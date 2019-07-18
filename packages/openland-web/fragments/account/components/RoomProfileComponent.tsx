@@ -35,7 +35,7 @@ import {
 } from 'openland-web/fragments/account/components/RoomControls';
 import { RoomEditModalBody } from 'openland-web/fragments/chat/RoomEditModal';
 import { showAdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
-import { AddMembersModal } from 'openland-web/fragments/chat/AddMembersModal';
+import { AddMembersModal, showAddMembersModal } from 'openland-web/fragments/chat/AddMembersModal';
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 import { useClient } from 'openland-web/utils/useClient';
 import { XCommunityCard } from 'openland-x/cards/XCommunityCard';
@@ -228,7 +228,7 @@ const DescriptionModalContent = (props: { chatId: string; hide: () => void }) =>
     }
 
     const form = useForm();
-    const editDescription = chat.description || undefined;
+    const editDescription = chat.description || '';
     const descriptionField = useField('input.description', editDescription, form);
 
     const createAction = () => {
@@ -250,7 +250,7 @@ const DescriptionModalContent = (props: { chatId: string; hide: () => void }) =>
             {form.loading && <XLoader loading={form.loading} />}
             {form.error && <XErrorMessage message={form.error} />}
             <XModalContent>
-                <XTextArea {...descriptionField.input} placeholder="Description" resize={false} />
+                <XTextArea placeholder="Description" resize={false} {...descriptionField.input} />
             </XModalContent>
             <XModalFooter>
                 <XButton text="Save" style="primary" size="large" onClick={createAction} />
@@ -360,15 +360,16 @@ const MembersProvider = ({
             >
                 {tab === tabs.members && (
                     <XView flexGrow={1} flexShrink={1}>
-                        <AddMembersModal
-                            id={chatId}
-                            isRoom={true}
-                            isChannel={isChannel}
-                            isOrganization={false}
-                        />
                         <XCreateCard
                             text="Add members"
-                            query={{ field: 'inviteMembers', value: 'true' }}
+                            onClick={() =>
+                                showAddMembersModal({
+                                    id: chatId,
+                                    isRoom: true,
+                                    isChannel: isChannel,
+                                    isOrganization: false,
+                                })
+                            }
                         />
                     </XView>
                 )}
