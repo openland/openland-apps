@@ -2,7 +2,6 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView, XViewProps } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
-// import { ThemeDefault } from 'openland-y-utils/themes';
 
 type UButtonSize = 'small' | 'medium' | 'large';
 type UButtonStyle = 'primary' | 'secondary' | 'danger';
@@ -159,7 +158,7 @@ const loaderColor = {
 };
 
 export const UButton = (props: UButtonProps) => {
-    const { text, square, size, style, loading, disable, ...other } = props;
+    const { text, square, size = 'medium', style = 'primary', loading, disable, ...other } = props;
     return (
         <XView {...other}>
             <div
@@ -168,10 +167,10 @@ export const UButton = (props: UButtonProps) => {
                     buttonWrapperStyle,
                     square && squareStyle,
                     (loading || disable) && disableStyle,
-                    sizeResolver[size || 'medium'],
-                    styleResolver[style || 'primary'],
-                    !(loading || disable) && styleResolverHover[style || 'primary'],
-                    !(loading || disable) && styleResolverActive[style || 'primary'],
+                    sizeResolver[size],
+                    styleResolver[style],
+                    !(loading || disable) && styleResolverHover[style],
+                    !(loading || disable) && styleResolverActive[style],
                 )}
             >
                 <span className={cx(textStyle, loading && loadingStyle)}>{text}</span>
@@ -180,7 +179,7 @@ export const UButton = (props: UButtonProps) => {
                         loading={true}
                         size="small"
                         transparentBackground
-                        {...loaderColor[style || 'primary']}
+                        {...loaderColor[style]}
                     />
                 )}
             </div>
