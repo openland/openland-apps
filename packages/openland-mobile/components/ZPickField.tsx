@@ -59,10 +59,16 @@ export interface ZPickFieldProps {
     pathParams?: any;
     onPress?: () => void;
     description?: string;
+    arrow?: 'right' | 'bottom';
 }
 
+const arrowIcon = {
+    right: require('assets/ic-right-16.png'),
+    bottom: require('assets/ic-bottom-16.png'),
+};
+
 const ZPickFieldComponent = (props: ZPickFieldProps & { router: SRouter }) => {
-    const { label, value, noWrapper, description } = props;
+    const { label, value, noWrapper, description, arrow = 'right' } = props;
     const theme = React.useContext(ThemeContext);
     const hasValue = !!(value && value.length > 0);
 
@@ -100,7 +106,7 @@ const ZPickFieldComponent = (props: ZPickFieldProps & { router: SRouter }) => {
                     )}
 
                     <View style={styles.iconContainer}>
-                        <Image source={require('assets/ic-right-16.png')} style={{ width: 16, height: 16, tintColor: theme.foregroundTertiary }} />
+                        <Image source={arrowIcon[arrow]} style={{ width: 16, height: 16, tintColor: theme.foregroundTertiary }} />
                     </View>
                 </View>
             </TouchableOpacity>
