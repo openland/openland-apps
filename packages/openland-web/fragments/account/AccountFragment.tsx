@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { showModalBox } from 'openland-x/showModalBox';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { ThemeDefault } from 'openland-y-utils/themes';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
@@ -17,6 +16,8 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from 'openland-web/components/UserInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
+import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 
 const UserProfileCard = withUserInfo(({ user }) => {
     if (user) {
@@ -64,10 +65,8 @@ const UserProfileCard = withUserInfo(({ user }) => {
                         </XView>
                     </XView>
                     <XView
-                        width={32}
-                        height={32}
-                        borderRadius={32}
-                        flexDirection="row"
+                        width={24}
+                        height={24}
                         alignItems="center"
                         justifyContent="center"
                     >
@@ -109,8 +108,8 @@ export const AccountFragment = React.memo(() => {
         <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
             <XView
                 height={56}
-                paddingHorizontal={16}
-                paddingVertical={12}
+                paddingLeft={16}
+                paddingRight={4}
                 backgroundColor="#fff"
                 fontSize={24}
                 lineHeight="32px"
@@ -120,21 +119,10 @@ export const AccountFragment = React.memo(() => {
                 alignItems="center"
                 justifyContent="center"
             >
-                <XView flexGrow={1} minWidth={0} flexBasis={0}>
+                <XView flexGrow={1} minWidth={0} flexBasis={0} >
                     Account
                 </XView>
-                <XView
-                    width={32}
-                    height={32}
-                    cursor="pointer"
-                    path="/auth/logout"
-                    borderRadius={32}
-                    alignItems="center"
-                    justifyContent="center"
-                    hoverBackgroundColor="#F0F2F5"
-                >
-                    <LeaveIcon />
-                </XView>
+                <UIconButton icon={<LeaveIcon />} path="/auth/logout" size="large" />
             </XView>
             <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">
                 <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
@@ -161,12 +149,11 @@ export const AccountFragment = React.memo(() => {
                         path="/settings/download"
                     />
 
-                    <UListHeader text="Organizations" />
-                    <XView position="relative" flexDirection="column">
+                    <UListGroup header="Organizations">
                         <React.Suspense fallback={<XLoader loading={true} />}>
                             <Organizations />
                         </React.Suspense>
-                    </XView>
+                    </UListGroup>
                 </XScrollView3>
             </XView>
         </XView>

@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { XView, XViewProps } from 'react-mental';
-import { ThemeDefault } from 'openland-y-utils/themes';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 
-const iconWrapper = css`
+type UIconButtonSize = 'medium' | 'large';
+
+const wrapper = css`
     display: flex;
-    width: 24px;
-    height: 24px;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
     align-items: center;
     justify-content: center;
 
@@ -16,29 +18,42 @@ const iconWrapper = css`
     }
 `;
 
+const wrapperActive = css`
+    background: #F0F2F5; // ThemeDefault.backgroundPrimaryHover
+`;
+
+const container = css`
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+
+    &:hover .${wrapper} {
+        background: #F0F2F5; // ThemeDefault.backgroundPrimaryHover
+    }
+`;
+
 interface UIconButtonProps extends XViewProps {
     icon: JSX.Element;
+    size?: UIconButtonSize;
     active?: boolean;
 }
 
 export const UIconButton = React.memo((props: UIconButtonProps) => {
-    const { icon, active, ...other } = props;
+    const { icon, size = 'medium', active, ...other } = props;
+    const boxSize = size === 'medium' ? 40 : 48;
 
     return (
         <XView
             {...other}
-            alignItems="center"
-            justifyContent="center"
             cursor="pointer"
-            width={40}
-            height={40}
-            borderRadius={20}
-            backgroundColor={active ? ThemeDefault.backgroundPrimaryHover : undefined}
-            hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
-            linkSelectable={true}
+            width={boxSize}
+            height={boxSize}
         >
-            <div className={iconWrapper}>
-                {icon}
+            <div className={container}>
+                <div className={cx(wrapper, active && wrapperActive)}>
+                    {icon}
+                </div>
             </div>
         </XView>
     );
