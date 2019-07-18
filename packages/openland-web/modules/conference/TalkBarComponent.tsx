@@ -5,13 +5,14 @@ import { TalkWatchComponent } from './TalkWatchComponent';
 import { XView } from 'react-mental';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-web/utils/useClient';
+import { ChatInfo } from 'openland-web/fragments/chat/types';
 
-export const TalkBarComponent = (props: { conversationId: string; isPrivate: boolean }) => {
+export const TalkBarComponent = (props: { chat: ChatInfo }) => {
     let calls = React.useContext(MessengerContext).calls;
     let callState = calls.useState();
     let client = useClient();
     let data = client.useWithoutLoaderConference(
-        { id: props.conversationId },
+        { id: props.chat.id },
         { fetchPolicy: 'network-only' },
     );
     if (!data) {
@@ -51,7 +52,7 @@ export const TalkBarComponent = (props: { conversationId: string; isPrivate: boo
                                 <XView width={8} />
                             </React.Fragment>
                         ))}
-                        {callState.conversationId === props.conversationId && (
+                        {callState.conversationId === props.chat.id && (
                             <>
                                 <XButton
                                     style="success"
@@ -68,7 +69,7 @@ export const TalkBarComponent = (props: { conversationId: string; isPrivate: boo
                                 />
                             </>
                         )}
-                        {callState.conversationId !== props.conversationId && (
+                        {callState.conversationId !== props.chat.id && (
                             <XButton
                                 style="success"
                                 text={callState.conversationId ? 'Leave' : 'Join'}
@@ -76,7 +77,7 @@ export const TalkBarComponent = (props: { conversationId: string; isPrivate: boo
                                     callState.conversationId
                                         ? () => calls.leaveCall()
                                         : () =>
-                                              calls.joinCall(props.conversationId, props.isPrivate)
+                                              calls.joinCall(props.chat.id, props.chat.__typename === 'PrivateRoom')
                                 }
                             />
                         )}
