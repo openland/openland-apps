@@ -68,7 +68,8 @@ export const AuthRouter = XMemo<{ children?: any }>(props => {
         !userInfo.isLoggedIn &&
         (router.path.startsWith('/join/') || router.path.startsWith('/invite/'))
     ) {
-        return redirectIfNeeded('/signin/invite');
+        // unicorn will handle it
+        return <>{props.children}</>;
     }
 
     // Redirect to Signup/Signin pages

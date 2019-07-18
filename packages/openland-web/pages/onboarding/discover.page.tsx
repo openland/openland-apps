@@ -120,7 +120,8 @@ const LocalDiscoverComponent = ({
     return (
         <Wrapper fullHeight={fullHeight}>
             <XDocumentHead title="Choose role" />
-            {!noTopBar && <TopBar progressInPercents={progressInPercents} />}
+            {/* commented out as Steve asked */}
+            {/* {!noTopBar && <TopBar progressInPercents={progressInPercents} />} */}
             {!noBackSkipLogo && (
                 <XView marginTop={isMobile ? 15 : 34}>
                     <BackSkipLogo onBack={onBack} onSkip={onSkip} noLogo={noLogo || !!isMobile} />

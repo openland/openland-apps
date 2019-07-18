@@ -14,13 +14,9 @@ import ProfileIcon from './navigation/icon_profile.svg';
 import ProfileActiveIcon from './navigation/icon_profile_active.svg';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { ResolveInviteComponent } from '../init/resolveInvite.page';
+import { AuthRouter } from '../root/AuthRouter';
 
-export default React.memo(() => {
-    const userInfo = React.useContext(UserInfoContext);
-    let loggedIn = userInfo && userInfo.isLoggedIn;
-    if (!loggedIn && (window.location.pathname.includes('/join') || window.location.pathname.includes('/invite'))) {
-        return <ResolveInviteComponent />;
-    }
+const Unicorn = React.memo(() => {
     const router = React.useMemo(() => new TabRouter([{
         icon: <DiscoverIcon />,
         iconActive: <DiscoverActiveIcon />,
@@ -41,5 +37,19 @@ export default React.memo(() => {
         <LayoutProvider>
             <TabLayout router={router} />
         </LayoutProvider>
+    );
+});
+
+export default React.memo(() => {
+    const userInfo = React.useContext(UserInfoContext);
+    let loggedIn = userInfo && userInfo.isLoggedIn;
+    // invites can be rendered before auth, but we want to keep them in one (unicorn) page to prevent page reload
+    if (!loggedIn && (window.location.pathname.includes('/join') || window.location.pathname.includes('/invite'))) {
+        return <ResolveInviteComponent />;
+    }
+    return (
+        <AuthRouter>
+            <Unicorn />
+        </AuthRouter>
     );
 });

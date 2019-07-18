@@ -199,30 +199,28 @@ const titleClassName = css`
 `;
 
 const InviteByRow = ({
-    invite,
+    invitedByUser,
     chatTypeStr,
 }: {
-    invite?: {
-        invitedByUser?: {
-            id: string;
-            name: string;
-            photo?: string | null;
-        };
-    };
+    invitedByUser?: {
+        id: string;
+        name: string;
+        photo?: string | null;
+    } | null;
     chatTypeStr: string;
 }) => {
     return (
         <>
-            {invite && invite.invitedByUser ? (
+            {invitedByUser ? (
                 <UserInfoWrapper separator={6} justifyContent="center" alignItems="center">
                     <XAvatar2
-                        src={invite.invitedByUser.photo || undefined}
-                        title={invite.invitedByUser.name}
-                        id={invite.invitedByUser.id}
+                        src={invitedByUser.photo || undefined}
+                        title={invitedByUser.name}
+                        id={invitedByUser.id}
                         size={24}
                     />
                     <Text>
-                        {invite.invitedByUser.name}{' '}
+                        {invitedByUser.name}{' '}
                         {`invites you to join ${chatTypeStr.toLowerCase()}`}
                     </Text>
                 </UserInfoWrapper>
@@ -333,19 +331,17 @@ export const InviteLandingComponentLayout = ({
     id,
     membersCount,
     description,
-    invite,
+    invitedByUser,
     noLogin,
     button,
 }: RoomInfoColumnT & {
     inviteLink?: string;
     signup?: string;
-    invite?: {
-        invitedByUser?: {
-            id: string;
-            name: string;
-            photo?: string | null;
-        };
-    };
+    invitedByUser?: {
+        id: string;
+        name: string;
+        photo?: string | null;
+    } | null;
     noLogin?: boolean;
     whereToInvite: 'Channel' | 'Group' | 'Organization' | 'Community';
 }) => {
@@ -380,7 +376,7 @@ export const InviteLandingComponentLayout = ({
                 )}
             </XView>
             <XView flexDirection="column" paddingHorizontal={20} zIndex={1}>
-                <InviteByRow invite={invite} chatTypeStr={whereToInvite} />
+                <InviteByRow invitedByUser={invitedByUser} chatTypeStr={whereToInvite} />
             </XView>
             <EntityInfoColumn
                 photo={photo}
@@ -453,21 +449,33 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     let client = useClient();
     let unicorn = useUnicorn();
 
-    let key = unicorn.id;
+    let path = window.location.pathname.split('/');
+    let key = unicorn ? unicorn.id : path[path.length - 1];
 
     let invite = client.useResolvedInvite({ key });
     let room: ResolvedInvite_invite_RoomInvite_room | undefined;
     let organization: ResolvedInvite_invite_InviteInfo_organization | undefined;
+    let invitedByUser;
 
     if (invite.invite && invite.invite.__typename === 'InviteInfo' && invite.invite.organization) {
         organization = invite.invite.organization;
+        invitedByUser = invite.invite.creator;
+
     }
 
     if (invite.invite && invite.invite.__typename === 'RoomInvite') {
         room = invite.invite.room;
+        invitedByUser = invite.invite.invitedByUser;
+
+    }
+
+    if (invite.invite && invite.invite.__typename === 'AppInvite') {
+        invitedByUser = invite.invite.inviter;
     }
 
     let button: JSX.Element | undefined;
+
+    console.warn(userInfo);
     if (!loggedIn) {
         button = <MainContent>
             <XButton
@@ -479,7 +487,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 path={signupRedirect}
             />
         </MainContent>;
-    } if (room) {
+    } else if (room) {
         button = resolveRoomButton(room, key);
     } else if (organization) {
         button = <XButton
@@ -516,6 +524,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 params={{ invite_type: whereToInvite.toLowerCase() }}
             />
             <InviteLandingComponentLayout
+                invitedByUser={invitedByUser}
                 button={button}
                 noLogin={!loggedIn}
                 whereToInvite={whereToInvite}
