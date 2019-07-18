@@ -7,6 +7,7 @@ import { HeaderConfig } from './HeaderConfig';
 
 export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     let router = useStackRouter();
+    let appearance = props.config.appearance || 'normal';
     return (
         <XView height={56} flexDirection="row" alignItems="center" zIndex={2}>
             <XView
@@ -35,7 +36,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                     flexBasis={0}
                     flexGrow={1}
                     fontSize={24}
-                    maxWidth={600}
+                    maxWidth={appearance === 'normal' ? 600 : 900}
                     lineHeight="32px"
                     fontWeight="600"
                     flexDirection="row"
