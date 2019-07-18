@@ -4,7 +4,6 @@ import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { avatarSizes } from 'openland-mobile/components/ZAvatar';
 
 type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
 
@@ -183,7 +182,7 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
         content = <AvatarPlaceholder {...props} />;
     }
 
-    const boxSize = avatarSizes[size].size;
+    const boxSize = AvatarSizes[size].size;
 
     return (
         <XView
