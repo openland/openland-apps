@@ -9,6 +9,9 @@ import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XView } from 'react-mental';
 import { showModalBox } from 'openland-x/showModalBox';
+import { XModalContent } from 'openland-web/components/XModalContent';
+import { XModalFooter } from 'openland-x-modal/XModal';
+import { XButton } from 'openland-x/XButton';
 
 const DeclineButtonWrapper = Glamorous(XLink)<{ isHoveredWrapper?: boolean }>([
     {
@@ -59,6 +62,7 @@ interface RemoveMemberModalProps {
     roomId: string;
     roomTitle: string;
     memberId: string;
+    memberName: string;
 }
 
 const RemoveMemberModalInner = ({
@@ -78,38 +82,48 @@ const RemoveMemberModalInner = ({
         return null;
     }
 
+    // remove, danger
+
     return (
-        <XModalForm
-            submitProps={{
-                text: 'Remove',
-                style: 'danger',
-            }}
-            title={'Remove ' + member.user.name + ' from ' + roomTitle}
-            ignoreTargetQuery
-            defaultAction={async () => {
-                await client.mutateRoomKick({
-                    userId: member.user.id,
-                    roomId,
-                });
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XView marginTop={30} />
+                <XText>
+                    Are you sure you want to remove {member.user.firstName}? They will no longer be
+                    able to participate in the discussion.
+                </XText>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Remove"
+                    style="danger"
+                    size="large"
+                    onClick={async () => {
+                        await client.mutateRoomKick({
+                            userId: member.user.id,
+                            roomId,
+                        });
 
-                await client.refetchRoom({
-                    id: roomId,
-                });
+                        await client.refetchRoom({
+                            id: roomId,
+                        });
 
-                hide();
-            }}
-            onClosed={() => {
-                hide();
-            }}
-        >
-            <XText>
-                Are you sure you want to remove {member.user.firstName}? They will no longer be able
-                to participate in the discussion.
-            </XText>
-        </XModalForm>
+                        hide();
+                    }}
+                />
+            </XModalFooter>
+        </XView>
     );
 };
 
 export const showRemoveMemberModal = (props: RemoveMemberModalProps) => {
-    showModalBox({}, ctx => <RemoveMemberModalInner {...props} hide={ctx.hide} />);
+    showModalBox(
+        {
+            title: 'Remove ' + props.memberName + ' from ' + props.roomTitle,
+        },
+        ctx => <RemoveMemberModalInner {...props} hide={ctx.hide} />,
+    );
 };

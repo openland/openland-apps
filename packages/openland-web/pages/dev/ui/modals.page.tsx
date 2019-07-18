@@ -4,7 +4,7 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import {
     addMemberModalChatId,
     webInboxChat,
-    egoarkaId,
+    egoarkaUser,
     rfzzOrgId,
     fredUser,
     pinMessage,
@@ -111,8 +111,9 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             onClick={() =>
                                 showRemoveMemberModal({
                                     roomId: webInboxChat.id,
-                                    memberId: egoarkaId,
+                                    memberId: egoarkaUser.id,
                                     roomTitle: webInboxChat.title,
+                                    memberName: egoarkaUser.fullName,
                                 })
                             }
                         />
@@ -134,7 +135,7 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             style="primary"
                             onClick={() =>
                                 showDeleteOrganizationModal({
-                                    accountId: egoarkaId,
+                                    accountId: egoarkaUser.id,
                                     orgId: rfzzOrgId,
                                 })
                             }

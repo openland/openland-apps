@@ -6,7 +6,10 @@ import {
 
 export const addMemberModalChatId = 'QwJ9g164eMTdJlDDj9qzS115XW';
 
-export const egoarkaId = 'b5OljEldvVcmdakbEKexIgW5Vl';
+export const egoarkaUser = {
+    id: 'b5OljEldvVcmdakbEKexIgW5Vl',
+    fullName: 'Egor Terletsky',
+};
 export const fredUser = {
     id: 'Jl1k97keDvsLjdwXPRKytboAyq',
     fullName: 'Fred Morozov',
