@@ -63,8 +63,8 @@ const SocialImageWrapperClassName = css`
 interface ModalBodyProps {
     welcomeMessageIsOn: boolean;
     setWelcomeMessageIsOn: (data: boolean) => void;
-    setSocialImageRef: (file: Partial<StoredFileT>) => void;
-    socialImageRef: Partial<StoredFileT> | undefined;
+    setSocialImageRef: (file: StoredFileT) => void;
+    socialImageRef: StoredFileT | undefined;
     isOpenUsers: boolean;
     setIsOpenUsers: (data: boolean) => void;
     msgSender: any;
@@ -249,13 +249,15 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide
         props.welcomeMessageSender,
     );
 
-    const [socialImageRef, setSocialImageRef] = React.useState<Partial<StoredFileT> | undefined>(
+    const [socialImageRef, setSocialImageRef] = React.useState<StoredFileT | undefined>(
         props.socialImage
             ? {
-                  uuid: props.socialImage ? props.socialImage : '',
+                  uuid: props.socialImage,
                   crop: {
                       w: 190,
                       h: 100,
+                      x: 0,
+                      y: 0,
                   },
               }
             : undefined,

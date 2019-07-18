@@ -46,7 +46,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
-import { AddMembersModal } from 'openland-web/fragments/chat/AddMembersModal';
+import { AddMembersModal, showAddMembersModal } from 'openland-web/fragments/chat/AddMembersModal';
 import { AvatarModal } from './UserProfileComponent';
 import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -783,16 +783,14 @@ const Members = ({ organization, router }: MembersProps) => {
                         <>
                             <XCreateCard
                                 text={TextProfiles.Organization.addMembers}
-                                query={{
-                                    field: 'inviteMembers',
-                                    value: organization.id,
+                                onClick={() => {
+                                    showAddMembersModal({
+                                        id: organization.id,
+                                        isRoom: false,
+                                        isOrganization: true,
+                                        isCommunity: organization.isCommunity,
+                                    });
                                 }}
-                            />
-                            <AddMembersModal
-                                id={organization.id}
-                                isRoom={false}
-                                isOrganization={true}
-                                isCommunity={organization.isCommunity}
                             />
                         </>
                     )}

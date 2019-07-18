@@ -12,7 +12,7 @@ export type StoredFileT = {
     isImage?: boolean;
     width?: number | null;
     height?: number | null;
-    crop: Partial<XImageCropT> | null;
+    crop: XImageCropT | null;
 };
 
 export const toValue = (file: UploadedFile | null): StoredFileT | null => {
