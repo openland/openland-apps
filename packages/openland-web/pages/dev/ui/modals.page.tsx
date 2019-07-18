@@ -146,7 +146,7 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             style="primary"
                             onClick={() =>
                                 showImagePreviewModal({
-                                    file: 'fooBar',
+                                    file: fredUser.photo,
                                     height: 50,
                                     width: 50,
                                     target: (
