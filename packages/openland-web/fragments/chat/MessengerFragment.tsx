@@ -6,6 +6,7 @@ import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarCompone
 import { ForwardPlaceholder } from './ForwardPlaceholder';
 import { useClient } from 'openland-web/utils/useClient';
 import { SharedRoomPlaceholder } from '../invite/InviteLandingComponent';
+import { UHeader } from 'openland-unicorn/UHeader';
 
 export const MessengerFragment = React.memo<{ id: string }>(props => {
 
@@ -34,32 +35,37 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
         }
     }
 
+    let title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
+
     return (
-        <XView
-            flexGrow={1}
-            flexShrink={1}
-            flexBasis={0}
-            minWidth={0}
-            minHeight={0}
-            alignSelf="stretch"
-            alignItems="stretch"
-        >
-            {state.useForwardPlaceholder && <ForwardPlaceholder state={state} />}
-            <TalkBarComponent chat={chat} />
+        <>
+            <UHeader title={title} appearance="wide" />
             <XView
                 flexGrow={1}
-                flexBasis={0}
-                minHeight={0}
                 flexShrink={1}
+                flexBasis={0}
+                minWidth={0}
+                minHeight={0}
+                alignSelf="stretch"
+                alignItems="stretch"
             >
-                <MessengerRootComponent
-                    onChatLostAccess={onChatLostAccess}
-                    pinMessage={pinMessage}
-                    conversationId={chat.id}
-                    conversationType={chat.__typename === 'SharedRoom' ? chat.kind : 'PRIVATE'}
-                    room={chat}
-                />
+                {state.useForwardPlaceholder && <ForwardPlaceholder state={state} />}
+                <TalkBarComponent chat={chat} />
+                <XView
+                    flexGrow={1}
+                    flexBasis={0}
+                    minHeight={0}
+                    flexShrink={1}
+                >
+                    <MessengerRootComponent
+                        onChatLostAccess={onChatLostAccess}
+                        pinMessage={pinMessage}
+                        conversationId={chat.id}
+                        conversationType={chat.__typename === 'SharedRoom' ? chat.kind : 'PRIVATE'}
+                        room={chat}
+                    />
+                </XView>
             </XView>
-        </XView>
+        </>
     );
 });
