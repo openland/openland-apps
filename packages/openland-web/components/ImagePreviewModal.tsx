@@ -8,6 +8,7 @@ import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { XLink2 } from 'openland-x/XLink2';
 import { MessagesStateContext } from '../fragments/chat/messenger/MessagesStateContext';
+import { showModalBox } from 'openland-x/showModalBox';
 
 const ModalBody = css`
     display: flex;
@@ -26,74 +27,79 @@ const ModalImage = css`
     max-height: 90vh;
 `;
 
-interface ImagePreviewModal extends XModalProps {
+type ImagePreviewModalProps = {
     file: string;
     width: number;
     height: number;
-}
+} & Pick<XModalProps, 'target'>;
 
-export const ImagePreviewModal = (props: ImagePreviewModal) => {
+const modalBody = (width: number, height: number) => (props: ImagePreviewModalProps) => (
+    <div className={ModalBody}>
+        <XLink2
+            cursor="pointer"
+            position="fixed"
+            right={20}
+            top={20}
+            width={36}
+            height={36}
+            borderRadius={5}
+            backgroundColor="transparent"
+            justifyContent="center"
+            alignItems="center"
+            autoClose={true}
+        >
+            <ModalCloseIcon />
+        </XLink2>
+        <XView flexDirection="row" alignItems="center" justifyContent="center">
+            <XView backgroundColor="#000" borderRadius={8}>
+                <XCloudImage
+                    srcCloud={props.file}
+                    width={width}
+                    height={height}
+                    className={ModalImage}
+                />
+                <XView
+                    as="a"
+                    justifyContent="center"
+                    alignItems="center"
+                    width={36}
+                    height={36}
+                    borderRadius={5}
+                    backgroundColor="rgba(0, 0, 0, 0.6)"
+                    opacity={0}
+                    position="absolute"
+                    top={20}
+                    right={20}
+                    href={props.file + '/-/preview/-/inline/no/'}
+                    hoverTextDecoration="none"
+                >
+                    <DownloadButtonIcon />
+                </XView>
+            </XView>
+        </XView>
+    </div>
+);
+
+export const showImagePreviewModal = (props: ImagePreviewModalProps) => {
+    showModalBox({}, () => {
+        let dimensions = layoutMedia(props.width, props.height, 1000, 1000);
+        const modal = modalBody(dimensions.width, dimensions.height)(props);
+        return modal;
+    });
+};
+
+export const ImagePreviewModal = (props: ImagePreviewModalProps) => {
+    if (!props.target) {
+        return null;
+    }
+
     const messagesContextProps = React.useContext(MessagesStateContext);
     if (messagesContextProps.useForwardHeader) {
         return props.target as React.ReactElement;
     }
 
-    const modalBody = (width: number, height: number) => (
-        <div className={ModalBody}>
-            <XLink2
-                cursor="pointer"
-                position="fixed"
-                right={20}
-                top={20}
-                width={36}
-                height={36}
-                borderRadius={5}
-                backgroundColor="transparent"
-                justifyContent="center"
-                alignItems="center"
-                autoClose={true}
-            >
-                <ModalCloseIcon />
-            </XLink2>
-            <XView flexDirection="row" alignItems="center" justifyContent="center">
-                <XView backgroundColor="#000" borderRadius={8}>
-                    <XCloudImage
-                        srcCloud={props.file}
-                        width={width}
-                        height={height}
-                        className={ModalImage}
-                    />
-                    <XView
-                        as="a"
-                        justifyContent="center"
-                        alignItems="center"
-                        width={36}
-                        height={36}
-                        borderRadius={5}
-                        backgroundColor="rgba(0, 0, 0, 0.6)"
-                        opacity={0}
-                        position="absolute"
-                        top={20}
-                        right={20}
-                        href={props.file + '/-/preview/-/inline/no/'}
-                        hoverTextDecoration="none"
-                    >
-                        <DownloadButtonIcon />
-                    </XView>
-                </XView>
-            </XView>
-        </div>
-    );
-    let dimensions = layoutMedia(props.width, props.height, 1000, 1000);
-
-    return (
-        <XModal
-            useTopCloser={true}
-            width={dimensions.width}
-            heading={null}
-            transparent={true}
-            body={modalBody(dimensions.width, dimensions.height)}
-            target={props.target}
-        />
-    );
+    const targetClone = React.cloneElement(props.target, {
+        onClick: () => showImagePreviewModal(props),
+    });
+    return targetClone;
 };

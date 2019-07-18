@@ -36,6 +36,7 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
+import { showModalBox } from 'openland-x/showModalBox';
 
 const ModalCloser = Glamorous(XLink)({
     position: 'fixed',
@@ -113,32 +114,27 @@ const UserStatus = (props: { variables: { userId: string }; isBot: boolean }) =>
     }
 };
 
-export const AvatarModal = (props: { photo?: string; title: string; id: string }) => {
+interface AvatarModalProps {
+    photo?: string;
+    title: string;
+    id: string;
+}
+
+export const showAvatarModal = (props: AvatarModalProps) => {
+    showModalBox({ width: 512 }, ctx => (
+        <ModalPic srcCloud={props.photo} resize={'fill'} width={512} height={512} />
+    ));
+};
+
+export const AvatarModal = (props: AvatarModalProps) => {
     const isMobile = React.useContext(IsMobileContext);
     if (isMobile) {
         return <XAvatar2 src={props.photo} size={58} title={props.title} id={props.id} />;
     }
     return (
-        <XModal
-            useTopCloser={false}
-            width={512}
-            heading={null}
-            transparent={true}
-            footer={null}
-            body={
-                <ModalBody>
-                    <ModalCloser autoClose={true} className="closer">
-                        <ModalCloseIcon />
-                    </ModalCloser>
-                    <ModalPic srcCloud={props.photo} resize={'fill'} width={512} height={512} />
-                </ModalBody>
-            }
-            target={
-                <XView cursor="pointer">
-                    <XAvatar2 src={props.photo} size={58} title={props.title} id={props.id} />
-                </XView>
-            }
-        />
+        <XView cursor="pointer" onClick={() => showAvatarModal(props)}>
+            <XAvatar2 src={props.photo} size={58} title={props.title} id={props.id} />
+        </XView>
     );
 };
 
@@ -218,9 +214,8 @@ const Header = (props: { user: User_user }) => {
                     </XView>
                     <XView paddingTop={13}>
                         <XHorizontal separator={8} alignItems="center">
-                            {user.audienceSize > 0 && !user.isBot && (
-                                <UserReach reach={user.audienceSize} />
-                            )}
+                            {user.audienceSize > 0 &&
+                                !user.isBot && <UserReach reach={user.audienceSize} />}
                             {user.website && (
                                 <XSocialButton
                                     value={user.website}
@@ -308,15 +303,16 @@ const FeaturedIn = (props: { user: User_user }) => {
                     paddingBottom={0}
                 />
                 <SectionContent>
-                    {user.chatsWithBadge.map((item, index) =>
-                        item.chat.__typename === 'SharedRoom' ? (
-                            <XRoomCard
-                                room={item.chat}
-                                badge={item.badge}
-                                customButton={null}
-                                customMenu={null}
-                            />
-                        ) : null,
+                    {user.chatsWithBadge.map(
+                        (item, index) =>
+                            item.chat.__typename === 'SharedRoom' ? (
+                                <XRoomCard
+                                    room={item.chat}
+                                    badge={item.badge}
+                                    customButton={null}
+                                    customMenu={null}
+                                />
+                            ) : null,
                     )}
                 </SectionContent>
             </Section>

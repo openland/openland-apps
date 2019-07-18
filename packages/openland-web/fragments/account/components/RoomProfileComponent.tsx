@@ -13,7 +13,6 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { LeaveChatComponent } from 'openland-web/fragments/chat/components/MessengerRootComponent';
-import { RemoveMemberModal } from 'openland-web/fragments/chat/RemoveMemberModal';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {
     HeaderAvatar,
@@ -88,6 +87,44 @@ export const tabs: { [K in tabsT]: tabsT } = {
     members: 'members',
 };
 
+const RoomEditModal = ({ chatId, hide }: { chatId: string; hide: () => void }) => {
+    const client = useClient();
+    const data = client.useRoomWithoutMembers({ id: chatId });
+
+    let chat = data.room as Room_room_SharedRoom;
+
+    const sharedRoom = chat.__typename === 'SharedRoom' ? (chat as Room_room_SharedRoom) : null;
+    const isChannel = !!(sharedRoom && sharedRoom.isChannel);
+
+    if (!chat) {
+        return <XLoader loading={true} />;
+    }
+
+    return (
+        <RoomEditModalBody
+            roomId={chat.id}
+            title={chat.title}
+            photo={chat.photo}
+            description={chat.description}
+            socialImage={chat.socialImage}
+            isChannel={isChannel}
+            onClose={hide}
+        />
+    );
+};
+
+export const showRoomEditModal = (chatId: string, isChannel: boolean) => {
+    showModalBox(
+        {
+            title: isChannel ? 'Channel settings' : 'Group settings',
+        },
+        ctx => <RoomEditModal chatId={chatId} hide={ctx.hide} />,
+    );
+};
+
+export const leaveChatModal = (chatId: string) =>
+    showModalBox({ title: 'Leave chat' }, ctx => <LeaveChatComponent id={chatId} ctx={ctx} />);
+
 const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
     let meMember = chat.membership === 'MEMBER';
     let leaveText = 'Leave group';
@@ -95,8 +132,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
     const canEdit = chat.canEdit;
 
     const canSeeAdvancedSettings = checkCanSeeAdvancedSettings({ chat });
-    const sharedRoom = chat.__typename === 'SharedRoom' ? (chat as Room_room_SharedRoom) : null;
-    const isChannel = !!(sharedRoom && sharedRoom.isChannel);
+
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -130,24 +166,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                         <XWithRole role="super-admin" or={canEdit}>
                                             <XMenuItem
                                                 onClick={() =>
-                                                    showModalBox(
-                                                        {
-                                                            title: isChannel
-                                                                ? 'Channel settings'
-                                                                : 'Group settings',
-                                                        },
-                                                        ctx => (
-                                                            <RoomEditModalBody
-                                                                roomId={chat.id}
-                                                                title={chat.title}
-                                                                photo={chat.photo}
-                                                                description={chat.description}
-                                                                socialImage={chat.socialImage}
-                                                                isChannel={isChannel}
-                                                                onClose={ctx.hide}
-                                                            />
-                                                        ),
-                                                    )
+                                                    showRoomEditModal(chat.id, chat.isChannel)
                                                 }
                                             >
                                                 Settings
@@ -155,11 +174,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                         </XWithRole>
 
                                         <XMenuItem
-                                            onClick={() =>
-                                                showModalBox({ title: 'Leave chat' }, ctx => (
-                                                    <LeaveChatComponent id={chat.id} ctx={ctx} />
-                                                ))
-                                            }
+                                            onClick={() => leaveChatModal(chat.id)}
                                             style="danger"
                                         >
                                             {leaveText}
@@ -201,14 +216,19 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
     );
 };
 
-const DescriptionModalContent = (props: {
-    description: string | null;
-    roomId: string;
-    ctx: XModalController;
-}) => {
+const DescriptionModalContent = (props: { chatId: string; hide: () => void }) => {
+    const { chatId } = props;
     const client = useClient();
+    const data = client.useRoomWithoutMembers({ id: chatId });
+
+    let chat = data.room as Room_room_SharedRoom;
+
+    if (!chat) {
+        return <XLoader loading={true} />;
+    }
+
     const form = useForm();
-    const editDescription = (props as any).description;
+    const editDescription = chat.description;
     const descriptionField = useField('input.description', editDescription, form);
 
     const createAction = () => {
@@ -221,7 +241,7 @@ const DescriptionModalContent = (props: {
                         : {}),
                 },
             });
-            props.ctx.hide();
+            props.hide();
         });
     };
 
@@ -238,6 +258,11 @@ const DescriptionModalContent = (props: {
         </XView>
     );
 };
+
+export const showAddDescriptionModal = (chatId: string) =>
+    showModalBox({ title: 'Add short description' }, ctx => (
+        <DescriptionModalContent chatId={chatId} hide={ctx.hide} />
+    ));
 
 const About = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
@@ -258,15 +283,7 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
                         <SectionContent>
                             <EditButton
                                 text="Add a short description"
-                                onClick={() =>
-                                    showModalBox({ title: 'Add short description' }, ctx => (
-                                        <DescriptionModalContent
-                                            roomId={chat.id}
-                                            description={chat.description}
-                                            ctx={ctx}
-                                        />
-                                    ))
-                                }
+                                onClick={() => showAddDescriptionModal(chat.id)}
                             />
                         </SectionContent>
                     </Section>
@@ -356,8 +373,6 @@ const MembersProvider = ({
                     </XView>
                 )}
             </SectionContent>
-
-            <RemoveMemberModal roomId={chatId} roomTitle={roomTitle} />
         </Section>
     );
 };

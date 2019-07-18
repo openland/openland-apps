@@ -30,6 +30,7 @@ import { XLink } from 'openland-x/XLink';
 import { useClient } from 'openland-web/utils/useClient';
 import { MutationFunc } from 'react-apollo';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
+import { showModalBox } from 'openland-x/showModalBox';
 
 const ReplyMessageWrapper = Glamorous.div({
     position: 'relative',
@@ -99,17 +100,17 @@ export interface PinMessageComponentProps {
         | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage;
     chatId: string;
     room: RoomChat_room;
-    target?: any;
+    target?: JSX.Element;
 }
 
 const expandIconClassName = css`
     & path {
         opacity: 1;
-        fill: #676D7A;
+        fill: #676d7a;
     }
 `;
 
-const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
+const buildPinMessageModalBody = (props: PinMessageComponentProps) => {
     const isMobile = React.useContext(IsMobileContext);
     const { room, pinMessage } = props;
     const { sender, message } = pinMessage;
@@ -178,7 +179,7 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
         );
     }
 
-    const body = (
+    return (
         <XView
             paddingHorizontal={32}
             paddingTop={isMobile ? 0 : 30}
@@ -340,7 +341,15 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
             </XView>
         </XView>
     );
+};
 
+export const showPinMessageModal = (props: PinMessageComponentProps) => {
+    showModalBox({}, () => {
+        return buildPinMessageModalBody(props);
+    });
+};
+
+const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
     let target = (
         <XView
             width={32}
@@ -360,7 +369,11 @@ const PinMessageModal = React.memo((props: PinMessageComponentProps) => {
         target = props.target;
     }
 
-    return <XModal body={body} target={target} footer={null} />;
+    const targetClone = React.cloneElement(target, {
+        onClick: () => showPinMessageModal(props),
+    });
+
+    return targetClone;
 });
 
 const ForwardIconClassName = css`
@@ -371,6 +384,7 @@ const ForwardIconClassName = css`
 
 export const PinMessageComponent = React.memo((props: PinMessageComponentProps) => {
     const { pinMessage, chatId, room } = props;
+
     const { attachments, sender } = pinMessage;
     const attach = attachments[0];
     const privateRoom = room.__typename === 'PrivateRoom';
@@ -379,12 +393,7 @@ export const PinMessageComponent = React.memo((props: PinMessageComponentProps) 
         hideSender = false;
     }
     return (
-        <XView
-            flexDirection="column"
-            flexGrow={1}
-            maxHeight={61}
-            alignItems="center"
-        >
+        <XView flexDirection="column" flexGrow={1} maxHeight={61} alignItems="center">
             <XView height={1} width="100%" flexShrink={0} backgroundColor="#ececec" />
             <XView
                 maxWidth={1040}
