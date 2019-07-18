@@ -4,8 +4,9 @@ import { XMenuVertical } from 'openland-x/XMenuItem';
 import { UIconButton } from '../UIconButton';
 import ManageVerticalIcon from 'openland-icons/ic-more-v.svg';
 import ManageHorizontalIcon from 'openland-icons/ic-more-h.svg';
+import { XViewProps } from 'react-mental';
 
-interface UMoreButtonProps {
+interface UMoreButtonProps extends XViewProps {
     placement?: Placement;
     show?: boolean;
     horizontal?: boolean;
@@ -48,18 +49,18 @@ export class UMoreButton extends React.PureComponent<UMoreButtonProps, { show: b
     }
 
     render() {
-        const { horizontal = false, placement = 'bottom-end', children, showOnHover } = this.props;
-        let show: boolean | undefined =
-            typeof this.props.show === 'undefined' ? this.state.show : this.props.show;
+        const { placement = 'bottom-end', show, horizontal = false, showOnHover, onClickOutside, children, ...other } = this.props;
+        let computedShow: boolean | undefined =
+            typeof show === 'undefined' ? this.state.show : show;
 
-        if (this.props.showOnHover) {
-            show = undefined;
+        if (showOnHover) {
+            computedShow = undefined;
         }
 
         return (
             <XPopper
-                show={show}
-                contentContainer={<XMenuVertical />}
+                show={computedShow}
+                // contentContainer={<XMenuVertical />}
                 content={children}
                 arrow={null}
                 placement={placement}
@@ -71,6 +72,7 @@ export class UMoreButton extends React.PureComponent<UMoreButtonProps, { show: b
                         icon={horizontal ? <ManageHorizontalIcon /> : <ManageVerticalIcon />}
                         active={show}
                         onClick={this.switch}
+                        {...other}
                     />
                 </div>
             </XPopper>
