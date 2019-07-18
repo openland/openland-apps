@@ -48,7 +48,7 @@ export class UMoreButton extends React.PureComponent<UMoreButtonProps, { show: b
     }
 
     render() {
-        const { horizontal = true, placement = 'bottom-end', children, showOnHover } = this.props;
+        const { horizontal = false, placement = 'bottom-end', children, showOnHover } = this.props;
         let show: boolean | undefined =
             typeof this.props.show === 'undefined' ? this.state.show : this.props.show;
 
