@@ -74,7 +74,7 @@ interface DeleteButtonProps {
     orgId: string;
 }
 
-export const showDeleteOrganizationModal = ({ orgId, accountId }: DeleteButtonProps) =>
+export const showSuperDeleteOrganizationModal = ({ orgId, accountId }: DeleteButtonProps) =>
     showModalBox(
         {
             title: 'Delete organization',
@@ -109,7 +109,7 @@ const DeleteButton = (props: DeleteButtonProps) => {
             text="Delete"
             style="danger"
             flexShrink={0}
-            onClick={() => showDeleteOrganizationModal(props)}
+            onClick={() => showSuperDeleteOrganizationModal(props)}
         />
     );
 };

@@ -567,7 +567,6 @@ const Header = (props: { organization: OrganizationWithoutMembers_organization }
                         />
                     )}
                 </HeaderAvatar>
-                <RemoveOrganizationModal />
                 <HeaderInfo flexGrow={1} separator={0}>
                     <HeaderTitle>{organization.name}</HeaderTitle>
                     {organization.website && (

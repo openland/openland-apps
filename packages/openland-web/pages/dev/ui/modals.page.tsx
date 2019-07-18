@@ -27,11 +27,12 @@ import {
 } from 'openland-web/fragments/account/components/RoomProfileComponent';
 import { showRemoveMemberModal } from 'openland-web/fragments/chat/RemoveMemberModal';
 import { showAvatarModal } from 'openland-web/fragments/account/components/UserProfileComponent';
-import { showDeleteOrganizationModal } from '../orgView.page';
+import { showSuperDeleteOrganizationModal } from '../orgView.page';
 import { showImagePreviewModal } from 'openland-web/components/ImagePreviewModal';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { XView } from 'react-mental';
 import { showPinMessageModal } from 'openland-web/fragments/chat/PinMessage';
+import { showDeleteOrganizationModal } from 'openland-web/fragments/account/components/modals';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
     return (
@@ -125,12 +126,23 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                         />
 
                         <XButton
+                            text="super delete organization"
+                            style="primary"
+                            onClick={() =>
+                                showSuperDeleteOrganizationModal({
+                                    accountId: egoarkaUser.id,
+                                    orgId: rfzzOrgId,
+                                })
+                            }
+                        />
+
+                        <XButton
                             text="delete organization"
                             style="primary"
                             onClick={() =>
                                 showDeleteOrganizationModal({
-                                    accountId: egoarkaUser.id,
-                                    orgId: rfzzOrgId,
+                                    organizationId: rfzzOrgId,
+                                    orgName: 'rfzzOrg',
                                 })
                             }
                         />

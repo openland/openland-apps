@@ -21,6 +21,9 @@ import { XModalFooterButton } from 'openland-web/components/XModalFooterButton';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { XCheckbox } from 'openland-x/XCheckbox';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XText } from 'openland-x/XText';
+import { showModalBox } from 'openland-x/showModalBox';
 
 export const AboutPlaceholder = (props: { target?: any }) => {
     const client = useClient();
@@ -117,50 +120,73 @@ export const LeaveOrganizationModal = () => {
     );
 };
 
-export const RemoveOrganizationModal = () => {
+export const RemoveOrganizationModal = ({
+    organizationId,
+    hide,
+}: {
+    organizationId: string;
+    hide: () => void;
+}) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
-    const organizationId = router.routeQuery.organizationId;
-
     const data = client.useWithoutLoaderOrganizationProfile({ organizationId });
 
     if (!(data && data.organizationProfile)) {
-        return null;
+        return <div />;
     }
 
     return (
-        <XModalForm
-            submitProps={{
-                text: 'Delete organization',
-                style: 'danger',
-            }}
-            title={`Delete ${data.organizationProfile.name}`}
-            defaultData={{}}
-            defaultAction={async () => {
-                await client.mutateDeleteOrganization({
-                    organizationId: data.organizationProfile.id,
-                });
-
-                await client.refetchMyOrganizations();
-                await client.refetchAccount();
-
-                // hack to navigate after modal closing navigation
-                setTimeout(() => {
-                    router!.push('/');
-                });
-            }}
-            targetQuery={'deleteOrganization'}
-            submitBtnText="Yes, I am sure"
-        >
-            <XFormLoadingContent>
+        <XView borderRadius={8}>
+            <XModalContent>
                 <XVertical flexGrow={1} separator={8}>
                     Are you sure you want to delete {data.organizationProfile.name}? This cannot be
                     undone.
                 </XVertical>
-            </XFormLoadingContent>
-        </XModalForm>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" onClick={hide} />
+                </XView>
+
+                <XButton
+                    text="Delete organization"
+                    style="danger"
+                    action={async () => {
+                        await client.mutateDeleteOrganization({
+                            organizationId: data.organizationProfile.id,
+                        });
+
+                        await client.refetchMyOrganizations();
+                        await client.refetchAccount();
+
+                        // hack to navigate after modal closing navigation
+                        setTimeout(() => {
+                            router!.push('/');
+                        });
+
+                        hide();
+                    }}
+                />
+            </XModalFooter>
+        </XView>
     );
 };
+
+export const showDeleteOrganizationModal = ({
+    orgName,
+    organizationId,
+}: {
+    orgName: string;
+    organizationId: string;
+}) =>
+    showModalBox(
+        {
+            title: `Delete ${orgName}`,
+        },
+        ctx => {
+            return <RemoveOrganizationModal organizationId={organizationId} hide={ctx.hide} />;
+        },
+    );
 
 export const SocialPlaceholder = (props: { target?: any }) => {
     const client = useClient();
@@ -282,8 +308,11 @@ export const MakeFeaturedModal = (props: {
     const { ctx, roomId, userId } = props;
     const client = useClient();
     const form = useForm();
-    const userBadge = client.useSuperBadgeInRoom({ roomId, userId }, { fetchPolicy: 'cache-and-network' }).superBadgeInRoom;
-    const [ featured, setFeatured ] = React.useState<boolean>(!!userBadge);
+    const userBadge = client.useSuperBadgeInRoom(
+        { roomId, userId },
+        { fetchPolicy: 'cache-and-network' },
+    ).superBadgeInRoom;
+    const [featured, setFeatured] = React.useState<boolean>(!!userBadge);
     const descriptionField = useField('input.description', userBadge ? userBadge.name : '', form, [
         {
             checkIsValid: value => value.trim().length > 0,
@@ -308,7 +337,7 @@ export const MakeFeaturedModal = (props: {
                     await client.mutateSuperBadgeUnsetToRoom({
                         userId,
                         roomId,
-                        badgeId: userBadge.id
+                        badgeId: userBadge.id,
                     });
                 }
             }
@@ -330,16 +359,17 @@ export const MakeFeaturedModal = (props: {
                     />
                     {featured && (
                         <XView marginTop={20}>
-                            <InputField title="Description" field={descriptionField} setFocusOnError maxLength={40} />
+                            <InputField
+                                title="Description"
+                                field={descriptionField}
+                                setFocusOnError
+                                maxLength={40}
+                            />
                         </XView>
                     )}
                 </XModalContent>
                 <XModalFooter>
-                    <XModalFooterButton
-                        text="Cancel"
-                        style="ghost"
-                        onClick={() => ctx.hide()}
-                    />
+                    <XModalFooterButton text="Cancel" style="ghost" onClick={() => ctx.hide()} />
                     <XModalFooterButton text="Save" style="primary" onClick={onSave} />
                 </XModalFooter>
             </XView>
