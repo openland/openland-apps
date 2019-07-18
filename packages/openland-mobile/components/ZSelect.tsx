@@ -5,7 +5,7 @@ import ActionSheet from './ActionSheet';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 
-type ZSelectValue = string | number;
+type ZSelectValue = string | number | boolean;
 
 type ZSelectOption = {
     label: string;
