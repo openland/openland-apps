@@ -1,4 +1,7 @@
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+if (canUseDOM) {
+    require('web-animations-js');
+}
 import { XStyleFactoryRegistry } from 'react-mental';
 import { css, rehydrate } from 'glamor';
 import { ClientCacheProvider } from 'openland-graphql/ClientCache';

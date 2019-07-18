@@ -209,6 +209,7 @@
         "url-pattern": "^1.0.3",
         "use-onclickoutside": "^0.3.0",
         "uuid": "^3.3.2",
+        "web-animations-js": "^2.3.2",
         "webrtc-adapter": "^6.4.6",
         "worker-loader": "1.1.1",
         "yarn": "^1.9.4"
