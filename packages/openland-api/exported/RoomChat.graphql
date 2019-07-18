@@ -18,6 +18,7 @@ query RoomChat($id: ID!) {
           id
           name
         }
+        shortname
       }
     }
     ... on SharedRoom {

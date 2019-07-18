@@ -269,6 +269,7 @@ export const RoomChatQuery = gql`
                     id
                     name
                     photo
+                    shortname
                     primaryOrganization {
                         id
                         name

@@ -17325,6 +17325,7 @@ export interface RoomChat_room_PrivateRoom_user {
   id: string;
   name: string;
   photo: string | null;
+  shortname: string | null;
   primaryOrganization: RoomChat_room_PrivateRoom_user_primaryOrganization | null;
   isBot: boolean;
 }
