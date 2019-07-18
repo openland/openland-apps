@@ -42,7 +42,6 @@ const CreateGroupComponent = (props: PageProps) => {
             <SHeaderButton title="Next" onPress={() => { ref.current!.submitForm(); }} />
             <ZForm
                 ref={ref}
-                defaultData={{ kind: selectedKind }}
                 action={async (src) => {
                     if (!src.title) {
                         Alert.builder().title(`Please enter a name for this ${chatTypeString.toLowerCase()}`).button('GOT IT!').show();
@@ -50,10 +49,10 @@ const CreateGroupComponent = (props: PageProps) => {
                         throw new SilentError();
                     }
 
-                    let orgId = src.kind === SharedRoomKind.PUBLIC ? selectedOrg : undefined;
+                    let orgId = selectedKind === SharedRoomKind.PUBLIC ? selectedOrg : undefined;
 
                     let res = await getClient().mutateRoomCreate({
-                        kind: src.kind,
+                        kind: selectedKind,
                         title: src.title,
                         photoRef: src.photoRef,
                         members: [],
@@ -116,7 +115,7 @@ const CreateGroupComponent = (props: PageProps) => {
                     />
                     <ZSelect 
                         label={`${chatTypeString} type`}
-                        field="kind"
+                        defaultValue={selectedKind}
                         onChange={(option: { label: string; value: SharedRoomKind.GROUP | SharedRoomKind.PUBLIC }) => {
                             setSelectedKind(option.value);
                         }}

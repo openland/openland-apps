@@ -46,7 +46,6 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                     await client.refetchOrganization({ organizationId: props.router.params.id });
                 }}
                 defaultData={{
-                    isPrivate: organization.isPrivate,
                     input: {
                         name: profile.name,
                         photoRef: sanitizeImageRef(
@@ -79,7 +78,7 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                     />
                     <ZSelect 
                         label="Community type"
-                        field="isPrivate"
+                        defaultValue={organization.isPrivate}
                         onChange={async (option: { label: string; value: boolean }) => {
                             if (organization.isOwner) {
                                 await changeType(option.value);
