@@ -83,6 +83,21 @@ export const OrganizationMembersShortPaginatedQuery = gql`
     ${UserFull}
 `;
 
+export const OrganizationMembersQuery = gql`
+    query OrganizationMembers($organizationId: ID!, $first: Int, $after: ID) {
+        organization(id: $organizationId) {
+            id
+            members: alphaOrganizationMembers(first: $first, after: $after) {
+                role
+                user {
+                    ...UserShort
+                }
+            }
+        }
+    }
+    ${UserShort}
+`;
+
 export const OrganizationProfileQuery = gql`
     query OrganizationProfile($organizationId: ID!) {
         organizationProfile(id: $organizationId) {

@@ -67673,6 +67673,62 @@ export interface OrganizationMembersShortPaginatedVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: OrganizationMembers
+// ====================================================
+
+export interface OrganizationMembers_organization_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  shortname: string | null;
+  about: string | null;
+  isCommunity: boolean;
+}
+
+export interface OrganizationMembers_organization_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: OrganizationMembers_organization_members_user_primaryOrganization | null;
+}
+
+export interface OrganizationMembers_organization_members {
+  __typename: "OrganizationJoinedMember";
+  role: OrganizationMemberRole;
+  user: OrganizationMembers_organization_members_user;
+}
+
+export interface OrganizationMembers_organization {
+  __typename: "Organization";
+  id: string;
+  members: OrganizationMembers_organization_members[];
+}
+
+export interface OrganizationMembers {
+  organization: OrganizationMembers_organization;
+}
+
+export interface OrganizationMembersVariables {
+  organizationId: string;
+  first?: number | null;
+  after?: string | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: OrganizationProfile
 // ====================================================
 
