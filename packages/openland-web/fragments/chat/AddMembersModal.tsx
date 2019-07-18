@@ -13,7 +13,7 @@ import {
 } from 'openland-api/Types';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
-import { XModalProps } from 'openland-x-modal/XModal';
+import { XModalProps, XModalFooter } from 'openland-x-modal/XModal';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
@@ -30,6 +30,8 @@ import CheckIcon from 'openland-icons/ic-check.svg';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { trackEvent } from 'openland-x-analytics';
 import { showModalBox } from 'openland-x/showModalBox';
+import { XModalContent } from 'openland-web/components/XModalContent';
+import { XButton } from 'openland-x/XButton';
 
 interface RenewInviteLinkButtonProps {
     id: string;
@@ -414,7 +416,7 @@ interface InviteModalProps extends XModalProps {
     isOrganization: boolean;
     isCommunity?: boolean;
 
-    hide?: () => void;
+    hide: () => void;
 }
 
 interface InviteModalState {
@@ -493,44 +495,9 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
             : props.isCommunity
                 ? 'community'
                 : 'organization';
+
         return (
-            <XModalForm
-                autoClose={1500}
-                title="Add members"
-                target={props.target}
-                submitBtnText="Add"
-                submitProps={{
-                    successText: 'Added',
-                }}
-                width={props.isMobile ? undefined : 520}
-                flexGrow={props.isMobile ? 1 : undefined}
-                useTopCloser={true}
-                ignoreTargetQuery
-                defaultAction={async () => {
-                    if (props.isRoom) {
-                        await (props.addMembers as RoomAddMembersType)({
-                            variables: {
-                                roomId: props.id,
-                                invites: invitesUsers,
-                            },
-                        });
-                    }
-
-                    if (props.isOrganization) {
-                        await (props.addMembers as OrganizationAddMembersType)({
-                            variables: {
-                                organizationId: props.id,
-                                userIds: invitesUsersIds,
-                            },
-                        });
-                    }
-
-                    this.setState({
-                        selectedUsers: null,
-                    });
-                }}
-                onClosed={this.onClosed}
-            >
+            <XModalContent>
                 <XTrack event="invite_view" params={{ invite_type: objType }} />
                 <XView
                     height={props.isMobile ? '100%' : '65vh'}
@@ -572,8 +539,48 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                             roomUsers={props.members}
                         />
                     </React.Suspense>
+                    <XModalFooter>
+                        <XView marginRight={12}>
+                            <XButton
+                                text="Cancel"
+                                style="ghost"
+                                size="large"
+                                onClick={props.hide}
+                            />
+                        </XView>
+                        <XButton
+                            text="Add"
+                            style="primary"
+                            size="large"
+                            onClick={async () => {
+                                if (props.isRoom) {
+                                    await (props.addMembers as RoomAddMembersType)({
+                                        variables: {
+                                            roomId: props.id,
+                                            invites: invitesUsers,
+                                        },
+                                    });
+                                }
+
+                                if (props.isOrganization) {
+                                    await (props.addMembers as OrganizationAddMembersType)({
+                                        variables: {
+                                            organizationId: props.id,
+                                            userIds: invitesUsersIds,
+                                        },
+                                    });
+                                }
+
+                                this.setState({
+                                    selectedUsers: null,
+                                });
+
+                                props.hide();
+                            }}
+                        />
+                    </XModalFooter>
                 </XView>
-            </XModalForm>
+            </XModalContent>
         );
     }
 }
@@ -585,7 +592,7 @@ type AddMemberModalT = {
     isOrganization: boolean;
     isCommunity?: boolean;
 
-    hide?: () => void;
+    hide: () => void;
 };
 
 interface AddMemberToRoom {
@@ -663,5 +670,5 @@ export const AddMembersModal = React.memo(
 );
 
 export const showAddMembersModal = (props: AddMemberModalT) => {
-    showModalBox({}, ctx => <AddMembersModal {...props} hide={ctx.hide} />);
+    showModalBox({ title: 'Add members' }, ctx => <AddMembersModal {...props} hide={ctx.hide} />);
 };
