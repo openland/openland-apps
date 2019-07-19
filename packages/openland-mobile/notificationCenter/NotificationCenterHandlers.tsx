@@ -7,7 +7,10 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 
 class NotificationCenterHandlersClass {
     handlePress = (id: string, item: NotificationsDataSourceItem) => {
-        // ignore
+        getMessenger().history.navigationManager.push('MessageComments', {
+            chatId: item.room!!.id,
+            messageId: item.peerRootId,
+        });
     }
 
     handleLongPress = (id: string, item: NotificationsDataSourceItem) => {
