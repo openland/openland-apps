@@ -10,7 +10,7 @@ export const DialogListFragment = React.memo((props: {
 }) => {
     let theme = React.useContext(ThemeContext);
     return (
-        <XView flexGrow={1} flexBasis={0} backgroundColor={theme.backgroundColor}>
+        <XView flexGrow={1} flexBasis={0} backgroundColor={theme.backgroundColor} contain="content">
             <DialogListView
                 onSearchItemSelected={props.onSearchItemSelected}
                 onDialogClick={props.onDialogPress}

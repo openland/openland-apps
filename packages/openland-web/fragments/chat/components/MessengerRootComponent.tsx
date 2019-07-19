@@ -327,7 +327,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             this.props.room.isChannel;
 
         return (
-            <XView flexDirection="column" flexGrow={1} flexShrink={1}>
+            <XView flexDirection="column" flexGrow={1} flexShrink={1} contain="content">
                 {this.props.pinMessage &&
                     !this.state.loading && (
                         <PinMessageComponent
