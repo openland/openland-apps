@@ -10,6 +10,7 @@ import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLand
 import { Footer } from 'openland-web/fragments/invite/Footer';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 
 type InviteInfoInnerT = {
     variables: { invite: string };
@@ -25,7 +26,7 @@ const InviteInfoInner = (props: any) => {
         loading,
     }: InviteInfoInnerT & { data: any; loading: any } = props;
     const client = useClient();
-
+    const isMobile = useIsMobile();
     const data = client.useWithoutLoaderRoomInviteInfo({
         invite: props.variables.invite,
     });
@@ -52,7 +53,7 @@ const InviteInfoInner = (props: any) => {
             {instantRedirect && <XPageRedirect path={instantRedirect} />}
             {!instantRedirect && (
                 <XView flexDirection="column" minHeight="100vh" width="100%" backgroundColor="#fff">
-                    <XView>
+                    <XView flexGrow={1}>
                         {data.invite && (
                             <>
                                 <InviteLandingComponent
@@ -60,7 +61,7 @@ const InviteInfoInner = (props: any) => {
                                         '/signup?redirect=' + encodeURIComponent(redirect)
                                     }
                                 />
-                                <Footer />
+                                {!isMobile && <Footer />}
                             </>
                         )}
                         {!data.invite &&

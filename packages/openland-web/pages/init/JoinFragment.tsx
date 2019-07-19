@@ -9,9 +9,11 @@ import { InitTexts } from './_text';
 import { AuthRouter } from 'openland-web/pages/root/AuthRouter';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 
 export const JoinFragment = ({ inviteKey }: { inviteKey: string }) => {
     const client = useClient();
+    const isMobile = useIsMobile();
     let userCtx = React.useContext(UserInfoContext)!!;
     const data = client.useWithoutLoaderAccountInviteInfo({
         inviteKey,
@@ -33,11 +35,11 @@ export const JoinFragment = ({ inviteKey }: { inviteKey: string }) => {
             />
 
             <XView flexDirection="column" minHeight="100vh" width="100%" backgroundColor="#fff">
-                <XView>
+                <XView flexGrow={1}>
                     {data.invite && (
                         <>
                             <InviteLandingComponent />
-                            <Footer />
+                            {!isMobile && <Footer />}
                         </>
                     )}
                     {!data.invite && (
