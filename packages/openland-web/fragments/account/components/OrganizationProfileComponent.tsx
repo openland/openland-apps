@@ -58,6 +58,10 @@ import { showEditCommunityModal } from './EditCommunityModal';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-x-modal/XModal';
+import { XFormSelectField } from 'openland-x-forms/XForm';
+import { useField } from 'openland-form/useField';
+import { useForm } from 'openland-form/useForm';
+import { SelectWithDropdown } from 'openland-web/pages/main/mail/SelectWithDropdown';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -382,51 +386,37 @@ const UpdateUserProfileModal = (props: { members: any[] }) => {
     );
 };
 
-export const PermissionsModal = (props: {
+interface PermissionsModalProps {
     orgName: string;
     members: any[];
     orgId: string;
-    refetchVars: { orgId: string; organizationId: string };
-}) => {
-    const client = useClient();
-    let router = React.useContext(XRouterContext)!;
+    changeRoleUserId: string;
+}
 
-    let member = (props as any).members.filter(
-        (m: any) => (m.user && m.user.id === router.query.changeRole) || '',
+export const PermissionsModal = (props: PermissionsModalProps & { hide: () => void }) => {
+    const client = useClient();
+
+    let member = props.members.filter(
+        (m: any) => (m.user && m.user.id === props.changeRoleUserId) || '',
     )[0];
 
     if (!member) {
         return null;
     }
-    return (
-        <XModalForm
-            title={TextProfiles.Organization.members.changeRole.title(
-                member.user.name,
-                (props as any).orgName,
-            )}
-            defaultData={{
-                role: member.role,
-            }}
-            targetQuery="changeRole"
-            defaultAction={async data => {
-                await client.mutateOrganizationChangeMemberRole({
-                    memberId: member.user.id,
-                    newRole: data.role as OrganizationMemberRole,
-                    organizationId: (props as any).orgId,
-                });
 
-                await client.refetchOrganization({
-                    organizationId: (props as any).orgId,
-                });
-            }}
-            target={(props as any).target}
-        >
-            <XVertical>
-                <XSelect
-                    clearable={false}
-                    searchable={false}
-                    field="role"
-                    options={[
+    const form = useForm();
+
+    const roleField = useField('input.role', member.role, form);
+
+    return (
+        <XView borderRadius={8}>
+            <XView marginTop={30} />
+            <XModalContent>
+                <SelectWithDropdown
+                    title="Community type"
+                    value={roleField.value}
+                    onChange={roleField.input.onChange}
+                    selectOptions={[
                         {
                             value: 'ADMIN',
                             label: TextProfiles.Organization.roles.ADMIN,
@@ -437,18 +427,108 @@ export const PermissionsModal = (props: {
                         },
                     ]}
                 />
-                <XStoreContext.Consumer>
-                    {store => {
-                        let role = store ? store.readValue('fields.role') : '';
-                        return (
-                            <XText>
-                                {TextProfiles.Organization.members.changeRole.hints[role]}
-                            </XText>
-                        );
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={props.hide} />
+                </XView>
+                <XButton
+                    text={'Change role'}
+                    style="danger"
+                    size="large"
+                    onClick={async () => {
+                        await client.mutateOrganizationChangeMemberRole({
+                            memberId: member.user.id,
+                            newRole: roleField.value as OrganizationMemberRole,
+                            organizationId: props.orgId,
+                        });
+
+                        await client.refetchOrganization({
+                            organizationId: props.orgId,
+                        });
+
+                        props.hide();
                     }}
-                </XStoreContext.Consumer>
-            </XVertical>
-        </XModalForm>
+                />
+            </XModalFooter>
+        </XView>
+    );
+
+    // return (
+    //     <XModalForm
+    // title={TextProfiles.Organization.members.changeRole.title(
+    //     member.user.name,
+    //     (props as any).orgName,
+    // )}
+    //         defaultData={{
+    //             role: member.role,
+    //         }}
+    //         targetQuery="changeRole"
+    //         defaultAction={async data => {
+    //             await client.mutateOrganizationChangeMemberRole({
+    //                 memberId: member.user.id,
+    //                 newRole: data.role as OrganizationMemberRole,
+    //                 organizationId: (props as any).orgId,
+    //             });
+
+    //             await client.refetchOrganization({
+    //                 organizationId: (props as any).orgId,
+    //             });
+    //         }}
+    //         target={(props as any).target}
+    //     >
+    //         <XVertical>
+    //             <XFormSelectField
+
+    //             />
+
+    //             <XSelect
+    //                 clearable={false}
+    //                 searchable={false}
+    //                 field="role"
+    //                 options={[
+    //                     {
+    //                         value: 'ADMIN',
+    //                         label: TextProfiles.Organization.roles.ADMIN,
+    //                     },
+    //                     {
+    //                         value: 'MEMBER',
+    //                         label: TextProfiles.Organization.roles.MEMBER,
+    //                     },
+    //                 ]}
+    //             />
+    //             <XStoreContext.Consumer>
+    //                 {store => {
+    //                     let role = store ? store.readValue('fields.role') : '';
+    //                     return (
+    //                         <XText>
+    //                             {TextProfiles.Organization.members.changeRole.hints[role]}
+    //                         </XText>
+    //                     );
+    //                 }}
+    //             </XStoreContext.Consumer>
+    //         </XVertical>
+    //     </XModalForm>
+    // );
+};
+
+export const showRoleOrgMemberModal = (props: PermissionsModalProps): void => {
+    let member = props.members.filter(
+        (m: any) => (m.user && m.user.id === props.changeRoleUserId) || '',
+    )[0];
+
+    if (!member) {
+        return undefined;
+    }
+
+    showModalBox(
+        {
+            title: TextProfiles.Organization.members.changeRole.title(
+                member.user.name,
+                props.orgName,
+            ),
+        },
+        ctx => <PermissionsModal {...props} hide={ctx.hide} />,
     );
 };
 
@@ -886,9 +966,9 @@ const Members = ({ organization, router }: MembersProps) => {
                     refetchVars={{
                         orgId: organization.id,
                         organizationId: organization.id,
-                    }}
+                    }} 
                 /> */}
-                <PermissionsModal
+                {/* <PermissionsModal
                     members={joinedMembers}
                     orgName={organization.name}
                     orgId={organization.id}
@@ -896,7 +976,7 @@ const Members = ({ organization, router }: MembersProps) => {
                         orgId: organization.id,
                         organizationId: organization.id,
                     }}
-                />
+                /> */}
                 <UpdateUserProfileModal members={joinedMembers} />
             </Section>
         );

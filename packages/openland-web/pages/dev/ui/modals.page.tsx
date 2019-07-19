@@ -43,6 +43,7 @@ import {
 import {
     RemoveJoinedModal,
     showRemoveOrgMemberModal,
+    showRoleOrgMemberModal,
 } from 'openland-web/fragments/account/components/OrganizationProfileComponent';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
@@ -218,6 +219,24 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                     ],
                                     orgName: 'foobar',
                                     removeUserId: egoarkaUser.id,
+                                })
+                            }
+                        />
+
+                        <XButton
+                            text="permissions modal"
+                            style="primary"
+                            onClick={() =>
+                                showRoleOrgMemberModal({
+                                    orgId: rfzzOrgId,
+                                    members: [
+                                        {
+                                            role: 'MEMBER',
+                                            user: egoarkaUser,
+                                        },
+                                    ],
+                                    orgName: 'foobar',
+                                    changeRoleUserId: egoarkaUser.id,
                                 })
                             }
                         />
