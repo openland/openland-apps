@@ -32,7 +32,7 @@ class NotificationCenterHandlersClass {
                 } finally {
                     stopLoader();
                 }
-            });
+            }, false, item.isSubscribedMessageComments ? require('assets/ic-follow-off-24.png') : require('assets/ic-follow-24.png'));
         }
 
         builder.action('Clear', async () => {

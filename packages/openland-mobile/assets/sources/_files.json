@@ -623,6 +623,34 @@
             "sizes": [
                 16
             ]
+        },
+        {
+            "name": "ic-calendar",
+            "src": "ic-calendar-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-follow",
+            "src": "ic-follow-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-follow-off",
+            "src": "ic-follow-off-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-send-filled",
+            "src": "ic-send-filled-24.svg",
+            "sizes": [
+                24
+            ]
         }
     ]
 }
