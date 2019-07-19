@@ -11,13 +11,14 @@ import {
 import { XView, XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
-import LogoWithName from 'openland-icons/logo.svg';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { switchOrganization } from 'openland-web/utils/switchOrganization';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { InviteImage } from './InviteImage';
+import { Footer } from './Footer';
 
 const RootClassName = css`
     position: relative;
@@ -42,58 +43,6 @@ const RootMobileNologinClassName = css`
 const RootMobileLoginClassName = css`
     padding-bottom: 160px;
 `;
-
-const imageWrapperStyle = css`
-    height: 367px;
-    position: absolute;
-    right: 0;
-    left: 0;
-    bottom: 88px;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
-
-    @media (max-height: 800px) {
-        height: 250px;
-    }
-`;
-
-const imageWrapperWithFooterStyle = css`
-    bottom: 60px;
-`;
-
-const imageStyle = css`
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 1242px;
-    margin-left: -688px;
-    background: url(/static/X/signup/invite-illustration.png) no-repeat;
-    background-image: -webkit-image-set(
-        url(/static/X/signup/invite-illustration.png) 1x,
-        url(/static/X/signup/invite-illustration@2x.png) 2x
-    );
-    background-size: auto 100%;
-
-    @media (max-height: 800px) {
-        width: 846px;
-        margin-left: -500px;
-    }
-
-    @media (max-height: 600px) {
-        background: none;
-        background-image: none;
-    }
-`;
-
-export const FooterImage = () => {
-    return (
-        <div className={cx(imageWrapperStyle, imageWrapperWithFooterStyle)}>
-            <div className={imageStyle} />
-        </div>
-    );
-};
 
 const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
     const client = useClient();
@@ -246,38 +195,6 @@ const EntityInfoColumn = ({
     );
 };
 
-const FooterClassName = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    width: 100%;
-    margin-top: auto;
-    height: 60px;
-    background-color: #f9f9f9;
-    flex-shrink: 0;
-`;
-
-const Footer = () => {
-    return (
-        <div className={FooterClassName}>
-            <XView marginTop={-10}>
-                <LogoWithName />
-            </XView>
-            <XView
-                marginLeft={8}
-                borderRadius={2}
-                width={4}
-                height={4}
-                backgroundColor={'#d8d8d8'}
-            />
-            <XView marginLeft={8} fontSize={13} color={'rgba(0, 0, 0, 0.5)'} fontWeight="600">
-                Professional messenger of the future
-            </XView>
-        </div>
-    );
-};
-
 const InviteLandingComponentLayout = ({
     whereToInvite,
     photo,
@@ -332,12 +249,8 @@ const InviteLandingComponentLayout = ({
                 description={description}
                 button={button}
             />
-            {!isMobile && (
-                <div className={cx(imageWrapperStyle, !noLogin && imageWrapperWithFooterStyle)}>
-                    <div className={imageStyle} />
-                </div>
-            )}
 
+            {!isMobile && <InviteImage onBottom={!noLogin} />}
             {!isMobile && noLogin && <Footer />}
         </div>
     );
@@ -434,17 +347,16 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     console.warn(userInfo);
     if (!loggedIn) {
         button = (
-            <XView zIndex={1} padding={28} flexShrink={0}>
-                <UButton
-                    style="primary"
-                    size="large"
-                    text="Accept invitation"
-                    alignSelf="center"
-                    flexShrink={0}
-                    path={signupRedirect}
-                    zIndex={2}
-                />
-            </XView>
+            <UButton
+                style="primary"
+                size="large"
+                text="Accept invitation"
+                alignSelf="center"
+                flexShrink={0}
+                margin={28}
+                path={signupRedirect}
+                zIndex={2}
+            />
         );
     } else if (room) {
         button = resolveRoomButton(room, key);
