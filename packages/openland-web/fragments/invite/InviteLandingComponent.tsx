@@ -18,7 +18,6 @@ import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { InviteImage } from './InviteImage';
-import { Footer } from './Footer';
 
 const RootClassName = css`
     position: relative;
@@ -249,7 +248,6 @@ const InviteLandingComponentLayout = ({
             />
 
             {!isMobile && <InviteImage onBottom={!noLogin} />}
-            {!isMobile && noLogin && <Footer />}
         </div>
     );
 };

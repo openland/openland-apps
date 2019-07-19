@@ -1,30 +1,15 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
-import { MessagePageContent } from '../../../components/MessagePageContent';
+import { XView } from 'react-mental';
+import * as Cookie from 'js-cookie';
+import { XLoader } from 'openland-x/XLoader';
+import { MessagePageContent } from 'openland-web/components/MessagePageContent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { InitTexts } from '../_text';
 import { useClient } from 'openland-web/utils/useClient';
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
+import { Footer } from 'openland-web/fragments/invite/Footer';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import * as Cookie from 'js-cookie';
-import { XLoader } from 'openland-x/XLoader';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
-
-const Root = Glamorous.div({
-    display: 'flex',
-    minHeight: '100vh',
-    width: '100%',
-    backgroundColor: '#ffffff',
-    flexDirection: 'column',
-});
-
-const Content = Glamorous.div({
-    flex: 1,
-});
-
-const InfoText = Glamorous.div({
-    marginBottom: 15,
-});
 
 type InviteInfoInnerT = {
     variables: { invite: string };
@@ -32,7 +17,7 @@ type InviteInfoInnerT = {
     instantRedirect?: string;
 };
 
-export const InviteInfoInner = (props: any) => {
+const InviteInfoInner = (props: any) => {
     const {
         variables,
         instantRedirect,
@@ -66,21 +51,29 @@ export const InviteInfoInner = (props: any) => {
             />
             {instantRedirect && <XPageRedirect path={instantRedirect} />}
             {!instantRedirect && (
-                <Root>
-                    <Content>
+                <XView flexDirection="column" minHeight="100vh" width="100%" backgroundColor="#fff">
+                    <XView>
                         {data.invite && (
-                            <InviteLandingComponent
-                                signupRedirect={'/signup?redirect=' + encodeURIComponent(redirect)}
-                            />
+                            <>
+                                <InviteLandingComponent
+                                    signupRedirect={
+                                        '/signup?redirect=' + encodeURIComponent(redirect)
+                                    }
+                                />
+                                <Footer />
+                            </>
                         )}
-                        {!data.invite && !loading && (
-                            <MessagePageContent title="Join">
-                                <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
-                            </MessagePageContent>
-                        )}
+                        {!data.invite &&
+                            !loading && (
+                                <MessagePageContent title="Join">
+                                    <XView marginBottom={15}>
+                                        {InitTexts.join.unableToFindInvite}
+                                    </XView>
+                                </MessagePageContent>
+                            )}
                         {!data.invite && loading && <XLoader loading={true} />}
-                    </Content>
-                </Root>
+                    </XView>
+                </XView>
             )}
         </>
     );
