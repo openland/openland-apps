@@ -1032,6 +1032,7 @@ export const ResolvedInviteQuery = gql`
 
 export const AddMessageCommentMutation = gql`
     mutation AddMessageComment(
+        $repeatKey: String
         $messageId: ID!
         $message: String
         $replyComment: ID
@@ -1040,6 +1041,7 @@ export const AddMessageCommentMutation = gql`
         $spans: [MessageSpanInput!]
     ) {
         addMessageComment: betaAddMessageComment(
+            repeatKey: $repeatKey
             messageId: $messageId
             message: $message
             replyComment: $replyComment
