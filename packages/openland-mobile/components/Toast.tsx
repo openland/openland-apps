@@ -106,14 +106,14 @@ function loader() {
 
 function success(config: ToastBuildConfig = {}) {
     return build({
-        iconSource: require('assets/ic-toast-checkmark-32.png'),
+        iconSource: require('assets/ic-done-32.png'),
         ...config,
     });
 }
 
 function failure(config: ToastBuildConfig = {}) {
     return build({
-        iconSource: require('assets/ic-toast-attention-32.png'),
+        iconSource: require('assets/ic-error-32.png'),
         ...config,
     });
 }

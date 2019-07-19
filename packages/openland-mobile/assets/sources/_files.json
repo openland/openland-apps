@@ -1,213 +1,199 @@
 {
     "icons": [
         {
-            "name": "ic-bottom",
-            "src": "ic-bottom.svg",
+            "name": "ic-close",
+            "src": "ic-close-16.svg",
             "sizes": [
                 16
             ]
         },
         {
-            "name": "ic-msg-unpin",
-            "src": "ic-msg-unpin.svg",
+            "name": "ic-dropdown",
+            "src": "ic-dropdown-16.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
+            "name": "ic-pin-off",
+            "src": "ic-pin-off-24.svg",
             "sizes": [
                 24
             ]
         },
         {
             "name": "ic-star",
-            "src": "ic-star.svg",
+            "src": "ic-star-24.svg",
             "sizes": [
                 24
             ]
         },
         {
             "name": "ic-invite",
-            "src": "ic-invite.svg",
+            "src": "ic-invite-24.svg",
             "sizes": [
                 24
             ]
         },
         {
             "name": "ic-user",
-            "src": "ic-user.svg",
+            "src": "ic-user-24.svg",
             "sizes": [
                 24
             ]
         },
         {
             "name": "ic-user-fill",
-            "src": "ic-user-fill.svg",
+            "src": "ic-user-fill-24.svg",
             "sizes": [
                 24
             ]
         },
         {
             "name": "ic-download",
-            "src": "ic-download.svg",
+            "src": "ic-download-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-attach-camera-video",
-            "src": "ic-attach-camera-video.svg",
+            "name": "ic-camera-video",
+            "src": "ic-camera-video-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-attach-camera",
-            "src": "ic-attach-camera.svg",
+            "name": "ic-camera",
+            "src": "ic-camera-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-attach-document",
-            "src": "ic-attach-document.svg",
+            "name": "ic-document",
+            "src": "ic-document-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-attach-gallery",
-            "src": "ic-attach-gallery.svg",
+            "name": "ic-gallery",
+            "src": "ic-gallery-24.svg",
             "sizes": [
                 24
             ]
         },
         {
             "name": "ic-info",
-            "src": "ic-info.svg",
+            "src": "ic-info-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-attach-video",
-            "src": "ic-attach-video.svg",
+            "name": "ic-video",
+            "src": "ic-video-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-header-share",
-            "src": "ic-header-share.svg",
+            "name": "ic-share",
+            "src": "ic-share-24.svg",
             "sizes": [
                 24
             ]
         },
         {
             "name": "ic-picker",
-            "src": "ic-picker.svg",
+            "src": "ic-picker-48.svg",
             "sizes": [
                 48
             ]
         },
         {
             "name": "ic-picker-selected",
-            "src": "ic-picker-selected.svg",
+            "src": "ic-picker-selected-16.svg",
             "sizes": [
                 16
             ]
         },
         {
-            "name": "ic-header-search",
-            "src": "ic-header-search.svg",
+            "name": "ic-search",
+            "src": "ic-search-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-msg-pin",
-            "src": "ic-msg-pin.svg",
+            "name": "ic-pin",
+            "src": "ic-pin-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-s-leave",
-            "src": "ic-s-leave.svg",
+            "name": "ic-leave",
+            "src": "ic-leave-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-create-private",
-            "src": "ic-create-private.svg",
+            "name": "ic-lock",
+            "src": "ic-lock-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-create-public",
-            "src": "ic-create-public.svg",
+            "name": "ic-chat",
+            "src": "ic-chat-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-msg-comment",
-            "src": "ic-msg-comment.svg",
+            "name": "ic-copy",
+            "src": "ic-copy-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-msg-copy",
-            "src": "ic-msg-copy.svg",
+            "name": "ic-delete",
+            "src": "ic-delete-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-msg-delete",
-            "src": "ic-msg-delete.svg",
+            "name": "ic-forward",
+            "src": "ic-forward-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-msg-forward",
-            "src": "ic-msg-forward.svg",
+            "name": "ic-reply",
+            "src": "ic-reply-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-msg-reply",
-            "src": "ic-msg-reply.svg",
+            "name": "ic-select",
+            "src": "ic-select-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-msg-select",
-            "src": "ic-msg-select.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-right",
-            "src": "ic-right.svg",
+            "name": "ic-chevron",
+            "src": "ic-chevron-16.svg",
             "sizes": [
                 16
-            ]
-        },
-        {
-            "name": "ic-input-clear",
-            "src": "ic-input-clear.svg",
-            "sizes": [
-                16
-            ]
-        },
-        {
-            "name": "ic-input-reply",
-            "src": "ic-input-reply.svg",
-            "sizes": [
-                24
             ]
         },
         {
@@ -356,8 +342,8 @@
             ]
         },
         {
-            "name": "ic-add",
-            "src": "ic-add.svg",
+            "name": "ic-add-fill",
+            "src": "ic-add-fill-24.svg",
             "sizes": [
                 24
             ]
@@ -388,13 +374,6 @@
             "src": "ic-members.svg",
             "sizes": [
                 16
-            ]
-        },
-        {
-            "name": "ic-more-android",
-            "src": "ic-more-android.svg",
-            "sizes": [
-                24
             ]
         },
         {
@@ -526,144 +505,158 @@
         },
         {
             "name": "ic-discover",
-            "src": "ic-discover.svg",
+            "src": "ic-discover-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-discover-active",
-            "src": "ic-discover-active.svg",
+            "name": "ic-discover-filled",
+            "src": "ic-discover-filled-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-chats",
-            "src": "ic-chats.svg",
+            "name": "ic-chat-filled",
+            "src": "ic-chat-filled-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-chats-active",
-            "src": "ic-chats-active.svg",
+            "name": "ic-user-filled",
+            "src": "ic-user-filled-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-profile",
-            "src": "ic-profile.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-profile-active",
-            "src": "ic-profile-active.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-toast-attention",
-            "src": "ic-toast-attention.svg",
+            "name": "ic-error",
+            "src": "ic-error-32.svg",
             "sizes": [
                 32
             ]
         },
         {
-            "name": "ic-toast-checkmark",
-            "src": "ic-toast-checkmark.svg",
+            "name": "ic-done",
+            "src": "ic-done-32.svg",
             "sizes": [
                 32
             ]
         },
         {
-            "name": "ic-input-attach",
-            "src": "ic-input-attach.svg",
+            "name": "ic-attach",
+            "src": "ic-attach-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-input-send",
-            "src": "ic-input-send.svg",
+            "name": "ic-send",
+            "src": "ic-send-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-header-bell",
-            "src": "ic-header-bell.svg",
+            "name": "ic-notifications",
+            "src": "ic-notifications-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-header-plus",
-            "src": "ic-header-plus.svg",
+            "name": "ic-add",
+            "src": "ic-add-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-header-back",
-            "src": "ic-header-back.svg",
+            "name": "ic-back",
+            "src": "ic-back-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-header-close",
-            "src": "ic-header-close.svg",
+            "name": "ic-close",
+            "src": "ic-close-24.svg",
             "sizes": [
                 24
             ]
         },
         {
             "name": "ic-edit",
-            "src": "ic-edit.svg",
+            "src": "ic-edit-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-header-call",
-            "src": "ic-header-call.svg",
+            "name": "ic-call",
+            "src": "ic-call-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-header-manage",
+            "name": "ic-more",
             "suffix": "android",
-            "src": "ic-header-manage-android.svg",
+            "src": "ic-more-v-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-header-manage",
+            "name": "ic-more",
             "suffix": "ios",
-            "src": "ic-header-manage-ios.svg",
+            "src": "ic-more-h-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-search-icon",
-            "src": "ic-search-icon.svg",
+            "name": "ic-search",
+            "src": "ic-search-16.svg",
             "sizes": [
                 16
             ]
         },
         {
-            "name": "ic-search-clear",
-            "src": "ic-search-clear.svg",
+            "name": "ic-clear",
+            "src": "ic-clear-16.svg",
             "sizes": [
                 16
+            ]
+        },
+        {
+            "name": "ic-calendar",
+            "src": "ic-calendar-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-follow",
+            "src": "ic-follow-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-follow-off",
+            "src": "ic-follow-off-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-send-filled",
+            "src": "ic-send-filled-24.svg",
+            "sizes": [
+                24
             ]
         }
     ]

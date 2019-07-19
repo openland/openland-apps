@@ -9,7 +9,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 const NotificationCenterButton = XMemo<{ dot: boolean, theme: ThemeGlobal, onPress: () => void }>((props) => {
     const { dot, theme, onPress } = props;
 
-    const icon = require('assets/ic-header-bell-24.png');
+    const icon = require('assets/ic-notifications-24.png');
     const size = Platform.OS === 'ios' ? 44 : 48;
     const dotPosition = Platform.OS === 'ios' ? 7 : 9;
     const color = theme.foregroundSecondary;
@@ -49,7 +49,7 @@ export const MainHeaderButtons = XMemo<{ router: SRouter, theme: ThemeGlobal }>(
             <SHeaderButton
                 key={'compose-button-' + dot}
                 title="New"
-                icon={require('assets/ic-header-plus-24.png')}
+                icon={require('assets/ic-add-24.png')}
                 onPress={() => props.router.push('Compose')}
             />
         </>

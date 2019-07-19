@@ -113,10 +113,10 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                 }
             }
             if (canKick) {
-                builder.action('Kick', () => handleKick(user), false, require('assets/ic-s-leave-24.png'));
+                builder.action('Kick', () => handleKick(user), false, require('assets/ic-leave-24.png'));
             }
         } else {
-            builder.action('Leave', handleLeave, false, require('assets/ic-s-leave-24.png'));
+            builder.action('Leave', handleLeave, false, require('assets/ic-leave-24.png'));
         }
 
         builder.show();

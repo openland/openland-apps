@@ -324,7 +324,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 {(privateRoom ? !privateRoom.user.isBot : true) && (
                     <SHeaderButton
                         title="Call"
-                        icon={require('assets/ic-header-call-24.png')}
+                        icon={require('assets/ic-call-24.png')}
                         onPress={async () => { showCallModal(this.props.chat.id); }}
                     />
                 )}

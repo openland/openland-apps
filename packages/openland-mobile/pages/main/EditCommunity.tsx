@@ -84,8 +84,8 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                             await changeType(option.value);
                         }}
                         options={[
-                            { label: 'Private', value: true, icon: require('assets/ic-create-private-24.png') },
-                            { label: 'Public', value: false, icon: require('assets/ic-create-public-24.png') }
+                            { label: 'Private', value: true, icon: require('assets/ic-lock-24.png') },
+                            { label: 'Public', value: false, icon: require('assets/ic-invite-24.png') }
                         ]}
                         description="Set by creator"
                     />  

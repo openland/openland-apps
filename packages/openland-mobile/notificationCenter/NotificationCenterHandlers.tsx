@@ -7,7 +7,10 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 
 class NotificationCenterHandlersClass {
     handlePress = (id: string, item: NotificationsDataSourceItem) => {
-        // ignore
+        getMessenger().history.navigationManager.push('MessageComments', {
+            chatId: item.room!!.id,
+            messageId: item.peerRootId,
+        });
     }
 
     handleLongPress = (id: string, item: NotificationsDataSourceItem) => {
@@ -29,12 +32,12 @@ class NotificationCenterHandlersClass {
                 } finally {
                     stopLoader();
                 }
-            });
+            }, false, item.isSubscribedMessageComments ? require('assets/ic-follow-off-24.png') : require('assets/ic-follow-24.png'));
         }
 
         builder.action('Clear', async () => {
             await this.deleteNotifications([id]);
-        }, false, require('assets/ic-msg-delete-24.png'));
+        }, false, require('assets/ic-delete-24.png'));
 
         builder.show();
     }
@@ -44,7 +47,7 @@ class NotificationCenterHandlersClass {
 
         builder.action('Clear All', async () => {
             await this.deleteNotifications(items.map(item => item.key));
-        }, false, require('assets/ic-msg-delete-24.png'));
+        }, false, require('assets/ic-delete-24.png'));
 
         builder.show();
     }

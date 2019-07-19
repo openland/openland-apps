@@ -175,21 +175,21 @@ export class MobileMessenger {
 
         builder.action('Select', () => {
             conversation.messagesActionsState.selectToggle(message);
-        }, false, require('assets/ic-msg-select-24.png'));
+        }, false, require('assets/ic-select-24.png'));
 
         if (conversation.canSendMessage) {
             builder.action('Reply', () => {
                 conversation.messagesActionsState.setState({ messages: [message], action: 'reply' });
-            }, false, require('assets/ic-msg-reply-24.png'));
+            }, false, require('assets/ic-reply-24.png'));
         }
 
         builder.action('Forward', () => {
             forward(conversation, [message]);
-        }, false, require('assets/ic-msg-forward-24.png'));
+        }, false, require('assets/ic-forward-24.png'));
 
         builder.action('Comment', () => {
             this.history.navigationManager.push('MessageComments', { messageId: message.id, chatId });
-        }, false, require('assets/ic-msg-comment-24.png'));
+        }, false, require('assets/ic-chat-24.png'));
 
         if (message.text) {
             if (message.senderId === this.engine.user.id) {
@@ -200,7 +200,7 @@ export class MobileMessenger {
 
             builder.action('Copy', () => {
                 Clipboard.setString(message.text!!);
-            }, false, require('assets/ic-msg-copy-24.png'));
+            }, false, require('assets/ic-copy-24.png'));
         }
 
         if (conversation.canPin) {
@@ -211,7 +211,7 @@ export class MobileMessenger {
                 } finally {
                     stopLoader();
                 }
-            }, false, require('assets/ic-msg-pin-24.png'));
+            }, false, require('assets/ic-pin-24.png'));
         }
 
         if (message.senderId === this.engine.user.id || SUPER_ADMIN) {
@@ -227,7 +227,7 @@ export class MobileMessenger {
                 } catch (e) {
                     Alert.alert(e.message);
                 }
-            }, false, require('assets/ic-msg-delete-24.png'));
+            }, false, require('assets/ic-delete-24.png'));
         }
 
         builder.show();

@@ -13,7 +13,6 @@ const NativeScrollStyle = css`
     flex-shrink: 1;
     width: 100%;
     height: 100%;
-    will-change: transform;
 `;
 
 const NativeScrollContentStyle = css`

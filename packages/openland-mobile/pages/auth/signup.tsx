@@ -36,6 +36,6 @@ next = async (router: SRouter | NavigationManager) => {
     let res = await backoff(async () => await getClient().refetchAccount()); // TODO: Refetch!
     let nextPage = resolveNextPage(res.sessionState);
     if (nextPage) {
-        router.push(nextPage, { action: resolveNextPageCompleteAction(nextPage) });
+        router.pushAndResetRoot(nextPage, { action: resolveNextPageCompleteAction(nextPage) });
     }
 };

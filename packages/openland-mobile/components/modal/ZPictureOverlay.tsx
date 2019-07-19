@@ -140,7 +140,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
 
             builder.action('Share', () => Share.open({
                 url: 'file://' + file
-            }), false, require('assets/ic-header-share-24.png'));
+            }), false, require('assets/ic-share-24.png'));
 
             builder.action(Platform.select({ ios: 'Save to Camera Roll', android: 'Save to Gallery' }), async () => {
                 await CameraRoll.saveToCameraRoll('file://' + file!);

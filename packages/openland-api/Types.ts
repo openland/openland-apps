@@ -52072,6 +52072,7 @@ export interface AddMessageComment {
 }
 
 export interface AddMessageCommentVariables {
+  repeatKey?: string | null;
   messageId: string;
   message?: string | null;
   replyComment?: string | null;

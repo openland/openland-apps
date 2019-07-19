@@ -4,6 +4,7 @@ export interface SNavigationViewStyle {
     backgroundColor: string;
     isOpaque: boolean;
     accentColor: string;
+    iconColor: string;
     textColor: string;
 }
 

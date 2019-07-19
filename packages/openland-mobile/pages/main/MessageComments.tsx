@@ -18,7 +18,6 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { MentionsRender } from './components/MentionsRender';
-import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { showAttachMenu } from '../../files/showAttachMenu';
 import { CommentsList } from './components/comments/CommentsList';
 import { SDevice } from 'react-native-s/SDevice';
@@ -32,6 +31,7 @@ import { prepareLegacyMentionsForSend, convertMentionsFromMessage } from 'openla
 import { trackEvent } from 'openland-mobile/analytics';
 import { getDepthOfCommentByID } from 'openland-y-utils/sortComments';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
+import UUID from 'uuid/v4';
 
 interface MessageCommentsInnerProps {
     message: FullMessage_GeneralMessage;
@@ -91,7 +91,10 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
 
                 trackEvent('comment_sent', { comment_level: newCommentDepth });
 
+                const repeatKey = UUID();
+
                 await getClient().mutateAddMessageComment({
+                    repeatKey,
                     messageId: message.id,
                     message: text,
                     replyComment: replied ? replied.id : null,
@@ -152,7 +155,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
                 } finally {
                     stopLoader();
                 }
-            }, false, require('assets/ic-msg-unpin-24.png'));
+            }, false, require('assets/ic-pin-off-24.png'));
         }
 
         builder.show();
