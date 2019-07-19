@@ -416,7 +416,7 @@ interface InviteModalProps extends XModalProps {
     isOrganization: boolean;
     isCommunity?: boolean;
 
-    hide: () => void;
+    hide?: () => void;
 }
 
 interface InviteModalState {
@@ -575,7 +575,9 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                                     selectedUsers: null,
                                 });
 
-                                props.hide();
+                                if (props.hide) {
+                                    props.hide();
+                                }
                             }}
                         />
                     </XModalFooter>
@@ -615,7 +617,7 @@ export const AddMembersModal = React.memo(
         isOrganization,
         isCommunity,
         hide,
-    }: AddMemberModalT & XModalProps & { hide: () => void }) => {
+    }: AddMemberModalT & XModalProps & { hide?: () => void }) => {
         const isMobile = React.useContext(IsMobileContext);
         const client = useClient();
 

@@ -55,8 +55,6 @@ class SignupOrgComponent extends React.PureComponent<PageProps, { name: string }
 
                         if (this.props.router.params.action) {
                             await this.props.router.params.action(this.props.router);
-                        } else {
-                            this.props.router.pushAndRemove('ProfileOrganization', { id: res.organization.id });
                         }
                     }}
                 >

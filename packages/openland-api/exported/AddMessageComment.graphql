@@ -1,5 +1,5 @@
-mutation AddMessageComment($fileAttachments: [FileAttachmentInput!], $mentions: [MentionInput!], $message: String, $messageId: ID!, $replyComment: ID, $spans: [MessageSpanInput!]) {
-  addMessageComment: betaAddMessageComment(fileAttachments: $fileAttachments, mentions: $mentions, message: $message, messageId: $messageId, replyComment: $replyComment, spans: $spans) {
+mutation AddMessageComment($fileAttachments: [FileAttachmentInput!], $mentions: [MentionInput!], $message: String, $messageId: ID!, $repeatKey: String, $replyComment: ID, $spans: [MessageSpanInput!]) {
+  addMessageComment: betaAddMessageComment(fileAttachments: $fileAttachments, mentions: $mentions, message: $message, messageId: $messageId, repeatKey: $repeatKey, replyComment: $replyComment, spans: $spans) {
     __typename
     id
   }

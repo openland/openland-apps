@@ -82,8 +82,8 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
             content = (
                 <SEquisiteCentered style={{ width: '100%' }}>
                     <SAnimated.View name={'header-left--' + v.page.key} pointerEvents={'box-none'} style={{ paddingLeft: 4 }}>
-                        {(!!this.props.manager.parent && this.props.page.page.startIndex === 0) && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
-                        {(!this.props.manager.parent || this.props.page.page.startIndex !== 0) && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.page.config.accentColor || this.props.style.accentColor} hideText={this.props.page.config.hideBackText} />}
+                        {(!!this.props.manager.parent && this.props.page.page.startIndex === 0) && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.iconColor} />}
+                        {(!this.props.manager.parent || this.props.page.page.startIndex !== 0) && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.page.config.iconColor || this.props.style.iconColor} hideText={this.props.page.config.hideBackText} />}
                     </SAnimated.View>
                     <SAnimated.View name={'header-title--' + v.page.key} style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column' }}>
                         {!v.config.titleView && v.config.title && <Text numberOfLines={1} style={[styles.title, { color: this.props.style.textColor }]} allowFontScaling={false}>{v.config.title}</Text>}
@@ -100,8 +100,8 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
             content = (
                 <View style={{ width: '100%', flexDirection: 'row' }}>
                     <SAnimated.View name={'header-left--' + v.page.key} pointerEvents={'box-none'} style={{ paddingLeft: 4 }}>
-                        {(!!this.props.manager.parent && this.props.page.page.startIndex === 0) && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
-                        {(!this.props.manager.parent || this.props.page.page.startIndex !== 0) && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.page.config.accentColor || this.props.style.accentColor} hideText={this.props.page.config.hideBackText} />}
+                        {(!!this.props.manager.parent && this.props.page.page.startIndex === 0) && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.iconColor} />}
+                        {(!this.props.manager.parent || this.props.page.page.startIndex !== 0) && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.page.config.iconColor || this.props.style.iconColor} hideText={this.props.page.config.hideBackText} />}
                     </SAnimated.View>
                     <SAnimated.View name={'header-title--' + v.page.key} style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column' }}>
                         {!v.config.titleView && v.config.title && <Text numberOfLines={1} style={[styles.title, { color: this.props.style.textColor }]} allowFontScaling={false}>{v.config.title}</Text>}
@@ -138,19 +138,19 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                     {!v.config.searchActive && (
                                         <TouchableWithoutFeedback onPress={v.config.searchPress}>
                                             <View style={{ flexDirection: 'row', height: 36, alignItems: 'center', flexGrow: 1 }}>
-                                                <Image source={require('assets/ic-search-icon-16.png')} style={{ width: 16, height: 16, marginLeft: 12, marginRight: 8, tintColor: this.props.style.searchColor }} />
+                                                <Image source={require('assets/ic-search-16.png')} style={{ width: 16, height: 16, marginLeft: 12, marginRight: 8, tintColor: this.props.style.searchColor }} />
                                                 <Text style={{ fontSize: 17, marginTop: -1, color: this.props.style.searchColor, lineHeight: 22 }}>Search</Text>
                                             </View>
                                         </TouchableWithoutFeedback>
                                     )}
                                     {v.config.searchActive && (
                                         <View style={{ flexDirection: 'row', height: 36, alignItems: 'center', flexGrow: 1, marginRight: 70 }}>
-                                            <Image source={require('assets/ic-search-icon-16.png')} style={{ width: 16, height: 16, marginLeft: 12, marginRight: 8, tintColor: this.props.style.searchColor }} />
+                                            <Image source={require('assets/ic-search-16.png')} style={{ width: 16, height: 16, marginLeft: 12, marginRight: 8, tintColor: this.props.style.searchColor }} />
                                             <TextInput value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} style={{ fontSize: 17, height: 22, flexGrow: 1, flexBasis: 0, marginRight: 4, color: this.props.style.textColor }} placeholder="Search" placeholderTextColor={this.props.style.searchColor} keyboardAppearance={this.props.style.keyboardAppearance} />
                                             {this.state.searchText.length > 0 && (
                                                 <TouchableOpacity onPress={() => this.handleTextChange('')}>
                                                     <View style={{ height: 36, width: 36, marginRight: -2, justifyContent: 'center', alignItems: 'center' }}>
-                                                        <Image source={require('assets/ic-search-clear-16.png')} style={{ tintColor: this.props.style.searchColor, width: 16, height: 16 }} />
+                                                        <Image source={require('assets/ic-clear-16.png')} style={{ tintColor: this.props.style.searchColor, width: 16, height: 16 }} />
                                                     </View>
                                                 </TouchableOpacity>
                                             )}
@@ -169,7 +169,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                         <View style={{ height: '100%', width: '100%' }} pointerEvents={this.props.page.config.searchActive ? 'box-none' : 'none'}>
                                             <TouchableOpacity onPress={v.config.searchClosed!!} style={{ height: '100%', width: '100%' }}>
                                                 <View style={{ height: '100%', width: '100%' }}>
-                                                    <Text style={{ color: this.props.style.accentColor, fontSize: 17, height: 36, lineHeight: 36 }} allowFontScaling={false}>Cancel</Text>
+                                                    <Text style={{ color: this.props.style.iconColor, fontSize: 17, height: 36, lineHeight: 36 }} allowFontScaling={false}>Cancel</Text>
                                                 </View>
                                             </TouchableOpacity>
                                         </View>

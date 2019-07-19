@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { OrganizationWithoutMembers_organization } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XButton } from 'openland-x/XButton';
@@ -6,7 +7,13 @@ import { XView } from 'react-mental';
 import { FooterImage } from 'openland-web/fragments/invite/InviteLandingComponent';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { ClosingCross } from 'openland-web/fragments/invite/InviteLandingComponent';
+import CloseIcon from 'openland-icons/ic-close.svg';
+
+const closeIconStyle = css`
+    & path {
+        fill: #cccccc;
+    }
+`;
 
 export const PrivateCommunityNotMemberLanding = ({
     organization,
@@ -39,7 +46,18 @@ export const PrivateCommunityNotMemberLanding = ({
                         marginRight={16}
                         alignItems="center"
                     >
-                        <ClosingCross />
+                        <XView
+                            cursor="pointer"
+                            path="/mail/"
+                            justifyContent="center"
+                            alignItems="center"
+                            width={32}
+                            height={32}
+                            borderRadius={32}
+                            hoverBackgroundColor="ecedf0"
+                        >
+                            <CloseIcon className={closeIconStyle} />
+                        </XView>
                     </XView>
                 </XView>
                 <XView

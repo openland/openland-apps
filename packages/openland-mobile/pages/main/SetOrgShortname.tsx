@@ -68,12 +68,12 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
 
                         onPress: (link: string) => {
                             if (profile.shortname) {
-                                ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-msg-copy-24.png')).show();
+                                ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-copy-24.png')).show();
                             }
                         },
                         onLongPress: (link: string) => {
                             if (profile.shortname) {
-                                ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-msg-copy-24.png')).show();
+                                ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-copy-24.png')).show();
                             }
                         }
                     }}

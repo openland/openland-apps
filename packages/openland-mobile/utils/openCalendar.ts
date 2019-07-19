@@ -22,8 +22,8 @@ export const openCalendar = (date: string) => {
 export const openCalendarContextMenu = (date: string, text: string) => {
     let builder = new ActionSheetBuilder();
 
-    builder.action('Copy', () => Clipboard.setString(text), false, require('assets/ic-msg-copy-24.png'));
-    builder.action('Open in Calendar', openCalendar(date));
+    builder.action('Copy', () => Clipboard.setString(text), false, require('assets/ic-copy-24.png'));
+    builder.action('Open in Calendar', openCalendar(date), false, require('assets/ic-calendar-24.png'));
 
     builder.show();
 };

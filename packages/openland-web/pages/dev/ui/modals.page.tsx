@@ -77,15 +77,7 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                         <XButton
                             text="Advanced settings"
                             style="primary"
-                            onClick={() =>
-                                showAdvancedSettingsModal({
-                                    roomId: addMemberModalChatId,
-                                    welcomeMessageIsOn: false,
-                                    socialImage: null,
-                                    welcomeMessageSender: null,
-                                    welcomeMessageText: null,
-                                })
-                            }
+                            onClick={() => showAdvancedSettingsModal(addMemberModalChatId)}
                         />
 
                         <XButton
