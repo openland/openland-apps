@@ -27,44 +27,65 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { XInputBasic } from 'openland-x/basics/XInputBasic';
 import { XLoader } from 'openland-x/XLoader';
 
-export const AboutPlaceholder = (props: { target?: any }) => {
+export const AboutPlaceholder = ({
+    organizationId,
+    hide,
+}: {
+    organizationId: string;
+    hide: () => void;
+}) => {
     const client = useClient();
-    let router = React.useContext(XRouterContext)!;
-    const organizationId = router.routeQuery.organizationId;
-    const data = client.useWithoutLoaderOrganizationProfile({ organizationId });
+    const data = client.useOrganizationProfile({ organizationId });
+    const org = data.organizationProfile;
 
-    if (!(data && data.organizationProfile)) {
-        return null;
-    }
-    return (
-        <XModalForm
-            defaultData={{
+    const form = useForm();
+    const aboutField = useField('input.about', org.about || '', form);
+
+    const save = () =>
+        form.doAction(async () => {
+            await client.mutateUpdateOrganization({
+                organizationId,
                 input: {
-                    about: data.organizationProfile!!.about,
+                    about: aboutField.value,
                 },
-            }}
-            defaultAction={async submitData => {
-                await client.mutateUpdateOrganization({
-                    organizationId: organizationId,
-                    input: {
-                        about: submitData.input.about,
-                    },
-                });
+            });
 
-                await client.refetchOrganization({ organizationId });
-            }}
-            target={props.target || <XButton text="About" iconRight="add" />}
-            title={TextOrganizationProfile.placeholderAboutModalAboutTitle}
-            useTopCloser={true}
-        >
-            <XVertical>
-                <XFormLoadingContent>
-                    <XFormField field="fields.input.about">
-                        <XTextArea valueStoreKey="fields.input.about" placeholder="Description" />
-                    </XFormField>
-                </XFormLoadingContent>
-            </XVertical>
-        </XModalForm>
+            await client.refetchOrganization({ organizationId });
+
+            hide();
+        });
+
+    return (
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XVertical flexGrow={1} separator={8}>
+                    <XInput placeholder={'Description'} {...aboutField.input} size="large" />
+                </XVertical>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Save"
+                    style="primary"
+                    size="large"
+                    onClick={save}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showAboutPlaceholderModal = (organizationId: string) => {
+    showModalBox(
+        {
+            title: TextOrganizationProfile.placeholderAboutModalAboutTitle,
+        },
+        ctx => {
+            return <AboutPlaceholder organizationId={organizationId} hide={ctx.hide} />;
+        },
     );
 };
 

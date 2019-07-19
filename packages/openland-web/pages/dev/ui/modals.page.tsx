@@ -38,6 +38,7 @@ import {
     showLeaveOrganizationModal,
     WebsitePlaceholder,
     showWebsitePlaceholderModal,
+    showAboutPlaceholderModal,
 } from 'openland-web/fragments/account/components/modals';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
@@ -200,6 +201,12 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             text="website placeholder"
                             style="primary"
                             onClick={() => showWebsitePlaceholderModal(rfzzOrgId)}
+                        />
+
+                        <XButton
+                            text="about placeholder"
+                            style="primary"
+                            onClick={() => showAboutPlaceholderModal(rfzzOrgId)}
                         />
                     </XVertical>
                 </XVertical2>

@@ -20,6 +20,7 @@ import {
     SocialPlaceholder,
     WebsitePlaceholder,
     showWebsitePlaceholderModal,
+    showAboutPlaceholderModal,
 } from './modals';
 import { XLoader } from 'openland-x/XLoader';
 import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
@@ -688,13 +689,10 @@ const About = (props: { organization: OrganizationWithoutMembers_organization })
                                 marginBottom={-5}
                             />
                             <SectionContent style={{ paddingBottom: 16 }}>
-                                <AboutPlaceholder
-                                    target={
-                                        <EditButton
-                                            text={TextProfiles.Organization.addAbout}
-                                            big={true}
-                                        />
-                                    }
+                                <EditButton
+                                    text={TextProfiles.Organization.addAbout}
+                                    big={true}
+                                    onClick={() => showAboutPlaceholderModal(organization.id)}
                                 />
                             </SectionContent>
                         </Section>
