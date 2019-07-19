@@ -172,15 +172,6 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                     file: fredUser.photo,
                                     height: 200,
                                     width: 200,
-                                    target: (
-                                        <XCloudImage
-                                            srcCloud={fredUser.photo}
-                                            resize="fill"
-                                            width={200}
-                                            height={200}
-                                            className={'foo-image'}
-                                        />
-                                    ),
                                 })
                             }
                         />

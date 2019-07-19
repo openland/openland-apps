@@ -122,7 +122,12 @@ interface AvatarModalProps {
 
 export const showAvatarModal = (photo: string) => {
     showModalBox({ width: 512 }, ctx => (
-        <ModalPic srcCloud={photo} resize={'fill'} width={512} height={512} />
+        <ModalPic
+            srcCloud={photo.includes('ucarecdn') ? photo : `https://ucarecdn.com/${photo}/`}
+            resize={'fill'}
+            width={512}
+            height={512}
+        />
     ));
 };
 
@@ -132,7 +137,10 @@ export const AvatarModal = (props: AvatarModalProps) => {
         return <XAvatar2 src={props.photo} size={58} title={props.title} id={props.id} />;
     }
     return (
-        <XView cursor="pointer" onClick={props.photo ? () => showAvatarModal(props.photo!) : undefined}>
+        <XView
+            cursor="pointer"
+            onClick={props.photo ? () => showAvatarModal(props.photo!) : undefined}
+        >
             <XAvatar2 src={props.photo} size={58} title={props.title} id={props.id} />
         </XView>
     );

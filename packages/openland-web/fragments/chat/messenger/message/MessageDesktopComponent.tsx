@@ -168,7 +168,7 @@ const MessageImageComponentWrapper = React.memo(
 export class DesktopMessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     DesktopMessageComponentInnerState
-    > {
+> {
     constructor(props: MessageComponentInnerProps) {
         super(props);
 
@@ -310,8 +310,8 @@ export class DesktopMessageComponentInner extends React.PureComponent<
 
                                 let qfileAttach = (item.__typename === 'GeneralMessage'
                                     ? (item.attachments || []).filter(
-                                        a => a.__typename === 'MessageAttachmentFile',
-                                    )[0]
+                                          a => a.__typename === 'MessageAttachmentFile',
+                                      )[0]
                                     : undefined) as
                                     | FullMessage_GeneralMessage_attachments_MessageAttachmentFile
                                     | undefined;
@@ -324,7 +324,9 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                         spans={message.replyTextSpans[index]}
                                         sender={item.sender}
                                         senderBadge={item.senderBadge}
-                                        senderBadgeNameEmojify={message.replySenderBadgeNameEmojify[index]}
+                                        senderBadgeNameEmojify={
+                                            message.replySenderBadgeNameEmojify[index]
+                                        }
                                         date={item.date}
                                         message={item.message}
                                         id={item.id}
