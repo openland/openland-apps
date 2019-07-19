@@ -117,14 +117,14 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                             height={SDevice.navigationBarHeight}
                         >
                             {showCloseButton && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.textColor} />}
-                            {showBackButton && <SBackButton onPress={v.config.searchActive ? v.config.searchClosed!! : this.props.manager.pop} tintColor={this.props.style.accentColor} />}
+                            {showBackButton && <SBackButton onPress={v.config.searchActive ? v.config.searchClosed!! : this.props.manager.pop} tintColor={this.props.style.iconColor} />}
                             {v.config.searchActive && (
                                 <>
                                     <TextInput style={{ flexGrow: 1, fontSize: 18, width: Dimensions.get('window').width - 56 - 56, color: this.props.style.textColor }} value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} placeholder="Search" />
                                     {this.state.searchText.length > 0 && (
                                         <TouchableOpacity onPress={() => this.handleTextChange('')}>
                                             <View style={{ height: 44, width: 56, justifyContent: 'center', alignItems: 'center' }}>
-                                                <Image source={require('assets/ic-close-24.png')} style={{ tintColor: this.props.style.accentColor, width: 14, height: 14 }} />
+                                                <Image source={require('assets/ic-close-24.png')} style={{ tintColor: this.props.style.iconColor, width: 14, height: 14 }} />
                                             </View>
                                         </TouchableOpacity>
                                     )}
