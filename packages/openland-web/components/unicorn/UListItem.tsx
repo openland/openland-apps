@@ -4,6 +4,7 @@ import { ThemeDefault } from 'openland-y-utils/themes';
 import { css } from 'linaria';
 import { TypeStyles } from 'openland-web/utils/TypeStyles';
 import { UAvatar } from './UAvatar';
+import { UMoreButton } from './templates/UMoreButton';
 
 const selectedStyle = css`
     svg {
@@ -44,15 +45,16 @@ interface UListItemProps {
     descriptionColor?: string;
     icon?: any;
     avatar?: { photo?: string | null, id: string, title: string, online?: boolean };
-    onClick?: () => void;
+    onClick?: (event: React.MouseEvent) => void;
     path?: string;
     large?: boolean;
     useRadius?: boolean;
     textRight?: string;
+    menu?: JSX.Element;
 }
 
 export const UListItem = React.memo((props: UListItemProps) => {
-    const { title, subtitle, description, descriptionColor, icon, avatar, onClick, path, large, useRadius, textRight } = props;
+    const { title, subtitle, description, descriptionColor, icon, avatar, onClick, path, large, useRadius, textRight, menu } = props;
     const height = large ? 80 : (!!avatar ? 56 : 48);
 
     const titleFont = !!description ? TypeStyles.label1 : TypeStyles.body;
@@ -107,6 +109,12 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 <SelectableText {...textRightFont} color={ThemeDefault.foregroundTertiary} selectedColor={ThemeDefault.contrastSpecial}>
                     {textRight}
                 </SelectableText>
+            )}
+
+            {!!menu && (
+                <UMoreButton marginRight={-8}>
+                    {menu}
+                </UMoreButton>
             )}
         </XView>
     );
