@@ -498,42 +498,28 @@
         },
         {
             "name": "ic-discover",
-            "src": "ic-discover.svg",
+            "src": "ic-discover-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-discover-active",
-            "src": "ic-discover-active.svg",
+            "name": "ic-discover-filled",
+            "src": "ic-discover-filled-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-chats",
-            "src": "ic-chats.svg",
+            "name": "ic-chat-filled",
+            "src": "ic-chat-filled-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-chats-active",
-            "src": "ic-chats-active.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-profile",
-            "src": "ic-profile.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-profile-active",
-            "src": "ic-profile-active.svg",
+            "name": "ic-user-filled",
+            "src": "ic-user-filled-24.svg",
             "sizes": [
                 24
             ]
