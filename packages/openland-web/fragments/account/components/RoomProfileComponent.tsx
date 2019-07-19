@@ -242,6 +242,9 @@ const DescriptionModalContent = (props: { chatId: string; hide: () => void }) =>
                 <XTextArea placeholder="Description" resize={false} {...descriptionField.input} />
             </XModalContent>
             <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={props.hide} />
+                </XView>
                 <XButton text="Save" style="primary" size="large" onClick={createAction} />
             </XModalFooter>
         </XView>
