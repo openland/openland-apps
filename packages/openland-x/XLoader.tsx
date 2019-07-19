@@ -31,6 +31,7 @@ const base = css`
     top: 0;
     left: 0;
     overflow: hidden;
+    will-change: transform;
 `;
 
 let rotate = css`

@@ -69,7 +69,6 @@ const NativeScrollStyle = css`
     flex-shrink: 1;
     display: flex;
     flex-direction: column;
-    will-change: transform;
 `;
 
 const ScrollContent = css`

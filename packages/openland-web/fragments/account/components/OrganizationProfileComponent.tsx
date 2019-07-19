@@ -19,6 +19,8 @@ import {
     AboutPlaceholder,
     SocialPlaceholder,
     WebsitePlaceholder,
+    showWebsitePlaceholderModal,
+    showAboutPlaceholderModal,
 } from './modals';
 import { XLoader } from 'openland-x/XLoader';
 import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
@@ -528,7 +530,11 @@ const Header = (props: { organization: OrganizationWithoutMembers_organization }
     const editButton = (
         <XMenuItem
             onClick={() =>
-                showEditCommunityModal(organization.id, organization.isCommunity, organization.isOwner)
+                showEditCommunityModal(
+                    organization.id,
+                    organization.isCommunity,
+                    organization.isOwner,
+                )
             }
         >
             {TextProfiles.Organization.edit}
@@ -578,8 +584,9 @@ const Header = (props: { organization: OrganizationWithoutMembers_organization }
                         !organization.isCommunity && (
                             <XWithRole role="admin" orgPermission={organization.id}>
                                 <HeaderAddWebsite>
-                                    <WebsitePlaceholder
-                                        target={<EditButton text="Add website" />}
+                                    <EditButton
+                                        text="Add website"
+                                        onClick={() => showWebsitePlaceholderModal(organization.id)}
                                     />
                                 </HeaderAddWebsite>
                             </XWithRole>
@@ -682,13 +689,10 @@ const About = (props: { organization: OrganizationWithoutMembers_organization })
                                 marginBottom={-5}
                             />
                             <SectionContent style={{ paddingBottom: 16 }}>
-                                <AboutPlaceholder
-                                    target={
-                                        <EditButton
-                                            text={TextProfiles.Organization.addAbout}
-                                            big={true}
-                                        />
-                                    }
+                                <EditButton
+                                    text={TextProfiles.Organization.addAbout}
+                                    big={true}
+                                    onClick={() => showAboutPlaceholderModal(organization.id)}
                                 />
                             </SectionContent>
                         </Section>

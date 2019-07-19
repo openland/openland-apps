@@ -24,53 +24,81 @@ import { XCheckbox } from 'openland-x/XCheckbox';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XText } from 'openland-x/XText';
 import { showModalBox } from 'openland-x/showModalBox';
+import { XInputBasic } from 'openland-x/basics/XInputBasic';
+import { XLoader } from 'openland-x/XLoader';
 
-export const AboutPlaceholder = (props: { target?: any }) => {
+export const AboutPlaceholder = ({
+    organizationId,
+    hide,
+}: {
+    organizationId: string;
+    hide: () => void;
+}) => {
     const client = useClient();
-    let router = React.useContext(XRouterContext)!;
-    const organizationId = router.routeQuery.organizationId;
-    const data = client.useWithoutLoaderOrganizationProfile({ organizationId });
+    const data = client.useOrganizationProfile({ organizationId });
+    const org = data.organizationProfile;
 
-    if (!(data && data.organizationProfile)) {
-        return null;
-    }
-    return (
-        <XModalForm
-            defaultData={{
+    const form = useForm();
+    const aboutField = useField('input.about', org.about || '', form);
+
+    const save = () =>
+        form.doAction(async () => {
+            await client.mutateUpdateOrganization({
+                organizationId,
                 input: {
-                    about: data.organizationProfile!!.about,
+                    about: aboutField.value,
                 },
-            }}
-            defaultAction={async submitData => {
-                await client.mutateUpdateOrganization({
-                    organizationId: organizationId,
-                    input: {
-                        about: submitData.input.about,
-                    },
-                });
+            });
 
-                await client.refetchOrganization({ organizationId });
-            }}
-            target={props.target || <XButton text="About" iconRight="add" />}
-            title={TextOrganizationProfile.placeholderAboutModalAboutTitle}
-            useTopCloser={true}
-        >
-            <XVertical>
-                <XFormLoadingContent>
-                    <XFormField field="fields.input.about">
-                        <XTextArea valueStoreKey="fields.input.about" placeholder="Description" />
-                    </XFormField>
-                </XFormLoadingContent>
-            </XVertical>
-        </XModalForm>
+            await client.refetchOrganization({ organizationId });
+
+            hide();
+        });
+
+    return (
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XVertical flexGrow={1} separator={8}>
+                    <XInput placeholder={'Description'} {...aboutField.input} size="large" />
+                </XVertical>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Save"
+                    style="primary"
+                    size="large"
+                    onClick={save}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </XView>
     );
 };
 
-export const LeaveOrganizationModal = () => {
+export const showAboutPlaceholderModal = (organizationId: string) => {
+    showModalBox(
+        {
+            title: TextOrganizationProfile.placeholderAboutModalAboutTitle,
+        },
+        ctx => {
+            return <AboutPlaceholder organizationId={organizationId} hide={ctx.hide} />;
+        },
+    );
+};
+
+export const LeaveOrganizationModal = ({
+    organizationId,
+    hide,
+}: {
+    organizationId: string;
+    hide: () => void;
+}) => {
     const client = useClient();
 
     let router = React.useContext(XRouterContext)!;
-    const organizationId = router.routeQuery.organizationId;
 
     const data = client.useWithoutLoaderOrganizationProfile({ organizationId });
 
@@ -85,40 +113,51 @@ export const LeaveOrganizationModal = () => {
     }
 
     return (
-        <XModalForm
-            submitProps={{
-                text: 'Leave organization',
-                style: 'danger',
-            }}
-            title={`Leave ${data.organizationProfile.name}`}
-            defaultData={{}}
-            defaultAction={async () => {
-                await client.mutateOrganizationMemberRemove({
-                    userId: user.id,
-                    organizationId: data.organizationProfile.id,
-                });
-
-                await client.refetchMyOrganizations();
-                await client.refetchAccount();
-
-                // hack to navigate after modal closing navigation
-                setTimeout(() => {
-                    router!.push('/');
-                });
-            }}
-            targetQuery={'leaveOrganization'}
-            submitBtnText="Yes, I am sure"
-        >
-            <XFormLoadingContent>
+        <XView borderRadius={8}>
+            <XModalContent>
                 <XVertical flexGrow={1} separator={8}>
                     Are you sure you want to leave? You will lose access to all internal chats at{' '}
                     {data.organizationProfile.name}. You can only join{' '}
                     {data.organizationProfile.name} by invitation in the future.
                 </XVertical>
-            </XFormLoadingContent>
-        </XModalForm>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Remove"
+                    style="danger"
+                    size="large"
+                    onClick={async () => {
+                        await client.mutateOrganizationMemberRemove({
+                            userId: user.id,
+                            organizationId: data.organizationProfile.id,
+                        });
+
+                        await client.refetchMyOrganizations();
+                        await client.refetchAccount();
+
+                        // hack to navigate after modal closing navigation
+                        setTimeout(() => {
+                            router!.push('/');
+                        });
+                    }}
+                />
+            </XModalFooter>
+        </XView>
     );
 };
+
+export const showLeaveOrganizationModal = (organizationId: string) =>
+    showModalBox(
+        {
+            title: `Leave organization`,
+        },
+        ctx => {
+            return <LeaveOrganizationModal organizationId={organizationId} hide={ctx.hide} />;
+        },
+    );
 
 export const RemoveOrganizationModal = ({
     organizationId,
@@ -131,8 +170,14 @@ export const RemoveOrganizationModal = ({
     let router = React.useContext(XRouterContext)!;
     const data = client.useWithoutLoaderOrganizationProfile({ organizationId });
 
-    if (!(data && data.organizationProfile)) {
-        return <div />;
+    let ctx = React.useContext(UserInfoContext);
+    if (!(data && data.organizationProfile && !!ctx)) {
+        return null;
+    }
+    const { user } = ctx;
+
+    if (!user) {
+        return null;
     }
 
     return (
@@ -253,50 +298,69 @@ export const SocialPlaceholder = (props: { target?: any }) => {
     );
 };
 
-export const WebsitePlaceholder = (props: { target?: any }) => {
+export const WebsitePlaceholder = ({
+    organizationId,
+    hide,
+}: {
+    organizationId: string;
+    hide: () => void;
+}) => {
     const client = useClient();
+    const data = client.useOrganizationProfile({ organizationId });
+    const org = data.organizationProfile;
 
-    let router = React.useContext(XRouterContext)!;
-    const organizationId = router.routeQuery.organizationId;
+    const form = useForm();
+    const websiteField = useField('input.website', org.website || '', form);
 
-    const data = client.useWithoutLoaderOrganizationProfile({ organizationId });
-
-    if (!(data && data.organizationProfile)) {
-        return null;
-    }
-    return (
-        <XModalForm
-            title={TextOrganizationProfile.placeholderSocialModalTitle}
-            useTopCloser={true}
-            defaultData={{
+    const save = () =>
+        form.doAction(async () => {
+            await client.mutateUpdateOrganization({
+                organizationId,
                 input: {
-                    website: data.organizationProfile!!.website,
+                    website: websiteField.value,
                 },
-            }}
-            defaultAction={async submitData => {
-                await client.mutateUpdateOrganization({
-                    organizationId: organizationId,
-                    input: {
-                        website: submitData.input.website,
-                    },
-                });
+            });
 
-                await client.refetchOrganization({ organizationId });
-            }}
-            target={props.target || <XButton text="Add website" iconRight="add" />}
-        >
-            <XFormLoadingContent>
+            await client.refetchOrganization({ organizationId });
+
+            hide();
+        });
+
+    return (
+        <XView borderRadius={8}>
+            <XModalContent>
                 <XVertical flexGrow={1} separator={8}>
-                    <XFormField field="input.website">
-                        <XInput
-                            placeholder={TextOrganizationProfile.placeholderSocialModalWeb}
-                            field="input.website"
-                            size="large"
-                        />
-                    </XFormField>
+                    <XInput
+                        placeholder={TextOrganizationProfile.placeholderSocialModalWeb}
+                        {...websiteField.input}
+                        size="large"
+                    />
                 </XVertical>
-            </XFormLoadingContent>
-        </XModalForm>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Save"
+                    style="primary"
+                    size="large"
+                    onClick={save}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showWebsitePlaceholderModal = (organizationId: string) => {
+    showModalBox(
+        {
+            title: TextOrganizationProfile.placeholderSocialModalTitle,
+        },
+        ctx => {
+            return <WebsitePlaceholder organizationId={organizationId} hide={ctx.hide} />;
+        },
     );
 };
 

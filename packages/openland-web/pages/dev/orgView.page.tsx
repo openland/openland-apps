@@ -81,6 +81,7 @@ export const showSuperDeleteOrganizationModal = ({ orgId, accountId }: DeleteBut
         },
         ctx => {
             const client = useClient();
+
             return (
                 <XView padding={20} flexDirection="row">
                     <XHorizontal justifyContent="flex-end" flexGrow={1}>
