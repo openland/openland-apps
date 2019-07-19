@@ -22,9 +22,6 @@ export const DialogsFragment = React.memo(() => {
                 <XView flexGrow={1} minWidth={0} flexBasis={0}>
                     Chats
                 </XView>
-                <XView path="/invite/iRaEBQd">
-                    qwe
-                </XView>
                 <XView flexDirection="row" alignItems="center" paddingLeft={12}>
                     <XView marginRight={7} justifyContent="center" alignItems="center">
                         <NotificationsButton />
