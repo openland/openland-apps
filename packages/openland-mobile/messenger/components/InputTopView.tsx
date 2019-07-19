@@ -26,7 +26,7 @@ export const InputTopView = (props: InputTopViewProps) => {
             <TouchableWithoutFeedback onPress={onClearPress}>
                 <View width={56} alignItems="center" justifyContent="center">
                     <View width={24} height={24} borderRadius={RadiusStyles.medium} backgroundColor={theme.backgroundInverted} alignItems="center" justifyContent="center">
-                        <Image source={require('assets/ic-clear-16.png')} style={{ tintColor: theme.foregroundTertiary, width: 16, height: 16 }} />
+                        <Image source={require('assets/ic-close-16.png')} style={{ tintColor: theme.foregroundTertiary, width: 16, height: 16 }} />
                     </View>
                 </View>
             </TouchableWithoutFeedback>

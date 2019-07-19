@@ -23,6 +23,7 @@ export interface MessageInputBarProps {
 
 const iconAttach = require('assets/ic-attach-24.png');
 const icon = require('assets/ic-send-24.png');
+const iconFilled = require('assets/ic-send-filled-24.png');
 
 export const MessageInputInner = React.forwardRef((props: MessageInputBarProps & { theme: ThemeGlobal }, ref: React.RefObject<TextInput>) => {
     const { theme } = props;
@@ -102,7 +103,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
                 <View width={52} height={52} alignItems="center" justifyContent="center">
                     <TouchableOpacity disabled={!props.canSubmit} onPress={props.onSubmitPress}>
                         <View width={44} height={44} alignItems="center" justifyContent="center">
-                            <Image source={icon} style={{ width: 26, height: 26, tintColor: props.canSubmit && props.enabled !== false ? theme.accentPrimary : theme.foregroundSecondary }} />
+                            <Image source={props.canSubmit ? iconFilled : icon} style={{ width: 26, height: 26, tintColor: props.canSubmit && props.enabled !== false ? theme.accentPrimary : theme.foregroundSecondary }} />
                         </View>
                     </TouchableOpacity>
                 </View>

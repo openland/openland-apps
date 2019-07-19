@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-close",
+            "src": "ic-close-16.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
             "name": "ic-dropdown",
             "src": "ic-dropdown-16.svg",
             "sizes": [
@@ -498,42 +505,28 @@
         },
         {
             "name": "ic-discover",
-            "src": "ic-discover.svg",
+            "src": "ic-discover-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-discover-active",
-            "src": "ic-discover-active.svg",
+            "name": "ic-discover-filled",
+            "src": "ic-discover-filled-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-chats",
-            "src": "ic-chats.svg",
+            "name": "ic-chat-filled",
+            "src": "ic-chat-filled-24.svg",
             "sizes": [
                 24
             ]
         },
         {
-            "name": "ic-chats-active",
-            "src": "ic-chats-active.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-profile",
-            "src": "ic-profile.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-profile-active",
-            "src": "ic-profile-active.svg",
+            "name": "ic-user-filled",
+            "src": "ic-user-filled-24.svg",
             "sizes": [
                 24
             ]
@@ -636,6 +629,34 @@
             "src": "ic-clear-16.svg",
             "sizes": [
                 16
+            ]
+        },
+        {
+            "name": "ic-calendar",
+            "src": "ic-calendar-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-follow",
+            "src": "ic-follow-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-follow-off",
+            "src": "ic-follow-off-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-send-filled",
+            "src": "ic-send-filled-24.svg",
+            "sizes": [
+                24
             ]
         }
     ]
