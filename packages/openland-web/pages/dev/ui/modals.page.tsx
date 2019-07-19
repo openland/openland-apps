@@ -36,6 +36,8 @@ import {
     showDeleteOrganizationModal,
     LeaveOrganizationModal,
     showLeaveOrganizationModal,
+    WebsitePlaceholder,
+    showWebsitePlaceholderModal,
 } from 'openland-web/fragments/account/components/modals';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
@@ -192,6 +194,12 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                     room: gfdsgsRoom,
                                 })
                             }
+                        />
+
+                        <XButton
+                            text="website placeholder"
+                            style="primary"
+                            onClick={() => showWebsitePlaceholderModal(rfzzOrgId)}
                         />
                     </XVertical>
                 </XVertical2>

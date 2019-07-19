@@ -24,6 +24,8 @@ import { XCheckbox } from 'openland-x/XCheckbox';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XText } from 'openland-x/XText';
 import { showModalBox } from 'openland-x/showModalBox';
+import { XInputBasic } from 'openland-x/basics/XInputBasic';
+import { XLoader } from 'openland-x/XLoader';
 
 export const AboutPlaceholder = (props: { target?: any }) => {
     const client = useClient();
@@ -275,50 +277,69 @@ export const SocialPlaceholder = (props: { target?: any }) => {
     );
 };
 
-export const WebsitePlaceholder = (props: { target?: any }) => {
+export const WebsitePlaceholder = ({
+    organizationId,
+    hide,
+}: {
+    organizationId: string;
+    hide: () => void;
+}) => {
     const client = useClient();
+    const data = client.useOrganizationProfile({ organizationId });
+    const org = data.organizationProfile;
 
-    let router = React.useContext(XRouterContext)!;
-    const organizationId = router.routeQuery.organizationId;
+    const form = useForm();
+    const websiteField = useField('input.website', org.website || '', form);
 
-    const data = client.useWithoutLoaderOrganizationProfile({ organizationId });
-
-    if (!(data && data.organizationProfile)) {
-        return null;
-    }
-    return (
-        <XModalForm
-            title={TextOrganizationProfile.placeholderSocialModalTitle}
-            useTopCloser={true}
-            defaultData={{
+    const save = () =>
+        form.doAction(async () => {
+            await client.mutateUpdateOrganization({
+                organizationId,
                 input: {
-                    website: data.organizationProfile!!.website,
+                    website: websiteField.value,
                 },
-            }}
-            defaultAction={async submitData => {
-                await client.mutateUpdateOrganization({
-                    organizationId: organizationId,
-                    input: {
-                        website: submitData.input.website,
-                    },
-                });
+            });
 
-                await client.refetchOrganization({ organizationId });
-            }}
-            target={props.target || <XButton text="Add website" iconRight="add" />}
-        >
-            <XFormLoadingContent>
+            await client.refetchOrganization({ organizationId });
+
+            hide();
+        });
+
+    return (
+        <XView borderRadius={8}>
+            <XModalContent>
                 <XVertical flexGrow={1} separator={8}>
-                    <XFormField field="input.website">
-                        <XInput
-                            placeholder={TextOrganizationProfile.placeholderSocialModalWeb}
-                            field="input.website"
-                            size="large"
-                        />
-                    </XFormField>
+                    <XInput
+                        placeholder={TextOrganizationProfile.placeholderSocialModalWeb}
+                        {...websiteField.input}
+                        size="large"
+                    />
                 </XVertical>
-            </XFormLoadingContent>
-        </XModalForm>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Save"
+                    style="primary"
+                    size="large"
+                    onClick={save}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showWebsitePlaceholderModal = (organizationId: string) => {
+    showModalBox(
+        {
+            title: TextOrganizationProfile.placeholderSocialModalTitle,
+        },
+        ctx => {
+            return <WebsitePlaceholder organizationId={organizationId} hide={ctx.hide} />;
+        },
     );
 };
 
