@@ -8,46 +8,13 @@ import { RadioButtonsSelect } from './components/RadioButtonsSelect';
 import {
     EmailFrequency,
     CommentsNotificationDelivery,
-    NotificationMessages, RoomHeader_room_SharedRoom,
+    NotificationMessages,
 } from 'openland-api/Types';
 import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
 import { FormFooter } from './components/FormFooter';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
-import { showAdvancedSettingsModal } from '../chat/AdvancedSettingsModal';
-
-const ShowModal = (props: {id: string}) => {
-    const client = useClient();
-    let room = client.useRoomHeader({ id: props.id });
-    console.log(room);
-    // if (!room.room) {
-    //     return null;
-    // }
-
-    const sharedRoom = room.room as RoomHeader_room_SharedRoom;
-
-    return (
-        <XView
-            width={20}
-            height={20}
-            backgroundColor="red"
-            onClick={() =>
-                showAdvancedSettingsModal({
-                    roomId: props.id,
-                    socialImage: sharedRoom.socialImage,
-                    welcomeMessageText:
-                        sharedRoom.welcomeMessage && sharedRoom.welcomeMessage.message,
-                    welcomeMessageSender:
-                        sharedRoom.welcomeMessage && sharedRoom.welcomeMessage.sender,
-                    welcomeMessageIsOn: !!(
-                        sharedRoom.welcomeMessage && sharedRoom.welcomeMessage.isOn
-                    ),
-                })
-            }
-        />
-    );
-};
 
 export const SettingsNotificationsFragment = React.memo(() => {
     const form = useForm();
@@ -86,7 +53,6 @@ export const SettingsNotificationsFragment = React.memo(() => {
         <Page>
             <UHeader title="Notifications" />
             <FormWrapper title="Notifications">
-                <ShowModal id="1pm4Xrl3aYf9eJ57mLLjfLdebY"/>
                 <FormSection title="Messages notifications">
                     <XView marginHorizontal={-16}>
                         <RadioButtonsSelect
