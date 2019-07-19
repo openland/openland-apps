@@ -7,11 +7,11 @@ import FileIcon from 'openland-icons/ic-file-2.svg';
 import ForwardIcon from 'openland-icons/ic-reply-2.svg';
 import MentionIcon from 'openland-icons/ic-mention-2.svg';
 import { XCounter } from 'openland-x/XCounter';
-import { XAvatar2 } from 'openland-x/XAvatar2';
 import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 import LockIcon from 'openland-icons/ic-group.svg';
 import ChanneSecretIcon from 'openland-icons/ic-channel-dialog.svg';
 import { DialogListWebItem } from './DialogListWebDataSource';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 
 export let iconClass = css`
     display: inline-block;
@@ -202,13 +202,13 @@ export const DialogView = React.memo<DialogViewProps>(props => {
             extractLayer={true}
             contain="content"
         >
-            <XAvatar2
+            <UAvatar
                 title={dialog.title}
                 titleEmoji={dialog.titlePlaceholderEmojify}
                 id={dialog.kind === 'PRIVATE' ? dialog.flexibleId : dialog.key}
-                src={dialog.photo}
+                photo={dialog.photo}
                 online={dialog.online}
-                size={56}
+                size="large"
             />
             <XView
                 flexDirection="column"
