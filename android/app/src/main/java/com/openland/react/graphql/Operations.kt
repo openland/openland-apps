@@ -2450,7 +2450,7 @@ private val AddAppToChatSelector = obj(
                 )))
         )
 private val AddMessageCommentSelector = obj(
-            field("betaAddMessageComment","addMessageComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("messageId", refValue("messageId")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
+            field("betaAddMessageComment","addMessageComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("messageId", refValue("messageId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID")))
                 )))
@@ -3749,7 +3749,7 @@ object Operations {
     val AddMessageComment = object: OperationDefinition {
         override val name = "AddMessageComment"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation AddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyComment:ID,\$spans:[MessageSpanInput!]){addMessageComment:betaAddMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyComment:\$replyComment,spans:\$spans){__typename id}}"
+        override val body = "mutation AddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$repeatKey:String,\$replyComment:ID,\$spans:[MessageSpanInput!]){addMessageComment:betaAddMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,repeatKey:\$repeatKey,replyComment:\$replyComment,spans:\$spans){__typename id}}"
         override val selector = AddMessageCommentSelector
     }
     val BetaDiscoverSkip = object: OperationDefinition {

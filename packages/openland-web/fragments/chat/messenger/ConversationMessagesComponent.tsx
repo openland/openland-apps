@@ -1,40 +1,10 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { MessageListComponent } from './view/MessageListComponent';
-import { XLoader } from 'openland-x/XLoader';
-import { MessagesContainer } from './view/MessagesContainer';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
 import { TypingsView } from './typings/TypingsView';
-import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
-
-const TypingComponent = React.memo((props: { chatId: string }) => {
-    const isMobile = React.useContext(IsMobileContext);
-    return (
-        <XView
-            alignItems="center"
-            width="100%"
-            flexShrink={0}
-            position="absolute"
-            backgroundColor="#fff"
-            bottom={0}
-            left={0}
-            paddingLeft={32}
-            paddingRight={32}
-        >
-            <XView
-                alignItems="flex-start"
-                width="100%"
-                maxHeight={33}
-                maxWidth={980}
-                paddingLeft={isMobile ? 20 : 136}
-                paddingRight={isMobile ? 20 : 136}
-            >
-                <TypingsView conversationId={props.chatId} />
-            </XView>
-        </XView>
-    );
-});
+import { XLoader } from 'openland-x/XLoader';
 
 interface ConversationMessagesComponentProps {
     isChannel: boolean;
@@ -61,7 +31,7 @@ export class ConversationMessagesComponent extends React.PureComponent<
 
     render() {
         return (
-            <MessagesContainer conversationId={this.props.conversationId}>
+            <XView flexDirection="column" flexGrow={1} flexShrink={1} overflow="hidden">
                 <MessageListComponent
                     isChannel={this.props.isChannel}
                     me={this.props.me}
@@ -73,9 +43,9 @@ export class ConversationMessagesComponent extends React.PureComponent<
                     scrollPosition={this.props.scrollPosition}
                     room={this.props.room}
                 />
+                <TypingsView conversationId={this.props.conversationId} />
                 {this.props.loading && <XLoader loading={this.props.loading} />}
-                <TypingComponent chatId={this.props.conversationId} />
-            </MessagesContainer>
+            </XView>
         );
     }
 }

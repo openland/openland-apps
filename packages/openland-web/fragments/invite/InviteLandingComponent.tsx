@@ -1,24 +1,24 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import Glamorous from 'glamorous';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar2 } from 'openland-x/XAvatar2';
-import { XButton } from 'openland-x/XButton';
-import { XLink } from 'openland-x/XLink';
-import CloseIcon from 'openland-icons/ic-close.svg';
 import ProfileIcon from 'openland-icons/ic-profile.svg';
-import { delayForewer } from 'openland-y-utils/timer';
-import { ResolvedInvite_invite_RoomInvite_room, ResolvedInvite_invite_InviteInfo_organization, SharedRoomMembershipStatus, RoomChat_room_SharedRoom } from 'openland-api/Types';
+import {
+    ResolvedInvite_invite_RoomInvite_room,
+    ResolvedInvite_invite_InviteInfo_organization,
+    SharedRoomMembershipStatus,
+    RoomChat_room_SharedRoom,
+} from 'openland-api/Types';
 import { XView, XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
-import LogoWithName from 'openland-icons/logo.svg';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { switchOrganization } from '../../utils/switchOrganization';
+import { switchOrganization } from 'openland-web/utils/switchOrganization';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { InviteImage } from './InviteImage';
+import { Footer } from './Footer';
 
 const RootClassName = css`
     position: relative;
@@ -30,6 +30,8 @@ const RootClassName = css`
     background-color: #fff;
     min-width: 100%;
     height: 100vh;
+    padding-left: 20px;
+    padding-right: 20px;
     -webkit-overflow-scrolling: touch;
 `;
 
@@ -41,111 +43,6 @@ const RootMobileNologinClassName = css`
 const RootMobileLoginClassName = css`
     padding-bottom: 160px;
 `;
-
-const MainContent = Glamorous.div({
-    zIndex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    flexShrink: 0,
-    padding: 28,
-    '& > *': {
-        zIndex: 2,
-    },
-});
-
-const Close = Glamorous(XLink)({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 32,
-    height: 32,
-    borderRadius: 50,
-    '&:hover': {
-        backgroundColor: '#ecedf0',
-    },
-    '& svg path': {
-        fill: '#CCCCCC',
-    },
-});
-
-export const ClosingCross = ({ path = '/mail/' }: { path?: string }) => {
-    return (
-        <Close path={path}>
-            <CloseIcon />
-        </Close>
-    );
-};
-
-const UserInfoWrapper = Glamorous(XHorizontal)({
-    marginTop: 50,
-    flexShrink: 0,
-});
-
-const Text = Glamorous.div<{ width?: number; autoMargin?: boolean }>(props => ({
-    fontSize: 14,
-    lineHeight: 1.43,
-    letterSpacing: 0,
-    textAlign: 'center',
-    width: props.width,
-    margin: props.autoMargin ? 'auto' : undefined,
-}));
-
-const RoomAvatar = Glamorous(XAvatar2)({
-    width: 80,
-    height: 80,
-    '& img': {
-        width: '80px !important',
-        height: '80px !important',
-    },
-    '& > div': {
-        borderRadius: 40,
-    },
-});
-
-const ImageWrapper = Glamorous.div<{ hasFooter: boolean }>(({ hasFooter }) => {
-    return {
-        height: 367,
-        position: 'absolute',
-        right: 0,
-        bottom: hasFooter ? 60 : 88,
-        left: 0,
-        overflow: 'hidden',
-        pointerEvents: 'none',
-        'z-index': '0 !important',
-        '@media (max-height: 800px)': {
-            height: 250,
-        },
-    };
-});
-
-const Image = Glamorous.div({
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: '50%',
-    width: 1242,
-    marginLeft: -688,
-    background: 'url(/static/X/signup/invite-illustration.png) no-repeat',
-    backgroundImage:
-        '-webkit-image-set(url(/static/X/signup/invite-illustration.png) 1x, url(/static/X/signup/invite-illustration@2x.png) 2x)',
-    backgroundSize: 'auto 100%',
-    '@media (max-height: 800px)': {
-        width: 846,
-        marginLeft: -500,
-    },
-    '@media (max-height: 600px)': {
-        background: 'none',
-        backgroundImage: 'none',
-    },
-});
-
-export const FooterImage = () => {
-    return (
-        <ImageWrapper hasFooter={true}>
-            <Image />
-        </ImageWrapper>
-    );
-};
 
 const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
     const client = useClient();
@@ -199,36 +96,35 @@ const titleClassName = css`
     text-shadow: 0 0 6px #fff, 0 0 6px #fff;
 `;
 
-const InviteByRow = ({
+const InviteByUser = ({
     invitedByUser,
     chatTypeStr,
 }: {
-    invitedByUser?: {
+    invitedByUser: {
         id: string;
         name: string;
         photo?: string | null;
-    } | null;
+    };
     chatTypeStr: string;
 }) => {
     return (
-        <>
-            {invitedByUser ? (
-                <UserInfoWrapper separator={6} justifyContent="center" alignItems="center">
-                    <XAvatar2
-                        src={invitedByUser.photo || undefined}
-                        title={invitedByUser.name}
-                        id={invitedByUser.id}
-                        size={24}
-                    />
-                    <Text>
-                        {invitedByUser.name}{' '}
-                        {`invites you to join ${chatTypeStr.toLowerCase()}`}
-                    </Text>
-                </UserInfoWrapper>
-            ) : (
-                    <div style={{ height: 50 }} />
-                )}
-        </>
+        <XView
+            flexDirection="row"
+            justifyContent="center"
+            alignItems="center"
+            flexShrink={0}
+            marginTop={50}
+        >
+            <XAvatar2
+                src={invitedByUser.photo || undefined}
+                title={invitedByUser.name}
+                id={invitedByUser.id}
+                size={24}
+            />
+            <XView marginLeft={12} fontSize={14} lineHeight={1.43}>
+                {invitedByUser.name} {`invites you to join ${chatTypeStr.toLowerCase()}`}
+            </XView>
+        </XView>
     );
 };
 
@@ -252,7 +148,7 @@ const EntityInfoColumn = ({
 }: RoomInfoColumnT) => {
     return (
         <XView marginTop={60} alignSelf="center" alignItems="center" maxWidth={428} zIndex={1}>
-            <RoomAvatar src={photo || undefined} title={title} id={id} size={74} />
+            <XAvatar2 src={photo || undefined} title={title} id={id} size={80} />
             <XView marginTop={28} lineHeight={1} fontSize={24} fontWeight={'600'}>
                 <span className={titleClassName}>{title}</span>
             </XView>
@@ -293,39 +189,7 @@ const EntityInfoColumn = ({
     );
 };
 
-const FooterClassName = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    width: 100%;
-    margin-top: auto;
-    height: 60px;
-    background-color: #f9f9f9;
-    flex-shrink: 0;
-`;
-
-const Footer = () => {
-    return (
-        <div className={FooterClassName}>
-            <XView marginTop={-10}>
-                <LogoWithName />
-            </XView>
-            <XView
-                marginLeft={8}
-                borderRadius={2}
-                width={4}
-                height={4}
-                backgroundColor={'#d8d8d8'}
-            />
-            <XView marginLeft={8} fontSize={13} color={'rgba(0, 0, 0, 0.5)'} fontWeight="600">
-                Professional messenger of the future
-            </XView>
-        </div>
-    );
-};
-
-export const InviteLandingComponentLayout = ({
+const InviteLandingComponentLayout = ({
     whereToInvite,
     photo,
     title,
@@ -360,24 +224,20 @@ export const InviteLandingComponentLayout = ({
                 isMobile && !noLogin && RootMobileLoginClassName,
             )}
         >
-            <XView
-                flexDirection="row"
-                justifyContent={isMobile ? 'space-between' : 'flex-end'}
-                alignItems="center"
-            >
-                {isMobile && !noLogin && (
-                    <XView
-                        fontSize={20}
-                        fontWeight="600"
-                        color="rgba(0, 0, 0, 0.9)"
-                        marginLeft={20}
-                    >
-                        {`${whereToInvite} invitation`}
+            {isMobile &&
+                !noLogin && (
+                    <XView flexDirection="row" justifyContent="center" alignItems="center">
+                        <XView fontSize={20} fontWeight="600" color="rgba(0, 0, 0, 0.9)">
+                            {`${whereToInvite} invitation`}
+                        </XView>
                     </XView>
                 )}
-            </XView>
             <XView flexDirection="column" paddingHorizontal={20} zIndex={1}>
-                <InviteByRow invitedByUser={invitedByUser} chatTypeStr={whereToInvite} />
+                {invitedByUser ? (
+                    <InviteByUser invitedByUser={invitedByUser} chatTypeStr={whereToInvite} />
+                ) : (
+                    <XView height={50} flexShrink={0} />
+                )}
             </XView>
             <EntityInfoColumn
                 photo={photo}
@@ -387,61 +247,69 @@ export const InviteLandingComponentLayout = ({
                 description={description}
                 button={button}
             />
-            {!isMobile && (
-                <ImageWrapper hasFooter={!noLogin}>
-                    <Image />
-                </ImageWrapper>
-            )}
 
+            {!isMobile && <InviteImage onBottom={!noLogin} />}
             {!isMobile && noLogin && <Footer />}
         </div>
     );
 };
 
-const resolveRoomButton = (room: { id: string, membership: SharedRoomMembershipStatus }, key?: string) => {
-    if (room &&
+const resolveRoomButton = (
+    room: { id: string; membership: SharedRoomMembershipStatus },
+    key?: string,
+) => {
+    if (
+        room &&
         (room.membership === 'NONE' ||
             room.membership === 'KICKED' ||
             room.membership === 'LEFT') &&
-        !key) {
+        !key
+    ) {
         return <JoinButton roomId={room.id!} text="Join group" />;
     } else if (room && room.membership === 'MEMBER') {
-        return <UButton
-            style="primary"
-            size="large"
-            text="Open room"
-            alignSelf="center"
-            flexShrink={0}
-            path={'/mail/' + room.id}
-        />;
+        return (
+            <UButton
+                style="primary"
+                size="large"
+                text="Open room"
+                alignSelf="center"
+                flexShrink={0}
+                path={'/mail/' + room.id}
+            />
+        );
     } else if (room && key) {
-        return <JoinLinkButton
-            invite={key}
-            refetchVars={{ conversationId: room.id! }}
-            text="Accept invite"
-        />;
+        return (
+            <JoinLinkButton
+                invite={key}
+                refetchVars={{ conversationId: room.id! }}
+                text="Accept invite"
+            />
+        );
     } else if (room && room.membership === 'REQUESTED') {
-        return <UButton
-            style="secondary"
-            size="large"
-            text="Pending"
-            alignSelf="center"
-            flexShrink={0}
-        />;
+        return (
+            <UButton
+                style="secondary"
+                size="large"
+                text="Pending"
+                alignSelf="center"
+                flexShrink={0}
+            />
+        );
     }
     return <></>;
 };
 
 export const SharedRoomPlaceholder = ({ room }: { room: RoomChat_room_SharedRoom }) => {
-
-    return <InviteLandingComponentLayout
-        button={resolveRoomButton(room)}
-        whereToInvite="Group"
-        photo={room.photo}
-        title={room.title}
-        id={room.id}
-        membersCount={room.membersCount}
-    />;
+    return (
+        <InviteLandingComponentLayout
+            button={resolveRoomButton(room)}
+            whereToInvite="Group"
+            photo={room.photo}
+            title={room.title}
+            id={room.id}
+            membersCount={room.membersCount}
+        />
+    );
 };
 
 export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: string }) => {
@@ -461,13 +329,11 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     if (invite.invite && invite.invite.__typename === 'InviteInfo' && invite.invite.organization) {
         organization = invite.invite.organization;
         invitedByUser = invite.invite.creator;
-
     }
 
     if (invite.invite && invite.invite.__typename === 'RoomInvite') {
         room = invite.invite.room;
         invitedByUser = invite.invite.invitedByUser;
-
     }
 
     if (invite.invite && invite.invite.__typename === 'AppInvite') {
@@ -478,32 +344,36 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
 
     console.warn(userInfo);
     if (!loggedIn) {
-        button = <MainContent>
-            <XButton
+        button = (
+            <UButton
                 style="primary"
                 size="large"
                 text="Accept invitation"
                 alignSelf="center"
                 flexShrink={0}
+                margin={28}
                 path={signupRedirect}
+                zIndex={2}
             />
-        </MainContent>;
+        );
     } else if (room) {
         button = resolveRoomButton(room, key);
     } else if (organization) {
-        button = <XButton
-            text={'Accept invite'}
-            action={async () => {
-                await client.mutateAccountInviteJoin({
-                    inviteKey: key,
-                });
-                switchOrganization(organization!.id);
-            }}
-            style="primary"
-            alignSelf="center"
-            flexShrink={0}
-            size="large"
-        />;
+        button = (
+            <UButton
+                text={'Accept invite'}
+                action={async () => {
+                    await client.mutateAccountInviteJoin({
+                        inviteKey: key,
+                    });
+                    switchOrganization(organization!.id);
+                }}
+                style="primary"
+                alignSelf="center"
+                flexShrink={0}
+                size="large"
+            />
+        );
     }
 
     const whereToInvite = room

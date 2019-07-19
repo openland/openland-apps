@@ -72,10 +72,14 @@ const UnpinButton = (props: {
     variables: {
         chatId: string;
     };
+    hide: () => void;
 }) => {
     const client = useClient();
 
-    const unpinMessage = async () => await client.mutateUnpinMessage(props.variables);
+    const unpinMessage = async () => {
+        await client.mutateUnpinMessage(props.variables);
+        props.hide();
+    };
 
     return (
         <XMutation mutation={unpinMessage as MutationFunc<{}>}>
@@ -110,7 +114,7 @@ const expandIconClassName = css`
     }
 `;
 
-const buildPinMessageModalBody = (props: PinMessageComponentProps) => {
+const buildPinMessageModalBody = (props: PinMessageComponentProps & { hide: () => void }) => {
     const isMobile = React.useContext(IsMobileContext);
     const { room, pinMessage } = props;
     const { sender, message } = pinMessage;
@@ -197,7 +201,7 @@ const buildPinMessageModalBody = (props: PinMessageComponentProps) => {
                     <XView color="rgba(0, 0, 0, 0.9)" fontSize={20} fontWeight="600">
                         Pinned message
                     </XView>
-                    <Close autoClose={true}>
+                    <Close onClick={props.hide}>
                         <CloseIcon />
                     </Close>
                 </XView>
@@ -248,9 +252,12 @@ const buildPinMessageModalBody = (props: PinMessageComponentProps) => {
                             </XView>
                             <XView flexDirection="row" alignItems="center">
                                 {canMeUnpinMessage && (
-                                    <UnpinButton variables={{ chatId: props.chatId }} />
+                                    <UnpinButton
+                                        variables={{ chatId: props.chatId }}
+                                        hide={props.hide}
+                                    />
                                 )}
-                                {!isMobile && <XModalCloser autoClose={true} />}
+                                {!isMobile && <XModalCloser onClick={props.hide} />}
                             </XView>
                         </XView>
                         <XView
@@ -344,8 +351,8 @@ const buildPinMessageModalBody = (props: PinMessageComponentProps) => {
 };
 
 export const showPinMessageModal = (props: PinMessageComponentProps) => {
-    showModalBox({}, () => {
-        return buildPinMessageModalBody(props);
+    showModalBox({}, ctx => {
+        return buildPinMessageModalBody({ ...props, hide: ctx.hide });
     });
 };
 

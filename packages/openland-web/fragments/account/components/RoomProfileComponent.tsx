@@ -183,18 +183,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                         <XWithRole role="super-admin" or={canSeeAdvancedSettings}>
                                             <XMenuItemSeparator />
                                             <XMenuItem
-                                                onClick={() =>
-                                                    showAdvancedSettingsModal({
-                                                        roomId: chat.id,
-                                                        socialImage: chat.socialImage,
-                                                        welcomeMessageText: chat.welcomeMessage!!
-                                                            .message,
-                                                        welcomeMessageSender: chat.welcomeMessage!!
-                                                            .sender,
-                                                        welcomeMessageIsOn: chat.welcomeMessage!!
-                                                            .isOn,
-                                                    })
-                                                }
+                                                onClick={() => showAdvancedSettingsModal(chat.id)}
                                             >
                                                 Advanced settings
                                             </XMenuItem>
@@ -253,6 +242,9 @@ const DescriptionModalContent = (props: { chatId: string; hide: () => void }) =>
                 <XTextArea placeholder="Description" resize={false} {...descriptionField.input} />
             </XModalContent>
             <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={props.hide} />
+                </XView>
                 <XButton text="Save" style="primary" size="large" onClick={createAction} />
             </XModalFooter>
         </XView>

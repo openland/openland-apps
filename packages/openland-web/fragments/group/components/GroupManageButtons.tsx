@@ -4,6 +4,7 @@ import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButt
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { showLeaveConfirmation } from 'openland-web/fragments/org/showLeaveConfirmation';
 import { showRoomEditModal } from 'openland-web/fragments/account/components/RoomProfileComponent';
+import { showAdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
 
 export const GroupManageButtons = React.memo((props: { group: RoomFullWithoutMembers_SharedRoom }) => {
     const { id, canEdit, role, organization, isChannel } = props.group;
@@ -14,7 +15,7 @@ export const GroupManageButtons = React.memo((props: { group: RoomFullWithoutMem
     return (
         <UMoreButton>
             {canEdit && <UListItem title="Edit" onClick={() => showRoomEditModal(id, isChannel)} />}
-            {canAdvencedEdit && <UListItem title="Advanced settings" />}
+            {canAdvencedEdit && <UListItem title="Advanced settings" onClick={() => showAdvancedSettingsModal(id)} />}
             <UListItem title={'Leave ' + typeString} onClick={() => showLeaveConfirmation(id)} />
         </UMoreButton>
     );

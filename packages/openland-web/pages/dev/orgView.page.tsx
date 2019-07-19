@@ -14,7 +14,7 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import { XOverflow } from '../../components/XOverflow';
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
-import { XModal } from 'openland-x-modal/XModal';
+import { XModal, XModalFooter } from 'openland-x-modal/XModal';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { showModalBox } from 'openland-x/showModalBox';
 
@@ -81,13 +81,17 @@ export const showSuperDeleteOrganizationModal = ({ orgId, accountId }: DeleteBut
         },
         ctx => {
             const client = useClient();
+
             return (
-                <XView padding={20} flexDirection="row">
-                    <XHorizontal justifyContent="flex-end" flexGrow={1}>
-                        <XButton text="Cancel" onClick={ctx.hide} />
+                <XView borderRadius={8}>
+                    <XModalFooter>
+                        <XView marginRight={12}>
+                            <XButton text="Cancel" style="ghost" size="large" onClick={ctx.hide} />
+                        </XView>
                         <XButton
                             text="Delete"
                             style="danger"
+                            size="large"
                             action={async () => {
                                 await client.mutateDeleteOrganization({
                                     organizationId: orgId,
@@ -97,7 +101,7 @@ export const showSuperDeleteOrganizationModal = ({ orgId, accountId }: DeleteBut
                                 });
                             }}
                         />
-                    </XHorizontal>
+                    </XModalFooter>
                 </XView>
             );
         },

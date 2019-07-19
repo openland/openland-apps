@@ -13,7 +13,6 @@ const NativeScrollStyle = css`
     flex-shrink: 1;
     width: 100%;
     height: 100%;
-    will-change: transform;
 `;
 
 const NativeScrollContentStyle = css`
@@ -158,13 +157,22 @@ export const XScrollViewReverse2 = React.memo(
 
             React.useLayoutEffect(
                 () => {
-                    const outerDiv = outerRef.current!!;
-                    const innerDiv = innerRef.current!!;
-                    if (!outerDiv || !innerDiv) {
-                        return;
-                    }
-                    updateSizes(outerDiv.clientHeight, innerDiv.clientHeight);
-                    reportOnScroll();
+                    let running = false;
+                    requestAnimationFrame(() => {
+                        if (!running) {
+                            return;
+                        }
+                        const outerDiv = outerRef.current!!;
+                        const innerDiv = innerRef.current!!;
+                        if (!outerDiv || !innerDiv) {
+                            return;
+                        }
+                        updateSizes(outerDiv.clientHeight, innerDiv.clientHeight);
+                        reportOnScroll();
+                    });
+                    return () => {
+                        running = false;
+                    };
                 },
                 [props.children],
             );

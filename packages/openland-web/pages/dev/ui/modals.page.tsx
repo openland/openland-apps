@@ -32,7 +32,14 @@ import { showImagePreviewModal } from 'openland-web/components/ImagePreviewModal
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { XView } from 'react-mental';
 import { showPinMessageModal } from 'openland-web/fragments/chat/PinMessage';
-import { showDeleteOrganizationModal } from 'openland-web/fragments/account/components/modals';
+import {
+    showDeleteOrganizationModal,
+    LeaveOrganizationModal,
+    showLeaveOrganizationModal,
+    WebsitePlaceholder,
+    showWebsitePlaceholderModal,
+    showAboutPlaceholderModal,
+} from 'openland-web/fragments/account/components/modals';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
     return (
@@ -77,15 +84,7 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                         <XButton
                             text="Advanced settings"
                             style="primary"
-                            onClick={() =>
-                                showAdvancedSettingsModal({
-                                    roomId: addMemberModalChatId,
-                                    welcomeMessageIsOn: false,
-                                    socialImage: null,
-                                    welcomeMessageSender: null,
-                                    welcomeMessageText: null,
-                                })
-                            }
+                            onClick={() => showAdvancedSettingsModal(addMemberModalChatId)}
                         />
 
                         <XButton
@@ -148,6 +147,24 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                         />
 
                         <XButton
+                            text="leave organization"
+                            style="primary"
+                            onClick={() => showLeaveOrganizationModal(rfzzOrgId)}
+                        />
+
+                        <XButton
+                            text="pin message"
+                            style="primary"
+                            onClick={() =>
+                                showPinMessageModal({
+                                    chatId: webInboxChat.id,
+                                    pinMessage,
+                                    room: gfdsgsRoom,
+                                })
+                            }
+                        />
+
+                        <XButton
                             text="image preview"
                             style="primary"
                             onClick={() =>
@@ -155,15 +172,6 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                     file: fredUser.photo,
                                     height: 200,
                                     width: 200,
-                                    target: (
-                                        <XCloudImage
-                                            srcCloud={fredUser.photo}
-                                            resize="fill"
-                                            width={200}
-                                            height={200}
-                                            className={'foo-image'}
-                                        />
-                                    ),
                                 })
                             }
                         />
@@ -180,7 +188,17 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             }
                         />
 
-                        {/* PinMessageComponentProps */}
+                        <XButton
+                            text="website placeholder"
+                            style="primary"
+                            onClick={() => showWebsitePlaceholderModal(rfzzOrgId)}
+                        />
+
+                        <XButton
+                            text="about placeholder"
+                            style="primary"
+                            onClick={() => showAboutPlaceholderModal(rfzzOrgId)}
+                        />
                     </XVertical>
                 </XVertical2>
             </XContent>

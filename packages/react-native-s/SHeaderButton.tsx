@@ -21,7 +21,7 @@ export class SHeaderButton extends React.PureComponent<{ title?: string, icon?: 
     private renderButton = (style: SNavigationViewStyle) => {
         if (this.props.title) {
             return (
-                <ActionButton icon={this.props.icon} title={this.props.title} onPress={this.handlePress} tintColor={style.accentColor} />
+                <ActionButton icon={this.props.icon} title={this.props.title} onPress={this.handlePress} iconColor={style.iconColor} accentColor={style.accentColor} />
             );
         } else {
             return (

@@ -34,7 +34,7 @@ export const InputsComponent = (props: PageProps) => {
                             console.log(option);
                         }}
                         options={[
-                            { label: 'Label 1', value: 'Value 1', icon: require('assets/ic-header-share-24.png') },
+                            { label: 'Label 1', value: 'Value 1', icon: require('assets/ic-share-24.png') },
                             { label: 'Label 2', value: 'Value 2', icon: require('assets/ic-download-24.png') },
                             { label: 'Label 3', value: 3, icon: require('assets/ic-download-24.png') }
                         ]}
@@ -47,7 +47,7 @@ export const InputsComponent = (props: PageProps) => {
                             console.log(option);
                         }}
                         options={[
-                            { label: 'Label 1', value: 'Value 1', icon: require('assets/ic-header-share-24.png') },
+                            { label: 'Label 1', value: 'Value 1', icon: require('assets/ic-share-24.png') },
                             { label: 'Label 2', value: 'Value 2', icon: require('assets/ic-download-24.png') },
                             { label: 'Label 3', value: 3, icon: require('assets/ic-download-24.png') }
                         ]}

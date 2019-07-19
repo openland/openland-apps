@@ -54,9 +54,11 @@ class RootContainer extends React.PureComponent<RootProps & { theme: ThemeGlobal
         let headerColor = this.props.theme.backgroundSecondary;
         let textColor = this.props.theme.foregroundPrimary;
         let blurType = this.props.theme.blurType;
-        let accentColor = this.props.theme.foregroundSecondary;
+        let accentColor = this.props.theme.accentPrimary;
+        let iconColor = this.props.theme.foregroundSecondary;
         let style: Partial<SNavigationViewStyle> = {
             accentColor,
+            iconColor,
             backgroundColor: bgColor,
             textColor,
             blurType,

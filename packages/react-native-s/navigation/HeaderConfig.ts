@@ -16,6 +16,7 @@ export interface HeaderConfig {
     counter?: number;
 
     accentColor?: string;
+    iconColor?: string;
     backgroundColor?: string;
 
     hideBackText?: boolean;
@@ -39,6 +40,7 @@ export interface HeaderConfig {
 export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let title: string | undefined;
     let accentColor: string | undefined;
+    let iconColor: string | undefined;
     let backgroundColor: string | undefined;
     let buttons: HeaderButtonDescription[] = [];
     let contentOffset: STrackedValue | undefined;
@@ -65,6 +67,9 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
         }
         if (c.accentColor) {
             accentColor = c.accentColor;
+        }
+        if (c.iconColor) {
+            iconColor = c.iconColor;
         }
         if (c.backgroundColor) {
             backgroundColor = c.backgroundColor;
@@ -115,7 +120,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
             searchContext = c.searchContext;
         }
     }
-    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress, searchContainer, searchClosingCompleted, searchChanged, searchContext, headerHidden, accentColor, hideBackText };
+    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress, searchContainer, searchClosingCompleted, searchChanged, searchContext, headerHidden, accentColor, iconColor, hideBackText };
 }
 
 export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
@@ -153,6 +158,9 @@ export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
         return false;
     }
     if (a.accentColor !== b.accentColor) {
+        return false;
+    }
+    if (a.iconColor !== b.iconColor) {
         return false;
     }
     if (a.backgroundColor !== b.backgroundColor) {

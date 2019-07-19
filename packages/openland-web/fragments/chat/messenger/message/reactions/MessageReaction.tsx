@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useClient } from 'openland-web/utils/useClient';
@@ -87,11 +86,12 @@ class SingleReaction extends React.PureComponent<{
         }
     }
     render() {
-        return (
-            <ReactionItem isMy={this.props.isMy} onClick={this.handleChangeReaction}>
-                {this.props.children}
-            </ReactionItem>
-        );
+        // return (
+        //     <ReactionItem isMy={this.props.isMy} onClick={this.handleChangeReaction}>
+        //         {this.props.children}
+        //     </ReactionItem>
+        // );
+        return null;
     }
 }
 
@@ -365,9 +365,9 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
 
     return (
         <>
-            <XHorizontal separator={3} alignItems="center">
+            <XView alignItems="center">
                 {components}
-            </XHorizontal>
+            </XView>
             <Label
                 usersList={usersList}
                 foundMyReaction={foundMyReaction}

@@ -70,7 +70,7 @@ export class UMoreButton extends React.PureComponent<UMoreButtonProps, { show: b
                 <div>
                     <UIconButton
                         icon={horizontal ? <ManageHorizontalIcon /> : <ManageVerticalIcon />}
-                        active={show}
+                        active={computedShow}
                         onClick={this.switch}
                         {...other}
                     />

@@ -18,6 +18,7 @@ export interface SNavigationViewStyle {
     backgroundColor: string;
     isOpaque: boolean;
     accentColor: string;
+    iconColor: string;
     textColor: string;
     blurType: 'dark' | 'light';
     hairlineColor: string;
@@ -116,6 +117,7 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
             backgroundColor: '#fff',
             isOpaque: true,
             accentColor: '#4747ec',
+            iconColor: '#4747ec',
             textColor: '#000',
             blurType: 'light',
             hairlineColor: '#e0e3e7',
