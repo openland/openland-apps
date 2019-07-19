@@ -7,6 +7,7 @@ import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import DownloadButtonIcon from 'openland-icons/ic_file_download.svg';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
+import { showImagePreviewModal } from 'openland-web/components/ImagePreviewModal';
 
 const ModalBody = css`
     display: flex;
@@ -62,68 +63,7 @@ interface MessageImageComponentProps {
 
 export const MessageImageComponent = React.memo<MessageImageComponentProps>(props => {
     // useCheckPerf({ name: 'MessageImageComponent' });
-    let [isOpen, handleOpen] = React.useState(false);
     const isMobile = React.useContext(IsMobileContext);
-
-    const openView = (e: any) => {
-        if (props.startSelected) {
-            return;
-        }
-        e.stopPropagation();
-        handleOpen(true);
-    };
-
-    const closeView = () => {
-        handleOpen(false);
-    };
-
-    const modalBody = (width: number, height: number) => (
-        <div className={ModalBody}>
-            <XView
-                onClick={closeView}
-                cursor="pointer"
-                position="fixed"
-                right={20}
-                top={20}
-                width={36}
-                height={36}
-                borderRadius={5}
-                backgroundColor="transparent"
-                justifyContent="center"
-                alignItems="center"
-            >
-                <ModalCloseIcon />
-            </XView>
-            <XView flexDirection="row" alignItems="center" justifyContent="center">
-                <XView backgroundColor="#000" borderRadius={8}>
-                    <XCloudImage
-                        srcCloud={'https://ucarecdn.com/' + props.file + '/'}
-                        resize={'fill'}
-                        width={width}
-                        height={height}
-                        className={ModalImage}
-                    />
-                    <XView
-                        as="a"
-                        justifyContent="center"
-                        alignItems="center"
-                        width={36}
-                        height={36}
-                        borderRadius={5}
-                        backgroundColor="rgba(0, 0, 0, 0.6)"
-                        opacity={0}
-                        position="absolute"
-                        top={20}
-                        right={20}
-                        href={'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'}
-                        hoverTextDecoration="none"
-                    >
-                        <DownloadButtonIcon />
-                    </XView>
-                </XView>
-            </XView>
-        </div>
-    );
 
     let finalDimensions = layoutMedia(props.dimentions.width, props.dimentions.height);
     let finalDimensions2 = layoutMedia(
@@ -141,20 +81,19 @@ export const MessageImageComponent = React.memo<MessageImageComponentProps>(prop
         }
     }
 
+    const openView = (e: any) => {
+        if (props.startSelected) {
+            return;
+        }
+        e.stopPropagation();
+        showImagePreviewModal({
+            file: props.file,
+            height: finalDimensions2.height,
+            width: finalDimensions2.width,
+        });
+    };
     return (
         <>
-            {!isMobile && (
-                <XModal
-                    useTopCloser={false}
-                    footer={null}
-                    width={finalDimensions2.width}
-                    heading={null}
-                    transparent={true}
-                    isOpen={isOpen}
-                    onClosed={closeView}
-                    body={modalBody(finalDimensions2.width, finalDimensions2.height)}
-                />
-            )}
             <XView onClick={openView} cursor="pointer" paddingBottom={5}>
                 <div
                     className={

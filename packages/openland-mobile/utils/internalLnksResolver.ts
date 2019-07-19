@@ -7,9 +7,9 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { next } from 'openland-mobile/pages/auth/signup';
 import UrlPattern from 'url-pattern';
 import UrlParse from 'url-parse';
-import { ResolvedInvite_invite_RoomInvite, ResolvedInvite_invite_InviteInfo, AccountInviteInfo_invite } from 'openland-api/Types';
+import { ResolvedInvite_invite_RoomInvite, AccountInviteInfo_invite } from 'openland-api/Types';
 
-export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
+export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?: boolean) => {
     return async () => {
         let resolved = false;
         let link = srcLink;
@@ -19,6 +19,10 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
         let patternBase = '(http(s)\\://)(:subdomain.)openland.com/';
         let patternBaseDeep = 'openland\\://deep/';
 
+        let navigate = getMessenger().history.navigationManager.push;
+        if (reset) {
+            navigate = getMessenger().history.navigationManager.pushAndReset;
+        }
         ////
         ////  >>>>> INVITES
         ////
@@ -29,7 +33,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
                     if (invite.room.membership === 'MEMBER') {
                         getMessenger().history.navigationManager.pushAndReset('Conversation', { id: invite.room.id });
                     } else {
-                        getMessenger().history.navigationManager.push('GroupInvite', { invite: invite, inviteId: key });
+                        navigate('GroupInvite', { invite: invite, inviteId: key });
                     }
                 } else {
                     Alert.alert('Invite not found');
@@ -134,7 +138,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
         let matchOrgProfile = profileOrgPattern.match(link);
         if (matchOrgProfile && matchOrgProfile.id) {
             resolved = true;
-            getMessenger().history.navigationManager.push('ProfileOrganization', { id: matchOrgProfile.id });
+            navigate('ProfileOrganization', { id: matchOrgProfile.id });
         }
 
         //
@@ -144,7 +148,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
         let matchUserProfile = profileUserPattern.match(link);
         if (matchUserProfile && matchUserProfile.id) {
             resolved = true;
-            getMessenger().history.navigationManager.push('ProfileUser', { id: matchUserProfile.id });
+            navigate('ProfileUser', { id: matchUserProfile.id });
         }
 
         //
@@ -154,7 +158,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
         let matchGroupProfile = profileGroupPattern.match(link);
         if (matchGroupProfile && matchGroupProfile.id) {
             resolved = true;
-            getMessenger().history.navigationManager.push('ProfileGroup', { id: matchGroupProfile.id });
+            navigate('ProfileGroup', { id: matchGroupProfile.id });
         }
 
         //
@@ -165,7 +169,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
         let matchConversation = conversationPattern.match(link) || conversationPatternDeep.match(link);
         if (matchConversation && matchConversation.id) {
             resolved = true;
-            getMessenger().history.navigationManager.push('Conversation', { id: matchConversation.id });
+            navigate('Conversation', { id: matchConversation.id });
         }
 
         //
@@ -219,20 +223,20 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
 
         if (link === '/onboarding_discover') {
             resolved = true;
-            getMessenger().history.navigationManager.push('Discover');
+            navigate('Discover');
         }
 
         if (link === '/onboarding_apps') {
             resolved = true;
-            getMessenger().history.navigationManager.push('InstallApps');
+            navigate('InstallApps');
         }
         if (link === '/onboarding_send_first_message') {
             resolved = true;
-            getMessenger().history.navigationManager.push('StartConversation');
+            navigate('StartConversation');
         }
         if (link === '/onboarding_invite') {
             resolved = true;
-            getMessenger().history.navigationManager.push('Invites');
+            navigate('Invites');
         }
 
         if (!resolved && fallback) {

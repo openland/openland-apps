@@ -9,12 +9,13 @@ export const addMemberModalChatId = 'QwJ9g164eMTdJlDDj9qzS115XW';
 export const egoarkaUser = {
     id: 'b5OljEldvVcmdakbEKexIgW5Vl',
     fullName: 'Egor Terletsky',
+    name: 'Egor Terletsky',
+    firstName: 'Egor',
 };
 export const fredUser = {
     id: 'Jl1k97keDvsLjdwXPRKytboAyq',
     fullName: 'Fred Morozov',
-    photo:
-        'https://ucarecdn.com/c39d275a-8b1c-419f-a663-cfae8c471191/-/crop/1200x1200/0,0/-/scale_crop/512x512/center/-/format/jpeg/-/progressive/yes/',
+    photo: 'c39d275a-8b1c-419f-a663-cfae8c471191',
 };
 
 export const rfzzOrgId = 'g09417DZAkuwvlvO35kzIdkZJv';

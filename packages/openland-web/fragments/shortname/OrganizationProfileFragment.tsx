@@ -8,6 +8,7 @@ import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { OrganizationManageButtons } from './components/OrganizationManageButtons';
+import { MemberManageMenu } from './components/MemberManageMenu';
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
@@ -42,6 +43,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 <UUserView
                     key={'member-' + member.user.id}
                     user={member.user}
+                    rightElement={<MemberManageMenu organization={organization} member={member} />}
                 />
             )}
             padded={false}

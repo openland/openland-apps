@@ -31,7 +31,7 @@ type ImagePreviewModalProps = {
     file: string;
     width: number;
     height: number;
-} & Pick<XModalProps, 'target'>;
+};
 
 const modalBody = (width: number, height: number) => (props: ImagePreviewModalProps) => (
     <div className={ModalBody}>
@@ -53,7 +53,8 @@ const modalBody = (width: number, height: number) => (props: ImagePreviewModalPr
         <XView flexDirection="row" alignItems="center" justifyContent="center">
             <XView backgroundColor="#000" borderRadius={8}>
                 <XCloudImage
-                    srcCloud={props.file}
+                    srcCloud={'https://ucarecdn.com/' + props.file + '/'}
+                    resize={'fill'}
                     width={width}
                     height={height}
                     className={ModalImage}
@@ -70,7 +71,7 @@ const modalBody = (width: number, height: number) => (props: ImagePreviewModalPr
                     position="absolute"
                     top={20}
                     right={20}
-                    href={props.file + '/-/preview/-/inline/no/'}
+                    href={'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'}
                     hoverTextDecoration="none"
                 >
                     <DownloadButtonIcon />
@@ -88,7 +89,7 @@ export const showImagePreviewModal = (props: ImagePreviewModalProps) => {
     });
 };
 
-export const ImagePreviewModal = (props: ImagePreviewModalProps) => {
+export const ImagePreviewModal = (props: ImagePreviewModalProps & Pick<XModalProps, 'target'>) => {
     if (!props.target) {
         return null;
     }

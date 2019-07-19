@@ -156,7 +156,7 @@ const Keyboard = React.memo(
             <>
                 {!!keyboard &&
                     keyboard.buttons.map((line, i) => (
-                        <XHorizontal key={i + ''} alignSelf="stretch" separator={4}>
+                        <XView key={i + ''} alignSelf="stretch" flexDirection="row">
                             {!!line &&
                                 line.map((button, j) => {
                                     let href: string | undefined = button.url || undefined;
@@ -183,7 +183,7 @@ const Keyboard = React.memo(
                                         />
                                     );
                                 })}
-                        </XHorizontal>
+                        </XView>
                     ))}
             </>
         );

@@ -1,8 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { MessageTextComponent, MessageTextComponentSpanned } from './content/MessageTextComponent';
 import { MessageAnimationComponent } from './content/MessageAnimationComponent';
 import { MessageImageComponent } from './content/MessageImageComponent';
@@ -39,47 +37,47 @@ const Check = Glamorous.div<{ selected: boolean }>(({ selected }) => ({
     border: selected ? undefined : '1px solid #D9D9D9',
 }));
 
-const MessageWrapper = Glamorous(XHorizontal)<{
-    isModal?: boolean;
-    compact: boolean;
-    isEditView: boolean;
-    startSelected: boolean;
-}>(props => ({
-    marginTop: props.compact || props.isModal ? 0 : 12,
-    paddingLeft: 20,
-    paddingRight: 20,
-    '& .message-container': {
-        backgroundColor: '#fff',
-        flexGrow: 1,
-        borderRadius: 6,
-        paddingRight: 10,
-        paddingBottom: 3,
-        paddingLeft: props.compact ? 7 : 10,
-        paddingTop: props.compact ? 3 : 7,
-    },
-    '& .time': {
-        opacity: props.compact ? 0 : 1,
-    },
-    '& .menu-wrapper': {
-        marginTop: props.compact ? 0 : 6,
-    },
+// const MessageWrapper = Glamorous(XHorizontal)<{
+//     isModal?: boolean;
+//     compact: boolean;
+//     isEditView: boolean;
+//     startSelected: boolean;
+// }>(props => ({
+//     marginTop: props.compact || props.isModal ? 0 : 12,
+//     paddingLeft: 20,
+//     paddingRight: 20,
+//     '& .message-container': {
+//         backgroundColor: '#fff',
+//         flexGrow: 1,
+//         borderRadius: 6,
+//         paddingRight: 10,
+//         paddingBottom: 3,
+//         paddingLeft: props.compact ? 7 : 10,
+//         paddingTop: props.compact ? 3 : 7,
+//     },
+//     '& .time': {
+//         opacity: props.compact ? 0 : 1,
+//     },
+//     '& .menu-wrapper': {
+//         marginTop: props.compact ? 0 : 6,
+//     },
 
-    '& .check-icon': {
-        opacity: props.startSelected ? 1 : 0,
-        cursor: 'pointer',
-    },
-    '&:hover': {
-        '& .message-container': {
-            backgroundColor: '#fff',
-        },
-        '& .check-icon': {
-            opacity: props.isEditView ? 0 : 1,
-        },
-        '& .time': {
-            opacity: props.isEditView ? 0 : 1,
-        },
-    },
-}));
+//     '& .check-icon': {
+//         opacity: props.startSelected ? 1 : 0,
+//         cursor: 'pointer',
+//     },
+//     '&:hover': {
+//         '& .message-container': {
+//             backgroundColor: '#fff',
+//         },
+//         '& .check-icon': {
+//             opacity: props.isEditView ? 0 : 1,
+//         },
+//         '& .time': {
+//             opacity: props.isEditView ? 0 : 1,
+//         },
+//     },
+// }));
 
 const ReplyMessageWrapper = Glamorous.div({
     position: 'relative',
@@ -324,7 +322,9 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                         spans={message.replyTextSpans[index]}
                                         sender={item.sender}
                                         senderBadge={item.senderBadge}
-                                        senderBadgeNameEmojify={message.replySenderBadgeNameEmojify[index]}
+                                        senderBadgeNameEmojify={
+                                            message.replySenderBadgeNameEmojify[index]
+                                        }
                                         date={item.date}
                                         message={item.message}
                                         id={item.id}
@@ -547,35 +547,37 @@ export class DesktopMessageComponentInner extends React.PureComponent<
         }
 
         return (
-            <MessageWrapper
-                isModal={this.props.isModal}
-                compact={false}
-                isEditView={isEditView}
-                separator={6}
+            <XView
+                // isModal={this.props.isModal}
+                // compact={false}
+                // isEditView={isEditView}
+                // separator={6}
                 alignItems="center"
-                startSelected={hideMenu}
+                // startSelected={hideMenu}
             >
-                <Check onClick={this.selectMessage} selected={!!selected} className="check-icon" />
+                {/* <Check onClick={this.selectMessage} selected={!!selected} className="check-icon" /> */}
 
-                <XVertical
-                    separator={0}
-                    className="message-container"
+                <XView
+                    flexDirection="row"
                     flexGrow={1}
                     maxWidth={!message.isService ? 'calc(100% - 125px)' : '100%'}
                 >
-                    <XHorizontal alignSelf="stretch">
-                        <XVertical
-                            separator={2}
+                    <XView
+                        flexDirection="row"
+                        alignSelf="stretch"
+                    >
+                        <XView
+                            flexDirection="column"
                             flexGrow={1}
                             maxWidth={
                                 !message.isService ? 'calc(100% - 52px)' : 'calc(100% - 25px)'
                             }
                         >
                             {content}
-                        </XVertical>
-                    </XHorizontal>
-                </XVertical>
-            </MessageWrapper>
+                        </XView>
+                    </XView>
+                </XView>
+            </XView>
         );
     }
 }

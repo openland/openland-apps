@@ -55,6 +55,9 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { showLeaveConfirmation } from 'openland-web/fragments/org/showLeaveConfirmation';
 import { PrivateCommunityNotMemberLanding } from './PrivateCommunityNotMemberLanding';
 import { showEditCommunityModal } from './EditCommunityModal';
+import { showModalBox } from 'openland-x/showModalBox';
+import { XModalContent } from 'openland-web/components/XModalContent';
+import { XModalFooter } from 'openland-x-modal/XModal';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -449,47 +452,72 @@ export const PermissionsModal = (props: {
     );
 };
 
-export const RemoveJoinedModal = (props => {
-    const client = useClient();
-    let router = React.useContext(XRouterContext)!;
-
-    let member = props.members.filter(
-        (m: any) => (m.user && m.user.id === router.query.remove) || '',
-    )[0];
-    if (!member) {
-        return null;
-    }
-    return (
-        <XModalForm
-            submitProps={{
-                text: TextProfiles.Organization.members.remove.submit,
-                style: 'danger',
-            }}
-            title={TextProfiles.Organization.members.remove.title(member.user.name, props.orgName)}
-            targetQuery="remove"
-            defaultAction={async () => {
-                await client.mutateOrganizationRemoveMember({
-                    memberId: member.user.id,
-                    organizationId: props.orgId,
-                });
-
-                await client.refetchOrganization({ organizationId: props.orgId });
-            }}
-        >
-            <XText>
-                {TextProfiles.Organization.members.remove.text(
-                    member.user.firstName,
-                    props.orgName,
-                )}
-            </XText>
-        </XModalForm>
-    );
-}) as React.ComponentType<{
+interface RemoveJoinedModalProps {
     orgName: string;
     members: any[];
     orgId: string;
-    refetchVars: { orgId: string; organizationId: string };
-}>;
+    removeUserId: string;
+}
+
+export const RemoveJoinedModal = (props: RemoveJoinedModalProps & { hide: () => void }) => {
+    const client = useClient();
+
+    let member = props.members.filter(
+        (m: any) => (m.user && m.user.id === props.removeUserId) || '',
+    )[0];
+
+    if (!member) {
+        return null;
+    }
+
+    return (
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XText>
+                    {TextProfiles.Organization.members.remove.text(
+                        member.user.firstName,
+                        props.orgName,
+                    )}
+                </XText>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={props.hide} />
+                </XView>
+                <XButton
+                    text={TextProfiles.Organization.members.remove.submit}
+                    style="danger"
+                    size="large"
+                    onClick={async () => {
+                        await client.mutateOrganizationRemoveMember({
+                            memberId: member.user.id,
+                            organizationId: props.orgId,
+                        });
+
+                        await client.refetchOrganization({ organizationId: props.orgId });
+
+                        props.hide();
+                    }}
+                />
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showRemoveOrgMemberModal = (props: RemoveJoinedModalProps): void => {
+    let member = props.members.filter(
+        (m: any) => (m.user && m.user.id === props.removeUserId) || '',
+    )[0];
+
+    if (!member) {
+        return undefined;
+    }
+
+    showModalBox(
+        { title: TextProfiles.Organization.members.remove.title(member.user.name, props.orgName) },
+        ctx => <RemoveJoinedModal {...props} hide={ctx.hide} />,
+    );
+};
 
 export const Section = Glamorous(XVertical)({
     paddingTop: 5,
@@ -851,7 +879,7 @@ const Members = ({ organization, router }: MembersProps) => {
                 {(!organization.isMine || (organization.isMine && requestMembers.length <= 0)) &&
                     joinedMembersBox(true)}
 
-                <RemoveJoinedModal
+                {/* <RemoveJoinedModal
                     members={joinedMembers}
                     orgName={organization.name}
                     orgId={organization.id}
@@ -859,7 +887,7 @@ const Members = ({ organization, router }: MembersProps) => {
                         orgId: organization.id,
                         organizationId: organization.id,
                     }}
-                />
+                /> */}
                 <PermissionsModal
                     members={joinedMembers}
                     orgName={organization.name}
