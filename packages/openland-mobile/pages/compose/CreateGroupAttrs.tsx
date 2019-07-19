@@ -120,8 +120,8 @@ const CreateGroupComponent = (props: PageProps) => {
                             setSelectedKind(option.value);
                         }}
                         options={[
-                            { label: 'Secret', value: SharedRoomKind.GROUP, icon: require('assets/ic-create-private-24.png') },
-                            { label: 'Shared', value: SharedRoomKind.PUBLIC, icon: require('assets/ic-create-public-24.png') }
+                            { label: 'Secret', value: SharedRoomKind.GROUP, icon: require('assets/ic-lock-24.png') },
+                            { label: 'Shared', value: SharedRoomKind.PUBLIC, icon: require('assets/ic-invite-24.png') }
                         ]}
                         description={selectedKind === SharedRoomKind.GROUP ? `Secret ${chatTypeString.toLowerCase()} is a place that people can view and join only by invite from a ${chatTypeString.toLowerCase()} member.` : undefined}
                     />

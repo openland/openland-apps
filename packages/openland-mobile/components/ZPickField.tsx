@@ -64,8 +64,8 @@ export interface ZPickFieldProps {
 }
 
 const arrowIcon = {
-    right: require('assets/ic-right-16.png'),
-    bottom: require('assets/ic-bottom-16.png'),
+    right: require('assets/ic-chevron-16.png'),
+    bottom: require('assets/ic-dropdown-16.png'),
 };
 
 const ZPickFieldComponent = (props: ZPickFieldProps & { router: SRouter }) => {

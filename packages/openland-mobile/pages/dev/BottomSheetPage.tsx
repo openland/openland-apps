@@ -20,7 +20,7 @@ export const BottomSheet = (props: PageProps) => (
                     onPress={() => {
                         let builder = new ActionSheetBuilder();
 
-                        builder.action('Share', () => console.log(), false, require('assets/ic-header-share-24.png'));
+                        builder.action('Share', () => console.log(), false, require('assets/ic-share-24.png'));
 
                         builder.action('Save to Gallery' , () => console.log(), false, require('assets/ic-download-24.png'));
 

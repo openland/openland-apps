@@ -21,8 +21,8 @@ export interface MessageInputBarProps {
     showLoader?: boolean;
 }
 
-const iconAttach = require('assets/ic-input-attach-24.png');
-const icon = require('assets/ic-input-send-24.png');
+const iconAttach = require('assets/ic-attach-24.png');
+const icon = require('assets/ic-send-24.png');
 
 export const MessageInputInner = React.forwardRef((props: MessageInputBarProps & { theme: ThemeGlobal }, ref: React.RefObject<TextInput>) => {
     const { theme } = props;

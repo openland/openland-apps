@@ -12,8 +12,8 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 let openContextMenu = (link: string) => {
     let builder = new ActionSheetBuilder();
 
-    builder.action('Copy', () => Clipboard.setString(link), false, require('assets/ic-msg-copy-24.png'));
-    builder.action('Share', () => Share.share({ message: link }), false, require('assets/ic-header-share-24.png'));
+    builder.action('Copy', () => Clipboard.setString(link), false, require('assets/ic-copy-24.png'));
+    builder.action('Share', () => Share.share({ message: link }), false, require('assets/ic-share-24.png'));
     builder.action('Open', resolveInternalLink(link, async () => await Linking.openURL(link)), false, require('assets/ic-discover-24.png'));
 
     builder.show();

@@ -21,8 +21,8 @@ class ComponentsComponent extends React.PureComponent<PageProps> {
                     <ZListItem title="Label" text="Value" />
                     <ZListItem title="Label" text="Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value" />
                     <ZListItem multiline={true} title="Label" text="Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value Value" />
-                    <ZListItem leftIcon={require('assets/ic-header-bell-24.png')} small={true} text="Small with icon" />
-                    <ZListItem leftIcon={require('assets/ic-header-bell-24.png')} text="With icon" />
+                    <ZListItem leftIcon={require('assets/ic-notifications-24.png')} small={true} text="Small with icon" />
+                    <ZListItem leftIcon={require('assets/ic-notifications-24.png')} text="With icon" />
                     <ZListItem text="Modal" onPress={() => showSheetModal(() => <View><Text>{123}</Text></View>)} />
                 </ZListItemGroup>
             </SScrollView>

@@ -34,7 +34,7 @@ class NotificationCenterHandlersClass {
 
         builder.action('Clear', async () => {
             await this.deleteNotifications([id]);
-        }, false, require('assets/ic-msg-delete-24.png'));
+        }, false, require('assets/ic-delete-24.png'));
 
         builder.show();
     }
@@ -44,7 +44,7 @@ class NotificationCenterHandlersClass {
 
         builder.action('Clear All', async () => {
             await this.deleteNotifications(items.map(item => item.key));
-        }, false, require('assets/ic-msg-delete-24.png'));
+        }, false, require('assets/ic-delete-24.png'));
 
         builder.show();
     }

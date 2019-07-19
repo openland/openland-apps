@@ -168,7 +168,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                                 props.router.back();
                             })
                             .show();
-                    }, false, require('assets/ic-s-leave-24.png')
+                    }, false, require('assets/ic-leave-24.png')
                 );
             }
 
@@ -184,7 +184,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
 
                             props.router.back();
                         }).show();
-                }, false, require('assets/ic-msg-delete-24.png'));
+                }, false, require('assets/ic-delete-24.png'));
             }
 
             builder.show();
@@ -236,7 +236,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                                     props.router.back();
                                 })
                                 .show();
-                        }, false, require('assets/ic-s-leave-24.png')
+                        }, false, require('assets/ic-leave-24.png')
                     );
                 }
 
@@ -256,7 +256,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                                     await resetMembersList();
                                 })
                                 .show();
-                        }, false, require('assets/ic-s-leave-24.png')
+                        }, false, require('assets/ic-leave-24.png')
                     );
                 }
 
