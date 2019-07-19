@@ -35,8 +35,10 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
         [props.conversationId],
     );
 
+    let content: any = null;
+
     if (typing) {
-        return (
+        content = (
             <XView
                 alignItems="flex-start"
                 marginTop={8}
@@ -45,7 +47,28 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                 <div className={typingClassName}>{emoji({ src: typing, size: 15 })}</div>
             </XView>
         );
-    } else {
-        return null;
     }
+
+    return (
+        <XView
+            alignItems="center"
+            width="100%"
+            flexShrink={0}
+            position="absolute"
+            backgroundColor="#fff"
+            bottom={0}
+            left={0}
+            paddingLeft={32}
+            paddingRight={32}
+        >
+            <XView
+                alignItems="flex-start"
+                width="100%"
+                maxHeight={33}
+                maxWidth={980}
+            >
+                {content}
+            </XView>
+        </XView>
+    );
 });
