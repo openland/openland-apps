@@ -59,7 +59,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const handleLeave = React.useCallback(() => {
         Alert.builder().title(`Are you sure you want to leave ${chatTypeStr}? You may not be able to join it again.`)
             .button('Cancel', 'cancel')
-            .action('Leave and delete', 'destructive', async () => {
+            .action('Leave ' + chatTypeStr, 'destructive', async () => {
                 await client.mutateRoomLeave({ roomId });
                 props.router.pushAndResetRoot('Home');
             })
@@ -156,7 +156,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             builder.action('Advanced settings', () => props.router.push('EditGroupAdvanced', { id: room.id }), false, require('assets/ic-edit-24.png'));
         }
 
-        builder.action('Leave and delete', handleLeave, false, require('assets/ic-s-leave-24.png'));
+        builder.action('Leave ' + chatTypeStr, handleLeave, false, require('assets/ic-leave-24.png'));
 
         builder.show();
     }, [room]);
