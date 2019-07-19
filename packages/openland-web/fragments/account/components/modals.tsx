@@ -66,7 +66,13 @@ export const AboutPlaceholder = (props: { target?: any }) => {
     );
 };
 
-export const LeaveOrganizationModal = ({ organizationId }: { organizationId: string }) => {
+export const LeaveOrganizationModal = ({
+    organizationId,
+    hide,
+}: {
+    organizationId: string;
+    hide: () => void;
+}) => {
     const client = useClient();
 
     let router = React.useContext(XRouterContext)!;
@@ -84,40 +90,51 @@ export const LeaveOrganizationModal = ({ organizationId }: { organizationId: str
     }
 
     return (
-        <XModalForm
-            submitProps={{
-                text: 'Leave organization',
-                style: 'danger',
-            }}
-            title={`Leave ${data.organizationProfile.name}`}
-            defaultData={{}}
-            defaultAction={async () => {
-                await client.mutateOrganizationMemberRemove({
-                    userId: user.id,
-                    organizationId: data.organizationProfile.id,
-                });
-
-                await client.refetchMyOrganizations();
-                await client.refetchAccount();
-
-                // hack to navigate after modal closing navigation
-                setTimeout(() => {
-                    router!.push('/');
-                });
-            }}
-            targetQuery={'leaveOrganization'}
-            submitBtnText="Yes, I am sure"
-        >
-            <XFormLoadingContent>
+        <XView borderRadius={8}>
+            <XModalContent>
                 <XVertical flexGrow={1} separator={8}>
                     Are you sure you want to leave? You will lose access to all internal chats at{' '}
                     {data.organizationProfile.name}. You can only join{' '}
                     {data.organizationProfile.name} by invitation in the future.
                 </XVertical>
-            </XFormLoadingContent>
-        </XModalForm>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Remove"
+                    style="danger"
+                    size="large"
+                    onClick={async () => {
+                        await client.mutateOrganizationMemberRemove({
+                            userId: user.id,
+                            organizationId: data.organizationProfile.id,
+                        });
+
+                        await client.refetchMyOrganizations();
+                        await client.refetchAccount();
+
+                        // hack to navigate after modal closing navigation
+                        setTimeout(() => {
+                            router!.push('/');
+                        });
+                    }}
+                />
+            </XModalFooter>
+        </XView>
     );
 };
+
+export const showLeaveOrganizationModal = (organizationId: string) =>
+    showModalBox(
+        {
+            title: `Leave organization`,
+        },
+        ctx => {
+            return <LeaveOrganizationModal organizationId={organizationId} hide={ctx.hide} />;
+        },
+    );
 
 export const RemoveOrganizationModal = ({
     organizationId,

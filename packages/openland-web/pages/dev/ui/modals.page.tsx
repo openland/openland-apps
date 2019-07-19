@@ -35,6 +35,7 @@ import { showPinMessageModal } from 'openland-web/fragments/chat/PinMessage';
 import {
     showDeleteOrganizationModal,
     LeaveOrganizationModal,
+    showLeaveOrganizationModal,
 } from 'openland-web/fragments/account/components/modals';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
@@ -143,6 +144,24 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                         />
 
                         <XButton
+                            text="leave organization"
+                            style="primary"
+                            onClick={() => showLeaveOrganizationModal(rfzzOrgId)}
+                        />
+
+                        <XButton
+                            text="pin message"
+                            style="primary"
+                            onClick={() =>
+                                showPinMessageModal({
+                                    chatId: webInboxChat.id,
+                                    pinMessage,
+                                    room: gfdsgsRoom,
+                                })
+                            }
+                        />
+
+                        <XButton
                             text="image preview"
                             style="primary"
                             onClick={() =>
@@ -174,10 +193,6 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                 })
                             }
                         />
-
-                        <LeaveOrganizationModal organizationId={rfzzOrgId} />
-
-                        {/* PinMessageComponentProps */}
                     </XVertical>
                 </XVertical2>
             </XContent>

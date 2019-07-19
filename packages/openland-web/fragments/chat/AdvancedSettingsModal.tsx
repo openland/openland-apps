@@ -250,8 +250,6 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide
         return <XLoader loading={true} />;
     }
 
-    console.log({ chat });
-
     const [isOpenUsers, setIsOpenUsers] = React.useState(false);
     const [welcomeMessageIsOn, setWelcomeMessageIsOn] = React.useState(chat.welcomeMessage!.isOn);
     const [welcomeMessageText, setWelcomeMessageText] = React.useState(
