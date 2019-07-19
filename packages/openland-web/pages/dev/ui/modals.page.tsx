@@ -40,6 +40,10 @@ import {
     showWebsitePlaceholderModal,
     showAboutPlaceholderModal,
 } from 'openland-web/fragments/account/components/modals';
+import {
+    RemoveJoinedModal,
+    showRemoveOrgMemberModal,
+} from 'openland-web/fragments/account/components/OrganizationProfileComponent';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
     return (
@@ -198,6 +202,24 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             text="about placeholder"
                             style="primary"
                             onClick={() => showAboutPlaceholderModal(rfzzOrgId)}
+                        />
+
+                        <XButton
+                            text="remove joined"
+                            style="primary"
+                            onClick={() =>
+                                showRemoveOrgMemberModal({
+                                    orgId: rfzzOrgId,
+                                    members: [
+                                        {
+                                            role: 'OWNER',
+                                            user: egoarkaUser,
+                                        },
+                                    ],
+                                    orgName: 'foobar',
+                                    removeUserId: egoarkaUser.id,
+                                })
+                            }
                         />
                     </XVertical>
                 </XVertical2>

@@ -9,6 +9,8 @@ export const addMemberModalChatId = 'QwJ9g164eMTdJlDDj9qzS115XW';
 export const egoarkaUser = {
     id: 'b5OljEldvVcmdakbEKexIgW5Vl',
     fullName: 'Egor Terletsky',
+    name: 'Egor Terletsky',
+    firstName: 'Egor',
 };
 export const fredUser = {
     id: 'Jl1k97keDvsLjdwXPRKytboAyq',
