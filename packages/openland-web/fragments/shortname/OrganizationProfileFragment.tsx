@@ -43,7 +43,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 <UUserView
                     key={'member-' + member.user.id}
                     user={member.user}
-                    menu={<MemberManageMenu organization={organization} member={member} />}
+                    rightElement={<MemberManageMenu organization={organization} member={member} />}
                 />
             )}
             padded={false}

@@ -50,11 +50,11 @@ interface UListItemProps {
     large?: boolean;
     useRadius?: boolean;
     textRight?: string;
-    menu?: JSX.Element;
+    rightElement?: JSX.Element;
 }
 
 export const UListItem = React.memo((props: UListItemProps) => {
-    const { title, subtitle, description, descriptionColor, icon, avatar, onClick, path, large, useRadius, textRight, menu } = props;
+    const { title, subtitle, description, descriptionColor, icon, avatar, onClick, path, large, useRadius, textRight, rightElement } = props;
     const height = large ? 80 : (!!avatar ? 56 : 48);
 
     const titleFont = !!description ? TypeStyles.label1 : TypeStyles.body;
@@ -65,7 +65,8 @@ export const UListItem = React.memo((props: UListItemProps) => {
     return (
         <XView
             height={height}
-            paddingHorizontal={16}
+            paddingLeft={16}
+            paddingRight={8}
             alignItems="center"
             flexDirection="row"
             hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
@@ -111,11 +112,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 </SelectableText>
             )}
 
-            {!!menu && (
-                <UMoreButton marginRight={-8}>
-                    {menu}
-                </UMoreButton>
-            )}
+            {rightElement}
         </XView>
     );
 });

@@ -3,6 +3,7 @@ import { OrganizationMembers_organization_members, OrganizationWithoutMembers_or
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { showLeaveConfirmation } from 'openland-web/fragments/org/showLeaveConfirmation';
+import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 
 interface MemberManageMenu {
     organization: OrganizationWithoutMembers_organization;
@@ -38,10 +39,10 @@ export const MemberManageMenu = React.memo((props: MemberManageMenu) => {
     }
 
     return (
-        <>
+        <UMoreButton>
             {user.id !== myUserID && organization.isOwner && <UListItem title={role === 'MEMBER' ? 'Make Admin' : 'Remove as Admin'} onClick={handleRoleClick} />}
             {user.id === myUserID && <UListItem title={'Leave ' + typeString} onClick={handleLeaveClick} />}
             {user.id !== myUserID && canEdit && <UListItem title={'Remove from ' + typeString} onClick={handleRemoveClick} />}
-        </>
+        </UMoreButton>
     );
 });
