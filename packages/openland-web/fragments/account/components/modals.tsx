@@ -126,7 +126,7 @@ export const LeaveOrganizationModal = ({
                     <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
                 </XView>
                 <XButton
-                    text="Remove"
+                    text="Leave"
                     style="danger"
                     size="large"
                     onClick={async () => {
@@ -190,12 +190,13 @@ export const RemoveOrganizationModal = ({
             </XModalContent>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <XButton text="Cancel" onClick={hide} />
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
                 </XView>
 
                 <XButton
-                    text="Delete organization"
+                    text="Delete"
                     style="danger"
+                    size="large"
                     action={async () => {
                         await client.mutateDeleteOrganization({
                             organizationId: data.organizationProfile.id,
