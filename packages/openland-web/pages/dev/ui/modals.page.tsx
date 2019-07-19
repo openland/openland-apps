@@ -211,14 +211,15 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             onClick={() =>
                                 showRemoveOrgMemberModal({
                                     orgId: rfzzOrgId,
-                                    members: [
-                                        {
-                                            role: 'OWNER',
-                                            user: egoarkaUser,
-                                        },
-                                    ],
                                     orgName: 'foobar',
-                                    removeUserId: egoarkaUser.id,
+                                    // only for test purpose
+                                    member: {
+                                        __typename: 'OrganizationJoinedMember',
+                                        // @ts-ignore
+                                        role: 'ADMIN',
+                                        // @ts-ignore
+                                        user: egoarkaUser,
+                                    },
                                 })
                             }
                         />
@@ -229,14 +230,15 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             onClick={() =>
                                 showRoleOrgMemberModal({
                                     orgId: rfzzOrgId,
-                                    members: [
-                                        {
-                                            role: 'MEMBER',
-                                            user: egoarkaUser,
-                                        },
-                                    ],
                                     orgName: 'foobar',
-                                    changeRoleUserId: egoarkaUser.id,
+                                    // only for test purpose
+                                    member: {
+                                        __typename: 'OrganizationJoinedMember',
+                                        // @ts-ignore
+                                        role: 'ADMIN',
+                                        // @ts-ignore
+                                        user: egoarkaUser,
+                                    },
                                 })
                             }
                         />

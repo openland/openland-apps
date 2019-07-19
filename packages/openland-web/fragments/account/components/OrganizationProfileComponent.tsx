@@ -6,6 +6,7 @@ import {
     Organization_organization_members,
     OrganizationWithoutMembers_organization,
     OrganizationWithoutMembers_organization_requests,
+    OrganizationMembers_organization_members,
 } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -388,22 +389,14 @@ const UpdateUserProfileModal = (props: { members: any[] }) => {
 
 interface PermissionsModalProps {
     orgName: string;
-    members: any[];
     orgId: string;
-    changeRoleUserId: string;
+    member: OrganizationMembers_organization_members;
 }
 
 export const PermissionsModal = (props: PermissionsModalProps & { hide: () => void }) => {
     const client = useClient();
 
-    let member = props.members.filter(
-        (m: any) => (m.user && m.user.id === props.changeRoleUserId) || '',
-    )[0];
-
-    if (!member) {
-        return null;
-    }
-
+    const { member } = props;
     const form = useForm();
 
     const roleField = useField('input.role', member.role, form);
@@ -456,18 +449,10 @@ export const PermissionsModal = (props: PermissionsModalProps & { hide: () => vo
 };
 
 export const showRoleOrgMemberModal = (props: PermissionsModalProps): void => {
-    let member = props.members.filter(
-        (m: any) => (m.user && m.user.id === props.changeRoleUserId) || '',
-    )[0];
-
-    if (!member) {
-        return undefined;
-    }
-
     showModalBox(
         {
             title: TextProfiles.Organization.members.changeRole.title(
-                member.user.name,
+                props.member.user.name,
                 props.orgName,
             ),
         },
@@ -477,21 +462,14 @@ export const showRoleOrgMemberModal = (props: PermissionsModalProps): void => {
 
 interface RemoveJoinedModalProps {
     orgName: string;
-    members: any[];
     orgId: string;
-    removeUserId: string;
+    member: OrganizationMembers_organization_members;
 }
 
 export const RemoveJoinedModal = (props: RemoveJoinedModalProps & { hide: () => void }) => {
     const client = useClient();
 
-    let member = props.members.filter(
-        (m: any) => (m.user && m.user.id === props.removeUserId) || '',
-    )[0];
-
-    if (!member) {
-        return null;
-    }
+    const { member } = props;
 
     return (
         <XView borderRadius={8}>
@@ -528,16 +506,13 @@ export const RemoveJoinedModal = (props: RemoveJoinedModalProps & { hide: () => 
 };
 
 export const showRemoveOrgMemberModal = (props: RemoveJoinedModalProps): void => {
-    let member = props.members.filter(
-        (m: any) => (m.user && m.user.id === props.removeUserId) || '',
-    )[0];
-
-    if (!member) {
-        return undefined;
-    }
-
     showModalBox(
-        { title: TextProfiles.Organization.members.remove.title(member.user.name, props.orgName) },
+        {
+            title: TextProfiles.Organization.members.remove.title(
+                props.member.user.name,
+                props.orgName,
+            ),
+        },
         ctx => <RemoveJoinedModal {...props} hide={ctx.hide} />,
     );
 };
