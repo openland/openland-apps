@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { TextInput, View, TextInputProps, Text, StyleSheet, ViewStyle, TextStyle, NativeSyntheticEvent, TextInputFocusEventData, LayoutChangeEvent, Platform } from 'react-native';
+import { TextInput, View, TextInputProps, Text, StyleSheet, ViewStyle, TextStyle, NativeSyntheticEvent, TextInputFocusEventData, LayoutChangeEvent, Platform, Animated, Easing } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { isAndroid } from 'openland-mobile/utils/isAndroid';
+
+const DURATION_PLACEHOLDER_ANIMATION = 100;
 
 const styles = StyleSheet.create({
     container: {
@@ -14,17 +17,10 @@ const styles = StyleSheet.create({
         left: 0,
         height: 56,
         justifyContent: 'center',
-        paddingHorizontal: 16
-    } as ViewStyle,
-    placeholderContainerFocused: {
-        justifyContent: 'flex-start',
-        paddingTop: 8,
+        paddingHorizontal: 15
     } as ViewStyle,
     placeholder: {
         ...TypeStyles.densed
-    } as TextStyle,
-    placeholderFocused: {
-        ...TypeStyles.caption
     } as TextStyle,
     prefixContainer: {
         position: 'absolute',
@@ -60,6 +56,7 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
     const [ focused, setFocused ] = React.useState<boolean>(false);
     const [ filled, setFilled ] = React.useState<boolean>(!!(props.value && props.value.length > 0));
     const [ prefixWidth, setPrefixWidth ] = React.useState<number>(0);
+    const animation = React.useRef(new Animated.Value(filled ? 1 : 0)).current;
 
     const handleChangeText = React.useCallback((text) => {
         if (props.onChangeText) {
@@ -75,6 +72,12 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
         }
 
         setFocused(true);
+
+        Animated.timing(animation, {
+            toValue: 1,
+            duration: DURATION_PLACEHOLDER_ANIMATION,
+            useNativeDriver: true
+        }).start();
     }, [props.onFocus]);
 
     const handleBlur = React.useCallback((e: NativeSyntheticEvent<TextInputFocusEventData>) => {
@@ -83,21 +86,53 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
         }
 
         setFocused(false);
-    }, [props.onBlur]);
+
+        if (!filled) {
+            Animated.timing(animation, {
+                toValue: 0,
+                duration: DURATION_PLACEHOLDER_ANIMATION,
+                easing: Easing.linear,
+                useNativeDriver: true
+            }).start();
+        }
+    }, [props.onBlur, filled]);
 
     const handlePrefixLayout = React.useCallback((e: LayoutChangeEvent) => {
         setPrefixWidth(e.nativeEvent.layout.width);
     }, []);
 
+    const placeholderAimatedStyle = {
+        transform: [
+            {
+                translateX: animation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, isAndroid ? -34 : -31],
+                })
+            },
+            {
+                translateY: animation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, -10],
+                }),
+            },
+            {
+                scale: animation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [1, 0.8],
+                })
+            },
+        ]
+    };
+
     return (
         <View marginHorizontal={noWrapper ? 0 : 16} marginBottom={noWrapper ? 0 : 16}>
             <View style={styles.container} backgroundColor={theme.backgroundTertiary}>
                 {!!placeholder && (
-                    <View style={[styles.placeholderContainer, (focused || filled) && styles.placeholderContainerFocused]}>
-                        <Text style={[styles.placeholder, (focused || filled) && styles.placeholderFocused, { color: invalid ? theme.accentNegative : (focused ? theme.accentPrimary : theme.foregroundTertiary) }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
+                    <Animated.View style={[styles.placeholderContainer, placeholderAimatedStyle]}>
+                        <Text style={[styles.placeholder, { color: invalid ? theme.accentNegative : (focused ? theme.accentPrimary : theme.foregroundTertiary) }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
                             {placeholder}
                         </Text>
-                    </View>
+                    </Animated.View>
                 )}
                 {!!prefix && (focused || filled) && (
                     <View style={styles.prefixContainer} onLayout={handlePrefixLayout}>
@@ -113,6 +148,7 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     allowFontScaling={false}
+                    selectionColor={theme.accentPrimary}
                     style={[props.style, {
                         ...TypeStyles.densed,
                         color: theme.foregroundPrimary,

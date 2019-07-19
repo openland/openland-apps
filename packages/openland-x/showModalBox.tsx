@@ -66,7 +66,7 @@ const overlayFullScreenStyle = css`
 `;
 
 const Loader = (
-    <XView height="100%" alignItems="center" justifyContent="center">
+    <XView height="100px" alignItems="center" justifyContent="center">
         <XLoader loading={true} />
     </XView>
 );
