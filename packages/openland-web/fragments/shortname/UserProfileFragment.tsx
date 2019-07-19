@@ -14,13 +14,13 @@ import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButt
 export const UserProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
     const { user, conversation } = client.useUser({ userId: props.id }, { fetchPolicy: 'cache-and-network' });
-    const { id, name, photo, audienceSize, about, shortname, location, phone, email, linkedin, primaryOrganization, isYou, chatsWithBadge } = user;
+    const { id, isBot, name, photo, audienceSize, about, shortname, location, phone, email, linkedin, primaryOrganization, isYou, chatsWithBadge } = user;
 
     return (
         <Page padded={false}>
             <UListHero
                 title={name}
-                score={audienceSize}
+                score={!isBot ? audienceSize : undefined}
                 description={<UPresence user={user} />}
                 avatar={{ photo, id, title: name }}
             >
