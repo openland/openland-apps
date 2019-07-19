@@ -66,11 +66,10 @@ export const AboutPlaceholder = (props: { target?: any }) => {
     );
 };
 
-export const LeaveOrganizationModal = () => {
+export const LeaveOrganizationModal = ({ organizationId }: { organizationId: string }) => {
     const client = useClient();
 
     let router = React.useContext(XRouterContext)!;
-    const organizationId = router.routeQuery.organizationId;
 
     const data = client.useWithoutLoaderOrganizationProfile({ organizationId });
 
@@ -131,8 +130,14 @@ export const RemoveOrganizationModal = ({
     let router = React.useContext(XRouterContext)!;
     const data = client.useWithoutLoaderOrganizationProfile({ organizationId });
 
-    if (!(data && data.organizationProfile)) {
-        return <div />;
+    let ctx = React.useContext(UserInfoContext);
+    if (!(data && data.organizationProfile && !!ctx)) {
+        return null;
+    }
+    const { user } = ctx;
+
+    if (!user) {
+        return null;
     }
 
     return (

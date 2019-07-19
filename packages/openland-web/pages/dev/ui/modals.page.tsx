@@ -32,7 +32,10 @@ import { showImagePreviewModal } from 'openland-web/components/ImagePreviewModal
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { XView } from 'react-mental';
 import { showPinMessageModal } from 'openland-web/fragments/chat/PinMessage';
-import { showDeleteOrganizationModal } from 'openland-web/fragments/account/components/modals';
+import {
+    showDeleteOrganizationModal,
+    LeaveOrganizationModal,
+} from 'openland-web/fragments/account/components/modals';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
     return (
@@ -171,6 +174,8 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                 })
                             }
                         />
+
+                        <LeaveOrganizationModal organizationId={rfzzOrgId} />
 
                         {/* PinMessageComponentProps */}
                     </XVertical>
