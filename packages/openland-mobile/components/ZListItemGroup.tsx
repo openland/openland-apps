@@ -78,7 +78,7 @@ export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
                     <View flexGrow={1} paddingRight={16} />
 
                     {actionRight && (
-                        <TouchableOpacity onPress={actionRight.onPress}>
+                        <TouchableOpacity onPress={actionRight.onPress} activeOpacity={0.7}>
                             <Text
                                 style={{
                                     ...TypeStyles.label2,

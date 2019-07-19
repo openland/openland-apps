@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-bottom",
+            "src": "ic-bottom.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
             "name": "ic-msg-unpin",
             "src": "ic-msg-unpin.svg",
             "sizes": [
@@ -38,13 +45,6 @@
         {
             "name": "ic-download",
             "src": "ic-download.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-appearance",
-            "src": "ic-appearance.svg",
             "sizes": [
                 24
             ]
@@ -232,34 +232,6 @@
             ]
         },
         {
-            "name": "ic-status-read",
-            "src": "ic-status-read.svg",
-            "sizes": [
-                13
-            ]
-        },
-        {
-            "name": "ic-status-sending",
-            "src": "ic-status-sending.svg",
-            "sizes": [
-                13
-            ]
-        },
-        {
-            "name": "ic-status-sent",
-            "src": "ic-status-sent.svg",
-            "sizes": [
-                13
-            ]
-        },
-        {
-            "name": "ic-status-read",
-            "src": "ic-status-read.svg",
-            "sizes": [
-                10
-            ]
-        },
-        {
             "name": "ic-status-sending",
             "src": "ic-status-sending.svg",
             "sizes": [
@@ -271,13 +243,6 @@
             "src": "ic-status-sent.svg",
             "sizes": [
                 10
-            ]
-        },
-        {
-            "name": "ic-compose",
-            "src": "ic-compose-ios.svg",
-            "sizes": [
-                26
             ]
         },
         {
@@ -288,26 +253,11 @@
             ]
         },
         {
-            "name": "ic-leave",
-            "src": "ic-leave.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-leave",
-            "src": "ic-leave.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
             "name": "ic-lock",
             "src": "ic-lock.svg",
             "sizes": [
                 13,
-                18,
-                24
+                18
             ]
         },
         {
@@ -318,15 +268,8 @@
             ]
         },
         {
-            "name": "ic-appearance",
-            "src": "ic-appearance-outline.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
             "name": "ic-call-end",
-            "src": "ic-end.svg",
+            "src": "ic-call-end.svg",
             "sizes": [
                 36
             ]
@@ -334,28 +277,14 @@
         {
             "name": "ic-call-end",
             "suffix": "android",
-            "src": "ic-end-android.svg",
+            "src": "ic-call-end-android.svg",
             "sizes": [
                 36
             ]
         },
         {
-            "name": "ic-help",
-            "src": "ic-notifications-copy.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
             "name": "ic-help-fill",
-            "src": "ic-ask.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-rate",
-            "src": "ic-rate.svg",
+            "src": "ic-help-fill.svg",
             "sizes": [
                 24
             ]
@@ -368,31 +297,15 @@
             ]
         },
         {
-            "name": "ic-star",
+            "name": "ic-star-admin",
             "src": "ic-star-admin.svg",
             "sizes": [
-                24,
-                13,
                 16
             ]
         },
         {
-            "name": "ic-group",
-            "src": "ic-group.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-rooms",
-            "src": "ic-rooms.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
             "name": "ic-link-fill",
-            "src": "ic-cell-link-ios.svg",
+            "src": "ic-link-fill.svg",
             "sizes": [
                 24
             ]
@@ -414,7 +327,7 @@
         },
         {
             "name": "ic-mic-on",
-            "src": "ic-micro-on.svg",
+            "src": "ic-mic-on.svg",
             "sizes": [
                 30
             ]
@@ -422,14 +335,14 @@
         {
             "name": "ic-mic-on",
             "suffix": "android",
-            "src": "ic-micro-on-android.svg",
+            "src": "ic-mic-on-android.svg",
             "sizes": [
                 30
             ]
         },
         {
             "name": "ic-mic-off",
-            "src": "ic-micro-off.svg",
+            "src": "ic-mic-off.svg",
             "sizes": [
                 30
             ]
@@ -437,7 +350,7 @@
         {
             "name": "ic-mic-off",
             "suffix": "android",
-            "src": "ic-micro-off-android.svg",
+            "src": "ic-mic-off-android.svg",
             "sizes": [
                 30
             ]
@@ -450,101 +363,10 @@
             ]
         },
         {
-            "name": "ic-message",
-            "src": "ic-message.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-message-fill",
-            "src": "ic-cell-message-ios.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-edit-text",
-            "src": "ic-name.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-edit-text-fill",
-            "src": "ic-cell-name-ios.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-notifications",
-            "src": "ic-notifications.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
             "name": "ic-notifications-fill",
-            "src": "ic-cell-notif-ios.svg",
+            "src": "ic-notifications-fill.svg",
             "sizes": [
                 24
-            ]
-        },
-        {
-            "name": "ic-photo",
-            "src": "ic-photo.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-camera",
-            "src": "ic-camera.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-video",
-            "src": "ic-video.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-gallery",
-            "src": "ic-photos.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-gallery-video",
-            "src": "ic-videos.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-document",
-            "src": "ic-document.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-photo-fill",
-            "src": "ic-cell-photo-ios.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-clear",
-            "src": "ic-clear.svg",
-            "sizes": [
-                16
             ]
         },
         {
@@ -558,22 +380,6 @@
             "name": "ic-room",
             "src": "ic-room.svg",
             "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-secret",
-            "src": "ic-secret.svg",
-            "sizes": [
-                20,
-                24
-            ]
-        },
-        {
-            "name": "ic-attachment",
-            "src": "ic-attachment.svg",
-            "sizes": [
-                11,
                 24
             ]
         },
@@ -596,9 +402,7 @@
             "src": "ic-channel.svg",
             "sizes": [
                 13,
-                16,
-                18,
-                24
+                18
             ]
         },
         {
@@ -640,7 +444,6 @@
             "name": "ic-cancel-gray",
             "src": "ic-cancel-gray.svg",
             "sizes": [
-                18,
                 26
             ]
         },
@@ -677,62 +480,6 @@
             "src": "ic-edited.svg",
             "sizes": [
                 10
-            ]
-        },
-        {
-            "name": "ic-export",
-            "src": "ic-export.svg",
-            "sizes": [
-                28
-            ]
-        },
-        {
-            "name": "ic-modal-close",
-            "src": "ic-modal-close.svg",
-            "sizes": [
-                20
-            ]
-        },
-        {
-            "name": "ic-add-rounded",
-            "src": "ic-add-rounded.svg",
-            "sizes": [
-                16
-            ]
-        },
-        {
-            "name": "ic-checkmark",
-            "src": "ic-checkmark.svg",
-            "sizes": [
-                16
-            ]
-        },
-        {
-            "name": "ic-rooms-ios",
-            "src": "ic-rooms-ios.svg",
-            "sizes": [
-                28
-            ]
-        },
-        {
-            "name": "ic-header-add",
-            "src": "ic-header-add.svg",
-            "sizes": [
-                26
-            ]
-        },
-        {
-            "name": "ic-header-notifications",
-            "src": "ic-header-notifications.svg",
-            "sizes": [
-                26
-            ]
-        },
-        {
-            "name": "ic-comment-channel",
-            "src": "ic-comment-channel.svg",
-            "sizes": [
-                22
             ]
         },
         {

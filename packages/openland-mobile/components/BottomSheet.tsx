@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, Keyboard } from 'react-native';
 import Modalize from 'react-native-modalize';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
@@ -88,6 +88,7 @@ class BottomSheetProviderComponent extends React.Component<
 
     private show = (key: string) => {
         setTimeout(() => {
+            Keyboard.dismiss();
             const modalRef = this._refs.find(ref => ref.key === key);
             if (!modalRef || !modalRef.current) {
                 return;
@@ -116,7 +117,7 @@ class BottomSheetProviderComponent extends React.Component<
                 <ZRoundedButton
                     title={'Cancel'}
                     size="large"
-                    style="secondary"
+                    style="secondary-inverted"
                     onPress={() => this.hide(modal.key)}
                 />
             </View>

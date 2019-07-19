@@ -32,13 +32,13 @@ const RoomsList = (props: { router: SRouter }) => {
             {NON_PRODUCTION && <ZListItem text="Tasks" path="Apps/Tasks" />}
 
             <ZListItemGroup
-                header="Top Groups"
+                header="Top groups"
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('GroupList', {
                         query: 'available',
                         isChannel: false,
                         initial: availableChats,
-                        title: 'Top Groups',
+                        title: 'Top groups',
                     })
                 }}
             >
@@ -59,13 +59,13 @@ const RoomsList = (props: { router: SRouter }) => {
             </ZListItemGroup>
 
             <ZListItemGroup
-                header="Top Channels"
+                header="Top channels"
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('GroupList', {
                         query: 'available',
                         isChannel: true,
                         initial: availableChannels,
-                        title: 'Top Channels',
+                        title: 'Top channels',
                     })
                 }}
             >
@@ -86,7 +86,7 @@ const RoomsList = (props: { router: SRouter }) => {
             </ZListItemGroup>
 
             <ZListItemGroup
-                header="Top Communities"
+                header="Top communities"
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('CommunityList', {
                         initial: communities.edges.map(e => e.node),
@@ -111,11 +111,11 @@ const RoomsList = (props: { router: SRouter }) => {
             </ZListItemGroup>
 
             <ZListItemGroup
-                header="Chats For You"
+                header="Chats for you"
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('GroupList', {
                         initial: suggestedRooms,
-                        title: 'Chats For You',
+                        title: 'Chats for you',
                     })
                 }}
             >

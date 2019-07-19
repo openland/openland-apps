@@ -62,7 +62,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
     inputRef = React.createRef<TextInput>();
-    private themeSub?: () => void;
 
     private setTyping = throttle(() => {
         getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id });
@@ -86,27 +85,31 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         AsyncStorage.getItem('compose_draft_mentions_v2_' + this.props.chat.id).then(s => this.setState({ mentions: JSON.parse(s) || [] }));
     }
 
-    componentWillUnmount() {
-        if (this.themeSub) {
-            this.themeSub();
-        }
-    }
-
     componentWillMount() {
         this.engine.messagesActionsState.listen(state => {
             this.setState({ messagesActionsState: state });
 
-            if (state.messages && state.messages.length > 0 && state.action === 'edit') {
-                const editMessage = state.messages[0];
+            if (state.messages && state.messages.length > 0) {
+                if (state.action === 'edit') {
+                    const editMessage = state.messages[0];
 
-                this.setState({
-                    text: editMessage.text || '',
-                    mentions: convertMentionsFromMessage(editMessage.text, editMessage.spans)
-                }, () => {
-                    if (this.inputRef.current) {
-                        this.inputRef.current.focus();
-                    }
-                });
+                    this.setState({
+                        text: editMessage.text || '',
+                        mentions: convertMentionsFromMessage(editMessage.text, editMessage.spans)
+                    }, () => {
+                        if (this.inputRef.current) {
+                            this.inputRef.current.focus();
+                        }
+                    });
+                } else if (state.action === 'reply' && this.inputRef.current) {
+                    this.inputRef.current.focus();
+                } else if (state.action === 'forward') {
+                    setTimeout(() => {
+                        if (this.inputRef.current) {
+                            this.inputRef.current.focus();
+                        }
+                    }, 500);
+                }
             }
         });
     }

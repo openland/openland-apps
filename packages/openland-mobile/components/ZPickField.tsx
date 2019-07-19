@@ -60,6 +60,7 @@ export interface ZPickFieldProps {
     onPress?: () => void;
     description?: string;
     arrow?: 'right' | 'bottom';
+    disabled?: boolean;
 }
 
 const arrowIcon = {
@@ -68,7 +69,7 @@ const arrowIcon = {
 };
 
 const ZPickFieldComponent = (props: ZPickFieldProps & { router: SRouter }) => {
-    const { label, value, noWrapper, description, arrow = 'right' } = props;
+    const { label, value, noWrapper, description, arrow = 'right', disabled } = props;
     const theme = React.useContext(ThemeContext);
     const hasValue = !!(value && value.length > 0);
 
@@ -83,7 +84,7 @@ const ZPickFieldComponent = (props: ZPickFieldProps & { router: SRouter }) => {
 
     return (
         <View marginHorizontal={noWrapper ? 0 : 16} marginBottom={noWrapper ? 0 : 16}>
-            <TouchableOpacity onPress={handlePress} activeOpacity={0.6}>
+            <TouchableOpacity onPress={handlePress} activeOpacity={0.6} disabled={disabled}>
                 <View style={styles.container} backgroundColor={theme.backgroundTertiary}>
                     <View style={[styles.labelContainer, (hasValue) && styles.labelContainerFocused]}>
                         <Text style={[styles.label, (hasValue) && styles.labelFocused, { color: theme.foregroundTertiary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
@@ -104,10 +105,12 @@ const ZPickFieldComponent = (props: ZPickFieldProps & { router: SRouter }) => {
                             {value}
                         </Text>
                     )}
-
-                    <View style={styles.iconContainer}>
-                        <Image source={arrowIcon[arrow]} style={{ width: 16, height: 16, tintColor: theme.foregroundTertiary }} />
-                    </View>
+                    
+                    {!disabled && (
+                        <View style={styles.iconContainer}>
+                            <Image source={arrowIcon[arrow]} style={{ width: 16, height: 16, tintColor: theme.foregroundTertiary }} />
+                        </View>
+                    )}
                 </View>
             </TouchableOpacity>
 

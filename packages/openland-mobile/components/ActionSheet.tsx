@@ -54,7 +54,7 @@ export class ActionSheetBuilder {
         return (
             <> 
                 {this._items.map((a, i) => (
-                    <>
+                    <View key={i + 'list-item'}>
                         {a.__typename === 'ActionItem' && (
                             <ZListItem
                                 key={i + '-ac'}
@@ -70,7 +70,7 @@ export class ActionSheetBuilder {
                                 {a.view(ctx)}
                             </View>
                         )}
-                    </>
+                    </View>
                 ))} 
             </>
         );

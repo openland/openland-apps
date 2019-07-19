@@ -9,14 +9,13 @@ import { SilentError } from 'openland-y-forms/errorHandling';
 import { Modals } from '../main/modals/Modals';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZInput } from 'openland-mobile/components/ZInput';
-import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
-import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { ZSelect } from 'openland-mobile/components/ZSelect';
 
 const CreateGroupComponent = (props: PageProps) => {
     const ref = React.createRef<ZForm>();
@@ -36,19 +35,6 @@ const CreateGroupComponent = (props: PageProps) => {
 
     const [selectedKind, setSelectedKind] = React.useState<SharedRoomKind.GROUP | SharedRoomKind.PUBLIC>(orgIdFromRouter ? SharedRoomKind.PUBLIC : SharedRoomKind.GROUP);
     const [selectedOrg, setSelectedOrg] = React.useState(sortedOrganizations[0].id);
-    const handleKindPress = React.useCallback(() => {
-        let builder = new ActionSheetBuilder();
-
-        builder.action(`Secret ${chatTypeString.toLowerCase()}`, () => {
-            setSelectedKind(SharedRoomKind.GROUP);
-        }, false, require('assets/ic-create-public-24.png'));
-
-        builder.action(`Shared ${chatTypeString.toLowerCase()}`, () => {
-            setSelectedKind(SharedRoomKind.PUBLIC);
-        }, false, require('assets/ic-create-private-24.png'));
-
-        builder.show();
-    }, []);
 
     return (
         <>
@@ -127,10 +113,16 @@ const CreateGroupComponent = (props: PageProps) => {
                         field="title"
                         autoFocus={true}
                     />
-                    <ZPickField
+                    <ZSelect
                         label={`${chatTypeString} type`}
-                        value={selectedKind === SharedRoomKind.GROUP ? 'Secret' : 'Shared'}
-                        onPress={handleKindPress}
+                        defaultValue={selectedKind}
+                        onChange={(option: { label: string; value: SharedRoomKind.GROUP | SharedRoomKind.PUBLIC }) => {
+                            setSelectedKind(option.value);
+                        }}
+                        options={[
+                            { label: 'Secret', value: SharedRoomKind.GROUP, icon: require('assets/ic-create-private-24.png') },
+                            { label: 'Shared', value: SharedRoomKind.PUBLIC, icon: require('assets/ic-create-public-24.png') }
+                        ]}
                         description={selectedKind === SharedRoomKind.GROUP ? `Secret ${chatTypeString.toLowerCase()} is a place that people can view and join only by invite from a ${chatTypeString.toLowerCase()} member.` : undefined}
                     />
                 </ZListItemGroup>
@@ -139,6 +131,7 @@ const CreateGroupComponent = (props: PageProps) => {
                     <ZListItemGroup header="Share with" headerMarginTop={0}>
                         {sortedOrganizations.map(org => (
                             <ZListItem
+                                key={'org-' + org.id}
                                 text={org.name}
                                 leftAvatar={{
                                     photo: org.photo,

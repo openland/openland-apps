@@ -7,12 +7,8 @@ import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { ZSelect } from 'openland-mobile/components/ZSelect';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
-import { ZForm } from 'openland-mobile/components/ZForm';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 
 export const InputsComponent = (props: PageProps) => {
-   const form = React.createRef<ZForm>();
-
     return (
         <SScrollView>
             <View>
@@ -29,6 +25,7 @@ export const InputsComponent = (props: PageProps) => {
                     <ZPickField label="Label" />
                     <ZPickField label="Label" value="Value" />
                     <ZPickField label="Label" value="Value" description="Description" />
+                    <ZPickField label="Label" value="Value" description="Disabled" disabled={true} />
                 </ZListItemGroup>
                 <ZListItemGroup header="Select fields" headerMarginTop={0}>
                     <ZSelect 
@@ -55,29 +52,6 @@ export const InputsComponent = (props: PageProps) => {
                             { label: 'Label 3', value: 3, icon: require('assets/ic-download-24.png') }
                         ]}
                     />
-                </ZListItemGroup>
-                <ZListItemGroup header="Select fields form" headerMarginTop={0}>
-                    <ZForm
-                        ref={form}
-                        action={src => console.log('src', src)}
-                        defaultData={{
-                            select: 3
-                        }}
-                    >
-                        <ZSelect 
-                            field={'select'}
-                            label="Label" 
-                            description={'with default value'}
-                            options={[
-                                { label: 'Label 1', value: 'Value 1', icon: require('assets/ic-header-share-24.png') },
-                                { label: 'Label 2', value: 'Value 2', icon: require('assets/ic-download-24.png') },
-                                { label: 'Label 3', value: 3, icon: require('assets/ic-download-24.png') }
-                            ]}
-                        />
-                    </ZForm>
-                    <View paddingHorizontal={16}>
-                        <ZRoundedButton title={'Submit'} onPress={() => form.current!.submitForm()} />
-                    </View>
                 </ZListItemGroup>
             </View>
         </SScrollView>

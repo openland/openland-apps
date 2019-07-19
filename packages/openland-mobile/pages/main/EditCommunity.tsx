@@ -10,9 +10,9 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZInput } from 'openland-mobile/components/ZInput';
-import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
+import { ZSelect } from 'openland-mobile/components/ZSelect';
 
 const EditCommunityComponent = XMemo<PageProps>((props) => {
     const ref = React.useRef<ZForm | null>(null);
@@ -32,20 +32,6 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
         } finally {
             stopLoader();
         }
-    }, [organization, profile]);
-
-    const handleChangeTypePress = React.useCallback(() => {
-        let builder = new ActionSheetBuilder();
-
-        builder.action('Private', async () => {
-            await changeType(true);
-        }, false, require('assets/ic-create-public-24.png'));
-
-        builder.action('Public', async () => {
-            await changeType(false);
-        }, false, require('assets/ic-create-private-24.png'));
-
-        builder.show();
     }, [organization, profile]);
 
     return (
@@ -90,12 +76,19 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                         multiline={true}
                         description="Publicly describe this community for all to see see"
                     />
-                    <ZPickField
+                    <ZSelect 
                         label="Community type"
-                        value={organization.isPrivate ? 'Private' : 'Public'}
-                        onPress={organization.isOwner ? handleChangeTypePress : undefined}
+                        defaultValue={organization.isPrivate}
+                        disabled={!organization.isOwner}
+                        onChange={async (option: { label: string; value: boolean }) => {
+                            await changeType(option.value);
+                        }}
+                        options={[
+                            { label: 'Private', value: true, icon: require('assets/ic-create-private-24.png') },
+                            { label: 'Public', value: false, icon: require('assets/ic-create-public-24.png') }
+                        ]}
                         description="Set by creator"
-                    />
+                    />  
                 </ZListItemGroup>
 
                 <ZListItemGroup header="Shortname" headerMarginTop={0}>
