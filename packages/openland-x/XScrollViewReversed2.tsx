@@ -157,13 +157,22 @@ export const XScrollViewReverse2 = React.memo(
 
             React.useLayoutEffect(
                 () => {
-                    const outerDiv = outerRef.current!!;
-                    const innerDiv = innerRef.current!!;
-                    if (!outerDiv || !innerDiv) {
-                        return;
-                    }
-                    updateSizes(outerDiv.clientHeight, innerDiv.clientHeight);
-                    reportOnScroll();
+                    let running = false;
+                    requestAnimationFrame(() => {
+                        if (!running) {
+                            return;
+                        }
+                        const outerDiv = outerRef.current!!;
+                        const innerDiv = innerRef.current!!;
+                        if (!outerDiv || !innerDiv) {
+                            return;
+                        }
+                        updateSizes(outerDiv.clientHeight, innerDiv.clientHeight);
+                        reportOnScroll();
+                    });
+                    return () => {
+                        running = false;
+                    };
                 },
                 [props.children],
             );
