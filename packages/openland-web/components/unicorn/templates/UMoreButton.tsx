@@ -5,6 +5,15 @@ import { UIconButton } from '../UIconButton';
 import ManageVerticalIcon from 'openland-icons/ic-more-v.svg';
 import ManageHorizontalIcon from 'openland-icons/ic-more-h.svg';
 import { XViewProps } from 'react-mental';
+import { css, cx } from 'linaria';
+
+const iconWrapper = css`
+    svg {
+        path {
+            fill: #676D7A; // Need to be ThemeDefault.foregroundSecondary
+        }
+    }
+`;
 
 interface UMoreButtonProps extends XViewProps {
     placement?: Placement;
@@ -67,7 +76,7 @@ export class UMoreButton extends React.PureComponent<UMoreButtonProps, { show: b
                 onClickOutside={this.handleClose}
                 showOnHover={showOnHover}
             >
-                <div>
+                <div className={cx(iconWrapper)}>
                     <UIconButton
                         icon={horizontal ? <ManageHorizontalIcon /> : <ManageVerticalIcon />}
                         active={computedShow}

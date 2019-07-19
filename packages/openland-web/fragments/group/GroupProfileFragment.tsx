@@ -12,6 +12,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
+import { GroupManageButtons } from './components/GroupManageButtons';
 
 export const GroupProfileFragment = React.memo((props) => {
     const client = useClient();
@@ -68,6 +69,7 @@ export const GroupProfileFragment = React.memo((props) => {
                     mute={!!settings.mute}
                     marginLeft={16}
                 />
+                <GroupManageButtons group={group} marginLeft={16} />
             </UListHero>
 
             <UListGroup header="About">

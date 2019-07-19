@@ -6,6 +6,10 @@ import { showLeaveConfirmation } from 'openland-web/fragments/org/showLeaveConfi
 import { showEditCommunityModal } from 'openland-web/fragments/account/components/EditCommunityModal';
 import { showDeleteOrganizationModal } from 'openland-web/fragments/account/components/modals';
 
+import EditIcon from 'openland-icons/s/ic-edit-24.svg';
+import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
+import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
+
 export const OrganizationManageButtons = React.memo((props: { organization: OrganizationWithoutMembers_organization }) => {
     const { id, isCommunity, isOwner, isAdmin, isMine, name } = props.organization;
 
@@ -19,9 +23,9 @@ export const OrganizationManageButtons = React.memo((props: { organization: Orga
 
     return (
         <UMoreButton>
-            {canEdit && <UListItem title="Edit" onClick={() => showEditCommunityModal(id, isCommunity, isOwner)} />}
-            {canLeave && <UListItem title="Leave" onClick={() => showLeaveConfirmation(id)} />}
-            {canEdit && <UListItem title="Delete" onClick={() => showDeleteOrganizationModal({ orgName: name, organizationId: id })} />}
+            {canEdit && <UListItem title="Edit" icon={<EditIcon />} onClick={() => showEditCommunityModal(id, isCommunity, isOwner)} />}
+            {canLeave && <UListItem title="Leave" icon={<LeaveIcon />} onClick={() => showLeaveConfirmation(id)} />}
+            {canEdit && <UListItem title="Delete" icon={<DeleteIcon />} onClick={() => showDeleteOrganizationModal({ orgName: name, organizationId: id })} />}
         </UMoreButton>
     );
 });
