@@ -24,11 +24,12 @@ import { XModalFooter } from 'openland-x-modal/XModal';
 import { XButton } from 'openland-x/XButton';
 
 interface AdvancedSettingsInnerProps {
-    socialImage: string | null;
     roomId: string;
-    welcomeMessageIsOn: boolean;
-    welcomeMessageText: string | null;
-    welcomeMessageSender: Room_room_SharedRoom_welcomeMessage_sender | null;
+
+    // socialImage: string | null;
+    // welcomeMessageIsOn: boolean;
+    // welcomeMessageText: string | null;
+    // welcomeMessageSender: Room_room_SharedRoom_welcomeMessage_sender | null;
 }
 
 const UsersWrapperClassName = css`
@@ -240,19 +241,30 @@ const ModalBody = (props: ModalBodyProps) => {
 
 export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide: () => void }) => {
     const api = useClient();
-    let router = React.useContext(XRouterContext)!;
+
+    const dataFromApi = api.useRoomWithoutMembers({ id: props.roomId });
+
+    let chat = dataFromApi.room as Room_room_SharedRoom;
+
+    if (!chat) {
+        return <XLoader loading={true} />;
+    }
+
+    console.log({ chat });
 
     const [isOpenUsers, setIsOpenUsers] = React.useState(false);
-    const [welcomeMessageIsOn, setWelcomeMessageIsOn] = React.useState(props.welcomeMessageIsOn);
-    const [welcomeMessageText, setWelcomeMessageText] = React.useState(props.welcomeMessageText);
+    const [welcomeMessageIsOn, setWelcomeMessageIsOn] = React.useState(chat.welcomeMessage!.isOn);
+    const [welcomeMessageText, setWelcomeMessageText] = React.useState(
+        chat.welcomeMessage!.message,
+    );
     const [welcomeMessageSender, setWelcomeMessageSender] = React.useState(
-        props.welcomeMessageSender,
+        chat.welcomeMessage!.sender,
     );
 
     const [socialImageRef, setSocialImageRef] = React.useState<StoredFileT | undefined>(
-        props.socialImage
+        chat!.socialImage
             ? {
-                  uuid: props.socialImage,
+                  uuid: chat!.socialImage,
                   crop: {
                       w: 190,
                       h: 100,
@@ -273,11 +285,11 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide
 
     React.useEffect(
         () => {
-            setWelcomeMessageIsOn(props.welcomeMessageIsOn);
-            setWelcomeMessageText(props.welcomeMessageText);
-            setWelcomeMessageSender(props.welcomeMessageSender);
+            setWelcomeMessageIsOn(chat.welcomeMessage!.isOn);
+            setWelcomeMessageText(chat.welcomeMessage!.message);
+            setWelcomeMessageSender(chat.welcomeMessage!.sender);
         },
-        [props.welcomeMessageIsOn, props.welcomeMessageText, props.welcomeMessageSender],
+        [chat.welcomeMessage!.isOn, chat.welcomeMessage!.message, chat.welcomeMessage!.sender],
     );
 
     const finalWelcomeMessageSenderError = triedToSend && welcomeMessageSenderError;
@@ -349,7 +361,7 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide
                         await api.mutateRoomUpdate({
                             roomId: props.roomId,
                             input: {
-                                ...(newSocialImage && newSocialImage.uuid !== props.socialImage
+                                ...(newSocialImage && newSocialImage.uuid !== chat.socialImage
                                     ? {
                                           socialImageRef: sanitizeImageRef(newSocialImage),
                                       }
@@ -379,11 +391,11 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide
     );
 };
 
-export const showAdvancedSettingsModal = (props: AdvancedSettingsInnerProps) => {
+export const showAdvancedSettingsModal = (roomId: string) => {
     showModalBox(
         {
             title: 'Advanced settings',
         },
-        ctx => <AdvancedSettingsModal {...props} hide={ctx.hide} />,
+        ctx => <AdvancedSettingsModal roomId={roomId} hide={ctx.hide} />,
     );
 };

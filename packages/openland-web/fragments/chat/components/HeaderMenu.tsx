@@ -154,15 +154,7 @@ export const HeaderMenu = ({ room }: { room: RoomHeader_room }) => {
                         <XMenuItem
                             icon={<DiscoverIcon />}
                             customContent
-                            onClick={() =>
-                                showAdvancedSettingsModal({
-                                    roomId: sharedRoom.id,
-                                    socialImage: sharedRoom.socialImage,
-                                    welcomeMessageText: sharedRoom.welcomeMessage!!.message,
-                                    welcomeMessageSender: sharedRoom.welcomeMessage!!.sender,
-                                    welcomeMessageIsOn: sharedRoom.welcomeMessage!!.isOn,
-                                })
-                            }
+                            onClick={() => showAdvancedSettingsModal(sharedRoom.id)}
                         >
                             <MenuItem>Advanced settings</MenuItem>
                         </XMenuItem>

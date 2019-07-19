@@ -183,18 +183,7 @@ const Header = ({ chat }: { chat: Room_room_SharedRoom }) => {
                                         <XWithRole role="super-admin" or={canSeeAdvancedSettings}>
                                             <XMenuItemSeparator />
                                             <XMenuItem
-                                                onClick={() =>
-                                                    showAdvancedSettingsModal({
-                                                        roomId: chat.id,
-                                                        socialImage: chat.socialImage,
-                                                        welcomeMessageText: chat.welcomeMessage!!
-                                                            .message,
-                                                        welcomeMessageSender: chat.welcomeMessage!!
-                                                            .sender,
-                                                        welcomeMessageIsOn: chat.welcomeMessage!!
-                                                            .isOn,
-                                                    })
-                                                }
+                                                onClick={() => showAdvancedSettingsModal(chat.id)}
                                             >
                                                 Advanced settings
                                             </XMenuItem>
