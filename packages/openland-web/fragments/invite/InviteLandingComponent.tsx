@@ -96,41 +96,35 @@ const titleClassName = css`
     text-shadow: 0 0 6px #fff, 0 0 6px #fff;
 `;
 
-const InviteByRow = ({
+const InviteByUser = ({
     invitedByUser,
     chatTypeStr,
 }: {
-    invitedByUser?: {
+    invitedByUser: {
         id: string;
         name: string;
         photo?: string | null;
-    } | null;
+    };
     chatTypeStr: string;
 }) => {
     return (
-        <>
-            {invitedByUser ? (
-                <XView
-                    flexDirection="row"
-                    justifyContent="center"
-                    alignItems="center"
-                    flexShrink={0}
-                    marginTop={50}
-                >
-                    <XAvatar2
-                        src={invitedByUser.photo || undefined}
-                        title={invitedByUser.name}
-                        id={invitedByUser.id}
-                        size={24}
-                    />
-                    <XView marginLeft={12} fontSize={14} lineHeight={1.43}>
-                        {invitedByUser.name} {`invites you to join ${chatTypeStr.toLowerCase()}`}
-                    </XView>
-                </XView>
-            ) : (
-                <div style={{ height: 50 }} />
-            )}
-        </>
+        <XView
+            flexDirection="row"
+            justifyContent="center"
+            alignItems="center"
+            flexShrink={0}
+            marginTop={50}
+        >
+            <XAvatar2
+                src={invitedByUser.photo || undefined}
+                title={invitedByUser.name}
+                id={invitedByUser.id}
+                size={24}
+            />
+            <XView marginLeft={12} fontSize={14} lineHeight={1.43}>
+                {invitedByUser.name} {`invites you to join ${chatTypeStr.toLowerCase()}`}
+            </XView>
+        </XView>
     );
 };
 
@@ -239,7 +233,11 @@ const InviteLandingComponentLayout = ({
                     </XView>
                 )}
             <XView flexDirection="column" paddingHorizontal={20} zIndex={1}>
-                <InviteByRow invitedByUser={invitedByUser} chatTypeStr={whereToInvite} />
+                {invitedByUser ? (
+                    <InviteByUser invitedByUser={invitedByUser} chatTypeStr={whereToInvite} />
+                ) : (
+                    <XView height={50} flexShrink={0} />
+                )}
             </XView>
             <EntityInfoColumn
                 photo={photo}
