@@ -453,63 +453,6 @@ export const PermissionsModal = (props: PermissionsModalProps & { hide: () => vo
             </XModalFooter>
         </XView>
     );
-
-    // return (
-    //     <XModalForm
-    // title={TextProfiles.Organization.members.changeRole.title(
-    //     member.user.name,
-    //     (props as any).orgName,
-    // )}
-    //         defaultData={{
-    //             role: member.role,
-    //         }}
-    //         targetQuery="changeRole"
-    //         defaultAction={async data => {
-    //             await client.mutateOrganizationChangeMemberRole({
-    //                 memberId: member.user.id,
-    //                 newRole: data.role as OrganizationMemberRole,
-    //                 organizationId: (props as any).orgId,
-    //             });
-
-    //             await client.refetchOrganization({
-    //                 organizationId: (props as any).orgId,
-    //             });
-    //         }}
-    //         target={(props as any).target}
-    //     >
-    //         <XVertical>
-    //             <XFormSelectField
-
-    //             />
-
-    //             <XSelect
-    //                 clearable={false}
-    //                 searchable={false}
-    //                 field="role"
-    //                 options={[
-    //                     {
-    //                         value: 'ADMIN',
-    //                         label: TextProfiles.Organization.roles.ADMIN,
-    //                     },
-    //                     {
-    //                         value: 'MEMBER',
-    //                         label: TextProfiles.Organization.roles.MEMBER,
-    //                     },
-    //                 ]}
-    //             />
-    //             <XStoreContext.Consumer>
-    //                 {store => {
-    //                     let role = store ? store.readValue('fields.role') : '';
-    //                     return (
-    //                         <XText>
-    //                             {TextProfiles.Organization.members.changeRole.hints[role]}
-    //                         </XText>
-    //                     );
-    //                 }}
-    //             </XStoreContext.Consumer>
-    //         </XVertical>
-    //     </XModalForm>
-    // );
 };
 
 export const showRoleOrgMemberModal = (props: PermissionsModalProps): void => {
