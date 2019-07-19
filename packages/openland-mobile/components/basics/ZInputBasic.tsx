@@ -2,7 +2,6 @@ import * as React from 'react';
 import { TextInput, View, TextInputProps, Text, StyleSheet, ViewStyle, TextStyle, NativeSyntheticEvent, TextInputFocusEventData, LayoutChangeEvent, Platform, Animated, Easing } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
-import { isAndroid } from 'openland-mobile/utils/isAndroid';
 
 const DURATION_PLACEHOLDER_ANIMATION = 100;
 
@@ -17,7 +16,7 @@ const styles = StyleSheet.create({
         left: 0,
         height: 56,
         justifyContent: 'center',
-        paddingHorizontal: 15
+        paddingHorizontal: 16
     } as ViewStyle,
     placeholder: {
         ...TypeStyles.densed
@@ -106,7 +105,7 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
             {
                 translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [0, isAndroid ? -34 : -31],
+                    outputRange: [0, Platform.OS === 'android' ? -34 : -31],
                 })
             },
             {

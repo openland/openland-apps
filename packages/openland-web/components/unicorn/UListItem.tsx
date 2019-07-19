@@ -1,12 +1,26 @@
 import * as React from 'react';
 import { XView, XViewSelectedContext, XViewProps } from 'react-mental';
 import { ThemeDefault } from 'openland-y-utils/themes';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { TypeStyles } from 'openland-web/utils/TypeStyles';
 import { UAvatar } from './UAvatar';
-import { UMoreButton } from './templates/UMoreButton';
 
-const selectedStyle = css`
+const iconWrapper = css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+        path {
+            stroke: #676D7A; // Need to be ThemeDefault.foregroundSecondary
+        }
+        circle {
+            fill: #676D7A; // Need to be ThemeDefault.foregroundSecondary
+        }
+    }
+`;
+
+const iconWrapperSelected = css`
     svg {
         path {
             stroke: white; // Need to be ThemeDefault.contrastSpecial
@@ -19,10 +33,14 @@ const selectedStyle = css`
 
 const SelectableSVG = React.memo((props: { children?: any }) => {
     let selected = React.useContext(XViewSelectedContext);
-    if (selected) {
-        return (<div className={selectedStyle}>{props.children}</div>);
-    }
-    return (<div>{props.children}</div>);
+
+    return (
+        <div
+            className={cx(iconWrapper, selected && iconWrapperSelected)}
+        >
+            {props.children}
+        </div>
+    );
 });
 
 const SelectableText = React.memo((props: XViewProps) => {
@@ -65,8 +83,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
     return (
         <XView
             height={height}
-            paddingLeft={16}
-            paddingRight={8}
+            paddingHorizontal={16}
             alignItems="center"
             flexDirection="row"
             hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
@@ -112,7 +129,11 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 </SelectableText>
             )}
 
-            {rightElement}
+            {!!rightElement && (
+                <XView marginRight={-8}>
+                    {rightElement}
+                </XView>
+            )}
         </XView>
     );
 });
