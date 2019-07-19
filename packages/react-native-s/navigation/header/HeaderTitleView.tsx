@@ -124,7 +124,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                                     {this.state.searchText.length > 0 && (
                                         <TouchableOpacity onPress={() => this.handleTextChange('')}>
                                             <View style={{ height: 44, width: 56, justifyContent: 'center', alignItems: 'center' }}>
-                                                <Image source={require('assets/ic-cancel.png')} style={{ tintColor: this.props.style.accentColor, width: 14, height: 14 }} />
+                                                <Image source={require('assets/ic-close-24.png')} style={{ tintColor: this.props.style.accentColor, width: 14, height: 14 }} />
                                             </View>
                                         </TouchableOpacity>
                                     )}
@@ -133,7 +133,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                             {!v.config.searchActive && title}
                         </View>
                         <View flexDirection="row" alignItems="center" alignSelf="center" paddingRight={2}>
-                            {v.config.search && !v.config.searchActive && <SHeaderButton title="Search" icon={require('assets/ic-header-search-24.png')} onPress={v.config.searchPress} style={this.props.style} />}
+                            {v.config.search && !v.config.searchActive && <SHeaderButton title="Search" icon={require('assets/ic-search-24.png')} onPress={v.config.searchPress} style={this.props.style} />}
                             {v.config.buttons && !v.config.searchActive && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
                         </View>
 
