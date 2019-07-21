@@ -390,39 +390,89 @@ export const showAddFeatureModal = (accountId: string) => {
     );
 };
 
-const RemoveFeature = ({ accountId }: { accountId: string }) => {
+const RemoveFeatureModal = ({ accountId, hide }: { accountId: string; hide: () => void }) => {
     const client = useClient();
+    const form = useForm();
     const data = client.useWithoutLoaderFeatureFlags();
+
+    const featureIdField = useField(
+        'input.featureId',
+        null as FeatureFlags_featureFlags | null,
+        form,
+    );
+
+    React.useEffect(
+        () => {
+            if (!data) {
+                return;
+            }
+
+            featureIdField.input.onChange(
+                data.featureFlags.length > 0 ? data.featureFlags[0] : null,
+            );
+        },
+        [data],
+    );
 
     if (!data) {
         return <XLoader loading={true} />;
     }
 
-    const mutate = async ({ variables: { featureId } }: { variables: { featureId: string } }) =>
-        await client.mutateFeatureFlagDisable({
-            accountId,
-            featureId,
+    const remove = () =>
+        form.doAction(async () => {
+            if (!featureIdField.value) {
+                return;
+            }
+
+            await client.mutateFeatureFlagDisable({
+                accountId,
+                featureId: featureIdField.value.id,
+            });
+            hide();
         });
 
     return (
-        <XModalForm
-            title="Remove feature from organization"
-            submitMutation={mutate as MutationFunc<{}>}
-            mutationDirect={true}
-            actionStyle="danger"
-            actionName="Remove"
-            target={<XButton style="danger" text="Remove feature" />}
-        >
-            <XFormField title="Feature">
-                <XForm.Select
-                    field="featureId"
-                    options={data.featureFlags.map((v: any) => ({
-                        value: v.id,
-                        title: v.title,
-                    }))}
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XVertical flexGrow={1} separator={8}>
+                    {featureIdField.value && (
+                        <SelectWithDropdown
+                            {...featureIdField.input}
+                            value={featureIdField.value!.id}
+                            size="large"
+                            title={'feature'}
+                            selectOptions={data.featureFlags.map((v: any) => ({
+                                label: v.title,
+                                value: v.id,
+                            }))}
+                        />
+                    )}
+                </XVertical>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Remove"
+                    style="danger"
+                    size="large"
+                    onClick={remove}
+                    loading={form.loading}
                 />
-            </XFormField>
-        </XModalForm>
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showRemoveFeatureModal = (accountId: string) => {
+    showModalBox(
+        {
+            title: 'Remove feature from organization',
+        },
+        ctx => {
+            return <RemoveFeatureModal accountId={accountId} hide={ctx.hide} />;
+        },
     );
 };
 
@@ -520,8 +570,11 @@ export default withApp('Super Organization', 'super-admin', () => {
             </XTable>
             <XHeader text="Features" description={superAccount.features.length + ' total'}>
                 <XButton text="Add feature" onClick={() => showAddFeatureModal(accountId)} />
-
-                <RemoveFeature accountId={accountId} />
+                <XButton
+                    style="danger"
+                    text="Remove feature"
+                    onClick={() => showRemoveFeatureModal(accountId)}
+                />
             </XHeader>
             <XTable>
                 <XTable.Header>
