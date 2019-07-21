@@ -51,6 +51,7 @@ import {
     WelcomePopup,
     showWelcomePopup,
 } from 'openland-web/fragments/account/components/welcomePopup';
+import { showDeleteMessagesFromModal } from 'openland-web/fragments/chat/components/ChatForwardHeaderView';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
     return (
@@ -264,7 +265,18 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                         <XButton
                             text="welcome popup"
                             style="primary"
-                            onClick={() => showWelcomePopup(true)}
+                            onClick={() => showWelcomePopup()}
+                        />
+
+                        <XButton
+                            text="delete messages from"
+                            style="primary"
+                            onClick={() =>
+                                showDeleteMessagesFromModal({
+                                    messagesIds: ['1'],
+                                    onDelete: () => console.log(123),
+                                })
+                            }
                         />
                     </XVertical>
                 </XVertical2>

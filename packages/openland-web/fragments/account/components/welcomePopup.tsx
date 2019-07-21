@@ -101,11 +101,7 @@ const WelcomeModalBody = ({ checkModal }: { checkModal: () => void }) => {
     );
 };
 
-export const showWelcomePopup = (visible: boolean): void => {
-    if (!visible) {
-        return;
-    }
-
+export const showWelcomePopup = (): void => {
     showModalBox({ width: 620 }, ctx => (
         <WelcomeModalBody
             checkModal={() => {
@@ -126,7 +122,9 @@ export class WelcomePopup extends React.Component<{}, {}> {
     componentWillMount() {
         if (canUseDOM) {
             let needToShow = localStorage.getItem('isnewuser');
-            showWelcomePopup(needToShow === 'newuser');
+            if (needToShow === 'newuser') {
+                showWelcomePopup();
+            }
         }
     }
 

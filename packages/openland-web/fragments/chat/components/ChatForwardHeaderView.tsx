@@ -10,6 +10,9 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { css } from 'linaria';
 import { XText } from 'openland-x/XText';
 import { useClient } from 'openland-web/utils/useClient';
+import { XModalFooter } from 'openland-x-modal/XModal';
+import { XModalContent } from 'openland-web/components/XModalContent';
+import { showModalBox } from 'openland-x/showModalBox';
 
 const ClearIconClass = css`
     margin-top: 4px;
@@ -25,26 +28,44 @@ const ClearIconClass = css`
     }
 `;
 
-const DeleteMessagesFrom = (props: { messagesIds: string[]; onDelete: () => void }) => {
+interface DeleteMessagesFromProps {
+    messagesIds: string[];
+    onDelete: () => void;
+}
+
+const DeleteMessagesFrom = (props: DeleteMessagesFromProps & { hide: () => void }) => {
     const client = useClient();
+
     return (
-        <XModalForm
-            submitProps={{
-                text: 'Delete',
-                style: 'danger',
-            }}
-            title="Delete message"
-            target={<XButton text="Delete" style="default" />}
-            defaultAction={async () => {
-                await client.mutateRoomDeleteMessages({
-                    mids: props.messagesIds,
-                });
-                await props.onDelete();
-            }}
-        >
-            <XText>Delete selected messages for everyone? This cannot be undone.</XText>
-        </XModalForm>
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XText>Delete selected messages for everyone? This cannot be undone.</XText>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={props.hide} />
+                </XView>
+                <XButton
+                    text="Delete"
+                    style="danger"
+                    size="large"
+                    onClick={async () => {
+                        await client.mutateRoomDeleteMessages({
+                            mids: props.messagesIds,
+                        });
+                        await props.onDelete();
+                        props.hide();
+                    }}
+                />
+            </XModalFooter>
+        </XView>
     );
+};
+
+export const showDeleteMessagesFromModal = (props: DeleteMessagesFromProps) => {
+    showModalBox({ title: 'Delete messages' }, ctx => (
+        <DeleteMessagesFrom {...props} hide={ctx.hide} />
+    ));
 };
 
 export const ChatForwardHeaderView = (props: {
@@ -81,18 +102,34 @@ export const ChatForwardHeaderView = (props: {
                 </XView>
                 <XHorizontal alignItems="center" separator={5}>
                     <XWithRole role="super-admin">
-                        <DeleteMessagesFrom
-                            messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
-                            onDelete={resetAll}
+                        <XButton
+                            text="Delete"
+                            style="default"
+                            onClick={() =>
+                                showDeleteMessagesFromModal({
+                                    messagesIds: Array.from(state.selectedMessages).map(
+                                        m => m.id!!,
+                                    ),
+                                    onDelete: resetAll,
+                                })
+                            }
                         />
                     </XWithRole>
                     <XWithRole role="super-admin" negate={true}>
                         {!Array.from(state.selectedMessages).find(
                             msg => msg.sender.id !== props.me.id,
                         ) && (
-                            <DeleteMessagesFrom
-                                messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
-                                onDelete={resetAll}
+                            <XButton
+                                text="Delete"
+                                style="default"
+                                onClick={() =>
+                                    showDeleteMessagesFromModal({
+                                        messagesIds: Array.from(state.selectedMessages).map(
+                                            m => m.id!!,
+                                        ),
+                                        onDelete: resetAll,
+                                    })
+                                }
                             />
                         )}
                     </XWithRole>
