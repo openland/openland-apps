@@ -47,6 +47,10 @@ import {
     showRoleOrgMemberModal,
     showUpdateUserProfileModal,
 } from 'openland-web/fragments/account/components/OrganizationProfileComponent';
+import {
+    WelcomePopup,
+    showWelcomePopup,
+} from 'openland-web/fragments/account/components/welcomePopup';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
     return (
@@ -255,6 +259,12 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             text="update user profile"
                             style="primary"
                             onClick={() => showUpdateUserProfileModal(egoarkaUser.id)}
+                        />
+
+                        <XButton
+                            text="welcome popup"
+                            style="primary"
+                            onClick={() => showWelcomePopup(true)}
                         />
                     </XVertical>
                 </XVertical2>
