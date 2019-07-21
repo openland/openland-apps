@@ -43,6 +43,7 @@ import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { useForm } from 'openland-form/useForm';
 import { XModalController } from 'openland-x/showModal';
+import { showModalBox } from 'openland-x/showModalBox';
 
 export interface File {
     uuid: string;
@@ -71,22 +72,44 @@ interface MessagesComponentState {
     loading: boolean;
 }
 
-export const DeleteMessageComponent = () => {
-    const router = useXRouter();
+export const DeleteMessageComponent = ({
+    messageId,
+    hide,
+}: {
+    messageId: string;
+    hide: () => void;
+}) => {
     const client = useClient();
-    let id = router.routeQuery.deleteMessage;
+
     return (
-        <XModalForm
-            title="Delete message"
-            targetQuery="deleteMessage"
-            submitBtnText="Delete"
-            defaultAction={async data => {
-                await client.mutateRoomDeleteMessage({ messageId: id });
-            }}
-            submitProps={{ successText: 'Deleted!', style: 'danger' }}
-        >
-            <XText>Are you sure you want to delete this message? This cannot be undone.</XText>
-        </XModalForm>
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XText>Are you sure you want to delete this message? This cannot be undone.</XText>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Delete"
+                    style="danger"
+                    size="large"
+                    onClick={async data => {
+                        await client.mutateRoomDeleteMessage({ messageId });
+                        hide();
+                    }}
+                />
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showDeleteMessageModal = (messageId: string) => {
+    showModalBox(
+        {
+            title: 'Delete message',
+        },
+        ctx => <DeleteMessageComponent messageId={messageId} hide={ctx.hide} />,
     );
 };
 
