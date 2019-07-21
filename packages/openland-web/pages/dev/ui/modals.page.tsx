@@ -54,7 +54,11 @@ import {
 import { showDeleteMessagesFromModal } from 'openland-web/fragments/chat/components/ChatForwardHeaderView';
 import { showDeleteMessageModal } from 'openland-web/fragments/chat/components/MessengerRootComponent';
 import { showMessageModal } from 'openland-web/fragments/chat/MessageModal';
-import { AddSuperAdminForm, showAddSuperAdminFormModal } from '../admins.page';
+import {
+    AddSuperAdminForm,
+    showAddSuperAdminFormModal,
+    showRemoveSuperAdminFormModal,
+} from '../admins.page';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
     return (
@@ -302,6 +306,12 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             text="add super admin form"
                             style="primary"
                             onClick={() => showAddSuperAdminFormModal()}
+                        />
+
+                        <XButton
+                            text="remove super admin form"
+                            style="primary"
+                            onClick={() => showRemoveSuperAdminFormModal()}
                         />
                     </XVertical>
                 </XVertical2>

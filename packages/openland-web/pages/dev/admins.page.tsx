@@ -29,6 +29,20 @@ export const AddSuperAdminForm = ({ hide }: { hide: () => void }) => {
     const userField = useField('input.user', null as any, form);
     const roleField = useField('input.role', SuperAdminRole.EDITOR, form);
 
+    const add = () =>
+        form.doAction(async () => {
+            if (!userField.value) {
+                return;
+            }
+
+            await client.mutateSuperAdminAdd({
+                userId: (userField.value as { value: string }).value,
+                role: roleField.value,
+            });
+
+            hide();
+        });
+
     return (
         <XView borderRadius={8}>
             <XModalContent>
@@ -54,21 +68,11 @@ export const AddSuperAdminForm = ({ hide }: { hide: () => void }) => {
                     <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
                 </XView>
                 <XButton
-                    text="Leave"
+                    text="Add"
                     style="danger"
                     size="large"
-                    onClick={async () => {
-                        if (!userField.value) {
-                            return;
-                        }
-
-                        await client.mutateSuperAdminAdd({
-                            userId: (userField.value as { value: string }).value,
-                            role: roleField.value,
-                        });
-
-                        hide();
-                    }}
+                    loading={form.loading}
+                    onClick={add}
                 />
             </XModalFooter>
         </XView>
@@ -84,27 +88,49 @@ export const showAddSuperAdminFormModal = () => {
     );
 };
 
-const RemoveSuperAdminForm = () => {
+const RemoveSuperAdminForm = ({ hide }: { hide: () => void }) => {
     const client = useClient();
 
-    const mutate = async ({ variables: { userId } }: { variables: { userId: string } }) =>
-        await client.mutateSuperAdminRemove({
-            userId,
+    const form = useForm();
+
+    const userField = useField('input.user', null as any, form);
+
+    const remove = () =>
+        form.doAction(async () => {
+            if (!userField.value) {
+                return;
+            }
+
+            await client.mutateSuperAdminRemove({
+                userId: (userField.value as { value: string }).value,
+            });
+
+            hide();
         });
 
     return (
-        <XModalForm
-            title="Remove Super Admin"
-            submitMutation={mutate as MutationFunc<{}>}
-            mutationDirect={true}
-            actionName="Remove"
-            actionStyle="danger"
-            target={<XButton text="Remove existing" />}
-        >
-            <XFormField title="User">
-                <XForm.Select field="userId" component={UserSelect} />
-            </XFormField>
-        </XModalForm>
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XVertical flexGrow={1} separator={8}>
+                    <UserSelect value={userField.input.value} onChange={userField.input.onChange} />
+                </XVertical>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton text="Leave" style="danger" size="large" onClick={remove} />
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showRemoveSuperAdminFormModal = () => {
+    showModalBox(
+        {
+            title: 'Remove Super Admin',
+        },
+        ctx => <RemoveSuperAdminForm hide={ctx.hide} />,
     );
 };
 
@@ -115,7 +141,7 @@ export default withApp('Super Admins', 'super-admin', () => {
         <DevToolsScaffold title="Super Admins">
             <XHeader text="Super Admins" description={superAdmins.length + ' total'}>
                 <XButton text="Add New" onClick={() => showAddSuperAdminFormModal()} />
-                <RemoveSuperAdminForm />
+                <XButton text="Remove existing" onClick={() => showRemoveSuperAdminFormModal()} />
             </XHeader>
             <XTable>
                 <XTable.Header>
