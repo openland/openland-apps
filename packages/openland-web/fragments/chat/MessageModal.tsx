@@ -13,12 +13,10 @@ import { convertDsMessage } from 'openland-web/fragments/chat/messenger/data/Web
 import { MessageComponent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { css } from 'linaria';
+import { XModalContent } from 'openland-web/components/XModalContent';
+import { showModalBox } from 'openland-x/showModalBox';
 export interface MessageComponentProps {
-    footer?: any;
-    afterDateElems?: any;
-    nearCrossButtons?: any;
     generalMessage: FullMessage_GeneralMessage;
-    target?: any;
     children?: any;
 }
 
@@ -100,33 +98,28 @@ export const MessageModalBody = (props: MessageComponentProps) => {
     );
 };
 
-export const MessageModal = React.memo((props: MessageComponentProps) => {
-    let target = (
-        <XView cursor="pointer">
-            <ExpandIcon />
+// let target = (
+//     <XView cursor="pointer">
+//         <ExpandIcon />
+//     </XView>
+// );
+
+const MessageModal = (props: MessageComponentProps & { hide: () => void }) => {
+    return (
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XView height={30} />
+                <MessageModalBody {...props} />
+            </XModalContent>
+            <XModalFooter>
+                <XButton text="Cancel" style="primary" size="large" onClick={props.hide} />
+                <XView width={12} flexShrink={0} />
+                <XButton text="Leave and delete" style="ghost" path="/mail" size="large" />
+            </XModalFooter>
         </XView>
     );
+};
 
-    if (props.target) {
-        target = props.target;
-    }
-
-    return (
-        <XModal
-            useTopCloser
-            body={<MessageModalBody {...props} />}
-            target={target}
-            footer={
-                props ? (
-                    props.footer
-                ) : (
-                    <XModalFooter>
-                        <XButton text="Cancel" style="primary" autoClose={true} />
-                        <XView width={12} flexShrink={0} />
-                        <XButton text="Leave and delete" style="ghost" path="/mail" />
-                    </XModalFooter>
-                )
-            }
-        />
-    );
-});
+export const showMessageModal = (props: MessageComponentProps) => {
+    showModalBox({}, ctx => <MessageModal {...props} hide={ctx.hide} />);
+};
