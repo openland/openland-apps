@@ -27,7 +27,11 @@ import {
 } from 'openland-web/fragments/account/components/RoomProfileComponent';
 import { showRemoveMemberModal } from 'openland-web/fragments/chat/RemoveMemberModal';
 import { showAvatarModal } from 'openland-web/fragments/account/components/UserProfileComponent';
-import { showSuperDeleteOrganizationModal, showAddMemberFormModal } from '../orgView.page';
+import {
+    showSuperDeleteOrganizationModal,
+    showAddMemberFormModal,
+    showRemoveMemberFormModal,
+} from '../orgView.page';
 import { showImagePreviewModal } from 'openland-web/components/ImagePreviewModal';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { XView } from 'react-mental';
@@ -298,6 +302,11 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             text="add member form"
                             style="primary"
                             onClick={() => showAddMemberFormModal(egoarkaUser.id)}
+                        />
+                        <XButton
+                            text="remove member form"
+                            style="primary"
+                            onClick={() => showRemoveMemberFormModal(egoarkaUser.id)}
                         />
                     </XVertical>
                 </XVertical2>

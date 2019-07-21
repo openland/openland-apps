@@ -236,27 +236,57 @@ export const showAddMemberFormModal = (accountId: string) => {
     );
 };
 
-const RemoveMemberForm = ({ accountId }: { accountId: string }) => {
+const RemoveMemberForm = ({ hide, accountId }: { accountId: string; hide: () => void }) => {
     const client = useClient();
-    const mutate = async ({ variables: { userId } }: { variables: { userId: string } }) =>
-        await client.mutateSuperAccountMemberRemove({
-            accountId,
-            userId,
+
+    const form = useForm();
+    const userField = useField('input.user', null as any, form);
+
+    const remove = () =>
+        form.doAction(async () => {
+            if (!userField.value) {
+                return;
+            }
+
+            await client.mutateSuperAccountMemberRemove({
+                accountId,
+                userId: (userField.value as { value: string }).value,
+            });
+
+            hide();
         });
 
     return (
-        <XModalForm
-            title="Remove member from organization"
-            submitMutation={mutate as MutationFunc<{}>}
-            mutationDirect={true}
-            actionStyle="danger"
-            actionName="Remove"
-            target={<XButton style="danger" text="Remove member" flexShrink={0} />}
-        >
-            <XFormField title="User">
-                <XForm.Select field="userId" component={UserSelect} />
-            </XFormField>
-        </XModalForm>
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XVertical flexGrow={1} separator={8}>
+                    <UserSelect value={userField.input.value} onChange={userField.input.onChange} />
+                </XVertical>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Remove"
+                    style="danger"
+                    size="large"
+                    onClick={remove}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showRemoveMemberFormModal = (accountId: string) => {
+    showModalBox(
+        {
+            title: 'Remove member from organization',
+        },
+        ctx => {
+            return <RemoveMemberForm accountId={accountId} hide={ctx.hide} />;
+        },
     );
 };
 
@@ -376,8 +406,12 @@ export default withApp('Super Organization', 'super-admin', () => {
                             flexShrink={0}
                             onClick={() => showAddMemberFormModal(accountId)}
                         />
-
-                        <RemoveMemberForm accountId={accountId} />
+                        <XButton
+                            style="danger"
+                            text="Remove member"
+                            flexShrink={0}
+                            onClick={() => showRemoveMemberFormModal(accountId)}
+                        />
                     </>
                 )}
                 {!actionsButton &&
