@@ -337,24 +337,24 @@ class MemberRequestCard extends React.Component<MemberRequestCardProps, MemberRe
     }
 }
 
-const UpdateUserProfileModal = (props: { members: any[] }) => {
+// TODO: where to get photoRef, from user ?
+const UpdateUserProfileModal = ({ userId, hide }: { userId: string; hide: () => void }) => {
     const client = useClient();
-    let router = React.useContext(XRouterContext)!;
-    let uid = router.query.editUser;
-    let member = (props as any).members.filter((m: any) => m.user && m.user.id === uid)[0];
-    if (!member) {
-        return null;
-    }
+
+    const member = client.useUser({
+        userId,
+    });
 
     return (
         <XModalForm
             title="Edit profile"
             targetQuery="editUser"
+            ignoreTargetQuery
             defaultData={{
                 input: {
                     firstName: member.user.firstName,
                     lastName: member.user.lastName,
-                    photoRef: sanitizeImageRef(member.user.photoRef),
+                    // photoRef: sanitizeImageRef(member.user.photoRef),
                 },
             }}
             defaultAction={async data => {
@@ -362,14 +362,15 @@ const UpdateUserProfileModal = (props: { members: any[] }) => {
                     input: {
                         firstName: data.input.firstName,
                         lastName: data.input.lastName,
-                        photoRef: sanitizeImageRef(data.input.photoRef),
+                        // photoRef: sanitizeImageRef(data.input.photoRef),
                     },
-                    uid,
+                    uid: userId,
                 });
 
                 await client.refetchAccount();
                 await client.refetchMyOrganizations();
             }}
+            onClosed={hide}
         >
             <XVertical>
                 <XInput
@@ -382,9 +383,18 @@ const UpdateUserProfileModal = (props: { members: any[] }) => {
                     size="large"
                     placeholder={TextProfiles.Organization.inputs.lastName}
                 />
-                <XAvatarUpload field="input.photoRef" />
+                {/* <XAvatarUpload field="input.photoRef" /> */}
             </XVertical>
         </XModalForm>
+    );
+};
+
+export const showUpdateUserProfileModal = (userId: string): void => {
+    showModalBox(
+        {
+            title: 'Edit profile',
+        },
+        ctx => <UpdateUserProfileModal userId={userId} hide={ctx.hide} />,
     );
 };
 
@@ -895,7 +905,7 @@ const Members = ({ organization, router }: MembersProps) => {
                         organizationId: organization.id,
                     }}
                 /> */}
-                <UpdateUserProfileModal members={joinedMembers} />
+                {/* <UpdateUserProfileModal members={joinedMembers} /> */}
             </Section>
         );
     } else {

@@ -45,6 +45,7 @@ import {
     RemoveJoinedModal,
     showRemoveOrgMemberModal,
     showRoleOrgMemberModal,
+    showUpdateUserProfileModal,
 } from 'openland-web/fragments/account/components/OrganizationProfileComponent';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
@@ -248,6 +249,12 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                     },
                                 })
                             }
+                        />
+
+                        <XButton
+                            text="update user profile"
+                            style="primary"
+                            onClick={() => showUpdateUserProfileModal(egoarkaUser.id)}
                         />
                     </XVertical>
                 </XVertical2>
