@@ -123,33 +123,45 @@ const DeleteButton = (props: DeleteButtonProps) => {
     );
 };
 
-const DeleteUserButton = ({ accountId, userId }: { accountId: string; userId: string }) => {
+const DeleteUserModal = ({ userId, hide }: { userId: string; hide: () => void }) => {
     const client = useClient();
-    const [deleted, setDelete] = React.useState(false);
+
+    const form = useForm();
+    const remove = () =>
+        form.doAction(async () => {
+            await client.mutateDeleteUser({
+                id: userId,
+            });
+
+            hide();
+        });
+
     return (
-        <XModal
-            useTopCloser={true}
-            title="Block user?"
-            target={<XButton text="Block" style="danger" flexShrink={0} />}
-            footer={
-                <XView padding={20} flexDirection="row">
-                    <XHorizontal justifyContent="flex-end" flexGrow={1}>
-                        <XButton text="Cancel" autoClose={true} />
-                        <XButton
-                            text={deleted ? 'Done!' : 'Delete'}
-                            style={deleted ? 'success' : 'danger'}
-                            action={async () => {
-                                await client
-                                    .mutateDeleteUser({
-                                        id: userId,
-                                    })
-                                    .then(() => setDelete(!deleted));
-                            }}
-                        />
-                    </XHorizontal>
+        <XView borderRadius={8}>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
                 </XView>
-            }
-        />
+                <XButton
+                    text="Delete"
+                    style="danger"
+                    size="large"
+                    onClick={remove}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showDeleteUserModal = (userId: string) => {
+    showModalBox(
+        {
+            title: 'Block user?',
+        },
+        ctx => {
+            return <DeleteUserModal userId={userId} hide={ctx.hide} />;
+        },
     );
 };
 
@@ -442,7 +454,12 @@ export default withApp('Super Organization', 'super-admin', () => {
                             <XTable.Cell>{v.name}</XTable.Cell>
                             <XTable.Cell>{v.email}</XTable.Cell>
                             <XTable.Cell>
-                                <DeleteUserButton accountId={accountId} userId={v.id} />
+                                <XButton
+                                    text="Block"
+                                    style="danger"
+                                    flexShrink={0}
+                                    onClick={() => showDeleteUserModal(v.id)}
+                                />
                             </XTable.Cell>
                         </XTable.Row>
                     ))}
