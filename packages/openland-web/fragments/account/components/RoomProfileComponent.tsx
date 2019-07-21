@@ -223,7 +223,7 @@ const DescriptionModalContent = (props: { chatId: string; hide: () => void }) =>
     const createAction = () => {
         form.doAction(async () => {
             await client.mutateRoomUpdate({
-                roomId: (props as any).roomId,
+                roomId: chatId,
                 input: {
                     ...(descriptionField.value !== editDescription
                         ? { description: descriptionField.value }

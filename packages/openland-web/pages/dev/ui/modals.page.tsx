@@ -39,6 +39,7 @@ import {
     WebsitePlaceholder,
     showWebsitePlaceholderModal,
     showAboutPlaceholderModal,
+    showSocialPlaceholderModal,
 } from 'openland-web/fragments/account/components/modals';
 import {
     RemoveJoinedModal,
@@ -203,6 +204,12 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             text="about placeholder"
                             style="primary"
                             onClick={() => showAboutPlaceholderModal(rfzzOrgId)}
+                        />
+
+                        <XButton
+                            text="social placeholder"
+                            style="primary"
+                            onClick={() => showSocialPlaceholderModal(rfzzOrgId)}
                         />
 
                         <XButton

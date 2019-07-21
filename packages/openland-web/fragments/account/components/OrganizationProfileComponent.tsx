@@ -22,6 +22,7 @@ import {
     WebsitePlaceholder,
     showWebsitePlaceholderModal,
     showAboutPlaceholderModal,
+    showSocialPlaceholderModal,
 } from './modals';
 import { XLoader } from 'openland-x/XLoader';
 import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
@@ -631,10 +632,9 @@ const Header = (props: { organization: OrganizationWithoutMembers_organization }
 
                     {!(organization.linkedin || organization.twitter || organization.facebook) && (
                         <XWithRole role="admin" orgPermission={organization.id}>
-                            <SocialPlaceholder
-                                target={
-                                    <EditButton text={TextProfiles.Organization.addSocialLinks} />
-                                }
+                            <EditButton
+                                text={TextProfiles.Organization.addSocialLinks}
+                                onClick={() => showSocialPlaceholderModal(organization.id)}
                             />
                         </XWithRole>
                     )}
