@@ -11,45 +11,76 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import { useClient } from 'openland-web/utils/useClient';
 import { SuperAdminRole } from 'openland-api/Types';
 import { MutationFunc } from 'react-apollo';
+import { useState } from 'react';
+import { XView } from 'react-mental';
+import { XModalContent } from 'openland-web/components/XModalContent';
+import { XVertical } from 'openland-x-layout/XVertical';
+import { XModalFooter } from 'openland-x-modal/XModal';
+import { showModalBox } from 'openland-x/showModalBox';
+import { SelectWithDropdown } from '../main/mail/SelectWithDropdown';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
 
-const AddSuperAdminForm = () => {
+export const AddSuperAdminForm = ({ hide }: { hide: () => void }) => {
     const client = useClient();
-    const mutate = async ({
-        variables: { userId, role },
-    }: {
-        variables: { userId: string; role: SuperAdminRole };
-    }) => {
-        await client.mutateSuperAdminAdd({
-            userId,
-            role,
-        });
-    };
+
+    const form = useForm();
+
+    const userField = useField('input.user', null as any, form);
+    const roleField = useField('input.role', SuperAdminRole.EDITOR, form);
 
     return (
-        <XModalForm
-            title="Add Super Admin"
-            submitMutation={mutate as MutationFunc<{}>}
-            mutationDirect={true}
-            actionName="Add"
-            target={<XButton text="Add New" />}
-        >
-            <XFormField title="User">
-                <XForm.Select field="userId" component={UserSelect} />
-            </XFormField>
-            <XFormField title="Role">
-                <XForm.Select
-                    field="role"
-                    options={[
-                        { title: 'Editor', value: 'EDITOR' },
-                        { title: 'Super Admin', value: 'SUPER_ADMIN' },
-                        {
-                            title: 'Software Developer',
-                            value: 'SOFTWARE_DEVELOPER',
-                        },
-                    ]}
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XVertical flexGrow={1} separator={8}>
+                    <UserSelect value={userField.input.value} onChange={userField.input.onChange} />
+                    <SelectWithDropdown
+                        {...roleField.input}
+                        size="large"
+                        title={'User role'}
+                        selectOptions={[
+                            { label: 'Editor', value: 'EDITOR' },
+                            { label: 'Super Admin', value: 'SUPER_ADMIN' },
+                            {
+                                label: 'Software Developer',
+                                value: 'SOFTWARE_DEVELOPER',
+                            },
+                        ]}
+                    />
+                </XVertical>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Leave"
+                    style="danger"
+                    size="large"
+                    onClick={async () => {
+                        if (!userField.value) {
+                            return;
+                        }
+
+                        await client.mutateSuperAdminAdd({
+                            userId: (userField.value as { value: string }).value,
+                            role: roleField.value,
+                        });
+
+                        hide();
+                    }}
                 />
-            </XFormField>
-        </XModalForm>
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showAddSuperAdminFormModal = () => {
+    showModalBox(
+        {
+            title: 'Add Super Admin',
+        },
+        ctx => <AddSuperAdminForm hide={ctx.hide} />,
     );
 };
 
@@ -83,7 +114,7 @@ export default withApp('Super Admins', 'super-admin', () => {
     return (
         <DevToolsScaffold title="Super Admins">
             <XHeader text="Super Admins" description={superAdmins.length + ' total'}>
-                <AddSuperAdminForm />
+                <XButton text="Add New" onClick={() => showAddSuperAdminFormModal()} />
                 <RemoveSuperAdminForm />
             </XHeader>
             <XTable>

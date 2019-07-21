@@ -54,6 +54,7 @@ import {
 import { showDeleteMessagesFromModal } from 'openland-web/fragments/chat/components/ChatForwardHeaderView';
 import { showDeleteMessageModal } from 'openland-web/fragments/chat/components/MessengerRootComponent';
 import { showMessageModal } from 'openland-web/fragments/chat/MessageModal';
+import { AddSuperAdminForm, showAddSuperAdminFormModal } from '../admins.page';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
     return (
@@ -295,6 +296,12 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                     generalMessage: pinMessage,
                                 })
                             }
+                        />
+
+                        <XButton
+                            text="add super admin form"
+                            style="primary"
+                            onClick={() => showAddSuperAdminFormModal()}
                         />
                     </XVertical>
                 </XVertical2>
