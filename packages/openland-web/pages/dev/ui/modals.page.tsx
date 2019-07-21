@@ -59,6 +59,7 @@ import {
     showAddSuperAdminFormModal,
     showRemoveSuperAdminFormModal,
 } from '../admins.page';
+import { showAddAccountFormModal } from '../orgs.page';
 
 export default withApp('UI Framework - New modals', 'viewer', props => {
     return (
@@ -312,6 +313,12 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             text="remove super admin form"
                             style="primary"
                             onClick={() => showRemoveSuperAdminFormModal()}
+                        />
+
+                        <XButton
+                            text="add account form"
+                            style="primary"
+                            onClick={() => showAddAccountFormModal()}
                         />
                     </XVertical>
                 </XVertical2>
