@@ -17,6 +17,11 @@ import { useXRouter } from 'openland-x-routing/useXRouter';
 import { XModal, XModalFooter } from 'openland-x-modal/XModal';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { showModalBox } from 'openland-x/showModalBox';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
+import { XModalContent } from 'openland-web/components/XModalContent';
+import { XVertical } from 'openland-x-layout/XVertical';
+import { InputField } from 'openland-web/components/InputField';
 
 const ActivateButton = ({ accountId }: { accountId: string }) => {
     const client = useClient();
@@ -177,26 +182,57 @@ const AlterOrgPublishedButton = ({
     );
 };
 
-const AddMemberForm = ({ accountId }: { accountId: string }) => {
+const AddMemberForm = ({ hide, accountId }: { accountId: string; hide: () => void }) => {
     const client = useClient();
-    const mutate = async ({ variables: { userId } }: { variables: { userId: string } }) =>
-        await client.mutateSuperAccountMemberAdd({
-            accountId,
-            userId,
+
+    const form = useForm();
+    const userField = useField('input.user', null as any, form);
+
+    const add = () =>
+        form.doAction(async () => {
+            if (!userField.value) {
+                return;
+            }
+
+            await client.mutateSuperAccountMemberAdd({
+                accountId,
+                userId: (userField.value as { value: string }).value,
+            });
+
+            hide();
         });
 
     return (
-        <XModalForm
-            title="Add member to organization"
-            submitMutation={mutate as MutationFunc<{}>}
-            mutationDirect={true}
-            actionName="Add"
-            target={<XButton text="Add member" flexShrink={0} />}
-        >
-            <XFormField title="User">
-                <XForm.Select field="userId" component={UserSelect} />
-            </XFormField>
-        </XModalForm>
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XVertical flexGrow={1} separator={8}>
+                    <UserSelect value={userField.input.value} onChange={userField.input.onChange} />
+                </XVertical>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Add"
+                    style="primary"
+                    size="large"
+                    onClick={add}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showAddMemberFormModal = (accountId: string) => {
+    showModalBox(
+        {
+            title: 'Add member to organization',
+        },
+        ctx => {
+            return <AddMemberForm accountId={accountId} hide={ctx.hide} />;
+        },
     );
 };
 
@@ -335,7 +371,12 @@ export default withApp('Super Organization', 'super-admin', () => {
                 <Edit orgTitle={superAccount.title} accountId={accountId} />
                 {superAccount.state !== 'DELETED' && (
                     <>
-                        <AddMemberForm accountId={accountId} />
+                        <XButton
+                            text="Add member"
+                            flexShrink={0}
+                            onClick={() => showAddMemberFormModal(accountId)}
+                        />
+
                         <RemoveMemberForm accountId={accountId} />
                     </>
                 )}

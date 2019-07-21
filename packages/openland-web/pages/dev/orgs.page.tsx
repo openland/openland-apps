@@ -53,7 +53,7 @@ const AddAccountForm = ({ hide }: { hide: () => void }) => {
                     <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
                 </XView>
                 <XButton
-                    text="Save"
+                    text="Add"
                     style="primary"
                     size="large"
                     onClick={add}
