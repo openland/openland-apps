@@ -22,6 +22,8 @@ import { useField } from 'openland-form/useField';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { InputField } from 'openland-web/components/InputField';
+import { SelectWithDropdown } from '../main/mail/SelectWithDropdown';
+import { FeatureFlags_featureFlags } from 'openland-api/Types';
 
 const ActivateButton = ({ accountId }: { accountId: string }) => {
     const client = useClient();
@@ -302,38 +304,89 @@ export const showRemoveMemberFormModal = (accountId: string) => {
     );
 };
 
-const AddFeature = ({ accountId }: { accountId: string }) => {
+const AddFeatureModal = ({ accountId, hide }: { accountId: string; hide: () => void }) => {
     const client = useClient();
+    const form = useForm();
     const data = client.useWithoutLoaderFeatureFlags();
+
+    const featureIdField = useField(
+        'input.featureId',
+        null as FeatureFlags_featureFlags | null,
+        form,
+    );
+
+    React.useEffect(
+        () => {
+            if (!data) {
+                return;
+            }
+
+            featureIdField.input.onChange(
+                data.featureFlags.length > 0 ? data.featureFlags[0] : null,
+            );
+        },
+        [data],
+    );
 
     if (!data) {
         return <XLoader loading={true} />;
     }
 
-    const mutate = async ({ variables: { userId } }: { variables: { userId: string } }) =>
-        await client.mutateSuperAccountMemberAdd({
-            accountId,
-            userId,
+    const add = () =>
+        form.doAction(async () => {
+            if (!featureIdField.value) {
+                return;
+            }
+
+            client.mutateFeatureFlagAdd({
+                key: featureIdField.value.key,
+                title: featureIdField.value.title,
+            });
+            hide();
         });
 
     return (
-        <XModalForm
-            title="Add feature to organization"
-            submitMutation={mutate as MutationFunc<{}>}
-            mutationDirect={true}
-            actionName="Add"
-            target={<XButton text="Add feature" />}
-        >
-            <XFormField title="Feature">
-                <XForm.Select
-                    field="featureId"
-                    options={data.featureFlags.map((v: any) => ({
-                        value: v.id,
-                        title: v.title,
-                    }))}
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XVertical flexGrow={1} separator={8}>
+                    {featureIdField.value && (
+                        <SelectWithDropdown
+                            {...featureIdField.input}
+                            value={featureIdField.value!.id}
+                            size="large"
+                            title={'feature'}
+                            selectOptions={data.featureFlags.map((v: any) => ({
+                                label: v.title,
+                                value: v.id,
+                            }))}
+                        />
+                    )}
+                </XVertical>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Add"
+                    style="primary"
+                    size="large"
+                    onClick={add}
+                    loading={form.loading}
                 />
-            </XFormField>
-        </XModalForm>
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showAddFeatureModal = (accountId: string) => {
+    showModalBox(
+        {
+            title: 'Add feature to organization',
+        },
+        ctx => {
+            return <AddFeatureModal accountId={accountId} hide={ctx.hide} />;
+        },
     );
 };
 
@@ -466,7 +519,8 @@ export default withApp('Super Organization', 'super-admin', () => {
                 </XTable.Body>
             </XTable>
             <XHeader text="Features" description={superAccount.features.length + ' total'}>
-                <AddFeature accountId={accountId} />
+                <XButton text="Add feature" onClick={() => showAddFeatureModal(accountId)} />
+
                 <RemoveFeature accountId={accountId} />
             </XHeader>
             <XTable>
