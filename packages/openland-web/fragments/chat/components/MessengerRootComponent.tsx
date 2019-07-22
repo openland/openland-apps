@@ -41,6 +41,7 @@ import { MessageContent } from '../messenger/message/MessageContent';
 import { convertMessage } from 'openland-engines/utils/convertMessage';
 import { convertDsMessage } from '../messenger/data/WebMessageItemDataSource';
 import { showModalBox } from 'openland-x/showModalBox';
+import { URickInput } from 'openland-web/components/unicorn/URickInput';
 
 export interface File {
     uuid: string;
@@ -352,12 +353,11 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                     room={this.props.room}
                 />
 
-                {!this.state.hideInput &&
-                    this.conversation.canSendMessage && (
-                        <UploadContextProvider>
-                            I'm input
-                        </UploadContextProvider>
-                    )}
+                {!this.state.hideInput && this.conversation.canSendMessage && (
+                    <XView minHeight={100} flexDirection="row" marginHorizontal={64} alignItems="flex-start" justifyContent="center">
+                        <URickInput onEnterPress={(text) => this.conversation!.sendMessage(text, [])} />
+                    </XView>
+                )}
             </XView>
         );
     }

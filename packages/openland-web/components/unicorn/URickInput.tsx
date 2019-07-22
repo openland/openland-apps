@@ -22,7 +22,7 @@ export const URickInput = React.memo((props: {
     text?: string;
     placeholder?: string,
     onTextChange?: (text: string) => void,
-    onEnterPress?: () => void
+    onEnterPress?: (text: string) => void
 }) => {
     const Quill = require('quill') as typeof QuillType.Quill;
     let editor = React.useRef<QuillType.Quill>();
@@ -37,7 +37,7 @@ export const URickInput = React.memo((props: {
         // Hack to handle enter before text edit
         q.keyboard.addBinding({ key: 13 as any }, () => {
             if (props.onEnterPress) {
-                props.onEnterPress();
+                props.onEnterPress(q.getText());
                 return false;
             } else {
                 return true;
