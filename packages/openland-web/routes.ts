@@ -127,6 +127,9 @@ routes.add('/isolated/modals/', '/dev/isolated/modals');
 routes.add('/isolated/forms', '/dev/isolated/forms');
 routes.add('/isolated/forms/', '/dev/isolated/forms');
 
+routes.add('/isolated/rick', '/dev/isolated/rick');
+routes.add('/isolated/rick/', '/dev/isolated/rick');
+
 //
 // Dev Tools
 //
