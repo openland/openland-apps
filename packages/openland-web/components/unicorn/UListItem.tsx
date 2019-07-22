@@ -20,6 +20,17 @@ const iconWrapper = css`
     }
 `;
 
+const iconBackgroundedWrapper = css`
+    svg {
+        path {
+            stroke: #FFFFFF; // Need to be ThemeDefault.contrastSpecial
+        }
+        circle {
+            fill: #FFFFFF; // Need to be ThemeDefault.contrastSpecial
+        }
+    }
+`;
+
 const iconWrapperSelected = css`
     svg {
         path {
@@ -37,6 +48,16 @@ const SelectableSVG = React.memo((props: { children?: any }) => {
     return (
         <div
             className={cx(iconWrapper, selected && iconWrapperSelected)}
+        >
+            {props.children}
+        </div>
+    );
+});
+
+const BackgroundedSVG = React.memo((props: { children?: any }) => {
+    return (
+        <div
+            className={cx(iconWrapper, iconBackgroundedWrapper)}
         >
             {props.children}
         </div>
@@ -63,6 +84,7 @@ interface UListItemProps {
     description?: string | JSX.Element | null;
     descriptionColor?: string;
     icon?: any;
+    iconColor?: string;
     avatar?: { photo?: string | null, id: string, title: string, online?: boolean };
     onClick?: (event: React.MouseEvent) => void;
     path?: string;
@@ -73,8 +95,8 @@ interface UListItemProps {
 }
 
 export const UListItem = React.memo((props: UListItemProps) => {
-    const { title, titleIcon, subtitle, description, descriptionColor, icon, avatar, onClick, path, large, useRadius, textRight, rightElement } = props;
-    const height = large ? 80 : (!!avatar ? 56 : 48);
+    const { title, titleIcon, subtitle, description, descriptionColor, icon, iconColor, avatar, onClick, path, large, useRadius, textRight, rightElement } = props;
+    const height = large ? 80 : ((!!avatar || !!iconColor) ? 56 : 48);
 
     const titleFont = !!description ? TypeStyles.label1 : TypeStyles.body;
     const subtitleFont = TypeStyles.caption;
@@ -97,7 +119,8 @@ export const UListItem = React.memo((props: UListItemProps) => {
             path={path}
             linkSelectable={true}
         >
-            {!!icon && <XView marginRight={16} width={24} height={24} alignItems="center" justifyContent="center"><SelectableSVG>{icon}</SelectableSVG></XView>}
+            {!!icon && !iconColor && <XView marginRight={16} width={24} height={24} alignItems="center" justifyContent="center"><SelectableSVG>{icon}</SelectableSVG></XView>}
+            {!!icon && !!iconColor && <XView marginRight={16} width={40} height={40} borderRadius={20} backgroundColor={iconColor} alignItems="center" justifyContent="center"><BackgroundedSVG>{icon}</BackgroundedSVG></XView>}
             {!!avatar && !icon && (
                 <XView marginRight={16}>
                     <UAvatar {...avatar} size={large ? 'large' : 'medium'} />
