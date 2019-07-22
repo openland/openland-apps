@@ -52,6 +52,7 @@ export const UText = React.memo((props: UTextProps) => {
                             key={'link-' + i}
                             href={v.link}
                             style={{ color: linkify ? ThemeDefault.accentPrimary : undefined }}
+                            target="_blank"
                         >
                             {v.text}
                         </a>
