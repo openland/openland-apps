@@ -1,91 +1,57 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
-import { XLink } from 'openland-x/XLink';
+import { XView } from 'react-mental';
+import { css } from 'linaria';
 
-const ErrorDiv = Glamorous.div({
-    position: 'relative',
-    backgroundColor: '#fff',
+const logoStyle = css`
+    width: 145px;
+    height: 42px;
+    background-image: url('/static/logo.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: absolute;
+    top: 15px;
+    left: 23px;
+`;
 
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+const footerTextStyle = css`
+    letter-spacing: -0.4px;
+    font-weight: 500;
+    text-align: center;
+`;
 
-    width: '100vw',
-    minHeight: '100vh',
-    paddingTop: 30,
-    paddingBottom: 30,
-});
-
-const Logo = Glamorous.div<{ width?: number; height?: number }>(props => ({
-    width: props.width ? props.width : 145,
-    height: props.height ? props.height : 42,
-    backgroundImage: "url('/static/logo.svg')",
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain',
-    position: 'absolute',
-    top: 15,
-    left: 23,
-}));
-
-const Container = Glamorous.div({
-    flexGrow: 1,
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    // width: 400
-});
-
-const Footer = Glamorous.div({
-    // position: 'absolute',
-    // left: 0,
-    // right: 0,
-    // bottom: 16,
-    // margin: 'auto',
-    marginTop: 30,
-});
-
-const FooterText = Glamorous.div({
-    fontSize: 14,
-    lineHeight: 1.71,
-    letterSpacing: -0.4,
-    fontWeight: 500,
-    textAlign: 'center',
-    color: '#334562',
-    opacity: 0.4,
-    '&:first-child': {
-        marginBottom: 6,
-    },
-});
-
-const FooterLink = Glamorous(XLink)({
-    display: 'inline-block',
-    textDecoration: 'underline',
-    fontSize: 14,
-    lineHeight: 1.71,
-    letterSpacing: -0.4,
-    fontWeight: 500,
-    textAlign: 'center',
-    color: '#334562',
-});
+const footerLinkStyle = css`
+    display: inline-block;
+    text-decoration: underline;  
+`;
 
 export function MessagePage(props: { children?: any; hideLegalText?: boolean }) {
     return (
-        <ErrorDiv>
-            <Logo />
-            <Container>{props.children}</Container>
-            <Footer>
+        <XView
+            backgroundColor="#fff"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="space-between"
+            width="100vw"
+            minHeight="100vh"
+            paddingVertical={30}
+        >
+            <div className={logoStyle} />
+            <XView flexGrow={1} flexDirection="column" alignItems="center" justifyContent="center">
+                {props.children}
+            </XView>
+            <XView marginTop={30} fontSize={14} lineHeight={1.71} color="#334562" opacity={0.4}>
                 {props.hideLegalText === true ? null : (
-                    <FooterText>
-                        By creating an account you are accepting our{' '}
-                        <FooterLink href="https://openland.com/terms">Terms of Service</FooterLink>{' '}
-                        and{' '}
-                        <FooterLink href="https://openland.com/privacy">Privacy Policy</FooterLink>.
-                    </FooterText>
+                    <XView marginBottom={6}>
+                        <div className={footerTextStyle}>
+                            By creating an account you are accepting our{' '}
+                            <a className={footerLinkStyle} href="https://openland.com/terms" target="_blank">Terms of Service</a>{' '}
+                            and{' '}
+                            <a className={footerLinkStyle} href="https://openland.com/privacy" target="_blank">Privacy Policy</a>.
+                        </div>
+                    </XView>
                 )}
-                <FooterText>© {new Date().getFullYear()} Openland</FooterText>
-            </Footer>
-        </ErrorDiv>
+                <div className={footerTextStyle}>© {new Date().getFullYear()} Openland</div>
+            </XView>
+        </XView>
     );
 }
