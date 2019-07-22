@@ -12,17 +12,41 @@ const quillStyle = css`
         font-size: 15px;
         line-height: 24px;
     }
+    .ql-editor.ql-blank::before {
+        color: #969AA3;
+        font-style: normal;
+    }
 `;
 
-export const URickInput = React.memo((props: { onTextChange?: (text: string) => void }) => {
+export const URickInput = React.memo((props: {
+    text?: string;
+    placeholder?: string,
+    onTextChange?: (text: string) => void,
+    onEnterPress?: () => void
+}) => {
     const Quill = require('quill') as typeof QuillType.Quill;
     let editor = React.useRef<QuillType.Quill>();
     let ref = React.useRef<HTMLDivElement>(null);
 
     React.useLayoutEffect(() => {
-        let q = new Quill(ref.current!, { formats: [] });
-        let lastKnownText: string = '';
-        q.setText(lastKnownText);
+        let q = new Quill(ref.current!, { formats: [], placeholder: props.placeholder });
+        if (props.text) {
+            q.setText(props.text);
+        }
+
+        // Hack to handle enter before text edit
+        q.keyboard.addBinding({ key: 13 as any }, () => {
+            if (props.onEnterPress) {
+                props.onEnterPress();
+                return false;
+            } else {
+                return true;
+            }
+        });
+        (q.keyboard as any).bindings[13].unshift((q as any).keyboard.bindings[13].pop());
+
+        // Handle text change
+        let lastKnownText: string = props.text || '';
         q.on('editor-change', () => {
             let tx = q.getText();
             if (tx !== lastKnownText) {

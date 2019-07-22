@@ -12,7 +12,11 @@ export default withApp('Rick Text Input', 'viewer', props => {
                 flexDirection="column"
                 paddingHorizontal={64}
             >
-                {canUseDOM && <URickInput onTextChange={(tx) => console.log(tx)} />}
+                {canUseDOM && <URickInput
+                    placeholder="Write a message...."
+                    onTextChange={(tx) => console.log(tx)}
+                    onEnterPress={() => console.log('enter')}
+                />}
             </XView>
         </DevDocsScaffold>
     );
