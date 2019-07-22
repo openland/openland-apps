@@ -3,6 +3,7 @@ import * as QuillType from 'quill';
 import { css } from 'linaria';
 
 const quillStyle = css`
+    flex-grow: 1;
     .ql-container {
         background-color: #F0F2F5;
         border-radius: 8px;
