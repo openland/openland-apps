@@ -43,7 +43,7 @@ import { convertDsMessage } from '../messenger/data/WebMessageItemDataSource';
 import { showModalBox } from 'openland-x/showModalBox';
 import { URickInput } from 'openland-web/components/unicorn/URickInput';
 
-// import { SendMessageComponent } from './SendMessageComponent';
+import { SendMessageComponent } from './SendMessageComponent';
 
 export interface File {
     uuid: string;
@@ -357,8 +357,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
 
                 {!this.state.hideInput && this.conversation.canSendMessage && (
                     <XView minHeight={100} flexDirection="row" marginHorizontal={64} alignItems="flex-start" justifyContent="center">
-                        {/*<SendMessageComponent onEnterPress={(text) => this.conversation!.sendMessage(text, [])}/>*/}
-                        <URickInput onEnterPress={(text) => this.conversation!.sendMessage(text, [])} />
+                        <SendMessageComponent onEnterPress={(text) => this.conversation!.sendMessage(text, [])}/>
+                        {/*<URickInput onEnterPress={(text) => this.conversation!.sendMessage(text, [])} />*/}
                     </XView>
                 )}
             </XView>

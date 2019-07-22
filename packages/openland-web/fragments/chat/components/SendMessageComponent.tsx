@@ -69,7 +69,7 @@ const ButtonPartWrapper = (props: { leftContent: JSX.Element; rightContent: JSX.
 );
 
 export const SendMessageComponent = (props: { onEnterPress?: (text: string) => void }) => (
-    <XView flexGrow={1} flexShrink={1} maxHeight={250}>
+    <XView flexGrow={1} flexShrink={1} maxHeight={250} paddingVertical={16}>
         <XView flexGrow={1} flexShrink={1}>
             <URickInput onEnterPress={props.onEnterPress} />
         </XView>

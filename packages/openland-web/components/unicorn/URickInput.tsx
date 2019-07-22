@@ -4,6 +4,9 @@ import { css } from 'linaria';
 
 const quillStyle = css`
     flex-grow: 1;
+    border-radius: 8px;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
     .ql-container {
         background-color: #F0F2F5;
         border-radius: 8px;
