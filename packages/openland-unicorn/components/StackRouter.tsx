@@ -2,7 +2,6 @@ import * as React from 'react';
 import uuid from 'uuid';
 import { URouting } from 'openland-unicorn/URouting';
 import { NotFound } from 'openland-unicorn/NotFound';
-import { string } from 'prop-types';
 
 export interface StackItems {
     key: string;
