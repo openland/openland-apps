@@ -97,9 +97,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                         text: editMessage.text || '',
                         mentions: convertMentionsFromMessage(editMessage.text, editMessage.spans)
                     }, () => {
-                        if (this.inputRef.current) {
-                            this.inputRef.current.focus();
-                        }
+                        setTimeout(() => {
+                            if (this.inputRef.current) {
+                                this.inputRef.current.focus();
+                            }
+                        }, 100);
                     });
                 } else if (state.action === 'reply' && this.inputRef.current) {
                     this.inputRef.current.focus();

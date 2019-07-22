@@ -66,11 +66,11 @@ const AvatarImage = (props: UAvatarProps) => {
     const { photo, size = 'medium' } = props;
     const boxSize = AvatarSizes[size].size;
 
-    let ops = '-/format/jpeg/-/scale_crop/' + (boxSize + 'x' + boxSize) + '/center/-/progressive/yes/';
+    let ops = '-/format/auto/-/scale_crop/' + (boxSize + 'x' + boxSize) + '/center/-/quality/best/-/progressive/yes/';
     let opsRetina =
-        '-/format/jpeg/-/scale_crop/' +
+        '-/format/auto/-/scale_crop/' +
         (boxSize * 2 + 'x' + boxSize * 2) +
-        '/center/-/quality/lighter/-/progressive/yes/ 2x';
+        '/center/-/quality/best/-/progressive/yes/ 2x';
 
     return (
         <XImage
@@ -80,6 +80,7 @@ const AvatarImage = (props: UAvatarProps) => {
             srcSet={photo + opsRetina}
             borderRadius="100%"
             overflow="hidden"
+            backgroundColor="#ffffff"
         />
     );
 };

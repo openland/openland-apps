@@ -2,9 +2,9 @@ import * as React from 'react';
 import { TextInput, View, TextInputProps, Text, StyleSheet, ViewStyle, TextStyle, NativeSyntheticEvent, TextInputFocusEventData, LayoutChangeEvent, Platform, Animated, Easing } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
-import { isAndroid } from 'openland-mobile/utils/isAndroid';
 
 const DURATION_PLACEHOLDER_ANIMATION = 100;
+const PLACEHOLDER_SCALE_RATIO = 0.8;
 
 const styles = StyleSheet.create({
     container: {
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         left: 0,
         height: 56,
         justifyContent: 'center',
-        paddingHorizontal: 15
+        paddingHorizontal: 16
     } as ViewStyle,
     placeholder: {
         ...TypeStyles.densed
@@ -57,6 +57,7 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
     const [ filled, setFilled ] = React.useState<boolean>(!!(props.value && props.value.length > 0));
     const [ prefixWidth, setPrefixWidth ] = React.useState<number>(0);
     const animation = React.useRef(new Animated.Value(filled ? 1 : 0)).current;
+    const [placeholderWidth, setPlaceholderWidth] = React.useState<number>(0);
 
     const handleChangeText = React.useCallback((text) => {
         if (props.onChangeText) {
@@ -101,12 +102,16 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
         setPrefixWidth(e.nativeEvent.layout.width);
     }, []);
 
+    const handlePlaceholderLayout = React.useCallback((e: LayoutChangeEvent) => {
+        setPlaceholderWidth(e.nativeEvent.layout.width);
+    }, []);
+  
     const placeholderAimatedStyle = {
         transform: [
             {
                 translateX: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [0, isAndroid ? -34 : -31],
+                    outputRange: [0, (Math.round(placeholderWidth * PLACEHOLDER_SCALE_RATIO) / 2) - (placeholderWidth / 2)],
                 })
             },
             {
@@ -118,7 +123,7 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
             {
                 scale: animation.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [1, 0.8],
+                    outputRange: [1, PLACEHOLDER_SCALE_RATIO],
                 })
             },
         ]
@@ -128,11 +133,13 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
         <View marginHorizontal={noWrapper ? 0 : 16} marginBottom={noWrapper ? 0 : 16}>
             <View style={styles.container} backgroundColor={theme.backgroundTertiary}>
                 {!!placeholder && (
-                    <Animated.View style={[styles.placeholderContainer, placeholderAimatedStyle]}>
-                        <Text style={[styles.placeholder, { color: invalid ? theme.accentNegative : (focused ? theme.accentPrimary : theme.foregroundTertiary) }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
-                            {placeholder}
-                        </Text>
-                    </Animated.View>
+                    <View style={styles.placeholderContainer}>
+                        <Animated.View style={placeholderAimatedStyle} onLayout={handlePlaceholderLayout}>
+                            <Text style={[styles.placeholder, { color: invalid ? theme.accentNegative : (focused ? theme.accentPrimary : theme.foregroundTertiary) }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
+                                {placeholder}
+                            </Text>
+                        </Animated.View>
+                    </View>
                 )}
                 {!!prefix && (focused || filled) && (
                     <View style={styles.prefixContainer} onLayout={handlePrefixLayout}>

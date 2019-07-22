@@ -37,6 +37,10 @@ const contentStyle = css`
     contain: content;
 `;
 
+const contentStyleCss = css`
+    transition: transform 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
+`;
+
 const contentWrapperStyle = css`
     position: relative;
     flex-grow: 1;
@@ -85,54 +89,53 @@ export const PageLayout = (props: {
     state: 'mounting' | 'entering' | 'visible' | 'exiting',
     container: React.RefObject<HTMLDivElement>
 }) => {
+    const isChrome = !!(window as any).chrome && (!!(window as any).chrome.webstore || !!(window as any).chrome.runtime);
     const ref = React.useRef<HTMLDivElement>(null);
-    // let offset: number;
-    // switch (props.state) {
-    //     case 'mounting':
-    //         offset = props.container.current!.clientWidth;
-    //         break;
-    //     case 'entering':
-    //         offset = 0;
-    //         break;
-    //     case 'visible':
-    //         offset = 0;
-    //         break;
-    //     case 'exiting':
-    //         offset = props.container.current!.clientWidth;
-    //         break;
-    //     default:
-    //         offset = 0;
-    //         break;
-    // }
-
-    React.useLayoutEffect(() => {
+    let offset: number = 0;
+    if (isChrome) {
+        React.useLayoutEffect(() => {
+            if (props.state === 'mounting') {
+                ref.current!.animate([
+                    {
+                        transform: `translateX(${props.container.current!.clientWidth}px)`
+                    }, {
+                        transform: `translateX(0px)`
+                    }
+                ], { duration: 240, fill: 'forwards', composite: 'add', easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)' });
+            } else if (props.state === 'entering') {
+                // Nothing to do
+            } else if (props.state === 'visible') {
+                // ref.current!.style.transform = `translateX(0px)`;
+            } else if (props.state === 'exiting') {
+                ref.current!.animate([
+                    {
+                        transform: `translateX(0px)`
+                    }, {
+                        transform: `translateX(${props.container.current!.clientWidth}px)`
+                    }
+                ], { duration: 240, fill: 'forwards', composite: 'add', easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)' });
+            }
+        }, [props.state]);
+    } else {
         if (props.state === 'mounting') {
-            ref.current!.animate([
-                {
-                    transform: `translateX(${props.container.current!.clientWidth}px)`
-                }, {
-                    transform: `translateX(0px)`
-                }
-            ], { duration: 240, fill: 'forwards', composite: 'add', easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)' });
+            offset = props.container.current!.clientWidth;
         } else if (props.state === 'entering') {
-            // Nothing to do
+            offset = 0;
         } else if (props.state === 'visible') {
-            // ref.current!.style.transform = `translateX(0px)`;
+            offset = 0;
         } else if (props.state === 'exiting') {
-            ref.current!.animate([
-                {
-                    transform: `translateX(0px)`
-                }, {
-                    transform: `translateX(${props.container.current!.clientWidth}px)`
-                }
-            ], { duration: 240, fill: 'forwards', composite: 'add', easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)' });
+            offset = props.container.current!.clientWidth;
         }
-    }, [props.state]);
+    }
 
     return (
         <div className={containerStyle}>
             <div className={shadowStyle + ' ' + shadowStateStyles[props.state]} />
-            <div ref={ref} className={contentStyle}>
+            <div
+                ref={ref}
+                className={contentStyle + (!isChrome ? ' ' + contentStyleCss : '')}
+                style={isChrome ? {} : { transform: `translateX(${offset}px)` }}
+            >
                 <HeaderComponent>
                     <Deferred>
                         <div className={contentWrapperStyle}>

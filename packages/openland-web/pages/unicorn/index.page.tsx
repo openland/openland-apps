@@ -32,7 +32,7 @@ const Unicorn = React.memo(() => {
         iconActive: <ProfileActiveIcon />,
         path: '/settings',
         component: <AccountFragment />
-    }], 1, Routing, 'root'), []);
+    }], 1, Routing), []);
     return (
         <LayoutProvider>
             <TabLayout router={router} />

@@ -118,11 +118,14 @@ routes.add('/notifications', '/unicorn/index');
 routes.add('/notifications/', '/unicorn/index');
 
 //
-// UI
+// Isolated features/units/components
 //
 
-routes.add('/ui/modals', '/dev/ui/modals');
-routes.add('/ui/modals/', '/dev/ui/modals');
+routes.add('/isolated/modals', '/dev/isolated/modals');
+routes.add('/isolated/modals/', '/dev/isolated/modals');
+
+routes.add('/isolated/forms', '/dev/isolated/forms');
+routes.add('/isolated/forms/', '/dev/isolated/forms');
 
 //
 // Dev Tools

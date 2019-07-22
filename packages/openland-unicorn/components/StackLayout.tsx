@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { StackRouter, StackRouterContext } from './StackRouter';
+import { StackRouter, StackRouterContext, StackItems } from './StackRouter';
 import { PageLayout } from './PageLayout';
 import { UnicornContext } from './UnicornContext';
+import { XViewRoute, XViewRouteContext } from 'react-mental';
 
 const PageAnimator = React.memo((props: {
     children?: any,
@@ -64,6 +65,8 @@ type AnimationAction = {
     key: string;
 } | {
     type: 'mounted'
+} | {
+    type: 'reset', pages: StackItems[]
 };
 
 type AnimationState = {
@@ -76,6 +79,23 @@ type AnimationState = {
         state: 'mounting' | 'entering' | 'visible' | 'hidden' | 'exiting'
     }[];
 };
+
+function initialState(pages: StackItems[]): AnimationState {
+    if (pages.length === 0) {
+        return { pages: [] };
+    } else {
+        return {
+            pages: pages.map((p, i) => ({
+                key: p.key,
+                id: p.id,
+                query: p.query,
+                path: p.path,
+                component: p.component,
+                state: (i === pages.length - 1 ? 'visible' : 'hidden') as 'visible' | 'hidden'
+            }))
+        };
+    }
+}
 
 function animationReducer(
     state: AnimationState,
@@ -135,43 +155,45 @@ function animationReducer(
         } else {
             return state;
         }
+    } else if (action.type === 'reset') {
+        return initialState(action.pages);
     } else {
         throw Error();
     }
 }
 
-const PageComponent = React.memo((props: { component: any, path: string, query: any, id?: string }) => {
+const PageComponent = React.memo((props: {
+    component: any,
+    path: string,
+    query: any,
+    id?: string,
+    protocol: string,
+    hostName: string
+}) => {
     let ctx = React.useMemo(() => ({
         path: props.path,
         query: props.query,
         id: props.id!
     }), []);
+    const xRoute: XViewRoute = React.useMemo(() => ({
+        href: props.protocol + '://' + props.hostName + props.path,
+        protocol: props.protocol,
+        hostName: props.hostName,
+        path: props.path,
+        query: props.query,
+    }), []);
     return (
-        <UnicornContext.Provider value={ctx}>
-            {props.component}
-        </UnicornContext.Provider>
+        <XViewRouteContext.Provider value={xRoute}>
+            <UnicornContext.Provider value={ctx}>
+                {props.component}
+            </UnicornContext.Provider>
+        </XViewRouteContext.Provider>
     );
 });
 
-function initialState(router: StackRouter): AnimationState {
-    if (router.pages.length === 0) {
-        return { pages: [] };
-    } else {
-        return {
-            pages: router.pages.map((p, i) => ({
-                key: p.key,
-                id: p.id,
-                query: p.query,
-                path: p.path,
-                component: p.component,
-                state: (i === router.pages.length - 1 ? 'visible' : 'hidden') as 'visible' | 'hidden'
-            }))
-        };
-    }
-}
-
 export const StackLayout = React.memo((props: { router: StackRouter, className?: string }) => {
-    let [state, dispatch] = React.useReducer(animationReducer, props.router, initialState);
+    let [state, dispatch] = React.useReducer(animationReducer, props.router.pages, initialState);
+    const baseRoute = React.useContext(XViewRouteContext)!;
     React.useEffect(() => { return props.router.addListener(dispatch); }, []);
     React.useLayoutEffect(() => { requestAnimationFrame(() => requestAnimationFrame(() => dispatch({ type: 'mounted' }))); });
     return (
@@ -179,7 +201,14 @@ export const StackLayout = React.memo((props: { router: StackRouter, className?:
             <div key="content" className={props.className} ref={props.router.ref}>
                 {state.pages.map((v) => (
                     <PageAnimator state={v.state} key={v.key} k={v.key} dispatch={dispatch} router={props.router}>
-                        <PageComponent component={v.component} query={v.query} id={v.id} path={v.path} />
+                        <PageComponent
+                            component={v.component}
+                            query={v.query}
+                            id={v.id}
+                            path={v.path}
+                            protocol={baseRoute.protocol}
+                            hostName={baseRoute.hostName}
+                        />
                     </PageAnimator>
                 ))}
             </div>

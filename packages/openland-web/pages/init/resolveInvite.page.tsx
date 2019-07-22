@@ -3,7 +3,7 @@ import { withAppBase } from '../../components/withAppBase';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { SignInInvite } from './components/signChannelInvite';
-import { JoinComponent } from './join.page';
+import { JoinFragment } from './JoinFragment';
 import { AppJoinComponent } from './components/AppJoinComponent';
 import { XLoader } from 'openland-x/XLoader';
 
@@ -23,7 +23,7 @@ export const ResolveInviteComponent = () => {
         } else if (resolvedInvite.invite.__typename === 'RoomInvite') {
             return <SignInInvite invite={inviteKey} />;
         } else if (resolvedInvite.invite.__typename === 'InviteInfo') {
-            return <JoinComponent inviteKey={inviteKey} />;
+            return <JoinFragment inviteKey={inviteKey} />;
         }
     }
 

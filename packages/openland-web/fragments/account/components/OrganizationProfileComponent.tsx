@@ -6,6 +6,7 @@ import {
     Organization_organization_members,
     OrganizationWithoutMembers_organization,
     OrganizationWithoutMembers_organization_requests,
+    OrganizationMembers_organization_members,
 } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -21,6 +22,7 @@ import {
     WebsitePlaceholder,
     showWebsitePlaceholderModal,
     showAboutPlaceholderModal,
+    showSocialPlaceholderModal,
 } from './modals';
 import { XLoader } from 'openland-x/XLoader';
 import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
@@ -58,6 +60,10 @@ import { showEditCommunityModal } from './EditCommunityModal';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-x-modal/XModal';
+import { XFormSelectField } from 'openland-x-forms/XForm';
+import { useField } from 'openland-form/useField';
+import { useForm } from 'openland-form/useForm';
+import { SelectWithDropdown } from 'openland-web/pages/main/mail/SelectWithDropdown';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -331,24 +337,24 @@ class MemberRequestCard extends React.Component<MemberRequestCardProps, MemberRe
     }
 }
 
-const UpdateUserProfileModal = (props: { members: any[] }) => {
+// TODO: where to get photoRef, from user ?
+const UpdateUserProfileModal = ({ userId, hide }: { userId: string; hide: () => void }) => {
     const client = useClient();
-    let router = React.useContext(XRouterContext)!;
-    let uid = router.query.editUser;
-    let member = (props as any).members.filter((m: any) => m.user && m.user.id === uid)[0];
-    if (!member) {
-        return null;
-    }
+
+    const member = client.useUser({
+        userId,
+    });
 
     return (
         <XModalForm
             title="Edit profile"
             targetQuery="editUser"
+            ignoreTargetQuery
             defaultData={{
                 input: {
                     firstName: member.user.firstName,
                     lastName: member.user.lastName,
-                    photoRef: sanitizeImageRef(member.user.photoRef),
+                    // photoRef: sanitizeImageRef(member.user.photoRef),
                 },
             }}
             defaultAction={async data => {
@@ -356,14 +362,15 @@ const UpdateUserProfileModal = (props: { members: any[] }) => {
                     input: {
                         firstName: data.input.firstName,
                         lastName: data.input.lastName,
-                        photoRef: sanitizeImageRef(data.input.photoRef),
+                        // photoRef: sanitizeImageRef(data.input.photoRef),
                     },
-                    uid,
+                    uid: userId,
                 });
 
                 await client.refetchAccount();
                 await client.refetchMyOrganizations();
             }}
+            onClosed={hide}
         >
             <XVertical>
                 <XInput
@@ -376,57 +383,44 @@ const UpdateUserProfileModal = (props: { members: any[] }) => {
                     size="large"
                     placeholder={TextProfiles.Organization.inputs.lastName}
                 />
-                <XAvatarUpload field="input.photoRef" />
+                {/* <XAvatarUpload field="input.photoRef" /> */}
             </XVertical>
         </XModalForm>
     );
 };
 
-export const PermissionsModal = (props: {
+export const showUpdateUserProfileModal = (userId: string): void => {
+    showModalBox(
+        {
+            title: 'Edit profile',
+        },
+        ctx => <UpdateUserProfileModal userId={userId} hide={ctx.hide} />,
+    );
+};
+
+interface PermissionsModalProps {
     orgName: string;
-    members: any[];
     orgId: string;
-    refetchVars: { orgId: string; organizationId: string };
-}) => {
+    member: OrganizationMembers_organization_members;
+}
+
+export const PermissionsModal = (props: PermissionsModalProps & { hide: () => void }) => {
     const client = useClient();
-    let router = React.useContext(XRouterContext)!;
 
-    let member = (props as any).members.filter(
-        (m: any) => (m.user && m.user.id === router.query.changeRole) || '',
-    )[0];
+    const { member } = props;
+    const form = useForm();
 
-    if (!member) {
-        return null;
-    }
+    const roleField = useField('input.role', member.role, form);
+
     return (
-        <XModalForm
-            title={TextProfiles.Organization.members.changeRole.title(
-                member.user.name,
-                (props as any).orgName,
-            )}
-            defaultData={{
-                role: member.role,
-            }}
-            targetQuery="changeRole"
-            defaultAction={async data => {
-                await client.mutateOrganizationChangeMemberRole({
-                    memberId: member.user.id,
-                    newRole: data.role as OrganizationMemberRole,
-                    organizationId: (props as any).orgId,
-                });
-
-                await client.refetchOrganization({
-                    organizationId: (props as any).orgId,
-                });
-            }}
-            target={(props as any).target}
-        >
-            <XVertical>
-                <XSelect
-                    clearable={false}
-                    searchable={false}
-                    field="role"
-                    options={[
+        <XView borderRadius={8}>
+            <XView marginTop={30} />
+            <XModalContent>
+                <SelectWithDropdown
+                    title="Community type"
+                    value={roleField.value}
+                    onChange={roleField.input.onChange}
+                    selectOptions={[
                         {
                             value: 'ADMIN',
                             label: TextProfiles.Organization.roles.ADMIN,
@@ -437,38 +431,56 @@ export const PermissionsModal = (props: {
                         },
                     ]}
                 />
-                <XStoreContext.Consumer>
-                    {store => {
-                        let role = store ? store.readValue('fields.role') : '';
-                        return (
-                            <XText>
-                                {TextProfiles.Organization.members.changeRole.hints[role]}
-                            </XText>
-                        );
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={props.hide} />
+                </XView>
+                <XButton
+                    text={'Change role'}
+                    style="danger"
+                    size="large"
+                    onClick={async () => {
+                        await client.mutateOrganizationChangeMemberRole({
+                            memberId: member.user.id,
+                            newRole: roleField.value as OrganizationMemberRole,
+                            organizationId: props.orgId,
+                        });
+
+                        await client.refetchOrganization({
+                            organizationId: props.orgId,
+                        });
+
+                        props.hide();
                     }}
-                </XStoreContext.Consumer>
-            </XVertical>
-        </XModalForm>
+                />
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showRoleOrgMemberModal = (props: PermissionsModalProps): void => {
+    showModalBox(
+        {
+            title: TextProfiles.Organization.members.changeRole.title(
+                props.member.user.name,
+                props.orgName,
+            ),
+        },
+        ctx => <PermissionsModal {...props} hide={ctx.hide} />,
     );
 };
 
 interface RemoveJoinedModalProps {
     orgName: string;
-    members: any[];
     orgId: string;
-    removeUserId: string;
+    member: OrganizationMembers_organization_members;
 }
 
 export const RemoveJoinedModal = (props: RemoveJoinedModalProps & { hide: () => void }) => {
     const client = useClient();
 
-    let member = props.members.filter(
-        (m: any) => (m.user && m.user.id === props.removeUserId) || '',
-    )[0];
-
-    if (!member) {
-        return null;
-    }
+    const { member } = props;
 
     return (
         <XView borderRadius={8}>
@@ -505,16 +517,13 @@ export const RemoveJoinedModal = (props: RemoveJoinedModalProps & { hide: () => 
 };
 
 export const showRemoveOrgMemberModal = (props: RemoveJoinedModalProps): void => {
-    let member = props.members.filter(
-        (m: any) => (m.user && m.user.id === props.removeUserId) || '',
-    )[0];
-
-    if (!member) {
-        return undefined;
-    }
-
     showModalBox(
-        { title: TextProfiles.Organization.members.remove.title(member.user.name, props.orgName) },
+        {
+            title: TextProfiles.Organization.members.remove.title(
+                props.member.user.name,
+                props.orgName,
+            ),
+        },
         ctx => <RemoveJoinedModal {...props} hide={ctx.hide} />,
     );
 };
@@ -633,10 +642,9 @@ const Header = (props: { organization: OrganizationWithoutMembers_organization }
 
                     {!(organization.linkedin || organization.twitter || organization.facebook) && (
                         <XWithRole role="admin" orgPermission={organization.id}>
-                            <SocialPlaceholder
-                                target={
-                                    <EditButton text={TextProfiles.Organization.addSocialLinks} />
-                                }
+                            <EditButton
+                                text={TextProfiles.Organization.addSocialLinks}
+                                onClick={() => showSocialPlaceholderModal(organization.id)}
                             />
                         </XWithRole>
                     )}
@@ -886,9 +894,9 @@ const Members = ({ organization, router }: MembersProps) => {
                     refetchVars={{
                         orgId: organization.id,
                         organizationId: organization.id,
-                    }}
+                    }} 
                 /> */}
-                <PermissionsModal
+                {/* <PermissionsModal
                     members={joinedMembers}
                     orgName={organization.name}
                     orgId={organization.id}
@@ -896,8 +904,8 @@ const Members = ({ organization, router }: MembersProps) => {
                         orgId: organization.id,
                         organizationId: organization.id,
                     }}
-                />
-                <UpdateUserProfileModal members={joinedMembers} />
+                /> */}
+                {/* <UpdateUserProfileModal members={joinedMembers} /> */}
             </Section>
         );
     } else {

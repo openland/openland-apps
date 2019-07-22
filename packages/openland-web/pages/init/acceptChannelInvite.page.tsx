@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { MessagePage } from '../../components/MessagePage';
-import { withAppBase } from '../../components/withAppBase';
+import { MessagePage } from 'openland-web/components/MessagePage';
+import { withAppBase } from 'openland-web/components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { AuthRouter } from '../root/AuthRouter';
+import { AuthRouter } from 'openland-web/pages/root/AuthRouter';
 import { InitTexts } from './_text';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';

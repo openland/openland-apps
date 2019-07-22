@@ -17,6 +17,14 @@ import { useXRouter } from 'openland-x-routing/useXRouter';
 import { XModal, XModalFooter } from 'openland-x-modal/XModal';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { showModalBox } from 'openland-x/showModalBox';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
+import { XModalContent } from 'openland-web/components/XModalContent';
+import { XVertical } from 'openland-x-layout/XVertical';
+import { InputField } from 'openland-web/components/InputField';
+import { SelectWithDropdown } from '../main/mail/SelectWithDropdown';
+import { FeatureFlags_featureFlags } from 'openland-api/Types';
+import { XInput } from 'openland-x/XInput';
 
 const ActivateButton = ({ accountId }: { accountId: string }) => {
     const client = useClient();
@@ -118,33 +126,45 @@ const DeleteButton = (props: DeleteButtonProps) => {
     );
 };
 
-const DeleteUserButton = ({ accountId, userId }: { accountId: string; userId: string }) => {
+const DeleteUserModal = ({ userId, hide }: { userId: string; hide: () => void }) => {
     const client = useClient();
-    const [deleted, setDelete] = React.useState(false);
+
+    const form = useForm();
+    const remove = () =>
+        form.doAction(async () => {
+            await client.mutateDeleteUser({
+                id: userId,
+            });
+
+            hide();
+        });
+
     return (
-        <XModal
-            useTopCloser={true}
-            title="Block user?"
-            target={<XButton text="Block" style="danger" flexShrink={0} />}
-            footer={
-                <XView padding={20} flexDirection="row">
-                    <XHorizontal justifyContent="flex-end" flexGrow={1}>
-                        <XButton text="Cancel" autoClose={true} />
-                        <XButton
-                            text={deleted ? 'Done!' : 'Delete'}
-                            style={deleted ? 'success' : 'danger'}
-                            action={async () => {
-                                await client
-                                    .mutateDeleteUser({
-                                        id: userId,
-                                    })
-                                    .then(() => setDelete(!deleted));
-                            }}
-                        />
-                    </XHorizontal>
+        <XView borderRadius={8}>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
                 </XView>
-            }
-        />
+                <XButton
+                    text="Delete"
+                    style="danger"
+                    size="large"
+                    onClick={remove}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showDeleteUserModal = (userId: string) => {
+    showModalBox(
+        {
+            title: 'Block user?',
+        },
+        ctx => {
+            return <DeleteUserModal userId={userId} hide={ctx.hide} />;
+        },
     );
 };
 
@@ -177,148 +197,342 @@ const AlterOrgPublishedButton = ({
     );
 };
 
-const AddMemberForm = ({ accountId }: { accountId: string }) => {
+const AddMemberForm = ({ hide, accountId }: { accountId: string; hide: () => void }) => {
     const client = useClient();
-    const mutate = async ({ variables: { userId } }: { variables: { userId: string } }) =>
-        await client.mutateSuperAccountMemberAdd({
-            accountId,
-            userId,
+
+    const form = useForm();
+    const userField = useField('input.user', null as any, form);
+
+    const add = () =>
+        form.doAction(async () => {
+            if (!userField.value) {
+                return;
+            }
+
+            await client.mutateSuperAccountMemberAdd({
+                accountId,
+                userId: (userField.value as { value: string }).value,
+            });
+
+            hide();
         });
 
     return (
-        <XModalForm
-            title="Add member to organization"
-            submitMutation={mutate as MutationFunc<{}>}
-            mutationDirect={true}
-            actionName="Add"
-            target={<XButton text="Add member" flexShrink={0} />}
-        >
-            <XFormField title="User">
-                <XForm.Select field="userId" component={UserSelect} />
-            </XFormField>
-        </XModalForm>
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XVertical flexGrow={1} separator={8}>
+                    <UserSelect value={userField.input.value} onChange={userField.input.onChange} />
+                </XVertical>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Add"
+                    style="primary"
+                    size="large"
+                    onClick={add}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </XView>
     );
 };
 
-const RemoveMemberForm = ({ accountId }: { accountId: string }) => {
+export const showAddMemberFormModal = (accountId: string) => {
+    showModalBox(
+        {
+            title: 'Add member to organization',
+        },
+        ctx => {
+            return <AddMemberForm accountId={accountId} hide={ctx.hide} />;
+        },
+    );
+};
+
+const RemoveMemberForm = ({ hide, accountId }: { accountId: string; hide: () => void }) => {
     const client = useClient();
-    const mutate = async ({ variables: { userId } }: { variables: { userId: string } }) =>
-        await client.mutateSuperAccountMemberRemove({
-            accountId,
-            userId,
+
+    const form = useForm();
+    const userField = useField('input.user', null as any, form);
+
+    const remove = () =>
+        form.doAction(async () => {
+            if (!userField.value) {
+                return;
+            }
+
+            await client.mutateSuperAccountMemberRemove({
+                accountId,
+                userId: (userField.value as { value: string }).value,
+            });
+
+            hide();
         });
 
     return (
-        <XModalForm
-            title="Remove member from organization"
-            submitMutation={mutate as MutationFunc<{}>}
-            mutationDirect={true}
-            actionStyle="danger"
-            actionName="Remove"
-            target={<XButton style="danger" text="Remove member" flexShrink={0} />}
-        >
-            <XFormField title="User">
-                <XForm.Select field="userId" component={UserSelect} />
-            </XFormField>
-        </XModalForm>
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XVertical flexGrow={1} separator={8}>
+                    <UserSelect value={userField.input.value} onChange={userField.input.onChange} />
+                </XVertical>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Remove"
+                    style="danger"
+                    size="large"
+                    onClick={remove}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </XView>
     );
 };
 
-const AddFeature = ({ accountId }: { accountId: string }) => {
+export const showRemoveMemberFormModal = (accountId: string) => {
+    showModalBox(
+        {
+            title: 'Remove member from organization',
+        },
+        ctx => {
+            return <RemoveMemberForm accountId={accountId} hide={ctx.hide} />;
+        },
+    );
+};
+
+const AddFeatureModal = ({ accountId, hide }: { accountId: string; hide: () => void }) => {
     const client = useClient();
+    const form = useForm();
     const data = client.useWithoutLoaderFeatureFlags();
+
+    const featureIdField = useField(
+        'input.featureId',
+        null as FeatureFlags_featureFlags | null,
+        form,
+    );
+
+    React.useEffect(
+        () => {
+            if (!data) {
+                return;
+            }
+
+            featureIdField.input.onChange(
+                data.featureFlags.length > 0 ? data.featureFlags[0] : null,
+            );
+        },
+        [data],
+    );
 
     if (!data) {
         return <XLoader loading={true} />;
     }
 
-    const mutate = async ({ variables: { userId } }: { variables: { userId: string } }) =>
-        await client.mutateSuperAccountMemberAdd({
-            accountId,
-            userId,
+    const add = () =>
+        form.doAction(async () => {
+            if (!featureIdField.value) {
+                return;
+            }
+
+            client.mutateFeatureFlagAdd({
+                key: featureIdField.value.key,
+                title: featureIdField.value.title,
+            });
+            hide();
         });
 
     return (
-        <XModalForm
-            title="Add feature to organization"
-            submitMutation={mutate as MutationFunc<{}>}
-            mutationDirect={true}
-            actionName="Add"
-            target={<XButton text="Add feature" />}
-        >
-            <XFormField title="Feature">
-                <XForm.Select
-                    field="featureId"
-                    options={data.featureFlags.map((v: any) => ({
-                        value: v.id,
-                        title: v.title,
-                    }))}
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XVertical flexGrow={1} separator={8}>
+                    {featureIdField.value && (
+                        <SelectWithDropdown
+                            {...featureIdField.input}
+                            value={featureIdField.value!.id}
+                            size="large"
+                            title={'feature'}
+                            selectOptions={data.featureFlags.map((v: any) => ({
+                                label: v.title,
+                                value: v.id,
+                            }))}
+                        />
+                    )}
+                </XVertical>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Add"
+                    style="primary"
+                    size="large"
+                    onClick={add}
+                    loading={form.loading}
                 />
-            </XFormField>
-        </XModalForm>
+            </XModalFooter>
+        </XView>
     );
 };
 
-const RemoveFeature = ({ accountId }: { accountId: string }) => {
+export const showAddFeatureModal = (accountId: string) => {
+    showModalBox(
+        {
+            title: 'Add feature to organization',
+        },
+        ctx => {
+            return <AddFeatureModal accountId={accountId} hide={ctx.hide} />;
+        },
+    );
+};
+
+const RemoveFeatureModal = ({ accountId, hide }: { accountId: string; hide: () => void }) => {
     const client = useClient();
+    const form = useForm();
     const data = client.useWithoutLoaderFeatureFlags();
+
+    const featureIdField = useField(
+        'input.featureId',
+        null as FeatureFlags_featureFlags | null,
+        form,
+    );
+
+    React.useEffect(
+        () => {
+            if (!data) {
+                return;
+            }
+
+            featureIdField.input.onChange(
+                data.featureFlags.length > 0 ? data.featureFlags[0] : null,
+            );
+        },
+        [data],
+    );
 
     if (!data) {
         return <XLoader loading={true} />;
     }
 
-    const mutate = async ({ variables: { featureId } }: { variables: { featureId: string } }) =>
-        await client.mutateFeatureFlagDisable({
-            accountId,
-            featureId,
+    const remove = () =>
+        form.doAction(async () => {
+            if (!featureIdField.value) {
+                return;
+            }
+
+            await client.mutateFeatureFlagDisable({
+                accountId,
+                featureId: featureIdField.value.id,
+            });
+            hide();
         });
 
     return (
-        <XModalForm
-            title="Remove feature from organization"
-            submitMutation={mutate as MutationFunc<{}>}
-            mutationDirect={true}
-            actionStyle="danger"
-            actionName="Remove"
-            target={<XButton style="danger" text="Remove feature" />}
-        >
-            <XFormField title="Feature">
-                <XForm.Select
-                    field="featureId"
-                    options={data.featureFlags.map((v: any) => ({
-                        value: v.id,
-                        title: v.title,
-                    }))}
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XVertical flexGrow={1} separator={8}>
+                    {featureIdField.value && (
+                        <SelectWithDropdown
+                            {...featureIdField.input}
+                            value={featureIdField.value!.id}
+                            size="large"
+                            title={'feature'}
+                            selectOptions={data.featureFlags.map((v: any) => ({
+                                label: v.title,
+                                value: v.id,
+                            }))}
+                        />
+                    )}
+                </XVertical>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Remove"
+                    style="danger"
+                    size="large"
+                    onClick={remove}
+                    loading={form.loading}
                 />
-            </XFormField>
-        </XModalForm>
+            </XModalFooter>
+        </XView>
     );
 };
 
-const Edit = ({ accountId, orgTitle }: { accountId: string; orgTitle: string }) => {
+export const showRemoveFeatureModal = (accountId: string) => {
+    showModalBox(
+        {
+            title: 'Remove feature from organization',
+        },
+        ctx => {
+            return <RemoveFeatureModal accountId={accountId} hide={ctx.hide} />;
+        },
+    );
+};
+
+interface EditOrganizationModal {
+    accountId: string;
+    orgTitle: string;
+}
+
+const EditOrganizationModal = ({
+    accountId,
+    orgTitle,
+    hide,
+}: EditOrganizationModal & { hide: () => void }) => {
     const client = useClient();
 
-    const mutate = async ({ variables: { title } }: { variables: { title: string } }) =>
-        await client.mutateSuperAccountRename({
-            accountId,
-            title,
+    const form = useForm();
+    const titleField = useField('input.title', orgTitle || '', form);
+
+    const rename = () =>
+        form.doAction(async () => {
+            await client.mutateSuperAccountRename({
+                accountId,
+                title: titleField.value,
+            });
+
+            hide();
         });
 
     return (
-        <XModalForm
-            title="Edit organization"
-            actionName="Rename"
-            target={<XButton text="Edit" flexShrink={0} />}
-            submitMutation={mutate as MutationFunc<{}>}
-            mutationDirect={true}
-        >
-            <XForm.Text
-                field="title"
-                autofocus={true}
-                value={orgTitle}
-                placeholder="Organization Name"
-            />
-        </XModalForm>
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XVertical flexGrow={1} separator={8}>
+                    <XInput placeholder={'Organization Name'} {...titleField.input} size="large" />
+                </XVertical>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Rename"
+                    style="primary"
+                    size="large"
+                    onClick={rename}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showEditOrganizationModal = (props: EditOrganizationModal) => {
+    showModalBox(
+        {
+            title: 'Edit organization',
+        },
+        ctx => {
+            return <EditOrganizationModal hide={ctx.hide} {...props} />;
+        },
     );
 };
 
@@ -332,11 +546,29 @@ export default withApp('Super Organization', 'super-admin', () => {
     return (
         <DevToolsScaffold title={superAccount.title}>
             <XHeader text={superAccount.title} description={'Current State: ' + superAccount.state}>
-                <Edit orgTitle={superAccount.title} accountId={accountId} />
+                <XButton
+                    text="Edit"
+                    flexShrink={0}
+                    onClick={() =>
+                        showEditOrganizationModal({
+                            accountId,
+                            orgTitle: superAccount.title,
+                        })
+                    }
+                />
                 {superAccount.state !== 'DELETED' && (
                     <>
-                        <AddMemberForm accountId={accountId} />
-                        <RemoveMemberForm accountId={accountId} />
+                        <XButton
+                            text="Add member"
+                            flexShrink={0}
+                            onClick={() => showAddMemberFormModal(accountId)}
+                        />
+                        <XButton
+                            style="danger"
+                            text="Remove member"
+                            flexShrink={0}
+                            onClick={() => showRemoveMemberFormModal(accountId)}
+                        />
                     </>
                 )}
                 {!actionsButton &&
@@ -367,15 +599,24 @@ export default withApp('Super Organization', 'super-admin', () => {
                             <XTable.Cell>{v.name}</XTable.Cell>
                             <XTable.Cell>{v.email}</XTable.Cell>
                             <XTable.Cell>
-                                <DeleteUserButton accountId={accountId} userId={v.id} />
+                                <XButton
+                                    text="Block"
+                                    style="danger"
+                                    flexShrink={0}
+                                    onClick={() => showDeleteUserModal(v.id)}
+                                />
                             </XTable.Cell>
                         </XTable.Row>
                     ))}
                 </XTable.Body>
             </XTable>
             <XHeader text="Features" description={superAccount.features.length + ' total'}>
-                <AddFeature accountId={accountId} />
-                <RemoveFeature accountId={accountId} />
+                <XButton text="Add feature" onClick={() => showAddFeatureModal(accountId)} />
+                <XButton
+                    style="danger"
+                    text="Remove feature"
+                    onClick={() => showRemoveFeatureModal(accountId)}
+                />
             </XHeader>
             <XTable>
                 <XTable.Header>

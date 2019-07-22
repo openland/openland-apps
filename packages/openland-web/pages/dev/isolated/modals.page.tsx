@@ -27,7 +27,15 @@ import {
 } from 'openland-web/fragments/account/components/RoomProfileComponent';
 import { showRemoveMemberModal } from 'openland-web/fragments/chat/RemoveMemberModal';
 import { showAvatarModal } from 'openland-web/fragments/account/components/UserProfileComponent';
-import { showSuperDeleteOrganizationModal } from '../orgView.page';
+import {
+    showSuperDeleteOrganizationModal,
+    showAddMemberFormModal,
+    showRemoveMemberFormModal,
+    showDeleteUserModal,
+    showAddFeatureModal,
+    showRemoveFeatureModal,
+    showEditOrganizationModal,
+} from '../orgView.page';
 import { showImagePreviewModal } from 'openland-web/components/ImagePreviewModal';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { XView } from 'react-mental';
@@ -38,15 +46,31 @@ import {
     WebsitePlaceholder,
     showWebsitePlaceholderModal,
     showAboutPlaceholderModal,
+    showSocialPlaceholderModal,
 } from 'openland-web/fragments/account/components/modals';
 import {
     RemoveJoinedModal,
     showRemoveOrgMemberModal,
+    showRoleOrgMemberModal,
+    showUpdateUserProfileModal,
 } from 'openland-web/fragments/account/components/OrganizationProfileComponent';
+import {
+    WelcomePopup,
+    showWelcomePopup,
+} from 'openland-web/fragments/account/components/welcomePopup';
+import { showDeleteMessagesFromModal } from 'openland-web/fragments/chat/components/ChatForwardHeaderView';
+import { showDeleteMessageModal } from 'openland-web/fragments/chat/components/MessengerRootComponent';
+import { showMessageModal } from 'openland-web/fragments/chat/MessageModal';
+import {
+    AddSuperAdminForm,
+    showAddSuperAdminFormModal,
+    showRemoveSuperAdminFormModal,
+} from '../admins.page';
+import { showAddAccountFormModal } from '../orgs.page';
 
-export default withApp('UI Framework - New modals', 'viewer', props => {
+export default withApp('Isolated - modals', 'viewer', props => {
     return (
-        <DevDocsScaffold title="New modals">
+        <DevDocsScaffold title="Modals">
             <XContent>
                 <XVertical2>
                     <XVertical width="400px">
@@ -70,7 +94,6 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             style="primary"
                             onClick={() => showCreateOrganization('organization')}
                         />
-
                         <XButton
                             text="Add members"
                             style="primary"
@@ -83,31 +106,26 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                 })
                             }
                         />
-
                         <XButton
                             text="Advanced settings"
                             style="primary"
                             onClick={() => showAdvancedSettingsModal(addMemberModalChatId)}
                         />
-
                         <XButton
                             text="Room edit"
                             style="primary"
                             onClick={() => showRoomEditModal(webInboxChat.id, true)}
                         />
-
                         <XButton
                             text="Leave chat"
                             style="primary"
                             onClick={() => leaveChatModal(webInboxChat.id)}
                         />
-
                         <XButton
                             text="Add description"
                             style="primary"
                             onClick={() => showAddDescriptionModal(webInboxChat.id)}
                         />
-
                         <XButton
                             text="remove member modal"
                             style="primary"
@@ -120,13 +138,11 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                 })
                             }
                         />
-
                         <XButton
                             text="avatar modal"
                             style="primary"
                             onClick={() => showAvatarModal(fredUser.photo)}
                         />
-
                         <XButton
                             text="super delete organization"
                             style="primary"
@@ -137,7 +153,6 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                 })
                             }
                         />
-
                         <XButton
                             text="delete organization"
                             style="primary"
@@ -148,7 +163,6 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                 })
                             }
                         />
-
                         <XButton
                             text="leave organization"
                             style="primary"
@@ -197,27 +211,137 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             style="primary"
                             onClick={() => showWebsitePlaceholderModal(rfzzOrgId)}
                         />
-
                         <XButton
                             text="about placeholder"
                             style="primary"
                             onClick={() => showAboutPlaceholderModal(rfzzOrgId)}
                         />
-
+                        <XButton
+                            text="social placeholder"
+                            style="primary"
+                            onClick={() => showSocialPlaceholderModal(rfzzOrgId)}
+                        />
                         <XButton
                             text="remove joined"
                             style="primary"
                             onClick={() =>
                                 showRemoveOrgMemberModal({
                                     orgId: rfzzOrgId,
-                                    members: [
-                                        {
-                                            role: 'OWNER',
-                                            user: egoarkaUser,
-                                        },
-                                    ],
                                     orgName: 'foobar',
-                                    removeUserId: egoarkaUser.id,
+                                    // only for test purpose
+                                    member: {
+                                        __typename: 'OrganizationJoinedMember',
+                                        // @ts-ignore
+                                        role: 'ADMIN',
+                                        // @ts-ignore
+                                        user: egoarkaUser,
+                                    },
+                                })
+                            }
+                        />
+                        <XButton
+                            text="permissions modal"
+                            style="primary"
+                            onClick={() =>
+                                showRoleOrgMemberModal({
+                                    orgId: rfzzOrgId,
+                                    orgName: 'foobar',
+                                    // only for test purpose
+                                    member: {
+                                        __typename: 'OrganizationJoinedMember',
+                                        // @ts-ignore
+                                        role: 'ADMIN',
+                                        // @ts-ignore
+                                        user: egoarkaUser,
+                                    },
+                                })
+                            }
+                        />
+                        <XButton
+                            text="update user profile"
+                            style="primary"
+                            onClick={() => showUpdateUserProfileModal(egoarkaUser.id)}
+                        />
+                        <XButton
+                            text="welcome popup"
+                            style="primary"
+                            onClick={() => showWelcomePopup()}
+                        />
+                        <XButton
+                            text="delete messages from"
+                            style="primary"
+                            onClick={() =>
+                                showDeleteMessagesFromModal({
+                                    messagesIds: ['1'],
+                                    onDelete: () => console.log(123),
+                                })
+                            }
+                        />
+                        <XButton
+                            text="delete message"
+                            style="primary"
+                            onClick={() => showDeleteMessageModal('1')}
+                        />
+                        <XButton
+                            text="show message"
+                            style="primary"
+                            onClick={() =>
+                                showMessageModal({
+                                    generalMessage: pinMessage,
+                                })
+                            }
+                        />
+                        <XButton
+                            text="add super admin form"
+                            style="primary"
+                            onClick={() => showAddSuperAdminFormModal()}
+                        />
+                        <XButton
+                            text="remove super admin form"
+                            style="primary"
+                            onClick={() => showRemoveSuperAdminFormModal()}
+                        />
+                        <XButton
+                            text="add account form"
+                            style="primary"
+                            onClick={() => showAddAccountFormModal()}
+                        />
+                        <XButton
+                            text="add member form"
+                            style="primary"
+                            onClick={() => showAddMemberFormModal(egoarkaUser.id)}
+                        />
+                        <XButton
+                            text="remove member form"
+                            style="primary"
+                            onClick={() => showRemoveMemberFormModal(egoarkaUser.id)}
+                        />
+
+                        <XButton
+                            text="delete user"
+                            style="primary"
+                            onClick={() => showDeleteUserModal(egoarkaUser.id)}
+                        />
+
+                        <XButton
+                            text="add feature"
+                            style="primary"
+                            onClick={() => showAddFeatureModal(egoarkaUser.id)}
+                        />
+
+                        <XButton
+                            text="remove feature"
+                            style="primary"
+                            onClick={() => showRemoveFeatureModal(egoarkaUser.id)}
+                        />
+
+                        <XButton
+                            text="edit organization"
+                            style="primary"
+                            onClick={() =>
+                                showEditOrganizationModal({
+                                    accountId: egoarkaUser.id,
+                                    orgTitle: 'foobar',
                                 })
                             }
                         />

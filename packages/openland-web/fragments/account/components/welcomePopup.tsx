@@ -3,6 +3,7 @@ import Glamorous from 'glamorous';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XButton } from 'openland-x/XButton';
 import { XModal } from 'openland-x-modal/XModal';
+import { showModalBox } from 'openland-x/showModalBox';
 
 const WelcomeModalWrapper = Glamorous.div({
     display: 'flex',
@@ -64,78 +65,70 @@ const WelcomeModalButton = Glamorous(XButton)({
     width: 190,
 });
 
-export class WelcomePopup extends React.Component<{}, { isOpen: boolean }> {
+const WelcomeModalBody = ({ checkModal }: { checkModal: () => void }) => {
+    return (
+        <WelcomeModalWrapper>
+            <WelcomePopupContent>
+                <WelcomePopupTitle>Welcome to Openland! </WelcomePopupTitle>
+                <WelcomeModalRowsWrapper>
+                    <WelcomeModalRow>
+                        <img src="/static/X/ic-home.svg" />
+                        <WelcomeModalText>
+                            Fill out your profile to attract inbound opportunities
+                        </WelcomeModalText>
+                    </WelcomeModalRow>
+                    <WelcomeModalRow>
+                        <img src="/static/X/ic-organization-big.svg" />
+                        <WelcomeModalText>
+                            Explore organizations directory and start conversations
+                        </WelcomeModalText>
+                    </WelcomeModalRow>
+                    <WelcomeModalRow>
+                        <img src="/static/X/ic-messenges.svg" />
+                        <WelcomeModalText>
+                            Chat with Openland Support to get help for your research
+                        </WelcomeModalText>
+                    </WelcomeModalRow>
+                </WelcomeModalRowsWrapper>
+                <WelcomeModalButton
+                    style="primary"
+                    size="large"
+                    text="Got it!"
+                    onClick={checkModal}
+                />
+            </WelcomePopupContent>
+        </WelcomeModalWrapper>
+    );
+};
+
+export const showWelcomePopup = (): void => {
+    showModalBox({ width: 620 }, ctx => (
+        <WelcomeModalBody
+            checkModal={() => {
+                if (canUseDOM) {
+                    localStorage.removeItem('isnewuser');
+                }
+                ctx.hide();
+            }}
+        />
+    ));
+};
+
+export class WelcomePopup extends React.Component<{}, {}> {
     constructor(props: any) {
         super(props);
-
-        this.state = {
-            isOpen: false,
-        };
-    }
-
-    checkModal = () => {
-        if (canUseDOM) {
-            localStorage.removeItem('isnewuser');
-
-            this.setState({
-                isOpen: false,
-            });
-        }
     }
 
     componentWillMount() {
         if (canUseDOM) {
             let needToShow = localStorage.getItem('isnewuser');
-
             if (needToShow === 'newuser') {
-                this.setState({
-                    isOpen: true,
-                });
+                showWelcomePopup();
             }
         }
     }
 
     render() {
-        return (
-            <XModal
-                size="large"
-                isOpen={this.state.isOpen}
-                closeOnClick={false}
-                customContent={true}
-                transparent={true}
-            >
-                <WelcomeModalWrapper>
-                    <WelcomePopupContent>
-                        <WelcomePopupTitle>Welcome to Openland! </WelcomePopupTitle>
-                        <WelcomeModalRowsWrapper>
-                            <WelcomeModalRow>
-                                <img src="/static/X/ic-home.svg" />
-                                <WelcomeModalText>
-                                    Fill out your profile to attract inbound opportunities
-                                </WelcomeModalText>
-                            </WelcomeModalRow>
-                            <WelcomeModalRow>
-                                <img src="/static/X/ic-organization-big.svg" />
-                                <WelcomeModalText>
-                                    Explore organizations directory and start conversations
-                                </WelcomeModalText>
-                            </WelcomeModalRow>
-                            <WelcomeModalRow>
-                                <img src="/static/X/ic-messenges.svg" />
-                                <WelcomeModalText>
-                                    Chat with Openland Support to get help for your research
-                                </WelcomeModalText>
-                            </WelcomeModalRow>
-                        </WelcomeModalRowsWrapper>
-                        <WelcomeModalButton
-                            style="primary"
-                            size="large"
-                            text="Got it!"
-                            onClick={this.checkModal}
-                        />
-                    </WelcomePopupContent>
-                </WelcomeModalWrapper>
-            </XModal>
-        );
+        return <div />;
     }
 }

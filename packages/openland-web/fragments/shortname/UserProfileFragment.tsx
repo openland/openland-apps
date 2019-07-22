@@ -10,17 +10,18 @@ import { UPresence } from 'openland-web/components/unicorn/UPresence';
 import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/UNotificationsSwitch';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
+import { UListText } from 'openland-web/components/unicorn/UListText';
 
 export const UserProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
     const { user, conversation } = client.useUser({ userId: props.id }, { fetchPolicy: 'cache-and-network' });
-    const { id, name, photo, audienceSize, about, shortname, location, phone, email, linkedin, primaryOrganization, isYou, chatsWithBadge } = user;
+    const { id, isBot, name, photo, audienceSize, about, shortname, location, phone, email, linkedin, primaryOrganization, isYou, chatsWithBadge } = user;
 
     return (
         <Page padded={false}>
             <UListHero
                 title={name}
-                score={audienceSize}
+                score={!isBot ? audienceSize : undefined}
                 description={<UPresence user={user} />}
                 avatar={{ photo, id, title: name }}
             >
@@ -39,8 +40,20 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
                 )}
             </UListHero>
             <UListGroup header="About">
-                {!!about && <UListField value={about} marginBottom={24} />}
-                {!!shortname && <UListField label="Shortname" value={'@' + shortname} />}
+                {!!about && <UListText value={about} />}
+                {!!shortname && (
+                    <UListField
+                        label="Username"
+                        value={
+                            <a
+                                href={'https://openland.com/' + shortname}
+                                target="_blank"
+                            >
+                                @{shortname}
+                            </a>
+                        }
+                    />
+                )}
                 {!!location && <UListField label="Location" value={location} />}
                 {!!phone && <UListField label="Phone" value={phone} />}
                 {!!email && <UListField label="Email" value={email} />}

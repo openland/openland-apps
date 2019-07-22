@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useClient } from 'openland-web/utils/useClient';
-import { Page } from 'openland-unicorn/Page';
 import { UListHero } from 'openland-web/components/unicorn/UListHero';
 import { plural } from 'openland-y-utils/plural';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
@@ -12,6 +11,10 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
+import { GroupManageButtons } from './components/GroupManageButtons';
+import { showAddMembersModal } from '../chat/AddMembersModal';
+import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
+import { UListText } from 'openland-web/components/unicorn/UListText';
 
 export const GroupProfileFragment = React.memo((props) => {
     const client = useClient();
@@ -24,7 +27,7 @@ export const GroupProfileFragment = React.memo((props) => {
 
     const featuredMembers = client.useRoomFeaturedMembers({ roomId: unicorn.id }, { fetchPolicy: 'cache-and-network' }).roomFeaturedMembers;
     const initialMembers = client.useRoomMembersPaginated({ roomId: unicorn.id, first: 15 }, { fetchPolicy: 'cache-and-network' }).members;
-    const { id, membersCount, photo, title, description, organization, settings } = group;
+    const { id, isChannel, membersCount, photo, title, description, organization, settings } = group;
 
     const [ members, setMembers ] = React.useState(initialMembers);
     const [ loading, setLoading ] = React.useState(false);
@@ -53,6 +56,7 @@ export const GroupProfileFragment = React.memo((props) => {
                 <UUserView
                     key={'member-' + member.user.id}
                     user={member.user}
+                    role={member.role}
                 />
             )}
             padded={false}
@@ -68,10 +72,11 @@ export const GroupProfileFragment = React.memo((props) => {
                     mute={!!settings.mute}
                     marginLeft={16}
                 />
+                <GroupManageButtons group={group} marginLeft={16} />
             </UListHero>
 
             <UListGroup header="About">
-                {!!description && <UListField value={description} />}
+                {!!description && <UListText value={description} marginBottom={0} />}
             </UListGroup>
 
             {organization && (
@@ -91,6 +96,17 @@ export const GroupProfileFragment = React.memo((props) => {
             </UListGroup>
 
             <UListHeader text="Members" counter={membersCount || 0} />
+            <UAddItem
+                title="Add members"
+                onClick={() => {
+                    showAddMembersModal({
+                        id,
+                        isRoom: true,
+                        isChannel,
+                        isOrganization: false,
+                    });
+                }}
+            />
         </UFlatList>
     );
 });

@@ -1,17 +1,13 @@
 import * as React from 'react';
-import { MessagePage } from '../../../components/MessagePage';
-import { MessagePageContent } from '../../../components/MessagePageContent';
+import { XView } from 'react-mental';
+import { MessagePage } from 'openland-web/components/MessagePage';
+import { MessagePageContent } from 'openland-web/components/MessagePageContent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { InitTexts } from '../_text';
 import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';
-import { css } from 'linaria';
-import { AuthRouter } from '../../root/AuthRouter';
+import { AuthRouter } from 'openland-web/pages/root/AuthRouter';
 import { XTrack } from 'openland-x-analytics/XTrack';
-
-const InfoText = css`
-    margin-bottom: 15px;
-`;
 
 const AcceptInviteComponent = ({ inviteKey }: { inviteKey: string }) => {
     const client = useClient();
@@ -54,7 +50,7 @@ export const AppJoinComponent = ({ inviteKey }: { inviteKey: string }) => {
                         (data.appInvite && <AcceptInviteComponent inviteKey={inviteKey} />)}
                     {!(data.invite || data.appInvite) && (
                         <MessagePageContent title="Invite">
-                            <div className={InfoText}>{InitTexts.invite.unableToFindInvite}</div>
+                            <XView marginBottom={15}>{InitTexts.invite.unableToFindInvite}</XView>
                         </MessagePageContent>
                     )}
                 </MessagePage>

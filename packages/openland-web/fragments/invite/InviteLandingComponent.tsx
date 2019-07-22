@@ -18,7 +18,6 @@ import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { InviteImage } from './InviteImage';
-import { Footer } from './Footer';
 
 const RootClassName = css`
     position: relative;
@@ -29,7 +28,6 @@ const RootClassName = css`
     flex-grow: 1;
     background-color: #fff;
     min-width: 100%;
-    height: 100vh;
     padding-left: 20px;
     padding-right: 20px;
     -webkit-overflow-scrolling: touch;
@@ -249,7 +247,6 @@ const InviteLandingComponentLayout = ({
             />
 
             {!isMobile && <InviteImage onBottom={!noLogin} />}
-            {!isMobile && noLogin && <Footer />}
         </div>
     );
 };

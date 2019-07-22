@@ -51,6 +51,7 @@ export const AboutPlaceholder = ({
             });
 
             await client.refetchOrganization({ organizationId });
+            await client.refetchOrganizationProfile({ organizationId });
 
             hide();
         });
@@ -234,68 +235,86 @@ export const showDeleteOrganizationModal = ({
         },
     );
 
-export const SocialPlaceholder = (props: { target?: any }) => {
+export const SocialPlaceholder = ({
+    organizationId,
+    hide,
+}: {
+    organizationId: string;
+    hide: () => void;
+}) => {
     const client = useClient();
 
-    let router = React.useContext(XRouterContext)!;
-    const organizationId = router.routeQuery.organizationId;
+    const data = client.useOrganizationProfile({ organizationId });
+    const org = data.organizationProfile;
 
-    const data = client.useWithoutLoaderOrganizationProfile({ organizationId });
+    const form = useForm();
 
-    if (!(data && data.organizationProfile)) {
-        return null;
-    }
-    return (
-        <XModalForm
-            title={TextOrganizationProfile.placeholderSocialModalTitle}
-            useTopCloser={true}
-            defaultData={{
+    const linkedinField = useField('input.linkedin', org.linkedin || '', form);
+    const twitterField = useField('input.twitter', org.twitter || '', form);
+    const facebookField = useField('input.facebook', org.facebook || '', form);
+
+    const save = () =>
+        form.doAction(async () => {
+            await client.mutateUpdateOrganization({
+                organizationId: organizationId,
                 input: {
-                    linkedin: data.organizationProfile!!.linkedin,
-                    twitter: data.organizationProfile!!.twitter,
-                    facebook: data.organizationProfile!!.facebook,
+                    linkedin: linkedinField.value,
+                    twitter: twitterField.value,
+                    facebook: facebookField.value,
                 },
-            }}
-            defaultAction={async submitData => {
-                await client.mutateUpdateOrganization({
-                    organizationId: organizationId,
-                    input: {
-                        linkedin: submitData.input.linkedin,
-                        twitter: submitData.input.twitter,
-                        facebook: submitData.input.facebook,
-                    },
-                });
+            });
 
-                await client.refetchOrganization({ organizationId });
-            }}
-            target={props.target || <XButton text="Add social links" iconRight="add" />}
-        >
-            <XFormLoadingContent>
+            await client.refetchOrganization({ organizationId });
+            await client.refetchOrganizationProfile({ organizationId });
+
+            hide();
+        });
+
+    return (
+        <XView borderRadius={8}>
+            <XModalContent>
                 <XVertical flexGrow={1} separator={8}>
-                    <XFormField field="input.linkedin">
-                        <XInput
-                            placeholder={TextOrganizationProfile.placeholderSocialModalLinkedIn}
-                            field="input.linkedin"
-                            size="large"
-                        />
-                    </XFormField>
-                    <XFormField field="input.twitter">
-                        <XInput
-                            placeholder={TextOrganizationProfile.placeholderSocialModalTwitter}
-                            field="input.twitter"
-                            size="large"
-                        />
-                    </XFormField>
-                    <XFormField field="input.facebook">
-                        <XInput
-                            placeholder={TextOrganizationProfile.placeholderSocialModalFacebook}
-                            field="input.facebook"
-                            size="large"
-                        />
-                    </XFormField>
+                    <XInput
+                        placeholder={TextOrganizationProfile.placeholderSocialModalLinkedIn}
+                        {...linkedinField.input}
+                        size="large"
+                    />
+                    <XInput
+                        placeholder={TextOrganizationProfile.placeholderSocialModalTwitter}
+                        {...twitterField.input}
+                        size="large"
+                    />
+                    <XInput
+                        placeholder={TextOrganizationProfile.placeholderSocialModalFacebook}
+                        {...facebookField.input}
+                        size="large"
+                    />
                 </XVertical>
-            </XFormLoadingContent>
-        </XModalForm>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Save"
+                    style="primary"
+                    size="large"
+                    onClick={save}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showSocialPlaceholderModal = (organizationId: string) => {
+    showModalBox(
+        {
+            title: TextOrganizationProfile.placeholderSocialModalTitle,
+        },
+        ctx => {
+            return <SocialPlaceholder organizationId={organizationId} hide={ctx.hide} />;
+        },
     );
 };
 
@@ -323,6 +342,7 @@ export const WebsitePlaceholder = ({
             });
 
             await client.refetchOrganization({ organizationId });
+            await client.refetchOrganizationProfile({ organizationId });
 
             hide();
         });

@@ -16,30 +16,62 @@ import { MutationFunc } from 'react-apollo';
 import { XInput } from 'openland-x/XInput';
 import { SuperAccounts_superAccounts } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
+import { showModalBox } from 'openland-x/showModalBox';
+import { XModalContent } from 'openland-web/components/XModalContent';
+import { XVertical } from 'openland-x-layout/XVertical';
+import { XModalFooter } from 'openland-x-modal/XModal';
+import { useField } from 'openland-form/useField';
+import { useForm } from 'openland-form/useForm';
+import { InputField } from 'openland-web/components/InputField';
 
-const AddAccountForm = () => {
+const AddAccountForm = ({ hide }: { hide: () => void }) => {
     const client = useClient();
 
-    const mutate = async ({ variables: { title } }: { variables: { title: string } }) => {
-        await client.mutateSuperAccountAdd({
-            title,
+    const form = useForm();
+    const titleField = useField('input.title', '', form);
+
+    const add = () =>
+        form.doAction(async () => {
+            await client.mutateSuperAccountAdd({
+                title: titleField.value,
+            });
+
+            await client.refetchSuperAccounts();
+
+            hide();
         });
 
-        await client.refetchSuperAccounts();
-    };
-
     return (
-        <XModalForm
-            title="Add new organization"
-            target={<XButton text="Add organization" />}
-            submitMutation={mutate as MutationFunc<{}>}
-            mutationDirect={true}
-            actionName="Add"
-        >
-            <XFormField title="Organization Name">
-                <XForm.Text field="title" />
-            </XFormField>
-        </XModalForm>
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XVertical flexGrow={1} separator={8}>
+                    <InputField title={'Organization Name'} field={titleField} size="large" />
+                </XVertical>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Add"
+                    style="primary"
+                    size="large"
+                    onClick={add}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showAddAccountFormModal = () => {
+    showModalBox(
+        {
+            title: 'Add new organization',
+        },
+        ctx => {
+            return <AddAccountForm hide={ctx.hide} />;
+        },
     );
 };
 
@@ -145,7 +177,7 @@ export default withApp('Super Organizations', 'super-admin', () => {
     return (
         <DevToolsScaffold title="Organizations">
             <XHeader text="Organizations" description={orgs.length + ' total'}>
-                <AddAccountForm />
+                <XButton text="Add organization" onClick={() => showAddAccountFormModal()} />
             </XHeader>
             <SearchInput onClick={searchTextFilter} />
             <XView marginLeft={24}>

@@ -9,6 +9,12 @@ import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { OrganizationManageButtons } from './components/OrganizationManageButtons';
 import { MemberManageMenu } from './components/MemberManageMenu';
+import { showAddMembersModal } from '../chat/AddMembersModal';
+import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
+import { UListText } from 'openland-web/components/unicorn/UListText';
+import { UListItem } from 'openland-web/components/unicorn/UListItem';
+import { ThemeDefault } from 'openland-y-utils/themes';
+import MoreHIcon from 'openland-icons/s/ic-more-h-24.svg';
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
@@ -16,8 +22,13 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
     const initialMembers = client.useOrganizationMembers({ organizationId: props.id, first: 15 }, { fetchPolicy: 'cache-and-network' }).organization.members;
     const { id, name, photo, about, shortname, website, twitter, facebook, rooms, membersCount, isCommunity } = organization;
 
+    const [ displayGroups, setDisplayGroups ] = React.useState(rooms.slice(0, 10));
     const [ members, setMembers ] = React.useState(initialMembers);
     const [ loading, setLoading ] = React.useState(false);
+
+    const handleGroupsShowMore = React.useCallback(async () => {
+        setDisplayGroups(rooms);
+    }, []);
 
     const handleLoadMore = React.useCallback(async () => {
         if (members.length < membersCount && !loading) {
@@ -43,6 +54,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 <UUserView
                     key={'member-' + member.user.id}
                     user={member.user}
+                    role={member.role}
                     rightElement={<MemberManageMenu organization={organization} member={member} />}
                 />
             )}
@@ -56,21 +68,56 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 <OrganizationManageButtons organization={organization} />
             </UListHero>
             <UListGroup header="About">
-                {!!about && <UListField value={about} marginBottom={24} />}
-                {!!shortname && <UListField label="Shortname" value={'@' + shortname} />}
+                {!!about && <UListText value={about} />}
+                {!!shortname && (
+                    <UListField
+                        label="Shortname"
+                        value={
+                            <a
+                                href={'https://openland.com/' + shortname}
+                                target="_blank"
+                            >
+                                @{shortname}
+                            </a>
+                        }
+                    />
+                )}
                 {!!website && <UListField label="Website" value={website} />}
                 {!!twitter && <UListField label="Twitter" value={twitter} />}
                 {!!facebook && <UListField label="Facebook" value={facebook} />}
             </UListGroup>
             <UListGroup header="Group and channels" counter={rooms.length}>
-                {rooms.slice(0, 10).map(room => (
+                {displayGroups.map(room => (
                     <UGroupView
                         key={'room-' + room.id}
                         group={room}
                     />
                 ))}
+                {displayGroups.length !== rooms.length && (
+                    <UListItem
+                        title="Show more"
+                        icon={<MoreHIcon />}
+                        iconColor={ThemeDefault.foregroundSecondary}
+                        iconBackground={ThemeDefault.backgroundTertiary}
+                        useRadius={true}
+                        onClick={handleGroupsShowMore}
+                    />
+                )}
             </UListGroup>
             <UListHeader text="Members" counter={membersCount} />
+            {organization.isMine && (
+                <UAddItem
+                    title="Add members"
+                    onClick={() => {
+                        showAddMembersModal({
+                            id,
+                            isRoom: false,
+                            isOrganization: true,
+                            isCommunity,
+                        });
+                    }}
+                />
+            )}
         </UFlatList>
     );
 });
