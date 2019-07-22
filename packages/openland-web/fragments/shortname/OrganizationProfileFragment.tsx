@@ -60,7 +60,19 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
             </UListHero>
             <UListGroup header="About">
                 {!!about && <UListField value={about} marginBottom={24} />}
-                {!!shortname && <UListField label="Shortname" value={'@' + shortname} />}
+                {!!shortname && (
+                    <UListField
+                        label="Shortname"
+                        value={
+                            <a
+                                href={'https://openland.com/' + shortname}
+                                target="_blank"
+                            >
+                                @{shortname}
+                            </a>
+                        }
+                    />
+                )}
                 {!!website && <UListField label="Website" value={website} />}
                 {!!twitter && <UListField label="Twitter" value={twitter} />}
                 {!!facebook && <UListField label="Facebook" value={facebook} />}

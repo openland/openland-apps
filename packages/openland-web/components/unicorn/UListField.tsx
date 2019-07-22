@@ -6,7 +6,7 @@ import { UText } from './UText';
 
 interface UListFieldProps extends XViewProps {
     label?: string;
-    value?: string;
+    value?: string | JSX.Element;
 }
 
 export const UListField = (props: UListFieldProps) => {
@@ -36,7 +36,12 @@ export const UListField = (props: UListFieldProps) => {
                 flexGrow={1}
                 flexShrink={1}
             >
-                <UText text={value} />
+                {typeof value === 'string' && <UText text={value} />}
+                {typeof value !== 'string' && (
+                    <>
+                        {value}
+                    </>
+                )}
             </XView>
         </XView>
     );
