@@ -3,7 +3,7 @@ import { NavigationManager } from '../NavigationManager';
 import { HeaderPage } from './HeaderPage';
 import { SNavigationViewStyle } from '../../SNavigationView';
 import { SDevice } from '../../SDevice';
-import { Image, StyleSheet, ViewStyle, TextStyle, View, Text, TextInput, BackHandler, Platform, TouchableOpacity, Dimensions } from 'react-native';
+import { Image, StyleSheet, ViewStyle, TextStyle, View, Text, TextInput, BackHandler, TouchableOpacity, Dimensions } from 'react-native';
 import { SAnimated } from '../../SAnimated';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SBackButton } from 'react-native-s/SBackButton';
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
         flexBasis: 0,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        // backgroundColor: Platform.OS === 'android' ? '#fff' : undefined // Needed for ripple effect to work
     } as ViewStyle,
     title: {
         ...TypeStyles.headline,
@@ -124,7 +123,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                                     {this.state.searchText.length > 0 && (
                                         <TouchableOpacity onPress={() => this.handleTextChange('')}>
                                             <View style={{ height: 44, width: 56, justifyContent: 'center', alignItems: 'center' }}>
-                                                <Image source={require('assets/ic-close-24.png')} style={{ tintColor: this.props.style.iconColor, width: 14, height: 14 }} />
+                                                <Image source={require('assets/ic-close-24.png')} style={{ tintColor: this.props.style.iconColor, width: 24, height: 24 }} />
                                             </View>
                                         </TouchableOpacity>
                                     )}
@@ -136,7 +135,6 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                             {v.config.search && !v.config.searchActive && <SHeaderButton title="Search" icon={require('assets/ic-search-24.png')} onPress={v.config.searchPress} style={this.props.style} />}
                             {v.config.buttons && !v.config.searchActive && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
                         </View>
-
                     </View>
                 </View>
             </SAnimated.View>
