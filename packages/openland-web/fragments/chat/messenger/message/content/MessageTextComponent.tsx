@@ -2,16 +2,11 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { SpannedView } from './SpannedView';
 import { Span } from 'openland-y-utils/spans/Span';
-import { useCheckPerf } from 'openland-web/hooks/useCheckPerf';
 
 export interface MessageTextComponentProps {
-    isComment?: boolean;
-    isChannel: boolean;
     spans: Span[];
     isEdited: boolean;
-    isService?: boolean;
     shouldCrop?: boolean;
-    asPinMessage?: boolean;
 }
 
 const styleSpansMessageContainer = css`
@@ -47,13 +42,12 @@ const EditLabelStyle = css`
 `;
 
 export const MessageTextComponent = React.memo<MessageTextComponentProps>(
-    ({ shouldCrop, spans, isEdited, asPinMessage, isService, isComment, isChannel }) => {
-        // useCheckPerf({ name: 'MessageTextComponent' });
+    ({ shouldCrop, spans, isEdited }) => {
         return (
             <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                 <span>
                     <SpannedView spans={spans} />
-                    {isEdited && !isComment && !isChannel && (
+                    {isEdited && (
                         <span className={EditLabelStyle}>(Edited)</span>
                     )}
                 </span>
@@ -63,13 +57,12 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(
 );
 
 export const MessageTextComponentSpanned = React.memo<MessageTextComponentProps>(
-    ({ shouldCrop, spans, isEdited, isService, isComment, isChannel }) => {
-        // useCheckPerf({ name: 'MessageTextComponentSpanned' });
+    ({ shouldCrop, spans, isEdited }) => {
         return (
             <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                 <span>
                     <SpannedView spans={spans} />
-                    {isEdited && !isComment && !isChannel && (
+                    {isEdited && (
                         <span className={EditLabelStyle}>(Edited)</span>
                     )}
                 </span>

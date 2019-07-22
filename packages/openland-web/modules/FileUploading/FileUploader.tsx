@@ -2,8 +2,8 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import RemoveIcon from 'openland-icons/ic-close.svg';
-import { niceBytes } from 'openland-web/fragments/chat/messenger/message/content/MessageFileComponent';
 import { UploadContext } from './UploadContext';
+import { formatBytes } from 'openland-y-utils/formatBytes';
 
 const CoverWrapper = Glamorous.div({
     borderRadius: 6,
@@ -90,7 +90,7 @@ export const FileUploader = () => {
                     <FileImage />
                     <XHorizontal alignItems="center" separator={4}>
                         <div>
-                            {fileName} <span>•</span> {niceBytes(fileSize)}
+                            {fileName} <span>•</span> {formatBytes(fileSize)}
                         </div>
                         <XHorizontal alignItems="center" className="remove" onClick={fileRemover}>
                             <RemoveIcon />

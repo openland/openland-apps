@@ -3,13 +3,10 @@ import { XView } from 'react-mental';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { UserForMention } from 'openland-api/Types';
 import { css, cx } from 'linaria';
-import { LinkToRoom } from './service/views/LinkToRoom';
-import { OthersPopper, JoinedUserPopperRowProps } from './service/views/OthersPopper';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
-import { MentionComponentInnerText } from './service/views/MentionedUser';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 
@@ -112,66 +109,18 @@ const MentionedUser = React.memo(
     ({ user, text, isYou }: { user: UserForMention; text: any; isYou: boolean }) => {
         return (
             <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
-                <MentionComponentInnerText isYou={isYou}>{text}</MentionComponentInnerText>
+                {/* <MentionComponentInnerText isYou={isYou}>{text}</MentionComponentInnerText> */}
+                {text}
             </UserPopper>
         );
     },
 );
 
-const LinkText = css`
-    display: inline;
-    white-space: pre-wrap;
-    overflow-wrap: break-word;
-    & > a {
-        display: inline;
-    }
-`;
-
-const LinkComponent = (props: { link: string; children?: any }) => {
-    const modal = React.useContext(XModalContext);
-    const modalBox = React.useContext(XModalBoxContext);
-
-    const onCloseModal = () => {
-        if (modal) {
-            modal.close();
-        }
-        if (modalBox) {
-            modalBox.close();
-        }
-    };
-    React.useEffect(() => undefined, [modal, modalBox]);
-
-    let href: string | undefined = props.link || undefined;
-    let path: string | undefined = undefined;
-
-    let internalLink = isInternalLink(href || '');
-
-    if (internalLink) {
-        path = makeInternalLinkRelative(href || '');
-        href = undefined;
-    }
-    let openlandLink: boolean = !!internalLink;
-
-    return (
-        <span className={LinkText}>
-            <XView
-                as="a"
-                target={openlandLink ? undefined : '_blank'}
-                href={href}
-                path={path}
-                onClick={onCloseModal}
-            >
-                {props.children}
-            </XView>
-        </span>
-    );
-};
-
 export const SpanView = React.memo<{ span: Span; children?: any; isService?: boolean }>(props => {
     const { span, children } = props;
 
     if (span.type === 'link') {
-        return <LinkComponent link={span.link}>{children}</LinkComponent>;
+        return <XView as="a" href={span.link}>{children}</XView>;
     } else if (span.type === 'bold') {
         return (
             <span className={cx(boldTextClassName, props.isService && boldTextServiceClassName)}>
@@ -193,24 +142,24 @@ export const SpanView = React.memo<{ span: Span; children?: any; isService?: boo
     } else if (span.type === 'code_block') {
         return <div className={codeBlockClassName}>{children}</div>;
     } else if (span.type === 'mention_room') {
-        return <LinkToRoom text={children} roomId={span.id} />;
+        return <XView path={'/group/' + span.id} >{children}</XView>;
     } else if (span.type === 'mention_user') {
         return <MentionedUser isYou={span.user.isYou} text={children} user={span.user} />;
-    } else if (span.type === 'mention_users') {
-        let otherItems: JoinedUserPopperRowProps[] = [];
+        // } else if (span.type === 'mention_users') {
+        //     let otherItems: JoinedUserPopperRowProps[] = [];
 
-        span.users.map(j => {
-            otherItems.push({
-                title: j.name,
-                subtitle: j.primaryOrganization ? j.primaryOrganization.name : '',
-                photo: j.photo || '',
-                id: j.id,
-            });
-        });
+        //     span.users.map(j => {
+        //         otherItems.push({
+        //             title: j.name,
+        //             subtitle: j.primaryOrganization ? j.primaryOrganization.name : '',
+        //             photo: j.photo || '',
+        //             id: j.id,
+        //         });
+        //     });
 
-        return <OthersPopper items={otherItems}>{children}</OthersPopper>;
-    } else if (span.type === 'mention_all') {
-        return <MentionComponentInnerText isYou={true}>{children}</MentionComponentInnerText>;
+        //     return <OthersPopper items={otherItems}>{children}</OthersPopper>;
+        // } else if (span.type === 'mention_all') {
+        //     return <MentionComponentInnerText isYou={true}>{children}</MentionComponentInnerText>;
     } else if (span.type === 'new_line') {
         return <br />;
     } else if (span.type === 'emoji') {

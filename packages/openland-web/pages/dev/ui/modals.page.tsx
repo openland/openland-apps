@@ -31,7 +31,6 @@ import { showSuperDeleteOrganizationModal } from '../orgView.page';
 import { showImagePreviewModal } from 'openland-web/components/ImagePreviewModal';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { XView } from 'react-mental';
-import { showPinMessageModal } from 'openland-web/fragments/chat/PinMessage';
 import {
     showDeleteOrganizationModal,
     LeaveOrganizationModal,
@@ -156,7 +155,8 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             onClick={() => showLeaveOrganizationModal(rfzzOrgId)}
                         />
 
-                        <XButton
+                        {/* Recover after pin modal */}
+                        {/* <XButton
                             text="pin message"
                             style="primary"
                             onClick={() =>
@@ -166,7 +166,7 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                     room: gfdsgsRoom,
                                 })
                             }
-                        />
+                        /> */}
 
                         <XButton
                             text="image preview"
@@ -179,8 +179,8 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                 })
                             }
                         />
-
-                        <XButton
+                        {/* Recover after pin modal */}
+                        {/* <XButton
                             text="pin message"
                             style="primary"
                             onClick={() =>
@@ -190,7 +190,7 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                                     room: gfdsgsRoom,
                                 })
                             }
-                        />
+                        /> */}
 
                         <XButton
                             text="website placeholder"

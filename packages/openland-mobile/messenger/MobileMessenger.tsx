@@ -30,17 +30,11 @@ import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
     let actionsState = conversationEngine.messagesActionsState;
 
-    actionsState.clear();
-    actionsState.setState({ messages });
-
     getMessenger().history.navigationManager.push('HomeDialogs', {
         title: 'Forward to', pressCallback: (id: string) => {
             let selectedActionsState = getMessenger().engine.getConversation(id).messagesActionsState;
-            let stateToForward = actionsState.getState();
 
-            actionsState.clear();
-
-            selectedActionsState.setState({ ...stateToForward, action: 'forward' });
+            selectedActionsState.forwardFrom(messages, actionsState);
 
             if (conversationEngine.conversationId === id) {
                 getMessenger().history.navigationManager.pushAndReset('Conversation', { id });
@@ -179,7 +173,7 @@ export class MobileMessenger {
 
         if (conversation.canSendMessage) {
             builder.action('Reply', () => {
-                conversation.messagesActionsState.setState({ messages: [message], action: 'reply' });
+                conversation.messagesActionsState.reply(message);
             }, false, require('assets/ic-reply-24.png'));
         }
 
@@ -194,7 +188,7 @@ export class MobileMessenger {
         if (message.text) {
             if (message.senderId === this.engine.user.id) {
                 builder.action('Edit', () => {
-                    conversation.messagesActionsState.setState({ messages: [message], action: 'edit' });
+                    conversation.messagesActionsState.edit(message);
                 }, false, require('assets/ic-edit-24.png'));
             }
 
