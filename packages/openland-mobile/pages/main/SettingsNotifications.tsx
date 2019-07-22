@@ -3,77 +3,132 @@ import { withApp } from '../../components/withApp';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
-import { ZForm } from '../../components/ZForm';
 import { SHeader } from 'react-native-s/SHeader';
-import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { NON_PRODUCTION } from '../Init';
+import { Settings_settings, CommentsNotificationDelivery, NotificationMessages, EmailFrequency } from 'openland-api/Types';
+import { ZCheckmarkGroup } from 'openland-mobile/components/ZCheckmarkGroup';
+import { SScrollView } from 'react-native-s/SScrollView';
+import { backoff } from 'openland-y-utils/timer';
 
-const SettingsNotificationsContent = XMemo<PageProps>((props) => {
-    let ref = React.useRef<ZForm | null>(null);
-    let handleSave = React.useCallback(() => {
-        if (ref.current) {
-            ref.current.submitForm();
+const SettingsNotificationsContent = XMemo<PageProps>(props => {
+    const settingsData = getClient().useSettings({ fetchPolicy: 'network-only' }).settings;
+    const [ settings, setSettings ] = React.useState<Settings_settings>(settingsData);
+    const debounceTimer = React.useRef<NodeJS.Timeout | null>(null);
+
+    const mutate = async () => {
+        const input = {
+            mobileNotifications: settings.mobileNotifications,
+            desktopNotifications: settings.desktopNotifications,
+            commentNotificationsDelivery: settings.commentNotificationsDelivery,
+            emailFrequency: settings.emailFrequency,
+            mobileAlert: settings.mobileAlert,
+            mobileIncludeText: settings.mobileIncludeText,
+            excludeMutedChats: settings.excludeMutedChats,
+            countUnreadChats: settings.countUnreadChats,
+        };
+
+        await backoff(async () => {
+            await getClient().mutateSettingsUpdate({ input });
+        });
+    };
+
+    const handleSave = (field: string, value: string | boolean | number) => {
+        setSettings(prevState => ({ ...prevState, [field]: value }));
+    };
+    
+    React.useEffect(() => {
+        if (debounceTimer.current) {
+            clearTimeout(debounceTimer.current);
         }
-    }, []);
-    let settings = getClient().useSettings({ fetchPolicy: 'network-only' }).settings;
+    
+        debounceTimer.current = setTimeout(() => {
+            mutate();
+            debounceTimer.current = null;
+        }, 1000);
+    }, [ settings ]);
 
     return (
-        <>
-            <SHeaderButton title="Save" onPress={handleSave} />
-            <ZForm
-                action={async (args) => {
-                    await getClient().mutateSettingsUpdate(args);
-                }}
-                onSuccess={() => props.router.back()}
-                ref={ref}
-                defaultData={{
-                    input: {
-                        mobileNotifications: settings.mobileNotifications,
-                        desktopNotifications: settings.desktopNotifications,
-                        commentNotificationsDelivery: settings.commentNotificationsDelivery,
-                        emailFrequency: settings.emailFrequency,
-                        mobileAlert: settings.mobileAlert,
-                        mobileIncludeText: settings.mobileIncludeText,
-                        excludeMutedChats: settings.excludeMutedChats,
-                        countUnreadChats: settings.countUnreadChats,
-                    }
-                }}
-            >
-                {NON_PRODUCTION && (
-                    <ZListItemGroup header="Counter">
-                        <ZListItem text="Show unread chats" toggleField={{ key: 'input.countUnreadChats' }} />
-                        <ZListItem text="Exclude muted chats" toggleField={{ key: 'input.excludeMutedChats' }} />
-                    </ZListItemGroup>
-                )}
-                <ZListItemGroup header="Push notifications">
-                    <ZListItem text="Alert" toggleField={{ key: 'input.mobileAlert' }} />
-                    <ZListItem text="Include preview of messages" toggleField={{ key: 'input.mobileIncludeText' }} />
+        <SScrollView>
+            {NON_PRODUCTION && (
+                <ZListItemGroup header="Counter">
+                    <ZListItem
+                        text="Show unread chats"
+                        onToggle={value => handleSave('countUnreadChats', value)}
+                        toggle={settings.countUnreadChats}
+                    />
+                    <ZListItem
+                        text="Exclude muted chats"
+                        onToggle={value => handleSave('excludeMutedChats', value)}
+                        toggle={settings.excludeMutedChats}
+                    />
                 </ZListItemGroup>
-                <ZListItemGroup header="Comments notifications">
-                    <ZListItem text="All comments" checkmarkField={{ key: 'input.commentNotificationsDelivery', value: 'ALL' }} />
-                    <ZListItem text="Never notify me" checkmarkField={{ key: 'input.commentNotificationsDelivery', value: 'NONE' }} />
-                </ZListItemGroup>
-                <ZListItemGroup header="Send notification about">
-                    <ZListItem text="All new messages" checkmarkField={{ key: 'input.mobileNotifications', value: 'ALL' }} />
-                    <ZListItem text="Direct messages" checkmarkField={{ key: 'input.mobileNotifications', value: 'DIRECT' }} />
-                    <ZListItem text="Never notify me" checkmarkField={{ key: 'input.mobileNotifications', value: 'NONE' }} />
-                </ZListItemGroup>
-                <ZListItemGroup header="Desktop & Email">
-                    <ZListItem text="All new messages" checkmarkField={{ key: 'input.desktopNotifications', value: 'ALL' }} />
-                    <ZListItem text="Direct messages" checkmarkField={{ key: 'input.desktopNotifications', value: 'DIRECT' }} />
-                    <ZListItem text="Never notify me" checkmarkField={{ key: 'input.desktopNotifications', value: 'NONE' }} />
-                </ZListItemGroup>
-                <ZListItemGroup header="Email frequency" footer={'When you’re busy or not online, Openland can send you email notifications about new messages. We will use ' + settings.primaryEmail + ' for notifications'}>
-                    <ZListItem text="Notify every 15 minutes" checkmarkField={{ key: 'input.emailFrequency', value: 'MIN_15' }} />
-                    <ZListItem text="Notify maximum once per 1 hour" checkmarkField={{ key: 'input.emailFrequency', value: 'HOUR_1' }} />
-                    <ZListItem text="Once per 24 hours" checkmarkField={{ key: 'input.emailFrequency', value: 'HOUR_24' }} />
-                    <ZListItem text="Once a week" checkmarkField={{ key: 'input.emailFrequency', value: 'WEEK_1' }} />
-                    <ZListItem text="Never notify me" checkmarkField={{ key: 'input.emailFrequency', value: 'NEVER' }} />
-                </ZListItemGroup>
-            </ZForm>
-        </>
+            )}
+
+            <ZListItemGroup header="Push notifications">
+                <ZListItem
+                    text="Alert"
+                    onToggle={value => handleSave('mobileAlert', value)}
+                    toggle={settings.mobileAlert}
+                />
+                <ZListItem
+                    text="Include preview of messages"
+                    onToggle={value => handleSave('mobileIncludeText', value)}
+                    toggle={settings.mobileIncludeText}
+                />
+            </ZListItemGroup>
+
+            <ZCheckmarkGroup
+                header={'Comments notifications'}
+                value={settings.commentNotificationsDelivery}
+                onChange={item => handleSave('commentNotificationsDelivery', item.value)}
+                items={[
+                    { label: 'All comments', value: CommentsNotificationDelivery.ALL },
+                    { label: 'Never notify me', value: CommentsNotificationDelivery.NONE },
+                ]}
+            />
+
+            <ZCheckmarkGroup
+                header={'Send notification about'}
+                value={settings.mobileNotifications}
+                onChange={item => handleSave('mobileNotifications', item.value)}
+                items={[
+                    { label: 'All new messages', value: NotificationMessages.ALL },
+                    { label: 'Direct messages', value: NotificationMessages.DIRECT },
+                    { label: 'Never notify me', value: NotificationMessages.NONE },
+                ]}
+            />
+
+            <ZCheckmarkGroup
+                header={'Desktop & Email'}
+                value={settings.desktopNotifications}
+                onChange={item => handleSave('desktopNotifications', item.value)}
+                items={[
+                    { label: 'All new messages', value: NotificationMessages.ALL },
+                    { label: 'Direct messages', value: NotificationMessages.DIRECT },
+                    { label: 'Never notify me', value: NotificationMessages.NONE },
+                ]}
+            />
+
+            <ZCheckmarkGroup
+                header={'Email frequency'}
+                footer={
+                    'When you’re busy or not online, Openland can send you email notifications about new messages. We will use ' +
+                    settings.primaryEmail +
+                    ' for notifications'
+                }
+                value={settings.emailFrequency}
+                onChange={item => handleSave('emailFrequency', item.value)}
+                items={[
+                    { label: 'Notify every 15 minutes', value: EmailFrequency.MIN_15 },
+                    { label: 'Notify maximum once per 1 hour', value: EmailFrequency.HOUR_1 },
+                    { label: 'Once per 24 hours', value: EmailFrequency.HOUR_24 },
+                    { label: 'Once a week', value: EmailFrequency.WEEK_1 },
+                    { label: 'Never notify me', value: EmailFrequency.NEVER },
+                ]}
+            />
+        </SScrollView>
     );
 });
 
