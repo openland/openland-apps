@@ -29,6 +29,10 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
         : null;
 
     // Check group state
+    const header = React.useMemo(() => {
+        return <ChatHeader chat={chat} />;
+    }, [chat]);
+
     if (chat.__typename === 'SharedRoom' && chat.kind !== 'INTERNAL' && chat.membership !== 'MEMBER') {
         if (chat.kind === 'PUBLIC') {
             return <SharedRoomPlaceholder room={chat} />;
@@ -36,10 +40,6 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
             throw Error('Access denied');
         }
     }
-
-    const header = React.useMemo(() => {
-        return <ChatHeader chat={chat} />;
-    }, [chat]);
 
     return (
         <>
