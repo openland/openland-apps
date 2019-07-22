@@ -9,6 +9,8 @@ import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { OrganizationManageButtons } from './components/OrganizationManageButtons';
 import { MemberManageMenu } from './components/MemberManageMenu';
+import { showAddMembersModal } from '../chat/AddMembersModal';
+import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
@@ -72,6 +74,19 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 ))}
             </UListGroup>
             <UListHeader text="Members" counter={membersCount} />
+            {organization.isMine && (
+                <UAddItem
+                    title="Add members"
+                    onClick={() => {
+                        showAddMembersModal({
+                            id,
+                            isRoom: false,
+                            isOrganization: true,
+                            isCommunity,
+                        });
+                    }}
+                />
+            )}
         </UFlatList>
     );
 });
