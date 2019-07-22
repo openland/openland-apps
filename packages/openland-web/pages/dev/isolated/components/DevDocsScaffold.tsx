@@ -29,6 +29,7 @@ export function DevDocsScaffold(props: {
                         <Sidebar title="Isolated features/units/components">
                             <Sidebar.Item path="/isolated/modals">Modals</Sidebar.Item>
                             <Sidebar.Item path="/isolated/forms">Forms</Sidebar.Item>
+                            <Sidebar.Item path="/isolated/rick">Rick Input</Sidebar.Item>
                         </Sidebar>
                     </Scaffold.Menu>
                 )}

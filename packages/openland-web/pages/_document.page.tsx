@@ -244,6 +244,7 @@ export default class OpenlandDocument extends Document {
                         rel="stylesheet"
                         href="https://fonts.googleapis.com/icon?family=Material+Icons"
                     />
+                    <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css" />
 
                     {/* Styles */}
                     <link rel="stylesheet" href="/static/css/draft.css" />
