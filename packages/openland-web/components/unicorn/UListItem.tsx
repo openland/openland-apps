@@ -1,67 +1,14 @@
 import * as React from 'react';
 import { XView, XViewSelectedContext, XViewProps } from 'react-mental';
 import { ThemeDefault } from 'openland-y-utils/themes';
-import { css, cx } from 'linaria';
 import { TypeStyles } from 'openland-web/utils/TypeStyles';
 import { UAvatar } from './UAvatar';
+import { UIcon } from './UIcon';
 
-const iconWrapper = css`
-    display: flex;
-    align-items: center;
-    justify-content: center;
+const SelectableSVG = React.memo((props: { icon: JSX.Element }) => {
+    const selected = React.useContext(XViewSelectedContext);
 
-    svg {
-        path {
-            stroke: #676D7A; // Need to be ThemeDefault.foregroundSecondary
-        }
-        circle {
-            fill: #676D7A; // Need to be ThemeDefault.foregroundSecondary
-        }
-    }
-`;
-
-const iconBackgroundedWrapper = css`
-    svg {
-        path {
-            stroke: #FFFFFF; // Need to be ThemeDefault.contrastSpecial
-        }
-        circle {
-            fill: #FFFFFF; // Need to be ThemeDefault.contrastSpecial
-        }
-    }
-`;
-
-const iconWrapperSelected = css`
-    svg {
-        path {
-            stroke: white; // Need to be ThemeDefault.contrastSpecial
-        }
-        circle {
-            fill: white; // Need to be ThemeDefault.contrastSpecial
-        }
-    }
-`;
-
-const SelectableSVG = React.memo((props: { children?: any }) => {
-    let selected = React.useContext(XViewSelectedContext);
-
-    return (
-        <div
-            className={cx(iconWrapper, selected && iconWrapperSelected)}
-        >
-            {props.children}
-        </div>
-    );
-});
-
-const BackgroundedSVG = React.memo((props: { children?: any }) => {
-    return (
-        <div
-            className={cx(iconWrapper, iconBackgroundedWrapper)}
-        >
-            {props.children}
-        </div>
-    );
+    return <UIcon icon={props.icon} color={selected ? '#FFFFFF' : '#676D7A'} />;
 });
 
 const SelectableText = React.memo((props: XViewProps) => {
@@ -83,7 +30,7 @@ interface UListItemProps {
     subtitle?: string;
     description?: string | JSX.Element | null;
     descriptionColor?: string;
-    icon?: any;
+    icon?: JSX.Element;
     iconColor?: string;
     avatar?: { photo?: string | null, id: string, title: string, online?: boolean };
     onClick?: (event: React.MouseEvent) => void;
@@ -119,8 +66,8 @@ export const UListItem = React.memo((props: UListItemProps) => {
             path={path}
             linkSelectable={true}
         >
-            {!!icon && !iconColor && <XView marginRight={16} width={24} height={24} alignItems="center" justifyContent="center"><SelectableSVG>{icon}</SelectableSVG></XView>}
-            {!!icon && !!iconColor && <XView marginRight={16} width={40} height={40} borderRadius={20} backgroundColor={iconColor} alignItems="center" justifyContent="center"><BackgroundedSVG>{icon}</BackgroundedSVG></XView>}
+            {!!icon && !iconColor && <XView marginRight={16} width={24} height={24} alignItems="center" justifyContent="center"><SelectableSVG icon={icon} /></XView>}
+            {!!icon && !!iconColor && <XView marginRight={16} width={40} height={40} borderRadius={20} backgroundColor={iconColor} alignItems="center" justifyContent="center"><UIcon icon={icon} color="#FFFFFF" /></XView>}
             {!!avatar && !icon && (
                 <XView marginRight={16}>
                     <UAvatar {...avatar} size={large ? 'large' : 'medium'} />

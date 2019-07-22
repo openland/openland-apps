@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { XView, XViewProps } from 'react-mental';
 import { css, cx } from 'linaria';
+import { UIcon } from './UIcon';
+import { ThemeDefault } from 'openland-y-utils/themes';
 
 type UIconButtonSize = 'medium' | 'large';
 
@@ -52,7 +54,7 @@ export const UIconButton = React.memo((props: UIconButtonProps) => {
         >
             <div className={container}>
                 <div className={cx(wrapper, active && wrapperActive)}>
-                    {icon}
+                    <UIcon icon={icon} color={ThemeDefault.foregroundSecondary} />
                 </div>
             </div>
         </XView>
