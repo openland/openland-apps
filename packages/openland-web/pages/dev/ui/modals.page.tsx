@@ -34,6 +34,7 @@ import {
     showDeleteUserModal,
     showAddFeatureModal,
     showRemoveFeatureModal,
+    showEditOrganizationModal
 } from '../orgView.page';
 import { showImagePreviewModal } from 'openland-web/components/ImagePreviewModal';
 import { XCloudImage } from 'openland-x/XCloudImage';
@@ -328,6 +329,17 @@ export default withApp('UI Framework - New modals', 'viewer', props => {
                             text="remove feature"
                             style="primary"
                             onClick={() => showRemoveFeatureModal(egoarkaUser.id)}
+                        />
+
+                        <XButton
+                            text="edit organization"
+                            style="primary"
+                            onClick={() =>
+                                showEditOrganizationModal({
+                                    accountId: egoarkaUser.id,
+                                    orgTitle: 'foobar',
+                                })
+                            }
                         />
                     </XVertical>
                 </XVertical2>

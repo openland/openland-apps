@@ -24,6 +24,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { InputField } from 'openland-web/components/InputField';
 import { SelectWithDropdown } from '../main/mail/SelectWithDropdown';
 import { FeatureFlags_featureFlags } from 'openland-api/Types';
+import { XInput } from 'openland-x/XInput';
 
 const ActivateButton = ({ accountId }: { accountId: string }) => {
     const client = useClient();
@@ -476,30 +477,62 @@ export const showRemoveFeatureModal = (accountId: string) => {
     );
 };
 
-const Edit = ({ accountId, orgTitle }: { accountId: string; orgTitle: string }) => {
+interface EditOrganizationModal {
+    accountId: string;
+    orgTitle: string;
+}
+
+const EditOrganizationModal = ({
+    accountId,
+    orgTitle,
+    hide,
+}: EditOrganizationModal & { hide: () => void }) => {
     const client = useClient();
 
-    const mutate = async ({ variables: { title } }: { variables: { title: string } }) =>
-        await client.mutateSuperAccountRename({
-            accountId,
-            title,
+    const form = useForm();
+    const titleField = useField('input.title', orgTitle || '', form);
+
+    const rename = () =>
+        form.doAction(async () => {
+            await client.mutateSuperAccountRename({
+                accountId,
+                title: titleField.value,
+            });
+
+            hide();
         });
 
     return (
-        <XModalForm
-            title="Edit organization"
-            actionName="Rename"
-            target={<XButton text="Edit" flexShrink={0} />}
-            submitMutation={mutate as MutationFunc<{}>}
-            mutationDirect={true}
-        >
-            <XForm.Text
-                field="title"
-                autofocus={true}
-                value={orgTitle}
-                placeholder="Organization Name"
-            />
-        </XModalForm>
+        <XView borderRadius={8}>
+            <XModalContent>
+                <XVertical flexGrow={1} separator={8}>
+                    <XInput placeholder={'Organization Name'} {...titleField.input} size="large" />
+                </XVertical>
+            </XModalContent>
+            <XModalFooter>
+                <XView marginRight={12}>
+                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                </XView>
+                <XButton
+                    text="Rename"
+                    style="primary"
+                    size="large"
+                    onClick={rename}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </XView>
+    );
+};
+
+export const showEditOrganizationModal = (props: EditOrganizationModal) => {
+    showModalBox(
+        {
+            title: 'Edit organization',
+        },
+        ctx => {
+            return <EditOrganizationModal hide={ctx.hide} {...props} />;
+        },
     );
 };
 
@@ -513,7 +546,16 @@ export default withApp('Super Organization', 'super-admin', () => {
     return (
         <DevToolsScaffold title={superAccount.title}>
             <XHeader text={superAccount.title} description={'Current State: ' + superAccount.state}>
-                <Edit orgTitle={superAccount.title} accountId={accountId} />
+                <XButton
+                    text="Edit"
+                    flexShrink={0}
+                    onClick={() =>
+                        showEditOrganizationModal({
+                            accountId,
+                            orgTitle: superAccount.title,
+                        })
+                    }
+                />
                 {superAccount.state !== 'DELETED' && (
                     <>
                         <XButton
