@@ -9,8 +9,6 @@ import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngin
 import { SelectWithDropdown } from 'openland-web/pages/main/mail/SelectWithDropdown';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
-import { UserWithOffset } from 'openland-engines/legacy/legacymentions';
-import { setDraftMessage } from '../chat/components/MessageComposeComponent/hooks/useDraft/DraftStore';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 
@@ -43,7 +41,8 @@ const WriteFirstMessageModal = () => {
     let goToChat = React.useCallback(
         async () => {
             if (selected) {
-                setDraftMessage(selected.key, 'Hi @All! I am ~role~ at ~organization~. We do ~this and that~. Our top priority at the moment is ~achieve something~. Does anyone has any advice or connections for us?', [{ __typename: 'MessageSpanAllMention', offset: 3, length: 4 } as any as UserWithOffset]);
+                // todo set draft somehow
+                // setDraftMessage(selected.key, 'Hi @All! I am ~role~ at ~organization~. We do ~this and that~. Our top priority at the moment is ~achieve something~. Does anyone has any advice or connections for us?', [{ __typename: 'MessageSpanAllMention', offset: 3, length: 4 } as any as UserWithOffset]);
                 router.push('/mail/' + selected.key);
                 if (modal) {
                     modal.close();
