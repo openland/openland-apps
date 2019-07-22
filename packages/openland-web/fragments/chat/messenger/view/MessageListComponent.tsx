@@ -22,8 +22,8 @@ import { XLoader } from 'openland-x/XLoader';
 import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 import { delay } from 'openland-y-utils/timer';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
-
-const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+import { DateComponent } from './DateComponent';
+import { NewMessageDividerComponent } from './NewMessageDividerComponent';
 
 const messagesWrapperClassName = css`
     display: flex;
@@ -88,50 +88,6 @@ const LoadingWrapper = glamorous.div({
     position: 'relative',
 });
 
-const NewMessageDivider = (props: { dividerKey: string } & ScrollTo) => {
-    const ref = React.useRef<any | null>(null);
-    let isChatActive = React.useContext(IsActivePoliteContext);
-
-    React.useEffect(
-        () => {
-            return isChatActive.listen(async active => {
-                await delay(0);
-                if (ref.current && props.scrollTo && active) {
-                    ref.current.scrollIntoView();
-                    props.scrollTo.key = undefined;
-                }
-            });
-        },
-        [ref.current, props.scrollTo],
-    );
-    return (
-        <div key={props.dividerKey} ref={ref}>
-            <XView
-                justifyContent="center"
-                alignItems="center"
-                zIndex={1}
-                marginTop={24}
-                marginBottom={0}
-            >
-                <XView
-                    justifyContent="center"
-                    alignItems="center"
-                    backgroundColor="#ffffff"
-                    borderRadius={50}
-                    paddingLeft={10}
-                    paddingRight={10}
-                    paddingTop={2}
-                    paddingBottom={2}
-                >
-                    <XView fontSize={13} color="rgba(0, 0, 0, 0.4)">
-                        New messages
-                    </XView>
-                </XView>
-            </XView>
-        </div>
-    );
-};
-
 const dss = new Map<string, DataSource<DataSourceWebMessageItem | DataSourceDateItem>>();
 
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
@@ -170,59 +126,20 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
     renderMessage = React.memo(
         (
-            i: (DataSourceWebMessageItem | DataSourceDateItem | DataSourceNewDividerItem) &
+            item: (DataSourceWebMessageItem | DataSourceDateItem | DataSourceNewDividerItem) &
                 ScrollTo,
         ) => {
-            if (i.type === 'message') {
+            if (item.type === 'message') {
                 return (
                     <MessageComponent
-                        key={i.id}
-                        message={i}
-                        isChannel={this.props.isChannel}
-                        conversationId={this.props.conversationId}
-                        me={this.props.me}
-                        room={this.props.room}
+                        message={item}
                     />
                 );
-            } else if (i.type === 'date') {
-                let now = new Date();
-                let date = 'Today';
-                if (now.getFullYear() === i.year) {
-                    if (now.getMonth() !== i.month || now.getDate() !== i.date) {
-                        date = months[i.month] + ' ' + i.date;
-                    }
-                } else {
-                    date = i.year + ', ' + months[i.month] + ' ' + i.date;
-                }
-                return (
-                    <XView
-                        key={'date-' + i.date}
-                        justifyContent="center"
-                        alignItems="center"
-                        zIndex={1}
-                        marginTop={24}
-                        marginBottom={0}
-                    >
-                        <XView
-                            justifyContent="center"
-                            alignItems="center"
-                            backgroundColor="#ffffff"
-                            borderRadius={50}
-                            paddingLeft={10}
-                            paddingRight={10}
-                            paddingTop={2}
-                            paddingBottom={2}
-                        >
-                            <XView fontSize={13} color="rgba(0, 0, 0, 0.4)">
-                                {date}
-                            </XView>
-                        </XView>
-                    </XView>
-                );
-            } else if (i.type === 'new_divider') {
-                return <NewMessageDivider dividerKey={(i as any).dataKey} scrollTo={i.scrollTo} />;
+            } else if (item.type === 'date') {
+                return <DateComponent item={item} />;
+            } else if (item.type === 'new_divider') {
+                return <NewMessageDividerComponent dividerKey={(item as any).dataKey} scrollTo={item.scrollTo} />;
             }
-
             return <div />;
         },
     );

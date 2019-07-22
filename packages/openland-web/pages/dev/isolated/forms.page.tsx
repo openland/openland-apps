@@ -5,7 +5,6 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XContent } from 'openland-x-layout/XContent';
 import { XVertical2 } from 'openland-x/XVertical2';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { EditMessageInline } from 'openland-web/fragments/chat/messenger/message/edit/MessageEditComponent';
 
 import {
     addMemberModalChatId,
@@ -27,7 +26,7 @@ export default withApp('Isolated - forms', 'viewer', props => {
                 <XVertical2>
                     <XVertical width="400px">
                         <XView fontSize={20}>Edit message inline</XView>
-                        <EditMessageInline
+                        {/* <EditMessageInline
                             key="foobar"
                             isComment={false}
                             minimal={false}
@@ -36,7 +35,7 @@ export default withApp('Isolated - forms', 'viewer', props => {
                             variables={{
                                 roomId: gfdsgsRoom.id,
                             }}
-                        />
+                        /> */}
                     </XVertical>
                 </XVertical2>
             </XContent>

@@ -8,11 +8,6 @@ import {
 } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
-import {
-    MessageComposeComponentDraft,
-    MessageComposeComponentProps,
-} from './MessageComposeComponent/components/MessageComposeComponentDesktop';
-import { MobileMessageCompose } from './MessageComposeComponent/components/MessageComposeComponentMobile';
 import { ConversationMessagesComponent } from '../messenger/ConversationMessagesComponent';
 import { UploadCareUploading } from '../../../utils/UploadCareUploading';
 import {
@@ -28,7 +23,6 @@ import { XText } from 'openland-x/XText';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
-import { PinMessageComponent } from 'openland-web/fragments/chat/PinMessage';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
@@ -43,6 +37,9 @@ import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { useForm } from 'openland-form/useForm';
 import { XModalController } from 'openland-x/showModal';
+import { MessageContent } from '../messenger/message/MessageContent';
+import { convertMessage } from 'openland-engines/utils/convertMessage';
+import { convertDsMessage } from '../messenger/data/WebMessageItemDataSource';
 import { showModalBox } from 'openland-x/showModalBox';
 
 export interface File {
@@ -61,9 +58,9 @@ interface MessagesComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
 }
 
@@ -169,21 +166,6 @@ export const LeaveChatComponent = (props: { id: string; ctx: XModalController })
         </XView>
     );
 };
-
-interface ComposeHandlerProps extends MessageComposeComponentProps {
-    variables?: {
-        roomId?: string;
-        conversationId?: string;
-    };
-}
-
-const MessageComposeHandler = XMemo<ComposeHandlerProps>(props => {
-    const isMobile = React.useContext(IsMobileContext);
-    if (isMobile) {
-        return <MobileMessageCompose {...props} />;
-    }
-    return <MessageComposeComponentDraft {...props} />;
-});
 
 class MessagesComponent extends React.PureComponent<MessagesComponentProps, MessagesComponentState>
     implements ConversationStateHandler {
@@ -300,8 +282,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         text: string,
         mentions:
             | (
-                  | FullMessage_GeneralMessage_spans_MessageSpanUserMention
-                  | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
+                | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+                | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
             | null,
     ) => {
         if (!this.conversation) {
@@ -312,11 +294,11 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             text,
             mentions
                 ? mentions.map(mention => {
-                      if (mention.__typename === 'MessageSpanUserMention') {
-                          return mention.user;
-                      }
-                      return { __typename: 'AllMention' as 'AllMention' };
-                  })
+                    if (mention.__typename === 'MessageSpanUserMention') {
+                        return mention.user;
+                    }
+                    return { __typename: 'AllMention' as 'AllMention' };
+                })
                 : null,
         );
     }
@@ -353,10 +335,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             <XView flexDirection="column" flexGrow={1} flexShrink={1} contain="content">
                 {this.props.pinMessage &&
                     !this.state.loading && (
-                        <PinMessageComponent
-                            pinMessage={this.props.pinMessage}
-                            chatId={this.props.conversationId}
-                            room={this.props.room}
+                        <MessageContent
+                            message={convertDsMessage(convertMessage(this.props.pinMessage))}
                         />
                     )}
                 <ConversationMessagesComponent
@@ -375,18 +355,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 {!this.state.hideInput &&
                     this.conversation.canSendMessage && (
                         <UploadContextProvider>
-                            <MessageComposeHandler
-                                conversation={this.conversation}
-                                onChange={this.handleChange}
-                                onSend={this.handleSend}
-                                onSendFile={this.handleSendFile}
-                                scrollToBottom={this.scrollToBottom}
-                                enabled={true}
-                                conversationType={this.props.conversationType}
-                                conversationId={this.props.conversationId}
-                                variables={this.vars}
-                                bright
-                            />
+                            I'm input
                         </UploadContextProvider>
                     )}
             </XView>
@@ -399,9 +368,9 @@ interface MessengerRootComponentProps {
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
 }
 

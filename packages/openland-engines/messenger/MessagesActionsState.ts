@@ -2,17 +2,45 @@ import * as React from 'react';
 import { DataSourceMessageItem } from "./ConversationEngine";
 
 export interface MessagesActionsState {
-    action?: 'forward' | 'reply' | 'edit';
+    action?: 'forwardInit' | 'forward' | 'reply' | 'edit';
     messages: DataSourceMessageItem[];
 }
+
+let forwardDonor: MessagesActionsStateEngine | undefined;
 
 export class MessagesActionsStateEngine {
     private state: MessagesActionsState = { messages: [] };
     private listeners = new Set<(state: MessagesActionsState) => void>();
 
-    setState = (state: Partial<MessagesActionsState>) => {
+    private setState = (state: Partial<MessagesActionsState>) => {
         this.state = { ...this.state, ...state };
         this.notifyAll();
+    }
+
+    forwardFromDonor = () => {
+        if (forwardDonor) {
+            this.forwardFrom(forwardDonor.getState().messages, forwardDonor);
+        }
+    }
+
+    forwardFrom = (messages: DataSourceMessageItem[], from: MessagesActionsStateEngine) => {
+        this.setState({ messages, action: 'forward' });
+        if (this !== from) {
+            from.clear();
+        }
+    }
+
+    forwardInit = (message?: DataSourceMessageItem) => {
+        this.setState({ action: 'forwardInit', ... (message ? { messages: [message] } : {}) });
+        forwardDonor = this;
+    }
+
+    reply = (message: DataSourceMessageItem) => {
+        this.setState({ messages: [message], action: 'reply' });
+    }
+
+    edit = (message: DataSourceMessageItem) => {
+        this.setState({ messages: [message], action: 'edit' });
     }
 
     selectToggle = (message: DataSourceMessageItem) => {
@@ -48,14 +76,17 @@ export class MessagesActionsStateEngine {
     }
 }
 
-export const useMessageSelected = (engine: MessagesActionsStateEngine, self: DataSourceMessageItem) => {
+export const useMessageSelected = (engine: MessagesActionsStateEngine, self: DataSourceMessageItem): [boolean, () => void] => {
     let [selected, setSelected] = React.useState(false);
     React.useEffect(() => {
         return engine.listen((s) => {
             setSelected(s.messages.includes(self));
         });
     }, [self]);
-    return selected;
+    let toggleSelect = React.useCallback(() => {
+        engine.selectToggle(self);
+    }, []);
+    return [selected, toggleSelect];
 };
 
 export const useChatSelectionMode = (engine: MessagesActionsStateEngine) => {

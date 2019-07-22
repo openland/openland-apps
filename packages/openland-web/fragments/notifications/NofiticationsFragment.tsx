@@ -16,7 +16,6 @@ import {
 } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
 import { MessageComponent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
-import { openCommentsModal } from 'openland-web/fragments/chat/messenger/message/content/comments/CommentsModalInner';
 import { MessengerEmptyFragment } from 'openland-web/fragments/chat/MessengerEmptyFragment';
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
@@ -117,20 +116,10 @@ class CommentsNotificationsInner extends React.PureComponent<
 
     private renderMessage = (i: (DataSourceWebMessageItem | DataSourceDateItem) & ScrollTo) => {
         const data = i as any;
+        // TODO recover open comment modal
         return (
             <MessageComponent
                 message={data}
-                replyQuoteText={data.replyQuoteTextEmojify || data.replyQuoteText}
-                room={data.room}
-                noSelector
-                isCommentNotification
-                onCommentNotificationsReplyClick={() => {
-                    openCommentsModal({
-                        messageId: data.peerRootId,
-                        conversationId: data.room.id,
-                        selectedCommentMessageId: data.id,
-                    });
-                }}
             />
         );
     }
