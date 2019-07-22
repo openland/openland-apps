@@ -11,42 +11,35 @@ import { Settings_settings, CommentsNotificationDelivery, NotificationMessages, 
 import { ZCheckmarkGroup } from 'openland-mobile/components/ZCheckmarkGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { backoff } from 'openland-y-utils/timer';
+import debounce from 'lodash/debounce';
+
+const sendMutate = debounce(async (state: Settings_settings) => {
+    const input = {
+        mobileNotifications: state.mobileNotifications,
+        desktopNotifications: state.desktopNotifications,
+        commentNotificationsDelivery: state.commentNotificationsDelivery,
+        emailFrequency: state.emailFrequency,
+        mobileAlert: state.mobileAlert,
+        mobileIncludeText: state.mobileIncludeText,
+        excludeMutedChats: state.excludeMutedChats,
+        countUnreadChats: state.countUnreadChats,
+    };
+
+    await backoff(async () => {
+        await getClient().mutateSettingsUpdate({ input });
+    });
+}, 5000);
 
 const SettingsNotificationsContent = XMemo<PageProps>(props => {
     const settingsData = getClient().useSettings({ fetchPolicy: 'network-only' }).settings;
     const [ settings, setSettings ] = React.useState<Settings_settings>(settingsData);
-    const debounceTimer = React.useRef<NodeJS.Timeout | null>(null);
-
-    const mutate = async () => {
-        const input = {
-            mobileNotifications: settings.mobileNotifications,
-            desktopNotifications: settings.desktopNotifications,
-            commentNotificationsDelivery: settings.commentNotificationsDelivery,
-            emailFrequency: settings.emailFrequency,
-            mobileAlert: settings.mobileAlert,
-            mobileIncludeText: settings.mobileIncludeText,
-            excludeMutedChats: settings.excludeMutedChats,
-            countUnreadChats: settings.countUnreadChats,
-        };
-
-        await backoff(async () => {
-            await getClient().mutateSettingsUpdate({ input });
-        });
-    };
 
     const handleSave = (field: string, value: string | boolean | number) => {
-        setSettings(prevState => ({ ...prevState, [field]: value }));
+        setSettings({ ...settings, [field]: value });
     };
     
     React.useEffect(() => {
-        if (debounceTimer.current) {
-            clearTimeout(debounceTimer.current);
-        }
-    
-        debounceTimer.current = setTimeout(() => {
-            mutate();
-            debounceTimer.current = null;
-        }, 1000);
+        sendMutate(settings);
     }, [ settings ]);
 
     return (
