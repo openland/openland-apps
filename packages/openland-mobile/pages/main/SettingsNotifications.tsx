@@ -94,7 +94,7 @@ const SettingsNotificationsContent = XMemo<PageProps>(props => {
             />
 
             <ZCheckmarkGroup
-                header={'Desktop & Email'}
+                header={'Desktop'}
                 value={settings.desktopNotifications}
                 onChange={item => handleSave('desktopNotifications', item.value)}
                 items={[
