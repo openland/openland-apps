@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StackRouter, StackRouterContext } from './StackRouter';
+import { StackRouter, StackRouterContext, StackItems } from './StackRouter';
 import { PageLayout } from './PageLayout';
 import { UnicornContext } from './UnicornContext';
 import { XViewRoute, XViewRouteContext } from 'react-mental';
@@ -65,6 +65,8 @@ type AnimationAction = {
     key: string;
 } | {
     type: 'mounted'
+} | {
+    type: 'reset', pages: StackItems[]
 };
 
 type AnimationState = {
@@ -77,6 +79,23 @@ type AnimationState = {
         state: 'mounting' | 'entering' | 'visible' | 'hidden' | 'exiting'
     }[];
 };
+
+function initialState(pages: StackItems[]): AnimationState {
+    if (pages.length === 0) {
+        return { pages: [] };
+    } else {
+        return {
+            pages: pages.map((p, i) => ({
+                key: p.key,
+                id: p.id,
+                query: p.query,
+                path: p.path,
+                component: p.component,
+                state: (i === pages.length - 1 ? 'visible' : 'hidden') as 'visible' | 'hidden'
+            }))
+        };
+    }
+}
 
 function animationReducer(
     state: AnimationState,
@@ -136,6 +155,8 @@ function animationReducer(
         } else {
             return state;
         }
+    } else if (action.type === 'reset') {
+        return initialState(action.pages);
     } else {
         throw Error();
     }
@@ -170,25 +191,8 @@ const PageComponent = React.memo((props: {
     );
 });
 
-function initialState(router: StackRouter): AnimationState {
-    if (router.pages.length === 0) {
-        return { pages: [] };
-    } else {
-        return {
-            pages: router.pages.map((p, i) => ({
-                key: p.key,
-                id: p.id,
-                query: p.query,
-                path: p.path,
-                component: p.component,
-                state: (i === router.pages.length - 1 ? 'visible' : 'hidden') as 'visible' | 'hidden'
-            }))
-        };
-    }
-}
-
 export const StackLayout = React.memo((props: { router: StackRouter, className?: string }) => {
-    let [state, dispatch] = React.useReducer(animationReducer, props.router, initialState);
+    let [state, dispatch] = React.useReducer(animationReducer, props.router.pages, initialState);
     const baseRoute = React.useContext(XViewRouteContext)!;
     React.useEffect(() => { return props.router.addListener(dispatch); }, []);
     React.useLayoutEffect(() => { requestAnimationFrame(() => requestAnimationFrame(() => dispatch({ type: 'mounted' }))); });

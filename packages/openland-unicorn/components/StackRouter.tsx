@@ -13,7 +13,8 @@ export interface StackItems {
 
 export type StackRouterAction =
     { type: 'push', key: string, component: any, query: any, id?: string, path: string; } |
-    { type: 'pop', key: string };
+    { type: 'pop', key: string } |
+    { type: 'reset', pages: StackItems[] };
 
 export class StackRouter {
     readonly ref: React.RefObject<HTMLDivElement> = React.createRef();
@@ -27,31 +28,68 @@ export class StackRouter {
         this.routing = routing;
     }
 
+    historyChanged = (paths: string[]) => {
+        let same = false;
+        if (this.pages.length === paths.length) {
+            same = true;
+            for (let i = 0; i < this.pages.length; i++) {
+                if (this.pages[i].path !== paths[i]) {
+                    same = false;
+                    break;
+                }
+            }
+        }
+        if (same) {
+            return;
+        }
+
+        // If navigate next
+        if (paths.length - 1 === this.pages.length) {
+            same = true;
+            for (let i = 0; i < this.pages.length; i++) {
+                if (this.pages[i].path !== paths[i]) {
+                    same = false;
+                    break;
+                }
+            }
+
+            if (same) {
+                this.push(paths[paths.length - 1]);
+                return;
+            }
+        }
+
+        // If navigate back
+        if (paths.length === this.pages.length - 1) {
+            same = true;
+            for (let i = 0; i < this.pages.length - 1; i++) {
+                if (this.pages[i].path !== paths[i]) {
+                    same = false;
+                    break;
+                }
+            }
+
+            if (same) {
+                this.pop();
+                return;
+            }
+        }
+
+        // Reset stack
+        this.pages.splice(0, this.pages.length);
+        for (let p of paths) {
+            this.pages.push(this.resolve(p));
+        }
+        for (let l of this._listeners) {
+            l({ type: 'reset', pages: [...this.pages] });
+        }
+    }
+
     restore = (paths: string[]) => {
         this.pages.splice(0, this.pages.length - 1);
 
         for (let p of paths) {
-            let ex = this.routing.resolve(p);
-            let component: any;
-            let query: any = {};
-            let id: string | undefined;
-            if (!ex) {
-                console.warn('Unable to resolve component for ' + p);
-                component = <NotFound />;
-            } else {
-                let Component = ex.route.factory();
-                query = ex.params;
-                let keys = Object.keys(query);
-                if (keys.length === 1) {
-                    let id2 = query[keys[0]];
-                    if (typeof id2 === 'string') {
-                        id = id2;
-                    }
-                }
-                component = <Component />;
-            }
-            let key = uuid();
-            this.pages.push({ path: p, key, query, id, component });
+            this.pages.push(this.resolve(p));
         }
     }
 
@@ -62,30 +100,10 @@ export class StackRouter {
         }
 
         // Push page to stack
-        let ex = this.routing.resolve(path);
-        let component: any;
-        let query: any = {};
-        let id: string | undefined;
-        if (!ex) {
-            console.warn('Unable to resolve component for ' + path);
-            component = <NotFound />;
-        } else {
-            let Component = ex.route.factory();
-            query = ex.params;
-            let keys = Object.keys(query);
-            if (keys.length === 1) {
-                let id2 = query[keys[0]];
-                if (typeof id2 === 'string') {
-                    id = id2;
-                }
-            }
-            component = <Component />;
-        }
-        let key = uuid();
-
-        this.pages.push({ path, key, query, id, component });
+        let item = this.resolve(path);
+        this.pages.push(item);
         for (let l of this._listeners) {
-            l({ type: 'push', key, component, query, id, path });
+            l({ type: 'push', ...item });
         }
     }
 
@@ -109,6 +127,31 @@ export class StackRouter {
         return () => {
             this._listeners.splice(this._listeners.indexOf(handler), 1);
         };
+    }
+
+    private resolve(path: string): StackItems {
+        let ex = this.routing.resolve(path);
+        let component: any;
+        let query: any = {};
+        let id: string | undefined;
+        if (!ex) {
+            console.warn('Unable to resolve component for ' + path);
+            component = <NotFound />;
+        } else {
+            let Component = ex.route.factory();
+            query = ex.params;
+            let keys = Object.keys(query);
+            if (keys.length === 1) {
+                let id2 = query[keys[0]];
+                if (typeof id2 === 'string') {
+                    id = id2;
+                }
+            }
+            component = <Component />;
+        }
+        let key = uuid();
+
+        return { key, component, path, query, id };
     }
 }
 
