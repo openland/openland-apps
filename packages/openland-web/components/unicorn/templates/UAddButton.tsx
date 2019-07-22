@@ -13,7 +13,7 @@ export const UAddItem = React.memo((props: UAddItemProps) => (
         title={props.title}
         onClick={props.onClick}
         icon={<AddIcon />}
-        iconColor={ThemeDefault.accentPrimary}
+        iconBackground={ThemeDefault.accentPrimary}
         useRadius={true}
     />
 ));

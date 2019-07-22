@@ -12,6 +12,9 @@ import { MemberManageMenu } from './components/MemberManageMenu';
 import { showAddMembersModal } from '../chat/AddMembersModal';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { UListText } from 'openland-web/components/unicorn/UListText';
+import { UListItem } from 'openland-web/components/unicorn/UListItem';
+import { ThemeDefault } from 'openland-y-utils/themes';
+import MoreHIcon from 'openland-icons/s/ic-more-h-24.svg';
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
@@ -19,8 +22,13 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
     const initialMembers = client.useOrganizationMembers({ organizationId: props.id, first: 15 }, { fetchPolicy: 'cache-and-network' }).organization.members;
     const { id, name, photo, about, shortname, website, twitter, facebook, rooms, membersCount, isCommunity } = organization;
 
+    const [ displayGroups, setDisplayGroups ] = React.useState(rooms.slice(0, 10));
     const [ members, setMembers ] = React.useState(initialMembers);
     const [ loading, setLoading ] = React.useState(false);
+
+    const handleGroupsShowMore = React.useCallback(async () => {
+        setDisplayGroups(rooms);
+    }, []);
 
     const handleLoadMore = React.useCallback(async () => {
         if (members.length < membersCount && !loading) {
@@ -79,12 +87,22 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 {!!facebook && <UListField label="Facebook" value={facebook} />}
             </UListGroup>
             <UListGroup header="Group and channels" counter={rooms.length}>
-                {rooms.slice(0, 10).map(room => (
+                {displayGroups.map(room => (
                     <UGroupView
                         key={'room-' + room.id}
                         group={room}
                     />
                 ))}
+                {displayGroups.length !== rooms.length && (
+                    <UListItem
+                        title="Show more"
+                        icon={<MoreHIcon />}
+                        iconColor={ThemeDefault.foregroundSecondary}
+                        iconBackground={ThemeDefault.backgroundTertiary}
+                        useRadius={true}
+                        onClick={handleGroupsShowMore}
+                    />
+                )}
             </UListGroup>
             <UListHeader text="Members" counter={membersCount} />
             {organization.isMine && (
