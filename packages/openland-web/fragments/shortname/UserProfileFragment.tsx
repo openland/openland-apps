@@ -10,6 +10,7 @@ import { UPresence } from 'openland-web/components/unicorn/UPresence';
 import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/UNotificationsSwitch';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
+import { UListText } from 'openland-web/components/unicorn/UListText';
 
 export const UserProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
@@ -39,7 +40,7 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
                 )}
             </UListHero>
             <UListGroup header="About">
-                {!!about && <UListField value={about} marginBottom={24} />}
+                {!!about && <UListText value={about} />}
                 {!!shortname && (
                     <UListField
                         label="Username"

@@ -11,6 +11,7 @@ import { OrganizationManageButtons } from './components/OrganizationManageButton
 import { MemberManageMenu } from './components/MemberManageMenu';
 import { showAddMembersModal } from '../chat/AddMembersModal';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
+import { UListText } from 'openland-web/components/unicorn/UListText';
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
@@ -59,7 +60,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 <OrganizationManageButtons organization={organization} />
             </UListHero>
             <UListGroup header="About">
-                {!!about && <UListField value={about} marginBottom={24} />}
+                {!!about && <UListText value={about} />}
                 {!!shortname && (
                     <UListField
                         label="Shortname"

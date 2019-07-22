@@ -14,6 +14,7 @@ import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { GroupManageButtons } from './components/GroupManageButtons';
 import { showAddMembersModal } from '../chat/AddMembersModal';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
+import { UListText } from 'openland-web/components/unicorn/UListText';
 
 export const GroupProfileFragment = React.memo((props) => {
     const client = useClient();
@@ -75,7 +76,7 @@ export const GroupProfileFragment = React.memo((props) => {
             </UListHero>
 
             <UListGroup header="About">
-                {!!description && <UListField value={description} />}
+                {!!description && <UListText value={description} marginBottom={0} />}
             </UListGroup>
 
             {organization && (
