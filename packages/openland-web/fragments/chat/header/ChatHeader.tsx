@@ -4,11 +4,45 @@ import { XView } from 'react-mental';
 import { ThemeDefault } from 'openland-y-utils/themes';
 import { css } from 'linaria';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import { useClient } from 'openland-web/utils/useClient';
+import { XDate } from 'openland-x/XDate';
 
 const secondary = css`
     color: #969AA3;
     padding-left: 4px;
 `;
+const secondadyAcent = css`
+    color: #1885F2;
+`;
+
+const HeaderLastSeen = (props: { id: string }) => {
+    const client = useClient();
+    const data = client.useWithoutLoaderOnline({ userId: props.id }, {
+        fetchPolicy: 'network-only',
+    });
+
+    if (!data) {
+        return null;
+    }
+
+    const { user } = data;
+    if (user && (user.lastSeen && user.lastSeen !== 'online' && !user.online)) {
+        return (
+            <span>
+                last seen{' '}
+                {user.lastSeen === 'never_online' ? (
+                    'moments ago'
+                ) : (
+                        <XDate value={user.lastSeen} format="humanize_cute" />
+                    )}
+            </span>
+        );
+    } else if (user && user.online) {
+        return <span className={secondadyAcent}>online</span>;
+    } else {
+        return null;
+    }
+};
 
 export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     let title = props.chat.__typename === 'PrivateRoom' ? props.chat.user.name : props.chat.title;
@@ -48,7 +82,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     fontWeight="600"
                     color={ThemeDefault.foregroundTertiary}
                 >
-                    Subtitle
+                    {props.chat.__typename === 'PrivateRoom' ? <HeaderLastSeen id={props.chat.user.id} /> : null}
                 </XView>
             </XView>
         </XView>
