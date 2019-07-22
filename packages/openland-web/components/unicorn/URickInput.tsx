@@ -42,6 +42,7 @@ export const URickInput = React.memo((props: {
         q.keyboard.addBinding({ key: 13 as any }, () => {
             if (props.onEnterPress) {
                 props.onEnterPress(q.getText());
+                q.setText('');
                 return false;
             } else {
                 return true;

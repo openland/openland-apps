@@ -68,25 +68,43 @@ const ButtonPartWrapper = (props: { leftContent: JSX.Element; rightContent: JSX.
     </XView>
 );
 
-export const SendMessageComponent = (props: { onEnterPress?: (text: string) => void }) => (
-    <XView flexGrow={1} flexShrink={1} maxHeight={250} paddingVertical={16}>
-        <XView flexGrow={1} flexShrink={1}>
-            <URickInput onEnterPress={props.onEnterPress} />
+export const SendMessageComponent = (props: { onEnterPress?: (text: string) => void }) => {
+    // const [message, setMessage] = React.useState('');
+    // const onTextChange = (txt: string) => {
+    //     setMessage(txt);
+    // };
+    // const onTextSend = () => {
+    //     if (props.onEnterPress) {
+    //         props.onEnterPress(message);
+    //     }
+    //     setMessage('');
+    // };
+    return (
+        <XView flexGrow={1} flexShrink={1} maxHeight={250} paddingVertical={16}>
+            <XView flexGrow={1} flexShrink={1}>
+                <URickInput
+                    // onTextChange={onTextChange}
+                    // text={message}
+                    onEnterPress={props.onEnterPress}
+                    placeholder="Write a message..."
+                />
+            </XView>
+            <XView
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-between"
+                marginTop={16}
+            >
+                <ButtonPartWrapper
+                    leftContent={<AttachButton text="Photo" icon={<PhotoIcon />} />}
+                    rightContent={<AttachButton text="Document" icon={<FileIcon />} />}
+                />
+                <ButtonPartWrapper
+                    leftContent={<AttachButton text="Shortcuts" icon={<ShortcutsIcon />} />}
+                    // rightContent={<UButton text="Send" onClick={onTextSend} />}
+                    rightContent={<UButton text="Send" />}
+                />
+            </XView>
         </XView>
-        <XView
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
-            marginTop={16}
-        >
-            <ButtonPartWrapper
-                leftContent={<AttachButton text="Photo" icon={<PhotoIcon />} />}
-                rightContent={<AttachButton text="Document" icon={<FileIcon />} />}
-            />
-            <ButtonPartWrapper
-                leftContent={<AttachButton text="Shortcuts" icon={<ShortcutsIcon />} />}
-                rightContent={<UButton text="Send" />}
-            />
-        </XView>
-    </XView>
-);
+    );
+};
