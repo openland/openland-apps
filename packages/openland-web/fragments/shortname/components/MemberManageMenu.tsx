@@ -4,6 +4,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { showLeaveConfirmation } from 'openland-web/fragments/org/showLeaveConfirmation';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
+import { showRoleOrgMemberModal, showRemoveOrgMemberModal } from 'openland-web/fragments/account/components/OrganizationProfileComponent';
 
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
@@ -15,7 +16,7 @@ interface MemberManageMenu {
 
 export const MemberManageMenu = React.memo((props: MemberManageMenu) => {
     const { organization, member } = props;
-    const { isOwner, isAdmin, isCommunity } = organization;
+    const { id, name, isOwner, isAdmin, isCommunity } = organization;
     const { user, role } = member;
     const messenger = React.useContext(MessengerContext);
     const myUserID = messenger.user.id;
@@ -25,6 +26,8 @@ export const MemberManageMenu = React.memo((props: MemberManageMenu) => {
 
     const handleRoleClick = React.useCallback((e: React.MouseEvent) => {
         e.preventDefault();
+
+        showRoleOrgMemberModal({ orgName: name, orgId: id, member });
     }, []);
 
     const handleLeaveClick = React.useCallback((e: React.MouseEvent) => {
@@ -35,6 +38,8 @@ export const MemberManageMenu = React.memo((props: MemberManageMenu) => {
 
     const handleRemoveClick = React.useCallback((e: React.MouseEvent) => {
         e.preventDefault();
+
+        showRemoveOrgMemberModal({ orgName: name, orgId: id, member });
     }, []);
 
     if (!showButton) {
