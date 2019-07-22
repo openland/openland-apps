@@ -1,53 +1,28 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
-import { MessagePage } from '../../components/MessagePage';
-import { MessagePageContent } from '../../components/MessagePageContent';
-import { withAppBase } from '../../components/withAppBase';
+import { css } from 'linaria';
+import { XView } from 'react-mental';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { MessagePage } from 'openland-web/components/MessagePage';
+import { MessagePageContent } from 'openland-web/components/MessagePageContent';
+import { withAppBase } from 'openland-web/components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
-import { AuthRouter } from '../root/AuthRouter';
+import { AuthRouter } from 'openland-web/pages/root/AuthRouter';
 import { TextGlobal } from 'openland-text/TextGlobal';
-import { XButton } from 'openland-x/XButton';
 import { InitTexts } from './_text';
 
-const Img = Glamorous.img({
-    display: 'block',
-    objectFit: 'contain',
-    maxWidth: 520,
-    height: 216,
-    marginBottom: 64,
-    '@media (max-height: 750px)': {
-        maxWidth: 500,
-    },
-});
+const imageStyle = css`
+    display: block;
+    object-fit: contain;
+    max-width: 520px;
+    height: 216px;
+    margin-bottom: 64px;
+    pointer-events: none;
+`;
 
-const InfoText = Glamorous.div({
-    maxWidth: 426,
-    margin: 'auto',
-    marginBottom: 12,
-    fontSize: 14,
-    lineHeight: 1.53,
-    color: '#000',
-    opacity: 0.8,
-    textAlign: 'center',
-});
-
-const MailText = Glamorous.span({
-    fontSize: 13,
-    marginBottom: 32,
-    display: 'flex',
-    justifyContent: 'center',
-});
-
-const QuestionsSpan = Glamorous.span({
-    opacity: 0.5,
-    color: '#000',
-});
-
-const HelloA = Glamorous.a({
-    color: '#1790ff',
-    marginLeft: 2,
-});
+const textAlignStyle = css`
+    text-align: center;
+`;
 
 export default withAppBase('Waitlist', props => {
     return (
@@ -58,18 +33,40 @@ export default withAppBase('Waitlist', props => {
             />
             <XTrack event="waitlist_view">
                 <MessagePage hideLegalText={true}>
-                    <Img
+                    <img
+                        className={imageStyle}
                         src="/static/img/artwork-copy.png"
                         srcSet="/static/img/artwork-copy@2x.png 2x"
                     />
                     <MessagePageContent title={InitTexts.waitlist.title}>
-                        <InfoText>{InitTexts.waitlist.content}</InfoText>
-                        <MailText>
-                            <QuestionsSpan>Questions?</QuestionsSpan>
-                            <HelloA href="mailto:hello@openland.com">hello@openland.com</HelloA>
-                        </MailText>
+                        <XView
+                            alignItems="center"
+                            alignSelf="center"
+                            maxWidth={426}
+                            marginBottom={12}
+                            fontSize={14}
+                            lineHeight={1.53}
+                            color="#000"
+                            opacity={0.8}
+                        >
+                            <span className={textAlignStyle}>{InitTexts.waitlist.content}</span>
+                        </XView>
+                        <XView
+                            fontSize={13}
+                            marginBottom={32}
+                            flexDirection="row"
+                            alignItems="center"
+                            justifyContent="center"
+                        >
+                            <XView color="#000" opacity={0.5} marginRight={2}>
+                                Questions?
+                            </XView>
+                            <XView as="a" href="mailto:hello@openland.com" color="#1790ff">
+                                hello@openland.com
+                            </XView>
+                        </XView>
 
-                        <XButton
+                        <UButton
                             path="/auth/logout"
                             text={TextGlobal.signOut}
                             style="primary"

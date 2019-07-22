@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { MessagePage } from '../../components/MessagePage';
-import { MessagePageContent } from '../../components/MessagePageContent';
-import { withAppBase } from '../../components/withAppBase';
+import { MessagePage } from 'openland-web/components/MessagePage';
+import { MessagePageContent } from 'openland-web/components/MessagePageContent';
+import { withAppBase } from 'openland-web/components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
-import { AuthRouter } from '../root/AuthRouter';
+import { AuthRouter } from 'openland-web/pages/root/AuthRouter';
 import { InitTexts } from './_text';
 
 export default withAppBase('Suspended', props => {
