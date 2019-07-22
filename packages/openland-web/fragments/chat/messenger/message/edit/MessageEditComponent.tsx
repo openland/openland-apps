@@ -1,6 +1,10 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { UserForMention } from 'openland-api/Types';
+import {
+    UserForMention,
+    FullMessage_GeneralMessage_spans_MessageSpanUserMention,
+    FullMessage_GeneralMessage_spans_MessageSpanAllMention,
+} from 'openland-api/Types';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XRichTextInput2, XRichTextInput2Props } from 'openland-x/XRichTextInput2';
@@ -30,6 +34,8 @@ import {
     getUploadCareFile,
 } from 'openland-web/fragments/chat/messenger/message/content/comments/useSendMethods';
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -65,95 +71,6 @@ export type XTextInputProps =
           kind: 'controlled';
       } & XRichTextInput2Props;
 
-class XRichTextInputStored extends React.PureComponent<
-    XTextInputProps & {
-        onSubmit: () => Promise<void>;
-        store: XStoreState;
-        minimal: boolean;
-        showAllMentionsSuggestion: boolean;
-        initialMentions?: UserWithOffset[];
-        getMentionsSuggestions: () => Promise<UserForMention[]>;
-    }
-> {
-    onChangeHandler = (value: { text: string; mentions?: UserWithOffset[] }) => {
-        if (this.props.kind === 'from_store') {
-            const previosValue = this.props.store.readValue(this.props.valueStoreKey);
-            this.props.store.writeValue(this.props.valueStoreKey, {
-                ...previosValue,
-                ...value,
-            });
-        }
-    }
-
-    render() {
-        let value;
-
-        const { kind, ...other } = this.props;
-        if (this.props.kind === 'from_store') {
-            let existing = this.props.store.readValue(this.props.valueStoreKey);
-            value = existing;
-        } else if (this.props.kind === 'controlled') {
-            value = this.props.value;
-        }
-
-        return (
-            <XRichTextInput2
-                {...other}
-                showAllMentionsSuggestion={this.props.showAllMentionsSuggestion}
-                autofocus={true}
-                onChange={data => this.onChangeHandler(data)}
-                value={value.text}
-                initialMentions={this.props.initialMentions}
-                getMentionsSuggestions={this.props.getMentionsSuggestions}
-            />
-        );
-    }
-}
-
-class XTextInput extends React.PureComponent<
-    XTextInputProps & {
-        onSubmit: (data: any) => Promise<void>;
-        minimal: boolean;
-        round: boolean;
-        initialMentions?: UserWithOffset[];
-        getMentionsSuggestions: () => Promise<UserForMention[]>;
-        showAllMentionsSuggestion: boolean;
-    }
-> {
-    render() {
-        if (this.props.kind === 'from_store') {
-            const { valueStoreKey, ...other } = this.props;
-            let valueStoreKeyCached = valueStoreKey;
-
-            return (
-                <XStoreContext.Consumer>
-                    {store => {
-                        if (!store) {
-                            throw Error('No store!');
-                        }
-
-                        return (
-                            <XRichTextInputStored
-                                {...other}
-                                onSubmit={async () => {
-                                    await this.props.onSubmit({
-                                        [valueStoreKey.replace('fields.', '')]: store.readValue(
-                                            valueStoreKey,
-                                        ),
-                                    });
-                                }}
-                                valueStoreKey={valueStoreKeyCached}
-                                store={store}
-                            />
-                        );
-                    }}
-                </XStoreContext.Consumer>
-            );
-        }
-        throw Error('kind for XTextInput is not set');
-    }
-}
-
 const Footer = Glamorous(XHorizontal)({
     display: 'flex',
     paddingTop: 10,
@@ -183,6 +100,17 @@ const PressEscTipFooter = ({ onClose }: { onClose: (event?: React.MouseEvent) =>
         </XView>
     );
 };
+
+interface MessageFieldProps {
+    text: string;
+    // TODO: add typings
+    file: any;
+    replyMessages: any;
+
+    mentions: (
+        | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+        | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[];
+}
 
 const EditMessageInlineInner = (props: EditMessageInlineT) => {
     const xFormSubmitRef = React.useRef<FormSubmit>(null);
@@ -226,8 +154,8 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
         return data && data.members.map(({ user }) => user);
     };
 
-    const onFormSubmit = async (data: any) => {
-        const messageText = data.message.text.trim();
+    const onFormSubmit = async (newMessage: MessageFieldProps) => {
+        const messageText = newMessage.text.trim();
         if (isComment) {
             let res = fileId;
             if (!file && !res && !messageText) {
@@ -241,8 +169,13 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
                 id: message.id!!,
                 message: messageText,
                 spans: findSpans(messageText || ''),
-                mentions: data.message.mentions
-                    ? data.message.mentions.map(convertToMentionInputNoText)
+
+                mentions: newMessage.mentions
+                    ? newMessage.mentions.map(m => {
+                          // @ts-ignore
+                          // TODO handle it in safe way
+                          return convertToMentionInputNoText(m);
+                      })
                     : null,
                 fileAttachments: res
                     ? [
@@ -263,15 +196,41 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
             await client.mutateEditMessage({
                 messageId: message!!.id!!,
                 message: messageText,
-                fileAttachments: data.message.file ? [{ fileId: data.message.file }] : null,
-                replyMessages: data.message.replyMessages,
-                mentions: prepareMentionsToSend(data.message.mentions || []),
+                fileAttachments: newMessage.file ? [{ fileId: newMessage.file }] : null,
+                replyMessages: newMessage.replyMessages,
+                mentions: prepareMentionsToSend(newMessage.mentions || []),
                 spans: findSpans(messageText || ''),
             });
         }
 
         onClose();
     };
+
+    const form = useForm();
+
+    const messageField = useField(
+        'input.message',
+        {
+            text: message.text || '',
+            mentions: message.text
+                ? prepareLegacyMentions(
+                      message.text,
+                      convertMentionsFromMessage(message.text, message.spans),
+                  )
+                : [],
+
+            // where to get them from message?
+            file: null,
+            replyMessages: [],
+        } as MessageFieldProps,
+        form,
+    );
+
+    const save = () =>
+        form.doAction(async () => {
+            await onFormSubmit(messageField.value);
+            onClose();
+        });
 
     return (
         <React.Fragment key={key}>
@@ -302,52 +261,41 @@ const EditMessageInlineInner = (props: EditMessageInlineT) => {
                         <FileUploader />
                     </XView>
                 )}
-                <XForm
-                    defaultAction={onFormSubmit}
-                    defaultData={{
-                        message: {
-                            text: message.text,
-                            mentions: message.text
-                                ? prepareLegacyMentions(
-                                      message.text,
-                                      convertMentionsFromMessage(message.text, message.spans),
-                                  )
-                                : [],
-                        },
-                    }}
-                >
+                <>
                     <XView marginLeft={isComment ? -15 : 0}>
                         <TextInputWrapper>
-                            <XTextInput
+                            <XRichTextInput2
+                                // {...other}
                                 showAllMentionsSuggestion={
                                     props.conversationType === 'PRIVATE' ? false : true
                                 }
-                                onSubmit={onFormSubmit}
-                                minimal={minimal}
-                                round={minimal}
-                                valueStoreKey="fields.message"
-                                kind="from_store"
+                                autofocus={true}
+                                // @ts-ignore
+                                onChange={messageField.input.onChange}
+                                value={messageField.input.value.text || ''}
                                 initialMentions={
                                     message.spans
                                         ? convertSpansToUserWithOffset({ spans: message.spans })
                                         : []
                                 }
+                                // @ts-ignore
+                                onSubmit={data => Promise.resolve(save())}
                                 getMentionsSuggestions={getMentionsSuggestions}
                             />
                         </TextInputWrapper>
                     </XView>
                     {!minimal && (
                         <Footer separator={5}>
-                            <XFormSubmit
+                            <XButton
                                 text="Save"
                                 style="primary"
-                                ref={xFormSubmitRef}
-                                disableEnterKey={true}
+                                loading={form.loading}
+                                onClick={save}
                             />
                             <XButton text="Cancel" size="default" onClick={onClose} />
                         </Footer>
                     )}
-                </XForm>
+                </>
                 {minimal && <PressEscTipFooter onClose={onClose} />}
             </XShortcuts>
         </React.Fragment>

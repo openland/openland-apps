@@ -26,8 +26,9 @@ export function DevDocsScaffold(props: {
             <Scaffold>
                 {props.hideSidebar !== true && (
                     <Scaffold.Menu>
-                        <Sidebar title="X Framework">
-                            <Sidebar.Item path="/ui/modals">Modals</Sidebar.Item>
+                        <Sidebar title="Isolated features/units/components">
+                            <Sidebar.Item path="/isolated/modals">Modals</Sidebar.Item>
+                            <Sidebar.Item path="/isolated/forms">Forms</Sidebar.Item>
                         </Sidebar>
                     </Scaffold.Menu>
                 )}

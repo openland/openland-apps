@@ -34,7 +34,7 @@ import {
     showDeleteUserModal,
     showAddFeatureModal,
     showRemoveFeatureModal,
-    showEditOrganizationModal
+    showEditOrganizationModal,
 } from '../orgView.page';
 import { showImagePreviewModal } from 'openland-web/components/ImagePreviewModal';
 import { XCloudImage } from 'openland-x/XCloudImage';
@@ -69,9 +69,9 @@ import {
 } from '../admins.page';
 import { showAddAccountFormModal } from '../orgs.page';
 
-export default withApp('UI Framework - New modals', 'viewer', props => {
+export default withApp('Isolated - modals', 'viewer', props => {
     return (
-        <DevDocsScaffold title="New modals">
+        <DevDocsScaffold title="Modals">
             <XContent>
                 <XVertical2>
                     <XVertical width="400px">

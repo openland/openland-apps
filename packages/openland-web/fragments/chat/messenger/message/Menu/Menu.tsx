@@ -87,7 +87,7 @@ export const Menu = React.memo(
             });
         }, []);
 
-        const setEditMessage = (e: any) => {
+        const setEditMessage = async (e: React.MouseEvent) => {
             if (!message.isSending) {
                 e.stopPropagation();
                 messagesContext.resetAll();
