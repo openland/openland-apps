@@ -54,6 +54,7 @@ export const GroupProfileFragment = React.memo((props) => {
                 <UUserView
                     key={'member-' + member.user.id}
                     user={member.user}
+                    role={member.role}
                 />
             )}
             padded={false}
