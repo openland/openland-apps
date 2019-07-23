@@ -10,7 +10,7 @@ let replyMeesageGroupClass = css`
     padding-left: 14px;
 `;
 
-export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessageItem[], onUserPress: (id: string) => void, onGroupPress: (id: string) => void }) => {
+export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessageItem[] }) => {
     let firstMessage = props.quotedMessages[0];
     let org = firstMessage.sender.primaryOrganization;
     return (
@@ -21,7 +21,7 @@ export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessage
     );
 };
 
-export const ReplyContent = (props: { quotedMessages: DataSourceWebMessageItem[], onUserPress: (id: string) => void, onGroupPress: (id: string) => void }) => {
+export const ReplyContent = (props: { quotedMessages: DataSourceWebMessageItem[] }) => {
     let content = props.quotedMessages.reduce((res, message, i, source) => {
         // group messages by sender
         let prev = source[i - 1];

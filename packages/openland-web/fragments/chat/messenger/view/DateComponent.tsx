@@ -20,7 +20,6 @@ export const DateComponent = (props: { item: DataSourceDateItem }) => {
             key={'date-' + item.date}
             justifyContent="center"
             alignItems="center"
-            zIndex={1}
             marginTop={24}
             marginBottom={0}
         >

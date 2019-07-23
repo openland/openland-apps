@@ -5,6 +5,8 @@ import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { SpanType } from 'openland-y-utils/spans/Span';
 import { ReplyContent } from './content/ReplyContent';
 import { ImageContent } from './content/ImageContent';
+import { DocumentContent } from './content/DocumentContent';
+import { RichAttachContent } from './content/RichAttachContent';
 
 export const MessageContent = (props: { message: DataSourceWebMessageItem }) => {
     let { message } = props;
@@ -13,22 +15,12 @@ export const MessageContent = (props: { message: DataSourceWebMessageItem }) => 
     let documentsAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
     let augmenationAttaches = attaches.filter(a => a.__typename === 'MessageRichAttachment') as FullMessage_GeneralMessage_attachments_MessageRichAttachment[] || [];
 
-    let hasReply = !!(message.reply && message.reply.length > 0);
     let hasText = !!(message.text);
-
-    // TODO: implement upper, forward here
-    let onUserPress = (uid: string) => {
-        //
-    };
-
-    let onGroupPress = (gid: string) => {
-        //
-    };
 
     let content: JSX.Element[] = [];
 
     if (message.reply) {
-        content.push(<ReplyContent key={'msg-' + message.id + '-reply'} quotedMessages={message.replyWeb} onUserPress={onUserPress} onGroupPress={onGroupPress} />);
+        content.push(<ReplyContent key={'msg-' + message.id + '-reply'} quotedMessages={message.replyWeb} />);
     }
 
     imageAttaches.map((file) => {
@@ -39,14 +31,13 @@ export const MessageContent = (props: { message: DataSourceWebMessageItem }) => 
         content.push(<MessageTextComponent spans={message.textSpans} isEdited={!!message.isEdited} />);
     }
 
-    // documentsAttaches.map((file, index) => {
-    //     content.push(<DocumentContent key={'msg-' + message.id + '-document-' + file.fileId} attach={file} message={message} />);
-    // });
+    documentsAttaches.map((file, index) => {
+        content.push(<DocumentContent key={'msg-' + message.id + '-document-' + file.fileId} file={file} />);
+    });
 
-    // augmenationAttaches.map((attach, index) => {
-
-    //     content.push(<RichAttachContent key={'msg-' + message.id + '-rich-' + attach.id} attach={attach} message={message} />);
-    // });
+    augmenationAttaches.map((attach, index) => {
+        content.push(<RichAttachContent key={'msg-' + message.id + '-rich-' + attach.id} attach={attach} />);
+    });
 
     if (!content.length) {
         let text = 'Unsupported content: ' + message.fallback;
