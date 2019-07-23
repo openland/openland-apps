@@ -7,7 +7,8 @@ import { showShortcutsHelp } from '../showShortcutsHelp';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import FileIcon from 'openland-icons/ic-file-3.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
-import { UListItem } from 'openland-web/components/unicorn/UListItem';
+import { UNavigableList, UNavigableListRef } from 'openland-web/components/unicorn/UNavigableList';
+import { useClient } from 'openland-web/utils/useClient';
 
 const attachButtonWrapper = css`
     display: flex;
@@ -80,23 +81,88 @@ const mentionsContainer = css`
     border-radius: 8px;
     padding-top: 8px;
     padding-bottom: 8px;
+    will-change: opacity;
+    transition: opacity, transform 150ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    overflow-y: scroll;
+    overflow-x: none;
+    max-height: 100px;
 `;
 
-const AutoCompleteComponent = React.memo((props: { activeWord: string | null }) => {
-    if (!props.activeWord) {
+interface AutoCompleteComponentRef {
+    onPressUp(): void;
+    onPressDown(): void;
+    onPressEnter(): void;
+    onPressTab(): void;
+}
+
+const AutoCompleteComponent = React.memo(React.forwardRef((props: { groupId: string, activeWord: string | null }, ref: React.Ref<AutoCompleteComponentRef>) => {
+
+    const listRef = React.useRef<UNavigableListRef>(null);
+
+    // Store word in state for nice disappear animation
+    const [word, setWord] = React.useState(props.activeWord);
+    if (props.activeWord) {
+        if (word !== props.activeWord) {
+            setWord(props.activeWord);
+        }
+    }
+    React.useImperativeHandle(ref, () => ({
+        onPressDown: () => {
+            let r = listRef.current;
+            if (r) {
+                r.onPressDown();
+            }
+        },
+        onPressUp: () => {
+            let r = listRef.current;
+            if (r) {
+                r.onPressUp();
+            }
+        },
+        onPressEnter: () => {
+            //
+        },
+        onPressTab: () => {
+            //
+        }
+    }));
+
+    const itemRender = React.useCallback((v: any) => <XView>{v.user.name}</XView>, []);
+    const client = useClient();
+
+    let members = client.useWithoutLoaderRoomMembers({ roomId: props.groupId });
+    if (!members || !members.members) {
         return null;
     }
 
+    let matched: any[];
+    if (word) {
+        let s = word.substring(1);
+        console.log(s);
+        console.log(members.members);
+        matched = members.members.filter((v) => v.user.name.startsWith(s)).map((v) => ({ key: v.user.id, data: v }));
+        console.log(matched);
+    } else {
+        matched = [];
+    }
+
     return (
-        <div className={mentionsContainer}>
-            <UListItem title={props.activeWord} onClick={() => console.log(props.activeWord)} />
+        <div
+            className={mentionsContainer}
+            style={{
+                opacity: props.activeWord ? 1 : 0,
+                transform: `translateY(${props.activeWord ? 0 : 10}px)`
+            }}
+        >
+            <UNavigableList data={matched} render={itemRender} ref={listRef} />
         </div>
     );
-});
+}));
 
-export const SendMessageComponent = React.memo((props: { onTextSent?: (text: string) => void }) => {
+export const SendMessageComponent = React.memo((props: { groupId?: string, onTextSent?: (text: string) => void }) => {
     const ref = React.useRef<URickInputInstance>(null);
-    const onEnterPress = React.useCallback(
+    const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
+    const onPressEnter = React.useCallback(
         () => {
             let ed = ref.current;
             if (ed) {
@@ -107,8 +173,42 @@ export const SendMessageComponent = React.memo((props: { onTextSent?: (text: str
                 ed.clear();
                 ed.focus();
             }
+            return true;
         },
         [props.onTextSent],
+    );
+
+    const onPressUp = React.useCallback(
+        () => {
+            let s = suggestRef.current;
+            if (s) {
+                s.onPressUp();
+            }
+            return true;
+        },
+        [],
+    );
+
+    const onPressDown = React.useCallback(
+        () => {
+            let s = suggestRef.current;
+            if (s) {
+                s.onPressDown();
+            }
+            return true;
+        },
+        [],
+    );
+
+    const onPressTab = React.useCallback(
+        () => {
+            let s = suggestRef.current;
+            if (s) {
+                s.onPressTab();
+            }
+            return true;
+        },
+        [],
     );
 
     const [activeWord, setActiveWord] = React.useState<string | null>(null);
@@ -118,13 +218,16 @@ export const SendMessageComponent = React.memo((props: { onTextSent?: (text: str
 
     return (
         <XView flexGrow={1} flexShrink={1} maxHeight={250} paddingVertical={16} position="relative">
-            <AutoCompleteComponent activeWord={activeWord} />
+            {props.groupId && <AutoCompleteComponent groupId={props.groupId} activeWord={activeWord} ref={suggestRef} />}
             <XView flexGrow={1} flexShrink={1}>
                 <URickInput
                     ref={ref}
                     autocompletePrefixes={['@']}
                     onAutocompleteWordChange={onAutocompleteWordChange}
-                    onEnterPress={onEnterPress}
+                    onPressEnter={onPressEnter}
+                    onPressUp={onPressUp}
+                    onPressDown={onPressDown}
+                    onPressTab={onPressTab}
                     autofocus={true}
                     placeholder="Write a message..."
                 />
@@ -141,7 +244,7 @@ export const SendMessageComponent = React.memo((props: { onTextSent?: (text: str
                 />
                 <ButtonPartWrapper
                     leftContent={<AttachButton text="Shortcuts" icon={<ShortcutsIcon />} onClick={showShortcutsHelp} />}
-                    rightContent={<UButton text="Send" onClick={onEnterPress} />}
+                    rightContent={<UButton text="Send" onClick={onPressEnter} />}
                 />
             </XView>
         </XView>

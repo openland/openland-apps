@@ -37,7 +37,12 @@ export interface URickInputProps {
     autocompletePrefixes?: string[];
     onTextChange?: (text: string) => void;
     onAutocompleteWordChange?: (text: string | null) => void;
-    onEnterPress?: () => void;
+
+    onPressEnter?: () => boolean;
+    onPressUp?: () => boolean;
+    onPressDown?: () => boolean;
+    onPressTab?: () => boolean;
+    onPressEsc?: () => boolean;
 }
 
 export const URickInput = React.memo(React.forwardRef((props: URickInputProps, ref: React.Ref<URickInputInstance>) => {
@@ -77,16 +82,28 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
             q.focus();
         }
 
-        // Hack to handle enter before text edit
-        q.keyboard.addBinding({ key: 13 as any }, () => {
-            if (props.onEnterPress) {
-                props.onEnterPress();
-                return false;
-            } else {
-                return true;
-            }
-        });
-        (q.keyboard as any).bindings[13].unshift((q as any).keyboard.bindings[13].pop());
+        // Hacky method to add key binding before editor processing
+        function addBinding(key: number, callback?: () => boolean) {
+            q.keyboard.addBinding({ key: key as any }, () => {
+                if (callback) {
+                    let res = callback();
+                    if (res) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            });
+            (q.keyboard as any).bindings[key].unshift((q as any).keyboard.bindings[key].pop());
+        }
+
+        addBinding(9, props.onPressTab);
+        addBinding(13, props.onPressEnter);
+        addBinding(38, props.onPressUp);
+        addBinding(40, props.onPressDown);
+        addBinding(27, props.onPressEsc);
 
         // Handle text change
         let lastKnownText: string = props.initialText || '';
