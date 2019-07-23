@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { URickInput } from 'openland-web/components/unicorn/URickInput';
+import { URickInput, URickInputInstance } from 'openland-web/components/unicorn/URickInput';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import FileIcon from 'openland-icons/ic-file-3.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
@@ -68,24 +68,25 @@ const ButtonPartWrapper = (props: { leftContent: JSX.Element; rightContent: JSX.
     </XView>
 );
 
-export const SendMessageComponent = (props: { onEnterPress?: (text: string) => void }) => {
-    // const [message, setMessage] = React.useState('');
-    // const onTextChange = (txt: string) => {
-    //     setMessage(txt);
-    // };
-    // const onTextSend = () => {
-    //     if (props.onEnterPress) {
-    //         props.onEnterPress(message);
-    //     }
-    //     setMessage('');
-    // };
+export const SendMessageComponent = React.memo((props: { onEnterPress?: (text: string) => void }) => {
+    const ref = React.useRef<URickInputInstance>(null);
+    const onEnterPress = React.useCallback((text: string) => {
+        if (props.onEnterPress) {
+            props.onEnterPress(text);
+        }
+        let ed = ref.current;
+        if (ed) {
+            ed.clear();
+        }
+    }, [props.onEnterPress]);
+
     return (
         <XView flexGrow={1} flexShrink={1} maxHeight={250} paddingVertical={16}>
             <XView flexGrow={1} flexShrink={1}>
                 <URickInput
-                    // onTextChange={onTextChange}
-                    // text={message}
-                    onEnterPress={props.onEnterPress}
+                    ref={ref}
+                    onEnterPress={onEnterPress}
+                    autofocus={true}
                     placeholder="Write a message..."
                 />
             </XView>
@@ -107,4 +108,4 @@ export const SendMessageComponent = (props: { onEnterPress?: (text: string) => v
             </XView>
         </XView>
     );
-};
+});
