@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { URickInput, URickInputInstance } from 'openland-web/components/unicorn/URickInput';
+import { URickInput, URickInputInstance, URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { showShortcutsHelp } from '../showShortcutsHelp';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import FileIcon from 'openland-icons/ic-file-3.svg';
@@ -188,7 +188,7 @@ const AutoCompleteComponent = React.memo(React.forwardRef((props: {
     );
 }));
 
-export const SendMessageComponent = React.memo((props: { groupId?: string, onTextSent?: (text: string) => void }) => {
+export const SendMessageComponent = React.memo((props: { groupId?: string, onTextSent?: (text: URickTextValue) => void }) => {
     const ref = React.useRef<URickInputInstance>(null);
     const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
     const onPressEnter = React.useCallback(
@@ -206,7 +206,7 @@ export const SendMessageComponent = React.memo((props: { groupId?: string, onTex
             if (ed) {
                 let text = ed.getText();
                 if (props.onTextSent) {
-                    if (text.trim().length > 0) {
+                    if (text.text.trim().length > 0) {
                         props.onTextSent(text);
                     }
                 }

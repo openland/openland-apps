@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as QuillType from 'quill';
 import { css } from 'linaria';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
+import { UserForMention } from 'openland-api/Types';
 
 const quillStyle = css`
     flex-grow: 1;
@@ -34,11 +35,16 @@ const mentionStyle = css`
     padding-bottom: 1px;
 `;
 
+export interface URickTextValue {
+    text: string;
+    mentions: UserForMention[];
+}
+
 export interface URickInputInstance {
     clear: () => void;
     focus: () => void;
-    getText: () => string;
-    commitSuggestion(src: any): void;
+    getText: () => URickTextValue;
+    commitSuggestion(src: UserForMention): void;
 }
 
 export interface URickInputProps {
@@ -70,11 +76,12 @@ function loadQuill() {
                 const node = super.create() as HTMLSpanElement;
                 node.className = mentionStyle;
                 node.innerText = data.name;
+                node.dataset.user = JSON.stringify(data);
                 return node;
             }
 
             static value(domNode: HTMLSpanElement) {
-                return { name: domNode.innerText };
+                return JSON.parse(domNode.dataset.user!);
             }
         }
         MentionBlot.blotName = 'mention';
@@ -116,10 +123,24 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
         getText: () => {
             let ed = editor.current;
             if (ed) {
-                console.log(ed.getLines());
-                return ed.getText();
+                let ctx = ed.getContents();
+                let res = '';
+                let mentions: any[] = [];
+                for (let c of ctx.ops!) {
+                    if (c.insert) {
+                        if (typeof c.insert === 'string') {
+                            res += c.insert;
+                        } else if (typeof c.insert === 'object') {
+                            if (c.insert.mention) {
+                                res += '@' + c.insert.mention.name;
+                                mentions.push(c.insert.mention);
+                            }
+                        }
+                    }
+                }
+                return { text: res, mentions };
             } else {
-                return '';
+                return { text: '', mentions: [] };
             }
         },
         commitSuggestion: (src: any) => {

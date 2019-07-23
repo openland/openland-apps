@@ -368,7 +368,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                         >
                             <SendMessageComponent
                                 groupId={this.props.conversationType !== 'PRIVATE' ? this.props.conversationId : undefined}
-                                onTextSent={(text) => this.conversation!.sendMessage(text, [])}
+                                onTextSent={(text) => this.conversation!.sendMessage(text.text, text.mentions)}
                             />
                         </XView>
                     </XView>
