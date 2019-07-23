@@ -10,8 +10,7 @@ import { NON_PRODUCTION } from '../Init';
 import { Settings_settings, CommentsNotificationDelivery, NotificationMessages, EmailFrequency } from 'openland-api/Types';
 import { ZCheckmarkGroup } from 'openland-mobile/components/ZCheckmarkGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { backoff } from 'openland-y-utils/timer';
-import debounce from 'lodash/debounce';
+import { backoff, debounce } from 'openland-y-utils/timer';
 
 const sendMutate = debounce(async (state: Settings_settings) => {
     const input = {
@@ -34,7 +33,7 @@ const SettingsNotificationsContent = XMemo<PageProps>(props => {
     const settingsData = getClient().useSettings({ fetchPolicy: 'network-only' }).settings;
     const [ settings, setSettings ] = React.useState<Settings_settings>(settingsData);
 
-    const handleSave = (field: string, value: string | boolean | number) => {
+    const handleSave: <T>(field: string, value: T) => void = (field, value) => {
         setSettings({ ...settings, [field]: value });
     };
     

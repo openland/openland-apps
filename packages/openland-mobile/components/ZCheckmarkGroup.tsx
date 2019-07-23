@@ -2,23 +2,21 @@ import * as React from 'react';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 
-type Value = boolean | string | number;
-
-type Item = {
+type Item<T> = {
     label: string;
-    value: Value;
+    value: T;
 };
 
-interface ZCheckmarkGroupProps {
+interface ZCheckmarkGroupProps<T> {
     header?: string;
     footer?: string;
-    onChange?: (item: Item) => void;
-    items: Item[];
-    value?: Value;
+    onChange?: (item: Item<T>) => void;
+    items: Item<T>[];
+    value?: T;
 }
 
-export const ZCheckmarkGroup = (props: ZCheckmarkGroupProps) => {
-    const handlePress = React.useCallback((item: Item) => {
+export function ZCheckmarkGroup<T>(props: ZCheckmarkGroupProps<T>) {
+    const handlePress = React.useCallback((item: Item<T>) => {
         if (props.onChange) {
             props.onChange(item);
         }
@@ -36,4 +34,4 @@ export const ZCheckmarkGroup = (props: ZCheckmarkGroupProps) => {
             ))}
         </ZListItemGroup>
     );
-};
+}
