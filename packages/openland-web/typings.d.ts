@@ -193,8 +193,6 @@ declare module 'react-localstorage-hoc' {
     export default ReturnType;
 }
 
-declare module 'lodash.flowright' { }
-
 declare namespace UploadCare {
     interface Dialog {
         done: (callback: (result: File) => void) => Dialog;
