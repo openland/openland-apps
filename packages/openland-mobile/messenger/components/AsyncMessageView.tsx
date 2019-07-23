@@ -18,6 +18,7 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { MessageReactionType } from 'openland-api/Types';
 
 const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMessageItem, theme: ThemeGlobal }>((props) => {
     const [selected, toggleSelect] = useMessageSelected(props.engine.messagesActionsState, props.message);
@@ -43,7 +44,7 @@ export interface AsyncMessageViewProps {
     onGroupPress: (id: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
-    onReactionPress: (message: DataSourceMessageItem, r: string) => void;
+    onReactionPress: (message: DataSourceMessageItem, r: MessageReactionType) => void;
     onCommentsPress: (message: DataSourceMessageItem, chatId: string) => void;
     onReactionsPress: (message: DataSourceMessageItem) => void;
     navigationManager: NavigationManager;

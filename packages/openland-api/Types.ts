@@ -26450,12 +26450,12 @@ export interface UnpinMessageVariables {
 // ====================================================
 
 export interface MessageSetReaction {
-  betaReactionSet: boolean;
+  messageReactionAdd: boolean;
 }
 
 export interface MessageSetReactionVariables {
   messageId: string;
-  reaction: string;
+  reaction: MessageReactionType;
 }
 
 /* tslint:disable */
@@ -26467,14 +26467,14 @@ export interface MessageSetReactionVariables {
 // ====================================================
 
 export interface SwitchReaction {
-  betaReactionSet: boolean;
-  betaReactionRemove: boolean;
+  messageReactionRemove: boolean;
+  messageReactionAdd: boolean;
 }
 
 export interface SwitchReactionVariables {
   messageId: string;
-  from: string;
-  to: string;
+  from: MessageReactionType;
+  to: MessageReactionType;
 }
 
 /* tslint:disable */
@@ -26486,12 +26486,12 @@ export interface SwitchReactionVariables {
 // ====================================================
 
 export interface MessageUnsetReaction {
-  betaReactionRemove: boolean;
+  messageReactionRemove: boolean;
 }
 
 export interface MessageUnsetReactionVariables {
   messageId: string;
-  reaction: string;
+  reaction: MessageReactionType;
 }
 
 /* tslint:disable */

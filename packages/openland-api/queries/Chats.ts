@@ -422,21 +422,21 @@ export const UnpinMessageMutation = gql`
 `;
 
 export const MessageSetReactionMutation = gql`
-    mutation MessageSetReaction($messageId: ID!, $reaction: String!) {
-        betaReactionSet(mid: $messageId, reaction: $reaction)
+    mutation MessageSetReaction($messageId: ID!, $reaction: MessageReactionType!) {
+        messageReactionAdd(messageId: $messageId, reaction: $reaction)
     }
 `;
 
 export const SwitchReactionMutation = gql`
-    mutation SwitchReaction($messageId: ID!, $from: String!, $to: String!) {
-        betaReactionSet(mid: $messageId, reaction: $to)
-        betaReactionRemove(mid: $messageId, reaction: $from)
+    mutation SwitchReaction($messageId: ID!, $from: MessageReactionType!, $to: MessageReactionType!) {
+        messageReactionRemove(messageId: $messageId, reaction: $from)
+        messageReactionAdd(messageId: $messageId, reaction: $to)
     }
 `;
 
 export const MessageUnsetReactionMutation = gql`
-    mutation MessageUnsetReaction($messageId: ID!, $reaction: String!) {
-        betaReactionRemove(mid: $messageId, reaction: $reaction)
+    mutation MessageUnsetReaction($messageId: ID!, $reaction: MessageReactionType!) {
+        messageReactionRemove(messageId: $messageId, reaction: $reaction)
     }
 `;
 

@@ -14,9 +14,9 @@ import { SRouting } from 'react-native-s/SRouting';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, MessageReactionType } from 'openland-api/Types';
 import { ZModalController } from 'openland-mobile/components/ZModal';
-import { reactionsImagesMap, defaultReactions, reactionMap } from './components/AsyncMessageReactionsView';
+import { reactionsImagesMap } from './components/AsyncMessageReactionsView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
 import { formatDateTime } from 'openland-y-utils/formatTime';
@@ -133,15 +133,15 @@ export class MobileMessenger {
         this.history.navigationManager.push('Conversation', { id });
     }
 
-    handleReactionSetUnset = (message: DataSourceMessageItem, r: string, doubleTap?: boolean) => {
+    handleReactionSetUnset = (message: DataSourceMessageItem, r: MessageReactionType, doubleTap?: boolean) => {
         try {
             let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;
             if (remove) {
-                this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: reactionMap[r] });
+                this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: r });
             } else {
                 trackEvent('reaction_sent', { reaction_type: r.toLowerCase(), double_tap: doubleTap ? 'yes' : 'not' });
 
-                this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: reactionMap[r] });
+                this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: r });
             }
         } catch (e) {
             Alert.alert(e.message);
@@ -154,11 +154,11 @@ export class MobileMessenger {
 
         builder.view((ctx: ZModalController) => (
             <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={52} paddingHorizontal={10}>
-                {defaultReactions.map(r => (
+                {Object.keys(MessageReactionType).map(r => (
                     <TouchableOpacity
                         onPress={() => {
                             ctx.hide();
-                            this.handleReactionSetUnset(message, r);
+                            this.handleReactionSetUnset(message, MessageReactionType[r]);
                         }}
                     >
                         <Image source={reactionsImagesMap[r]} />
@@ -228,7 +228,7 @@ export class MobileMessenger {
     }
 
     private handleMessageDoublePress = (message: DataSourceMessageItem) => {
-        this.handleReactionSetUnset(message, 'LIKE', true);
+        this.handleReactionSetUnset(message, MessageReactionType.LIKE, true);
     }
 
     private handleReactionsClick = (message: DataSourceMessageItem) => {

@@ -303,24 +303,24 @@
       }
     },
     {
-      "signature": "2dd99d7be82cc0cfe3bd34f19a05ad4554eed91bfc955fd4e58e58bbc2bc09f3",
-      "document": "mutation MessageSetReaction($messageId:ID!,$reaction:String!){betaReactionSet(mid:$messageId,reaction:$reaction)}",
+      "signature": "2d6af83574bb5f6186e8044eef136b199a4dfd4b81c2c0609c1e0eb78716fef9",
+      "document": "mutation MessageSetReaction($messageId:ID!,$reaction:MessageReactionType!){messageReactionAdd(messageId:$messageId,reaction:$reaction)}",
       "metadata": {
-        "engineSignature": "mutation MessageSetReaction($messageId:ID!,$reaction:String!){betaReactionSet(mid:$messageId,reaction:$reaction)}"
+        "engineSignature": "mutation MessageSetReaction($messageId:ID!,$reaction:MessageReactionType!){messageReactionAdd(messageId:$messageId,reaction:$reaction)}"
       }
     },
     {
-      "signature": "5afffaf3011da860e272dc17bb6c0ffb31b8d395f0ca9d0e19f124cbb5f90394",
-      "document": "mutation SwitchReaction($from:String!,$messageId:ID!,$to:String!){betaReactionRemove(mid:$messageId,reaction:$from)betaReactionSet(mid:$messageId,reaction:$to)}",
+      "signature": "ca5cd069cfded853c095d7efb3bac8b15828d2beb8f8142c78942b1aedc81649",
+      "document": "mutation SwitchReaction($from:MessageReactionType!,$messageId:ID!,$to:MessageReactionType!){messageReactionAdd(messageId:$messageId,reaction:$to)messageReactionRemove(messageId:$messageId,reaction:$from)}",
       "metadata": {
-        "engineSignature": "mutation SwitchReaction($from:String!,$messageId:ID!,$to:String!){betaReactionRemove(mid:$messageId,reaction:$from)betaReactionSet(mid:$messageId,reaction:$to)}"
+        "engineSignature": "mutation SwitchReaction($from:MessageReactionType!,$messageId:ID!,$to:MessageReactionType!){messageReactionAdd(messageId:$messageId,reaction:$to)messageReactionRemove(messageId:$messageId,reaction:$from)}"
       }
     },
     {
-      "signature": "aa93d20421808387386d3ccaf6a2fa42dffe9fdb7b521e05873c61835dd280eb",
-      "document": "mutation MessageUnsetReaction($messageId:ID!,$reaction:String!){betaReactionRemove(mid:$messageId,reaction:$reaction)}",
+      "signature": "c0a4d0ef8042163da308ce3afd6a096deb5ca96f31e48400c7ffb35d93ccd61f",
+      "document": "mutation MessageUnsetReaction($messageId:ID!,$reaction:MessageReactionType!){messageReactionRemove(messageId:$messageId,reaction:$reaction)}",
       "metadata": {
-        "engineSignature": "mutation MessageUnsetReaction($messageId:ID!,$reaction:String!){betaReactionRemove(mid:$messageId,reaction:$reaction)}"
+        "engineSignature": "mutation MessageUnsetReaction($messageId:ID!,$reaction:MessageReactionType!){messageReactionRemove(messageId:$messageId,reaction:$reaction)}"
       }
     },
     {

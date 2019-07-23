@@ -2695,10 +2695,10 @@ private val MediaOfferSelector = obj(
                 )))
         )
 private val MessageSetReactionSelector = obj(
-            field("betaReactionSet","betaReactionSet", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+            field("messageReactionAdd","messageReactionAdd", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
 private val MessageUnsetReactionSelector = obj(
-            field("betaReactionRemove","betaReactionRemove", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+            field("messageReactionRemove","messageReactionRemove", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
 private val MyNotificationCenterMarkSeqReadSelector = obj(
             field("notificationCenterMarkSeqRead","notificationCenterMarkSeqRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("Boolean")))
@@ -3064,8 +3064,8 @@ private val SuperBadgeUnsetToRoomSelector = obj(
             field("superBadgeUnsetToRoom","superBadgeUnsetToRoom", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
         )
 private val SwitchReactionSelector = obj(
-            field("betaReactionRemove","betaReactionRemove", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("from"))), notNull(scalar("Boolean"))),
-            field("betaReactionSet","betaReactionSet", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("to"))), notNull(scalar("Boolean")))
+            field("messageReactionAdd","messageReactionAdd", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("to"))), notNull(scalar("Boolean"))),
+            field("messageReactionRemove","messageReactionRemove", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("from"))), notNull(scalar("Boolean")))
         )
 private val UnSubscribeMessageCommentsSelector = obj(
             field("unSubscribeMessageComments","unSubscribeMessageComments", arguments(fieldValue("messageId", refValue("messageId"))), notNull(scalar("Boolean")))
@@ -3959,13 +3959,13 @@ object Operations {
     val MessageSetReaction = object: OperationDefinition {
         override val name = "MessageSetReaction"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation MessageSetReaction(\$messageId:ID!,\$reaction:String!){betaReactionSet(mid:\$messageId,reaction:\$reaction)}"
+        override val body = "mutation MessageSetReaction(\$messageId:ID!,\$reaction:MessageReactionType!){messageReactionAdd(messageId:\$messageId,reaction:\$reaction)}"
         override val selector = MessageSetReactionSelector
     }
     val MessageUnsetReaction = object: OperationDefinition {
         override val name = "MessageUnsetReaction"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation MessageUnsetReaction(\$messageId:ID!,\$reaction:String!){betaReactionRemove(mid:\$messageId,reaction:\$reaction)}"
+        override val body = "mutation MessageUnsetReaction(\$messageId:ID!,\$reaction:MessageReactionType!){messageReactionRemove(messageId:\$messageId,reaction:\$reaction)}"
         override val selector = MessageUnsetReactionSelector
     }
     val MyNotificationCenterMarkSeqRead = object: OperationDefinition {
@@ -4343,7 +4343,7 @@ object Operations {
     val SwitchReaction = object: OperationDefinition {
         override val name = "SwitchReaction"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation SwitchReaction(\$from:String!,\$messageId:ID!,\$to:String!){betaReactionRemove(mid:\$messageId,reaction:\$from)betaReactionSet(mid:\$messageId,reaction:\$to)}"
+        override val body = "mutation SwitchReaction(\$from:MessageReactionType!,\$messageId:ID!,\$to:MessageReactionType!){messageReactionAdd(messageId:\$messageId,reaction:\$to)messageReactionRemove(messageId:\$messageId,reaction:\$from)}"
         override val selector = SwitchReactionSelector
     }
     val UnSubscribeMessageComments = object: OperationDefinition {

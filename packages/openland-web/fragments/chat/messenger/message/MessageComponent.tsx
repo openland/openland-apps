@@ -11,7 +11,7 @@ export const MessageComponent = (props: { message: DataSourceWebMessageItem }) =
             <MessageContent message={message} />
             <>
                 {/* for buttons: reactions, comments */}
-                <MessageReactions reactions={message.reactions} />
+                <MessageReactions messageId={message.id} reactions={message.reactions} />
             </>
         </>
     );

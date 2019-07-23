@@ -7,28 +7,17 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { Stopwatch } from 'openland-y-utils/stopwatch';
 import { ASImage } from 'react-native-async-view/ASImage';
-import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_reactions, MessageReactionType } from 'openland-api/Types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 
-export const defaultReactions = ['LIKE', 'THUMB_UP', 'JOY', 'SCREAM', 'CRYING', 'ANGRY'];
-
-export const reactionsImagesMap = {
+export const reactionsImagesMap: { [key in MessageReactionType]: NodeRequire } = {
     'LIKE': require('assets/reactions/ic-reaction-like.png'),
     'THUMB_UP': require('assets/reactions/ic-reaction-thumbsup.png'),
     'JOY': require('assets/reactions/ic-reaction-lol.png'),
     'SCREAM': require('assets/reactions/ic-reaction-wow.png'),
     'CRYING': require('assets/reactions/ic-reaction-sad.png'),
     'ANGRY': require('assets/reactions/ic-reaction-angry.png')
-};
-
-export let reactionMap = {
-    'LIKE': '❤️',
-    'THUMB_UP': '👍',
-    'JOY': '😂',
-    'SCREAM': '😱',
-    'CRYING': '😢',
-    'ANGRY': '🤬',
 };
 
 export const extractReactionsSorted = (reactions: FullMessage_GeneralMessage_reactions[]) => {

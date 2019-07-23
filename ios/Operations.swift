@@ -2689,10 +2689,10 @@ private let MediaOfferSelector = obj(
                 )))
         )
 private let MessageSetReactionSelector = obj(
-            field("betaReactionSet","betaReactionSet", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+            field("messageReactionAdd","messageReactionAdd", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
 private let MessageUnsetReactionSelector = obj(
-            field("betaReactionRemove","betaReactionRemove", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+            field("messageReactionRemove","messageReactionRemove", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
 private let MyNotificationCenterMarkSeqReadSelector = obj(
             field("notificationCenterMarkSeqRead","notificationCenterMarkSeqRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("Boolean")))
@@ -3058,8 +3058,8 @@ private let SuperBadgeUnsetToRoomSelector = obj(
             field("superBadgeUnsetToRoom","superBadgeUnsetToRoom", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
         )
 private let SwitchReactionSelector = obj(
-            field("betaReactionRemove","betaReactionRemove", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("from"))), notNull(scalar("Boolean"))),
-            field("betaReactionSet","betaReactionSet", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("to"))), notNull(scalar("Boolean")))
+            field("messageReactionAdd","messageReactionAdd", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("to"))), notNull(scalar("Boolean"))),
+            field("messageReactionRemove","messageReactionRemove", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("from"))), notNull(scalar("Boolean")))
         )
 private let UnSubscribeMessageCommentsSelector = obj(
             field("unSubscribeMessageComments","unSubscribeMessageComments", arguments(fieldValue("messageId", refValue("messageId"))), notNull(scalar("Boolean")))
@@ -3956,13 +3956,13 @@ class Operations {
     let MessageSetReaction = OperationDefinition(
         "MessageSetReaction",
         .mutation, 
-        "mutation MessageSetReaction($messageId:ID!,$reaction:String!){betaReactionSet(mid:$messageId,reaction:$reaction)}",
+        "mutation MessageSetReaction($messageId:ID!,$reaction:MessageReactionType!){messageReactionAdd(messageId:$messageId,reaction:$reaction)}",
         MessageSetReactionSelector
     )
     let MessageUnsetReaction = OperationDefinition(
         "MessageUnsetReaction",
         .mutation, 
-        "mutation MessageUnsetReaction($messageId:ID!,$reaction:String!){betaReactionRemove(mid:$messageId,reaction:$reaction)}",
+        "mutation MessageUnsetReaction($messageId:ID!,$reaction:MessageReactionType!){messageReactionRemove(messageId:$messageId,reaction:$reaction)}",
         MessageUnsetReactionSelector
     )
     let MyNotificationCenterMarkSeqRead = OperationDefinition(
@@ -4340,7 +4340,7 @@ class Operations {
     let SwitchReaction = OperationDefinition(
         "SwitchReaction",
         .mutation, 
-        "mutation SwitchReaction($from:String!,$messageId:ID!,$to:String!){betaReactionRemove(mid:$messageId,reaction:$from)betaReactionSet(mid:$messageId,reaction:$to)}",
+        "mutation SwitchReaction($from:MessageReactionType!,$messageId:ID!,$to:MessageReactionType!){messageReactionAdd(messageId:$messageId,reaction:$to)messageReactionRemove(messageId:$messageId,reaction:$from)}",
         SwitchReactionSelector
     )
     let UnSubscribeMessageComments = OperationDefinition(

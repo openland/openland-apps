@@ -36,7 +36,7 @@ export const extractReactionsSorted = (reactions: FullMessage_GeneralMessage_rea
         if (users.length === 1) {
             usersString = users[0].name;
         } else if (users.length === 2) {
-            usersString = users[0].name + users[1].name;
+            usersString = users[0].name + ' and ' + users[1].name;
         } else {
             const othersCount = users.length - 1;
             usersString = users[0].name + ` and ${othersCount} others`;

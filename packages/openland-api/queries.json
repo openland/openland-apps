@@ -3806,18 +3806,18 @@
 				},
 				{
 					"name": "reaction",
-					"type": "String!"
+					"type": "MessageReactionType!"
 				}
 			],
-			"source": "mutation MessageSetReaction($messageId: ID!, $reaction: String!) {\n  betaReactionSet(mid: $messageId, reaction: $reaction)\n}",
+			"source": "mutation MessageSetReaction($messageId: ID!, $reaction: MessageReactionType!) {\n  messageReactionAdd(messageId: $messageId, reaction: $reaction)\n}",
 			"fields": [
 				{
-					"responseName": "betaReactionSet",
-					"fieldName": "betaReactionSet",
+					"responseName": "messageReactionAdd",
+					"fieldName": "messageReactionAdd",
 					"type": "Boolean!",
 					"args": [
 						{
-							"name": "mid",
+							"name": "messageId",
 							"value": {
 								"kind": "Variable",
 								"variableName": "messageId"
@@ -3830,7 +3830,7 @@
 								"kind": "Variable",
 								"variableName": "reaction"
 							},
-							"type": "String!"
+							"type": "MessageReactionType!"
 						}
 					],
 					"isConditional": false,
@@ -3840,8 +3840,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation MessageSetReaction($messageId: ID!, $reaction: String!) {\n  betaReactionSet(mid: $messageId, reaction: $reaction)\n}",
-			"operationId": "9f724c1931d29de4ff56e283a49dcb7bee4425d33089076e8259f313cb9a9a87"
+			"sourceWithFragments": "mutation MessageSetReaction($messageId: ID!, $reaction: MessageReactionType!) {\n  messageReactionAdd(messageId: $messageId, reaction: $reaction)\n}",
+			"operationId": "99602d5d857b6de2a2fa7f1f99dd4df7594cbf6715911bdebeb82065282241de"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
@@ -3855,47 +3855,22 @@
 				},
 				{
 					"name": "from",
-					"type": "String!"
+					"type": "MessageReactionType!"
 				},
 				{
 					"name": "to",
-					"type": "String!"
+					"type": "MessageReactionType!"
 				}
 			],
-			"source": "mutation SwitchReaction($messageId: ID!, $from: String!, $to: String!) {\n  betaReactionSet(mid: $messageId, reaction: $to)\n  betaReactionRemove(mid: $messageId, reaction: $from)\n}",
+			"source": "mutation SwitchReaction($messageId: ID!, $from: MessageReactionType!, $to: MessageReactionType!) {\n  messageReactionRemove(messageId: $messageId, reaction: $from)\n  messageReactionAdd(messageId: $messageId, reaction: $to)\n}",
 			"fields": [
 				{
-					"responseName": "betaReactionSet",
-					"fieldName": "betaReactionSet",
+					"responseName": "messageReactionRemove",
+					"fieldName": "messageReactionRemove",
 					"type": "Boolean!",
 					"args": [
 						{
-							"name": "mid",
-							"value": {
-								"kind": "Variable",
-								"variableName": "messageId"
-							},
-							"type": "ID!"
-						},
-						{
-							"name": "reaction",
-							"value": {
-								"kind": "Variable",
-								"variableName": "to"
-							},
-							"type": "String!"
-						}
-					],
-					"isConditional": false,
-					"isDeprecated": false
-				},
-				{
-					"responseName": "betaReactionRemove",
-					"fieldName": "betaReactionRemove",
-					"type": "Boolean!",
-					"args": [
-						{
-							"name": "mid",
+							"name": "messageId",
 							"value": {
 								"kind": "Variable",
 								"variableName": "messageId"
@@ -3908,7 +3883,32 @@
 								"kind": "Variable",
 								"variableName": "from"
 							},
-							"type": "String!"
+							"type": "MessageReactionType!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "messageReactionAdd",
+					"fieldName": "messageReactionAdd",
+					"type": "Boolean!",
+					"args": [
+						{
+							"name": "messageId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "messageId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "reaction",
+							"value": {
+								"kind": "Variable",
+								"variableName": "to"
+							},
+							"type": "MessageReactionType!"
 						}
 					],
 					"isConditional": false,
@@ -3918,8 +3918,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation SwitchReaction($messageId: ID!, $from: String!, $to: String!) {\n  betaReactionSet(mid: $messageId, reaction: $to)\n  betaReactionRemove(mid: $messageId, reaction: $from)\n}",
-			"operationId": "6ab3b0a4733a61f350c28991ebf85cc7d4321be6ca72ff8088125c66c494d992"
+			"sourceWithFragments": "mutation SwitchReaction($messageId: ID!, $from: MessageReactionType!, $to: MessageReactionType!) {\n  messageReactionRemove(messageId: $messageId, reaction: $from)\n  messageReactionAdd(messageId: $messageId, reaction: $to)\n}",
+			"operationId": "4a3f9ba58a0a504f66bfc0510f7c89cfe510ff09104a4fd08b7c8d10320fa936"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
@@ -3933,18 +3933,18 @@
 				},
 				{
 					"name": "reaction",
-					"type": "String!"
+					"type": "MessageReactionType!"
 				}
 			],
-			"source": "mutation MessageUnsetReaction($messageId: ID!, $reaction: String!) {\n  betaReactionRemove(mid: $messageId, reaction: $reaction)\n}",
+			"source": "mutation MessageUnsetReaction($messageId: ID!, $reaction: MessageReactionType!) {\n  messageReactionRemove(messageId: $messageId, reaction: $reaction)\n}",
 			"fields": [
 				{
-					"responseName": "betaReactionRemove",
-					"fieldName": "betaReactionRemove",
+					"responseName": "messageReactionRemove",
+					"fieldName": "messageReactionRemove",
 					"type": "Boolean!",
 					"args": [
 						{
-							"name": "mid",
+							"name": "messageId",
 							"value": {
 								"kind": "Variable",
 								"variableName": "messageId"
@@ -3957,7 +3957,7 @@
 								"kind": "Variable",
 								"variableName": "reaction"
 							},
-							"type": "String!"
+							"type": "MessageReactionType!"
 						}
 					],
 					"isConditional": false,
@@ -3967,8 +3967,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation MessageUnsetReaction($messageId: ID!, $reaction: String!) {\n  betaReactionRemove(mid: $messageId, reaction: $reaction)\n}",
-			"operationId": "dc032ef7e85eb37d26760af50f7db33697bcbb08e4e6a53ea4458b267e067f40"
+			"sourceWithFragments": "mutation MessageUnsetReaction($messageId: ID!, $reaction: MessageReactionType!) {\n  messageReactionRemove(messageId: $messageId, reaction: $reaction)\n}",
+			"operationId": "158605d47e2c1b77606708e1b2f8f516def645e525796afbb018416f831bb2f1"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
@@ -27242,6 +27242,36 @@
 		},
 		{
 			"kind": "EnumType",
+			"name": "MessageReactionType",
+			"values": [
+				{
+					"name": "LIKE",
+					"isDeprecated": false
+				},
+				{
+					"name": "THUMB_UP",
+					"isDeprecated": false
+				},
+				{
+					"name": "JOY",
+					"isDeprecated": false
+				},
+				{
+					"name": "SCREAM",
+					"isDeprecated": false
+				},
+				{
+					"name": "CRYING",
+					"isDeprecated": false
+				},
+				{
+					"name": "ANGRY",
+					"isDeprecated": false
+				}
+			]
+		},
+		{
+			"kind": "EnumType",
 			"name": "PostMessageType",
 			"values": [
 				{
@@ -27452,36 +27482,6 @@
 			"kind": "ScalarType",
 			"name": "Date",
 			"description": "Date type format, serialized as UNIX-time in string"
-		},
-		{
-			"kind": "EnumType",
-			"name": "MessageReactionType",
-			"values": [
-				{
-					"name": "LIKE",
-					"isDeprecated": false
-				},
-				{
-					"name": "THUMB_UP",
-					"isDeprecated": false
-				},
-				{
-					"name": "JOY",
-					"isDeprecated": false
-				},
-				{
-					"name": "SCREAM",
-					"isDeprecated": false
-				},
-				{
-					"name": "CRYING",
-					"isDeprecated": false
-				},
-				{
-					"name": "ANGRY",
-					"isDeprecated": false
-				}
-			]
 		},
 		{
 			"kind": "EnumType",
