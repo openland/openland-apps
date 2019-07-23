@@ -10,9 +10,6 @@ const wrapper = css`
 
     svg {
         path {
-            stroke: var(--icon-color);
-        }
-        circle {
             fill: var(--icon-color);
         }
     }
