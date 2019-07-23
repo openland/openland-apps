@@ -3,7 +3,7 @@ import { css } from 'linaria';
 import ResizeObserver from 'resize-observer-polyfill';
 import { XView, XStyles } from 'react-mental';
 import { XScrollValues } from './XScrollView3';
-import throttle from 'lodash/throttle';
+import { throttle } from 'openland-y-utils/timer';
 
 const NativeScrollStyle = css`
     overflow-y: overlay;

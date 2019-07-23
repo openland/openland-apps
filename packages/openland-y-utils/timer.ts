@@ -6,20 +6,36 @@ export async function delayForewer() {
     return new Promise(resolver => { /*Do nothing*/ });
 }
 
-export function debounce(f: Function, ms: number) {
+export function debounce<T extends (...args: any[]) => any>(f: T, ms: number): T {
     let timer: NodeJS.Timeout | null = null;
-  
-    return (...args: any[]) => {
-      if (timer) {
-        clearTimeout(timer);
-      }
-  
-      timer = setTimeout(() => {
-        f(...args);
-        timer = null;
-      }, ms);
-    };
-  }
+
+    return ((...args: any[]) => {
+        if (timer) {
+            clearTimeout(timer);
+        }
+
+        timer = setTimeout(() => {
+            f(...args);
+            timer = null;
+        }, ms);
+    }) as any;
+}
+
+export function throttle<T extends (...args: any[]) => any>(f: T, wait: number): T {
+    let isCalled = false;
+
+    return ((...args: any[]) => {
+        if (!isCalled) {
+            f(...args);
+
+            isCalled = true;
+
+            setTimeout(() => {
+                isCalled = false;
+            }, wait);
+        }
+    }) as any;
+}
 
 export async function backoff<T>(callback: () => Promise<T>, repeat?: number): Promise<T> {
     while (true) {

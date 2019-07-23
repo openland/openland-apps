@@ -25,7 +25,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
 import { ContextStateInterface } from 'openland-x/createPoliteContext';
 import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
-import throttle from 'lodash/throttle';
+import { throttle } from 'openland-y-utils/timer';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-web/components/XModalFooter';

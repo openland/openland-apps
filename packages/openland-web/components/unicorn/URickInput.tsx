@@ -24,10 +24,20 @@ const quillStyle = css`
     }
 `;
 
+const mentionStyle = css`
+    background-color: #DAECFD;
+    border-radius: 4px;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+`;
+
 export interface URickInputInstance {
     clear: () => void;
     focus: () => void;
     getText: () => string;
+    commitSuggestion(src: any): void;
 }
 
 export interface URickInputProps {
@@ -45,8 +55,37 @@ export interface URickInputProps {
     onPressEsc?: () => boolean;
 }
 
+let Quill: typeof QuillType.Quill;
+
+function loadQuill() {
+    if (!Quill) {
+        Quill = require('quill') as typeof QuillType.Quill;
+
+        // Mentions Blot
+        const Embed = Quill.import('blots/embed');
+        class MentionBlot extends Embed {
+            static create(data: any) {
+                console.log(data);
+                const node = super.create() as HTMLSpanElement;
+                node.className = mentionStyle;
+                node.innerText = data.name;
+                return node;
+            }
+
+            static value(domNode: HTMLSpanElement) {
+                return { name: domNode.innerText };
+            }
+        }
+        MentionBlot.blotName = 'mention';
+        MentionBlot.tagName = 'span';
+        MentionBlot.className = 'mention';
+        Quill.register(MentionBlot);
+    }
+}
+
 export const URickInput = React.memo(React.forwardRef((props: URickInputProps, ref: React.Ref<URickInputInstance>) => {
-    const Quill = require('quill') as typeof QuillType.Quill;
+    loadQuill();
+
     let editor = React.useRef<QuillType.Quill>();
     let containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -70,11 +109,43 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
             } else {
                 return '';
             }
+        },
+        commitSuggestion: (src: any) => {
+            setTimeout(() => {
+                let ed = editor.current;
+                if (ed) {
+                    let selection = ed.getSelection();
+                    if (selection) {
+                        let autocompleteWord: string | null = null;
+                        let activeWord = findActiveWord(ed.getText(), { start: selection.index, end: selection.index + selection.length });
+                        if (activeWord) {
+                            for (let p of props.autocompletePrefixes!) {
+                                if (activeWord.startsWith(p)) {
+                                    autocompleteWord = activeWord;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!activeWord) {
+                            return;
+                        }
+
+                        // WARNING: Do not change order of lines.
+                        // It seems there is a bug in Quill that inserts a new line when 
+                        // deleting text up to the end
+                        ed.insertEmbed(selection.index, 'mention', src, 'user');
+                        ed.insertText(selection.index + 1, ' ', 'user');
+                        ed.deleteText(selection.index - activeWord.length, activeWord.length + selection.length, 'user');
+                        ed.setSelection(selection.index + 1, 1, 'user');
+                    }
+                }
+            }, 10);
         }
     }));
 
     React.useLayoutEffect(() => {
-        let q = new Quill(containerRef.current!, { formats: [], placeholder: props.placeholder });
+        let q = new Quill(containerRef.current!, { formats: ['mention'], placeholder: props.placeholder });
         if (props.initialText) {
             q.setText(props.initialText);
         }
@@ -137,6 +208,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                 }
             }
         });
+
         editor.current = q;
     }, []);
 

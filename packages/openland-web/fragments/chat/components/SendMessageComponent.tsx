@@ -193,14 +193,18 @@ export const SendMessageComponent = React.memo((props: { groupId?: string, onTex
     const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
     const onPressEnter = React.useCallback(
         () => {
+            console.log('enter');
             let s = suggestRef.current;
             if (s) {
+                console.log('sug');
                 if (s.onPressEnter()) {
+                    console.log('sug:true');
                     return true;
                 }
             }
             let ed = ref.current;
             if (ed) {
+                console.log('send');
                 let text = ed.getText();
                 if (props.onTextSent) {
                     props.onTextSent(text);
@@ -251,8 +255,7 @@ export const SendMessageComponent = React.memo((props: { groupId?: string, onTex
         setActiveWord(word);
     }, []);
     const onUserPicked = React.useCallback((user: RoomMembers_members_user) => {
-        console.log(user);
-        //
+        ref.current!.commitSuggestion(user);
     }, []);
 
     return (
