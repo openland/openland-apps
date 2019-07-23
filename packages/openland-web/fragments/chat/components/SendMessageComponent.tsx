@@ -204,10 +204,11 @@ export const SendMessageComponent = React.memo((props: { groupId?: string, onTex
             }
             let ed = ref.current;
             if (ed) {
-                console.log('send');
                 let text = ed.getText();
                 if (props.onTextSent) {
-                    props.onTextSent(text);
+                    if (text.trim().length > 0) {
+                        props.onTextSent(text);
+                    }
                 }
                 ed.clear();
                 ed.focus();

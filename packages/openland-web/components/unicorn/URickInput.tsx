@@ -26,6 +26,7 @@ const quillStyle = css`
 
 const mentionStyle = css`
     background-color: #DAECFD;
+    color: #1885F2;
     border-radius: 4px;
     padding-left: 3px;
     padding-right: 3px;
@@ -83,6 +84,16 @@ function loadQuill() {
     }
 }
 
+function extractActiveWord(quill: QuillType.Quill) {
+    let selection = quill.getSelection();
+    if (!selection) {
+        return null;
+    }
+    let start = Math.max(0, selection.index - 64 /* Maximum lookback */);
+
+    return findActiveWord(quill.getText(start, selection.index + selection.length - start), { start: selection.index, end: selection.index + selection.length });
+}
+
 export const URickInput = React.memo(React.forwardRef((props: URickInputProps, ref: React.Ref<URickInputInstance>) => {
     loadQuill();
 
@@ -105,6 +116,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
         getText: () => {
             let ed = editor.current;
             if (ed) {
+                console.log(ed.getLines());
                 return ed.getText();
             } else {
                 return '';
@@ -117,7 +129,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                     let selection = ed.getSelection();
                     if (selection) {
                         let autocompleteWord: string | null = null;
-                        let activeWord = findActiveWord(ed.getText(), { start: selection.index, end: selection.index + selection.length });
+                        let activeWord = extractActiveWord(ed);
                         if (activeWord) {
                             for (let p of props.autocompletePrefixes!) {
                                 if (activeWord.startsWith(p)) {
@@ -192,7 +204,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                 let selection = q.getSelection();
                 if (selection) {
                     let autocompleteWord: string | null = null;
-                    let activeWord = findActiveWord(tx, { start: selection.index, end: selection.index + selection.length });
+                    let activeWord = extractActiveWord(q);
                     if (activeWord) {
                         for (let p of props.autocompletePrefixes) {
                             if (activeWord.startsWith(p)) {
