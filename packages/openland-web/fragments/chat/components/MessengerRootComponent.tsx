@@ -7,7 +7,6 @@ import {
     ConversationStateHandler,
 } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { ConversationMessagesComponent } from '../messenger/ConversationMessagesComponent';
 import { UploadCareUploading } from '../../../utils/UploadCareUploading';
 import {
@@ -21,11 +20,8 @@ import {
 } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { XMemo } from 'openland-y-utils/XMemo';
-import { UploadContextProvider } from 'openland-web/modules/FileUploading/UploadContext';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
-import { useXRouter } from 'openland-x-routing/useXRouter';
 import { trackEvent } from 'openland-x-analytics';
 import { ContextStateInterface } from 'openland-x/createPoliteContext';
 import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
@@ -41,7 +37,6 @@ import { MessageContent } from '../messenger/message/MessageContent';
 import { convertMessage } from 'openland-engines/utils/convertMessage';
 import { convertDsMessage } from '../messenger/data/WebMessageItemDataSource';
 import { showModalBox } from 'openland-x/showModalBox';
-import { URickInput } from 'openland-web/components/unicorn/URickInput';
 
 import { SendMessageComponent } from './SendMessageComponent';
 

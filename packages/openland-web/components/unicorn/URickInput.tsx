@@ -13,6 +13,7 @@ const quillStyle = css`
     }
     .ql-editor {
         padding: 8px 16px;
+        padding-right: 32px;
         font-size: 15px;
         line-height: 24px;
     }
@@ -22,27 +23,52 @@ const quillStyle = css`
     }
 `;
 
-export const URickInput = React.memo((props: {
-    text?: string;
-    placeholder?: string,
-    onTextChange?: (text: string) => void,
-    onEnterPress?: (text: string) => void
-}) => {
+export interface URickInputInstance {
+    clear: () => void;
+    focus: () => void;
+}
+
+export interface URickInputProps {
+    initialText?: string;
+    placeholder?: string;
+    autofocus?: boolean;
+    onTextChange?: (text: string) => void;
+    onEnterPress?: (text: string) => void;
+}
+
+export const URickInput = React.memo(React.forwardRef((props: URickInputProps, ref: React.Ref<URickInputInstance>) => {
     const Quill = require('quill') as typeof QuillType.Quill;
     let editor = React.useRef<QuillType.Quill>();
-    let ref = React.useRef<HTMLDivElement>(null);
+    let containerRef = React.useRef<HTMLDivElement>(null);
+
+    React.useImperativeHandle(ref, () => ({
+        clear: () => {
+            let ed = editor.current;
+            if (ed) {
+                ed.setText('');
+            }
+        },
+        focus: () => {
+            let ed = editor.current;
+            if (ed) {
+                ed.focus();
+            }
+        }
+    }));
 
     React.useLayoutEffect(() => {
-        let q = new Quill(ref.current!, { formats: [], placeholder: props.placeholder });
-        if (props.text) {
-            q.setText(props.text);
+        let q = new Quill(containerRef.current!, { formats: [], placeholder: props.placeholder });
+        if (props.initialText) {
+            q.setText(props.initialText);
+        }
+        if (props.autofocus) {
+            q.focus();
         }
 
         // Hack to handle enter before text edit
         q.keyboard.addBinding({ key: 13 as any }, () => {
             if (props.onEnterPress) {
                 props.onEnterPress(q.getText());
-                q.setText('');
                 return false;
             } else {
                 return true;
@@ -51,7 +77,7 @@ export const URickInput = React.memo((props: {
         (q.keyboard as any).bindings[13].unshift((q as any).keyboard.bindings[13].pop());
 
         // Handle text change
-        let lastKnownText: string = props.text || '';
+        let lastKnownText: string = props.initialText || '';
         q.on('editor-change', () => {
             let tx = q.getText();
             if (tx !== lastKnownText) {
@@ -66,7 +92,7 @@ export const URickInput = React.memo((props: {
 
     return (
         <div className={quillStyle}>
-            <div ref={ref} />
+            <div ref={containerRef} />
         </div>
     );
-});
+}));
