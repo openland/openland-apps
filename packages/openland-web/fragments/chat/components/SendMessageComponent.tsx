@@ -3,6 +3,7 @@ import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { URickInput, URickInputInstance } from 'openland-web/components/unicorn/URickInput';
+import { showShortcutsHelp } from '../showShortcutsHelp';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import FileIcon from 'openland-icons/ic-file-3.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
@@ -70,17 +71,20 @@ const ButtonPartWrapper = (props: { leftContent: JSX.Element; rightContent: JSX.
 
 export const SendMessageComponent = React.memo((props: { onTextSent?: (text: string) => void }) => {
     const ref = React.useRef<URickInputInstance>(null);
-    const onEnterPress = React.useCallback(() => {
-        let ed = ref.current;
-        if (ed) {
-            let text = ed.getText();
-            if (props.onTextSent) {
-                props.onTextSent(text);
+    const onEnterPress = React.useCallback(
+        () => {
+            let ed = ref.current;
+            if (ed) {
+                let text = ed.getText();
+                if (props.onTextSent) {
+                    props.onTextSent(text);
+                }
+                ed.clear();
+                ed.focus();
             }
-            ed.clear();
-            ed.focus();
-        }
-    }, [props.onTextSent]);
+        },
+        [props.onTextSent],
+    );
 
     const onAutocompleteWordChange = React.useCallback((word: string) => {
         console.log(word);
@@ -109,7 +113,13 @@ export const SendMessageComponent = React.memo((props: { onTextSent?: (text: str
                     rightContent={<AttachButton text="Document" icon={<FileIcon />} />}
                 />
                 <ButtonPartWrapper
-                    leftContent={<AttachButton text="Shortcuts" icon={<ShortcutsIcon />} />}
+                    leftContent={
+                        <AttachButton
+                            text="Shortcuts"
+                            icon={<ShortcutsIcon />}
+                            onClick={showShortcutsHelp}
+                        />
+                    }
                     rightContent={<UButton text="Send" onClick={onEnterPress} />}
                 />
             </XView>
