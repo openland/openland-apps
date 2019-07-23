@@ -10,6 +10,7 @@ import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import { UNavigableList, UNavigableListRef } from 'openland-web/components/unicorn/UNavigableList';
 import { useClient } from 'openland-web/utils/useClient';
 import { RoomMembers_members_user } from 'openland-api/Types';
+import { XAvatar2 } from 'openland-x/XAvatar2';
 
 const attachButtonWrapper = css`
     display: flex;
@@ -72,6 +73,66 @@ const ButtonPartWrapper = (props: { leftContent: JSX.Element; rightContent: JSX.
     </XView>
 );
 
+interface MentionUserComponentProps {
+    id: string;
+    name: string;
+    photo: string | null;
+    primaryOrganization: {
+        name: string;
+    } | null;
+}
+
+const MentionUserComponent = (props: MentionUserComponentProps) => (
+    <XView
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-between"
+        flexGrow={1}
+        height={40}
+        paddingHorizontal={16}
+    >
+        <XAvatar2 id={props.id} title={props.name} src={props.photo} size={28}/>
+        <XView
+            marginLeft={12}
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+            flexGrow={1}
+        >
+            <XView flexDirection="row" alignItems="center" flexGrow={1}>
+                <XView
+                    fontSize={13}
+                    fontWeight="600"
+                    lineHeight={1.54}
+                    color="#171B1F"
+                >
+                    {props.name}
+                </XView>
+                {props.primaryOrganization && (
+                    <XView
+                        marginLeft={7}
+                        paddingTop={4}
+                        fontSize={12}
+                        lineHeight={1.5}
+                        color="#676D7A"
+                    >
+                        {props.primaryOrganization.name}
+                    </XView>
+                )}
+            </XView>
+            <XView
+                fontSize={12}
+                lineHeight={1.5}
+                color="#676D7A"
+                flexDirection="row"
+            >
+                <XView paddingTop={3} marginRight={5}>↵</XView>
+                <XView>to select</XView>
+            </XView>
+        </XView>
+    </XView>
+);
+
 const mentionsContainer = css`
     position: absolute;
     bottom: 100%;
@@ -86,7 +147,7 @@ const mentionsContainer = css`
     transition: opacity, transform 150ms cubic-bezier(0.4, 0.0, 0.2, 1);
     overflow-y: scroll;
     overflow-x: none;
-    max-height: 100px;
+    max-height: 250px;
 `;
 
 interface AutoCompleteComponentRef {
@@ -153,7 +214,14 @@ const AutoCompleteComponent = React.memo(React.forwardRef((props: {
         }
     }));
 
-    const itemRender = React.useCallback((v: any) => <XView>{v.name}</XView>, []);
+    const itemRender = React.useCallback((v: any) => (
+        <MentionUserComponent
+            name={v.name}
+            id={v.id}
+            photo={v.photo}
+            primaryOrganization={v.primaryOrganization}
+        />
+    ), []);
     const client = useClient();
 
     let members = client.useWithoutLoaderRoomMembers({ roomId: props.groupId });
