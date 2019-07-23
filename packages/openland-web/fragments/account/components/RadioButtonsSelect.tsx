@@ -15,9 +15,11 @@ export function RadioButtonsSelect<T>({
     onChange: (data: T) => void;
     selectOptions: RadioButtonsSelectOptions<T>[];
 }) {
-    const [innerValue, setInnerValue] = React.useState<RadioButtonsSelectOptions<T>>(
-        selectOptions.find((item: RadioButtonsSelectOptions<T>) => item.value === value)!!,
-    );
+    let defaultVal = selectOptions.find((item: RadioButtonsSelectOptions<T>) => item.value === value);
+    if (!defaultVal) {
+        throw new Error(`Can't find value "${value}". Did you forget add it to selectOptions?`);
+    }
+    const [innerValue, setInnerValue] = React.useState<RadioButtonsSelectOptions<T>>(defaultVal);
 
     React.useEffect(
         () => {
