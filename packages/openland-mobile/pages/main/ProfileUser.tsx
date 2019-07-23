@@ -112,6 +112,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                                 title: user.primaryOrganization.name,
                             }}
                             text={user.primaryOrganization.name}
+                            subTitle={user.primaryOrganization.about}
                             path="ProfileOrganization"
                             pathParams={{ id: user.primaryOrganization.id }}
                         />
