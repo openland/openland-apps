@@ -49,8 +49,6 @@ export const SettingsNotificationsFragment = React.memo(() => {
         });
     };
 
-    console.warn('boom', messagesNotifications, commentsNotifications, emailNotifications);
-
     return (
         <Page>
             <UHeader title="Notifications" />
