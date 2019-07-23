@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XRadioItem } from 'openland-x/XRadio2';
+import { URadioItem } from 'openland-web/components/unicorn/URadioItem';
 
 export interface RadioButtonsSelectOptions<T> {
     value: T;
@@ -15,7 +15,9 @@ export function RadioButtonsSelect<T>({
     onChange: (data: T) => void;
     selectOptions: RadioButtonsSelectOptions<T>[];
 }) {
-    let defaultVal = selectOptions.find((item: RadioButtonsSelectOptions<T>) => item.value === value);
+    let defaultVal = selectOptions.find(
+        (item: RadioButtonsSelectOptions<T>) => item.value === value,
+    );
     if (!defaultVal) {
         throw new Error(`Can't find value "${value}". Did you forget add it to selectOptions?`);
     }
@@ -36,7 +38,7 @@ export function RadioButtonsSelect<T>({
         <>
             {selectOptions.map((item: RadioButtonsSelectOptions<T>, key: number) => {
                 return (
-                    <XRadioItem
+                    <URadioItem
                         key={key}
                         label={item.label}
                         checked={item.value === innerValue.value}
