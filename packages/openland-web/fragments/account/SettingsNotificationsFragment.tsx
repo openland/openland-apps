@@ -49,6 +49,8 @@ export const SettingsNotificationsFragment = React.memo(() => {
         });
     };
 
+    console.warn('boom', messagesNotifications, commentsNotifications, emailNotifications);
+
     return (
         <Page>
             <UHeader title="Notifications" />
@@ -65,6 +67,10 @@ export const SettingsNotificationsFragment = React.memo(() => {
                                 {
                                     value: NotificationMessages.DIRECT,
                                     label: `Direct messages and mentions`,
+                                },
+                                {
+                                    value: NotificationMessages.NONE,
+                                    label: `Never notify me`,
                                 },
                             ]}
                         />
