@@ -42,6 +42,7 @@ export const AppBarBottomItem = React.memo<AppBarBottomItemProps>((props) => {
                 >
                     <Image
                         source={selected ? iconSelected : icon}
+                        fadeDuration={0}
                         style={{
                             width: 24,
                             height: 24,
