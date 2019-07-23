@@ -33,12 +33,9 @@ export let isInvite = (attach?: FullMessage_GeneralMessage_attachments_MessageRi
 };
 
 export let richAttachImageShouldBeCompact = (attach?: FullMessage_GeneralMessage_attachments_MessageRichAttachment) => {
-    return attach && attach.image &&
-        (
-            (attach.image.metadata && attach.image.metadata.imageHeight === attach.image.metadata.imageWidth)
-            ||
-            isInvite(attach)
-        );
+    const aspectRatio = attach && attach.image && attach.image.metadata && attach.image.metadata.imageWidth && attach.image.metadata.imageHeight ? (attach.image.metadata.imageWidth / attach.image.metadata.imageHeight) : undefined;
+
+    return ((aspectRatio && aspectRatio >= 0.8 && aspectRatio <= 1.2) || isInvite(attach));
 };
 
 export const paddedTextPrfix = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 9, ios: 8 }))}</ASText >;
