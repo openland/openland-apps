@@ -83,7 +83,7 @@ export const Organizations = React.memo(() => {
 
     return (
         <>
-            {myOrganizations.map((organization, key) => {
+            {myOrganizations.sort((a, b) => a.isPrimary ? 1 : 0).map((organization, key) => {
                 const { id, photo, name, isPrimary, shortname } = organization;
 
                 return (
