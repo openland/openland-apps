@@ -243,7 +243,8 @@ const AutoCompleteComponent = React.memo(React.forwardRef((props: {
             className={mentionsContainer}
             style={{
                 opacity: props.activeWord ? 1 : 0,
-                transform: `translateY(${props.activeWord ? 0 : 10}px)`
+                transform: `translateY(${props.activeWord ? 0 : 10}px)`,
+                pointerEvents: props.activeWord ? 'auto' : 'none'
             }}
         >
             <UNavigableList
