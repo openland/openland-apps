@@ -15,7 +15,7 @@ export default withApp('Rick Text Input', 'viewer', props => {
                 {canUseDOM && <URickInput
                     placeholder="Write a message...."
                     onTextChange={(tx) => console.log(tx)}
-                    onEnterPress={() => console.log('enter')}
+                    onPressEnter={() => console.log('enter')}
                 />}
             </XView>
         </DevDocsScaffold>

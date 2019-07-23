@@ -5,11 +5,13 @@ import { css } from 'linaria';
 export interface UNavigableListProps {
     data: { key: string, data: any }[];
     render: (item: any) => any;
+    onSelected: (item: any) => void;
 }
 
 export interface UNavigableListRef {
     onPressUp(): void;
     onPressDown(): void;
+    onPressEnter(): boolean;
 }
 
 interface ListState {
@@ -83,6 +85,8 @@ export const UNavigableList = React.memo(React.forwardRef((props: UNavigableList
     if (state.items !== props.data) {
         dispatch({ 'type': 'update', items: props.data });
     }
+    const lastState = React.useRef(state);
+    lastState.current = state;
 
     React.useImperativeHandle(ref, () => ({
         onPressUp: () => {
@@ -90,6 +94,14 @@ export const UNavigableList = React.memo(React.forwardRef((props: UNavigableList
         },
         onPressDown: () => {
             dispatch({ 'type': 'down' });
+        },
+        onPressEnter: () => {
+            if (lastState.current.items.length > 0) {
+                let selected = lastState.current.items[lastState.current.focus].data;
+                props.onSelected(selected);
+                return true;
+            }
+            return false;
         }
     }));
     return (

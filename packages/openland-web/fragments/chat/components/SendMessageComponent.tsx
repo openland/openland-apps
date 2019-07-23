@@ -9,6 +9,7 @@ import FileIcon from 'openland-icons/ic-file-3.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import { UNavigableList, UNavigableListRef } from 'openland-web/components/unicorn/UNavigableList';
 import { useClient } from 'openland-web/utils/useClient';
+import { RoomMembers_members_user } from 'openland-api/Types';
 
 const attachButtonWrapper = css`
     display: flex;
@@ -89,18 +90,22 @@ const mentionsContainer = css`
 `;
 
 interface AutoCompleteComponentRef {
-    onPressUp(): void;
-    onPressDown(): void;
-    onPressEnter(): void;
-    onPressTab(): void;
+    onPressUp(): boolean;
+    onPressDown(): boolean;
+    onPressEnter(): boolean;
 }
 
-const AutoCompleteComponent = React.memo(React.forwardRef((props: { groupId: string, activeWord: string | null }, ref: React.Ref<AutoCompleteComponentRef>) => {
+const AutoCompleteComponent = React.memo(React.forwardRef((props: {
+    groupId: string, activeWord: string | null,
+    onSelected: (user: RoomMembers_members_user) => void
+}, ref: React.Ref<AutoCompleteComponentRef>) => {
 
     const listRef = React.useRef<UNavigableListRef>(null);
 
     // Store word in state for nice disappear animation
     const [word, setWord] = React.useState(props.activeWord);
+    const lastActiveWord = React.useRef(props.activeWord);
+    lastActiveWord.current = props.activeWord;
     if (props.activeWord) {
         if (word !== props.activeWord) {
             setWord(props.activeWord);
@@ -108,26 +113,47 @@ const AutoCompleteComponent = React.memo(React.forwardRef((props: { groupId: str
     }
     React.useImperativeHandle(ref, () => ({
         onPressDown: () => {
+            if (!lastActiveWord.current) {
+                return false;
+            }
             let r = listRef.current;
             if (r) {
                 r.onPressDown();
+                return true;
             }
+            return false;
         },
         onPressUp: () => {
+            if (!lastActiveWord.current) {
+                return false;
+            }
             let r = listRef.current;
             if (r) {
                 r.onPressUp();
+                return true;
             }
+            return false;
         },
         onPressEnter: () => {
-            //
+            if (!lastActiveWord.current) {
+                return false;
+            }
+            let r = listRef.current;
+            if (r) {
+                return r.onPressEnter();
+            }
+            return false;
         },
         onPressTab: () => {
-            //
+            let r = listRef.current;
+            if (r) {
+                return r.onPressEnter();
+            }
+            return false;
         }
     }));
 
-    const itemRender = React.useCallback((v: any) => <XView>{v.user.name}</XView>, []);
+    const itemRender = React.useCallback((v: any) => <XView>{v.name}</XView>, []);
     const client = useClient();
 
     let members = client.useWithoutLoaderRoomMembers({ roomId: props.groupId });
@@ -138,10 +164,8 @@ const AutoCompleteComponent = React.memo(React.forwardRef((props: { groupId: str
     let matched: any[];
     if (word) {
         let s = word.substring(1);
-        console.log(s);
-        console.log(members.members);
-        matched = members.members.filter((v) => v.user.name.startsWith(s)).map((v) => ({ key: v.user.id, data: v }));
-        console.log(matched);
+        matched = members.members
+            .filter((v) => v.user.name.startsWith(s)).map((v) => ({ key: v.user.id, data: v.user }));
     } else {
         matched = [];
     }
@@ -154,7 +178,12 @@ const AutoCompleteComponent = React.memo(React.forwardRef((props: { groupId: str
                 transform: `translateY(${props.activeWord ? 0 : 10}px)`
             }}
         >
-            <UNavigableList data={matched} render={itemRender} ref={listRef} />
+            <UNavigableList
+                data={matched}
+                render={itemRender}
+                onSelected={props.onSelected}
+                ref={listRef}
+            />
         </div>
     );
 }));
@@ -164,6 +193,12 @@ export const SendMessageComponent = React.memo((props: { groupId?: string, onTex
     const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
     const onPressEnter = React.useCallback(
         () => {
+            let s = suggestRef.current;
+            if (s) {
+                if (s.onPressEnter()) {
+                    return true;
+                }
+            }
             let ed = ref.current;
             if (ed) {
                 let text = ed.getText();
@@ -204,7 +239,7 @@ export const SendMessageComponent = React.memo((props: { groupId?: string, onTex
         () => {
             let s = suggestRef.current;
             if (s) {
-                s.onPressTab();
+                return s.onPressEnter();
             }
             return true;
         },
@@ -215,10 +250,21 @@ export const SendMessageComponent = React.memo((props: { groupId?: string, onTex
     const onAutocompleteWordChange = React.useCallback((word: string) => {
         setActiveWord(word);
     }, []);
+    const onUserPicked = React.useCallback((user: RoomMembers_members_user) => {
+        console.log(user);
+        //
+    }, []);
 
     return (
         <XView flexGrow={1} flexShrink={1} maxHeight={250} paddingVertical={16} position="relative">
-            {props.groupId && <AutoCompleteComponent groupId={props.groupId} activeWord={activeWord} ref={suggestRef} />}
+            {props.groupId && (
+                <AutoCompleteComponent
+                    onSelected={onUserPicked}
+                    groupId={props.groupId}
+                    activeWord={activeWord}
+                    ref={suggestRef}
+                />
+            )}
             <XView flexGrow={1} flexShrink={1}>
                 <URickInput
                     ref={ref}
