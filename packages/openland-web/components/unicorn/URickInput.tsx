@@ -102,8 +102,8 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
 
             if (props.onAutocompleteWordChange && props.autocompletePrefixes && props.autocompletePrefixes.length > 0) {
                 let selection = q.getSelection();
-                let autocompleteWord: string | null = null;
                 if (selection) {
+                    let autocompleteWord: string | null = null;
                     let activeWord = findActiveWord(tx, { start: selection.index, end: selection.index + selection.length });
                     if (activeWord) {
                         for (let p of props.autocompletePrefixes) {
@@ -113,11 +113,10 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                             }
                         }
                     }
-                }
-
-                if (lastAutocompleteText !== autocompleteWord) {
-                    lastAutocompleteText = autocompleteWord;
-                    props.onAutocompleteWordChange(autocompleteWord);
+                    if (lastAutocompleteText !== autocompleteWord) {
+                        lastAutocompleteText = autocompleteWord;
+                        props.onAutocompleteWordChange(autocompleteWord);
+                    }
                 }
             }
         });
