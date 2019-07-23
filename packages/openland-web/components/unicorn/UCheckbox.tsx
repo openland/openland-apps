@@ -82,7 +82,7 @@ const SwitcherComponent = ({ checked }: { checked?: boolean }) => (
     </div>
 );
 
-interface XRadioItemProps {
+interface UCheckboxItemProps {
     label: string;
     value?: string;
     checked?: boolean;
@@ -90,7 +90,7 @@ interface XRadioItemProps {
     asSwitcher?: boolean;
 }
 
-export const UCheckbox = (props: XRadioItemProps) => {
+export const UCheckbox = (props: UCheckboxItemProps) => {
     const handleChange = () => {
         if (props.onChange) {
             props.onChange();
