@@ -34,7 +34,7 @@ import { EditView } from 'openland-mobile/messenger/components/EditView';
 import { ChatSelectedActions } from './components/ChatSelectedActions';
 import { prepareLegacyMentionsForSend, convertMentionsFromMessage } from 'openland-engines/legacy/legacymentions';
 import { findSpans } from 'openland-y-utils/findSpans';
-import throttle from 'lodash/throttle';
+import { throttle } from 'openland-y-utils/timer';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { PinnedMessage } from './components/PinnedMessage';

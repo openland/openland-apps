@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XScrollView } from './XScrollView';
 import { XFlexStyles } from './basics/Flex';
-import throttle from 'lodash/throttle';
+import { throttle } from 'openland-y-utils/timer';
 import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 
 interface Dimensions {

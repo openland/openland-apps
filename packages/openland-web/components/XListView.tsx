@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { DataSourceItem, ReadableDataSource } from 'openland-y-utils/DataSource';
 import { XView } from 'react-mental';
-import throttle from 'lodash/throttle';
 import { XScrollValues, XScrollView3 } from 'openland-x/XScrollView3';
+import { throttle } from 'openland-y-utils/timer';
 
 function useDataSource<T extends DataSourceItem>(dataSource: ReadableDataSource<T>): [T[], boolean] {
     let [items, setItems] = React.useState<T[]>([]);
@@ -84,6 +84,7 @@ export const XListView = React.memo(function <T extends DataSourceItem>(props: X
             throttle(() => {
                 props.dataSource.needMore();
             }, 500),
+
         [props.dataSource],
     );
     let onScroll = React.useCallback(
