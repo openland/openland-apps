@@ -1,7 +1,21 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import { ThemeDefault } from 'openland-y-utils/themes';
+
+const radioDotStyle = css`
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    border: 2px solid #c4c7cc;
+    background-color: #fff;
+    transition: all 0.15s ease;
+`;
+
+const radioDotCheckedStyle = css`
+    border: 6px solid #1885f2;
+`;
 
 const inputClassName = css`
     display: none;
@@ -9,9 +23,10 @@ const inputClassName = css`
 
 const labelClassName = css`
     flex-grow: 1;
+    cursor: pointer;
 `;
 
-interface XRadioItemProps {
+interface URadioItemProps {
     label: string;
     value?: string;
     checked?: boolean;
@@ -19,7 +34,7 @@ interface XRadioItemProps {
     useAnyOption?: boolean;
 }
 
-export const XRadioItem = (props: XRadioItemProps) => {
+export const URadioItem = (props: URadioItemProps) => {
     const handleChange = () => {
         if (props.onChange) {
             props.onChange(
@@ -33,10 +48,7 @@ export const XRadioItem = (props: XRadioItemProps) => {
         .replace(/0\./, '')}`;
 
     return (
-        <XView
-            flexDirection="row"
-            alignItems="center"
-        >
+        <XView flexDirection="row" alignItems="center">
             <input
                 onClick={props.useAnyOption === false ? handleChange : undefined}
                 onChange={props.useAnyOption === false ? undefined : handleChange}
@@ -62,15 +74,7 @@ export const XRadioItem = (props: XRadioItemProps) => {
                     hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
                 >
                     <span>{props.label}</span>
-                    <XView
-                        width={20}
-                        height={20}
-                        flexShrink={0}
-                        borderRadius={20}
-                        borderWidth={props.checked ? 6 : 2}
-                        borderColor={props.checked ? '#1885F2' : '#C4C7CC'}
-                        backgroundColor="#fff"
-                    />
+                    <div className={cx(radioDotStyle, props.checked && radioDotCheckedStyle)} />
                 </XView>
             </label>
         </XView>
