@@ -5,12 +5,12 @@ import { ThemeDefault } from 'openland-y-utils/themes';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 
-import LeaveIcon from 'openland-icons/ic-leave.svg';
-import NotificationsIcon from 'openland-icons/notifications_icon.svg';
-import InviteFriendsIcon from 'openland-icons/invite_friends_icon.svg';
-import EditProfileIcon from 'openland-icons/ic-edit-profile.svg';
-import AppearanceIcon from './icons/appearance_icon.svg';
-import DownloadIcon from './icons/download_icon.svg';
+import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
+import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
+import InviteFriendsIcon from 'openland-icons/s/ic-invite-24.svg';
+import EditProfileIcon from 'openland-icons/s/ic-edit-24.svg';
+import AppearanceIcon from 'openland-icons/s/ic-appearance-24.svg';
+import DownloadIcon from 'openland-icons/s/ic-download-24.svg';
 
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from 'openland-web/components/UserInfo';

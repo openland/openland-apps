@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 
-import BackIcon from './back_24.svg';
+import BackIcon from 'openland-icons/s/ic-back-24.svg';
 import { useStackRouter } from './StackRouter';
 import { HeaderConfig } from './HeaderConfig';
 
