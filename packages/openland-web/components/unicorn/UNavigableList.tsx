@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 
 export interface UNavigableListProps {
     data: { key: string, data: any }[];
@@ -59,11 +59,11 @@ function listStateReducer(state: ListState, action: ListStateAction): ListState 
 
 const itemStyle = css`
     display: flex;
-    background-color: blue;
+    background-color: #fff;
 `;
 
 const focusedStyle = css`
-    background-color: red;
+    background-color: #F0F2F5;
 `;
 
 const Item = React.memo((props: { focused: boolean, children?: any }) => {
@@ -74,7 +74,7 @@ const Item = React.memo((props: { focused: boolean, children?: any }) => {
         }
     }, [props.focused]);
     return (
-        <div className={itemStyle + (props.focused ? ' ' + focusedStyle : '')} ref={ref}>
+        <div className={cx(itemStyle, props.focused && focusedStyle)} ref={ref}>
             {props.children}
         </div>
     );
