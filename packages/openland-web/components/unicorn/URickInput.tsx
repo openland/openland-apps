@@ -26,6 +26,7 @@ const quillStyle = css`
 export interface URickInputInstance {
     clear: () => void;
     focus: () => void;
+    getText: () => string;
 }
 
 export interface URickInputProps {
@@ -33,7 +34,7 @@ export interface URickInputProps {
     placeholder?: string;
     autofocus?: boolean;
     onTextChange?: (text: string) => void;
-    onEnterPress?: (text: string) => void;
+    onEnterPress?: () => void;
 }
 
 export const URickInput = React.memo(React.forwardRef((props: URickInputProps, ref: React.Ref<URickInputInstance>) => {
@@ -53,6 +54,14 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
             if (ed) {
                 ed.focus();
             }
+        },
+        getText: () => {
+            let ed = editor.current;
+            if (ed) {
+                return ed.getText();
+            } else {
+                return '';
+            }
         }
     }));
 
@@ -68,7 +77,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
         // Hack to handle enter before text edit
         q.keyboard.addBinding({ key: 13 as any }, () => {
             if (props.onEnterPress) {
-                props.onEnterPress(q.getText());
+                props.onEnterPress();
                 return false;
             } else {
                 return true;

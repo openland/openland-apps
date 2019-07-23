@@ -70,13 +70,15 @@ const ButtonPartWrapper = (props: { leftContent: JSX.Element; rightContent: JSX.
 
 export const SendMessageComponent = React.memo((props: { onEnterPress?: (text: string) => void }) => {
     const ref = React.useRef<URickInputInstance>(null);
-    const onEnterPress = React.useCallback((text: string) => {
-        if (props.onEnterPress) {
-            props.onEnterPress(text);
-        }
+    const onEnterPress = React.useCallback(() => {
         let ed = ref.current;
         if (ed) {
+            let text = ed.getText();
+            if (props.onEnterPress) {
+                props.onEnterPress(text);
+            }
             ed.clear();
+            ed.focus();
         }
     }, [props.onEnterPress]);
 
@@ -102,8 +104,7 @@ export const SendMessageComponent = React.memo((props: { onEnterPress?: (text: s
                 />
                 <ButtonPartWrapper
                     leftContent={<AttachButton text="Shortcuts" icon={<ShortcutsIcon />} />}
-                    // rightContent={<UButton text="Send" onClick={onTextSend} />}
-                    rightContent={<UButton text="Send" />}
+                    rightContent={<UButton text="Send" onClick={onEnterPress} />}
                 />
             </XView>
         </XView>
