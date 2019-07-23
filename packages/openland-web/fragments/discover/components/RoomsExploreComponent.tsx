@@ -67,7 +67,7 @@ const Rooms = (props: WithChatSearchRoomsProps) => {
 
 export const RoomsWithSort = ComponentWithSort({ Component: Rooms });
 
-export const RoomsExploreComponent = () => {
+export const RoomsExploreComponent = React.memo(() => {
     return (
         <SearchCardsOrShowProfile
             CardsComponent={RoomsWithSort}
@@ -85,4 +85,4 @@ export const RoomsExploreComponent = () => {
             }}
         />
     );
-};
+});
