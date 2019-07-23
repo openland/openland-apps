@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataSourceMessageItem, convertMessage } from 'openland-engines/messenger/ConversationEngine';
+import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
@@ -7,8 +7,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
 import { AsyncReplyMessageMediaView } from '../AsyncReplyMessageMediaView';
 import { AsyncReplyMessageDocumentView } from '../AsyncReplyMessageDocumentView';
-import { getMessenger } from 'openland-mobile/utils/messenger';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_quotedMessages_GeneralMessage } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 import { RenderSpans } from './AsyncRenderSpans';
 import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from '../AsyncBubbleView';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
@@ -42,10 +41,10 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
             <>
                 {message.reply && (
                     message.reply.map((m, i) => {
-                        let generalMesage = m.__typename === 'GeneralMessage' ? m as FullMessage_GeneralMessage_quotedMessages_GeneralMessage : undefined;
+                        let repliedMessage = !m.isService ? m : undefined;
 
-                        if (generalMesage) {
-                            let attachFile = generalMesage.attachments && generalMesage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+                        if (repliedMessage) {
+                            let attachFile = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
 
                             return (
                                 <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.foregroundQuaternary}>
@@ -58,17 +57,17 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         color={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.foregroundPrimary}
                                         letterSpacing={-0.3}
                                         fontSize={13}
-                                        onPress={() => this.props.onUserPress(generalMesage!.sender.id!)}
+                                        onPress={() => this.props.onUserPress(repliedMessage!.sender.id)}
                                         fontWeight={TextStyles.weight.medium}
                                         marginBottom={2}
                                     >
-                                        {generalMesage.sender.name || ''}
+                                        {repliedMessage.sender.name || ''}
                                     </ASText>
 
-                                    {message.replyTextSpans[i].length > 0 && (
+                                    {message.textSpans.length > 0 && (
                                         <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10}>
                                             <RenderSpans
-                                                spans={message.replyTextSpans[i]}
+                                                spans={message.textSpans}
                                                 message={message}
                                                 padded={compensateBubble ? (!message.text && (i + 1 === message.reply!.length)) : false}
                                                 theme={this.props.theme}
@@ -88,7 +87,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         <AsyncReplyMessageMediaView
                                             attach={attachFile}
                                             onPress={this.props.onMediaPress}
-                                            message={convertMessage(m as any, '', getMessenger().engine)}
+                                            message={repliedMessage}
                                         />
                                     ) : null}
                                     {attachFile && !attachFile.fileMetadata.isImage ? (
@@ -98,7 +97,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                             attach={attachFile}
                                             onPress={this.props.onDocumentPress}
                                             parent={message}
-                                            message={convertMessage(m as any, '', getMessenger().engine)}
+                                            message={repliedMessage}
                                         />
                                     ) : null}
                                 </ASFlex>
@@ -106,10 +105,10 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                         } else {
                             return (
                                 <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.foregroundQuaternary}>
-                                    {message.replyTextSpans[i].length > 0 && (
+                                    {message.textSpans.length > 0 && (
                                         <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10}>
                                             <RenderSpans
-                                                spans={message.replyTextSpans[i]}
+                                                spans={message.textSpans}
                                                 message={message}
                                                 padded={compensateBubble ? (!message.text && (i + 1 === message.reply!!.length)) : false}
                                                 theme={this.props.theme}

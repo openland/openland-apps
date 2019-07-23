@@ -12,7 +12,6 @@ import glamorous from 'glamorous';
 import {
     DataSourceWebMessageItem,
     buildMessagesDataSource,
-    DataSourceWebDateItem,
 } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
 import { MessageComponent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
@@ -60,7 +59,7 @@ class CommentsNotificationsInner extends React.PureComponent<
     > {
     private unmount?: () => void;
     private unmount1?: () => void;
-    private dataSource: DataSource<DataSourceWebMessageItem | DataSourceWebDateItem>;
+    private dataSource: DataSource<DataSourceWebMessageItem | DataSourceDateItem>;
 
     constructor(props: CommentsNotificationsProps) {
         super(props);

@@ -5,7 +5,7 @@ import { processSpans } from 'openland-y-utils/spans/processSpans';
 export function convertMessage(
     src: FullMessage & {
         repeatKey?: string;
-    } ,
+    },
 ): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
@@ -13,8 +13,8 @@ export function convertMessage(
     let reply =
         generalMessage && generalMessage.quotedMessages
             ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date)
+                .map(r => convertMessage(r as FullMessage))
             : undefined;
-    let replyTextSpans = reply ? reply.map(r => processSpans(r.message || '', r.spans)) : [];
 
     return {
         chatId: '',
@@ -37,7 +37,6 @@ export function convertMessage(
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,
         reply,
-        replyTextSpans,
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : null,
