@@ -6,6 +6,21 @@ export async function delayForewer() {
     return new Promise(resolver => { /*Do nothing*/ });
 }
 
+export function debounce(f: Function, ms: number) {
+    let timer: NodeJS.Timeout | null = null;
+  
+    return (...args: any[]) => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+  
+      timer = setTimeout(() => {
+        f(...args);
+        timer = null;
+      }, ms);
+    };
+  }
+
 export async function backoff<T>(callback: () => Promise<T>, repeat?: number): Promise<T> {
     while (true) {
         try {
