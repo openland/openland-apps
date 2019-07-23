@@ -4,7 +4,7 @@ import * as glamor from 'glamor';
 import Loadable from 'react-loadable';
 import { XAvatar } from 'openland-x/XAvatar';
 import { UserForMention } from 'openland-api/Types';
-import { XPopperContent } from 'openland-x/popper/XPopperContent';
+import { XPopperContentDEPRECATED } from 'openland-x/popper/XPopperContent';
 import { XPopper } from 'openland-x/XPopper';
 
 const showAnimation = glamor.keyframes({
@@ -36,7 +36,7 @@ const UserAvatarWrapper = Glamorous(XAvatar)({
     },
 });
 
-const Container = Glamorous(XPopperContent)({
+const Container = Glamorous(XPopperContentDEPRECATED)({
     padding: 0,
     animationDuration: `500ms`,
     animationName: `${showAnimation}`,

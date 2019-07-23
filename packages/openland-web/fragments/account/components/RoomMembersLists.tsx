@@ -10,7 +10,7 @@ import {
     RoomFull_SharedRoom_members,
     RoomMembersPaginated_members,
 } from 'openland-api/Types';
-import { XWithRole, useHasRole } from 'openland-x-permissions/XWithRole';
+import { XWithRole, useRole } from 'openland-x-permissions/XWithRole';
 import { useClient } from 'openland-web/utils/useClient';
 import { useInfiniteScroll } from 'openland-web/hooks/useInfiniteScroll';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
@@ -30,7 +30,7 @@ const MemberCard = ({ member, chat }: { member: RoomFull_SharedRoom_members, cha
             role={member.role}
             customOwnerText="Group creator"
             customMenu={
-                useHasRole('super-admin') || member.canKick || member.user.isYou ? (
+                useRole('super-admin') || member.canKick || member.user.isYou ? (
                     <XOverflow
                         placement="bottom-end"
                         content={

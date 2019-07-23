@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { XView } from 'react-mental';
 import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XLink, XLinkProps } from 'openland-x/XLink';
-import { XPopperContent } from 'openland-x/popper/XPopperContent';
+import { XPopperContentDEPRECATED } from 'openland-x/popper/XPopperContent';
 
 type XMenuItemStyle = 'default' | 'danger';
 
@@ -135,7 +135,7 @@ export const XMenuItemSeparator = Glamorous.div<{ marginTop?: number; marginBott
 );
 
 export const XMenuVertical = Glamorous<{ paddingTop?: number; paddingBottom?: number }>(
-    XPopperContent,
+    XPopperContentDEPRECATED,
 )(props => ({
     paddingTop: props.paddingTop || 8,
     paddingBottom: props.paddingBottom || 8,
