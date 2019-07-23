@@ -49,7 +49,7 @@ export const UUserView = React.memo((props: UUserViewProps) => {
             title={name}
             titleIcon={role ? <AdminIcon role={role} /> : undefined}
             subtitle={primaryOrganization ? primaryOrganization.name : undefined}
-            description={badge ? badge.name : <UPresence user={props.user} />}
+            description={<UPresence suffix={badge ? ' · ' + badge.name : undefined} user={props.user} />}
             avatar={{ photo, id, title: name, online }}
             useRadius={true}
             path={path}

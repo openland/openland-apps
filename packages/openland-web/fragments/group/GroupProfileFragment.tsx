@@ -14,6 +14,7 @@ import { GroupManageButtons } from './components/GroupManageButtons';
 import { showAddMembersModal } from '../chat/AddMembersModal';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { UListText } from 'openland-web/components/unicorn/UListText';
+import { MemberManageMenu } from './components/MembersManageMenu';
 
 export const GroupProfileFragment = React.memo((props) => {
     const client = useClient();
@@ -56,6 +57,7 @@ export const GroupProfileFragment = React.memo((props) => {
                     key={'member-' + member.user.id}
                     user={member.user}
                     role={member.role}
+                    rightElement={<MemberManageMenu group={group} member={member} />}
                 />
             )}
             padded={false}
@@ -90,6 +92,7 @@ export const GroupProfileFragment = React.memo((props) => {
                         key={'featured-member-' + member.user.id}
                         user={member.user}
                         badge={member.badge}
+                        rightElement={<MemberManageMenu group={group} member={member} />}
                     />
                 ))}
             </UListGroup>

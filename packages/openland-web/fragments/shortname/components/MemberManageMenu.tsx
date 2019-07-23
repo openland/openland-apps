@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { OrganizationMembers_organization_members, OrganizationWithoutMembers_organization, OrganizationMemberRole } from 'openland-api/Types';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { showRoleOrgMemberModal, showRemoveOrgMemberModal } from 'openland-web/fragments/account/components/OrganizationProfileComponent';
@@ -18,14 +17,12 @@ export const MemberManageMenu = React.memo((props: MemberManageMenu) => {
     const { id, name, isOwner, isAdmin, isCommunity } = organization;
     const { user, role } = member;
 
-    const messenger = React.useContext(MessengerContext);
-    const myUserID = messenger.user.id;
     const canEdit = isOwner || isAdmin;
     const typeString = isCommunity ? 'community' : 'organization';
 
-    const canChangeRole = user.id !== myUserID && isOwner;
-    const canLeave = user.id === myUserID && !isOwner;
-    const canRemove = user.id !== myUserID && canEdit && role !== OrganizationMemberRole.OWNER;
+    const canChangeRole = !user.isYou && isOwner;
+    const canLeave = user.isYou && !isOwner;
+    const canRemove = !user.isYou && canEdit && role !== OrganizationMemberRole.OWNER;
     const showButton = canChangeRole || canLeave || canRemove;
 
     const handleChangeRoleClick = React.useCallback((e: React.MouseEvent) => {

@@ -1,10 +1,15 @@
 import * as React from 'react';
 import { formatLastSeen } from 'openland-y-utils/formatTime';
 import { UserShort } from 'openland-api/Types';
-import { XView, XViewSelectedContext } from 'react-mental';
+import { XViewSelectedContext } from 'react-mental';
 import { ThemeDefault } from 'openland-y-utils/themes';
 
-export const UPresence = ((props: { user: UserShort }) => {
+interface UPresenceProps {
+    user: UserShort;
+    suffix?: string;
+}
+
+export const UPresence = ((props: UPresenceProps) => {
     const { isBot, lastSeen, online } = props.user;
     const selected = React.useContext(XViewSelectedContext);
 
@@ -22,6 +27,11 @@ export const UPresence = ((props: { user: UserShort }) => {
     }
 
     return (
-        <XView color={isOnline && !selected ? ThemeDefault.accentPrimary : undefined}>{sub}</XView>
+        <span>
+            <span style={{ color: isOnline && !selected ? ThemeDefault.accentPrimary : undefined }}>
+                {sub}
+            </span>
+            {props.suffix}
+        </span>
     );
 });

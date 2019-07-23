@@ -461,3 +461,14 @@ export const MakeFeaturedModal = (props: {
         </>
     );
 };
+
+export const showMakeFeaturedModal = (roomId: string, userId: string) => {
+    showModalBox(
+        {
+            title: 'Member featuring',
+        },
+        ctx => {
+            return <MakeFeaturedModal ctx={ctx} userId={userId} roomId={roomId} />;
+        },
+    );
+};
