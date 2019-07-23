@@ -7,9 +7,9 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { MultiplePicker } from './multiplePicker';
 import { XCheckboxBasic } from 'openland-x/XCheckbox';
 import { delay } from 'openland-y-utils/timer';
-import { XPopperContent } from 'openland-x/popper/XPopperContent';
+import { XPopperContentDEPRECATED } from 'openland-x/popper/XPopperContent';
 
-const ContentWrapper = Glamorous(XPopperContent)({
+const ContentWrapper = Glamorous(XPopperContentDEPRECATED)({
     minWidth: 180,
 });
 

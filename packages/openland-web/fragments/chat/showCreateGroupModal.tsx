@@ -3,12 +3,13 @@ import { showModalBox } from "openland-x/showModalBox";
 import { CreateEntity, EntityKind } from 'openland-web/fragments/create/CreateEntity';
 import { SharedRoomKind } from 'openland-api/Types';
 
-export function showCreateGroupModal(type: 'group' | 'channel') {
+export function showCreateGroupModal(type: 'group' | 'channel', orgId?: string) {
     showModalBox({ fullScreen: true }, (ctx) => {
         return (
             <CreateEntity
                 ctx={ctx}
                 entityKind={type === 'group' ? EntityKind.GROUP : EntityKind.CHANNEL}
+                inOrgId={orgId}
                 selectOptions={[
                     {
                         value: SharedRoomKind.GROUP,

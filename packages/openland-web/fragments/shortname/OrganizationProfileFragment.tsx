@@ -15,12 +15,13 @@ import { UListText } from 'openland-web/components/unicorn/UListText';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { ThemeDefault } from 'openland-y-utils/themes';
 import MoreHIcon from 'openland-icons/s/ic-more-h-24.svg';
+import { CreateGroupButton } from './components/CreateGroupButton';
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
     const organization = client.useOrganizationWithoutMembers({ organizationId: props.id }, { fetchPolicy: 'cache-and-network' }).organization;
     const initialMembers = client.useOrganizationMembers({ organizationId: props.id, first: 15 }, { fetchPolicy: 'cache-and-network' }).organization.members;
-    const { id, name, photo, about, shortname, website, twitter, facebook, rooms, membersCount, isCommunity } = organization;
+    const { id, name, photo, about, shortname, website, twitter, facebook, rooms, membersCount, isCommunity, isMine } = organization;
 
     const [ displayGroups, setDisplayGroups ] = React.useState(rooms.slice(0, 10));
     const [ members, setMembers ] = React.useState(initialMembers);
@@ -87,6 +88,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 {!!facebook && <UListField label="Facebook" value={facebook} />}
             </UListGroup>
             <UListGroup header="Group and channels" counter={rooms.length}>
+                {isMine && <CreateGroupButton id={id} />}
                 {displayGroups.map(room => (
                     <UGroupView
                         key={'room-' + room.id}

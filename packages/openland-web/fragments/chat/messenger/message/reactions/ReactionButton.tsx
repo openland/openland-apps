@@ -11,11 +11,11 @@ import { MessageReactionType } from 'openland-api/Types';
 import { emojifyReactions } from './emojifyReactions';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { trackEvent } from 'openland-x-analytics';
-import { XPopperContent } from 'openland-x/popper/XPopperContent';
+import { XPopperContentDEPRECATED } from 'openland-x/popper/XPopperContent';
 import { XPopperArrow } from 'openland-x/popper/XPopperArrow';
 import XPopper from 'openland-x/XPopper';
 
-const CustomPickerDiv = Glamorous(XPopperContent)({
+const CustomPickerDiv = Glamorous(XPopperContentDEPRECATED)({
     padding: '4px 10px',
     borderRadius: 18,
 });

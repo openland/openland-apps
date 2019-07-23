@@ -19,6 +19,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { showCreateOrganization } from '../org/showCreateOrganization';
+import { showLogoutConfirmation } from './LogoutFragment';
 
 const UserProfileCard = withUserInfo(({ user }) => {
     if (user) {
@@ -65,12 +66,7 @@ const UserProfileCard = withUserInfo(({ user }) => {
                             </XView>
                         </XView>
                     </XView>
-                    <XView
-                        width={24}
-                        height={24}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
+                    <XView width={24} height={24} alignItems="center" justifyContent="center">
                         <EditProfileIcon />
                     </XView>
                 </XView>
@@ -120,10 +116,10 @@ export const AccountFragment = React.memo(() => {
                 alignItems="center"
                 justifyContent="center"
             >
-                <XView flexGrow={1} minWidth={0} flexBasis={0} >
+                <XView flexGrow={1} minWidth={0} flexBasis={0}>
                     Account
                 </XView>
-                <UIconButton icon={<LeaveIcon />} path="/auth/logout" size="large" />
+                <UIconButton icon={<LeaveIcon />} size="large" onClick={showLogoutConfirmation} />
             </XView>
             <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">
                 <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
@@ -150,7 +146,13 @@ export const AccountFragment = React.memo(() => {
                         path="/settings/download"
                     />
 
-                    <UListGroup header="Organizations" action={{ title: '+ New', onClick: () => showCreateOrganization('organization')}}>
+                    <UListGroup
+                        header="Organizations"
+                        action={{
+                            title: '+ New',
+                            onClick: () => showCreateOrganization('organization'),
+                        }}
+                    >
                         <React.Suspense fallback={<XLoader loading={true} />}>
                             <Organizations />
                         </React.Suspense>

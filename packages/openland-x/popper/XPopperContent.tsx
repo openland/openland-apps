@@ -3,6 +3,7 @@ import Glamorous from 'glamorous';
 import * as classnames from 'classnames';
 import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XPopperStyleType } from '../XPopper';
+import { css } from 'linaria';
 
 interface ContentDivProps {
     width?: number | string;
@@ -68,7 +69,7 @@ interface XPopperContentProps {
     className?: string;
 }
 
-export class XPopperContent extends React.PureComponent<XPopperContentProps> {
+export class XPopperContentDEPRECATED extends React.PureComponent<XPopperContentProps> {
     render() {
         return (
             <ContentDiv
@@ -87,3 +88,17 @@ export class XPopperContent extends React.PureComponent<XPopperContentProps> {
         );
     }
 }
+
+const wrapper = css`
+    min-width: 150px;
+    background: #ffffff; // Need to be ThemeDefault.backgroundPrimary
+    border-radius: 8px;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
+    padding: 8px 0;
+`;
+
+export const XPopperContent = React.memo<{ captureContent?: (arrow: any) => void }>(props => (
+    <div ref={props.captureContent} className={wrapper}>
+        {props.children}
+    </div>
+));

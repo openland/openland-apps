@@ -8,6 +8,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XPopper } from '../XPopper';
 import { UserPicker } from '../XUserPicker';
 import { isNumber } from 'util';
+import { XPopperContentDEPRECATED } from 'openland-x/popper/XPopperContent';
 
 const Container = Glamorous(XHorizontal)<XFlexStyles>([
     {
@@ -69,7 +70,7 @@ interface XSelectCustomProps extends XSelectProps, XFlexStyles {
 }
 
 const CustomContentDiv = Glamorous<{ paddingTop?: number; paddingBottom?: number }>(
-    XPopper.Content,
+    XPopperContentDEPRECATED,
 )(props => ({
     boxShadow:
         '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
