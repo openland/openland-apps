@@ -6,14 +6,6 @@ import ManageHorizontalIcon from 'openland-icons/ic-more-h.svg';
 import { XViewProps } from 'react-mental';
 import { css, cx } from 'linaria';
 
-const wrapper = css`
-    min-width: 150px;
-    background: #ffffff; // Need to be ThemeDefault.backgroundPrimary
-    border-radius: 8px;
-    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
-    padding: 8px 0;
-`;
-
 const iconWrapper = css`
     svg {
         path {
@@ -21,12 +13,6 @@ const iconWrapper = css`
         }
     }
 `;
-
-const Wrapper = React.memo<{ captureContent?: (arrow: any) => void }>(props => (
-    <div ref={props.captureContent} className={wrapper}>
-        {props.children}
-    </div>
-));
 
 interface UMoreButtonProps extends XViewProps {
     placement?: Placement;
@@ -82,7 +68,6 @@ export class UMoreButton extends React.PureComponent<UMoreButtonProps, { show: b
         return (
             <XPopper
                 show={computedShow}
-                contentContainer={<Wrapper />}
                 content={children}
                 arrow={null}
                 placement={placement}

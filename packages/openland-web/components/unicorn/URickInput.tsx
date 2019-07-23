@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as QuillType from 'quill';
 import { css } from 'linaria';
+import { findActiveWord } from 'openland-y-utils/findActiveWord';
 
 const quillStyle = css`
     flex-grow: 1;
@@ -33,7 +34,9 @@ export interface URickInputProps {
     initialText?: string;
     placeholder?: string;
     autofocus?: boolean;
+    autocompletePrefixes?: string[];
     onTextChange?: (text: string) => void;
+    onAutocompleteWordChange?: (text: string | null) => void;
     onEnterPress?: () => void;
 }
 
@@ -87,12 +90,34 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
 
         // Handle text change
         let lastKnownText: string = props.initialText || '';
+        let lastAutocompleteText: string | null = null;
         q.on('editor-change', () => {
             let tx = q.getText();
             if (tx !== lastKnownText) {
                 lastKnownText = tx;
                 if (props.onTextChange) {
                     props.onTextChange(tx);
+                }
+            }
+
+            if (props.onAutocompleteWordChange && props.autocompletePrefixes && props.autocompletePrefixes.length > 0) {
+                let selection = q.getSelection();
+                let autocompleteWord: string | null = null;
+                if (selection) {
+                    let activeWord = findActiveWord(tx, { start: selection.index, end: selection.index + selection.length });
+                    if (activeWord) {
+                        for (let p of props.autocompletePrefixes) {
+                            if (activeWord.startsWith(p)) {
+                                autocompleteWord = activeWord;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (lastAutocompleteText !== autocompleteWord) {
+                    lastAutocompleteText = autocompleteWord;
+                    props.onAutocompleteWordChange(autocompleteWord);
                 }
             }
         });

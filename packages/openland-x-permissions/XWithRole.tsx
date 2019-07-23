@@ -45,7 +45,7 @@ export const XWithRole = (props: { role: string | string[], or?: boolean, orgPer
     );
 };
 
-export const useHasRole = (role: string | string[], or?: boolean, orgPermission?: string | 'primary', negate?: boolean) => {
+export const useRole = (role: string | string[], or?: boolean, orgPermission?: string | 'primary', negate?: boolean) => {
     const userRoles = React.useContext(XRoleContext);
 
     if (!userRoles) {

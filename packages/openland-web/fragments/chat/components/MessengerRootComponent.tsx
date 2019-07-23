@@ -351,9 +351,25 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 />
 
                 {!this.state.hideInput && this.conversation.canSendMessage && (
-                    <XView minHeight={100} flexDirection="row" marginHorizontal={64} alignItems="flex-start" justifyContent="center">
-                        <SendMessageComponent onEnterPress={(text) => this.conversation!.sendMessage(text, [])}/>
-                        {/*<URickInput onEnterPress={(text) => this.conversation!.sendMessage(text, [])} />*/}
+                    <XView
+                        flexDirection="row"
+                        alignSelf="stretch"
+                        justifyContent="center"
+                    >
+                        <XView
+                            minHeight={100}
+                            maxWidth={900}
+                            flexDirection="row"
+                            paddingHorizontal={16}
+                            alignItems="flex-start"
+                            justifyContent="center"
+                            flexGrow={1}
+                            flexBasis={0}
+                        >
+                            <SendMessageComponent
+                                onTextSent={(text) => this.conversation!.sendMessage(text, [])}
+                            />
+                        </XView>
                     </XView>
                 )}
             </XView>

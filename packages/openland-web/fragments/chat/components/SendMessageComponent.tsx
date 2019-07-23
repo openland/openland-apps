@@ -68,25 +68,31 @@ const ButtonPartWrapper = (props: { leftContent: JSX.Element; rightContent: JSX.
     </XView>
 );
 
-export const SendMessageComponent = React.memo((props: { onEnterPress?: (text: string) => void }) => {
+export const SendMessageComponent = React.memo((props: { onTextSent?: (text: string) => void }) => {
     const ref = React.useRef<URickInputInstance>(null);
     const onEnterPress = React.useCallback(() => {
         let ed = ref.current;
         if (ed) {
             let text = ed.getText();
-            if (props.onEnterPress) {
-                props.onEnterPress(text);
+            if (props.onTextSent) {
+                props.onTextSent(text);
             }
             ed.clear();
             ed.focus();
         }
-    }, [props.onEnterPress]);
+    }, [props.onTextSent]);
+
+    const onAutocompleteWordChange = React.useCallback((word: string) => {
+        console.log(word);
+    }, []);
 
     return (
         <XView flexGrow={1} flexShrink={1} maxHeight={250} paddingVertical={16}>
             <XView flexGrow={1} flexShrink={1}>
                 <URickInput
                     ref={ref}
+                    autocompletePrefixes={['@']}
+                    onAutocompleteWordChange={onAutocompleteWordChange}
                     onEnterPress={onEnterPress}
                     autofocus={true}
                     placeholder="Write a message..."
