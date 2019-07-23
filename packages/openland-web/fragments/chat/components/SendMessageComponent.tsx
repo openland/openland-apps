@@ -104,7 +104,7 @@ const MentionUserComponent = (props: MentionUserComponentProps) => (
                     fontSize={13}
                     fontWeight="600"
                     lineHeight={1.54}
-                    color="#000000"
+                    color="#171B1F"
                 >
                     {props.name}
                 </XView>
@@ -112,23 +112,22 @@ const MentionUserComponent = (props: MentionUserComponentProps) => (
                     <XView
                         marginLeft={7}
                         paddingTop={4}
-                        opacity={0.4}
                         fontSize={12}
-                        fontWeight="600"
                         lineHeight={1.5}
-                        color="#000000"
+                        color="#676D7A"
                     >
                         {props.primaryOrganization.name}
                     </XView>
                 )}
             </XView>
             <XView
-                opacity={0.4}
                 fontSize={12}
                 lineHeight={1.5}
-                color="#000000"
+                color="#676D7A"
+                flexDirection="row"
             >
-                ↵ to select
+                <XView paddingTop={3} marginRight={5}>↵</XView>
+                <XView>to select</XView>
             </XView>
         </XView>
     </XView>
