@@ -20,7 +20,9 @@ const reactionsText = css`
 `;
 
 const reactionsItems = css`
+    display: flex;
     align-items: center;
+    flex-direction: row;
     padding-right: 2px;
 `;
 
