@@ -8,10 +8,10 @@ import { UIcon } from './UIcon';
 const SelectableSVG = React.memo((props: { icon: JSX.Element }) => {
     const selected = React.useContext(XViewSelectedContext);
 
-    return <UIcon icon={props.icon} color={selected ? '#FFFFFF' : '#676D7A'} />;
+    return <UIcon icon={props.icon} color={selected ? ThemeDefault.contrastSpecial : ThemeDefault.foregroundSecondary} />;
 });
 
-const SelectableText = React.memo((props: XViewProps) => {
+export const SelectableText = React.memo((props: XViewProps) => {
     const selected = React.useContext(XViewSelectedContext);
     
     return (

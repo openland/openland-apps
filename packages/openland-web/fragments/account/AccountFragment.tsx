@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
+import { XView, XViewSelectedContext } from 'react-mental';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { ThemeDefault } from 'openland-y-utils/themes';
-import { UListItem } from 'openland-web/components/unicorn/UListItem';
+import { UListItem, SelectableText } from 'openland-web/components/unicorn/UListItem';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
@@ -20,6 +20,15 @@ import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { showCreateOrganization } from '../org/showCreateOrganization';
 import { showLogoutConfirmation } from './LogoutFragment';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import { TypeStyles } from 'openland-web/utils/TypeStyles';
+
+const SelectableSVG = React.memo((props: { icon: JSX.Element }) => {
+    const selected = React.useContext(XViewSelectedContext);
+
+    return <UIcon icon={props.icon} color={selected ? ThemeDefault.contrastSpecial : ThemeDefault.foregroundSecondary} />;
+});
 
 const UserProfileCard = withUserInfo(({ user }) => {
     if (user) {
@@ -27,48 +36,33 @@ const UserProfileCard = withUserInfo(({ user }) => {
             <XView
                 cursor="pointer"
                 path="/settings/profile"
+                color={ThemeDefault.foregroundPrimary}
                 hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
+                selectedBackgroundColor={ThemeDefault.accentPrimary}
+                selectedHoverBackgroundColor={ThemeDefault.accentPrimaryHover}
+                selectedColor={ThemeDefault.contrastSpecial}
                 height={70}
-                width="100%"
-                flexShrink={0}
-                flexDirection="column"
-                hoverTextDecoration="none"
-                color="#000"
+                flexDirection="row"
+                paddingHorizontal={16}
+                paddingVertical={12}
+                alignItems="center"
+                linkSelectable={true}
             >
-                <XView
-                    paddingHorizontal={16}
-                    paddingTop={16}
-                    paddingBottom={13}
-                    flexDirection="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    height={69}
-                >
-                    <XView flexDirection="row" height="100%">
-                        <XAvatar2 size={40} src={user.photo} title={user.name} id={user.id} />
-                        <XView marginLeft={16}>
-                            <XView
-                                fontSize={15}
-                                fontWeight="600"
-                                lineHeight={1.33}
-                                color="#000"
-                                marginBottom={1}
-                            >
-                                {user.name}
-                            </XView>
-                            <XView
-                                fontSize={14}
-                                lineHeight={1.43}
-                                color="rgba(0, 0, 0, 0.5)"
-                                marginBottom={1}
-                            >
-                                {user.email}
-                            </XView>
-                        </XView>
+                <UAvatar size="medium" photo={user.photo} title={user.name} id={user.id} marginRight={16} />
+                <XView flexGrow={1}>
+                    <XView {...TypeStyles.title2}>
+                        {user.name}
                     </XView>
-                    <XView width={24} height={24} alignItems="center" justifyContent="center">
-                        <EditProfileIcon />
-                    </XView>
+                    <SelectableText
+                        {...TypeStyles.body}
+                        color={ThemeDefault.foregroundSecondary}
+                        selectedColor={ThemeDefault.contrastSpecial}
+                    >
+                        {user.email}
+                    </SelectableText>
+                </XView>
+                <XView width={24}>
+                    <SelectableSVG icon={<EditProfileIcon />} />
                 </XView>
             </XView>
         );
