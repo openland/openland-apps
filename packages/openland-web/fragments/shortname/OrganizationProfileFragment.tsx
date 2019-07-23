@@ -68,7 +68,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 <OrganizationManageButtons organization={organization} />
             </UListHero>
             <UListGroup header="About">
-                {!!about && <UListText value={about} />}
+                {!!about && <UListText value={about} marginBottom={16} />}
                 {!!shortname && (
                     <UListField
                         label="Shortname"

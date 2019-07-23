@@ -40,7 +40,7 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
                 )}
             </UListHero>
             <UListGroup header="About">
-                {!!about && <UListText value={about} />}
+                {!!about && <UListText value={about} marginBottom={16} />}
                 {!!shortname && (
                     <UListField
                         label="Username"

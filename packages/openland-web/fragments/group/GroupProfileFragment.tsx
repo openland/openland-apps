@@ -3,7 +3,6 @@ import { useClient } from 'openland-web/utils/useClient';
 import { UListHero } from 'openland-web/components/unicorn/UListHero';
 import { plural } from 'openland-y-utils/plural';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
-import { UListField } from 'openland-web/components/unicorn/UListField';
 import { UOrganizationView } from 'openland-web/components/unicorn/templates/UOrganizationView';
 import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/UNotificationsSwitch';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
@@ -76,7 +75,7 @@ export const GroupProfileFragment = React.memo((props) => {
             </UListHero>
 
             <UListGroup header="About">
-                {!!description && <UListText value={description} marginBottom={0} />}
+                {!!description && <UListText value={description} />}
             </UListGroup>
 
             {organization && (

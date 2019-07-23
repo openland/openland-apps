@@ -12,7 +12,6 @@ export const UListText = (props: UListTextProps) => {
 
     return (
         <XView
-            marginBottom={16}
             {...other}
             {...TypeStyles.body}
             paddingHorizontal={16}
