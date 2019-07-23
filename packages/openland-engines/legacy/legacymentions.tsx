@@ -27,11 +27,14 @@ export const prepareLegacyMentions = (
     function getOffset(str: string, n: number = 0): number {
         let offset = message.toLowerCase().indexOf(str.toLowerCase(), n);
 
-        if (offsets.has(offset)) {
-            return getOffset(str, n + 1);
+        if (offset >= 0) {
+            if (offsets.has(offset)) {
+                return getOffset(str, n + 1);
+            }
+    
+            offsets.add(offset);
         }
 
-        offsets.add(offset);
         return offset;
     }
 
