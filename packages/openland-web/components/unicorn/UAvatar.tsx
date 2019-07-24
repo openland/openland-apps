@@ -16,7 +16,7 @@ export interface UAvatarProps extends XViewProps {
     size?: UAvatarSize;
 }
 
-const PlaceholderColor = [
+export const PlaceholderColor = [
     'linear-gradient(138deg, #ffb600, #ff8d00)',
     'linear-gradient(138deg, #ff655d, #ff3d33)',
     'linear-gradient(138deg, #59d23c, #21ac00)',
@@ -25,7 +25,7 @@ const PlaceholderColor = [
     'linear-gradient(138deg, #aa22ff, #8e00e6)',
 ];
 
-const AvatarSizes: { [key in UAvatarSize]: { size: number, placeholder: number, dotSize: number, dotPosition: number, dotBorderWidth: number }} = {
+const AvatarSizes: { [key in UAvatarSize]: { size: number, placeholder: number, dotSize: number, dotPosition: number, dotBorderWidth: number } } = {
     'x-small': { size: 24, placeholder: 8, dotSize: 6, dotPosition: 0, dotBorderWidth: 1 },
     'small': { size: 32, placeholder: 16, dotSize: 10, dotPosition: 0, dotBorderWidth: 2 },
     'medium': { size: 40, placeholder: 20, dotSize: 12, dotPosition: 0, dotBorderWidth: 2 },
@@ -62,7 +62,7 @@ const AvatarPlaceholder = React.memo((props: UAvatarProps) => {
     );
 });
 
-const AvatarImage = (props: UAvatarProps) => {
+const AvatarImage = React.memo((props: UAvatarProps) => {
     const { photo, size = 'medium' } = props;
     const boxSize = AvatarSizes[size].size;
 
@@ -83,7 +83,7 @@ const AvatarImage = (props: UAvatarProps) => {
             backgroundColor="#ffffff"
         />
     );
-};
+});
 
 const OnlineDotXXLarge = () => (
     <XView
@@ -195,7 +195,7 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
             <XView width="100%" height="100%" borderRadius={boxSize / 2} overflow="hidden">
                 {content}
             </XView>
-    
+
             {online && size === 'x-small' && <OnlineDotXSmall />}
             {online && size === 'small' && <OnlineDotSmall />}
             {online && size === 'medium' && <OnlineDotMedium />}

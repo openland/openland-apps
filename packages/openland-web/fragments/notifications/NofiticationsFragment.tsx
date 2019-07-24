@@ -19,6 +19,7 @@ import { MessengerEmptyFragment } from 'openland-web/fragments/chat/MessengerEmp
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { UHeader } from 'openland-unicorn/UHeader';
+import { MessageContent } from '../chat/messenger/message/MessageContent';
 
 const wrapperClassName = css`
     width: 100%;
@@ -117,7 +118,7 @@ class CommentsNotificationsInner extends React.PureComponent<
         const data = i as any;
         // TODO recover open comment modal
         return (
-            <MessageComponent
+            <MessageContent
                 message={data}
             />
         );

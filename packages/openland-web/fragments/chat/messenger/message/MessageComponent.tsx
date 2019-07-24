@@ -1,18 +1,77 @@
 import * as React from 'react';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
-import { MessageContent } from './MessageContent';
 import { MessageReactions } from './reactions/MessageReactions';
+import { MessageContent } from './MessageContent';
+import { MAvatar } from './MAvatar';
+import { css, cx } from 'linaria';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 
-export const MessageComponent = (props: { message: DataSourceWebMessageItem }) => {
-    let { message } = props;
-    // place to header and all callbacks
-    return (
+const messageContainerClass = css`
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 1;
+    display: flex;
+    max-width: 984px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+`;
+
+const messageContainerAttachClass = css`
+    margin-top: 8px;
+`;
+
+const messageAvatarWrapper = css`
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    justify-content: center;
+    flex-shrink: 0;
+`;
+
+const messageContentAreaClass = css`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding-left: 16px;
+`;
+
+const noAvatarPlaceholder = css`
+    padding-left: 56px;
+`;
+
+interface MessageComponentProps {
+    message: DataSourceWebMessageItem;
+    engine: ConversationEngine;
+}
+
+export const MessageComponent = (props: MessageComponentProps) => {
+    const { message } = props;
+    const content = (
         <>
             <MessageContent message={message} />
-            <>
-                {/* for buttons: reactions, comments */}
-                <MessageReactions messageId={message.id} reactions={message.reactions} />
-            </>
+            <MessageReactions messageId={message.id} reactions={message.reactions} />
         </>
+    );
+
+    return (
+        <div className={cx(messageContainerClass, !message.attachTop && messageContainerAttachClass)}>
+            {!message.attachTop && (
+                <div className={messageAvatarWrapper}>
+                    <MAvatar
+                        senderPhoto={message.senderPhoto}
+                        senderNameEmojify={message.senderNameEmojify}
+                        senderName={message.senderName}
+                        senderId={message.senderId}
+                    />
+                </div>
+            )}
+            <div className={cx(messageContentAreaClass, message.attachTop && noAvatarPlaceholder)}>
+                {props.message.senderNameEmojify}
+                {content}
+            </div>
+        </div>
     );
 };

@@ -52,7 +52,7 @@ export interface DataSourceMessageItem {
     serviceMetaData?: FullMessage_ServiceMessage_serviceMetadata;
     isService?: boolean;
     progress?: number;
-    commentsCount: number | null;
+    commentsCount: number;
     fallback?: string;
     textSpans: Span[];
 
@@ -108,7 +108,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
         reply,
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
-        commentsCount: generalMessage ? generalMessage.commentsCount : null,
+        commentsCount: generalMessage ? generalMessage.commentsCount : 0,
         fallback: src.fallback || undefined,
         textSpans: src.message ? processSpans(src.message, src.spans) : []
     };
@@ -766,7 +766,7 @@ export class ConversationEngine implements MessageSendHandler {
                 text: src.message ? src.message : undefined,
                 attachBottom: false,
                 spans: src.spans,
-                commentsCount: null,
+                commentsCount: 0,
                 attachments: p.uri ? [{
                     __typename: "MessageAttachmentFile",
                     id: 'pending_message_attach_file_id',
