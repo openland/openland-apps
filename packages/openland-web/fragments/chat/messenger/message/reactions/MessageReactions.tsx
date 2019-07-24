@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { FullMessage_GeneralMessage_reactions, MessageReactionType } from 'openland-api/Types';
+import { MessageReactionType } from 'openland-api/Types';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { extractReactionsSorted } from './extractReactions';
 import { css, cx } from 'linaria';
 import { TypeCaption } from 'openland-web/utils/TypeStyles';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
+import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
 
 const reactionsWrapper = css`
     display: flex;
@@ -42,27 +43,27 @@ const reactionsItem = css`
 `;
 
 interface MessageReactionsProps {
-    messageId?: string;
-    reactions: FullMessage_GeneralMessage_reactions[];
+    message: DataSourceWebMessageItem;
     selected: boolean;
 }
 
 export const MessageReactions = React.memo<MessageReactionsProps>(props => {
-    const { messageId, reactions, selected } = props;
+    const { message, selected } = props;
+    const { id, reactions } = message;
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
     const handleReactionClick = React.useCallback((reaction: MessageReactionType) => {
-        if (messageId) {
+        if (id) {
             let remove = reactions && reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === reaction).length > 0;
             if (remove) {
-                client.mutateMessageUnsetReaction({ messageId, reaction });
+                client.mutateMessageUnsetReaction({ messageId: id, reaction });
             } else {
                 trackEvent('reaction_sent', { reaction_type: reaction.toLowerCase(), double_tap: 'not' });
 
-                client.mutateMessageSetReaction({ messageId, reaction });
+                client.mutateMessageSetReaction({ messageId: id, reaction });
             }
         }
-    }, [messageId, reactions]);
+    }, [id, reactions]);
 
     if (reactions.length <= 0) {
         return null;

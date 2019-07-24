@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { TypeCaption } from 'openland-web/utils/TypeStyles';
 import { XViewRouterContext } from 'react-mental';
+import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
 
 const buttonWrapper = css`
     display: flex;
@@ -21,26 +22,31 @@ const buttonSelectedWrapper = css`
 `;
 
 interface MessageCommentsButtonProps {
-    messageId: string;
-    count: number;
+    message: DataSourceWebMessageItem;
     selected: boolean;
+    isChannel: boolean;
 }
 
 export const MessageCommentsButton = React.memo<MessageCommentsButtonProps>(props => {
-    const { messageId, count, selected } = props;
+    const { message, selected, isChannel } = props;
+    const { id, commentsCount } = message;
     const router = React.useContext(XViewRouterContext);
 
-    return (
-        <div
-            className={cx(TypeCaption, buttonWrapper, selected && buttonSelectedWrapper)}
-            onClick={() => {
-                if (router) {
-                    router.navigate('/message/' + messageId);
-                }
-            }}
-        >
-            {!!count && `${count} comments`}
-            {!count && 'Comments'}
-        </div>
-    );
+    if ((isChannel || commentsCount > 0) && id) {
+        return (
+            <div
+                className={cx(TypeCaption, buttonWrapper, selected && buttonSelectedWrapper)}
+                onClick={() => {
+                    if (router) {
+                        router.navigate('/message/' + id);
+                    }
+                }}
+            >
+                {!!commentsCount && `${commentsCount} comments`}
+                {!commentsCount && 'Comments'}
+            </div>
+        );
+    }
+
+    return null;
 });
