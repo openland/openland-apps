@@ -22,21 +22,21 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
     let ref = React.createRef<FastImageViewer>();
 
     let progress = new Animated.Value(0);
-    let progressInverted = Animated.add(1, Animated.multiply(progress, -1));
-    let unredlayOpacity = progressInverted.interpolate({
-        inputRange: [0, 0.5],
-        outputRange: [0, 1],
-        extrapolate: 'clamp'
-    });
+    // let progressInverted = Animated.add(1, Animated.multiply(progress, -1));
+    // let unredlayOpacity = progressInverted.interpolate({
+    //     inputRange: [0, 0.5],
+    //     outputRange: [0, 1],
+    //     extrapolate: 'clamp'
+    // });
     let progressLinear = new Animated.Value(0);
-    let progressLinearInverted = Animated.add(1, Animated.multiply(progressLinear, -1));
+    // let progressLinearInverted = Animated.add(1, Animated.multiply(progressLinear, -1));
     let barOpacity = new Animated.Value(1);
     let barVisible = true;
 
-    let previewLoaded = true;
-    let fullLoaded = false;
+    // let previewLoaded = true;
+    // let fullLoaded = false;
 
-    let [closing, setClosing] = React.useState(false);
+    // let [closing, setClosing] = React.useState(false);
 
     let handleStarting = React.useCallback(() => {
         if (Platform.OS === 'android') {

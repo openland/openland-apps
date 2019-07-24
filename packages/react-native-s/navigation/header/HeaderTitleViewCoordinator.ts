@@ -1,8 +1,6 @@
 import { NavigationPage } from '../NavigationPage';
 import { HeaderCoordinator } from './HeaderCoordinator';
 import { SAnimatedShadowView } from '../../SAnimatedShadowView';
-import { HeaderConfig } from '../HeaderConfig';
-import { SAnimated } from '../../SAnimated';
 
 export class HeaderTitleViewCoordinator {
     readonly key: string;

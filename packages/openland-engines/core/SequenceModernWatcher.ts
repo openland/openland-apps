@@ -1,6 +1,5 @@
 import { SequenceHandler } from './SequenceHandler';
 import { GraphqlClient, GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
-import { GraphqlTypedSubscription } from 'openland-y-graphql/typed';
 
 export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> {
     readonly name: string;

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
-import { XView } from 'react-mental';
 
 export const DocumentContent = (props: { file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile }) => {
     return (

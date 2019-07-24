@@ -11,7 +11,7 @@ import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { GroupManageButtons } from './components/GroupManageButtons';
-import { showAddMembersModal } from '../chat/AddMembersModal';
+import { showAddMembersModal } from '../chat/showAddMembersModal';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { UListText } from 'openland-web/components/unicorn/UListText';
 import { MemberManageMenu } from './components/MembersManageMenu';

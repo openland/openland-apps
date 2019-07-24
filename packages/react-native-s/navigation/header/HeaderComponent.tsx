@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SNavigationViewStyle } from '../../SNavigationView';
-import { View, Dimensions, Platform, Image } from 'react-native';
+import { View, Dimensions, Platform } from 'react-native';
 import { SDevice } from '../../SDevice';
 import { SAnimated } from '../../SAnimated';
 import { NavigationManager } from '../NavigationManager';

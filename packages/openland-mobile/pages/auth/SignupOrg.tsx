@@ -41,7 +41,7 @@ class SignupOrgComponent extends React.PureComponent<PageProps, { name: string }
                     action={async (src) => {
                         let client = getClient();
 
-                        let res = await client.mutateCreateOrganization({
+                        await client.mutateCreateOrganization({
                             input: {
                                 name: canSkip ? getMessenger().engine.user.name : name,
                                 personal: false,

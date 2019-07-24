@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { View, Image, TouchableOpacity, Text } from 'react-native';
+import { View, Image, TouchableOpacity } from 'react-native';
 import ImagePicker, { Image as PickerImage } from 'react-native-image-crop-picker';
 import { UploadCareDirectUploading } from '../utils/UploadCareDirectUploading';
 import { UploadStatus } from 'openland-engines/messenger/types';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
-import { startLoader, stopLoader } from './ZGlobalLoader';
 import { ZAvatar, ZAvatarSize, avatarSizes } from './ZAvatar';
 import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
 import { XMemo } from 'openland-y-utils/XMemo';

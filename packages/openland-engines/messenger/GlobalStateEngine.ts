@@ -12,6 +12,7 @@ const log = createLogger('Engine-Global');
 
 export class GlobalStateEngine {
     readonly engine: MessengerEngine;
+    // tslint:disable-next-line
     private watcher: SequenceModernWatcher<Types.DialogsWatch, Types.DialogsWatchVariables> | null = null;
     private visibleConversations = new Set<string>();
     private isVisible = true;

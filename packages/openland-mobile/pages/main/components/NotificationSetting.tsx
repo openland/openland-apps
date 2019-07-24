@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Platform } from 'react-native';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';

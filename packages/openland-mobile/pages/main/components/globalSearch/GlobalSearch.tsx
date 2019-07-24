@@ -2,7 +2,6 @@ import * as React from 'react';
 import { View, Text, Dimensions } from 'react-native';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ASView } from 'react-native-async-view/ASView';
-import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { SRouter } from 'react-native-s/SRouter';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { GlobalSearchItemOrganization, GlobalSearchItemUser, GlobalSearchItemSharedRoom } from './GlobalSearchItems';

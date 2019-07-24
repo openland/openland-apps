@@ -4,7 +4,6 @@ import { SharedRoomKind } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import BackIcon from 'openland-icons/ic-back-create-room.svg';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { CoverUpload } from '../../pages/main/mail/CoverUpload';
 import { ExplorePeople } from '../discover/components/ExplorePeople';
 import { SearchPeopleBox } from './SearchPeopleBox';
@@ -15,7 +14,6 @@ import { useField } from 'openland-form/useField';
 import { SelectWithDropdown, SelectWithDropdownOption } from '../../pages/main/mail/SelectWithDropdown';
 import { InputField } from 'openland-web/components/InputField';
 import { XTextArea } from 'openland-x/XTextArea';
-import CloseIcon from 'openland-icons/ic-close-post.svg';
 import { XModalController } from 'openland-x/showModal';
 
 export enum EntityKind {
@@ -42,24 +40,7 @@ type MainWrapperT = {
     showLeaveModal: boolean;
 };
 
-const CloseModalTarget = (props: { path?: string }) => (
-    <XView
-        cursor="pointer"
-        alignItems="center"
-        justifyContent="center"
-        padding={8}
-        width={32}
-        height={32}
-        borderRadius={50}
-        hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
-        path={props.path}
-    >
-        <CloseIcon />
-    </XView>
-);
-
 const MainWrapper = ({ entityKind, back, onBackClick, children, showLeaveModal }: MainWrapperT) => {
-    let chatTypeStr = entityKind.toLowerCase();
     return (
         <XView
             flexGrow={1}
@@ -191,7 +172,6 @@ export const CreateEntity = ({
     ctx,
 }: CreateEntityProps) => {
     const client = useClient();
-    let router = React.useContext(XRouterContext)!;
     const [coverSrc, setCoverSrc] = React.useState<string | null>('');
     const [settingsPage, setSettingsPage] = React.useState(true);
     const [searchPeopleQuery, setSearchPeopleQuery] = React.useState<string>('');
@@ -235,7 +215,7 @@ export const CreateEntity = ({
         }
 
         if (typeField.value === SharedRoomKind.GROUP || typeField.value === SharedRoomKind.PUBLIC) {
-            const returnedData = await client.mutateRoomCreate({
+            await client.mutateRoomCreate({
                 title: titleField.value.trim(),
                 kind: typeField.value,
                 photoRef,
@@ -243,8 +223,6 @@ export const CreateEntity = ({
                 organizationId: selectedOrgField.value ? selectedOrgField.value : myOrgId || '',
                 channel: entityKind === EntityKind.CHANNEL,
             });
-
-            const roomId: string = returnedData.room.id as string;
 
             // TODO: Navigate
             ctx.hide();

@@ -19,6 +19,7 @@ export class BaseApiClient {
     }
 
     protected useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, opts?: QueryWatchParameters): TQuery | null {
+        // tslint:disable-next-line
         const [observableQuery, currentResult] = this.useObservableQuery(query, vars, opts);
         
         if (currentResult && currentResult.error) {

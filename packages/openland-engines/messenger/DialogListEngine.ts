@@ -11,14 +11,12 @@ import {
     ChatUpdateFragment_ChatMessageReceived,
 } from 'openland-api/Types';
 import { DataSource } from 'openland-y-utils/DataSource';
-import { createLogger } from 'mental-log';
+// import { createLogger } from 'mental-log';
 import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';
 import { DataSourceAugmentor } from 'openland-y-utils/DataSourceAugmentor';
-import { DataSourceLogger } from 'openland-y-utils/DataSourceLogger';
 import { RoomPicoQuery } from 'openland-api';
-import { from } from 'zen-observable';
 
-const log = createLogger('Engine-Dialogs');
+// const log = createLogger('Engine-Dialogs');
 
 export interface DialogDataSourceItemStored {
     key: string;
@@ -108,13 +106,13 @@ export const extractDialog = (
 
 export class DialogListEngine {
     readonly engine: MessengerEngine;
-    private dialogs: Dialogs_dialogs_items[] = [];
+    // private dialogs: Dialogs_dialogs_items[] = [];
     readonly _dataSourceStored: DataSourceStored<DialogDataSourceItemStored>;
     readonly dataSource: DataSource<DialogDataSourceItem>;
     private userConversationMap = new Map<string, string>();
     private useOnlines = new Map<string, boolean>();
     private loadedConversations = new Set<string>();
-    private processedMessages = new Map<string, Set<string>>();
+    // private processedMessages = new Map<string, Set<string>>();
 
     constructor(engine: MessengerEngine) {
         this.engine = engine;

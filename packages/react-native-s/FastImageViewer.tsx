@@ -56,11 +56,11 @@ export class FastImageViewer extends React.PureComponent<FastImageViewerProps> {
         outputRange: [0, 1],
         extrapolate: 'clamp'
     });
-    private _transitionOpacityPreview = this._transitionOpacity.interpolate({
-        inputRange: [0, 0.9, 1],
-        outputRange: [1, 1, 0],
-        extrapolate: 'clamp'
-    });
+    // private _transitionOpacityPreview = this._transitionOpacity.interpolate({
+    //     inputRange: [0, 0.9, 1],
+    //     outputRange: [1, 1, 0],
+    //     extrapolate: 'clamp'
+    // });
     private _transitionZoomMoverX = new Animated.Value(1);
     private _transitionZoomMoverY = new Animated.Value(1);
     private _transitionOffsetMoverX = new Animated.Value(0);

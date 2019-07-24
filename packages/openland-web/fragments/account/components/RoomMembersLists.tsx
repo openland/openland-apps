@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { RoomMembersPaginated, Room_room_SharedRoom_requests, RoomFull_SharedRoom_requests, Room_room_SharedRoom, SharedRoomKind } from 'openland-api/Types';
+import { RoomMembersPaginated, Room_room_SharedRoom_requests, RoomFull_SharedRoom_requests, Room_room_SharedRoom } from 'openland-api/Types';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMenuItem } from 'openland-x/XMenuItem';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform, Text } from 'react-native';
+import { View, Platform } from 'react-native';
 import { showSheetModal } from './showSheetModal';
 import { ZModalController } from './ZModal';
 import { ZListItem } from './ZListItem';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SRouting } from 'react-native-s/SRouting';
-import { Platform, Dimensions, View, LayoutChangeEvent, LayoutAnimation } from 'react-native';
+import { Platform, View } from 'react-native';
 import { SNavigationView, SNavigationViewStyle } from 'react-native-s/SNavigationView';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { randomKey } from 'react-native-s/utils/randomKey';

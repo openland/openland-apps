@@ -5,7 +5,6 @@ import { View, Image, Text, Platform, Animated, Easing } from 'react-native';
 import { ConversationMessagesView } from './ConversationMessagesView';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import LinearGradient from 'react-native-linear-gradient';
 import { trackEvent } from 'openland-mobile/analytics';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { useChatSelectionMode } from 'openland-engines/messenger/MessagesActionsState';

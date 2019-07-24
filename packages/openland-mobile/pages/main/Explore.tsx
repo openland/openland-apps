@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
-import { Platform, Text, View, Image, Dimensions } from 'react-native';
+import { Text, View, Image, Dimensions } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { SScrollView } from 'react-native-s/SScrollView';

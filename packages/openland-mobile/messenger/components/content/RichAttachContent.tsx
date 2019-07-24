@@ -90,7 +90,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
     render() {
         let { theme, message } = this.props;
         let out = message.isOut;
-        let link = this.props.attach!.titleLink || '';
+        // let link = this.props.attach!.titleLink || '';
         let { text, subTitle, keyboard } = this.props.attach;
 
         // prepare image

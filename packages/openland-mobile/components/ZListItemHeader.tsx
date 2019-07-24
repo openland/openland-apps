@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextStyle, ViewStyle, Platform, Image } from 'react-native';
+import { View, Text, StyleSheet, TextStyle, ViewStyle, Image } from 'react-native';
 import { ZRoundedButton } from './ZRoundedButton';
 import { XPAvatarWithPreview } from './XPAvatarWithPreview';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';

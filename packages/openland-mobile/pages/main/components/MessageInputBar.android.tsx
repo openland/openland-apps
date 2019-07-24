@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { androidMessageInputListOverlap } from './ConversationView';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MessageInputInner, MessageInputBarProps } from './MessageInputInner';

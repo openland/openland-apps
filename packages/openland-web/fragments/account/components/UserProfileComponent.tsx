@@ -2,17 +2,14 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { css } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
-import { User_user, UserBadge, UserShort } from 'openland-api/Types';
+import { User_user } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
-import { XModal } from 'openland-x-modal/XModal';
-import { XLink } from 'openland-x/XLink';
 import { XCloudImage } from 'openland-x/XCloudImage';
-import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import {
     Section,
     SectionContent,
@@ -37,30 +34,6 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
 import { showModalBox } from 'openland-x/showModalBox';
-
-const ModalCloser = Glamorous(XLink)({
-    position: 'fixed',
-    right: 20,
-    top: 20,
-    width: 36,
-    height: 36,
-    borderRadius: 5,
-    backgroundColor: 'transparent',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-});
-
-const ModalBody = Glamorous.div({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    marginBottom: 40,
-    '&:hover > .download-button': {
-        opacity: 1,
-    },
-});
 
 const ModalPic = Glamorous(XCloudImage)({
     borderRadius: 8,

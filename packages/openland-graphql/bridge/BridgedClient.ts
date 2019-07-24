@@ -1,6 +1,5 @@
 import { GraphqlClient, GraphqlQuery, GraphqlQueryWatch, OperationParameters, GraphqlSubscription, GraphqlActiveSubscription, GraphqlMutation, GraphqlFragment, ApiError, GraphqlClientStatus } from 'openland-graphql/GraphqlClient';
 import { Queue } from 'openland-graphql/utils/Queue';
-import { throwFatalError } from 'openland-y-utils/throwFatalError';
 import { randomKey } from 'openland-graphql/utils/randomKey';
 import { createLogger } from 'mental-log';
 import { delay } from 'openland-y-utils/timer';

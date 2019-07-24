@@ -1,10 +1,8 @@
 import { trackError } from 'openland-x-analytics';
 import { AppNotifications } from 'openland-y-runtime/AppNotifications';
 import { AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
-import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { backoff } from 'openland-y-utils/timer';
 import { logger } from 'openland-y-utils/logger';
-import { FetchPushSettingsQuery, RegisterWebPushMutation } from 'openland-api';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 
 const log = logger('push');

@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
-import { XAvatarUpload, XAvatarFormFieldComponent, StoredFileT } from 'openland-x/XAvatarUpload';
+import { XAvatarFormFieldComponent, StoredFileT } from 'openland-x/XAvatarUpload';
 import { XView } from 'react-mental';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { XTextArea } from 'openland-x/XTextArea';
@@ -13,12 +12,9 @@ import {
 } from 'openland-api/Types';
 import { useClient } from 'openland-web/utils/useClient';
 import ArrowIcon from 'openland-icons/ic-arrow-group-select.svg';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import { XLoader } from 'openland-x/XLoader';
 import { showModalBox } from 'openland-x/showModalBox';
-import { useField } from 'openland-form/useField';
-import { useForm } from 'openland-form/useForm';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-x-modal/XModal';
 import { XButton } from 'openland-x/XButton';

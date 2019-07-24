@@ -18,7 +18,6 @@ import './_app.css';
 import './init';
 import '../globals';
 import React from 'react';
-import { XView } from 'react-mental';
 import App, { AppProps, Container } from 'next/app';
 import * as Sentry from '@sentry/browser';
 import { loadConfig } from 'openland-x-config';

@@ -6,7 +6,6 @@ import {
     TextStyle,
     Text,
     Image,
-    ImageStyle,
     ImageSourcePropType,
 } from 'react-native';
 import { showBlanketModal } from './showBlanketModal';
@@ -74,7 +73,6 @@ const ToastComponent = ({ text, iconSource, IconComponent, textStyle }: ToastBui
     );
 };
 
-const q = [];
 function build(config: ToastBuildConfig) {
     let modal: ZModalController;
 

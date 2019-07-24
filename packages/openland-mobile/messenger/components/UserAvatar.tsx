@@ -6,7 +6,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { avatarSizes } from 'openland-mobile/components/ZAvatar';
 
 export function UserAvatar(props: AsyncAvatarProps & { online?: boolean, theme: ThemeGlobal }) {
-    const { size, placeholder: textSize, dotSize, dotPosition, dotBorderWidth } = avatarSizes[props.size];
+    const { size, dotSize, dotPosition, dotBorderWidth } = avatarSizes[props.size];
 
     return (
         <ASFlex

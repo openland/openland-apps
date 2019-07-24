@@ -1,6 +1,5 @@
 import * as React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import { View } from 'react-native';
 import { ZFlexStyle } from './ZFlexStyle';
 
 export interface ZLinearGradientProps extends ZFlexStyle {

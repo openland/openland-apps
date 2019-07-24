@@ -1,4 +1,4 @@
-import { GraphqlClient, GraphqlQueryWatch, GraphqlActiveSubscription, ApiError } from "openland-graphql/GraphqlClient";
+import { GraphqlClient, GraphqlActiveSubscription, ApiError } from "openland-graphql/GraphqlClient";
 import { WorkerInterface } from './WorkerInterface';
 import { WorkerRequest, WorkerResponse } from './api/WorkerApi';
 import { randomKey } from 'openland-graphql/utils/randomKey';

@@ -4,7 +4,7 @@ import {
     NavigableParentProps,
     NavigableChildProps,
 } from './Navigable';
-import { XViewProps, XView, XViewSelectedContext } from 'react-mental';
+import { XViewProps, XView } from 'react-mental';
 
 export type XLink2Props = NavigableParentProps<XViewProps>;
 

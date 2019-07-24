@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { View, ActivityIndicator, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle } from 'react-native';
 import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
-import Toast from 'openland-mobile/components/Toast';
+// import Toast from 'openland-mobile/components/Toast';
 
 var watchers: ((isLoading: boolean) => void)[] = [];
 var loading = false;
 
-const loader = Toast.loader();
+// const loader = Toast.loader();
 
 export function startLoader() {
     // loader.show();

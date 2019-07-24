@@ -7,13 +7,9 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { View, Share, Text, Clipboard, Image } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { SScrollView } from 'react-native-s/SScrollView';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { line } from 'd3-shape';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 
 const InvitesComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);

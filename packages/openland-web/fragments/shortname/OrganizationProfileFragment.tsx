@@ -9,7 +9,7 @@ import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { OrganizationManageButtons } from './components/OrganizationManageButtons';
 import { MemberManageMenu } from './components/MemberManageMenu';
-import { showAddMembersModal } from '../chat/AddMembersModal';
+import { showAddMembersModal } from '../chat/showAddMembersModal';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { UListText } from 'openland-web/components/unicorn/UListText';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';

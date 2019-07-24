@@ -35,7 +35,7 @@ import {
 } from 'openland-web/fragments/account/components/RoomControls';
 import { RoomEditModalBody } from 'openland-web/fragments/chat/RoomEditModal';
 import { showAdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
-import { AddMembersModal, showAddMembersModal } from 'openland-web/fragments/chat/AddMembersModal';
+import { showAddMembersModal } from 'openland-web/fragments/chat/showAddMembersModal';
 import { checkCanSeeAdvancedSettings } from 'openland-y-utils/checkCanSeeAdvancedSettings';
 import { useClient } from 'openland-web/utils/useClient';
 import { XCommunityCard } from 'openland-x/cards/XCommunityCard';
@@ -43,7 +43,6 @@ import { AvatarModal } from './UserProfileComponent';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XIcon } from 'openland-x/XIcon';
 import { TextProfiles } from 'openland-text/TextProfiles';
-import { XModalController } from 'openland-x/showModal';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { XErrorMessage } from 'openland-x/XErrorMessage';

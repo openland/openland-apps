@@ -2,7 +2,6 @@ import * as React from 'react';
 import Popper, { Placement } from 'popper.js';
 import * as ReactDOM from 'react-dom';
 import { css } from 'linaria';
-import ReactResizeDetector from 'react-resize-detector';
 
 const contentStyle = css`
     position: relative;

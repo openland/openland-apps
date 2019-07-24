@@ -114,7 +114,7 @@ export class HeaderTitleViewCoordinator {
         let opacityLinear = (1 - Math.abs(progress));
         let opacitySimple = (1 - Math.abs(progress)) * (1 - Math.abs(progress));
         let opacityDelayed = (1 - Math.abs(progress) * 2);
-        let opacityDelayedDouble = (1 - Math.abs(progress) * 4);
+        // let opacityDelayedDouble = (1 - Math.abs(progress) * 4);
         let opacityDelayedClamped = opacityDelayed;
         let opacityDelayedDoubleClamped = opacityDelayed;
         if (opacityDelayedDoubleClamped < 0) {

@@ -3,12 +3,8 @@ import { XView } from 'react-mental';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { UserForMention } from 'openland-api/Types';
 import { css, cx } from 'linaria';
-import { isInternalLink } from 'openland-web/utils/isInternalLink';
-import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
-import { XModalContext } from 'openland-x-modal/XModalContext';
-import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 
 const boldTextClassName = css`
     font-weight: bold;

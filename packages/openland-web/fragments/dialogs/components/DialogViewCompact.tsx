@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { XLink2 } from 'openland-x/XLink2';
 import { XView } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar } from 'openland-x/XAvatar';

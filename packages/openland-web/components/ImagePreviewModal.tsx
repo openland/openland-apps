@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { XCloudImage } from 'openland-x/XCloudImage';
-import { XModal, XModalProps } from 'openland-x-modal/XModal';
+import { XModalProps } from 'openland-x-modal/XModal';
 import DownloadButtonIcon from 'openland-icons/ic_file_download.svg';
 import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';

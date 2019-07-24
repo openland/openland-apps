@@ -1,5 +1,5 @@
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-import { backoff, delay } from 'openland-y-utils/timer';
+import { backoff } from 'openland-y-utils/timer';
 import { MediaStreamManager } from './MediaStreamManager';
 import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';

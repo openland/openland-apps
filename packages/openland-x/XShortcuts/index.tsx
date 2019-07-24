@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 const { ShortcutManager } = require('react-shortcuts');
-import Shortcuts from './shortcuts';
 import UUID from 'uuid/v4';
 
 const shortcutManager = new ShortcutManager({
@@ -42,7 +41,7 @@ type XShortcutsT = {
     supressOtherShortcuts?: boolean;
 };
 
-let listOfIdKeymaps: { id: string; keymap: KeymapT; supressOtherShortcuts?: boolean }[] = [];
+// let listOfIdKeymaps: { id: string; keymap: KeymapT; supressOtherShortcuts?: boolean }[] = [];
 export class XShortcuts extends React.Component<XShortcutsT> {
     componentId: string;
 

@@ -65,6 +65,7 @@ export class NotificationCenterEngine {
     readonly dataSource: DataSource<NotificationsDataSourceItem>;
     private lastNotificationRead: string | null = null;
     private isVisible: boolean = true;
+    // tslint:disable-next-line
     private watcher: SequenceModernWatcher<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> | null = null;
     private maxSeq = 0;
     private lastReportedSeq = 0;

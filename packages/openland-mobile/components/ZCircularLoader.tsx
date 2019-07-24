@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Animated, Text, ART } from 'react-native';
+import { Animated, ART } from 'react-native';
 
 export interface XPCircularLoaderProps {
     visible: boolean;

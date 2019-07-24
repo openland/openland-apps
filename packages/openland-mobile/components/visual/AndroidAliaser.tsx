@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, ART, Platform } from 'react-native';
+import { View } from 'react-native';
 
 export class AndroidAliaser extends React.PureComponent<{ width: number, height: number, borderRadius: number, color?: string }> {
     render() {

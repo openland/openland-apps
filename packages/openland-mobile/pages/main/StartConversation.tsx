@@ -52,7 +52,7 @@ const Chat = (props: { item: DialogDataSourceItem, onPress: (key: string) => voi
 const StartConversationComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
     const [items, setItems] = React.useState([] as DialogDataSourceItem[]);
-    const [selected, setSelected] = React.useState<DialogDataSourceItem>();
+    // const [selected, setSelected] = React.useState<DialogDataSourceItem>();
     let messenger = getMessenger();
     let dataSource = React.useMemo(() => messenger.engine.dialogList.dataSource, [messenger]);
 
@@ -63,9 +63,9 @@ const StartConversationComponent = XMemo<PageProps>((props) => {
                 .getItems()
                 .filter(d => (d.kind === 'GROUP' || d.kind === 'PUBLIC') && !d.isChannel);
             setItems(itms);
-            if (itms.length) {
-                setSelected(itms[0]);
-            }
+            // if (itms.length) {
+            //     setSelected(itms[0]);
+            // }
         });
     }, []);
 

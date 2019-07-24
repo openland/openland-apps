@@ -23,7 +23,7 @@ interface WithChatSearchRoomsProps {
 
 const Rooms = (props: WithChatSearchRoomsProps) => {
     const client = useClient();
-    const { tagsCount, customMenu, customButton, CustomButtonComponent } = props;
+    const { tagsCount } = props;
     const data = client.useRoomSearch(props.variables, {
         fetchPolicy: 'cache-and-network',
     });

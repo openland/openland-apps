@@ -6,11 +6,8 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { Share } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const InstallAppsComponent = XMemo<PageProps>((props) => {
-    const theme = React.useContext(ThemeContext);
-
     let shareCallback = (message: string) => {
         Share.share({ message });
     };

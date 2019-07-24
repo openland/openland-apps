@@ -7,8 +7,6 @@ import {
     egoarkaUser,
     rfzzOrgId,
     fredUser,
-    pinMessage,
-    gfdsgsRoom,
 } from './fixtures';
 
 import { XContent } from 'openland-x-layout/XContent';
@@ -18,7 +16,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 
 import { showCreateGroupModal } from 'openland-web/fragments/chat/showCreateGroupModal';
 import { showCreateOrganization } from 'openland-web/fragments/org/showCreateOrganization';
-import { showAddMembersModal } from 'openland-web/fragments/chat/AddMembersModal';
+import { showAddMembersModal } from 'openland-web/fragments/chat/showAddMembersModal';
 import { showAdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
 import {
     showRoomEditModal,
@@ -37,31 +35,23 @@ import {
     showEditOrganizationModal,
 } from '../orgView.page';
 import { showImagePreviewModal } from 'openland-web/components/ImagePreviewModal';
-import { XCloudImage } from 'openland-x/XCloudImage';
-import { XView } from 'react-mental';
 import {
     showDeleteOrganizationModal,
-    LeaveOrganizationModal,
     showLeaveOrganizationModal,
-    WebsitePlaceholder,
     showWebsitePlaceholderModal,
     showAboutPlaceholderModal,
     showSocialPlaceholderModal,
 } from 'openland-web/fragments/account/components/modals';
 import {
-    RemoveJoinedModal,
     showRemoveOrgMemberModal,
     showRoleOrgMemberModal,
     showUpdateUserProfileModal,
 } from 'openland-web/fragments/account/components/OrganizationProfileComponent';
 import {
-    WelcomePopup,
     showWelcomePopup,
 } from 'openland-web/fragments/account/components/welcomePopup';
-import { showDeleteMessagesFromModal } from 'openland-web/fragments/chat/components/ChatForwardHeaderView';
 import { showDeleteMessageModal } from 'openland-web/fragments/chat/components/MessengerRootComponent';
 import {
-    AddSuperAdminForm,
     showAddSuperAdminFormModal,
     showRemoveSuperAdminFormModal,
 } from '../admins.page';
@@ -265,16 +255,6 @@ export default withApp('Isolated - modals', 'viewer', props => {
                             text="welcome popup"
                             style="primary"
                             onClick={() => showWelcomePopup()}
-                        />
-                        <XButton
-                            text="delete messages from"
-                            style="primary"
-                            onClick={() =>
-                                showDeleteMessagesFromModal({
-                                    messagesIds: ['1'],
-                                    onDelete: () => console.log(123),
-                                })
-                            }
                         />
                         <XButton
                             text="delete message"

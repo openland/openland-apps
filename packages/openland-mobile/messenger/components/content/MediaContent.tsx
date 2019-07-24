@@ -108,7 +108,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     }
 
     render() {
-        const { hasTopContent, hasBottomContent, message, attach, onUserPress, onGroupPress, onMediaPress, onDocumentPress, layout, compensateBubble, theme } = this.props;
+        const { hasTopContent, hasBottomContent, message, attach, layout, compensateBubble, theme } = this.props;
         const { downloadState } = this.state;
         const isSingle = !hasTopContent && !hasBottomContent;
 

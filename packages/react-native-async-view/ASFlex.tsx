@@ -5,7 +5,6 @@ import { ASEventEmitter } from './platform/ASEventEmitter';
 import { ASPressEvent } from './ASPressEvent';
 import { baseStyleProcessor } from './internals/baseStyleProcessor';
 import { randomTag } from './internals/randomTag';
-import Alert from 'openland-mobile/components/AlertBlanket';
 
 export interface ASFlexProps extends ASViewStyle {
     flexDirection?: 'row' | 'column';

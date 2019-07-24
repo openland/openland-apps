@@ -17,7 +17,7 @@ export interface AsyncAvatarProps {
 
 export class AsyncAvatar extends React.PureComponent<AsyncAvatarProps> {
     render() {
-        const { size, placeholder: textSize, dotSize, dotPosition, dotBorderWidth } = avatarSizes[this.props.size];
+        const { size, placeholder: textSize } = avatarSizes[this.props.size];
 
         if (this.props.src && !this.props.src.startsWith('ph://')) {
             let url = this.props.src;

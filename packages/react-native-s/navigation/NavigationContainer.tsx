@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform, StyleSheet, ViewStyle, Keyboard, Dimensions, PanResponder, Image, PanResponderGestureState } from 'react-native';
+import { View, Platform, StyleSheet, ViewStyle, Keyboard, PanResponder, Image, PanResponderGestureState } from 'react-native';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { AnimatedViewKeys } from './AnimatedViewKeys';
 import { SAnimated } from 'react-native-s/SAnimated';
@@ -212,7 +212,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         // Update internal state
         let underlayKey = state.history[state.history.length - 1].key;
         let underlayHolder = this.routes.find((v) => v.key === underlayKey)!!;
-        let prevHistory = this.currentHistory;
+        // let prevHistory = this.currentHistory;
         this.currentHistory = state;
 
         //

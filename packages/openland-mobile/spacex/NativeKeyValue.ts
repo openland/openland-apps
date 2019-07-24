@@ -2,7 +2,6 @@ import SQLite from 'react-native-sqlite-storage';
 import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
 import { KeyValueStore } from 'openland-y-utils/KeyValueStore';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
-import { Platform } from 'react-native';
 
 export class NativeKeyValue implements KeyValueStore {
 
