@@ -14,7 +14,6 @@ import {
     buildMessagesDataSource,
 } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
-import { MessageComponent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { MessengerEmptyFragment } from 'openland-web/fragments/chat/MessengerEmptyFragment';
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
