@@ -85,7 +85,7 @@ export const Organizations = React.memo(() => {
                         avatar={{ photo, id, title: name }}
                         title={name}
                         textRight={isPrimary ? 'Primary' : undefined}
-                        path={shortname ? '/' + shortname : '/' + id}
+                        path={`/${shortname || id}`}
                     />
                 );
             })}

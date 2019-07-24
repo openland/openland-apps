@@ -4,7 +4,6 @@ import { OrganizationShort } from 'openland-api/Types';
 
 export const UOrganizationView = React.memo((props: { organization: OrganizationShort }) => {
     const { id, photo, name, about, shortname } = props.organization;
-    const path = shortname ? '/' + shortname : '/' + id;
 
     return (
         <UListItem
@@ -12,7 +11,7 @@ export const UOrganizationView = React.memo((props: { organization: Organization
             description={about}
             avatar={{ photo, id, title: name }}
             useRadius={true}
-            path={path}
+            path={`/${shortname || id}`}
         />
     );
 });

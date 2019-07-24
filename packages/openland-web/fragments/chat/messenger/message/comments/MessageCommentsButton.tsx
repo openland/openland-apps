@@ -42,6 +42,7 @@ export const MessageCommentsButton = React.memo<MessageCommentsButtonProps>(prop
                     }
                 }}
             >
+                [ICON]
                 {!!commentsCount && `${commentsCount} comments`}
                 {!commentsCount && 'Comments'}
             </div>

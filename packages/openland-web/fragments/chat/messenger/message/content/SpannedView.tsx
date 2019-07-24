@@ -105,7 +105,7 @@ const MentionedUser = React.memo(
     ({ user, text, isYou }: { user: UserForMention; text: any; isYou: boolean }) => {
         return (
             <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
-                <ULink path={user.shortname ? `/${user.shortname}` : `/${user.id}`}>
+                <ULink path={`/${user.shortname || user.id}`}>
                     {text}
                 </ULink>
             </UserPopper>

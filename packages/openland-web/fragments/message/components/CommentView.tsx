@@ -4,6 +4,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { convertDsMessage, DataSourceWebMessageItem } from '../../chat/messenger/data/WebMessageItemDataSource';
 import { MessageContent } from '../../chat/messenger/message/MessageContent';
 import { MessageComments_messageComments_comments_comment } from 'openland-api/Types';
+import { CommentSender } from './CommentSender';
 
 interface CommentViewProps {
     comment: MessageComments_messageComments_comments_comment;
@@ -17,7 +18,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
 
     return (
         <div style={{ paddingLeft: depth * 50 }}>
-            {converted.senderNameEmojify}
+            <CommentSender comment={converted} />
             <MessageContent message={converted} />
         </div>
     );

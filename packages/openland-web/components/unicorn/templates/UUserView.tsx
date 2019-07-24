@@ -42,7 +42,6 @@ interface UUserViewProps {
 export const UUserView = React.memo((props: UUserViewProps) => {
     const { user, badge, role, rightElement } = props;
     const { id, photo, name, online, shortname, primaryOrganization } = user;
-    const path = shortname ? '/' + shortname : '/' + id;
 
     return (
         <UListItem
@@ -52,7 +51,7 @@ export const UUserView = React.memo((props: UUserViewProps) => {
             description={<UPresence suffix={badge ? ' · ' + badge.name : undefined} user={props.user} />}
             avatar={{ photo, id, title: name, online }}
             useRadius={true}
-            path={path}
+            path={`/${shortname || id}`}
             rightElement={rightElement}
         />
     );

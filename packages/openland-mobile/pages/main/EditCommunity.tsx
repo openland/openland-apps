@@ -24,7 +24,7 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
         startLoader();
 
         try {
-            await client.mutateUpdateOrganization({ organizationId: organization.id, input: { alphaIsPrivate: isPrivate }});
+            await client.mutateUpdateOrganization({ organizationId: organization.id, input: { alphaIsPrivate: isPrivate } });
             await client.refetchOrganizationProfile({ organizationId: props.router.params.id });
             await client.refetchOrganization({ organizationId: props.router.params.id });
         } catch (e) {
@@ -76,7 +76,7 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                         multiline={true}
                         description="Publicly describe this community for all to see see"
                     />
-                    <ZSelect 
+                    <ZSelect
                         label="Community type"
                         defaultValue={organization.isPrivate}
                         disabled={!organization.isOwner}
@@ -88,13 +88,13 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                             { label: 'Public', value: false, icon: require('assets/ic-invite-24.png') }
                         ]}
                         description="Set by creator"
-                    />  
+                    />
                 </ZListItemGroup>
 
                 <ZListItemGroup header="Shortname" headerMarginTop={0}>
                     <ZPickField
                         label="Shortname"
-                        value={organization.shortname ? '@' + organization.shortname : 'Create'}
+                        value={organization.shortname ? '@' + organization.shortname : undefined}
                         path="SetOrgShortname"
                         pathParams={{ id: organization.id }}
                         description="People will be able to find your community by this shortname"
