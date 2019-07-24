@@ -6,7 +6,6 @@ import { layoutMedia } from 'openland-web/utils/MediaLayout';
 const richWrapper = css`
     display: flex;
     flex-direction: row;
-    flex-grow: 1;
     flex-shrink: 1;
     max-width: 680px;
     background-color: #f0f2f5;
