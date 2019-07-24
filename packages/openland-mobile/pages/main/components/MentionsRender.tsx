@@ -6,6 +6,7 @@ import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { SuggestionsWrapper, SuggestionsItemName } from './Suggestions';
+import { searchMentions } from 'openland-engines/mentions/searchMentions';
 
 export const findMentions = (activeWord: string, groupId: string): MentionToSend[] => {
     let res: MentionToSend[] = [];
@@ -15,19 +16,11 @@ export const findMentions = (activeWord: string, groupId: string): MentionToSend
         return [];
     }
 
-    let nameToSearch = activeWord.replace('@', '').toLowerCase();
-
-    if ('all'.startsWith(nameToSearch)) {
+    if ('@all'.startsWith(activeWord.toLowerCase())) {
         res.push({ __typename: 'AllMention' });
     }
 
-    let mentionedUsers: MentionToSend[] = members.filter(member => member.user.name.toLowerCase().startsWith(nameToSearch)).map(member => ({
-        __typename: 'User',
-
-        ...member.user
-    }));
-
-    res.push(...mentionedUsers);
+    res.push(...searchMentions(activeWord, members).map(v => v.user));
 
     return res;
 };

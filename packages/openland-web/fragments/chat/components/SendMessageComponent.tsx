@@ -11,6 +11,7 @@ import { UNavigableList, UNavigableListRef } from 'openland-web/components/unico
 import { useClient } from 'openland-web/utils/useClient';
 import { RoomMembers_members_user } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
+import { searchMentions } from 'openland-engines/mentions/searchMentions';
 
 const attachButtonWrapper = css`
     display: flex;
@@ -231,9 +232,7 @@ const AutoCompleteComponent = React.memo(React.forwardRef((props: {
 
     let matched: any[];
     if (word) {
-        let s = word.substring(1);
-        matched = members.members
-            .filter((v) => v.user.name.startsWith(s)).map((v) => ({ key: v.user.id, data: v.user }));
+        matched = searchMentions(word, members.members).map(v => ({ key: v.user.id, data: v.user }));
     } else {
         matched = [];
     }
