@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Message_message } from 'openland-api/Types';
+import { FullMessage } from 'openland-api/Types';
 import { InputTopView } from './InputTopView';
 
 interface EditViewProps {
-    message: Message_message;
+    message: FullMessage;
     isComment?: boolean;
 
     onClearPress: () => void;

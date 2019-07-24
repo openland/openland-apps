@@ -4,6 +4,8 @@ import { XView } from 'react-mental';
 import BackIcon from 'openland-icons/s/ic-back-24.svg';
 import { useStackRouter } from './StackRouter';
 import { HeaderConfig } from './HeaderConfig';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { ThemeDefault } from 'openland-y-utils/themes';
 
 export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     let router = useStackRouter();
@@ -18,7 +20,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                 onClick={() => router.pop()}
                 cursor="pointer"
             >
-                <BackIcon />
+                <UIcon icon={<BackIcon />} color={ThemeDefault.foregroundSecondary} />
             </XView>
             <XView
                 minWidth={0}

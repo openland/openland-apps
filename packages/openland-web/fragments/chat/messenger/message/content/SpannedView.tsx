@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { UserForMention } from 'openland-api/Types';
 import { css, cx } from 'linaria';
 import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
+import { ULink } from 'openland-web/components/unicorn/ULink';
 
 const boldTextClassName = css`
     font-weight: bold;
@@ -105,8 +105,9 @@ const MentionedUser = React.memo(
     ({ user, text, isYou }: { user: UserForMention; text: any; isYou: boolean }) => {
         return (
             <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
-                {/* <MentionComponentInnerText isYou={isYou}>{text}</MentionComponentInnerText> */}
-                {text}
+                <ULink path={user.shortname ? `/${user.shortname}` : `/${user.id}`}>
+                    {text}
+                </ULink>
             </UserPopper>
         );
     },
@@ -116,7 +117,7 @@ export const SpanView = React.memo<{ span: Span; children?: any; isService?: boo
     const { span, children } = props;
 
     if (span.type === 'link') {
-        return <XView as="a" href={span.link}>{children}</XView>;
+        return <ULink href={span.link}>{children}</ULink>;
     } else if (span.type === 'bold') {
         return (
             <span className={cx(boldTextClassName, props.isService && boldTextServiceClassName)}>
@@ -138,7 +139,7 @@ export const SpanView = React.memo<{ span: Span; children?: any; isService?: boo
     } else if (span.type === 'code_block') {
         return <div className={codeBlockClassName}>{children}</div>;
     } else if (span.type === 'mention_room') {
-        return <XView path={'/group/' + span.id} >{children}</XView>;
+        return <ULink path={'/group/' + span.id}>{children}</ULink>;
     } else if (span.type === 'mention_user') {
         return <MentionedUser isYou={span.user.isYou} text={children} user={span.user} />;
         // } else if (span.type === 'mention_users') {

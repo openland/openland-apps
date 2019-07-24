@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { preprocessText } from 'openland-y-utils/TextProcessor';
-import { ThemeDefault } from 'openland-y-utils/themes';
 import { ULink } from './ULink';
 
 interface UTextProps {
@@ -20,10 +19,10 @@ export const UText = React.memo((props: UTextProps) => {
                 return (
                     <ULink
                         key={'link-' + i}
-                        link={v.link}
-                        text={v.text || v.link}
-                        color={ThemeDefault.accentPrimary}
-                    />
+                        href={v.link}
+                    >
+                        {v.text || v.link}
+                    </ULink>
                 );
             } else {
                 return <span key={'text-' + i}>{v.text}</span>;

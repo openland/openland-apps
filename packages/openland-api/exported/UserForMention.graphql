@@ -9,4 +9,5 @@ fragment UserForMention on User {
     id
     name
   }
+  shortname
 }

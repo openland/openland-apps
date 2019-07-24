@@ -7,7 +7,7 @@ import {
     Dialogs_dialogs_items_topMessage_GeneralMessage_attachments,
     TinyMessage,
     DialogKind,
-    Message_message,
+    FullMessage,
     ChatUpdateFragment_ChatMessageReceived,
 } from 'openland-api/Types';
 import { DataSource } from 'openland-y-utils/DataSource';
@@ -50,7 +50,7 @@ export interface DialogDataSourceItem extends DialogDataSourceItemStored {
     typing?: string;
 }
 
-export function formatMessage(message: Dialogs_dialogs_items_topMessage | Message_message | null): string {
+export function formatMessage(message: Dialogs_dialogs_items_topMessage | FullMessage | null): string {
     if (!message) {
         return '';
     }

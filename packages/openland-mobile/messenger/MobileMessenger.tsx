@@ -27,6 +27,15 @@ import { trackEvent } from 'openland-mobile/analytics';
 import { AsyncNewMessageDivider } from './components/AsyncNewMessageDivider';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
+const SortedReactions = [
+    MessageReactionType.LIKE,
+    MessageReactionType.THUMB_UP,
+    MessageReactionType.JOY,
+    MessageReactionType.SCREAM,
+    MessageReactionType.CRYING,
+    MessageReactionType.ANGRY
+];
+
 export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
     let actionsState = conversationEngine.messagesActionsState;
 
@@ -154,11 +163,11 @@ export class MobileMessenger {
 
         builder.view((ctx: ZModalController) => (
             <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={52} paddingHorizontal={10}>
-                {Object.keys(MessageReactionType).map(r => (
+                {SortedReactions.map(r => (
                     <TouchableOpacity
                         onPress={() => {
                             ctx.hide();
-                            this.handleReactionSetUnset(message, MessageReactionType[r]);
+                            this.handleReactionSetUnset(message, r);
                         }}
                     >
                         <Image source={reactionsImagesMap[r]} />

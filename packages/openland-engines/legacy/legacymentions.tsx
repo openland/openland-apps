@@ -31,7 +31,7 @@ export const prepareLegacyMentions = (
             if (offsets.has(offset)) {
                 return getOffset(str, n + 1);
             }
-    
+
             offsets.add(offset);
         }
 
@@ -61,6 +61,7 @@ export const prepareLegacyMentions = (
                         isYou: mention.isYou,
                         photo: mention.photo,
                         primaryOrganization: mention.primaryOrganization,
+                        shortname: mention.shortname
                     },
                 });
             } else if (mention.__typename === 'AllMention') {
