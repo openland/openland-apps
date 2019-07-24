@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Text, TextStyle, View, TextProps } from 'react-native';
-import { FullMessage_GeneralMessage, FullMessage_GeneralMessage_quotedMessages } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_quotedMessages, FullMessage } from 'openland-api/Types';
 import { renderPreprocessedText } from '../renderPreprocessedText';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { getSpansSlices } from 'openland-y-utils/spans/utils';
@@ -28,7 +28,7 @@ const TextWrapper = (props: TextWrapperProps) => (
 );
 
 interface TextContentProps {
-    message: FullMessage_GeneralMessage | FullMessage_GeneralMessage_quotedMessages;
+    message: FullMessage | FullMessage_GeneralMessage_quotedMessages;
 
     fontStyle?: 'italic' | 'normal';
     isSmall?: boolean;

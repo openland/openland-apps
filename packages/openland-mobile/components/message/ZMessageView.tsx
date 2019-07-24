@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FullMessage_GeneralMessage, FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage } from 'openland-api/Types';
 import { View } from 'react-native';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -7,7 +7,7 @@ import { extractContent } from './extractContent';
 import { ReactionsView } from './content/ReactionsView';
 
 export interface ZMessageViewProps {
-    message: FullMessage_GeneralMessage;
+    message: FullMessage;
 
     small?: boolean;
     showReactions?: boolean;
@@ -40,7 +40,7 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
         theme
     }, small, maxWidth);
 
-    const reactions = showReactions ? <ReactionsView reactions={message.reactions} theme={theme} /> : undefined;
+    const reactions = showReactions && message.__typename === 'GeneralMessage' ? <ReactionsView reactions={message.reactions} theme={theme} /> : undefined;
 
     return (
         <View>

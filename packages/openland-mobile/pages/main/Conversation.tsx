@@ -235,7 +235,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     handlePinnedMessagePress = (mid: string) => {
-        this.props.router.push('MessageComments', { messageId: mid, chatId: this.props.chat.id });
+        this.props.router.push('MessageComments', { messageId: mid });
     }
 
     onQuotedClearPress = () => {

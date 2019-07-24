@@ -53155,14 +53155,33 @@ export interface Message_message_GeneralMessage_source_MessageSourceComment {
   __typename: "MessageSourceComment";
 }
 
+export interface Message_message_GeneralMessage_source_MessageSourceChat_chat_PrivateRoom_pinnedMessage {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
 export interface Message_message_GeneralMessage_source_MessageSourceChat_chat_PrivateRoom {
   __typename: "PrivateRoom";
+  id: string;
+  pinnedMessage: Message_message_GeneralMessage_source_MessageSourceChat_chat_PrivateRoom_pinnedMessage | null;
+}
+
+export interface Message_message_GeneralMessage_source_MessageSourceChat_chat_SharedRoom_pinnedMessage {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
   id: string;
 }
 
 export interface Message_message_GeneralMessage_source_MessageSourceChat_chat_SharedRoom {
   __typename: "SharedRoom";
   id: string;
+  canEdit: boolean;
+  pinnedMessage: Message_message_GeneralMessage_source_MessageSourceChat_chat_SharedRoom_pinnedMessage | null;
 }
 
 export type Message_message_GeneralMessage_source_MessageSourceChat_chat = Message_message_GeneralMessage_source_MessageSourceChat_chat_PrivateRoom | Message_message_GeneralMessage_source_MessageSourceChat_chat_SharedRoom;
@@ -53446,14 +53465,33 @@ export interface Message_message_ServiceMessage_source_MessageSourceComment {
   __typename: "MessageSourceComment";
 }
 
+export interface Message_message_ServiceMessage_source_MessageSourceChat_chat_PrivateRoom_pinnedMessage {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
 export interface Message_message_ServiceMessage_source_MessageSourceChat_chat_PrivateRoom {
   __typename: "PrivateRoom";
+  id: string;
+  pinnedMessage: Message_message_ServiceMessage_source_MessageSourceChat_chat_PrivateRoom_pinnedMessage | null;
+}
+
+export interface Message_message_ServiceMessage_source_MessageSourceChat_chat_SharedRoom_pinnedMessage {
+  __typename: "GeneralMessage" | "ServiceMessage";
+  /**
+   * State
+   */
   id: string;
 }
 
 export interface Message_message_ServiceMessage_source_MessageSourceChat_chat_SharedRoom {
   __typename: "SharedRoom";
   id: string;
+  canEdit: boolean;
+  pinnedMessage: Message_message_ServiceMessage_source_MessageSourceChat_chat_SharedRoom_pinnedMessage | null;
 }
 
 export type Message_message_ServiceMessage_source_MessageSourceChat_chat = Message_message_ServiceMessage_source_MessageSourceChat_chat_PrivateRoom | Message_message_ServiceMessage_source_MessageSourceChat_chat_SharedRoom;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FullMessage_GeneralMessage, FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment, FullMessage } from 'openland-api/Types';
 import { MediaContent } from './content/MediaContent';
 import { ReplyContent } from './content/ReplyContent';
 import { TextContent } from './content/TextContent';
@@ -11,7 +11,7 @@ import { isPad } from 'openland-mobile/pages/Root';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface ExtractContentProps {
-    message: FullMessage_GeneralMessage;
+    message: FullMessage;
     theme: ThemeGlobal;
 
     onUserPress: (id: string) => void;
@@ -25,6 +25,12 @@ export let extractContent = (props: ExtractContentProps, isSmall?: boolean, maxW
 
     if (isPad) {
         realMaxWidth -= 320;
+    }
+
+    if (message.__typename === 'ServiceMessage') {
+        return (
+            <TextContent key={'msg-' + message.id + '-text'} message={message} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} isSmall={isSmall} theme={theme} />
+        );
     }
 
     let attaches = (message.attachments || []);

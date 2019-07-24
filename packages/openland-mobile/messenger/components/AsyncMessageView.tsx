@@ -39,13 +39,13 @@ export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
     engine: ConversationEngine;
     onMessageDoublePress: (message: DataSourceMessageItem) => void;
-    onMessageLongPress: (message: DataSourceMessageItem, chatId: string) => void;
+    onMessageLongPress: (message: DataSourceMessageItem) => void;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
     onReactionPress: (message: DataSourceMessageItem, r: MessageReactionType) => void;
-    onCommentsPress: (message: DataSourceMessageItem, chatId: string) => void;
+    onCommentsPress: (message: DataSourceMessageItem) => void;
     onReactionsPress: (message: DataSourceMessageItem) => void;
     navigationManager: NavigationManager;
 }
@@ -75,11 +75,11 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     };
     let handleLongPress = () => {
         if (!props.message.isSending) {
-            props.onMessageLongPress(props.message, props.engine.conversationId);
+            props.onMessageLongPress(props.message);
         }
     };
     let handleCommentsPress = () => {
-        props.onCommentsPress(props.message, props.engine.conversationId);
+        props.onCommentsPress(props.message);
     };
     let handleReactionsPress = () => {
         props.onReactionsPress(props.message);

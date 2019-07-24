@@ -14,7 +14,7 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { View, Platform, Text, Dimensions } from 'react-native';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { Organization_organization_members, Organization_organization_members_user, OrganizationMembersShortPaginated_organization, OrganizationMemberRole } from 'openland-api/Types';
+import { OrganizationMemberRole, OrganizationWithoutMembers_organization, OrganizationMembers_organization_members, OrganizationMembers_organization_members_user } from 'openland-api/Types';
 import { GroupView } from './components/GroupView';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -25,7 +25,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 
-const PrivateProfile = XMemo<PageProps & { organization: OrganizationMembersShortPaginated_organization }>((props) => {
+const PrivateProfile = XMemo<PageProps & { organization: OrganizationWithoutMembers_organization }>((props) => {
     const { router, organization } = props;
     const theme = React.useContext(ThemeContext);
     const typeString = organization.isCommunity ? 'community' : 'organization';
@@ -66,11 +66,13 @@ const PrivateProfile = XMemo<PageProps & { organization: OrganizationMembersShor
 
 const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
     const settings = getClient().useAccountSettings();
-    const organization = getClient().useOrganizationMembersShortPaginated({ organizationId: props.router.params.id, first: 10 }, { fetchPolicy: 'cache-and-network' }).organization;
+    const organization = getClient().useOrganizationWithoutMembers({ organizationId: props.router.params.id }, { fetchPolicy: 'cache-and-network' }).organization;
 
     if (!organization.isMine && organization.isPrivate) {
         return <PrivateProfile {...props} organization={organization} />;
     }
+
+    const initialMembers = getClient().useOrganizationMembers({ organizationId: props.router.params.id, first: 10 }, { fetchPolicy: 'cache-and-network' }).organization.members;
 
     const myUserID = getMessenger().engine.user.id;
     const canMakePrimary = organization.isMine && organization.id !== (settings.me && settings.me.primaryOrganization && settings.me.primaryOrganization.id) && !organization.isCommunity;
@@ -79,79 +81,147 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
     const showManageBtn = canMakePrimary || canEdit || canLeave;
     const typeString = organization.isCommunity ? 'community' : 'organization';
 
-    const [ members, setMembers ] = React.useState(organization.members);
-    const [ loading, setLoading ] = React.useState(false);
+    const [members, setMembers] = React.useState(initialMembers);
+    const [loading, setLoading] = React.useState(false);
 
     // callbacks
-        const resetMembersList = React.useCallback(async () => {
-            const loaded = await getClient().queryOrganizationMembersShortPaginated({
-                organizationId: organization.id,
-                first: 10,
-            }, { fetchPolicy: 'network-only' });
+    const resetMembersList = React.useCallback(async () => {
+        const loaded = await getClient().queryOrganizationMembersShortPaginated({
+            organizationId: organization.id,
+            first: 10,
+        }, { fetchPolicy: 'network-only' });
 
-            setMembers(loaded.organization.members);
-        }, [organization.id]);
+        setMembers(loaded.organization.members);
+    }, [organization.id]);
 
-        const handleAddMember = React.useCallback(() => {
-            Modals.showUserMuptiplePicker(props.router, {
-                title: 'Add',
-                action: async (users) => {
-                    startLoader();
-                    try {
-                        await getMessenger().engine.client.mutateOrganizationAddMember({ userIds: users.map(u => u.id), organizationId: organization.id });
-                        await resetMembersList();
-                    } catch (e) {
-                        Alert.alert(formatError(e));
-                    }
-                    stopLoader();
-                    props.router.back();
+    const handleAddMember = React.useCallback(() => {
+        Modals.showUserMuptiplePicker(props.router, {
+            title: 'Add',
+            action: async (users) => {
+                startLoader();
+                try {
+                    await getMessenger().engine.client.mutateOrganizationAddMember({ userIds: users.map(u => u.id), organizationId: organization.id });
+                    await resetMembersList();
+                } catch (e) {
+                    Alert.alert(formatError(e));
                 }
-            },
-                'Add members',
-                organization.members.map(u => u.user.id),
-                [ getMessenger().engine.user.id ],
-                { path: 'OrganizationInviteLinkModal', pathParams: { organization } });
-        }, [organization]);
-
-        const handleCreatePress = React.useCallback(() => {
-            let builder = new ActionSheetBuilder();
-
-            builder.action('New group', () => props.router.push('CreateGroupAttrs', { organizationId: organization.id }));
-            builder.action('New channel', () => props.router.push('CreateGroupAttrs', { organizationId: organization.id, isChannel: true }));
-
-            builder.show();
-        }, [organization.id]);
-
-        const handleManageClick = React.useCallback(() => {
-            let builder = new ActionSheetBuilder();
-
-            if (canEdit) {
-                if (organization.isCommunity) {
-                    builder.action('Edit', () => props.router.push('EditCommunity', { id: props.router.params.id }), false, require('assets/ic-edit-24.png'));
-                } else {
-                    builder.action('Edit', () => props.router.push('EditOrganization', { id: props.router.params.id }), false, require('assets/ic-edit-24.png'));
-                }
+                stopLoader();
+                props.router.back();
             }
+        },
+            'Add members',
+            members.map(u => u.user.id),
+            [getMessenger().engine.user.id],
+            { path: 'OrganizationInviteLinkModal', pathParams: { organization } });
+    }, [organization, members]);
 
-            if (canMakePrimary) {
-                builder.action('Make primary', async () => {
-                    startLoader();
-                    try {
-                        await getClient().mutateProfileUpdate({
-                            input: {
-                                alphaPrimaryOrganizationId: organization.id,
-                            },
-                        });
+    const handleCreatePress = React.useCallback(() => {
+        let builder = new ActionSheetBuilder();
+
+        builder.action('New group', () => props.router.push('CreateGroupAttrs', { organizationId: organization.id }));
+        builder.action('New channel', () => props.router.push('CreateGroupAttrs', { organizationId: organization.id, isChannel: true }));
+
+        builder.show();
+    }, [organization.id]);
+
+    const handleManageClick = React.useCallback(() => {
+        let builder = new ActionSheetBuilder();
+
+        if (canEdit) {
+            if (organization.isCommunity) {
+                builder.action('Edit', () => props.router.push('EditCommunity', { id: props.router.params.id }), false, require('assets/ic-edit-24.png'));
+            } else {
+                builder.action('Edit', () => props.router.push('EditOrganization', { id: props.router.params.id }), false, require('assets/ic-edit-24.png'));
+            }
+        }
+
+        if (canMakePrimary) {
+            builder.action('Make primary', async () => {
+                startLoader();
+                try {
+                    await getClient().mutateProfileUpdate({
+                        input: {
+                            alphaPrimaryOrganizationId: organization.id,
+                        },
+                    });
+                    await getClient().refetchAccountSettings();
+
+                    props.router.back();
+                } finally {
+                    stopLoader();
+                }
+            }, false, require('assets/ic-star-24.png'));
+        }
+
+        if (canLeave) {
+            builder.action('Leave ' + typeString,
+                () => {
+                    Alert.builder()
+                        .title('Are you sure want to leave?')
+                        .button('Cancel', 'cancel')
+                        .action('Leave', 'destructive', async () => {
+                            await getClient().mutateOrganizationRemoveMember({
+                                memberId: myUserID,
+                                organizationId: props.router.params.id,
+                            });
+                            await getClient().refetchOrganization({ organizationId: props.router.params.id });
+                            await getClient().refetchAccountSettings();
+
+                            props.router.back();
+                        })
+                        .show();
+                }, false, require('assets/ic-leave-24.png')
+            );
+        }
+
+        if (canEdit) {
+            builder.action('Delete', () => {
+                Alert.builder()
+                    .title(`Delete ${organization.name}`)
+                    .message(`Are you sure you want to delete ${organization.name}? This cannot be undone.`)
+                    .button('Cancel', 'cancel')
+                    .action('Delete', 'destructive', async () => {
+                        await getClient().mutateDeleteOrganization({ organizationId: organization.id });
                         await getClient().refetchAccountSettings();
 
                         props.router.back();
-                    } finally {
-                        stopLoader();
-                    }
-                }, false, require('assets/ic-star-24.png'));
+                    }).show();
+            }, false, require('assets/ic-delete-24.png'));
+        }
+
+        builder.show();
+    }, []);
+
+    const handleMemberPress = React.useCallback((user: OrganizationMembers_organization_members_user) => {
+        props.router.push('ProfileUser', { id: user.id });
+    }, []);
+
+    const handleMemberLongPress = React.useCallback((member: OrganizationMembers_organization_members) => {
+        const { user } = member;
+
+        if (user.id === myUserID || canEdit) {
+            let builder = new ActionSheetBuilder();
+
+            if (user.id !== myUserID && organization.isOwner) {
+                builder.action(member.role === 'MEMBER' ? 'Make Admin' : 'Remove as Admin',
+                    () => {
+                        Alert.builder()
+                            .title(`Change role for ${user.name} to ${member.role === 'MEMBER' ? `Admin? Admins have full control over the ${typeString} account.` : `Member? Members can participate in the ${typeString}\'s chats.`}`)
+                            .button('Cancel', 'cancel')
+                            .action('Change role', 'default', async () => {
+                                await getClient().mutateOrganizationChangeMemberRole({
+                                    memberId: user.id,
+                                    organizationId: props.router.params.id,
+                                    newRole: (member.role === 'MEMBER' ? OrganizationMemberRole.ADMIN : OrganizationMemberRole.MEMBER),
+                                });
+                                await getClient().refetchOrganization({ organizationId: props.router.params.id });
+                                await resetMembersList();
+                            }).show();
+                    }, false, require('assets/ic-star-24.png')
+                );
             }
 
-            if (canLeave) {
+            if (user.id === myUserID) {
                 builder.action('Leave ' + typeString,
                     () => {
                         Alert.builder()
@@ -159,7 +229,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                             .button('Cancel', 'cancel')
                             .action('Leave', 'destructive', async () => {
                                 await getClient().mutateOrganizationRemoveMember({
-                                    memberId: myUserID,
+                                    memberId: user.id,
                                     organizationId: props.router.params.id,
                                 });
                                 await getClient().refetchOrganization({ organizationId: props.router.params.id });
@@ -172,112 +242,44 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 );
             }
 
-            if (canEdit) {
-                builder.action('Delete', () => {
-                    Alert.builder()
-                        .title(`Delete ${organization.name}`)
-                        .message(`Are you sure you want to delete ${organization.name}? This cannot be undone.`)
-                        .button('Cancel', 'cancel')
-                        .action('Delete', 'destructive', async () => {
-                            await getClient().mutateDeleteOrganization({ organizationId: organization.id });
-                            await getClient().refetchAccountSettings();
+            if (canEdit && user.id !== myUserID) {
+                builder.action('Remove from ' + typeString,
+                    () => {
+                        Alert.builder()
+                            .title(`Are you sure want to remove ${user.name}? They will be removed from all internal chats at ${organization.name}.`)
+                            .button('Cancel', 'cancel')
+                            .action('Remove', 'destructive', async () => {
+                                await getClient().mutateOrganizationRemoveMember({
+                                    memberId: user.id,
+                                    organizationId: props.router.params.id,
+                                });
+                                await getClient().refetchOrganization({ organizationId: props.router.params.id });
 
-                            props.router.back();
-                        }).show();
-                }, false, require('assets/ic-delete-24.png'));
+                                await resetMembersList();
+                            })
+                            .show();
+                    }, false, require('assets/ic-leave-24.png')
+                );
             }
 
             builder.show();
-        }, []);
+        }
+    }, [organization]);
 
-        const handleMemberPress = React.useCallback((user: Organization_organization_members_user) => {
-            props.router.push('ProfileUser', { id: user.id });
-        }, []);
+    const handleLoadMore = React.useCallback(async () => {
+        if (members.length < organization.membersCount && !loading) {
+            setLoading(true);
 
-        const handleMemberLongPress = React.useCallback((member: Organization_organization_members) => {
-            const { user } = member;
+            const loaded = (await getClient().queryOrganizationMembers({
+                organizationId: organization.id,
+                first: 10,
+                after: members[members.length - 1].user.id,
+            }, { fetchPolicy: 'network-only' })).organization.members;
 
-            if (user.id === myUserID || canEdit) {
-                let builder = new ActionSheetBuilder();
-
-                if (user.id !== myUserID && organization.isOwner) {
-                    builder.action(member.role === 'MEMBER' ? 'Make Admin' : 'Remove as Admin',
-                        () => {
-                            Alert.builder()
-                                .title(`Change role for ${user.name} to ${member.role === 'MEMBER' ? `Admin? Admins have full control over the ${typeString} account.` : `Member? Members can participate in the ${typeString}\'s chats.`}`)
-                                .button('Cancel', 'cancel')
-                                .action('Change role', 'default', async () => {
-                                    await getClient().mutateOrganizationChangeMemberRole({
-                                        memberId: user.id,
-                                        organizationId: props.router.params.id,
-                                        newRole: (member.role === 'MEMBER' ? OrganizationMemberRole.ADMIN : OrganizationMemberRole.MEMBER),
-                                    });
-                                    await getClient().refetchOrganization({ organizationId: props.router.params.id });
-                                    await resetMembersList();
-                                }).show();
-                        }, false, require('assets/ic-star-24.png')
-                    );
-                }
-
-                if (user.id === myUserID) {
-                    builder.action('Leave ' + typeString,
-                        () => {
-                            Alert.builder()
-                                .title('Are you sure want to leave?')
-                                .button('Cancel', 'cancel')
-                                .action('Leave', 'destructive', async () => {
-                                    await getClient().mutateOrganizationRemoveMember({
-                                        memberId: user.id,
-                                        organizationId: props.router.params.id,
-                                    });
-                                    await getClient().refetchOrganization({ organizationId: props.router.params.id });
-                                    await getClient().refetchAccountSettings();
-
-                                    props.router.back();
-                                })
-                                .show();
-                        }, false, require('assets/ic-leave-24.png')
-                    );
-                }
-
-                if (canEdit && user.id !== myUserID) {
-                    builder.action('Remove from ' + typeString,
-                        () => {
-                            Alert.builder()
-                                .title(`Are you sure want to remove ${user.name}? They will be removed from all internal chats at ${organization.name}.`)
-                                .button('Cancel', 'cancel')
-                                .action('Remove', 'destructive', async () => {
-                                    await getClient().mutateOrganizationRemoveMember({
-                                        memberId: user.id,
-                                        organizationId: props.router.params.id,
-                                    });
-                                    await getClient().refetchOrganization({ organizationId: props.router.params.id });
-
-                                    await resetMembersList();
-                                })
-                                .show();
-                        }, false, require('assets/ic-leave-24.png')
-                    );
-                }
-
-                builder.show();
-            }
-        }, [ organization ]);
-
-        const handleLoadMore = React.useCallback(async () => {
-            if (members.length < organization.membersCount && !loading) {
-                setLoading(true);
-
-                const loaded = await getClient().queryOrganizationMembersShortPaginated({
-                    organizationId: organization.id,
-                    first: 10,
-                    after: members[members.length - 1].user.id,
-                }, { fetchPolicy: 'network-only' });
-
-                setMembers([...members, ...loaded.organization.members.filter(m => !members.find(m2 => m2.user.id === m.user.id))]);
-                setLoading(false);
-            }
-        }, [ organization, members, loading ]);
+            setMembers([...members, ...loaded.filter(m => !members.find(m2 => m2.user.id === m.user.id))]);
+            setLoading(false);
+        }
+    }, [organization, members, loading]);
 
     const content = (
         <>
@@ -311,7 +313,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                     <ZListItem title="Linkedin" text={organization.linkedin} copy={true} />
                 )}
             </ZListItemGroup>
-            
+
             <ZListItemGroup
                 header="Groups and Channels"
                 counter={organization.rooms.length}

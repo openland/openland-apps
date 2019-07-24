@@ -119,8 +119,8 @@ export class MobileMessenger {
         });
     }
 
-    handleCommentsClick = (message: DataSourceMessageItem, chatId: string) => {
-        this.history.navigationManager.push('MessageComments', { messageId: message.id, chatId });
+    handleCommentsClick = (message: DataSourceMessageItem) => {
+        this.history.navigationManager.push('MessageComments', { messageId: message.id });
     }
 
     handleDocumentClick = (document: DataSourceMessageItem) => {
@@ -157,7 +157,7 @@ export class MobileMessenger {
         }
     }
 
-    private handleMessageLongPress = (message: DataSourceMessageItem, chatId: string) => {
+    private handleMessageLongPress = (message: DataSourceMessageItem) => {
         let conversation: ConversationEngine = this.engine.getConversation(message.chatId);
         let builder = new ActionSheetBuilder();
 
@@ -191,7 +191,7 @@ export class MobileMessenger {
         }, false, require('assets/ic-forward-24.png'));
 
         builder.action('Comment', () => {
-            this.history.navigationManager.push('MessageComments', { messageId: message.id, chatId });
+            this.history.navigationManager.push('MessageComments', { messageId: message.id });
         }, false, require('assets/ic-chat-24.png'));
 
         if (message.text) {

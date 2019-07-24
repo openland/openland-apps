@@ -8,7 +8,6 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 class NotificationCenterHandlersClass {
     handlePress = (id: string, item: NotificationsDataSourceItem) => {
         getMessenger().history.navigationManager.push('MessageComments', {
-            chatId: item.room!!.id,
             messageId: item.peerRootId,
         });
     }
@@ -20,7 +19,7 @@ class NotificationCenterHandlersClass {
         if (item.notificationType !== 'unsupported') {
             builder.action(item.isSubscribedMessageComments ? 'Unfollow thread' : 'Follow thread', async () => {
                 startLoader();
-    
+
                 try {
                     if (item.isSubscribedMessageComments) {
                         await client.mutateUnSubscribeMessageComments({ messageId: item.peerRootId!! });
@@ -54,7 +53,6 @@ class NotificationCenterHandlersClass {
 
     handleReplyPress = (id: string, item: NotificationsDataSourceItem) => {
         getMessenger().history.navigationManager.push('MessageComments', {
-            chatId: item.room!!.id,
             messageId: item.peerRootId,
             highlightCommentId: item.id
         });
