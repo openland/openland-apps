@@ -8,15 +8,24 @@ import { css, cx } from 'linaria';
 const messageContainerClass = css`
     display: flex;
     flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 1;
+    display: flex;
+    max-width: 984px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 4px;
+    padding-bottom: 4px;
 `;
 
 const messageContentAreaClass = css`
     display: flex;
     flex-direction: column;
+    padding-left: 16px
 `;
 
 const noAvatarPlaceholder = css`
-    margin-left: 40px;
+    padding-left: 56px;
 `;
 
 export const MessageComponent = (props: { message: DataSourceWebMessageItem }) => {

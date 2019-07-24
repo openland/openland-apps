@@ -9,6 +9,10 @@ export interface MessageTextComponentProps {
     shouldCrop?: boolean;
 }
 
+const spansMessageWrapper = css`
+    display: flex;
+`;
+
 const styleSpansMessageContainer = css`
     display: inline;
     white-space: pre-wrap;
@@ -44,13 +48,15 @@ const EditLabelStyle = css`
 export const MessageTextComponent = React.memo<MessageTextComponentProps>(
     ({ shouldCrop, spans, isEdited }) => {
         return (
-            <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
-                <span>
-                    <SpannedView spans={spans} />
-                    {isEdited && (
-                        <span className={EditLabelStyle}>(Edited)</span>
-                    )}
-                </span>
+            <div className={spansMessageWrapper}>
+                <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
+                    <span>
+                        <SpannedView spans={spans} />
+                        {isEdited && (
+                            <span className={EditLabelStyle}>(Edited)</span>
+                        )}
+                    </span>
+                </div>
             </div>
         );
     },
