@@ -4,6 +4,7 @@ import { MessageReactions } from './reactions/MessageReactions';
 import { MessageContent } from './MessageContent';
 import { MAvatar } from './MAvatar';
 import { css, cx } from 'linaria';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 
 const messageContainerClass = css`
     display: flex;
@@ -41,15 +42,20 @@ const noAvatarPlaceholder = css`
     padding-left: 56px;
 `;
 
-export const MessageComponent = (props: { message: DataSourceWebMessageItem }) => {
-    let { message } = props;
+interface MessageComponentProps {
+    message: DataSourceWebMessageItem;
+    engine: ConversationEngine;
+}
 
-    let content = (
+export const MessageComponent = (props: MessageComponentProps) => {
+    const { message } = props;
+    const content = (
         <>
             <MessageContent message={message} />
             <MessageReactions messageId={message.id} reactions={message.reactions} />
         </>
     );
+
     return (
         <div className={cx(messageContainerClass, !message.attachTop && messageContainerAttachClass)}>
             {!message.attachTop && (

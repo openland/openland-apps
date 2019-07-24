@@ -39,7 +39,7 @@ export function convertMessage(
         reply,
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
-        commentsCount: generalMessage ? generalMessage.commentsCount : null,
+        commentsCount: generalMessage ? generalMessage.commentsCount : 0,
         textSpans: src.message ? processSpans(src.message, src.spans) : [],
     };
 }

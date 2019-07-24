@@ -14,11 +14,11 @@ import {
     buildMessagesDataSource,
 } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
-import { MessageComponent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { MessengerEmptyFragment } from 'openland-web/fragments/chat/MessengerEmptyFragment';
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { UHeader } from 'openland-unicorn/UHeader';
+import { MessageContent } from '../chat/messenger/message/MessageContent';
 
 const wrapperClassName = css`
     width: 100%;
@@ -117,7 +117,7 @@ class CommentsNotificationsInner extends React.PureComponent<
         const data = i as any;
         // TODO recover open comment modal
         return (
-            <MessageComponent
+            <MessageContent
                 message={data}
             />
         );
