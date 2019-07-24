@@ -39,6 +39,7 @@ export class MessengerEngine {
     private isVisible = true;
     private close: any = null;
     private loadingPromise: Promise<void>;
+    // tslint:disable-next-line
     private typingsWatcher?: TypingsWatcher;
     private onlineWatcher: OnlineWatcher;
 

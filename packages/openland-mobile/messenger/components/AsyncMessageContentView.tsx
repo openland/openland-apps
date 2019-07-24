@@ -175,15 +175,15 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
 
     let { hasDocument,
         hasImage,
-        hasReply,
+        // hasReply,
         hasText,
-        hasUrlAug,
+        // hasUrlAug,
         imageOnly,
         topContent,
         imageLayout,
         richAttachImageLayout,
         bottomContent,
-        richAttachIsCompact,
+        // richAttachIsCompact,
         isEmojiOnly
     } = extractContent(props, (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming), true);
     // let width = imageLayout ? imageLayout.previewWidth : (richAttachImageLayout && !richAttachIsCompact) ? richAttachImageLayout.previewWidth : undefined;

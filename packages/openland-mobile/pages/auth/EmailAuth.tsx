@@ -4,7 +4,6 @@ import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZInput } from '../../components/ZInput';
-import { signupStyles } from './SignupUser';
 import { ZForm } from '../../components/ZForm';
 import RNRestart from 'react-native-restart';
 import { Text, StyleSheet, TextStyle } from 'react-native';

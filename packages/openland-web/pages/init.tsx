@@ -1,5 +1,4 @@
 import { rehydrate, css, keyframes } from 'glamor';
-import { XThemeDefault } from 'openland-x/XTheme';
 
 if (typeof window !== 'undefined') {
     if ((window as any).__NEXT_DATA__.ids) {

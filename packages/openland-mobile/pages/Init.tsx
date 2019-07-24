@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { View, Linking, LayoutChangeEvent, Platform, Dimensions, LayoutAnimation, Image, Animated } from 'react-native';
+import { View, Linking, LayoutChangeEvent, Platform, Dimensions, LayoutAnimation, Image } from 'react-native';
 import { buildNativeClient, saveClient, getClient, hasClient } from '../utils/graphqlClient';
 import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
-import { ZLoader } from '../components/ZLoader';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { backoff } from 'openland-y-utils/timer';
 import { Routes } from '../routes';

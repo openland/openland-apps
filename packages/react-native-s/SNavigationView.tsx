@@ -32,11 +32,11 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
 
     private key: string = randomKey();
     private routing: SRouting;
-    private presentationManager: PresentationManager;
 
     constructor(props: SNavigationViewProps) {
         super(props);
-        this.presentationManager = new PresentationManager(this.props.routing.navigationManager, this.handlePresented, this.handleDismissed);
+        // tslint:disable-next-line
+        new PresentationManager(this.props.routing.navigationManager, this.handlePresented, this.handleDismissed);
         this.routing = props.routing;
         this.state = {};
     }

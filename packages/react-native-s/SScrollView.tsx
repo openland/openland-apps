@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ScrollViewProps, Animated, Platform } from 'react-native';
+import { ScrollViewProps, Animated } from 'react-native';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderConfigRegistrator } from './navigation/HeaderConfigRegistrator';
 import { STrackedValue } from './STrackedValue';

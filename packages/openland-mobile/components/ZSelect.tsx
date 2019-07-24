@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
-import { View } from 'react-native';
 import ActionSheet from './ActionSheet';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';

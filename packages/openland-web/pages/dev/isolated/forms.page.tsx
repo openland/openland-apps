@@ -6,17 +6,6 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XVertical2 } from 'openland-x/XVertical2';
 import { XVertical } from 'openland-x-layout/XVertical';
 
-import {
-    addMemberModalChatId,
-    webInboxChat,
-    egoarkaUser,
-    rfzzOrgId,
-    fredUser,
-    pinMessage,
-    gfdsgsRoom,
-    editFormMessage,
-} from './fixtures';
-import { XText, Mode } from 'openland-web/components/XText';
 import { XView } from 'react-mental';
 
 export default withApp('Isolated - forms', 'viewer', props => {

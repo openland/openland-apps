@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
-import { HeaderComponentProps, HeaderComponent } from './HeaderComponent';
+import { HeaderComponent } from './HeaderComponent';
 import { HeaderPage } from './HeaderPage';
 import { NavigationPage } from '../NavigationPage';
 import { HeaderConfig } from '../HeaderConfig';

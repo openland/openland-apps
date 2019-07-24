@@ -10,9 +10,10 @@ import { throttledMap } from 'react-native-s/SThrottler';
 class ItemRenderHolder<T extends DataSourceItem> {
     item: T;
     currentState: any;
+    readonly dataView: ASDataView<T>;
+    
     private container: AsyncRenderer;
     private render: (src: T) => React.ReactElement<{}>;
-    private dataView: ASDataView<T>;
 
     constructor(dataView: ASDataView<T>, initial: T, render: (src: T) => React.ReactElement<{}>) {
         this.dataView = dataView;

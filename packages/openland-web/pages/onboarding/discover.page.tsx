@@ -1,20 +1,17 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
-import * as qs from 'query-string';
 import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XButton } from 'openland-x/XButton';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { TopBar } from '../components/TopBar';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { getPercentageOfOnboarding } from '../components/utils';
 import { TagsCloud } from '../components/TagsCloud';
 import { TagGroup, Tag } from '../components/TagButton';
 import { ChatsForYou } from './chats-for-you.page';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { Wrapper } from './components/wrapper';
@@ -166,9 +163,9 @@ const LocalDiscoverComponent = ({
     );
 };
 
-const arrowify = (value: string | string[]) => {
-    return typeof value === 'string' ? [value] : value || [];
-};
+// const arrowify = (value: string | string[]) => {
+//     return typeof value === 'string' ? [value] : value || [];
+// };
 
 export const Discover = ({
     noLogo,
@@ -320,21 +317,21 @@ export const DiscoverOnLocalState = ({
         return allSelected;
     }, [rootState]);
 
-    const mergeAllExcluded = React.useCallback(() => {
-        const allExcludeArrays = rootState.map(({ exclude }) => {
-            return exclude;
-        });
+    // const mergeAllExcluded = React.useCallback(() => {
+    //     const allExcludeArrays = rootState.map(({ exclude }) => {
+    //         return exclude;
+    //     });
 
-        const allExclude: string[] = [];
-        for (let exclude of allExcludeArrays) {
-            for (let selectedItem of exclude) {
-                if (!allExclude.includes(selectedItem)) {
-                    allExclude.push(selectedItem);
-                }
-            }
-        }
-        return allExclude;
-    }, [rootState]);
+    //     const allExclude: string[] = [];
+    //     for (let exclude of allExcludeArrays) {
+    //         for (let selectedItem of exclude) {
+    //             if (!allExclude.includes(selectedItem)) {
+    //                 allExclude.push(selectedItem);
+    //             }
+    //         }
+    //     }
+    //     return allExclude;
+    // }, [rootState]);
 
     const onContinueClick = React.useCallback(
         async (data: { selected: string[]; exclude: string[]; currentPageId: string }) => {
@@ -449,84 +446,6 @@ export const DiscoverOnLocalState = ({
             onContinueClick={onContinueClick}
             fullHeight={fullHeight}
             allowContinue={allowContinue}
-        />
-    );
-};
-
-const DiscoverOnRouter = () => {
-    const client = useClient();
-    const router = React.useContext(XRouterContext)!;
-
-    const { exclude, selected } = router.query;
-
-    const [previousChoisesMap, setPreviousChoisesMap] = React.useState<any>({});
-    const [rootSelected, setRootSelected] = React.useState<string[]>(() => arrowify(selected));
-    const [rootExclude, setRootExclude] = React.useState<string[]>(() => arrowify(selected));
-
-    const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
-
-    React.useEffect(() => {
-        if (!discoverDone.betaIsDiscoverDone) {
-            setRootSelected(arrowify(selected));
-            setRootExclude(arrowify(exclude));
-        }
-    }, [router.query.selected, router.query.exclude]);
-
-    const onContinueClick = async (props: {
-        selected: string[];
-        exclude: string[];
-        currentPageId: string;
-    }) => {
-        setPreviousChoisesMap({
-            ...previousChoisesMap,
-            [props.currentPageId]: props.selected,
-        });
-
-        router.push(
-            `/onboarding/discover?${qs.stringify({
-                selected: props.selected,
-                exclude: props.exclude,
-            })}`,
-        );
-    };
-
-    const onSkip = () => {
-        router.push('/');
-    };
-
-    const onBack = () => {
-        if (exclude.length === 0) {
-            router.replace('/onboarding/start');
-        } else {
-            if (canUseDOM) {
-                window.history.back();
-            }
-        }
-    };
-
-    const onChatsForYouSkip = () => {
-        router.push('/');
-    };
-    const onChatsForYouBack = async () => {
-        await client.mutateBetaNextDiscoverReset();
-        await client.refetchSuggestedRooms();
-        await client.refetchDiscoverIsDone();
-
-        if (canUseDOM) {
-            window.history.back();
-        }
-    };
-
-    return (
-        <Discover
-            onChatsForYouSkip={onChatsForYouSkip}
-            onChatsForYouBack={onChatsForYouBack}
-            onSkip={onSkip}
-            onBack={onBack}
-            previousChoisesMap={previousChoisesMap}
-            rootSelected={rootSelected}
-            rootExclude={rootExclude}
-            onContinueClick={onContinueClick}
         />
     );
 };

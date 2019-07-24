@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import InviteIcon from 'openland-icons/ic-invite-plus.svg';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { trackEvent } from 'openland-x-analytics';
@@ -47,7 +46,6 @@ const OrgInviteLoader = (props: { orgId: string }) => {
 };
 
 export const DialogsInviteButton = XMemo(() => {
-    let router = React.useContext(XRouterContext)!;
 
     // preload links
     let profile = useClient().useWithoutLoaderProfile();

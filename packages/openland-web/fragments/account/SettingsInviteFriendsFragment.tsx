@@ -3,7 +3,6 @@ import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XImage } from 'react-mental';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
@@ -314,7 +313,6 @@ export const InviteFriendsFragment = (props: InviteFriendsFragmentProps) => {
     const client = useClient(),
         inviteCount = client.useMySuccessfulInvitesCount(),
         { invite: openlandInvite } = client.useAccountAppInvite(),
-        router = React.useContext(XRouterContext)!,
         isMobile = useIsMobile() || undefined;
 
     return (

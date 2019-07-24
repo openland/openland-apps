@@ -1,13 +1,10 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
-import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 
 export const BottomSheet = (props: PageProps) => (

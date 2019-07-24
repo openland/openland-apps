@@ -20,7 +20,6 @@ type InviteInfoInnerT = {
 
 const InviteInfoInner = (props: any) => {
     const {
-        variables,
         instantRedirect,
         redirect,
         loading,

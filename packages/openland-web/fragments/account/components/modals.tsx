@@ -1,10 +1,6 @@
 import * as React from 'react';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
-import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
-import { XFormField } from 'openland-x-forms/XFormField';
-import { XTextArea } from 'openland-x/XTextArea';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { XInput } from 'openland-x/XInput';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
@@ -19,13 +15,8 @@ import { InputField } from 'openland-web/components/InputField';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalFooterButton } from 'openland-web/components/XModalFooterButton';
 import { XModalContent } from 'openland-web/components/XModalContent';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { XCheckbox } from 'openland-x/XCheckbox';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XText } from 'openland-x/XText';
 import { showModalBox } from 'openland-x/showModalBox';
-import { XInputBasic } from 'openland-x/basics/XInputBasic';
-import { XLoader } from 'openland-x/XLoader';
 
 export const AboutPlaceholder = ({
     organizationId,

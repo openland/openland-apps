@@ -47,13 +47,13 @@ const colorProcessor: PropsTransformer = {
     }
 };
 
-const tintColorProcessor: PropsTransformer = {
-    name: 'tintColor',
-    imports: [{ what: 'processColor', from: 'react-native' }],
-    tranform: (src) => {
-        return processWrapper('processColor', src);
-    }
-};
+// const tintColorProcessor: PropsTransformer = {
+//     name: 'tintColor',
+//     imports: [{ what: 'processColor', from: 'react-native' }],
+//     tranform: (src) => {
+//         return processWrapper('processColor', src);
+//     }
+// };
 
 const backgroundGradientProcessor: PropsTransformer = {
     name: 'backgroundGradient',

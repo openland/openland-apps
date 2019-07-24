@@ -12,7 +12,6 @@ import EditProfileIcon from 'openland-icons/s/ic-edit-24.svg';
 import AppearanceIcon from 'openland-icons/s/ic-appearance-24.svg';
 import DownloadIcon from 'openland-icons/s/ic-download-24.svg';
 
-import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from 'openland-web/components/UserInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';

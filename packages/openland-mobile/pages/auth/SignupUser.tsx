@@ -31,17 +31,6 @@ export const signupStyles = StyleSheet.create({
     } as TextStyle,
 });
 
-const styles = StyleSheet.create({
-    hint: {
-        paddingHorizontal: 16,
-        fontSize: 13,
-        lineHeight: 17,
-        fontWeight: '300',
-        color: '#666666',
-        opacity: 0.8
-    } as TextStyle
-});
-
 const SignupUserContent = XMemo<PageProps>((props) => {
     let prefill = getClient().useProfilePrefill().prefill;
     let ref = React.useRef<ZForm | null>(null);

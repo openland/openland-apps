@@ -7,7 +7,6 @@ import {
 } from 'openland-engines/messenger/ConversationEngine';
 import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
 import { EmptyBlock } from 'openland-web/fragments/chat/components/ChatEmptyComponent';
-import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import { DataSourceRender, ScrollTo } from './DataSourceRender';
 import glamorous from 'glamorous';
@@ -19,8 +18,6 @@ import {
 import { XScrollViewReverse2 } from 'openland-x/XScrollViewReversed2';
 import { XScrollValues } from 'openland-x/XScrollView3';
 import { XLoader } from 'openland-x/XLoader';
-import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
-import { delay } from 'openland-y-utils/timer';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { DateComponent } from './DateComponent';
 import { NewMessageDividerComponent } from './NewMessageDividerComponent';

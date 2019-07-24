@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { AutoSizer, InfiniteLoader, List, CellMeasurer, ListRowProps, Index, CellMeasurerCache, IndexRange } from 'react-virtualized';
 
 interface XListProps {

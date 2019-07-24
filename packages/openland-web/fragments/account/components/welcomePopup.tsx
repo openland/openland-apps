@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XButton } from 'openland-x/XButton';
-import { XModal } from 'openland-x-modal/XModal';
 import { showModalBox } from 'openland-x/showModalBox';
 
 const WelcomeModalWrapper = Glamorous.div({

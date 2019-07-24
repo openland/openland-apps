@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';

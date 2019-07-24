@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Platform, View, Text, Image } from 'react-native';
 import { ZRoundedButton } from './ZRoundedButton';
-import { TextStyles, RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
 import { ZModalController } from './ZModal';
 import { delay } from 'openland-y-utils/timer';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';

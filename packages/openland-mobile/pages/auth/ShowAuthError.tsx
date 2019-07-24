@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
 import { NamedError } from 'openland-y-forms/errorHandling';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { STouchable } from './STouchable';
-import { View, Platform, Image, Text } from 'react-native';
+import { View, Image } from 'react-native';
 import { SDevice } from './SDevice';
 
 export class SShareButton extends React.PureComponent<{ tintColor?: string, onPress?: () => void }> {

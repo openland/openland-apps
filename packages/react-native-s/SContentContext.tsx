@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ASKeyboardContext, ASKeyboardAcessoryViewContext } from 'react-native-async-view/ASKeyboardContext';
-import { NativeSyntheticEvent, Platform, View, Keyboard, DeviceEventEmitter } from 'react-native';
+import { NativeSyntheticEvent, Platform, View, DeviceEventEmitter } from 'react-native';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { SDevice } from './SDevice';
 import { randomKey } from './utils/randomKey';

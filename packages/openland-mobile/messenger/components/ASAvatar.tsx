@@ -19,7 +19,7 @@ interface ASAvatarProps {
 }
 
 export function ASAvatar(props: ASAvatarProps) {
-    const { size, placeholder: textSize, dotSize, dotPosition, dotBorderWidth } = avatarSizes[props.size];
+    const { size, placeholder: textSize } = avatarSizes[props.size];
 
     if (props.src && !props.src.startsWith('ph://')) {
         let url = props.src;

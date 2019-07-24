@@ -25,23 +25,6 @@ export interface UserInfoProps {
     roles: string[];
 }
 
-type RolesT = {
-    roles: any;
-    currentOrganizatonId: any;
-};
-
-type CtxT = {
-    user: Types.UserShort | null;
-    organization: Types.OrganizationShort | null;
-    isLoggedIn: boolean;
-    isProfileCreated: boolean;
-    isAccountExists: boolean;
-    isAccountPicked: boolean;
-    isActivated: boolean;
-    isCompleted: boolean;
-    isBlocked: boolean;
-};
-
 export class UserInfoProvider extends React.Component<UserInfoProps> {
     ctx: UserInfo;
     rolesCtx: { roles: string[]; currentOrganizatonId?: string };

@@ -131,12 +131,12 @@ export default () => {
         roomView = false;
     }
 
-    let title;
-    if (isSignInInvite) {
-        title = InitTexts.invite.pageTitle;
-    } else {
-        title = signin ? InitTexts.auth.signinPageTitle : InitTexts.auth.signupPageTitle;
-    }
+    // let title;
+    // if (isSignInInvite) {
+    //     title = InitTexts.invite.pageTitle;
+    // } else {
+    //     title = signin ? InitTexts.auth.signinPageTitle : InitTexts.auth.signupPageTitle;
+    // }
 
     const [email, setEmail] = React.useState(false);
     const [emailValue, setEmailValue] = React.useState('');

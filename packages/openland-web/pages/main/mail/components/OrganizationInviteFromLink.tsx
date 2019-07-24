@@ -18,15 +18,6 @@ export const OrganizationInviteFromLink = () => {
         return null;
     }
 
-    let invitedByUser = undefined;
-    if (data.invite && data.invite.creator) {
-        invitedByUser = {
-            id: data.invite.creator.id,
-            name: data.invite.creator.name,
-            photo: data.invite.creator.photo,
-        };
-    }
-
     return (
         <InviteLandingComponent />
     );

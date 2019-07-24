@@ -25,6 +25,7 @@ export function createDumbBridgeClient(client: GraphqlClient) {
         setHandler: (handler) => clientCallback = handler
     };
 
+    // tslint:disable-next-line
     let host = new WorkerApolloHost(client, hostWorkerInterface);
     return new WorkerApolloClient(clientWorkerInterface);
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Share, Platform } from 'react-native';
+import { Share } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
@@ -8,7 +8,6 @@ import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import Rate from 'react-native-rate';
-import { CenteredHeader } from './components/CenteredHeader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { NON_PRODUCTION } from '../Init';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ViewStyle, StyleProp, NativeSyntheticEvent, NativeScrollEvent, processColor, Platform } from 'react-native';
+import { ViewStyle, StyleProp, NativeSyntheticEvent, NativeScrollEvent, processColor } from 'react-native';
 import { ASDataView } from './ASDataView';
 import { ASViewListRender } from './platform/ASViewRender';
 import { XMemo } from 'openland-y-utils/XMemo';

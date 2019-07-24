@@ -14,7 +14,6 @@ import {
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { XModalProps, XModalFooter } from 'openland-x-modal/XModal';
-import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XUserCard } from 'openland-x/cards/XUserCard';
@@ -457,16 +456,6 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
         this.setState({
             selectedUsers: selected,
         });
-    }
-
-    private onClosed = () => {
-        this.setState(
-            {
-                selectedUsers: null,
-                searchQuery: '',
-            },
-            () => (this.props.hide ? this.props.hide() : {}),
-        );
     }
 
     render() {

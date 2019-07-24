@@ -1,4 +1,3 @@
-import { NavigationState } from '../NavigationState';
 import { Dimensions, Platform } from 'react-native';
 import { SDevice } from '../../SDevice';
 import { NavigationPage } from '../NavigationPage';

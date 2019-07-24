@@ -75,9 +75,9 @@ const HorizontalInner = Glamorous(XHorizontal)({
     alignItems: 'center',
 });
 
-const BulletWrapper = Glamorous.div({
-    paddingTop: 4,
-});
+// const BulletWrapper = Glamorous.div({
+//     paddingTop: 4,
+// });
 
 export class XHeader extends React.Component<XCardHeaderProps> {
     static Target = HeaderTargetElement;

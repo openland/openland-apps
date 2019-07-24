@@ -160,7 +160,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                             }
                         }
 
-                        if (!activeWord) {
+                        if (!autocompleteWord) {
                             return;
                         }
 
@@ -169,7 +169,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                         // deleting text up to the end
                         ed.insertEmbed(selection.index, 'mention', src, 'user');
                         ed.insertText(selection.index + 1, ' ', 'user');
-                        ed.deleteText(selection.index - activeWord.length, activeWord.length + selection.length, 'user');
+                        ed.deleteText(selection.index - autocompleteWord.length, autocompleteWord.length + selection.length, 'user');
                         ed.setSelection(selection.index + 1, 1, 'user');
                     }
                 }

@@ -12,7 +12,7 @@ export const extractReactionsSorted = (reactions: FullMessage_GeneralMessage_rea
         new Map<string, { count: number, my: boolean, reaction: MessageReactionType }>()
     );
     let reactionsSorted = [...reactionsReduced.values()].sort((a, b) => a.count - b.count);
-    let hasYou = false;
+    // let hasYou = false;
     let users = reactions
         .reduce(
             (res, r) => res.find(u => u.id === r.user.id) ? res : [...res, r.user],
@@ -22,7 +22,7 @@ export const extractReactionsSorted = (reactions: FullMessage_GeneralMessage_rea
         .sort((a, b) => a.id === myID ? -1 : 1)
         // replace user name to 'You';
         .map(u => {
-            hasYou = true;
+            // hasYou = true;
 
             if (u.id === myID) {
                 return { ...u, name: 'You' };

@@ -16,10 +16,6 @@ import { XIcon } from 'openland-x/XIcon';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton, XButtonProps } from 'openland-x/XButton';
 import {
-    RemoveOrganizationModal,
-    AboutPlaceholder,
-    SocialPlaceholder,
-    WebsitePlaceholder,
     showWebsitePlaceholderModal,
     showAboutPlaceholderModal,
     showSocialPlaceholderModal,
@@ -29,12 +25,8 @@ import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XLink } from 'openland-x/XLink';
 import { XOverflow } from 'openland-web/components/XOverflow';
-import { XAvatarUpload } from 'openland-x/XAvatarUpload';
-import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XInput } from 'openland-x/XInput';
-import { XStoreContext } from 'openland-y-store/XStoreContext';
-import { XSelect } from 'openland-x/XSelect';
 import { XText } from 'openland-x/XText';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
@@ -50,7 +42,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
-import { AddMembersModal, showAddMembersModal } from 'openland-web/fragments/chat/AddMembersModal';
+import { showAddMembersModal } from 'openland-web/fragments/chat/showAddMembersModal';
 import { AvatarModal } from './UserProfileComponent';
 import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -60,7 +52,6 @@ import { showEditCommunityModal } from './EditCommunityModal';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-x-modal/XModal';
-import { XFormSelectField } from 'openland-x-forms/XForm';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
 import { SelectWithDropdown } from 'openland-web/pages/main/mail/SelectWithDropdown';

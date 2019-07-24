@@ -8,7 +8,6 @@ import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import introspectionQueryResultData from 'openland-api/fragmentTypes.json';
 import { GraphqlTypedQuery, GraphqlTypedMutation } from './typed';
-import { getMainDefinition } from 'apollo-utilities';
 // import LogCache from 'apollo-cache-logger';
 
 export class ApolloClientStatus {
@@ -157,11 +156,11 @@ export function buildClient(config: { endpoint: string, wsEndpoint?: string, tok
         // HTTP Link
         //
 
-        let httpLink = new HttpLink({
-            uri: config.endpoint,
-            headers: headers,
-            fetch: config.fetch
-        });
+        // let httpLink = new HttpLink({
+        //     uri: config.endpoint,
+        //     headers: headers,
+        //     fetch: config.fetch
+        // });
 
         // Hybrid link
         // link = split(

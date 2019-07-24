@@ -4,7 +4,6 @@ import * as qs from 'query-string';
 import { XRouter } from './XRouter';
 import { RouterProps } from 'next/router';
 import { XRouterContext } from './XRouterContext';
-import { XRouting } from './XRouting';
 import { XViewRouterContext, XViewRouter, XViewRouteContext } from 'react-mental';
 
 interface NextRoutes {
@@ -28,21 +27,11 @@ export class XRouterProvider extends React.Component<{
     };
 
     private xRouterState: XRouter;
-    private xRouting: XRouting;
     private xViewRouter: XViewRouter;
 
     constructor(props: { routes: NextRoutes; hostName: string; protocol: string }, context: any) {
         super(props, context);
         this.xRouterState = this.buildState(context);
-        this.xRouting = {
-            push: this.push,
-            pushQuery: this.pushQuery,
-            pushQueryParams: this.pushQueryParams,
-            replace: this.replace,
-            replaceQuery: this.replaceQuery,
-            replaceQueryParams: this.replaceQueryParams,
-            resolveLink: this.resolveLink,
-        };
         this.xViewRouter = {
             navigate: to => {
                 if (typeof to === 'string') {

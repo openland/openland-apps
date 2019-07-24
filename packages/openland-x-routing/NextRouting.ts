@@ -1,6 +1,6 @@
-import NRouter, { RouterProps } from 'next/router';
+import NRouter from 'next/router';
 import * as NProgress from 'nprogress';
-import { trackPage, trackError } from 'openland-x-analytics';
+import { trackError } from 'openland-x-analytics';
 
 NProgress.configure({ showSpinner: false, parent: '#progress_container' });
 

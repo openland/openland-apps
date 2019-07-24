@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableWithoutFeedback, Image, Text, Platform } from 'react-native';
+import { View, TouchableWithoutFeedback, Image } from 'react-native';
 import { SDevice } from 'react-native-s/SDevice';
 import { ZCounter } from './ZCounter';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';

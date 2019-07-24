@@ -10,6 +10,7 @@ import { WorkerInterface } from 'openland-graphql/proxy/WorkerInterface';
 
 const ctx = self as any;
 
+// tslint:disable-next-line
 var host;
 
 const initHandler = (ev: MessageEvent) => {

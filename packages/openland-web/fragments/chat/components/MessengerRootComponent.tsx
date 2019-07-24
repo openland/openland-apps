@@ -23,8 +23,6 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
-import { ContextStateInterface } from 'openland-x/createPoliteContext';
-import { IsActivePoliteContext } from 'openland-web/pages/main/mail/components/CacheComponent';
 import { throttle } from 'openland-y-utils/timer';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalContent } from 'openland-web/components/XModalContent';
@@ -49,7 +47,7 @@ export interface File {
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
-    isActive: ContextStateInterface<boolean>;
+    isActive: boolean;
     conversationId: string;
     loading: boolean;
     messenger: MessengerEngine;
@@ -200,19 +198,26 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     }
 
     componentDidMount() {
-        this.activeSubscription = this.props.isActive.listen(acitive => {
-            if (acitive) {
-                this.unmounter = this.conversation!.engine.mountConversation(
-                    this.props.conversationId,
-                );
-                this.unmounter2 = this.conversation!.subscribe(this);
-                if (!this.conversation) {
-                    throw Error('conversation should be defined here');
-                }
-            } else {
-                this.unsubscribe();
-            }
-        });
+        // this.activeSubscription = this.props.isActive.listen(acitive => {
+        //     if (acitive) {
+        //         this.unmounter = this.conversation!.engine.mountConversation(
+        //             this.props.conversationId,
+        //         );
+        //         this.unmounter2 = this.conversation!.subscribe(this);
+        //         if (!this.conversation) {
+        //             throw Error('conversation should be defined here');
+        //         }
+        //     } else {
+        //         this.unsubscribe();
+        //     }
+        // });
+        this.unmounter = this.conversation!.engine.mountConversation(
+            this.props.conversationId,
+        );
+        this.unmounter2 = this.conversation!.subscribe(this);
+        if (!this.conversation) {
+            throw Error('conversation should be defined here');
+        }
     }
 
     scrollToBottom = () => {
@@ -391,13 +396,11 @@ interface MessengerRootComponentProps {
 
 export const MessengerRootComponent = React.memo((props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
-    let isActive = React.useContext(IsActivePoliteContext);
-    // useCheckPerf({ name: `MessengerRootComponent: ${props.conversationId}` });
 
     return (
         <MessagesComponent
             onChatLostAccess={props.onChatLostAccess}
-            isActive={isActive}
+            isActive={true}
             me={messenger.user}
             loading={false}
             conversationId={props.conversationId}
