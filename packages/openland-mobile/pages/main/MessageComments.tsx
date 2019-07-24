@@ -334,12 +334,8 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
     const messenger = getMessenger();
     const client = getClient();
 
-    console.warn('boom', { messageId });
-
     const message = client.useMessage({ messageId: messageId }, { fetchPolicy: 'cache-and-network' }).message;
     const comments = client.useMessageComments({ messageId: messageId }, { fetchPolicy: 'cache-and-network' }).messageComments.comments;
-
-    console.warn('boom 2');
 
     if (!message) {
         return null;

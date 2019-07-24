@@ -7,15 +7,17 @@ import { MessageComments_messageComments_comments_comment } from 'openland-api/T
 
 interface CommentViewProps {
     comment: MessageComments_messageComments_comments_comment;
+    depth: number;
 }
 
 export const CommentView = React.memo((props: CommentViewProps) => {
-    const { comment } = props;
+    const { comment, depth } = props;
     const messenger = React.useContext(MessengerContext);
     const [converted] = React.useState<DataSourceWebMessageItem>(convertDsMessage(convertMessage(comment, '', messenger)));
 
     return (
-        <div>
+        <div style={{ paddingLeft: depth * 50 }}>
+            {converted.senderNameEmojify}
             <MessageContent message={converted} />
         </div>
     );

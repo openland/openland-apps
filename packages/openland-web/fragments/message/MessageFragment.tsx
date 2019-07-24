@@ -12,6 +12,7 @@ import { CommentView } from './components/CommentView';
 import { CommentWatch_event_CommentUpdateSingle_update } from 'openland-api/Types';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { CommentInput } from './components/CommentInput';
+import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 
 const wrapper = css`
     display: flex;
@@ -47,13 +48,25 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
     const groupId = message.source && message.source.__typename === 'MessageSourceChat' && message.source.chat.__typename === 'SharedRoom' ? message.source.chat.id : undefined;
     const [converted] = React.useState<DataSourceWebMessageItem>(convertDsMessage(convertMessage(message, '', messenger)));
 
+    const commentsMap = {};
+
+    comments.map(comment => {
+        commentsMap[comment.id] = comment;
+    });
+
+    const commentsSorted = sortComments(comments, commentsMap);
+
     return (
         <div className={wrapper}>
             <XScrollView3 flexGrow={1} flexBasis={0} flexShrink={1} alignItems="flex-start">
                 <MessageContent message={converted} />
                 <div>
-                    {comments.map(item => (
-                        <CommentView comment={item.comment} />
+                    {commentsSorted.map(item => (
+                        <CommentView
+                            key={'comment-' + item.id}
+                            comment={item.comment}
+                            depth={getDepthOfComment(item, commentsMap)}
+                        />
                     ))}
                 </div>
             </XScrollView3>
