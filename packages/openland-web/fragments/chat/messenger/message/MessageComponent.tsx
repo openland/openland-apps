@@ -8,15 +8,33 @@ import { css, cx } from 'linaria';
 const messageContainerClass = css`
     display: flex;
     flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 1;
+    display: flex;
+    max-width: 984px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+`;
+
+const messageAvatarWrapper = css`
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    justify-content: center;
+    flex-shrink: 0;
 `;
 
 const messageContentAreaClass = css`
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+    padding-left: 16px;
 `;
 
 const noAvatarPlaceholder = css`
-    margin-left: 40px;
+    padding-left: 56px;
 `;
 
 export const MessageComponent = (props: { message: DataSourceWebMessageItem }) => {
@@ -30,11 +48,20 @@ export const MessageComponent = (props: { message: DataSourceWebMessageItem }) =
     );
     return (
         <div className={messageContainerClass}>
-            {!message.attachTop && <MAvatar senderPhoto={message.senderPhoto} senderNameEmojify={message.senderNameEmojify} senderName={message.senderName} senderId={message.senderId} />}
+            {!message.attachTop && (
+                <div className={messageAvatarWrapper}>
+                    <MAvatar
+                        senderPhoto={message.senderPhoto}
+                        senderNameEmojify={message.senderNameEmojify}
+                        senderName={message.senderName}
+                        senderId={message.senderId}
+                    />
+                </div>
+            )}
             <div className={cx(messageContentAreaClass, message.attachTop && noAvatarPlaceholder)}>
                 {props.message.senderNameEmojify}
                 {content}
             </div>
-        </div >
+        </div>
     );
 };

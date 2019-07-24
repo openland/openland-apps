@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
@@ -7,6 +8,20 @@ import { ReplyContent } from './content/ReplyContent';
 import { ImageContent } from './content/ImageContent';
 import { DocumentContent } from './content/DocumentContent';
 import { RichAttachContent } from './content/RichAttachContent';
+
+const messageWrapper = css`
+    flex-grow: 1;
+    flex-shrink: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+`;
+
+const messageContent = css`
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 1;
+`;
 
 export const MessageContent = (props: { message: DataSourceWebMessageItem }) => {
     let { message } = props;
@@ -44,5 +59,11 @@ export const MessageContent = (props: { message: DataSourceWebMessageItem }) => 
         content.push(<MessageTextComponent spans={[{ type: SpanType.italic, offset: 0, length: text.length, childrens: [{ type: SpanType.text, text, offset: 0, length: text.length }] }]} isEdited={false} />);
     }
 
-    return <>{content}</>;
+    return (
+        <div className={messageWrapper}>
+            <div className={messageContent}>
+                {content}
+            </div>
+        </div>
+    );
 };
