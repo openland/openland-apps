@@ -6,6 +6,7 @@ export const UserForMention = gql`
         id
         name
         photo
+        shortname
         primaryOrganization {
             id
             name
