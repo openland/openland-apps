@@ -103,7 +103,7 @@ export const ImageContent = React.memo(
             <div className={imgContainer} style={{ width: layoutWidth, height: layoutHeight }}>
                 <img
                     ref={placeholderRef}
-                    className={cx(imgPreviewClass, imgMediaClass)}
+                    className={cx(imgPreviewClass)}
                     width={layoutWidth}
                     height={layoutHeight}
                     src={props.file.filePreview || undefined}
