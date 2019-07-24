@@ -72,7 +72,13 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
     const { reactionsSorted, usersString } = extractReactionsSorted(reactions, messenger.user.id);
 
     return (
-        <div className={cx(reactionsWrapper, selected && reactionsSelectedWrapper)}>
+        <div
+            className={cx(reactionsWrapper, selected && reactionsSelectedWrapper)}
+            onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            }}
+        >
             <div className={reactionsItems}>
                 {reactionsSorted.map((item, index) => (
                     <div

@@ -36,7 +36,10 @@ export const MessageCommentsButton = React.memo<MessageCommentsButtonProps>(prop
         return (
             <div
                 className={cx(TypeCaption, buttonWrapper, selected && buttonSelectedWrapper)}
-                onClick={() => {
+                onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
                     if (router) {
                         router.navigate('/message/' + id);
                     }
