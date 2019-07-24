@@ -6,6 +6,7 @@ import { MAvatar } from './MAvatar';
 import { css, cx } from 'linaria';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
+import { useMessageSelected } from 'openland-engines/messenger/MessagesActionsState';
 
 const messageContainerClass = css`
     display: flex;
@@ -18,6 +19,12 @@ const messageContainerClass = css`
     padding-right: 50px;
     padding-top: 4px;
     padding-bottom: 4px;
+    margin: 4px 16px;
+    border-radius: 8px;
+`;
+
+const messageContainerSelectedClass = css`
+    background-color: #F0F2F5; //ThemeDefault.backgroundTertiary
 `;
 
 const messageContainerAttachClass = css`
@@ -55,6 +62,8 @@ interface MessageComponentProps {
 
 export const MessageComponent = (props: MessageComponentProps) => {
     const { message, engine } = props;
+    const [selected, toggleSelect] = useMessageSelected(props.engine.messagesActionsState, props.message);
+    const onSelect = React.useCallback(toggleSelect, [props.message.id]);
     const content = (
         <>
             <MessageContent message={message} />
@@ -68,7 +77,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
     );
 
     return (
-        <div className={cx(messageContainerClass, !message.attachTop && messageContainerAttachClass)}>
+        <div onClick={onSelect} className={cx(messageContainerClass, !message.attachTop && messageContainerAttachClass, selected && messageContainerSelectedClass)}>
             {!message.attachTop && (
                 <div className={messageAvatarWrapper}>
                     <MAvatar

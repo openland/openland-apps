@@ -64,7 +64,7 @@ function useDataSource<T extends DataSourceItem>(
 export type ScrollTo = { scrollTo: { key: string | undefined } | undefined };
 export interface XListViewProps<T extends DataSourceItem> {
     dataSource: DataSource<T>;
-    renderItem: React.ComponentClass<T & ScrollTo> | React.StatelessComponent<T & ScrollTo>;
+    renderItem: React.ComponentClass<{ item: T }> | React.StatelessComponent<{ item: T }>;
     renderLoading: React.ComponentClass<any> | React.StatelessComponent<any>;
     reverce?: boolean;
     wrapWith?: any;
@@ -103,7 +103,7 @@ const WrapWith = React.memo(
     },
 );
 
-export const DataSourceRender = React.memo(function<T extends DataSourceItem>(
+export const DataSourceRender = React.memo(function <T extends DataSourceItem>(
     props: XListViewProps<T>,
 ) {
     let [items, completed, scrollTo] = useDataSource(props.dataSource);
@@ -113,20 +113,14 @@ export const DataSourceRender = React.memo(function<T extends DataSourceItem>(
         for (let i = items.length - 1; i >= 0; i--) {
             renderedItems.push(
                 <props.renderItem
-                    {...items[i]}
-                    key={items[i].key}
-                    dataKey={items[i].key}
-                    scrollTo={items[i].key === scrollTo.key ? scrollTo : undefined}
+                    item={items[i]}
                 />,
             );
         }
     } else {
         renderedItems = items.map((i, key) => (
             <props.renderItem
-                {...i}
-                key={key}
-                dataKey={key}
-                scrollTo={i.key === scrollTo.key ? scrollTo : undefined}
+                item={i}
             />
         ));
     }

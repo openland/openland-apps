@@ -44,7 +44,7 @@ export class MessagesActionsStateEngine {
     }
 
     selectToggle = (message: DataSourceMessageItem) => {
-        if (!(this.state.messages || []).find(m => m.id === message.id || m.key === message.key)) {
+        if (!(this.state.messages || []).find(m => (m.id === message.id) || (m.key === message.key))) {
             this.state.messages.push(message);
             this.notifyAll();
         } else {
@@ -80,7 +80,7 @@ export const useMessageSelected = (engine: MessagesActionsStateEngine, self: Dat
     let [selected, setSelected] = React.useState(false);
     React.useEffect(() => {
         return engine.listen((s) => {
-            setSelected(!!s.messages.find(m => m.id === self.id || m.key === self.key));
+            setSelected(!!s.messages.find(m => (m.id === self.id) || (m.key === self.key)));
         });
     }, [self]);
     let toggleSelect = React.useCallback(() => {

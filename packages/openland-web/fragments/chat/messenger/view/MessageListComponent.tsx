@@ -123,20 +123,19 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
     renderMessage = React.memo(
         (
-            item: (DataSourceWebMessageItem | DataSourceDateItem | DataSourceNewDividerItem) &
-                ScrollTo,
+            data: { item: (DataSourceWebMessageItem | DataSourceDateItem | DataSourceNewDividerItem) },
         ) => {
-            if (item.type === 'message') {
+            if (data.item.type === 'message') {
                 return (
                     <MessageComponent
-                        message={item}
+                        message={data.item}
                         engine={this.props.conversation}
                     />
                 );
-            } else if (item.type === 'date') {
-                return <DateComponent item={item} />;
-            } else if (item.type === 'new_divider') {
-                return <NewMessageDividerComponent dividerKey={(item as any).dataKey} scrollTo={item.scrollTo} />;
+            } else if (data.item.type === 'date') {
+                return <DateComponent item={data.item} />;
+            } else if (data.item.type === 'new_divider') {
+                return <NewMessageDividerComponent dividerKey={(data.item as any).dataKey} scrollTo={{ key: '' }} />;
             }
             return <div />;
         },

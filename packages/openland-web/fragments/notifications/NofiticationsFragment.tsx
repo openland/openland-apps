@@ -113,12 +113,11 @@ class CommentsNotificationsInner extends React.PureComponent<
         );
     }
 
-    private renderMessage = (i: (DataSourceWebMessageItem | DataSourceDateItem) & ScrollTo) => {
-        const data = i as any;
+    private renderMessage = (data: { item: (DataSourceWebMessageItem) }) => {
         // TODO recover open comment modal
         return (
             <MessageContent
-                message={data}
+                message={data.item}
             />
         );
     }
