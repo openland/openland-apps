@@ -20,7 +20,7 @@ const messageContainerClass = css`
 
 const messageAvatarWrapper = css`
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     flex-direction: row;
     justify-content: center;
     flex-shrink: 0;
@@ -29,6 +29,7 @@ const messageAvatarWrapper = css`
 const messageContentAreaClass = css`
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
     padding-left: 16px;
 `;
 
