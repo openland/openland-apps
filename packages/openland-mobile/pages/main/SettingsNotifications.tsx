@@ -27,14 +27,14 @@ const sendMutate = debounce(async (state: Settings_settings) => {
     await backoff(async () => {
         await getClient().mutateSettingsUpdate({ input });
     });
-}, 5000);
+}, 3000);
 
 const SettingsNotificationsContent = XMemo<PageProps>(props => {
     const settingsData = getClient().useSettings({ fetchPolicy: 'network-only' }).settings;
     const [ settings, setSettings ] = React.useState<Settings_settings>(settingsData);
 
     const handleSave: <T>(field: string, value: T) => void = (field, value) => {
-        setSettings({ ...settings, [field]: value });
+        setSettings((prevState) => ({ ...prevState, [field]: value }));
     };
     
     React.useEffect(() => {
