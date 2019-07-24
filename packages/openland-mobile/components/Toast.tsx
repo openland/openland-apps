@@ -99,7 +99,7 @@ function build(config: ToastBuildConfig) {
 }
 
 function loader() {
-    return { show: () => startLoader(), hide: () => stopLoader() };
+    return build({ IconComponent: () => <LoaderSpinner size="large" /> });
 }
 
 function success(config: ToastBuildConfig = {}) {

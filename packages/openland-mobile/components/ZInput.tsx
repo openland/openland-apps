@@ -2,15 +2,16 @@ import * as React from 'react';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { ZInputBasicProps, ZInputBasic } from './basics/ZInputBasic';
+import { FormField } from 'openland-form/useField';
 
 export interface ZInputProps extends ZInputBasicProps {
-    field?: string;
+    field?: string | FormField<string>;
     valueStoreKey?: string;
     invalidStoreKey?: string;
     enabledStoreKey?: string;
 }
 
-class ZInputComponent extends React.PureComponent<ZInputProps & { store?: XStoreState }> {
+class ZInputComponentDeprecated extends React.PureComponent<ZInputProps & { store?: XStoreState }> {
     onChangeHandler = (value: string) => {
         if (this.props.onChangeText) {
             this.props.onChangeText(value);
@@ -22,7 +23,7 @@ class ZInputComponent extends React.PureComponent<ZInputProps & { store?: XStore
 
     render() {
         let { field, valueStoreKey, invalidStoreKey, enabledStoreKey, onChangeText, ...other } = this.props;
-
+        
         let value = this.props.value;
         if (this.props.field) {
             let existing = this.props.store!!.readValue(valueStoreKey || ('fields.' + field));
@@ -58,31 +59,45 @@ class ZInputComponent extends React.PureComponent<ZInputProps & { store?: XStore
     }
 }
 
-export class ZInput extends React.PureComponent<ZInputProps> {
-    render() {
-        let { field, valueStoreKey, invalidStoreKey, enabledStoreKey, ...other } = this.props;
+export const ZInput = (props: ZInputProps) => {
+    const { field, valueStoreKey, invalidStoreKey, enabledStoreKey, ...other } = props;
 
-        if (this.props.field || this.props.invalidStoreKey || this.props.enabledStoreKey) {
-            return (
-                <XStoreContext.Consumer>
-                    {store => {
-                        if (!store) {
-                            throw Error('No store!');
-                        }
-                        return (
-                            <ZInputComponent
-                                {...other}
-                                store={store}
-                                field={field}
-                                valueStoreKey={valueStoreKey}
-                                invalidStoreKey={invalidStoreKey}
-                                enabledStoreKey={enabledStoreKey}
-                            />);
-                    }}
-                </XStoreContext.Consumer>
-            );
-        } else {
-            return <ZInputBasic {...other} />;
-        }
+    if (typeof field === 'object' && field.input) {
+        return (
+            <ZInputBasic 
+                {...other} 
+                description={field.input.invalid ? field.input.errorText : undefined}
+                value={field.input.value}
+                invalid={field.input.invalid}
+                onChangeText={(text) => {
+                    field.input.onChange(text);
+
+                    if (props.onChangeText) {
+                        props.onChangeText(text);
+                    }
+                }}
+            />
+        );
+    } else if (field || invalidStoreKey || enabledStoreKey) {
+        return (
+            <XStoreContext.Consumer>
+                {store => {
+                    if (!store) {
+                        throw Error('No store!');
+                    }
+                    return (
+                        <ZInputComponentDeprecated
+                            {...other}
+                            store={store}
+                            field={field}
+                            valueStoreKey={valueStoreKey}
+                            invalidStoreKey={invalidStoreKey}
+                            enabledStoreKey={enabledStoreKey}
+                        />);
+                }}
+            </XStoreContext.Consumer>
+        );
+    }  else {
+        return <ZInputBasic {...other} />;
     }
-}
+};
