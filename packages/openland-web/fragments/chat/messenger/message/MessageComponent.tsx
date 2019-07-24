@@ -19,7 +19,7 @@ const messageContainerClass = css`
     padding-right: 50px;
     padding-top: 4px;
     padding-bottom: 4px;
-    margin: 4px 16px;
+    margin: 0 16px;
     border-radius: 8px;
 `;
 
