@@ -47,7 +47,7 @@ class RNImageNode: ASDisplayNode {
         let targetRequest = ImageRequest(url: targetUrl, targetSize: targetSize, contentMode: targetContentMode)
         self.task = ImagePipeline.shared.loadImage(with: targetRequest, progress: nil) { (response, error) in
           if response != nil {
-            var img = UIImage(cgImage: response!.image.cgImage!)
+            var img = UIImage(cgImage: response!.image.cgImage!, scale: response!.image.scale, orientation: response!.image.imageOrientation)
               // .withRenderingMode(UIImageRenderingMode.automatic)
             if spec.tintColor != nil {
               img = img.fillAlpha(fillColor: spec.tintColor!)
