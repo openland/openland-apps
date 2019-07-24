@@ -5,6 +5,7 @@ import { MessageContent } from './MessageContent';
 import { MAvatar } from './MAvatar';
 import { css, cx } from 'linaria';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { MessageCommentsButton } from './comments/MessageCommentsButton';
 
 const messageContainerClass = css`
     display: flex;
@@ -42,17 +43,27 @@ const noAvatarPlaceholder = css`
     padding-left: 56px;
 `;
 
+const buttonsClass = css`
+    display: flex;
+    flex-direction: row;
+`;
+
 interface MessageComponentProps {
     message: DataSourceWebMessageItem;
     engine: ConversationEngine;
 }
 
 export const MessageComponent = (props: MessageComponentProps) => {
-    const { message } = props;
+    const { message, engine } = props;
     const content = (
         <>
             <MessageContent message={message} />
-            <MessageReactions messageId={message.id} reactions={message.reactions} />
+            <div className={buttonsClass}>
+                <MessageReactions messageId={message.id} reactions={message.reactions} />
+                {(engine.isChannel || message.commentsCount > 0) && message.id && (
+                    <MessageCommentsButton messageId={message.id} count={message.commentsCount} />
+                )}
+            </div>
         </>
     );
 

@@ -15,6 +15,7 @@ const reactionsWrapper = css`
     height: 28px;
     border-radius: 14px;
     padding: 5px 12px;
+    margin-right: 8px;
 `;
 
 const reactionsText = css`

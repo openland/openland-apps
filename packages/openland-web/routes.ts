@@ -174,6 +174,13 @@ routes.add('/group/:id', '/unicorn/index');
 routes.add('/group/:id/', '/unicorn/index');
 
 //
+// Message
+//
+
+routes.add('/message/:id', '/unicorn/index');
+routes.add('/message/:id/', '/unicorn/index');
+
+//
 // Shortnames
 //
 

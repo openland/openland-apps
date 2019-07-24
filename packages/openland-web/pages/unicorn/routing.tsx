@@ -13,6 +13,7 @@ import { DownloadAppsFragment } from 'openland-web/fragments/account/SettingsDow
 import { InviteFriendsFragment } from 'openland-web/fragments/account/SettingsInviteFriendsFragment';
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 import { GroupProfileFragment } from 'openland-web/fragments/group/GroupProfileFragment';
+import { MessageFragment } from 'openland-web/fragments/message/MessageFragment';
 
 const routing = new URouting();
 
@@ -23,6 +24,9 @@ routing.addRoute('/mail/:conversationId', () =>
         return (<MessengerFragment id={ctx.id!} />);
     })
 );
+
+// Message
+routing.addRoute('/message/:id', () => MessageFragment);
 
 // Notifications
 routing.addRoute('/notifications', () => NotificationsFragment);
