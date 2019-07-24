@@ -53,11 +53,11 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
                 client.mutateMessageUnsetReaction({ messageId, reaction });
             } else {
                 trackEvent('reaction_sent', { reaction_type: reaction.toLowerCase(), double_tap: 'not' });
-    
+
                 client.mutateMessageSetReaction({ messageId, reaction });
             }
         }
-    }, []);
+    }, [messageId, reactions]);
 
     if (!reactions || reactions.length <= 0) {
         return null;

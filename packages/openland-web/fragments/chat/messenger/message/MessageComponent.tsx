@@ -62,8 +62,8 @@ interface MessageComponentProps {
 
 export const MessageComponent = (props: MessageComponentProps) => {
     const { message, engine } = props;
-    const [selected, toggleSelect] = useMessageSelected(props.engine.messagesActionsState, props.message);
-    const onSelect = React.useCallback(toggleSelect, [props.message.id]);
+    const [selected, toggleSelect] = useMessageSelected(engine.messagesActionsState, message);
+    const onSelect = React.useCallback(toggleSelect, [message.id]);
     const content = (
         <>
             <MessageContent message={message} />
