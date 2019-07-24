@@ -1,19 +1,18 @@
 import * as React from 'react';
-import { css } from 'linaria';
+// import { css } from 'linaria';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 
-const richAttachWrapper = css`
-    display: flex;
-    flex-grow: 1;
-    flex-shrink: 1;
-    
-`;
+// const richAttachWrapper = css`
+//     display: flex;
+//     flex-grow: 1;
+//     flex-shrink: 1;
+// `;
 
 export const RichAttachContent = (props: {
     attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment;
 }) => {
-    console.log(props);
+    // console.log(props);
     let img = undefined;
     if (props.attach.image && props.attach.image.metadata) {
         let layout = layoutMedia(

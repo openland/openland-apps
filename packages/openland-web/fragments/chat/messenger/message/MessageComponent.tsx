@@ -18,10 +18,18 @@ const messageContainerClass = css`
     padding-bottom: 4px;
 `;
 
+const messageAvatarWrapper = css`
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    flex-shrink: 0;
+`;
+
 const messageContentAreaClass = css`
     display: flex;
     flex-direction: column;
-    padding-left: 16px
+    padding-left: 16px;
 `;
 
 const noAvatarPlaceholder = css`
@@ -39,11 +47,20 @@ export const MessageComponent = (props: { message: DataSourceWebMessageItem }) =
     );
     return (
         <div className={messageContainerClass}>
-            {!message.attachTop && <MAvatar senderPhoto={message.senderPhoto} senderNameEmojify={message.senderNameEmojify} senderName={message.senderName} senderId={message.senderId} />}
+            {!message.attachTop && (
+                <div className={messageAvatarWrapper}>
+                    <MAvatar
+                        senderPhoto={message.senderPhoto}
+                        senderNameEmojify={message.senderNameEmojify}
+                        senderName={message.senderName}
+                        senderId={message.senderId}
+                    />
+                </div>
+            )}
             <div className={cx(messageContentAreaClass, message.attachTop && noAvatarPlaceholder)}>
                 {props.message.senderNameEmojify}
                 {content}
             </div>
-        </div >
+        </div>
     );
 };

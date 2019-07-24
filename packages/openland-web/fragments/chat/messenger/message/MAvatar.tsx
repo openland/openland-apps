@@ -26,7 +26,7 @@ const avatarPlaceholderClass = css`
 `;
 
 const AvatarPlaceholder = React.memo((props: { title: string, titleEmoji: any, id: string }) => {
-    const { title, titleEmoji, id } = props;
+    const { title, id } = props;
     const ph = extractPlaceholder(title);
     const phIndex = Math.abs(doSimpleHash(id)) % PlaceholderColor.length;
 
