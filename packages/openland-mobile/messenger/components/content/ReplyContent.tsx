@@ -64,10 +64,10 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         {repliedMessage.sender.name || ''}
                                     </ASText>
 
-                                    {message.textSpans.length > 0 && (
+                                    {repliedMessage.textSpans.length > 0 && (
                                         <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10}>
                                             <RenderSpans
-                                                spans={message.textSpans}
+                                                spans={repliedMessage.textSpans}
                                                 message={message}
                                                 padded={compensateBubble ? (!message.text && (i + 1 === message.reply!.length)) : false}
                                                 theme={this.props.theme}
