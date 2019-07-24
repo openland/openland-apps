@@ -77,6 +77,11 @@ export const SettingsProfileFragment = React.memo(() => {
 
     const organizationsWithoutCommunity = organizations.myOrganizations.filter(i => !i.isCommunity);
 
+    // Temp && ugly fix for users with community as primary organizations
+    if (profile.primaryOrganization && (organizationsWithoutCommunity.filter(i => i.id === profile.primaryOrganization!.id).length <= 0)) {
+        organizationsWithoutCommunity.unshift(profile.primaryOrganization as any);
+    }
+
     const avatarUploadComponent = (
         <XView>
             <XAvatarFormFieldComponent

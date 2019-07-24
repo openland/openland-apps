@@ -67,9 +67,13 @@ export function SelectWithDropdown<T>({
     selectOptions: SelectWithDropdownOption<T>[];
     size?: 'large';
 }) {
-    const [innerValue, setInnerValue] = React.useState<SelectWithDropdownOption<T>>(
-        selectOptions.find((item: SelectWithDropdownOption<T>) => item.value === value)!!,
+    let defaultVal = selectOptions.find(
+        (item: SelectWithDropdownOption<T>) => item.value === value,
     );
+    if (!defaultVal) {
+        throw new Error(`Can't find value "${value}". Did you forget add it to selectOptions?`);
+    }
+    const [innerValue, setInnerValue] = React.useState<SelectWithDropdownOption<T>>(defaultVal);
 
     React.useEffect(
         () => {
