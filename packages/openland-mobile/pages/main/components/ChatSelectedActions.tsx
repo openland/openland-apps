@@ -32,7 +32,7 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
     const cancel = React.useCallback(() => {
         props.conversation.messagesActionsState.clear();
     }, []);
-    let height = Platform.OS === 'ios' ? 50 : 64;
+    let height = 52;
 
     let canDelete = true;
 
