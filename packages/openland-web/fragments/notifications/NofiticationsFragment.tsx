@@ -4,7 +4,6 @@ import { css } from 'linaria';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import {
     DataSourceRender,
-    ScrollTo,
 } from 'openland-web/fragments/chat/messenger/view/DataSourceRender';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView3, XScrollValues } from 'openland-x/XScrollView3';

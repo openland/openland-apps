@@ -106,7 +106,7 @@ const WrapWith = React.memo(
 export const DataSourceRender = React.memo(function <T extends DataSourceItem>(
     props: XListViewProps<T>,
 ) {
-    let [items, completed, scrollTo] = useDataSource(props.dataSource);
+    let [items, completed] = useDataSource(props.dataSource);
 
     let renderedItems: any = [];
     if (props.reverce) {

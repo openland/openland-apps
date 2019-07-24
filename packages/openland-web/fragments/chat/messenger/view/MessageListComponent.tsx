@@ -8,7 +8,7 @@ import {
 import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
 import { EmptyBlock } from 'openland-web/fragments/chat/components/ChatEmptyComponent';
 import { css, cx } from 'linaria';
-import { DataSourceRender, ScrollTo } from './DataSourceRender';
+import { DataSourceRender } from './DataSourceRender';
 import glamorous from 'glamorous';
 import { DataSource } from 'openland-y-utils/DataSource';
 import {
