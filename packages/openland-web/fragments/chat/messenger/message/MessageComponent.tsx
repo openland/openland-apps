@@ -18,6 +18,10 @@ const messageContainerClass = css`
     padding-bottom: 4px;
 `;
 
+const messageContainerAttachClass = css`
+    margin-top: 8px;
+`;
+
 const messageAvatarWrapper = css`
     display: flex;
     align-items: flex-start;
@@ -47,7 +51,7 @@ export const MessageComponent = (props: { message: DataSourceWebMessageItem }) =
         </>
     );
     return (
-        <div className={messageContainerClass}>
+        <div className={cx(messageContainerClass, !message.attachTop && messageContainerAttachClass)}>
             {!message.attachTop && (
                 <div className={messageAvatarWrapper}>
                     <MAvatar
