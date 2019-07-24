@@ -16,18 +16,23 @@ const buttonWrapper = css`
     cursor: pointer;
 `;
 
+const buttonSelectedWrapper = css`
+    background-color: #FFFFFF; // ThemeDefault.backgroundTertiary
+`;
+
 interface MessageCommentsButtonProps {
     messageId: string;
     count: number;
+    selected: boolean;
 }
 
 export const MessageCommentsButton = React.memo<MessageCommentsButtonProps>(props => {
-    const { messageId, count } = props;
+    const { messageId, count, selected } = props;
     const router = React.useContext(XViewRouterContext);
 
     return (
         <div
-            className={cx(TypeCaption, buttonWrapper)}
+            className={cx(TypeCaption, buttonWrapper, selected && buttonSelectedWrapper)}
             onClick={() => {
                 if (router) {
                     router.navigate('/message/' + messageId);

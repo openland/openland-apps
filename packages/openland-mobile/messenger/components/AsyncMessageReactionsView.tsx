@@ -66,14 +66,14 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
 
     let commentsCount = props.message.commentsCount;
 
-    if (!props.isChannel && ((!props.message.reactions || props.message.reactions!.length === 0) && commentsCount === 0)) {
+    if (!props.isChannel && props.message.reactions.length === 0 && commentsCount === 0) {
         return null;
     }
 
     let reactions: any = { reactionsSorted: [], usersString: '' };
 
-    if (props.message.reactions && props.message.reactions.length > 0) {
-        reactions = extractReactionsSorted(props.message.reactions!);
+    if (props.message.reactions.length > 0) {
+        reactions = extractReactionsSorted(props.message.reactions);
     }
 
     sw.next();

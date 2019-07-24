@@ -43,7 +43,7 @@ export interface DataSourceMessageItem {
     title?: string;
     isEdited?: boolean;
     reply?: DataSourceMessageItem[];
-    reactions?: FullMessage_GeneralMessage_reactions[];
+    reactions: FullMessage_GeneralMessage_reactions[];
     attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string })[];
     spans?: FullMessage_GeneralMessage_spans[];
     isSending: boolean;
@@ -101,7 +101,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
         isSending: false,
         attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) && (src.date - next.date < timeGroup) && ((next.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
         attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) && (prev.date - src.date < timeGroup) && ((prev.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
-        reactions: generalMessage && generalMessage.reactions,
+        reactions: generalMessage ? generalMessage.reactions : [],
         serviceMetaData: serviceMessage && serviceMessage.serviceMetadata || undefined,
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,
@@ -787,7 +787,8 @@ export class ConversationEngine implements MessageSendHandler {
                 }] : undefined,
                 reply,
                 attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData && !prev.isService : false,
-                textSpans: src.message ? processSpans(src.message, src.spans) : []
+                textSpans: src.message ? processSpans(src.message, src.spans) : [],
+                reactions: []
             };
         }
         if (this.dataSource.hasItem(conv.key)) {

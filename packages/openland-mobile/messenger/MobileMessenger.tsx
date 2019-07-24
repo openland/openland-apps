@@ -144,7 +144,7 @@ export class MobileMessenger {
 
     handleReactionSetUnset = (message: DataSourceMessageItem, r: MessageReactionType, doubleTap?: boolean) => {
         try {
-            let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;
+            let remove = message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;
             if (remove) {
                 this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: r });
             } else {
@@ -241,7 +241,7 @@ export class MobileMessenger {
     }
 
     private handleReactionsClick = (message: DataSourceMessageItem) => {
-        if (message.reactions && message.reactions.length > 0) {
+        if (message.reactions.length > 0) {
             showReactionsList(message.reactions);
         }
     }

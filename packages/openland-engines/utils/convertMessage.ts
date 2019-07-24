@@ -32,7 +32,7 @@ export function convertMessage(
         isSending: false,
         attachTop: false,
         attachBottom: false,
-        reactions: generalMessage && generalMessage.reactions,
+        reactions: generalMessage ? generalMessage.reactions : [],
         serviceMetaData: (serviceMessage && serviceMessage.serviceMetadata) || undefined,
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,

@@ -68,9 +68,9 @@ export const MessageComponent = (props: MessageComponentProps) => {
         <>
             <MessageContent message={message} />
             <div className={buttonsClass}>
-                <MessageReactions messageId={message.id} reactions={message.reactions} />
+                <MessageReactions messageId={message.id} reactions={message.reactions} selected={selected} />
                 {(engine.isChannel || message.commentsCount > 0) && message.id && (
-                    <MessageCommentsButton messageId={message.id} count={message.commentsCount} />
+                    <MessageCommentsButton messageId={message.id} count={message.commentsCount} selected={selected} />
                 )}
             </div>
         </>

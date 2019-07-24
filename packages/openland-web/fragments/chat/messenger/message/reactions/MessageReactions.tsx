@@ -18,6 +18,10 @@ const reactionsWrapper = css`
     margin-right: 8px;
 `;
 
+const reactionsSelectedWrapper = css`
+    background-color: #FFFFFF; // ThemeDefault.backgroundPrimary
+`;
+
 const reactionsText = css`
     color: #676D7A; // ThemeDefault.foregroundSecondary
 `;
@@ -39,11 +43,12 @@ const reactionsItem = css`
 
 interface MessageReactionsProps {
     messageId?: string;
-    reactions?: FullMessage_GeneralMessage_reactions[];
+    reactions: FullMessage_GeneralMessage_reactions[];
+    selected: boolean;
 }
 
 export const MessageReactions = React.memo<MessageReactionsProps>(props => {
-    const { messageId, reactions } = props;
+    const { messageId, reactions, selected } = props;
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
     const handleReactionClick = React.useCallback((reaction: MessageReactionType) => {
@@ -59,14 +64,14 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
         }
     }, [messageId, reactions]);
 
-    if (!reactions || reactions.length <= 0) {
+    if (reactions.length <= 0) {
         return null;
     }
 
     const { reactionsSorted, usersString } = extractReactionsSorted(reactions, messenger.user.id);
 
     return (
-        <div className={reactionsWrapper}>
+        <div className={cx(reactionsWrapper, selected && reactionsSelectedWrapper)}>
             <div className={reactionsItems}>
                 {reactionsSorted.map((item, index) => (
                     <div
