@@ -130,6 +130,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                 return (
                     <MessageComponent
                         message={item}
+                        engine={this.props.conversation}
                     />
                 );
             } else if (item.type === 'date') {

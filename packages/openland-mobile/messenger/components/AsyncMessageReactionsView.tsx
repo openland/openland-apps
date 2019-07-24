@@ -64,7 +64,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
     let sw = new Stopwatch('reactions');
     sw.next('reaction');
 
-    let commentsCount = props.message.commentsCount || 0;
+    let commentsCount = props.message.commentsCount;
 
     if (!props.isChannel && ((!props.message.reactions || props.message.reactions!.length === 0) && commentsCount === 0)) {
         return null;
