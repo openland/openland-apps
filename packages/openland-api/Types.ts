@@ -52960,6 +52960,29 @@ export interface Message_message_GeneralMessage_reactions {
   reaction: MessageReactionType;
 }
 
+export interface Message_message_GeneralMessage_source_MessageSourceComment {
+  __typename: "MessageSourceComment";
+}
+
+export interface Message_message_GeneralMessage_source_MessageSourceChat_chat_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+}
+
+export interface Message_message_GeneralMessage_source_MessageSourceChat_chat_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+}
+
+export type Message_message_GeneralMessage_source_MessageSourceChat_chat = Message_message_GeneralMessage_source_MessageSourceChat_chat_PrivateRoom | Message_message_GeneralMessage_source_MessageSourceChat_chat_SharedRoom;
+
+export interface Message_message_GeneralMessage_source_MessageSourceChat {
+  __typename: "MessageSourceChat";
+  chat: Message_message_GeneralMessage_source_MessageSourceChat_chat;
+}
+
+export type Message_message_GeneralMessage_source = Message_message_GeneralMessage_source_MessageSourceComment | Message_message_GeneralMessage_source_MessageSourceChat;
+
 export interface Message_message_GeneralMessage {
   __typename: "GeneralMessage";
   /**
@@ -52980,6 +53003,7 @@ export interface Message_message_GeneralMessage {
   attachments: Message_message_GeneralMessage_attachments[];
   quotedMessages: Message_message_GeneralMessage_quotedMessages[];
   reactions: Message_message_GeneralMessage_reactions[];
+  source: Message_message_GeneralMessage_source | null;
 }
 
 export interface Message_message_ServiceMessage_sender_primaryOrganization {
@@ -53225,6 +53249,29 @@ export interface Message_message_ServiceMessage_serviceMetadata_PostRespondServi
 
 export type Message_message_ServiceMessage_serviceMetadata = Message_message_ServiceMessage_serviceMetadata_InviteServiceMetadata | Message_message_ServiceMessage_serviceMetadata_KickServiceMetadata | Message_message_ServiceMessage_serviceMetadata_TitleChangeServiceMetadata | Message_message_ServiceMessage_serviceMetadata_PhotoChangeServiceMetadata | Message_message_ServiceMessage_serviceMetadata_PostRespondServiceMetadata;
 
+export interface Message_message_ServiceMessage_source_MessageSourceComment {
+  __typename: "MessageSourceComment";
+}
+
+export interface Message_message_ServiceMessage_source_MessageSourceChat_chat_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+}
+
+export interface Message_message_ServiceMessage_source_MessageSourceChat_chat_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+}
+
+export type Message_message_ServiceMessage_source_MessageSourceChat_chat = Message_message_ServiceMessage_source_MessageSourceChat_chat_PrivateRoom | Message_message_ServiceMessage_source_MessageSourceChat_chat_SharedRoom;
+
+export interface Message_message_ServiceMessage_source_MessageSourceChat {
+  __typename: "MessageSourceChat";
+  chat: Message_message_ServiceMessage_source_MessageSourceChat_chat;
+}
+
+export type Message_message_ServiceMessage_source = Message_message_ServiceMessage_source_MessageSourceComment | Message_message_ServiceMessage_source_MessageSourceChat;
+
 export interface Message_message_ServiceMessage {
   __typename: "ServiceMessage";
   /**
@@ -53241,6 +53288,7 @@ export interface Message_message_ServiceMessage {
   fallback: string;
   spans: Message_message_ServiceMessage_spans[];
   serviceMetadata: Message_message_ServiceMessage_serviceMetadata | null;
+  source: Message_message_ServiceMessage_source | null;
 }
 
 export type Message_message = Message_message_GeneralMessage | Message_message_ServiceMessage;

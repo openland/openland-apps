@@ -114,7 +114,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
     };
 }
 
-export function convertMessageBack(src: DataSourceMessageItem): Types.Message_message {
+export function convertMessageBack(src: DataSourceMessageItem): Types.FullMessage {
     let res = {
         __typename: src.isService ? 'ServiceMessage' : 'GeneralMessage' as any,
         id: src.id!,

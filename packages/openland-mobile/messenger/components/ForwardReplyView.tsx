@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Message_message } from 'openland-api/Types';
+import { FullMessage } from 'openland-api/Types';
 import { formatMessage } from 'openland-engines/messenger/DialogListEngine';
 import { InputTopView } from './InputTopView';
 
 interface ForwardReplyViewProps {
-    messages: Message_message[];
+    messages: FullMessage[];
 
     action?: 'forward' | 'reply';
     onClearPress: () => void;
