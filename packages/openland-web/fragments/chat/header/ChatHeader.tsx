@@ -7,6 +7,8 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useClient } from 'openland-web/utils/useClient';
 import { XDate } from 'openland-x/XDate';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const secondary = css`
     color: #969AA3;
@@ -60,6 +62,20 @@ const ChatOnlinesTitle = (props: { id: string }) => {
     );
 };
 
+const CallButton = (props: { chat: ChatInfo }) => {
+    let calls = React.useContext(MessengerContext).calls;
+    let callsState = calls.useState();
+
+    return callsState.conversationId !== props.chat.id ? (
+        <UButton
+            text="Call"
+            style="secondary"
+            marginRight={8}
+            onClick={() => calls.joinCall(props.chat.id, props.chat.__typename === 'PrivateRoom')}
+        />
+    ) : null;
+};
+
 export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     let title = props.chat.__typename === 'PrivateRoom' ? props.chat.user.name : props.chat.title;
     let photo = props.chat.__typename === 'PrivateRoom' ? props.chat.user.photo : props.chat.photo;
@@ -108,6 +124,13 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         </span>
                     )}
                 </XView>
+            </XView>
+            <XView alignSelf="center" flexDirection="row">
+                <CallButton chat={props.chat} />
+                {props.chat.__typename === 'PrivateRoom'
+                    ? (<UButton text="Profile" style="secondary" path={`/${props.chat.user.id}`} />)
+                    : (<UButton text="Info" style="secondary" path={`/group/${props.chat.id}`} />)
+                }
             </XView>
         </XView>
     );
