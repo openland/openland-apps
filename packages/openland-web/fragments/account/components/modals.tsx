@@ -81,7 +81,7 @@ export const showAboutPlaceholderModal = (organizationId: string) => {
     );
 };
 
-export const LeaveOrganizationModal = ({
+const LeaveOrganizationModal = ({
     organizationId,
     hide,
 }: {
@@ -151,7 +151,7 @@ export const showLeaveOrganizationModal = (organizationId: string) =>
         },
     );
 
-export const RemoveOrganizationModal = ({
+const RemoveOrganizationModal = ({
     organizationId,
     hide,
 }: {
@@ -226,7 +226,7 @@ export const showDeleteOrganizationModal = ({
         },
     );
 
-export const SocialPlaceholder = ({
+const SocialPlaceholder = ({
     organizationId,
     hide,
 }: {
@@ -309,7 +309,7 @@ export const showSocialPlaceholderModal = (organizationId: string) => {
     );
 };
 
-export const WebsitePlaceholder = ({
+const WebsitePlaceholder = ({
     organizationId,
     hide,
 }: {
@@ -376,7 +376,7 @@ export const showWebsitePlaceholderModal = (organizationId: string) => {
     );
 };
 
-export const MakeFeaturedModal = (props: {
+const MakeFeaturedModal = (props: {
     ctx: XModalController;
     roomId: string;
     userId: string;

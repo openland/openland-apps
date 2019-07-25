@@ -22,9 +22,8 @@ import {
     showRoomEditModal,
     leaveChatModal,
     showAddDescriptionModal,
-} from 'openland-web/fragments/account/components/RoomProfileComponent';
+} from 'openland-web/fragments/account/components/groupProfileModals';
 import { showRemoveMemberModal } from 'openland-web/fragments/chat/RemoveMemberModal';
-import { showAvatarModal } from 'openland-web/fragments/account/components/UserProfileComponent';
 import {
     showSuperDeleteOrganizationModal,
     showAddMemberFormModal,
@@ -45,7 +44,6 @@ import {
 import {
     showRemoveOrgMemberModal,
     showRoleOrgMemberModal,
-    showUpdateUserProfileModal,
 } from 'openland-web/fragments/account/components/OrganizationProfileComponent';
 import {
     showWelcomePopup,
@@ -126,11 +124,6 @@ export default withApp('Isolated - modals', 'viewer', props => {
                                     memberName: egoarkaUser.fullName,
                                 })
                             }
-                        />
-                        <XButton
-                            text="avatar modal"
-                            style="primary"
-                            onClick={() => showAvatarModal(fredUser.photo)}
                         />
                         <XButton
                             text="super delete organization"
@@ -245,11 +238,6 @@ export default withApp('Isolated - modals', 'viewer', props => {
                                     },
                                 })
                             }
-                        />
-                        <XButton
-                            text="update user profile"
-                            style="primary"
-                            onClick={() => showUpdateUserProfileModal(egoarkaUser.id)}
                         />
                         <XButton
                             text="welcome popup"

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { RoomFullWithoutMembers_SharedRoom } from 'openland-api/Types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { showRoomEditModal, leaveChatModal } from 'openland-web/fragments/account/components/RoomProfileComponent';
+import { showRoomEditModal, leaveChatModal } from 'openland-web/fragments/account/components/groupProfileModals';
 import { showAdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
 
 import EditIcon from 'openland-icons/s/ic-edit-24.svg';

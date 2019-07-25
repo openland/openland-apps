@@ -3,7 +3,7 @@ import { XView } from 'react-mental';
 import { UAvatar } from './UAvatar';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { ThemeDefault } from 'openland-y-utils/themes';
-import { showAvatarModal } from 'openland-web/fragments/account/components/UserProfileComponent';
+import { showAvatarModal } from '../showAvatarModal';
 
 const Score = (props: { value: number }) => (
     <XView position="absolute" left={0} bottom={-6} right={0} alignItems="center">
