@@ -92,7 +92,7 @@ const MentionUserComponent = (props: MentionUserComponentProps) => (
         height={40}
         paddingHorizontal={16}
     >
-        <XAvatar2 id={props.id} title={props.name} src={props.photo} size={28}/>
+        <XAvatar2 id={props.id} title={props.name} src={props.photo} size={28} />
         <XView
             marginLeft={12}
             flexDirection="row"
@@ -256,17 +256,20 @@ const AutoCompleteComponent = React.memo(React.forwardRef((props: {
     );
 }));
 
-export const SendMessageComponent = React.memo((props: { groupId?: string, onTextSent?: (text: URickTextValue) => void }) => {
+interface SendMessageComponentProps {
+    groupId?: string;
+    onTextSent?: (text: URickTextValue) => void;
+    placeholder?: string;
+}
+
+export const SendMessageComponent = React.memo((props: SendMessageComponentProps) => {
     const ref = React.useRef<URickInputInstance>(null);
     const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
     const onPressEnter = React.useCallback(
         () => {
-            console.log('enter');
             let s = suggestRef.current;
             if (s) {
-                console.log('sug');
                 if (s.onPressEnter()) {
-                    console.log('sug:true');
                     return true;
                 }
             }
@@ -347,7 +350,7 @@ export const SendMessageComponent = React.memo((props: { groupId?: string, onTex
                     onPressDown={onPressDown}
                     onPressTab={onPressTab}
                     autofocus={true}
-                    placeholder="Write a message..."
+                    placeholder={props.placeholder || 'Write a message...'}
                 />
             </XView>
             <XView

@@ -15,6 +15,7 @@ export const CommentInput = React.memo((props: CommentInputProps) => {
             <SendMessageComponent
                 groupId={groupId}
                 onTextSent={onSent}
+                placeholder="Write a comment..."
             />
         </div>
     );
