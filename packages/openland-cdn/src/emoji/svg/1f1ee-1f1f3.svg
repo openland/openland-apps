@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<path fill="#F59E01" d="M32,2C18.94,2,7.83,10.35,3.71,22h56.57C56.17,10.35,45.06,2,32,2z"/>
+<path fill="#529320" d="M32,62c13.06,0,24.17-8.35,28.29-20H3.71C7.83,53.65,18.94,62,32,62z"/>
+<path fill="#F5F5F5" d="M3.71,22C2.61,25.13,2,28.49,2,32s0.61,6.87,1.71,10h56.57C61.39,38.87,62,35.51,62,32s-0.61-6.87-1.71-10
+	H3.71z"/>
+<circle fill="#014D87" cx="32" cy="32" r="8"/>
+<circle fill="#F5F5F5" cx="32" cy="32" r="7"/>
+<ellipse transform="matrix(0.9238 -0.3828 0.3828 0.9238 -7.5404 13.1682)" fill="#014D87" cx="29.32" cy="25.53" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.7929 -0.6093 0.6093 0.7929 -10.3709 22.3786)" fill="#014D87" cx="27.74" cy="26.45" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.6093 -0.7929 0.7929 0.6093 -11.6628 31.8072)" fill="#014D87" cx="26.45" cy="27.74" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.3829 -0.9238 0.9238 0.3829 -11.3309 41.682)" fill="#014D87" cx="25.53" cy="29.32" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.1309 -0.9914 0.9914 0.1309 -9.0406 51.8614)" fill="#014D87" cx="25.06" cy="31.09" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.9914 -0.1309 0.1309 0.9914 -4.0936 3.5644)" fill="#014D87" cx="25.06" cy="32.91" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.9238 -0.3829 0.3829 0.9238 -11.3326 12.4196)" fill="#014D87" cx="25.53" cy="34.68" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.7929 -0.6094 0.6094 0.7929 -16.6194 23.6271)" fill="#014D87" cx="26.45" cy="36.26" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.6087 -0.7934 0.7934 0.6087 -18.9406 36.7037)" fill="#014D87" cx="27.74" cy="37.55" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.382 -0.9242 0.9242 0.382 -17.4283 50.8741)" fill="#014D87" cx="29.32" cy="38.47" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.1308 -0.9914 0.9914 0.1308 -11.5845 64.6673)" fill="#014D87" cx="31.09" cy="38.94" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.9914 -0.1311 0.1311 0.9914 -4.8194 4.6495)" fill="#014D87" cx="32.91" cy="38.94" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.9238 -0.3828 0.3828 0.9238 -12.0838 16.2061)" fill="#014D87" cx="34.68" cy="38.47" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.793 -0.6093 0.6093 0.793 -15.3723 29.869)" fill="#014D87" cx="36.26" cy="37.55" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.6093 -0.793 0.793 0.6093 -14.0795 43.9475)" fill="#014D87" cx="37.55" cy="36.26" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.3828 -0.9238 0.9238 0.3828 -8.2941 56.9407)" fill="#014D87" cx="38.47" cy="34.68" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.129 -0.9916 0.9916 0.129 1.2808 67.2844)" fill="#014D87" cx="38.94" cy="32.91" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.9914 -0.131 0.131 0.9914 -3.7355 5.3673)" fill="#014D87" cx="38.94" cy="31.09" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.9237 -0.3832 0.3832 0.9237 -8.2995 16.9796)" fill="#014D87" cx="38.47" cy="29.32" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.7929 -0.6093 0.6093 0.7929 -9.125 28.6266)" fill="#014D87" cx="37.55" cy="27.74" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.6077 -0.7941 0.7941 0.6077 -6.7781 39.1702)" fill="#014D87" cx="36.26" cy="26.45" rx="0.5" ry="0.5"/>
+<path fill="#014D87" d="M35.14,25.72c-0.1,0.26-0.39,0.38-0.65,0.27c-0.26-0.11-0.38-0.4-0.27-0.65c0.1-0.25,0.4-0.38,0.65-0.27
+	C35.13,25.18,35.25,25.47,35.14,25.72z"/>
+<ellipse transform="matrix(0.1319 -0.9913 0.9913 0.1319 3.7303 54.3798)" fill="#014D87" cx="32.91" cy="25.06" rx="0.5" ry="0.5"/>
+<ellipse transform="matrix(0.9916 -0.1291 0.1291 0.9916 -2.9749 4.2224)" fill="#014D87" cx="31.09" cy="25.06" rx="0.5" ry="0.5"/>
+<circle fill="#014D87" cx="32" cy="32" r="1.5"/>
+<polygon fill="#014D87" points="32,25 31.75,29.32 32,32 32.25,29.31 "/>
+<polygon fill="#014D87" points="30.19,25.24 31.07,29.48 32,32 31.55,29.34 "/>
+<polygon fill="#014D87" points="28.5,25.94 30.45,29.81 32,32 30.87,29.55 "/>
+<polygon fill="#014D87" points="27.05,27.05 29.93,30.28 32,32 30.28,29.92 "/>
+<polygon fill="#014D87" points="25.94,28.5 29.56,30.88 32,32 29.8,30.44 "/>
+<polygon fill="#014D87" points="25.24,30.19 29.35,31.55 32,32 29.47,31.06 "/>
+<polygon fill="#014D87" points="25,32 29.32,32.25 32,32 29.31,31.75 "/>
+<polygon fill="#014D87" points="25.24,33.81 29.48,32.94 32,32 29.34,32.46 "/>
+<polygon fill="#014D87" points="25.94,35.5 29.81,33.56 32,32 29.55,33.13 "/>
+<polygon fill="#014D87" points="27.05,36.95 30.29,34.07 32,32 29.92,33.72 "/>
+<polygon fill="#014D87" points="28.5,38.06 30.88,34.44 32,32 30.44,34.2 "/>
+<polygon fill="#014D87" points="30.19,38.76 31.55,34.65 32,32 31.06,34.53 "/>
+<polygon fill="#014D87" points="32,39 32.25,34.68 32,32 31.75,34.69 "/>
+<polygon fill="#014D87" points="33.81,38.76 32.94,34.52 32,32 32.46,34.66 "/>
+<polygon fill="#014D87" points="35.5,38.06 33.56,34.19 32,32 33.13,34.45 "/>
+<polygon fill="#014D87" points="36.95,36.95 34.07,33.71 32,32 33.72,34.08 "/>
+<polygon fill="#014D87" points="38.06,35.5 34.45,33.12 32,32 34.2,33.56 "/>
+<polygon fill="#014D87" points="38.76,33.81 34.65,32.45 32,32 34.53,32.94 "/>
+<polygon fill="#014D87" points="39,32 34.68,31.75 32,32 34.69,32.25 "/>
+<polygon fill="#014D87" points="38.76,30.19 34.52,31.06 32,32 34.66,31.55 "/>
+<polygon fill="#014D87" points="38.06,28.5 34.19,30.44 32,32 34.45,30.87 "/>
+<polygon fill="#014D87" points="36.95,27.05 33.72,29.93 32,32 34.08,30.28 "/>
+<polygon fill="#014D87" points="35.5,25.94 33.12,29.55 32,32 33.56,29.8 "/>
+<polygon fill="#014D87" points="33.81,25.24 32.45,29.35 32,32 32.94,29.47 "/>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="32" y1="62" x2="32" y2="2">
+	<stop  offset="0" style="stop-color:#1A1A1A"/>
+	<stop  offset="0.102" style="stop-color:#393939;stop-opacity:0.949"/>
+	<stop  offset="0.3475" style="stop-color:#7F7F7F;stop-opacity:0.8262"/>
+	<stop  offset="0.5688" style="stop-color:#B6B6B6;stop-opacity:0.7156"/>
+	<stop  offset="0.7582" style="stop-color:#DEDEDE;stop-opacity:0.6209"/>
+	<stop  offset="0.9081" style="stop-color:#F6F6F6;stop-opacity:0.5459"/>
+	<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0.5"/>
+</linearGradient>
+<circle opacity="0.1" fill="url(#SVGID_1_)" cx="32" cy="32" r="30"/>
+</svg>

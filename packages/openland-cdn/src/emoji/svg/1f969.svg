@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+]>
+<svg version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="2" y1="38.2412" x2="62.001" y2="38.2412">
+	<stop  offset="0" style="stop-color:#F5CFA0"/>
+	<stop  offset="0.504" style="stop-color:#E6BF8E"/>
+	<stop  offset="1" style="stop-color:#DBB381"/>
+	<a:midPointStop  offset="0" style="stop-color:#F5CFA0"/>
+	<a:midPointStop  offset="0.4303" style="stop-color:#F5CFA0"/>
+	<a:midPointStop  offset="1" style="stop-color:#DBB381"/>
+</linearGradient>
+<path fill="url(#SVGID_1_)" d="M3.09,47.754c-2.359,2.15-0.764,11.799,3.564,13.352c14.068,5.05,19.639-12.631,40.851-19.283
+	c4.249-1.333,11.98-7.444,13.402-10.688c1.487-3.391,2.306-9.815-3.35-15.771C50.958,8.412,6.312,44.814,3.09,47.754z"/>
+<path fill="#FDE0DA" d="M47.128,10.863C32.004,8.95,35.182,4.761,24.233,3.162c-4.563-0.667-10.67,0.701-13.256,14.57
+	c-0.939,5.031,2.643,13.271-0.506,17.75c-4.767,6.78-6.24,7.837-8.101,13.178C0.062,55.287,12.75,60.717,28.09,46
+	c8.021-7.693,22.102-7.895,28.458-14.682C69.745,17.228,52.009,11.481,47.128,10.863z"/>
+<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="13.3579" y1="53.3535" x2="13.3579" y2="2.1343" gradientTransform="matrix(1.0315 0 0 1 17.566 0)">
+	<stop  offset="0" style="stop-color:#C21413"/>
+	<stop  offset="0.0561" style="stop-color:#C51313"/>
+	<stop  offset="0.6687" style="stop-color:#E8050F"/>
+	<stop  offset="1" style="stop-color:#F5000D"/>
+	<a:midPointStop  offset="0" style="stop-color:#C21413"/>
+	<a:midPointStop  offset="0.4303" style="stop-color:#C21413"/>
+	<a:midPointStop  offset="1" style="stop-color:#F5000D"/>
+</linearGradient>
+<path fill="url(#SVGID_2_)" d="M46.712,11.24c-15.124-1.914-11.53-7.452-22.479-9.051c-4.563-0.667-11.119,4.766-12.557,15.384
+	c-0.686,5.069,1.551,10.125-0.784,16.02c-3.03,7.652-6.619,9.741-8.521,15.068c-1.463,4.092,9.841,9.983,25.181-4.734
+	c8.022-7.693,22.034-6.396,28.397-13.177C68.387,17.496,51.593,11.857,46.712,11.24z"/>
+<path fill="#FDE0DA" d="M43.974,8.873c-4.259,1.554-6.044-0.106-6.934-2.665c-3.624-1.412-11.995-5.63-15.651-3.72
+	c6.195-1.226,14.025,5.516,11.706,8.091C21.142,23.841,22.821,28.246,6.536,44.131c-3.609,3.521,7.262-2.273,19.715-18.691
+	c3.789-4.995,7.939-13.883,13.858-12.057c6.945,2.143,14.608-1.152,20.26,7.479C61.081,15.365,48.771,8.841,43.974,8.873z"/>
+<path fill="#FDE0DA" d="M32.737,17.228c-0.411,4.062,27.588,7.086,26.665,9.179C64.771,21.554,33.922,20.678,32.737,17.228z"/>
+<path fill="#FDE0DA" d="M31.542,21.554c-0.41,4.063,10.766,7.703,8.851,12.038C46.46,28.788,32.727,25.004,31.542,21.554z"/>
+<path fill="#FDE0DA" d="M54.286,17.459c-0.516-2.325-7.398-2.56-7.127-5.276C44.665,15.827,52.995,15.731,54.286,17.459z"/>
+<path fill="#FDE0DA" d="M49.819,20.146c-0.597-4.137-13.311-5.201-12.182-10.031C31.674,16.582,47.479,17.066,49.819,20.146z"/>
+<path fill="#FDE0DA" d="M20.594,44.398C15.634,42.972,8.295,55.26,3.375,52C7.838,60.247,15.999,44.988,20.594,44.398z"/>
+<path fill="#FDE0DA" d="M26.935,40.258c-3.378,0.855-4.104,7.208-8.366,10.385C24.288,53.848,24.541,42.141,26.935,40.258z"/>
+<path fill="#FDE0DA" d="M29.602,35.482c2.355-3.69-4.383-11.112-0.736-14.52C21.802,23.335,30.427,31.801,29.602,35.482z"/>
+<path fill="#FDE0DA" d="M13.989,9.292c3.699-2.835,4.393,1.388,13.707,0.044c-2.42-2.958-10.292-0.685-9.811-4.941
+	C16.446,4.877,14.216,8.328,13.989,9.292z"/>
+<path fill="#FDE0DA" d="M22.711,11.856c-0.355-1.569-6.52,5.633,3.867,2.455C34.656,11.839,23.311,14.503,22.711,11.856z"/>
+<path fill="#FDE0DA" d="M15.307,26.833c-0.24-2.49-8.863,6.802,4.58,5.205C22.09,27.735,15.686,30.753,15.307,26.833z"/>
+</svg>

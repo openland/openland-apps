@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+]>
+<svg version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="32.0005" y1="57" x2="32.0005" y2="7.001">
+	<stop  offset="0" style="stop-color:#DB0100"/>
+	<stop  offset="0.5836" style="stop-color:#F31317"/>
+	<stop  offset="1" style="stop-color:#FF1C23"/>
+	<a:midPointStop  offset="0" style="stop-color:#DB0100"/>
+	<a:midPointStop  offset="0.4242" style="stop-color:#DB0100"/>
+	<a:midPointStop  offset="1" style="stop-color:#FF1C23"/>
+</linearGradient>
+<path fill="url(#SVGID_1_)" d="M61.026,18.24C56.55,5.201,44.341,4.908,37.909,10.288C33.323,14.122,30.974,21.6,30.974,21.6
+	l8.008,1.406l-8.357,14.875l9.309-1.842l-4.586,16.514l-1.16-12.229l-10.798,2.288l8.429-15.23l-7.399-1.427l4.1-12.722
+	C22.123,6.318,5.577,5.042,2.344,21.625C-1.501,41.378,35.362,57,35.362,57C43.786,51.121,66.772,34.968,61.026,18.24z"/>
+<polygon fill="#850505" points="28.519,13.233 29.315,15.895 25.633,25.77 23.145,26.613 "/>
+<polygon fill="#B00505" points="31.396,27.979 33.323,26.57 25.734,25.499 23.145,26.613 "/>
+<polygon fill="#850505" points="21.897,43.478 25.113,41.89 33.323,26.57 30.751,27.873 "/>
+<polygon fill="#B00505" points="34.142,40.739 35.214,39.398 25.305,41.532 21.897,43.478 "/>
+<polygon fill="#850505" points="35.347,52.553 35.214,39.398 33.792,40.818 "/>
+</svg>

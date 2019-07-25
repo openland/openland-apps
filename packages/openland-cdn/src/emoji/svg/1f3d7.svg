@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+]>
+<svg version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<rect x="42.652" y="16.395" fill="#F9B700" width="3" height="2"/>
+<rect x="16" y="17.235" fill="#F9C802" width="1" height="39"/>
+<rect x="20" y="17.235" fill="#F9C802" width="1" height="39"/>
+<polygon fill="#F9C802" points="16,35.235 16,36.235 21,33.235 21,32.235 "/>
+<polygon fill="#F9C802" points="16,36.235 21,39.235 21,38.235 16,35.235 "/>
+<polygon fill="#F9C802" points="16,29.235 16,30.235 21,27.235 21,26.235 "/>
+<polygon fill="#F9C802" points="16,30.235 21,33.235 21,32.235 16,29.235 "/>
+<polygon fill="#F9C802" points="16,47.235 16,48.235 21,45.235 21,44.235 "/>
+<polygon fill="#F9C802" points="16,48.235 21,51.235 21,50.235 16,47.235 "/>
+<polygon fill="#F9C802" points="16,41.235 16,42.235 21,39.235 21,38.235 "/>
+<polygon fill="#F9C802" points="16,42.235 21,45.235 21,44.235 16,41.235 "/>
+<polygon fill="#F9C802" points="16,53.235 16,54.235 21,51.235 21,50.235 "/>
+<rect x="39.734" y="22.389" fill="#302C3B" width="0.5" height="1.96"/>
+<rect x="43.886" y="22.389" fill="#302C3B" width="0.5" height="1.96"/>
+<rect x="37.935" y="26" fill="#302C3B" width="0.5" height="21"/>
+<rect x="45.686" y="26" fill="#302C3B" width="0.5" height="21"/>
+<polygon fill="#302C3B" points="43.818,24.349 42.061,25.668 40.302,24.349 39.734,24.349 42.061,26.168 44.386,24.349 "/>
+<rect x="39.734" y="23.849" fill="#302C3B" width="4.651" height="0.5"/>
+<rect x="37.935" y="25.668" fill="#302C3B" width="8.251" height="0.5"/>
+<polygon fill="#302C3B" points="43.785,21.024 43.432,21.024 42.649,18.098 43.004,18.098 "/>
+<polygon fill="#302C3B" points="44.52,21.024 44.885,21.024 45.667,18.098 45.301,18.098 "/>
+<polygon fill="#F9C802" points="44.746,22.573 43.56,22.573 43.378,20.878 44.928,20.878 "/>
+<path fill="#D46A06" d="M43.298,18.205c0,0.57-0.854,0.57-0.854,0S43.298,17.635,43.298,18.205z"/>
+<path fill="#D46A06" d="M45.862,18.205c0,0.57-0.854,0.57-0.854,0S45.862,17.635,45.862,18.205z"/>
+<rect x="38.468" y="16.395" fill="#F9B700" width="3" height="2"/>
+<polygon fill="#302C3B" points="39.601,21.024 39.25,21.024 38.469,18.098 38.819,18.098 "/>
+<polygon fill="#302C3B" points="40.336,21.024 40.698,21.024 41.479,18.098 41.117,18.098 "/>
+<polygon fill="#F9C802" points="40.561,22.573 39.374,22.573 39.193,20.878 40.742,20.878 "/>
+<path fill="#D46A06" d="M39.113,18.205c0,0.57-0.855,0.57-0.855,0S39.113,17.635,39.113,18.205z"/>
+<path fill="#D46A06" d="M41.678,18.205c0,0.57-0.855,0.57-0.855,0S41.678,17.635,41.678,18.205z"/>
+<rect x="4" y="16" fill="#B3C2C6" width="7" height="5"/>
+<polygon fill="#302C3B" points="17.533,2.05 2,15.012 3.023,14.768 18.037,2.235 "/>
+<polygon fill="#302C3B" points="19.006,2.05 52.268,13.011 50.546,13.011 18.415,2.421 "/>
+<path fill="#F9C802" d="M20.856,16.811L19.068,2h-1.582l-1.779,14.817v0.794h5.149V16.811z M16.833,14.714l2.716-1.577l0.412,3.6
+	l-3.15-1.829L16.833,14.714z M18.734,6.032l0.147,1.283l-1.29,0.749l0.287-2.529L18.734,6.032z M17.944,4.965l0.247-2.167h0.173
+	l0.296,2.583L17.944,4.965z M18.947,7.885l0.4,3.494l-2.002-1.162l0.171-1.502L18.947,7.885z M19.422,12.03l0.062,0.536
+	l-2.576,1.496l0.374-3.275L19.422,12.03z M16.746,15.478l2.3,1.335l-2.452,0.004L16.746,15.478z"/>
+<polygon fill="#F9C802" points="2,14 2,18 3,18 2.992,14 "/>
+<polygon fill="#F9C802" points="7,14 7,18 8,18 7.992,14 "/>
+<polygon fill="#F9C802" points="12,14 12,18 13,18 12.992,14 "/>
+<polygon fill="#F9C802" points="16.502,14 2,14 2,15 16.502,14.992 "/>
+<polygon fill="#E81C27" points="27,44 27,46.49 57,46.49 57,44 "/>
+<polygon fill="#E81C27" points="27,38 27,40.49 57,40.49 57,38 "/>
+<polygon fill="#B00505" points="28,40.49 28,44 56,44 56,40.49 "/>
+<rect x="15" y="19" fill="#CFD8DD" width="7" height="4"/>
+<rect x="15.5" y="19.32" fill="#302C3B" width="6" height="2"/>
+<rect x="14" y="23" fill="#F9B700" width="9" height="1"/>
+<rect x="14" y="25" fill="#F9B700" width="9" height="1"/>
+<rect x="14" y="23" fill="#F9B700" width="1" height="3"/>
+<rect x="22" y="23" fill="#F9B700" width="1" height="3"/>
+<rect x="18" y="23" fill="#F9B700" width="1" height="3"/>
+<rect x="12" y="55" fill="#B3C2C6" width="13" height="7"/>
+<rect x="11" y="61" fill="#302C3B" width="15" height="1"/>
+<rect x="11.5" y="60" fill="#4E5E67" width="1" height="1"/>
+<rect x="24.5" y="60" fill="#4E5E67" width="1" height="1"/>
+<rect x="14" y="55" fill="#302C3B" width="1" height="6"/>
+<rect x="22" y="55" fill="#302C3B" width="1" height="6"/>
+<rect x="37.828" y="37.29" fill="#302C3B" width="0.5" height="9.49"/>
+<rect x="45.793" y="37.29" fill="#302C3B" width="0.5" height="9.49"/>
+<rect x="22.145" y="13" fill="#F9C802" width="36.855" height="1"/>
+<polygon fill="#F9C802" points="2,18 62,18 61,17 2,17 "/>
+<polygon fill="#F9C802" points="53,13 52,13 55,18 56,18 "/>
+<polygon fill="#F9C802" points="52,13 49,18 50,18 53,13 "/>
+<polygon fill="#F9C802" points="59,13 58,13 61,18 62,18 "/>
+<polygon fill="#F9C802" points="58,13 55,18 56,18 59,13 "/>
+<polygon fill="#F9C802" points="41,13 40,13 43,18 44,18 "/>
+<polygon fill="#F9C802" points="40,13 37,18 38,18 41,13 "/>
+<polygon fill="#F9C802" points="47,13 46,13 49,18 50,18 "/>
+<polygon fill="#F9C802" points="46,13 43,18 44,18 47,13 "/>
+<polygon fill="#F9C802" points="29,13 28,13 31,18 32,18 "/>
+<polygon fill="#F9C802" points="28,13 25,18 26,18 29,13 "/>
+<polygon fill="#F9C802" points="35,13 34,13 37,18 38,18 "/>
+<polygon fill="#F9C802" points="34,13 31,18 32,18 35,13 "/>
+<polygon fill="#F9C802" points="23,13 22,13 25,18 26,18 "/>
+<polygon fill="#F9C802" points="22,13 19,18 20,18 23,13 "/>
+</svg>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<path fill="#014D87" d="M32,62c9.81,0,18.53-4.71,24-12H8C13.47,57.29,22.19,62,32,62z"/>
+<path fill="#014D87" d="M32,2C15.43,2,2,15.43,2,32h60C62,15.43,48.57,2,32,2z"/>
+<path fill="#F5F5F5" d="M61.4,38c0.39-1.94,0.6-3.94,0.6-6H2c0,2.06,0.21,4.06,0.6,6H61.4z"/>
+<path fill="#E81C27" d="M4.5,44H59.5c0.83-1.91,1.48-3.91,1.9-6H2.6C3.03,40.09,3.67,42.09,4.5,44z"/>
+<path fill="#F5F5F5" d="M4.5,44c0.94,2.14,2.11,4.15,3.5,6h48c1.39-1.85,2.56-3.86,3.5-6H4.5z"/>
+<polygon fill="#FFE12C" points="25,26.06 26.24,27 25.77,25.47 27,24.53 25.47,24.52 25,23 24.53,24.52 23,24.53 24.23,25.47 
+	23.76,27 "/>
+<polygon fill="#FFE12C" points="25,56.06 26.24,57 25.77,55.47 27,54.53 25.47,54.52 25,53 24.53,54.52 23,54.53 24.23,55.47 
+	23.76,57 "/>
+<polygon fill="#FFE12C" points="36,36.06 37.24,37 36.77,35.47 38,34.53 36.47,34.52 36,33 35.53,34.52 34,34.53 35.23,35.47 
+	34.76,37 "/>
+<polygon fill="#FFE12C" points="18,29.06 19.24,30 18.77,28.47 20,27.53 18.47,27.52 18,26 17.53,27.52 16,27.53 17.23,28.47 
+	16.76,30 "/>
+<polygon fill="#FFE12C" points="32,29.06 33.24,30 32.77,28.47 34,27.53 32.47,27.52 32,26 31.53,27.52 30,27.53 31.23,28.47 
+	30.76,30 "/>
+<polygon fill="#FFE12C" points="13,36.06 14.24,37 13.77,35.47 15,34.53 13.47,34.52 13,33 12.53,34.52 11,34.53 12.23,35.47 
+	11.76,37 "/>
+<polygon fill="#FFE12C" points="36,48.06 37.24,49 36.77,47.47 38,46.53 36.47,46.52 36,45 35.53,46.52 34,46.53 35.23,47.47 
+	34.76,49 "/>
+<polygon fill="#FFE12C" points="13,48.06 14.24,49 13.77,47.47 15,46.53 13.47,46.52 13,45 12.53,46.52 11,46.53 12.23,47.47 
+	11.76,49 "/>
+<polygon fill="#FFE12C" points="31,54.06 32.24,55 31.77,53.47 33,52.53 31.47,52.52 31,51 30.53,52.52 29,52.53 30.23,53.47 
+	29.76,55 "/>
+<polygon fill="#FFE12C" points="18,54.06 19.24,55 18.77,53.47 20,52.53 18.47,52.52 18,51 17.53,52.52 16,52.53 17.23,53.47 
+	16.76,55 "/>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="32" y1="62" x2="32" y2="2">
+	<stop  offset="0" style="stop-color:#1A1A1A"/>
+	<stop  offset="0.102" style="stop-color:#393939;stop-opacity:0.949"/>
+	<stop  offset="0.3475" style="stop-color:#7F7F7F;stop-opacity:0.8262"/>
+	<stop  offset="0.5688" style="stop-color:#B6B6B6;stop-opacity:0.7156"/>
+	<stop  offset="0.7582" style="stop-color:#DEDEDE;stop-opacity:0.6209"/>
+	<stop  offset="0.9081" style="stop-color:#F6F6F6;stop-opacity:0.5459"/>
+	<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0.5"/>
+</linearGradient>
+<circle opacity="0.1" fill="url(#SVGID_1_)" cx="32" cy="32" r="30"/>
+</svg>

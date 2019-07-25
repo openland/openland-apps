@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<path fill="#F5F5F5" d="M2,32c0,5.88,1.7,11.37,4.63,16h50.74C60.3,43.37,62,37.88,62,32c0-5.88-1.7-11.37-4.63-16H6.63
+	C3.7,20.63,2,26.12,2,32z"/>
+<path fill="#E81C27" d="M57.37,16C52.06,7.59,42.68,2,32,2C21.32,2,11.94,7.59,6.63,16H57.37z"/>
+<path fill="#E81C27" d="M6.63,48C11.94,56.41,21.32,62,32,62c10.68,0,20.06-5.59,25.37-14H6.63z"/>
+<path fill-rule="evenodd" clip-rule="evenodd" fill="#529320" d="M23.54,45c0,0,6.52-4.29,14.09-0.47v-1.58c0,0-6.42-4.17-1.01-4.76
+	c5.4-0.59,8.38,2.24,8.38,2.24v-1.36c0,0-9.18-4.88-1.27-3.01v-1.37c0,0-7.12-2.49-2.82-2.49s1.85,0,1.85,0v-0.91
+	c0,0-7.28-1.01-1.15-1.41v-0.93c0,0-11.02-5.07-2.79-3.07v-1.01c0,0-3.98-0.76-0.94-1.21c0,0-1.56-2.12-4.2-2.12
+	c-2.64,0-2.21-2.56-2.21-2.56l-3.26,3.52c0,0,2.26-0.24-1.43,1.74c0,0,3.07,0.35-3.91,4.45c0,0,2.59-0.96,2.59,0.7
+	c0,1.66-4.59,3.96-4.59,3.96l0.38,1.09c0,0,3.21-2.49,2.98-0.83C24,35.29,19,37.93,19,37.93l0.48,0.83c0,0,4.06-2.41,4.21-1.36
+	c0,0,0.58,0.71-3.42,2.01l0.51,0.78c0,0,6.13-3.02,7.66-0.83c1.53,2.19-5.05,4.53-5.05,4.53L23.54,45z"/>
+<ellipse fill-rule="evenodd" clip-rule="evenodd" fill="#F5F5F5" cx="29.77" cy="26.64" rx="0.92" ry="0.91"/>
+<ellipse fill-rule="evenodd" clip-rule="evenodd" fill="#F5F5F5" cx="33.41" cy="28.12" rx="0.92" ry="0.91"/>
+<ellipse fill-rule="evenodd" clip-rule="evenodd" fill="#F5F5F5" cx="26.01" cy="32.93" rx="0.92" ry="0.91"/>
+<ellipse fill-rule="evenodd" clip-rule="evenodd" fill="#F5F5F5" cx="36.02" cy="33.83" rx="0.92" ry="0.91"/>
+<ellipse fill-rule="evenodd" clip-rule="evenodd" fill="#F5F5F5" cx="38.93" cy="34.74" rx="0.92" ry="0.91"/>
+<ellipse fill-rule="evenodd" clip-rule="evenodd" fill="#F5F5F5" cx="27.1" cy="28.84" rx="0.92" ry="0.91"/>
+<ellipse fill-rule="evenodd" clip-rule="evenodd" fill="#F5F5F5" cx="32.19" cy="32.05" rx="0.92" ry="0.91"/>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="32" y1="62" x2="32" y2="2">
+	<stop  offset="0" style="stop-color:#1A1A1A"/>
+	<stop  offset="0.102" style="stop-color:#393939;stop-opacity:0.949"/>
+	<stop  offset="0.3475" style="stop-color:#7F7F7F;stop-opacity:0.8262"/>
+	<stop  offset="0.5688" style="stop-color:#B6B6B6;stop-opacity:0.7156"/>
+	<stop  offset="0.7582" style="stop-color:#DEDEDE;stop-opacity:0.6209"/>
+	<stop  offset="0.9081" style="stop-color:#F6F6F6;stop-opacity:0.5459"/>
+	<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0.5"/>
+</linearGradient>
+<circle opacity="0.1" fill="url(#SVGID_1_)" cx="32" cy="32" r="30"/>
+</svg>

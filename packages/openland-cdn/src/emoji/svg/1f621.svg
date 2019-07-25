@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+]>
+<svg version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="88" y1="-142" x2="88" y2="-82" gradientTransform="matrix(1 0 0 -1 -56 -80)">
+	<stop  offset="0.2" style="stop-color:#FF3E2E"/>
+	<stop  offset="0.4027" style="stop-color:#FF611F"/>
+	<stop  offset="0.664" style="stop-color:#FF890E"/>
+	<stop  offset="0.8723" style="stop-color:#FFA104"/>
+	<stop  offset="1" style="stop-color:#FFAA00"/>
+	<a:midPointStop  offset="0.2" style="stop-color:#FF3E2E"/>
+	<a:midPointStop  offset="0.4" style="stop-color:#FF3E2E"/>
+	<a:midPointStop  offset="1" style="stop-color:#FFAA00"/>
+</linearGradient>
+<circle fill="url(#SVGID_1_)" cx="32" cy="32" r="30"/>
+<ellipse fill="#1A1626" cx="22" cy="31.072" rx="4" ry="5"/>
+<ellipse fill="#1A1626" cx="42" cy="31.072" rx="4" ry="5"/>
+<path fill="#1A1626" d="M24.893,49.229c3.663-2.574,10.259-2.744,14.215,0c0.916,0.633,2.434,0.193,2.094-0.547
+	c-3.458-7.537-14.952-7.521-18.402,0C22.459,49.423,23.981,49.868,24.893,49.229z"/>
+<path fill="#C92400" d="M12.933,18.954c4.91-0.625,10.535,1.231,13.983,3.898c0.828,0.641-0.353,4.17-1.215,3.489
+	c-4.444-3.503-8.153-5.515-13.048-6.276C11.444,19.877,11.514,19.136,12.933,18.954z"/>
+<path fill="#C92400" d="M51.067,18.954c-4.909-0.625-10.536,1.232-13.983,3.898c-0.826,0.641,0.353,4.17,1.215,3.489
+	c4.445-3.503,8.153-5.515,13.049-6.276C52.556,19.877,52.486,19.137,51.067,18.954z"/>
+</svg>

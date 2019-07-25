@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="32" y1="2" x2="32" y2="62">
+	<stop  offset="0" style="stop-color:#47DE00"/>
+	<stop  offset="0.2814" style="stop-color:#45DA00"/>
+	<stop  offset="0.5729" style="stop-color:#41CD00"/>
+	<stop  offset="0.8681" style="stop-color:#39B900"/>
+	<stop  offset="1" style="stop-color:#35AD00"/>
+</linearGradient>
+<path fill="url(#SVGID_1_)" d="M62,54c0,4.4-3.6,8-8,8H10c-4.4,0-8-3.6-8-8V10c0-4.4,3.6-8,8-8h44c4.4,0,8,3.6,8,8V54z"/>
+<path fill="#FFFFFF" d="M32,26.957c0.857,0,3.336-11.887,3.447-15.152C35.504,10.255,33.904,9,32,9
+	c-1.902,0-3.502,1.254-3.447,2.805C28.668,15.07,31.141,26.957,32,26.957z"/>
+<path fill="#FFFFFF" d="M26.955,32c0-0.857-11.881-3.336-15.15-3.449C10.256,28.497,9,30.096,9,32s1.256,3.502,2.805,3.449
+	C15.074,35.333,26.955,32.857,26.955,32z"/>
+<path fill="#FFFFFF" d="M28.469,26.438L15.338,15.34l11.1,13.129C27.033,27.725,27.721,27.037,28.469,26.438z"/>
+<path fill="#FFFFFF" d="M35.531,37.563L48.66,48.661l-11.096-13.13C36.967,36.273,36.279,36.968,35.531,37.563z"/>
+<path fill="#FFFFFF" d="M52.195,28.551C48.928,28.664,37.044,31.143,37.044,32c0,0.856,11.884,3.333,15.151,3.449
+	C53.744,35.502,55,33.904,55,32C55.002,30.096,53.744,28.497,52.195,28.551z"/>
+<path fill="#FFFFFF" d="M32,37.045c-0.857,0-3.332,11.882-3.447,15.149C28.498,53.742,30.096,55,32.002,55
+	c1.902,0,3.502-1.258,3.445-2.806C35.336,48.927,32.855,37.045,32,37.045z"/>
+<path fill="#FFFFFF" d="M37.563,28.469l11.1-13.13L35.533,26.436C36.28,27.036,36.965,27.725,37.563,28.469z"/>
+<path fill="#FFFFFF" d="M26.439,35.531l-11.102,13.13l13.131-11.099C27.725,36.968,27.031,36.272,26.439,35.531z"/>
+<circle fill="#FFFFFF" cx="32" cy="32" r="3.45"/>
+</svg>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+]>
+<svg version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="31.9995" y1="2" x2="31.9995" y2="62.0005">
+	<stop  offset="0" style="stop-color:#FF9900"/>
+	<stop  offset="0.2875" style="stop-color:#FF9500"/>
+	<stop  offset="0.5853" style="stop-color:#FF8800"/>
+	<stop  offset="0.8868" style="stop-color:#FF7400"/>
+	<stop  offset="1" style="stop-color:#FF6A00"/>
+	<a:midPointStop  offset="0" style="stop-color:#FF9900"/>
+	<a:midPointStop  offset="0.7" style="stop-color:#FF9900"/>
+	<a:midPointStop  offset="1" style="stop-color:#FF6A00"/>
+</linearGradient>
+<path fill="url(#SVGID_1_)" d="M62,54c0,4.4-3.6,8-8,8H10c-4.399,0-8-3.6-8-8V10c0-4.4,3.601-8,8-8h44c4.4,0,8,3.6,8,8V54z"/>
+<path fill="#FFFFFF" d="M19.644,43.758l-7.592-23.267c-0.178-0.579,0.106-0.953,0.712-0.953h3.569c0.471,0,0.81,0.205,0.952,0.703
+	l5.617,18.504l5.616-18.504c0.144-0.499,0.481-0.703,0.953-0.703h3.57c0.604,0,0.889,0.374,0.711,0.953L26.16,43.758
+	c-0.142,0.463-0.48,0.703-0.952,0.703h-4.61C20.125,44.461,19.787,44.221,19.644,43.758z"/>
+<path fill="#FFFFFF" d="M34.367,37.66c-0.035-0.578,0.293-0.88,0.836-0.88h3.215c0.506,0,0.783,0.275,0.871,0.819
+	c0.303,1.699,1.727,2.571,4.139,2.571c2.502,0,3.676-1.077,3.676-2.519c0-1.771-1.992-2.546-4.361-3.383
+	c-3.586-1.264-7.965-2.679-7.965-7.975c0-4.771,3.951-7.236,8.1-7.236c4.111,0,7.967,2.252,8.375,7.147
+	c0.035,0.579-0.293,0.881-0.836,0.881h-3.215c-0.506,0-0.781-0.276-0.871-0.81c-0.293-1.647-1.531-2.448-3.453-2.448
+	c-2.021,0-3.205,1.032-3.205,2.465c0,1.833,1.719,2.643,4.014,3.489c3.615,1.3,8.314,2.608,8.314,7.869
+	c0,4.779-3.943,7.289-8.572,7.289C38.809,44.941,34.777,42.646,34.367,37.66z"/>
+</svg>

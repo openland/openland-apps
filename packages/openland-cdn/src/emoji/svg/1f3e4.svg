@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+]>
+<svg version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<polygon fill="#785647" points="32,2 2,32 62,32 "/>
+<polygon fill="#F2BA4B" points="6.998,32 56.998,32 31.998,9 "/>
+<polygon fill="#FFDD99" points="32,12 7,32 7,62 57,62 57,32 "/>
+<rect x="44.5" y="43.75" fill="#F2BA4B" width="7" height="10.5"/>
+<rect x="45.5" y="44.75" fill="#302C3B" width="2.25" height="4"/>
+<rect x="48.25" y="44.75" fill="#302C3B" width="2.25" height="4"/>
+<rect x="45.5" y="49.25" fill="#302C3B" width="2.25" height="4"/>
+<rect x="48.25" y="49.25" fill="#302C3B" width="2.25" height="4"/>
+<path fill="#018BC9" d="M53,45.743c-0.618,0-0.669-0.389-1.287-0.389c-0.617,0-0.617,0.396-1.234,0.396s-0.617-0.396-1.235-0.396
+	c-0.619,0-0.619,0.396-1.237,0.396s-0.618-0.396-1.235-0.396c-0.619,0-0.619,0.396-1.237,0.396c-0.62,0-0.62-0.396-1.241-0.396
+	c-0.62,0-0.671,0.396-1.29,0.396L43,43.748h10V45.743z"/>
+<polygon fill="#006DAE" points="53,43.748 43.002,43.748 43.833,41.75 52.166,41.75 "/>
+<rect x="12.5" y="43.75" fill="#F2BA4B" width="7" height="10.5"/>
+<rect x="16.25" y="44.75" fill="#302C3B" width="2.25" height="4"/>
+<rect x="13.5" y="44.75" fill="#302C3B" width="2.25" height="4"/>
+<rect x="13.5" y="49.25" fill="#302C3B" width="2.25" height="4"/>
+<rect x="16.25" y="49.25" fill="#302C3B" width="2.25" height="4"/>
+<path fill="#018BC9" d="M21,45.743c-0.618,0-0.669-0.389-1.287-0.389c-0.617,0-0.617,0.396-1.234,0.396s-0.617-0.396-1.235-0.396
+	c-0.619,0-0.619,0.396-1.237,0.396s-0.618-0.396-1.235-0.396c-0.619,0-0.619,0.396-1.237,0.396c-0.62,0-0.62-0.396-1.241-0.396
+	c-0.62,0-0.671,0.396-1.29,0.396L11,43.748h10V45.743z"/>
+<polygon fill="#006DAE" points="21,43.748 11.002,43.748 11.833,41.75 20.166,41.75 "/>
+<rect id="Rectangle-path_20_" x="7" y="60" fill="#F2BA4B" width="50" height="2"/>
+<rect id="Rectangle-path_19_" x="25" y="43" fill="#F2BA4B" width="14" height="19"/>
+<rect id="Rectangle-path_18_" x="26.5" y="44.5" fill="#785647" width="11" height="17.5"/>
+<rect id="Rectangle-path_17_" x="27.5" y="45.5" fill="#9E6C49" width="9" height="16.5"/>
+<path fill="#B3C2C6" d="M35.917,56.25c0.11,0,0.11-0.416,0-0.416h-0.811c-0.111,0-0.201-0.095-0.201-0.209v-1.25
+	c0-0.114,0.09-0.209,0.201-0.209h0.811c0.11,0,0.11-0.416,0-0.416h-1.126c-0.11,0-0.291,0.054-0.291,0.274v1.951
+	c0,0.221,0.181,0.274,0.291,0.274H35.917z"/>
+<rect x="2.5" y="57" fill="#014D87" width="6" height="2"/>
+<path id="Shape_13_" fill="#018BC9" d="M8.5,57.467C8.5,57.761,8.235,58,7.917,58H3.083C2.762,58,2.5,57.761,2.5,57.467v-4.934
+	C2.5,52.239,2.762,52,3.083,52h4.834C8.235,52,8.5,52.239,8.5,52.533V57.467z"/>
+<path id="Shape_12_" fill="#014D87" d="M7.5,54.897c0,1.815-4,1.815-4,0V53.5C3.5,53.225,3.725,53,4,53h3c0.273,0,0.5,0.225,0.5,0.5
+	V54.897z"/>
+<rect id="Rectangle-path_16_" x="4" y="53.5" fill="#018BC9" width="3" height="1"/>
+<rect x="2" y="53" fill="#013366" width="0.5" height="9"/>
+<rect x="8.5" y="53" fill="#013366" width="0.5" height="9"/>
+<path fill="#006DAE" d="M27.981,25.751h-7.587c-0.602,3.814,2.289,12.687,12.686,12.687c7.813,0,8.863-7.478,5.644-10.83
+	c-3.555-3.702-9.697-1.856-10.62,2.541c0,0,0.546,2.691,3.361,3.958c-1.787-1.705-0.732-5.623,2.5-5.623
+	c3.094,0,4.668,3.367,2.59,5.7C34.064,36.971,25.11,33.903,27.981,25.751z"/>
+<path fill="#006DAE" d="M40.201,25.751h3.13c1.888,8.312-4.49,11.284-4.49,11.284s3.075-2.522,1.847-6.932
+	C40.688,30.104,41.262,28.295,40.201,25.751z"/>
+<rect x="29" y="47" fill="#302C3B" width="2.625" height="2.625"/>
+<rect x="32.375" y="47" fill="#302C3B" width="2.625" height="2.625"/>
+<rect x="29" y="50.375" fill="#302C3B" width="2.625" height="2.625"/>
+<rect x="32.375" y="50.375" fill="#302C3B" width="2.625" height="2.625"/>
+</svg>

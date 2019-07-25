@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+]>
+<svg version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="20" y1="32" x2="44" y2="32">
+	<stop  offset="0" style="stop-color:#4E5E67"/>
+	<stop  offset="0.3815" style="stop-color:#444E59"/>
+	<stop  offset="1" style="stop-color:#302C3B"/>
+	<a:midPointStop  offset="0" style="stop-color:#4E5E67"/>
+	<a:midPointStop  offset="0.5576" style="stop-color:#4E5E67"/>
+	<a:midPointStop  offset="1" style="stop-color:#302C3B"/>
+</linearGradient>
+<path fill="url(#SVGID_1_)" d="M20,3.385v57.23c7.346,1.834,16.557,1.859,24,0V3.385C36.654,1.552,27.446,1.525,20,3.385z"/>
+<radialGradient id="SVGID_2_" cx="136.3799" cy="274.585" r="26.5941" gradientTransform="matrix(0.6549 0 0 2.3504 -57.3148 -613.374)" gradientUnits="userSpaceOnUse">
+	<stop  offset="0" style="stop-color:#FF7136"/>
+	<stop  offset="0.1676" style="stop-color:#F96530"/>
+	<stop  offset="0.4709" style="stop-color:#E74521"/>
+	<stop  offset="0.8725" style="stop-color:#CC1208"/>
+	<stop  offset="1" style="stop-color:#C20000"/>
+	<a:midPointStop  offset="0" style="stop-color:#FF7136"/>
+	<a:midPointStop  offset="0.5758" style="stop-color:#FF7136"/>
+	<a:midPointStop  offset="1" style="stop-color:#C20000"/>
+</radialGradient>
+<path fill="url(#SVGID_2_)" d="M20.028,7.655c-13.181,6.606-13.56,42.784,0,48.884c5.407,2.433,19.019,2.79,24.282,0
+	c13.137-6.966,12.699-41.359,0-48.884C39.139,4.592,25.369,4.979,20.028,7.655z"/>
+<path fill="#B00505" d="M10.891,29.693c13.558-0.95,28.654-0.952,42.219,0C39.648,29.563,24.344,29.563,10.891,29.693z"/>
+<path fill="#B00505" d="M11.006,27.375c13.495-1.471,28.486-1.474,41.988,0C39.619,26.723,24.373,26.722,11.006,27.375z"/>
+<path fill="#B00505" d="M11.196,25.055c13.386-1.992,28.216-1.997,41.606,0C39.561,23.88,24.432,23.879,11.196,25.055z"/>
+<path fill="#B00505" d="M11.463,22.735c13.225-2.513,27.842-2.52,41.074,0C39.477,21.041,24.516,21.039,11.463,22.735z"/>
+<path fill="#B00505" d="M12.365,20.306c12.656-2.892,26.607-2.894,39.27,0C39.16,18.234,24.832,18.234,12.365,20.306z"/>
+<path fill="#B00505" d="M12.77,17.964c12.408-3.384,26.047-3.39,38.461,0C39.025,15.397,24.968,15.397,12.77,17.964z"/>
+<path fill="#B00505" d="M13.783,15.476c11.768-3.68,24.66-3.687,36.432,0C38.668,12.615,25.326,12.613,13.783,15.476z"/>
+<path fill="#B00505" d="M15.359,12.792c10.762-3.72,22.516-3.725,33.281,0C38.104,9.892,25.892,9.892,15.359,12.792z"/>
+<path fill="#B00505" d="M17.938,9.734c9.104-3.259,19.013-3.267,28.122,0C37.168,7.296,26.826,7.296,17.938,9.734z"/>
+<path fill="#B00505" d="M53.148,31.985c-13.572,0.51-28.721,0.511-42.299,0C24.348,31.514,39.658,31.514,53.148,31.985z"/>
+<path fill="#B00505" d="M53.109,34.306c-13.559,0.95-28.656,0.952-42.219,0C24.351,34.437,39.654,34.437,53.109,34.306z"/>
+<path fill="#B00505" d="M52.994,36.625c-13.496,1.471-28.487,1.473-41.988,0C24.381,37.276,39.625,37.277,52.994,36.625z"/>
+<path fill="#B00505" d="M52.803,38.944c-13.385,1.992-28.217,1.998-41.606,0C24.438,40.119,39.568,40.12,52.803,38.944z"/>
+<path fill="#B00505" d="M52.537,41.264c-13.227,2.513-27.844,2.52-41.074,0C24.522,42.959,39.484,42.961,52.537,41.264z"/>
+<path fill="#B00505" d="M51.635,43.693c-12.656,2.893-26.607,2.895-39.27,0C24.84,45.765,39.166,45.765,51.635,43.693z"/>
+<path fill="#B00505" d="M51.23,46.035c-12.41,3.385-26.047,3.39-38.461,0C24.975,48.602,39.031,48.603,51.23,46.035z"/>
+<path fill="#B00505" d="M50.215,48.523c-11.766,3.68-24.659,3.688-36.432,0C25.332,51.385,38.674,51.386,50.215,48.523z"/>
+<path fill="#B00505" d="M48.641,51.206c-10.762,3.721-22.516,3.727-33.281,0C25.896,54.107,38.107,54.107,48.641,51.206z"/>
+<path fill="#B00505" d="M46.061,54.265c-9.105,3.259-19.014,3.267-28.122,0C26.832,56.702,37.174,56.702,46.061,54.265z"/>
+</svg>

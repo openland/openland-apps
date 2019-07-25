@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+]>
+<svg version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="33.1113" y1="55.6006" x2="33.1113" y2="6.9717" gradientTransform="matrix(1 0 0 1 4.5352 -4.9814)">
+	<stop  offset="0" style="stop-color:#CC0100"/>
+	<stop  offset="0.2904" style="stop-color:#DE1615"/>
+	<stop  offset="0.7383" style="stop-color:#F63131"/>
+	<stop  offset="1" style="stop-color:#FF3B3B"/>
+	<a:midPointStop  offset="0" style="stop-color:#CC0100"/>
+	<a:midPointStop  offset="0.4121" style="stop-color:#CC0100"/>
+	<a:midPointStop  offset="1" style="stop-color:#FF3B3B"/>
+</linearGradient>
+<path fill="url(#SVGID_1_)" d="M55.314,8.654c-6.203-6.198-20.506-11.907-34.042,1.616c-8.954,8.946-12.157,20.249,0,32.396
+	c12.159,12.145,23.471,8.943,32.418,0C67.23,29.142,61.518,14.848,55.314,8.654z"/>
+<radialGradient id="SVGID_2_" cx="49.2402" cy="58.4609" r="7.8985" gradientTransform="matrix(1 0 0 1 4.5352 -4.9814)" gradientUnits="userSpaceOnUse">
+	<stop  offset="0.3333" style="stop-color:#ECF1F5"/>
+	<stop  offset="0.6097" style="stop-color:#E1E8EC"/>
+	<stop  offset="1" style="stop-color:#CBD4D9"/>
+	<a:midPointStop  offset="0.3333" style="stop-color:#ECF1F5"/>
+	<a:midPointStop  offset="0.5856" style="stop-color:#ECF1F5"/>
+	<a:midPointStop  offset="1" style="stop-color:#CBD4D9"/>
+</radialGradient>
+<circle fill="url(#SVGID_2_)" cx="55.016" cy="55.011" r="7"/>
+<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="-11.3677" y1="110.2217" x2="-11.3677" y2="98.7549" gradientTransform="matrix(0.7071 0.7071 -0.7071 0.7071 100.5928 -20.5782)">
+	<stop  offset="0" style="stop-color:#E6B53C"/>
+	<stop  offset="1" style="stop-color:#FDD674"/>
+	<a:midPointStop  offset="0" style="stop-color:#E6B53C"/>
+	<a:midPointStop  offset="0.5152" style="stop-color:#E6B53C"/>
+	<a:midPointStop  offset="1" style="stop-color:#FDD674"/>
+</linearGradient>
+<path fill="url(#SVGID_3_)" d="M14.615,33.119c0,0,3.448,7.975-2.391,13.81l4.784,4.778c5.835-5.834,13.818-2.392,13.818-2.392
+	L14.615,33.119z"/>
+<radialGradient id="SVGID_4_" cx="-11.292" cy="111.7539" r="3.9639" gradientTransform="matrix(0.7071 0.7084 -3.1247 3.1302 370.7666 -291.451)" gradientUnits="userSpaceOnUse">
+	<stop  offset="0.2909" style="stop-color:#FDD674"/>
+	<stop  offset="0.465" style="stop-color:#FAD26D"/>
+	<stop  offset="0.7203" style="stop-color:#F2C659"/>
+	<stop  offset="1" style="stop-color:#E6B53C"/>
+	<a:midPointStop  offset="0.2909" style="stop-color:#FDD674"/>
+	<a:midPointStop  offset="0.6242" style="stop-color:#FDD674"/>
+	<a:midPointStop  offset="1" style="stop-color:#E6B53C"/>
+</radialGradient>
+<path fill="url(#SVGID_4_)" d="M24.823,43.301l-4.187-4.187L1.984,56.384c0,0,2.055,3.59,5.596,5.605L24.823,43.301z"/>
+</svg>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<path fill="#014D87" d="M32,2v10H12v20H2c0,16.57,13.43,30,30,30s30-13.43,30-30C62,15.43,48.57,2,32,2z"/>
+<path fill="#F5F5F5" d="M14,8C6.71,13.47,2,22.19,2,32h12V8z"/>
+<path fill="#F5F5F5" d="M8,14h24V2C22.19,2,13.47,6.71,8,14z"/>
+<path fill="#F5F5F5" d="M9.83,11.79L26,32h6v-7.5L17.15,5.94C14.41,7.5,11.94,9.48,9.83,11.79z"/>
+<path fill="#E81C27" d="M32,5H18.91C12.86,7.94,7.94,12.86,5,18.91V32h6V11h21V5z"/>
+<polygon fill="#E81C27" points="32,27.06 19,11 13,11 30,32 32,32 "/>
+<path fill="#F5F5F5" d="M37.13,32l1.01-2.93l-2.72-1.91h3.39l0.98-2.82l1,2.82h3.38l-2.72,1.91L42.46,32l-2.66-1.8L37.13,32z"/>
+<polygon fill="#E81C27" points="39.8,29.52 41.39,30.6 40.79,28.85 42.38,27.73 40.41,27.73 39.8,26.02 39.2,27.73 37.22,27.73 
+	38.81,28.85 38.21,30.6 "/>
+<path fill="#F5F5F5" d="M54.63,32l1.01-2.93l-2.72-1.91h3.39l0.98-2.82l1,2.82h3.38l-2.72,1.91L59.96,32l-2.66-1.8L54.63,32z"/>
+<polygon fill="#E81C27" points="57.3,29.52 58.89,30.6 58.29,28.85 59.88,27.73 57.91,27.73 57.3,26.02 56.7,27.73 54.72,27.73 
+	56.31,28.85 55.71,30.6 "/>
+<path fill="#F5F5F5" d="M45.88,21.66l1.01-2.93l-2.72-1.91h3.39L48.54,14l1,2.82h3.38l-2.72,1.91l1.01,2.93l-2.66-1.8L45.88,21.66z"
+	/>
+<polygon fill="#E81C27" points="48.55,19.18 50.14,20.25 49.54,18.5 51.13,17.39 49.16,17.39 48.55,15.67 47.95,17.39 45.97,17.39 
+	47.56,18.5 46.96,20.25 "/>
+<path fill="#F5F5F5" d="M45.05,48.66l1.33-3.85l-3.58-2.52h4.46l1.28-3.7l1.32,3.7h4.44l-3.57,2.52l1.32,3.85l-3.5-2.36L45.05,48.66
+	z"/>
+<polygon fill="#E81C27" points="48.55,45.4 50.64,46.81 49.85,44.51 51.94,43.05 49.35,43.05 48.55,40.79 47.77,43.05 45.16,43.05 
+	47.25,44.51 46.45,46.81 "/>
+<rect x="12.56" y="11" fill="#F5F5F5" width="12.19" height="3"/>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="31.9995" y1="62" x2="31.9995" y2="2">
+	<stop  offset="0" style="stop-color:#1A1A1A"/>
+	<stop  offset="0.102" style="stop-color:#393939;stop-opacity:0.949"/>
+	<stop  offset="0.3475" style="stop-color:#7F7F7F;stop-opacity:0.8262"/>
+	<stop  offset="0.5688" style="stop-color:#B6B6B6;stop-opacity:0.7156"/>
+	<stop  offset="0.7582" style="stop-color:#DEDEDE;stop-opacity:0.6209"/>
+	<stop  offset="0.9081" style="stop-color:#F6F6F6;stop-opacity:0.5459"/>
+	<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0.5"/>
+</linearGradient>
+<circle opacity="0.1" fill="url(#SVGID_1_)" cx="32" cy="32" r="30"/>
+</svg>

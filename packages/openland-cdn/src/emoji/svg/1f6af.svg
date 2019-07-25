@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<radialGradient id="SVGID_1_" cx="31.9991" cy="31.9996" r="26.2001" gradientUnits="userSpaceOnUse">
+	<stop  offset="0" style="stop-color:#545061"/>
+	<stop  offset="0.2793" style="stop-color:#464253"/>
+	<stop  offset="0.6105" style="stop-color:#312D3D"/>
+	<stop  offset="0.7961" style="stop-color:#211D2D"/>
+	<stop  offset="0.9556" style="stop-color:#1A1626"/>
+</radialGradient>
+<path fill="url(#SVGID_1_)" d="M7.368,23.676c-11.1,32.841,38.163,49.489,49.262,16.648C67.73,7.482,18.469-9.166,7.368,23.676z"/>
+<path fill="#FFFFFF" d="M32.602,20.381h2.594c0.957,0,1.73-0.617,1.73-1.379v-3.439c0-0.762-0.774-1.379-1.73-1.379h-2.594
+	c-0.957,0-1.731,0.617-1.731,1.379v3.439C30.871,19.764,31.645,20.381,32.602,20.381z"/>
+<path fill="#FFFFFF" d="M39.486,21.93H27.961c-0.816,0-1.479,0.521-1.479,1.162v5.81l-3.688,2.975v1.34l5.75-2.928l0.746-6.035
+	v25.562h2.955l1.477-11.619l1.479,11.619h2.955V24.254l1.33,11.619h1.479V23.092C40.965,22.451,40.303,21.93,39.486,21.93z"/>
+<rect x="19.924" y="34.231" fill="#FFFFFF" width="2.816" height="3.754"/>
+<rect x="23.785" y="38.863" fill="#FFFFFF" width="2.814" height="3.756"/>
+<rect x="19.162" y="43.147" fill="#FFFFFF" width="2.816" height="3.754"/>
+<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="16.9976" y1="6.015" x2="47.0025" y2="57.985">
+	<stop  offset="0" style="stop-color:#FF3B3B"/>
+	<stop  offset="0.2558" style="stop-color:#FB3737"/>
+	<stop  offset="0.5207" style="stop-color:#F02B2A"/>
+	<stop  offset="0.7889" style="stop-color:#DD1616"/>
+	<stop  offset="1" style="stop-color:#C90100"/>
+</linearGradient>
+<path fill="url(#SVGID_2_)" d="M32,2C15.432,2,2,15.432,2,32s13.432,30,30,30s30-13.432,30-30S48.568,2,32,2z M56,32
+	c0,5.546-1.886,10.649-5.045,14.713L17.288,13.045C21.351,9.886,26.454,8,32,8C45.254,8,56,18.746,56,32z M8,32
+	c0-5.546,1.886-10.648,5.045-14.712l33.666,33.668C42.648,54.114,37.545,56,32,56C18.744,56,8,45.256,8,32z"/>
+</svg>

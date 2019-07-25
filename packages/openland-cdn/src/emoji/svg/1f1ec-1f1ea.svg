@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<path fill="#F5F5F5" d="M37.97,2.6H26.03C14.26,4.98,4.99,14.24,2.6,26v12c2.39,11.77,11.66,21.02,23.43,23.4H38
+	c11.76-2.39,21.02-11.66,23.4-23.43V26C59.01,14.24,49.74,4.98,37.97,2.6z"/>
+<path fill="#E81C27" d="M38,26V2.6C36.06,2.21,34.05,2,32,2c-2.05,0-4.06,0.21-6,0.6V26H2.6C2.21,27.94,2,29.95,2,32
+	c0,2.06,0.21,4.06,0.6,6H26v23.4c1.94,0.39,3.95,0.6,6,0.6c2.05,0,4.06-0.21,6-0.6V38h23.4c0.39-1.94,0.6-3.95,0.6-6
+	c0-2.05-0.21-4.06-0.6-6H38z"/>
+<polygon fill="#E81C27" points="18,20 14,20 15,14 14,8 18,8 17,14 "/>
+<polygon fill="#E81C27" points="10,16 10,12 16,13 22,12 22,16 16,15 "/>
+<polygon fill="#E81C27" points="50,20 46,20 47,14 46,8 50,8 49,14 "/>
+<polygon fill="#E81C27" points="42,16 42,12 48,13 54,12 54,16 48,15 "/>
+<path fill="#E81C27" d="M18,56h-4c0,0,1-4.5,1-6s-1-6-1-6h4c0,0-1,4.5-1,6S18,56,18,56z"/>
+<polygon fill="#E81C27" points="10,52 10,48 16,49 22,48 22,52 16,51 "/>
+<polygon fill="#E81C27" points="50,56 46,56 47,50 46,44 50,44 49,50 "/>
+<polygon fill="#E81C27" points="42,52 42,48 48,49 54,48 54,52 48,51 "/>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="32" y1="61.9997" x2="32" y2="1.9998">
+	<stop  offset="0" style="stop-color:#1A1A1A"/>
+	<stop  offset="0.102" style="stop-color:#393939;stop-opacity:0.949"/>
+	<stop  offset="0.3475" style="stop-color:#7F7F7F;stop-opacity:0.8262"/>
+	<stop  offset="0.5688" style="stop-color:#B6B6B6;stop-opacity:0.7156"/>
+	<stop  offset="0.7582" style="stop-color:#DEDEDE;stop-opacity:0.6209"/>
+	<stop  offset="0.9081" style="stop-color:#F6F6F6;stop-opacity:0.5459"/>
+	<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0.5"/>
+</linearGradient>
+<circle opacity="0.1" fill="url(#SVGID_1_)" cx="32" cy="32" r="30"/>
+</svg>

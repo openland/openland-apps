@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="32" y1="2" x2="32" y2="62">
+	<stop  offset="0" style="stop-color:#00ABF1"/>
+	<stop  offset="0.2292" style="stop-color:#00A7EF"/>
+	<stop  offset="0.4667" style="stop-color:#009AE9"/>
+	<stop  offset="0.7079" style="stop-color:#0086E0"/>
+	<stop  offset="0.9504" style="stop-color:#0069D3"/>
+	<stop  offset="1" style="stop-color:#0062D0"/>
+</linearGradient>
+<path fill="url(#SVGID_1_)" d="M62,54c0,4.4-3.6,8-8,8H10c-4.4,0-8-3.6-8-8V10c0-4.4,3.6-8,8-8h44c4.4,0,8,3.6,8,8V54z"/>
+<circle fill="#FFFFFF" cx="14.5" cy="49" r="2"/>
+<circle fill="#FFFFFF" cx="21.5" cy="49" r="2"/>
+<circle fill="#FFFFFF" cx="28.5" cy="49" r="2"/>
+<circle fill="#FFFFFF" cx="35.5" cy="49" r="2"/>
+<circle fill="#FFFFFF" cx="42.5" cy="49" r="2"/>
+<circle fill="#FFFFFF" cx="49.5" cy="49" r="2"/>
+<path fill="#FFFFFF" d="M41,20h-2v-3.902c0-0.57-0.447-1.033-1-1.033H26c-0.551,0-1,0.463-1,1.033V20h-2v-3.902
+	C23,14.389,24.346,13,26,13h12c1.654,0,3,1.389,3,3.098V20z"/>
+<path fill="#FFFFFF" d="M14,20c-1.104,0-2,0.896-2,2v20c0,1.105,0.896,2,2,2h3.5V20H14z"/>
+<rect x="19.5" y="20" fill="#FFFFFF" width="25" height="24"/>
+<path fill="#FFFFFF" d="M50,20h-3.5v24H50c1.105,0,2-0.895,2-2V22C52,20.896,51.105,20,50,20z"/>
+</svg>

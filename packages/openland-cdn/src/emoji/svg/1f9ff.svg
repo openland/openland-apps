@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+]>
+<svg version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<radialGradient id="SVGID_1_" cx="29.625" cy="29.875" r="32.4579" gradientTransform="matrix(0.7071 -0.7071 0.5985 0.5985 -9.2045 32.9416)" gradientUnits="userSpaceOnUse">
+	<stop  offset="0.7152" style="stop-color:#005687"/>
+	<stop  offset="0.7868" style="stop-color:#02598B"/>
+	<stop  offset="0.8578" style="stop-color:#086397"/>
+	<stop  offset="0.9285" style="stop-color:#1372AB"/>
+	<stop  offset="0.9988" style="stop-color:#2289C6"/>
+	<stop  offset="1" style="stop-color:#2289C7"/>
+	<a:midPointStop  offset="0.7152" style="stop-color:#005687"/>
+	<a:midPointStop  offset="0.7091" style="stop-color:#005687"/>
+	<a:midPointStop  offset="1" style="stop-color:#2289C7"/>
+</radialGradient>
+<path fill="url(#SVGID_1_)" d="M29.085,2.021c-41.395,1.303-31.92,67.681,5.335,59.237C75.417,51.974,68.261,0.789,29.085,2.021z"/>
+<path fill="#FFFFFF" d="M11.808,35.421C8.994,9.143,43.146,1.73,51.483,28.823C59.063,53.442,14.785,63.185,11.808,35.421z"/>
+<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="31.9995" y1="46.9883" x2="31.9995" y2="17.0137">
+	<stop  offset="0" style="stop-color:#009AF7"/>
+	<stop  offset="0.2824" style="stop-color:#12A6F3"/>
+	<stop  offset="0.8455" style="stop-color:#40C5E9"/>
+	<stop  offset="1" style="stop-color:#4ECEE6"/>
+	<a:midPointStop  offset="0" style="stop-color:#009AF7"/>
+	<a:midPointStop  offset="0.5515" style="stop-color:#009AF7"/>
+	<a:midPointStop  offset="1" style="stop-color:#4ECEE6"/>
+</linearGradient>
+<path fill="url(#SVGID_2_)" d="M21.412,42.235C8.281,27.859,25.33,8.563,42.097,21.014C57.333,32.331,35.286,57.427,21.412,42.235z"
+	/>
+<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="31.9995" y1="41.6797" x2="31.9995" y2="22.3218">
+	<stop  offset="0" style="stop-color:#302C3B"/>
+	<stop  offset="0.2848" style="stop-color:#343240"/>
+	<stop  offset="0.6799" style="stop-color:#41444E"/>
+	<stop  offset="1" style="stop-color:#4E585E"/>
+	<a:midPointStop  offset="0" style="stop-color:#302C3B"/>
+	<a:midPointStop  offset="0.6364" style="stop-color:#302C3B"/>
+	<a:midPointStop  offset="1" style="stop-color:#4E585E"/>
+</linearGradient>
+<path fill="url(#SVGID_3_)" d="M31.785,22.334c12.626,0.57,13.658,17.257,0.244,19.239C19.839,43.374,18.439,21.729,31.785,22.334z"
+	/>
+<path fill="#FFFFFF" d="M36.458,31.901c-0.264,5.824-7.958,6.301-8.873,0.113C26.753,26.391,36.737,25.746,36.458,31.901z"/>
+<linearGradient id="SVGID_4_" gradientUnits="userSpaceOnUse" x1="34.2246" y1="62" x2="34.2246" y2="5.2759">
+	<stop  offset="0" style="stop-color:#013366"/>
+	<stop  offset="0.3064" style="stop-color:#004779"/>
+	<stop  offset="0.6121" style="stop-color:#005687"/>
+	<stop  offset="0.7152" style="stop-color:#005687"/>
+	<a:midPointStop  offset="0" style="stop-color:#013366"/>
+	<a:midPointStop  offset="0.44" style="stop-color:#013366"/>
+	<a:midPointStop  offset="0.6121" style="stop-color:#005687"/>
+	<a:midPointStop  offset="0.5" style="stop-color:#005687"/>
+	<a:midPointStop  offset="0.7152" style="stop-color:#005687"/>
+</linearGradient>
+<path fill="url(#SVGID_4_)" d="M45.784,5.275C66.157,17.58,64.37,51.251,32.24,58.528c-11.611,2.631-20.449-2.197-25.789-10.018
+	c5.229,9.439,14.883,15.715,27.974,12.748C68.657,53.507,69.31,16.543,45.784,5.275z"/>
+</svg>

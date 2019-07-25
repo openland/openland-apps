@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<path fill="#0FB4D4" d="M32,2C15.43,2,2,15.43,2,32h60C62,15.43,48.57,2,32,2z"/>
+<path fill="#529320" d="M58,47H6c5.19,8.96,14.89,15,26,15C43.11,62,52.81,55.96,58,47z"/>
+<path fill="#FFE12C" d="M57.98,47C60.53,42.59,62,37.47,62,32H2c0,5.47,1.47,10.59,4.02,15H57.98z"/>
+<polygon fill="#FFE12C" points="46.22,19.46 54.89,18.96 46.22,18.45 54.46,15.72 45.96,17.47 53.21,12.7 45.45,16.6 51.22,10.11 
+	44.74,15.88 48.63,8.12 43.86,15.38 45.61,6.87 42.88,15.11 42.38,6.45 41.87,15.11 39.14,6.87 40.89,15.38 36.12,8.12 40.01,15.88 
+	33.53,10.11 39.3,16.6 31.54,12.7 38.79,17.47 30.29,15.72 38.53,18.45 29.87,18.96 38.53,19.46 30.29,22.2 38.79,20.44 
+	31.54,25.21 39.3,21.32 33.53,27.8 40.01,22.04 36.12,29.79 40.89,22.54 39.14,31.04 41.87,22.8 42.38,31.47 42.88,22.8 
+	45.61,31.04 43.86,22.54 48.63,29.79 44.74,22.04 51.22,27.8 45.45,21.32 53.21,25.21 45.96,20.44 54.46,22.2 "/>
+<circle fill="#FFE12C" cx="42.38" cy="18.96" r="3.7"/>
+<path fill="#0FB4D4" d="M42.38,23.04c-2.25,0-4.08-1.83-4.08-4.08c0-2.25,1.83-4.08,4.08-4.08c2.25,0,4.08,1.83,4.08,4.08
+	C46.45,21.21,44.63,23.04,42.38,23.04z M42.38,15.64c-1.83,0-3.31,1.49-3.31,3.31c0,1.83,1.49,3.32,3.31,3.32
+	c1.83,0,3.31-1.49,3.31-3.32C45.69,17.13,44.2,15.64,42.38,15.64z"/>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="32" y1="62" x2="32" y2="2">
+	<stop  offset="0" style="stop-color:#1A1A1A"/>
+	<stop  offset="0.102" style="stop-color:#393939;stop-opacity:0.949"/>
+	<stop  offset="0.3475" style="stop-color:#7F7F7F;stop-opacity:0.8262"/>
+	<stop  offset="0.5688" style="stop-color:#B6B6B6;stop-opacity:0.7156"/>
+	<stop  offset="0.7582" style="stop-color:#DEDEDE;stop-opacity:0.6209"/>
+	<stop  offset="0.9081" style="stop-color:#F6F6F6;stop-opacity:0.5459"/>
+	<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0.5"/>
+</linearGradient>
+<circle opacity="0.1" fill="url(#SVGID_1_)" cx="32" cy="32" r="30"/>
+</svg>

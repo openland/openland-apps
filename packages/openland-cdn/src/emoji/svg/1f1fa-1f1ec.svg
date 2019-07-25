@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<path fill="#302C3B" d="M32,2C23.12,2,15.14,5.86,9.65,12h44.71C48.86,5.86,40.88,2,32,2z"/>
+<path fill="#FFE12C" d="M54.36,12H9.65c-2.58,2.88-4.62,6.27-5.93,10h56.57C58.97,18.27,56.94,14.88,54.36,12z"/>
+<path fill="#E81C27" d="M60.29,22H3.71C2.61,25.13,2,28.49,2,32h60C62,28.49,61.39,25.13,60.29,22z"/>
+<path fill="#302C3B" d="M62,32H2c0,3.51,0.61,6.87,1.71,10h56.57C61.39,38.87,62,35.51,62,32z"/>
+<path fill="#FFE12C" d="M60.29,42H3.71c1.32,3.73,3.35,7.11,5.93,10h44.71C56.94,49.11,58.97,45.73,60.29,42z"/>
+<path fill="#E81C27" d="M54.36,52H9.65C15.14,58.13,23.12,62,32,62C40.88,62,48.86,58.13,54.36,52z"/>
+<circle fill="#F5F5F5" cx="32" cy="32" r="10"/>
+<circle fill="#302C3B" cx="31" cy="26" r="2"/>
+<polygon fill="#302C3B" points="31.5,35 32,41 32.5,41 32.5,35 "/>
+<polygon fill="#302C3B" points="31,40.5 31,41 33,41 33,40 "/>
+<path fill="#302C3B" d="M34.93,37.25c-1.06-1.67-2.13-3.34-3.2-5.01c-0.35-0.54-1.21-0.04-0.87,0.51c0.9,1.42,1.81,2.84,2.71,4.26
+	c-1.37,0-2.22,0-3.58,0v0.5c1.67,0,2.83,0.5,4.5,0.5C34.87,38,35.14,37.57,34.93,37.25z"/>
+<path fill="#302C3B" d="M33.93,32.1c-1.13-0.42-3.36-0.88-1.93-5.1h-1.82c0,0-4.38,8.73,3.75,8.73c1.8,0,2.58,1.46,2.58,3.27
+	C36.51,39,38.67,33.84,33.93,32.1z"/>
+<polygon fill="#302C3B" points="29.5,36.5 30,38.5 30.5,38.5 30.5,36.5 "/>
+<polygon fill="#302C3B" points="31,25 27,27 31,27 "/>
+<path fill="#E81C27" d="M35,32.62v3.33c0,0,1.59,0.65,0.94,3.06L37,39.53C37,39.53,38.84,34.73,35,32.62z"/>
+<path fill="#BCBCBC" d="M31.5,32c0,0,0,2.58,2.54,2.58C34.04,34.58,35,32,31.5,32z"/>
+<ellipse fill="#BCBCBC" cx="30.36" cy="31.74" rx="0.86" ry="1.55"/>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="32" y1="62" x2="32" y2="2">
+	<stop  offset="0" style="stop-color:#1A1A1A"/>
+	<stop  offset="0.102" style="stop-color:#393939;stop-opacity:0.949"/>
+	<stop  offset="0.3475" style="stop-color:#7F7F7F;stop-opacity:0.8262"/>
+	<stop  offset="0.5688" style="stop-color:#B6B6B6;stop-opacity:0.7156"/>
+	<stop  offset="0.7582" style="stop-color:#DEDEDE;stop-opacity:0.6209"/>
+	<stop  offset="0.9081" style="stop-color:#F6F6F6;stop-opacity:0.5459"/>
+	<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0.5"/>
+</linearGradient>
+<circle opacity="0.1" fill="url(#SVGID_1_)" cx="32" cy="32" r="30"/>
+</svg>

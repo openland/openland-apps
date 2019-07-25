@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<path fill="#F5F5F5" d="M32,62c16.57,0,30-13.43,30-30H2C2,48.57,15.43,62,32,62z"/>
+<path fill="#E81C27" d="M32,2C15.43,2,2,15.43,2,32h60C62,15.43,48.57,2,32,2z"/>
+<polygon fill="#F5F5F5" points="21.23,17.47 20,16.53 21.53,16.52 22,15 22.48,16.52 24,16.53 22.77,17.47 23.24,19 22,18.06 
+	20.77,19 "/>
+<polygon fill="#F5F5F5" points="29.23,17.47 28,16.53 29.53,16.52 30,15 30.48,16.52 32,16.53 30.77,17.47 31.24,19 30,18.06 
+	28.77,19 "/>
+<polygon fill="#F5F5F5" points="22.23,22.47 21,21.53 22.53,21.52 23,20 23.48,21.52 25,21.53 23.77,22.47 24.24,24 23,23.06 
+	21.77,24 "/>
+<polygon fill="#F5F5F5" points="28.23,22.47 27,21.53 28.53,21.52 29,20 29.48,21.52 31,21.53 29.77,22.47 30.24,24 29,23.06 
+	27.77,24 "/>
+<polygon fill="#F5F5F5" points="25.23,14.47 24,13.53 25.53,13.52 26,12 26.48,13.52 28,13.53 26.77,14.47 27.24,16 26,15.06 
+	24.77,16 "/>
+<path fill="#F5F5F5" d="M24.41,27.96c-4.77,0-8.63-4.05-8.63-9.06c0-5,3.87-9.06,8.63-9.06c0.35,0,0.69,0.03,1.03,0.07
+	C24.24,9.33,22.91,9,21.5,9C16.26,9,12,13.48,12,19c0,5.52,4.26,10,9.5,10c1.63,0,3.16-0.44,4.5-1.2
+	C25.48,27.9,24.96,27.96,24.41,27.96z"/>
+<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="32" y1="62" x2="32" y2="2">
+	<stop  offset="0" style="stop-color:#1A1A1A"/>
+	<stop  offset="0.102" style="stop-color:#393939;stop-opacity:0.949"/>
+	<stop  offset="0.3475" style="stop-color:#7F7F7F;stop-opacity:0.8262"/>
+	<stop  offset="0.5688" style="stop-color:#B6B6B6;stop-opacity:0.7156"/>
+	<stop  offset="0.7582" style="stop-color:#DEDEDE;stop-opacity:0.6209"/>
+	<stop  offset="0.9081" style="stop-color:#F6F6F6;stop-opacity:0.5459"/>
+	<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0.5"/>
+</linearGradient>
+<circle opacity="0.1" fill="url(#SVGID_1_)" cx="32" cy="32" r="30"/>
+</svg>
