@@ -14,7 +14,6 @@ interface CommentsListProps {
 }
 
 const CommentsListInner = React.memo((props: CommentsListProps & { comments: MessageComments_messageComments_comments[] }) => {
-    const client = useClient();
     const { messageId, groupId, comments, onSent } = props;
     const [highlightId, setHighlightId] = React.useState<string | undefined>(undefined);
 

@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
-import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalController } from 'openland-x/showModal';
 import { useForm } from 'openland-form/useForm';
