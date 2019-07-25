@@ -15,9 +15,6 @@ import { SUPER_ADMIN } from '../Init';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { SScrollView } from 'react-native-s/SScrollView';
-import Toast from 'openland-mobile/components/Toast';
-
-const Loader = Toast.loader();
 
 export const ErrorText = (props: { color: string; text: string }) => (
     <Text
@@ -107,14 +104,6 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
     React.useEffect(() => {
         setError(undefined);
     }, [shortnameField.value]);
-
-    React.useEffect(() => {
-        if (form.loading) {
-            Loader.show();
-        } else {
-            Loader.hide();
-        }
-    }, [form.loading]);
 
     const greenErrorLabel = getErrorByShortname(shortnameField.value, 'Username', minLength, maxLength);
 

@@ -2,16 +2,16 @@ import { AppLoaderApi } from 'openland-y-runtime-api/AppLoaderApi';
 import Toast from 'openland-mobile/components/Toast';
 
 export class AppLoaderStub implements AppLoaderApi {
-    loader: { show: () => void; hide: () => void };
+    private loader: { show: () => void; hide: () => void };
 
     constructor() {
         this.loader = Toast.loader();
     }
 
-    appLoaderStart() {
+    start() {
         this.loader.show();
     }
-    appLoaderStop() {
+    stop() {
         this.loader.hide();
     }
 }

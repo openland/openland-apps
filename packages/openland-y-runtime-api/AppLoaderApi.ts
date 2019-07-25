@@ -1,4 +1,4 @@
 export interface AppLoaderApi {
-    appLoaderStart: () => void;
-    appLoaderStop: () => void;
+    start: () => void;
+    stop: () => void;
 }

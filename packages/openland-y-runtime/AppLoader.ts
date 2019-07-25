@@ -1,10 +1,10 @@
 import { AppLoaderApi } from 'openland-y-runtime-api/AppLoaderApi';
 
 export class AppLoaderStub implements AppLoaderApi {
-    appLoaderStart() {
+    start() {
         // Do nothing
     }
-    appLoaderStop() {
+    stop() {
         // Do nothing
     }
 }

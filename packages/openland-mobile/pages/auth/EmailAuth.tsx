@@ -17,7 +17,6 @@ import { TypeStyles } from 'openland-mobile/styles/AppStyles';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { SScrollView } from 'react-native-s/SScrollView';
-import Toast from 'openland-mobile/components/Toast';
 
 export const ACTIVATION_CODE_LENGTH = 6;
 
@@ -32,8 +31,6 @@ const styles = StyleSheet.create({
 
 let email = '';
 let session = '';
-
-const Loader = Toast.loader();
 
 const http = async (params: { url: string; body?: any; method: 'POST' | 'GET' }) => {
     let res = await fetch(params.url, {
@@ -200,14 +197,6 @@ const EmailCodeComponent = (props: PageProps) => {
             submitForm();
         }
     }, [codeField.value]);
-
-    React.useEffect(() => {
-        if (form.loading) {
-            Loader.show();
-        } else {
-            Loader.hide();
-        }
-    }, [form.loading]);
 
     return (
         <ZTrack event="code_view">

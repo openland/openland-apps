@@ -89,7 +89,9 @@ function build(config: ToastBuildConfig) {
             },
         );
 
-    const hide = () => modal && modal.hide();
+    const hide = () => {
+        setTimeout(() => modal && modal.hide(), 1);
+    };
 
     if (config.duration) {
         setTimeout(hide, config.duration);
