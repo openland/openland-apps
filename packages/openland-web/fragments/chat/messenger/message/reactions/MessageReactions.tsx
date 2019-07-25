@@ -3,7 +3,7 @@ import { MessageReactionType } from 'openland-api/Types';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { extractReactionsSorted } from './extractReactions';
 import { css, cx } from 'linaria';
-import { TypeCaption } from 'openland-web/utils/TypeStyles';
+import { TextCaption } from 'openland-web/utils/TextStyles';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
 import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
@@ -85,7 +85,7 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
                 ))}
             </div>
 
-            <div className={cx(TypeCaption, reactionsText)}>
+            <div className={cx(TextCaption, reactionsText)}>
                 {usersString}
             </div>
         </div>

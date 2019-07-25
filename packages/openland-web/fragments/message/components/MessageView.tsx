@@ -27,7 +27,6 @@ export const MessageView = React.memo((props: { message: Message_message_General
             <SenderView
                 sender={message.sender}
                 date={message.date}
-                edited={message.edited}
             />
             <MessageContent
                 id={message.id}

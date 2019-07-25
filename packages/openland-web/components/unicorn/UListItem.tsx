@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XView, XViewSelectedContext, XViewProps } from 'react-mental';
 import { ThemeDefault } from 'openland-y-utils/themes';
-import { TypeStyles } from 'openland-web/utils/TypeStyles';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 import { UAvatar } from './UAvatar';
 import { UIcon } from './UIcon';
 
@@ -13,7 +13,7 @@ const SelectableSVG = React.memo((props: { icon: JSX.Element }) => {
 
 export const SelectableText = React.memo((props: XViewProps) => {
     const selected = React.useContext(XViewSelectedContext);
-    
+
     return (
         <XView
             {...props}
@@ -46,10 +46,10 @@ export const UListItem = React.memo((props: UListItemProps) => {
     const { title, titleIcon, subtitle, description, descriptionColor, icon, iconBackground, iconColor, avatar, onClick, path, large, useRadius, textRight, rightElement } = props;
     const height = large ? 80 : ((!!avatar || !!iconBackground) ? 56 : 48);
 
-    const titleFont = !!description ? TypeStyles.label1 : TypeStyles.body;
-    const subtitleFont = TypeStyles.caption;
-    const descriptionFont = large ? TypeStyles.densed : TypeStyles.caption;
-    const textRightFont = TypeStyles.body;
+    const titleFont = !!description ? TextStyles.label1 : TextStyles.body;
+    const subtitleFont = TextStyles.caption;
+    const descriptionFont = large ? TextStyles.densed : TextStyles.caption;
+    const textRightFont = TextStyles.body;
 
     return (
         <XView

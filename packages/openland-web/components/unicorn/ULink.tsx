@@ -3,14 +3,15 @@ import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { XViewRouterContext } from 'react-mental';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 
-const ULinkInternal = React.memo((props: { link: string; color?: string, children?: any }) => {
-    const { link, children, color } = props;
+const ULinkInternal = React.memo((props: { link: string; color?: string, className?: string, children?: any }) => {
+    const { link, children, className, color } = props;
     const router = React.useContext(XViewRouterContext);
 
     return (
         <a
             href={link}
             style={{ color }}
+            className={className}
             onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -29,17 +30,19 @@ interface ULinkProps {
     href?: string; // for external and MAY BE internal links
     path?: string; // fallback only for internal relative links
     color?: string;
+    className?: string;
     children?: any;
 }
 
 export const ULink = React.memo((props: ULinkProps) => {
-    const { children, href, path, color } = props;
+    const { children, href, path, color, className } = props;
 
     if (path) {
         return (
             <ULinkInternal
                 link={path}
                 color={color}
+                className={className}
             >
                 {children}
             </ULinkInternal>
@@ -52,6 +55,7 @@ export const ULink = React.memo((props: ULinkProps) => {
                 <ULinkInternal
                     link={makeInternalLinkRelative(href)}
                     color={color}
+                    className={className}
                 >
                     {children}
                 </ULinkInternal>
@@ -61,6 +65,7 @@ export const ULink = React.memo((props: ULinkProps) => {
         return (
             <a
                 href={href}
+                className={className}
                 style={{ color }}
                 target="_blank"
             >

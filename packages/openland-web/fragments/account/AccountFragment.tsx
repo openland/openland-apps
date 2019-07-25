@@ -21,7 +21,7 @@ import { showCreateOrganization } from '../org/showCreateOrganization';
 import { showLogoutConfirmation } from './LogoutFragment';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { TypeStyles } from 'openland-web/utils/TypeStyles';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 
 const SelectableSVG = React.memo((props: { icon: JSX.Element }) => {
     const selected = React.useContext(XViewSelectedContext);
@@ -49,11 +49,11 @@ const UserProfileCard = withUserInfo(({ user }) => {
             >
                 <UAvatar size="medium" photo={user.photo} title={user.name} id={user.id} marginRight={16} />
                 <XView flexGrow={1}>
-                    <XView {...TypeStyles.title2}>
+                    <XView {...TextStyles.title2}>
                         {user.name}
                     </XView>
                     <SelectableText
-                        {...TypeStyles.body}
+                        {...TextStyles.body}
                         color={ThemeDefault.foregroundSecondary}
                         selectedColor={ThemeDefault.contrastSpecial}
                     >

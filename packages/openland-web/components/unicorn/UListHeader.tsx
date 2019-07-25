@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { TypeStyles } from 'openland-web/utils/TypeStyles';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 import { ThemeDefault } from 'openland-y-utils/themes';
 
 interface UListHeaderProps {
@@ -25,12 +25,12 @@ export const UListHeader = (props: UListHeaderProps) => {
             alignItems="center"
         >
             <XView flexDirection="row" flexGrow={1} justifyContent="flex-start">
-                <XView {...TypeStyles.title2} color={ThemeDefault.foregroundPrimary}>
+                <XView {...TextStyles.title2} color={ThemeDefault.foregroundPrimary}>
                     {text}
                 </XView>
 
                 {!!counter && (
-                    <XView {...TypeStyles.label1} color={ThemeDefault.foregroundTertiary} marginLeft={8}>
+                    <XView {...TextStyles.label1} color={ThemeDefault.foregroundTertiary} marginLeft={8}>
                         {counter}
                     </XView>
                 )}
@@ -38,7 +38,7 @@ export const UListHeader = (props: UListHeaderProps) => {
 
             {!!action && (
                 <XView
-                    {...TypeStyles.label1}
+                    {...TextStyles.label1}
                     cursor="pointer"
                     color={ThemeDefault.foregroundTertiary}
                     hoverColor={ThemeDefault.foregroundSecondary}

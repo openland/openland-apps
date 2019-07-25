@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView, XViewProps } from 'react-mental';
-import { TypeStyles } from 'openland-web/utils/TypeStyles';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 import { ThemeDefault } from 'openland-y-utils/themes';
 import { UText } from './UText';
 
@@ -21,7 +21,7 @@ export const UListField = (props: UListFieldProps) => {
         >
             {!!label && (
                 <XView
-                    {...TypeStyles.body}
+                    {...TextStyles.body}
                     color={ThemeDefault.foregroundSecondary}
                     width={104}
                     marginRight={56}
@@ -31,7 +31,7 @@ export const UListField = (props: UListFieldProps) => {
             )}
 
             <XView
-                {...TypeStyles.body}
+                {...TextStyles.body}
                 color={ThemeDefault.foregroundPrimary}
                 flexGrow={1}
                 flexShrink={1}

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView, XViewProps } from 'react-mental';
-import { TypeStyles } from 'openland-web/utils/TypeStyles';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 import { ThemeDefault } from 'openland-y-utils/themes';
 
 interface UListTextProps extends XViewProps {
@@ -13,7 +13,7 @@ export const UListText = (props: UListTextProps) => {
     return (
         <XView
             {...other}
-            {...TypeStyles.body}
+            {...TextStyles.body}
             paddingHorizontal={16}
             color={ThemeDefault.foregroundPrimary}
             flexGrow={1}

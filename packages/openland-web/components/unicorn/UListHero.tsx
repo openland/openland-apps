@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { UAvatar } from './UAvatar';
-import { TypeStyles } from 'openland-web/utils/TypeStyles';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 import { ThemeDefault } from 'openland-y-utils/themes';
 import { showAvatarModal } from 'openland-web/fragments/account/components/UserProfileComponent';
 
 const Score = (props: { value: number }) => (
     <XView position="absolute" left={0} bottom={-6} right={0} alignItems="center">
         <XView
-            {...TypeStyles.label2}
+            {...TextStyles.label2}
             borderWidth={2}
             borderRadius={12}
             borderColor={ThemeDefault.backgroundPrimary}
@@ -50,7 +50,7 @@ export const UListHero = (props: UListHeroProps) => {
 
             <XView flexGrow={1} flexDirection="column" justifyContent="center">
                 <XView
-                    {...TypeStyles.title2}
+                    {...TextStyles.title2}
                     color={ThemeDefault.foregroundPrimary}
                 >
                     {title}
@@ -58,7 +58,7 @@ export const UListHero = (props: UListHeroProps) => {
 
                 {!!description && (
                     <XView
-                        {...TypeStyles.densed}
+                        {...TextStyles.densed}
                         color={descriptionColor ? descriptionColor : ThemeDefault.foregroundSecondary}
                         marginTop={4}
                     >
