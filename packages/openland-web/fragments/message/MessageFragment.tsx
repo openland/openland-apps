@@ -6,8 +6,7 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { CommentInput } from './components/CommentInput';
 import { CommentsList } from './components/CommentsList';
-import { MessageContent } from '../chat/messenger/message/MessageContent';
-import { processSpans } from 'openland-y-utils/spans/processSpans';
+import { MessageView } from './components/MessageView';
 
 const wrapper = css`
     display: flex;
@@ -20,7 +19,7 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
     const client = useClient();
     const message = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' }).message;
 
-    if (!message) {
+    if (!message || message.__typename === 'ServiceMessage') {
         return null;
     }
 
@@ -29,15 +28,7 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
     return (
         <div className={wrapper}>
             <XScrollView3 flexGrow={1} flexBasis={0} flexShrink={1} alignItems="flex-start">
-                <MessageContent
-                    id={message.id}
-                    text={message.message}
-                    textSpans={processSpans(message.message || '', message.spans)}
-                    isEdited={message.__typename === 'GeneralMessage' ? message.edited : undefined}
-                    // reply={message.replyWeb}
-                    attachments={message.__typename === 'GeneralMessage' ? message.attachments : undefined}
-                    fallback={message.fallback}
-                />
+                <MessageView message={message} />
                 <CommentsList messageId={messageId} />
             </XScrollView3>
 
