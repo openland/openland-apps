@@ -8,6 +8,8 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import CloseIcon from 'openland-icons/s/ic-close-16.svg';
 import { TextTitle2 } from 'openland-web/utils/TextStyles';
+import { showDeleteMessageModal as showDeleteMessagesModal } from '../components/MessengerRootComponent';
+import { useClient } from 'openland-web/utils/useClient';
 
 const containerClass = css`
     position: absolute;
@@ -112,25 +114,39 @@ const Counter = (props: { engine: MessagesActionsStateEngine }) => {
 };
 
 const Buttons = (props: { engine: MessagesActionsStateEngine }) => {
+    let client = useClient();
+    let deleteCallback = React.useCallback(() => {
+        let ids = props.engine.getState().messages.filter(m => !!m.id).map(m => m.id!);
+        showDeleteMessagesModal(ids, async () => {
+            await client.mutateRoomDeleteMessages({ mids: ids });
+            props.engine.clear();
+        });
+    }, []);
+    let forwardCallback = React.useCallback(() => {
+        props.engine.forwardInit();
+    }, []);
+    let replyCallback = React.useCallback(() => {
+        props.engine.reply();
+    }, []);
     let state = props.engine.useState();
     let canDelete = !state.messages.filter(m => !m.sender.isYou).length; // || useRole('super-admin')
     return (
         <XView flexDirection="row">
-            <div className={canDelete ? animateUpCenter : animateCenterUp}><UButton text="Delete" style="secondary" /></div>
-            <UButton text="Reply" marginLeft={8} />
-            <UButton text="Forward" marginLeft={8} />
+            <div className={canDelete ? animateUpCenter : animateCenterUp}><UButton onClick={deleteCallback} text="Delete" style="secondary" /></div>
+            <UButton onClick={replyCallback} text="Reply" marginLeft={8} />
+            <UButton onClick={forwardCallback} text="Forward" marginLeft={8} />
         </XView>
     );
 };
 
 export const MessagesActionsHeader = (props: { chatId: string }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
-    let engine = React.useContext(MessengerContext).getConversation(props.chatId).messagesActionsState;
+    let engine = React.useContext(MessengerContext).getConversation(props.chatId).messagesActionsStateEngine;
 
     React.useEffect(() => {
         engine.listen(state => {
             if (containerRef.current) {
-                containerRef.current.className = cx(containerClass, state.messages.length && containerVisibleClass);
+                containerRef.current.className = cx(containerClass, state.messages.length && !state.action && containerVisibleClass);
             }
         });
     }, []);

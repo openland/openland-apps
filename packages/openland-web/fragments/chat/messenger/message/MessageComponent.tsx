@@ -97,7 +97,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     );
 
     React.useEffect(() => {
-        props.engine.messagesActionsState.listenSelect(props.message, selected => {
+        props.engine.messagesActionsStateEngine.listenSelect(props.message, selected => {
             if (containerRef.current) {
                 containerRef.current.className = cx(
                     messageContainerClass,
@@ -108,7 +108,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
         });
     }, []);
     const toggleSelect = React.useCallback(() => {
-        props.engine.messagesActionsState.selectToggle(props.message);
+        props.engine.messagesActionsStateEngine.selectToggle(props.message);
     }, []);
     const onSelect = React.useCallback(toggleSelect, [message.id]);
     const content = (

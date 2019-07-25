@@ -37,14 +37,9 @@ const SortedReactions = [
 ];
 
 export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
-    let actionsState = conversationEngine.messagesActionsState;
 
     getMessenger().history.navigationManager.push('HomeDialogs', {
         title: 'Forward to', pressCallback: (id: string) => {
-            let selectedActionsState = getMessenger().engine.getConversation(id).messagesActionsState;
-
-            selectedActionsState.forwardFrom(messages, actionsState);
-
             if (conversationEngine.conversationId === id) {
                 getMessenger().history.navigationManager.pushAndReset('Conversation', { id });
             } else {
@@ -177,12 +172,12 @@ export class MobileMessenger {
         ));
 
         builder.action('Select', () => {
-            conversation.messagesActionsState.selectToggle(message);
+            conversation.messagesActionsStateEngine.selectToggle(message);
         }, false, require('assets/ic-select-24.png'));
 
         if (conversation.canSendMessage) {
             builder.action('Reply', () => {
-                conversation.messagesActionsState.reply(message);
+                conversation.messagesActionsStateEngine.reply(message);
             }, false, require('assets/ic-reply-24.png'));
         }
 
@@ -197,7 +192,7 @@ export class MobileMessenger {
         if (message.text) {
             if (message.senderId === this.engine.user.id) {
                 builder.action('Edit', () => {
-                    conversation.messagesActionsState.edit(message);
+                    conversation.messagesActionsStateEngine.edit(message);
                 }, false, require('assets/ic-edit-24.png'));
             }
 

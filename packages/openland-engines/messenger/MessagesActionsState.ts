@@ -31,11 +31,12 @@ export class MessagesActionsStateEngine {
     forwardFromDonor = () => {
         if (forwardDonor) {
             this.forwardFrom(forwardDonor.getState().messages, forwardDonor);
+            forwardDonor = undefined;
         }
     }
 
-    reply = (message: DataSourceMessageItem) => {
-        this.setState({ messages: [message], action: 'reply' });
+    reply = (message?: DataSourceMessageItem) => {
+        this.setState({ messages: message ? [message] : this.state.messages, action: 'reply' });
     }
 
     edit = (message: DataSourceMessageItem) => {
@@ -69,7 +70,7 @@ export class MessagesActionsStateEngine {
 
     listenSelect = (message: DataSourceMessageItem, listener: (selected: boolean) => void) => {
         return this.listen((s) => {
-            listener(!!s.messages.find(m => (m.id && (m.id === message.id)) || (m.key === message.key)));
+            listener(!!s.messages.find(m => (m.id && (m.id === message.id)) || (m.key === message.key)) && !s.action);
         });
     }
 
@@ -108,7 +109,7 @@ export const useMessageSelected = (engine: MessagesActionsStateEngine, message: 
     let [selected, setSelected] = React.useState(false);
     React.useEffect(() => {
         return engine.listen((s) => {
-            setSelected(!!s.messages.find(m => (m.id && (m.id === message.id)) || (m.key === message.key)));
+            setSelected(!!s.messages.find(m => (m.id && (m.id === message.id)) || (m.key === message.key)) && !s.action);
         });
     }, [message]);
     let toggleSelect = React.useCallback(() => {

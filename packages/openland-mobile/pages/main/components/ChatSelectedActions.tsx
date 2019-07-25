@@ -17,27 +17,27 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
     const theme = React.useContext(ThemeContext);
     const del = React.useCallback(() => {
         Alert.builder()
-            .title(`Delete ${props.conversation.messagesActionsState.getState().messages.length} messages?`)
+            .title(`Delete ${props.conversation.messagesActionsStateEngine.getState().messages.length} messages?`)
             .button('Cancel', 'cancel')
             .action('Delete', 'destructive',
                 async () => {
-                    await getMessenger().engine.client.mutateRoomDeleteMessages({ mids: props.conversation.messagesActionsState.getState().messages.map(m => m.id!) });
-                    props.conversation.messagesActionsState.clear();
+                    await getMessenger().engine.client.mutateRoomDeleteMessages({ mids: props.conversation.messagesActionsStateEngine.getState().messages.map(m => m.id!) });
+                    props.conversation.messagesActionsStateEngine.clear();
                 })
             .show();
     }, []);
     const fwd = React.useCallback(() => {
-        forward(props.conversation, props.conversation.messagesActionsState.getState().messages);
+        forward(props.conversation, props.conversation.messagesActionsStateEngine.getState().messages);
     }, []);
     const cancel = React.useCallback(() => {
-        props.conversation.messagesActionsState.clear();
+        props.conversation.messagesActionsStateEngine.clear();
     }, []);
     let height = 52;
 
     let canDelete = true;
 
     if (!SUPER_ADMIN) {
-        props.conversation.messagesActionsState.getState().messages.map(m => {
+        props.conversation.messagesActionsStateEngine.getState().messages.map(m => {
             if (m.senderId !== getMessenger().engine.user.id) {
                 canDelete = false;
             }

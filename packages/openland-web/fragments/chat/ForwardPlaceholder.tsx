@@ -17,7 +17,7 @@ const imageStyle = css`
 `;
 
 export const ForwardPlaceholder = (props: { chatId: string }) => {
-    let engine = React.useContext(MessengerContext).getConversation(props.chatId).messagesActionsState;
+    let engine = React.useContext(MessengerContext).getConversation(props.chatId).messagesActionsStateEngine;
     let state = engine.useState();
 
     if (state.action !== 'forwardInit') {
@@ -76,7 +76,7 @@ export const ForwardPlaceholder = (props: { chatId: string }) => {
                     >
                         Select a chat in the left column to forward
                         <XView fontWeight="600" color="#4C4C4C" marginLeft={5}>
-                            {state.messages.length} {plural(state.messages.length, ['message', 'messages'])}
+                            {plural(state.messages.length, ['message', 'messages'])}
                         </XView>
                     </XView>
                 </XView>

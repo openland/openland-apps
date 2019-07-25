@@ -21,7 +21,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { MessageReactionType } from 'openland-api/Types';
 
 const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMessageItem, theme: ThemeGlobal }>((props) => {
-    const [selected, toggleSelect] = useMessageSelected(props.engine.messagesActionsState, props.message);
+    const [selected, toggleSelect] = useMessageSelected(props.engine.messagesActionsStateEngine, props.message);
     return (
         <ASFlex marginLeft={-200} renderModes={rm({ 'selection': { marginLeft: 8 } })} overlay={true} alignItems="center">
             <ASFlex onPress={toggleSelect} width={24} height={24} borderRadius={12} backgroundColor={selected ? props.theme.accentPrimary : props.theme.foregroundQuaternary} >

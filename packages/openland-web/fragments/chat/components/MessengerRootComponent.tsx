@@ -35,6 +35,8 @@ import { MessageContent } from '../messenger/message/MessageContent';
 import { showModalBox } from 'openland-x/showModalBox';
 import { SendMessageComponent } from './SendMessageComponent';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
+import { MessagesActionsStateEngine } from 'openland-engines/messenger/MessagesActionsState';
+import { plural, pluralForm } from 'openland-y-utils/plural';
 
 export interface File {
     uuid: string;
@@ -64,18 +66,18 @@ interface MessagesComponentState {
 }
 
 export const DeleteMessageComponent = ({
-    messageId,
+    messageIds,
     hide,
+    action,
 }: {
-    messageId: string;
+    messageIds: string[];
     hide: () => void;
+    action: () => void;
 }) => {
-    const client = useClient();
-
     return (
         <XView borderRadius={8}>
             <XModalContent>
-                <XText>Are you sure you want to delete this message? This cannot be undone.</XText>
+                <XText>{`Are you sure you want to delete this ${pluralForm(messageIds.length, ['message', 'messages'])}? This cannot be undone.`}</XText>
             </XModalContent>
             <XModalFooter>
                 <XView marginRight={12}>
@@ -86,7 +88,7 @@ export const DeleteMessageComponent = ({
                     style="danger"
                     size="large"
                     onClick={async data => {
-                        await client.mutateRoomDeleteMessage({ messageId });
+                        await action();
                         hide();
                     }}
                 />
@@ -95,12 +97,12 @@ export const DeleteMessageComponent = ({
     );
 };
 
-export const showDeleteMessageModal = (messageId: string) => {
+export const showDeleteMessageModal = (messageIds: string[], action: () => void) => {
     showModalBox(
         {
-            title: 'Delete message',
+            title: `Delete ${pluralForm(messageIds.length, ['message', 'messages'])}`,
         },
-        ctx => <DeleteMessageComponent messageId={messageId} hide={ctx.hide} />,
+        ctx => <DeleteMessageComponent messageIds={messageIds} hide={ctx.hide} action={action} />,
     );
 };
 
@@ -159,6 +161,40 @@ export const LeaveChatComponent = (props: { id: string; ctx: XModalController })
             </XModalFooter>
         </XView>
     );
+};
+
+const messageActonContainerClass = css`
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    flex-grow: 1;
+    justify-content: flex-start;
+    border-left: 2px solid #C4C7CC;
+    max-width: 750px;
+    flex-shrink: 0;
+    padding-left: 16px;
+`;
+const MessageAction = (props: { engine: MessagesActionsStateEngine }) => {
+    let state = props.engine.useState();
+    if (state.action === 'forward' || state.action === 'reply') {
+        return (
+            <div className={messageActonContainerClass}>
+                {state.messages.length === 1 && (
+                    <XView onClick={props.engine.clear} flexDirection="column" flexGrow={1}>
+                        <div>{state.messages[0].senderName}</div>
+                        <div>{state.messages[0].fallback}</div>
+                    </XView>
+                )}
+                {state.messages.length !== 1 && (
+                    <XView onClick={props.engine.clear} flexGrow={1}>
+                        {plural(state.messages.length, ['message', 'messages'])}
+                    </XView>
+                )}
+            </div>
+        );
+    } else {
+        return null;
+    }
 };
 
 class MessagesComponent extends React.PureComponent<MessagesComponentProps, MessagesComponentState>
@@ -358,6 +394,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                     inputShower={this.handleShowIput}
                     room={this.props.room}
                 />
+
+                <MessageAction engine={this.conversation.messagesActionsStateEngine} />
 
                 {!this.state.hideInput && this.conversation.canSendMessage && (
                     <XView

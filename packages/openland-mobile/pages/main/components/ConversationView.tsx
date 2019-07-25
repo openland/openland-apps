@@ -104,7 +104,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
 
 export const ConversationView = (props: MessagesListProps) => {
     let theme = React.useContext(ThemeContext);
-    let selectionMode = useChatSelectionMode(props.engine.messagesActionsState);
+    let selectionMode = useChatSelectionMode(props.engine.messagesActionsStateEngine);
     return (
         <ASSafeAreaContext.Consumer>
             {area => (<ConversationViewComponent {...props} bottomInset={area.bottom} topInset={area.top} theme={theme} selectionMode={selectionMode} />)}

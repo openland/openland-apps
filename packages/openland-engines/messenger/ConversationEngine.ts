@@ -181,7 +181,7 @@ export class ConversationEngine implements MessageSendHandler {
     private listeners: ConversationStateHandler[] = [];
     private loadingHistory?: string = undefined;
     private localMessagesMap = new Map<string, string>();
-    readonly messagesActionsState: MessagesActionsStateEngine;
+    readonly messagesActionsStateEngine: MessagesActionsStateEngine;
     readonly onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void;
 
     role?: Types.RoomMemberRole | null;
@@ -204,7 +204,7 @@ export class ConversationEngine implements MessageSendHandler {
         });
         // this.dataSourceLogger = new DataSourceLogger('conv:' + conversationId, this.dataSource);
 
-        this.messagesActionsState = new MessagesActionsStateEngine();
+        this.messagesActionsStateEngine = new MessagesActionsStateEngine();
         this.onNewMessage = onNewMessage;
     }
 
@@ -314,6 +314,7 @@ export class ConversationEngine implements MessageSendHandler {
     onOpen = () => {
         this.isOpen = true;
         this.markReadIfNeeded();
+        this.messagesActionsStateEngine.forwardFromDonor();
     }
 
     onClosed = () => {
@@ -401,12 +402,12 @@ export class ConversationEngine implements MessageSendHandler {
         let message = text.trim();
         let date = (new Date().getTime()).toString();
 
-        let messagesActionsState = this.messagesActionsState.getState();
+        let messagesActionsState = this.messagesActionsStateEngine.getState();
         let quoted;
 
         if (['reply', 'forward'].includes(messagesActionsState.action || '')) {
-            quoted = this.messagesActionsState.getState().messages;
-            this.messagesActionsState.clear();
+            quoted = this.messagesActionsStateEngine.getState().messages;
+            this.messagesActionsStateEngine.clear();
         }
 
         let styledSpans = findSpans(message);
@@ -448,12 +449,12 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     sendFile = (file: UploadingFile) => {
-        let messagesActionsState = this.messagesActionsState.getState();
+        let messagesActionsState = this.messagesActionsStateEngine.getState();
         let quoted;
 
         if (['reply', 'forward'].includes(messagesActionsState.action || '')) {
-            quoted = this.messagesActionsState.getState().messages;
-            this.messagesActionsState.clear();
+            quoted = this.messagesActionsStateEngine.getState().messages;
+            this.messagesActionsStateEngine.clear();
         }
 
         let key = this.engine.sender.sendFile(this.conversationId, file, this, (quoted || []).map(q => q.id!));

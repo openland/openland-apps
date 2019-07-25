@@ -86,7 +86,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     componentWillMount() {
-        this.engine.messagesActionsState.listen(state => {
+        this.engine.messagesActionsStateEngine.listen(state => {
             this.setState({ messagesActionsState: state });
 
             if (state.messages && state.messages.length > 0) {
@@ -182,7 +182,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             this.engine.sendMessage(tx, this.state.mentions);
         }
 
-        this.engine.messagesActionsState.clear();
+        this.engine.messagesActionsStateEngine.clear();
 
         this.setState({
             text: '',
@@ -239,13 +239,13 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 
     onQuotedClearPress = () => {
-        this.engine.messagesActionsState.clear();
+        this.engine.messagesActionsStateEngine.clear();
 
         this.removeDraft();
     }
 
     onEditedClearPress = () => {
-        this.engine.messagesActionsState.clear();
+        this.engine.messagesActionsStateEngine.clear();
 
         this.setState({
             text: '',

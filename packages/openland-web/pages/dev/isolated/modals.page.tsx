@@ -247,7 +247,7 @@ export default withApp('Isolated - modals', 'viewer', props => {
                         <XButton
                             text="delete message"
                             style="primary"
-                            onClick={() => showDeleteMessageModal('1')}
+                            onClick={() => showDeleteMessageModal(['1'], () => false)}
                         />
                         {/* TODO: recover after showMessageModal*/}
                         {/* <XButton
