@@ -3,7 +3,7 @@ import { Queue } from 'openland-graphql/utils/Queue';
 
 async function throttle() {
     return new Promise(r => {
-        setTimeout(r, 10);
+        setTimeout(r, 1);
     });
 }
 
@@ -343,7 +343,7 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
             let c = 0;
             while (true) {
                 let s = await queue.get();
-                if (c++ > 3) {
+                if (c++ > 10) {
                     await throttle();
                     c = 0;
                 }
