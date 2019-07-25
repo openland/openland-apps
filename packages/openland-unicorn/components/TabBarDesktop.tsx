@@ -55,7 +55,7 @@ export const TabBarDesktop = React.memo((props: {
                     justifyContent="center"
                     hoverBackgroundColor={ThemeDefault.backgroundTertiaryHover}
                     cursor="pointer"
-                    path="/ui/typo"
+                    path="/ui"
                     position="absolute"
                     bottom={0}
                 >

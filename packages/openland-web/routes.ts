@@ -121,6 +121,9 @@ routes.add('/notifications/', '/unicorn/index');
 // UI
 //
 
+routes.add('/ui', '/dev/ui/typo');
+routes.add('/ui/', '/dev/ui/typo');
+
 routes.add('/ui/typo', '/dev/ui/typo');
 routes.add('/ui/typo/', '/dev/ui/typo');
 
