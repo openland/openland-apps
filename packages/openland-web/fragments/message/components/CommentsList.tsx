@@ -5,6 +5,7 @@ import { CommentWatch_event_CommentUpdateSingle_update, MessageComments_messageC
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
+import { showCommentDeleteModal } from './CommentDeleteModal';
 
 interface CommentsListProps {
     messageId: string;
@@ -27,7 +28,7 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Mes
     }, [highlightId]);
 
     const handleDeleteClick = React.useCallback((id: string) => {
-        client.mutateDeleteComment({ id });
+        showCommentDeleteModal(id);
     }, []);
 
     const commentsMap = {};
