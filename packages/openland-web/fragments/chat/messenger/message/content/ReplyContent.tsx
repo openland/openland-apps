@@ -15,7 +15,7 @@ export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessage
     let org = firstMessage.sender.primaryOrganization;
     return (
         <div className={replyMeesageGroupClass}>
-            <span>{firstMessage.sender.name} <span>{org && org.name}</span> <span>{firstMessage.date}</span></span>
+            <span>{firstMessage.senderNameEmojify} <span>{org && org.name}</span> <span>{firstMessage.date}</span></span>
             {props.quotedMessages.map(q => (
                 <MessageContent
                     key={q.id}
