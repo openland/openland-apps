@@ -106,8 +106,7 @@ export function emoji({
             res.push(src.substring(offset, e.start));
         }
         let v = src.substring(e.start, e.start + e.length);
-        let url = baseUrl + assetSize + '/' + e.name + '.png';
-        let urlRetina = baseUrl + assetRetinaSize + '/' + e.name + '.png 2x';
+        let url = baseUrl + 'svg/' + e.name + '.svg';
         res.push(<img
             width={height}
             height={height}
@@ -115,7 +114,6 @@ export function emoji({
             key={'e-' + e.start}
             alt={v}
             src={url}
-            srcSet={urlRetina}
         />);
         offset = e.start + e.length;
     }
