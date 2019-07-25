@@ -3,6 +3,9 @@ import { XView } from 'react-mental';
 import { ThemeDefault } from 'openland-y-utils/themes';
 import { css } from 'linaria';
 import { TabRouter } from './TabRouter';
+import AppearanceIcon from 'openland-icons/s/ic-appearance-24.svg';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
 const selectorStyle = css`
     position: absolute;
@@ -44,6 +47,21 @@ export const TabBarDesktop = React.memo((props: {
                 className={selectorStyle}
                 style={{ transform: `translateY(${props.selected * 54}px)` }}
             />
+            <XWithRole role="super-admin">
+                <XView
+                    width={64}
+                    height={54}
+                    alignItems="center"
+                    justifyContent="center"
+                    hoverBackgroundColor={ThemeDefault.backgroundTertiaryHover}
+                    cursor="pointer"
+                    path="/ui/typo"
+                    position="absolute"
+                    bottom={0}
+                >
+                    <UIcon icon={<AppearanceIcon />} color="#676D7A" />
+                </XView>
+            </XWithRole>
         </XView>
     );
 });
