@@ -3,6 +3,7 @@ import { css, cx } from 'linaria';
 import { TypeCaption } from 'openland-web/utils/TypeStyles';
 import { XViewRouterContext } from 'react-mental';
 import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
+import { plural } from 'openland-y-utils/plural';
 
 const buttonWrapper = css`
     display: flex;
@@ -46,7 +47,7 @@ export const MessageCommentsButton = React.memo<MessageCommentsButtonProps>(prop
                 }}
             >
                 [ICON]
-                {!!commentsCount && `${commentsCount} comments`}
+                {!!commentsCount && plural(commentsCount, ['comment', 'comments'])}
                 {!commentsCount && 'Comments'}
             </div>
         );
