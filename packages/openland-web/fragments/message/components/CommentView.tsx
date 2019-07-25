@@ -10,6 +10,8 @@ import { css } from 'linaria';
 import { CommentTools } from './CommentTools';
 import { CommentInput } from './CommentInput';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
+import LikeIcon from 'openland-icons/s/ic-like-24.svg';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
 const wrapper = css`
     display: flex;
@@ -22,6 +24,15 @@ const content = css`
     flex-shrink: 1;
     padding-left: 16px;
     flex-direction: column;
+`;
+
+const reactionsWrapper = css`
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 `;
 
 interface CommentViewProps {
@@ -83,6 +94,11 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                     />
                 )}
             </div>
+            {!deleted && (
+                <div className={reactionsWrapper}>
+                    <UIcon icon={<LikeIcon />} />
+                </div>
+            )}
         </div>
     );
 });
