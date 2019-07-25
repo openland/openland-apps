@@ -122,21 +122,6 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
         <>
             <SHeaderButton title="Save" onPress={handleSave} />
             <SScrollView>
-            {/* <ZForm
-                action={async args => {
-                    setError(undefined);
-
-                    await getClient().mutateSetUserShortname(args);
-
-                    await getClient().refetchAccount();
-                }}
-                onSuccess={() => props.router.back()}
-                onError={(e) => setError(formatError(e))}
-                ref={ref}
-                defaultData={{
-                    shortname: user.shortname
-                }}
-            > */}
                 <ZListItemGroup
                     header={null}
                     footer={{
@@ -169,7 +154,6 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                     {error && <ErrorText color="red" text={error} />}
                     {!error && greenErrorLabel && <ErrorText color="green" text={greenErrorLabel} />}
                 </ZListItemGroup>
-            {/* </ZForm> */}
             </SScrollView>
         </>
     );
