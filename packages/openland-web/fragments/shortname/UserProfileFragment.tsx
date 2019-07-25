@@ -11,6 +11,9 @@ import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { UListText } from 'openland-web/components/unicorn/UListText';
+import copy from 'copy-to-clipboard';
+import EditIcon from 'openland-icons/s/ic-edit-24.svg';
+import CopyIcon from 'openland-icons/s/ic-copy-24.svg';
 
 export const UserProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
@@ -33,11 +36,10 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
                         marginLeft={16}
                     />
                 )}
-                {isYou && (
-                    <UMoreButton>
-                        <UListItem title="Edit profile" path="/settings/profile/" />
-                    </UMoreButton>
-                )}
+                <UMoreButton marginLeft={16}>
+                    <UListItem title="Copy link" icon={<CopyIcon />} onClick={() => { copy(`https://openland.com/${shortname || id}`); }} />
+                    {isYou && (<UListItem title="Edit profile" icon={<EditIcon />} path="/settings/profile/" />)}
+                </UMoreButton>
             </UListHero>
             <UListGroup header="About">
                 {!!about && <UListText value={about} marginBottom={16} />}

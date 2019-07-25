@@ -208,6 +208,7 @@
         "web-animations-js": "^2.3.2",
         "webrtc-adapter": "^6.4.6",
         "worker-loader": "1.1.1",
+        "copy-to-clipboard": "3.2.0",
         "yarn": "^1.9.4"
     },
     "devDependencies": {
