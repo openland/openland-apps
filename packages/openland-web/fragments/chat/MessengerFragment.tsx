@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { MessengerRootComponent } from './components/MessengerRootComponent';
-import { MessagesStateContext } from './messenger/MessagesStateContext';
 import { XView } from 'react-mental';
 import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarComponent';
 import { ForwardPlaceholder } from './ForwardPlaceholder';
@@ -18,9 +17,6 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
     const onChatLostAccess = React.useCallback(() => {
         client.refetchRoom({ id: props.id });
     }, [client]);
-
-    // Messaging state
-    const state = React.useContext(MessagesStateContext);
 
     // Pin message
     let pinMessage = chat.pinnedMessage &&
@@ -54,7 +50,7 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
                     alignSelf="stretch"
                     alignItems="stretch"
                 >
-                    {state.useForwardPlaceholder && <ForwardPlaceholder state={state} />}
+                    <ForwardPlaceholder chatId={chat.id} />
                     <TalkBarComponent chat={chat} />
                     <XView
                         flexGrow={1}

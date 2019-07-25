@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
-import { MessagesStateContextProps } from './messenger/MessagesStateContext';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
+import { plural } from 'openland-y-utils/plural';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const imageStyle = css`
     width: 358px;
@@ -15,11 +16,12 @@ const imageStyle = css`
     margin-bottom: 50px;
 `;
 
-export const ForwardPlaceholder = (props: { state: MessagesStateContextProps }) => {
-    let { state } = props;
-    let msgLength = 0;
-    if (state.forwardMessagesId) {
-        msgLength = state.forwardMessagesId.size;
+export const ForwardPlaceholder = (props: { chatId: string }) => {
+    let engine = React.useContext(MessengerContext).getConversation(props.chatId).messagesActionsState;
+    let state = engine.useState();
+
+    if (state.action !== 'forwardInit') {
+        return null;
     }
 
     return (
@@ -32,9 +34,7 @@ export const ForwardPlaceholder = (props: { state: MessagesStateContextProps }) 
             height="100%"
         >
             <XView
-                onClick={() => {
-                    state.resetAll();
-                }}
+                onClick={engine.clear}
                 width={32}
                 height={32}
                 borderRadius={50}
@@ -76,7 +76,7 @@ export const ForwardPlaceholder = (props: { state: MessagesStateContextProps }) 
                     >
                         Select a chat in the left column to forward
                         <XView fontWeight="600" color="#4C4C4C" marginLeft={5}>
-                            {msgLength} {msgLength === 1 ? 'message' : 'messages'}
+                            {state.messages.length} {plural(state.messages.length, ['message', 'messages'])}
                         </XView>
                     </XView>
                 </XView>
