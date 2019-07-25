@@ -32,11 +32,9 @@ import { XLoader } from 'openland-x/XLoader';
 import { useForm } from 'openland-form/useForm';
 import { XModalController } from 'openland-x/showModal';
 import { MessageContent } from '../messenger/message/MessageContent';
-import { convertMessage } from 'openland-engines/utils/convertMessage';
-import { convertDsMessage } from '../messenger/data/WebMessageItemDataSource';
 import { showModalBox } from 'openland-x/showModalBox';
-
 import { SendMessageComponent } from './SendMessageComponent';
+import { processSpans } from 'openland-y-utils/spans/processSpans';
 
 export interface File {
     uuid: string;
@@ -334,12 +332,18 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             this.props.room.__typename === 'SharedRoom' &&
             this.props.room.isChannel;
 
+        const pin = this.props.pinMessage;
+
         return (
             <XView flexDirection="column" flexGrow={1} flexShrink={1} contain="content">
-                {this.props.pinMessage &&
+                {pin &&
                     !this.state.loading && (
                         <MessageContent
-                            message={convertDsMessage(convertMessage(this.props.pinMessage))}
+                            id={pin.id}
+                            text={pin.message}
+                            textSpans={processSpans(pin.message || '', pin.spans)}
+                            attachments={pin.attachments}
+                            fallback={pin.fallback}
                         />
                     )}
                 <ConversationMessagesComponent

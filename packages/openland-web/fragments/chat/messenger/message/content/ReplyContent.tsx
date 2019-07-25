@@ -16,7 +16,18 @@ export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessage
     return (
         <div className={replyMeesageGroupClass}>
             <span>{firstMessage.sender.name} <span>{org && org.name}</span> <span>{firstMessage.date}</span></span>
-            {props.quotedMessages.map(q => <MessageContent key={q.id} message={q} />)}
+            {props.quotedMessages.map(q => (
+                <MessageContent
+                    key={q.id}
+                    id={q.id}
+                    text={q.text}
+                    textSpans={q.textSpans}
+                    isEdited={q.isEdited}
+                    reply={q.replyWeb}
+                    attachments={q.attachments}
+                    fallback={q.fallback}
+                />
+            ))}
         </div>
     );
 };

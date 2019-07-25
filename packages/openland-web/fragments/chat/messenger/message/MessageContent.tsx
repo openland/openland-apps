@@ -1,47 +1,56 @@
 import * as React from 'react';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment, FullMessage_GeneralMessage_attachments } from 'openland-api/Types';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
-import { SpanType } from 'openland-y-utils/spans/Span';
+import { SpanType, Span, SpanText } from 'openland-y-utils/spans/Span';
 import { ReplyContent } from './content/ReplyContent';
 import { ImageContent } from './content/ImageContent';
 import { DocumentContent } from './content/DocumentContent';
 import { RichAttachContent } from './content/RichAttachContent';
 
-export const MessageContent = (props: { message: DataSourceWebMessageItem }) => {
-    let { message } = props;
-    let attaches = (message.attachments || []);
-    let imageAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
-    let documentsAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
-    let augmenationAttaches = attaches.filter(a => a.__typename === 'MessageRichAttachment') as FullMessage_GeneralMessage_attachments_MessageRichAttachment[] || [];
+interface MessageContentProps {
+    id?: string;
+    text?: string | null;
+    textSpans?: Span[];
+    isEdited?: boolean;
+    reply?: DataSourceWebMessageItem[];
+    attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string })[];
+    fallback?: string;
+}
 
-    let hasText = !!(message.text);
+export const MessageContent = (props: MessageContentProps) => {
+    const { id, text, textSpans = [], isEdited, reply, attachments = [], fallback } = props;
+    const imageAttaches = attachments.filter(a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
+    const documentsAttaches = attachments.filter(a => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
+    const augmenationAttaches = attachments.filter(a => a.__typename === 'MessageRichAttachment') as FullMessage_GeneralMessage_attachments_MessageRichAttachment[] || [];
 
-    let content: JSX.Element[] = [];
+    const hasText = !!text;
 
-    if (message.reply) {
-        content.push(<ReplyContent key={'msg-' + message.id + '-reply'} quotedMessages={message.replyWeb} />);
+    const content: JSX.Element[] = [];
+
+    if (reply) {
+        content.push(<ReplyContent key={'msg-' + id + '-reply'} quotedMessages={reply} />);
     }
 
     imageAttaches.map((file) => {
-        content.push(<ImageContent key={'msg-' + message.id + '-media-' + file.fileId} message={message} file={file} />);
+        content.push(<ImageContent key={'msg-' + id + '-media-' + file.fileId} file={file} />);
     });
 
     if (hasText) {
-        content.push(<MessageTextComponent spans={message.textSpans} isEdited={!!message.isEdited} />);
+        content.push(<MessageTextComponent spans={textSpans} isEdited={!!isEdited} />);
     }
 
-    documentsAttaches.map((file, index) => {
-        content.push(<DocumentContent key={'msg-' + message.id + '-document-' + file.fileId} file={file} />);
+    documentsAttaches.map(file => {
+        content.push(<DocumentContent key={'msg-' + id + '-document-' + file.fileId} file={file} />);
     });
 
-    augmenationAttaches.map((attach, index) => {
-        content.push(<RichAttachContent key={'msg-' + message.id + '-rich-' + attach.id} attach={attach} />);
+    augmenationAttaches.map(attach => {
+        content.push(<RichAttachContent key={'msg-' + id + '-rich-' + attach.id} attach={attach} />);
     });
 
     if (!content.length) {
-        let text = 'Unsupported content: ' + message.fallback;
-        content.push(<MessageTextComponent spans={[{ type: SpanType.italic, offset: 0, length: text.length, childrens: [{ type: SpanType.text, text, offset: 0, length: text.length }] }]} isEdited={false} />);
+        const unsupportedText = 'Unsupported content: ' + fallback;
+        content.push(<MessageTextComponent spans={[{ type: SpanType.italic, offset: 0, length: unsupportedText.length, childrens: [{ type: SpanType.text, text, offset: 0, length: unsupportedText.length } as SpanText] }]} isEdited={false} />);
     }
 
     return <>{content}</>;

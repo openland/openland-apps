@@ -1,15 +1,13 @@
 import * as React from 'react';
 import { useClient } from 'openland-web/utils/useClient';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
-import { convertMessage } from 'openland-engines/messenger/ConversationEngine';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { convertDsMessage, DataSourceWebMessageItem } from '../chat/messenger/data/WebMessageItemDataSource';
-import { MessageContent } from '../chat/messenger/message/MessageContent';
 import { css } from 'linaria';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { CommentInput } from './components/CommentInput';
 import { CommentsList } from './components/CommentsList';
+import { MessageContent } from '../chat/messenger/message/MessageContent';
+import { processSpans } from 'openland-y-utils/spans/processSpans';
 
 const wrapper = css`
     display: flex;
@@ -20,20 +18,26 @@ const wrapper = css`
 const MessageFragmentInner = React.memo((props: { messageId: string }) => {
     const { messageId } = props;
     const client = useClient();
-    const messenger = React.useContext(MessengerContext);
     const message = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' }).message;
 
-    if (!message || message.__typename === 'ServiceMessage') {
+    if (!message) {
         return null;
     }
 
     const groupId = message.source && message.source.__typename === 'MessageSourceChat' && message.source.chat.__typename === 'SharedRoom' ? message.source.chat.id : undefined;
-    const [converted] = React.useState<DataSourceWebMessageItem>(convertDsMessage(convertMessage(message, '', messenger)));
 
     return (
         <div className={wrapper}>
             <XScrollView3 flexGrow={1} flexBasis={0} flexShrink={1} alignItems="flex-start">
-                <MessageContent message={converted} />
+                <MessageContent
+                    id={message.id}
+                    text={message.message}
+                    textSpans={processSpans(message.message || '', message.spans)}
+                    isEdited={message.__typename === 'GeneralMessage' ? message.edited : undefined}
+                    // reply={message.replyWeb}
+                    attachments={message.__typename === 'GeneralMessage' ? message.attachments : undefined}
+                    fallback={message.fallback}
+                />
                 <CommentsList messageId={messageId} />
             </XScrollView3>
 

@@ -116,7 +116,13 @@ class CommentsNotificationsInner extends React.PureComponent<
         // TODO recover open comment modal
         return (
             <MessageContent
-                message={data.item}
+                id={data.item.id}
+                text={data.item.text}
+                textSpans={data.item.textSpans}
+                isEdited={data.item.isEdited}
+                reply={data.item.replyWeb}
+                attachments={data.item.attachments}
+                fallback={data.item.fallback}
             />
         );
     }

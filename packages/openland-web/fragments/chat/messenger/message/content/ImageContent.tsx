@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
-import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { css, cx } from 'linaria';
 
@@ -55,7 +54,6 @@ const imgAppearInstantClass = css`
 export const ImageContent = React.memo(
     (props: {
         file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
-        message: DataSourceWebMessageItem;
     }) => {
         const placeholderRef = React.useRef<HTMLImageElement>(null);
         const imgRef = React.useRef<HTMLImageElement>(null);

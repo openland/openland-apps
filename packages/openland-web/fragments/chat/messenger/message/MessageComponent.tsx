@@ -66,7 +66,15 @@ export const MessageComponent = (props: MessageComponentProps) => {
     const onSelect = React.useCallback(toggleSelect, [message.id]);
     const content = (
         <>
-            <MessageContent message={message} />
+            <MessageContent
+                id={message.id}
+                text={message.text}
+                textSpans={message.textSpans}
+                isEdited={message.isEdited}
+                reply={message.replyWeb}
+                attachments={message.attachments}
+                fallback={message.fallback}
+            />
             <div className={buttonsClass}>
                 <MessageReactions message={message} selected={selected} />
                 <MessageCommentsButton message={message} isChannel={engine.isChannel || false} selected={selected} />

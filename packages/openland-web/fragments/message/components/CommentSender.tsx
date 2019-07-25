@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { css } from 'linaria';
-import { DataSourceWebMessageItem } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
+import { MessageComments_messageComments_comments_comment } from 'openland-api/Types';
 
 const wrapperClass = css`
     display: flex;
@@ -22,17 +22,17 @@ const dateClass = css`
 `;
 
 interface CommentSenderProps {
-    comment: DataSourceWebMessageItem;
+    comment: MessageComments_messageComments_comments_comment;
 }
 
 export const CommentSender = React.memo((props: CommentSenderProps) => {
     const { comment } = props;
-    const { sender, date, senderNameEmojify } = comment;
+    const { sender, date } = comment;
 
     return (
         <div className={wrapperClass}>
             <div className={nameClass}>
-                <ULink path={`/${sender.shortname || sender.id}`}>{senderNameEmojify || sender.name}</ULink>
+                <ULink path={`/${sender.shortname || sender.id}`}>{sender.name}</ULink>
             </div>
             <div className={organizationClass}>
                 {sender.primaryOrganization && <ULink path={`/${sender.primaryOrganization.shortname || sender.primaryOrganization.id}`}>{sender.primaryOrganization.name}</ULink>}
