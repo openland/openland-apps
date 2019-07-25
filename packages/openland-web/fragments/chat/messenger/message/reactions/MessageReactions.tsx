@@ -8,6 +8,15 @@ import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
 import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
 
+const reactionsImagesMap: { [key in MessageReactionType]: string } = {
+    'LIKE': 'https://cdn.openland.com/shared/emoji/64/2764.png',
+    'THUMB_UP': 'https://cdn.openland.com/shared/emoji/64/1f44d.png',
+    'JOY': 'https://cdn.openland.com/shared/emoji/64/1f602.png',
+    'SCREAM': 'https://cdn.openland.com/shared/emoji/64/1f631.png',
+    'CRYING': 'https://cdn.openland.com/shared/emoji/64/1f622.png',
+    'ANGRY': 'https://cdn.openland.com/shared/emoji/64/1f92c.png'
+};
+
 const reactionsWrapper = css`
     display: flex;
     align-self: flex-start;
@@ -34,8 +43,13 @@ const reactionsItem = css`
     cursor: pointer;
     width: 16px;
     height: 16px;
-    background: red;
     margin-right: 4px;
+
+    img {
+        display: block;
+        width: 16px;
+        height: 16px;
+    }
 `;
 
 interface MessageReactionsProps {
@@ -66,7 +80,6 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
 
     const { reactionsSorted, usersString } = extractReactionsSorted(reactions, messenger.user.id);
 
-    console.warn('boom', reactionsWrapper);
     return (
         <div
             className={cx(reactionsWrapper, 'message-buttons-wrapper')}
@@ -81,7 +94,9 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
                         key={'reaction-' + item.reaction + '-' + index}
                         className={reactionsItem}
                         onClick={() => handleReactionClick(item.reaction)}
-                    />
+                    >
+                        <img src={reactionsImagesMap[item.reaction]} />
+                    </div>
                 ))}
             </div>
 
