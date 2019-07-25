@@ -4,8 +4,9 @@ import { TextCaption } from 'openland-web/utils/TextStyles';
 import { XViewRouterContext } from 'react-mental';
 import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
 import { plural } from 'openland-y-utils/plural';
+import CommentsIcon from 'openland-icons/s/ic-discuss-16.svg';
 
-export const messageCommentsButtonWrapper = css`
+const messageCommentsButtonWrapper = css`
     display: flex;
     align-self: flex-start;
     align-items: center;
@@ -16,6 +17,21 @@ export const messageCommentsButtonWrapper = css`
     margin-right: 8px;
     color: #676D7A; // ThemeDefault.foregroundSecondary
     cursor: pointer;
+`;
+
+const iconWrapper = css`
+    display: flex;
+    align-items: center;
+    margin-right: 6px;
+
+    svg {
+        width: 16px;
+        height: 16px;
+        
+        path {
+            fill: #0C7FF2; // ThemeDefault.accentPrimary
+        }
+    }
 `;
 
 interface MessageCommentsButtonProps {
@@ -41,7 +57,9 @@ export const MessageCommentsButton = React.memo<MessageCommentsButtonProps>(prop
                     }
                 }}
             >
-                [ICON]
+                <div className={iconWrapper}>
+                    <CommentsIcon />
+                </div>
                 {!!commentsCount && plural(commentsCount, ['comment', 'comments'])}
                 {!commentsCount && 'Comments'}
             </div>
