@@ -4,7 +4,7 @@ import { XView, XViewProps } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 
 type UButtonSize = 'small' | 'medium' | 'large';
-type UButtonStyle = 'primary' | 'secondary' | 'danger';
+export type UButtonStyle = 'primary' | 'secondary' | 'danger';
 
 export interface UButtonProps extends XViewProps {
     square?: boolean;
@@ -169,6 +169,11 @@ export const UButton = (props: UButtonProps) => {
         await action();
         setLoadingState(false);
     }, [action]);
+
+    React.useEffect(() => {
+        setLoadingState(loading);
+    }, [loading]);
+
     return (
         <XView {...other} onClick={action ? actionCallback : onClick}>
             <div

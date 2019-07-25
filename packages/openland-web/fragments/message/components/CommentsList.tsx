@@ -5,7 +5,7 @@ import { CommentWatch_event_CommentUpdateSingle_update, MessageComments_messageC
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
-import { showCommentDeleteModal } from './CommentDeleteModal';
+import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 
 interface CommentsListProps {
     messageId: string;
@@ -14,6 +14,7 @@ interface CommentsListProps {
 }
 
 const CommentsListInner = React.memo((props: CommentsListProps & { comments: MessageComments_messageComments_comments[] }) => {
+    const client = useClient();
     const { messageId, groupId, comments, onSent } = props;
     const [highlightId, setHighlightId] = React.useState<string | undefined>(undefined);
 
@@ -27,7 +28,14 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Mes
     }, [highlightId]);
 
     const handleDeleteClick = React.useCallback((id: string) => {
-        showCommentDeleteModal(id);
+        const builder = new AlertBlanketBuilder();
+
+        builder.title('Delete comment');
+        builder.message('Delete this comment for everyone? This cannot be undone.');
+        builder.action('Delete', async () => {
+            await client.mutateDeleteComment({ id });
+        }, 'danger');
+        builder.show();
     }, []);
 
     const commentsMap = {};
