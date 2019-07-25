@@ -7,12 +7,14 @@ import { MessageContent } from 'openland-web/fragments/chat/messenger/message/Me
 import { convertDsMessage, DataSourceWebMessageItem } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { Span } from 'openland-y-utils/spans/Span';
 import { SenderView } from './SenderView';
+import { emoji } from 'openland-y-utils/emoji';
 
 export const MessageView = React.memo((props: { message: Message_message_GeneralMessage }) => {
     const { message } = props;
     const messenger = React.useContext(MessengerContext);
     const [reply, setReply] = React.useState<DataSourceWebMessageItem[]>([]);
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
+    const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(message.sender.name);
 
     React.useEffect(() => {
         setReply(message.quotedMessages.map((r) => convertDsMessage(convertMessage(r as FullMessage, '', messenger))));
@@ -22,11 +24,16 @@ export const MessageView = React.memo((props: { message: Message_message_General
         setTextSpans(processSpans(message.message || '', message.spans));
     }, [message.message, message.spans]);
 
+    React.useEffect(() => {
+        setSenderNameEmojify(emoji({ src: message.sender.name, size: 16 }));
+    }, [message.sender.name]);
+
     return (
         <div>
             <SenderView
                 sender={message.sender}
                 date={message.date}
+                senderNameEmojify={senderNameEmojify}
             />
             <MessageContent
                 id={message.id}

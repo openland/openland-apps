@@ -3,19 +3,12 @@ import { ULink } from 'openland-web/components/unicorn/ULink';
 import { css, cx } from 'linaria';
 import { FullMessage_GeneralMessage_sender } from 'openland-api/Types';
 import { MAvatar } from 'openland-web/fragments/chat/messenger/message/MAvatar';
-import { emoji } from 'openland-y-utils/emoji';
 import { TextLabel1, TextCaption } from 'openland-web/utils/TextStyles';
 
 const wrapperClass = css`
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-`;
-
-const wrapperCompactClass = css`
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
 `;
 
 const innerClass = css`
@@ -30,6 +23,8 @@ const infoClass = css`
     display: flex;
     flex-direction: row;
     align-items: baseline;
+    margin-top: -3px;
+    margin-bottom: -1px;
 `;
 
 const nameClass = css`
@@ -54,10 +49,6 @@ const orgLinkClass = css`
     }
 `;
 
-const organizationClass = css`
-
-`;
-
 const dateClass = css`
     color: #676D7A; // ThemeDefault.foregroundSecondary
 `;
@@ -74,15 +65,11 @@ const editClass = css`
 interface SenderViewProps {
     sender: FullMessage_GeneralMessage_sender;
     date: number;
+    senderNameEmojify: string | JSX.Element;
 }
 
 export const SenderView = React.memo((props: SenderViewProps) => {
-    const { sender, date } = props;
-    const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
-
-    React.useEffect(() => {
-        setSenderNameEmojify(emoji({ src: sender.name, size: 16 }));
-    }, [sender.name]);
+    const { sender, date, senderNameEmojify } = props;
 
     return (
         <div className={wrapperClass}>
@@ -99,7 +86,7 @@ export const SenderView = React.memo((props: SenderViewProps) => {
                             {senderNameEmojify}
                         </ULink>
                     </div>
-                    <div className={cx(TextCaption, organizationClass)}>
+                    <div className={TextCaption}>
                         {sender.primaryOrganization && (
                             <ULink path={`/${sender.primaryOrganization.shortname || sender.primaryOrganization.id}`} className={orgLinkClass}>
                                 {sender.primaryOrganization.name}
@@ -118,24 +105,20 @@ export const SenderView = React.memo((props: SenderViewProps) => {
 interface SenderViewCompactProps {
     sender: FullMessage_GeneralMessage_sender;
     edited: boolean;
+    senderNameEmojify: string | JSX.Element;
 }
 
 export const SenderViewCompact = React.memo((props: SenderViewCompactProps) => {
-    const { sender, edited } = props;
-    const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
-
-    React.useEffect(() => {
-        setSenderNameEmojify(emoji({ src: sender.name, size: 16 }));
-    }, [sender.name]);
+    const { sender, edited, senderNameEmojify } = props;
 
     return (
-        <div className={wrapperCompactClass}>
+        <div className={infoClass}>
             <div className={cx(TextLabel1, nameClass)}>
                 <ULink path={`/${sender.shortname || sender.id}`} className={nameLinkClass}>
                     {senderNameEmojify}
                 </ULink>
             </div>
-            <div className={cx(TextCaption, organizationClass)}>
+            <div className={TextCaption}>
                 {sender.primaryOrganization && (
                     <ULink path={`/${sender.primaryOrganization.shortname || sender.primaryOrganization.id}`} className={orgLinkClass}>
                         {sender.primaryOrganization.name}
