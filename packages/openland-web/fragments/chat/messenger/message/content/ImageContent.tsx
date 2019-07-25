@@ -31,11 +31,13 @@ const imgMediaClass = css`
         max-height: 100%;
         height: auto;
     }
+    z-index: 2;
 `;
 
 const imgPreviewClass = css`
     position: absolute;
     border-radius: 8px;
+    z-index: 1;
 `;
 
 const imgAppearClass = css`
@@ -70,9 +72,11 @@ export const ImageContent = React.memo(
                         // animate loaded via transition
                         imgRef.current.style.opacity = '1';
                     }
-                    if (placeholderRef.current) {
-                        setTimeout(() => (placeholderRef.current!.style.display = 'none'), 300);
-                    }
+                    // setTimeout(() => {
+                    //     if (placeholderRef.current) {
+                    //         placeholderRef.current.style.display = 'none';
+                    //     }
+                    // }, 300);
                 }
             },
             [placeholderRef.current, imgRef.current],

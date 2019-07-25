@@ -5,7 +5,7 @@ import { XViewRouterContext } from 'react-mental';
 import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
 import { plural } from 'openland-y-utils/plural';
 
-const buttonWrapper = css`
+export const messageCommentsButtonWrapper = css`
     display: flex;
     align-self: flex-start;
     align-items: center;
@@ -18,25 +18,20 @@ const buttonWrapper = css`
     cursor: pointer;
 `;
 
-const buttonSelectedWrapper = css`
-    background-color: #FFFFFF; // ThemeDefault.backgroundTertiary
-`;
-
 interface MessageCommentsButtonProps {
     message: DataSourceWebMessageItem;
-    selected: boolean;
     isChannel: boolean;
 }
 
 export const MessageCommentsButton = React.memo<MessageCommentsButtonProps>(props => {
-    const { message, selected, isChannel } = props;
+    const { message, isChannel } = props;
     const { id, commentsCount } = message;
     const router = React.useContext(XViewRouterContext);
 
     if ((isChannel || commentsCount > 0) && id) {
         return (
             <div
-                className={cx(TypeCaption, buttonWrapper, selected && buttonSelectedWrapper)}
+                className={cx(TypeCaption, messageCommentsButtonWrapper, 'message-buttons-wrapper')}
                 onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();

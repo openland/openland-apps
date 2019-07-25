@@ -19,10 +19,6 @@ const reactionsWrapper = css`
     margin-right: 8px;
 `;
 
-const reactionsSelectedWrapper = css`
-    background-color: #FFFFFF; // ThemeDefault.backgroundPrimary
-`;
-
 const reactionsText = css`
     color: #676D7A; // ThemeDefault.foregroundSecondary
 `;
@@ -44,11 +40,10 @@ const reactionsItem = css`
 
 interface MessageReactionsProps {
     message: DataSourceWebMessageItem;
-    selected: boolean;
 }
 
 export const MessageReactions = React.memo<MessageReactionsProps>(props => {
-    const { message, selected } = props;
+    const { message } = props;
     const { id, reactions } = message;
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
@@ -71,9 +66,10 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
 
     const { reactionsSorted, usersString } = extractReactionsSorted(reactions, messenger.user.id);
 
+    console.warn('boom', reactionsWrapper);
     return (
         <div
-            className={cx(reactionsWrapper, selected && reactionsSelectedWrapper)}
+            className={cx(reactionsWrapper, 'message-buttons-wrapper')}
             onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();

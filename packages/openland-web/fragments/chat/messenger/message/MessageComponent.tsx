@@ -6,7 +6,6 @@ import { MAvatar } from './MAvatar';
 import { css, cx } from 'linaria';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
-import { useMessageSelected } from 'openland-engines/messenger/MessagesActionsState';
 
 const messageContainerClass = css`
     display: flex;
@@ -23,8 +22,24 @@ const messageContainerClass = css`
     border-radius: 8px;
 `;
 
+const buttonsClass = css`
+    display: flex;
+    flex-direction: row;
+`;
+
+const messageContentAreaClass = css`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding-left: 16px;
+`;
+
 const messageContainerSelectedClass = css`
     background-color: #F0F2F5; //ThemeDefault.backgroundTertiary
+   
+    .message-buttons-wrapper {
+        background-color: #fff; // ThemeDefault.backgroundPrimary
+    }
 `;
 
 const messageContainerAttachClass = css`
@@ -39,20 +54,8 @@ const messageAvatarWrapper = css`
     flex-shrink: 0;
 `;
 
-const messageContentAreaClass = css`
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    padding-left: 16px;
-`;
-
 const noAvatarPlaceholder = css`
     padding-left: 56px;
-`;
-
-const buttonsClass = css`
-    display: flex;
-    flex-direction: row;
 `;
 
 interface MessageComponentProps {
@@ -60,9 +63,19 @@ interface MessageComponentProps {
     engine: ConversationEngine;
 }
 
-export const MessageComponent = (props: MessageComponentProps) => {
+export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const { message, engine } = props;
-    const [selected, toggleSelect] = useMessageSelected(engine.messagesActionsState, message);
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    React.useEffect(() => {
+        props.engine.messagesActionsState.listenSelect(props.message, (selected) => {
+            if (containerRef.current) {
+                containerRef.current.className = cx(messageContainerClass, !message.attachTop && messageContainerAttachClass, selected && messageContainerSelectedClass);
+            }
+        });
+    }, []);
+    const toggleSelect = React.useCallback(() => {
+        props.engine.messagesActionsState.selectToggle(props.message);
+    }, []);
     const onSelect = React.useCallback(toggleSelect, [message.id]);
     const content = (
         <>
@@ -76,14 +89,14 @@ export const MessageComponent = (props: MessageComponentProps) => {
                 fallback={message.fallback}
             />
             <div className={buttonsClass}>
-                <MessageReactions message={message} selected={selected} />
-                <MessageCommentsButton message={message} isChannel={engine.isChannel || false} selected={selected} />
+                <MessageReactions message={message} />
+                <MessageCommentsButton message={message} isChannel={engine.isChannel || false} />
             </div>
         </>
     );
 
     return (
-        <div onClick={onSelect} className={cx(messageContainerClass, !message.attachTop && messageContainerAttachClass, selected && messageContainerSelectedClass)}>
+        <div ref={containerRef} onClick={onSelect} className={cx(messageContainerClass, !message.attachTop && messageContainerAttachClass)}>
             {!message.attachTop && (
                 <div className={messageAvatarWrapper}>
                     <MAvatar
@@ -100,4 +113,4 @@ export const MessageComponent = (props: MessageComponentProps) => {
             </div>
         </div>
     );
-};
+});

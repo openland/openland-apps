@@ -113,6 +113,7 @@ export const DataSourceRender = React.memo(function <T extends DataSourceItem>(
         for (let i = items.length - 1; i >= 0; i--) {
             renderedItems.push(
                 <props.renderItem
+                    key={items[i].key}
                     item={items[i]}
                 />,
             );
@@ -120,6 +121,7 @@ export const DataSourceRender = React.memo(function <T extends DataSourceItem>(
     } else {
         renderedItems = items.map((i, key) => (
             <props.renderItem
+                key={i.key}
                 item={i}
             />
         ));

@@ -60,6 +60,12 @@ export class MessagesActionsStateEngine {
         };
     }
 
+    listenSelect = (message: DataSourceMessageItem, listener: (selected: boolean) => void) => {
+        return this.listen((s) => {
+            listener(!!s.messages.find(m => (m.id === message.id) || (m.key === message.key)));
+        });
+    }
+
     clear = () => {
         this.state = { messages: [] };
         this.notifyAll();
@@ -76,16 +82,16 @@ export class MessagesActionsStateEngine {
     }
 }
 
-export const useMessageSelected = (engine: MessagesActionsStateEngine, self: DataSourceMessageItem): [boolean, () => void] => {
+export const useMessageSelected = (engine: MessagesActionsStateEngine, message: DataSourceMessageItem): [boolean, () => void] => {
     let [selected, setSelected] = React.useState(false);
     React.useEffect(() => {
         return engine.listen((s) => {
-            setSelected(!!s.messages.find(m => (m.id === self.id) || (m.key === self.key)));
+            setSelected(!!s.messages.find(m => (m.id === message.id) || (m.key === message.key)));
         });
-    }, [self]);
+    }, [message]);
     let toggleSelect = React.useCallback(() => {
-        engine.selectToggle(self);
-    }, [self]);
+        engine.selectToggle(message);
+    }, [message]);
     return [selected, toggleSelect];
 };
 
