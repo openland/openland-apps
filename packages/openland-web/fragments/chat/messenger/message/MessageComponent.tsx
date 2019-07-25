@@ -18,8 +18,8 @@ const messageContainerClass = css`
     padding-right: 50px;
     padding-top: 4px;
     padding-bottom: 4px;
-    margin: 0 16px;
     border-radius: 8px;
+    margin: 0 16px;
 `;
 
 const buttonsClass = css`
@@ -35,15 +35,37 @@ const messageContentAreaClass = css`
 `;
 
 const messageContainerSelectedClass = css`
-    background-color: #F0F2F5; //ThemeDefault.backgroundTertiary
-   
+    background-color: #f0f2f5; //ThemeDefault.backgroundTertiary
+
     .message-buttons-wrapper {
         background-color: #fff; // ThemeDefault.backgroundPrimary
     }
 `;
 
-const messageContainerAttachClass = css`
+const attachClass = css`
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+`;
+
+const noAttach = css`
     margin-top: 8px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+`;
+
+const bottomAttach = css`
+    margin-top: 8px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+`;
+
+const topAttach = css`
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 `;
 
 const messageAvatarWrapper = css`
@@ -66,10 +88,22 @@ interface MessageComponentProps {
 export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const { message, engine } = props;
     const containerRef = React.useRef<HTMLDivElement>(null);
+
+    const attachesClassNames = cx(
+        message.attachTop && message.attachBottom && attachClass,
+        !message.attachTop && !message.attachBottom && noAttach,
+        !message.attachTop && message.attachBottom && bottomAttach,
+        message.attachTop && !message.attachBottom && topAttach,
+    );
+
     React.useEffect(() => {
-        props.engine.messagesActionsState.listenSelect(props.message, (selected) => {
+        props.engine.messagesActionsState.listenSelect(props.message, selected => {
             if (containerRef.current) {
-                containerRef.current.className = cx(messageContainerClass, !message.attachTop && messageContainerAttachClass, selected && messageContainerSelectedClass);
+                containerRef.current.className = cx(
+                    messageContainerClass,
+                    attachesClassNames,
+                    selected && messageContainerSelectedClass,
+                );
             }
         });
     }, []);
@@ -96,7 +130,11 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     );
 
     return (
-        <div ref={containerRef} onClick={onSelect} className={cx(messageContainerClass, !message.attachTop && messageContainerAttachClass)}>
+        <div
+            ref={containerRef}
+            onClick={onSelect}
+            className={cx(messageContainerClass, attachesClassNames)}
+        >
             {!message.attachTop && (
                 <div className={messageAvatarWrapper}>
                     <MAvatar
