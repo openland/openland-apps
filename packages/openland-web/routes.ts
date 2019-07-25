@@ -118,17 +118,26 @@ routes.add('/notifications', '/unicorn/index');
 routes.add('/notifications/', '/unicorn/index');
 
 //
-// Isolated features/units/components
+// UI
 //
 
-routes.add('/isolated/modals', '/dev/isolated/modals');
-routes.add('/isolated/modals/', '/dev/isolated/modals');
+routes.add('/ui/typo', '/dev/ui/typo');
+routes.add('/ui/typo/', '/dev/ui/typo');
 
-routes.add('/isolated/forms', '/dev/isolated/forms');
-routes.add('/isolated/forms/', '/dev/isolated/forms');
+routes.add('/ui/list', '/dev/ui/list');
+routes.add('/ui/list/', '/dev/ui/list');
 
-routes.add('/isolated/rick', '/dev/isolated/rick');
-routes.add('/isolated/rick/', '/dev/isolated/rick');
+routes.add('/ui/buttons', '/dev/ui/buttons');
+routes.add('/ui/buttons/', '/dev/ui/buttons');
+
+routes.add('/ui/inputs', '/dev/ui/inputs');
+routes.add('/ui/inputs/', '/dev/ui/inputs');
+
+routes.add('/ui/modals', '/dev/ui/modals');
+routes.add('/ui/modals/', '/dev/ui/modals');
+
+routes.add('/ui/rick', '/dev/ui/rick');
+routes.add('/ui/rick/', '/dev/ui/rick');
 
 //
 // Dev Tools
