@@ -22,7 +22,7 @@ export function DevDocsScaffold(props: {
                 {props.hideSidebar !== true && (
                     <XView width="300px" backgroundColor={ThemeDefault.backgroundTertiary}>
                         <UListGroup header="UI">
-                            <UListItem title="Typography" path="/ui/typo" />
+                            <UListItem title="Typography" path="/ui" />
                             <UListItem title="List items" path="/ui/list" />
                             <UListItem title="Buttons" path="/ui/buttons" />
                             <UListItem title="Inputs" path="/ui/inputs" />
