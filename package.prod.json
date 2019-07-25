@@ -107,6 +107,7 @@
         "react-virtualized": "^9.21.0",
         "web-animations-js": "^2.3.2",
         "mental-log": "^1.4.16",
-        "quill": "^1.3.6"
+        "quill": "^1.3.6",
+        "emoji-regex": "^8.0.0"
     }
 }
