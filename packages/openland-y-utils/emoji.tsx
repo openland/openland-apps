@@ -1,18 +1,8 @@
 import * as React from 'react';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { emojiExtract } from './emojiExtract';
 import { css } from 'linaria';
 
 let baseUrl = 'https://cdn.openland.com/shared/emoji/';
-export class EmojiFlags {
-    static ignoreEmojione = canUseDOM && localStorage.getItem('meke_web_great_again') === 'true';
-}
-
-type SizeT = 10 | 12 | 13 | 14 | 15 | 16 | 18 | 20 | 25 | 38;
-
-// get native from short
-// if paste depends on native, how it can work on other platforms? (BAD)
-// better to make it depend on shortname
 
 const emojiStyle = css`
    height: 1em;
@@ -22,10 +12,6 @@ const emojiStyle = css`
 `;
 
 export function emoji(src: string) {
-    if (EmojiFlags.ignoreEmojione) {
-        return src;
-    }
-
     let emojies = emojiExtract(src);
     if (emojies.length === 0) {
         return src;
