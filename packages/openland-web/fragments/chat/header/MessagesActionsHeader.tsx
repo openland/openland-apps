@@ -1,0 +1,147 @@
+import * as React from 'react';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { css, cx } from 'linaria';
+import { XView } from 'react-mental';
+import { MessagesActionsStateEngine } from 'openland-engines/messenger/MessagesActionsState';
+import { pluralForm } from 'openland-y-utils/plural';
+import { TypeTitle2 } from 'openland-web/utils/TypeStyles';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import CloseIcon from 'openland-icons/s/ic-close-16.svg';
+
+const containerClass = css`
+    position: absolute;
+    display: flex;
+    transition: transform cubic-bezier(0, 0, 0.2, 1) 150ms, opacity cubic-bezier(0, 0, 0.2, 1) 150ms;
+    opacity: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #fff; // ThemeDefault.backgroundPrimary
+    transform: translateY(-100%);
+`;
+
+const containerVisibleClass = css`
+    transform: translateY(0);
+    opacity: 1;
+`;
+
+const animateCenterDown = css`
+    animation: anim 150ms cubic-bezier(0, 0, 0.2, 1);
+    @keyframes anim {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+    }
+    transform: translateY(100%);
+    opacity: 0;
+`;
+
+const animateCenterUp = css`
+    animation: anim 150ms cubic-bezier(0, 0, 0.2, 1);
+    @keyframes anim {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(-100%);
+        }
+    }
+    opacity: 0;
+    transform: translateY(-100%);
+`;
+
+const animateDownCenter = css`
+    animation: anim 150ms cubic-bezier(0, 0, 0.2, 1);
+    @keyframes anim {
+        from {
+            transform: translateY(100%);
+        }
+        to {
+            transform: translateY(0);
+        }
+    }
+    transform: translateY(0);
+`;
+
+const animateUpCenter = css`
+    animation: anim 150ms cubic-bezier(0, 0, 0.2, 1);
+    @keyframes anim {
+        from {
+            transform: translateY(-100%);
+        }
+        to {
+            transform: translateY(0);
+        }
+    }
+    transform: translateY(0);
+`;
+
+const Counter = (props: { engine: MessagesActionsStateEngine }) => {
+    let countRef = React.useRef(0);
+
+    let state = props.engine.useState();
+
+    let count = state.messages.length;
+    let old = countRef.current;
+    let increment = count > (old);
+
+    countRef.current = count;
+
+    let width = (count.toString()).length * 12;
+    return (
+        <XView flexDirection="row" alignItems="center" justifyContent="flex-start" onClick={props.engine.clear} cursor="pointer">
+            <span className={TypeTitle2}>
+                <span key={count + '_old'} className={increment ? animateCenterUp : animateCenterDown} style={{ width, display: 'inline-block', position: 'absolute' }}>{old}</span>
+                <span key={count + '_new'} className={increment ? animateDownCenter : animateUpCenter} style={{ width, display: 'inline-block' }}>{count}</span>
+                {` ${pluralForm(count, ['message', 'messages'])} selected`}
+            </span>
+            <XView width={32} height={32} alignItems="center" justifyContent="center">
+                <UIcon icon={<CloseIcon />} />
+            </XView>
+        </XView>
+    );
+};
+
+const Buttons = (props: { engine: MessagesActionsStateEngine }) => {
+    let state = props.engine.useState();
+    let canDelete = !state.messages.filter(m => !m.sender.isYou).length; // || useRole('super-admin')
+    return (
+        <XView flexDirection="row">
+            <div className={canDelete ? animateUpCenter : animateCenterUp}><UButton text="Delete" style="secondary" /></div>
+            <UButton text="Reply" marginLeft={8} />
+            <UButton text="Forward" marginLeft={8} />
+        </XView>
+    );
+};
+
+export const MessagesActionsHeader = (props: { chatId: string }) => {
+    let containerRef = React.useRef<HTMLDivElement>(null);
+    let engine = React.useContext(MessengerContext).getConversation(props.chatId).messagesActionsState;
+
+    React.useEffect(() => {
+        engine.listen(state => {
+            if (containerRef.current) {
+                containerRef.current.className = cx(containerClass, state.messages.length && containerVisibleClass);
+            }
+        });
+    }, []);
+
+    return (
+        <div ref={containerRef} className={containerClass} >
+            <XView flexGrow={1} justifyContent="space-between" alignItems="center" flexDirection="row">
+                <Counter engine={engine} />
+                <Buttons engine={engine} />
+            </XView>
+        </div>
+    );
+    //
+};

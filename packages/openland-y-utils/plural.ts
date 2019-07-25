@@ -1,1 +1,2 @@
 export const plural = (n: number, forms: string[]): string => n + ' ' + (n === 1 ? forms[0] : forms[1]);
+export const pluralForm = (n: number, forms: string[]): string => (n === 1 ? forms[0] : forms[1]);

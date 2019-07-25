@@ -9,6 +9,7 @@ import { XDate } from 'openland-x/XDate';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { MessagesActionsHeader } from './MessagesActionsHeader';
 
 const secondary = css`
     color: #969AA3;
@@ -80,7 +81,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     let title = props.chat.__typename === 'PrivateRoom' ? props.chat.user.name : props.chat.title;
     let photo = props.chat.__typename === 'PrivateRoom' ? props.chat.user.photo : props.chat.photo;
     return (
-        <XView flexDirection="row" flexGrow={1} flexBasis={0} minWidth={0}>
+        <XView flexDirection="row" flexGrow={1} flexBasis={0} minWidth={0} position="relative">
             <XView paddingTop={8} paddingRight={16}>
                 <UAvatar
                     size="medium"
@@ -132,6 +133,8 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     : (<UButton text="Info" style="secondary" path={`/group/${props.chat.id}`} />)
                 }
             </XView>
+            <MessagesActionsHeader chatId={props.chat.id} />
+
         </XView>
     );
 });

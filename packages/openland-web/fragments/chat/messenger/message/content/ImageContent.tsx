@@ -32,6 +32,7 @@ const imgMediaClass = css`
         height: auto;
     }
     z-index: 2;
+    will-change: opacity;
 `;
 
 const imgPreviewClass = css`

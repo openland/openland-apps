@@ -35,8 +35,8 @@ const messageContentAreaClass = css`
 `;
 
 const messageContainerSelectedClass = css`
-    background-color: #f0f2f5; //ThemeDefault.backgroundTertiary
-
+    background-color: #F0F2F5; // ThemeDefault.backgroundTertiary
+   
     .message-buttons-wrapper {
         background-color: #fff; // ThemeDefault.backgroundPrimary
     }

@@ -12,15 +12,13 @@ export class MessagesActionsStateEngine {
     private state: MessagesActionsState = { messages: [] };
     private listeners = new Set<(state: MessagesActionsState) => void>();
 
-    private setState = (state: Partial<MessagesActionsState>) => {
-        this.state = { ...this.state, ...state };
-        this.notifyAll();
-    }
+    ////
+    // Actions
+    ////
 
-    forwardFromDonor = () => {
-        if (forwardDonor) {
-            this.forwardFrom(forwardDonor.getState().messages, forwardDonor);
-        }
+    forwardInit = (message?: DataSourceMessageItem) => {
+        this.setState({ action: 'forwardInit', ... (message ? { messages: [message] } : {}) });
+        forwardDonor = this;
     }
 
     forwardFrom = (messages: DataSourceMessageItem[], from: MessagesActionsStateEngine) => {
@@ -30,9 +28,10 @@ export class MessagesActionsStateEngine {
         }
     }
 
-    forwardInit = (message?: DataSourceMessageItem) => {
-        this.setState({ action: 'forwardInit', ... (message ? { messages: [message] } : {}) });
-        forwardDonor = this;
+    forwardFromDonor = () => {
+        if (forwardDonor) {
+            this.forwardFrom(forwardDonor.getState().messages, forwardDonor);
+        }
     }
 
     reply = (message: DataSourceMessageItem) => {
@@ -45,12 +44,20 @@ export class MessagesActionsStateEngine {
 
     selectToggle = (message: DataSourceMessageItem) => {
         if (!(this.state.messages || []).find(m => (m.id === message.id) || (m.key === message.key))) {
-            this.state.messages.push(message);
-            this.notifyAll();
+            this.setState({ messages: [...this.state.messages, message] });
         } else {
             this.setState({ messages: this.state.messages.filter(m => m.id !== message.id) });
         }
     }
+
+    clear = () => {
+        this.state = { messages: [] };
+        this.notifyAll();
+    }
+
+    ////
+    // IO
+    ////
 
     listen = (listener: (state: MessagesActionsState) => void) => {
         this.listeners.add(listener);
@@ -62,23 +69,38 @@ export class MessagesActionsStateEngine {
 
     listenSelect = (message: DataSourceMessageItem, listener: (selected: boolean) => void) => {
         return this.listen((s) => {
-            listener(!!s.messages.find(m => (m.id === message.id) || (m.key === message.key)));
+            listener(!!s.messages.find(m => (m.id && (m.id === message.id)) || (m.key === message.key)));
         });
-    }
-
-    clear = () => {
-        this.state = { messages: [] };
-        this.notifyAll();
     }
 
     getState = () => {
         return this.state;
     }
 
+    useState = () => {
+        let [state, setState] = React.useState(this.state);
+        React.useEffect(() => {
+            return this.listen((s) => {
+                console.warn('boom', 'updated');
+                setState(s);
+            });
+        }, []);
+        return state;
+    }
+
+    ////
+    // Util
+    ////
+
     private notifyAll = () => {
         for (let l of this.listeners) {
             l(this.state);
         }
+    }
+
+    private setState = (state: Partial<MessagesActionsState>) => {
+        this.state = { ...this.state, ...state };
+        this.notifyAll();
     }
 }
 
@@ -86,7 +108,7 @@ export const useMessageSelected = (engine: MessagesActionsStateEngine, message: 
     let [selected, setSelected] = React.useState(false);
     React.useEffect(() => {
         return engine.listen((s) => {
-            setSelected(!!s.messages.find(m => (m.id === message.id) || (m.key === message.key)));
+            setSelected(!!s.messages.find(m => (m.id && (m.id === message.id)) || (m.key === message.key)));
         });
     }, [message]);
     let toggleSelect = React.useCallback(() => {
