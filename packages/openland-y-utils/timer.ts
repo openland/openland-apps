@@ -23,18 +23,27 @@ export function debounce<T extends (...args: any[]) => any>(f: T, ms: number): T
 
 export function throttle<T extends (...args: any[]) => any>(f: T, wait: number): T {
     let isCalled = false;
+    let savedArgs: any[] | null; 
 
-    return ((...args: any[]) => {
-        if (!isCalled) {
-            f(...args);
-
-            isCalled = true;
-
-            setTimeout(() => {
-                isCalled = false;
-            }, wait);
+    const wrapper = ((...args: any[]) => {
+        if (isCalled) {
+            savedArgs = args;
+            return;
         }
+
+        f(...args);
+        isCalled = true;
+        
+        setTimeout(() => {
+            isCalled = false;
+            if (savedArgs) {
+                wrapper(...args);
+                savedArgs = null;
+            }
+        }, wait);
     }) as any;
+
+    return wrapper;
 }
 
 export async function backoff<T>(callback: () => Promise<T>, repeat?: number): Promise<T> {
