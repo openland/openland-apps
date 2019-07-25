@@ -4,10 +4,10 @@ import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import { MessagesActionsStateEngine } from 'openland-engines/messenger/MessagesActionsState';
 import { pluralForm } from 'openland-y-utils/plural';
-import { TypeTitle2 } from 'openland-web/utils/TypeStyles';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import CloseIcon from 'openland-icons/s/ic-close-16.svg';
+import { TextTitle2 } from 'openland-web/utils/TextStyles';
 
 const containerClass = css`
     position: absolute;
@@ -99,7 +99,7 @@ const Counter = (props: { engine: MessagesActionsStateEngine }) => {
     let width = (count.toString()).length * 12;
     return (
         <XView flexDirection="row" alignItems="center" justifyContent="flex-start" onClick={props.engine.clear} cursor="pointer">
-            <span className={TypeTitle2}>
+            <span className={TextTitle2}>
                 <span key={count + '_old'} className={increment ? animateCenterUp : animateCenterDown} style={{ width, display: 'inline-block', position: 'absolute' }}>{old}</span>
                 <span key={count + '_new'} className={increment ? animateDownCenter : animateUpCenter} style={{ width, display: 'inline-block' }}>{count}</span>
                 {` ${pluralForm(count, ['message', 'messages'])} selected`}
