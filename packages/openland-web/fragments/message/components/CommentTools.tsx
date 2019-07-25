@@ -13,18 +13,24 @@ const dateClass = css`
 
 interface CommentToolsProps {
     date: number;
+    deleted: boolean;
     onReplyClick: () => void;
     onDeleteClick: () => void;
 }
 
 export const CommentTools = React.memo((props: CommentToolsProps) => {
-    const { date, onReplyClick, onDeleteClick } = props;
+    const { date, deleted, onReplyClick, onDeleteClick } = props;
 
     return (
         <div className={wrapper}>
             <URelativeDate date={date} className={dateClass} />
-            <div onClick={onReplyClick}>Reply</div>
-            <div onClick={onDeleteClick}>Delete</div>
+
+            {!deleted && (
+                <>
+                    <div onClick={onReplyClick}>Reply</div>
+                    <div onClick={onDeleteClick}>Delete</div>
+                </>
+            )}
         </div>
     );
 });

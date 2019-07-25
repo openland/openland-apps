@@ -41,6 +41,7 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Mes
                 <CommentView
                     key={'comment-' + item.id}
                     comment={item.comment}
+                    deleted={item.deleted}
                     depth={getDepthOfComment(item, commentsMap)}
                     onReplyClick={handleReplyClick}
                     onDeleteClick={handleDeleteClick}

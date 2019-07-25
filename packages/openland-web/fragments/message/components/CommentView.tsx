@@ -26,6 +26,7 @@ const content = css`
 
 interface CommentViewProps {
     comment: MessageComments_messageComments_comments_comment;
+    deleted: boolean;
     depth: number;
     highlighted: boolean;
     groupId?: string;
@@ -35,7 +36,7 @@ interface CommentViewProps {
 }
 
 export const CommentView = React.memo((props: CommentViewProps) => {
-    const { comment, depth, highlighted, groupId, onReplyClick, onDeleteClick, onSent } = props;
+    const { comment, deleted, depth, highlighted, groupId, onReplyClick, onDeleteClick, onSent } = props;
     const { id, sender, edited, message, attachments, spans, fallback, date, } = comment;
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
     const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
@@ -71,6 +72,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                 />
                 <CommentTools
                     date={date}
+                    deleted={deleted}
                     onReplyClick={() => onReplyClick(id)}
                     onDeleteClick={() => onDeleteClick(id)}
                 />
