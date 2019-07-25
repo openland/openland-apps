@@ -6,6 +6,7 @@ import { FullMessage, Message_message_GeneralMessage } from 'openland-api/Types'
 import { MessageContent } from 'openland-web/fragments/chat/messenger/message/MessageContent';
 import { convertDsMessage, DataSourceWebMessageItem } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { Span } from 'openland-y-utils/spans/Span';
+import { SenderView } from './SenderView';
 
 export const MessageView = React.memo((props: { message: Message_message_GeneralMessage }) => {
     const { message } = props;
@@ -22,14 +23,21 @@ export const MessageView = React.memo((props: { message: Message_message_General
     }, [message.message, message.spans]);
 
     return (
-        <MessageContent
-            id={message.id}
-            text={message.message}
-            textSpans={textSpans}
-            isEdited={message.edited}
-            reply={reply}
-            attachments={message.attachments}
-            fallback={message.fallback}
-        />
+        <div>
+            <SenderView
+                sender={message.sender}
+                date={message.date}
+                edited={message.edited}
+            />
+            <MessageContent
+                id={message.id}
+                text={message.message}
+                textSpans={textSpans}
+                edited={message.edited}
+                reply={reply}
+                attachments={message.attachments}
+                fallback={message.fallback}
+            />
+        </div>
     );
 });

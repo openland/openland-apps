@@ -5,7 +5,7 @@ import { Span } from 'openland-y-utils/spans/Span';
 
 export interface MessageTextComponentProps {
     spans: Span[];
-    isEdited: boolean;
+    edited: boolean;
     shouldCrop?: boolean;
 }
 
@@ -46,13 +46,13 @@ const EditLabelStyle = css`
 `;
 
 export const MessageTextComponent = React.memo<MessageTextComponentProps>(
-    ({ shouldCrop, spans, isEdited }) => {
+    ({ shouldCrop, spans, edited }) => {
         return (
             <div className={spansMessageWrapper}>
                 <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                     <span>
                         <SpannedView spans={spans} />
-                        {isEdited && (
+                        {edited && (
                             <span className={EditLabelStyle}>(Edited)</span>
                         )}
                     </span>
@@ -63,12 +63,12 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(
 );
 
 export const MessageTextComponentSpanned = React.memo<MessageTextComponentProps>(
-    ({ shouldCrop, spans, isEdited }) => {
+    ({ shouldCrop, spans, edited }) => {
         return (
             <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                 <span>
                     <SpannedView spans={spans} />
-                    {isEdited && (
+                    {edited && (
                         <span className={EditLabelStyle}>(Edited)</span>
                     )}
                 </span>

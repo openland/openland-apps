@@ -119,7 +119,7 @@ class CommentsNotificationsInner extends React.PureComponent<
                 id={data.item.id}
                 text={data.item.text}
                 textSpans={data.item.textSpans}
-                isEdited={data.item.isEdited}
+                edited={data.item.isEdited}
                 reply={data.item.replyWeb}
                 attachments={data.item.attachments}
                 fallback={data.item.fallback}

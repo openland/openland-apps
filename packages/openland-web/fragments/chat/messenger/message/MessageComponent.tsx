@@ -70,7 +70,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
                 id={message.id}
                 text={message.text}
                 textSpans={message.textSpans}
-                isEdited={message.isEdited}
+                edited={message.isEdited}
                 reply={message.replyWeb}
                 attachments={message.attachments}
                 fallback={message.fallback}

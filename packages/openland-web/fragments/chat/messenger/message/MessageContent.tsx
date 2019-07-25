@@ -12,14 +12,14 @@ interface MessageContentProps {
     id?: string;
     text?: string | null;
     textSpans?: Span[];
-    isEdited?: boolean;
+    edited?: boolean;
     reply?: DataSourceWebMessageItem[];
     attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string })[];
     fallback?: string;
 }
 
 export const MessageContent = (props: MessageContentProps) => {
-    const { id, text, textSpans = [], isEdited, reply, attachments = [], fallback } = props;
+    const { id, text, textSpans = [], edited, reply, attachments = [], fallback } = props;
     const imageAttaches = attachments.filter(a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
     const documentsAttaches = attachments.filter(a => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
     const augmenationAttaches = attachments.filter(a => a.__typename === 'MessageRichAttachment') as FullMessage_GeneralMessage_attachments_MessageRichAttachment[] || [];
@@ -37,7 +37,7 @@ export const MessageContent = (props: MessageContentProps) => {
     });
 
     if (hasText) {
-        content.push(<MessageTextComponent spans={textSpans} isEdited={!!isEdited} />);
+        content.push(<MessageTextComponent spans={textSpans} edited={!!edited} />);
     }
 
     documentsAttaches.map(file => {
@@ -50,7 +50,7 @@ export const MessageContent = (props: MessageContentProps) => {
 
     if (!content.length) {
         const unsupportedText = 'Unsupported content: ' + fallback;
-        content.push(<MessageTextComponent spans={[{ type: SpanType.italic, offset: 0, length: unsupportedText.length, childrens: [{ type: SpanType.text, text, offset: 0, length: unsupportedText.length } as SpanText] }]} isEdited={false} />);
+        content.push(<MessageTextComponent spans={[{ type: SpanType.italic, offset: 0, length: unsupportedText.length, childrens: [{ type: SpanType.text, text, offset: 0, length: unsupportedText.length } as SpanText] }]} edited={false} />);
     }
 
     return <>{content}</>;

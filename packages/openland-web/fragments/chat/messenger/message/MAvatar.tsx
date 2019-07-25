@@ -68,7 +68,14 @@ const AvatarImage = React.memo((props: { photo: string }) => {
     );
 });
 
-export const MAvatar = (props: { senderNameEmojify: any, senderName: string, senderId: string, senderPhoto?: string }) => {
+interface MAvatarProps {
+    senderNameEmojify: string | JSX.Element;
+    senderName: string;
+    senderId: string;
+    senderPhoto?: string | null;
+}
+
+export const MAvatar = (props: MAvatarProps) => {
     let res = <AvatarPlaceholder titleEmoji={props.senderNameEmojify} title={props.senderName} id={props.senderId} />;
     if (props.senderPhoto && !props.senderPhoto.startsWith('ph://')) {
         res = <AvatarImage photo={props.senderPhoto} />;
