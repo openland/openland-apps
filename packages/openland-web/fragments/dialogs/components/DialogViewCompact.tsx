@@ -79,10 +79,7 @@ export const DialogViewCompact = React.memo(
                             whiteSpace="nowrap"
                             textOverflow="ellipsis"
                         >
-                            {emoji({
-                                src: dialog.title,
-                                size: 16,
-                            })}
+                            {emoji(dialog.title)}
                         </XView>
                         {dialog.date && (
                             <XView

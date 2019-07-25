@@ -53,11 +53,7 @@ const AvatarPlaceholder = React.memo((props: UAvatarProps) => {
             hoverTextDecoration="none"
         >
             {titleEmoji ||
-                emoji({
-                    src: ph,
-                    size: 20,
-                    cache: true,
-                })}
+                emoji(ph)}
         </XView>
     );
 });

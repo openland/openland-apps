@@ -176,20 +176,13 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                     const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
                     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
 
-                    const emojifyText = (msg: string) => emoji({ src: msg, size: 14 });
+                    const emojifyText = (msg: string) => emoji(msg);
 
                     return (
                         <DialogView
                             item={{
-                                titleEmojify: emoji({
-                                    src: title,
-                                    size: 16,
-                                }),
-                                titlePlaceholderEmojify: emoji({
-                                    src: extractPlaceholder(title),
-                                    size: 20,
-                                    cache: true,
-                                }),
+                                titleEmojify: emoji(title),
+                                titlePlaceholderEmojify: emoji(extractPlaceholder(title)),
                                 senderEmojify: message.sender && emojifyText(message.sender.name),
                                 messageEmojify: message.message && emojifyText(message.message),
                                 message: message.message || undefined,

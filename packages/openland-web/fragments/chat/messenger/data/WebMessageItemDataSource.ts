@@ -18,18 +18,12 @@ export function convertDsMessage(src: DataSourceMessageItem): DataSourceWebMessa
         ...src,
         senderNameEmojify:
             src.type === 'message' && !src.attachTop
-                ? emoji({
-                    src: src.sender.name,
-                    size: 16,
-                })
+                ? emoji(src.sender.name)
                 : undefined,
 
         textSpans: processSpans(src.text || '', src.spans),
         senderBadgeNameEmojify: src.senderBadge
-            ? emoji({
-                src: src.senderBadge.name,
-                size: 12,
-            })
+            ? emoji(src.senderBadge.name)
             : undefined,
         replyWeb: (src.reply || []).map(convertDsMessage)
     };

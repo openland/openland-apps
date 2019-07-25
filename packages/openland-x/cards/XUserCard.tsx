@@ -224,16 +224,13 @@ export const XUserCard = ({
                             {role && <Tooltip role={role} customOwnerText={customOwnerText} />}
                             <XView minWidth={0} flexShrink={1}>
                                 <div className={userNameClassname}>
-                                    {emoji({
-                                        src: user.name || '',
-                                        size: 16,
-                                    })}
+                                    {emoji(user.name || '')}
                                 </div>
                             </XView>
                             {!isMobile && organizationElem}
                             {!isMobile && badge && (
                                 <XView marginLeft={7}>
-                                    <XFeatured text={emoji({ src: badge.name, size: 16 })} />
+                                    <XFeatured text={emoji(badge.name)} />
                                 </XView>
                             )}
                         </XView>

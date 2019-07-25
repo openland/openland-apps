@@ -145,11 +145,7 @@ const UserPopperContent = XMemo(
                             hidePopper();
                         } : undefined}
                     >
-                        {emoji({
-                            src: user.name,
-                            size: 16,
-                            cache: true,
-                        })}
+                        {emoji(user.name)}
                     </XView>
                     <OrgTitle>{organizationName}</OrgTitle>
                     {(!isMe || !!customButton) && (

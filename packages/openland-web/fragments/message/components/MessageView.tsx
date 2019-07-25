@@ -25,7 +25,7 @@ export const MessageView = React.memo((props: { message: Message_message_General
     }, [message.message, message.spans]);
 
     React.useEffect(() => {
-        setSenderNameEmojify(emoji({ src: message.sender.name, size: 16 }));
+        setSenderNameEmojify(emoji(message.sender.name));
     }, [message.sender.name]);
 
     return (

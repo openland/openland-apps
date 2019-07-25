@@ -4,10 +4,7 @@ import { emoji } from 'openland-y-utils/emoji';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 
 const emojifyMessage = (msg: string) => {
-    return emoji({
-        src: msg,
-        size: 14,
-    });
+    return emoji(msg);
 };
 
 export interface DialogListWebItem extends DialogDataSourceItem {
@@ -23,15 +20,8 @@ export function dialogListWebDataSource(
 ): DataSource<DialogListWebItem> {
     return dialogs.batched().throttledMap(src => ({
         ...src,
-        titleEmojify: emoji({
-            src: src.title,
-            size: 16,
-        }),
-        titlePlaceholderEmojify: emoji({
-            src: extractPlaceholder(src.title),
-            size: 20,
-            cache: true,
-        }),
+        titleEmojify: emoji(src.title),
+        titlePlaceholderEmojify: emoji(extractPlaceholder(src.title)),
         senderEmojify: src.sender && emojifyMessage(src.sender),
         typingEmojify: src.typing && emojifyMessage(src.typing),
         messageEmojify: src.message && emojifyMessage(src.message),

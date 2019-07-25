@@ -46,7 +46,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
     }, [message, spans]);
 
     React.useEffect(() => {
-        setSenderNameEmojify(emoji({ src: sender.name, size: 16 }));
+        setSenderNameEmojify(emoji(sender.name));
     }, [sender.name]);
 
     return (

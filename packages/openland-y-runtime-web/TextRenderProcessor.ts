@@ -6,20 +6,7 @@ import { cropSpecSymbols } from 'openland-y-utils/spans/cropSpecSymbols';
 
 export const TextRenderProccessor: TextRenderProccessorApi = {
     processSpan(type: SpanType, text: string, size?: 'default' | 'big' | 'huge') {
-        let emojiSize: 16 | 20 | 38 = 16;
-
-        if (size === 'big') {
-            emojiSize = 20;
-        }
-
-        if (size === 'huge') {
-            emojiSize = 38;
-        }
-
-        return emoji({
-            src: text,
-            size: emojiSize
-        });
+        return emoji(text);
     },
 
     cropSpecSymbols(spans: Span[], parent: Span, symbolObject: SpecSymbolsType) {

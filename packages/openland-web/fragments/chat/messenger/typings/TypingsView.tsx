@@ -44,7 +44,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                 marginTop={8}
                 marginBottom={8}
             >
-                <div className={typingClassName}>{emoji({ src: typing, size: 15 })}</div>
+                <div className={typingClassName}>{emoji(typing)}</div>
             </XView>
         );
     }
