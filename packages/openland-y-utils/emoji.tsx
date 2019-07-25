@@ -40,12 +40,12 @@ export function emoji({
     }
 
     let height = size || 32;
-    let assetSize = 32;
-    let assetRetinaSize = 64;
-    if (height > 32) {
-        assetSize = 64;
-        assetRetinaSize = 128;
-    }
+    // let assetSize = 32;
+    // let assetRetinaSize = 64;
+    // if (height > 32) {
+    //     assetSize = 64;
+    //     assetRetinaSize = 128;
+    // }
 
     let emojies = emojiExtract(src);
     if (emojies.length === 0) {
