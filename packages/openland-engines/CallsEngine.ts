@@ -55,7 +55,13 @@ export class CallsEngine {
     useState = () => {
         let [res, setRes] = React.useState(this._state);
         React.useEffect(() => {
-            this._stateSubscriptions.push((s) => setRes(s));
+            this._stateSubscriptions.push(setRes);
+            return () => {
+                let ind = this._stateSubscriptions.indexOf(setRes);
+                if (ind >= 0) {
+                    this._stateSubscriptions.splice(ind, 1);
+                }
+            };
         }, []);
         return res;
     }
