@@ -25,7 +25,7 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
                 description={<UPresence user={user} />}
                 avatar={{ photo, id, title: name }}
             >
-                {!isYou && <UButton text="Message" path={'/mail/' + id} />}
+                {!isYou && <UButton text={isBot ? 'View messages' : 'Message'} path={'/mail/' + id} />}
                 {!isYou && conversation && conversation.__typename === 'PrivateRoom' && (
                     <UNotificationsSwitch
                         id={conversation.id}
