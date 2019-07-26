@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { useClient } from 'openland-web/utils/useClient';
 import { CommentView } from './CommentView';
-import { CommentWatch_event_CommentUpdateSingle_update, MessageComments_messageComments_comments } from 'openland-api/Types';
+import { CommentWatch_event_CommentUpdateSingle_update, MessageComments_messageComments_comments, MessageReactionType, MessageComments_messageComments_comments_comment } from 'openland-api/Types';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 interface CommentsListProps {
     messageId: string;
@@ -15,6 +16,7 @@ interface CommentsListProps {
 
 const CommentsListInner = React.memo((props: CommentsListProps & { comments: MessageComments_messageComments_comments[] }) => {
     const client = useClient();
+    const messenger = React.useContext(MessengerContext);
     const { messageId, groupId, comments, onSent } = props;
     const [highlightId, setHighlightId] = React.useState<string | undefined>(undefined);
 
@@ -38,6 +40,18 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Mes
         builder.show();
     }, []);
 
+    const handleReactionClick = React.useCallback((comment: MessageComments_messageComments_comments_comment) => {
+        const { id, reactions } = comment;
+        const r = MessageReactionType.LIKE;
+        const remove = reactions && reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === r).length > 0;
+
+        if (remove) {
+            client.mutateCommentUnsetReaction({ commentId: id, reaction: r });
+        } else {
+            client.mutateCommentSetReaction({ commentId: id, reaction: r });
+        }
+    }, []);
+
     const commentsMap = {};
 
     comments.map(comment => { commentsMap[comment.id] = comment; });
@@ -53,6 +67,7 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Mes
                     depth={getDepthOfComment(item, commentsMap)}
                     onReplyClick={handleReplyClick}
                     onDeleteClick={handleDeleteClick}
+                    onReactionClick={handleReactionClick}
                     highlighted={highlightId === item.comment.id}
                     groupId={groupId}
                     onSent={handleCommentSent}

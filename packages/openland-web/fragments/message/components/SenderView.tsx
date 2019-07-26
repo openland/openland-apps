@@ -4,6 +4,7 @@ import { css, cx } from 'linaria';
 import { FullMessage_GeneralMessage_sender } from 'openland-api/Types';
 import { MAvatar } from 'openland-web/fragments/chat/messenger/message/MAvatar';
 import { TextLabel1, TextCaption } from 'openland-web/utils/TextStyles';
+import { formatTime } from 'openland-y-utils/formatTime';
 
 const wrapperClass = css`
     display: flex;
@@ -64,7 +65,7 @@ const editClass = css`
 
 interface SenderViewProps {
     sender: FullMessage_GeneralMessage_sender;
-    date: number;
+    date: string;
     senderNameEmojify: string | JSX.Element;
 }
 
@@ -95,7 +96,7 @@ export const SenderView = React.memo((props: SenderViewProps) => {
                     </div>
                 </div>
                 <div className={cx(TextCaption, dateClass)}>
-                    {date}
+                    {formatTime(parseInt(date, 10))}
                 </div>
             </div>
         </div>
