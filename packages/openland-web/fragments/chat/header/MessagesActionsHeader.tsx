@@ -102,8 +102,8 @@ const Counter = (props: { engine: MessagesActionsStateEngine }) => {
     return (
         <XView flexDirection="row" alignItems="center" justifyContent="flex-start" onClick={props.engine.clear} cursor="pointer">
             <span className={TextTitle2}>
-                <span key={count + '_old'} className={increment ? animateCenterUp : animateCenterDown} style={{ width, display: 'inline-block', position: 'absolute' }}>{old}</span>
-                <span key={count + '_new'} className={increment ? animateDownCenter : animateUpCenter} style={{ width, display: 'inline-block' }}>{count}</span>
+                <span key={count + '_old'} className={increment ? animateCenterDown : animateCenterUp} style={{ width, display: 'inline-block', position: 'absolute' }}>{old}</span>
+                <span key={count + '_new'} className={increment ? animateUpCenter : animateDownCenter} style={{ width, display: 'inline-block' }}>{count}</span>
                 {` ${pluralForm(count, ['message', 'messages'])} selected`}
             </span>
             <XView width={32} height={32} alignItems="center" justifyContent="center">
