@@ -3,6 +3,7 @@ import * as QuillType from 'quill';
 import { css } from 'linaria';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { UserForMention } from 'openland-api/Types';
+import { emojiLink } from 'openland-y-utils/emojiLink';
 
 const quillStyle = css`
     flex-grow: 1;
@@ -100,7 +101,7 @@ function loadQuill() {
             static create(data: any) {
                 const node = super.create() as HTMLImageElement;
                 node.className = emojiStyle;
-                node.src = 'https://cdn.openland.com/shared/emoji/64/' + data.name + '.png';
+                node.src = emojiLink(data.name);
                 node.dataset.value = data.value;
                 node.dataset.name = data.name;
                 return node;

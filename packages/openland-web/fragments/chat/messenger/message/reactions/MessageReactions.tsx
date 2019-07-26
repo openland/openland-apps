@@ -7,14 +7,15 @@ import { TextCaption } from 'openland-web/utils/TextStyles';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
 import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
+import { emojiLink } from 'openland-y-utils/emojiLink';
 
 const reactionsImagesMap: { [key in MessageReactionType]: string } = {
-    'LIKE': 'https://cdn.openland.com/shared/emoji/64/2764.png',
-    'THUMB_UP': 'https://cdn.openland.com/shared/emoji/64/1f44d.png',
-    'JOY': 'https://cdn.openland.com/shared/emoji/64/1f602.png',
-    'SCREAM': 'https://cdn.openland.com/shared/emoji/64/1f631.png',
-    'CRYING': 'https://cdn.openland.com/shared/emoji/64/1f622.png',
-    'ANGRY': 'https://cdn.openland.com/shared/emoji/64/1f92c.png'
+    'LIKE': emojiLink('2764'),
+    'THUMB_UP': emojiLink('1f44d'),
+    'JOY': emojiLink('1f602'),
+    'SCREAM': emojiLink('1f631'),
+    'CRYING': emojiLink('1f622'),
+    'ANGRY': emojiLink('1f92c')
 };
 
 const reactionsWrapper = css`

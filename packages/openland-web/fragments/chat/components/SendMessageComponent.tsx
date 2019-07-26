@@ -12,6 +12,8 @@ import { useClient } from 'openland-web/utils/useClient';
 import { RoomMembers_members_user } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { searchMentions } from 'openland-engines/mentions/searchMentions';
+import { emojiSuggest } from 'openland-y-utils/emojiSuggest';
+import { emojiComponent } from 'openland-y-utils/emojiComponent';
 
 const attachButtonWrapper = css`
     display: flex;
@@ -134,6 +136,48 @@ const MentionUserComponent = (props: MentionUserComponentProps) => (
     </XView>
 );
 
+const EmojiSuggestionComponent = (props: { name: string, value: string, display: string }) => (
+    <XView
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-between"
+        flexGrow={1}
+        height={40}
+        paddingHorizontal={16}
+    >
+        <XView fontSize={18} width={28} height={28}>
+            {emojiComponent(props.name)}
+        </XView>
+        <XView
+            marginLeft={12}
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+            flexGrow={1}
+        >
+            <XView flexDirection="row" alignItems="center" flexGrow={1}>
+                <XView
+                    fontSize={13}
+                    fontWeight="600"
+                    lineHeight={1.54}
+                    color="#171B1F"
+                >
+                    {props.display}
+                </XView>
+            </XView>
+            <XView
+                fontSize={12}
+                lineHeight={1.5}
+                color="#676D7A"
+                flexDirection="row"
+            >
+                <XView paddingTop={3} marginRight={5}>↵</XView>
+                <XView>to select</XView>
+            </XView>
+        </XView>
+    </XView>
+);
+
 const mentionsContainer = css`
     position: absolute;
     bottom: 100%;
@@ -158,7 +202,7 @@ interface AutoCompleteComponentRef {
 }
 
 const AutoCompleteComponent = React.memo(React.forwardRef((props: {
-    groupId: string, activeWord: string | null,
+    groupId?: string, activeWord: string | null,
     onSelected: (user: RoomMembers_members_user) => void,
     onEmojiSelected: (emoji: { name: string, value: string }) => void
 }, ref: React.Ref<AutoCompleteComponentRef>) => {
@@ -225,14 +269,51 @@ const AutoCompleteComponent = React.memo(React.forwardRef((props: {
         />
     ), []);
 
-    const client = useClient();
+    const emojiItemRender = React.useCallback((v: any) => (
+        <EmojiSuggestionComponent
+            name={v.name}
+            value={v.value}
+            display={v.shortcode}
+        />
+    ), []);
 
-    let members = client.useWithoutLoaderRoomMembers({ roomId: props.groupId });
-    if (!members || !members.members) {
-        return null;
+    if (props.groupId) {
+        const client = useClient();
+        let members = client.useWithoutLoaderRoomMembers({ roomId: props.groupId });
+        if (!members || !members.members) {
+            return null;
+        }
+
+        if (word && !word.startsWith(':')) {
+            // Mentions
+            let matched: any[];
+            if (word) {
+                matched = searchMentions(word, members.members).map(v => ({ key: v.user.id, data: v.user }));
+            } else {
+                matched = [];
+            }
+
+            return (
+                <div
+                    className={mentionsContainer}
+                    style={{
+                        opacity: props.activeWord ? 1 : 0,
+                        transform: `translateY(${props.activeWord ? 0 : 10}px)`,
+                        pointerEvents: props.activeWord ? 'auto' : 'none'
+                    }}
+                >
+                    <UNavigableList
+                        data={matched}
+                        render={itemRender}
+                        onSelected={props.onSelected}
+                        ref={listRef}
+                    />
+                </div>
+            );
+        }
     }
-
     if (word && word.startsWith(':')) {
+        let filtered = emojiSuggest(word).map((v) => ({ key: v.name, data: v }));
         return (
             <div
                 className={mentionsContainer}
@@ -242,36 +323,17 @@ const AutoCompleteComponent = React.memo(React.forwardRef((props: {
                     pointerEvents: props.activeWord ? 'auto' : 'none'
                 }}
             >
-                <UButton text="Send" onClick={() => props.onEmojiSelected({ name: '1f923', value: '🤣' })} />
+                {/* <UButton text={'filtered-' + filtered.length} onClick={() => props.onEmojiSelected({ name: '1f923', value: '🤣' })} /> */}
+                <UNavigableList
+                    data={filtered}
+                    render={emojiItemRender}
+                    onSelected={props.onEmojiSelected}
+                    ref={listRef}
+                />
             </div>
         );
     }
-
-    // Mentions
-    let matched: any[];
-    if (word) {
-        matched = searchMentions(word, members.members).map(v => ({ key: v.user.id, data: v.user }));
-    } else {
-        matched = [];
-    }
-
-    return (
-        <div
-            className={mentionsContainer}
-            style={{
-                opacity: props.activeWord ? 1 : 0,
-                transform: `translateY(${props.activeWord ? 0 : 10}px)`,
-                pointerEvents: props.activeWord ? 'auto' : 'none'
-            }}
-        >
-            <UNavigableList
-                data={matched}
-                render={itemRender}
-                onSelected={props.onSelected}
-                ref={listRef}
-            />
-        </div>
-    );
+    return null;
 }));
 
 interface SendMessageComponentProps {
@@ -353,15 +415,13 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
 
     return (
         <XView flexGrow={1} flexShrink={1} maxHeight={250} paddingVertical={16} position="relative">
-            {props.groupId && (
-                <AutoCompleteComponent
-                    onSelected={onUserPicked}
-                    onEmojiSelected={onEmojiPicked}
-                    groupId={props.groupId}
-                    activeWord={activeWord}
-                    ref={suggestRef}
-                />
-            )}
+            <AutoCompleteComponent
+                onSelected={onUserPicked}
+                onEmojiSelected={onEmojiPicked}
+                groupId={props.groupId}
+                activeWord={activeWord}
+                ref={suggestRef}
+            />
             <XView flexGrow={1} flexShrink={1}>
                 <URickInput
                     ref={ref}

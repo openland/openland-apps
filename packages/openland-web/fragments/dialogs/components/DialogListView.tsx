@@ -28,6 +28,7 @@ const dialogSearchWrapperClassName = css`
 
 export interface DialogListViewProps {
     onDialogClick?: (id: string) => void;
+    onSearchItemPress?: (a: string) => void;
     onSearchItemSelected: (a: GlobalSearch_items | null) => void;
 }
 
@@ -146,6 +147,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                             <DialogSearchResults
                                 variables={{ query: query }}
                                 onClick={() => setQuery('')}
+                                onSearchItemPress={props.onSearchItemPress}
                                 onSearchItemSelected={props.onSearchItemSelected}
                             />
                         </div>

@@ -2,11 +2,11 @@ import * as React from 'react';
 import { DataSourceMessageItem } from "./ConversationEngine";
 
 export interface MessagesActionsState {
-    action?: 'forwardInit' | 'forward' | 'reply' | 'edit';
+    action?: 'forward' | 'reply' | 'edit';
     messages: DataSourceMessageItem[];
 }
 
-let forwardDonor: MessagesActionsStateEngine | undefined;
+let toForward: DataSourceMessageItem[] | undefined;
 
 export class MessagesActionsStateEngine {
     private state: MessagesActionsState = { messages: [] };
@@ -16,22 +16,22 @@ export class MessagesActionsStateEngine {
     // Actions
     ////
 
-    forwardInit = (message?: DataSourceMessageItem) => {
-        this.setState({ action: 'forwardInit', ... (message ? { messages: [message] } : {}) });
-        forwardDonor = this;
+    forwardInit = () => {
+        toForward = this.state.messages;
+        this.clear();
     }
 
-    forwardFrom = (messages: DataSourceMessageItem[], from: MessagesActionsStateEngine) => {
-        this.setState({ messages, action: 'forward' });
-        if (this !== from) {
+    forwardFrom = (messages: DataSourceMessageItem[], from?: MessagesActionsStateEngine) => {
+        if (from && (this !== from)) {
             from.clear();
         }
+        this.setState({ messages, action: 'forward' });
     }
 
     forwardFromDonor = () => {
-        if (forwardDonor) {
-            this.forwardFrom(forwardDonor.getState().messages, forwardDonor);
-            forwardDonor = undefined;
+        if (toForward) {
+            this.forwardFrom(toForward);
+            toForward = undefined;
         }
     }
 
