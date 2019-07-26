@@ -34,7 +34,7 @@ export function emojiExtract(src: string): { name: string, start: number, length
         res.push({
             name: toCodePoints(removeVS16s(match[0])).join('-'),
             start: match.index!,
-            length: [...match[0]].length + 1
+            length: [...match[0]].length  * 2
         });
     }
     return res;

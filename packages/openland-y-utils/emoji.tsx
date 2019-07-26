@@ -9,6 +9,7 @@ const emojiStyle = css`
    width: 1em;
    margin: 0 .05em 0 .1em;
    vertical-align: -0.1em;
+   svg { max-height: 100%; };
 `;
 
 export function emoji(src: string) {
