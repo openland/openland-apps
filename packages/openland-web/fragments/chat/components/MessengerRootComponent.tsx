@@ -5,7 +5,6 @@ import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEng
 import {
     ConversationEngine,
     ConversationStateHandler,
-    DataSourceMessageItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import { ConversationMessagesComponent } from '../messenger/ConversationMessagesComponent';
