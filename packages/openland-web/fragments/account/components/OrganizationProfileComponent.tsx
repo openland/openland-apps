@@ -94,7 +94,7 @@ interface RemoveJoinedModalProps {
     member: OrganizationMembers_organization_members;
 }
 
-export const RemoveJoinedModal = (props: RemoveJoinedModalProps & { hide: () => void }) => {
+const RemoveJoinedModal = (props: RemoveJoinedModalProps & { hide: () => void }) => {
     const client = useClient();
 
     const { member } = props;
