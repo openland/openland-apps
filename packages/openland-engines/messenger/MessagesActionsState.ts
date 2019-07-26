@@ -47,10 +47,10 @@ export class MessagesActionsStateEngine {
         if (this.state.action) {
             return;
         }
-        if (!(this.state.messages || []).find(m => (m.id === message.id) || (m.key === message.key))) {
+        if (!(this.state.messages || []).find(m => (m.key === message.key))) {
             this.setState({ messages: [...this.state.messages, message] });
         } else {
-            this.setState({ messages: this.state.messages.filter(m => m.id !== message.id) });
+            this.setState({ messages: this.state.messages.filter(m => m.key !== message.key) });
         }
     }
 
@@ -73,7 +73,7 @@ export class MessagesActionsStateEngine {
 
     listenSelect = (message: DataSourceMessageItem, listener: (selected: boolean) => void) => {
         return this.listen((s) => {
-            listener(!!s.messages.find(m => (m.id && (m.id === message.id)) || (m.key === message.key)) && !s.action);
+            listener(!!s.messages.find(m => (m.key === message.key)) && !s.action);
         });
     }
 
@@ -111,7 +111,7 @@ export const useMessageSelected = (engine: MessagesActionsStateEngine, message: 
     let [selected, setSelected] = React.useState(false);
     React.useEffect(() => {
         return engine.listen((s) => {
-            setSelected(!!s.messages.find(m => (m.id && (m.id === message.id)) || (m.key === message.key)) && !s.action);
+            setSelected(!!s.messages.find(m => (m.key === message.key)) && !s.action);
         });
     }, [message]);
     let toggleSelect = React.useCallback(() => {
