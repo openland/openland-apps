@@ -6,17 +6,14 @@ import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { MAvatar } from 'openland-web/fragments/chat/messenger/message/MAvatar';
 import { emoji } from 'openland-y-utils/emoji';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { CommentTools } from './CommentTools';
 import { CommentInput } from './CommentInput';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
-import LikeIcon from 'openland-icons/s/ic-like-24.svg';
+import LikeIcon from 'openland-icons/s/ic-like-densed-filled-24.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-
-const wrapper = css`
-    display: flex;
-    flex-direction: row;
-`;
+import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { ThemeDefault } from 'openland-y-utils/themes';
 
 const avatarWrapper = css`
     flex-shrink: 0;
@@ -38,6 +35,25 @@ const reactionsWrapper = css`
     justify-content: center;
     cursor: pointer;
     flex-shrink: 0;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: transform cubic-bezier(0, 0, 0.2, 1) 150ms, opacity cubic-bezier(0, 0, 0.2, 1) 150ms;
+`;
+
+const reactionsLikedWrapper = css`
+    opacity: 1;
+    transform: translateX(0);
+`;
+
+const wrapper = css`
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+
+    &:hover .${reactionsWrapper} {
+        opacity: 1;
+        transform: translateX(0);
+    }
 `;
 
 interface CommentViewProps {
@@ -48,12 +64,14 @@ interface CommentViewProps {
     groupId?: string;
     onReplyClick: (id: string) => void;
     onDeleteClick: (id: string) => void;
+    onReactionClick: (comment: MessageComments_messageComments_comments_comment) => void;
     onSent: (data: URickTextValue) => void;
 }
 
 export const CommentView = React.memo((props: CommentViewProps) => {
-    const { comment, deleted, depth, highlighted, groupId, onReplyClick, onDeleteClick, onSent } = props;
-    const { id, sender, edited, message, attachments, spans, fallback, date, } = comment;
+    const messenger = React.useContext(MessengerContext);
+    const { comment, deleted, depth, highlighted, groupId, onReplyClick, onDeleteClick, onReactionClick, onSent } = props;
+    const { id, sender, edited, message, attachments, spans, fallback, date, reactions } = comment;
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
     const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
 
@@ -65,8 +83,15 @@ export const CommentView = React.memo((props: CommentViewProps) => {
         setSenderNameEmojify(emoji(sender.name));
     }, [sender.name]);
 
+    let myLike = false;
+    reactions.map(r => {
+        if (r.user.id === messenger.user.id) {
+            myLike = true;
+        }
+    });
+
     return (
-        <div className={wrapper} style={{ paddingLeft: depth * 50 }}>
+        <div className={wrapper} style={{ paddingLeft: depth * 50 }} onDoubleClick={() => onReactionClick(comment)}>
             <div className={avatarWrapper}>
                 <MAvatar
                     senderId={sender.id}
@@ -102,8 +127,11 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                 )}
             </div>
             {!deleted && (
-                <div className={reactionsWrapper}>
-                    <UIcon icon={<LikeIcon />} />
+                <div className={cx(reactionsWrapper, reactions.length > 0 && reactionsLikedWrapper)} onClick={() => onReactionClick(comment)}>
+                    <UIcon
+                        icon={<LikeIcon />}
+                        color={myLike ? ThemeDefault.accentNegative : ThemeDefault.foregroundQuaternary}
+                    />
                 </div>
             )}
         </div>

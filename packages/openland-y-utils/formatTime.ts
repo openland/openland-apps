@@ -10,7 +10,7 @@ export function formatTime(date: number) {
     let hours = dt.getHours();
     let ampm = dt.getHours() < 12 ? 'AM' : 'PM';
     hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
-    return hours + ':' + addLeadingZero(dt.getMinutes()) + ampm;
+    return hours + ':' + addLeadingZero(dt.getMinutes()) + ' ' + ampm;
 }
 
 export function formatDateTime(date: number) {
