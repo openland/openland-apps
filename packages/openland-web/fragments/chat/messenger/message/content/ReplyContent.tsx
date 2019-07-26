@@ -2,12 +2,25 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { MessageContent } from '../MessageContent';
 import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
+import { MessageSenderContent } from '../MessageComponent';
 
 let replyMeesageGroupClass = css`
     display: flex;
     flex-direction: column;
-    border-left: 2px solid #C4C7CC;
     padding-left: 14px;
+    position: relative;
+    margin-top: 4px;
+
+    &::before {
+        content: '';
+        position: absolute;
+        height: calc(100% - 6px);
+        width: 2px;
+        left: 0;
+        top: 6px;
+        background-color: #c4c7cc;
+        border-radius: 2px;
+    }
 `;
 
 export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessageItem[] }) => {
@@ -15,7 +28,11 @@ export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessage
     let org = firstMessage.sender.primaryOrganization;
     return (
         <div className={replyMeesageGroupClass}>
-            <span>{firstMessage.senderNameEmojify} <span>{org && org.name}</span> <span>{firstMessage.date}</span></span>
+            <MessageSenderContent
+                name={firstMessage.senderNameEmojify}
+                org={org}
+                date={firstMessage.date}
+            />
             {props.quotedMessages.map(q => (
                 <MessageContent
                     key={q.id}
@@ -33,23 +50,25 @@ export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessage
 };
 
 export const ReplyContent = (props: { quotedMessages: DataSourceWebMessageItem[] }) => {
-    let content = props.quotedMessages.reduce((res, message, i, source) => {
-        // group messages by sender
-        let prev = source[i - 1];
-        let group: DataSourceWebMessageItem[];
-        if (message.sender.id === (prev && prev.sender.id)) {
-            group = res[res.length - 1];
-        } else {
-            group = [];
-            res.push(group);
-        }
-        group.push(message);
-        return res;
-    }, ([] as DataSourceWebMessageItem[][]))
+    let content = props.quotedMessages
+        .reduce(
+            (res, message, i, source) => {
+                // group messages by sender
+                let prev = source[i - 1];
+                let group: DataSourceWebMessageItem[];
+                if (message.sender.id === (prev && prev.sender.id)) {
+                    group = res[res.length - 1];
+                } else {
+                    group = [];
+                    res.push(group);
+                }
+                group.push(message);
+                return res;
+            },
+            [] as DataSourceWebMessageItem[][],
+        )
         .map((group, i) => {
             return <ReplyMessagesGroup key={i} {...props} quotedMessages={group} />;
         });
-    return (
-        <>{content}</>
-    );
+    return <>{content}</>;
 };

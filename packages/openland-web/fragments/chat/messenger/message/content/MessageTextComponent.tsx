@@ -18,11 +18,11 @@ const styleSpansMessageContainer = css`
     white-space: pre-wrap;
     word-wrap: break-word;
     max-width: 100%;
-    font-size: 14px;
-    line-height: 22px;
+    font-size: 15px;
+    line-height: 24px;
     letter-spacing: 0;
     font-weight: 400;
-    color: rgba(0, 0, 0, 0.8);
+    color: #171b1f; // ThemeDefault.foregroundPrimary
 `;
 
 const cropTextStyle = css`
@@ -52,9 +52,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(
                 <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                     <span>
                         <SpannedView spans={spans} />
-                        {edited && (
-                            <span className={EditLabelStyle}>(Edited)</span>
-                        )}
+                        {edited && <span className={EditLabelStyle}>(Edited)</span>}
                     </span>
                 </div>
             </div>
@@ -68,9 +66,7 @@ export const MessageTextComponentSpanned = React.memo<MessageTextComponentProps>
             <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                 <span>
                     <SpannedView spans={spans} />
-                    {edited && (
-                        <span className={EditLabelStyle}>(Edited)</span>
-                    )}
+                    {edited && <span className={EditLabelStyle}>(Edited)</span>}
                 </span>
             </div>
         );

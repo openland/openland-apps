@@ -7,6 +7,52 @@ import { css, cx } from 'linaria';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
 import { formatTime } from 'openland-y-utils/formatTime';
+import { UserShort_primaryOrganization } from 'openland-api/Types';
+
+const senderContainer = css`
+    display: flex;
+    align-items: center;
+`;
+
+const senderNameStyle = css`
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 24px
+    color: #171B1F; // ThemeDefault.foregroundPrimary
+`;
+
+const senderOrgAndDateStyle = css`
+    font-size: 13px;
+    line-height: 18px;
+    margin-left: 8px;
+    color: #676d7a; // ThemeDefault.foregroundSecondary
+`;
+
+const MessageSenderName = (props: { name: string }) => (
+    <div className={senderNameStyle}>{props.name}</div>
+);
+
+const MessageSenderOrg = (props: { org: string }) => (
+    <div className={senderOrgAndDateStyle}>{props.org}</div>
+);
+
+const MessageTime = (props: { time: number }) => (
+    <div className={senderOrgAndDateStyle}>{formatTime(props.time)}</div>
+);
+
+interface MessageSenderContentProps {
+    name?: string;
+    org: UserShort_primaryOrganization | null;
+    date: number;
+}
+
+export const MessageSenderContent = (props: MessageSenderContentProps) => (
+    <div className={senderContainer}>
+        {props.name && <MessageSenderName name={props.name} />}
+        {props.org && <MessageSenderOrg org={props.org.name} />}
+        <MessageTime time={props.date} />
+    </div>
+);
 
 const messageContainerClass = css`
     display: flex;
@@ -66,6 +112,7 @@ const noBorderRadiusMobile = css`
 `;
 
 const messageAvatarWrapper = css`
+    padding-top: 6px;
     display: flex;
     align-items: flex-start;
     flex-direction: row;
@@ -75,25 +122,6 @@ const messageAvatarWrapper = css`
 
 const noAvatarPlaceholder = css`
     padding-left: 56px;
-`;
-
-const senderContainer = css`
-    display: flex;
-    align-items: center;
-`;
-
-const senderNameStyle = css`
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 24px
-    color: #171B1F; // ThemeDefault.foregroundPrimary
-`;
-
-const senderOrgAndDateStyle = css`
-    font-size: 13px;
-    line-height: 18px;
-    margin-left: 8px;
-    color: #676d7a; // ThemeDefault.foregroundSecondary
 `;
 
 interface MessageComponentProps {
@@ -157,15 +185,11 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     );
 
     const sender = (
-        <div className={senderContainer}>
-            <div className={senderNameStyle}>{message.senderNameEmojify}</div>
-            {message.sender.primaryOrganization && (
-                <div className={senderOrgAndDateStyle}>
-                    {message.sender.primaryOrganization.name}
-                </div>
-            )}
-            <div className={senderOrgAndDateStyle}>{formatTime(message.date)}</div>
-        </div>
+        <MessageSenderContent
+            name={message.senderNameEmojify}
+            org={message.sender.primaryOrganization}
+            date={message.date}
+        />
     );
 
     return (
