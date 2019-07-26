@@ -17,10 +17,13 @@ export class TabRouter {
     readonly routing: URouting;
     readonly tabs: TabDefinition[];
     readonly stacks: StackRouter[];
+    readonly counters: number[];
     private id: string = randomKey();
     currentTab: number;
 
     onChangeListener?: (index: number) => void;
+
+    private _counterListeners: ((counters: number[]) => void)[] = [];
 
     constructor(tabs: TabDefinition[], defaultTab: number, routing: URouting) {
         if (defaultTab < 0 || defaultTab >= tabs.length) {
@@ -39,6 +42,11 @@ export class TabRouter {
         });
         this.currentTab = defaultTab;
         this.routing = routing;
+
+        this.counters = [];
+        for (let i = 0; i < tabs.length; i++) {
+            this.counters.push(0);
+        }
 
         // Sync with browser history
         let wasRestored = false;
@@ -130,6 +138,31 @@ export class TabRouter {
             });
         }
     }
+
+    //
+    // Counters
+    //
+
+    setCounter(index: number, counter: number) {
+        this.counters[index] = counter;
+        for (let l of this._counterListeners) {
+            l([...this.counters]);
+        }
+    }
+
+    onCountersChanged(handler: (counters: number[]) => void) {
+        this._counterListeners.push(handler);
+        return () => {
+            let r = this._counterListeners.indexOf(handler);
+            if (r >= 0) {
+                this._counterListeners.splice(r, 1);
+            }
+        };
+    }
+
+    //
+    // Tabs
+    //
 
     switchTab(index: number) {
         let destUrl = this.tryChangeTab(index);

@@ -7,6 +7,7 @@ import { StackLayout } from './StackLayout';
 import { css } from 'linaria';
 import { TabBarDesktop } from './TabBarDesktop';
 import { TabBarMobile } from './TabBarMobile';
+import { CounterContext } from './CounterContext';
 
 const containerMobile = css`
     display: flex;    
@@ -96,7 +97,9 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
                             <div key={'tab-' + i} className={selectedMounted === i ? visibleContainer : invisibleContainer}>
                                 <XView width="100%" height="100%" flexDirection="row" overflow="hidden" paddingBottom={52}>
                                     <XView key="root" width="100%" height="100%" position="relative" alignItems="flex-start" backgroundColor="#fff">
-                                        {props.router.tabs[i].component}
+                                        <CounterContext.Provider value={(c) => props.router.setCounter(i, c)}>
+                                            {props.router.tabs[i].component}
+                                        </CounterContext.Provider>
                                     </XView>
                                     <StackLayout key="stack" className={containerMobile} router={v} />
                                 </XView>
@@ -120,7 +123,9 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
                                     <XView key="sep1" width={1} backgroundColor="rgba(120, 128, 143, 0.08)" height="100%" />
                                     <XView key="root" maxWidth={370} flexShrink={1} flexGrow={1} height="100%" flexDirection="column">
                                         <XView width="100%" height="100%" position="relative" alignItems="flex-start" backgroundColor="#fff">
-                                            {props.router.tabs[i].component}
+                                            <CounterContext.Provider value={(c) => props.router.setCounter(i, c)}>
+                                                {props.router.tabs[i].component}
+                                            </CounterContext.Provider>
                                         </XView>
                                     </XView>
                                     <XView key="sep2" width={1} height="100%" backgroundColor="rgba(0, 0, 0, 0.08)" />
