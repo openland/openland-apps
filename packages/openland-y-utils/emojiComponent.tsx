@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
+import { emojiLink } from './emojiLink';
 
 const emojiStyle = css`
    height: 1em;
@@ -9,11 +10,10 @@ const emojiStyle = css`
 `;
 
 export function emojiComponent(name: string, key?: string) {
-    let url = 'https://cdn.openland.com/shared/emoji/128/' + name + '.png';
     return (
         <img
             className={emojiStyle}
-            src={url}
+            src={emojiLink(name)}
             key={key}
         />
     );
