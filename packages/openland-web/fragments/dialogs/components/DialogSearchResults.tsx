@@ -29,6 +29,7 @@ type DialogSearchResultsT = {
     onClick: () => void;
     onSelect?: () => void;
     variables: { query: string };
+    onSearchItemPress?: (a: string) => void;
     onSearchItemSelected: (a: GlobalSearch_items) => void;
 };
 
@@ -162,7 +163,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                         selected={selectedIndex === index}
                         key={i.id}
                         onSelect={props.onSelect}
-                        onClick={props.onClick}
+                        onClick={() => props.onSearchItemPress ? props.onSearchItemPress(i.id) : props.onClick}
                         item={item}
                     />
                 );
@@ -203,7 +204,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                                 sender: message.sender.name,
                             }}
                             key={message.id}
-                            onPress={() => router!.navigate(`/mail/${chat.id}`)}
+                            onPress={() => props.onSearchItemPress ? props.onSearchItemPress(chat.id) : router!.navigate(`/mail/${chat.id}`)}
                         />
                     );
                 })}

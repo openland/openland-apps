@@ -22,7 +22,8 @@ export const DialogViewCompact = React.memo(
         return (
             <XView
                 selected={props.selected}
-                path={path}
+                path={!props.onClick ? path : undefined}
+                onClick={props.onClick}
                 height={50}
                 flexDirection="row"
                 paddingLeft={16}
@@ -31,16 +32,16 @@ export const DialogViewCompact = React.memo(
                 hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
                 hoverTextDecoration="none"
                 cursor="pointer"
-                // selectedBackgroundColor="#4596e1"
-                // selectedHoverBackgroundColor="#4596e1"
-                // onClick={() => {
-                //     if (props.onSelect) {
-                //         props.onSelect(props.item.key);
-                //     }
-                //     if (props.onClick) {
-                //         props.onClick();
-                //     }
-                // }}
+            // selectedBackgroundColor="#4596e1"
+            // selectedHoverBackgroundColor="#4596e1"
+            // onClick={() => {
+            //     if (props.onSelect) {
+            //         props.onSelect(props.item.key);
+            //     }
+            //     if (props.onClick) {
+            //         props.onClick();
+            //     }
+            // }}
             >
                 <XAvatar
                     objectName={dialog.title}

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { MessengerRootComponent } from './components/MessengerRootComponent';
 import { XView } from 'react-mental';
 import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarComponent';
-import { ForwardPlaceholder } from './ForwardPlaceholder';
 import { useClient } from 'openland-web/utils/useClient';
 import { SharedRoomPlaceholder } from '../invite/InviteLandingComponent';
 import { UHeader } from 'openland-unicorn/UHeader';
@@ -50,7 +49,6 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
                     alignSelf="stretch"
                     alignItems="stretch"
                 >
-                    <ForwardPlaceholder chatId={chat.id} />
                     <TalkBarComponent chat={chat} />
                     <XView
                         flexGrow={1}

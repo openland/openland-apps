@@ -17,7 +17,7 @@ const senderContainer = css`
 const senderNameStyle = css`
     font-size: 15px;
     font-weight: 600;
-    line-height: 24px
+    line-height: 24px;
     color: #171B1F; // ThemeDefault.foregroundPrimary
 `;
 

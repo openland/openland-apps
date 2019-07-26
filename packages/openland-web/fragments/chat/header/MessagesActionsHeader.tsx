@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { css, cx } from 'linaria';
-import { XView } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { MessagesActionsStateEngine } from 'openland-engines/messenger/MessagesActionsState';
 import { pluralForm } from 'openland-y-utils/plural';
 import { UButton } from 'openland-web/components/unicorn/UButton';
@@ -10,6 +10,8 @@ import CloseIcon from 'openland-icons/s/ic-close-16.svg';
 import { TextTitle2 } from 'openland-web/utils/TextStyles';
 import { showDeleteMessageModal as showDeleteMessagesModal } from '../components/MessengerRootComponent';
 import { useClient } from 'openland-web/utils/useClient';
+import { showChatPicker } from '../showChatPicker';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 
 const containerClass = css`
     position: absolute;
@@ -115,7 +117,7 @@ const Counter = (props: { engine: MessagesActionsStateEngine }) => {
     );
 };
 
-const Buttons = (props: { engine: MessagesActionsStateEngine }) => {
+const Buttons = (props: { engine: MessagesActionsStateEngine, chatId: string }) => {
     let client = useClient();
     let deleteCallback = React.useCallback(() => {
         let ids = props.engine.getState().messages.filter(m => !!m.id).map(m => m.id!);
@@ -124,8 +126,13 @@ const Buttons = (props: { engine: MessagesActionsStateEngine }) => {
             props.engine.clear();
         });
     }, []);
+    let layout = useLayout();
+    const router = React.useContext(XViewRouterContext);
     let forwardCallback = React.useCallback(() => {
-        props.engine.forwardInit();
+        showChatPicker((id: string) => {
+            props.engine.forwardInit();
+            router!.navigate('/mail/' + id);
+        }, layout);
     }, []);
     let replyCallback = React.useCallback(() => {
         props.engine.reply();
@@ -157,7 +164,7 @@ export const MessagesActionsHeader = (props: { chatId: string }) => {
         <div ref={containerRef} className={containerClass} >
             <XView flexGrow={1} justifyContent="space-between" alignItems="center" flexDirection="row">
                 <Counter engine={engine} />
-                <Buttons engine={engine} />
+                <Buttons engine={engine} chatId={props.chatId} />
             </XView>
         </div>
     );
