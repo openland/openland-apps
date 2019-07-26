@@ -163,7 +163,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                         selected={selectedIndex === index}
                         key={i.id}
                         onSelect={props.onSelect}
-                        onClick={() => props.onSearchItemPress ? props.onSearchItemPress(i.id) : props.onClick}
+                        onClick={() => props.onSearchItemPress ? props.onSearchItemPress(i.id) : props.onClick()}
                         item={item}
                     />
                 );

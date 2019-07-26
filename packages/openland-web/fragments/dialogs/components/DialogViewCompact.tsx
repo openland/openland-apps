@@ -22,7 +22,7 @@ export const DialogViewCompact = React.memo(
         return (
             <XView
                 selected={props.selected}
-                path={!props.onClick ? path : undefined}
+                path={path}
                 onClick={props.onClick}
                 height={50}
                 flexDirection="row"
