@@ -35,6 +35,13 @@ const mentionStyle = css`
     padding-bottom: 1px;
 `;
 
+const emojiStyle = css`
+   height: 1em;
+   width: 1em;
+   margin: 0 .05em 0 .1em;
+   vertical-align: -0.1em;
+`;
+
 export interface URickTextValue {
     text: string;
     mentions: UserForMention[];
@@ -44,7 +51,7 @@ export interface URickInputInstance {
     clear: () => void;
     focus: () => void;
     getText: () => URickTextValue;
-    commitSuggestion(src: UserForMention): void;
+    commitSuggestion(type: 'mention' | 'emoji', src: UserForMention | { name: string, value: string }): void;
 }
 
 export interface URickInputProps {
@@ -67,12 +74,11 @@ let Quill: typeof QuillType.Quill;
 function loadQuill() {
     if (!Quill) {
         Quill = require('quill') as typeof QuillType.Quill;
+        const Embed = Quill.import('blots/embed');
 
         // Mentions Blot
-        const Embed = Quill.import('blots/embed');
         class MentionBlot extends Embed {
             static create(data: any) {
-                console.log(data);
                 const node = super.create() as HTMLSpanElement;
                 node.className = mentionStyle;
                 node.innerText = data.name;
@@ -88,6 +94,26 @@ function loadQuill() {
         MentionBlot.tagName = 'span';
         MentionBlot.className = 'mention';
         Quill.register(MentionBlot);
+
+        // Emoji Blot
+        class EmojiBlot extends Embed {
+            static create(data: any) {
+                const node = super.create() as HTMLImageElement;
+                node.className = emojiStyle;
+                node.src = 'https://cdn.openland.com/shared/emoji/64/' + data.name + '.png';
+                node.dataset.value = data.value;
+                node.dataset.name = data.name;
+                return node;
+            }
+
+            static value(domNode: HTMLImageElement) {
+                return { value: domNode.dataset.value, name: domNode.dataset.name };
+            }
+        }
+        EmojiBlot.blotName = 'emoji';
+        EmojiBlot.tagName = 'img';
+        EmojiBlot.className = 'emoji';
+        Quill.register(EmojiBlot);
     }
 }
 
@@ -135,6 +161,9 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                                 res += '@' + c.insert.mention.name;
                                 mentions.push(c.insert.mention);
                             }
+                            if (c.insert.emoji) {
+                                res += c.insert.emoji.value;
+                            }
                         }
                     }
                 }
@@ -143,11 +172,11 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                 return { text: '', mentions: [] };
             }
         },
-        commitSuggestion: (src: any) => {
+        commitSuggestion: (type: 'mention' | 'emoji', src: any) => {
             setTimeout(() => {
                 let ed = editor.current;
                 if (ed) {
-                    let selection = ed.getSelection();
+                    let selection = ed.getSelection(true);
                     if (selection) {
                         let autocompleteWord: string | null = null;
                         let activeWord = extractActiveWord(ed);
@@ -163,12 +192,13 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                         if (!autocompleteWord) {
                             return;
                         }
-
                         // WARNING: Do not change order of lines.
                         // It seems there is a bug in Quill that inserts a new line when 
                         // deleting text up to the end
-                        ed.insertEmbed(selection.index, 'mention', src, 'user');
-                        ed.insertText(selection.index + 1, ' ', 'user');
+                        ed.insertEmbed(selection.index, type, src, 'user');
+                        if (type === 'mention') {
+                            ed.insertText(selection.index + 1, ' ', 'user');
+                        }
                         ed.deleteText(selection.index - autocompleteWord.length, autocompleteWord.length + selection.length, 'user');
                         ed.setSelection(selection.index + 1, 1, 'user');
                     }
@@ -178,7 +208,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
     }));
 
     React.useLayoutEffect(() => {
-        let q = new Quill(containerRef.current!, { formats: ['mention'], placeholder: props.placeholder });
+        let q = new Quill(containerRef.current!, { formats: ['mention', 'emoji'], placeholder: props.placeholder });
         if (props.initialText) {
             q.setText(props.initialText);
         }
