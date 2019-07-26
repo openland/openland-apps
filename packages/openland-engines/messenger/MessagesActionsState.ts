@@ -85,7 +85,6 @@ export class MessagesActionsStateEngine {
         let [state, setState] = React.useState(this.state);
         React.useEffect(() => {
             return this.listen((s) => {
-                console.warn('boom', 'updated');
                 setState(s);
             });
         }, []);
