@@ -24,13 +24,9 @@ import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
 import { throttle } from 'openland-y-utils/timer';
-import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { XButton } from 'openland-x/XButton';
-import { XLoader } from 'openland-x/XLoader';
-import { useForm } from 'openland-form/useForm';
-import { XModalController } from 'openland-x/showModal';
 import { MessageContent } from '../messenger/message/MessageContent';
 import { showModalBox } from 'openland-x/showModalBox';
 import { SendMessageComponent } from './SendMessageComponent';
@@ -123,45 +119,6 @@ export const DeleteUrlAugmentationComponent = withRouter(props => {
         </XModalForm>
     );
 });
-
-const cancelButtonClassName = css`
-    border: 1px solid #e7e7e7 !important;
-    background-color: rgb(242, 243, 244) !important;
-`;
-
-export const LeaveChatComponent = (props: { id: string; ctx: XModalController }) => {
-    const client = useClient();
-    const form = useForm();
-    const createAction = () => {
-        form.doAction(async () => {
-            await client.mutateRoomLeave({ roomId: props.id });
-            props.ctx.hide();
-        });
-    };
-    return (
-        <XView borderRadius={8}>
-            {form.loading && <XLoader loading={form.loading} />}
-            {form.error && <XErrorMessage message={form.error} />}
-            <XModalContent>
-                <XText>
-                    Are you sure you want to leave? You will need to request access to join it again
-                    in the future.
-                </XText>
-            </XModalContent>
-            <XModalFooter>
-                <XView marginRight={12}>
-                    <XButton
-                        text="Cancel"
-                        size="large"
-                        className={cancelButtonClassName}
-                        onClick={props.ctx.hide}
-                    />
-                </XView>
-                <XButton text="Leave" style="danger" size="large" onClick={createAction} />
-            </XModalFooter>
-        </XView>
-    );
-};
 
 const messageActonContainerClass = css`
     display: flex;
