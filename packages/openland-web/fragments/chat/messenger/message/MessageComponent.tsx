@@ -79,10 +79,15 @@ const buttonsClass = css`
     flex-direction: row;
 `;
 
+const buttonsMarginClass = css`
+    margin-top: 8px;
+`;
+
 const messageContentAreaClass = css`
     display: flex;
     flex-direction: column;
     padding-left: 16px;
+    flex-grow: 1;
 `;
 
 const messageContainerSelectedClass = css`
@@ -166,7 +171,12 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                 attachments={message.attachments}
                 fallback={message.fallback}
             />
-            <div className={buttonsClass}>
+            <div
+                className={cx(
+                    buttonsClass,
+                    (engine.isChannel || message.reactions.length > 0) && buttonsMarginClass,
+                )}
+            >
                 <MessageReactions message={message} />
                 <MessageCommentsButton message={message} isChannel={engine.isChannel || false} />
             </div>
