@@ -75,12 +75,9 @@ const messageInnerContainerClass = css`
 `;
 
 const buttonsClass = css`
+    margin-top: 8px;
     display: flex;
     flex-direction: row;
-`;
-
-const buttonsMarginClass = css`
-    margin-top: 8px;
 `;
 
 const messageContentAreaClass = css`
@@ -161,26 +158,22 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const onSelect = React.useCallback(toggleSelect, [message.id]);
 
     const content = (
-        <>
-            <MessageContent
-                id={message.id}
-                text={message.text}
-                textSpans={message.textSpans}
-                edited={message.isEdited}
-                reply={message.replyWeb}
-                attachments={message.attachments}
-                fallback={message.fallback}
-            />
-            <div
-                className={cx(
-                    buttonsClass,
-                    (engine.isChannel || message.reactions.length > 0) && buttonsMarginClass,
-                )}
-            >
-                <MessageReactions message={message} />
-                <MessageCommentsButton message={message} isChannel={engine.isChannel || false} />
-            </div>
-        </>
+        <MessageContent
+            id={message.id}
+            text={message.text}
+            textSpans={message.textSpans}
+            edited={message.isEdited}
+            reply={message.replyWeb}
+            attachments={message.attachments}
+            fallback={message.fallback}
+        />
+    );
+
+    const buttons = (
+        <div className={buttonsClass}>
+            <MessageReactions message={message} />
+            <MessageCommentsButton message={message} isChannel={engine.isChannel || false} />
+        </div>
     );
 
     const avatar = (
@@ -218,6 +211,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                 >
                     {!message.attachTop && sender}
                     {content}
+                    {(engine.isChannel || message.reactions.length > 0) && buttons}
                 </div>
             </div>
         </div>

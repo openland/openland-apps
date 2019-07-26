@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { MessageComponent } from '../message/MessageComponent';
+import { ServiceMessage } from '../message/ServiceMessage';
 import {
     ConversationEngine,
     DataSourceDateItem,
@@ -130,20 +131,23 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     }
 
     renderMessage = React.memo(
-        (
-            data: { item: (DataSourceWebMessageItem | DataSourceDateItem | DataSourceNewDividerItem) },
-        ) => {
+        (data: {
+            item: DataSourceWebMessageItem | DataSourceDateItem | DataSourceNewDividerItem;
+        }) => {
+            if (data.item.type === 'message' && data.item.isService) {
+                return <ServiceMessage message={data.item} />;
+            }
             if (data.item.type === 'message') {
-                return (
-                    <MessageComponent
-                        message={data.item}
-                        engine={this.props.conversation}
-                    />
-                );
+                return <MessageComponent message={data.item} engine={this.props.conversation} />;
             } else if (data.item.type === 'date') {
                 return <DateComponent item={data.item} />;
             } else if (data.item.type === 'new_divider') {
-                return <NewMessageDividerComponent dividerKey={(data.item as any).dataKey} scrollTo={{ key: '' }} />;
+                return (
+                    <NewMessageDividerComponent
+                        dividerKey={(data.item as any).dataKey}
+                        scrollTo={{ key: '' }}
+                    />
+                );
             }
             return <div />;
         },

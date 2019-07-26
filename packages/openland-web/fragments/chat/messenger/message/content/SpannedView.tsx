@@ -101,11 +101,29 @@ const insaneTextClassName = css`
     color: transparent;
 `;
 
+const mentionServiceClassName = css`
+    color: #676d7a;
+    font-weight: 600;
+`;
+
 const MentionedUser = React.memo(
-    ({ user, text, isYou }: { user: UserForMention; text: any; isYou: boolean }) => {
+    ({
+        user,
+        text,
+        isYou,
+        isService,
+    }: {
+        user: UserForMention;
+        text: any;
+        isYou: boolean;
+        isService?: boolean;
+    }) => {
         return (
             <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
-                <ULink path={`/${user.shortname || user.id}`}>
+                <ULink
+                    path={`/${user.shortname || user.id}`}
+                    className={cx(isService && mentionServiceClassName)}
+                >
                     {text}
                 </ULink>
             </UserPopper>
@@ -139,9 +157,23 @@ export const SpanView = React.memo<{ span: Span; children?: any; isService?: boo
     } else if (span.type === 'code_block') {
         return <div className={codeBlockClassName}>{children}</div>;
     } else if (span.type === 'mention_room') {
-        return <ULink path={'/group/' + span.id}>{children}</ULink>;
+        return (
+            <ULink
+                path={'/group/' + span.id}
+                className={cx(props.isService && mentionServiceClassName)}
+            >
+                {children}
+            </ULink>
+        );
     } else if (span.type === 'mention_user') {
-        return <MentionedUser isYou={span.user.isYou} text={children} user={span.user} />;
+        return (
+            <MentionedUser
+                isYou={span.user.isYou}
+                text={children}
+                user={span.user}
+                isService={props.isService}
+            />
+        );
         // } else if (span.type === 'mention_users') {
         //     let otherItems: JoinedUserPopperRowProps[] = [];
 
