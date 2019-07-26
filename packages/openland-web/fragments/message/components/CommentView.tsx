@@ -18,6 +18,10 @@ const wrapper = css`
     flex-direction: row;
 `;
 
+const avatarWrapper = css`
+    flex-shrink: 0;
+`;
+
 const content = css`
     display: flex;
     flex-grow: 1;
@@ -33,6 +37,7 @@ const reactionsWrapper = css`
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    flex-shrink: 0;
 `;
 
 interface CommentViewProps {
@@ -62,12 +67,14 @@ export const CommentView = React.memo((props: CommentViewProps) => {
 
     return (
         <div className={wrapper} style={{ paddingLeft: depth * 50 }}>
-            <MAvatar
-                senderId={sender.id}
-                senderName={sender.name}
-                senderNameEmojify={senderNameEmojify}
-                senderPhoto={sender.photo}
-            />
+            <div className={avatarWrapper}>
+                <MAvatar
+                    senderId={sender.id}
+                    senderName={sender.name}
+                    senderNameEmojify={senderNameEmojify}
+                    senderPhoto={sender.photo}
+                />
+            </div>
             <div className={content}>
                 <SenderViewCompact
                     sender={sender}
