@@ -136,8 +136,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         }) => {
             if (data.item.type === 'message' && data.item.isService) {
                 return <ServiceMessage message={data.item} />;
-            }
-            if (data.item.type === 'message') {
+            } else if (data.item.type === 'message') {
                 return <MessageComponent message={data.item} engine={this.props.conversation} />;
             } else if (data.item.type === 'date') {
                 return <DateComponent item={data.item} />;

@@ -104,6 +104,27 @@ const insaneTextClassName = css`
 const mentionServiceClassName = css`
     color: #676d7a;
     font-weight: 600;
+    
+    &:hover {
+        color: #676d7a;
+        text-decoration: none;
+    }
+`;
+
+const mentionClassName = css`
+    color: #1885f2;
+    font-weight: 600;
+    
+    &:hover {
+        color: #1885f2;
+        text-decoration: none;
+    }
+`;
+
+const mentionBgClassName = css`
+    background-color: #d6edff;
+    padding: 2px;
+    border-radius: 4px;
 `;
 
 const MentionedUser = React.memo(
@@ -122,7 +143,11 @@ const MentionedUser = React.memo(
             <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
                 <ULink
                     path={`/${user.shortname || user.id}`}
-                    className={cx(isService && mentionServiceClassName)}
+                    className={cx(
+                        mentionClassName,
+                        isYou && mentionBgClassName,
+                        isService && mentionServiceClassName,
+                    )}
                 >
                     {text}
                 </ULink>
