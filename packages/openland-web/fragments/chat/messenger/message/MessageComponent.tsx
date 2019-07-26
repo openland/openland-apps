@@ -6,6 +6,7 @@ import { MAvatar } from './MAvatar';
 import { css, cx } from 'linaria';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
+import { formatTime } from 'openland-y-utils/formatTime';
 
 const messageContainerClass = css`
     display: flex;
@@ -39,7 +40,7 @@ const messageContentAreaClass = css`
 `;
 
 const messageContainerSelectedClass = css`
-    background-color: #F0F2F5; // ThemeDefault.backgroundTertiary
+    background-color: #f0f2f5; // ThemeDefault.backgroundTertiary
 
     .message-buttons-wrapper {
         background-color: #fff; // ThemeDefault.backgroundPrimary
@@ -76,6 +77,25 @@ const noAvatarPlaceholder = css`
     padding-left: 56px;
 `;
 
+const senderContainer = css`
+    display: flex;
+    align-items: center;
+`;
+
+const senderNameStyle = css`
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 24px
+    color: #171B1F; // ThemeDefault.foregroundPrimary
+`;
+
+const senderOrgAndDateStyle = css`
+    font-size: 13px;
+    line-height: 18px;
+    margin-left: 8px;
+    color: #676d7a; // ThemeDefault.foregroundSecondary
+`;
+
 interface MessageComponentProps {
     message: DataSourceWebMessageItem;
     engine: ConversationEngine;
@@ -106,6 +126,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
         props.engine.messagesActionsStateEngine.selectToggle(props.message);
     }, []);
     const onSelect = React.useCallback(toggleSelect, [message.id]);
+
     const content = (
         <>
             <MessageContent
@@ -124,6 +145,29 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
         </>
     );
 
+    const avatar = (
+        <div className={messageAvatarWrapper}>
+            <MAvatar
+                senderPhoto={message.senderPhoto}
+                senderNameEmojify={message.senderNameEmojify}
+                senderName={message.senderName}
+                senderId={message.senderId}
+            />
+        </div>
+    );
+
+    const sender = (
+        <div className={senderContainer}>
+            <div className={senderNameStyle}>{message.senderNameEmojify}</div>
+            {message.sender.primaryOrganization && (
+                <div className={senderOrgAndDateStyle}>
+                    {message.sender.primaryOrganization.name}
+                </div>
+            )}
+            <div className={senderOrgAndDateStyle}>{formatTime(message.date)}</div>
+        </div>
+    );
+
     return (
         <div
             ref={containerRef}
@@ -131,18 +175,14 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             className={cx(messageContainerClass, attachesClassNames, noBorderRadiusMobile)}
         >
             <div className={messageInnerContainerClass}>
-                {!message.attachTop && (
-                    <div className={messageAvatarWrapper}>
-                        <MAvatar
-                            senderPhoto={message.senderPhoto}
-                            senderNameEmojify={message.senderNameEmojify}
-                            senderName={message.senderName}
-                            senderId={message.senderId}
-                        />
-                    </div>
-                )}
-                <div className={cx(messageContentAreaClass, message.attachTop && noAvatarPlaceholder)}>
-                    {props.message.senderNameEmojify}
+                {!message.attachTop && avatar}
+                <div
+                    className={cx(
+                        messageContentAreaClass,
+                        message.attachTop && noAvatarPlaceholder,
+                    )}
+                >
+                    {!message.attachTop && sender}
                     {content}
                 </div>
             </div>
