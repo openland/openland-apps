@@ -3,10 +3,21 @@
 // let emojiList = emojione.emojioneList;
 import emojiRegex from 'emoji-regex';
 
-const vs16RegExp = /\uFE0F/g;
+// const vs16RegExp = /\uFE0F/g;
 // avoid using a string literal like '\u200D' here because minifiers expand it inline
 const zeroWidthJoiner = String.fromCharCode(0x200d);
-const removeVS16s = (rawEmoji: string) => (rawEmoji.indexOf(zeroWidthJoiner) < 0 ? rawEmoji.replace(vs16RegExp, '') : rawEmoji);
+const alt = String.fromCharCode(0xfe0f);
+const removeVS16s = (rawEmoji: string) => {
+    let index;
+    while ((index = rawEmoji.indexOf(zeroWidthJoiner)) >= 0) {
+        rawEmoji = rawEmoji.substring(0, index) + rawEmoji.substring(index + 1);
+    }
+    while ((index = rawEmoji.indexOf(alt)) >= 0) {
+        rawEmoji = rawEmoji.substring(0, index) + rawEmoji.substring(index + 1);
+    }
+    return rawEmoji;
+};
+
 function toCodePoints(unicodeSurrogates: string): Array<string> {
     const points = [];
     let char = 0;
@@ -26,15 +37,23 @@ function toCodePoints(unicodeSurrogates: string): Array<string> {
     return points;
 }
 
+export function emojiConvertToName(src: string) {
+    console.log(src);
+    console.log(src.indexOf(zeroWidthJoiner));
+    let res = toCodePoints(removeVS16s(src)).join('-');
+    console.log(`${src} -> ${res}`);
+    return res;
+}
+
 export function emojiExtract(src: string): { name: string, start: number, length: number }[] {
     let res: { name: string, start: number, length: number }[] = [];
     let regex = emojiRegex();
     let match: RegExpMatchArray | null;
     while (match = regex.exec(src)) {
         res.push({
-            name: toCodePoints(removeVS16s(match[0])).join('-'),
+            name: emojiConvertToName(match[0]),
             start: match.index!,
-            length: [...match[0]].length  * 2
+            length: [...match[0]].length * 2
         });
     }
     return res;

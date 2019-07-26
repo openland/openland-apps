@@ -2759,4 +2759,5 @@ export default {
     asciiToUnicode,
     shortToUnicode,
     unicodeToShort,
+    EMOJI_DATA
 };
