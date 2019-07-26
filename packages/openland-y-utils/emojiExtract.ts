@@ -38,11 +38,7 @@ function toCodePoints(unicodeSurrogates: string): Array<string> {
 }
 
 export function emojiConvertToName(src: string) {
-    console.log(src);
-    console.log(src.indexOf(zeroWidthJoiner));
-    let res = toCodePoints(removeVS16s(src)).join('-');
-    console.log(`${src} -> ${res}`);
-    return res;
+    return toCodePoints(removeVS16s(src)).join('-');
 }
 
 export function emojiExtract(src: string): { name: string, start: number, length: number }[] {
