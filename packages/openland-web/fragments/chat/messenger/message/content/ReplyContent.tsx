@@ -10,6 +10,7 @@ let replyMeesageGroupClass = css`
     padding-left: 14px;
     position: relative;
     margin-top: 4px;
+    margin-bottom: 4px;
 
     &::before {
         content: '';
