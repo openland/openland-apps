@@ -44,6 +44,9 @@ export class MessagesActionsStateEngine {
     }
 
     selectToggle = (message: DataSourceMessageItem) => {
+        if (this.state.action) {
+            return;
+        }
         if (!(this.state.messages || []).find(m => (m.id === message.id) || (m.key === message.key))) {
             this.setState({ messages: [...this.state.messages, message] });
         } else {
