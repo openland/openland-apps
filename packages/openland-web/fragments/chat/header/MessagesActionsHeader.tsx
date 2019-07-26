@@ -92,6 +92,7 @@ const animateUpCenter = css`
 `;
 
 const Counter = (props: { engine: MessagesActionsStateEngine }) => {
+    let layout = useLayout();
     let countRef = React.useRef(0);
 
     let state = props.engine.useState();
@@ -108,7 +109,7 @@ const Counter = (props: { engine: MessagesActionsStateEngine }) => {
             <span className={TextTitle2}>
                 <span key={count + '_old'} className={increment ? animateCenterDown : animateCenterUp} style={{ width, display: 'inline-block', position: 'absolute' }}>{old}</span>
                 <span key={count + '_new'} className={increment ? animateUpCenter : animateDownCenter} style={{ width, display: 'inline-block' }}>{count}</span>
-                {` ${pluralForm(count, ['message', 'messages'])} selected`}
+                {layout === 'desktop' && ` ${pluralForm(count, ['message', 'messages'])} selected`}
             </span>
             <XView width={32} height={32} alignItems="center" justifyContent="center">
                 <UIcon icon={<CloseIcon />} />
