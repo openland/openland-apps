@@ -31,6 +31,14 @@ const messagesWrapperClassName = css`
     max-width: 1040px;
     padding-top: 96px;
     padding-bottom: 35px;
+
+    padding-left: 16px;
+    padding-right: 16px;
+
+    @media (max-width: 750px) {
+        padding-left: 0;
+        padding-right: 0;
+    }
 `;
 
 const mobileMessageWrapperClassName = css`

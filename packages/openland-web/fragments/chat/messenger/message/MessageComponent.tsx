@@ -11,15 +11,20 @@ const messageContainerClass = css`
     display: flex;
     flex-direction: row;
     flex-grow: 1;
-    flex-shrink: 1;
-    display: flex;
-    max-width: 984px;
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-top: 4px;
-    padding-bottom: 4px;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 8px;
     border-radius: 8px;
-    margin: 0 16px;
+    margin: 4px 0;
+`;
+
+const messageInnerContainerClass = css`
+    display: flex;
+    flex-direction: row;
+    max-width: 950px;
+    flex-grow: 1;
+    justify-content: start;
+    align-items: start;
 `;
 
 const buttonsClass = css`
@@ -30,42 +35,33 @@ const buttonsClass = css`
 const messageContentAreaClass = css`
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
     padding-left: 16px;
 `;
 
 const messageContainerSelectedClass = css`
     background-color: #F0F2F5; // ThemeDefault.backgroundTertiary
-   
+
     .message-buttons-wrapper {
         background-color: #fff; // ThemeDefault.backgroundPrimary
     }
 `;
 
-const attachClass = css`
+const attachTop = css`
+    margin-top: 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+`;
+
+const attachBottom = css`
+    margin-bottom: 0;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 `;
 
-const noAttach = css`
-    margin-top: 8px;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-`;
-
-const bottomAttach = css`
-    margin-top: 8px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-`;
-
-const topAttach = css`
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+const noBorderRadiusMobile = css`
+    @media (max-width: 750px) {
+        border-radius: 0;
+    }
 `;
 
 const messageAvatarWrapper = css`
@@ -90,10 +86,8 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
 
     const attachesClassNames = cx(
-        message.attachTop && message.attachBottom && attachClass,
-        !message.attachTop && !message.attachBottom && noAttach,
-        !message.attachTop && message.attachBottom && bottomAttach,
-        message.attachTop && !message.attachBottom && topAttach,
+        message.attachTop && attachTop,
+        message.attachBottom && attachBottom,
     );
 
     React.useEffect(() => {
@@ -102,6 +96,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                 containerRef.current.className = cx(
                     messageContainerClass,
                     attachesClassNames,
+                    noBorderRadiusMobile,
                     selected && messageContainerSelectedClass,
                 );
             }
@@ -133,21 +128,23 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
         <div
             ref={containerRef}
             onClick={onSelect}
-            className={cx(messageContainerClass, attachesClassNames)}
+            className={cx(messageContainerClass, attachesClassNames, noBorderRadiusMobile)}
         >
-            {!message.attachTop && (
-                <div className={messageAvatarWrapper}>
-                    <MAvatar
-                        senderPhoto={message.senderPhoto}
-                        senderNameEmojify={message.senderNameEmojify}
-                        senderName={message.senderName}
-                        senderId={message.senderId}
-                    />
+            <div className={messageInnerContainerClass}>
+                {!message.attachTop && (
+                    <div className={messageAvatarWrapper}>
+                        <MAvatar
+                            senderPhoto={message.senderPhoto}
+                            senderNameEmojify={message.senderNameEmojify}
+                            senderName={message.senderName}
+                            senderId={message.senderId}
+                        />
+                    </div>
+                )}
+                <div className={cx(messageContentAreaClass, message.attachTop && noAvatarPlaceholder)}>
+                    {props.message.senderNameEmojify}
+                    {content}
                 </div>
-            )}
-            <div className={cx(messageContentAreaClass, message.attachTop && noAvatarPlaceholder)}>
-                {props.message.senderNameEmojify}
-                {content}
             </div>
         </div>
     );
