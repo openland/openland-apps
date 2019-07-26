@@ -159,7 +159,8 @@ interface AutoCompleteComponentRef {
 
 const AutoCompleteComponent = React.memo(React.forwardRef((props: {
     groupId: string, activeWord: string | null,
-    onSelected: (user: RoomMembers_members_user) => void
+    onSelected: (user: RoomMembers_members_user) => void,
+    onEmojiSelected: (emoji: { name: string, value: string }) => void
 }, ref: React.Ref<AutoCompleteComponentRef>) => {
 
     const listRef = React.useRef<UNavigableListRef>(null);
@@ -223,6 +224,7 @@ const AutoCompleteComponent = React.memo(React.forwardRef((props: {
             primaryOrganization={v.primaryOrganization}
         />
     ), []);
+
     const client = useClient();
 
     let members = client.useWithoutLoaderRoomMembers({ roomId: props.groupId });
@@ -230,6 +232,22 @@ const AutoCompleteComponent = React.memo(React.forwardRef((props: {
         return null;
     }
 
+    if (word && word.startsWith(':')) {
+        return (
+            <div
+                className={mentionsContainer}
+                style={{
+                    opacity: props.activeWord ? 1 : 0,
+                    transform: `translateY(${props.activeWord ? 0 : 10}px)`,
+                    pointerEvents: props.activeWord ? 'auto' : 'none'
+                }}
+            >
+                <UButton text="Send" onClick={() => props.onEmojiSelected({ name: '1f923', value: '🤣' })} />
+            </div>
+        );
+    }
+
+    // Mentions
     let matched: any[];
     if (word) {
         matched = searchMentions(word, members.members).map(v => ({ key: v.user.id, data: v.user }));
@@ -327,7 +345,10 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
         setActiveWord(word);
     }, []);
     const onUserPicked = React.useCallback((user: RoomMembers_members_user) => {
-        ref.current!.commitSuggestion(user);
+        ref.current!.commitSuggestion('mention', user);
+    }, []);
+    const onEmojiPicked = React.useCallback((emoji: { name: string, value: string }) => {
+        ref.current!.commitSuggestion('emoji', emoji);
     }, []);
 
     return (
@@ -335,6 +356,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             {props.groupId && (
                 <AutoCompleteComponent
                     onSelected={onUserPicked}
+                    onEmojiSelected={onEmojiPicked}
                     groupId={props.groupId}
                     activeWord={activeWord}
                     ref={suggestRef}
@@ -343,7 +365,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             <XView flexGrow={1} flexShrink={1}>
                 <URickInput
                     ref={ref}
-                    autocompletePrefixes={['@']}
+                    autocompletePrefixes={['@', ':']}
                     onAutocompleteWordChange={onAutocompleteWordChange}
                     onPressEnter={onPressEnter}
                     onPressUp={onPressUp}

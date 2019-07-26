@@ -21,7 +21,8 @@ const containerClass = css`
     top: 0;
     bottom: 0;
     background-color: #fff; // ThemeDefault.backgroundPrimary
-    transform: translateY(-100%);
+    transform: translateY(-56px);
+    will-change: transform;
 `;
 
 const containerVisibleClass = css`
@@ -29,6 +30,7 @@ const containerVisibleClass = css`
     opacity: 1;
 `;
 
+// TODO: ref as PageLayout animations
 const animateCenterDown = css`
     animation: anim 150ms cubic-bezier(0, 0, 0.2, 1);
     @keyframes anim {
@@ -38,10 +40,10 @@ const animateCenterDown = css`
         }
         to {
             opacity: 0;
-            transform: translateY(100%);
+            transform: translateY(20px);
         }
     }
-    transform: translateY(100%);
+    transform: translateY(20px);
     opacity: 0;
 `;
 
@@ -54,18 +56,18 @@ const animateCenterUp = css`
         }
         to {
             opacity: 0;
-            transform: translateY(-100%);
+            transform: translateY(-20px);
         }
     }
     opacity: 0;
-    transform: translateY(-100%);
+    transform: translateY(-20px);
 `;
 
 const animateDownCenter = css`
     animation: anim 150ms cubic-bezier(0, 0, 0.2, 1);
     @keyframes anim {
         from {
-            transform: translateY(100%);
+            transform: translateY(20px);
         }
         to {
             transform: translateY(0);
@@ -78,7 +80,7 @@ const animateUpCenter = css`
     animation: anim 150ms cubic-bezier(0, 0, 0.2, 1);
     @keyframes anim {
         from {
-            transform: translateY(-100%);
+            transform: translateY(-20px);
         }
         to {
             transform: translateY(0);

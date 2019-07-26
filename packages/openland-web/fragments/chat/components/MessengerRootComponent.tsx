@@ -33,6 +33,8 @@ import { SendMessageComponent } from './SendMessageComponent';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { MessagesActionsStateEngine } from 'openland-engines/messenger/MessagesActionsState';
 import { plural, pluralForm } from 'openland-y-utils/plural';
+import { TextBody, TextLabel1 } from 'openland-web/utils/TextStyles';
+import { MessageCompactComponent } from '../messenger/message/MessageCompactContent';
 
 export interface File {
     uuid: string;
@@ -123,30 +125,48 @@ export const DeleteUrlAugmentationComponent = withRouter(props => {
 const messageActonContainerClass = css`
     display: flex;
     flex-direction: row;
-    align-self: center;
-    flex-grow: 1;
-    justify-content: flex-start;
-    border-left: 2px solid #C4C7CC;
-    max-width: 750px;
+    align-self: stretch;
+    justify-content: center;
+    align-items: 'center';
     flex-shrink: 0;
+    margin-left: 16px;
+
+`;
+const messageActonInnerContainerClass = css`
+    display: flex;
+    flex-direction: column;
+    border-left: 2px solid #C4C7CC;
+    align-self: 'stretch';
+    flex-grow: 1;
     padding-left: 16px;
+    max-width: 868px;
 `;
 const MessageAction = (props: { engine: MessagesActionsStateEngine }) => {
     let state = props.engine.useState();
+    let names = '';
+
+    if (state.action === 'forward' || state.action === 'reply') {
+        names = state.messages.reduce((res, item) => {
+            if (!res.find(s => item.sender.id === s.id)) {
+                res.push({ id: item.sender.id, name: item.sender.name });
+            }
+            return res;
+        }, [] as { id: string, name: string }[]).map(s => s.name).join(', ');
+    }
     if (state.action === 'forward' || state.action === 'reply') {
         return (
-            <div className={messageActonContainerClass}>
-                {state.messages.length === 1 && (
-                    <XView onClick={props.engine.clear} flexDirection="column" flexGrow={1}>
-                        <div>{state.messages[0].senderName}</div>
-                        <div>{state.messages[0].fallback}</div>
-                    </XView>
-                )}
-                {state.messages.length !== 1 && (
-                    <XView onClick={props.engine.clear} flexGrow={1}>
-                        {plural(state.messages.length, ['message', 'messages'])}
-                    </XView>
-                )}
+            <div className={messageActonContainerClass} onClick={props.engine.clear}>
+                <div className={messageActonInnerContainerClass}>
+                    {state.messages.length === 1 && (
+                        <MessageCompactComponent message={state.messages[0]} />
+                    )}
+                    {state.messages.length !== 1 && (
+                        <>
+                            <span className={TextLabel1}>  {names}  </span>
+                            <span className={TextBody}> {plural(state.messages.length, ['message', 'messages'])} </span>
+                        </>
+                    )}
+                </div>
             </div>
         );
     } else {
