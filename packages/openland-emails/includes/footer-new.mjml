@@ -1,0 +1,32 @@
+<mj-section mj-class="wrapper">
+    <mj-column mj-class="container-narrow">
+        <mj-spacer padding-bottom="17px"></mj-spacer>
+    </mj-column>
+</mj-section>
+
+<mj-section mj-class="footer">
+    <mj-column mj-class="footer-col-left" width="40%">
+        <mj-text mj-class="text-small" align="left">
+            <a href="https://openland.com/settings/notifications" style="display: inline-block; vertical-align: top; text-decoration: none; font-size: 13px; line-height: 18px; color: #676D7A;">
+                Email settings
+            </a>
+            <span style="display: inline-block; vertical-align: top;  padding-right: 24px;"></span>
+            <a href="mailto:yury@openland.com?subject=Openland Support" style="display: inline-block; vertical-align: top; text-decoration: none; font-size: 13px; line-height: 18px; color: #676D7A;">
+                Support
+            </a>
+        </mj-text>
+    </mj-column>
+    <mj-column width="30%"></mj-column>
+    <mj-column mj-class="footer-col-right" width="30%">
+        <mj-text mj-class="text-small" css-class="no-wrap" align="left">
+            <span>Mobile apps</span>
+            <a href="https://oplnd.com/ios" style="display: inline-block; vertical-align: top; padding-left: 10px; padding-right: 10px; margin-left: 5px;">
+                <img style="display: inline-block; vertical-align: top; width: 16px; height: 20px;" src="https://cdn.openland.com/shared/email/ic-ios@2x.png" />
+            </a>
+            <a href="https://oplnd.com/android" style="display: inline-block; vertical-align: top; padding-left: 10px;">
+                <img style="display: inline-block; vertical-align: top; width: 17px; height: 20px;" src="https://cdn.openland.com/shared/email/ic-android@2x.png" />
+            </a>
+        </mj-text>
+
+    </mj-column>
+</mj-section>

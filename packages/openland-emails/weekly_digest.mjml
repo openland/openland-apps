@@ -1,0 +1,82 @@
+<mjml>
+    <mj-head>
+        <mj-include path="./includes/attributes.mjml" />
+        <mj-style inline="inline">
+            .no-wrap div {
+                white-space: nowrap;
+            }
+        </mj-style>
+        <mj-breakpoint width="517px" />
+        <mj-title>Weekly digest</mj-title>
+        <mj-preview>Some text about digest... to enter Openland, use the following one-time code on</mj-preview>
+    </mj-head>
+    <mj-body>
+        <mj-include path="./includes/header.mjml" />
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container-narrow">
+                <mj-text mj-class="title bold-text">
+                    Weekly digest
+                </mj-text>
+                <mj-text mj-class="text">
+                    Some text about digest... to enter Openland, use the following one-time code on
+                </mj-text>
+            </mj-column>
+        </mj-section>
+
+        <mj-spacer height="24px" />
+
+        <!-- new messages -->
+
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container-narrow">
+                <mj-text mj-class="title-xsmall">
+                    You’ve got {{newMessages.unread}} new messages
+                </mj-text>
+            </mj-column>
+        </mj-section>
+
+        <mj-raw>{{#each newMessages.rows}}</mj-raw>
+        <mj-section mj-class="group-preview-row">
+            <mj-raw>{{#each items}}</mj-raw>
+            <mj-include path="./includes/group-preview.mjml" />
+            <mj-raw>{{/each}}</mj-raw>
+        </mj-section>
+        <mj-raw>{{/each}}</mj-raw>
+
+        <mj-spacer height="8px" />
+
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container-narrow">
+                <mj-button mj-class="button-new" href="https://openland.com/mail">View messages</mj-button>
+            </mj-column>
+        </mj-section>
+
+        <!-- trending -->
+
+        <mj-spacer height="48px" />
+
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container-narrow">
+                <mj-text mj-class="title-xsmall">
+                    Trending groups
+                </mj-text>
+            </mj-column>
+        </mj-section>
+
+        <mj-raw>{{#each discoverGroups.rows}}</mj-raw>
+        <mj-section mj-class="group-preview-row">
+            <mj-raw>{{#each items}}</mj-raw>
+            <mj-include path="./includes/group-preview.mjml" />
+            <mj-raw>{{/each}}</mj-raw>
+        </mj-section>
+        <mj-raw>{{/each}}</mj-raw>
+
+        <mj-spacer height="8px" />
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container-narrow">
+                <mj-button mj-class="button-new" href="https://openland.com/mail">Discover groups</mj-button>
+            </mj-column>
+        </mj-section>
+        <mj-include path="./includes/footer-new.mjml" />
+    </mj-body>
+</mjml>

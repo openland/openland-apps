@@ -1,0 +1,19 @@
+<mj-group mj-class="group-preview-body" width="50%">
+    <mj-column mj-class="group-preview-col-left">
+        <mj-image href="{{this.previewLink}}" mj-class="group-preview-avatar" src="{{this.previewImage}}"></mj-image>
+    </mj-column>
+    <mj-column mj-class="group-preview-col-right">
+        <mj-raw>{{#if this.more}}</mj-raw>
+            <mj-text mj-class="group-preview-title" css-class="no-wrap">
+                <a href="{{this.previewLink}}" style="text-decoration: none; color: inherit;">{{this.title}}</a>
+            </mj-text>
+        <mj-raw>{{else}}</mj-raw>
+            <mj-text mj-class="group-preview-title" css-class="no-wrap">
+                <a href="{{this.previewLink}}" style="text-decoration: none; color: inherit;">{{this.title}}</a>
+            </mj-text>
+            <mj-text mj-class="group-preview-sub" css-class="no-wrap">
+                <a href="{{this.previewLink}}" style="text-decoration: none; color: inherit;">{{this.sub}}</a>
+            </mj-text>
+        <mj-raw>{{/if}}</mj-raw>
+    </mj-column>
+</mj-group>

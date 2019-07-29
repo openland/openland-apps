@@ -59,6 +59,13 @@
         padding-left="20px"
         padding-right="20px" />
 
+    <mj-class
+        name="container-narrow"
+
+        width="690px"
+        padding-left="16px"
+        padding-right="16px" />
+
     <!-- Custom styles -->
 
     <mj-class
@@ -93,9 +100,24 @@
         color="#000000" />
 
     <mj-class
+        name="bold-text"
+        font-weight="700"
+        />
+
+    <mj-class
         name="title-small"
 
         font-size="20px"
+        line-height="24px"
+        font-weight="600"
+        padding-top="0"
+        padding-bottom="16px"
+        color="#000000" />
+    
+    <mj-class
+        name="title-xsmall"
+        letter-spacing="-0.24px"
+        font-size="17px"
         line-height="24px"
         font-weight="600"
         padding-top="0"
@@ -110,6 +132,14 @@
         padding-top="0"
         padding-bottom="12px"
         color="#000000" />
+    
+    <mj-class
+        name="text-small"
+        display="inline-block"
+        font-size="13px"
+        line-height="18px"
+        letter-spacing="-0.08px"
+        color="#676D7A" />
 
     <mj-class
         name="text-quote"
@@ -159,6 +189,16 @@
         padding-top="12px" />
 
     <mj-class
+        name="button-new"
+        background-color="#1885F2"
+        border-radius="8px"
+        font-size="15px"
+        line-height="24px"
+        font-weight="500"
+        letter-spacing="-0.41px"
+        inner-padding="8px 24px" />
+
+    <mj-class
         name="footer"
 
         text-align="left"
@@ -177,5 +217,69 @@
         text-align="left"
         padding-top="44px"
         padding-bottom="20px" />
+
+     <mj-class
+        name="group-preview-row"
+        width="690px"
+        text-align="left" />
+
+    <mj-class
+        name="group-preview-body"
+        text-align="left" />
+
+    <mj-class
+        name="group-preview-col-left"
+        padding="8px 0px 8px 16px"
+        width="56px"
+        vertical-align="middle"
+        text-align="left" />
+
+    <mj-class 
+        name="footer-col-left"
+        text-align="left"
+        align="left"
+        vertical-align="middle"
+        padding="10px 16px"
+    />
+
+    <mj-class 
+        name="footer-col-right"
+        text-align="right"
+        align="right"
+        vertical-align="middle"
+        padding="10px 16px"
+    />
+    
+    <mj-class
+        name="group-preview-col-right"
+        vertical-align="middle"
+        padding="8px 16px 8px 16px"
+        text-align="left" />
+
+    <mj-class
+        name="group-preview-avatar"
+        width="40px"
+        height="40px"
+        display="inline-block"
+        border-radius="50%"
+        align="left" />
+
+    <mj-class
+        name="group-preview-title"
+        color="#171B1F"
+        font-weight="600"
+        font-size="15px"
+        line-height="24px"
+        letter-spacing="-0.41px"
+        text-align="left" />
+
+    <mj-class
+        name="group-preview-sub"
+        color="#969AA3"
+        font-size="13px"
+        line-height="18px"
+        letter-spacing="-0.08px"
+        text-align="left" />
+    
 
 </mj-attributes>
