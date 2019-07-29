@@ -38,7 +38,7 @@ const contentStyle = css`
 `;
 
 const contentStyleCss = css`
-    transition: transform 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: transform 250ms cubic-bezier(.29, .09, .24, .99);
 `;
 
 const contentWrapperStyle = css`
@@ -66,7 +66,7 @@ const shadowStyle = css`
     pointer-events: none;
 
     background-color: black;
-    transition: opacity 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: opacity 250ms cubic-bezier(.29, .09, .24, .99);
     will-change: opacity;
 `;
 

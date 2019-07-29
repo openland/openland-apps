@@ -4,12 +4,15 @@ import { css } from 'linaria';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { UserForMention } from 'openland-api/Types';
 import { emojiLink } from 'openland-y-utils/emojiLink';
+import { EmojiPicker } from './emoji/EmojiPicker';
 
 const quillStyle = css`
     flex-grow: 1;
     border-radius: 8px;
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
+    position: relative;
+
     .ql-container {
         background-color: #F0F2F5;
         border-radius: 8px;
@@ -279,6 +282,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
     return (
         <div className={quillStyle}>
             <div ref={containerRef} />
+            <EmojiPicker />
         </div>
     );
 }));
