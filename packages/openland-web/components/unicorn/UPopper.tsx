@@ -8,7 +8,6 @@ export type UPopper = (controller: UPopperController) => {
 
 export interface UPopperController {
     hide(): void;
-    setOnCloseHandler(handler: () => void): void;
 }
 
 export interface UPopperProvider {
@@ -21,10 +20,13 @@ export function registerPopupProvider(provider: UPopperProvider) {
     currentProvider = provider;
 }
 
-export function showPopper(target: HTMLElement, placement: Placement, popper: (ctx: UPopperController) => React.ReactElement<{}>) {
+export function showPopper(config: {
+    target: HTMLElement, 
+    placement: Placement
+}, popper: (ctx: UPopperController) => React.ReactElement<{}>) {
     currentProvider!!.showPopper((ctx) => ({
-        target,
-        placement,
+        target: config.target,
+        placement: config.placement,
         content: popper(ctx)
     }));
 }
