@@ -1,7 +1,32 @@
 import * as React from 'react';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
+import { showModalBox } from 'openland-x/showModalBox';
 import { css, cx } from 'linaria';
+
+const modalImgContainer = css`
+    background-color: #000;
+    flex-shrink: 0;
+    flex-grow: 1;
+    display: flex;
+    width: 100%;
+    height: 100%;
+`;
+
+const modalImgStyle = css`
+    flex-shrink: 0;
+    object-fit: contain;
+    width: 100%;
+    max-height: 80vh;
+`;
+
+const showImageModal = (src: string, srcSet: string) => {
+    showModalBox({ width: 680 }, ctx => (
+        <div className={modalImgContainer}>
+            <img src={src} srcSet={srcSet} className={modalImgStyle} />
+        </div>
+    ));
+};
 
 const imgContainer = css`
     position: relative;
@@ -15,7 +40,8 @@ const imgContainer = css`
     overflow: hidden;
     border-radius: 8px;
     background-color: #f0f2f5;
-    
+    z-index: 0;
+
     @media (max-width: 1300px) {
         max-width: 100%;
         height: auto !important;
@@ -31,14 +57,12 @@ const imgMediaClass = css`
         max-height: 100%;
         height: auto;
     }
-    z-index: 2;
     will-change: opacity;
 `;
 
 const imgPreviewClass = css`
     position: absolute;
     border-radius: 8px;
-    z-index: 1;
 `;
 
 const imgAppearClass = css`
@@ -55,9 +79,7 @@ const imgAppearInstantClass = css`
 `;
 
 export const ImageContent = React.memo(
-    (props: {
-        file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
-    }) => {
+    (props: { file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile }) => {
         const placeholderRef = React.useRef<HTMLImageElement>(null);
         const imgRef = React.useRef<HTMLImageElement>(null);
         const renderTime = new Date().getTime();
@@ -103,7 +125,11 @@ export const ImageContent = React.memo(
         let opsRetina = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/center/ 2x`;
 
         return (
-            <div className={imgContainer} style={{ width: layoutWidth, height: layoutHeight }}>
+            <div
+                className={imgContainer}
+                style={{ width: layoutWidth, height: layoutHeight }}
+                onClick={() => showImageModal(url + ops, url + opsRetina)}
+            >
                 <img
                     ref={placeholderRef}
                     className={cx(imgPreviewClass)}
