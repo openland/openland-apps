@@ -5,10 +5,12 @@ import { showPopper, UPopperController } from '../UPopper';
 
 const emojiPickerIcon = css`
     position: absolute;
-    right: 10px;
-    top: 10px;
-    width: 20px;
-    height: 20px;
+    right: 0px;
+    top: 0px;
+    padding: 10px;
+    padding: 10px;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
     transition: opacity 150ms cubic-bezier(.29, .09, .24, .99);
 
@@ -23,7 +25,7 @@ const emojiPickerIconOpen = css`
 
 const pickerBody = css`
     display: flex;
-    padding: 26px;
+    padding-bottom: 16px;
 `;
 
 const pickerInnerBody = css`
@@ -55,7 +57,7 @@ export const EmojiPicker = React.memo(() => {
         }
         isVisibleRef.current = true;
         setVisible(true);
-        showPopper(ref.current!, (ctx) => {
+        showPopper(ref.current!, 'top-end', (ctx) => {
             ctxRef.current = ctx;
             return (<PickerBody />);
         });

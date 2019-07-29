@@ -56,7 +56,7 @@ export class XDialogProviderComponent extends React.Component<{}, { modals: { co
                             },
                         },
                         eventsEnabled: true,
-                        placement: 'top'
+                        placement: res.placement || 'auto'
                     });
                     return () => {
                         pjs.destroy();
