@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import emojiData from 'openland-y-utils/data/emoji-data';
+import { shortToUnicode } from 'openland-y-utils/data/emoji-data';
 import { SuggestionsItemName, SuggestionsWrapper } from './Suggestions';
 
 interface EmojiSuggestion {
@@ -29,7 +29,7 @@ export const findEmojiByShortname = (activeWord: string) => {
     if (activeWord === ':') {
         return defaultRecentEmoji;
     } else {
-        const emojiMap = emojiData.shortToUnicode;
+        const emojiMap = shortToUnicode;
         let res: EmojiSuggestion[] = [];
 
         for (let k of emojiMap.keys()) {

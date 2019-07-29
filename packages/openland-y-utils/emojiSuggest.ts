@@ -1,5 +1,5 @@
 import rankings from './data/emoji-ranking.json'; // from http://emojitracker.com/api/rankings
-import emojiData from './data/emoji-data';
+import { EMOJI_DATA } from './data/emoji-data';
 import { emojiConvertToName } from './emojiExtract';
 
 const emojiList: {
@@ -14,13 +14,13 @@ function populateEmoji() {
         let name = r.id.toLowerCase();
         processed.add(name);
 
-        let dt = emojiData.EMOJI_DATA.find((v) => v[0] === name);
+        let dt = EMOJI_DATA.find((v) => v[0] === name);
         if (!dt) {
             continue;
         }
         emojiList.push({ name: emojiConvertToName(dt[2] as string), value: dt[2] as string, shortcodes: dt[1] as string[] });
     }
-    for (let e of emojiData.EMOJI_DATA) {
+    for (let e of EMOJI_DATA) {
         if (processed.has(e[0] as string)) {
             continue;
         }

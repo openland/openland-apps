@@ -9,6 +9,8 @@ declare module 'worker-loader!*' {
     export default WebpackWorker;
 }
 
+
+
 declare module '*.handlebars' {
     const content: string;
     export = content;
@@ -577,4 +579,11 @@ declare module 'react-native-webrtc' {
     export class RTCIceCandidate {
         constructor(src: any);
     }
+}
+
+declare module 'emoji-toolkit' {
+    const instance: {
+
+    };
+    export = instance;
 }

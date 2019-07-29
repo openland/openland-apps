@@ -4,9 +4,8 @@ import IconSticker from './ic_sticker.svg';
 import { usePopper } from '../usePopper';
 import { XView } from 'react-mental';
 import { FixedSizeGrid } from 'react-window';
-import e from 'emoji.json';
-import { emojiComponent } from 'openland-y-utils/emojiComponent';
-import { emojiConvertToName } from 'openland-y-utils/emojiExtract';
+import { pickerEmoji } from 'openland-y-utils/data/emoji-data';
+import { emojiComponentSprite } from 'openland-y-utils/emojiComponentSprite';
 
 const emojiPickerIcon = css`
     position: absolute;
@@ -28,7 +27,7 @@ const emojiPickerIconOpen = css`
     opacity: 0.5;
 `;
 
-const EmojiComponent = React.memo((props: { name: string }) => {
+const EmojiComponent = React.memo((props: { codepoint: string }) => {
     return (
         <XView
             width={40}
@@ -37,7 +36,7 @@ const EmojiComponent = React.memo((props: { name: string }) => {
             justifyContent="center"
             fontSize={22}
         >
-            {emojiComponent(props.name)}
+            {emojiComponentSprite(props.codepoint)}
         </XView>
     );
 });
@@ -62,20 +61,20 @@ const EmojiPickerBody = React.memo(() => {
             <XView flexGrow={1} flexBasis={0} minHeight={0} paddingHorizontal={16} overflow="hidden">
                 <FixedSizeGrid
                     columnCount={8}
-                    rowCount={Math.ceil(e.length / 8)}
+                    rowCount={Math.ceil(pickerEmoji.length / 8)}
                     columnWidth={40}
                     rowHeight={40}
                     width={384 /* Bigger width to hide scrollbar */}
                     height={384}
                 >
                     {({ columnIndex, rowIndex, style }) => {
-                        if (columnIndex + rowIndex * 8 >= e.length) {
+                        if (columnIndex + rowIndex * 8 >= pickerEmoji.length) {
                             return null;
                         }
-                        let ch = emojiConvertToName(e[columnIndex + rowIndex * 8].char);
+                        // let ch = emojiConvertToName(e[columnIndex + rowIndex * 8].char);
                         return (
                             <div style={style}>
-                                <EmojiComponent name={ch} />
+                                <EmojiComponent codepoint={pickerEmoji[columnIndex + rowIndex * 8].value} />
                             </div>
                         );
                     }}

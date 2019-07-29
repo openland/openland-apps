@@ -1,3 +1,5 @@
+import emj from './emoji.json';
+
 /* tslint:disable */
 const EMOJI_DATA = [
     ['1f468-200d-2764-fe0f-200d-1f48b-200d-1f468', [':kiss_mm:', ':couplekiss_mm:'], '👨‍❤️‍💋‍👨'],
@@ -2864,10 +2866,15 @@ EMOJI_DATA_ANIMATED.map(([name, unicode]) => {
     animUnicodeToName.set(unicode, name);
 });
 
-export default {
+const pickerEmoji =
+    emj.filter((v) => v.n.indexOf('-1f3f') < 0)
+        .map((v) => ({ name: v.n, value: v.v }))
+
+export {
     asciiToUnicode,
     shortToUnicode,
     unicodeToShort,
     animUnicodeToName,
-    EMOJI_DATA
+    EMOJI_DATA,
+    pickerEmoji
 };

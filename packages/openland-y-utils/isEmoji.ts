@@ -1,4 +1,4 @@
-import emojiData from './data/emoji-data';
+import { asciiToUnicode, shortToUnicode, unicodeToShort } from './data/emoji-data';
 
 const asciiToUnicodeCache = new Map<string, string>();
 
@@ -6,7 +6,7 @@ function isUnicodeEmoji(src: string) {
     if (asciiToUnicodeCache.has(src)) {
         return true;
     }
-    for (const [regExp, unicode] of emojiData.asciiToUnicode.entries()) {
+    for (const [regExp, unicode] of asciiToUnicode.entries()) {
         if (src.replace(regExp, unicode) === unicode) {
             asciiToUnicodeCache.set(src, unicode);
             return true;
@@ -16,12 +16,12 @@ function isUnicodeEmoji(src: string) {
 }
 
 function isTextEmoji(src: string) {
-    return emojiData.shortToUnicode.has(src);
+    return shortToUnicode.has(src);
 }
 
 export function isEmoji(src: string) {
     // What the heck?
-    if (emojiData.unicodeToShort.has(src)) {
+    if (unicodeToShort.has(src)) {
         return true;
     }
     if (isTextEmoji(src)) {

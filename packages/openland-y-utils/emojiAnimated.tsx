@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import emojiData from './data/emoji-data';
+import { animUnicodeToName } from './data/emoji-data';
 
 const emojiStyle = css`
    height: 50px;
@@ -8,7 +8,7 @@ const emojiStyle = css`
 `;
 
 export function emojiAnimated(unicode: string) {
-    const name = emojiData.animUnicodeToName.get(unicode);
+    const name = animUnicodeToName.get(unicode);
 
     return (
         <img

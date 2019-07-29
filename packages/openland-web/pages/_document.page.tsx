@@ -240,19 +240,12 @@ export default class OpenlandDocument extends Document {
                             : {})}
                     />
 
-                    <link
-                        rel="stylesheet"
-                        href="https://fonts.googleapis.com/icon?family=Material+Icons"
-                    />
                     <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css" />
 
                     {/* Styles */}
-                    <link rel="stylesheet" href="/static/css/draft.css" />
-                    <link rel="stylesheet" href="/static/css/draft-emoji.css" />
-                    <link rel="stylesheet" href="/static/css/draft-mentions.css" />
-                    <link rel="stylesheet" href="/static/css/emoji-mart.css" />
+                    <link rel="stylesheet" href="https://cdn.openland.com/shared/emoji/sprites/joypixels-sprite-64.css" />
+                    <link rel="stylesheet" href="https://cdn.openland.com/shared/emoji/sprites/joypixels-sprite-32.css" />
                     <link rel="stylesheet" href="/static/css/x.css" />
-                    <link rel="stylesheet" href="/static/css/preload-emoji.css" />
 
                     <style dangerouslySetInnerHTML={{ __html: (this.props as any).glamCss }} />
 
