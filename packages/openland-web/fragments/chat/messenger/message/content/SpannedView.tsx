@@ -102,11 +102,11 @@ const insaneTextClassName = css`
 `;
 
 const mentionServiceClassName = css`
-    color: #676d7a;
+    color: #676d7a !important;
     font-weight: 600;
     
     &:hover {
-        color: #676d7a;
+        color: #676d7a !important;
         text-decoration: none;
     }
 `;
