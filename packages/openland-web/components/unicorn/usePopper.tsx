@@ -40,6 +40,9 @@ const PopperBody = React.memo((props: {
             if (isOver !== isNewOver && !isNewOver) {
                 setVisible(false);
                 props.onHide();
+                setTimeout(() => {
+                    props.ctx.hide();
+                }, 300);
             }
         };
         const mouseOverHandler = (e: MouseEvent) => {
@@ -51,6 +54,9 @@ const PopperBody = React.memo((props: {
                 setTimeout(() => {
                     setVisible(false);
                     props.onHide();
+                    setTimeout(() => {
+                        props.ctx.hide();
+                    }, 300);
                 }, 300);
             }
         };

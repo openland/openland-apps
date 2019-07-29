@@ -129,7 +129,10 @@ export const ImageContent = React.memo(
             <div
                 className={imgContainer}
                 style={{ width: layoutWidth, height: layoutHeight }}
-                onClick={() => showImageModal(url + ops, url + opsRetina)}
+                onClick={(ev: React.MouseEvent) => {
+                    ev.stopPropagation();
+                    showImageModal(url + ops, url + opsRetina);
+                }}
             >
                 <img
                     ref={placeholderRef}

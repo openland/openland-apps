@@ -5,6 +5,29 @@
             .no-wrap div {
                 white-space: nowrap;
             }
+
+            p {
+                font-family: '-apple-system',BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';
+                margin: 0;
+                padding: 0;
+            }
+
+            .group-preview-title {
+                color: #171B1F;
+                font-weight: 600;
+                font-size: 15px;
+                line-height: 24px;
+                letter-spacing: -0.41px;
+                text-align: left;
+            }
+
+            .group-preview-sub {
+                color: #969AA3;
+                font-size: 13px;
+                line-height: 18px;
+                letter-spacing: -0.08px;
+                text-align: left;
+            }
         </mj-style>
         <mj-breakpoint width="517px" />
         <mj-title>Weekly digest</mj-title>
@@ -36,12 +59,13 @@
         </mj-section>
 
         <mj-raw>{{#each newMessages.rows}}</mj-raw>
-        <mj-section mj-class="group-preview-row">
+        <mj-section mj-class="group-preview-row" full-width="full-width">
             <mj-raw>{{#each items}}</mj-raw>
             <mj-include path="./includes/group-preview.mjml" />
             <mj-raw>{{/each}}</mj-raw>
         </mj-section>
         <mj-raw>{{/each}}</mj-raw>
+
 
         <mj-spacer height="8px" />
 

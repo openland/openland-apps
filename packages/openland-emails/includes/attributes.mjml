@@ -220,17 +220,17 @@
 
      <mj-class
         name="group-preview-row"
-        width="690px"
-        text-align="left" />
+        width="690px" />
 
     <mj-class
         name="group-preview-body"
-        text-align="left" />
+        />
 
     <mj-class
         name="group-preview-col-left"
         padding="8px 0px 8px 16px"
         width="56px"
+        display="inline-block"
         vertical-align="middle"
         text-align="left" />
 
@@ -239,6 +239,7 @@
         text-align="left"
         align="left"
         vertical-align="middle"
+        display="inline-block"
         padding="10px 16px"
     />
 
@@ -254,13 +255,13 @@
         name="group-preview-col-right"
         vertical-align="middle"
         padding="8px 16px 8px 16px"
+        align="left"
         text-align="left" />
 
     <mj-class
         name="group-preview-avatar"
         width="40px"
         height="40px"
-        display="inline-block"
         border-radius="50%"
         align="left" />
 

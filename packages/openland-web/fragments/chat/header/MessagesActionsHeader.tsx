@@ -97,7 +97,7 @@ const Counter = (props: { engine: MessagesActionsStateEngine }) => {
 
     let state = props.engine.useState();
 
-    let count = state.messages.length;
+    let count = state.messages.length || 1;
     let old = countRef.current;
     let increment = count > (old);
 

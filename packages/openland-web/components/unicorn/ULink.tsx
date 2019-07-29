@@ -68,6 +68,9 @@ export const ULink = React.memo((props: ULinkProps) => {
                 className={className}
                 style={{ color }}
                 target="_blank"
+                onClick={(e) => {
+                    e.stopPropagation();
+                }}
             >
                 {children}
             </a>
