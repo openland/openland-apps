@@ -8,7 +8,7 @@ export type UPopper = (controller: UPopperController) => {
 
 export interface UPopperController {
     hide(): void;
-    setOnEscPressed(handler: () => void): void;
+    setOnCloseHandler(handler: () => void): void;
 }
 
 export interface UPopperProvider {
