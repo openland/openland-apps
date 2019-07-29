@@ -1,19 +1,30 @@
 <mj-group mj-class="group-preview-body" width="50%">
-    <mj-column mj-class="group-preview-col-left">
-        <mj-image href="{{this.previewLink}}" mj-class="group-preview-avatar" src="{{this.previewImage}}"></mj-image>
+    <mj-column>
+        <mj-table>
+            <tr>
+                <td valign="middle" width="40px" style="padding: 8px 0px 8px 16px; word-break: break-word;">
+                    <a href="{{this.previewLink}}" style="text-decoration:none; display:block;width:100%;height:40px">
+                        <img height="40px" width="40px" src="{{this.previewImage}}" style="border:none; border-radius: 50%; display:inline-block;"></img>
+                    </a>
+                </td>
+                <td align="left" style="padding: 8px 16px 8px 16px;">
+                    <mj-raw>{{#if this.more}}</mj-raw>
+                    <p class="group-preview-title" align="left">
+                        <a href="{{this.previewLink}}" style="text-decoration: none; color: inherit;">{{this.title}}</a>
+                    </p>
+                    </mj-raw>
+                    {{else}}</mj-raw>
+                        <p class="group-preview-title"  align="left">
+                            <a href="{{this.previewLink}}" style="text-decoration: none; color: inherit;">{{this.title}}</a>
+                        </p>
+                        <p class="group-preview-sub"  align="left">
+                            <a href="{{this.previewLink}}" style="text-decoration: none; color: inherit;">{{this.sub}}</a>
+                        </p>
+                        <mj-raw>{{/if}}</mj-raw>
+                </td>
+            </tr>
+        </mj-table>
+
     </mj-column>
-    <mj-column mj-class="group-preview-col-right">
-        <mj-raw>{{#if this.more}}</mj-raw>
-            <mj-text mj-class="group-preview-title" css-class="no-wrap">
-                <a href="{{this.previewLink}}" style="text-decoration: none; color: inherit;">{{this.title}}</a>
-            </mj-text>
-        <mj-raw>{{else}}</mj-raw>
-            <mj-text mj-class="group-preview-title" css-class="no-wrap">
-                <a href="{{this.previewLink}}" style="text-decoration: none; color: inherit;">{{this.title}}</a>
-            </mj-text>
-            <mj-text mj-class="group-preview-sub" css-class="no-wrap">
-                <a href="{{this.previewLink}}" style="text-decoration: none; color: inherit;">{{this.sub}}</a>
-            </mj-text>
-        <mj-raw>{{/if}}</mj-raw>
-    </mj-column>
+
 </mj-group>
