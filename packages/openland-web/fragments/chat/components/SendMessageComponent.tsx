@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
-import { UButton } from 'openland-web/components/unicorn/UButton';
-import { URickInput, URickInputInstance, URickTextValue } from 'openland-web/components/unicorn/URickInput';
-import { showShortcutsHelp } from '../showShortcutsHelp';
-import PhotoIcon from 'openland-icons/ic-photo-2.svg';
-import FileIcon from 'openland-icons/ic-file-3.svg';
-import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
+import {
+    URickInput,
+    URickInputInstance,
+    URickTextValue,
+} from 'openland-web/components/unicorn/URickInput';
+import AttachIcon from 'openland-icons/ic-attach.svg';
+import SendIcon from 'openland-icons/ic-send.svg';
 import { UNavigableList, UNavigableListRef } from 'openland-web/components/unicorn/UNavigableList';
 import { useClient } from 'openland-web/utils/useClient';
 import { RoomMembers_members_user } from 'openland-api/Types';
@@ -14,67 +15,6 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { searchMentions } from 'openland-engines/mentions/searchMentions';
 import { emojiSuggest } from 'openland-y-utils/emojiSuggest';
 import { emojiComponent } from 'openland-y-utils/emojiComponent';
-
-const attachButtonWrapper = css`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    height: 32px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 5px;
-    color: #676d7a;
-    cursor: pointer;
-    padding-left: 12px;
-    padding-right: 12px;
-
-    &:hover {
-        background-color: #f0f2f5;
-    }
-
-    & svg {
-        margin-right: 10px;
-
-        & * {
-            fill: #969aa3;
-        }
-    }
-
-    @media (max-width: 1230px) {
-        & svg {
-            margin-right: 0;
-        }
-        & span {
-            display: none;
-        }
-    }
-`;
-
-interface AttachButtonProps {
-    text: string;
-    icon: JSX.Element;
-    onClick?: () => void;
-}
-
-const AttachButton = (props: AttachButtonProps) => (
-    <XView onClick={props.onClick}>
-        <div className={attachButtonWrapper}>
-            {props.icon}
-            <span>{props.text}</span>
-        </div>
-    </XView>
-);
-
-const ButtonPartWrapper = (props: { leftContent: JSX.Element; rightContent: JSX.Element }) => (
-    <XView flexDirection="row" alignItems="center">
-        <XView flexDirection="row" alignItems="center" marginRight={6}>
-            {props.leftContent}
-        </XView>
-        {props.rightContent}
-    </XView>
-);
 
 interface MentionUserComponentProps {
     id: string;
@@ -85,97 +25,56 @@ interface MentionUserComponentProps {
     } | null;
 }
 
+const mentionUserContainer = css`
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    height: 40px;
+    padding-left: 16px;
+    padding-right: 16px;
+`;
+
+const mentionUserDataWrap = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 12px;
+`;
+
+const userName = css`
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.54;
+    color: #171b1f;
+`;
+
+const userOrg = css`
+    margin-left: 7px;
+    padding-top: 4px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #676d7a;
+`;
+
 const MentionUserComponent = (props: MentionUserComponentProps) => (
-    <XView
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="space-between"
-        flexGrow={1}
-        height={40}
-        paddingHorizontal={16}
-    >
+    <div className={mentionUserContainer}>
         <XAvatar2 id={props.id} title={props.name} src={props.photo} size={28} />
-        <XView
-            marginLeft={12}
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
-            flexGrow={1}
-        >
-            <XView flexDirection="row" alignItems="center" flexGrow={1}>
-                <XView
-                    fontSize={13}
-                    fontWeight="600"
-                    lineHeight={1.54}
-                    color="#171B1F"
-                >
-                    {props.name}
-                </XView>
-                {props.primaryOrganization && (
-                    <XView
-                        marginLeft={7}
-                        paddingTop={4}
-                        fontSize={12}
-                        lineHeight={1.5}
-                        color="#676D7A"
-                    >
-                        {props.primaryOrganization.name}
-                    </XView>
-                )}
-            </XView>
-            <XView
-                fontSize={12}
-                lineHeight={1.5}
-                color="#676D7A"
-                flexDirection="row"
-            >
-                <XView paddingTop={3} marginRight={5}>↵</XView>
-                <XView>to select</XView>
-            </XView>
-        </XView>
-    </XView>
+        <div className={mentionUserDataWrap}>
+            <div className={userName}>{props.name}</div>
+            {props.primaryOrganization && (
+                <div className={userOrg}>{props.primaryOrganization.name}</div>
+            )}
+        </div>
+    </div>
 );
 
-const EmojiSuggestionComponent = (props: { name: string, value: string, display: string }) => (
-    <XView
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="space-between"
-        flexGrow={1}
-        height={40}
-        paddingHorizontal={16}
-    >
-        <XView fontSize={18} width={28} height={28}>
+const EmojiSuggestionComponent = (props: { name: string; value: string; display: string }) => (
+    <div className={mentionUserContainer}>
+        <XView fontSize={18} width={28} height={28} marginRight={6}>
             {emojiComponent(props.name)}
         </XView>
-        <XView
-            marginLeft={12}
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
-            flexGrow={1}
-        >
-            <XView flexDirection="row" alignItems="center" flexGrow={1}>
-                <XView
-                    fontSize={13}
-                    fontWeight="600"
-                    lineHeight={1.54}
-                    color="#171B1F"
-                >
-                    {props.display}
-                </XView>
-            </XView>
-            <XView
-                fontSize={12}
-                lineHeight={1.5}
-                color="#676D7A"
-                flexDirection="row"
-            >
-                <XView paddingTop={3} marginRight={5}>↵</XView>
-                <XView>to select</XView>
-            </XView>
-        </XView>
-    </XView>
+        <div className={userName}>{props.display}</div>
+    </div>
 );
 
 const mentionsContainer = css`
@@ -189,7 +88,7 @@ const mentionsContainer = css`
     padding-top: 8px;
     padding-bottom: 8px;
     will-change: opacity;
-    transition: opacity, transform 150ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: opacity, transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: scroll;
     overflow-x: none;
     max-height: 250px;
@@ -201,146 +100,184 @@ interface AutoCompleteComponentRef {
     onPressEnter(): boolean;
 }
 
-const AutoCompleteComponent = React.memo(React.forwardRef((props: {
-    groupId?: string, activeWord: string | null,
-    onSelected: (user: RoomMembers_members_user) => void,
-    onEmojiSelected: (emoji: { name: string, value: string }) => void
-}, ref: React.Ref<AutoCompleteComponentRef>) => {
+const AutoCompleteComponent = React.memo(
+    React.forwardRef(
+        (
+            props: {
+                groupId?: string;
+                activeWord: string | null;
+                onSelected: (user: RoomMembers_members_user) => void;
+                onEmojiSelected: (emoji: { name: string; value: string }) => void;
+            },
+            ref: React.Ref<AutoCompleteComponentRef>,
+        ) => {
+            const listRef = React.useRef<UNavigableListRef>(null);
 
-    const listRef = React.useRef<UNavigableListRef>(null);
+            // Store word in state for nice disappear animation
+            const [word, setWord] = React.useState(props.activeWord);
+            const lastActiveWord = React.useRef(props.activeWord);
+            lastActiveWord.current = props.activeWord;
+            if (props.activeWord) {
+                if (word !== props.activeWord) {
+                    setWord(props.activeWord);
+                }
+            }
+            React.useImperativeHandle(ref, () => ({
+                onPressDown: () => {
+                    if (!lastActiveWord.current) {
+                        return false;
+                    }
+                    let r = listRef.current;
+                    if (r) {
+                        r.onPressDown();
+                        return true;
+                    }
+                    return false;
+                },
+                onPressUp: () => {
+                    if (!lastActiveWord.current) {
+                        return false;
+                    }
+                    let r = listRef.current;
+                    if (r) {
+                        r.onPressUp();
+                        return true;
+                    }
+                    return false;
+                },
+                onPressEnter: () => {
+                    if (!lastActiveWord.current) {
+                        return false;
+                    }
+                    let r = listRef.current;
+                    if (r) {
+                        return r.onPressEnter();
+                    }
+                    return false;
+                },
+                onPressTab: () => {
+                    let r = listRef.current;
+                    if (r) {
+                        return r.onPressEnter();
+                    }
+                    return false;
+                },
+            }));
 
-    // Store word in state for nice disappear animation
-    const [word, setWord] = React.useState(props.activeWord);
-    const lastActiveWord = React.useRef(props.activeWord);
-    lastActiveWord.current = props.activeWord;
-    if (props.activeWord) {
-        if (word !== props.activeWord) {
-            setWord(props.activeWord);
-        }
-    }
-    React.useImperativeHandle(ref, () => ({
-        onPressDown: () => {
-            if (!lastActiveWord.current) {
-                return false;
-            }
-            let r = listRef.current;
-            if (r) {
-                r.onPressDown();
-                return true;
-            }
-            return false;
-        },
-        onPressUp: () => {
-            if (!lastActiveWord.current) {
-                return false;
-            }
-            let r = listRef.current;
-            if (r) {
-                r.onPressUp();
-                return true;
-            }
-            return false;
-        },
-        onPressEnter: () => {
-            if (!lastActiveWord.current) {
-                return false;
-            }
-            let r = listRef.current;
-            if (r) {
-                return r.onPressEnter();
-            }
-            return false;
-        },
-        onPressTab: () => {
-            let r = listRef.current;
-            if (r) {
-                return r.onPressEnter();
-            }
-            return false;
-        }
-    }));
-
-    const itemRender = React.useCallback((v: any) => (
-        <MentionUserComponent
-            name={v.name}
-            id={v.id}
-            photo={v.photo}
-            primaryOrganization={v.primaryOrganization}
-        />
-    ), []);
-
-    const emojiItemRender = React.useCallback((v: any) => (
-        <EmojiSuggestionComponent
-            name={v.name}
-            value={v.value}
-            display={v.shortcode}
-        />
-    ), []);
-
-    if (props.groupId) {
-        const client = useClient();
-        let members = client.useWithoutLoaderRoomMembers({ roomId: props.groupId });
-        if (!members || !members.members) {
-            return null;
-        }
-
-        if (word && !word.startsWith(':')) {
-            // Mentions
-            let matched: any[];
-            if (word) {
-                matched = searchMentions(word, members.members).map(v => ({ key: v.user.id, data: v.user }));
-            } else {
-                matched = [];
-            }
-
-            return (
-                <div
-                    className={mentionsContainer}
-                    style={{
-                        opacity: props.activeWord ? 1 : 0,
-                        transform: `translateY(${props.activeWord ? 0 : 10}px)`,
-                        pointerEvents: props.activeWord ? 'auto' : 'none'
-                    }}
-                >
-                    <UNavigableList
-                        data={matched}
-                        render={itemRender}
-                        onSelected={props.onSelected}
-                        ref={listRef}
+            const itemRender = React.useCallback(
+                (v: any) => (
+                    <MentionUserComponent
+                        name={v.name}
+                        id={v.id}
+                        photo={v.photo}
+                        primaryOrganization={v.primaryOrganization}
                     />
-                </div>
+                ),
+                [],
             );
-        }
-    }
-    if (word && word.startsWith(':')) {
-        let filtered = emojiSuggest(word).map((v) => ({ key: v.name, data: v }));
-        return (
-            <div
-                className={mentionsContainer}
-                style={{
-                    opacity: props.activeWord ? 1 : 0,
-                    transform: `translateY(${props.activeWord ? 0 : 10}px)`,
-                    pointerEvents: props.activeWord ? 'auto' : 'none'
-                }}
-            >
-                {/* <UButton text={'filtered-' + filtered.length} onClick={() => props.onEmojiSelected({ name: '1f923', value: '🤣' })} /> */}
-                <UNavigableList
-                    data={filtered}
-                    render={emojiItemRender}
-                    onSelected={props.onEmojiSelected}
-                    ref={listRef}
-                />
-            </div>
-        );
-    }
-    return null;
-}));
+
+            const emojiItemRender = React.useCallback(
+                (v: any) => (
+                    <EmojiSuggestionComponent name={v.name} value={v.value} display={v.shortcode} />
+                ),
+                [],
+            );
+
+            if (props.groupId) {
+                const client = useClient();
+                let members = client.useWithoutLoaderRoomMembers({ roomId: props.groupId });
+                if (!members || !members.members) {
+                    return null;
+                }
+
+                if (word && !word.startsWith(':')) {
+                    // Mentions
+                    let matched: any[];
+                    if (word) {
+                        matched = searchMentions(word, members.members).map(v => ({
+                            key: v.user.id,
+                            data: v.user,
+                        }));
+                    } else {
+                        matched = [];
+                    }
+
+                    return (
+                        <div
+                            className={mentionsContainer}
+                            style={{
+                                opacity: props.activeWord ? 1 : 0,
+                                transform: `translateY(${props.activeWord ? 0 : 10}px)`,
+                                pointerEvents: props.activeWord ? 'auto' : 'none',
+                            }}
+                        >
+                            <UNavigableList
+                                data={matched}
+                                render={itemRender}
+                                onSelected={props.onSelected}
+                                ref={listRef}
+                            />
+                        </div>
+                    );
+                }
+            }
+            if (word && word.startsWith(':')) {
+                let filtered = emojiSuggest(word).map(v => ({ key: v.name, data: v }));
+                return (
+                    <div
+                        className={mentionsContainer}
+                        style={{
+                            opacity: props.activeWord ? 1 : 0,
+                            transform: `translateY(${props.activeWord ? 0 : 10}px)`,
+                            pointerEvents: props.activeWord ? 'auto' : 'none',
+                        }}
+                    >
+                        {/* <UButton text={'filtered-' + filtered.length} onClick={() => props.onEmojiSelected({ name: '1f923', value: '🤣' })} /> */}
+                        <UNavigableList
+                            data={filtered}
+                            render={emojiItemRender}
+                            onSelected={props.onEmojiSelected}
+                            ref={listRef}
+                        />
+                    </div>
+                );
+            }
+            return null;
+        },
+    ),
+);
 
 interface SendMessageComponentProps {
     groupId?: string;
     onTextSent?: (text: URickTextValue) => void;
     placeholder?: string;
 }
+
+const sendMessageContainer = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    flex-grow: 1;
+    flex-shrink: 1;
+    align-self: stretch;
+`;
+
+const actionButtonContainer = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    cursor: pointer;
+    flex-shrink: 0;
+
+    &:hover {
+        background-color: #f2f3f5;
+    }
+`;
 
 export const SendMessageComponent = React.memo((props: SendMessageComponentProps) => {
     const ref = React.useRef<URickInputInstance>(null);
@@ -369,38 +306,29 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
         [props.onTextSent],
     );
 
-    const onPressUp = React.useCallback(
-        () => {
-            let s = suggestRef.current;
-            if (s) {
-                s.onPressUp();
-            }
-            return true;
-        },
-        [],
-    );
+    const onPressUp = React.useCallback(() => {
+        let s = suggestRef.current;
+        if (s) {
+            s.onPressUp();
+        }
+        return true;
+    }, []);
 
-    const onPressDown = React.useCallback(
-        () => {
-            let s = suggestRef.current;
-            if (s) {
-                s.onPressDown();
-            }
-            return true;
-        },
-        [],
-    );
+    const onPressDown = React.useCallback(() => {
+        let s = suggestRef.current;
+        if (s) {
+            s.onPressDown();
+        }
+        return true;
+    }, []);
 
-    const onPressTab = React.useCallback(
-        () => {
-            let s = suggestRef.current;
-            if (s) {
-                return s.onPressEnter();
-            }
-            return true;
-        },
-        [],
-    );
+    const onPressTab = React.useCallback(() => {
+        let s = suggestRef.current;
+        if (s) {
+            return s.onPressEnter();
+        }
+        return true;
+    }, []);
 
     const [activeWord, setActiveWord] = React.useState<string | null>(null);
     const onAutocompleteWordChange = React.useCallback((word: string) => {
@@ -409,12 +337,12 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     const onUserPicked = React.useCallback((user: RoomMembers_members_user) => {
         ref.current!.commitSuggestion('mention', user);
     }, []);
-    const onEmojiPicked = React.useCallback((emoji: { name: string, value: string }) => {
+    const onEmojiPicked = React.useCallback((emoji: { name: string; value: string }) => {
         ref.current!.commitSuggestion('emoji', emoji);
     }, []);
 
     return (
-        <XView flexGrow={1} flexShrink={1} maxHeight={250} paddingVertical={16} position="relative">
+        <div className={sendMessageContainer}>
             <AutoCompleteComponent
                 onSelected={onUserPicked}
                 onEmojiSelected={onEmojiPicked}
@@ -422,7 +350,16 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 activeWord={activeWord}
                 ref={suggestRef}
             />
-            <XView flexGrow={1} flexShrink={1}>
+            <div className={actionButtonContainer}>
+                <AttachIcon />
+            </div>
+            <XView
+                flexGrow={1}
+                flexShrink={1}
+                marginHorizontal={16}
+                maxHeight={250}
+                flexDirection="column"
+            >
                 <URickInput
                     ref={ref}
                     autocompletePrefixes={['@', ':']}
@@ -435,21 +372,9 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     placeholder={props.placeholder || 'Write a message...'}
                 />
             </XView>
-            <XView
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="space-between"
-                marginTop={16}
-            >
-                <ButtonPartWrapper
-                    leftContent={<AttachButton text="Photo" icon={<PhotoIcon />} />}
-                    rightContent={<AttachButton text="Document" icon={<FileIcon />} />}
-                />
-                <ButtonPartWrapper
-                    leftContent={<AttachButton text="Shortcuts" icon={<ShortcutsIcon />} onClick={showShortcutsHelp} />}
-                    rightContent={<UButton text="Send" onClick={onPressEnter} />}
-                />
-            </XView>
-        </XView>
+            <div className={actionButtonContainer} onClick={onPressEnter}>
+                <SendIcon />
+            </div>
+        </div>
     );
 });
