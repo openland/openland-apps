@@ -15,9 +15,8 @@ const pickerBodyInvisible = css`
 
 const pickerInnerBody = css`
     display: flex;
-    padding: 16px;
     background-color: white;
-    border-radius: 8px;
+    border-radius: 16px;
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
 `;
 
