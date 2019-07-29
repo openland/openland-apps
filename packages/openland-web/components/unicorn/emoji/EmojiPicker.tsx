@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import IconSticker from './ic_sticker.svg';
-import { usePopperHover } from 'openland-web/hooks/usePopperHover';
 
 const emojiPickerIcon = css`
     position: absolute;
