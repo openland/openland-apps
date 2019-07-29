@@ -4,7 +4,7 @@ import { MessageContent } from '../MessageContent';
 import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
 import { MessageSenderContent } from '../MessageComponent';
 
-let replyMeesageGroupClass = css`
+const replyMessageGroupClass = css`
     display: flex;
     flex-direction: column;
     padding-left: 14px;
@@ -28,7 +28,7 @@ export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessage
     let firstMessage = props.quotedMessages[0];
     let org = firstMessage.sender.primaryOrganization;
     return (
-        <div className={replyMeesageGroupClass}>
+        <div className={replyMessageGroupClass}>
             <MessageSenderContent
                 name={firstMessage.senderNameEmojify}
                 org={org}
