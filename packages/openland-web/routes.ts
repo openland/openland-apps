@@ -139,6 +139,9 @@ routes.add('/ui/modals/', '/dev/ui/modals');
 routes.add('/ui/rick', '/dev/ui/rick');
 routes.add('/ui/rick/', '/dev/ui/rick');
 
+routes.add('/ui/shortcuts', '/dev/ui/shortcuts');
+routes.add('/ui/shortcuts/', '/dev/ui/shortcuts');
+
 //
 // Dev Tools
 //
