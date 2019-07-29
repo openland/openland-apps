@@ -1828,12 +1828,6 @@
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/@types/diff/-/diff-3.5.2.tgz#bd92300d32675bbe9f7853480730250aa859a90a"
 
-"@types/emoji-mart@^2.8.1":
-  version "2.8.2"
-  resolved "https://registry.yarnpkg.com/@types/emoji-mart/-/emoji-mart-2.8.2.tgz#64507fcae3353ae715108982e380e10198e832f2"
-  dependencies:
-    "@types/react" "*"
-
 "@types/events@*":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-1.2.0.tgz#81a6731ce4df43619e5c8c945383b3e62a89ea86"
