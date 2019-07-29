@@ -79,7 +79,6 @@
         "d3-shape": "^1.2.0",
         "decorate-component-with-props": "^1.1.0",
         "diff": "^3.4.0",
-        "emoji-mart": "^2.9.2",
         "emoji-regex": "^8.0.0",
         "emoji-toolkit": "^5.0.3",
         "emoji.json": "^12.1.0",

@@ -27,7 +27,7 @@ const emojiPickerIconOpen = css`
     opacity: 0.5;
 `;
 
-const EmojiComponent = React.memo((props: { codepoint: string }) => {
+const EmojiComponent = React.memo((props: { name: string, category: string }) => {
     return (
         <XView
             width={40}
@@ -36,7 +36,7 @@ const EmojiComponent = React.memo((props: { codepoint: string }) => {
             justifyContent="center"
             fontSize={22}
         >
-            {emojiComponentSprite(props.codepoint)}
+            {emojiComponentSprite(props.name, props.category)}
         </XView>
     );
 });
@@ -64,6 +64,7 @@ const EmojiPickerBody = React.memo(() => {
                     rowCount={Math.ceil(pickerEmoji.length / 8)}
                     columnWidth={40}
                     rowHeight={40}
+                    overscanCount={20}
                     width={384 /* Bigger width to hide scrollbar */}
                     height={384}
                 >
@@ -74,7 +75,7 @@ const EmojiPickerBody = React.memo(() => {
                         // let ch = emojiConvertToName(e[columnIndex + rowIndex * 8].char);
                         return (
                             <div style={style}>
-                                <EmojiComponent codepoint={pickerEmoji[columnIndex + rowIndex * 8].value} />
+                                <EmojiComponent name={pickerEmoji[columnIndex + rowIndex * 8].name} category={pickerEmoji[columnIndex + rowIndex * 8].sprite} />
                             </div>
                         );
                     }}
