@@ -28,6 +28,7 @@ export function DevDocsScaffold(props: {
                             <UListItem title="Inputs" path="/ui/inputs" />
                             <UListItem title="Modals" path="/ui/modals" />
                             <UListItem title="Rick Input" path="/ui/rick" />
+                            <UListItem title="Shortcuts" path="/ui/shortcuts" />
                         </UListGroup>
                     </XView>
                 )}
