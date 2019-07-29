@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XModalProvider, XModal, registerModalProvider, XModalController } from './showModal';
 import { randomKey } from 'openland-graphql/utils/randomKey';
 import * as ReactModal from 'react-modal';
-import { UPopperProvider, UPopper, registerPopupProvider } from 'openland-web/components/unicorn/UPopper';
+import { UPopperProvider, UPopper, registerPopupProvider, UPopperController } from 'openland-web/components/unicorn/UPopper';
 import * as ReactDOM from 'react-dom';
 import Popper from 'popper.js';
 import { css } from 'linaria';
@@ -22,13 +22,9 @@ export class XDialogProviderComponent extends React.Component<{}, { modals: { co
     showPopper = (popper: UPopper) => {
         setTimeout(() => {
             let key = randomKey();
-            // let escHandler: (() => void) | undefined;
-            let cont: XModalController = {
+            let cont: UPopperController = {
                 hide: () => {
                     this.setState(state => ({ modals: state.modals.filter(v => v.key !== key) }));
-                },
-                setOnEscPressed: handler => {
-                    // escHandler = handler;
                 },
             };
             // let esc = () => {
