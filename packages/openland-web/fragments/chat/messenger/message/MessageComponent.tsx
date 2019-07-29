@@ -8,7 +8,6 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
 import { formatTime } from 'openland-y-utils/formatTime';
 import { UserShort_primaryOrganization } from 'openland-api/Types';
-import { select } from 'glamor';
 
 const senderContainer = css`
     display: flex;
