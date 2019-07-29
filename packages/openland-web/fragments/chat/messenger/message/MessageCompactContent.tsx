@@ -4,7 +4,10 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { css, cx } from 'linaria';
 
 const singleLine = css`
-    max-lines: 1;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    height: 24px;
+    overflow: hidden;
 `;
 
 export const MessageCompactComponent = React.memo((props: { message: DataSourceMessageItem }) => {
@@ -13,7 +16,7 @@ export const MessageCompactComponent = React.memo((props: { message: DataSourceM
         <>
             {/* {imageAttachWithPreview && <img style={{ objectFit: 'contain' }} width={20} height={20} src={imageAttachWithPreview.__typename === 'MessageAttachmentFile' && imageAttachWithPreview.filePreview || undefined} />} */}
             <span className={cx(TextLabel1, singleLine)}>{props.message.senderName}</span>
-            < span className={cx(TextBody, singleLine)}>{props.message.fallback}</span>
+            <span className={cx(TextBody, singleLine)}>{props.message.fallback}</span>
         </>
     );
 });

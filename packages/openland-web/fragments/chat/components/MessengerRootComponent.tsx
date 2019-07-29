@@ -35,6 +35,8 @@ import { MessagesActionsStateEngine } from 'openland-engines/messenger/MessagesA
 import { plural, pluralForm } from 'openland-y-utils/plural';
 import { TextBody, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { MessageCompactComponent } from '../messenger/message/MessageCompactContent';
+import ReplyIcon from 'openland-icons/ic-reply.svg';
+import CloseIcon from 'openland-icons/ic-close-xs.svg';
 
 export interface File {
     uuid: string;
@@ -52,9 +54,9 @@ interface MessagesComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
     pinMessage:
-    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-    | null;
+        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+        | null;
     room: RoomChat_room;
 }
 
@@ -75,7 +77,10 @@ export const DeleteMessageComponent = ({
     return (
         <XView borderRadius={8}>
             <XModalContent>
-                <XText>{`Are you sure you want to delete this ${pluralForm(messageIds.length, ['message', 'messages'])}? This cannot be undone.`}</XText>
+                <XText>{`Are you sure you want to delete this ${pluralForm(messageIds.length, [
+                    'message',
+                    'messages',
+                ])}? This cannot be undone.`}</XText>
             </XModalContent>
             <XModalFooter>
                 <XView marginRight={12}>
@@ -127,45 +132,100 @@ const messageActonContainerClass = css`
     flex-direction: row;
     align-self: stretch;
     justify-content: center;
-    align-items: 'center';
+    align-items: center;
     flex-shrink: 0;
-    margin-left: 16px;
-
+    margin-bottom: 12px;
 `;
+
 const messageActonInnerContainerClass = css`
     display: flex;
     flex-direction: column;
-    border-left: 2px solid #C4C7CC;
-    align-self: 'stretch';
+    align-self: stretch;
     flex-grow: 1;
-    padding-left: 16px;
     max-width: 868px;
 `;
+
+const messageActionIconWrap = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-right: 16px;
+    flex-shrink: 0;
+`;
+
+const messageActionCloseWrap = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border-radius: 24px;
+    cursor: pointer;
+    background-color: #f2f3f5;
+    margin-left: 16px;
+    margin-right: 6px;
+`;
+
+const composeContainer = css`
+    min-height: 72px;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    align-items: flex-start;
+    justify-content: center;
+    flex-grow: 1;
+    flex-basis: 0;
+`;
+
 const MessageAction = (props: { engine: MessagesActionsStateEngine }) => {
     let state = props.engine.useState();
     let names = '';
 
     if (state.action === 'forward' || state.action === 'reply') {
-        names = state.messages.reduce((res, item) => {
-            if (!res.find(s => item.sender.id === s.id)) {
-                res.push({ id: item.sender.id, name: item.sender.name });
-            }
-            return res;
-        }, [] as { id: string, name: string }[]).map(s => s.name).join(', ');
+        names = state.messages
+            .reduce(
+                (res, item) => {
+                    if (!res.find(s => item.sender.id === s.id)) {
+                        res.push({ id: item.sender.id, name: item.sender.name });
+                    }
+                    return res;
+                },
+                [] as { id: string; name: string }[],
+            )
+            .map(s => s.name)
+            .join(', ');
     }
     if (state.action === 'forward' || state.action === 'reply') {
         return (
-            <div className={messageActonContainerClass} onClick={props.engine.clear}>
+            <div className={messageActonContainerClass}>
+                <div className={messageActionIconWrap}>
+                    <ReplyIcon />
+                </div>
                 <div className={messageActonInnerContainerClass}>
                     {state.messages.length === 1 && (
                         <MessageCompactComponent message={state.messages[0]} />
                     )}
                     {state.messages.length !== 1 && (
                         <>
-                            <span className={TextLabel1}>  {names}  </span>
-                            <span className={TextBody}> {plural(state.messages.length, ['message', 'messages'])} </span>
+                            <span className={TextLabel1}> {names} </span>
+                            <span className={TextBody}>
+                                {' '}
+                                {plural(state.messages.length, ['message', 'messages'])}{' '}
+                            </span>
                         </>
                     )}
+                </div>
+                <div className={messageActionCloseWrap} onClick={props.engine.clear}>
+                    <CloseIcon />
                 </div>
             </div>
         );
@@ -222,9 +282,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         //         this.unsubscribe();
         //     }
         // });
-        this.unmounter = this.conversation!.engine.mountConversation(
-            this.props.conversationId,
-        );
+        this.unmounter = this.conversation!.engine.mountConversation(this.props.conversationId);
         this.unmounter2 = this.conversation!.subscribe(this);
         if (!this.conversation) {
             throw Error('conversation should be defined here');
@@ -296,8 +354,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         text: string,
         mentions:
             | (
-                | FullMessage_GeneralMessage_spans_MessageSpanUserMention
-                | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
+                  | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+                  | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
             | null,
     ) => {
         if (!this.conversation) {
@@ -308,11 +366,11 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             text,
             mentions
                 ? mentions.map(mention => {
-                    if (mention.__typename === 'MessageSpanUserMention') {
-                        return mention.user;
-                    }
-                    return { __typename: 'AllMention' as 'AllMention' };
-                })
+                      if (mention.__typename === 'MessageSpanUserMention') {
+                          return mention.user;
+                      }
+                      return { __typename: 'AllMention' as 'AllMention' };
+                  })
                 : null,
         );
     }
@@ -372,31 +430,26 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                     room={this.props.room}
                 />
 
-                <MessageAction engine={this.conversation.messagesActionsStateEngine} />
-
-                {!this.state.hideInput && this.conversation.canSendMessage && (
-                    <XView
-                        flexDirection="row"
-                        alignSelf="stretch"
-                        justifyContent="center"
-                    >
-                        <XView
-                            minHeight={100}
-                            maxWidth={900}
-                            flexDirection="row"
-                            paddingHorizontal={16}
-                            alignItems="flex-start"
-                            justifyContent="center"
-                            flexGrow={1}
-                            flexBasis={0}
-                        >
-                            <SendMessageComponent
-                                groupId={this.props.conversationType !== 'PRIVATE' ? this.props.conversationId : undefined}
-                                onTextSent={(text) => this.conversation!.sendMessage(text.text, text.mentions)}
-                            />
+                {!this.state.hideInput &&
+                    this.conversation.canSendMessage && (
+                        <XView flexDirection="row" alignSelf="stretch" justifyContent="center">
+                            <div className={composeContainer}>
+                                <MessageAction
+                                    engine={this.conversation.messagesActionsStateEngine}
+                                />
+                                <SendMessageComponent
+                                    groupId={
+                                        this.props.conversationType !== 'PRIVATE'
+                                            ? this.props.conversationId
+                                            : undefined
+                                    }
+                                    onTextSent={text =>
+                                        this.conversation!.sendMessage(text.text, text.mentions)
+                                    }
+                                />
+                            </div>
                         </XView>
-                    </XView>
-                )}
+                    )}
             </XView>
         );
     }
@@ -407,9 +460,9 @@ interface MessengerRootComponentProps {
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
     pinMessage:
-    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-    | null;
+        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+        | null;
     room: RoomChat_room;
 }
 
