@@ -31,11 +31,11 @@ export class XDialogProviderComponent extends React.Component<{}, { modals: { co
                     escHandler = handler;
                 },
             };
-            let esc = () => {
-                if (escHandler) {
-                    escHandler();
-                }
-            };
+            // let esc = () => {
+            //     if (escHandler) {
+            //         escHandler();
+            //     }
+            // };
             let res = popper(cont);
 
             const Body = () => {
