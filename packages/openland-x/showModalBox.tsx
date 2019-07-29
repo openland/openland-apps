@@ -5,7 +5,6 @@ import { XView } from 'react-mental';
 import { XLoader } from './XLoader';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import ResizeObserver from 'resize-observer-polyfill';
-import { XShortcuts } from 'openland-x/XShortcuts';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
 
 const boxStyle = css`
@@ -154,22 +153,22 @@ const ModalBoxComponent = React.memo<{
 
     const boxInlineStyle = props.config.fullScreen
         ? {
-              top: 0,
-              right: 0,
-              bottom: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              maxWidth: 'initial',
-              maxHeight: 'initial',
-              borderRadius: 0,
-              transition: 'none',
-          }
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            maxWidth: 'initial',
+            maxHeight: 'initial',
+            borderRadius: 0,
+            transition: 'none',
+        }
         : {
-              top,
-              left,
-              width: props.config.flowing ? 'auto' : props.config.width ? props.config.width : 575,
-          };
+            top,
+            left,
+            width: props.config.flowing ? 'auto' : props.config.width ? props.config.width : 575,
+        };
 
     return (
         <XModalBoxContext.Provider
@@ -255,20 +254,9 @@ export interface XModalBoxConfig {
 
 export function showModalBox(config: XModalBoxConfig, modal: XModal) {
     showModal(ctx => {
+        ctx.setOnEscPressed(ctx.hide);
         return (
-            <XShortcuts
-                supressOtherShortcuts
-                handlerMap={{
-                    ESC: () => {
-                        ctx.hide();
-                    },
-                }}
-                keymap={{
-                    ESC: 'ESC',
-                }}
-            >
-                <ModalBoxComponent modal={modal} ctx={ctx} config={config} />
-            </XShortcuts>
+            <ModalBoxComponent modal={modal} ctx={ctx} config={config} />
         );
     });
 }
