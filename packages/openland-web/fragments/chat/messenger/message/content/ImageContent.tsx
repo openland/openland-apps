@@ -21,7 +21,7 @@ const modalImgStyle = css`
 `;
 
 const showImageModal = (src: string, srcSet: string) => {
-    showModalBox({ width: 680 }, ctx => (
+    showModalBox({ width: 680 }, () => (
         <div className={modalImgContainer}>
             <img src={src} srcSet={srcSet} className={modalImgStyle} />
         </div>
@@ -76,6 +76,7 @@ const imgAppearInstantClass = css`
     opacity: 1;
     border-radius: 8px;
     position: absolute;
+    cursor: pointer;
 `;
 
 export const ImageContent = React.memo(
