@@ -22,13 +22,13 @@ export class XDialogProviderComponent extends React.Component<{}, { modals: { co
     showPopper = (popper: UPopper) => {
         setTimeout(() => {
             let key = randomKey();
-            let escHandler: (() => void) | undefined;
+            // let escHandler: (() => void) | undefined;
             let cont: XModalController = {
                 hide: () => {
                     this.setState(state => ({ modals: state.modals.filter(v => v.key !== key) }));
                 },
                 setOnEscPressed: handler => {
-                    escHandler = handler;
+                    // escHandler = handler;
                 },
             };
             // let esc = () => {

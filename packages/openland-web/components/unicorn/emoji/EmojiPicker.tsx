@@ -23,7 +23,7 @@ const emojiPickerIconOpen = css`
 
 const pickerBody = css`
     display: flex;
-    padding: 16px;
+    padding: 26px;
 `;
 
 const pickerInnerBody = css`
