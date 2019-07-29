@@ -2868,6 +2868,7 @@ EMOJI_DATA_ANIMATED.map(([name, unicode]) => {
 
 const pickerEmoji =
     emj.filter((v) => v.n.indexOf('-1f3f') < 0 || !v.sc)
+        .filter((v) => ['1f3fb', '1f3fc', '1f3fd', '1f3fe', '1f3ff', '1f9b0', '1f9b1', '1f9b3', '1f9b2'].indexOf(v.n) < 0)
         .map((v) => ({ name: v.n, value: v.v, sprite: v.sc! }))
 
 export {
