@@ -19,7 +19,7 @@ const removeVS16s = (rawEmoji: string) => {
 };
 
 function toCodePoints(unicodeSurrogates: string): Array<string> {
-    const points = [];
+    const points: string[] = [];
     let char = 0;
     let previous = 0;
     let i = 0;
@@ -31,7 +31,12 @@ function toCodePoints(unicodeSurrogates: string): Array<string> {
         } else if (char > 0xd800 && char <= 0xdbff) {
             previous = char;
         } else {
-            points.push(char.toString(16));
+            let r = char.toString(16);
+            if (r.length === 2) {
+                points.push('00' + r);
+            } else {
+                points.push(r);
+            }
         }
     }
     return points;
