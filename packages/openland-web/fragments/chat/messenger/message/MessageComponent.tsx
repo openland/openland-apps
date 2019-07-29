@@ -8,6 +8,7 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
 import { formatTime } from 'openland-y-utils/formatTime';
 import { UserShort_primaryOrganization } from 'openland-api/Types';
+import { select } from 'glamor';
 
 const senderContainer = css`
     display: flex;
@@ -152,10 +153,16 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             }
         });
     }, []);
-    const toggleSelect = React.useCallback(() => {
+    const onSelect = React.useCallback(() => {
+        let selection = window.getSelection();
+        if (selection) {
+            let range = selection.getRangeAt(0);
+            if (range.startOffset !== range.endOffset) {
+                return;
+            }
+        }
         props.engine.messagesActionsStateEngine.selectToggle(props.message);
-    }, []);
-    const onSelect = React.useCallback(toggleSelect, [message.id]);
+    }, [message.id]);
 
     const content = (
         <MessageContent
