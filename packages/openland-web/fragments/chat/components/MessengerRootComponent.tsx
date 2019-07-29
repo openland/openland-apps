@@ -153,6 +153,7 @@ const messageActionIconWrap = css`
     width: 40px;
     height: 40px;
     margin-right: 16px;
+    flex-shrink: 0;
 `;
 
 const messageActionCloseWrap = css`
@@ -162,6 +163,7 @@ const messageActionCloseWrap = css`
     justify-content: center;
     width: 24px;
     height: 24px;
+    flex-shrink: 0;
     border-radius: 24px;
     cursor: pointer;
     background-color: #f2f3f5;

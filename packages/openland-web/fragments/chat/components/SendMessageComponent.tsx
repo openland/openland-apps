@@ -272,6 +272,7 @@ const actionButtonContainer = css`
     height: 40px;
     border-radius: 40px;
     cursor: pointer;
+    flex-shrink: 0;
 
     &:hover {
         background-color: #f2f3f5;
