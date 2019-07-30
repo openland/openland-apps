@@ -36,6 +36,8 @@ const EmojiComponent = React.memo((props: { name: string, value: string, categor
             justifyContent="center"
             fontSize={22}
             onClick={() => props.onEmojiPicked(props.value)}
+            hoverBackgroundColor="#F2F3F5"
+            paddingTop={6 /* Emoji are aligned by baseline and we need to compensate this */}
         >
             {emojiComponentSprite(props.name, props.category)}
         </XView>
@@ -73,7 +75,6 @@ const EmojiPickerBody = React.memo((props: { onEmojiPicked: (arg: string) => voi
                         if (columnIndex + rowIndex * 8 >= pickerEmoji.length) {
                             return null;
                         }
-                        // let ch = emojiConvertToName(e[columnIndex + rowIndex * 8].char);
                         return (
                             <div style={style}>
                                 <EmojiComponent

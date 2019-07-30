@@ -33,13 +33,13 @@ const PopperBody = React.memo((props: {
 
     React.useEffect(() => {
         let isOver = true;
+        let hideTimeout: any = undefined;
         const mouseClickHandler = (e: MouseEvent) => {
             let overTarget = props.target.contains(e.target as HTMLElement);
             let overMenu = ref.current ? ref.current!.contains(e.target as HTMLElement) : false;
             let isNewOver = overTarget || overMenu;
             if (isOver !== isNewOver && !isNewOver) {
                 setVisible(false);
-                props.onHide();
                 setTimeout(() => {
                     props.ctx.hide();
                 }, 300);
@@ -49,15 +49,19 @@ const PopperBody = React.memo((props: {
             let overTarget = props.target.contains(e.target as HTMLElement);
             let overMenu = ref.current ? ref.current!.contains(e.target as HTMLElement) : false;
             let isNewOver = overTarget || overMenu;
-            if (isOver !== isNewOver && !isNewOver) {
+            if (isOver !== isNewOver) {
                 isOver = isNewOver;
-                setTimeout(() => {
-                    setVisible(false);
-                    props.onHide();
-                    setTimeout(() => {
-                        props.ctx.hide();
+                if (!isOver) {
+                    hideTimeout = setTimeout(() => {
+                        setVisible(false);
+                        props.onHide();
+                        setTimeout(() => {
+                            props.ctx.hide();
+                        }, 300);
                     }, 300);
-                }, 300);
+                } else if (isOver) {
+                    clearTimeout(hideTimeout);
+                }
             }
         };
         if (props.hideOnClick) {
