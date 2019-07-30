@@ -8,6 +8,7 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
 import { formatTime } from 'openland-y-utils/formatTime';
 import { UserShort_primaryOrganization } from 'openland-api/Types';
+import { HoverMenu } from './Menu/HoverMenu';
 
 const senderContainer = css`
     display: flex;
@@ -54,6 +55,9 @@ export const MessageSenderContent = (props: MessageSenderContentProps) => (
     </div>
 );
 
+////  
+// Message container
+//// 
 const messageContainerClass = css`
     display: flex;
     flex-direction: row;
@@ -63,6 +67,11 @@ const messageContainerClass = css`
     padding: 4px 8px;
     border-radius: 8px;
     margin: 4px 0;
+
+    &:hover .hover-menu-button {
+        opacity: 1;
+        transform: translateX(0);
+    }
 `;
 
 const messageInnerContainerClass = css`
@@ -74,19 +83,7 @@ const messageInnerContainerClass = css`
     align-items: start;
 `;
 
-const buttonsClass = css`
-    margin-top: 8px;
-    display: flex;
-    flex-direction: row;
-`;
-
-const messageContentAreaClass = css`
-    display: flex;
-    flex-direction: column;
-    padding-left: 16px;
-    flex-grow: 1;
-`;
-
+// Message container seleciton
 const messageContainerSelectedClass = css`
     background-color: #f0f2f5; // ThemeDefault.backgroundTertiary
 
@@ -111,6 +108,22 @@ const noBorderRadiusMobile = css`
     @media (max-width: 750px) {
         border-radius: 0;
     }
+`;
+
+////  
+// Message content
+//// 
+const buttonsClass = css`
+    margin-top: 8px;
+    display: flex;
+    flex-direction: row;
+`;
+
+const messageContentAreaClass = css`
+    display: flex;
+    flex-direction: column;
+    padding-left: 16px;
+    flex-grow: 1;
 `;
 
 const messageAvatarWrapper = css`
@@ -220,6 +233,8 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                     {(engine.isChannel || message.reactions.length > 0) && buttons}
                 </div>
             </div>
+
+            <HoverMenu message={message} />
         </div>
     );
 });

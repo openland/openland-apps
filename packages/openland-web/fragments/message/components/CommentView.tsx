@@ -36,7 +36,7 @@ const reactionsWrapper = css`
     cursor: pointer;
     flex-shrink: 0;
     opacity: 0;
-    transform: translateX(100%);
+    transform: translateX(40px);
     transition: transform cubic-bezier(0, 0, 0.2, 1) 150ms, opacity cubic-bezier(0, 0, 0.2, 1) 150ms;
 `;
 

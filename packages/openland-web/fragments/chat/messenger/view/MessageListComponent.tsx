@@ -28,7 +28,6 @@ const messagesWrapperClassName = css`
     align-items: stretch;
     align-self: center;
     width: 100%;
-    max-width: 1040px;
     padding-top: 96px;
     padding-bottom: 35px;
 
