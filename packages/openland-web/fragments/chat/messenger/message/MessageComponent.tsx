@@ -238,7 +238,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                 >
                     {!message.attachTop && sender}
                     {content}
-                    {(engine.isChannel || message.reactions.length > 0) && buttons}
+                    {(message.commentsCount > 0 || engine.isChannel || message.reactions.length > 0) && buttons}
                 </div>
             </div>
 

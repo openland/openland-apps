@@ -3,23 +3,29 @@ import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { SendMessageComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
 import { css } from 'linaria';
 
-const wrapper = css`
-    padding: 16px;
+const wrapperClass = css`
+    padding: 16px 12px;
+    max-width: 816px;
+    width: 100%;
     margin: 0 auto;
-    max-width: 950px;
+`;
+
+const wrapperCompactClass = css`
+    padding: 8px 0;
     width: 100%;
 `;
 
 interface CommentInputProps {
     onSent: (data: URickTextValue) => void;
     groupId?: string;
+    compact?: boolean;
 }
 
 export const CommentInput = React.memo((props: CommentInputProps) => {
-    const { onSent, groupId } = props;
+    const { onSent, groupId, compact } = props;
 
     return (
-        <div className={wrapper}>
+        <div className={compact ? wrapperCompactClass : wrapperClass}>
             <SendMessageComponent
                 groupId={groupId}
                 onTextSent={onSent}

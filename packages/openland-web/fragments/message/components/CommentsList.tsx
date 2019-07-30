@@ -8,6 +8,10 @@ import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { css } from 'linaria';
+import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
+import { XView } from 'react-mental';
+import { ThemeDefault } from 'openland-y-utils/themes';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 
 const wrapper = css`
     padding-bottom: 32px;
@@ -57,6 +61,14 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Mes
         }
     }, []);
 
+    if (comments.length <= 0) {
+        return (
+            <XView {...TextStyles.body} alignItems="center" justifyContent="center" flexGrow={1} color={ThemeDefault.foregroundSecondary}>
+                Write first comment
+            </XView>
+        );
+    }
+
     const commentsMap = {};
 
     comments.map(comment => { commentsMap[comment.id] = comment; });
@@ -64,6 +76,8 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Mes
 
     return (
         <div className={wrapper}>
+            <UListHeader text="Comments" counter={commentsSorted.length} padded={false} />
+
             {commentsSorted.map(item => (
                 <CommentView
                     key={'comment-' + item.id}
