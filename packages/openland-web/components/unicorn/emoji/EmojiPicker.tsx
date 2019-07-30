@@ -6,7 +6,7 @@ import { XView } from 'react-mental';
 import { FixedSizeList } from 'react-window';
 import { pickerEmoji } from 'openland-y-utils/data/emoji-data';
 import { emojiComponentSprite } from 'openland-y-utils/emojiComponentSprite';
-import { useRecent, onEmojiSent, getRecent } from './Recent';
+import { onEmojiSent, getRecent } from './Recent';
 
 const emojiPickerIcon = css`
     position: absolute;
