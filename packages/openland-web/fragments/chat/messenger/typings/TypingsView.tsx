@@ -1,11 +1,35 @@
 import * as React from 'react';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { emoji } from 'openland-y-utils/emoji';
 
-const typingClassName = css`
+const typingWrapper = css`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+    flex-shrink: 0;
+    background-color: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding-left: 80px;
+    padding-right: 80px;
+`;
+
+const typingContent = css`
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    max-height: 33px;
+    max-width: 750px;
+`;
+
+const typingText = css`
+    align-items: flex-start;
+    margin-top: 8px;
+    margin-bottom: 8px;
     opacity: 0.5;
     font-size: 13px;
     font-weight: normal;
@@ -38,37 +62,12 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
     let content: any = null;
 
     if (typing) {
-        content = (
-            <XView
-                alignItems="flex-start"
-                marginTop={8}
-                marginBottom={8}
-            >
-                <div className={typingClassName}>{emoji(typing)}</div>
-            </XView>
-        );
+        content = <div className={typingText}>{emoji(typing)}</div>;
     }
 
     return (
-        <XView
-            alignItems="center"
-            width="100%"
-            flexShrink={0}
-            position="absolute"
-            backgroundColor="#fff"
-            bottom={0}
-            left={0}
-            paddingLeft={32}
-            paddingRight={32}
-        >
-            <XView
-                alignItems="flex-start"
-                width="100%"
-                maxHeight={33}
-                maxWidth={980}
-            >
-                {content}
-            </XView>
-        </XView>
+        <div className={typingWrapper}>
+            <div className={typingContent}>{content}</div>
+        </div>
     );
 });
