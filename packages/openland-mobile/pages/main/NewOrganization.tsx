@@ -81,6 +81,6 @@ const NewOrganizationComponent = (props: PageProps) => {
             </SScrollView>
         </ZTrack>
     );
-}
+};
 
 export const NewOrganization = withApp(NewOrganizationComponent);
