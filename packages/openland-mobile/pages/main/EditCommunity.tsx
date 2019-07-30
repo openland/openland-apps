@@ -34,8 +34,8 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
 
         try {
             await client.mutateUpdateOrganization({ organizationId: organization.id, input: { alphaIsPrivate: isPrivate } });
-            await client.refetchOrganizationProfile({ organizationId });
-            await client.refetchOrganization({ organizationId });
+            await client.refetchOrganizationProfile({ organizationId: props.router.params.id });
+            await client.refetchOrganization({ organizationId: props.router.params.id });
         } catch (e) {
             console.warn(e);
         } finally {
