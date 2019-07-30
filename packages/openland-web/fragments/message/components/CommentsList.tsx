@@ -8,6 +8,8 @@ import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { css } from 'linaria';
+import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
+import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 
 const wrapper = css`
     padding-bottom: 32px;
@@ -64,6 +66,8 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Mes
 
     return (
         <div className={wrapper}>
+            <UListHeader text="Comments" counter={commentsSorted.length} padded={false} />
+
             {commentsSorted.map(item => (
                 <CommentView
                     key={'comment-' + item.id}

@@ -3,7 +3,6 @@ import { useClient } from 'openland-web/utils/useClient';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { css } from 'linaria';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { UHeader } from 'openland-unicorn/UHeader';
 import { CommentInput } from './components/CommentInput';
 import { CommentsList } from './components/CommentsList';
 import { MessageView } from './components/MessageView';
@@ -19,12 +18,16 @@ const wrapperClass = css`
 `;
 
 const contentClass = css`
-    padding: 0 32px;
+    padding: 0 12px;
+    max-width: 816px;
+    width: 100%;
+    margin: 0 auto;
 `;
 
-const MessageFragmentInner = React.memo((props: { messageId: string }) => {
-    const { messageId } = props;
+export const MessageFragment = React.memo(() => {
     const client = useClient();
+    const unicorn = useUnicorn();
+    const messageId = unicorn.id;
     const message = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' }).message;
 
     if (!message || message.__typename === 'ServiceMessage') {
@@ -59,16 +62,5 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
 
             <CommentInput onSent={handleCommentSent} groupId={groupId} />
         </div>
-    );
-});
-
-export const MessageFragment = React.memo(() => {
-    const unicorn = useUnicorn();
-
-    return (
-        <>
-            <UHeader title="Comments" />
-            <MessageFragmentInner messageId={unicorn.id} />
-        </>
     );
 });

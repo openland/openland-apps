@@ -6,16 +6,44 @@ import { FullMessage, Message_message_GeneralMessage } from 'openland-api/Types'
 import { MessageContent } from 'openland-web/fragments/chat/messenger/message/MessageContent';
 import { convertDsMessage, DataSourceWebMessageItem } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { Span } from 'openland-y-utils/spans/Span';
-import { SenderView } from '../../../components/SenderView';
 import { emoji } from 'openland-y-utils/emoji';
 import { MessageReactions } from 'openland-web/fragments/chat/messenger/message/reactions/MessageReactions';
+import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import { css } from 'linaria';
+
+const avatarWrapper = css`
+    flex-shrink: 0;
+    padding-top: 6px;
+`;
+
+const content = css`
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    padding-left: 16px;
+    flex-direction: column;
+`;
+
+const wrapper = css`
+    display: flex;
+    flex-direction: row;
+    padding: 8px 0;
+`;
+
+const buttonsClass = css`
+    margin-top: 8px;
+    display: flex;
+    flex-direction: row;
+`;
 
 export const MessageView = React.memo((props: { message: Message_message_GeneralMessage }) => {
     const { message } = props;
     const messenger = React.useContext(MessengerContext);
+    const { sender } = message;
     const [reply, setReply] = React.useState<DataSourceWebMessageItem[]>([]);
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
-    const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(message.sender.name);
+    const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
 
     React.useEffect(() => {
         setReply(message.quotedMessages.map((r) => convertDsMessage(convertMessage(r as FullMessage, '', messenger))));
@@ -26,26 +54,38 @@ export const MessageView = React.memo((props: { message: Message_message_General
     }, [message.message, message.spans]);
 
     React.useEffect(() => {
-        setSenderNameEmojify(emoji(message.sender.name));
-    }, [message.sender.name]);
+        setSenderNameEmojify(emoji(sender.name));
+    }, [sender.name]);
 
     return (
-        <div>
-            <SenderView
-                sender={message.sender}
-                date={message.date}
-                senderNameEmojify={senderNameEmojify}
-            />
-            <MessageContent
-                id={message.id}
-                text={message.message}
-                textSpans={textSpans}
-                edited={message.edited}
-                reply={reply}
-                attachments={message.attachments}
-                fallback={message.fallback}
-            />
-            <MessageReactions messageId={message.id} reactions={message.reactions} />
+        <div className={wrapper}>
+            <div className={avatarWrapper}>
+                <UAvatar
+                    id={sender.id}
+                    title={sender.name}
+                    titleEmoji={senderNameEmojify}
+                    photo={sender.photo}
+                />
+            </div>
+            <div className={content}>
+                <MessageSenderContent
+                    name={senderNameEmojify}
+                    org={sender.primaryOrganization}
+                    date={parseInt(message.date, 10)}
+                />
+                <MessageContent
+                    id={message.id}
+                    text={message.message}
+                    textSpans={textSpans}
+                    edited={message.edited}
+                    reply={reply}
+                    attachments={message.attachments}
+                    fallback={message.fallback}
+                />
+                <div className={buttonsClass}>
+                    <MessageReactions messageId={message.id} reactions={message.reactions} />
+                </div>
+            </div>
         </div>
     );
 });

@@ -1,49 +1,53 @@
 import * as React from 'react';
-import { URelativeDate } from 'openland-web/components/unicorn/URelativeDate';
-import { css, cx } from 'linaria';
-import { TextCaption } from 'openland-web/utils/TextStyles';
+import { UIconLabeled } from 'openland-web/components/unicorn/UIconLabeled';
+import { css } from 'linaria';
+import LikeIcon from 'openland-icons/s/ic-like-16.svg';
+import LikeFilledIcon from 'openland-icons/s/ic-like-filled-16.svg';
+import ReplyIcon from 'openland-icons/s/ic-reply-16.svg';
+import DeleteIcon from 'openland-icons/s/ic-delete-16.svg';
+import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { plural } from 'openland-y-utils/plural';
 
 const wrapperClass = css`
     display: flex;
     flex-direction: row;
-    margin-top: 8px;
-`;
-
-const dateClass = css`
-    color: #676D7A; // ThemeDefault.foregroundSecondary
-`;
-
-const replyClass = css`
-    cursor: pointer;
-    margin-left: 8px;
-    color: #0C7FF2; // ThemeDefault.accentPrimary
-`;
-
-const deleteClass = css`
-    cursor: pointer;
-    margin-left: 8px;
-    color: #676D7A; // ThemeDefault.foregroundSecondary
+    margin: 5px 0 0 -8px;
 `;
 
 interface CommentToolsProps {
-    date: number;
-    deleted: boolean;
+    reactions: FullMessage_GeneralMessage_reactions[];
+    onReactionClick: () => void;
     onReplyClick: () => void;
-    onDeleteClick: () => void;
+    onDeleteClick?: () => void;
 }
 
 export const CommentTools = React.memo((props: CommentToolsProps) => {
-    const { date, deleted, onReplyClick, onDeleteClick } = props;
+    const messenger = React.useContext(MessengerContext);
+    const { reactions, onReactionClick, onReplyClick, onDeleteClick } = props;
+
+    let myLike = false;
+    reactions.map(r => {
+        if (r.user.id === messenger.user.id) {
+            myLike = true;
+        }
+    });
+
+    const likeLabel = myLike && reactions.length === 1 ? 'Liked' : (reactions.length > 0 ? plural(reactions.length, ['like', 'likes']) : 'Like');
 
     return (
         <div className={wrapperClass}>
-            <URelativeDate date={date} className={cx(TextCaption, dateClass)} />
+            <UIconLabeled
+                icon={myLike ? <LikeFilledIcon /> : <LikeIcon />}
+                label={likeLabel}
+                style={myLike ? 'danger' : 'default'}
+                onClick={onReactionClick}
+            />
 
-            {!deleted && (
-                <>
-                    <div className={cx(TextCaption, replyClass)} onClick={onReplyClick}>Reply</div>
-                    <div className={cx(TextCaption, deleteClass)} onClick={onDeleteClick}>Delete</div>
-                </>
+            <UIconLabeled icon={<ReplyIcon />} label="Reply" onClick={onReplyClick} />
+
+            {!!onDeleteClick && (
+                <UIconLabeled icon={<DeleteIcon />} label="Delete" onClick={onDeleteClick} />
             )}
         </div>
     );

@@ -4,10 +4,10 @@ import { SendMessageComponent } from 'openland-web/fragments/chat/components/Sen
 import { css } from 'linaria';
 
 const wrapper = css`
-    padding: 16px;
-    margin: 0 auto;
-    max-width: 950px;
+    padding: 16px 12px;
+    max-width: 816px;
     width: 100%;
+    margin: 0 auto;
 `;
 
 interface CommentInputProps {

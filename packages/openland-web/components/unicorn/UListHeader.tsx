@@ -6,6 +6,7 @@ import { ThemeDefault } from 'openland-y-utils/themes';
 interface UListHeaderProps {
     text: string;
     counter?: string | number;
+    padded?: boolean;
     action?: {
         title: string;
         path?: string;
@@ -14,13 +15,13 @@ interface UListHeaderProps {
 }
 
 export const UListHeader = (props: UListHeaderProps) => {
-    const { text, counter, action } = props;
+    const { text, counter, action, padded } = props;
 
     return (
         <XView
             marginTop={16}
             height={48}
-            paddingHorizontal={16}
+            paddingHorizontal={padded !== false ? 16 : undefined}
             flexDirection="row"
             alignItems="center"
         >
