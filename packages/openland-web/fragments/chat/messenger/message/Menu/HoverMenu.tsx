@@ -6,6 +6,7 @@ import MoreIcon from 'openland-icons/s/ic-more-v-24.svg';
 import CommentIcon from 'openland-icons/s/ic-message-24.svg';
 import LikeIcon from 'openland-icons/s/ic-like-24.svg';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
+import { XViewRouterContext } from 'react-mental';
 
 ////
 // Menu
@@ -18,6 +19,7 @@ const menuButton = css`
     justify-content: center;
     padding: 6;
     opacity: 0;
+    cursor: pointer;
 `;
 
 const menuContainerClass = css`
@@ -29,15 +31,26 @@ const forceVisible = css`
 `;
 
 export const HoverMenu = (props: { message: DataSourceWebMessageItem }) => {
-    let [visible, show] = usePopper({ placement: 'auto' }, () => <div style={{ width: 40, height: 40, backgroundColor: 'red' }} />);
-    let showWrapped = React.useCallback((ev: React.MouseEvent) => {
+    const { message } = props;
+    const router = React.useContext(XViewRouterContext);
+    const [visible, show] = usePopper({ placement: 'auto' }, () => <div style={{ width: 40, height: 40, backgroundColor: 'red' }} />);
+    const showWrapped = React.useCallback((ev: React.MouseEvent) => {
         ev.stopPropagation();
         show(ev);
     }, []);
+
+    const handleCommentClick = React.useCallback((e) => {
+        e.stopPropagation();
+
+        if (router && message.id) {
+            router.navigate(`/message/${message.id}`);
+        }
+    }, [message.id]);
+
     return (
         <div className={cx(menuContainerClass)}>
             <UIcon className={cx(menuButton, 'hover-menu-button')} icon={<LikeIcon />} />
-            <UIcon className={cx(menuButton, 'hover-menu-button')} icon={<CommentIcon />} />
+            <UIcon className={cx(menuButton, 'hover-menu-button')} icon={<CommentIcon onClick={handleCommentClick} />} />
             <UIcon className={cx(menuButton, 'hover-menu-button', visible && forceVisible)} icon={<MoreIcon onClick={showWrapped} />} />
         </div>
     );
