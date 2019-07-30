@@ -105,7 +105,7 @@ export const SenderView = React.memo((props: SenderViewProps) => {
 
 interface SenderViewCompactProps {
     sender: FullMessage_GeneralMessage_sender;
-    edited: boolean;
+    edited?: boolean;
     senderNameEmojify: string | JSX.Element;
 }
 

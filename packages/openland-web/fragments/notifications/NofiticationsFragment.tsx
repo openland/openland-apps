@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import {
     DataSourceRender,
 } from 'openland-web/fragments/chat/messenger/view/DataSourceRender';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView3, XScrollValues } from 'openland-x/XScrollView3';
-import glamorous from 'glamorous';
 import {
     DataSourceWebMessageItem,
     buildMessagesDataSource,
@@ -17,36 +15,22 @@ import { MessengerEmptyFragment } from 'openland-web/fragments/chat/MessengerEmp
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { UHeader } from 'openland-unicorn/UHeader';
-import { MessageContent } from '../chat/messenger/message/MessageContent';
+import { NotificationView } from './components/NotificationView';
+import { css } from 'linaria';
 
-const wrapperClassName = css`
+const wrapperClass = css`
+    padding: 0 12px 32px;
+    max-width: 950px;
+    margin: 0 auto;
     width: 100%;
-    padding-left: 20px;
-    padding-right: 20px;
-    @media (min-width: 1150px) {
-        width: 674px;
-        padding-left: 0px;
-        padding-right: 0px;
-    }
-
-    flex-grow: 1;
-    flex-shrink: 1;
 `;
 
-const MessagesWrapper = ({ children }: { children: any }) => {
-    return (
-        <XView alignItems="center">
-            <div className={wrapperClassName}>{children}</div>
-        </XView>
-    );
-};
-
-const LoadingWrapper = glamorous.div({
-    height: 50,
-    display: 'flex',
-    justifyContent: 'center',
-    position: 'relative',
-});
+const loaderClass = css`
+    height: 50;
+    display: flex;
+    justify-content: center;
+    position: relative;
+`;
 
 interface CommentsNotificationsProps {
     engine: NotificationCenterEngine;
@@ -85,9 +69,9 @@ class CommentsNotificationsInner extends React.PureComponent<
 
     private renderLoading = () => {
         return (
-            <LoadingWrapper>
+            <div className={loaderClass}>
                 <XLoader loading={true} />
-            </LoadingWrapper>
+            </div>
         );
     }
 
@@ -106,24 +90,17 @@ class CommentsNotificationsInner extends React.PureComponent<
                     flexShrink={1}
                     onScroll={this.handleScroll}
                 >
-                    <MessagesWrapper>{props.children}</MessagesWrapper>
+                    <div className={wrapperClass}>
+                        {props.children}
+                    </div>
                 </XScrollView3>
             </>
         );
     }
 
-    private renderMessage = (data: { item: (DataSourceWebMessageItem) }) => {
-        // TODO recover open comment modal
+    private renderNotification = (data: { item: (DataSourceWebMessageItem) }) => {
         return (
-            <MessageContent
-                id={data.item.id}
-                text={data.item.text}
-                textSpans={data.item.textSpans}
-                edited={data.item.isEdited}
-                reply={data.item.replyWeb}
-                attachments={data.item.attachments}
-                fallback={data.item.fallback}
-            />
+            <NotificationView notification={data.item} />
         );
     }
 
@@ -151,7 +128,7 @@ class CommentsNotificationsInner extends React.PureComponent<
                         dataSource={this.dataSource}
                         reverce={false}
                         wrapWith={this.dataSourceWrapper}
-                        renderItem={this.renderMessage}
+                        renderItem={this.renderNotification}
                         renderLoading={this.renderLoading}
                     />
                 </XView>

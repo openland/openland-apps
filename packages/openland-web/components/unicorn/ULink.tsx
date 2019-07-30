@@ -28,7 +28,7 @@ const ULinkInternal = React.memo((props: { link: string; color?: string, classNa
 
 interface ULinkProps {
     href?: string; // for external and MAY BE internal links
-    path?: string; // fallback only for internal relative links
+    path?: string; // fallback only for internal RELATIVE links
     color?: string;
     className?: string;
     children?: any;

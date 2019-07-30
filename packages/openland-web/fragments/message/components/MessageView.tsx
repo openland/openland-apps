@@ -6,7 +6,7 @@ import { FullMessage, Message_message_GeneralMessage } from 'openland-api/Types'
 import { MessageContent } from 'openland-web/fragments/chat/messenger/message/MessageContent';
 import { convertDsMessage, DataSourceWebMessageItem } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { Span } from 'openland-y-utils/spans/Span';
-import { SenderView } from './SenderView';
+import { SenderView } from '../../../components/SenderView';
 import { emoji } from 'openland-y-utils/emoji';
 
 export const MessageView = React.memo((props: { message: Message_message_GeneralMessage }) => {

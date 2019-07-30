@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessageContent } from '../../chat/messenger/message/MessageContent';
 import { MessageComments_messageComments_comments_comment } from 'openland-api/Types';
-import { SenderViewCompact } from './SenderView';
+import { SenderViewCompact } from '../../../components/SenderView';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { MAvatar } from 'openland-web/fragments/chat/messenger/message/MAvatar';
