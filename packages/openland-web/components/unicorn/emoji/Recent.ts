@@ -99,7 +99,6 @@ export function onEmojiSent(name: string) {
         let r = [...recent];
         r = r.sort((a, b) => b.used - a.used);
         recent = r;
-        console.log(recent);
         for (let l of listeners) {
             l();
         }
