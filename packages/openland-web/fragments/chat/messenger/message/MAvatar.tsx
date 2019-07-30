@@ -69,7 +69,7 @@ const AvatarImage = React.memo((props: { photo: string }) => {
 });
 
 interface MAvatarProps {
-    senderNameEmojify: string | JSX.Element;
+    senderNameEmojify?: string | JSX.Element;
     senderName: string;
     senderId: string;
     senderPhoto?: string | null;

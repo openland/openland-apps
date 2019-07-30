@@ -25,13 +25,23 @@ const content = css`
     flex-direction: column;
 `;
 
+const replyWrapper = css`
+    border-left: 2px solid #1885F2;
+    margin: 4px 0 6px;
+`;
+
+const replyInnerWrapper = css`
+    padding-left: 12px;
+    opacity: 0.6;
+`;
+
 interface NotificationViewProps {
     notification: DataSourceWebMessageItem;
 }
 
 export const NotificationView = React.memo((props: NotificationViewProps) => {
     const { notification } = props;
-    const { id, date, sender, text, attachments, textSpans, fallback, senderNameEmojify, peerRootId, room } = notification;
+    const { id, date, sender, text, attachments, textSpans, fallback, senderNameEmojify, peerRootId, room, replyQuoteTextEmojify } = notification;
     const sharedRoom = room && room.__typename === 'SharedRoom' ? room as RoomNano_SharedRoom : undefined;
 
     return (
@@ -50,6 +60,13 @@ export const NotificationView = React.memo((props: NotificationViewProps) => {
                     senderNameEmojify={senderNameEmojify}
                     group={sharedRoom}
                 />
+                {!!replyQuoteTextEmojify && (
+                    <div className={replyWrapper}>
+                        <div className={replyInnerWrapper}>
+                            {replyQuoteTextEmojify}
+                        </div>
+                    </div>
+                )}
                 <MessageContent
                     id={id}
                     text={text}

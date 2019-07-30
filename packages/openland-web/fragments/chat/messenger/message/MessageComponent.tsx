@@ -28,7 +28,7 @@ const senderOrgAndDateStyle = css`
     color: #676d7a; // ThemeDefault.foregroundSecondary
 `;
 
-const MessageSenderName = (props: { name: string }) => (
+const MessageSenderName = (props: { name: string | JSX.Element }) => (
     <div className={senderNameStyle}>{props.name}</div>
 );
 
@@ -41,7 +41,7 @@ const MessageTime = (props: { time: number }) => (
 );
 
 interface MessageSenderContentProps {
-    name?: string;
+    name?: string | JSX.Element;
     org: UserShort_primaryOrganization | null;
     date: number;
 }
