@@ -2,7 +2,6 @@ import * as React from 'react';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
-import { ZForm } from '../../components/ZForm';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -11,71 +10,77 @@ import { SilentError } from 'openland-y-forms/errorHandling';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
+import { SScrollView } from 'react-native-s/SScrollView';
 
-class NewOrganizationComponent extends React.PureComponent<PageProps> {
-    private ref = React.createRef<ZForm>();
-    render() {
-        const isCommunity = this.props.router.params.isCommunity;
+const NewOrganizationComponent = (props: PageProps) => {
+    const isCommunity = props.router.params.isCommunity;
 
-        return (
-            <ZTrack event="new_org_view">
-                <SHeader title={isCommunity ? 'New community' : 'New organization'} />
-                <SHeaderButton title={isCommunity ? 'Create' : 'Next'} onPress={() => { this.ref.current!.submitForm(); }} />
-                <ZForm
-                    ref={this.ref}
-                    action={async (src) => {
-                        if (!src.input || (src.input && !src.input.name)) {
-                            Alert.builder().title('Please enter a name for this ' + (isCommunity ? 'community' : 'organization')).button('GOT IT!').show();    
+    const form = useForm();
+    const nameField = useField('name', '', form);
+    const photoField = useField('photoRef', null, form);
+    const aboutField = useField('about', '', form);
 
-                            throw new SilentError();
-                        }
+    const handleSave = () => 
+        form.doAction(async () => {
+            if (nameField.value === '') {
+                Alert.builder().title('Please enter a name for this ' + (isCommunity ? 'community' : 'organization')).button('GOT IT!').show();    
 
-                        let client = getClient();
+                throw new SilentError();
+            }
 
-                        let res = await client.mutateCreateOrganization({
-                            input: {
-                                name: '',
-                                personal: false,
-                                isCommunity: isCommunity,
-                                ...src.input
-                            },
-                        });
+            let client = getClient();
 
-                        await client.refetchAccount();
-                        await client.refetchAccountSettings();
+            let res = await client.mutateCreateOrganization({
+                input: {
+                    personal: false,
+                    isCommunity: isCommunity,
+                    name: nameField.value,
+                    photoRef: photoField.value,
+                    ...(isCommunity && { about: aboutField.value })
+                },
+            });
 
-                        if (this.props.router.params.action) {
-                            await this.props.router.params.action(this.props.router);
-                        } else {
-                            this.props.router.pushAndRemove('ProfileOrganization', { id: res.organization.id });
-                        }
-                    }}
-                >
-                    <ZListItemGroup header={null} alignItems="center">
-                        <ZAvatarPicker field="input.photoRef" size="xx-large" />
-                    </ZListItemGroup>
+            await client.refetchAccount();
+            await client.refetchAccountSettings();
 
-                    <ZListItemGroup header={null}>
-                        {!isCommunity && (
-                            <ZInput
-                                placeholder="Organization name"
-                                field="input.name"
-                                autoFocus={true}
-                                description="Please, provide organization name and optional logo"
-                            />
-                        )}
+            if (props.router.params.action) {
+                await props.router.params.action(props.router);
+            } else {
+                props.router.pushAndRemove('ProfileOrganization', { id: res.organization.id });
+            }
+        });
 
-                        {isCommunity && (
-                            <>
-                                <ZInput placeholder="Community name" field="input.name" autoFocus={true} />
-                                <ZInput placeholder="About" field="input.about" multiline={true} />
-                            </>
-                        )}
-                    </ZListItemGroup>
-                </ZForm>
-            </ZTrack>
-        );
-    }
+    return (
+        <ZTrack event="new_org_view">
+            <SHeader title={isCommunity ? 'New community' : 'New organization'} />
+            <SHeaderButton title={isCommunity ? 'Create' : 'Next'} onPress={handleSave} />
+            <SScrollView>
+                <ZListItemGroup header={null} alignItems="center">
+                    <ZAvatarPicker field={photoField} size="xx-large" />
+                </ZListItemGroup>
+
+                <ZListItemGroup header={null}>
+                    {!isCommunity && (
+                        <ZInput
+                            placeholder="Organization name"
+                            field={nameField}
+                            autoFocus={true}
+                            description="Please, provide organization name and optional logo"
+                        />
+                    )}
+
+                    {isCommunity && (
+                        <>
+                            <ZInput placeholder="Community name" field={nameField} autoFocus={true} />
+                            <ZInput placeholder="About" field={aboutField} multiline={true} />
+                        </>
+                    )}
+                </ZListItemGroup>
+            </SScrollView>
+        </ZTrack>
+    );
 }
 
 export const NewOrganization = withApp(NewOrganizationComponent);
