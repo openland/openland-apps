@@ -2,7 +2,6 @@ import * as React from 'react';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
-import { ZForm } from '../../components/ZForm';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -15,7 +14,6 @@ import { ZAvatarPicker, ZAvatarPickerRenderProps } from 'openland-mobile/compone
 import { View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { ZImage } from 'openland-mobile/components/ZImage';
 import Alert from 'openland-mobile/components/AlertBlanket';
-import { SilentError } from 'openland-y-forms/errorHandling';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { useForm } from 'openland-form/useForm';

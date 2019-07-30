@@ -12,7 +12,6 @@ import { showBlanketModal } from './showBlanketModal';
 import { ZModalController } from './ZModal';
 import LoaderSpinner from './LoaderSpinner';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 
 const styles = StyleSheet.create({
     modalWrapper: {

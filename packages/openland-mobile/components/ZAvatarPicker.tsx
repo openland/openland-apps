@@ -18,7 +18,6 @@ interface AvatarImageRef {
 
 export interface ZAvatarPickerRenderProps {
     url?: string;
-    file?: string;
     loading: boolean;
     showPicker: () => void;
 }
@@ -38,7 +37,6 @@ export interface ZAvatarPickerProps {
 }
 
 const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal }) => {
-    const [file, setFile] = React.useState<string | undefined>(undefined);
     const [localPath, setLocalPath] = React.useState<string | undefined>(undefined);
     const [loading, setLoading] = React.useState<boolean>(false);
     
@@ -139,7 +137,7 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
     }
 
     let size = avatarSizes[props.size || 'x-large'].size;
-    return props.render ? <props.render url={valueUrl} file={file} loading={loading} showPicker={handlePicker} /> : (
+    return props.render ? <props.render url={valueUrl} loading={loading} showPicker={handlePicker} /> : (
         <TouchableOpacity onPress={handlePicker}>
             <View width={size} height={size} borderRadius={size / 2} backgroundColor={theme.backgroundTertiary}>
                 {!valueUrl && !loading && (
