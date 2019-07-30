@@ -7,50 +7,49 @@ import { css, cx } from 'linaria';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
 import { formatTime } from 'openland-y-utils/formatTime';
-import { UserShort_primaryOrganization } from 'openland-api/Types';
+import { UserShort_primaryOrganization, UserShort } from 'openland-api/Types';
 import { HoverMenu } from './Menu/HoverMenu';
+import { ULink } from 'openland-web/components/unicorn/ULink';
+import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
 
 const senderContainer = css`
     display: flex;
-    align-items: center;
+    align-items: baseline;
+
+    a:hover { text-decoration: none; }
 `;
 
 const senderNameStyle = css`
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 24px;
     color: #171b1f; // ThemeDefault.foregroundPrimary
 `;
 
 const senderOrgAndDateStyle = css`
-    font-size: 13px;
-    line-height: 18px;
     margin-left: 8px;
     color: #676d7a; // ThemeDefault.foregroundSecondary
 `;
 
-const MessageSenderName = (props: { name: string | JSX.Element }) => (
-    <div className={senderNameStyle}>{props.name}</div>
+const MessageSenderName = (props: { sender: UserShort; senderNameEmojify?: string | JSX.Element; }) => (
+    <ULink path={`/${props.sender.shortname || props.sender.id}`} className={cx(TextLabel1, senderNameStyle)}>{props.senderNameEmojify || props.sender.name}</ULink>
 );
 
-const MessageSenderOrg = (props: { org: string }) => (
-    <div className={senderOrgAndDateStyle}>{props.org}</div>
+const MessageSenderOrg = (props: { organization: UserShort_primaryOrganization }) => (
+    <ULink path={`/${props.organization.shortname || props.organization.id}`} className={cx(TextCaption, senderOrgAndDateStyle)}>{props.organization.name}</ULink>
 );
 
 const MessageTime = (props: { time: number }) => (
-    <div className={senderOrgAndDateStyle}>{formatTime(props.time)}</div>
+    <div className={cx(TextCaption, senderOrgAndDateStyle)}>{formatTime(props.time)}</div>
 );
 
 interface MessageSenderContentProps {
-    name?: string | JSX.Element;
-    org: UserShort_primaryOrganization | null;
+    sender: UserShort;
+    senderNameEmojify?: string | JSX.Element;
     date: number;
 }
 
 export const MessageSenderContent = (props: MessageSenderContentProps) => (
     <div className={senderContainer}>
-        {props.name && <MessageSenderName name={props.name} />}
-        {props.org && <MessageSenderOrg org={props.org.name} />}
+        <MessageSenderName sender={props.sender} senderNameEmojify={props.senderNameEmojify} />
+        {props.sender.primaryOrganization && <MessageSenderOrg organization={props.sender.primaryOrganization} />}
         <MessageTime time={props.date} />
     </div>
 );
@@ -213,8 +212,8 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
 
     const sender = (
         <MessageSenderContent
-            name={message.senderNameEmojify}
-            org={message.sender.primaryOrganization}
+            sender={message.sender}
+            senderNameEmojify={message.senderNameEmojify}
             date={message.date}
         />
     );

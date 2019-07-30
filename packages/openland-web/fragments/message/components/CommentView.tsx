@@ -73,8 +73,8 @@ export const CommentView = React.memo((props: CommentViewProps) => {
             </div>
             <div className={content}>
                 <MessageSenderContent
-                    name={senderNameEmojify}
-                    org={sender.primaryOrganization}
+                    sender={sender}
+                    senderNameEmojify={senderNameEmojify}
                     date={parseInt(date, 10)}
                 />
                 <MessageContent

@@ -68,8 +68,8 @@ export const MessageView = React.memo((props: { message: Message_message_General
             </div>
             <div className={content}>
                 <MessageSenderContent
-                    name={senderNameEmojify}
-                    org={sender.primaryOrganization}
+                    sender={sender}
+                    senderNameEmojify={senderNameEmojify}
                     date={parseInt(message.date, 10)}
                 />
                 <MessageContent

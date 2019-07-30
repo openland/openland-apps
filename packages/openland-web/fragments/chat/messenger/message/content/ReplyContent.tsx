@@ -26,12 +26,11 @@ const replyMessageGroupClass = css`
 
 export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessageItem[] }) => {
     let firstMessage = props.quotedMessages[0];
-    let org = firstMessage.sender.primaryOrganization;
     return (
         <div className={replyMessageGroupClass}>
             <MessageSenderContent
-                name={firstMessage.senderNameEmojify}
-                org={org}
+                sender={firstMessage.sender}
+                senderNameEmojify={firstMessage.senderNameEmojify}
                 date={firstMessage.date}
             />
             {props.quotedMessages.map(q => (
