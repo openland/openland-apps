@@ -18,6 +18,10 @@ const replyClass = css`
     cursor: pointer;
     margin-left: 8px;
     color: #0C7FF2; // ThemeDefault.accentPrimary
+
+    &:hover {
+        text-decoration: none;
+    }
 `;
 
 interface NotificationToolsProps {

@@ -48,7 +48,7 @@ const reactionsLikedWrapper = css`
 const wrapper = css`
     display: flex;
     flex-direction: row;
-    margin-top: 20px;
+    margin-top: 24px;
 
     &:hover .${reactionsWrapper} {
         opacity: 1;

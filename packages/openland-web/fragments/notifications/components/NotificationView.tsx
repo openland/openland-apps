@@ -10,7 +10,7 @@ import { RoomNano_SharedRoom } from 'openland-api/Types';
 const wrapper = css`
     display: flex;
     flex-direction: row;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 `;
 
 const avatarWrapper = css`
