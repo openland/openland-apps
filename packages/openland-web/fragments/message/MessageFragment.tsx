@@ -22,6 +22,9 @@ const contentClass = css`
     max-width: 816px;
     width: 100%;
     margin: 0 auto;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 `;
 
 export const MessageFragment = React.memo(() => {
