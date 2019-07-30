@@ -33,7 +33,7 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
         Loader.show();
 
         try {
-            await client.mutateUpdateOrganization({ organizationId: organization.id, input: { alphaIsPrivate: isPrivate }});
+            await client.mutateUpdateOrganization({ organizationId: organization.id, input: { alphaIsPrivate: isPrivate } });
             await client.refetchOrganizationProfile({ organizationId });
             await client.refetchOrganization({ organizationId });
         } catch (e) {
