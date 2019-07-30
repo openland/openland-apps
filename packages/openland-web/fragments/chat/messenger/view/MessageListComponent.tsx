@@ -25,7 +25,7 @@ import { NewMessageDividerComponent } from './NewMessageDividerComponent';
 const messagesWrapperClassName = css`
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     align-self: center;
     width: 100%;
     padding-top: 96px;

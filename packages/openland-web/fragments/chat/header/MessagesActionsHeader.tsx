@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { css, cx } from 'linaria';
 import { XView, XViewRouterContext } from 'react-mental';
 import { MessagesActionsStateEngine } from 'openland-engines/messenger/MessagesActionsState';
@@ -9,7 +9,6 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import CloseIcon from 'openland-icons/s/ic-close-16.svg';
 import { TextTitle2 } from 'openland-web/utils/TextStyles';
 import { showDeleteMessageModal as showDeleteMessagesModal } from '../components/MessengerRootComponent';
-import { useClient } from 'openland-web/utils/useClient';
 import { showChatPicker } from '../showChatPicker';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 
@@ -118,22 +117,17 @@ const Counter = (props: { engine: MessagesActionsStateEngine }) => {
     );
 };
 
-const Buttons = (props: { engine: MessagesActionsStateEngine, chatId: string }) => {
-    let client = useClient();
+const Buttons = (props: { chatId: string, engine: MessagesActionsStateEngine, messenger: MessengerEngine }) => {
     let deleteCallback = React.useCallback(() => {
         let ids = props.engine.getState().messages.filter(m => !!m.id).map(m => m.id!);
-        showDeleteMessagesModal(ids, async () => {
-            await client.mutateRoomDeleteMessages({ mids: ids });
-            props.engine.clear();
-        });
+        showDeleteMessagesModal(ids, props.engine.clear);
     }, []);
-    let layout = useLayout();
     const router = React.useContext(XViewRouterContext);
     let forwardCallback = React.useCallback(() => {
         showChatPicker((id: string) => {
-            props.engine.forwardInit();
+            props.messenger.getConversation(id).messagesActionsStateEngine.forward(props.engine.getState().messages, props.engine);
             router!.navigate('/mail/' + id);
-        }, layout);
+        });
     }, []);
     let replyCallback = React.useCallback(() => {
         props.engine.reply();
@@ -151,7 +145,8 @@ const Buttons = (props: { engine: MessagesActionsStateEngine, chatId: string }) 
 
 export const MessagesActionsHeader = (props: { chatId: string }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
-    let engine = React.useContext(MessengerContext).getConversation(props.chatId).messagesActionsStateEngine;
+    let messenger = React.useContext(MessengerContext);
+    let engine = messenger.getConversation(props.chatId).messagesActionsStateEngine;
 
     React.useEffect(() => {
         engine.listen(state => {
@@ -165,7 +160,7 @@ export const MessagesActionsHeader = (props: { chatId: string }) => {
         <div ref={containerRef} className={containerClass} >
             <XView flexGrow={1} justifyContent="space-between" alignItems="center" flexDirection="row">
                 <Counter engine={engine} />
-                <Buttons engine={engine} chatId={props.chatId} />
+                <Buttons engine={engine} chatId={props.chatId} messenger={messenger} />
             </XView>
         </div>
     );

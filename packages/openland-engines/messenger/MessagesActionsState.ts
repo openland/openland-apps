@@ -6,8 +6,6 @@ export interface MessagesActionsState {
     messages: DataSourceMessageItem[];
 }
 
-let toForward: DataSourceMessageItem[] | undefined;
-
 export class MessagesActionsStateEngine {
     private state: MessagesActionsState = { messages: [] };
     private listeners = new Set<(state: MessagesActionsState) => void>();
@@ -16,23 +14,11 @@ export class MessagesActionsStateEngine {
     // Actions
     ////
 
-    forwardInit = () => {
-        toForward = this.state.messages;
-        this.clear();
-    }
-
-    forwardFrom = (messages: DataSourceMessageItem[], from?: MessagesActionsStateEngine) => {
+    forward = (messages: DataSourceMessageItem[], from?: MessagesActionsStateEngine) => {
         if (from && (this !== from)) {
             from.clear();
         }
         this.setState({ messages, action: 'forward' });
-    }
-
-    forwardFromDonor = () => {
-        if (toForward) {
-            this.forwardFrom(toForward);
-            toForward = undefined;
-        }
     }
 
     reply = (message?: DataSourceMessageItem) => {
