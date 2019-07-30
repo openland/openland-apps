@@ -314,7 +314,6 @@ export class ConversationEngine implements MessageSendHandler {
     onOpen = () => {
         this.isOpen = true;
         this.markReadIfNeeded();
-        this.messagesActionsStateEngine.forwardFromDonor();
     }
 
     onClosed = () => {

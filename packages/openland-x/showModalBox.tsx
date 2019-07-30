@@ -6,6 +6,7 @@ import { XLoader } from './XLoader';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import ResizeObserver from 'resize-observer-polyfill';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 
 const boxStyle = css`
     overflow: visible;
@@ -151,7 +152,11 @@ const ModalBoxComponent = React.memo<{
         return () => observer.disconnect();
     }, []);
 
-    const boxInlineStyle = props.config.fullScreen
+    let layout = useLayout();
+
+    let isFullscreen = props.config.fullScreen === 'on-mobile' ? layout === 'mobile' : !!props.config.fullScreen;
+
+    const boxInlineStyle = isFullscreen
         ? {
             top: 0,
             right: 0,
@@ -180,7 +185,7 @@ const ModalBoxComponent = React.memo<{
                 ref={containerRef}
                 className={cx(
                     // overlayStyle,
-                    props.config.fullScreen ? overlayFullScreenStyle : overlayStyle,
+                    isFullscreen ? overlayFullScreenStyle : overlayStyle,
                     state === 'showing' && overlayShowing,
                     state === 'visible' && overlayVisible,
                     state === 'hiding' && overlayHiding,
@@ -197,7 +202,7 @@ const ModalBoxComponent = React.memo<{
                     )}
                     style={boxInlineStyle}
                 >
-                    {props.config.fullScreen && (
+                    {isFullscreen && (
                         <XView position="absolute" right={23} top={23} zIndex={1000}>
                             <XView
                                 onClick={tryHide}
@@ -248,7 +253,7 @@ export const XModalBoxStyles = {
 export interface XModalBoxConfig {
     title?: string;
     width?: number;
-    fullScreen?: boolean;
+    fullScreen?: boolean | 'on-mobile';
     flowing?: boolean;
 }
 

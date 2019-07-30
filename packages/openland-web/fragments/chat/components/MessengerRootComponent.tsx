@@ -55,9 +55,9 @@ interface MessagesComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
 }
 
@@ -73,8 +73,9 @@ export const DeleteMessageComponent = ({
 }: {
     messageIds: string[];
     hide: () => void;
-    action: () => void;
+    action?: () => void;
 }) => {
+    let client = useClient();
     return (
         <XView borderRadius={8}>
             <XModalContent>
@@ -91,8 +92,11 @@ export const DeleteMessageComponent = ({
                     text="Delete"
                     style="danger"
                     size="large"
-                    onClick={async data => {
-                        await action();
+                    onClick={async () => {
+                        await client.mutateRoomDeleteMessages({ mids: messageIds });
+                        if (action) {
+                            action();
+                        }
                         hide();
                     }}
                 />
@@ -101,7 +105,7 @@ export const DeleteMessageComponent = ({
     );
 };
 
-export const showDeleteMessageModal = (messageIds: string[], action: () => void) => {
+export const showDeleteMessageModal = (messageIds: string[], action?: () => void) => {
     showModalBox(
         {
             title: `Delete ${pluralForm(messageIds.length, ['message', 'messages'])}`,
@@ -360,8 +364,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         text: string,
         mentions:
             | (
-                  | FullMessage_GeneralMessage_spans_MessageSpanUserMention
-                  | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
+                | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+                | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
             | null,
     ) => {
         if (!this.conversation) {
@@ -372,11 +376,11 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             text,
             mentions
                 ? mentions.map(mention => {
-                      if (mention.__typename === 'MessageSpanUserMention') {
-                          return mention.user;
-                      }
-                      return { __typename: 'AllMention' as 'AllMention' };
-                  })
+                    if (mention.__typename === 'MessageSpanUserMention') {
+                        return mention.user;
+                    }
+                    return { __typename: 'AllMention' as 'AllMention' };
+                })
                 : null,
         );
     }
@@ -466,9 +470,9 @@ interface MessengerRootComponentProps {
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
 }
 
