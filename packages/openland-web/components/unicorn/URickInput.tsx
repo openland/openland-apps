@@ -5,6 +5,7 @@ import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { UserForMention } from 'openland-api/Types';
 import { emojiLink } from 'openland-y-utils/emojiLink';
 import { EmojiPicker } from './emoji/EmojiPicker';
+import { emojiConvertToName } from 'openland-y-utils/emojiExtract';
 
 const quillStyle = css`
     flex-grow: 1;
@@ -279,10 +280,19 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
         editor.current = q;
     }, []);
 
+    const onEmojiPicked = React.useCallback((src: string) => {
+        let q = editor.current;
+        if (q) {
+            let selection = q.getSelection(true);
+            q.insertEmbed(selection.index, 'emoji', { name: emojiConvertToName(src), value: src }, 'user');
+            q.setSelection(selection.index + 1, 0, 'user');
+        }
+    }, []);
+
     return (
         <div className={quillStyle}>
             <div ref={containerRef} />
-            <EmojiPicker />
+            <EmojiPicker onEmojiPicked={onEmojiPicked} />
         </div>
     );
 }));

@@ -27,7 +27,7 @@ const emojiPickerIconOpen = css`
     opacity: 0.5;
 `;
 
-const EmojiComponent = React.memo((props: { name: string, category: string }) => {
+const EmojiComponent = React.memo((props: { name: string, value: string, category: string, onEmojiPicked: (arg: string) => void }) => {
     return (
         <XView
             width={40}
@@ -35,13 +35,14 @@ const EmojiComponent = React.memo((props: { name: string, category: string }) =>
             alignItems="center"
             justifyContent="center"
             fontSize={22}
+            onClick={() => props.onEmojiPicked(props.value)}
         >
             {emojiComponentSprite(props.name, props.category)}
         </XView>
     );
 });
 
-const EmojiPickerBody = React.memo(() => {
+const EmojiPickerBody = React.memo((props: { onEmojiPicked: (arg: string) => void }) => {
     return (
         <XView
             flexDirection="column"
@@ -75,7 +76,12 @@ const EmojiPickerBody = React.memo(() => {
                         // let ch = emojiConvertToName(e[columnIndex + rowIndex * 8].char);
                         return (
                             <div style={style}>
-                                <EmojiComponent name={pickerEmoji[columnIndex + rowIndex * 8].name} category={pickerEmoji[columnIndex + rowIndex * 8].sprite} />
+                                <EmojiComponent
+                                    name={pickerEmoji[columnIndex + rowIndex * 8].name}
+                                    value={pickerEmoji[columnIndex + rowIndex * 8].value}
+                                    category={pickerEmoji[columnIndex + rowIndex * 8].sprite}
+                                    onEmojiPicked={props.onEmojiPicked}
+                                />
                             </div>
                         );
                     }}
@@ -85,8 +91,8 @@ const EmojiPickerBody = React.memo(() => {
     );
 });
 
-export const EmojiPicker = React.memo(() => {
-    const [visible, show] = usePopper({ placement: 'top-end', hideOnLeave: true }, () => <EmojiPickerBody />);
+export const EmojiPicker = React.memo((props: { onEmojiPicked: (arg: string) => void }) => {
+    const [visible, show] = usePopper({ placement: 'top-end', hideOnLeave: true }, () => <EmojiPickerBody onEmojiPicked={props.onEmojiPicked} />);
 
     return (
         <>
