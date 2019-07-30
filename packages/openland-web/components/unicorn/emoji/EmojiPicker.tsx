@@ -28,6 +28,34 @@ const emojiPickerIconOpen = css`
     opacity: 0.5;
 `;
 
+const titleStyle = css`
+    position: sticky !important;
+    position: -webkit-sticky !important;
+    display: flex;
+    height: 40px;
+    color: #171B1F;
+    font-size: 15px;
+    line-height: 40px;
+    font-weight: 600;
+    top: 0px;
+    z-index: 2;
+
+    background-color: #fff;
+    /* @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+        margin-top: -16px;
+        padding-top: 16px;
+        background-color: rgba(0,0,0,0);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    } */
+`;
+
+const titleBgStyle = css`
+    width: '100%';
+    height: '100%';
+    /* background-color: rgba(255,255,255,0.72); */
+`;
+
 const EmojiComponent = React.memo((props: { name: string, value: string, category: string, onEmojiPicked: (arg: string) => void }) => {
     return (
         <XView
@@ -96,24 +124,14 @@ const sections: EmojiSection[] = [{
 let total = 0;
 for (let s of sections) {
     s.start = total;
-    s.end = total + Math.ceil(s.emoji.length / 8 + 1);
+    s.end = s.start + Math.ceil(s.emoji.length / 8 + 1);
     total += Math.ceil(s.emoji.length / 8 + 1);
 }
 
 const RowComponent = React.memo((props: { section: EmojiSection, index: number, onEmojiPicked: (arg: string) => void }) => {
     let index = props.index - props.section.start;
     if (index === 0) {
-        return (
-            <XView
-                height={40}
-                color="#171B1F"
-                fontSize={15}
-                lineHeight="40px"
-                fontWeight="600"
-            >
-                {props.section.title}
-            </XView>
-        );
+        return null;
     }
     index--;
     let emoji = props.section.emoji.slice(index * 8, Math.min(props.section.emoji.length, index * 8 + 8));
@@ -133,17 +151,7 @@ const RowComponent = React.memo((props: { section: EmojiSection, index: number, 
 
 const Recent = React.memo((props: { index: number, onEmojiPicked: (arg: string) => void }) => {
     if (props.index === 0) {
-        return (
-            <XView
-                height={40}
-                color="#171B1F"
-                fontSize={15}
-                lineHeight="40px"
-                fontWeight="600"
-            >
-                Recent
-            </XView>
-        );
+        return null;
     }
 
     let recent = React.useMemo(() => getRecent(), []);
@@ -167,6 +175,28 @@ const Recent = React.memo((props: { index: number, onEmojiPicked: (arg: string) 
     );
 });
 
+const innerElementType = React.forwardRef<HTMLDivElement>(({ children, ...rest }, ref) => (
+    <div ref={ref} {...rest}>
+        <div style={{ top: 0, left: 0, width: "100%", height: 3 * 40 }}>
+            <div className={titleStyle}>
+                <div className={titleBgStyle}>
+                    Recent
+                </div>
+            </div>
+        </div>
+        {sections.map((index, i) => (
+            <div style={{ top: (index.start + 3) * 40, left: 0, width: "100%", height: i === sections.length - 1 ? (index.end - index.start - 4) * 40 /* WTF? */ : (index.end - index.start) * 40 }}>
+                <div className={titleStyle}>
+                    <div className={titleBgStyle}>
+                        {index.title}
+                    </div>
+                </div>
+            </div>
+        ))}
+        {children}
+    </div>
+));
+
 const EmojiPickerBody = React.memo((props: { onEmojiPicked: (arg: string) => void }) => {
     return (
         <XView
@@ -184,17 +214,28 @@ const EmojiPickerBody = React.memo((props: { onEmojiPicked: (arg: string) => voi
             >
                 Emoji
             </XView>
-            <XView flexGrow={1} flexBasis={0} minHeight={0} paddingHorizontal={16} overflow="hidden">
+            <XView
+                flexGrow={1}
+                flexBasis={0}
+                minHeight={0}
+                paddingHorizontal={16}
+                overflow="hidden"
+            >
                 <FixedSizeList
                     itemCount={total}
                     itemSize={40}
                     overscanCount={10}
                     width={384 /* Bigger width to hide scrollbar */}
                     height={384}
+                    innerElementType={innerElementType}
                 >
                     {({ index, style }) => {
                         if (index < 3) {
-                            return <Recent index={index} onEmojiPicked={props.onEmojiPicked} />;
+                            return (
+                                <div style={style}>
+                                    <Recent index={index} onEmojiPicked={props.onEmojiPicked} />
+                                </div>
+                            );
                         }
                         let ii = index - 3;
                         let section = sections.find((v) => v.start <= ii && ii < v.end)!;
