@@ -87,7 +87,7 @@ const messageInnerContainerClass = css`
 const messageContainerSelectedClass = css`
     background-color: #f0f2f5; // ThemeDefault.backgroundTertiary
 
-    .message-buttons-wrapper {
+    .message-buttons-wrapper, .message-rich-wrapper {
         background-color: #fff; // ThemeDefault.backgroundPrimary
     }
 `;

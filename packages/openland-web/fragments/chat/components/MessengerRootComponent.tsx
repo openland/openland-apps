@@ -35,8 +35,9 @@ import { MessagesActionsStateEngine } from 'openland-engines/messenger/MessagesA
 import { plural, pluralForm } from 'openland-y-utils/plural';
 import { TextBody, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { MessageCompactComponent } from '../messenger/message/MessageCompactContent';
-import ReplyIcon from 'openland-icons/ic-reply.svg';
-import CloseIcon from 'openland-icons/ic-close-xs.svg';
+import ReplyIcon from 'openland-icons/s/ic-reply-24.svg';
+import CloseIcon from 'openland-icons/s/ic-close-8.svg';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
 export interface File {
     uuid: string;
@@ -169,6 +170,11 @@ const messageActionCloseWrap = css`
     background-color: #f2f3f5;
     margin-left: 16px;
     margin-right: 6px;
+
+    & svg * {
+        fill: #676d7a;
+        stroke: #676d7a;
+    }
 `;
 
 const composeContainer = css`
@@ -208,7 +214,7 @@ const MessageAction = (props: { engine: MessagesActionsStateEngine }) => {
         return (
             <div className={messageActonContainerClass}>
                 <div className={messageActionIconWrap}>
-                    <ReplyIcon />
+                    <UIcon icon={<ReplyIcon />} color={'#676d7a'} />
                 </div>
                 <div className={messageActonInnerContainerClass}>
                     {state.messages.length === 1 && (
