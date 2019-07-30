@@ -23,20 +23,17 @@ const replyClass = css`
 interface NotificationToolsProps {
     date: number;
     messageId?: string;
-    notificationType?: 'new_comment' | 'unsupported';
 }
 
 export const NotificationTools = React.memo((props: NotificationToolsProps) => {
-    const { date, messageId, notificationType } = props;
+    const { date, messageId } = props;
 
     return (
         <div className={wrapperClass}>
             <URelativeDate date={date} className={cx(TextCaption, dateClass)} />
-            {notificationType === 'new_comment' && (
-                <ULink path={`/message/${messageId}`} className={cx(TextCaption, replyClass)}>
-                    Reply
-                </ULink>
-            )}
+            <ULink path={`/message/${messageId}`} className={cx(TextCaption, replyClass)}>
+                Reply
+            </ULink>
         </div>
     );
 });

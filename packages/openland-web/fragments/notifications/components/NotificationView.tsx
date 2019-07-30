@@ -74,11 +74,12 @@ export const NotificationView = React.memo((props: NotificationViewProps) => {
                     attachments={attachments}
                     fallback={fallback}
                 />
-                <NotificationTools
-                    messageId={peerRootId}
-                    date={date}
-                    notificationType={notificationType}
-                />
+                {notificationType === 'new_comment' && (
+                    <NotificationTools
+                        messageId={peerRootId}
+                        date={date}
+                    />
+                )}
             </div>
         </div>
     );
