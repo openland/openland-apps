@@ -19,7 +19,7 @@ const senderNameStyle = css`
     font-size: 15px;
     font-weight: 600;
     line-height: 24px;
-    color: #171B1F; // ThemeDefault.foregroundPrimary
+    color: #171b1f; // ThemeDefault.foregroundPrimary
 `;
 
 const senderOrgAndDateStyle = css`
@@ -55,9 +55,9 @@ export const MessageSenderContent = (props: MessageSenderContentProps) => (
     </div>
 );
 
-////  
+////
 // Message container
-//// 
+////
 const messageContainerClass = css`
     display: flex;
     flex-direction: row;
@@ -87,7 +87,9 @@ const messageInnerContainerClass = css`
 const messageContainerSelectedClass = css`
     background-color: #f0f2f5; // ThemeDefault.backgroundTertiary
 
-    .message-buttons-wrapper, .message-rich-wrapper {
+    .message-buttons-wrapper,
+    .message-rich-wrapper,
+    .message-document-wrapper {
         background-color: #fff; // ThemeDefault.backgroundPrimary
     }
 `;
@@ -110,9 +112,9 @@ const noBorderRadiusMobile = css`
     }
 `;
 
-////  
+////
 // Message content
-//// 
+////
 const buttonsClass = css`
     margin-top: 8px;
     display: flex;
@@ -165,16 +167,19 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             }
         });
     }, []);
-    const onSelect = React.useCallback(() => {
-        let selection = window.getSelection();
-        if (selection) {
-            let range = selection.getRangeAt(0);
-            if (range.startOffset !== range.endOffset) {
-                return;
+    const onSelect = React.useCallback(
+        () => {
+            let selection = window.getSelection();
+            if (selection) {
+                let range = selection.getRangeAt(0);
+                if (range.startOffset !== range.endOffset) {
+                    return;
+                }
             }
-        }
-        props.engine.messagesActionsStateEngine.selectToggle(props.message);
-    }, [message.id]);
+            props.engine.messagesActionsStateEngine.selectToggle(props.message);
+        },
+        [message.id],
+    );
 
     const content = (
         <MessageContent
