@@ -62,7 +62,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
     const canEdit = sender.id === messenger.user.id;
 
     return (
-        <div className={wrapper} style={{ paddingLeft: depth > 0 ? 56 + ((depth - 1) * 40) : undefined }} onDoubleClick={() => onReactionClick(comment)}>
+        <div className={wrapper} style={{ paddingLeft: depth > 0 ? 56 + ((depth - 1) * 40) : undefined }}>
             <div className={avatarWrapper}>
                 <UAvatar
                     id={sender.id}
