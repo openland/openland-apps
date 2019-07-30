@@ -3,11 +3,13 @@ import { css, cx } from 'linaria';
 import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { FullMessage_GeneralMessage_sender, RoomNano_SharedRoom } from 'openland-api/Types';
 import { ULink } from 'openland-web/components/unicorn/ULink';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import GroupReplyIcon from 'openland-icons/ic-reply-comments.svg';
 
 const wrapperClass = css`
     display: flex;
     flex-direction: row;
-    align-items: baseline;
+    align-items: center;
     margin-top: -3px;
     margin-bottom: -1px;
 `;
@@ -25,13 +27,14 @@ const nameLinkClass = css`
     }
 `;
 
-const groupLinkClass = css`
-    color: #676D7A; // ThemeDefault.foregroundSecondary
+const groupWrapper = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+`;
 
-    &:hover {
-        text-decoration: none;
-        color: #1885F2; // ThemeDefault.accentPrimary
-    }
+const iconWrapper = css`
+    margin-right: 8px;
 `;
 
 interface NotificationSenderProps {
@@ -52,11 +55,22 @@ export const NotificationSender = React.memo((props: NotificationSenderProps) =>
             </div>
 
             {group && (
-                <div className={TextCaption}>
-                    <ULink path={`/mail/${group.id}`} className={groupLinkClass}>
+                <>
+                    <div className={iconWrapper}>
+                        <GroupReplyIcon />
+                    </div>
+
+                    <ULink path={`/mail/${group.id}`} className={cx(TextCaption, groupWrapper, nameLinkClass)}>
+                        <UAvatar
+                            id={group.id}
+                            photo={group.photo}
+                            title={group.title}
+                            size="x-small"
+                            marginRight={6}
+                        />
                         {group.title}
                     </ULink>
-                </div>
+                </>
             )}
         </div>
     );

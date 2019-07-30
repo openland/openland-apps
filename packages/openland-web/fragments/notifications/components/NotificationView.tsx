@@ -41,7 +41,7 @@ interface NotificationViewProps {
 
 export const NotificationView = React.memo((props: NotificationViewProps) => {
     const { notification } = props;
-    const { id, date, sender, text, attachments, textSpans, fallback, senderNameEmojify, peerRootId, room, replyQuoteTextEmojify } = notification;
+    const { id, date, sender, text, attachments, textSpans, fallback, senderNameEmojify, peerRootId, room, replyQuoteTextEmojify, notificationType } = notification;
     const sharedRoom = room && room.__typename === 'SharedRoom' ? room as RoomNano_SharedRoom : undefined;
 
     return (
@@ -77,6 +77,7 @@ export const NotificationView = React.memo((props: NotificationViewProps) => {
                 <NotificationTools
                     messageId={peerRootId}
                     date={date}
+                    notificationType={notificationType}
                 />
             </div>
         </div>
