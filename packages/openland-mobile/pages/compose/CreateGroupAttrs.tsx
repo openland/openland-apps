@@ -82,17 +82,15 @@ const CreateGroupComponent = (props: PageProps) => {
     const [selectedKind, setSelectedKind] = React.useState<SharedRoomKind.GROUP | SharedRoomKind.PUBLIC>(orgIdFromRouter ? SharedRoomKind.PUBLIC : SharedRoomKind.GROUP);
     const [selectedOrg, setSelectedOrg] = React.useState(sortedOrganizations[0].id);
 
-    const handleSave = () => 
+    const handleSave = () => {
+        if (titleField.value === '') {
+            Alert.builder().title(`Please enter a name for this ${chatTypeString.toLowerCase()}`).button('GOT IT!').show();
+            return;
+        }
+        
         form.doAction(async () => {
-            if (titleField.value === '') {
-                Alert.builder().title(`Please enter a name for this ${chatTypeString.toLowerCase()}`).button('GOT IT!').show();
-
-                throw new SilentError();
-            }
-
-            let orgId = selectedKind === SharedRoomKind.PUBLIC ? selectedOrg : undefined;
-
-            let res = await getClient().mutateRoomCreate({
+            const orgId = selectedKind === SharedRoomKind.PUBLIC ? selectedOrg : undefined;
+            const res = await getClient().mutateRoomCreate({
                 kind: selectedKind,
                 title: titleField.value,
                 photoRef: photoField.value,
@@ -107,6 +105,7 @@ const CreateGroupComponent = (props: PageProps) => {
 
             showMembersModal(props.router, res);
         });
+    };
 
     return (
         <>

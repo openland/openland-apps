@@ -22,15 +22,14 @@ const NewOrganizationComponent = (props: PageProps) => {
     const photoField = useField('photoRef', null, form);
     const aboutField = useField('about', '', form);
 
-    const handleSave = () => 
+    const handleSave = () => {
+        if (nameField.value === '') {
+            Alert.builder().title('Please enter a name for this ' + (isCommunity ? 'community' : 'organization')).button('GOT IT!').show();    
+            return;
+        }
+
         form.doAction(async () => {
-            if (nameField.value === '') {
-                Alert.builder().title('Please enter a name for this ' + (isCommunity ? 'community' : 'organization')).button('GOT IT!').show();    
-
-                throw new SilentError();
-            }
-
-            let client = getClient();
+            const client = getClient();
 
             let res = await client.mutateCreateOrganization({
                 input: {
@@ -51,6 +50,7 @@ const NewOrganizationComponent = (props: PageProps) => {
                 props.router.pushAndRemove('ProfileOrganization', { id: res.organization.id });
             }
         });
+    };
 
     return (
         <ZTrack event="new_org_view">
