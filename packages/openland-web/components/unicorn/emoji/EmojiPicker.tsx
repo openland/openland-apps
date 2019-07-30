@@ -3,9 +3,10 @@ import { css, cx } from 'linaria';
 import IconSticker from './ic_sticker.svg';
 import { usePopper } from '../usePopper';
 import { XView } from 'react-mental';
-import { FixedSizeGrid } from 'react-window';
+import { FixedSizeList } from 'react-window';
 import { pickerEmoji } from 'openland-y-utils/data/emoji-data';
 import { emojiComponentSprite } from 'openland-y-utils/emojiComponentSprite';
+import { useRecent, onEmojiSent, getRecent } from './Recent';
 
 const emojiPickerIcon = css`
     position: absolute;
@@ -35,11 +36,133 @@ const EmojiComponent = React.memo((props: { name: string, value: string, categor
             alignItems="center"
             justifyContent="center"
             fontSize={22}
-            onClick={() => props.onEmojiPicked(props.value)}
+            onClick={() => {
+                onEmojiSent(props.name);
+                props.onEmojiPicked(props.value);
+            }}
             hoverBackgroundColor="#F2F3F5"
             paddingTop={6 /* Emoji are aligned by baseline and we need to compensate this */}
+            borderRadius={8}
+            cursor="pointer"
         >
             {emojiComponentSprite(props.name, props.category)}
+        </XView>
+    );
+});
+
+interface EmojiSection {
+    title: string;
+    emoji: { name: string, value: string, sprite: string }[];
+    start: number;
+    end: number;
+}
+
+const sections: EmojiSection[] = [{
+    title: 'Smileys & people',
+    emoji: pickerEmoji.filter((v) => v.category === 0 || v.category === 1),
+    start: 0,
+    end: 0
+}, {
+    title: 'Animals & Nature',
+    emoji: pickerEmoji.filter((v) => v.category === 2),
+    start: 0,
+    end: 0
+}, {
+    title: 'Food & Drink',
+    emoji: pickerEmoji.filter((v) => v.category === 3),
+    start: 0,
+    end: 0
+}, {
+    title: 'Travel & Places',
+    emoji: pickerEmoji.filter((v) => v.category === 4 || v.category === 5),
+    start: 0,
+    end: 0
+}, {
+    title: 'Objects',
+    emoji: pickerEmoji.filter((v) => v.category === 6),
+    start: 0,
+    end: 0
+}, {
+    title: 'Symbols',
+    emoji: pickerEmoji.filter((v) => v.category === 7),
+    start: 0,
+    end: 0
+}, {
+    title: 'Flags',
+    emoji: pickerEmoji.filter((v) => v.category === 8),
+    start: 0,
+    end: 0
+}];
+let total = 0;
+for (let s of sections) {
+    s.start = total;
+    s.end = total + Math.ceil(s.emoji.length / 8 + 1);
+    total += Math.ceil(s.emoji.length / 8 + 1);
+}
+
+const RowComponent = React.memo((props: { section: EmojiSection, index: number, onEmojiPicked: (arg: string) => void }) => {
+    let index = props.index - props.section.start;
+    if (index === 0) {
+        return (
+            <XView
+                height={40}
+                color="#171B1F"
+                fontSize={15}
+                lineHeight="40px"
+                fontWeight="600"
+            >
+                {props.section.title}
+            </XView>
+        );
+    }
+    index--;
+    let emoji = props.section.emoji.slice(index * 8, Math.min(props.section.emoji.length, index * 8 + 8));
+    return (
+        <XView height={40} flexDirection="row">
+            {emoji.map((v) => (
+                <EmojiComponent
+                    name={v.name}
+                    value={v.value}
+                    category={v.sprite}
+                    onEmojiPicked={props.onEmojiPicked}
+                />
+            ))}
+        </XView>
+    );
+});
+
+const Recent = React.memo((props: { index: number, onEmojiPicked: (arg: string) => void }) => {
+    if (props.index === 0) {
+        return (
+            <XView
+                height={40}
+                color="#171B1F"
+                fontSize={15}
+                lineHeight="40px"
+                fontWeight="600"
+            >
+                Recent
+            </XView>
+        );
+    }
+
+    let recent = React.useMemo(() => getRecent(), []);
+
+    if (props.index === 1) {
+        recent.splice(8, 16);
+    } else {
+        recent.splice(0, 8);
+    }
+    return (
+        <XView height={40} flexDirection="row">
+            {recent.map((v) => (
+                <EmojiComponent
+                    name={v.name}
+                    value={v.value}
+                    category={v.sprite}
+                    onEmojiPicked={props.onEmojiPicked}
+                />
+            ))}
         </XView>
     );
 });
@@ -62,31 +185,26 @@ const EmojiPickerBody = React.memo((props: { onEmojiPicked: (arg: string) => voi
                 Emoji
             </XView>
             <XView flexGrow={1} flexBasis={0} minHeight={0} paddingHorizontal={16} overflow="hidden">
-                <FixedSizeGrid
-                    columnCount={8}
-                    rowCount={Math.ceil(pickerEmoji.length / 8)}
-                    columnWidth={40}
-                    rowHeight={40}
-                    overscanCount={20}
+                <FixedSizeList
+                    itemCount={total}
+                    itemSize={40}
+                    overscanCount={10}
                     width={384 /* Bigger width to hide scrollbar */}
                     height={384}
                 >
-                    {({ columnIndex, rowIndex, style }) => {
-                        if (columnIndex + rowIndex * 8 >= pickerEmoji.length) {
-                            return null;
+                    {({ index, style }) => {
+                        if (index < 3) {
+                            return <Recent index={index} onEmojiPicked={props.onEmojiPicked} />;
                         }
+                        let ii = index - 3;
+                        let section = sections.find((v) => v.start <= ii && ii < v.end)!;
                         return (
                             <div style={style}>
-                                <EmojiComponent
-                                    name={pickerEmoji[columnIndex + rowIndex * 8].name}
-                                    value={pickerEmoji[columnIndex + rowIndex * 8].value}
-                                    category={pickerEmoji[columnIndex + rowIndex * 8].sprite}
-                                    onEmojiPicked={props.onEmojiPicked}
-                                />
+                                <RowComponent section={section} index={ii} onEmojiPicked={props.onEmojiPicked} />
                             </div>
                         );
                     }}
-                </FixedSizeGrid>
+                </FixedSizeList>
             </XView>
         </XView>
     );

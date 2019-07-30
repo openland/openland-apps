@@ -5,7 +5,7 @@ import { UPopperController, showPopper } from './UPopper';
 
 const pickerBody = css`
     display: flex;
-    padding-bottom: 16px;
+    padding-bottom: 8px;
     transition: opacity 150ms cubic-bezier(.29, .09, .24, .99);
 `;
 
@@ -16,7 +16,7 @@ const pickerBodyInvisible = css`
 const pickerInnerBody = css`
     display: flex;
     background-color: white;
-    border-radius: 16px;
+    border-radius: 8px;
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
 `;
 
