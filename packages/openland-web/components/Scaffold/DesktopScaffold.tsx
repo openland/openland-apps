@@ -57,9 +57,7 @@ const NavigationScroller = XMemo<{ children: any }>(props => {
     return (
         <NavigationScrollerDiv
             css={{
-                backgroundColor: theme.appBarBackgroundColor,
-                borderRightWidth: theme.appBarSeparatorColor !== undefined ? '1px' : '0px',
-                borderRightColor: theme.appBarSeparatorColor,
+                backgroundColor: theme.backgroundTertiary,
             }}
         >
             {props.children}

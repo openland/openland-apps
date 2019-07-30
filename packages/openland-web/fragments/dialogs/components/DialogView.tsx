@@ -106,8 +106,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     ) : dialog.sender ? (
         <>{dialog.senderEmojify}: </>
     ) : (
-        ''
-    );
+                    ''
+                );
     let message: any = undefined;
     let theme = React.useContext(ThemeContext);
 
@@ -232,8 +232,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                     active
                                         ? '#fff'
                                         : highlightSecretChat && dialog.kind === 'GROUP'
-                                        ? '#129f25'
-                                        : '#1C2229'
+                                            ? '#129f25'
+                                            : '#1C2229'
                                 }
                                 overflow="hidden"
                                 whiteSpace="nowrap"
@@ -262,8 +262,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                                 active
                                                     ? channelIconActiveClass
                                                     : dialog.kind === 'GROUP' && highlightSecretChat
-                                                    ? channelSecretIconClass
-                                                    : channelIconClass
+                                                        ? channelSecretIconClass
+                                                        : channelIconClass
                                             }
                                         />
                                     </XView>
@@ -304,7 +304,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                         overflow="hidden"
                         selectedOpacity={1}
                         color="#78808F"
-                        selectedColor={theme.dialogMessageTextColorSelected}
+                        selectedColor={theme.contrastSpecial}
                     >
                         {message}
                     </XView>
