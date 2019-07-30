@@ -45,8 +45,6 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
                     }
                 };
 
-                console.warn(variables);
-
                 await client.mutateRoomUpdate(variables);
                 await client.refetchRoom({ id: props.router.params.id });
 
