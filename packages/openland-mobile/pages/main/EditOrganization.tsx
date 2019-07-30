@@ -2,7 +2,6 @@ import * as React from 'react';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
-import { ZForm } from '../../components/ZForm';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { View } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -12,54 +11,59 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
+import { SScrollView } from 'react-native-s/SScrollView';
 
 const EditOrganizationComponent = XMemo<PageProps>((props) => {
-    const ref = React.useRef<ZForm | null>(null);
     const organizationId = props.router.params.id;
-    const profile = getClient().useOrganizationProfile({ organizationId }, { fetchPolicy: 'network-only' }).organizationProfile;
+    const client = getClient();
+    const profile = client.useOrganizationProfile({ organizationId }, { fetchPolicy: 'network-only' }).organizationProfile;
+
+    const form = useForm();
+    const nameField = useField('name', profile.name || '', form);
+    const photoField = useField('photoRef', profile.photoRef, form);
+    const aboutField = useField('about', profile.about || '', form);
+    const websiteField = useField('website', profile.website || '', form);
+    const twitterField = useField('twitter', profile.twitter || '', form);
+    const facebookField = useField('facebook', profile.facebook || '', form);
+    const linkedinField = useField('linkedin', profile.linkedin || '', form);
+
+    const handleSave = () => 
+        form.doAction(async () => {
+            await client.mutateUpdateOrganization({
+                organizationId,
+                input: {
+                    name: nameField.value,
+                    photoRef: sanitizeImageRef(photoField.value),
+                    about: aboutField.value,
+                    website: websiteField.value,
+                    twitter: twitterField.value,
+                    facebook: facebookField.value,
+                    linkedin: linkedinField.value,
+                }
+            });
+            await client.refetchOrganizationProfile({ organizationId });
+            await client.refetchOrganization({ organizationId });
+
+            props.router.back();
+        });
 
     return (
         <>
             <SHeader title="Edit organization" />
-            <SHeaderButton title="Save" onPress={() => { ref.current!.submitForm(); }} />
-            <ZForm
-                ref={ref}
-                action={async src => {
-                    let client = getClient();
-                    await client.mutateUpdateOrganization(src);
-                    await client.refetchOrganizationProfile({ organizationId });
-                    await client.refetchOrganization({ organizationId });
-                }}
-                defaultData={{
-                    input: {
-                        name: profile.name,
-                        photoRef: sanitizeImageRef(
-                            profile.photoRef,
-                        ),
-                        about: profile.about,
-                        website: profile.website,
-                        twitter: profile.twitter,
-                        facebook: profile.facebook,
-                        linkedin: profile.linkedin,
-                    },
-                }}
-                staticData={{
-                    organizationId
-                }}
-                onSuccess={() => {
-                    props.router.back();
-                }}
-            >
+            <SHeaderButton title="Save" onPress={handleSave} />
+            <SScrollView>
                 <ZListItemGroup header={null} alignItems="center">
-                    <ZAvatarPicker size="xx-large" field="input.photoRef" />
+                    <ZAvatarPicker size="xx-large" field={photoField} />
                 </ZListItemGroup>
                 <ZListItemGroup header="Info" headerMarginTop={0}>
                     <ZInput
                         placeholder="Organization name"
-                        field="input.name"
+                        field={nameField}
                     />
                     <ZInput
-                        field="input.about"
+                        field={aboutField}
                         placeholder="About"
                         multiline={true}
                         description="Publicly describe this organization for all to see"
@@ -78,22 +82,22 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                 <ZListItemGroup header="Contacts" headerMarginTop={0}>
                     <ZInput
                         placeholder="Website"
-                        field="input.website"
+                        field={websiteField}
                     />
                     <ZInput
                         placeholder="Twitter"
-                        field="input.twitter"
+                        field={twitterField}
                     />
                     <ZInput
                         placeholder="Facebook"
-                        field="input.facebook"
+                        field={facebookField}
                     />
                     <ZInput
                         placeholder="LinkedIn"
-                        field="input.linkedin"
+                        field={linkedinField}
                     />
                 </ZListItemGroup>
-            </ZForm>
+            </SScrollView>
         </>
     );
 });
