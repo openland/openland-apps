@@ -7,6 +7,11 @@ import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { css } from 'linaria';
+
+const wrapper = css`
+    padding-bottom: 32px;
+`;
 
 interface CommentsListProps {
     messageId: string;
@@ -58,7 +63,7 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Mes
     const commentsSorted = sortComments(comments, commentsMap);
 
     return (
-        <div>
+        <div className={wrapper}>
             {commentsSorted.map(item => (
                 <CommentView
                     key={'comment-' + item.id}

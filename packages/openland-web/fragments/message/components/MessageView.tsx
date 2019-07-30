@@ -8,6 +8,7 @@ import { convertDsMessage, DataSourceWebMessageItem } from 'openland-web/fragmen
 import { Span } from 'openland-y-utils/spans/Span';
 import { SenderView } from '../../../components/SenderView';
 import { emoji } from 'openland-y-utils/emoji';
+import { MessageReactions } from 'openland-web/fragments/chat/messenger/message/reactions/MessageReactions';
 
 export const MessageView = React.memo((props: { message: Message_message_GeneralMessage }) => {
     const { message } = props;
@@ -44,6 +45,7 @@ export const MessageView = React.memo((props: { message: Message_message_General
                 attachments={message.attachments}
                 fallback={message.fallback}
             />
+            <MessageReactions messageId={message.id} reactions={message.reactions} />
         </div>
     );
 });

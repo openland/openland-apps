@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { MessageReactionType } from 'openland-api/Types';
+import { MessageReactionType, FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { extractReactionsSorted } from './extractReactions';
 import { css, cx } from 'linaria';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
-import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
 import { emojiLink } from 'openland-y-utils/emojiLink';
 
 const reactionsImagesMap: { [key in MessageReactionType]: string } = {
@@ -54,26 +53,26 @@ const reactionsItem = css`
 `;
 
 interface MessageReactionsProps {
-    message: DataSourceWebMessageItem;
+    messageId?: string;
+    reactions: FullMessage_GeneralMessage_reactions[];
 }
 
 export const MessageReactions = React.memo<MessageReactionsProps>(props => {
-    const { message } = props;
-    const { id, reactions } = message;
+    const { messageId, reactions } = props;
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
     const handleReactionClick = React.useCallback((reaction: MessageReactionType) => {
-        if (id) {
+        if (messageId) {
             let remove = reactions && reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === reaction).length > 0;
             if (remove) {
-                client.mutateMessageUnsetReaction({ messageId: id, reaction });
+                client.mutateMessageUnsetReaction({ messageId, reaction });
             } else {
                 trackEvent('reaction_sent', { reaction_type: reaction.toLowerCase(), double_tap: 'not' });
 
-                client.mutateMessageSetReaction({ messageId: id, reaction });
+                client.mutateMessageSetReaction({ messageId, reaction });
             }
         }
-    }, [id, reactions]);
+    }, [messageId, reactions]);
 
     if (reactions.length <= 0) {
         return null;

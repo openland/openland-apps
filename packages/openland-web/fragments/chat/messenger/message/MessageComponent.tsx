@@ -177,7 +177,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
 
     const buttons = (
         <div className={buttonsClass}>
-            <MessageReactions message={message} />
+            <MessageReactions messageId={message.id} reactions={message.reactions} />
             <MessageCommentsButton message={message} isChannel={engine.isChannel || false} />
         </div>
     );
