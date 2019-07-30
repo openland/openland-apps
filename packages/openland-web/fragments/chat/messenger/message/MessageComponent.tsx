@@ -67,6 +67,9 @@ const messageContainerClass = css`
     padding: 4px 8px;
     border-radius: 8px;
     margin: 4px 0;
+    max-width: 880px;
+    align-self: center;
+    width: 100%;
 
     &:hover .hover-menu-button {
         opacity: 1;
