@@ -1,7 +1,11 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
+import { isInternalLink } from 'openland-web/utils/isInternalLink';
+import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
+import { XAvatar2 } from 'openland-x/XAvatar2';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 
 const richWrapper = css`
     display: flex;
@@ -76,11 +80,101 @@ const textStyle = css`
     margin-top: 2px;
 `;
 
+// internal styles
+
+const internalWrapper = css`
+    max-width: 480px;
+    padding: 16px;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+const internalContent = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-grow: 1;
+    flex-shrink: 1;
+`;
+
+const internalImg = css`
+    margin-right: 16px;
+`;
+
+const internalDataContent = css`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 1;
+`;
+
+const keyboardContent = css`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: -8px;
+`;
+
+const InternalComponent = ({
+    attach,
+}: {
+    attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment;
+}) => {
+    let avatar = null;
+    let keyboard = null;
+    if (attach.image && attach.image.metadata) {
+        avatar = (
+            <div className={cx(richImageContainer, internalImg)}>
+                <XAvatar2
+                    size={56}
+                    src={attach.image.url}
+                    title={attach.title || ''}
+                    id={attach.id}
+                />
+            </div>
+        );
+    }
+    if (attach.keyboard) {
+        keyboard = (
+            <div className={keyboardContent}>
+                {attach.keyboard.buttons.map(i => {
+                    if (i) {
+                        return i.map(j => (
+                            <UButton
+                                text={j.title}
+                                path={makeInternalLinkRelative(j.url || '')}
+                                marginTop={8}
+                                key={j.id}
+                            />
+                        ));
+                    }
+                    return null;
+                })}
+            </div>
+        );
+    }
+    return (
+        <div className={cx(richWrapper, internalWrapper, 'message-rich-wrapper')}>
+            <div className={internalContent}>
+                {avatar}
+                <div className={internalDataContent}>
+                    {attach.title && <div className={titleStyle}>{attach.title}</div>}
+                    {attach.subTitle && <div className={textStyle}>{attach.subTitle}</div>}
+                </div>
+            </div>
+            {keyboard}
+        </div>
+    );
+};
+
 export const RichAttachContent = ({
     attach,
 }: {
     attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment;
 }) => {
+    if (isInternalLink(attach.titleLink || '') || attach.keyboard) {
+        return <InternalComponent attach={attach} />;
+    }
     let img = null;
     let siteIcon = null;
     const text = attach.text && attach.text.length > 150 ? attach.text.slice(0, 130) + '...' : null;
@@ -112,7 +206,7 @@ export const RichAttachContent = ({
         );
     }
     return (
-        <div className={richWrapper}>
+        <div className={cx(richWrapper, 'message-rich-wrapper')}>
             {img}
             <div className={richContentContainer}>
                 {(siteIcon || attach.titleLinkHostname) && (

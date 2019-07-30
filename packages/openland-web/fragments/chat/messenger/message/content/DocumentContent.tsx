@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { formatBytes } from 'openland-y-utils/formatBytes';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 import IconFile from 'openland-icons/ic-file.svg';
@@ -78,7 +78,7 @@ export const DocumentContent = ({
     file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
 }) => {
     return (
-        <div className={fileContainer}>
+        <div className={cx(fileContainer, 'message-document-wrapper')}>
             <div className={infoContent}>
                 <div className={iconContainer}>
                     <IconFile />

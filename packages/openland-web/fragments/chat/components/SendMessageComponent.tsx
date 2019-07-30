@@ -6,8 +6,8 @@ import {
     URickInputInstance,
     URickTextValue,
 } from 'openland-web/components/unicorn/URickInput';
-import AttachIcon from 'openland-icons/ic-attach.svg';
-import SendIcon from 'openland-icons/ic-send.svg';
+import AttachIcon from 'openland-icons/s/ic-attach-24.svg';
+import SendIcon from 'openland-icons/s/ic-send-24.svg';
 import { UNavigableList, UNavigableListRef } from 'openland-web/components/unicorn/UNavigableList';
 import { useClient } from 'openland-web/utils/useClient';
 import { RoomMembers_members_user } from 'openland-api/Types';
@@ -15,6 +15,7 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { searchMentions } from 'openland-engines/mentions/searchMentions';
 import { emojiSuggest } from 'openland-y-utils/emojiSuggest';
 import { emojiComponent } from 'openland-y-utils/emojiComponent';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
 interface MentionUserComponentProps {
     id: string;
@@ -351,7 +352,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 ref={suggestRef}
             />
             <div className={actionButtonContainer}>
-                <AttachIcon />
+                <UIcon icon={<AttachIcon />} color={'#676d7a'}/>
             </div>
             <XView
                 flexGrow={1}
@@ -373,7 +374,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 />
             </XView>
             <div className={actionButtonContainer} onClick={onPressEnter}>
-                <SendIcon />
+                <UIcon icon={<SendIcon />} color={'#676d7a'}/>
             </div>
         </div>
     );
