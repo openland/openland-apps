@@ -25,6 +25,7 @@ const menuButton = css`
 const menuContainerClass = css`
     display: flex;
     flex-direction: row;
+    flex-shrink: 0;
 `;
 const forceVisible = css`
     opacity: 1;
