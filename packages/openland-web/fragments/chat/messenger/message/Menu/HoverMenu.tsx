@@ -6,11 +6,10 @@ import MoreIcon from 'openland-icons/s/ic-more-v-24.svg';
 import CommentIcon from 'openland-icons/s/ic-message-24.svg';
 import LikeIcon from 'openland-icons/s/ic-like-24.svg';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { buildMessageMenu } from './MessageMenu';
 import { XViewRouterContext } from 'react-mental';
 
-////
-// Menu
-////
 const menuButton = css`
     width: 32px;
     height: 32px;
@@ -31,10 +30,10 @@ const forceVisible = css`
     opacity: 1;
 `;
 
-export const HoverMenu = (props: { message: DataSourceWebMessageItem }) => {
+export const HoverMenu = (props: { message: DataSourceWebMessageItem, engine: ConversationEngine }) => {
     const { message } = props;
     const router = React.useContext(XViewRouterContext);
-    const [visible, show] = usePopper({ placement: 'auto' }, () => <div style={{ width: 40, height: 40, backgroundColor: 'red' }} />);
+    const [visible, show] = usePopper({ placement: 'top-end', hideOnClick: true }, (ctx) => buildMessageMenu(ctx, props.message, props.engine, router!));
     const showWrapped = React.useCallback((ev: React.MouseEvent) => {
         ev.stopPropagation();
         show(ev);

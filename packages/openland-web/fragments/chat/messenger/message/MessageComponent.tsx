@@ -242,7 +242,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                 </div>
             </div>
 
-            <HoverMenu message={message} />
+            <HoverMenu message={message} engine={engine} />
         </div>
     );
 });

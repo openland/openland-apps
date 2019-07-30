@@ -2,8 +2,10 @@ import * as React from 'react';
 import { showModalBox } from 'openland-x/showModalBox';
 import { DialogListView } from '../dialogs/components/DialogListView';
 import { XModalController } from 'openland-x/showModal';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 
-const ChatPickerComponent = (props: { onSelect: (selecedChatId: string) => void, ctx: XModalController, layout: 'mobile' | 'desktop' }) => {
+const ChatPickerComponent = (props: { onSelect: (selecedChatId: string) => void, ctx: XModalController }) => {
+    let layout = useLayout();
     let onDialogClick = (id: string) => {
         props.onSelect(id);
         props.ctx.hide();
@@ -13,12 +15,12 @@ const ChatPickerComponent = (props: { onSelect: (selecedChatId: string) => void,
         onDialogClick(id);
     };
     return (
-        <div style={{ height: props.layout === 'mobile' ? '100vh' : '70vh', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ height: layout === 'mobile' ? '100vh' : '70vh', display: 'flex', flexDirection: 'column' }}>
             <DialogListView onDialogClick={onDialogClick} onSearchItemPress={onSearchItemPress} onSearchItemSelected={() => false} />
         </div>
     );
 };
 
-export const showChatPicker = (onSelect: (selecedChatId: string) => void, layout: 'mobile' | 'desktop') => {
-    showModalBox({ fullScreen: layout === 'mobile', title: 'Forward to' }, (ctx) => <ChatPickerComponent onSelect={onSelect} ctx={ctx} layout={layout} />);
+export const showChatPicker = (onSelect: (selecedChatId: string) => void) => {
+    showModalBox({ fullScreen: 'on-mobile', title: 'Forward to' }, (ctx) => <ChatPickerComponent onSelect={onSelect} ctx={ctx} />);
 };
