@@ -63,7 +63,6 @@ export const MessageView = React.memo((props: { message: Message_message_General
                 <UAvatar
                     id={sender.id}
                     title={sender.name}
-                    titleEmoji={senderNameEmojify}
                     photo={sender.photo}
                 />
             </div>

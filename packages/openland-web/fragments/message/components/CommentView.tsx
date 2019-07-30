@@ -67,7 +67,6 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                 <UAvatar
                     id={sender.id}
                     title={sender.name}
-                    titleEmoji={senderNameEmojify}
                     photo={sender.photo}
                     size={depth > 0 ? 'x-small' : 'medium'}
                 />
