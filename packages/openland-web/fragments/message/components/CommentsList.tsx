@@ -10,6 +10,8 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { css } from 'linaria';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { XView } from 'react-mental';
+import { ThemeDefault } from 'openland-y-utils/themes';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 
 const wrapper = css`
     padding-bottom: 32px;
@@ -61,7 +63,7 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Mes
 
     if (comments.length <= 0) {
         return (
-            <XView alignItems="center" justifyContent="center" flexGrow={1}>
+            <XView {...TextStyles.body} alignItems="center" justifyContent="center" flexGrow={1} color={ThemeDefault.foregroundSecondary}>
                 Write first comment
             </XView>
         );
