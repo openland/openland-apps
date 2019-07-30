@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { PageProps } from '../../components/PageProps';
-import { ZForm } from '../../components/ZForm';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { SharedRoomKind, RoomMemberRole } from 'openland-api/Types';
+import { SharedRoomKind, RoomMemberRole, RoomCreate } from 'openland-api/Types';
 import { SilentError } from 'openland-y-forms/errorHandling';
 import { Modals } from '../main/modals/Modals';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -16,9 +15,56 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ZSelect } from 'openland-mobile/components/ZSelect';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
+import { SScrollView } from 'react-native-s/SScrollView';
+import { SRouter } from 'react-native-s/SRouter';
+
+const showMembersModal = (router: SRouter, res: RoomCreate) => {
+    Modals.showUserMuptiplePicker(router,
+        {
+            title: 'Add',
+            action: async (users) => {
+                startLoader();
+                try {
+                    await getClient().mutateRoomAddMembers({
+                        invites: users.map(u => ({
+                            userId: u.id,
+                            role: RoomMemberRole.MEMBER
+                        })),
+                        roomId: res.room.id
+                    });
+
+                    router.pushAndReset('Conversation', { id: res.room.id });
+                } catch (e) {
+                    Alert.alert(e.message);
+                }
+                stopLoader();
+            },
+
+            titleEmpty: 'Skip',
+            actionEmpty: () => {
+                router.pushAndReset('Conversation', { id: res.room.id });
+            }
+        },
+        'Add members',
+        [],
+        [ getMessenger().engine.user.id ],
+        {
+            path: 'ProfileGroupLink',
+            pathParams: { id: res.room.id },
+            onPress: () => {
+                router.push('ProfileGroupLink', { room: res.room });
+            }
+        },
+        true
+    );
+};
 
 const CreateGroupComponent = (props: PageProps) => {
-    const ref = React.createRef<ZForm>();
+    const form = useForm();
+    const photoField = useField('photoRef', null, form);
+    const titleField = useField('title', '', form);
 
     let isChannel = !!props.router.params.isChannel;
     let orgIdFromRouter = props.router.params.organizationId;
@@ -36,81 +82,44 @@ const CreateGroupComponent = (props: PageProps) => {
     const [selectedKind, setSelectedKind] = React.useState<SharedRoomKind.GROUP | SharedRoomKind.PUBLIC>(orgIdFromRouter ? SharedRoomKind.PUBLIC : SharedRoomKind.GROUP);
     const [selectedOrg, setSelectedOrg] = React.useState(sortedOrganizations[0].id);
 
+    const handleSave = () => 
+        form.doAction(async () => {
+            if (titleField.value === '') {
+                Alert.builder().title(`Please enter a name for this ${chatTypeString.toLowerCase()}`).button('GOT IT!').show();
+
+                throw new SilentError();
+            }
+
+            let orgId = selectedKind === SharedRoomKind.PUBLIC ? selectedOrg : undefined;
+
+            let res = await getClient().mutateRoomCreate({
+                kind: selectedKind,
+                title: titleField.value,
+                photoRef: photoField.value,
+                members: [],
+                organizationId: orgId,
+                channel: isChannel,
+            });
+
+            if (orgId) {
+                await getClient().refetchOrganization({ organizationId: orgId });
+            }
+
+            showMembersModal(props.router, res);
+        });
+
     return (
         <>
             <SHeader title={`Create ${chatTypeString.toLowerCase()}`} />
-            <SHeaderButton title="Next" onPress={() => { ref.current!.submitForm(); }} />
-            <ZForm
-                ref={ref}
-                action={async (src) => {
-                    if (!src.title) {
-                        Alert.builder().title(`Please enter a name for this ${chatTypeString.toLowerCase()}`).button('GOT IT!').show();
-
-                        throw new SilentError();
-                    }
-
-                    let orgId = selectedKind === SharedRoomKind.PUBLIC ? selectedOrg : undefined;
-
-                    let res = await getClient().mutateRoomCreate({
-                        kind: selectedKind,
-                        title: src.title,
-                        photoRef: src.photoRef,
-                        members: [],
-                        organizationId: orgId,
-                        channel: isChannel,
-                    });
-
-                    if (orgId) {
-                        await getClient().refetchOrganization({ organizationId: orgId });
-                    }
-
-                    Modals.showUserMuptiplePicker(props.router,
-                        {
-                            title: 'Add',
-                            action: async (users) => {
-                                startLoader();
-                                try {
-                                    await getClient().mutateRoomAddMembers({
-                                        invites: users.map(u => ({
-                                            userId: u.id,
-                                            role: RoomMemberRole.MEMBER
-                                        })),
-                                        roomId: res.room.id
-                                    });
-
-                                    props.router.pushAndReset('Conversation', { id: res.room.id });
-                                } catch (e) {
-                                    Alert.alert(e.message);
-                                }
-                                stopLoader();
-                            },
-
-                            titleEmpty: 'Skip',
-                            actionEmpty: () => {
-                                props.router.pushAndReset('Conversation', { id: res.room.id });
-                            }
-                        },
-                        'Add members',
-                        [],
-                        [ getMessenger().engine.user.id ],
-                        {
-                            path: 'ProfileGroupLink',
-                            pathParams: { id: res.room.id },
-                            onPress: () => {
-                                props.router.push('ProfileGroupLink', { room: res.room });
-                            }
-                        },
-                        true
-                    );
-                }}
-            >
+            <SHeaderButton title="Next" onPress={handleSave} />
+            <SScrollView>
                 <ZListItemGroup header={null} alignItems="center">
-                    <ZAvatarPicker size="xx-large" field="photoRef" />
+                    <ZAvatarPicker size="xx-large" field={photoField} />
                 </ZListItemGroup>
                 <ZListItemGroup header={null}>
                     <ZInput
                         placeholder={`${chatTypeString} name`}
-                        field="title"
+                        field={titleField}
                         autoFocus={true}
                     />
                     <ZSelect
@@ -144,7 +153,7 @@ const CreateGroupComponent = (props: PageProps) => {
                         ))}
                     </ZListItemGroup>
                 )}
-            </ZForm>
+            </SScrollView>
         </>
     );
 };
