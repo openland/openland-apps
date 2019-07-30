@@ -11,7 +11,7 @@ const wrapperClass = css`
 `;
 
 const wrapperCompactClass = css`
-    padding: 16px 0;
+    padding: 8px 0;
     width: 100%;
 `;
 
@@ -25,7 +25,7 @@ export const CommentInput = React.memo((props: CommentInputProps) => {
     const { onSent, groupId, compact } = props;
 
     return (
-        <div className={compact ? wrapperClass : wrapperCompactClass}>
+        <div className={compact ? wrapperCompactClass : wrapperClass}>
             <SendMessageComponent
                 groupId={groupId}
                 onTextSent={onSent}

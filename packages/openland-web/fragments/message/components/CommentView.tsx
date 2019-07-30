@@ -97,6 +97,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                     <CommentInput
                         onSent={onSent}
                         groupId={groupId}
+                        compact={true}
                     />
                 )}
             </div>
