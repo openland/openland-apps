@@ -8,7 +8,6 @@ import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { css } from 'linaria';
-import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 
 const wrapper = css`
