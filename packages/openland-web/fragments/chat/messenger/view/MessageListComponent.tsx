@@ -10,7 +10,6 @@ import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
 import { EmptyBlock } from 'openland-web/fragments/chat/components/ChatEmptyComponent';
 import { css, cx } from 'linaria';
 import { DataSourceRender } from './DataSourceRender';
-import glamorous from 'glamorous';
 import { DataSource } from 'openland-y-utils/DataSource';
 import {
     DataSourceWebMessageItem,
@@ -87,12 +86,12 @@ interface MessageListProps {
     room: RoomChat_room;
 }
 
-const LoadingWrapper = glamorous.div({
-    height: 50,
-    display: 'flex',
-    justifyContent: 'center',
-    position: 'relative',
-});
+const loaderClass = css`
+    height: 50;
+    display: flex;
+    justify-content: center;
+    position: relative;
+`;
 
 const dss = new Map<string, DataSource<DataSourceWebMessageItem | DataSourceDateItem>>();
 
@@ -154,9 +153,9 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
     renderLoading = React.memo(() => {
         return (
-            <LoadingWrapper>
+            <div className={loaderClass}>
                 <XLoader loading={true} size="small" />
-            </LoadingWrapper>
+            </div>
         );
     });
 
