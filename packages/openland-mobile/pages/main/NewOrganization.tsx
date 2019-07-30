@@ -6,7 +6,6 @@ import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import Alert from 'openland-mobile/components/AlertBlanket';
-import { SilentError } from 'openland-y-forms/errorHandling';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
