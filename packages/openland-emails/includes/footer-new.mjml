@@ -1,8 +1,4 @@
-<mj-section mj-class="wrapper">
-    <mj-column mj-class="container-narrow">
-        <mj-spacer padding-bottom="17px"></mj-spacer>
-    </mj-column>
-</mj-section>
+<mj-spacer height="32px" ></mj-spacer>
 
 <mj-section mj-class="footer">
     <mj-column mj-class="footer-col-left" width="40%">

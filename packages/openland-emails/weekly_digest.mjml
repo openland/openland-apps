@@ -12,6 +12,18 @@
                 padding: 0;
             }
 
+            .group-preview-color {
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                color: #ffffff;
+                text-align: center;
+                font-size: 20px;
+                font-weight: 600;
+                line-height: 40px;
+            }
+
             .group-preview-title {
                 color: #171B1F;
                 font-weight: 600;
@@ -50,34 +62,36 @@
 
         <!-- new messages -->
 
-        <mj-section mj-class="wrapper">
-            <mj-column mj-class="container-narrow">
-                <mj-text mj-class="title-xsmall">
-                    You’ve got {{newMessages.unread}} new messages
-                </mj-text>
-            </mj-column>
-        </mj-section>
+        <mj-raw>{{#if unreadMessages.unreadMessagesCount}}</mj-raw>
+            <mj-section mj-class="wrapper">
+                <mj-column mj-class="container-narrow">
+                    <mj-text mj-class="title-xsmall">
+                        You’ve got {{unreadMessages.unreadMessagesCount}} new messages
+                    </mj-text>
+                </mj-column>
+            </mj-section>
 
-        <mj-raw>{{#each newMessages.rows}}</mj-raw>
-        <mj-section mj-class="group-preview-row">
-            <mj-raw>{{#each items}}</mj-raw>
-            <mj-include path="./includes/group-preview.mjml" />
+            <mj-raw>{{#each unreadMessages.rows}}</mj-raw>
+            <mj-section mj-class="group-preview-row">
+                <mj-raw>{{#each items}}</mj-raw>
+                <mj-include path="./includes/group-preview.mjml" />
+                <mj-raw>{{/each}}</mj-raw>
+            </mj-section>
             <mj-raw>{{/each}}</mj-raw>
-        </mj-section>
-        <mj-raw>{{/each}}</mj-raw>
 
+            <mj-spacer height="8px" />
 
-        <mj-spacer height="8px" />
+            <mj-section mj-class="wrapper">
+                <mj-column mj-class="container-narrow">
+                    <mj-button mj-class="button-new" href="https://openland.com/mail">View messages</mj-button>
+                </mj-column>
+            </mj-section>
 
-        <mj-section mj-class="wrapper">
-            <mj-column mj-class="container-narrow">
-                <mj-button mj-class="button-new" href="https://openland.com/mail">View messages</mj-button>
-            </mj-column>
-        </mj-section>
+            <mj-spacer height="48px" />
+
+        <mj-raw>{{/if}}</mj-raw>
 
         <!-- trending -->
-
-        <mj-spacer height="48px" />
 
         <mj-section mj-class="wrapper">
             <mj-column mj-class="container-narrow">
@@ -87,7 +101,7 @@
             </mj-column>
         </mj-section>
 
-        <mj-raw>{{#each discoverGroups.rows}}</mj-raw>
+        <mj-raw>{{#each trendingGroups.rows}}</mj-raw>
         <mj-section mj-class="group-preview-row">
             <mj-raw>{{#each items}}</mj-raw>
             <mj-include path="./includes/group-preview.mjml" />
@@ -98,7 +112,7 @@
         <mj-spacer height="8px" />
         <mj-section mj-class="wrapper">
             <mj-column mj-class="container-narrow">
-                <mj-button mj-class="button-new" href="https://openland.com/mail">Discover groups</mj-button>
+                <mj-button mj-class="button-new" href="https://openland.com/discover">Discover groups</mj-button>
             </mj-column>
         </mj-section>
         <mj-include path="./includes/footer-new.mjml" />

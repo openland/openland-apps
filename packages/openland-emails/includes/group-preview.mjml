@@ -4,7 +4,11 @@
             <tr>
                 <td valign="middle" width="40px" style="padding: 8px 0px 8px 16px; word-break: break-word;">
                     <a href="{{this.previewLink}}" style="text-decoration:none; display:block;width:100%;height:40px">
-                        <img height="40px" width="40px" src="{{this.previewImage}}" style="border:none; border-radius: 50%; display:inline-block;"></img>
+                        <mj-raw>{{#if this.previewImage}}</mj-raw>
+                            <img height="40px" width="40px" src="{{this.previewImage}}" style="border:none; border-radius: 50%; display:inline-block;"></img>
+                        <mj-raw>{{else}}</mj-raw>
+                            <span class="group-preview-color" style="background-image: {{this.color}};">{{this.firstTitleChar}}</span>
+                        <mj-raw>{{/if}}</mj-raw>
                     </a>
                 </td>
                 <td align="left" style="padding: 8px 16px 8px 16px;">
@@ -12,15 +16,14 @@
                     <p class="group-preview-title" align="left">
                         <a href="{{this.previewLink}}" style="text-decoration: none; color: inherit;">{{this.title}}</a>
                     </p>
-                    </mj-raw>
-                    {{else}}</mj-raw>
-                        <p class="group-preview-title"  align="left">
-                            <a href="{{this.previewLink}}" style="text-decoration: none; color: inherit;">{{this.title}}</a>
-                        </p>
-                        <p class="group-preview-sub"  align="left">
-                            <a href="{{this.previewLink}}" style="text-decoration: none; color: inherit;">{{this.sub}}</a>
-                        </p>
-                        <mj-raw>{{/if}}</mj-raw>
+                    <mj-raw>{{else}}</mj-raw>
+                    <p class="group-preview-title"  align="left">
+                        <a href="{{this.previewLink}}" style="text-decoration: none; color: inherit;">{{this.title}}</a>
+                    </p>
+                    <p class="group-preview-sub"  align="left">
+                        <a href="{{this.previewLink}}" style="text-decoration: none; color: inherit;">{{this.subTitle}}</a>
+                    </p>
+                    <mj-raw>{{/if}}</mj-raw>
                 </td>
             </tr>
         </mj-table>

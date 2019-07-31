@@ -220,6 +220,7 @@
 
      <mj-class
         name="group-preview-row"
+        text-align="left"
         width="690px" />
 
     <mj-class
