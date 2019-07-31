@@ -174,7 +174,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const onSelect = React.useCallback(
         () => {
             let selection = window.getSelection();
-            if (selection) {
+            if (selection && layout !== 'mobile') {
                 let range = selection.getRangeAt(0);
                 if (range.startOffset !== range.endOffset) {
                     return;
