@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { Placement } from 'popper.js';
 import { UPopperController, showPopper } from './UPopper';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const pickerBody = css`
     display: flex;
@@ -32,10 +33,10 @@ const PopperBody = React.memo(React.forwardRef((props: {
     children?: any;
     hideOnClick: boolean;
     hideOnLeave: boolean;
+    hideOnEsc?: boolean
 }, ref: React.Ref<PopperBodyRef>) => {
     const [visible, setVisible] = React.useState(true);
     const containerRef = React.useRef<HTMLDivElement>(null);
-
     const hide = React.useCallback(() => {
         setVisible(false);
         props.onHide();
@@ -43,6 +44,8 @@ const PopperBody = React.memo(React.forwardRef((props: {
             props.ctx.hide();
         }, 300);
     }, []);
+
+    useShortcuts({ keys: ['Escape'], callback: props.hideOnEsc !== false ? hide : undefined });
 
     React.useImperativeHandle(ref, () => ({ hide }));
 
@@ -92,7 +95,7 @@ const PopperBody = React.memo(React.forwardRef((props: {
     );
 }));
 
-export const usePopper = (config: { placement: Placement, hideOnLeave?: boolean, hideOnClick?: boolean }, popper: (ctx: UPopperController) => React.ReactElement<{}>): [boolean, (element: HTMLElement | React.MouseEvent<unknown>) => void] => {
+export const usePopper = (config: { placement: Placement, hideOnLeave?: boolean, hideOnClick?: boolean, hideOnEsc?: boolean }, popper: (ctx: UPopperController) => React.ReactElement<{}>): [boolean, (element: HTMLElement | React.MouseEvent<unknown>) => void] => {
     const [isVisible, setVisible] = React.useState(false);
     const ctxRef = React.useRef<UPopperController | undefined>(undefined);
     const popperBodyRef = React.useRef<PopperBodyRef>(null);
@@ -131,6 +134,7 @@ export const usePopper = (config: { placement: Placement, hideOnLeave?: boolean,
                         }}
                         hideOnClick={config.hideOnClick !== undefined ? config.hideOnClick : true}
                         hideOnLeave={config.hideOnLeave !== undefined ? config.hideOnLeave : false}
+                        hideOnEsc={config.hideOnEsc}
                     >
                         {popper(fakeCtx)}
                     </PopperBody>
