@@ -53,7 +53,7 @@ export interface DataSourceMessageItem {
     isService?: boolean;
     progress?: number;
     commentsCount: number;
-    fallback?: string;
+    fallback: string;
     textSpans: Span[];
 
     // legacy
@@ -109,7 +109,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : 0,
-        fallback: src.fallback || undefined,
+        fallback: src.fallback || src.message || '',
         textSpans: src.message ? processSpans(src.message, src.spans) : []
     };
 }
@@ -788,7 +788,8 @@ export class ConversationEngine implements MessageSendHandler {
                 reply,
                 attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData && !prev.isService : false,
                 textSpans: src.message ? processSpans(src.message, src.spans) : [],
-                reactions: []
+                reactions: [],
+                fallback: src.message || ''
             };
         }
         if (this.dataSource.hasItem(conv.key)) {

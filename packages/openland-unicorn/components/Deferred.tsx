@@ -1,31 +1,37 @@
 import * as React from 'react';
 
+const enable = false;
+
 export const Deferred = React.memo((props: { children?: any }) => {
-    let [inited, setInited] = React.useState(false);
+    if (enable) {
+        let [inited, setInited] = React.useState(false);
 
-    React.useLayoutEffect(() => {
-        let active = true;
+        React.useLayoutEffect(() => {
+            let active = true;
 
-        requestAnimationFrame(() => {
-            if (active) {
-                requestAnimationFrame(() => {
-                    if (active) {
-                        setTimeout(() => {
-                            if (active) {
-                                setInited(true);
-                            }
-                        }, 50);
-                    }
-                });
-            }
-        });
+            requestAnimationFrame(() => {
+                if (active) {
+                    requestAnimationFrame(() => {
+                        if (active) {
+                            setTimeout(() => {
+                                if (active) {
+                                    setInited(true);
+                                }
+                            }, 10);
+                        }
+                    });
+                }
+            });
 
-        return () => { active = false; };
-    }, []);
+            return () => { active = false; };
+        }, []);
 
-    if (inited) {
-        return props.children;
+        if (inited) {
+            return props.children;
+        } else {
+            return null;
+        }
     } else {
-        return null;
+        return props.children;
     }
 });

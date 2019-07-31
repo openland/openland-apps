@@ -28,7 +28,7 @@ export const buildMessageMenu = (ctx: UPopperController, message: DataSourceWebM
             });
         }
     });
-    if (engine.canPin) {
+    if (engine.canPin && message.id) {
         menu.item({ title: 'Pin', icon: <PinIcon />, action: () => engine.engine.client.mutatePinMessage({ messageId: message.id!, chatId: engine.conversationId }) });
     }
     if (message.senderId === engine.engine.user.id && message.text) {

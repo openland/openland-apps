@@ -17,7 +17,9 @@ const senderContainer = css`
     display: flex;
     align-items: baseline;
 
-    a:hover { text-decoration: none; }
+    a:hover {
+        text-decoration: none;
+    }
 `;
 
 const senderNameStyle = css`
@@ -29,12 +31,25 @@ const senderOrgAndDateStyle = css`
     color: #676d7a; // ThemeDefault.foregroundSecondary
 `;
 
-const MessageSenderName = (props: { sender: UserShort; senderNameEmojify?: string | JSX.Element; }) => (
-    <ULink path={`/${props.sender.shortname || props.sender.id}`} className={cx(TextLabel1, senderNameStyle)}>{props.senderNameEmojify || props.sender.name}</ULink>
+const MessageSenderName = (props: {
+    sender: UserShort;
+    senderNameEmojify?: string | JSX.Element;
+}) => (
+    <ULink
+        path={`/${props.sender.shortname || props.sender.id}`}
+        className={cx(TextLabel1, senderNameStyle)}
+    >
+        {props.senderNameEmojify || props.sender.name}
+    </ULink>
 );
 
 const MessageSenderOrg = (props: { organization: UserShort_primaryOrganization }) => (
-    <ULink path={`/${props.organization.shortname || props.organization.id}`} className={cx(TextCaption, senderOrgAndDateStyle)}>{props.organization.name}</ULink>
+    <ULink
+        path={`/${props.organization.shortname || props.organization.id}`}
+        className={cx(TextCaption, senderOrgAndDateStyle)}
+    >
+        {props.organization.name}
+    </ULink>
 );
 
 const MessageTime = (props: { time: number }) => (
@@ -50,7 +65,9 @@ interface MessageSenderContentProps {
 export const MessageSenderContent = (props: MessageSenderContentProps) => (
     <div className={senderContainer}>
         <MessageSenderName sender={props.sender} senderNameEmojify={props.senderNameEmojify} />
-        {props.sender.primaryOrganization && <MessageSenderOrg organization={props.sender.primaryOrganization} />}
+        {props.sender.primaryOrganization && (
+            <MessageSenderOrg organization={props.sender.primaryOrganization} />
+        )}
         <MessageTime time={props.date} />
     </div>
 );
@@ -59,21 +76,32 @@ export const MessageSenderContent = (props: MessageSenderContentProps) => (
 // Message container
 ////
 const messageContainerClass = css`
+    position: relative;
     display: flex;
     flex-direction: row;
     flex-grow: 1;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    padding: 4px 8px;
+    padding: 4px;
     border-radius: 8px;
     margin: 4px 0;
-    max-width: 880px;
     align-self: center;
     width: 100%;
 
     &:hover .hover-menu-button {
         opacity: 1;
     }
+`;
+
+const messageContentClass = css`
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 1;
+    justify-content: center;
+    align-items: center;
+    max-width: 870px;
+    margin: auto;
 `;
 
 const messageInnerContainerClass = css`
@@ -173,7 +201,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const onSelect = React.useCallback(
         () => {
             let selection = window.getSelection();
-            if (selection) {
+            if (selection && layout !== 'mobile') {
                 let range = selection.getRangeAt(0);
                 if (range.startOffset !== range.endOffset) {
                     return;
@@ -228,17 +256,22 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             onClick={onSelect}
             className={cx(messageContainerClass, attachesClassNames, noBorderRadiusMobile)}
         >
-            <div className={messageInnerContainerClass}>
-                {!message.attachTop && avatar}
-                <div
-                    className={cx(
-                        messageContentAreaClass,
-                        message.attachTop && noAvatarPlaceholder,
-                    )}
-                >
-                    {!message.attachTop && sender}
-                    {content}
-                    {(message.commentsCount > 0 || engine.isChannel || message.reactions.length > 0) && buttons}
+            <div className={messageContentClass}>
+                <div className={messageInnerContainerClass}>
+                    {!message.attachTop && avatar}
+                    <div
+                        className={cx(
+                            messageContentAreaClass,
+                            message.attachTop && noAvatarPlaceholder,
+                        )}
+                    >
+                        {!message.attachTop && sender}
+                        {content}
+                        {(message.commentsCount > 0 ||
+                            engine.isChannel ||
+                            message.reactions.length > 0) &&
+                            buttons}
+                    </div>
                 </div>
             </div>
 

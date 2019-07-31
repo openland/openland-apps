@@ -4,6 +4,7 @@ import { formatBytes } from 'openland-y-utils/formatBytes';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 import IconFile from 'openland-icons/ic-file.svg';
 import IconDownload from 'openland-icons/ic-download.svg';
+import { TextDensed, TextLabel1 } from 'openland-web/utils/TextStyles';
 
 const fileContainer = css`
     display: flex;
@@ -59,8 +60,6 @@ const metadataContainer = css`
 `;
 
 const title = css`
-    font-size: 15px;
-    font-weight: 600;
     color: #171b1f;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -68,7 +67,6 @@ const title = css`
 `;
 
 const subtitle = css`
-    font-size: 14px;
     color: #171b1f;
 `;
 
@@ -87,8 +85,8 @@ export const DocumentContent = React.memo(({
                     <IconFile />
                 </div>
                 <div className={metadataContainer}>
-                    <div className={title + ' title'}>{file.fileMetadata.name}</div>
-                    <div className={subtitle}>{formatBytes(file.fileMetadata.size)}</div>
+                    <div className={cx(title + ' title', TextLabel1)}>{file.fileMetadata.name}</div>
+                    <div className={cx(subtitle, TextDensed)}>{formatBytes(file.fileMetadata.size)}</div>
                 </div>
             </div>
             <a className={downloadContainer} href={`https://ucarecdn.com/${file.fileId}/`} onClick={onClick} title="doc">
