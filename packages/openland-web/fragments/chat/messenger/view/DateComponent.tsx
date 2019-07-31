@@ -1,6 +1,22 @@
 import * as React from 'react';
+import { css, cx } from 'linaria';
 import { DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
-import { XView } from 'react-mental';
+import { TextCaption } from 'openland-web/utils/TextStyles';
+
+const dateDividerContainer = css`
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    height: 32px;
+    position: relative;
+    margin: 4px 0;
+`;
+
+const dateText = css`
+    color: #676d7a;
+    text-align: center;
+`;
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -16,27 +32,8 @@ export const DateComponent = (props: { item: DataSourceDateItem }) => {
         date = item.year + ', ' + months[item.month] + ' ' + item.date;
     }
     return (
-        <XView
-            key={'date-' + item.date}
-            justifyContent="center"
-            alignItems="center"
-            marginTop={24}
-            marginBottom={0}
-        >
-            <XView
-                justifyContent="center"
-                alignItems="center"
-                backgroundColor="#ffffff"
-                borderRadius={50}
-                paddingLeft={10}
-                paddingRight={10}
-                paddingTop={2}
-                paddingBottom={2}
-            >
-                <XView fontSize={13} color="rgba(0, 0, 0, 0.4)">
-                    {date}
-                </XView>
-            </XView>
-        </XView>
+        <div key={'date-' + item.date} className={dateDividerContainer}>
+            <div className={cx(dateText, TextCaption)}>{date}</div>
+        </div>
     );
 };
