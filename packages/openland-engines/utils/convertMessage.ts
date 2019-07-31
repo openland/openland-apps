@@ -41,5 +41,6 @@ export function convertMessage(
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : 0,
         textSpans: src.message ? processSpans(src.message, src.spans) : [],
+        fallback: src.message || ''
     };
 }
