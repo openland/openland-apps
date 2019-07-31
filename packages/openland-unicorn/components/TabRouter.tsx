@@ -188,6 +188,19 @@ export class TabRouter {
         }
     }
 
+    reset(path: string) {
+
+        //
+        // Ignore navigation if url is not changed
+        // otherwise next.js won't push new page to history
+        //
+        if (NextRouter.asPath !== path) {
+            this.stacks[this.currentTab].reset(path);
+            this.pushHistory(path);
+            return;
+        }
+    }
+
     private onBackPressed(index: number) {
         let stack = this.stacks[index];
         let destUrl;
