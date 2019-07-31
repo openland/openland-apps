@@ -9,6 +9,7 @@ import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { buildMessageMenu } from './MessageMenu';
 import { XViewRouterContext } from 'react-mental';
+import { MessageReactionType } from 'openland-api/Types';
 
 const menuButton = css`
     width: 32px;
@@ -17,23 +18,36 @@ const menuButton = css`
     align-items: center;
     justify-content: center;
     padding: 6;
-    opacity: 0;
     cursor: pointer;
 `;
 
 const menuContainerClass = css`
+    position: absolute;
+    opacity: 0;
+    top: 12px;
+    right: 0;
     display: flex;
     flex-direction: row;
     flex-shrink: 0;
+    background-color: #fff; // ThemeDefault.backgroundPrimary
+    border-radius: 8px;
+`;
+const attachTop = css`
+    top: 0;
 `;
 const forceVisible = css`
     opacity: 1;
 `;
+const forceInvisible = css`
+    display: none;
+`;
 
-export const HoverMenu = (props: { message: DataSourceWebMessageItem, engine: ConversationEngine }) => {
+export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem, engine: ConversationEngine }) => {
     const { message } = props;
     const router = React.useContext(XViewRouterContext);
-    const [visible, show] = usePopper({ placement: 'bottom-end', hideOnClick: true }, (ctx) => buildMessageMenu(ctx, props.message, props.engine, router!));
+    const messageRef = React.useRef(message);
+    messageRef.current = message;
+    const [visible, show] = usePopper({ placement: 'bottom-end', hideOnClick: true }, (ctx) => buildMessageMenu(ctx, messageRef.current, props.engine, router!));
     const showWrapped = React.useCallback((ev: React.MouseEvent) => {
         ev.stopPropagation();
         show(ev);
@@ -47,11 +61,18 @@ export const HoverMenu = (props: { message: DataSourceWebMessageItem, engine: Co
         }
     }, [message.id]);
 
+    const handleLikeClick = React.useCallback((e) => {
+        e.stopPropagation();
+        if (message.id) {
+            props.engine.engine.client.mutateMessageSetReaction({ messageId: message.id, reaction: MessageReactionType.LIKE });
+        }
+    }, [message.id]);
+
     return (
-        <div className={cx(menuContainerClass)}>
-            <UIcon className={cx(menuButton, 'hover-menu-button', visible && forceVisible)} icon={<LikeIcon />} />
-            <UIcon className={cx(menuButton, 'hover-menu-button', visible && forceVisible)} icon={<CommentIcon onClick={handleCommentClick} />} />
-            <UIcon className={cx(menuButton, 'hover-menu-button', visible && forceVisible)} icon={<MoreIcon onClick={showWrapped} />} />
+        <div className={cx(menuContainerClass, message.attachTop && attachTop, 'hover-menu-button', visible && forceVisible, message.isSending && forceInvisible)}>
+            <UIcon className={cx(menuButton, visible && forceVisible)} icon={<LikeIcon onClick={handleLikeClick} />} />
+            <UIcon className={cx(menuButton)} icon={<CommentIcon onClick={handleCommentClick} />} />
+            <UIcon className={cx(menuButton)} icon={<MoreIcon onClick={showWrapped} />} />
         </div>
     );
-};
+});

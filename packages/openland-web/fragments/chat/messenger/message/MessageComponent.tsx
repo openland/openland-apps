@@ -59,6 +59,7 @@ export const MessageSenderContent = (props: MessageSenderContentProps) => (
 // Message container
 ////
 const messageContainerClass = css`
+    position: relative;
     display: flex;
     flex-direction: row;
     flex-grow: 1;
