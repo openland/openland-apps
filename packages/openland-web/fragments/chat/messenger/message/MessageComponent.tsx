@@ -11,6 +11,7 @@ import { UserShort_primaryOrganization, UserShort } from 'openland-api/Types';
 import { HoverMenu } from './Menu/HoverMenu';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 
 const senderContainer = css`
     display: flex;
@@ -72,7 +73,6 @@ const messageContainerClass = css`
 
     &:hover .hover-menu-button {
         opacity: 1;
-        transform: translateX(0);
     }
 `;
 
@@ -151,6 +151,7 @@ interface MessageComponentProps {
 export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const { message, engine } = props;
     const containerRef = React.useRef<HTMLDivElement>(null);
+    const layout = useLayout();
 
     const attachesClassNames = cx(
         message.attachTop && attachTop,
@@ -241,7 +242,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                 </div>
             </div>
 
-            <HoverMenu message={message} engine={engine} />
+            {layout !== 'mobile' && <HoverMenu message={message} engine={engine} />}
         </div>
     );
 });

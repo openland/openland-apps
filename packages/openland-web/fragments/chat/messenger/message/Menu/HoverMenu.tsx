@@ -49,8 +49,8 @@ export const HoverMenu = (props: { message: DataSourceWebMessageItem, engine: Co
 
     return (
         <div className={cx(menuContainerClass)}>
-            <UIcon className={cx(menuButton, 'hover-menu-button')} icon={<LikeIcon />} />
-            <UIcon className={cx(menuButton, 'hover-menu-button')} icon={<CommentIcon onClick={handleCommentClick} />} />
+            <UIcon className={cx(menuButton, 'hover-menu-button', visible && forceVisible)} icon={<LikeIcon />} />
+            <UIcon className={cx(menuButton, 'hover-menu-button', visible && forceVisible)} icon={<CommentIcon onClick={handleCommentClick} />} />
             <UIcon className={cx(menuButton, 'hover-menu-button', visible && forceVisible)} icon={<MoreIcon onClick={showWrapped} />} />
         </div>
     );
