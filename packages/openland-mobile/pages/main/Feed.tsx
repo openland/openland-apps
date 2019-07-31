@@ -10,7 +10,7 @@ const FeedPage = (props: PageProps) => {
     return (
         <>
             <SHeader title="Feed" />
-            <SHeaderButton title="New" icon={require('assets/ic-add-24.png')} />
+            <SHeaderButton title="New" icon={require('assets/ic-add-24.png')} onPress={() => props.router.present('CreatePost')}/>
             <SScrollView>
                 <Post 
                     user={{ 
