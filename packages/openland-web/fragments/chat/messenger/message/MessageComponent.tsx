@@ -82,7 +82,7 @@ const messageContainerClass = css`
     flex-grow: 1;
     justify-content: space-between;
     align-items: center;
-    padding: 4px 8px;
+    padding: 4px;
     border-radius: 8px;
     margin: 4px 0;
     align-self: center;
@@ -100,7 +100,7 @@ const messageContentClass = css`
     flex-shrink: 1;
     justify-content: center;
     align-items: center;
-    max-width: 865px;
+    max-width: 870px;
     margin: auto;
 `;
 
