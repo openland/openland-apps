@@ -4,16 +4,17 @@ import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { ZForm } from '../../components/ZForm';
 import { next } from './signup';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { SilentError } from 'openland-y-forms/errorHandling';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
+import { useField } from 'openland-form/useField';
+import { useForm } from 'openland-form/useForm';
+import { SScrollView } from 'react-native-s/SScrollView';
 
 export const signupStyles = StyleSheet.create({
     input: {
@@ -32,47 +33,50 @@ export const signupStyles = StyleSheet.create({
 });
 
 const SignupUserContent = XMemo<PageProps>((props) => {
-    let prefill = getClient().useProfilePrefill().prefill;
-    let ref = React.useRef<ZForm | null>(null);
+    const prefill = getClient().useProfilePrefill().prefill;
+
+    const form = useForm();
+    const photoField = useField('photoRef', null, form);
+    const firstNameField = useField('firstName', prefill && prefill.firstName || '', form);
+    const lastNameField = useField('lastName', prefill && prefill.lastName || '', form);
+
+    const handleSave = () => {
+        if (firstNameField.value === '') {
+            Alert.builder().title('Please enter your name').button('GOT IT!').show();
+            return;
+        }
+
+        form.doAction(async () => {
+            await getClient().mutateProfileCreate({ 
+                input: { 
+                    firstName: firstNameField.value, 
+                    lastName: lastNameField.value 
+                } 
+            });
+            await getClient().refetchAccount();
+            await next(props.router);
+        });
+    };
 
     return (
         <>
-            <SHeaderButton title="Next" onPress={() => ref.current && ref.current.submitForm()} />
-            <ZForm
-                ref={ref}
-                defaultData={{
-                    input: {
-                        firstName: prefill && prefill.firstName || '',
-                        lastName: prefill && prefill.firstName || undefined,
-
-                    }
-                }}
-                action={async (src) => {
-                    // await delay(1000);
-                    if (!src.input.firstName) {
-                        Alert.builder().title('Please enter your name').button('GOT IT!').show();
-                        throw new SilentError();
-                    }
-                    await getClient().mutateProfileCreate({ input: { firstName: src.input.firstName, lastName: src.input.lastName } });
-                    await getClient().refetchAccount();
-                    await next(props.router);
-                }}
-            >
+            <SHeaderButton title="Next" onPress={handleSave} />
+            <SScrollView>
                 <ZListItemGroup header={null} alignItems="center">
-                    <ZAvatarPicker field="input.photoRef" initialUrl={prefill && prefill.picture || undefined} size="xx-large" />
+                    <ZAvatarPicker field={photoField} initialUrl={prefill && prefill.picture || undefined} size="xx-large" />
                 </ZListItemGroup>
                 <ZListItemGroup header={null}>
                     <ZInput
-                        field="input.firstName"
+                        field={firstNameField}
                         placeholder="First name"
                     />
                     <ZInput
-                        field="input.lastName"
+                        field={lastNameField}
                         placeholder="Last name"
                         description="Please, provide your name. This information is part of your public profile."
                     />
                 </ZListItemGroup>
-            </ZForm>
+            </SScrollView>
         </>
     );
 });

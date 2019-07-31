@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
-import { XAvatar } from 'openland-x/XAvatar';
 import { emoji } from 'openland-y-utils/emoji';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 
 export const DialogViewCompact = React.memo(
     (props: {
@@ -32,25 +32,12 @@ export const DialogViewCompact = React.memo(
                 hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
                 hoverTextDecoration="none"
                 cursor="pointer"
-            // selectedBackgroundColor="#4596e1"
-            // selectedHoverBackgroundColor="#4596e1"
-            // onClick={() => {
-            //     if (props.onSelect) {
-            //         props.onSelect(props.item.key);
-            //     }
-            //     if (props.onClick) {
-            //         props.onClick();
-            //     }
-            // }}
             >
-                <XAvatar
-                    objectName={dialog.title}
-                    objectId={dialog.flexibleId}
-                    src={
-                        dialog.photo && dialog.photo.startsWith('ph://') ? undefined : dialog.photo
-                    }
-                    style="user"
-                    size="m-small"
+                <UAvatar
+                    title={dialog.title}
+                    id={dialog.flexibleId}
+                    photo={dialog.photo}
+                    size="x-small"
                 />
                 <XView
                     flexDirection="column"

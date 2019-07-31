@@ -2,7 +2,6 @@ import * as React from 'react';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
-import { ZForm } from '../../components/ZForm';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -15,9 +14,11 @@ import { ZAvatarPicker, ZAvatarPickerRenderProps } from 'openland-mobile/compone
 import { View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { ZImage } from 'openland-mobile/components/ZImage';
 import Alert from 'openland-mobile/components/AlertBlanket';
-import { SilentError } from 'openland-y-forms/errorHandling';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
+import { SScrollView } from 'react-native-s/SScrollView';
 
 const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
     const width = 190;
@@ -42,119 +43,110 @@ const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
 });
 
 const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
-    let ref = React.useRef<ZForm | null>(null);
-    let rawGroup = getClient().useRoom({ id: props.router.params.id }, { fetchPolicy: 'network-only' }).room;
-    let group = (rawGroup && rawGroup.__typename === 'SharedRoom') ? rawGroup : undefined;
-    let roomAdmins = getClient().useRoomOrganizationAdminMembers({ id: props.router.params.id });
+    const roomId = props.router.params.id;
+    const client = getClient();
+    const rawGroup = client.useRoom({ id: roomId }, { fetchPolicy: 'network-only' }).room;
+    const group = (rawGroup && rawGroup.__typename === 'SharedRoom') ? rawGroup : undefined;
+    
+    if (!group) {
+        return null;
+    }   
+
+    const form = useForm();
+    const socialImageField = useField('socialImageRef', group.socialImage ? { uuid: group.socialImage } : null, form);
+    
+    const welcomeMessageText = group.welcomeMessage && group.welcomeMessage.message ? group.welcomeMessage.message : '';
+    const welcomeMessageField = useField('welcomeMessageText', welcomeMessageText, form);
+
+    const roomAdmins = client.useRoomOrganizationAdminMembers({ id: roomId });
 
     const [welcomeMessageEnabled, setWelcomeMessageEnabled] = React.useState((group && group.welcomeMessage) ? group.welcomeMessage.isOn : false);
     const [welcomeMessageSender, setWelcomeMessageSender] = React.useState((group && group.welcomeMessage) ? group.welcomeMessage.sender : undefined);
 
-    if (group) {
-        let currentSocialImage = group.socialImage;
+    const handleSave = () => {
+        if (welcomeMessageEnabled) {
+            if (!welcomeMessageSender) {
+                Alert.builder().title('Please choose who will send the Welcome message').button('GOT IT!').show();
+                return;
+            }
 
-        return (
-            <>
-                <SHeader title="Advanced settings" />
-                <SHeaderButton title="Save" onPress={() => { ref.current!.submitForm(); }} />
-                <ZForm
-                    ref={ref}
-                    action={async src => {
-                        if (welcomeMessageEnabled) {
-                            if (!welcomeMessageSender) {
-                                Alert.builder().title('Please choose who will send the Welcome message').button('GOT IT!').show();
+            if (welcomeMessageField.value === '') {
+                Alert.builder().title('Please enter the Welcome message text').button('GOT IT!').show();
+                return;
+            }
+        }
 
-                                throw new SilentError();
-                            }
+        form.doAction(async () => {
+            await client.mutateUpdateWelcomeMessage({
+                roomId,
+                welcomeMessageIsOn: welcomeMessageEnabled,
+                welcomeMessageSender: welcomeMessageSender ? welcomeMessageSender.id : undefined,
+                welcomeMessageText: welcomeMessageField.value
+            });
 
-                            if (typeof src.input.welcomeMessageText !== 'string' || src.input.welcomeMessageText === '') {
-                                Alert.builder().title('Please enter the Welcome message text').button('GOT IT!').show();
+            await client.mutateRoomUpdate({
+                roomId,
+                input: {
+                    ...(
+                        socialImageField.value && 
+                        socialImageField.value.uuid !== group.socialImage && 
+                        { socialImageRef: socialImageField.value }
+                    )
+                }
+            });
 
-                                throw new SilentError();
-                            }
-                        }
+            await client.refetchRoom({ id: roomId });
 
-                        let client = getClient();
+            props.router.back();
+        });
+    };
 
-                        await client.mutateUpdateWelcomeMessage({
-                            roomId: src.roomId,
-                            welcomeMessageIsOn: welcomeMessageEnabled,
-                            welcomeMessageSender: welcomeMessageSender ? welcomeMessageSender.id : undefined,
-                            welcomeMessageText: src.input.welcomeMessageText,
-                        });
+    return (
+        <>
+            <SHeader title="Advanced settings" />
+            <SHeaderButton title="Save" onPress={handleSave} />
+            <SScrollView>
+                <ZListItemGroup header={null} footer="Send an automatic message in 1:1 chat to every new member who joins this group">
+                    <ZListItem text="Welcome message" toggle={welcomeMessageEnabled} onToggle={(value) => setWelcomeMessageEnabled(value)} />
+                </ZListItemGroup>
 
-                        if (src.input.socialImageRef && src.input.socialImageRef.uuid === currentSocialImage) {
-                            src.input.socialImageRef = undefined;
-                        }
+                {welcomeMessageEnabled && (
+                    <ZListItemGroup header={null}>
+                        <ZPickField
+                            label="Sender"
+                            value={welcomeMessageSender ? welcomeMessageSender.name : undefined}
+                            onPress={() => {
+                                Modals.showUserPicker(
+                                    props.router,
+                                    async (user) => {
+                                        setWelcomeMessageSender(user);
 
-                        await client.mutateRoomUpdate({
-                            roomId: src.roomId,
-                            input: {
-                                socialImageRef: src.input.socialImageRef
-                            }
-                        });
+                                        props.router.back();
+                                    },
+                                    getWelcomeMessageSenders({
+                                        chat: group,
+                                        admins: (roomAdmins && roomAdmins.room && roomAdmins.room.__typename === 'SharedRoom' && roomAdmins.room.organization && roomAdmins.room.organization.adminMembers || []).map(a => a.user)
+                                    }),
+                                    'Choose sender',
+                                    welcomeMessageSender ? welcomeMessageSender.id : undefined,
+                                );
+                            }}
+                        />
+                        <ZInput multiline={true} placeholder="Text message" field={welcomeMessageField} />
+                    </ZListItemGroup>
+                )}
 
-                        await client.refetchRoom({ id: props.router.params.id });
-                    }}
-                    defaultData={{
-                        input: {
-                            welcomeMessageText: group.welcomeMessage ? group.welcomeMessage.message : undefined,
-                            socialImageRef: {
-                                uuid: currentSocialImage
-                            },
-                        },
-                    }}
-                    staticData={{
-                        roomId: props.router.params.id,
-                    }}
-                    onSuccess={() => {
-                        props.router.back();
-                    }}
+                <ZListItemGroup
+                    header="Social sharing image"
+                    footer="Choose an image to display when sharing invite to this group on social networks"
                 >
-                    <ZListItemGroup header={null} footer="Send an automatic message in 1:1 chat to every new member who joins this group">
-                        <ZListItem text="Welcome message" toggle={welcomeMessageEnabled} onToggle={(value) => setWelcomeMessageEnabled(value)} />
-                    </ZListItemGroup>
-
-                    {welcomeMessageEnabled && (
-                        <ZListItemGroup header={null}>
-                            <ZPickField
-                                label="Sender"
-                                value={welcomeMessageSender ? welcomeMessageSender.name : undefined}
-                                onPress={() => {
-                                    Modals.showUserPicker(
-                                        props.router,
-                                        async (user) => {
-                                            setWelcomeMessageSender(user);
-
-                                            props.router.back();
-                                        },
-                                        getWelcomeMessageSenders({
-                                            chat: group,
-                                            admins: (roomAdmins && roomAdmins.room && roomAdmins.room.__typename === 'SharedRoom' && roomAdmins.room.organization && roomAdmins.room.organization.adminMembers || []).map(a => a.user)
-                                        }),
-                                        'Choose sender',
-                                        welcomeMessageSender ? welcomeMessageSender.id : undefined,
-                                    );
-                                }}
-                            />
-                            <ZInput multiline={true} placeholder="Text message" field="input.welcomeMessageText" />
-                        </ZListItemGroup>
-                    )}
-
-                    <ZListItemGroup
-                        header="Social sharing image"
-                        footer="Choose an image to display when sharing invite to this group on social networks"
-                    >
-                        <View paddingHorizontal={16}>
-                            <ZAvatarPicker field="input.socialImageRef" render={SocialPicker} pickSize={{ width: 1200, height: 630 }} />
-                        </View>
-                    </ZListItemGroup>
-                </ZForm>
-            </>
-        );
-    } else {
-        return null;
-    }
+                    <View paddingHorizontal={16}>
+                        <ZAvatarPicker field={socialImageField} render={SocialPicker} pickSize={{ width: 1200, height: 630 }} />
+                    </View>
+                </ZListItemGroup>
+            </SScrollView>
+        </>
+    );
 });
 
 export const EditGroupAdvanced = withApp(EditGroupAdvancedComponent, { navigationAppearance: 'small' });
