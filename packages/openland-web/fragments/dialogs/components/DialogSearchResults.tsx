@@ -1,16 +1,14 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XView, XViewRouterContext } from 'react-mental';
+import { XView } from 'react-mental';
 import { DialogViewCompact } from './DialogViewCompact';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { GlobalSearch_items } from 'openland-api/Types';
-import { DialogView } from './DialogView';
-import { emoji } from '../../../../openland-y-utils/emoji';
-import { extractPlaceholder } from '../../../../openland-y-utils/extractPlaceholder';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { MessagesSearch } from './MessagesSearch';
 
 const NoResultWrapper = Glamorous(XVertical)({
     marginTop: 34,
@@ -34,30 +32,11 @@ type DialogSearchResultsT = {
 };
 
 const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
-    let router = React.useContext(XViewRouterContext);
-
     const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
-
     const client = useClient();
-
     const data = client.useGlobalSearch(props.variables, {
         fetchPolicy: 'cache-and-network',
     });
-
-    const messagesSearch = client.useMessagesSearch(
-        {
-            query: JSON.stringify({
-                $and: [{ text: props.variables.query }, { isService: false }],
-            }),
-            sort: JSON.stringify([{ createdAt: { order: 'desc' } }]),
-            first: 100,
-        },
-        {
-            fetchPolicy: 'network-only',
-        },
-    );
-    const messages = messagesSearch.messagesSearch.edges;
-    const me = client.useAccount();
 
     if (!data || !data.items) {
         return <XLoader loading={true} />;
@@ -101,7 +80,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
         }
     }, [selectedIndex]);
 
-    if (items.length === 0 && messages.length === 0) {
+    if (items.length === 0) {
         return (
             <NoResultWrapper separator={10} alignItems="center">
                 <Image />
@@ -169,45 +148,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                 );
             })}
             <XWithRole role="feature-non-production">
-                {messages.length > 0 && (
-                    <XView height={1} alignSelf="stretch" backgroundColor="#ececec" />
-                )}
-                {messages.map(i => {
-                    const { message, chat } = i.node;
-                    const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
-                    const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
-
-                    const emojifyText = (msg: string) => emoji(msg);
-
-                    return (
-                        <DialogView
-                            item={{
-                                titleEmojify: emoji(title),
-                                titlePlaceholderEmojify: emoji(extractPlaceholder(title)),
-                                senderEmojify: message.sender && emojifyText(message.sender.name),
-                                messageEmojify: message.message && emojifyText(message.message),
-                                message: message.message || undefined,
-                                title,
-                                key: chat.id,
-                                flexibleId: chat.id,
-                                kind: chat.__typename === 'PrivateRoom' ? 'PRIVATE' : 'GROUP',
-                                unread: 0,
-                                fallback: message.fallback,
-                                date: message.date,
-                                photo: photo || undefined,
-                                attachments:
-                                    message.__typename === 'GeneralMessage'
-                                        ? message.attachments
-                                        : undefined,
-                                isService: false,
-                                isOut: me.me ? message.sender.id === me.me.id : false,
-                                sender: message.sender.name,
-                            }}
-                            key={message.id}
-                            onPress={() => props.onSearchItemPress ? props.onSearchItemPress(chat.id) : router!.navigate(`/mail/${chat.id}`)}
-                        />
-                    );
-                })}
+                <MessagesSearch {...props} />
             </XWithRole>
         </XShortcuts>
     );
