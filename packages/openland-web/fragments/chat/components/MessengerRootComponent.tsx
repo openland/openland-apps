@@ -421,13 +421,15 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             <XView flexDirection="column" flexGrow={1} flexShrink={1} contain="content">
                 {pin &&
                     !this.state.loading && (
-                        <MessageContent
-                            id={pin.id}
-                            text={pin.message}
-                            textSpans={processSpans(pin.message || '', pin.spans)}
-                            attachments={pin.attachments}
-                            fallback={pin.fallback}
-                        />
+                        <XView backgroundColor="white">
+                            <MessageContent
+                                id={pin.id}
+                                text={pin.message}
+                                textSpans={processSpans(pin.message || '', pin.spans)}
+                                attachments={pin.attachments}
+                                fallback={pin.fallback}
+                            />
+                        </XView>
                     )}
                 <XView flexDirection="column" flexGrow={1} flexShrink={1} overflow="hidden">
                     <MessageListComponent
