@@ -20,6 +20,7 @@ export const Developer = withApp(() => {
             <SHeader title="Developer" />
             <SScrollView>
                 <ZListItemGroup header={null}>
+                    <ZListItem text="Feed" path="Feed" />
                     <ZListItem text="Colors" path="DevColors" />
                     <ZListItem text="Avatars" path="DevAvatars" />
                     <ZListItem text="Typography" path="DevTypography" />

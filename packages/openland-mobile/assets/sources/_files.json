@@ -1,6 +1,27 @@
 {
     "icons": [
         {
+            "name": "ic-like",
+            "src": "ic-like-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-like-active",
+            "src": "ic-like-active-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-message",
+            "src": "ic-message-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-close",
             "src": "ic-close-16.svg",
             "sizes": [
