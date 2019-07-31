@@ -21,6 +21,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { DateComponent } from './DateComponent';
 import { NewMessageDividerComponent } from './NewMessageDividerComponent';
+import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
 
 const messagesWrapperClassName = css`
     display: flex;
@@ -96,17 +97,21 @@ const dss = new Map<string, DataSource<DataSourceWebMessageItem | DataSourceDate
 
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
     scroller = React.createRef<any>();
-    private dataSource: DataSource<DataSourceWebMessageItem | DataSourceDateItem>;
+    private dataSource: DataSourceWindow<DataSourceWebMessageItem | DataSourceDateItem>;
 
     constructor(props: MessageListProps) {
         super(props);
         if (dss.has(props.conversationId)) {
-            this.dataSource = dss.get(props.conversationId)!;
+            this.dataSource = new DataSourceWindow(dss.get(props.conversationId)!, 20);
         } else {
             let b = buildMessagesDataSource(props.conversation.dataSource);
             dss.set(props.conversationId, b);
-            this.dataSource = b;
+            this.dataSource = new DataSourceWindow(b, 20);
         }
+    }
+
+    componentWillUnmount() {
+        this.dataSource.destroy();
     }
 
     scrollToBottom = () => {
@@ -117,7 +122,8 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
     handlerScroll = (e: XScrollValues) => {
         if (e.scrollTop < 1200) {
-            this.props.conversation.loadBefore();
+            // this.props.conversation.loadBefore();
+            this.dataSource.needMore();
         }
     }
 

@@ -10,6 +10,7 @@ import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MessagesActionsHeader } from './MessagesActionsHeader';
+import { showAvatarModal } from 'openland-web/components/showAvatarModal';
 
 const secondary = css`
     color: #969AA3;
@@ -88,6 +89,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     title={title}
                     photo={photo}
                     id={props.chat.__typename === 'PrivateRoom' ? props.chat.user.id : props.chat.id}
+                    onClick={photo && !photo.startsWith('ph://') ? () => showAvatarModal(photo!) : undefined}
                 />
             </XView>
             <XView flexDirection="column" flexGrow={1} flexBasis={0} minWidth={0}>

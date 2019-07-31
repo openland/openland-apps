@@ -7,7 +7,6 @@ import {
     ConversationStateHandler,
 } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { ConversationMessagesComponent } from '../messenger/ConversationMessagesComponent';
 import { UploadCareUploading } from '../../../utils/UploadCareUploading';
 import {
     UserShort,
@@ -38,6 +37,9 @@ import { MessageCompactComponent } from '../messenger/message/MessageCompactCont
 import ReplyIcon from 'openland-icons/s/ic-reply-24.svg';
 import CloseIcon from 'openland-icons/s/ic-close-8.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { MessageListComponent } from '../messenger/view/MessageListComponent';
+import { TypingsView } from '../messenger/typings/TypingsView';
+import { XLoader } from 'openland-x/XLoader';
 
 export interface File {
     uuid: string;
@@ -246,7 +248,7 @@ const MessageAction = (props: { engine: MessagesActionsStateEngine }) => {
 
 class MessagesComponent extends React.PureComponent<MessagesComponentProps, MessagesComponentState>
     implements ConversationStateHandler {
-    messagesList = React.createRef<ConversationMessagesComponent>();
+    messagesList = React.createRef<MessageListComponent>();
     private conversation: ConversationEngine | null;
     messageText: string = '';
     unmounter: (() => void) | null = null;
@@ -419,26 +421,30 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             <XView flexDirection="column" flexGrow={1} flexShrink={1} contain="content">
                 {pin &&
                     !this.state.loading && (
-                        <MessageContent
-                            id={pin.id}
-                            text={pin.message}
-                            textSpans={processSpans(pin.message || '', pin.spans)}
-                            attachments={pin.attachments}
-                            fallback={pin.fallback}
-                        />
+                        <XView backgroundColor="white">
+                            <MessageContent
+                                id={pin.id}
+                                text={pin.message}
+                                textSpans={processSpans(pin.message || '', pin.spans)}
+                                attachments={pin.attachments}
+                                fallback={pin.fallback}
+                            />
+                        </XView>
                     )}
-                <ConversationMessagesComponent
-                    isChannel={isChannel}
-                    ref={this.messagesList}
-                    key={this.props.conversationId}
-                    me={this.props.me}
-                    loading={this.state.loading}
-                    conversation={this.conversation}
-                    conversationId={this.props.conversationId}
-                    conversationType={this.props.conversationType}
-                    inputShower={this.handleShowIput}
-                    room={this.props.room}
-                />
+                <XView flexDirection="column" flexGrow={1} flexShrink={1} overflow="hidden">
+                    <MessageListComponent
+                        ref={this.messagesList}
+                        isChannel={isChannel}
+                        me={this.props.me}
+                        conversation={this.conversation}
+                        conversationType={this.props.conversationType}
+                        inputShower={this.handleShowIput}
+                        conversationId={this.props.conversationId}
+                        room={this.props.room}
+                    />
+                    <TypingsView conversationId={this.props.conversationId} />
+                    {this.props.loading && <XLoader loading={this.props.loading} />}
+                </XView>
 
                 {!this.state.hideInput &&
                     this.conversation.canSendMessage && (

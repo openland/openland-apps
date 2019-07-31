@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { ZForm } from '../../components/ZForm';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
@@ -11,58 +10,64 @@ import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
+import { SScrollView } from 'react-native-s/SScrollView';
 
 const SettingsProfileContent = XMemo<PageProps>((props) => {
     const { user, profile } = getClient().useProfile({ fetchPolicy: 'network-only' });
-    const ref = React.useRef<ZForm | null>(null);
-    const handleSave = React.useCallback(() => {
-        if (ref.current) {
-            ref.current.submitForm();
-        }
-    }, []);
 
     if (!user || !profile) {
         return null;
     }
 
+    const form = useForm();
+    const firstNameField = useField('firstName', profile.firstName || '', form);
+    const lastNameField = useField('lastName', profile.lastName || '', form);
+    const photoField = useField('photoRef', profile.photoRef, form);
+    const aboutField = useField('about', profile.about || '', form);
+    const phoneField = useField('phone', profile.phone || '', form);
+    const emailField = useField('email', profile.email || '', form);
+    const locationField = useField('location', profile.location || '', form);
+    const websiteField = useField('website', profile.website || '', form);
+    const linkedinField = useField('linkedin', profile.linkedin || '', form);
+
+    const handleSave = () => 
+        form.doAction(async () => {
+            await getClient().mutateProfileUpdate({
+                input: {
+                    firstName: firstNameField.value,
+                    lastName: lastNameField.value,
+                    photoRef: sanitizeImageRef(photoField.value),
+                    about: aboutField.value,
+                    phone: phoneField.value,
+                    email: emailField.value,
+                    location: locationField.value,
+                    website: websiteField.value,
+                    alphaLinkedin: linkedinField.value,
+                },
+            });
+            await getClient().refetchAccount();
+
+            props.router.back();
+        });
+
     return (
         <>
             <SHeaderButton title="Save" onPress={handleSave} />
-            <ZForm
-                action={async args => {
-                    await getClient().mutateProfileUpdate(args);
-                    await getClient().refetchAccount();
-                }}
-                onSuccess={() => props.router.back()}
-                ref={ref}
-                defaultData={{
-                    input: {
-                        firstName: profile.firstName,
-                        lastName: profile.lastName,
-                        photoRef: sanitizeImageRef(
-                            profile.photoRef,
-                        ),
-                        about: profile.about,
-                        phone: profile.phone,
-                        email: profile.email,
-                        location: profile.location,
-                        website: profile.website,
-                        alphaLinkedin: profile.linkedin,
-                    },
-                }}
-            >
+            <SScrollView>
                 <ZListItemGroup header={null} alignItems="center">
-                    <ZAvatarPicker size="xx-large" field="input.photoRef" />
+                    <ZAvatarPicker size="xx-large" field={photoField} />
                 </ZListItemGroup>
 
                 <ZListItemGroup header="Info" headerMarginTop={0}>
                     <ZInput
                         placeholder="First name"
-                        field="input.firstName"
+                        field={firstNameField}
                     />
                     <ZInput
                         placeholder="Last name"
-                        field="input.lastName"
+                        field={lastNameField}
                     />
                     <ZPickField
                         label="Primary organization"
@@ -71,12 +76,12 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                     />
                     <ZInput
                         placeholder="About"
-                        field="input.about"
+                        field={aboutField}
                         multiline={true}
                     />
                     <ZInput
                         placeholder="Location"
-                        field="input.location"
+                        field={locationField}
                     />
                 </ZListItemGroup>
 
@@ -91,22 +96,22 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                 <ZListItemGroup header="Contacts" headerMarginTop={0}>
                     <ZInput
                         placeholder="Phone"
-                        field="input.phone"
+                        field={phoneField}
                     />
                     <ZInput
                         placeholder="Email"
-                        field="input.email"
+                        field={emailField}
                     />
                     <ZInput
                         placeholder="Website"
-                        field="input.website"
+                        field={websiteField}
                     />
                     <ZInput
                         placeholder="LinkedIn"
-                        field="input.alphaLinkedin"
+                        field={linkedinField}
                     />
                 </ZListItemGroup>
-            </ZForm>
+            </SScrollView>
         </>
     );
 });

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { SForm } from './SForm';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { exportWrongFields } from './exportWrongFields';
+import { AppLoader } from 'openland-y-runtime/AppLoader';
 
 export function useForm(): SForm {
     const started = React.useRef(false);
@@ -39,6 +40,7 @@ export function useForm(): SForm {
                 return;
             }
             started.current = true;
+            AppLoader.start();
             setLoading(true);
             setEnabled(false);
             setError(null);
@@ -57,6 +59,7 @@ export function useForm(): SForm {
             } finally {
                 clientValidation = {};
 
+                AppLoader.stop();
                 setLoading(false);
                 setEnabled(true);
                 started.current = false;

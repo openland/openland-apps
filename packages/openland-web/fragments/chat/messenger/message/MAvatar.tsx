@@ -3,6 +3,7 @@ import { css, cx } from 'linaria';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { PlaceholderColor } from 'openland-web/components/unicorn/UAvatar';
+import { showAvatarModal } from 'openland-web/components/showAvatarModal';
 
 const phBackgrounds = [
     css`background-image: linear-gradient(138deg, #ffb600, #ff8d00);`,
@@ -50,7 +51,7 @@ const avatarImageClass = css`
     border-radius: 40px;
     overflow: hidden;
     background-color: #fff;
-
+    cursor: pointer;
 `;
 
 const AvatarImage = React.memo((props: { photo: string }) => {
@@ -64,6 +65,11 @@ const AvatarImage = React.memo((props: { photo: string }) => {
             className={avatarImageClass}
             src={props.photo + ops}
             srcSet={props.photo + opsRetina}
+            onClick={(e) => {
+                e.stopPropagation();
+
+                showAvatarModal(props.photo);
+            }}
         />
     );
 });

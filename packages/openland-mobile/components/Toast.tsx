@@ -12,7 +12,6 @@ import { showBlanketModal } from './showBlanketModal';
 import { ZModalController } from './ZModal';
 import LoaderSpinner from './LoaderSpinner';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 
 const styles = StyleSheet.create({
     modalWrapper: {
@@ -89,7 +88,9 @@ function build(config: ToastBuildConfig) {
             },
         );
 
-    const hide = () => modal && modal.hide();
+    const hide = () => {
+        setTimeout(() => modal && modal.hide(), 1);
+    };
 
     if (config.duration) {
         setTimeout(hide, config.duration);
@@ -99,7 +100,7 @@ function build(config: ToastBuildConfig) {
 }
 
 function loader() {
-    return { show: () => startLoader(), hide: () => stopLoader() };
+    return build({ IconComponent: () => <LoaderSpinner size="large" /> });
 }
 
 function success(config: ToastBuildConfig = {}) {

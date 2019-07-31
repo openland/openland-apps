@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { ZForm } from '../../components/ZForm';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -13,49 +12,51 @@ import ActionSheet from 'openland-mobile/components/ActionSheet';
 import { ErrorText, validateShortname, getErrorByShortname } from './SetUserShortname';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { SUPER_ADMIN } from '../Init';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
+import { SScrollView } from 'react-native-s/SScrollView';
 
 const SetOrgShortnameContent = XMemo<PageProps>((props) => {
     const organizationId = props.router.params.id;
     const profile = getClient().useOrganizationProfile({ organizationId }, { fetchPolicy: 'network-only' }).organizationProfile;
 
-    const [shortname, setShortname] = React.useState<string>(profile.shortname || '');
     const [error, setError] = React.useState<string | undefined>(undefined);
 
     const minLength = SUPER_ADMIN ? 3 : 5;
     const maxLength = 16;
 
-    let ref = React.useRef<ZForm | null>(null);
-    let handleSave = React.useCallback(() => {
-        if (ref.current) {
-            if (validateShortname(shortname, minLength, maxLength)) {
-                ref.current.submitForm();
-            }
-        }
-    }, [shortname, minLength, maxLength]);
+    const form = useForm();
+    const shortnameField = useField('shortname', profile.shortname || '', form);
+    
+    React.useEffect(() => setError(undefined), [shortnameField.value]);
 
-    const greenErrorLabel = getErrorByShortname(shortname, 'Shortname', minLength, maxLength);
+    const handleSave = () => {
+        if (validateShortname(shortnameField.value, minLength, maxLength)) {
+            form.doAction(async () => {
+                try {
+                    setError(undefined);
+
+                    await getClient().mutateSetOrgShortname({ 
+                        shortname: shortnameField.value, 
+                        organizationId 
+                    });
+                    await getClient().refetchOrganization({ organizationId });
+                    await getClient().refetchOrganizationProfile({ organizationId });
+
+                    props.router.back();
+                } catch (e) {
+                    setError(formatError(e));
+                }
+            });
+        }
+    };
+
+    const greenErrorLabel = getErrorByShortname(shortnameField.value, 'Shortname', minLength, maxLength);
 
     return (
         <>
             <SHeaderButton title="Save" onPress={handleSave} />
-            <ZForm
-                action={async args => {
-                    setError(undefined);
-
-                    await getClient().mutateSetOrgShortname(args);
-                    await getClient().refetchOrganization({ organizationId });
-                    await getClient().refetchOrganizationProfile({ organizationId });
-                }}
-                onSuccess={() => props.router.back()}
-                onError={(e) => setError(formatError(e))}
-                ref={ref}
-                defaultData={{
-                    shortname: profile.shortname
-                }}
-                staticData={{
-                    organizationId
-                }}
-            >
+            <SScrollView>
                 <ZListItemGroup
                     header={null}
                     footer={{
@@ -64,7 +65,7 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
                               'You can use a-z, 0-9 and underscores.' + '\n' +
                               'Minimum length is ' + minLength + ' characters.' + '\n\n' +
                               'This link opens ' + profile.name + ' page:' + '\n' +
-                              'openland.com/' + (shortname ? shortname : ' shortname'),
+                              'openland.com/' + (shortnameField.value ? shortnameField.value : ' shortname'),
 
                         onPress: (link: string) => {
                             if (profile.shortname) {
@@ -81,19 +82,15 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
                     <ZInput
                         placeholder="Shortname"
                         prefix="@"
-                        field="shortname"
+                        field={shortnameField}
                         autoCapitalize="none"
-                        onChangeText={(src: string) => {
-                            setShortname(src);
-                            setError(undefined);
-                        }}
                         autoFocus={true}
                     />
 
                     {error && <ErrorText color="red" text={error} />}
                     {!error && greenErrorLabel && <ErrorText color="green" text={greenErrorLabel} />}
                 </ZListItemGroup>
-            </ZForm>
+            </SScrollView>
         </>
     );
 });

@@ -85,6 +85,19 @@ export class StackRouter {
         }
     }
 
+    reset = (path?: string) => {
+        this.pages.splice(0, this.pages.length);
+        if (path) {
+            this.pages.push(this.resolve(path));
+        }
+
+        setTimeout(() => {
+            for (let l of this._listeners) {
+                l({ type: 'reset', pages: [...this.pages] });
+            }
+        }, 10);
+    }
+
     restore = (paths: string[]) => {
         this.pages.splice(0, this.pages.length - 1);
 

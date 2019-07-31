@@ -11,6 +11,7 @@ import { UserShort_primaryOrganization, UserShort } from 'openland-api/Types';
 import { HoverMenu } from './Menu/HoverMenu';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 
 const senderContainer = css`
     display: flex;
@@ -30,25 +31,12 @@ const senderOrgAndDateStyle = css`
     color: #676d7a; // ThemeDefault.foregroundSecondary
 `;
 
-const MessageSenderName = (props: {
-    sender: UserShort;
-    senderNameEmojify?: string | JSX.Element;
-}) => (
-    <ULink
-        path={`/${props.sender.shortname || props.sender.id}`}
-        className={cx(TextLabel1, senderNameStyle)}
-    >
-        {props.senderNameEmojify || props.sender.name}
-    </ULink>
+const MessageSenderName = (props: { sender: UserShort; senderNameEmojify?: string | JSX.Element; }) => (
+    <ULink path={`/${props.sender.shortname || props.sender.id}`} className={cx(TextLabel1, senderNameStyle)}>{props.senderNameEmojify || props.sender.name}</ULink>
 );
 
 const MessageSenderOrg = (props: { organization: UserShort_primaryOrganization }) => (
-    <ULink
-        path={`/${props.organization.shortname || props.organization.id}`}
-        className={cx(TextCaption, senderOrgAndDateStyle)}
-    >
-        {props.organization.name}
-    </ULink>
+    <ULink path={`/${props.organization.shortname || props.organization.id}`} className={cx(TextCaption, senderOrgAndDateStyle)}>{props.organization.name}</ULink>
 );
 
 const MessageTime = (props: { time: number }) => (
@@ -64,9 +52,7 @@ interface MessageSenderContentProps {
 export const MessageSenderContent = (props: MessageSenderContentProps) => (
     <div className={senderContainer}>
         <MessageSenderName sender={props.sender} senderNameEmojify={props.senderNameEmojify} />
-        {props.sender.primaryOrganization && (
-            <MessageSenderOrg organization={props.sender.primaryOrganization} />
-        )}
+        {props.sender.primaryOrganization && <MessageSenderOrg organization={props.sender.primaryOrganization} />}
         <MessageTime time={props.date} />
     </div>
 );
@@ -75,6 +61,7 @@ export const MessageSenderContent = (props: MessageSenderContentProps) => (
 // Message container
 ////
 const messageContainerClass = css`
+    position: relative;
     display: flex;
     flex-direction: row;
     flex-grow: 1;
@@ -88,7 +75,6 @@ const messageContainerClass = css`
 
     &:hover .hover-menu-button {
         opacity: 1;
-        transform: translateX(0);
     }
 `;
 
@@ -178,6 +164,7 @@ interface MessageComponentProps {
 export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const { message, engine } = props;
     const containerRef = React.useRef<HTMLDivElement>(null);
+    const layout = useLayout();
 
     const attachesClassNames = cx(
         message.attachTop && attachTop,
@@ -199,7 +186,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const onSelect = React.useCallback(
         () => {
             let selection = window.getSelection();
-            if (selection) {
+            if (selection && layout !== 'mobile') {
                 let range = selection.getRangeAt(0);
                 if (range.startOffset !== range.endOffset) {
                     return;
@@ -272,7 +259,8 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                     </div>
                 </div>
             </div>
-            <HoverMenu message={message} engine={engine} />
+
+            {layout !== 'mobile' && <HoverMenu message={message} engine={engine} />}
         </div>
     );
 });

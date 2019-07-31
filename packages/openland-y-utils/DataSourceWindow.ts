@@ -65,7 +65,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                 }
             },
             onDataSourceScrollToKeyRequested: (key: string) => {
-                throw Error('Not supported');
+                // throw Error('Not supported');
             },
         });
     }
