@@ -33,7 +33,7 @@ const forceVisible = css`
 export const HoverMenu = (props: { message: DataSourceWebMessageItem, engine: ConversationEngine }) => {
     const { message } = props;
     const router = React.useContext(XViewRouterContext);
-    const [visible, show] = usePopper({ placement: 'top-end', hideOnClick: true }, (ctx) => buildMessageMenu(ctx, props.message, props.engine, router!));
+    const [visible, show] = usePopper({ placement: 'bottom-end', hideOnClick: true }, (ctx) => buildMessageMenu(ctx, props.message, props.engine, router!));
     const showWrapped = React.useCallback((ev: React.MouseEvent) => {
         ev.stopPropagation();
         show(ev);
