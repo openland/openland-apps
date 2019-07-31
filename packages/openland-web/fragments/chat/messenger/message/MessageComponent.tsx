@@ -31,12 +31,25 @@ const senderOrgAndDateStyle = css`
     color: #676d7a; // ThemeDefault.foregroundSecondary
 `;
 
-const MessageSenderName = (props: { sender: UserShort; senderNameEmojify?: string | JSX.Element; }) => (
-    <ULink path={`/${props.sender.shortname || props.sender.id}`} className={cx(TextLabel1, senderNameStyle)}>{props.senderNameEmojify || props.sender.name}</ULink>
+const MessageSenderName = (props: {
+    sender: UserShort;
+    senderNameEmojify?: string | JSX.Element;
+}) => (
+    <ULink
+        path={`/${props.sender.shortname || props.sender.id}`}
+        className={cx(TextLabel1, senderNameStyle)}
+    >
+        {props.senderNameEmojify || props.sender.name}
+    </ULink>
 );
 
 const MessageSenderOrg = (props: { organization: UserShort_primaryOrganization }) => (
-    <ULink path={`/${props.organization.shortname || props.organization.id}`} className={cx(TextCaption, senderOrgAndDateStyle)}>{props.organization.name}</ULink>
+    <ULink
+        path={`/${props.organization.shortname || props.organization.id}`}
+        className={cx(TextCaption, senderOrgAndDateStyle)}
+    >
+        {props.organization.name}
+    </ULink>
 );
 
 const MessageTime = (props: { time: number }) => (
@@ -52,7 +65,9 @@ interface MessageSenderContentProps {
 export const MessageSenderContent = (props: MessageSenderContentProps) => (
     <div className={senderContainer}>
         <MessageSenderName sender={props.sender} senderNameEmojify={props.senderNameEmojify} />
-        {props.sender.primaryOrganization && <MessageSenderOrg organization={props.sender.primaryOrganization} />}
+        {props.sender.primaryOrganization && (
+            <MessageSenderOrg organization={props.sender.primaryOrganization} />
+        )}
         <MessageTime time={props.date} />
     </div>
 );
