@@ -72,11 +72,14 @@ const subtitle = css`
     color: #171b1f;
 `;
 
-export const DocumentContent = ({
+export const DocumentContent = React.memo(({
     file,
 }: {
     file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
 }) => {
+    let onClick = React.useCallback((ev: React.MouseEvent) => {
+        ev.stopPropagation();
+    }, []);
     return (
         <div className={cx(fileContainer, 'message-document-wrapper')}>
             <div className={infoContent}>
@@ -88,9 +91,9 @@ export const DocumentContent = ({
                     <div className={subtitle}>{formatBytes(file.fileMetadata.size)}</div>
                 </div>
             </div>
-            <a className={downloadContainer} href={`https://ucarecdn.com/${file.fileId}/`} title="doc">
-                <IconDownload/>
+            <a className={downloadContainer} href={`https://ucarecdn.com/${file.fileId}/`} onClick={onClick} title="doc">
+                <IconDownload />
             </a>
         </div>
     );
-};
+});
