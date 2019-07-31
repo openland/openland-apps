@@ -37,7 +37,7 @@ export const MessageContent = (props: MessageContentProps) => {
     });
 
     if (hasText) {
-        content.push(<MessageTextComponent spans={textSpans} edited={!!edited} />);
+        content.push(<MessageTextComponent key="msg-text" spans={textSpans} edited={!!edited} />);
     }
 
     documentsAttaches.map(file => {
@@ -50,7 +50,7 @@ export const MessageContent = (props: MessageContentProps) => {
 
     if (!content.length) {
         const unsupportedText = 'Unsupported content: ' + fallback;
-        content.push(<MessageTextComponent spans={[{ type: SpanType.italic, offset: 0, length: unsupportedText.length, childrens: [{ type: SpanType.text, text, offset: 0, length: unsupportedText.length } as SpanText] }]} edited={false} />);
+        content.push(<MessageTextComponent key="msg-text-unsupported" spans={[{ type: SpanType.italic, offset: 0, length: unsupportedText.length, childrens: [{ type: SpanType.text, text, offset: 0, length: unsupportedText.length } as SpanText] }]} edited={false} />);
     }
 
     return <>{content}</>;
