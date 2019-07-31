@@ -2,7 +2,6 @@ import * as React from 'react';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
-import { ZForm } from '../../components/ZForm';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -10,70 +9,59 @@ import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { XMemo } from 'openland-y-utils/XMemo';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
+import { SScrollView } from 'react-native-s/SScrollView';
 
-class SignupOrgComponent extends React.PureComponent<PageProps, { name: string }> {
-    private ref = React.createRef<ZForm>();
+const SignupOrgComponent = XMemo<PageProps>((props) => {
+    const form = useForm();
+    const nameField = useField('name', '', form);
+    const photoField = useField('photoRef', null, form);
 
-    constructor(props: PageProps) {
-        super(props);
+    const canSkip = nameField.value.length <= 0;
 
-        this.state = {
-            name: ''
-        };
-    }
+    const handleSave = () => 
+        form.doAction(async () => {
+            const client = getClient();
 
-    handleNameChange = (text: string) => {
-        this.setState({
-            name: text
+            await client.mutateCreateOrganization({
+                input: {
+                    name: canSkip ? getMessenger().engine.user.name : nameField.value,
+                    photoRef: photoField.value,
+                    personal: false,
+                    isCommunity: false
+                },
+            });
+
+            await client.refetchAccount();
+            await client.refetchAccountSettings();
+
+            if (props.router.params.action) {
+                await props.router.params.action(props.router);
+            }
         });
-    }
 
-    render() {
-        const { name } = this.state;
-        const canSkip = name.length <= 0;
+    return (
+        <ZTrack event="signup_org_view">
+            <SHeader title="New organization" />
+            <SHeaderButton key={'btn-' + canSkip} title={canSkip ? 'Skip' : 'Next'} onPress={handleSave} />
+            <SScrollView>
+                <ZListItemGroup header={null} alignItems="center">
+                    <ZAvatarPicker field={photoField} size="xx-large" />
+                </ZListItemGroup>
 
-        return (
-            <ZTrack event="signup_org_view">
-                <SHeader title="New organization" />
-                <SHeaderButton key={'btn-' + canSkip} title={canSkip ? 'Skip' : 'Next'} onPress={() => { this.ref.current!.submitForm(); }} />
-                <ZForm
-                    ref={this.ref}
-                    action={async (src) => {
-                        let client = getClient();
-
-                        await client.mutateCreateOrganization({
-                            input: {
-                                name: canSkip ? getMessenger().engine.user.name : name,
-                                personal: false,
-                                isCommunity: false,
-                                ...src.input
-                            },
-                        });
-
-                        await client.refetchAccount();
-                        await client.refetchAccountSettings();
-
-                        if (this.props.router.params.action) {
-                            await this.props.router.params.action(this.props.router);
-                        }
-                    }}
-                >
-                    <ZListItemGroup header={null} alignItems="center">
-                        <ZAvatarPicker field="input.photoRef" size="xx-large" />
-                    </ZListItemGroup>
-
-                    <ZListItemGroup header={null}>
-                        <ZInput
-                            placeholder="Organization name"
-                            autoFocus={true}
-                            description="Please, provide organization name and optional logo"
-                            onChangeText={this.handleNameChange}
-                        />
-                    </ZListItemGroup>
-                </ZForm>
-            </ZTrack>
-        );
-    }
-}
+                <ZListItemGroup header={null}>
+                    <ZInput
+                        placeholder="Organization name"
+                        autoFocus={true}
+                        description="Please, provide organization name and optional logo"
+                        field={nameField}
+                    />
+                </ZListItemGroup>
+            </SScrollView>
+        </ZTrack>
+    );
+});
 
 export const SignupOrg = withApp(SignupOrgComponent);

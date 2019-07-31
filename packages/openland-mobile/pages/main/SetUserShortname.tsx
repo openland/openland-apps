@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { ZForm } from '../../components/ZForm';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -12,6 +11,9 @@ import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import ActionSheet from 'openland-mobile/components/ActionSheet';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { SUPER_ADMIN } from '../Init';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
+import { SScrollView } from 'react-native-s/SScrollView';
 
 export const ErrorText = (props: { color: string; text: string }) => (
     <Text
@@ -69,41 +71,45 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
         return null;
     }
 
-    const [shortname, setShortname] = React.useState<string>(user.shortname || '');
     const [error, setError] = React.useState<string | undefined>(undefined);
 
     const minLength = SUPER_ADMIN ? 3 : 5;
     const maxLength = 16;
 
-    const ref = React.useRef<ZForm | null>(null);
-    const handleSave = React.useCallback(() => {
-        if (ref.current) {
-            if (validateShortname(shortname, minLength, maxLength)) {
-                ref.current.submitForm();
-            }
-        }
-    }, [shortname, minLength, maxLength]);
+    const form = useForm();
+    const shortnameField = useField('shortname', user.shortname || '', form);
 
-    const greenErrorLabel = getErrorByShortname(shortname, 'Username', minLength, maxLength);
+    const handleSave = () => {
+        if (validateShortname(shortnameField.value, minLength, maxLength)) {
+            form.doAction(async () => {
+                try {
+                    setError(undefined);
+
+                    await getClient().mutateSetUserShortname({
+                        shortname: shortnameField.value
+                    });
+
+                    await getClient().refetchAccount();
+
+                    props.router.back();
+                
+                } catch (e) {
+                    setError(formatError(e));
+                }
+            });
+        }
+    };
+
+    React.useEffect(() => {
+        setError(undefined);
+    }, [shortnameField.value]);
+
+    const greenErrorLabel = getErrorByShortname(shortnameField.value, 'Username', minLength, maxLength);
 
     return (
         <>
             <SHeaderButton title="Save" onPress={handleSave} />
-            <ZForm
-                action={async args => {
-                    setError(undefined);
-
-                    await getClient().mutateSetUserShortname(args);
-
-                    await getClient().refetchAccount();
-                }}
-                onSuccess={() => props.router.back()}
-                onError={(e) => setError(formatError(e))}
-                ref={ref}
-                defaultData={{
-                    shortname: user.shortname
-                }}
-            >
+            <SScrollView>
                 <ZListItemGroup
                     header={null}
                     footer={{
@@ -112,7 +118,7 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                             'You can use a-z, 0-9 and underscores.' + '\n' +
                             'Minimum length is ' + minLength + ' characters.' + '\n\n' +
                             'This link opens a chat with you:' + '\n' +
-                            'openland.com/' + (shortname ? shortname : ' username'),
+                            'openland.com/' + (shortnameField.value ? shortnameField.value : ' username'),
                         onPress: (link: string) => {
                             if (user.shortname) {
                                 ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-copy-24.png')).show();
@@ -128,19 +134,15 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                     <ZInput
                         placeholder="Username"
                         prefix="@"
-                        field="shortname"
+                        field={shortnameField}
                         autoCapitalize="none"
-                        onChangeText={(src: string) => {
-                            setShortname(src);
-                            setError(undefined);
-                        }}
                         autoFocus={true}
                     />
 
                     {error && <ErrorText color="red" text={error} />}
                     {!error && greenErrorLabel && <ErrorText color="green" text={greenErrorLabel} />}
                 </ZListItemGroup>
-            </ZForm>
+            </SScrollView>
         </>
     );
 });
