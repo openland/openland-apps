@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { DataSource, DataSourceItem } from 'openland-y-utils/DataSource';
+import { DataSourceItem, ReadableDataSource } from 'openland-y-utils/DataSource';
 
 function useDataSource<T extends DataSourceItem>(
-    dataSource: DataSource<T>,
+    dataSource: ReadableDataSource<T>,
 ): [T[], boolean, { key: string | undefined }] {
     let [items, setItems] = React.useState<T[]>([]);
     let [scrollTo, setScrollTo] = React.useState({ key: undefined as string | undefined });
@@ -63,7 +63,7 @@ function useDataSource<T extends DataSourceItem>(
 
 export type ScrollTo = { scrollTo: { key: string | undefined } | undefined };
 export interface XListViewProps<T extends DataSourceItem> {
-    dataSource: DataSource<T>;
+    dataSource: ReadableDataSource<T>;
     renderItem: React.ComponentClass<{ item: T }> | React.StatelessComponent<{ item: T }>;
     renderLoading: React.ComponentClass<any> | React.StatelessComponent<any>;
     reverce?: boolean;
