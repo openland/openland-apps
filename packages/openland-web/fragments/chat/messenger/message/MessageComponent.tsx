@@ -100,7 +100,7 @@ const messageContentClass = css`
     flex-shrink: 1;
     justify-content: center;
     align-items: center;
-    max-width: 770px;
+    max-width: 865px;
     margin: auto;
 `;
 
