@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { emoji } from 'openland-y-utils/emoji';
+import { TextCaption } from 'openland-web/utils/TextStyles';
 
 const typingWrapper = css`
     display: flex;
@@ -30,12 +31,7 @@ const typingText = css`
     align-items: flex-start;
     margin-top: 8px;
     margin-bottom: 8px;
-    opacity: 0.5;
-    font-size: 13px;
-    font-weight: normal;
-    font-style: normal;
-    line-height: normal;
-    color: #000000;
+    color: #676d7a;
 `;
 
 export interface TypingsViewProps {
@@ -62,7 +58,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
     let content: any = null;
 
     if (typing) {
-        content = <div className={typingText}>{emoji(typing)}</div>;
+        content = <div className={cx(typingText, TextCaption)}>{emoji(typing)}</div>;
     }
 
     return (

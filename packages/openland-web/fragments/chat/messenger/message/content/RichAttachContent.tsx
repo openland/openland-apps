@@ -6,6 +6,7 @@ import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { TextCaption, TextTitle2, TextBody } from 'openland-web/utils/TextStyles';
 
 const richWrapper = css`
     display: flex;
@@ -61,21 +62,15 @@ const siteIconImageStyle = css`
 const linkHostnameContainer = css`
     display: flex;
     align-items: center;
-    font-size: 13px;
     color: #676d7a;
 `;
 
 const titleStyle = css`
-    font-size: 17px;
-    line-height: 24px;
-    font-weight: 600;
     color: #171b1f;
     margin-top: 2px;
 `;
 
 const textStyle = css`
-    font-size: 15px;
-    line-height: 24px;
     color: #171b1f;
     margin-top: 2px;
 `;
@@ -158,8 +153,12 @@ const InternalComponent = ({
             <div className={internalContent}>
                 {avatar}
                 <div className={internalDataContent}>
-                    {attach.title && <div className={titleStyle}>{attach.title}</div>}
-                    {attach.subTitle && <div className={textStyle}>{attach.subTitle}</div>}
+                    {attach.title && (
+                        <div className={cx(titleStyle, TextTitle2)}>{attach.title}</div>
+                    )}
+                    {attach.subTitle && (
+                        <div className={cx(textStyle, TextBody)}>{attach.subTitle}</div>
+                    )}
                 </div>
             </div>
             {keyboard}
@@ -210,18 +209,18 @@ export const RichAttachContent = ({
             {img}
             <div className={richContentContainer}>
                 {(siteIcon || attach.titleLinkHostname) && (
-                    <div className={linkHostnameContainer}>
+                    <div className={cx(linkHostnameContainer, TextCaption)}>
                         {siteIcon}
                         <span>{attach.titleLinkHostname}</span>
                     </div>
                 )}
                 {attach.title && (
-                    <div className={titleStyle}>
+                    <div className={cx(titleStyle, TextTitle2)}>
                         <span>{attach.title}</span>
                     </div>
                 )}
                 {text && (
-                    <div className={textStyle}>
+                    <div className={cx(textStyle, TextBody)}>
                         <span>{text}</span>
                     </div>
                 )}
