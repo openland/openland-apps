@@ -90,9 +90,12 @@ export class StackRouter {
         if (path) {
             this.pages.push(this.resolve(path));
         }
-        for (let l of this._listeners) {
-            l({ type: 'reset', pages: [...this.pages] });
-        }
+
+        setTimeout(() => {
+            for (let l of this._listeners) {
+                l({ type: 'reset', pages: [...this.pages] });
+            }
+        }, 10);
     }
 
     restore = (paths: string[]) => {
