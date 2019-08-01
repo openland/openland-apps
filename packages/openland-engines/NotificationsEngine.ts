@@ -86,7 +86,7 @@ export class NotificationsEngine {
         if (settings.desktopNotifications === 'NONE') {
             return;
         } else if (settings.desktopNotifications === 'DIRECT') {
-            if (privateRoom) {
+            if (!privateRoom) {
                 return;
             }
         }
