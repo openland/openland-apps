@@ -23,8 +23,8 @@ let sizeStyles = styleResolver({
         fontSize: 15,
         lineHeight: '24px',
         paddingTop: 16,
-        paddingLeft: 20,
-        paddingRight: 20,
+        paddingLeft: 16,
+        paddingRight: 16,
         paddingBottom: 16,
     },
     default: {
@@ -41,7 +41,7 @@ let titleStyles = styleResolver({
     large: {
         top: 10,
         lineHeight: '18px',
-        paddingLeft: 19,
+        paddingLeft: 16,
         left: 0,
         height: 27,
         width: '100%',

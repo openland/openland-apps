@@ -93,6 +93,7 @@ interface InputProps extends XInputBasicProps {
     setFocusOnError?: boolean;
     hideErrorText?: boolean;
     valid?: boolean;
+    errorText?: string | null;
 }
 
 export const InputField = (props: InputProps) => {
@@ -109,6 +110,7 @@ export const InputField = (props: InputProps) => {
 
     if (props.size === 'large') {
         largeClassName = InputLargeClassName;
+        placeholderClassNames = InputTitleLargeClassName;
     }
     if (field.input.value !== '') {
         placeholderClassNames = InputValueStyledClassName;
@@ -130,10 +132,9 @@ export const InputField = (props: InputProps) => {
                     (props.invalid || field.input.invalid) && InputInvalidStyledClassName,
                 )}
             />
-            {field.input.invalid &&
-                !hideErrorText && (
+            {(field.input.invalid || props.errorText) && !hideErrorText && (
                     <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
-                        {field.input.errorText}
+                        {props.errorText ? props.errorText : field.input.errorText}
                     </XView>
                 )}
         </>

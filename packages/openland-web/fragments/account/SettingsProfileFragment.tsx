@@ -26,10 +26,12 @@ export const SettingsProfileFragment = React.memo(() => {
     const user = client.useProfile().user!;
     const organizations = client.useMyOrganizations();
 
-    const firstNameField = useField('input.firstName', profile.firstName || '', form, [{
-        checkIsValid: (value) => !!value && value.length > 0,
-        text: 'Please enter your name'
-    }]);
+    const firstNameField = useField('input.firstName', profile.firstName || '', form, [
+        {
+            checkIsValid: value => !!value && value.length > 0,
+            text: 'Please enter your name',
+        },
+    ]);
     const lastNameField = useField('input.lastName', profile.lastName || '', form);
     const avatarField = useField<StoredFileT | undefined | null>(
         'input.avatar',
@@ -81,7 +83,11 @@ export const SettingsProfileFragment = React.memo(() => {
     const organizationsWithoutCommunity = organizations.myOrganizations.filter(i => !i.isCommunity);
 
     // Temp && ugly fix for users with community as primary organizations
-    if (profile.primaryOrganization && (organizationsWithoutCommunity.filter(i => i.id === profile.primaryOrganization!.id).length <= 0)) {
+    if (
+        profile.primaryOrganization &&
+        organizationsWithoutCommunity.filter(i => i.id === profile.primaryOrganization!.id)
+            .length <= 0
+    ) {
         organizationsWithoutCommunity.unshift(profile.primaryOrganization as any);
     }
 
@@ -158,7 +164,13 @@ export const SettingsProfileFragment = React.memo(() => {
                             <InputField title={'Location'} field={locationField} size="large" />
                         </FormSection>
                         <FormSection title="Username">
-                            <InputField title={'Username'} field={usernameField} size="large" />
+                            <InputField
+                                title={'Username'}
+                                field={usernameField}
+                                size="large"
+                                invalid={!!form.error}
+                                errorText={form.error}
+                            />
                         </FormSection>
                         <FormSection title="Contacts">
                             <XView marginBottom={16}>
@@ -183,6 +195,7 @@ export const SettingsProfileFragment = React.memo(() => {
                                 size="large"
                                 alignSelf="flex-start"
                                 onClick={doConfirm}
+                                loading={form.loading}
                                 square
                             />
                         </FormFooter>
