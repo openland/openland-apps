@@ -26,33 +26,33 @@ export const SettingsProfileFragment = React.memo(() => {
     const user = client.useProfile().user!;
     const organizations = client.useMyOrganizations();
 
-    let firstNameField = useField('input.firstName', profile.firstName || '', form);
-    let secondNameField = useField('input.secondName', profile.lastName || '', form);
+    const firstNameField = useField('input.firstName', profile.firstName || '', form);
+    const lastNameField = useField('input.lastName', profile.lastName || '', form);
     const avatarField = useField<StoredFileT | undefined | null>(
         'input.avatar',
         sanitizeImageRef(profile.photoRef),
         form,
     );
-    let primaryOrganizationField = useField(
+    const primaryOrganizationField = useField(
         'input.primaryOrganization',
         profile.primaryOrganization && profile.primaryOrganization!!.id,
         form,
     );
 
-    let aboutField = useField('input.about', profile.about || '', form);
-    let locationField = useField('input.location', profile.location || '', form);
-    let usernameField = useField('input.username', user.shortname || '', form);
-    let phoneNumberField = useField('input.phoneNumber', profile.phone || '', form);
-    let emailField = useField('input.email', profile.email || '', form);
-    let websiteField = useField('input.website', profile.website || '', form);
-    let linkedinField = useField('input.linkedin', profile.linkedin || '', form);
+    const aboutField = useField('input.about', profile.about || '', form);
+    const locationField = useField('input.location', profile.location || '', form);
+    const usernameField = useField('input.username', user.shortname || '', form);
+    const phoneNumberField = useField('input.phoneNumber', profile.phone || '', form);
+    const emailField = useField('input.email', profile.email || '', form);
+    const websiteField = useField('input.website', profile.website || '', form);
+    const linkedinField = useField('input.linkedin', profile.linkedin || '', form);
 
     const doConfirm = () => {
         form.doAction(async () => {
             await client.mutateProfileUpdate({
                 input: {
                     firstName: firstNameField.value,
-                    lastName: secondNameField.value,
+                    lastName: lastNameField.value,
                     alphaPrimaryOrganizationId: primaryOrganizationField.value,
                     about: aboutField.value,
                     photoRef: sanitizeImageRef(avatarField.value),
@@ -125,8 +125,8 @@ export const SettingsProfileFragment = React.memo(() => {
                             </XView>
                             <XView marginBottom={16}>
                                 <InputField
-                                    title={'Second name'}
-                                    field={secondNameField}
+                                    title={'Last name'}
+                                    field={lastNameField}
                                     size="large"
                                 />
                             </XView>
