@@ -5,10 +5,6 @@ import { AuthRouter } from '../pages/root/AuthRouter';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import { ClientCacheProvider } from 'openland-graphql/ClientCache';
-import {
-    PerfCollectorContext,
-    defaultPerfCollectorContextValue,
-} from 'openland-web/perf/PerfCollectorContext';
 
 export function withApp(
     name: string,
@@ -18,22 +14,20 @@ export function withApp(
 ) {
     return withAppBase(name, () => {
         return (
-            <PerfCollectorContext.Provider value={defaultPerfCollectorContextValue}>
-                <ClientCacheProvider>
-                    <AuthRouter>
-                        {(canUseDOM || forceSSR) && (
-                            <XWithRole role={role}>
-                                {canUseDOM && (
-                                    <React.Suspense fallback={<XLoader loading={true} />}>
-                                        <WrappedComponent />
-                                    </React.Suspense>
-                                )}
-                                {!canUseDOM && <WrappedComponent />}
-                            </XWithRole>
-                        )}
-                    </AuthRouter>
-                </ClientCacheProvider>
-            </PerfCollectorContext.Provider>
+            <ClientCacheProvider>
+                <AuthRouter>
+                    {(canUseDOM || forceSSR) && (
+                        <XWithRole role={role}>
+                            {canUseDOM && (
+                                <React.Suspense fallback={<XLoader loading={true} />}>
+                                    <WrappedComponent />
+                                </React.Suspense>
+                            )}
+                            {!canUseDOM && <WrappedComponent />}
+                        </XWithRole>
+                    )}
+                </AuthRouter>
+            </ClientCacheProvider>
         );
     });
 }
