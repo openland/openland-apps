@@ -131,6 +131,7 @@ const UserPopperContent = XMemo(
                             e.stopPropagation();
                             if (router) {
                                 router.navigate('/' + user.id);
+                                hidePopper();
                             }
                         }}
                     >
@@ -149,6 +150,7 @@ const UserPopperContent = XMemo(
                                         e.stopPropagation();
                                         if (router) {
                                             router.navigate('/mail/' + user.id);
+                                            hidePopper();
                                         }
                                     }}
                                 />
