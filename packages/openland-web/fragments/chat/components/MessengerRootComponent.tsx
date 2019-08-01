@@ -445,15 +445,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             <div className={messengerContainer}>
                 {pin && !this.state.loading && (
                     <PinMessageComponent message={pin}/>
-                    // <XView backgroundColor="white">
-                    //     <MessageContent
-                    //         id={pin.id}
-                    //         text={pin.message}
-                    //         textSpans={processSpans(pin.message || '', pin.spans)}
-                    //         attachments={pin.attachments}
-                    //         fallback={pin.fallback}
-                    //     />
-                    // </XView>
                 )}
                 <div className={messagesListContainer}>
                     <MessageListComponent
