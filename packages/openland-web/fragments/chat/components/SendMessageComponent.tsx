@@ -101,6 +101,7 @@ interface AutoCompleteComponentRef {
     onPressUp(): boolean;
     onPressDown(): boolean;
     onPressEnter(): boolean;
+    isActive(): boolean;
 }
 
 const AutoCompleteComponent = React.memo(
@@ -165,6 +166,9 @@ const AutoCompleteComponent = React.memo(
                     }
                     return false;
                 },
+                isActive: () => {
+                    return !!word && word.startsWith(':');
+                }
             }));
 
             const itemRender = React.useCallback(
@@ -259,6 +263,7 @@ interface SendMessageComponentProps {
     placeholder?: string;
     initialText?: URickInputValue;
     rickRef?: React.RefObject<URickInputInstance>;
+    onPressUp?: () => void;
 }
 
 const sendMessageContainer = css`
@@ -316,8 +321,10 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
 
     const onPressUp = React.useCallback(() => {
         let s = suggestRef.current;
-        if (s) {
+        if (s && s.isActive()) {
             s.onPressUp();
+        } else if (props.onPressUp) {
+            props.onPressUp();
         }
         return true;
     }, []);

@@ -9,7 +9,7 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import EditIcon from 'openland-icons/s/ic-edit-24.svg';
 import { emoji } from 'openland-y-utils/emoji';
 import { css } from 'linaria';
-// import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const messageActonContainerClass = css`
     display: flex;
@@ -61,7 +61,16 @@ const messageActionCloseWrap = css`
 `;
 
 export const InputMessageActionComponent = (props: { engine: MessagesActionsStateEngine }) => {
-    // useShortcuts()
+    useShortcuts({
+        keys: ['Escape'], callback: () => {
+            if (props.engine.getState().action) {
+                props.engine.clear();
+                return true;
+            } else {
+                return false;
+            }
+        }
+    });
     let state = props.engine.useState();
     let names = '';
 
