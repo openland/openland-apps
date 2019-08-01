@@ -69,7 +69,7 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
     }, [message.id]);
 
     return (
-        <div className={cx(menuContainerClass, message.attachTop && attachTop, 'hover-menu-button', visible && forceVisible, message.isSending && forceInvisible)}>
+        <div className={cx(menuContainerClass, message.attachTop && attachTop, 'hover-menu-container', visible && forceVisible, message.isSending && forceInvisible)}>
             <UIcon className={cx(menuButton, visible && forceVisible)} icon={<LikeIcon onClick={handleLikeClick} />} />
             <UIcon className={cx(menuButton)} icon={<CommentIcon onClick={handleCommentClick} />} />
             <UIcon className={cx(menuButton)} icon={<MoreIcon onClick={showWrapped} />} />
