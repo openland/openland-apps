@@ -60,8 +60,12 @@ function listStateReducer(state: ListState, action: ListStateAction): ListState 
 const itemStyle = css`
     display: flex;
     background-color: #fff;
+    cursor: pointer;
     &:hover {
         background-color: #F0F2F5;
+    }
+    &:active {
+        background-color: #EBEDF0;
     }
 `;
 
