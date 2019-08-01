@@ -3,7 +3,7 @@ import { css, cx } from 'linaria';
 import { XViewRouterContext } from 'react-mental';
 import { TextBody } from 'openland-web/utils/TextStyles';
 import PinIcon from 'openland-icons/s/ic-pin-24.svg';
-import GoIcon from 'openland-icons/s/ic-ahead-24.svg';
+import { TextLabel1 } from 'openland-web/utils/TextStyles';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import {
@@ -18,14 +18,14 @@ interface PinMessageProps {
 }
 
 const pinMessageContainer = css`
-    height: 56px;
+    height: 40px;
     display: flex;
     flex-shrink: 0;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    border-top: 1px solid #f2f3f5;
-    border-bottom: 1px solid #f2f3f5;
+    background-color: #F2F3F5;
+    cursor: pointer;
 `;
 
 const piMessageContent = css`
@@ -58,14 +58,9 @@ const iconContainer = css`
     margin-right: 16px;
 `;
 
-const aheadIcon = css`
-    margin-right: 0;
-    margin-left: 16px;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #f2f3f5;
-    }
+const senderName = css`
+    color: #171B1F;
+    margin-right: 10px;
 `;
 
 const pinMessageFallback = css`
@@ -74,6 +69,7 @@ const pinMessageFallback = css`
     text-overflow: ellipsis;
     overflow: hidden;
     height: 24px;
+    pointer-events: none;
 `;
 
 export const PinMessageComponent = React.memo((props: PinMessageProps) => {
@@ -100,16 +96,14 @@ export const PinMessageComponent = React.memo((props: PinMessageProps) => {
         );
 
     return (
-        <div className={pinMessageContainer}>
+        <div className={pinMessageContainer} onClick={handlePinClick}>
             <div className={piMessageContent}>
                 <div className={pinMessageMainContent}>
                     <div className={iconContainer}>
                         <PinIcon />
                     </div>
+                    <div className={cx(TextLabel1, senderName)}>{message.sender.name}</div>
                     <div className={cx(pinMessageFallback, TextBody)}>{content}</div>
-                </div>
-                <div className={cx(iconContainer, aheadIcon)} onClick={handlePinClick}>
-                    <GoIcon />
                 </div>
             </div>
         </div>
