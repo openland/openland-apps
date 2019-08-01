@@ -6,18 +6,23 @@ import { css } from 'linaria';
 
 const counterStyle = css`
     background-color: #E62E3D;
+    border: 2px solid #fff;
     position: absolute;
-    top: 5px;
-    right: 15px;
-    height: 16px;
-    min-width: 16px;
+    top: 8px;
+    left: 50%;
+    height: 20px;
+    min-width: 20px;
     align-items: center;
     justify-content: center;
     display: flex;
     color: white;
-    font-size: 13px;
+    font-size: 10px;
     line-height: 16px;
-    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 20px;
+    padding-left: 2px;
+    padding-right: 2px;
 `;
 
 export const TabBarMobile = React.memo((props: {

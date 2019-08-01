@@ -22,17 +22,22 @@ const selectorStyle = css`
 const counterStyle = css`
     background-color: #E62E3D;
     position: absolute;
-    top: 5px;
+    top: 8px;
+    border: 2px solid #F2F3F5;
     right: 15px;
-    height: 16px;
-    min-width: 16px;
+    height: 20px;
+    min-width: 20px;
     align-items: center;
     justify-content: center;
     display: flex;
     color: white;
-    font-size: 13px;
+    font-size: 10px;
     line-height: 16px;
-    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 20px;
+    padding-left: 2px;
+    padding-right: 2px;
 `;
 
 export const TabBarDesktop = React.memo((props: {
