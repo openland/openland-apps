@@ -173,6 +173,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
             let ed = editor.current;
             if (ed) {
                 ed.focus();
+                ed.setSelection(ed.getLength(), ed.getLength());
             }
         },
         getText: () => {

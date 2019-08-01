@@ -5,6 +5,7 @@ import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEng
 import {
     ConversationEngine,
     ConversationStateHandler,
+    DataSourceMessageItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import { UploadCareUploading } from '../../../utils/UploadCareUploading';
@@ -255,6 +256,9 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 value.push(textStringTail);
 
                 this.rickRef.current.setContent(value);
+                this.rickRef.current.focus();
+            } else if (state.action === 'forward' || state.action === 'reply') {
+                this.rickRef.current.focus();
             } else if (!state.action) {
                 this.rickRef.current.setContent('');
             }
@@ -366,6 +370,14 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         });
     }
 
+    onInputPressUp = () => {
+        let myMessages = this.conversation!.dataSource.getItems().filter(m => m.type === 'message' && m.isOut);
+        let myMessage = myMessages[0] as DataSourceMessageItem | undefined;
+        if (myMessage) {
+            this.conversation!.messagesActionsStateEngine.edit(myMessage);
+        }
+    }
+
     //
     // Rendering
     //
@@ -407,6 +419,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                         <div className={composeContent}>
                             <InputMessageActionComponent engine={this.conversation.messagesActionsStateEngine} />
                             <SendMessageComponent
+                                onPressUp={this.onInputPressUp}
                                 rickRef={this.rickRef}
                                 groupId={
                                     this.props.conversationType !== 'PRIVATE'
