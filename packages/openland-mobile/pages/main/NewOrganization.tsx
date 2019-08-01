@@ -11,7 +11,7 @@ import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { SScrollView } from 'react-native-s/SScrollView';
+import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 
 const NewOrganizationComponent = (props: PageProps) => {
     const isCommunity = props.router.params.isCommunity;
@@ -55,7 +55,7 @@ const NewOrganizationComponent = (props: PageProps) => {
         <ZTrack event="new_org_view">
             <SHeader title={isCommunity ? 'New community' : 'New organization'} />
             <SHeaderButton title={isCommunity ? 'Create' : 'Next'} onPress={handleSave} />
-            <SScrollView>
+            <KeyboardAvoidingScrollView>
                 <ZListItemGroup header={null} alignItems="center">
                     <ZAvatarPicker field={photoField} size="xx-large" />
                 </ZListItemGroup>
@@ -77,7 +77,7 @@ const NewOrganizationComponent = (props: PageProps) => {
                         </>
                     )}
                 </ZListItemGroup>
-            </SScrollView>
+            </KeyboardAvoidingScrollView>
         </ZTrack>
     );
 };

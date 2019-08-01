@@ -16,7 +16,7 @@ import { TrackAuthError } from './TrackAuthError';
 import { TypeStyles } from 'openland-mobile/styles/AppStyles';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { SScrollView } from 'react-native-s/SScrollView';
+import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 
 export const ACTIVATION_CODE_LENGTH = 6;
 
@@ -103,7 +103,7 @@ const EmailStartComponent = (props: PageProps) => {
             <SHeader title="Email" />
             <SHeaderButton title="Next" onPress={submitForm} />
 
-            <SScrollView>
+            <KeyboardAvoidingScrollView>
                 <Text style={styles.hint}>
                     Enter your email address to sign in or create a{'\u00A0'}new{'\u00A0'}account
                 </Text>
@@ -116,7 +116,7 @@ const EmailStartComponent = (props: PageProps) => {
                     returnKeyType="next"
                     onSubmitEditing={submitForm}
                 />
-            </SScrollView>
+            </KeyboardAvoidingScrollView>
         </ZTrack>
     );
 };
@@ -203,7 +203,7 @@ const EmailCodeComponent = (props: PageProps) => {
             <SHeader title="Confirm email" />
             <SHeaderButton title="Next" onPress={submitForm} />
 
-            <SScrollView>
+            <KeyboardAvoidingScrollView>
                 <Text style={styles.hint}>
                     Enter activation code that was just sent to {email}
                 </Text>
@@ -217,7 +217,7 @@ const EmailCodeComponent = (props: PageProps) => {
                     onSubmitEditing={submitForm}
                     maxLength={ACTIVATION_CODE_LENGTH}
                 />
-            </SScrollView>
+            </KeyboardAvoidingScrollView>
         </ZTrack>
     );
 };

@@ -3,7 +3,7 @@ import { PageProps } from 'openland-mobile/components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { TextInput, StyleSheet, View, Text } from 'react-native';
+import { TextInput, StyleSheet, View } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { STrackedValue } from 'react-native-s/STrackedValue';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';

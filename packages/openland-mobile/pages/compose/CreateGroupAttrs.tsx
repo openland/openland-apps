@@ -16,8 +16,8 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ZSelect } from 'openland-mobile/components/ZSelect';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { SScrollView } from 'react-native-s/SScrollView';
 import { SRouter } from 'react-native-s/SRouter';
+import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 
 const showMembersModal = (router: SRouter, res: RoomCreate) => {
     Modals.showUserMuptiplePicker(router,
@@ -110,7 +110,7 @@ const CreateGroupComponent = (props: PageProps) => {
         <>
             <SHeader title={`Create ${chatTypeString.toLowerCase()}`} />
             <SHeaderButton title="Next" onPress={handleSave} />
-            <SScrollView>
+            <KeyboardAvoidingScrollView>
                 <ZListItemGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field={photoField} />
                 </ZListItemGroup>
@@ -151,7 +151,7 @@ const CreateGroupComponent = (props: PageProps) => {
                         ))}
                     </ZListItemGroup>
                 )}
-            </SScrollView>
+            </KeyboardAvoidingScrollView>
         </>
     );
 };

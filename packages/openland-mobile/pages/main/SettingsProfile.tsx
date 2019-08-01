@@ -12,7 +12,7 @@ import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { SScrollView } from 'react-native-s/SScrollView';
+import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 
 const SettingsProfileContent = XMemo<PageProps>((props) => {
     const { user, profile } = getClient().useProfile({ fetchPolicy: 'network-only' });
@@ -55,7 +55,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
     return (
         <>
             <SHeaderButton title="Save" onPress={handleSave} />
-            <SScrollView>
+            <KeyboardAvoidingScrollView>
                 <ZListItemGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field={photoField} />
                 </ZListItemGroup>
@@ -111,7 +111,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                         field={linkedinField}
                     />
                 </ZListItemGroup>
-            </SScrollView>
+            </KeyboardAvoidingScrollView>
         </>
     );
 });

@@ -13,8 +13,8 @@ import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { ZSelect } from 'openland-mobile/components/ZSelect';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { SScrollView } from 'react-native-s/SScrollView';
 import Toast from 'openland-mobile/components/Toast';
+import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 
 const Loader = Toast.loader();
 
@@ -67,7 +67,7 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
         <>
             <SHeader title="Edit community" />
             <SHeaderButton title="Save" onPress={handleSave} />
-            <SScrollView>
+            <KeyboardAvoidingScrollView>
                 <ZListItemGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field={photoField} />
                 </ZListItemGroup>
@@ -107,7 +107,7 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                         description="People will be able to find your community by this shortname"
                     />
                 </ZListItemGroup>
-            </SScrollView>
+            </KeyboardAvoidingScrollView>
         </>
     );
 });

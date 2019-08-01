@@ -10,7 +10,7 @@ import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
-import { SScrollView } from 'react-native-s/SScrollView';
+import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 
 const EditGroupComponent = XMemo<PageProps>((props) => {
     const client = getClient();
@@ -59,7 +59,7 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
         <>
             <SHeader title="Edit group info" />
             <SHeaderButton title="Save" onPress={handleSave} />
-            <SScrollView>
+            <KeyboardAvoidingScrollView>
                 <ZListItemGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field={photoField} />
                 </ZListItemGroup>
@@ -74,7 +74,7 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
                         multiline={true}
                     />
                 </ZListItemGroup>
-            </SScrollView>
+            </KeyboardAvoidingScrollView>
         </>
     );
 });

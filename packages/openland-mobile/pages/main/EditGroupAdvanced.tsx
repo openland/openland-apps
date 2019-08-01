@@ -18,7 +18,7 @@ import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { SScrollView } from 'react-native-s/SScrollView';
+import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 
 const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
     const width = 190;
@@ -105,7 +105,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
         <>
             <SHeader title="Advanced settings" />
             <SHeaderButton title="Save" onPress={handleSave} />
-            <SScrollView>
+            <KeyboardAvoidingScrollView>
                 <ZListItemGroup header={null} footer="Send an automatic message in 1:1 chat to every new member who joins this group">
                     <ZListItem text="Welcome message" toggle={welcomeMessageEnabled} onToggle={(value) => setWelcomeMessageEnabled(value)} />
                 </ZListItemGroup>
@@ -144,7 +144,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                         <ZAvatarPicker field={socialImageField} render={SocialPicker} pickSize={{ width: 1200, height: 630 }} />
                     </View>
                 </ZListItemGroup>
-            </SScrollView>
+            </KeyboardAvoidingScrollView>
         </>
     );
 });

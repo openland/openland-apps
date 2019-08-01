@@ -14,7 +14,7 @@ import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
-import { SScrollView } from 'react-native-s/SScrollView';
+import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 
 export const signupStyles = StyleSheet.create({
     input: {
@@ -61,7 +61,7 @@ const SignupUserContent = XMemo<PageProps>((props) => {
     return (
         <>
             <SHeaderButton title="Next" onPress={handleSave} />
-            <SScrollView>
+            <KeyboardAvoidingScrollView>
                 <ZListItemGroup header={null} alignItems="center">
                     <ZAvatarPicker field={photoField} initialUrl={prefill && prefill.picture || undefined} size="xx-large" />
                 </ZListItemGroup>
@@ -76,7 +76,7 @@ const SignupUserContent = XMemo<PageProps>((props) => {
                         description="Please, provide your name. This information is part of your public profile."
                     />
                 </ZListItemGroup>
-            </SScrollView>
+            </KeyboardAvoidingScrollView>
         </>
     );
 });

@@ -13,7 +13,7 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { SUPER_ADMIN } from '../Init';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { SScrollView } from 'react-native-s/SScrollView';
+import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 
 export const ErrorText = (props: { color: string; text: string }) => (
     <Text
@@ -109,7 +109,7 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
     return (
         <>
             <SHeaderButton title="Save" onPress={handleSave} />
-            <SScrollView>
+            <KeyboardAvoidingScrollView>
                 <ZListItemGroup
                     header={null}
                     footer={{
@@ -142,7 +142,7 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                     {error && <ErrorText color="red" text={error} />}
                     {!error && greenErrorLabel && <ErrorText color="green" text={greenErrorLabel} />}
                 </ZListItemGroup>
-            </SScrollView>
+            </KeyboardAvoidingScrollView>
         </>
     );
 });
