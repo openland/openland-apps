@@ -230,7 +230,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                                     className={InputClassName}
                                 />
                                 <XPolitePopper
-                                    content="Revoke link"
+                                    content={<div style={{ textAlign: 'center' }}>Revoke link</div>}
                                     style="dark"
                                     showOnHover={true}
                                     placement="bottom"

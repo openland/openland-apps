@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import * as classnames from 'classnames';
 import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XPopperStyleType } from '../XPopper';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 
 interface ContentDivProps {
     width?: number | string;
@@ -97,8 +97,19 @@ const wrapper = css`
     padding: 8px 0;
 `;
 
-export const XPopperContent = React.memo<{ captureContent?: (arrow: any) => void }>(props => (
-    <div ref={props.captureContent} className={wrapper}>
+const darkWrapper = css`
+    background: #6e7588;
+    color: #fff;
+`;
+
+export const XPopperContent = React.memo<{
+    captureContent?: (arrow: any) => void;
+    colorStyle?: XPopperStyleType;
+}>(props => (
+    <div
+        ref={props.captureContent}
+        className={cx(wrapper, props.colorStyle === 'dark' && darkWrapper)}
+    >
         {props.children}
     </div>
 ));
