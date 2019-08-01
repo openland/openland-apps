@@ -263,6 +263,7 @@ const messengerContainer = css`
 const messagesListContainer = css`
     display: flex;
     flex-direction: column;
+    position: relative;
     flex-grow: 1;
     flex-shrink: 1;
     overflow: hidden;
