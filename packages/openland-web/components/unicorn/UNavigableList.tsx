@@ -60,21 +60,27 @@ function listStateReducer(state: ListState, action: ListStateAction): ListState 
 const itemStyle = css`
     display: flex;
     background-color: #fff;
+    &:hover {
+        background-color: #F0F2F5;
+    }
 `;
 
 const focusedStyle = css`
     background-color: #F0F2F5;
 `;
 
-const Item = React.memo((props: { focused: boolean, children?: any }) => {
+const Item = React.memo((props: { focused: boolean, children?: any, item: any, onSelected: (item: any) => void }) => {
     let ref = React.useRef<HTMLDivElement>(null);
     React.useLayoutEffect(() => {
         if (props.focused) {
             ref.current!.scrollIntoView({ behavior: 'auto', block: 'nearest' });
         }
     }, [props.focused]);
+    const callback = React.useCallback((e: React.MouseEvent) => {
+        props.onSelected(props.item);
+    }, []);
     return (
-        <div className={cx(itemStyle, props.focused && focusedStyle)} ref={ref}>
+        <div className={cx(itemStyle, props.focused && focusedStyle)} ref={ref} onClick={callback}>
             {props.children}
         </div>
     );
@@ -110,7 +116,7 @@ export const UNavigableList = React.memo(React.forwardRef((props: UNavigableList
             alignItems="stretch"
         >
             {state.items.map((v, i) => (
-                <Item key={'item-' + v.key} focused={state.focus === i}>
+                <Item key={'item-' + v.key} focused={state.focus === i} item={v.data} onSelected={props.onSelected}>
                     {props.render(v.data)}
                 </Item>
             ))}

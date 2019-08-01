@@ -81,7 +81,7 @@ const EmojiSuggestionComponent = (props: { name: string; value: string; display:
 
 const mentionsContainer = css`
     position: absolute;
-    bottom: 100%;
+    bottom: calc(100% + 16px);
     left: 0px;
     right: 0px;
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
@@ -94,6 +94,7 @@ const mentionsContainer = css`
     overflow-y: scroll;
     overflow-x: none;
     max-height: 250px;
+    z-index: 2;
 `;
 
 interface AutoCompleteComponentRef {
@@ -212,6 +213,7 @@ const AutoCompleteComponent = React.memo(
                                 transform: `translateY(${props.activeWord ? 0 : 10}px)`,
                                 pointerEvents: props.activeWord ? 'auto' : 'none',
                             }}
+                            onMouseDown={(e) => e.preventDefault()}
                         >
                             <UNavigableList
                                 data={matched}
@@ -233,6 +235,7 @@ const AutoCompleteComponent = React.memo(
                             transform: `translateY(${props.activeWord ? 0 : 10}px)`,
                             pointerEvents: props.activeWord ? 'auto' : 'none',
                         }}
+                        onMouseDown={(e) => e.preventDefault()}
                     >
                         {/* <UButton text={'filtered-' + filtered.length} onClick={() => props.onEmojiSelected({ name: '1f923', value: '🤣' })} /> */}
                         <UNavigableList
