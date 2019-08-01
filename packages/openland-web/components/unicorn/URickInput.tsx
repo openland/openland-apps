@@ -57,14 +57,14 @@ export interface URickInputInstance {
     focus: () => void;
     getText: () => URickTextValue;
     commitSuggestion(type: 'mention' | 'emoji', src: UserForMention | { name: string, value: string }): void;
-    setInputValue: (inputValue: URickInputValue) => void;
+    setContent: (inputValue: URickInputValue) => void;
 }
 
 type URickInputContent = string | UserForMention;
 export type URickInputValue = string | URickInputContent[];
 
 export interface URickInputProps {
-    initialInputValue?: URickInputValue;
+    initialContent?: URickInputValue;
     placeholder?: string;
     autofocus?: boolean;
     autocompletePrefixes?: string[];
@@ -79,10 +79,13 @@ export interface URickInputProps {
 }
 
 let Quill: typeof QuillType.Quill;
+let QuillDelta: typeof QuillType.Delta;
 
 function loadQuill() {
     if (!Quill) {
+        // doing this shit because of SSR
         Quill = require('quill') as typeof QuillType.Quill;
+        QuillDelta = require('quill-delta') as typeof QuillType.Delta;
         const Embed = Quill.import('blots/embed');
 
         // Mentions Blot
@@ -137,22 +140,19 @@ function extractActiveWord(quill: QuillType.Quill) {
 }
 
 function setURickInputValue(q: QuillType.Quill, contnent: URickInputValue) {
-    if (contnent) {
-        if (Array.isArray(contnent)) {
-            let index = 0;
-            for (let c of contnent) {
-                if (typeof c === 'string') {
-                    // TODO: extract emoji
-                    q.insertText(index, c, 'user');
-                    index += c.length;
-                } else if (c.__typename === 'User') {
-                    q.insertEmbed(index, 'mention', c, 'user');
-                    index += c.name.length;
-                }
+    if (Array.isArray(contnent)) {
+        q.setContents(new QuillDelta(contnent.map(c => {
+            if (typeof c === 'string') {
+                // TODO: extract emoji
+                return { insert: c };
+            } else if (c.__typename === 'User') {
+                return { insert: { mention: c } };
+            } else {
+                return { insert: '' };
             }
-        } else if (typeof contnent === 'string') {
-            q.setText(contnent);
-        }
+        })));
+    } else if (typeof contnent === 'string') {
+        q.setText(contnent);
     }
 }
 
@@ -234,7 +234,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                 }
             }, 10);
         },
-        setInputValue: (inputValue: URickInputValue) => {
+        setContent: (inputValue: URickInputValue) => {
             let ed = editor.current;
             if (ed) {
                 setURickInputValue(ed, inputValue);
@@ -244,8 +244,8 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
 
     React.useLayoutEffect(() => {
         let q = new Quill(containerRef.current!, { formats: ['mention', 'emoji'], placeholder: props.placeholder });
-        if (props.initialInputValue) {
-            setURickInputValue(q, props.initialInputValue);
+        if (props.initialContent) {
+            setURickInputValue(q, props.initialContent);
         }
         if (props.autofocus) {
             q.focus();
@@ -275,7 +275,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
         addBinding(27, props.onPressEsc);
 
         // Handle text change
-        let lastKnownText: URickInputValue = props.initialInputValue || '';
+        let lastKnownText: URickInputValue = props.initialContent || '';
         let lastAutocompleteText: string | null = null;
         q.on('editor-change', () => {
             let tx = q.getText();

@@ -370,7 +370,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             >
                 <URickInput
                     ref={ref}
-                    initialInputValue={props.initialText}
+                    initialContent={props.initialText}
                     autocompletePrefixes={['@', ':']}
                     onAutocompleteWordChange={onAutocompleteWordChange}
                     onPressEnter={onPressEnter}

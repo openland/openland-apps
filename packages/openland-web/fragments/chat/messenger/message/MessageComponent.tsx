@@ -35,13 +35,13 @@ const MessageSenderName = (props: {
     sender: UserShort;
     senderNameEmojify?: string | JSX.Element;
 }) => (
-    <ULink
-        path={`/${props.sender.shortname || props.sender.id}`}
-        className={cx(TextLabel1, senderNameStyle)}
-    >
-        {props.senderNameEmojify || props.sender.name}
-    </ULink>
-);
+        <ULink
+            path={`/${props.sender.shortname || props.sender.id}`}
+            className={cx(TextLabel1, senderNameStyle)}
+        >
+            {props.senderNameEmojify || props.sender.name}
+        </ULink>
+    );
 
 const MessageSenderOrg = (props: { organization: UserShort_primaryOrganization }) => (
     <ULink
@@ -76,7 +76,6 @@ export const MessageSenderContent = (props: MessageSenderContentProps) => (
 // Message container
 ////
 const messageContainerClass = css`
-    position: relative;
     display: flex;
     flex-direction: row;
     flex-grow: 1;
@@ -88,7 +87,7 @@ const messageContainerClass = css`
     align-self: center;
     width: 100%;
 
-    &:hover .hover-menu-button {
+    &:hover .hover-menu-container {
         opacity: 1;
     }
 `;
@@ -105,6 +104,7 @@ const messageContentClass = css`
 `;
 
 const messageInnerContainerClass = css`
+    position: relative;
     display: flex;
     flex-direction: row;
     max-width: 950px;
@@ -121,6 +121,10 @@ const messageContainerSelectedClass = css`
     .message-rich-wrapper,
     .message-document-wrapper {
         background-color: #fff; // ThemeDefault.backgroundPrimary
+    }
+
+    .hover-menu-container{
+        background-color:  #f0f2f5; // ThemeDefault.backgroundTertiary
     }
 `;
 
@@ -272,10 +276,10 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                             message.reactions.length > 0) &&
                             buttons}
                     </div>
+                    {layout !== 'mobile' && <HoverMenu message={message} engine={engine} />}
                 </div>
             </div>
 
-            {layout !== 'mobile' && <HoverMenu message={message} engine={engine} />}
         </div>
     );
 });
