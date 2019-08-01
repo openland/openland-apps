@@ -5,6 +5,7 @@ import {
     URickInput,
     URickInputInstance,
     URickTextValue,
+    URickInputValue,
 } from 'openland-web/components/unicorn/URickInput';
 import AttachIcon from 'openland-icons/s/ic-attach-24.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
@@ -253,6 +254,8 @@ interface SendMessageComponentProps {
     onTextSent?: (text: URickTextValue) => void;
     onTextChange?: (text: string) => void;
     placeholder?: string;
+    initialText?: URickInputValue;
+    rickRef?: React.RefObject<URickInputInstance>;
 }
 
 const sendMessageContainer = css`
@@ -282,7 +285,7 @@ const actionButtonContainer = css`
 `;
 
 export const SendMessageComponent = React.memo((props: SendMessageComponentProps) => {
-    const ref = React.useRef<URickInputInstance>(null);
+    const ref = props.rickRef || React.useRef<URickInputInstance>(null);
     const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
     const onPressEnter = React.useCallback(
         () => {
@@ -364,6 +367,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             >
                 <URickInput
                     ref={ref}
+                    initialInputValue={props.initialText}
                     autocompletePrefixes={['@', ':']}
                     onAutocompleteWordChange={onAutocompleteWordChange}
                     onPressEnter={onPressEnter}

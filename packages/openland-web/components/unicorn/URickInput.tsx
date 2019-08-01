@@ -57,10 +57,14 @@ export interface URickInputInstance {
     focus: () => void;
     getText: () => URickTextValue;
     commitSuggestion(type: 'mention' | 'emoji', src: UserForMention | { name: string, value: string }): void;
+    setInputValue: (inputValue: URickInputValue) => void;
 }
 
+type URickInputContent = string | UserForMention;
+export type URickInputValue = string | URickInputContent[];
+
 export interface URickInputProps {
-    initialText?: string;
+    initialInputValue?: URickInputValue;
     placeholder?: string;
     autofocus?: boolean;
     autocompletePrefixes?: string[];
@@ -130,6 +134,26 @@ function extractActiveWord(quill: QuillType.Quill) {
     let start = Math.max(0, selection.index - 64 /* Maximum lookback */);
 
     return findActiveWord(quill.getText(start, selection.index + selection.length - start), { start: selection.index, end: selection.index + selection.length });
+}
+
+function setURickInputValue(q: QuillType.Quill, contnent: URickInputValue) {
+    if (contnent) {
+        if (Array.isArray(contnent)) {
+            let index = 0;
+            for (let c of contnent) {
+                if (typeof c === 'string') {
+                    // TODO: extract emoji
+                    q.insertText(index, c, 'user');
+                    index += c.length;
+                } else if (c.__typename === 'User') {
+                    q.insertEmbed(index, 'mention', c, 'user');
+                    index += c.name.length;
+                }
+            }
+        } else if (typeof contnent === 'string') {
+            q.setText(contnent);
+        }
+    }
 }
 
 export const URickInput = React.memo(React.forwardRef((props: URickInputProps, ref: React.Ref<URickInputInstance>) => {
@@ -209,13 +233,19 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                     }
                 }
             }, 10);
+        },
+        setInputValue: (inputValue: URickInputValue) => {
+            let ed = editor.current;
+            if (ed) {
+                setURickInputValue(ed, inputValue);
+            }
         }
     }));
 
     React.useLayoutEffect(() => {
         let q = new Quill(containerRef.current!, { formats: ['mention', 'emoji'], placeholder: props.placeholder });
-        if (props.initialText) {
-            q.setText(props.initialText);
+        if (props.initialInputValue) {
+            setURickInputValue(q, props.initialInputValue);
         }
         if (props.autofocus) {
             q.focus();
@@ -245,7 +275,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
         addBinding(27, props.onPressEsc);
 
         // Handle text change
-        let lastKnownText: string = props.initialText || '';
+        let lastKnownText: URickInputValue = props.initialInputValue || '';
         let lastAutocompleteText: string | null = null;
         q.on('editor-change', () => {
             let tx = q.getText();

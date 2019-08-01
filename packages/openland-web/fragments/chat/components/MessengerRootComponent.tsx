@@ -39,6 +39,9 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { MessageListComponent } from '../messenger/view/MessageListComponent';
 import { TypingsView } from '../messenger/typings/TypingsView';
 import { XLoader } from 'openland-x/XLoader';
+import EditIcon from 'openland-icons/s/ic-edit-24.svg';
+import { emoji } from 'openland-y-utils/emoji';
+import { URickInputInstance } from 'openland-web/components/unicorn/URickInput';
 
 export interface File {
     uuid: string;
@@ -200,34 +203,53 @@ const MessageAction = (props: { engine: MessagesActionsStateEngine }) => {
             .map(s => s.name)
             .join(', ');
     }
+
+    let icon = <UIcon icon={<ReplyIcon />} color={'#676d7a'} />;
+    if (state.action === 'edit') {
+        icon = <UIcon icon={<EditIcon />} color={'#676d7a'} />;
+    }
+
+    let content;
     if (state.action === 'forward' || state.action === 'reply') {
-        return (
-            <div className={messageActonContainerClass}>
-                <div className={messageActionIconWrap}>
-                    <UIcon icon={<ReplyIcon />} color={'#676d7a'} />
-                </div>
-                <div className={messageActonInnerContainerClass}>
-                    {state.messages.length === 1 && (
-                        <MessageCompactComponent message={state.messages[0]} />
-                    )}
-                    {state.messages.length !== 1 && (
-                        <>
-                            <span className={TextLabel1}> {names} </span>
-                            <span className={TextBody}>
-                                {' '}
-                                {plural(state.messages.length, ['message', 'messages'])}{' '}
-                            </span>
-                        </>
-                    )}
-                </div>
-                <div className={messageActionCloseWrap} onClick={props.engine.clear}>
-                    <CloseIcon />
-                </div>
-            </div>
+        if (state.messages.length === 1) {
+            content = <MessageCompactComponent message={state.messages[0]} />;
+        } else {
+            content = (
+                <>
+                    <span className={TextLabel1}> {names} </span>
+                    <span className={TextBody}>
+                        {' '}
+                        {plural(state.messages.length, ['message', 'messages'])}{' '}
+                    </span>
+                </>
+            );
+        }
+    } else if (state.action === 'edit' && state.messages.length === 1) {
+        content = (
+            <>
+                <span className={TextLabel1}>Edit message</span>
+                <span className={TextBody}>
+                    {emoji(state.messages[0].fallback)}
+                </span>
+            </>
         );
     } else {
         return null;
     }
+
+    return (
+        <div className={messageActonContainerClass}>
+            <div className={messageActionIconWrap}>
+                {icon}
+            </div>
+            <div className={messageActonInnerContainerClass}>
+                {content}
+            </div>
+            <div className={messageActionCloseWrap} onClick={props.engine.clear}>
+                <CloseIcon />
+            </div>
+        </div>
+    );
 };
 
 const messengerContainer = css`
@@ -273,10 +295,12 @@ const composeContent = css`
 class MessagesComponent extends React.PureComponent<MessagesComponentProps, MessagesComponentState>
     implements ConversationStateHandler {
     messagesList = React.createRef<MessageListComponent>();
+    rickRef = React.createRef<URickInputInstance>();
     private conversation: ConversationEngine | null;
     messageText: string = '';
     unmounter: (() => void) | null = null;
     unmounter2: (() => void) | null = null;
+    unmounter3: (() => void) | null = null;
     vars: {
         roomId: string;
         conversationId: string;
@@ -323,6 +347,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }
+        // this.unmounter3 = this.conversation!.messagesActionsStateEngine.sub
     }
 
     scrollToBottom = () => {
@@ -361,6 +386,10 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         if (this.unmounter2) {
             this.unmounter2();
             this.unmounter2 = null;
+        }
+        if (this.unmounter3) {
+            this.unmounter3();
+            this.unmounter3 = null;
         }
     }
 
@@ -475,6 +504,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                         <div className={composeContent}>
                             <MessageAction engine={this.conversation.messagesActionsStateEngine} />
                             <SendMessageComponent
+                                rickRef={this.rickRef}
                                 groupId={
                                     this.props.conversationType !== 'PRIVATE'
                                         ? this.props.conversationId

@@ -32,7 +32,7 @@ export const buildMessageMenu = (ctx: UPopperController, message: DataSourceWebM
         menu.item({ title: 'Pin', icon: <PinIcon />, action: () => engine.engine.client.mutatePinMessage({ messageId: message.id!, chatId: engine.conversationId }) });
     }
     if (message.senderId === engine.engine.user.id && message.text) {
-        menu.item({ title: 'Edit', icon: <EditIcon /> });
+        menu.item({ title: 'Edit', icon: <EditIcon />, onClick: () => engine.messagesActionsStateEngine.edit(message) });
     }
     if (message.senderId === engine.engine.user.id) {
         menu.item({
