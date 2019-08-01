@@ -251,6 +251,7 @@ const AutoCompleteComponent = React.memo(
 interface SendMessageComponentProps {
     groupId?: string;
     onTextSent?: (text: URickTextValue) => void;
+    onTextChange?: (text: string) => void;
     placeholder?: string;
 }
 
@@ -352,7 +353,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 ref={suggestRef}
             />
             <div className={actionButtonContainer}>
-                <UIcon icon={<AttachIcon />} color={'#676d7a'}/>
+                <UIcon icon={<AttachIcon />} color={'#676d7a'} />
             </div>
             <XView
                 flexGrow={1}
@@ -369,12 +370,13 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     onPressUp={onPressUp}
                     onPressDown={onPressDown}
                     onPressTab={onPressTab}
+                    onTextChange={props.onTextChange}
                     autofocus={true}
                     placeholder={props.placeholder || 'Write a message...'}
                 />
             </XView>
             <div className={actionButtonContainer} onClick={onPressEnter}>
-                <UIcon icon={<SendIcon />} color={'#676d7a'}/>
+                <UIcon icon={<SendIcon />} color={'#676d7a'} />
             </div>
         </div>
     );

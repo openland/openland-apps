@@ -56,9 +56,9 @@ interface MessagesComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
 }
 
@@ -390,8 +390,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         text: string,
         mentions:
             | (
-                  | FullMessage_GeneralMessage_spans_MessageSpanUserMention
-                  | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
+                | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+                | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
             | null,
     ) => {
         if (!this.conversation) {
@@ -402,11 +402,11 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             text,
             mentions
                 ? mentions.map(mention => {
-                      if (mention.__typename === 'MessageSpanUserMention') {
-                          return mention.user;
-                      }
-                      return { __typename: 'AllMention' as 'AllMention' };
-                  })
+                    if (mention.__typename === 'MessageSpanUserMention') {
+                        return mention.user;
+                    }
+                    return { __typename: 'AllMention' as 'AllMention' };
+                })
                 : null,
         );
     }
@@ -444,7 +444,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         return (
             <div className={messengerContainer}>
                 {pin && !this.state.loading && (
-                    <PinMessageComponent message={pin}/>
+                    <PinMessageComponent message={pin} />
                     // <XView backgroundColor="white">
                     //     <MessageContent
                     //         id={pin.id}
@@ -483,6 +483,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                 onTextSent={text =>
                                     this.conversation!.sendMessage(text.text, text.mentions)
                                 }
+                                onTextChange={this.handleChange}
                             />
                         </div>
                     </div>
@@ -497,9 +498,9 @@ interface MessengerRootComponentProps {
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
 }
 
