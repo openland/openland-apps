@@ -5,6 +5,7 @@ import {
     URickInput,
     URickInputInstance,
     URickTextValue,
+    URickInputValue,
 } from 'openland-web/components/unicorn/URickInput';
 import AttachIcon from 'openland-icons/s/ic-attach-24.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
@@ -252,6 +253,8 @@ interface SendMessageComponentProps {
     groupId?: string;
     onTextSent?: (text: URickTextValue) => void;
     placeholder?: string;
+    initialText?: URickInputValue;
+    rickRef?: React.RefObject<URickInputInstance>;
 }
 
 const sendMessageContainer = css`
@@ -281,7 +284,7 @@ const actionButtonContainer = css`
 `;
 
 export const SendMessageComponent = React.memo((props: SendMessageComponentProps) => {
-    const ref = React.useRef<URickInputInstance>(null);
+    const ref = props.rickRef || React.useRef<URickInputInstance>(null);
     const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
     const onPressEnter = React.useCallback(
         () => {
@@ -352,7 +355,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 ref={suggestRef}
             />
             <div className={actionButtonContainer}>
-                <UIcon icon={<AttachIcon />} color={'#676d7a'}/>
+                <UIcon icon={<AttachIcon />} color={'#676d7a'} />
             </div>
             <XView
                 flexGrow={1}
@@ -363,6 +366,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             >
                 <URickInput
                     ref={ref}
+                    initialInputValue={props.initialText}
                     autocompletePrefixes={['@', ':']}
                     onAutocompleteWordChange={onAutocompleteWordChange}
                     onPressEnter={onPressEnter}
@@ -374,7 +378,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 />
             </XView>
             <div className={actionButtonContainer} onClick={onPressEnter}>
-                <UIcon icon={<SendIcon />} color={'#676d7a'}/>
+                <UIcon icon={<SendIcon />} color={'#676d7a'} />
             </div>
         </div>
     );
