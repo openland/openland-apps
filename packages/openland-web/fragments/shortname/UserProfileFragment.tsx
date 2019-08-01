@@ -18,7 +18,8 @@ import CopyIcon from 'openland-icons/s/ic-copy-24.svg';
 export const UserProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
     const { user, conversation } = client.useUser({ userId: props.id }, { fetchPolicy: 'cache-and-network' });
-    const { id, isBot, name, photo, audienceSize, about, shortname, location, phone, email, linkedin, primaryOrganization, isYou, chatsWithBadge } = user;
+    const { id, isBot, name, photo, audienceSize, about, shortname, location, phone, email, linkedin,
+        primaryOrganization, isYou, chatsWithBadge, website } = user;
 
     return (
         <Page padded={false}>
@@ -56,10 +57,11 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
                         }
                     />
                 )}
-                {!!location && <UListField label="Location" value={location} />}
+                {!!website && <UListField label="Web" value={website} />}
                 {!!phone && <UListField label="Phone" value={phone} />}
                 {!!email && <UListField label="Email" value={email} />}
                 {!!linkedin && <UListField label="LinkedIn" value={linkedin} />}
+                {!!location && <UListField label="Location" value={location} />}
             </UListGroup>
             <UListGroup header="Organization">
                 {!!primaryOrganization && (

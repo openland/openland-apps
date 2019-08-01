@@ -5,6 +5,7 @@ import {
     URickInput,
     URickInputInstance,
     URickTextValue,
+    URickInputValue,
 } from 'openland-web/components/unicorn/URickInput';
 import AttachIcon from 'openland-icons/s/ic-attach-24.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
@@ -80,7 +81,7 @@ const EmojiSuggestionComponent = (props: { name: string; value: string; display:
 
 const mentionsContainer = css`
     position: absolute;
-    bottom: 100%;
+    bottom: calc(100% + 16px);
     left: 0px;
     right: 0px;
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
@@ -93,6 +94,7 @@ const mentionsContainer = css`
     overflow-y: scroll;
     overflow-x: none;
     max-height: 250px;
+    z-index: 2;
 `;
 
 interface AutoCompleteComponentRef {
@@ -211,6 +213,7 @@ const AutoCompleteComponent = React.memo(
                                 transform: `translateY(${props.activeWord ? 0 : 10}px)`,
                                 pointerEvents: props.activeWord ? 'auto' : 'none',
                             }}
+                            onMouseDown={(e) => e.preventDefault()}
                         >
                             <UNavigableList
                                 data={matched}
@@ -232,6 +235,7 @@ const AutoCompleteComponent = React.memo(
                             transform: `translateY(${props.activeWord ? 0 : 10}px)`,
                             pointerEvents: props.activeWord ? 'auto' : 'none',
                         }}
+                        onMouseDown={(e) => e.preventDefault()}
                     >
                         {/* <UButton text={'filtered-' + filtered.length} onClick={() => props.onEmojiSelected({ name: '1f923', value: '🤣' })} /> */}
                         <UNavigableList
@@ -251,7 +255,10 @@ const AutoCompleteComponent = React.memo(
 interface SendMessageComponentProps {
     groupId?: string;
     onTextSent?: (text: URickTextValue) => void;
+    onTextChange?: (text: string) => void;
     placeholder?: string;
+    initialText?: URickInputValue;
+    rickRef?: React.RefObject<URickInputInstance>;
 }
 
 const sendMessageContainer = css`
@@ -281,7 +288,7 @@ const actionButtonContainer = css`
 `;
 
 export const SendMessageComponent = React.memo((props: SendMessageComponentProps) => {
-    const ref = React.useRef<URickInputInstance>(null);
+    const ref = props.rickRef || React.useRef<URickInputInstance>(null);
     const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
     const onPressEnter = React.useCallback(
         () => {
@@ -352,7 +359,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 ref={suggestRef}
             />
             <div className={actionButtonContainer}>
-                <UIcon icon={<AttachIcon />} color={'#676d7a'}/>
+                <UIcon icon={<AttachIcon />} color={'#676d7a'} />
             </div>
             <XView
                 flexGrow={1}
@@ -363,18 +370,20 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             >
                 <URickInput
                     ref={ref}
+                    initialInputValue={props.initialText}
                     autocompletePrefixes={['@', ':']}
                     onAutocompleteWordChange={onAutocompleteWordChange}
                     onPressEnter={onPressEnter}
                     onPressUp={onPressUp}
                     onPressDown={onPressDown}
                     onPressTab={onPressTab}
+                    onTextChange={props.onTextChange}
                     autofocus={true}
                     placeholder={props.placeholder || 'Write a message...'}
                 />
             </XView>
             <div className={actionButtonContainer} onClick={onPressEnter}>
-                <UIcon icon={<SendIcon />} color={'#676d7a'}/>
+                <UIcon icon={<SendIcon />} color={'#676d7a'} />
             </div>
         </div>
     );
