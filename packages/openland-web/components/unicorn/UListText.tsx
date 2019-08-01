@@ -21,7 +21,7 @@ const getRows = (value: string) => {
     });
 
     return processedRows;
-}
+};
 
 interface UListTextProps extends XViewProps {
     value?: string | JSX.Element;
