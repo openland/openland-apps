@@ -57,7 +57,7 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
                         }
                     />
                 )}
-                {!!website && <UListField label="Web" value={website} />}
+                {!!website && <UListField label="Website" value={website} />}
                 {!!phone && <UListField label="Phone" value={phone} />}
                 {!!email && <UListField label="Email" value={email} />}
                 {!!linkedin && <UListField label="LinkedIn" value={linkedin} />}
