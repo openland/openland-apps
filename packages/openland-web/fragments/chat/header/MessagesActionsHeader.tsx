@@ -11,6 +11,7 @@ import { TextTitle2 } from 'openland-web/utils/TextStyles';
 import { showDeleteMessageModal as showDeleteMessagesModal } from '../components/MessengerRootComponent';
 import { showChatPicker } from '../showChatPicker';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const containerClass = css`
     position: absolute;
@@ -147,6 +148,7 @@ export const MessagesActionsHeader = (props: { chatId: string }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
     let messenger = React.useContext(MessengerContext);
     let engine = messenger.getConversation(props.chatId).messagesActionsStateEngine;
+    useShortcuts({ keys: ['Escape'], callback: () => engine.clear() });
 
     React.useEffect(() => {
         engine.listen(state => {
