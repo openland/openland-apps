@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import IconSticker from './ic_sticker.svg';
+import IconSticker from './ic_sticker2.svg';
 import { usePopper } from '../usePopper';
 import { XView } from 'react-mental';
 import { FixedSizeList } from 'react-window';
@@ -12,8 +12,7 @@ const emojiPickerIcon = css`
     position: absolute;
     right: 0px;
     top: 0px;
-    padding: 10px;
-    padding: 10px;
+    padding: 8px;
     width: 40px;
     height: 40px;
     cursor: pointer;
