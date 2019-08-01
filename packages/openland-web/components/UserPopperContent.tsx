@@ -10,6 +10,7 @@ import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useClient } from 'openland-web/utils/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { XViewRouterContext } from 'react-mental';
 
 const StatusWrapper = Glamorous.div<{ online: boolean }>(props => ({
     flex: 1,
@@ -72,7 +73,6 @@ const UserPopperContent = XMemo(
         noCardOnMe,
         isMe,
         user,
-        startSelected,
         hidePopper,
         customButton,
     }: {
@@ -83,10 +83,7 @@ const UserPopperContent = XMemo(
         hidePopper: Function;
         customButton?: (hidePopper: Function) => void;
     }) => {
-        let usrPath: string | undefined = undefined;
-        if (!startSelected) {
-            usrPath = '/mail/u/' + user.id;
-        }
+        const router = React.useContext(XViewRouterContext);
         if (noCardOnMe && isMe) {
             return (
                 <XView
@@ -110,23 +107,14 @@ const UserPopperContent = XMemo(
             return (
                 <Wrapper>
                     <XHorizontal>
-                        <XView
-                            path={usrPath}
-                            cursor={!!usrPath ? 'pointer' : undefined}
-                            onClick={!!usrPath ? (e: any) => {
-                                e.stopPropagation();
-                                hidePopper();
-                            } : undefined}
-                        >
-                            <XAvatar
-                                online={false}
-                                size="l-medium"
-                                style="user"
-                                objectName={user.name}
-                                objectId={user.id}
-                                cloudImageUuid={user.photo || undefined}
-                            />
-                        </XView>
+                        <XAvatar
+                            online={false}
+                            size="l-medium"
+                            style="user"
+                            objectName={user.name}
+                            objectId={user.id}
+                            cloudImageUuid={user.photo || undefined}
+                        />
                         <React.Suspense fallback={<div />}>
                             <Status variables={{ userId: user.id }} />
                         </React.Suspense>
@@ -137,13 +125,14 @@ const UserPopperContent = XMemo(
                         fontWeight="600"
                         flexDirection="row"
                         color="rgba(0, 0, 0, 0.9)"
-                        hoverColor={!!usrPath ? '#1790ff' : undefined}
-                        path={usrPath}
-                        cursor={!!usrPath ? 'pointer' : undefined}
-                        onClick={!!usrPath ? (e: any) => {
+                        hoverColor="#1790ff"
+                        cursor="pointer"
+                        onClick={(e: any) => {
                             e.stopPropagation();
-                            hidePopper();
-                        } : undefined}
+                            if (router) {
+                                router.navigate('/' + user.id);
+                            }
+                        }}
                     >
                         {emoji(user.name)}
                     </XView>
@@ -152,14 +141,15 @@ const UserPopperContent = XMemo(
                         <Buttons separator={6}>
                             {!isMe && (
                                 <XButton
-                                    path={'/mail/' + user.id}
                                     style="primary"
                                     text="Direct chat"
                                     size="small"
                                     autoClose={true}
                                     onClick={(e: any) => {
                                         e.stopPropagation();
-                                        hidePopper();
+                                        if (router) {
+                                            router.navigate('/mail/' + user.id);
+                                        }
                                     }}
                                 />
                             )}

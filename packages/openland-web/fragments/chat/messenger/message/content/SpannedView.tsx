@@ -104,7 +104,7 @@ const insaneTextClassName = css`
 const mentionServiceClassName = css`
     color: #676d7a !important;
     font-weight: 600;
-    
+
     &:hover {
         color: #676d7a !important;
         text-decoration: none;
@@ -114,7 +114,7 @@ const mentionServiceClassName = css`
 const mentionClassName = css`
     color: #1885f2;
     font-weight: 600;
-    
+
     &:hover {
         color: #1885f2;
         text-decoration: none;
