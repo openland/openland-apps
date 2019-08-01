@@ -26,7 +26,10 @@ export const SettingsProfileFragment = React.memo(() => {
     const user = client.useProfile().user!;
     const organizations = client.useMyOrganizations();
 
-    const firstNameField = useField('input.firstName', profile.firstName || '', form);
+    const firstNameField = useField('input.firstName', profile.firstName || '', form, [{
+        checkIsValid: (value) => !!value && value.length > 0,
+        text: 'Please enter your name'
+    }]);
     const lastNameField = useField('input.lastName', profile.lastName || '', form);
     const avatarField = useField<StoredFileT | undefined | null>(
         'input.avatar',
