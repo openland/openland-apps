@@ -1,39 +1,11 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
-import { MenuItem, DiscoverNotDoneRedDot } from 'openland-web/components/MainLayout';
-import { tabs } from '../../../pages/main/mail/tabs';
-import RoomIcon from 'openland-icons/dir-rooms.svg';
-import PeopleIcon from 'openland-icons/dir-people.svg';
-import OrganizationsIcon from 'openland-icons/dir-organizations.svg';
-import CommunityIcon from 'openland-icons/dir-communities.svg';
-import RecommendationIcon from 'openland-icons/ic-cell-recommendation.svg';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchBox } from 'openland-web/fragments/discover/components/SearchBox';
 import { SortPicker } from 'openland-web/fragments/discover/components/sortPicker';
 import { XSubHeader } from 'openland-x/XSubHeader';
-import { Navigation } from 'openland-web/components/Navigation';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
-import { XScrollView3 } from 'openland-x/XScrollView3';
-import { NewOptionsButton } from 'openland-web/components/NewOptionsButton';
-
-const iconWrapper = css`
-    & svg * {
-        fill: #bfbfbf !important;
-        opacity: 1 !important;
-    }
-`;
-
-const RecommendationIconWrapper = () => {
-    return (
-        <div className={iconWrapper}>
-            <RecommendationIcon />
-        </div>
-    );
-};
 
 export const SearchCardsOrShowProfile = XMemo(
     ({
@@ -138,126 +110,6 @@ export const SearchCardsOrShowProfile = XMemo(
 
                 {id && ProfileComponent && <ProfileComponent id={id} />}
             </>
-        );
-    },
-);
-
-export const DiscoverNavigation = XMemo(
-    ({
-        title = '',
-        onlyFeatured,
-        id,
-        ProfileComponent,
-        CardsComponent,
-        searchPlaceholder,
-        noQueryText,
-        hasQueryText,
-        children,
-        withoutFeatured,
-        page,
-        defaultSortOption,
-        sortOptions,
-        withoutSort,
-    }: {
-        title?: string;
-        onlyFeatured?: boolean;
-        id?: string | null;
-        ProfileComponent?: any;
-        CardsComponent?: any;
-        searchPlaceholder?: string;
-        noQueryText?: string;
-        hasQueryText?: string;
-        children?: any;
-        withoutFeatured?: boolean;
-        page?: number;
-        defaultSortOption?: string;
-        sortOptions?: {
-            label: string;
-            values: { label: string; value: string }[];
-        };
-        withoutSort?: boolean;
-    }) => {
-        const isMobile = useIsMobile();
-
-        return (
-            <Navigation
-                title={isMobile ? title : 'Discover'}
-                swapFragmentsOnMobile
-                tab={tabs.empty}
-                menuRightContent={<NewOptionsButton />}
-                menuChildrenContent={
-                    <>
-                        <MenuItem
-                            path="/discover/recommended"
-                            title="Chats for you"
-                            icon={<RecommendationIconWrapper />}
-                            notification={<DiscoverNotDoneRedDot />}
-                        />
-                        <MenuItem
-                            path="/discover"
-                            title="Groups and channels"
-                            icon={<RoomIcon />}
-                        />
-                        <MenuItem
-                            path="/discover/communities"
-                            title="Communities"
-                            icon={<CommunityIcon />}
-                        />
-                        <MenuItem path="/discover/people" title="People" icon={<PeopleIcon />} />
-                        <MenuItem
-                            path="/discover/organizations"
-                            title="Organizations"
-                            icon={<OrganizationsIcon />}
-                        />
-                        <XWithRole role="feature-non-production">
-                            <MenuItem
-                                path="/discover/explore"
-                                title="Explore"
-                                icon={<CommunityIcon />}
-                            />
-                        </XWithRole>
-                    </>
-                }
-                secondFragment={
-                    <XView
-                        flexGrow={1}
-                        height={isMobile ? undefined : '100%'}
-                        position="relative"
-                        flexShrink={1}
-                    >
-                        <XScrollView3 flexGrow={1} flexShrink={1}>
-                            <XView flexGrow={1} flexShrink={1}>
-                                <React.Suspense
-                                    fallback={
-                                        <XView flexGrow={1} flexShrink={0}>
-                                            <XLoader loading={true} />
-                                        </XView>
-                                    }
-                                >
-                                    {children ? (
-                                        children
-                                    ) : (
-                                        <SearchCardsOrShowProfile
-                                            onlyFeatured={onlyFeatured}
-                                            id={id}
-                                            ProfileComponent={ProfileComponent}
-                                            CardsComponent={CardsComponent}
-                                            searchPlaceholder={searchPlaceholder || ''}
-                                            noQueryText={noQueryText || ''}
-                                            hasQueryText={hasQueryText || ''}
-                                            withoutFeatured={withoutFeatured}
-                                            sortOptions={sortOptions}
-                                            defaultSortOption={defaultSortOption}
-                                            page={page}
-                                            withoutSort={withoutSort}
-                                        />
-                                    )}
-                                </React.Suspense>
-                            </XView>
-                        </XScrollView3>
-                    </XView>
-                }
-            />
         );
     },
 );
