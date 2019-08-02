@@ -72,6 +72,8 @@ const senderName = css`
     color: #171B1F;
     margin-right: 10px;
     white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 `;
 
 const pinMessageFallback = css`
