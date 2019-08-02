@@ -26,6 +26,11 @@ interface PopperBodyRef {
     hide: () => void;
 }
 
+const eventBorder = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+};
+
 const PopperBody = React.memo(React.forwardRef((props: {
     target: HTMLElement,
     ctx: UPopperController,
@@ -88,7 +93,12 @@ const PopperBody = React.memo(React.forwardRef((props: {
         };
     }, []);
     return (
-        <div className={cx(pickerBody, !visible && pickerBodyInvisible)} ref={containerRef}>
+        <div
+            className={cx(pickerBody, !visible && pickerBodyInvisible)}
+            ref={containerRef}
+            onMouseDown={eventBorder}
+            onClick={eventBorder}
+        >
             <div className={pickerInnerBody} style={{ borderRadius: props.borderRadius }}>
                 {props.children}
             </div>
