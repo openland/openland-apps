@@ -371,7 +371,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     }
 
     onInputPressUp = () => {
-        let myMessages = this.conversation!.dataSource.getItems().filter(m => m.type === 'message' && m.isOut);
+        let myMessages = this.conversation!.dataSource.getItems().filter(m => m.type === 'message' && m.isOut && m.text);
         let myMessage = myMessages[0] as DataSourceMessageItem | undefined;
         if (myMessage) {
             this.conversation!.messagesActionsStateEngine.edit(myMessage);
