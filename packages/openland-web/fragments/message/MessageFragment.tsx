@@ -10,6 +10,7 @@ import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { findSpans } from 'openland-y-utils/findSpans';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import UUID from 'uuid/v4';
+import { UserForMention } from 'openland-api/Types';
 
 const wrapperClass = css`
     display: flex;
@@ -38,13 +39,22 @@ export const MessageFragment = React.memo(() => {
     }
 
     const handleCommentSent = React.useCallback((data: URickTextValue, replyId?: string) => {
-        const text = data.text.trim();
+        let text = '';
+        let mentions: UserForMention[] = [];
+        for (let t of data) {
+            if (typeof t === 'string') {
+                text += t;
+            } else {
+                text += '@' + t.name;
+                mentions.push(t);
+            }
+        }
 
         if (text.length > 0) {
             client.mutateAddMessageComment({
                 messageId,
                 repeatKey: UUID(),
-                mentions: prepareLegacyMentionsForSend(text, data.mentions),
+                mentions: prepareLegacyMentionsForSend(text, mentions),
                 message: text,
                 spans: findSpans(text),
                 replyComment: replyId

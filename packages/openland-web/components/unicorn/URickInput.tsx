@@ -47,28 +47,23 @@ const emojiStyle = css`
    vertical-align: -0.1em;
 `;
 
-export interface URickTextValue {
-    text: string;
-    mentions: UserForMention[];
-}
+export type URickTextValue = (string | UserForMention)[];
 
 export interface URickInputInstance {
     clear: () => void;
     focus: () => void;
     getText: () => URickTextValue;
     commitSuggestion(type: 'mention' | 'emoji', src: UserForMention | { name: string, value: string }): void;
-    setContent: (inputValue: URickInputValue) => void;
+    setContent: (inputValue: URickTextValue) => void;
 }
 
-type URickInputContent = string | UserForMention;
-export type URickInputValue = string | URickInputContent[];
-
 export interface URickInputProps {
-    initialContent?: URickInputValue;
+    initialContent?: URickTextValue;
     placeholder?: string;
     autofocus?: boolean;
     autocompletePrefixes?: string[];
     onTextChange?: (text: string) => void;
+    onContentChange?: (content: URickTextValue) => void;
     onAutocompleteWordChange?: (text: string | null) => void;
 
     onPressEnter?: () => boolean;
@@ -139,21 +134,39 @@ function extractActiveWord(quill: QuillType.Quill) {
     return findActiveWord(quill.getText(start, selection.index + selection.length - start), { start: selection.index, end: selection.index + selection.length });
 }
 
-function setURickInputValue(q: QuillType.Quill, contnent: URickInputValue) {
-    if (Array.isArray(contnent)) {
-        q.setContents(new QuillDelta(contnent.map(c => {
-            if (typeof c === 'string') {
-                // TODO: extract emoji
-                return { insert: c };
-            } else if (c.__typename === 'User') {
-                return { insert: { mention: c } };
-            } else {
-                return { insert: '' };
-            }
-        })));
-    } else if (typeof contnent === 'string') {
-        q.setText(contnent);
+function convertInputValue(content: URickTextValue) {
+    if (typeof content === 'string') {
+        return new QuillDelta([{ insert: content }]);
     }
+    return new QuillDelta(content.map(c => {
+        if (typeof c === 'string') {
+            // TODO: extract emoji
+            return { insert: c };
+        } else if (c.__typename === 'User') {
+            return { insert: { mention: c } };
+        } else {
+            return { insert: '' };
+        }
+    }));
+}
+
+function convertQuillContent(content: QuillType.Delta) {
+    let res: (string | UserForMention)[] = [];
+    for (let c of content.ops!) {
+        if (c.insert) {
+            if (typeof c.insert === 'string') {
+                res.push(c.insert);
+            } else if (typeof c.insert === 'object') {
+                if (c.insert.mention) {
+                    res.push(c.insert.mention);
+                }
+                if (c.insert.emoji) {
+                    res.push(c.insert.emoji.value);
+                }
+            }
+        }
+    }
+    return res;
 }
 
 export const URickInput = React.memo(React.forwardRef((props: URickInputProps, ref: React.Ref<URickInputInstance>) => {
@@ -179,27 +192,9 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
         getText: () => {
             let ed = editor.current;
             if (ed) {
-                let ctx = ed.getContents();
-                let res = '';
-                let mentions: any[] = [];
-                for (let c of ctx.ops!) {
-                    if (c.insert) {
-                        if (typeof c.insert === 'string') {
-                            res += c.insert;
-                        } else if (typeof c.insert === 'object') {
-                            if (c.insert.mention) {
-                                res += '@' + c.insert.mention.name;
-                                mentions.push(c.insert.mention);
-                            }
-                            if (c.insert.emoji) {
-                                res += c.insert.emoji.value;
-                            }
-                        }
-                    }
-                }
-                return { text: res, mentions };
+                return convertQuillContent(ed.getContents());
             } else {
-                return { text: '', mentions: [] };
+                return [''];
             }
         },
         commitSuggestion: (type: 'mention' | 'emoji', src: any) => {
@@ -235,10 +230,10 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                 }
             }, 10);
         },
-        setContent: (inputValue: URickInputValue) => {
+        setContent: (inputValue: URickTextValue) => {
             let ed = editor.current;
             if (ed) {
-                setURickInputValue(ed, inputValue);
+                ed.setContents(convertInputValue(inputValue));
             }
         }
     }));
@@ -246,7 +241,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
     React.useLayoutEffect(() => {
         let q = new Quill(containerRef.current!, { formats: ['mention', 'emoji'], placeholder: props.placeholder });
         if (props.initialContent) {
-            setURickInputValue(q, props.initialContent);
+            q.setContents(convertInputValue(props.initialContent));
         }
         if (props.autofocus) {
             q.focus();
@@ -276,7 +271,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
         addBinding(27, props.onPressEsc);
 
         // Handle text change
-        let lastKnownText: URickInputValue = props.initialContent || '';
+        let lastKnownText: string = '';
         let lastAutocompleteText: string | null = null;
         q.on('editor-change', () => {
             let tx = q.getText().trim();

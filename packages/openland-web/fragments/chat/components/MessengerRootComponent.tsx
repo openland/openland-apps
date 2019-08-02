@@ -17,6 +17,7 @@ import {
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
     FullMessage_GeneralMessage_spans_MessageSpanUserMention,
     FullMessage_GeneralMessage_spans_MessageSpanAllMention,
+    UserForMention,
 } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
@@ -34,7 +35,7 @@ import { pluralForm } from 'openland-y-utils/plural';
 import { MessageListComponent } from '../messenger/view/MessageListComponent';
 import { TypingsView } from '../messenger/typings/TypingsView';
 import { XLoader } from 'openland-x/XLoader';
-import { URickInputInstance, URickInputValue } from 'openland-web/components/unicorn/URickInput';
+import { URickInputInstance, URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { InputMessageActionComponent } from './InputMessageActionComponent';
 import { SpanType, SpanUser } from 'openland-y-utils/spans/Span';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
@@ -236,7 +237,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 return;
             }
             if (state.action === 'edit' && message && message.text) {
-                let value: URickInputValue = [];
+                let value: URickTextValue = [];
                 let textStringTail = message.text;
                 for (let absSpan of message.textSpans.filter(span => span.type === SpanType.mention_user)) {
                     let userSpan = absSpan as SpanUser;
@@ -260,7 +261,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             } else if (state.action === 'forward' || state.action === 'reply') {
                 this.rickRef.current.focus();
             } else if (!state.action) {
-                this.rickRef.current.setContent('');
+                this.rickRef.current.setContent(['']);
             }
             lastState = state.action;
         });
@@ -378,6 +379,34 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         }
     }
 
+    onTextSend = (text: URickTextValue) => {
+        let actionState = this.conversation!.messagesActionsStateEngine.getState();
+        let actionMessage = actionState.messages[0];
+
+        let textValue = '';
+        let mentions: UserForMention[] = [];
+        for (let t of text) {
+            if (typeof t === 'string') {
+                textValue += t;
+            } else {
+                textValue += '@' + t.name;
+                mentions.push(t);
+            }
+        }
+
+        if (actionState.action === 'edit' && actionMessage && actionMessage.text && actionMessage.id!) {
+            this.conversation!.messagesActionsStateEngine.clear();
+            this.conversation!.engine.client.mutateEditMessage({
+                messageId: actionMessage.id!,
+                message: textValue,
+                mentions: prepareLegacyMentionsForSend(textValue, mentions),
+                spans: findSpans(textValue)
+            });
+        } else {
+            this.conversation!.sendMessage(textValue, mentions);
+        }
+    }
+
     //
     // Rendering
     //
@@ -394,6 +423,9 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
 
         const pin = this.props.pinMessage;
         const showInput = !this.state.hideInput && this.conversation.canSendMessage;
+        const groupId = this.props.conversationType !== 'PRIVATE'
+            ? this.props.conversationId
+            : undefined;
         return (
             <div className={messengerContainer}>
                 {pin && !this.state.loading && (
@@ -421,27 +453,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                             <SendMessageComponent
                                 onPressUp={this.onInputPressUp}
                                 rickRef={this.rickRef}
-                                groupId={
-                                    this.props.conversationType !== 'PRIVATE'
-                                        ? this.props.conversationId
-                                        : undefined
-                                }
-                                onTextSent={text => {
-                                    let actionState = this.conversation!.messagesActionsStateEngine.getState();
-                                    let actionMessage = actionState.messages[0];
-                                    if (actionState.action === 'edit' && actionMessage && actionMessage.text && actionMessage.id!) {
-                                        this.conversation!.messagesActionsStateEngine.clear();
-                                        this.conversation!.engine.client.mutateEditMessage(
-                                            {
-                                                messageId: actionMessage.id!,
-                                                message: text.text,
-                                                mentions: prepareLegacyMentionsForSend(text.text, text.mentions || []),
-                                                spans: findSpans(text.text)
-                                            });
-                                    } else {
-                                        this.conversation!.sendMessage(text.text, text.mentions);
-                                    }
-                                }}
+                                groupId={groupId}
+                                onTextSent={this.onTextSend}
                                 onTextChange={this.handleChange}
                             />
                         </div>

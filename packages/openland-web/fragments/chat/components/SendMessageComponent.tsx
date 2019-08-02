@@ -4,8 +4,7 @@ import { XView } from 'react-mental';
 import {
     URickInput,
     URickInputInstance,
-    URickTextValue,
-    URickInputValue,
+    URickTextValue
 } from 'openland-web/components/unicorn/URickInput';
 import AttachIcon from 'openland-icons/s/ic-attach-24.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
@@ -261,7 +260,7 @@ interface SendMessageComponentProps {
     onTextSent?: (text: URickTextValue) => void;
     onTextChange?: (text: string) => void;
     placeholder?: string;
-    initialText?: URickInputValue;
+    initialText?: URickTextValue;
     rickRef?: React.RefObject<URickInputInstance>;
     onPressUp?: () => void;
 }
@@ -307,7 +306,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             if (ed) {
                 let text = ed.getText();
                 if (props.onTextSent) {
-                    if (text.text.trim().length > 0) {
+                    if (text.length > 0) {
                         props.onTextSent(text);
                     }
                 }
