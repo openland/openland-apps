@@ -74,7 +74,7 @@ export const DocumentContent = React.memo(({
         <a className={cx(fileContainer, 'message-document-wrapper')} href={file.fileId && `https://ucarecdn.com/${file.fileId}/`} onClick={onClick} >
             <div className={infoContent}>
                 <div className={iconContainer}>
-                    {file.uri ? <XLoader transparentBackground={true} /> : <IconFile />}
+                    {file.uri ? <XLoader size="small" transparentBackground={true} /> : <IconFile />}
                 </div>
                 <div className={metadataContainer}>
                     <div className={cx(title + ' title', TextLabel1)}>{file.fileMetadata.name}</div>
