@@ -5,8 +5,6 @@ import { TextBody } from 'openland-web/utils/TextStyles';
 import PinIcon from 'openland-icons/s/ic-pin-24.svg';
 import CloseIcon from 'openland-icons/s/ic-close-16.svg';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
-import { processSpans } from 'openland-y-utils/spans/processSpans';
-import { MessageTextComponent } from './content/MessageTextComponent';
 import { emoji } from 'openland-y-utils/emoji';
 import {
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
@@ -73,6 +71,8 @@ const senderName = css`
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    flex-grow: 1;
+    flex-shrink: 0;
 `;
 
 const pinMessageFallback = css`
@@ -91,6 +91,7 @@ const unpinIconContainer = css`
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: 16px;
     
     &:hover {
         opacity: 0.64;
@@ -110,16 +111,6 @@ export const PinMessageComponent = React.memo((props: PinMessageProps) => {
         [message.id],
     );
 
-    let content =
-        message.spans.length > 0 ? (
-            <MessageTextComponent
-                spans={processSpans(message.message || '', message.spans)}
-                edited={false}
-            />
-        ) : (
-            emoji(message.fallback)
-        );
-
     return (
         <div className={pinMessageContainer} onClick={handlePinClick}>
             <div className={piMessageContent}>
@@ -128,7 +119,7 @@ export const PinMessageComponent = React.memo((props: PinMessageProps) => {
                         <UIcon icon={<PinIcon />} />
                     </div>
                     <div className={cx(TextLabel1, senderName)}>{emoji(message.sender.name)}</div>
-                    <div className={cx(pinMessageFallback, TextBody)}>{content}</div>
+                    <div className={cx(pinMessageFallback, TextBody)}>{emoji(message.fallback)}</div>
                 </div>
                 {engine.canPin && (
                     <div
