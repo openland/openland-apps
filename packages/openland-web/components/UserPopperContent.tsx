@@ -58,6 +58,11 @@ const Status = (({ variables }) => {
     }
 }) as React.ComponentType<{ variables: { userId: string } }>;
 
+const eventBorder = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+};
+
 const Wrapper = Glamorous.div({
     maxWidth: 400,
     minWidth: 200,
@@ -105,7 +110,10 @@ const UserPopperContent = XMemo(
                 messenger.getOnlines().onUserAppears(user.id!);
             }, []);
             return (
-                <Wrapper>
+                <Wrapper
+                    onMouseDown={eventBorder}
+                    onClick={eventBorder}
+                >
                     <XHorizontal>
                         <XAvatar
                             online={false}
