@@ -15,8 +15,6 @@ import {
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
     RoomChat_room,
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
-    FullMessage_GeneralMessage_spans_MessageSpanUserMention,
-    FullMessage_GeneralMessage_spans_MessageSpanAllMention,
     UserForMention,
 } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
@@ -392,8 +390,10 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 spans: findSpans(textValue)
             });
         } else {
-            localStorage.removeItem('drafts-' + this.props.conversationId);
-            this.conversation!.sendMessage(textValue, mentions);
+            if (textValue.length > 0 || actionState.action === 'reply' || actionState.action === 'forward') {
+                localStorage.removeItem('drafts-' + this.props.conversationId);
+                this.conversation!.sendMessage(textValue, mentions);
+            }
         }
     }
 
