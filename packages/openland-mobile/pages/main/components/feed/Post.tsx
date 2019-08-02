@@ -4,10 +4,10 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TypeStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { GlobalFeedHome_homeFeed_content_message } from 'openland-api/Types';
 
 interface PostProps {
-    user: { name: string; organization: string; avatar: string; }; // Replace User_user
-    text: string;
+    post: GlobalFeedHome_homeFeed_content_message;
 }
 
 const styles = StyleSheet.create({
@@ -40,23 +40,29 @@ const styles = StyleSheet.create({
 // };
 
 export const Post = XMemo<PostProps>((props) => {
+    const { post } = props; 
+    const sender = post.sender;
     const theme = React.useContext(ThemeContext);
 
     return (
         <View style={styles.post}>
             <View style={styles.header}>
-                <ZAvatar size={'small'} src={props.user.avatar} />
+                <ZAvatar size={'small'} src={sender.photo} />
                 <Text style={{ ...TypeStyles.subhead, marginLeft: 12, color: theme.foregroundSecondary }}>
-                    {props.user.name}
+                    {sender.name}
                 </Text>
-                <View style={[styles.dotDivider, { backgroundColor: theme.foregroundSecondary }]} />
-                <Text style={{ ...TypeStyles.subhead, color: theme.foregroundSecondary, flex: 1 }} numberOfLines={1} ellipsizeMode={'tail'}>
-                    {props.user.organization}
-                </Text>
+                {sender.primaryOrganization && (
+                    <>
+                        <View style={[styles.dotDivider, { backgroundColor: theme.foregroundSecondary }]} />
+                        <Text style={{ ...TypeStyles.subhead, color: theme.foregroundSecondary, flex: 1 }} numberOfLines={1} ellipsizeMode={'tail'}>
+                            {sender.primaryOrganization.name}
+                        </Text>
+                    </>
+                )}
             </View>
 
             <Text style={{ ...TypeStyles.body, color: theme.foregroundPrimary, paddingBottom: 4 }}>
-                {props.text}
+                {post.message}
             </Text>
             
             <View style={styles.actions}>

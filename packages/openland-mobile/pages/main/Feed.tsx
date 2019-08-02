@@ -2,33 +2,32 @@ import * as React from 'react';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { withApp } from 'openland-mobile/components/withApp';
-import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { Post } from './components/feed/Post';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
+import { SFlatList } from 'react-native-s/SFlatList';
 
 const FeedPage = (props: PageProps) => {
+    const feed = getClient().useGlobalFeedHome();
+
     return (
         <>
             <SHeader title="Feed" />
             <SHeaderButton title="New" icon={require('assets/ic-add-24.png')} onPress={() => props.router.present('CreatePost')}/>
-            <SScrollView>
-                <Post 
-                    user={{ 
-                        avatar: 'https://ucarecdn.com/f08d7228-d243-44ec-baa5-8ffd4dd6b65a/-/crop/300x300/0,0/-/format/jpeg/-/scale_crop/72x72/center/-/quality/lighter/-/progressive/yes/',
-                        name: 'Yury Lifshits', 
-                        organization: 'Openland' 
-                    }} 
-                    text={'How does one, just in the middle of doing all the things you do, create cars, rockets'}
-                />
-                <Post 
-                    user={{ 
-                        avatar: 'https://ucarecdn.com/f08d7228-d243-44ec-baa5-8ffd4dd6b65a/-/crop/300x300/0,0/-/format/jpeg/-/scale_crop/72x72/center/-/quality/lighter/-/progressive/yes/',
-                        name: 'Yury Lifshits', 
-                        organization: 'Openland Openland Openland Openland' 
-                    }} 
-                    text={'Rulers and guides are now available with the latest version of Framer X. Press Ctrl + R to show rulers on the canvas, then either click a ruler to set a guide at that interval or...'}
-                />
-            </SScrollView>
+            <SFlatList 
+                data={feed.homeFeed}
+                keyExtractor={item => item.id}
+                renderItem={({ item }) => {
+                    if (!item.content || !item.content.message) {
+                        return null;
+                    }
+
+                    return (
+                        <Post post={item.content.message} />
+                    );
+                }}
+
+            />
         </>
     );
 };

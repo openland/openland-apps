@@ -57666,6 +57666,9 @@ export interface FeedHome_homeFeed_by {
 export interface FeedHome_homeFeed {
   __typename: "FeedItem";
   id: string;
+  /**
+   * deprecated
+   */
   text: string;
   date: any;
   by: FeedHome_homeFeed_by;
@@ -57673,6 +57676,74 @@ export interface FeedHome_homeFeed {
 
 export interface FeedHome {
   homeFeed: FeedHome_homeFeed[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: GlobalFeedHome
+// ====================================================
+
+export interface GlobalFeedHome_homeFeed_content_message_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  shortname: string | null;
+  about: string | null;
+  isCommunity: boolean;
+}
+
+export interface GlobalFeedHome_homeFeed_content_message_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  isBot: boolean;
+  shortname: string | null;
+  primaryOrganization: GlobalFeedHome_homeFeed_content_message_sender_primaryOrganization | null;
+}
+
+export interface GlobalFeedHome_homeFeed_content_message_reactions {
+  __typename: "ModernMessageReaction";
+  reaction: MessageReactionType;
+}
+
+export interface GlobalFeedHome_homeFeed_content_message {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  /**
+   * Content
+   */
+  message: string | null;
+  sender: GlobalFeedHome_homeFeed_content_message_sender;
+  reactions: GlobalFeedHome_homeFeed_content_message_reactions[];
+}
+
+export interface GlobalFeedHome_homeFeed_content {
+  __typename: "FeedPost";
+  message: GlobalFeedHome_homeFeed_content_message | null;
+}
+
+export interface GlobalFeedHome_homeFeed {
+  __typename: "FeedItem";
+  id: string;
+  content: GlobalFeedHome_homeFeed_content | null;
+}
+
+export interface GlobalFeedHome {
+  homeFeed: GlobalFeedHome_homeFeed[];
 }
 
 /* tslint:disable */
@@ -57693,6 +57764,22 @@ export interface FeedPost {
 }
 
 export interface FeedPostVariables {
+  message: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: GlobalFeedPost
+// ====================================================
+
+export interface GlobalFeedPost {
+  alphaCreateGlobalFeedPost: boolean;
+}
+
+export interface GlobalFeedPostVariables {
   message: string;
 }
 
@@ -91706,6 +91793,7 @@ export enum DebugEmailType {
   SIGNUP_CODE = "SIGNUP_CODE",
   UNREAD_MESSAGE = "UNREAD_MESSAGE",
   UNREAD_MESSAGES = "UNREAD_MESSAGES",
+  WEEKLY_DIGEST = "WEEKLY_DIGEST",
   WELCOME = "WELCOME",
 }
 

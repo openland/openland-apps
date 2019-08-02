@@ -1598,6 +1598,32 @@ private val GlobalCounterSelector = obj(
                     field("unreadCount","unreadCount", notNull(scalar("Int")))
                 )))
         )
+private val GlobalFeedHomeSelector = obj(
+            field("alphaHomeFeed","homeFeed", notNull(list(notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("FeedItem", obj(
+                        field("content","content", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                inline("FeedPost", obj(
+                                    field("message","message", obj(
+                                            field("__typename","__typename", notNull(scalar("String"))),
+                                            field("id","id", notNull(scalar("ID"))),
+                                            field("message","message", scalar("String")),
+                                            field("reactions","reactions", notNull(list(notNull(obj(
+                                                    field("__typename","__typename", notNull(scalar("String"))),
+                                                    field("reaction","reaction", notNull(scalar("String")))
+                                                ))))),
+                                            field("sender","sender", notNull(obj(
+                                                    field("__typename","__typename", notNull(scalar("String"))),
+                                                    fragment("User", UserShortSelector)
+                                                )))
+                                        ))
+                                ))
+                            )),
+                        field("id","id", notNull(scalar("ID")))
+                    ))
+                )))))
+        )
 private val GlobalSearchSelector = obj(
             field("alphaGlobalSearch","items", arguments(fieldValue("kinds", refValue("kinds")), fieldValue("query", refValue("query"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2650,6 +2676,9 @@ private val FeedPostSelector = obj(
                     field("id","id", notNull(scalar("ID")))
                 )))
         )
+private val GlobalFeedPostSelector = obj(
+            field("alphaCreateGlobalFeedPost","alphaCreateGlobalFeedPost", arguments(fieldValue("message", refValue("message"))), notNull(scalar("Boolean")))
+        )
 private val MarkSequenceReadSelector = obj(
             field("alphaGlobalRead","alphaGlobalRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("String")))
         )
@@ -3428,6 +3457,12 @@ object Operations {
         override val body = "query GlobalCounter{alphaNotificationCounter{__typename id unreadCount}}"
         override val selector = GlobalCounterSelector
     }
+    val GlobalFeedHome = object: OperationDefinition {
+        override val name = "GlobalFeedHome"
+        override val kind = OperationKind.QUERY
+        override val body = "query GlobalFeedHome{homeFeed:alphaHomeFeed{__typename ... on FeedItem{content{__typename ... on FeedPost{message{__typename id message reactions{__typename reaction}sender{__typename ...UserShort}}}}id}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}"
+        override val selector = GlobalFeedHomeSelector
+    }
     val GlobalSearch = object: OperationDefinition {
         override val name = "GlobalSearch"
         override val kind = OperationKind.QUERY
@@ -3943,6 +3978,12 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation FeedPost(\$message:String!){alphaCreateFeedPost(message:\$message){__typename id}}"
         override val selector = FeedPostSelector
+    }
+    val GlobalFeedPost = object: OperationDefinition {
+        override val name = "GlobalFeedPost"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation GlobalFeedPost(\$message:String!){alphaCreateGlobalFeedPost(message:\$message)}"
+        override val selector = GlobalFeedPostSelector
     }
     val MarkSequenceRead = object: OperationDefinition {
         override val name = "MarkSequenceRead"
@@ -4497,6 +4538,7 @@ object Operations {
         if (name == "FetchPushSettings") return FetchPushSettings
         if (name == "GetDraftMessage") return GetDraftMessage
         if (name == "GlobalCounter") return GlobalCounter
+        if (name == "GlobalFeedHome") return GlobalFeedHome
         if (name == "GlobalSearch") return GlobalSearch
         if (name == "Message") return Message
         if (name == "MessageComments") return MessageComments
@@ -4583,6 +4625,7 @@ object Operations {
         if (name == "FeatureFlagDisable") return FeatureFlagDisable
         if (name == "FeatureFlagEnable") return FeatureFlagEnable
         if (name == "FeedPost") return FeedPost
+        if (name == "GlobalFeedPost") return GlobalFeedPost
         if (name == "MarkSequenceRead") return MarkSequenceRead
         if (name == "MediaAnswer") return MediaAnswer
         if (name == "MediaCandidate") return MediaCandidate

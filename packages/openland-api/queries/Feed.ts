@@ -15,6 +15,37 @@ export const FeedHomeQuery = gql`
     ${UserShort}
 `;
 
+export const GlobalFeedHomeQuery = gql`
+    query GlobalFeedHome {
+        homeFeed: alphaHomeFeed {
+            ... on FeedItem {
+                id
+                content {
+                    ...on FeedPost {
+                        message { 
+                            id
+                            message
+                            sender {
+                                ...UserShort
+                            }
+                            reactions {
+                                reaction
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    ${UserShort}
+`;
+
+export const GlobalFeedPostMutation = gql`
+    mutation GlobalFeedPost($message: String!) {
+        alphaCreateGlobalFeedPost(message: $message)
+    }
+`;
+
 export const FeedPostMutation = gql`
     mutation FeedPost($message: String!) {
         alphaCreateFeedPost(message: $message) {

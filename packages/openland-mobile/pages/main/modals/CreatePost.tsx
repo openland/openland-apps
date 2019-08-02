@@ -9,6 +9,9 @@ import { STrackedValue } from 'react-native-s/STrackedValue';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { useForm } from 'openland-form/useForm';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
+import { useField } from 'openland-form/useField';
 
 const styles = StyleSheet.create({
     textarea: {
@@ -20,14 +23,38 @@ const styles = StyleSheet.create({
 });
 
 const CreatePostModal = (props: PageProps) => {
+    const client = getClient();
     const theme = React.useContext(ThemeContext);
     const area = React.useContext(ASSafeAreaContext);
     const contentOffset = new STrackedValue();
 
+    const form = useForm();
+    const message = useField('messsage', '', form);
+
+    const handlePost = () => {
+        if (message.value === '') {
+            return;
+        }
+
+        form.doAction(async () => {
+            try {
+                await client.mutateGlobalFeedPost({
+                    message: message.value
+                });
+
+                await client.refetchGlobalFeedHome();
+
+                props.router.back();
+            } catch (error) {
+                console.warn(error);
+            }
+        });
+    };
+
     return (
         <>
             <SHeader title="New post" />
-            <SHeaderButton title={'Post'} />
+            <SHeaderButton title={'Post'}  onPress={handlePost} />
             <HeaderConfigRegistrator config={{ contentOffset }} />
             
             <View style={{ paddingTop: area.top, paddingBottom: area.bottom }}>
@@ -36,6 +63,8 @@ const CreatePostModal = (props: PageProps) => {
                     style={styles.textarea}
                     placeholder={'Write a post...'}
                     placeholderTextColor={theme.foregroundTertiary}
+                    onChangeText={text => message.input.onChange(text)}
+                    value={message.value}
                 />
             </View>
         </>

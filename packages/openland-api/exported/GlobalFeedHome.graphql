@@ -1,0 +1,26 @@
+query GlobalFeedHome {
+  homeFeed: alphaHomeFeed {
+    __typename
+    ... on FeedItem {
+      content {
+        __typename
+        ... on FeedPost {
+          message {
+            __typename
+            id
+            message
+            reactions {
+              __typename
+              reaction
+            }
+            sender {
+              __typename
+              ...UserShort
+            }
+          }
+        }
+      }
+      id
+    }
+  }
+}

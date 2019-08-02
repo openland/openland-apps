@@ -631,6 +631,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderFeedHome(opts?: QueryWatchParameters): Types.FeedHome | null {
         return this.useQuery(Source.FeedHomeQuery, undefined, opts);
     }
+    async queryGlobalFeedHome(opts?: OperationParameters): Promise<Types.GlobalFeedHome> {
+        return this.client.query(Source.GlobalFeedHomeQuery, undefined, opts);
+    }
+    async refetchGlobalFeedHome(): Promise<Types.GlobalFeedHome> {
+        return this.refetch(Source.GlobalFeedHomeQuery);
+    }
+    useGlobalFeedHome(opts?: QueryWatchParameters): Types.GlobalFeedHome {
+        return this.useQuerySuspense(Source.GlobalFeedHomeQuery, undefined, opts);
+    }
+    useWithoutLoaderGlobalFeedHome(opts?: QueryWatchParameters): Types.GlobalFeedHome | null {
+        return this.useQuery(Source.GlobalFeedHomeQuery, undefined, opts);
+    }
     async queryMyNotifications(variables: Types.MyNotificationsVariables, opts?: OperationParameters): Promise<Types.MyNotifications> {
         return this.client.query(Source.MyNotificationsQuery, variables, opts);
     }
@@ -1173,6 +1185,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     async mutateFeedPost(variables: Types.FeedPostVariables): Promise<Types.FeedPost> {
         return this.client.mutate(Source.FeedPostMutation, variables);
+    }
+    async mutateGlobalFeedPost(variables: Types.GlobalFeedPostVariables): Promise<Types.GlobalFeedPost> {
+        return this.client.mutate(Source.GlobalFeedPostMutation, variables);
     }
     async mutateMyNotificationCenterMarkSeqRead(variables: Types.MyNotificationCenterMarkSeqReadVariables): Promise<Types.MyNotificationCenterMarkSeqRead> {
         return this.client.mutate(Source.MyNotificationCenterMarkSeqReadMutation, variables);

@@ -1,6 +1,20 @@
 {
     "icons": [
         {
+            "name": "ic-feed",
+            "src": "ic-feed-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-feed-filled",
+            "src": "ic-feed-filled-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-like",
             "src": "ic-like-24.svg",
             "sizes": [
