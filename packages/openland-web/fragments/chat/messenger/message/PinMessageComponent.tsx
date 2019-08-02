@@ -12,7 +12,6 @@ import {
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
 } from 'openland-api/Types';
-import { ThemeDefault } from 'openland-y-utils/themes';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 
@@ -126,7 +125,7 @@ export const PinMessageComponent = React.memo((props: PinMessageProps) => {
             <div className={piMessageContent}>
                 <div className={pinMessageMainContent}>
                     <div className={iconContainer}>
-                        <UIcon icon={<PinIcon />} color={ThemeDefault.foregroundSecondary} />
+                        <UIcon icon={<PinIcon />} />
                     </div>
                     <div className={cx(TextLabel1, senderName)}>{emoji(message.sender.name)}</div>
                     <div className={cx(pinMessageFallback, TextBody)}>{content}</div>
@@ -142,7 +141,7 @@ export const PinMessageComponent = React.memo((props: PinMessageProps) => {
                             });
                         }}
                     >
-                        <UIcon icon={<CloseIcon />} color={ThemeDefault.foregroundSecondary} />
+                        <UIcon icon={<CloseIcon />} />
                     </div>
                 )}
             </div>
