@@ -71,7 +71,6 @@ const senderName = css`
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    flex-grow: 1;
     flex-shrink: 0;
 `;
 
