@@ -10,6 +10,7 @@ import {
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
 } from 'openland-api/Types';
+import { emoji } from 'openland-y-utils/emoji';
 
 interface PinMessageProps {
     message:
@@ -101,7 +102,7 @@ export const PinMessageComponent = React.memo((props: PinMessageProps) => {
                     <div className={iconContainer}>
                         <PinIcon />
                     </div>
-                    <div className={cx(TextLabel1, senderName)}>{message.sender.name}</div>
+                    <div className={cx(TextLabel1, senderName)}>{emoji(message.sender.name)}</div>
                     <div className={cx(pinMessageFallback, TextBody)}>{content}</div>
                 </div>
             </div>
