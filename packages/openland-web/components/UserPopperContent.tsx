@@ -115,14 +115,25 @@ const UserPopperContent = XMemo(
                     onClick={eventBorder}
                 >
                     <XHorizontal>
-                        <XAvatar
-                            online={false}
-                            size="l-medium"
-                            style="user"
-                            objectName={user.name}
-                            objectId={user.id}
-                            cloudImageUuid={user.photo || undefined}
-                        />
+                        <XView
+                            flexShrink={0}
+                            onClick={(e: any) => {
+                                e.stopPropagation();
+                                if (router) {
+                                    router.navigate('/' + user.id);
+                                    hidePopper();
+                                }
+                            }}
+                        >
+                            <XAvatar
+                                online={false}
+                                size="l-medium"
+                                style="user"
+                                objectName={user.name}
+                                objectId={user.id}
+                                cloudImageUuid={user.photo || undefined}
+                            />
+                        </XView>
                         <React.Suspense fallback={<div />}>
                             <Status variables={{ userId: user.id }} />
                         </React.Suspense>
