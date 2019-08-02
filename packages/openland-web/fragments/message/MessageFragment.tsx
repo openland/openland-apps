@@ -10,6 +10,7 @@ import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { findSpans } from 'openland-y-utils/findSpans';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import UUID from 'uuid/v4';
+import { UHeader } from 'openland-unicorn/UHeader';
 
 const wrapperClass = css`
     display: flex;
@@ -27,10 +28,9 @@ const contentClass = css`
     flex-direction: column;
 `;
 
-export const MessageFragment = React.memo(() => {
+const MessageFragmentInner = React.memo((props: { messageId: string }) => {
+    const { messageId } = props;
     const client = useClient();
-    const unicorn = useUnicorn();
-    const messageId = unicorn.id;
     const message = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' }).message;
 
     if (!message || message.__typename === 'ServiceMessage') {
@@ -65,5 +65,16 @@ export const MessageFragment = React.memo(() => {
 
             <CommentInput onSent={handleCommentSent} groupId={groupId} />
         </div>
+    );
+});
+
+export const MessageFragment = React.memo(() => {
+    const unicorn = useUnicorn();
+
+    return (
+        <>
+            <UHeader title="Comments" />
+            <MessageFragmentInner messageId={unicorn.id} />
+        </>
     );
 });
