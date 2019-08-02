@@ -21,6 +21,10 @@ const menuButton = css`
     cursor: pointer;
 `;
 
+const menuManageButton = css`
+    width: 24px;
+`;
+
 const menuContainerClass = css`
     position: absolute;
     opacity: 0;
@@ -72,7 +76,7 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
         <div className={cx(menuContainerClass, message.attachTop && attachTop, 'hover-menu-container', visible && forceVisible, message.isSending && forceInvisible)}>
             <UIcon className={cx(menuButton, visible && forceVisible)} icon={<LikeIcon onClick={handleLikeClick} />} />
             <UIcon className={cx(menuButton)} icon={<CommentIcon onClick={handleCommentClick} />} />
-            <UIcon className={cx(menuButton)} icon={<MoreIcon onClick={showWrapped} />} />
+            <UIcon className={cx(menuButton, menuManageButton)} icon={<MoreIcon onClick={showWrapped} />} />
         </div>
     );
 });
