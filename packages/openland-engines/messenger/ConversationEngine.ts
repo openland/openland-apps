@@ -431,7 +431,7 @@ export class ConversationEngine implements MessageSendHandler {
             isImage: false,
             failed: false,
             spans,
-            quoted
+            quoted: quoted ? quoted.map(q => ({ ...q, reply: undefined })) : undefined
         };
 
         this.messages = [...this.messages, msgs];

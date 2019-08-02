@@ -8,7 +8,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
 import { emojiLink } from 'openland-y-utils/emojiLink';
 
-const reactionsImagesMap: { [key in MessageReactionType]: string } = {
+export const reactionsImagesMap: { [key in MessageReactionType]: string } = {
     'LIKE': emojiLink('2764'),
     'THUMB_UP': emojiLink('1f44d'),
     'JOY': emojiLink('1f602'),

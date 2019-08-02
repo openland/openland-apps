@@ -18,11 +18,9 @@ import {
     UserForMention,
 } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
-import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
-import { throttle } from 'openland-y-utils/timer';
+import { throttle, delay } from 'openland-y-utils/timer';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { XButton } from 'openland-x/XButton';
@@ -113,24 +111,6 @@ export const showDeleteMessageModal = (messageIds: string[], action?: () => void
         ctx => <DeleteMessageComponent messageIds={messageIds} hide={ctx.hide} action={action} />,
     );
 };
-
-export const DeleteUrlAugmentationComponent = withRouter(props => {
-    const client = useClient();
-    let id = props.router.query.deleteUrlAugmentation;
-    return (
-        <XModalForm
-            title="Remove attachment"
-            targetQuery="deleteUrlAugmentation"
-            submitBtnText="Remove"
-            defaultAction={async () => {
-                await client.mutateRoomDeleteUrlAugmentation({ messageId: id });
-            }}
-            submitProps={{ successText: 'Removed!', style: 'danger' }}
-        >
-            <XText>Remove this attachment from the message?</XText>
-        </XModalForm>
-    );
-});
 
 const messengerContainer = css`
     display: flex;
@@ -240,7 +220,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             throw Error('conversation should be defined here');
         }
         let lastState: string | undefined = undefined;
-        this.unmounter3 = this.conversation!.messagesActionsStateEngine.listen(state => {
+        this.unmounter3 = this.conversation!.messagesActionsStateEngine.listen(async state => {
             let message = state.messages[0];
             if (lastState === state.action || !this.rickRef.current) {
                 return;
@@ -268,6 +248,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 this.rickRef.current.setContent(value);
                 this.rickRef.current.focus();
             } else if (state.action === 'forward' || state.action === 'reply') {
+                await delay(10);
                 this.rickRef.current.focus();
             } else if (!state.action) {
                 if (this.initialContent) {
@@ -360,7 +341,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     }
 
     onInputPressUp = () => {
-        let myMessages = this.conversation!.dataSource.getItems().filter(m => m.type === 'message' && m.isOut && m.text);
+        let myMessages = this.conversation!.dataSource.getItems().filter(m => m.type === 'message' && m.isOut && m.text && !m.isSending);
         let myMessage = myMessages[0] as DataSourceMessageItem | undefined;
         if (myMessage) {
             this.conversation!.messagesActionsStateEngine.edit(myMessage);
