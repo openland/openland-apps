@@ -26,7 +26,8 @@ const wrapperClass = css`
 `;
 
 const loaderClass = css`
-    height: 50;
+    height: 50px;
+    width: 100%;
     display: flex;
     justify-content: center;
     position: relative;
