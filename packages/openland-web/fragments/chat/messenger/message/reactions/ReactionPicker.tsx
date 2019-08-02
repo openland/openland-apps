@@ -33,6 +33,10 @@ const reactionClass = css`
         transform: scale(calc(4 / 3));
     }
 
+    &:active {
+        transform: scale(1.15);
+    }
+
     img {
         width: 24px;
         height: 24px;
