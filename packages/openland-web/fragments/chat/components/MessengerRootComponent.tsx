@@ -18,8 +18,6 @@ import {
     UserForMention,
 } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
-import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
 import { throttle, delay } from 'openland-y-utils/timer';
