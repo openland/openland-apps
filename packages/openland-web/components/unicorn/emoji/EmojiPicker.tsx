@@ -1,12 +1,77 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import IconSticker from './ic_sticker2.svg';
+import IconAnimal from './ic-animal-24.svg';
+import IconAnimalFilled from './ic-animal-filled-24.svg';
+import IconFood from './ic-food-24.svg';
+import IconFoodFilled from './ic-food-filled-24.svg';
+import IconObject from './ic-object-24.svg';
+import IconObjectFilled from './ic-object-filled-24.svg';
+import IconSmile from './ic-smile-24.svg';
+import IconSmileFilled from './ic-smile-filled-24.svg';
+import IconSport from './ic-sport-24.svg';
+import IconSportFilled from './ic-sport-filled-24.svg';
+import IconSymbol from './ic-symbol-24.svg';
+import IconSymbolFilled from './ic-symbol-filled-24.svg';
+import IconTrasport from './ic-transport-24.svg';
+import IconTrasportFilled from './ic-transport-filled-24.svg';
+import IconRecent from './ic-recent-24.svg';
+import IconRecentFilled from './ic-recent-filled-24.svg';
+
 import { usePopper } from '../usePopper';
 import { XView } from 'react-mental';
-import { FixedSizeList } from 'react-window';
+import { FixedSizeList, ListOnScrollProps } from 'react-window';
 import { pickerEmoji } from 'openland-y-utils/data/emoji-data';
 import { emojiComponentSprite } from 'openland-y-utils/emojiComponentSprite';
 import { onEmojiSent, getRecent } from './Recent';
+import { UIcon } from '../UIcon';
+
+const categoryButton = css`
+    position: relative;
+    width: 40px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+`;
+
+const categoryIconActive = css`
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 150ms cubic-bezier(.29, .09, .24, .99);
+`;
+
+const categoryIconInactive = css`
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 150ms cubic-bezier(.29, .09, .24, .99);
+`;
+
+const categorySelector = css`
+    position: absolute;
+    left: 16px;
+    top: 0px;
+    height: 2px;
+    width: 40px;
+    background: #1885F2;
+    border-radius: 0px 0px 100px 100px;
+    transition: transform 150ms cubic-bezier(.29, .09, .24, .99);
+`;
 
 const emojiPickerIcon = css`
     position: absolute;
@@ -196,7 +261,45 @@ const innerElementType = React.forwardRef<HTMLDivElement>(({ children, ...rest }
     </div>
 ));
 
+const CategoryButton = React.memo((props: { iconActive: any, iconInactive: any, focused: boolean, offset: number, onClick: (offset: number) => void }) => {
+    return (
+        <div className={categoryButton} onClick={() => props.onClick(props.offset)}>
+            <div className={props.focused ? categoryIconActive : categoryIconInactive}>
+                <UIcon color="#1885F2" icon={props.iconActive} />
+            </div>
+            <div className={props.focused ? categoryIconInactive : categoryIconActive}>
+                <UIcon color="#676D7A" icon={props.iconInactive} />
+            </div>
+        </div>
+    );
+});
+
 const EmojiPickerBody = React.memo((props: { onEmojiPicked: (arg: string) => void }) => {
+    const ref = React.useRef<FixedSizeList>(null);
+    const [currentSection, setCurrentSection] = React.useState(0);
+    const onScroll = React.useCallback((s: ListOnScrollProps) => {
+        let row = Math.round(s.scrollOffset / 40);
+        if (row < 3) {
+            setCurrentSection(0);
+        } else {
+            row -= 3;
+            let section = sections.findIndex((v) => v.start <= row && row < v.end)! + 1;
+            setCurrentSection(section);
+        }
+    }, []);
+    const onCategoryClick = React.useCallback((src: number) => {
+        let s = ref.current;
+        if (s) {
+            // const el = findDOMNode(s);
+            // if (el) {
+            //     (el as Element).scrollTo({
+            //         behavior: 'smooth',
+            //         top: src * 40
+            //     });
+            // }
+            s.scrollToItem(src, 'start');
+        }
+    }, []);
     return (
         <XView
             flexDirection="column"
@@ -215,18 +318,20 @@ const EmojiPickerBody = React.memo((props: { onEmojiPicked: (arg: string) => voi
             </XView>
             <XView
                 flexGrow={1}
+                flexShrink={1}
                 flexBasis={0}
-                minHeight={0}
                 paddingHorizontal={16}
                 overflow="hidden"
             >
                 <FixedSizeList
+                    ref={ref}
                     itemCount={total}
                     itemSize={40}
                     overscanCount={10}
                     width={384 /* Bigger width to hide scrollbar */}
                     height={384}
                     innerElementType={innerElementType}
+                    onScroll={onScroll}
                 >
                     {({ index, style }) => {
                         if (index < 3) {
@@ -245,6 +350,65 @@ const EmojiPickerBody = React.memo((props: { onEmojiPicked: (arg: string) => voi
                         );
                     }}
                 </FixedSizeList>
+            </XView>
+            <XView flexDirection="row" paddingHorizontal={16} height={48}>
+                <div className={categorySelector} style={{ transform: `translateX(${currentSection * 40}px)` }} />
+                <CategoryButton
+                    iconActive={<IconRecentFilled />}
+                    iconInactive={<IconRecent />}
+                    focused={currentSection === 0}
+                    offset={0}
+                    onClick={onCategoryClick}
+                />
+                <CategoryButton
+                    iconActive={<IconSmileFilled />}
+                    iconInactive={<IconSmile />}
+                    focused={currentSection === 1}
+                    offset={3 + sections[0].start}
+                    onClick={onCategoryClick}
+                />
+                <CategoryButton
+                    iconActive={<IconAnimalFilled />}
+                    iconInactive={<IconAnimal />}
+                    focused={currentSection === 2}
+                    offset={3 + sections[1].start}
+                    onClick={onCategoryClick}
+                />
+                <CategoryButton
+                    iconActive={<IconFoodFilled />}
+                    iconInactive={<IconFood />}
+                    focused={currentSection === 3}
+                    offset={3 + sections[2].start}
+                    onClick={onCategoryClick}
+                />
+                <CategoryButton
+                    iconActive={<IconSportFilled />}
+                    iconInactive={<IconSport />}
+                    focused={currentSection === 4}
+                    offset={3 + sections[3].start}
+                    onClick={onCategoryClick}
+                />
+                <CategoryButton
+                    iconActive={<IconTrasportFilled />}
+                    iconInactive={<IconTrasport />}
+                    focused={currentSection === 5}
+                    offset={3 + sections[4].start}
+                    onClick={onCategoryClick}
+                />
+                <CategoryButton
+                    iconActive={<IconObjectFilled />}
+                    iconInactive={<IconObject />}
+                    focused={currentSection === 6}
+                    offset={3 + sections[5].start}
+                    onClick={onCategoryClick}
+                />
+                <CategoryButton
+                    iconActive={<IconSymbolFilled />}
+                    iconInactive={<IconSymbol />}
+                    focused={currentSection === 7}
+                    offset={3 + sections[6].start}
+                    onClick={onCategoryClick}
+                />
             </XView>
         </XView>
     );
