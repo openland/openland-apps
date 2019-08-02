@@ -3,9 +3,10 @@ import { MessageContent } from '../../chat/messenger/message/MessageContent';
 import { MAvatar } from 'openland-web/fragments/chat/messenger/message/MAvatar';
 import { css } from 'linaria';
 import { DataSourceWebMessageItem } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
-import { NotificationTools } from './NotificationTools';
 import { NotificationSender } from './NotificationSender';
 import { RoomNano_SharedRoom } from 'openland-api/Types';
+import { UIconLabeled } from 'openland-web/components/unicorn/UIconLabeled';
+import ReplyIcon from 'openland-icons/s/ic-reply-24.svg';
 
 const wrapper = css`
     display: flex;
@@ -26,13 +27,15 @@ const content = css`
 `;
 
 const replyWrapper = css`
-    border-left: 2px solid #1885F2;
-    margin: 4px 0 6px;
+    border-left: 2px solid #C4C7CC; // ThemeDefault.foregroundQuaternary
+    margin: 4px 0;
+    padding-left: 12px;
 `;
 
-const replyInnerWrapper = css`
-    padding-left: 12px;
-    opacity: 0.6;
+const toolsWrapperClass = css`
+    display: flex;
+    flex-direction: row;
+    margin-left: -8px;
 `;
 
 interface NotificationViewProps {
@@ -59,12 +62,11 @@ export const NotificationView = React.memo((props: NotificationViewProps) => {
                     sender={sender}
                     senderNameEmojify={senderNameEmojify}
                     group={sharedRoom}
+                    date={date}
                 />
                 {!!replyQuoteTextEmojify && (
                     <div className={replyWrapper}>
-                        <div className={replyInnerWrapper}>
-                            {replyQuoteTextEmojify}
-                        </div>
+                        {replyQuoteTextEmojify}
                     </div>
                 )}
                 <MessageContent
@@ -75,10 +77,9 @@ export const NotificationView = React.memo((props: NotificationViewProps) => {
                     fallback={fallback}
                 />
                 {notificationType === 'new_comment' && (
-                    <NotificationTools
-                        messageId={peerRootId}
-                        date={date}
-                    />
+                    <div className={toolsWrapperClass}>
+                        <UIconLabeled path={`/message/${notification.peerRootId}`} icon={<ReplyIcon />} label="Reply" />
+                    </div>
                 )}
             </div>
         </div>

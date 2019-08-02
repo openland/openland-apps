@@ -3,22 +3,20 @@ import { css, cx } from 'linaria';
 import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { FullMessage_GeneralMessage_sender, RoomNano_SharedRoom } from 'openland-api/Types';
 import { ULink } from 'openland-web/components/unicorn/ULink';
-import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import GroupReplyIcon from 'openland-icons/ic-reply-comments.svg';
+import { formatTime } from 'openland-y-utils/formatTime';
+import GroupReplyIcon from 'openland-icons/s/ic-chevron-16.svg';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { ThemeDefault } from 'openland-y-utils/themes';
 
 const wrapperClass = css`
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: baseline;
     margin-top: -3px;
     margin-bottom: -1px;
 `;
 
-const nameClass = css`
-    margin-right: 12px;
-`;
-
-const nameLinkClass = css`
+const linkClass = css`
     color: #171B1F; // ThemeDefault.foregroundPrimary
 
     &:hover {
@@ -27,29 +25,32 @@ const nameLinkClass = css`
     }
 `;
 
-const groupWrapper = css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+const dateWrapper = css`
+    margin-left: 8px;
+    color: #676D7A; // ThemeDefault.foregroundSecondary
 `;
 
 const iconWrapper = css`
-    margin-right: 8px;
+    margin: 0 4px;
+    width: 16px;
+    height: 16px;
+    transform: translateY(3px);
 `;
 
 interface NotificationSenderProps {
     sender: FullMessage_GeneralMessage_sender;
     senderNameEmojify?: string | JSX.Element;
     group?: RoomNano_SharedRoom;
+    date: number;
 }
 
 export const NotificationSender = React.memo((props: NotificationSenderProps) => {
-    const { sender, senderNameEmojify, group } = props;
+    const { sender, senderNameEmojify, group, date } = props;
 
     return (
         <div className={wrapperClass}>
-            <div className={cx(TextLabel1, nameClass)}>
-                <ULink path={`/${sender.shortname || sender.id}`} className={nameLinkClass}>
+            <div className={cx(TextLabel1)}>
+                <ULink path={`/${sender.shortname || sender.id}`} className={linkClass}>
                     {senderNameEmojify || sender.name}
                 </ULink>
             </div>
@@ -57,21 +58,18 @@ export const NotificationSender = React.memo((props: NotificationSenderProps) =>
             {group && (
                 <>
                     <div className={iconWrapper}>
-                        <GroupReplyIcon />
+                        <UIcon icon={<GroupReplyIcon />} color={ThemeDefault.foregroundTertiary} />
                     </div>
 
-                    <ULink path={`/mail/${group.id}`} className={cx(TextCaption, groupWrapper, nameLinkClass)}>
-                        <UAvatar
-                            id={group.id}
-                            photo={group.photo}
-                            title={group.title}
-                            size="x-small"
-                            marginRight={6}
-                        />
+                    <ULink path={`/mail/${group.id}`} className={cx(TextLabel1, linkClass)}>
                         {group.title}
                     </ULink>
                 </>
             )}
+
+            <div className={cx(TextCaption, dateWrapper)}>
+                {formatTime(date)}
+            </div>
         </div>
     );
 });
