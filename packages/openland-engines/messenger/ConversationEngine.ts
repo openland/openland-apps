@@ -459,6 +459,7 @@ export class ConversationEngine implements MessageSendHandler {
         let key = this.engine.sender.sendFile(this.conversationId, file, this, (quoted || []).map(q => q.id!));
         (async () => {
             let info = await file.fetchInfo();
+            console.warn(info);
             let name = info.name || 'image.jpg';
             let date = (new Date().getTime()).toString();
             let pmsg = {

@@ -24,6 +24,7 @@ const pickerInnerBody = css`
 
 interface PopperBodyRef {
     hide: () => void;
+    instantHide: () => void;
 }
 
 const eventBorder = (e: React.MouseEvent) => {
@@ -51,9 +52,15 @@ const PopperBody = React.memo(React.forwardRef((props: {
         }, 300);
     }, []);
 
+    const instantHide = React.useCallback(() => {
+        setVisible(false);
+        props.onHide();
+        props.ctx.hide();
+    }, []);
+
     useShortcuts({ keys: ['Escape'], callback: props.hideOnEsc !== false ? hide : undefined });
 
-    React.useImperativeHandle(ref, () => ({ hide }));
+    React.useImperativeHandle(ref, () => ({ hide, instantHide }));
 
     React.useEffect(() => {
         let isOver = true;
@@ -106,21 +113,45 @@ const PopperBody = React.memo(React.forwardRef((props: {
     );
 }));
 
+const popperScopes: Map<string, Set<React.RefObject<PopperBodyRef>>> = new Map();
+
 interface PopperConfig {
     placement: Placement;
     hideOnLeave?: boolean;
     hideOnClick?: boolean;
     hideOnEsc?: boolean;
     borderRadius?: number;
+    scope?: string;
 }
 
 export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController) => React.ReactElement<{}>): [boolean, (element: HTMLElement | React.MouseEvent<unknown>) => void] => {
     const [isVisible, setVisible] = React.useState(false);
     const ctxRef = React.useRef<UPopperController | undefined>(undefined);
     const popperBodyRef = React.useRef<PopperBodyRef>(null);
+    let currentScope: Set<React.RefObject<PopperBodyRef>> | undefined;
+
+    if (config.scope) {
+        currentScope = popperScopes.get(config.scope);
+
+        if (!currentScope) {
+            currentScope = new Set();
+            popperScopes.set(config.scope, currentScope);
+        }
+
+        currentScope.add(popperBodyRef);
+    }
+
     const show = React.useMemo(() => {
         let lastVisible = false;
         return (arg: HTMLElement | React.MouseEvent<unknown>) => {
+            if (currentScope) {
+                currentScope.forEach(r => {
+                    if (r.current && r !== ctxRef) {
+                        r.current.instantHide();
+                    }
+                });
+            }
+
             if (lastVisible) {
                 if (popperBodyRef.current) {
                     popperBodyRef.current.hide();
@@ -134,7 +165,7 @@ export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController)
                 target,
                 placement: config.placement
             }, (ctx) => {
-
+                ctxRef.current = ctx;
                 let fakeCtx = {
                     hide: () => {
                         if (popperBodyRef.current) {
@@ -167,6 +198,12 @@ export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController)
             let r = ctxRef.current;
             if (r) {
                 r.hide();
+            }
+
+            if (currentScope) {
+                currentScope.delete(popperBodyRef);
+
+                console.warn('boom 2', currentScope);
             }
         };
     }, []);

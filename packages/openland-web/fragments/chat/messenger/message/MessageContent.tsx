@@ -28,7 +28,7 @@ export const MessageContent = (props: MessageContentProps) => {
 
     const content: JSX.Element[] = [];
 
-    if (reply) {
+    if (reply && reply.length) {
         content.push(<ReplyContent key={'msg-' + id + '-reply'} quotedMessages={reply} />);
     }
 
@@ -49,8 +49,8 @@ export const MessageContent = (props: MessageContentProps) => {
     });
 
     if (!content.length) {
-        const unsupportedText = 'Unsupported content: ' + fallback;
-        content.push(<MessageTextComponent key="msg-text-unsupported" spans={[{ type: SpanType.italic, offset: 0, length: unsupportedText.length, childrens: [{ type: SpanType.text, text, offset: 0, length: unsupportedText.length } as SpanText] }]} edited={false} />);
+        const unsupportedText = 'Unsupported content' + (fallback ? ': ' + fallback : '');
+        content.push(<MessageTextComponent key="msg-text-unsupported" spans={[{ type: SpanType.italic, offset: 0, length: unsupportedText.length, childrens: [{ type: SpanType.text, text: unsupportedText, offset: 0, length: unsupportedText.length } as SpanText] }]} edited={false} />);
     }
 
     return <>{content}</>;

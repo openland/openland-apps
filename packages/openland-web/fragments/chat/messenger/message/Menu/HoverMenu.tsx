@@ -95,7 +95,7 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
         }
     };
 
-    const [reactionsVisible, reactionsShow] = usePopper({ placement: 'top', hideOnLeave: true, borderRadius: 20 }, () => <ReactionPicker onPick={handleReactionClick} />);
+    const [reactionsVisible, reactionsShow] = usePopper({ placement: 'top', hideOnLeave: true, borderRadius: 20, scope: 'reaction-picker' }, () => <ReactionPicker onPick={handleReactionClick} />);
     const visible = menuVisible || reactionsVisible;
 
     return (

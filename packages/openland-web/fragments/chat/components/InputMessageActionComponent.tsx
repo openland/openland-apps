@@ -114,7 +114,7 @@ export const InputMessageActionComponent = (props: { engine: MessagesActionsStat
             <>
                 <span className={TextLabel1}>Edit message</span>
                 <span className={TextBody}>
-                    {emoji(state.messages[0].fallback)}
+                    {emoji(state.messages[0].text!)}
                 </span>
             </>
         );
