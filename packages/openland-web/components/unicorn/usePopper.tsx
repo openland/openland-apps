@@ -33,7 +33,8 @@ const PopperBody = React.memo(React.forwardRef((props: {
     children?: any;
     hideOnClick: boolean;
     hideOnLeave: boolean;
-    hideOnEsc?: boolean
+    hideOnEsc?: boolean;
+    borderRadius?: number;
 }, ref: React.Ref<PopperBodyRef>) => {
     const [visible, setVisible] = React.useState(true);
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -88,14 +89,22 @@ const PopperBody = React.memo(React.forwardRef((props: {
     }, []);
     return (
         <div className={cx(pickerBody, !visible && pickerBodyInvisible)} ref={containerRef}>
-            <div className={pickerInnerBody}>
+            <div className={pickerInnerBody} style={{ borderRadius: props.borderRadius }}>
                 {props.children}
             </div>
         </div>
     );
 }));
 
-export const usePopper = (config: { placement: Placement, hideOnLeave?: boolean, hideOnClick?: boolean, hideOnEsc?: boolean }, popper: (ctx: UPopperController) => React.ReactElement<{}>): [boolean, (element: HTMLElement | React.MouseEvent<unknown>) => void] => {
+interface PopperConfig {
+    placement: Placement;
+    hideOnLeave?: boolean;
+    hideOnClick?: boolean;
+    hideOnEsc?: boolean;
+    borderRadius?: number;
+}
+
+export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController) => React.ReactElement<{}>): [boolean, (element: HTMLElement | React.MouseEvent<unknown>) => void] => {
     const [isVisible, setVisible] = React.useState(false);
     const ctxRef = React.useRef<UPopperController | undefined>(undefined);
     const popperBodyRef = React.useRef<PopperBodyRef>(null);
@@ -135,6 +144,7 @@ export const usePopper = (config: { placement: Placement, hideOnLeave?: boolean,
                         hideOnClick={config.hideOnClick !== undefined ? config.hideOnClick : true}
                         hideOnLeave={config.hideOnLeave !== undefined ? config.hideOnLeave : false}
                         hideOnEsc={config.hideOnEsc}
+                        borderRadius={config.borderRadius}
                     >
                         {popper(fakeCtx)}
                     </PopperBody>

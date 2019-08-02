@@ -10,6 +10,10 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { buildMessageMenu } from './MessageMenu';
 import { XViewRouterContext } from 'react-mental';
 import { MessageReactionType } from 'openland-api/Types';
+import { ReactionPicker } from '../reactions/ReactionPicker';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { useClient } from 'openland-web/utils/useClient';
+import { trackEvent } from 'openland-x-analytics';
 
 const menuButton = css`
     width: 32px;
@@ -48,13 +52,15 @@ const forceInvisible = css`
 
 export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem, engine: ConversationEngine }) => {
     const { message } = props;
+    const client = useClient();
+    const messenger = React.useContext(MessengerContext);
     const router = React.useContext(XViewRouterContext);
     const messageRef = React.useRef(message);
     messageRef.current = message;
-    const [visible, show] = usePopper({ placement: 'bottom-end', hideOnClick: true }, (ctx) => buildMessageMenu(ctx, messageRef.current, props.engine, router!));
+    const [menuVisible, menuShow] = usePopper({ placement: 'bottom-end', hideOnClick: true }, (ctx) => buildMessageMenu(ctx, messageRef.current, props.engine, router!));
     const showWrapped = React.useCallback((ev: React.MouseEvent) => {
         ev.stopPropagation();
-        show(ev);
+        menuShow(ev);
     }, []);
 
     const handleCommentClick = React.useCallback((e) => {
@@ -65,16 +71,25 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
         }
     }, [message.id]);
 
-    const handleLikeClick = React.useCallback((e) => {
-        e.stopPropagation();
+    const handleReactionClick = React.useCallback((reaction: MessageReactionType) => {
         if (message.id) {
-            props.engine.engine.client.mutateMessageSetReaction({ messageId: message.id, reaction: MessageReactionType.LIKE });
+            const remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === reaction).length > 0;
+            if (remove) {
+                client.mutateMessageUnsetReaction({ messageId: message.id, reaction });
+            } else {
+                trackEvent('reaction_sent', { reaction_type: reaction.toLowerCase(), double_tap: 'not' });
+
+                client.mutateMessageSetReaction({ messageId: message.id, reaction });
+            }
         }
-    }, [message.id]);
+    }, [message.id, message.reactions]);
+
+    const [reactionsVisible, reactionsShow] = usePopper({ placement: 'top', hideOnLeave: true, borderRadius: 20 }, () => <ReactionPicker onReactionPick={handleReactionClick} />);
+    const visible = menuVisible || reactionsVisible;
 
     return (
         <div className={cx(menuContainerClass, message.attachTop && attachTop, 'hover-menu-container', visible && forceVisible, message.isSending && forceInvisible)}>
-            <UIcon className={cx(menuButton, visible && forceVisible)} icon={<LikeIcon onClick={handleLikeClick} />} />
+            <UIcon className={cx(menuButton)} icon={<LikeIcon onMouseEnter={reactionsShow} />} />
             <UIcon className={cx(menuButton)} icon={<CommentIcon onClick={handleCommentClick} />} />
             <UIcon className={cx(menuButton, menuManageButton)} icon={<MoreIcon onClick={showWrapped} />} />
         </div>
