@@ -141,13 +141,10 @@ const composeContainer = css`
 
 const composeContent = css`
     min-height: 72px;
-    max-width: 910px;
+    max-width: 824px;
     display: flex;
     flex-direction: column;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 16px;
-    padding-bottom: 16px;
+    padding: 16px;
     align-items: flex-start;
     justify-content: center;
     flex-grow: 1;

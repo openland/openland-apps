@@ -19,8 +19,8 @@ import { NotificationView } from './components/NotificationView';
 import { css } from 'linaria';
 
 const wrapperClass = css`
-    padding: 0 12px 32px;
-    max-width: 950px;
+    padding: 0 16px 32px;
+    max-width: 824px;
     margin: 0 auto;
     width: 100%;
 `;
@@ -123,7 +123,7 @@ class CommentsNotificationsInner extends React.PureComponent<
 
         return (
             <>
-                <UHeader title="Notifications" />
+                <UHeader title="Notifications" appearance="wide" />
                 <XView paddingTop={24} flexGrow={1} flexShrink={1}>
                     <DataSourceRender
                         dataSource={this.dataSource}

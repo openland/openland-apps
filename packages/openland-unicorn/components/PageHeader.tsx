@@ -44,7 +44,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                         minWidth={0}
                         flexBasis={0}
                         flexGrow={1}
-                        maxWidth={appearance === 'normal' ? 600 : 900}
+                        maxWidth={appearance === 'normal' ? 600 : 824}
                         flexDirection="row"
                         paddingHorizontal={16}
                         alignItems="stretch"
@@ -61,7 +61,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                         flexBasis={0}
                         flexGrow={1}
                         fontSize={24}
-                        maxWidth={appearance === 'normal' ? 600 : 900}
+                        maxWidth={appearance === 'normal' ? 600 : 824}
                         lineHeight="32px"
                         fontWeight="600"
                         flexDirection="row"

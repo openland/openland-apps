@@ -19,8 +19,8 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 interface PinMessageProps {
     engine: ConversationEngine;
     message:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage;
 }
 
 const pinMessageContainer = css`
@@ -32,18 +32,13 @@ const pinMessageContainer = css`
     justify-content: center;
     background-color: #f2f3f5;
     cursor: pointer;
-
-    &:hover {
-        background-color: #f0f2f5;
-    }
 `;
 
 const piMessageContent = css`
-    max-width: 910px;
+    max-width: 824px;
     display: flex;
     flex-direction: row;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 0 16px;
     align-items: center;
     justify-content: space-between;
     flex-grow: 1;
@@ -74,7 +69,7 @@ const iconContainer = css`
 `;
 
 const senderName = css`
-    color: #171b1f;
+    color: #171B1F;
     margin-right: 10px;
     white-space: nowrap;
 `;
