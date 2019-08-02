@@ -279,7 +279,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
         let lastKnownText: URickInputValue = props.initialContent || '';
         let lastAutocompleteText: string | null = null;
         q.on('editor-change', () => {
-            let tx = q.getText();
+            let tx = q.getText().trim();
             if (tx !== lastKnownText) {
                 lastKnownText = tx;
                 if (props.onTextChange) {

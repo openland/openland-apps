@@ -316,7 +316,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         }
     }
 
-    handleChange = async (text: string) => {
+    handleChange = (text: string) => {
         let prevLength = this.messageText.length;
         let curLength = text.length;
 
