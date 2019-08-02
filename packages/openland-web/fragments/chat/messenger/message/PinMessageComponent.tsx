@@ -13,8 +13,8 @@ import {
 
 interface PinMessageProps {
     message:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage;
 }
 
 const pinMessageContainer = css`
@@ -29,11 +29,10 @@ const pinMessageContainer = css`
 `;
 
 const piMessageContent = css`
-    max-width: 910px;
+    max-width: 824px;
     display: flex;
     flex-direction: row;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 0 16px;
     align-items: center;
     justify-content: space-between;
     flex-grow: 1;
@@ -92,8 +91,8 @@ export const PinMessageComponent = React.memo((props: PinMessageProps) => {
                 edited={false}
             />
         ) : (
-            message.fallback
-        );
+                message.fallback
+            );
 
     return (
         <div className={pinMessageContainer} onClick={handlePinClick}>

@@ -20,8 +20,8 @@ const wrapperClass = css`
 `;
 
 const contentClass = css`
-    padding: 0 12px;
-    max-width: 816px;
+    padding: 0 16px;
+    max-width: 824px;
     width: 100%;
     margin: 0 auto;
     flex-grow: 1;
@@ -83,7 +83,7 @@ export const MessageFragment = React.memo(() => {
 
     return (
         <>
-            <UHeader title="Comments" />
+            <UHeader title="Comments" appearance="wide" />
             <MessageFragmentInner messageId={unicorn.id} />
         </>
     );

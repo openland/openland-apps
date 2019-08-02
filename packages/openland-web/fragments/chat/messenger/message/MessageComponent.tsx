@@ -107,7 +107,7 @@ const messageInnerContainerClass = css`
     position: relative;
     display: flex;
     flex-direction: row;
-    max-width: 950px;
+    max-width: 792px;
     flex-grow: 1;
     justify-content: start;
     align-items: start;
