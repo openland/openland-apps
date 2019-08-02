@@ -8,6 +8,7 @@ import { TextCaption } from 'openland-web/utils/TextStyles';
 const typingWrapper = css`
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 100%;
     flex-direction: column;
     flex-shrink: 0;
@@ -15,8 +16,6 @@ const typingWrapper = css`
     position: absolute;
     bottom: 0;
     left: 0;
-    padding-left: 80px;
-    padding-right: 80px;
 `;
 
 const typingContent = css`
@@ -24,7 +23,9 @@ const typingContent = css`
     align-items: flex-start;
     width: 100%;
     max-height: 33px;
-    max-width: 750px;
+    max-width: 824px;
+    padding-left: 72px;
+    padding-right: 72px;
 `;
 
 const typingText = css`
