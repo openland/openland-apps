@@ -3,15 +3,21 @@ import { css, cx } from 'linaria';
 import { XViewRouterContext } from 'react-mental';
 import { TextBody } from 'openland-web/utils/TextStyles';
 import PinIcon from 'openland-icons/s/ic-pin-24.svg';
+import CloseIcon from 'openland-icons/s/ic-close-16.svg';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { MessageTextComponent } from './content/MessageTextComponent';
+import { emoji } from 'openland-y-utils/emoji';
 import {
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
 } from 'openland-api/Types';
+import { ThemeDefault } from 'openland-y-utils/themes';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 
 interface PinMessageProps {
+    engine: ConversationEngine;
     message:
         | Room_room_SharedRoom_pinnedMessage_GeneralMessage
         | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage;
@@ -24,8 +30,12 @@ const pinMessageContainer = css`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: #F2F3F5;
+    background-color: #f2f3f5;
     cursor: pointer;
+
+    &:hover {
+        background-color: #f0f2f5;
+    }
 `;
 
 const piMessageContent = css`
@@ -56,11 +66,17 @@ const iconContainer = css`
     justify-content: center;
     flex-shrink: 0;
     margin-right: 16px;
+
+    & svg {
+        width: 20px;
+        height: 20px;
+    }
 `;
 
 const senderName = css`
-    color: #171B1F;
+    color: #171b1f;
     margin-right: 10px;
+    white-space: nowrap;
 `;
 
 const pinMessageFallback = css`
@@ -72,9 +88,22 @@ const pinMessageFallback = css`
     pointer-events: none;
 `;
 
+const unpinIconContainer = css`
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+        opacity: 0.64;
+    }
+`;
+
 export const PinMessageComponent = React.memo((props: PinMessageProps) => {
     const router = React.useContext(XViewRouterContext);
-    const { message } = props;
+    const { message, engine } = props;
 
     const handlePinClick = React.useCallback(
         e => {
@@ -92,7 +121,7 @@ export const PinMessageComponent = React.memo((props: PinMessageProps) => {
                 edited={false}
             />
         ) : (
-            message.fallback
+            emoji(message.fallback)
         );
 
     return (
@@ -100,11 +129,25 @@ export const PinMessageComponent = React.memo((props: PinMessageProps) => {
             <div className={piMessageContent}>
                 <div className={pinMessageMainContent}>
                     <div className={iconContainer}>
-                        <PinIcon />
+                        <UIcon icon={<PinIcon />} color={ThemeDefault.foregroundSecondary} />
                     </div>
-                    <div className={cx(TextLabel1, senderName)}>{message.sender.name}</div>
+                    <div className={cx(TextLabel1, senderName)}>{emoji(message.sender.name)}</div>
                     <div className={cx(pinMessageFallback, TextBody)}>{content}</div>
                 </div>
+                {engine.canPin && (
+                    <div
+                        className={unpinIconContainer}
+                        onClick={(e: any) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            engine.engine.client.mutateUnpinMessage({
+                                chatId: engine.conversationId,
+                            });
+                        }}
+                    >
+                        <UIcon icon={<CloseIcon />} color={ThemeDefault.foregroundSecondary} />
+                    </div>
+                )}
             </div>
         </div>
     );

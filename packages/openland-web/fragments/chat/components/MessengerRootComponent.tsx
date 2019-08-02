@@ -409,7 +409,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         return (
             <div className={messengerContainer}>
                 {pin && !this.state.loading && (
-                    <PinMessageComponent message={pin} />
+                    <PinMessageComponent message={pin} engine={this.conversation} />
                 )}
                 <div className={messagesListContainer}>
                     <MessageListComponent
