@@ -27,7 +27,7 @@ import { XButton } from 'openland-x/XButton';
 import { showModalBox } from 'openland-x/showModalBox';
 import { SendMessageComponent } from './SendMessageComponent';
 import { PinMessageComponent } from 'openland-web/fragments/chat/messenger/message/PinMessageComponent';
-import { pluralForm } from 'openland-y-utils/plural';
+import { pluralForm, plural } from 'openland-y-utils/plural';
 import { MessageListComponent } from '../messenger/view/MessageListComponent';
 import { TypingsView } from '../messenger/typings/TypingsView';
 import { XLoader } from 'openland-x/XLoader';
@@ -36,13 +36,8 @@ import { InputMessageActionComponent } from './InputMessageActionComponent';
 import { SpanType, SpanUser } from 'openland-y-utils/spans/Span';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import { findSpans } from 'openland-y-utils/findSpans';
-
-export interface File {
-    uuid: string;
-    name: string;
-    size: string;
-    isImage: boolean;
-}
+import AlertBlanket from 'openland-x/AlertBlanket';
+import UploadCare from 'uploadcare-widget';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
@@ -323,14 +318,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         this.messageText = text;
     }
 
-    handleSendFile = (file: UploadCare.File) => {
-        if (!this.conversation) {
-            throw Error('conversation should be defined here');
-        }
-
-        this.conversation.sendFile(new UploadCareUploading(file));
-    }
-
     handleShowIput = (show: boolean) => {
         this.setState({
             hideInput: !show,
@@ -338,6 +325,9 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     }
 
     onInputPressUp = () => {
+        if (this.rickRef.current && this.rickRef.current.getText().map(c => typeof c === 'string' ? c : c.name).join().trim()) {
+            return;
+        }
         let myMessages = this.conversation!.dataSource.getItems().filter(m => m.type === 'message' && m.isOut && m.text && !m.isSending);
         let myMessage = myMessages[0] as DataSourceMessageItem | undefined;
         if (myMessage) {
@@ -384,6 +374,17 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         }
     }
 
+    onAttach = (files: File[]) => {
+        AlertBlanket
+            .builder()
+            .title(`Send ${plural(files.length, ['file', 'files'])}?`)
+            .action('Send', async () => {
+                files.map(f => new UploadCareUploading(UploadCare.fileFrom('object', f), f.name))
+                    .map(this.conversation!.sendFile);
+            })
+            .show();
+    }
+
     //
     // Rendering
     //
@@ -428,6 +429,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                         <div className={composeContent}>
                             <InputMessageActionComponent engine={this.conversation.messagesActionsStateEngine} />
                             <SendMessageComponent
+                                onAttach={this.onAttach}
                                 initialText={this.initialContent}
                                 onPressUp={this.onInputPressUp}
                                 rickRef={this.rickRef}

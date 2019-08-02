@@ -58,6 +58,11 @@ const Status = (({ variables }) => {
     }
 }) as React.ComponentType<{ variables: { userId: string } }>;
 
+const eventBorder = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+};
+
 const Wrapper = Glamorous.div({
     maxWidth: 400,
     minWidth: 200,
@@ -105,16 +110,30 @@ const UserPopperContent = XMemo(
                 messenger.getOnlines().onUserAppears(user.id!);
             }, []);
             return (
-                <Wrapper>
+                <Wrapper
+                    onMouseDown={eventBorder}
+                    onClick={eventBorder}
+                >
                     <XHorizontal>
-                        <XAvatar
-                            online={false}
-                            size="l-medium"
-                            style="user"
-                            objectName={user.name}
-                            objectId={user.id}
-                            cloudImageUuid={user.photo || undefined}
-                        />
+                        <XView
+                            flexShrink={0}
+                            onClick={(e: any) => {
+                                e.stopPropagation();
+                                if (router) {
+                                    router.navigate('/' + user.id);
+                                    hidePopper();
+                                }
+                            }}
+                        >
+                            <XAvatar
+                                online={false}
+                                size="l-medium"
+                                style="user"
+                                objectName={user.name}
+                                objectId={user.id}
+                                cloudImageUuid={user.photo || undefined}
+                            />
+                        </XView>
                         <React.Suspense fallback={<div />}>
                             <Status variables={{ userId: user.id }} />
                         </React.Suspense>

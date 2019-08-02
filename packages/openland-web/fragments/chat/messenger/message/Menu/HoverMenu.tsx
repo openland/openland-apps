@@ -77,9 +77,14 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
         }
     }, [message.id]);
 
-    const handleReactionClick = React.useCallback((reaction: MessageReactionType) => {
+    // Sorry universe
+    const reactionsRef = React.useRef(message.reactions);
+    reactionsRef.current = message.reactions;
+
+    const handleReactionClick = (reaction: MessageReactionType) => {
+        const reactions = reactionsRef.current;
         if (message.id) {
-            const remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === reaction).length > 0;
+            const remove = reactions && reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === reaction).length > 0;
             if (remove) {
                 client.mutateMessageUnsetReaction({ messageId: message.id, reaction });
             } else {
@@ -88,9 +93,9 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
                 client.mutateMessageSetReaction({ messageId: message.id, reaction });
             }
         }
-    }, [message.id, message.reactions]);
+    };
 
-    const [reactionsVisible, reactionsShow] = usePopper({ placement: 'top', hideOnLeave: true, borderRadius: 20 }, () => <ReactionPicker onReactionPick={handleReactionClick} />);
+    const [reactionsVisible, reactionsShow] = usePopper({ placement: 'top', hideOnLeave: true, borderRadius: 20, scope: 'reaction-picker' }, () => <ReactionPicker onPick={handleReactionClick} />);
     const visible = menuVisible || reactionsVisible;
 
     return (

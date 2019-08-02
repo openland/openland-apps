@@ -33,6 +33,10 @@ const reactionClass = css`
         transform: scale(calc(4 / 3));
     }
 
+    &:active {
+        transform: scale(1.15);
+    }
+
     img {
         width: 24px;
         height: 24px;
@@ -40,16 +44,16 @@ const reactionClass = css`
 `;
 
 interface ReactionPickerProps {
-    onReactionPick: (reaction: MessageReactionType) => void;
+    onPick: (reaction: MessageReactionType) => void;
 }
 
 export const ReactionPicker = React.memo<ReactionPickerProps>(props => {
-    const { onReactionPick } = props;
+    const { onPick } = props;
 
     return (
         <div className={wrapperClass}>
             {SortedReactions.map(reaction => (
-                <div className={reactionClass} onClick={() => onReactionPick(reaction)}>
+                <div key={'reaction-' + reaction} className={reactionClass} onClick={() => onPick(reaction)}>
                     <img src={reactionsImagesMap[reaction]} />
                 </div>
             ))}

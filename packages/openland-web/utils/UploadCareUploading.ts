@@ -3,7 +3,7 @@ import { UploadingFile, FileMetadata, UploadStatus } from 'openland-engines/mess
 export class UploadCareUploading implements UploadingFile {
     private file: UploadCare.File;
     private infoPromise: Promise<FileMetadata>;
-    constructor(file: UploadCare.File) {
+    constructor(file: UploadCare.File, origUrl: string) {
         this.file = file;
         let isFirst = true;
         let resolved = false;
@@ -25,7 +25,7 @@ export class UploadCareUploading implements UploadingFile {
                 isFirst = false;
                 let name = v.incompleteFileInfo.name || 'image.jpg';
                 resolved = true;
-                resolver({ name });
+                resolver({ name, uri: origUrl, fileSize: parseInt(v.incompleteFileInfo.size || '0', 10) });
             });
             file.done(v => {
                 if (resolved) {
@@ -33,7 +33,7 @@ export class UploadCareUploading implements UploadingFile {
                 }
                 let name = v.name || 'image.jpg';
                 resolved = true;
-                resolver({ name });
+                resolver({ name, uri: origUrl, fileSize: parseInt(v.size || '0', 10) });
             });
         });
     }
