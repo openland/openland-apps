@@ -14,6 +14,7 @@ import { ReactionPicker } from '../reactions/ReactionPicker';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
+import { ThemeDefault } from 'openland-y-utils/themes';
 
 const menuButton = css`
     width: 32px;
@@ -23,6 +24,11 @@ const menuButton = css`
     justify-content: center;
     padding: 6;
     cursor: pointer;
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
 `;
 
 const menuManageButton = css`
@@ -89,9 +95,15 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
 
     return (
         <div className={cx(menuContainerClass, message.attachTop && attachTop, 'hover-menu-container', visible && forceVisible, message.isSending && forceInvisible)}>
-            <UIcon className={cx(menuButton)} icon={<LikeIcon onMouseEnter={reactionsShow} />} />
-            <UIcon className={cx(menuButton)} icon={<CommentIcon onClick={handleCommentClick} />} />
-            <UIcon className={cx(menuButton, menuManageButton)} icon={<MoreIcon onClick={showWrapped} />} />
+            <div className={cx(menuButton)} onMouseEnter={reactionsShow}>
+                <UIcon icon={<LikeIcon />} color={ThemeDefault.foregroundTertiary} />
+            </div>
+            <div className={cx(menuButton)} onClick={handleCommentClick}>
+                <UIcon icon={<CommentIcon />} color={ThemeDefault.foregroundTertiary} />
+            </div>
+            <div className={cx(menuButton, menuManageButton)} onClick={showWrapped}>
+                <UIcon icon={<MoreIcon />} color={ThemeDefault.foregroundTertiary} />
+            </div>
         </div>
     );
 });
