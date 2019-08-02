@@ -123,7 +123,7 @@ export class StackRouter {
     pop = () => {
         // Ignore action if not mounted
         if (!this.ref.current) {
-            return;
+            return false;
         }
 
         // Pop if there are pages in stack
@@ -132,7 +132,9 @@ export class StackRouter {
             for (let l of this._listeners) {
                 l({ type: 'pop', key: r[0].key });
             }
+            return true;
         }
+        return false;
     }
 
     addListener = (handler: (action: { type: 'push', key: string, component: any, query: any, id?: string, path: string; } | { type: 'pop', key: string }) => void) => {

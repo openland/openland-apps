@@ -41,8 +41,10 @@ export class MessagesActionsStateEngine {
     }
 
     clear = () => {
+        let changed = this.state.action || this.state.messages.length;
         this.state = { messages: [] };
         this.notifyAll();
+        return !!changed;
     }
 
     ////
