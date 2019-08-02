@@ -264,6 +264,7 @@ interface SendMessageComponentProps {
     initialText?: URickTextValue;
     rickRef?: React.RefObject<URickInputInstance>;
     onPressUp?: () => void;
+    onAttach?: (files: File[]) => void;
 }
 
 const sendMessageContainer = css`
@@ -294,6 +295,7 @@ const actionButtonContainer = css`
 
 export const SendMessageComponent = React.memo((props: SendMessageComponentProps) => {
     const ref = props.rickRef || React.useRef<URickInputInstance>(null);
+    const fileInputRef = React.useRef<HTMLInputElement>(null);
     const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
     const onPressEnter = React.useCallback(
         () => {
@@ -345,6 +347,27 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
         return true;
     }, []);
 
+    const onAttachPress = React.useCallback(() => {
+        //
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    }, []);
+
+    const onFileInputChange = React.useCallback((e) => {
+        let files: FileList | undefined = e.target.files;
+        if (files && files.length && props.onAttach) {
+            let res = [];
+            for (let i = 0; i < files.length; i++) {
+                res.push(files[i]);
+            }
+            props.onAttach(res);
+        }
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
+    }, []);
+
     const [activeWord, setActiveWord] = React.useState<string | null>(null);
     const onAutocompleteWordChange = React.useCallback((word: string) => {
         setActiveWord(word);
@@ -365,7 +388,8 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 activeWord={activeWord}
                 ref={suggestRef}
             />
-            <div className={actionButtonContainer}>
+            <input ref={fileInputRef} type="file" multiple={true} style={{ display: 'none' }} onChange={onFileInputChange} />
+            <div className={actionButtonContainer} onClick={onAttachPress}>
                 <UIcon icon={<AttachIcon />} color={'#676d7a'} />
             </div>
             <XView
