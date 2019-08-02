@@ -23,6 +23,10 @@ const styleSpansMessageContainer = css`
     letter-spacing: 0;
     font-weight: 400;
     color: #171b1f; // ThemeDefault.foregroundPrimary
+    
+    & > span br:last-child {
+        display: none;
+    }
 `;
 
 const cropTextStyle = css`
@@ -35,7 +39,6 @@ const cropTextStyle = css`
 `;
 
 const EditLabelStyle = css`
-    display: inline-block;
     vertical-align: baseline;
     color: rgba(0, 0, 0, 0.4);
     font-size: 13px;
