@@ -22,7 +22,7 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
-import { throttle } from 'openland-y-utils/timer';
+import { throttle, delay } from 'openland-y-utils/timer';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { XButton } from 'openland-x/XButton';
@@ -221,7 +221,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             throw Error('conversation should be defined here');
         }
         let lastState: string | undefined = undefined;
-        this.unmounter3 = this.conversation!.messagesActionsStateEngine.listen(state => {
+        this.unmounter3 = this.conversation!.messagesActionsStateEngine.listen(async state => {
             let message = state.messages[0];
             if (lastState === state.action || !this.rickRef.current) {
                 return;
@@ -249,6 +249,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 this.rickRef.current.setContent(value);
                 this.rickRef.current.focus();
             } else if (state.action === 'forward' || state.action === 'reply') {
+                await delay(10);
                 this.rickRef.current.focus();
             } else if (!state.action) {
                 if (this.initialContent) {
