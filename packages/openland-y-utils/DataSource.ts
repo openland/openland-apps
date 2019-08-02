@@ -72,7 +72,7 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         return this.dataByKey.get(key);
     }
     getItems() {
-        return [...this.dataByKey.values()];
+        return [...this.data];
     }
     getSize() {
         return this.data.length;
