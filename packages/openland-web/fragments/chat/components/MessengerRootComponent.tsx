@@ -196,6 +196,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     }, 1000);
 
     activeSubscription?: () => void;
+    initialContent?: URickTextValue;
 
     constructor(props: MessagesComponentProps) {
         super(props);
@@ -209,6 +210,15 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
 
         this.conversation = props.messenger.getConversation(props.conversationId);
         this.state = { hideInput: false, loading: this.conversation.getState().loading };
+
+        let ex = localStorage.getItem('drafts-' + props.conversationId);
+        if (ex) {
+            try {
+                this.initialContent = JSON.parse(ex);
+            } catch (e) {
+                console.warn(e);
+            }
+        }
     }
 
     componentDidMount() {
@@ -261,7 +271,11 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             } else if (state.action === 'forward' || state.action === 'reply') {
                 this.rickRef.current.focus();
             } else if (!state.action) {
-                this.rickRef.current.setContent(['']);
+                if (this.initialContent) {
+                    this.rickRef.current.setContent(this.initialContent);
+                } else {
+                    this.rickRef.current.setContent(['']);
+                }
             }
             lastState = state.action;
         });
@@ -332,31 +346,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         this.messageText = text;
     }
 
-    handleSend = (
-        text: string,
-        mentions:
-            | (
-                | FullMessage_GeneralMessage_spans_MessageSpanUserMention
-                | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[]
-            | null,
-    ) => {
-        if (!this.conversation) {
-            throw Error('conversation should be defined here');
-        }
-
-        this.conversation.sendMessage(
-            text,
-            mentions
-                ? mentions.map(mention => {
-                    if (mention.__typename === 'MessageSpanUserMention') {
-                        return mention.user;
-                    }
-                    return { __typename: 'AllMention' as 'AllMention' };
-                })
-                : null,
-        );
-    }
-
     handleSendFile = (file: UploadCare.File) => {
         if (!this.conversation) {
             throw Error('conversation should be defined here');
@@ -403,7 +392,16 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 spans: findSpans(textValue)
             });
         } else {
+            localStorage.removeItem('drafts-' + this.props.conversationId);
             this.conversation!.sendMessage(textValue, mentions);
+        }
+    }
+
+    onContentChange = (text: URickTextValue) => {
+        let actionState = this.conversation!.messagesActionsStateEngine.getState();
+        if (actionState.action !== 'edit') {
+            this.initialContent = text;
+            localStorage.setItem('drafts-' + this.props.conversationId, JSON.stringify(text));
         }
     }
 
@@ -451,11 +449,13 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                         <div className={composeContent}>
                             <InputMessageActionComponent engine={this.conversation.messagesActionsStateEngine} />
                             <SendMessageComponent
+                                initialText={this.initialContent}
                                 onPressUp={this.onInputPressUp}
                                 rickRef={this.rickRef}
                                 groupId={groupId}
                                 onTextSent={this.onTextSend}
                                 onTextChange={this.handleChange}
+                                onContentChange={this.onContentChange}
                             />
                         </div>
                     </div>

@@ -258,6 +258,7 @@ const AutoCompleteComponent = React.memo(
 interface SendMessageComponentProps {
     groupId?: string;
     onTextSent?: (text: URickTextValue) => void;
+    onContentChange?: (text: URickTextValue) => void;
     onTextChange?: (text: string) => void;
     placeholder?: string;
     initialText?: URickTextValue;
@@ -384,6 +385,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     onPressDown={onPressDown}
                     onPressTab={onPressTab}
                     onTextChange={props.onTextChange}
+                    onContentChange={props.onContentChange}
                     autofocus={true}
                     placeholder={props.placeholder || 'Write a message...'}
                 />

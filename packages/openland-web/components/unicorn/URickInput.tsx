@@ -281,6 +281,9 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                     props.onTextChange(tx);
                 }
             }
+            if (props.onContentChange) {
+                props.onContentChange(convertQuillContent(q.getContents()));
+            }
 
             if (props.onAutocompleteWordChange && props.autocompletePrefixes && props.autocompletePrefixes.length > 0) {
                 let selection = q.getSelection();
