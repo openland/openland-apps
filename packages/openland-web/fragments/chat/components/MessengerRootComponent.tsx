@@ -114,24 +114,6 @@ export const showDeleteMessageModal = (messageIds: string[], action?: () => void
     );
 };
 
-export const DeleteUrlAugmentationComponent = withRouter(props => {
-    const client = useClient();
-    let id = props.router.query.deleteUrlAugmentation;
-    return (
-        <XModalForm
-            title="Remove attachment"
-            targetQuery="deleteUrlAugmentation"
-            submitBtnText="Remove"
-            defaultAction={async () => {
-                await client.mutateRoomDeleteUrlAugmentation({ messageId: id });
-            }}
-            submitProps={{ successText: 'Removed!', style: 'danger' }}
-        >
-            <XText>Remove this attachment from the message?</XText>
-        </XModalForm>
-    );
-});
-
 const messengerContainer = css`
     display: flex;
     flex-direction: column;
@@ -359,7 +341,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     }
 
     onInputPressUp = () => {
-        let myMessages = this.conversation!.dataSource.getItems().filter(m => m.type === 'message' && m.isOut && m.text);
+        let myMessages = this.conversation!.dataSource.getItems().filter(m => m.type === 'message' && m.isOut && m.text && !m.isSending);
         let myMessage = myMessages[0] as DataSourceMessageItem | undefined;
         if (myMessage) {
             this.conversation!.messagesActionsStateEngine.edit(myMessage);
