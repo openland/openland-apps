@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Text, ViewStyle, Image } from 'react-native';
+import { View, StyleSheet, Text, ViewStyle, Image, TouchableOpacity } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TypeStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     } as ViewStyle,
     actionIcon: {
-        marginRight: 38
+        marginRight: 38,
+        flexDirection: 'row',
     },
 });
 
@@ -43,6 +44,7 @@ export const Post = XMemo<PostProps>((props) => {
     const { post } = props; 
     const sender = post.sender;
     const theme = React.useContext(ThemeContext);
+    const [like, toggleLike] = React.useState<boolean>(false);
 
     return (
         <View style={styles.post}>
@@ -66,9 +68,17 @@ export const Post = XMemo<PostProps>((props) => {
             </Text>
             
             <View style={styles.actions}>
-                <View style={styles.actionIcon}>
-                    <Image source={require('assets/ic-like-24.png')} style={{ tintColor: theme.foregroundTertiary }} />
-                </View>
+                <TouchableOpacity onPress={() => toggleLike(!like)}>
+                    <View style={styles.actionIcon}>
+                        <Image source={like ? require('assets/ic-like-active-24.png') : require('assets/ic-like-24.png')} style={{ tintColor: like ? theme.tint1 : theme.foregroundTertiary }} />
+                        
+                        {like && (
+                            <View style={{ position: 'absolute', left: 30 }}>
+                                <Text style={{ ...TypeStyles.body, color: like ? theme.tint1 : theme.foregroundTertiary }}>1</Text>
+                            </View>
+                        )}
+                    </View>
+                </TouchableOpacity>
                 <View style={styles.actionIcon}>
                     <Image source={require('assets/ic-message-24.png')} style={{ tintColor: theme.foregroundTertiary }} />
                 </View>
