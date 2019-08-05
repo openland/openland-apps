@@ -14,9 +14,10 @@ import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import Toast from '../Toast';
 
 export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose: () => void }>((props) => {
-
+    console.log(props.config.url);
     let theme = React.useContext(ThemeContext);
 
     let ref = React.createRef<FastImageViewer>();
@@ -133,7 +134,19 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
         , []);
 
     let handleShareClick = React.useCallback(async () => {
-        let file = await DownloadManagerInstance.copyFileWithNewName(props.config.url, 'image.png');
+        const url = props.config.url;
+        let file: string | undefined;
+
+        if (url.indexOf('http') === 0) {
+            const loader = Toast.loader();
+            loader.show();
+
+            file = await DownloadManagerInstance.downloadImage(url, 'image.png');
+
+            loader.hide();
+        } else {
+            file = await DownloadManagerInstance.copyFileWithNewName(url, 'image.png');
+        }
 
         if (file) {
             let builder = new ActionSheetBuilder();

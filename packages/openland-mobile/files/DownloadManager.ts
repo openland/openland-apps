@@ -171,6 +171,14 @@ export class DownloadManager implements DownloadManagerInterface {
             return undefined;
         }
     }
+
+    downloadImage = async (url: string, name: string) => {
+        const targetPath = Platform.OS === 'android' ? (RNFetchBlob as any).fs.dirs.DownloadDir : (RNFetchBlob as any).fs.dirs.CacheDir;
+        const path = targetPath + '/' + name;
+
+        await RNFetchBlob.config({ path }).fetch('GET', url);
+        return path;
+    }
 }
 
 export const DownloadManagerInstance = new DownloadManager();
