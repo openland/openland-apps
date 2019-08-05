@@ -244,7 +244,11 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
             q.setContents(convertInputValue(props.initialContent));
         }
         if (props.autofocus) {
-            q.focus();
+            if (props.initialContent) {
+                q.setSelection({ index: q.getText().length - 1, length: 0 });
+            } else {
+                q.focus();
+            }
         }
 
         // Hacky method to add key binding before editor processing
