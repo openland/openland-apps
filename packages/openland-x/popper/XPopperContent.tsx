@@ -98,7 +98,7 @@ const wrapper = css`
 `;
 
 const darkWrapper = css`
-    background: #6e7588;
+    background: #000;
     color: #fff;
 `;
 

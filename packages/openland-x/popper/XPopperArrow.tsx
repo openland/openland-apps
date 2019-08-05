@@ -30,7 +30,7 @@ let colorStyles = styleResolver({
     'dark': {
         height: 10,
         width: 10,
-        background: '#6E7588',
+        background: '#000',
         transform: 'rotate(45deg)',
         borderRadius: 2,
 
