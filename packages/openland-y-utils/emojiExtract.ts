@@ -54,7 +54,7 @@ export function emojiExtract(src: string): { name: string, start: number, length
         res.push({
             name: emojiConvertToName(match[0]),
             start: match.index!,
-            length: [...match[0]].length * 2
+            length: match[0].length
         });
     }
     return res;

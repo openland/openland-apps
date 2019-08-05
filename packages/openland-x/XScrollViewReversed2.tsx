@@ -33,6 +33,15 @@ interface XScrollViewReverse2RefProps {
     scrollToBottom: () => void;
 }
 
+const context = React.createContext(() => { /*  */ });
+
+export const useScrollRefresh = () => {
+    let ct = React.useContext(context);
+    React.useLayoutEffect(() => {
+        ct();
+    });
+};
+
 export const XScrollViewReverse2 = React.memo(
     React.forwardRef<XScrollViewReverse2RefProps, XScrollViewReverse2Props>(
         (props: XScrollViewReverse2Props, ref) => {
@@ -129,6 +138,13 @@ export const XScrollViewReverse2 = React.memo(
                 }, 150);
                 outerDiv.addEventListener('scroll', onScrollHandler, { passive: true });
 
+                // const onScrollHandlerSync = () => {
+                //     updateSizes(outerDiv.clientHeight, innerDiv.clientHeight);
+                // };
+                // if (!isChrome) {
+                //     outerDiv.addEventListener('scroll', onScrollHandlerSync, { passive: false });
+                // }
+
                 // Watch for size
                 let observer = new ResizeObserver(src => {
                     let outer = outerHeight.current;
@@ -151,6 +167,9 @@ export const XScrollViewReverse2 = React.memo(
 
                 return () => {
                     outerDiv.removeEventListener('scroll', onScrollHandler);
+                    // if (!isChrome) {
+                    //     outerDiv.removeEventListener('scroll', onScrollHandlerSync);
+                    // }
                     observer.disconnect();
                 };
             }, []);
@@ -177,16 +196,28 @@ export const XScrollViewReverse2 = React.memo(
                 [props.children],
             );
 
+            const ctx = React.useCallback(() => {
+                const outerDiv = outerRef.current!!;
+                const innerDiv = innerRef.current!!;
+                if (!outerDiv || !innerDiv) {
+                    return;
+                }
+                updateSizes(outerDiv.clientHeight, innerDiv.clientHeight);
+                reportOnScroll();
+            }, []);
+
             const { children, ...other } = props;
 
             return (
-                <XView {...other}>
-                    <div className={NativeScrollStyle} ref={outerRef}>
-                        <div className={NativeScrollContentStyle} ref={innerRef}>
-                            {props.children}
+                <context.Provider value={ctx}>
+                    <XView {...other}>
+                        <div className={NativeScrollStyle} ref={outerRef}>
+                            <div className={NativeScrollContentStyle} ref={innerRef}>
+                                {props.children}
+                            </div>
                         </div>
-                    </div>
-                </XView>
+                    </XView>
+                </context.Provider>
             );
         },
     ),

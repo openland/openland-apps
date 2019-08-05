@@ -16,14 +16,22 @@ const modalImgContainer = css`
 const modalImgStyle = css`
     flex-shrink: 0;
     object-fit: contain;
-    width: 100%;
-    max-height: 80vh;
+    max-width: 70vw;
+    max-height: 90vh;
 `;
 
-const showImageModal = (src: string, srcSet: string) => {
-    showModalBox({ width: 680 }, () => (
+const showImageModal = (src: string, srcSet: string, width: number, height: number) => {
+    showModalBox({ flowing: true }, () => (
         <div className={modalImgContainer}>
-            <img src={src} srcSet={srcSet} className={modalImgStyle} />
+            <img
+                src={src}
+                srcSet={srcSet}
+                className={modalImgStyle}
+                style={{
+                    width: width,
+                    // height: height,
+                }}
+            />
         </div>
     ));
 };
@@ -41,6 +49,8 @@ const imgContainer = css`
     border-radius: 8px;
     background-color: #f0f2f5;
     z-index: 0;
+    cursor: pointer;
+    margin: 4px 0;
 
     @media (max-width: 1300px) {
         max-width: 100%;
@@ -85,26 +95,23 @@ export const ImageContent = React.memo(
         const imgRef = React.useRef<HTMLImageElement>(null);
         const renderTime = new Date().getTime();
 
-        const onLoad = React.useCallback(
-            () => {
-                let delta = new Date().getTime() - renderTime;
-                if (imgRef.current) {
-                    if (delta < 50) {
-                        // show image instantly if loaded fast enough
-                        imgRef.current.className = cx(imgAppearInstantClass, imgMediaClass);
-                    } else {
-                        // animate loaded via transition
-                        imgRef.current.style.opacity = '1';
-                    }
-                    // setTimeout(() => {
-                    //     if (placeholderRef.current) {
-                    //         placeholderRef.current.style.display = 'none';
-                    //     }
-                    // }, 300);
+        const onLoad = React.useCallback(() => {
+            let delta = new Date().getTime() - renderTime;
+            if (imgRef.current) {
+                if (delta < 50) {
+                    // show image instantly if loaded fast enough
+                    imgRef.current.className = cx(imgAppearInstantClass, imgMediaClass);
+                } else {
+                    // animate loaded via transition
+                    imgRef.current.style.opacity = '1';
                 }
-            },
-            [placeholderRef.current, imgRef.current],
-        );
+                // setTimeout(() => {
+                //     if (placeholderRef.current) {
+                //         placeholderRef.current.style.display = 'none';
+                //     }
+                // }, 300);
+            }
+        }, []);
 
         const layout = layoutMedia(
             props.file.fileMetadata.imageWidth || 0,
@@ -123,15 +130,23 @@ export const ImageContent = React.memo(
 
         const url = `https://ucarecdn.com/${props.file.fileId}/-/format/auto/-/`;
         const ops = `scale_crop/${layoutWidth}x${layoutHeight}/`;
-        let opsRetina = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/center/ 2x`;
+        const opsRetina = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/center/ 2x`;
+
+        const opsModal = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/`;
+        const opsRetinaModal = `scale_crop/${layoutWidth * 3}x${layoutHeight * 3}/center/ 2x`;
 
         return (
             <div
                 className={imgContainer}
                 style={{ width: layoutWidth, height: layoutHeight }}
-                onClick={(ev: React.MouseEvent) => {
-                    ev.stopPropagation();
-                    showImageModal(url + ops, url + opsRetina);
+                onClick={(e: React.MouseEvent) => {
+                    e.stopPropagation();
+                    showImageModal(
+                        url + opsModal,
+                        url + opsRetinaModal,
+                        layoutWidth * 3,
+                        layoutHeight * 3,
+                    );
                 }}
             >
                 <img

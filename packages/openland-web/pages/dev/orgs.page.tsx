@@ -1,17 +1,18 @@
+// tslint:disable
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
-import { XTable } from 'openland-x/XTable';
+// import { XTable } from 'openland-x/XTable';
 import { XSwitcher } from 'openland-x/XSwitcher';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
+// import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XView } from 'react-mental';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { XInput } from 'openland-x/XInput';
 import { SuperAccounts_superAccounts } from 'openland-api/Types';
-import { XDate } from 'openland-x/XDate';
+// import { XDate } from 'openland-x/XDate';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -118,37 +119,38 @@ class FilteredOptions extends React.Component<FilteredOptionsProps> {
         if (props.searchValue) {
             nodes = nodes.filter(o => o.title.toLowerCase().match(props.searchValue.toLowerCase()));
         }
-        return (
-            <>
-                {nodes.map((v, i) => (
-                    <XTable.Row key={v.orgId + i} noHover={true}>
-                        <XTable.Cell>{v.title}</XTable.Cell>
-                        <XTable.Cell>{v.state}</XTable.Cell>
-                        <XTable.Cell>
-                            <XDate value={v.createdAt || ''} format="date" />
-                            <span>&nbsp;</span>
-                            <XDate value={v.createdAt || ''} format="time" />
-                        </XTable.Cell>
-                        <XTable.Cell>
-                            <XHorizontal justifyContent="flex-end">
-                                <XButton
-                                    path={'/super/orgs/' + v.id}
-                                    style="ghost"
-                                    text="Settings"
-                                    flexShrink={0}
-                                />
-                                <XButton
-                                    path={'/directory/o/' + v.orgId}
-                                    style="ghost"
-                                    text="Profile"
-                                    flexShrink={0}
-                                />
-                            </XHorizontal>
-                        </XTable.Cell>
-                    </XTable.Row>
-                ))}
-            </>
-        );
+        // return (
+        //     <>
+        //         {nodes.map((v, i) => (
+        //             <XTable.Row key={v.orgId + i} noHover={true}>
+        //                 <XTable.Cell>{v.title}</XTable.Cell>
+        //                 <XTable.Cell>{v.state}</XTable.Cell>
+        //                 <XTable.Cell>
+        //                     <XDate value={v.createdAt || ''} format="date" />
+        //                     <span>&nbsp;</span>
+        //                     <XDate value={v.createdAt || ''} format="time" />
+        //                 </XTable.Cell>
+        //                 <XTable.Cell>
+        //                     <XHorizontal justifyContent="flex-end">
+        //                         <XButton
+        //                             path={'/super/orgs/' + v.id}
+        //                             style="ghost"
+        //                             text="Settings"
+        //                             flexShrink={0}
+        //                         />
+        //                         <XButton
+        //                             path={'/directory/o/' + v.orgId}
+        //                             style="ghost"
+        //                             text="Profile"
+        //                             flexShrink={0}
+        //                         />
+        //                     </XHorizontal>
+        //                 </XTable.Cell>
+        //             </XTable.Row>
+        //         ))}
+        //     </>
+        // );
+        return null;
     }
 }
 
@@ -201,7 +203,7 @@ export default withApp('Super Organizations', 'super-admin', () => {
                     </XSwitcher.Item>
                 </XSwitcher>
             </XView>
-            <XTable>
+            {/* <XTable>
                 <XTable.Header>
                     <XTable.Cell>Title</XTable.Cell>
                     <XTable.Cell>State</XTable.Cell>
@@ -211,7 +213,7 @@ export default withApp('Super Organizations', 'super-admin', () => {
                 <XTable.Body>
                     <FilteredOptions orgsCurrentTab={orgsCurrentTab} searchValue={searchValue} />
                 </XTable.Body>
-            </XTable>
+            </XTable> */}
         </DevToolsScaffold>
     );
 });

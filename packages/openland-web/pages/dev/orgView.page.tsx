@@ -6,7 +6,7 @@ import { UserSelect } from '../../api/UserSelect';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
-import { XTable } from 'openland-x/XTable';
+// import { XTable } from 'openland-x/XTable';
 import { XOverflow } from '../../components/XOverflow';
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
@@ -582,7 +582,7 @@ export default withApp('Super Organization', 'super-admin', () => {
                 />
             </XHeader>
             <XHeader text="Members" description={superAccount.members.length + ' total'} />
-            <XTable>
+            {/* <XTable>
                 <XTable.Header>
                     <XTable.Cell>Name</XTable.Cell>
                     <XTable.Cell>Email</XTable.Cell>
@@ -603,7 +603,7 @@ export default withApp('Super Organization', 'super-admin', () => {
                         </XTable.Row>
                     ))}
                 </XTable.Body>
-            </XTable>
+            </XTable> */}
             <XHeader text="Features" description={superAccount.features.length + ' total'}>
                 <XButton text="Add feature" onClick={() => showAddFeatureModal(accountId)} />
                 <XButton
@@ -612,7 +612,7 @@ export default withApp('Super Organization', 'super-admin', () => {
                     onClick={() => showRemoveFeatureModal(accountId)}
                 />
             </XHeader>
-            <XTable>
+            {/* <XTable>
                 <XTable.Header>
                     <XTable.Cell>Key</XTable.Cell>
                     <XTable.Cell>Title</XTable.Cell>
@@ -625,7 +625,7 @@ export default withApp('Super Organization', 'super-admin', () => {
                         </XTable.Row>
                     ))}
                 </XTable.Body>
-            </XTable>
+            </XTable> */}
         </DevToolsScaffold>
     );
 });

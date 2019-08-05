@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleResolver';
 import { XFlexStyles, applyFlex } from './basics/Flex';
-import { XIcon } from './XIcon';
 import { makeNavigable, NavigableParentProps } from './Navigable';
 import { makeActionable, ActionableParentProps } from './Actionable';
 import { XLoader } from './XLoader';
@@ -29,44 +28,6 @@ export interface XButtonStyleProps extends XFlexStyles {
 }
 
 export type XButtonProps = ActionableParentProps<NavigableParentProps<XButtonStyleProps & { pressed?: boolean; dataTestId?: string }>>;
-
-let iconsIndentation = styleResolver({
-    'large': {
-        marginLeft: -4,
-        marginRight: 4
-    },
-    'default': {
-        marginLeft: -2,
-        marginRight: 4
-    },
-    'small': {
-        marginLeft: -2,
-        marginRight: 4
-    },
-    'tiny': {
-        marginLeft: -2,
-        marginRight: 4
-    }
-});
-
-let iconsIndentationRight = styleResolver({
-    'large': {
-        marginRight: -4,
-        marginLeft: 8
-    },
-    'default': {
-        marginRight: -2,
-        marginLeft: 8
-    },
-    'small': {
-        marginRight: -2,
-        marginLeft: 8
-    },
-    'tiny': {
-        marginRight: -2,
-        marginLeft: 8
-    }
-});
 
 let borderRadiusStyles = styleResolverWithProps((props: { attach?: 'left' | 'right' | 'both' }) => ({
     'large': {
@@ -519,16 +480,6 @@ let loaderStyles = styleResolver({
     }
 });
 
-const StyledIcon = Glamorous<XButtonProps & { opacity?: number }>(XIcon)([
-    (props) => iconsIndentation(props.size, !!props.text),
-    (props) => ({ opacity: props.opacity || .5 }),
-]);
-
-const StyledIconRight = Glamorous<XButtonProps & { opacity?: number }>(XIcon)([
-    (props) => iconsIndentationRight(props.size, !!props.text),
-    (props) => ({ opacity: props.opacity || .5 }),
-]);
-
 const StyledButtonContentWrapper = Glamorous.div({
     width: '100%',
     height: '100%',
@@ -757,12 +708,12 @@ export const XButton = makeActionable(makeNavigable<XButtonProps>((props) => {
                 <MainContent className="main-content">
                     {props.iconResponsive && (
                         typeof (props.iconResponsive) === 'string'
-                            ? <StyledIcon size={props.size} text={props.text} icon={props.iconResponsive} opacity={props.iconOpacity} className="icon icon-responsive material" />
+                            ? null
                             : <i className="icon icon-responsive">{props.iconResponsive}</i>
                     )}
                     {props.icon && (
                         typeof (props.icon) === 'string'
-                            ? <StyledIcon size={props.size} text={props.text} icon={props.icon} opacity={props.iconOpacity} className="icon material" />
+                            ? null
                             : <i className="icon icon-svg">{props.icon}</i>
                     )}
                     <ButtonText
@@ -774,7 +725,7 @@ export const XButton = makeActionable(makeNavigable<XButtonProps>((props) => {
                     </ButtonText>
                     {props.iconRight && (
                         typeof (props.iconRight) === 'string'
-                            ? <StyledIconRight size={props.size} text={props.text} icon={props.iconRight} opacity={props.iconOpacity} className="icon material" />
+                            ? null
                             : <i className="icon icon-svg">{props.iconRight}</i>
                     )}
                 </MainContent>

@@ -3,7 +3,7 @@ import { withApp } from '../../components/withApp';
 import { UserSelect } from '../../api/UserSelect';
 import { XHeader } from 'openland-x/XHeader';
 import { XButton } from 'openland-x/XButton';
-import { XTable } from 'openland-x/XTable';
+// import { XTable } from 'openland-x/XTable';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { useClient } from 'openland-web/utils/useClient';
 import { SuperAdminRole } from 'openland-api/Types';
@@ -138,7 +138,7 @@ export default withApp('Super Admins', 'super-admin', () => {
                 <XButton text="Add New" onClick={() => showAddSuperAdminFormModal()} />
                 <XButton text="Remove existing" onClick={() => showRemoveSuperAdminFormModal()} />
             </XHeader>
-            <XTable>
+            {/* <XTable>
                 <XTable.Header>
                     <XTable.Cell width={100}>First Name</XTable.Cell>
                     <XTable.Cell width={100}>Last Name</XTable.Cell>
@@ -155,7 +155,7 @@ export default withApp('Super Admins', 'super-admin', () => {
                         </XTable.Row>
                     ))}
                 </XTable.Body>
-            </XTable>
+            </XTable> */}
         </DevToolsScaffold>
     );
 });

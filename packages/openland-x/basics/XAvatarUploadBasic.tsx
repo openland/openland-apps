@@ -6,7 +6,6 @@ import {
     UploadedFile,
 } from '../files/XFileUpload';
 import Glamorous from 'glamorous';
-import { XIcon } from '../XIcon';
 import { XCloudImage } from '../XCloudImage';
 import { XLoader } from '../XLoader';
 import { styleResolver } from 'openland-x-utils/styleResolver';
@@ -90,11 +89,6 @@ const PlaceholderHoint = Glamorous.div<{ hasImage: boolean }>(props => ({
     lineHeight: 1.29,
     letterSpacing: -0.1,
     textAlign: 'center',
-}));
-
-const PlaceholderImage = Glamorous(XIcon)<{ hasImage: boolean }>(props => ({
-    fontSize: 30,
-    marginBottom: 7,
 }));
 
 interface PlaceholderProps {
@@ -222,7 +216,6 @@ class AvatarRender extends React.PureComponent<AvatarRenderProps, { srcLoading: 
                 )}
 
                 <Placeholder hasImage={hasImage} darkMode={this.props.darkMode}>
-                    <PlaceholderImage icon="photo_camera" hasImage={hasImage} />
                     <PlaceholderHoint hasImage={hasImage}>
                         {this.props.placeholder &&
                             (hasImage ? this.props.placeholder.change : this.props.placeholder.add)}

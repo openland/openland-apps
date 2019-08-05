@@ -38,6 +38,7 @@ import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacyment
 import { findSpans } from 'openland-y-utils/findSpans';
 import AlertBlanket from 'openland-x/AlertBlanket';
 import UploadCare from 'uploadcare-widget';
+import { DropZone } from './DropZone';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
@@ -441,6 +442,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                         </div>
                     </div>
                 )}
+                <DropZone onDrop={this.onAttach} />
             </div>
         );
     }

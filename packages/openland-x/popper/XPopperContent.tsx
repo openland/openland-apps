@@ -90,7 +90,7 @@ export class XPopperContentDEPRECATED extends React.PureComponent<XPopperContent
 }
 
 const wrapper = css`
-    min-width: 150px;
+    min-width: 100px;
     background: #ffffff; // Need to be ThemeDefault.backgroundPrimary
     border-radius: 8px;
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
@@ -98,7 +98,7 @@ const wrapper = css`
 `;
 
 const darkWrapper = css`
-    background: #6e7588;
+    background: #000;
     color: #fff;
 `;
 

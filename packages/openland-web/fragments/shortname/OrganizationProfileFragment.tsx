@@ -115,9 +115,9 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                     onClick={() => {
                         showAddMembersModal({
                             id,
+                            isCommunity,
                             isRoom: false,
                             isOrganization: true,
-                            isCommunity,
                         });
                     }}
                 />

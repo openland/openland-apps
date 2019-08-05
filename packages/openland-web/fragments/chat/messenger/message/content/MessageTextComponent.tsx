@@ -44,7 +44,6 @@ const EditLabelStyle = css`
     font-size: 13px;
     font-weight: 400;
     line-height: 22px;
-    padding-left: 6px;
     letter-spacing: 0;
 `;
 
@@ -55,7 +54,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(
                 <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                     <span>
                         <SpannedView spans={spans} />
-                        {edited && <span className={EditLabelStyle}>(Edited)</span>}
+                        {edited && <span className={EditLabelStyle}>{'\u00A0'}(edited)</span>}
                     </span>
                 </div>
             </div>
@@ -69,7 +68,7 @@ export const MessageTextComponentSpanned = React.memo<MessageTextComponentProps>
             <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                 <span>
                     <SpannedView spans={spans} />
-                    {edited && <span className={EditLabelStyle}>(Edited)</span>}
+                    {edited && <span className={EditLabelStyle}>{'\u00A0'}(edited)</span>}
                 </span>
             </div>
         );
