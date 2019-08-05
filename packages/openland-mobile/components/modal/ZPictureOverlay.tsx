@@ -17,21 +17,20 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import Toast from '../Toast';
 
 export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose: () => void }>((props) => {
-    console.log(props.config.url);
     let theme = React.useContext(ThemeContext);
 
     let ref = React.createRef<FastImageViewer>();
 
-    let progress = new Animated.Value(0);
+    let progress = React.useRef(new Animated.Value(0)).current;
     // let progressInverted = Animated.add(1, Animated.multiply(progress, -1));
     // let unredlayOpacity = progressInverted.interpolate({
     //     inputRange: [0, 0.5],
     //     outputRange: [0, 1],
     //     extrapolate: 'clamp'
     // });
-    let progressLinear = new Animated.Value(0);
+    let progressLinear = React.useRef(new Animated.Value(0)).current;
     // let progressLinearInverted = Animated.add(1, Animated.multiply(progressLinear, -1));
-    let barOpacity = new Animated.Value(1);
+    let barOpacity = React.useRef(new Animated.Value(1)).current;
     let barVisible = true;
 
     // let previewLoaded = true;
@@ -163,10 +162,6 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
         }
     }, []);
 
-    // componentWillMount() {
-
-    // }
-
     let handleBackPress = React.useCallback(() => {
         handleCloseClick();
         return true;
@@ -177,7 +172,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
         return () => BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     });
 
-    let handleTap = React.useCallback(() => {
+    let handleTap = React.useCallback(() => { 
         if (barVisible) {
             barVisible = false;
             Animated.timing(barOpacity, {
@@ -185,7 +180,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                 duration: 200,
                 useNativeDriver: true,
                 isInteraction: false
-            });
+            }).start();
         } else {
             barVisible = true;
             Animated.timing(barOpacity, {
@@ -193,7 +188,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                 duration: 200,
                 useNativeDriver: true,
                 isInteraction: false
-            });
+            }).start();
         }
     }, []);
 
@@ -258,13 +253,13 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                     height: SDevice.navigationBarHeight + SDevice.statusBarHeight + SDevice.safeArea.top,
                     paddingTop: SDevice.statusBarHeight + SDevice.safeArea.top,
                     backgroundColor: 'rgba(0,0,0,0.6)',
-                    opacity: Animated.multiply(progressLinear, barOpacity)
-                    // transform: [{
-                    //     translateY:
-                    //         Animated.multiply(
-                    //             Animated.add(Animated.multiply(progressLinear, barOpacity), -1),
-                    //             ZAppConfig.statusBarHeight + ZAppConfig.navigationBarHeight)
-                    // }]
+                    opacity: Animated.multiply(progressLinear, barOpacity),
+                    transform: [{
+                        translateY:
+                            Animated.multiply(
+                                Animated.add(Animated.multiply(progressLinear, barOpacity), -1),
+                                SDevice.statusBarHeight + SDevice.navigationBarHeight)
+                    }]
                 }}
             >
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
