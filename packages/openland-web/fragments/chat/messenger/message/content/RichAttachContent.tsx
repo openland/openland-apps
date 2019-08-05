@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
+import { XViewRouterContext } from 'react-mental';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
@@ -117,6 +118,16 @@ const InternalComponent = ({
 }) => {
     let avatar = null;
     let keyboard = null;
+    const router = React.useContext(XViewRouterContext);
+
+    const keyboardAction = React.useCallback((e: any, path: string | null) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (router) {
+            router.navigate(makeInternalLinkRelative(path || ''));
+        }
+    }, []);
+
     if (attach.image && attach.image.metadata) {
         avatar = (
             <div className={cx(richImageContainer, internalImg)}>
@@ -129,7 +140,8 @@ const InternalComponent = ({
             </div>
         );
     }
-    if (attach.keyboard) {
+
+    if (attach.keyboard && attach.keyboard.buttons) {
         keyboard = (
             <div className={keyboardContent}>
                 {attach.keyboard.buttons.map(i => {
@@ -137,9 +149,9 @@ const InternalComponent = ({
                         return i.map(j => (
                             <UButton
                                 text={j.title}
-                                path={makeInternalLinkRelative(j.url || '')}
                                 marginTop={8}
                                 key={j.id}
+                                onClick={(e: any) => keyboardAction(e, j.url)}
                             />
                         ));
                     }
