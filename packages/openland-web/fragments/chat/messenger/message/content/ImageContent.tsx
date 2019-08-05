@@ -103,7 +103,7 @@ export const ImageContent = React.memo(
                     // }, 300);
                 }
             },
-            [placeholderRef.current, imgRef.current],
+            []
         );
 
         const layout = layoutMedia(

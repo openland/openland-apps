@@ -32,7 +32,7 @@ const ShortcutHandlerView = () => {
                 }
             }, 310);
         }
-    }, [ref.current]);
+    }, []);
     useShortcuts([
         {
             keys: ['Control', 'V'], callback: () => {
