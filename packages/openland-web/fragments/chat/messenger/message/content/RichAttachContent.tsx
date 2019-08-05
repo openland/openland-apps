@@ -196,7 +196,7 @@ const modalImgStyle = css`
 `;
 
 const showImageModal = (src: string, width: number, height: number) => {
-    showModalBox({ width: 800 }, () => (
+    showModalBox({ width: 600 }, () => (
         <div className={modalImgContainer}>
             <img src={src} className={modalImgStyle} width={width} height={height} />
         </div>

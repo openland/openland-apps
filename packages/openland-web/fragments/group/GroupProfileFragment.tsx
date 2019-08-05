@@ -103,8 +103,8 @@ export const GroupProfileFragment = React.memo((props) => {
                 onClick={() => {
                     showAddMembersModal({
                         id,
-                        isRoom: true,
                         isChannel,
+                        isRoom: true,
                         isOrganization: false,
                     });
                 }}

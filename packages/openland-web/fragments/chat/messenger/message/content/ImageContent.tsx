@@ -17,11 +17,11 @@ const modalImgStyle = css`
     flex-shrink: 0;
     object-fit: contain;
     width: 100%;
-    max-height: 80vh;
+    max-height: 90vh;
 `;
 
 const showImageModal = (src: string, srcSet: string) => {
-    showModalBox({ width: 1200 }, () => (
+    showModalBox({ flowing: true }, () => (
         <div className={modalImgContainer}>
             <img src={src} srcSet={srcSet} className={modalImgStyle} />
         </div>
