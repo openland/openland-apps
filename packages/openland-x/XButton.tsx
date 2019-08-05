@@ -29,44 +29,6 @@ export interface XButtonStyleProps extends XFlexStyles {
 
 export type XButtonProps = ActionableParentProps<NavigableParentProps<XButtonStyleProps & { pressed?: boolean; dataTestId?: string }>>;
 
-let iconsIndentation = styleResolver({
-    'large': {
-        marginLeft: -4,
-        marginRight: 4
-    },
-    'default': {
-        marginLeft: -2,
-        marginRight: 4
-    },
-    'small': {
-        marginLeft: -2,
-        marginRight: 4
-    },
-    'tiny': {
-        marginLeft: -2,
-        marginRight: 4
-    }
-});
-
-let iconsIndentationRight = styleResolver({
-    'large': {
-        marginRight: -4,
-        marginLeft: 8
-    },
-    'default': {
-        marginRight: -2,
-        marginLeft: 8
-    },
-    'small': {
-        marginRight: -2,
-        marginLeft: 8
-    },
-    'tiny': {
-        marginRight: -2,
-        marginLeft: 8
-    }
-});
-
 let borderRadiusStyles = styleResolverWithProps((props: { attach?: 'left' | 'right' | 'both' }) => ({
     'large': {
         borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 20,
