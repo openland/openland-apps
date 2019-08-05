@@ -15,7 +15,7 @@ import {
     DataSourceWebMessageItem,
     buildMessagesDataSource,
 } from '../data/WebMessageItemDataSource';
-import { XScrollViewReverse2 } from 'openland-x/XScrollViewReversed2';
+import { XScrollViewReverse2, useScrollRefresh } from 'openland-x/XScrollViewReversed2';
 import { XScrollValues } from 'openland-x/XScrollView3';
 import { XLoader } from 'openland-x/XLoader';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
@@ -165,36 +165,41 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         );
     });
 
-    dataSourceWrapper = React.memo((props: any) => (
-        <XScrollViewReverse2
-            flexGrow={1}
-            flexShrink={1}
-            justifyContent="flex-end"
-            onScroll={this.handlerScroll}
-            ref={this.scroller}
-        >
-            {this.isEmpty() && (
-                <MessagesWrapperEmpty>
-                    <EmptyBlock
-                        conversationType={this.props.conversationType}
-                        onClick={this.props.inputShower}
-                    />
-                </MessagesWrapperEmpty>
-            )}
+    dataSourceWrapper = React.memo((props: any) => {
+        useScrollRefresh();
+        console.log('render!');
+        return (
+            <>
+                {this.isEmpty() && (
+                    <MessagesWrapperEmpty>
+                        <EmptyBlock
+                            conversationType={this.props.conversationType}
+                            onClick={this.props.inputShower}
+                        />
+                    </MessagesWrapperEmpty>
+                )}
 
-            {!this.isEmpty() && <MessagesWrapper>{props.children}</MessagesWrapper>}
-        </XScrollViewReverse2>
-    ));
+                {!this.isEmpty() && <MessagesWrapper>{props.children}</MessagesWrapper>}
+            </>);
+    });
 
     render() {
         return (
-            <DataSourceRender
-                dataSource={this.dataSource}
-                reverce={true}
-                wrapWith={this.dataSourceWrapper}
-                renderItem={this.renderMessage}
-                renderLoading={this.renderLoading}
-            />
+            <XScrollViewReverse2
+                flexGrow={1}
+                flexShrink={1}
+                justifyContent="flex-end"
+                onScroll={this.handlerScroll}
+                ref={this.scroller}
+            >
+                <DataSourceRender
+                    dataSource={this.dataSource}
+                    reverce={true}
+                    wrapWith={this.dataSourceWrapper}
+                    renderItem={this.renderMessage}
+                    renderLoading={this.renderLoading}
+                />
+            </XScrollViewReverse2>
         );
     }
 }
