@@ -146,7 +146,6 @@ export const XScrollViewReverse2 = React.memo(
                 // }
 
                 // Watch for size
-                let wasInited = false;
                 let observer = new ResizeObserver(src => {
                     let outer = outerHeight.current;
                     let inner = innerHeight.current;
@@ -162,11 +161,6 @@ export const XScrollViewReverse2 = React.memo(
                         }
                     }
                     updateSizes(outer, inner);
-
-                    if (!wasInited) {
-                        wasInited = true;
-                        setInited(true);
-                    }
                 });
                 observer.observe(innerDiv);
                 observer.observe(outerDiv);
