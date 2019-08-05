@@ -29,7 +29,7 @@ const showImageModal = (src: string, srcSet: string, width: number, height: numb
                 className={modalImgStyle}
                 style={{
                     width: width,
-                    height: height,
+                    // height: height,
                 }}
             />
         </div>
