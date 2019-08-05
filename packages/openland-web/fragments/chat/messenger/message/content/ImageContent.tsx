@@ -16,14 +16,22 @@ const modalImgContainer = css`
 const modalImgStyle = css`
     flex-shrink: 0;
     object-fit: contain;
-    width: 100%;
+    max-width: 70vw;
     max-height: 90vh;
 `;
 
-const showImageModal = (src: string, srcSet: string) => {
+const showImageModal = (src: string, srcSet: string, width: number, height: number) => {
     showModalBox({ flowing: true }, () => (
         <div className={modalImgContainer}>
-            <img src={src} srcSet={srcSet} className={modalImgStyle} />
+            <img
+                src={src}
+                srcSet={srcSet}
+                className={modalImgStyle}
+                style={{
+                    width: width,
+                    // height: height,
+                }}
+            />
         </div>
     ));
 };
@@ -42,6 +50,7 @@ const imgContainer = css`
     background-color: #f0f2f5;
     z-index: 0;
     cursor: pointer;
+    margin: 4px 0;
 
     @media (max-width: 1300px) {
         max-width: 100%;
@@ -132,7 +141,12 @@ export const ImageContent = React.memo(
                 style={{ width: layoutWidth, height: layoutHeight }}
                 onClick={(e: React.MouseEvent) => {
                     e.stopPropagation();
-                    showImageModal(url + opsModal, url + opsRetinaModal);
+                    showImageModal(
+                        url + opsModal,
+                        url + opsRetinaModal,
+                        layoutWidth * 3,
+                        layoutHeight * 3,
+                    );
                 }}
             >
                 <img

@@ -6,12 +6,14 @@ import { MAvatar } from './MAvatar';
 import { css, cx } from 'linaria';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
+import StarIcon from 'openland-icons/s/ic-star-16.svg';
 import { formatTime } from 'openland-y-utils/formatTime';
 import { UserShort_primaryOrganization, UserShort } from 'openland-api/Types';
 import { HoverMenu } from './Menu/HoverMenu';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
+import { XPopper } from 'openland-x/XPopper';
 
 const senderContainer = css`
     display: flex;
@@ -31,17 +33,41 @@ const senderOrgAndDateStyle = css`
     color: #676d7a; // ThemeDefault.foregroundSecondary
 `;
 
+const senderBadgeStyle = css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    cursor: pointer;
+    margin-left: 4px;
+`;
+
 const MessageSenderName = (props: {
     sender: UserShort;
     senderNameEmojify?: string | JSX.Element;
 }) => (
-        <ULink
-            path={`/${props.sender.shortname || props.sender.id}`}
-            className={cx(TextLabel1, senderNameStyle)}
+    <ULink
+        path={`/${props.sender.shortname || props.sender.id}`}
+        className={cx(TextLabel1, senderNameStyle)}
+    >
+        {props.senderNameEmojify || props.sender.name}
+    </ULink>
+);
+
+const MessageSenderBadge = (props: { senderBadgeNameEmojify: string | JSX.Element }) => {
+    return (
+        <XPopper
+            placement="top"
+            showOnHover={true}
+            style="dark"
+            content={<div style={{ textAlign: 'center' }}>{props.senderBadgeNameEmojify}</div>}
         >
-            {props.senderNameEmojify || props.sender.name}
-        </ULink>
+            <div className={senderBadgeStyle}>
+                <StarIcon />
+            </div>
+        </XPopper>
     );
+};
 
 const MessageSenderOrg = (props: { organization: UserShort_primaryOrganization }) => (
     <ULink
@@ -59,12 +85,16 @@ const MessageTime = (props: { time: number }) => (
 interface MessageSenderContentProps {
     sender: UserShort;
     senderNameEmojify?: string | JSX.Element;
+    senderBadgeNameEmojify?: string | JSX.Element;
     date: number;
 }
 
 export const MessageSenderContent = (props: MessageSenderContentProps) => (
     <div className={senderContainer}>
         <MessageSenderName sender={props.sender} senderNameEmojify={props.senderNameEmojify} />
+        {props.senderBadgeNameEmojify && (
+            <MessageSenderBadge senderBadgeNameEmojify={props.senderBadgeNameEmojify} />
+        )}
         {props.sender.primaryOrganization && (
             <MessageSenderOrg organization={props.sender.primaryOrganization} />
         )}
@@ -123,8 +153,8 @@ const messageContainerSelectedClass = css`
         background-color: #fff; // ThemeDefault.backgroundPrimary
     }
 
-    .hover-menu-container{
-        background-color:  #f0f2f5; // ThemeDefault.backgroundTertiary
+    .hover-menu-container {
+        background-color: #f0f2f5; // ThemeDefault.backgroundTertiary
     }
 `;
 
@@ -250,6 +280,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
         <MessageSenderContent
             sender={message.sender}
             senderNameEmojify={message.senderNameEmojify}
+            senderBadgeNameEmojify={message.senderBadgeNameEmojify}
             date={message.date}
         />
     );
@@ -279,7 +310,6 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                     {layout !== 'mobile' && <HoverMenu message={message} engine={engine} />}
                 </div>
             </div>
-
         </div>
     );
 });
