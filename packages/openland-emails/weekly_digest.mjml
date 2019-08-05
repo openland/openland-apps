@@ -42,23 +42,10 @@
             }
         </mj-style>
         <mj-breakpoint width="517px" />
-        <mj-title>Weekly digest</mj-title>
-        <mj-preview>Some text about digest... to enter Openland, use the following one-time code on</mj-preview>
+        <mj-title>{{title}}</mj-title>
     </mj-head>
     <mj-body width="690px">
         <mj-include path="./includes/header.mjml" />
-        <mj-section mj-class="wrapper">
-            <mj-column mj-class="container-narrow">
-                <mj-text mj-class="title bold-text">
-                    Weekly digest
-                </mj-text>
-                <mj-text mj-class="text">
-                    Some text about digest... to enter Openland, use the following one-time code on
-                </mj-text>
-            </mj-column>
-        </mj-section>
-
-        <mj-spacer height="24px" />
 
         <!-- new messages -->
 
