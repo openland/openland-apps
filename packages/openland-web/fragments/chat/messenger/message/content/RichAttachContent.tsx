@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XViewRouterContext } from 'react-mental';
+import { showModalBox } from 'openland-x/showModalBox';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
@@ -25,6 +26,7 @@ const richImageContainer = css`
     flex-direction: row;
     align-items: center;
     min-height: 100%;
+    cursor: pointer;
 `;
 
 const richImageStyle = css`
@@ -120,8 +122,7 @@ const InternalComponent = ({
     let keyboard = null;
     const router = React.useContext(XViewRouterContext);
 
-    const keyboardAction = React.useCallback((e: any, path: string | null) => {
-        e.preventDefault();
+    const keyboardAction = React.useCallback((e: React.MouseEvent, path: string | null) => {
         e.stopPropagation();
         if (router) {
             router.navigate(makeInternalLinkRelative(path || ''));
@@ -151,7 +152,7 @@ const InternalComponent = ({
                                 text={j.title}
                                 marginTop={8}
                                 key={j.id}
-                                onClick={(e: any) => keyboardAction(e, j.url)}
+                                onClick={(e: React.MouseEvent) => keyboardAction(e, j.url)}
                             />
                         ));
                     }
@@ -178,6 +179,30 @@ const InternalComponent = ({
     );
 };
 
+const modalImgContainer = css`
+    background-color: #000;
+    flex-shrink: 0;
+    flex-grow: 1;
+    display: flex;
+    width: 100%;
+    height: 100%;
+`;
+
+const modalImgStyle = css`
+    flex-shrink: 0;
+    object-fit: contain;
+    width: 100%;
+    max-height: 80vh;
+`;
+
+const showImageModal = (src: string, width: number, height: number) => {
+    showModalBox({ width: 800 }, () => (
+        <div className={modalImgContainer}>
+            <img src={src} className={modalImgStyle} width={width} height={height} />
+        </div>
+    ));
+};
+
 export const RichAttachContent = ({
     attach,
 }: {
@@ -199,7 +224,13 @@ export const RichAttachContent = ({
             24,
         );
         img = (
-            <div className={richImageContainer}>
+            <div
+                className={richImageContainer}
+                onClick={(e: React.MouseEvent) => {
+                    e.stopPropagation();
+                    showImageModal(attach.image!!.url, layout.width * 2, layout.height * 2);
+                }}
+            >
                 <img
                     className={richImageStyle}
                     width={layout.width}
