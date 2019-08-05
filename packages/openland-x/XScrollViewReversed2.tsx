@@ -4,6 +4,7 @@ import ResizeObserver from 'resize-observer-polyfill';
 import { XView, XStyles } from 'react-mental';
 import { XScrollValues } from './XScrollView3';
 import { throttle } from 'openland-y-utils/timer';
+import { isChrome } from 'openland-y-utils/isChrome';
 
 const NativeScrollStyle = css`
     overflow-y: overlay;
@@ -36,6 +37,7 @@ interface XScrollViewReverse2RefProps {
 export const XScrollViewReverse2 = React.memo(
     React.forwardRef<XScrollViewReverse2RefProps, XScrollViewReverse2Props>(
         (props: XScrollViewReverse2Props, ref) => {
+            const [inited, setInited] = React.useState<boolean>(isChrome);
             const outerRef = React.useRef<HTMLDivElement>(null);
             const innerRef = React.useRef<HTMLDivElement>(null);
             const outerHeight = React.useRef<number>(0);
@@ -78,6 +80,7 @@ export const XScrollViewReverse2 = React.memo(
             }, []);
 
             const updateSizes = React.useCallback((outer: number, inner: number) => {
+                console.log('update:', [outer, inner]);
                 const outerDiv = outerRef.current!!;
                 const innerDiv = innerRef.current!!;
                 if (!outerDiv || !innerDiv) {
@@ -129,7 +132,15 @@ export const XScrollViewReverse2 = React.memo(
                 }, 150);
                 outerDiv.addEventListener('scroll', onScrollHandler, { passive: true });
 
+                // const onScrollHandlerSync = () => {
+                //     updateSizes(outerDiv.clientHeight, innerDiv.clientHeight);
+                // };
+                // if (!isChrome) {
+                //     outerDiv.addEventListener('scroll', onScrollHandlerSync, { passive: false });
+                // }
+
                 // Watch for size
+                let wasInited = false;
                 let observer = new ResizeObserver(src => {
                     let outer = outerHeight.current;
                     let inner = innerHeight.current;
@@ -145,12 +156,20 @@ export const XScrollViewReverse2 = React.memo(
                         }
                     }
                     updateSizes(outer, inner);
+
+                    if (!wasInited) {
+                        wasInited = true;
+                        setInited(true);
+                    }
                 });
                 observer.observe(innerDiv);
                 observer.observe(outerDiv);
 
                 return () => {
                     outerDiv.removeEventListener('scroll', onScrollHandler);
+                    // if (!isChrome) {
+                    //     outerDiv.removeEventListener('scroll', onScrollHandlerSync);
+                    // }
                     observer.disconnect();
                 };
             }, []);
@@ -180,7 +199,7 @@ export const XScrollViewReverse2 = React.memo(
             const { children, ...other } = props;
 
             return (
-                <XView {...other}>
+                <XView {...other} opacity={inited ? 1 : 0}>
                     <div className={NativeScrollStyle} ref={outerRef}>
                         <div className={NativeScrollContentStyle} ref={innerRef}>
                             {props.children}

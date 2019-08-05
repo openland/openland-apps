@@ -202,8 +202,6 @@ export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController)
 
             if (currentScope) {
                 currentScope.delete(popperBodyRef);
-
-                console.warn('boom 2', currentScope);
             }
         };
     }, []);
