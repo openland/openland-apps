@@ -54,7 +54,7 @@ export const ReplyContent = (props: ReplyContentProps) => {
                                     height: 15,
                                     lineHeight: 15,
                                     color: theme.foregroundPrimary,
-                                    letterSpacing: -0.3,
+                                    letterSpacing: 0,
                                     fontSize: 13,
                                     fontWeight: TextStyles.weight.medium,
                                     marginBottom: 2,
