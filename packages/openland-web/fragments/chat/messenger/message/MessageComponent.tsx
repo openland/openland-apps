@@ -67,6 +67,19 @@ const senderBadgeContentStyle = css`
     }
 `;
 
+const botBadgeStyle = css`
+    align-self: center;
+    font-size: 11px;
+    line-height: 13px;
+    font-weight: 600;
+    color: #248bf2;
+    text-align: center;
+    padding: 2px 5px;
+    border-radius: 4px;
+    background-color: #e7f3ff;
+    margin-left: 8px;
+`;
+
 const MessageSenderName = (props: {
     sender: UserShort;
     senderNameEmojify?: string | JSX.Element;
@@ -115,6 +128,7 @@ interface MessageSenderContentProps {
 export const MessageSenderContent = (props: MessageSenderContentProps) => (
     <div className={senderContainer}>
         <MessageSenderName sender={props.sender} senderNameEmojify={props.senderNameEmojify} />
+        {props.sender.isBot && <div className={botBadgeStyle}>BOT</div>}
         {props.senderBadgeNameEmojify && (
             <MessageSenderBadge senderBadgeNameEmojify={props.senderBadgeNameEmojify} />
         )}
