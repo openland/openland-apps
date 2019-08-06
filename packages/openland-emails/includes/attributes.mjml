@@ -282,6 +282,23 @@
         line-height="18px"
         letter-spacing="-0.08px"
         text-align="left" />
+
+    <mj-class
+        name="post-preview-body"
+        />
+
+    <mj-class
+        name="post-preview-top"
+        padding-bottom="8px"
+        />
+
+    <mj-class
+        name="post-preview-content"
+        />
     
+    <mj-class
+        name="post-preview-bottom"
+        padding-top="8px"
+        />
 
 </mj-attributes>
