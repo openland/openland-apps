@@ -73,7 +73,7 @@ const focusedStyle = css`
     background-color: #F0F2F5;
 `;
 
-const Item = React.memo((props: { focused: boolean, children?: any, item: any, onSelected: (item: any) => void }) => {
+export const Item = React.memo((props: { focused: boolean, children?: any, item: any, onSelected: (item: any) => void }) => {
     let ref = React.useRef<HTMLDivElement>(null);
     React.useLayoutEffect(() => {
         if (props.focused) {
@@ -115,15 +115,12 @@ export const UNavigableList = React.memo(React.forwardRef((props: UNavigableList
         }
     }));
     return (
-        <XView
-            flexDirection="column"
-            alignItems="stretch"
-        >
+        <>
             {state.items.map((v, i) => (
                 <Item key={'item-' + v.key} focused={state.focus === i} item={v.data} onSelected={props.onSelected}>
                     {props.render(v.data)}
                 </Item>
             ))}
-        </XView>
+        </>
     );
 }));
