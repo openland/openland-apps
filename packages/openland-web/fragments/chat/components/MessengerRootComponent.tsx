@@ -327,13 +327,17 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
 
     onInputPressUp = () => {
         if (this.rickRef.current && this.rickRef.current.getText().map(c => typeof c === 'string' ? c : c.name).join().trim()) {
-            return;
+            return false;
         }
-        let myMessages = this.conversation!.dataSource.getItems().filter(m => m.type === 'message' && m.isOut && m.text && !m.isSending);
+        let myMessages = this.conversation!.dataSource.getItems().filter(m => m.type === 'message' && m.isOut && m.text && !m.isSending && !m.isService);
         let myMessage = myMessages[0] as DataSourceMessageItem | undefined;
         if (myMessage) {
             this.conversation!.messagesActionsStateEngine.edit(myMessage);
+            return true;
+
         }
+        return false;
+
     }
 
     onTextSend = (text: URickTextValue) => {
