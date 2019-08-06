@@ -78,11 +78,11 @@ export const ChatJoin = XMemo<ChatJoinProps>((props) => (
                     <Text style={[styles.title, { color: props.theme.foregroundPrimary }]}>
                         {props.room.title}
                     </Text>
-                    {/* {props.room.description && (
+                    {props.room.description && (
                         <Text style={[styles.description, { color: props.theme.foregroundPrimary }]}>
                             {props.room.description}
                         </Text>
-                    )} */}
+                    )}
                     <Text style={[styles.members, { color: props.theme.foregroundSecondary }]}>
                         {props.room.membersCount + (props.room.membersCount === 1 ? ' member' : ' members')}
                     </Text>
