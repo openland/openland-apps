@@ -8,6 +8,7 @@ import { UserAvatar } from 'openland-mobile/messenger/components/UserAvatar';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { Platform } from 'react-native';
 
 interface ItemBaseProps {
     avatar: JSX.Element;
@@ -22,7 +23,7 @@ const ItemBase = XMemo<ItemBaseProps>((props) => {
 
     return (
         <ASFlex marginLeft={16} marginRight={16} flexDirection="row" highlightColor={theme.backgroundPrimaryActive} onPress={onPress} alignItems="center">
-            <ASFlex alignItems="center" justifyContent="center">
+            <ASFlex marginLeft={Platform.OS === 'android' ? 16 : 0} alignItems="center" justifyContent="center">
                 {avatar}
             </ASFlex>
             <ASFlex marginLeft={16} flexGrow={1} flexBasis={0} alignItems="center">
