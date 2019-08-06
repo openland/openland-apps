@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ASText } from 'react-native-async-view/ASText';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { renderPreprocessedText } from '../AsyncMessageContentView';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
