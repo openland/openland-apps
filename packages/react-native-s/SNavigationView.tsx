@@ -26,6 +26,7 @@ export interface SNavigationViewStyle {
     headerColor: string;
     searchBackground: string;
     searchColor: string;
+    selectionColor: string;
 }
 
 export class SNavigationView extends React.PureComponent<SNavigationViewProps, { presented?: NavigationManager }> {
@@ -125,6 +126,7 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
             headerColor: 'white',
             searchBackground: '#F0F2F5',
             searchColor: '#969AA3',
+            selectionColor: '#1885F2',
             ...this.props.navigationBarStyle
         };
 

@@ -20,7 +20,7 @@ const TextWrapper = (props: TextWrapperProps) => {
         <ASText
             key={'text-' + props.color}
             {...other}
-            letterSpacing={-0.3}
+            letterSpacing={0}
             fontWeight={TextStyles.weight.regular}
         >
             {children}

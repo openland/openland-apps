@@ -199,6 +199,24 @@ routes.add('/message/:id/', '/unicorn/index');
 routes.add('/:shortname', '/unicorn/index');
 routes.add('/:shortname/', '/unicorn/index');
 
+//
+// Backward compatibility
+//
+
+// Profile
+routes.add('/mail/u/:id', '/unicorn/index');
+routes.add('/mail/u/:id/', '/unicorn/index');
+routes.add('/mail/o/:id', '/unicorn/index');
+routes.add('/mail/o/:id/', '/unicorn/index');
+routes.add('/mail/c/:id', '/unicorn/index');
+routes.add('/mail/c/:id/', '/unicorn/index');
+routes.add('/direcory/u/:id', '/unicorn/index');
+routes.add('/direcory/u/:id/', '/unicorn/index');
+routes.add('/direcory/o/:id', '/unicorn/index');
+routes.add('/direcory/o/:id/', '/unicorn/index');
+routes.add('/direcory/c/:id', '/unicorn/index');
+routes.add('/direcory/c/:id/', '/unicorn/index');
+
 export function getRequestHandler(src: any): any {
     return routes.getRequestHandler(src);
 }

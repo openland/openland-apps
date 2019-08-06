@@ -5,35 +5,92 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { css, cx } from 'linaria';
 
 const modalImgContainer = css`
+    position: relative;
     background-color: #000;
     flex-shrink: 0;
     flex-grow: 1;
     display: flex;
     width: 100%;
     height: 100%;
+    z-index: 0;
 `;
 
-const modalImgStyle = css`
-    flex-shrink: 0;
+const modalPreviewImgStyle = css`
+    position: absolute;
     object-fit: contain;
+    left: 0;
+    top: 0;
+    z-index: 0;
     max-width: 70vw;
     max-height: 90vh;
 `;
 
-const showImageModal = (src: string, srcSet: string, width: number, height: number) => {
-    showModalBox({ flowing: true }, () => (
+const modalImgStyle = css`
+    opacity: 0;
+    transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    object-fit: contain;
+    max-width: 70vw;
+    max-height: 90vh;
+    z-index: 1;
+`;
+
+const modalImgAppearStyle = css`
+    opacity: 1;
+`;
+
+interface ModalProps {
+    src: string;
+    srcSet: string;
+    width: number;
+    height: number;
+    preview: string;
+}
+
+const ModalContent = React.memo((props: ModalProps) => {
+    const imgRef = React.useRef<HTMLImageElement>(null);
+    const renderTime = new Date().getTime();
+
+    const onLoad = React.useCallback(() => {
+        let delta = new Date().getTime() - renderTime;
+        if (imgRef.current) {
+            if (delta < 50) {
+                // show image instantly if loaded fast enough
+                imgRef.current.className = cx(modalImgStyle, modalImgAppearStyle);
+            } else {
+                // animate loaded via transition
+                imgRef.current.style.opacity = '1';
+            }
+        }
+    }, []);
+
+    return (
         <div className={modalImgContainer}>
             <img
-                src={src}
-                srcSet={srcSet}
+                className={modalPreviewImgStyle}
+                src={props.preview}
+                style={{
+                    width: props.width,
+                    height: props.height,
+                }}
+            />
+            <img
+                ref={imgRef}
+                onLoad={onLoad}
+                src={props.src}
+                srcSet={props.srcSet}
                 className={modalImgStyle}
                 style={{
-                    width: width,
-                    // height: height,
+                    width: props.width,
+                    height: props.height,
                 }}
             />
         </div>
-    ));
+    );
+});
+
+const showImageModal = (props: ModalProps) => {
+    showModalBox({ flowing: true }, () => <ModalContent {...props} />);
 };
 
 const imgContainer = css`
@@ -132,8 +189,18 @@ export const ImageContent = React.memo(
         const ops = `scale_crop/${layoutWidth}x${layoutHeight}/`;
         const opsRetina = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/center/ 2x`;
 
-        const opsModal = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/`;
-        const opsRetinaModal = `scale_crop/${layoutWidth * 3}x${layoutHeight * 3}/center/ 2x`;
+        const layoutModal = layoutMedia(
+            props.file.fileMetadata.imageWidth || 0,
+            props.file.fileMetadata.imageHeight || 0,
+            (window.innerWidth / 100) * 80,
+            (window.innerHeight / 100) * 80,
+            32,
+            32,
+        );
+
+        const opsModal = `scale_crop/${layoutModal.width}x${layoutModal.height}/`;
+        const opsRetinaModal = `scale_crop/${layoutModal.width * 2}x${layoutModal.height *
+            2}/center/ 2x`;
 
         return (
             <div
@@ -141,12 +208,13 @@ export const ImageContent = React.memo(
                 style={{ width: layoutWidth, height: layoutHeight }}
                 onClick={(e: React.MouseEvent) => {
                     e.stopPropagation();
-                    showImageModal(
-                        url + opsModal,
-                        url + opsRetinaModal,
-                        layoutWidth * 3,
-                        layoutHeight * 3,
-                    );
+                    showImageModal({
+                        src: url + opsModal,
+                        srcSet: url + opsRetinaModal,
+                        width: layoutModal.width,
+                        height: layoutModal.height,
+                        preview: props.file.filePreview || '',
+                    });
                 }}
             >
                 <img

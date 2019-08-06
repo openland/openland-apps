@@ -55,7 +55,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         lineHeight={15}
                                         marginLeft={10}
                                         color={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.foregroundPrimary}
-                                        letterSpacing={-0.3}
+                                        letterSpacing={0}
                                         fontSize={13}
                                         onPress={() => this.props.onUserPress(repliedMessage!.sender.id)}
                                         fontWeight={TextStyles.weight.medium}

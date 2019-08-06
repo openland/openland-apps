@@ -20,7 +20,7 @@ export const InputTopView = (props: InputTopViewProps) => {
                 <Image source={icon} style={{ tintColor: theme.foregroundSecondary, width: 24, height: 24 }} />
             </View>
             <View flexGrow={1} flexShrink={1}>
-                <Text style={{ ...TypeStyles.label1, color: theme.foregroundPrimary }} ellipsizeMode="tail" numberOfLines={1} allowFontScaling={false}>{title}</Text>
+                <Text style={{ ...TypeStyles.label2, color: theme.foregroundPrimary }} ellipsizeMode="tail" numberOfLines={1} allowFontScaling={false}>{title}</Text>
                 <Text style={{ ...TypeStyles.subhead, color: theme.foregroundSecondary }} ellipsizeMode="tail" numberOfLines={1} allowFontScaling={false}>{text}</Text>
             </View>
             <TouchableWithoutFeedback onPress={onClearPress}>

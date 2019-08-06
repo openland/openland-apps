@@ -354,7 +354,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     text={this.state.text}
                                     suggestions={suggestions}
                                     topView={quoted}
-                                    placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message...'}
+                                    placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message'}
                                     canSubmit={canSubmit}
                                 />
                             )}

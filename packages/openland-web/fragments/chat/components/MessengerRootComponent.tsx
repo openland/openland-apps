@@ -27,7 +27,7 @@ import { XButton } from 'openland-x/XButton';
 import { showModalBox } from 'openland-x/showModalBox';
 import { SendMessageComponent } from './SendMessageComponent';
 import { PinMessageComponent } from 'openland-web/fragments/chat/messenger/message/PinMessageComponent';
-import { pluralForm, plural } from 'openland-y-utils/plural';
+import { pluralForm } from 'openland-y-utils/plural';
 import { MessageListComponent } from '../messenger/view/MessageListComponent';
 import { TypingsView } from '../messenger/typings/TypingsView';
 import { XLoader } from 'openland-x/XLoader';
@@ -36,9 +36,9 @@ import { InputMessageActionComponent } from './InputMessageActionComponent';
 import { SpanType, SpanUser } from 'openland-y-utils/spans/Span';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import { findSpans } from 'openland-y-utils/findSpans';
-import AlertBlanket from 'openland-x/AlertBlanket';
 import UploadCare from 'uploadcare-widget';
 import { DropZone } from './DropZone';
+import { showAttachConfirm } from './AttachConfirm';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
@@ -327,13 +327,17 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
 
     onInputPressUp = () => {
         if (this.rickRef.current && this.rickRef.current.getText().map(c => typeof c === 'string' ? c : c.name).join().trim()) {
-            return;
+            return false;
         }
-        let myMessages = this.conversation!.dataSource.getItems().filter(m => m.type === 'message' && m.isOut && m.text && !m.isSending);
+        let myMessages = this.conversation!.dataSource.getItems().filter(m => m.type === 'message' && m.isOut && m.text && !m.isSending && !m.isService);
         let myMessage = myMessages[0] as DataSourceMessageItem | undefined;
         if (myMessage) {
             this.conversation!.messagesActionsStateEngine.edit(myMessage);
+            return true;
+
         }
+        return false;
+
     }
 
     onTextSend = (text: URickTextValue) => {
@@ -376,14 +380,10 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     }
 
     onAttach = (files: File[]) => {
-        AlertBlanket
-            .builder()
-            .title(`Send ${plural(files.length, ['file', 'files'])}?`)
-            .action('Send', async () => {
-                files.map(f => new UploadCareUploading(UploadCare.fileFrom('object', f), f.name))
-                    .map(this.conversation!.sendFile);
-            })
-            .show();
+        showAttachConfirm(files, (res) => {
+            res.map(f => new UploadCareUploading(UploadCare.fileFrom('object', f), f.name))
+                .map(this.conversation!.sendFile);
+        });
     }
 
     //

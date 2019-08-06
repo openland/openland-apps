@@ -16,6 +16,7 @@ import { searchMentions } from 'openland-engines/mentions/searchMentions';
 import { emojiSuggest } from 'openland-y-utils/emojiSuggest';
 import { emojiComponent } from 'openland-y-utils/emojiComponent';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 interface MentionUserComponentProps {
     id: string;
@@ -88,8 +89,10 @@ const mentionsContainer = css`
     border-radius: 8px;
     padding-top: 8px;
     padding-bottom: 8px;
+    opacity: 0;
+    transform: translateY(10px);
     will-change: opacity;
-    transition: opacity, transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: scroll;
     overflow-x: none;
     max-height: 250px;
@@ -115,16 +118,22 @@ const AutoCompleteComponent = React.memo(
             ref: React.Ref<AutoCompleteComponentRef>,
         ) => {
             const listRef = React.useRef<UNavigableListRef>(null);
+            const fallbackRender = React.useRef<any>(<div className={mentionsContainer} />);
+            const containerRef = React.useRef<HTMLDivElement>(null);
 
+            const forceClose = React.useRef<boolean>(false);
             // Store word in state for nice disappear animation
             const [word, setWord] = React.useState(props.activeWord);
-            const lastActiveWord = React.useRef(props.activeWord);
-            lastActiveWord.current = props.activeWord;
-            if (props.activeWord) {
-                if (word !== props.activeWord) {
-                    setWord(props.activeWord);
-                }
+            if (word !== props.activeWord && !forceClose.current) {
+                setWord(props.activeWord);
             }
+            forceClose.current = false;
+
+            const lastActiveWord = React.useRef(props.activeWord);
+            const isActive = React.useRef<boolean>(false);
+            isActive.current = false;
+            lastActiveWord.current = props.activeWord;
+
             React.useImperativeHandle(ref, () => ({
                 onPressDown: () => {
                     if (!lastActiveWord.current) {
@@ -166,9 +175,27 @@ const AutoCompleteComponent = React.memo(
                     return false;
                 },
                 isActive: () => {
-                    return !!word && word.startsWith(':');
+                    return isActive.current;
                 }
             }));
+            useShortcuts([{
+                keys: ['Escape'], callback: () => {
+                    if (isActive.current) {
+                        forceClose.current = true;
+                        setWord(null);
+                        return true;
+                    }
+                    return false;
+                }
+            }]);
+
+            React.useEffect(() => {
+                if (containerRef.current) {
+                    containerRef.current.style.opacity = word ? '1' : '0';
+                    containerRef.current.style.transform = `translateY(${word ? 0 : 10}px)`;
+                    containerRef.current.style.pointerEvents = word ? 'auto' : 'none';
+                }
+            }, [word]);
 
             const itemRender = React.useCallback(
                 (v: any) => (
@@ -193,7 +220,7 @@ const AutoCompleteComponent = React.memo(
                 const client = useClient();
                 let members = client.useWithoutLoaderRoomMembers({ roomId: props.groupId });
                 if (!members || !members.members) {
-                    return null;
+                    return fallbackRender.current;
                 }
 
                 if (word && !word.startsWith(':')) {
@@ -208,14 +235,11 @@ const AutoCompleteComponent = React.memo(
                         matched = [];
                     }
 
-                    return (
+                    isActive.current = true;
+                    fallbackRender.current = (
                         <div
+                            ref={containerRef}
                             className={mentionsContainer}
-                            style={{
-                                opacity: props.activeWord ? 1 : 0,
-                                transform: `translateY(${props.activeWord ? 0 : 10}px)`,
-                                pointerEvents: props.activeWord ? 'auto' : 'none',
-                            }}
                             onMouseDown={(e) => e.preventDefault()}
                         >
                             <UNavigableList
@@ -230,14 +254,11 @@ const AutoCompleteComponent = React.memo(
             }
             if (word && word.startsWith(':')) {
                 let filtered = emojiSuggest(word).map(v => ({ key: v.name, data: v }));
-                return (
+                isActive.current = true;
+                fallbackRender.current = (
                     <div
+                        ref={containerRef}
                         className={mentionsContainer}
-                        style={{
-                            opacity: props.activeWord ? 1 : 0,
-                            transform: `translateY(${props.activeWord ? 0 : 10}px)`,
-                            pointerEvents: props.activeWord ? 'auto' : 'none',
-                        }}
                         onMouseDown={(e) => e.preventDefault()}
                     >
                         {/* <UButton text={'filtered-' + filtered.length} onClick={() => props.onEmojiSelected({ name: '1f923', value: '🤣' })} /> */}
@@ -250,7 +271,7 @@ const AutoCompleteComponent = React.memo(
                     </div>
                 );
             }
-            return null;
+            return fallbackRender.current;
         },
     ),
 );
@@ -263,7 +284,7 @@ interface SendMessageComponentProps {
     placeholder?: string;
     initialText?: URickTextValue;
     rickRef?: React.RefObject<URickInputInstance>;
-    onPressUp?: () => void;
+    onPressUp?: () => boolean;
     onAttach?: (files: File[]) => void;
 }
 
@@ -325,10 +346,11 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
         let s = suggestRef.current;
         if (s && s.isActive()) {
             s.onPressUp();
+            return true;
         } else if (props.onPressUp) {
-            props.onPressUp();
+            return props.onPressUp();
         }
-        return true;
+        return false;
     }, []);
 
     const onPressDown = React.useCallback(() => {
@@ -336,7 +358,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
         if (s) {
             s.onPressDown();
         }
-        return true;
+        return false;
     }, []);
 
     const onPressTab = React.useCallback(() => {
@@ -344,7 +366,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
         if (s) {
             return s.onPressEnter();
         }
-        return true;
+        return false;
     }, []);
 
     const onAttachPress = React.useCallback(() => {

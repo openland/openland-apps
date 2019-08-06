@@ -2,10 +2,12 @@ import * as React from 'react';
 import { showModalBox } from './showModalBox';
 import { AlertBlanketComponent } from './AlertBlanketComponent';
 import { UButtonStyle } from 'openland-web/components/unicorn/UButton';
+import { XModalController } from './showModal';
 
 export class AlertBlanketBuilder {
     _title?: string;
     _message?: string;
+    _body?: (ctx: XModalController) => JSX.Element;
     _cancelable?: boolean;
     _action?: { name: string, action: () => Promise<void>, style: UButtonStyle } = undefined;
 
@@ -31,6 +33,11 @@ export class AlertBlanketBuilder {
 
     message(message: string): AlertBlanketBuilder {
         this._message = message;
+        return this;
+    }
+
+    body(body: (ctx: XModalController) => JSX.Element): AlertBlanketBuilder {
+        this._body = body;
         return this;
     }
 

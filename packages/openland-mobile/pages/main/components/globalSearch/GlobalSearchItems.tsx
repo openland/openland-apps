@@ -8,6 +8,7 @@ import { UserAvatar } from 'openland-mobile/messenger/components/UserAvatar';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { Platform } from 'react-native';
 
 interface ItemBaseProps {
     avatar: JSX.Element;
@@ -19,15 +20,14 @@ interface ItemBaseProps {
 
 const ItemBase = XMemo<ItemBaseProps>((props) => {
     const { onPress, avatar, name, theme } = props;
-    const height = 48;
 
     return (
-        <ASFlex marginLeft={12} marginRight={12} height={height} flexDirection="row" highlightColor={theme.backgroundPrimaryActive} onPress={onPress} alignItems="center">
-            <ASFlex width={height} height={height} alignItems="center" justifyContent="center">
+        <ASFlex marginLeft={16} marginRight={16} flexDirection="row" highlightColor={theme.backgroundPrimaryActive} onPress={onPress} alignItems="center">
+            <ASFlex marginLeft={Platform.OS === 'android' ? 16 : 0} alignItems="center" justifyContent="center">
                 {avatar}
             </ASFlex>
-            <ASFlex marginLeft={4} flexGrow={1} flexBasis={0} alignItems="center">
-                <ASText fontSize={15} fontWeight={TextStyles.weight.medium} color={theme.foregroundPrimary} flexGrow={1} flexBasis={0} numberOfLines={1}>
+            <ASFlex marginLeft={16} flexGrow={1} flexBasis={0} alignItems="center">
+                <ASText fontSize={17} fontWeight={TextStyles.weight.medium} color={theme.foregroundPrimary} flexGrow={1} flexBasis={0} numberOfLines={1}>
                     {name}
                 </ASText>
             </ASFlex>
@@ -56,7 +56,7 @@ export const GlobalSearchItemSharedRoom = XMemo<ItemRoomProps>((props) => {
             avatar={
                 <ASAvatar
                     src={item.roomPhoto}
-                    size="small"
+                    size="medium"
                     placeholderKey={item.id}
                     placeholderTitle={item.title}
                 />
@@ -82,7 +82,7 @@ export const GlobalSearchItemOrganization = XMemo<ItemOrganizationProps>((props)
             avatar={
                 <ASAvatar
                     src={item.photo}
-                    size="small"
+                    size="medium"
                     placeholderKey={item.id}
                     placeholderTitle={item.name}
                 />
@@ -108,7 +108,7 @@ export const GlobalSearchItemUser = XMemo<ItemUserProps>((props) => {
             avatar={
                 <UserAvatar
                     src={item.photo}
-                    size="small"
+                    size="medium"
                     placeholderKey={item.id}
                     placeholderTitle={item.name}
                     online={item.online}

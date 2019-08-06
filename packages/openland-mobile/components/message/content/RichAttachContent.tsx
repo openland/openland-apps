@@ -186,7 +186,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
                             <Text
                                 style={{
                                     color: theme.foregroundPrimary,
-                                    letterSpacing: -0.3,
+                                    letterSpacing: 0,
                                     fontSize: 14,
                                     marginTop: Platform.OS === 'android' ? -4 : -1,
                                     marginBottom: 4,
