@@ -50,4 +50,16 @@ routing.addRoute('/:shortname', () => ShortnameFragment);
 routing.addRoute('/invite/:invite', () => InviteLandingComponent);
 routing.addRoute('/join/:invite', () => InviteLandingComponent);
 
+//
+// Backward compatibility
+//
+
+// Profile
+routing.addRoute('/mail/u/:id', () => ShortnameFragment);
+routing.addRoute('/mail/o/:id', () => ShortnameFragment);
+routing.addRoute('/mail/c/:id', () => ShortnameFragment);
+routing.addRoute('/direcory/u/:id', () => ShortnameFragment);
+routing.addRoute('/direcory/o/:id', () => ShortnameFragment);
+routing.addRoute('/direcory/c/:id', () => ShortnameFragment);
+
 export const Routing = routing;
