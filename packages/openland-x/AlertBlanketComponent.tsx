@@ -30,6 +30,7 @@ export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, 
                         {builder._message}
                     </XModalContent>
                 )}
+                {builder._body && builder._body(controller)}
                 <XModalFooter>
                     {builder._cancelable && (
                         <UButton

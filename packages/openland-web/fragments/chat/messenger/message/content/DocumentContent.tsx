@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { formatBytes } from 'openland-y-utils/formatBytes';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 import IconFile from 'openland-icons/ic-file.svg';
 import { TextDensed, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { XLoader } from 'openland-x/XLoader';
@@ -62,16 +61,21 @@ const subtitle = css`
     color: #171b1f;
 `;
 
-export const DocumentContent = React.memo(({
-    file,
-}: {
-    file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile & { uri?: string };
-}) => {
+export const DocumentContent = React.memo((props:
+    {
+        file: { fileId?: string, fileMetadata: { name: string, size: number }, uri?: string },
+        onClick?: (ev: React.MouseEvent) => void;
+    }) => {
+    let { file } = props;
     let onClick = React.useCallback((ev: React.MouseEvent) => {
-        ev.stopPropagation();
+        if (props.onClick) {
+            props.onClick(ev);
+        } else {
+            ev.stopPropagation();
+        }
     }, []);
     return (
-        <a className={cx(fileContainer, 'message-document-wrapper')} href={file.fileId && `https://ucarecdn.com/${file.fileId}/`} onClick={onClick} >
+        <a className={cx(fileContainer, 'message-document-wrapper')} href={!props.onClick ? file.fileId && `https://ucarecdn.com/${file.fileId}/` : undefined} onClick={onClick} >
             <div className={infoContent}>
                 <div className={iconContainer}>
                     {file.uri ? <XLoader size="small" transparentBackground={true} /> : <IconFile />}

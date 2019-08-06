@@ -55,6 +55,7 @@ export interface DataSourceMessageItem {
     commentsCount: number;
     fallback: string;
     textSpans: Span[];
+    failed?: boolean;
 
     // legacy
     isSubscribedMessageComments?: boolean;
@@ -535,6 +536,12 @@ export class ConversationEngine implements MessageSendHandler {
             });
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
+        }
+
+        let exDs = this.dataSource.getItem(key);
+        if (exDs) {
+            // TODO: implement reply
+            this.dataSource.removeItem(key);
         }
     }
 

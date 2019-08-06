@@ -49,10 +49,12 @@ export const DropZone = (props: { onDrop: (files: File[]) => void }) => {
     const iconContainerAnimRef = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
+        let pendingClose = false;
         let onDragStart = (ev: any) => {
             if (ev.dataTransfer.types[0] !== 'Files') {
                 return;
             }
+            pendingClose = false;
             ev.preventDefault();
             if (containerRef.current) {
                 containerRef.current.style.display = 'flex';
@@ -63,9 +65,12 @@ export const DropZone = (props: { onDrop: (files: File[]) => void }) => {
             ev.preventDefault();
         };
         let onDragEnd = () => {
-            if (containerRef.current) {
-                containerRef.current.style.display = 'none';
-            }
+            pendingClose = true;
+            setTimeout(() => {
+                if (pendingClose && containerRef.current) {
+                    containerRef.current.style.display = 'none';
+                }
+            }, 50);
         };
         window.addEventListener('dragover', onDragStart);
         window.addEventListener('dragstart', onDragStart);

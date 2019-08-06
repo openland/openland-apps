@@ -8,22 +8,30 @@ export async function delayForewer() {
 
 export function debounce<T extends (...args: any[]) => any>(f: T, ms: number): T {
     let timer: NodeJS.Timeout | null = null;
-
+    let argsToUse: any = undefined;
     return ((...args: any[]) => {
         if (timer) {
             clearTimeout(timer);
+            argsToUse = args;
+        } else {
+            f(...args);
+            console.warn(args);
+            argsToUse = undefined;
         }
 
         timer = setTimeout(() => {
-            f(...args);
-            timer = null;
+            if (argsToUse) {
+                f(...argsToUse);
+                argsToUse = undefined;
+                timer = null;
+            }
         }, ms);
     }) as any;
 }
 
 export function throttle<T extends (...args: any[]) => any>(f: T, wait: number): T {
     let isCalled = false;
-    let savedArgs: any[] | null; 
+    let savedArgs: any[] | null;
 
     const wrapper = ((...args: any[]) => {
         if (isCalled) {
@@ -33,7 +41,7 @@ export function throttle<T extends (...args: any[]) => any>(f: T, wait: number):
 
         f(...args);
         isCalled = true;
-        
+
         setTimeout(() => {
             isCalled = false;
             if (savedArgs) {

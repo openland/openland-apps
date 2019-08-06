@@ -132,8 +132,17 @@ export const ImageContent = React.memo(
         const ops = `scale_crop/${layoutWidth}x${layoutHeight}/`;
         const opsRetina = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/center/ 2x`;
 
-        const opsModal = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/`;
-        const opsRetinaModal = `scale_crop/${layoutWidth * 3}x${layoutHeight * 3}/center/ 2x`;
+        const layoutModal = layoutMedia(
+            props.file.fileMetadata.imageWidth || 0,
+            props.file.fileMetadata.imageHeight || 0,
+            window.innerWidth / 100 * 80,
+            window.innerWidth / 100 * 80,
+            32,
+            32,
+        );
+
+        const opsModal = `scale_crop/${layoutModal.width}x${layoutModal.height}/`;
+        const opsRetinaModal = `scale_crop/${layoutModal.width * 2}x${layoutModal.height * 2}/center/ 2x`;
 
         return (
             <div
@@ -144,8 +153,8 @@ export const ImageContent = React.memo(
                     showImageModal(
                         url + opsModal,
                         url + opsRetinaModal,
-                        layoutWidth * 3,
-                        layoutHeight * 3,
+                        layoutModal.width,
+                        layoutModal.height,
                     );
                 }}
             >
