@@ -54,7 +54,7 @@ const senderBadgeContentStyle = css`
     min-width: 80px;
     height: 30px;
     padding: 0 12px;
-    
+
     &::after {
         position: absolute;
         content: '';
@@ -80,14 +80,11 @@ const MessageSenderName = (props: {
 );
 
 const MessageSenderBadge = (props: { senderBadgeNameEmojify: string | JSX.Element }) => {
-    const [visible, show] = usePopper(
-        { placement: 'top', hideOnLeave: true, borderRadius: 8 },
-        () => (
-            <div className={senderBadgeContentStyle}>
-                <span className={TextCaption}>{props.senderBadgeNameEmojify}</span>
-            </div>
-        ),
-    );
+    const [, show] = usePopper({ placement: 'top', hideOnLeave: true, borderRadius: 8 }, () => (
+        <div className={senderBadgeContentStyle}>
+            <span className={TextCaption}>{props.senderBadgeNameEmojify}</span>
+        </div>
+    ));
     return (
         <div className={senderBadgeStyle} onMouseEnter={show}>
             <StarIcon />
