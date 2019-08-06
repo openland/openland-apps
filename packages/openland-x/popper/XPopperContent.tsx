@@ -19,7 +19,7 @@ interface ContentDivProps {
 
 let colorStyles = styleResolver({
     dark: {
-        background: '#6E7588',
+        background: '#000',
         color: '#ffffff',
         borderRadius: 10,
         padding: '6px 12px 8px',
