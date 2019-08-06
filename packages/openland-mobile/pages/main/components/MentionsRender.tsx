@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, ActivityIndicator, Image } from 'react-native';
+import { View, Image } from 'react-native';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
@@ -7,6 +7,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { SuggestionsWrapper, SuggestionsItemName } from './Suggestions';
 import { searchMentions } from 'openland-engines/mentions/searchMentions';
+import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
 
 export const findMentions = (activeWord: string, groupId: string): MentionToSend[] => {
     let res: MentionToSend[] = [];
@@ -91,7 +92,13 @@ const MentionsRenderInner = (props: MentionsRenderProps) => {
 };
 
 export const MentionsRender = (props: MentionsRenderProps) => (
-    <React.Suspense fallback={<View paddingTop={10} paddingBottom={6}><ActivityIndicator /></View>}>
+    <React.Suspense 
+        fallback={
+            <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 10, paddingBottom: 6 }}>
+                <LoaderSpinner size={'medium'} />
+            </View>
+        }
+    >
         <MentionsRenderInner {...props} />
     </React.Suspense>
 );

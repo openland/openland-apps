@@ -1,0 +1,36 @@
+<mj-section mj-class="post-preview-top container-narrow">
+    <mj-column>
+        <mj-text font-size="0" line-height="0">
+            <a href="{{this.sender.profileLink}}" class="post-preview-link">
+              <img style="display: inline-block; vertical-align: middle; border-radius: 50%;" width="24" height="24" src="{{this.sender.avatar}}" />
+              <span class="post-preview-text" style="padding-left: 12px;">{{this.sender.name}}</span>
+            </a>
+            <span class="post-preview-text post-preview-dot">•</span>
+            <a href="{{this.sender.companyLink}}" class="post-preview-link">
+              <span class="post-preview-text">{{this.sender.company}}</span>
+            </a>
+        </mj-text>
+    </mj-column>
+</mj-section>
+
+<mj-section mj-class="post-preview-content container-narrow">
+    <mj-column>
+        <mj-text font-size="0" line-height="0">
+            <span style="color: #171B1F; font-size: 15px; line-height: 24px; font-weight: 400;">{{this.message}}</span>
+        </mj-text>
+    </mj-column>
+</mj-section>
+
+<mj-section mj-class="post-preview-bottom container-narrow">
+    <mj-column>
+        <mj-text font-size="0" line-height="0">
+            <a href="{{this.chatLink}}" class="post-preview-link">
+              <span class="post-preview-text">{{this.likesCount}} likes</span>
+            </a>
+            <span class="post-preview-text post-preview-dot">•</span>
+            <a href="{{this.chatLink}}" class="post-preview-link">
+              <span class="post-preview-text">{{this.commentsCount}} comments</span>
+            </a>
+        </mj-text>
+    </mj-column>
+</mj-section>
