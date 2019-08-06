@@ -41,7 +41,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         if (span.type === 'link') {
             return <ASText key={'link'} color={(message.isOut && !message.isService) ? theme.contrastPrimary : theme.accentPrimary} onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
         } else if (span.type === 'mention_user') {
-            return <ASText key={'mention-user'} color={(message.isOut && !message.isService) ? theme.contrastPrimary : theme.accentPrimary} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(span.user.id)}>{children}</ASText>;
+            return <ASText key={'mention-user'} fontWeight={message.isService ? TextStyles.weight.bold : undefined} color={!message.isService ? (message.isOut ? theme.contrastPrimary : theme.accentPrimary) : undefined} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(span.user.id)}>{children}</ASText>;
         } else if (span.type === 'mention_all') {
             return <ASText key={'mention-all'} color={(message.isOut && !message.isService) ? theme.contrastPrimary : theme.accentPrimary} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'}>{children}</ASText>;
         } else if (span.type === 'mention_room') {

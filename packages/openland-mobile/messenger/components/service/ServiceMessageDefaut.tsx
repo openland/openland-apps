@@ -33,10 +33,9 @@ export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
             >
                 <ASText
                     color={props.theme.foregroundSecondary}
-                    fontSize={12}
-                    lineHeight={17}
+                    fontSize={13}
+                    lineHeight={18}
                     marginLeft={6}
-                    fontWeight={TextStyles.weight.medium}
                     marginRight={6}
                     textAlign="center"
                 >
