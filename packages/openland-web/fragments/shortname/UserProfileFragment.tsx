@@ -48,12 +48,14 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
                     <UListField
                         label="Username"
                         value={
-                            <a
-                                href={'https://openland.com/' + shortname}
-                                target="_blank"
-                            >
-                                @{shortname}
-                            </a>
+                            <div>
+                                <a
+                                    href={'https://openland.com/' + shortname}
+                                    target="_blank"
+                                >
+                                    @{shortname}
+                                </a>
+                            </div>
                         }
                     />
                 )}
