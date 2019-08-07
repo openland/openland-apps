@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 
 export interface UNavigableListProps {

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { XView } from 'react-mental';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import {
     ConversationEngine,
@@ -17,14 +16,8 @@ import {
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
     UserForMention,
 } from 'openland-api/Types';
-import { XText } from 'openland-x/XText';
-import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
 import { throttle, delay } from 'openland-y-utils/timer';
-import { XModalContent } from 'openland-web/components/XModalContent';
-import { XModalFooter } from 'openland-web/components/XModalFooter';
-import { XButton } from 'openland-x/XButton';
-import { showModalBox } from 'openland-x/showModalBox';
 import { SendMessageComponent } from './SendMessageComponent';
 import { PinMessageComponent } from 'openland-web/fragments/chat/messenger/message/PinMessageComponent';
 import { pluralForm } from 'openland-y-utils/plural';
