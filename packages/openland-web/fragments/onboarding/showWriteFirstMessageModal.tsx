@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { css } from 'linaria';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XImage } from 'react-mental';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { SelectWithDropdown } from 'openland-web/pages/main/mail/SelectWithDropdown';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XScrollView3 } from 'openland-x/XScrollView3';
@@ -18,7 +17,7 @@ const textAlignClassName = css`
 
 const WriteFirstMessageModal = () => {
     const modal = React.useContext(XModalBoxContext);
-    const router = React.useContext(XRouterContext)!;
+    const router = React.useContext(XViewRouterContext);
     const isMobile = useIsMobile() || undefined;
     const [items, setItems] = React.useState([] as DialogDataSourceItem[]);
     const [selected, setSelected] = React.useState<DialogDataSourceItem>();
@@ -39,17 +38,17 @@ const WriteFirstMessageModal = () => {
     }, []);
 
     let goToChat = React.useCallback(
-        async () => {
-            if (selected) {
+        () => {
+            if (selected && router) {
                 // todo set draft somehow
                 // setDraftMessage(selected.key, 'Hi @All! I am ~role~ at ~organization~. We do ~this and that~. Our top priority at the moment is ~achieve something~. Does anyone has any advice or connections for us?', [{ __typename: 'MessageSpanAllMention', offset: 3, length: 4 } as any as UserWithOffset]);
-                router.push('/mail/' + selected.key);
+                router.navigate('/mail/' + selected.key);
                 if (modal) {
                     modal.close();
                 }
             }
         },
-        [selected]
+        [selected],
     );
 
     return (
@@ -107,18 +106,18 @@ const WriteFirstMessageModal = () => {
                         <SelectWithDropdown
                             title="Chats"
                             value={selected}
+                            onChange={setSelected}
                             selectOptions={items.map(i => ({
                                 value: i,
                                 label: i.title,
                                 labelShort: i.title,
                                 subtitle: '',
                             }))}
-                            onChange={setSelected}
                         />
                     )}
                 </XView>
 
-                <XButton text="Go to chat" style="primary" size="large" onClick={goToChat} />
+                <UButton text="Go to chat" size="large" onClick={goToChat} />
             </XView>
         </XView>
     );
@@ -126,7 +125,7 @@ const WriteFirstMessageModal = () => {
 
 export function showWriteFirstMessageModal() {
     showModalBox({ fullScreen: true }, () => (
-        <XScrollView3 flexGrow={1} flexShrink={1}>
+        <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
             <WriteFirstMessageModal />
         </XScrollView3>
     ));

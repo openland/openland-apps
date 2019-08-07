@@ -98,7 +98,7 @@ const UserPopperContent = XMemo(
                     height={30}
                     color={'white'}
                     borderRadius={15}
-                    backgroundColor={'#6e7588'}
+                    backgroundColor={'#000'}
                 >
                     It&apos;s you
                 </XView>

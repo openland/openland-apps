@@ -6,35 +6,24 @@ import { showWriteFirstMessageModal } from 'openland-web/fragments/onboarding/sh
 import { InviteFriendsFragment } from 'openland-web/fragments/account/SettingsInviteFriendsFragment';
 import { DownloadAppsFragment } from 'openland-web/fragments/account/SettingsDownloadAppsFragment';
 
-export let resolveLinkAction: (url: string) => (() => void) | undefined = (url: string) => {
+export const resolveLinkAction = (url: string) => {
     if (url === '/onboarding_invite') {
-        return () => {
-            showModalBox({ fullScreen: true }, ctx => (
-                <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
-                    <InviteFriendsFragment modalContext={ctx} />
-                </XScrollView3>
-            ));
-        };
-    }
-    if (url === '/onboarding_apps') {
-        return () => {
-            showModalBox({ fullScreen: true }, () => (
-                <XScrollView3 flexGrow={1} flexShrink={1}>
-                    <DownloadAppsFragment />
-                </XScrollView3>
-            ));
-        };
+        showModalBox({ fullScreen: true }, ctx => (
+            <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
+                <InviteFriendsFragment modalContext={ctx} />
+            </XScrollView3>
+        ));
+    } else if (url === '/onboarding_apps') {
+        showModalBox({ fullScreen: true }, () => (
+            <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
+                <DownloadAppsFragment />
+            </XScrollView3>
+        ));
     } else if (url === '/onboarding_discover') {
-        return () => {
-            showModalBox({ fullScreen: true }, ctx => (
-                <DiscoverOnLocalState fullHeight={true} onJoinChats={ctx.hide} />
-            ));
-        };
+        showModalBox({ fullScreen: true }, ctx => (
+            <DiscoverOnLocalState fullHeight={true} onJoinChats={ctx.hide} />
+        ));
     } else if (url === '/onboarding_send_first_message') {
-        return () => {
-            showWriteFirstMessageModal();
-        };
+        showWriteFirstMessageModal();
     }
-
-    return undefined;
 };

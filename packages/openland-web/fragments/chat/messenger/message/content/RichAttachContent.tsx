@@ -2,13 +2,20 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XViewRouterContext } from 'react-mental';
 import { showModalBox } from 'openland-x/showModalBox';
-import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
+import {
+    FullMessage_GeneralMessage_attachments_MessageRichAttachment,
+    FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard,
+} from 'openland-api/Types';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextCaption, TextTitle2, TextBody } from 'openland-web/utils/TextStyles';
+import { resolveLinkAction } from 'openland-web/utils/resolveLinkAction';
+
+type messageRitchAttachs = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
+type unicornKeyboard = FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard;
 
 const richWrapper = css`
     display: flex;
@@ -113,11 +120,34 @@ const keyboardContent = css`
     margin-top: -8px;
 `;
 
-const InternalComponent = ({
-    attach,
-}: {
-    attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment;
-}) => {
+const UnicornBotButton = ({ keyboard }: { keyboard: unicornKeyboard }) => (
+    <>
+        {keyboard.buttons.map(i => {
+            if (i) {
+                return i.map(j => (
+                    <UButton
+                        key={j.id}
+                        text={j.title}
+                        marginTop={12}
+                        marginBottom={4}
+                        alignSelf="flex-start"
+                        onClick={(e: React.MouseEvent) => {
+                            e.stopPropagation();
+                            resolveLinkAction(j.url || '');
+                        }}
+                    />
+                ));
+            }
+            return null;
+        })}
+    </>
+);
+
+const InternalComponent = ({ attach }: { attach: messageRitchAttachs }) => {
+    if (!attach.title && !attach.subTitle && attach.keyboard) {
+        return <UnicornBotButton keyboard={attach.keyboard} />;
+    }
+
     let avatar = null;
     let keyboard = null;
     const router = React.useContext(XViewRouterContext);
@@ -203,11 +233,11 @@ const showImageModal = (src: string, width: number, height: number) => {
     ));
 };
 
-export const RichAttachContent = ({
-    attach,
-}: {
-    attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment;
-}) => {
+export const RichAttachContent = ({ attach }: { attach: messageRitchAttachs }) => {
+    if (!attach.title && !attach.titleLink && !attach.subTitle && !attach.keyboard) {
+        return null;
+    }
+
     if (isInternalLink(attach.titleLink || '') || attach.keyboard) {
         return <InternalComponent attach={attach} />;
     }

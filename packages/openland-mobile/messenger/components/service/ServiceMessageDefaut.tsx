@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ASText } from 'react-native-async-view/ASText';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { renderPreprocessedText } from '../AsyncMessageContentView';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
@@ -33,10 +32,9 @@ export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
             >
                 <ASText
                     color={props.theme.foregroundSecondary}
-                    fontSize={12}
-                    lineHeight={17}
+                    fontSize={13}
+                    lineHeight={18}
                     marginLeft={6}
-                    fontWeight={TextStyles.weight.medium}
                     marginRight={6}
                     textAlign="center"
                 >
