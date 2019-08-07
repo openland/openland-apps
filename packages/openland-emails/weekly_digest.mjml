@@ -130,7 +130,7 @@
         <!-- top posts -->
 
 
-        <mj-raw>{{#if topPosts.items.length}}</mj-raw>
+        <mj-raw>{{#if topPosts.count}}</mj-raw>
             <mj-raw>{{#each topPosts.items}}</mj-raw>
                 <mj-include path="./includes/post-preview.mjml" />
                 <mj-spacer height="28px" />
