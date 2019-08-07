@@ -356,7 +356,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     const onPressDown = React.useCallback(() => {
         let s = suggestRef.current;
         if (s) {
-            s.onPressDown();
+            return s.onPressDown();
         }
         return false;
     }, []);

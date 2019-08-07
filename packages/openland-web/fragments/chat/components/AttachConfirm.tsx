@@ -81,7 +81,7 @@ const Body = (props: { files: File[][], ctx: XModalController }) => {
 
     });
 
-    let title = `Send ${hasPhoto && !hasFiles ? pluralForm(bodyFiles.length, ['a photo', bodyFiles.length + ' photos']) : pluralForm(bodyFiles.length, ['an item', bodyFiles.length + ' items'])}`;
+    let title = `Share ${hasPhoto && !hasFiles ? pluralForm(bodyFiles.length, ['a photo', bodyFiles.length + ' photos']) : pluralForm(bodyFiles.length, ['a file', bodyFiles.length + ' files'])}`;
 
     return (
         <>

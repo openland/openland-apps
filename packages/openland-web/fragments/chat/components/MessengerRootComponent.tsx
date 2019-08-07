@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { XView } from 'react-mental';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import {
     ConversationEngine,
@@ -17,14 +16,8 @@ import {
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
     UserForMention,
 } from 'openland-api/Types';
-import { XText } from 'openland-x/XText';
-import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
 import { throttle, delay } from 'openland-y-utils/timer';
-import { XModalContent } from 'openland-web/components/XModalContent';
-import { XModalFooter } from 'openland-web/components/XModalFooter';
-import { XButton } from 'openland-x/XButton';
-import { showModalBox } from 'openland-x/showModalBox';
 import { SendMessageComponent } from './SendMessageComponent';
 import { PinMessageComponent } from 'openland-web/fragments/chat/messenger/message/PinMessageComponent';
 import { pluralForm } from 'openland-y-utils/plural';
@@ -39,6 +32,8 @@ import { findSpans } from 'openland-y-utils/findSpans';
 import UploadCare from 'uploadcare-widget';
 import { DropZone } from './DropZone';
 import { showAttachConfirm } from './AttachConfirm';
+import AlertBlanket from 'openland-x/AlertBlanket';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
@@ -60,52 +55,17 @@ interface MessagesComponentState {
     loading: boolean;
 }
 
-export const DeleteMessageComponent = ({
-    messageIds,
-    hide,
-    action,
-}: {
-    messageIds: string[];
-    hide: () => void;
-    action?: () => void;
-}) => {
-    let client = useClient();
-    return (
-        <XView borderRadius={8}>
-            <XModalContent>
-                <XText>{`Are you sure you want to delete this ${pluralForm(messageIds.length, [
-                    'message',
-                    'messages',
-                ])}? This cannot be undone.`}</XText>
-            </XModalContent>
-            <XModalFooter>
-                <XView marginRight={12}>
-                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
-                </XView>
-                <XButton
-                    text="Delete"
-                    style="danger"
-                    size="large"
-                    onClick={async () => {
-                        await client.mutateRoomDeleteMessages({ mids: messageIds });
-                        if (action) {
-                            action();
-                        }
-                        hide();
-                    }}
-                />
-            </XModalFooter>
-        </XView>
-    );
-};
-
-export const showDeleteMessageModal = (messageIds: string[], action?: () => void) => {
-    showModalBox(
-        {
-            title: `Delete ${pluralForm(messageIds.length, ['message', 'messages'])}`,
-        },
-        ctx => <DeleteMessageComponent messageIds={messageIds} hide={ctx.hide} action={action} />,
-    );
+export const showDeleteMessageModal = (messageIds: string[], client: OpenlandClient, action?: () => void) => {
+    AlertBlanket.builder()
+        .title(`Delete ${pluralForm(messageIds.length, ['message', 'messages'])}`)
+        .message(`Are you sure you want to delete this ${pluralForm(messageIds.length, ['message', 'messages'])}? This cannot be undone.`)
+        .action('Delete', async () => {
+            await client.mutateRoomDeleteMessages({ mids: messageIds });
+            if (action) {
+                action();
+            }
+        }, 'danger')
+        .show();
 };
 
 const messengerContainer = css`
