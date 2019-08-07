@@ -1,28 +1,25 @@
 import * as React from 'react';
 import { XView, XViewRouterContext } from 'react-mental';
 import { css } from 'linaria';
-import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XImage } from 'react-mental';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { SelectWithDropdown } from 'openland-web/pages/main/mail/SelectWithDropdown';
-import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XScrollView3 } from 'openland-x/XScrollView3';
+import { XModalController } from 'openland-x/showModal';
 
 const textAlignClassName = css`
     text-align: center;
 `;
 
-const WriteFirstMessageModal = () => {
-    const modal = React.useContext(XModalBoxContext);
+const WriteFirstMessageModal = (props: { ctx: XModalController }) => {
     const router = React.useContext(XViewRouterContext);
-    const isMobile = useIsMobile() || undefined;
     const [items, setItems] = React.useState([] as DialogDataSourceItem[]);
     const [selected, setSelected] = React.useState<DialogDataSourceItem>();
-    let messenger = React.useContext(MessengerContext);
-    let dataSource = React.useMemo(() => messenger.dialogList.dataSource, [messenger]);
+    const messenger = React.useContext(MessengerContext);
+    const dataSource = React.useMemo(() => messenger.dialogList.dataSource, [messenger]);
 
     React.useEffect(() => {
         dataSource.needMore();
@@ -37,15 +34,13 @@ const WriteFirstMessageModal = () => {
         });
     }, []);
 
-    let goToChat = React.useCallback(
+    const goToChat = React.useCallback(
         () => {
             if (selected && router) {
                 // todo set draft somehow
                 // setDraftMessage(selected.key, 'Hi @All! I am ~role~ at ~organization~. We do ~this and that~. Our top priority at the moment is ~achieve something~. Does anyone has any advice or connections for us?', [{ __typename: 'MessageSpanAllMention', offset: 3, length: 4 } as any as UserWithOffset]);
                 router.navigate('/mail/' + selected.key);
-                if (modal) {
-                    modal.close();
-                }
+                props.ctx.hide();
             }
         },
         [selected],
@@ -57,8 +52,7 @@ const WriteFirstMessageModal = () => {
             position={'relative'}
             flexGrow={1}
             justifyContent={'center'}
-            paddingLeft={isMobile ? 40 : 0}
-            paddingRight={isMobile ? 40 : 0}
+            paddingHorizontal={20}
             paddingBottom={80}
         >
             <XView position="fixed" top={19} left={32}>
@@ -116,7 +110,6 @@ const WriteFirstMessageModal = () => {
                         />
                     )}
                 </XView>
-
                 <UButton text="Go to chat" size="large" onClick={goToChat} />
             </XView>
         </XView>
@@ -124,9 +117,9 @@ const WriteFirstMessageModal = () => {
 };
 
 export function showWriteFirstMessageModal() {
-    showModalBox({ fullScreen: true }, () => (
+    showModalBox({ fullScreen: true }, ctx => (
         <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
-            <WriteFirstMessageModal />
+            <WriteFirstMessageModal ctx={ctx} />
         </XScrollView3>
     ));
 }

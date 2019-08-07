@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 
 type XCounterProps = {
     big?: boolean;
@@ -8,50 +7,52 @@ type XCounterProps = {
     count: number;
 };
 
-const XCounterBig = (props: XCounterProps) => (
-    <XView
-        alignItems="center"
-        justifyContent="center"
-        fontWeight="600"
-        color="#ffffff"
-        backgroundColor={props.grey ? 'rgba(0, 0, 0, 0.2)' : '#0C7FF2'}
+const counterContainer = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #fff;
+    background-color: #0C7FF2;
+    font-weight: 600;
+`;
 
-        whiteSpace="nowrap"
-        overflow="hidden"
-        textOverflow="ellipsis"
-        minWidth={20}
-        height={20}
-        borderRadius={10}
-        fontSize={13}
-        lineHeight="10px"
-        paddingLeft={5}
-        paddingRight={5}
-    >
+const greyStyle = css`
+    background-color: #c4c7cc;
+`;
+
+const counterBigStyle = css`
+    font-size: 13px;
+    line-height: 10px;
+    height: 20px;
+    min-width: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 20px;
+`;
+
+const XCounterBig = (props: XCounterProps) => (
+    <div className={cx(counterContainer, counterBigStyle, props.grey && greyStyle)}>
         {props.count}
-    </XView>
+    </div>
 );
 
-const XCounterSmall = (props: XCounterProps) => (
-    <XView
-        alignItems="center"
-        justifyContent="center"
-        fontWeight="600"
-        color="#ffffff"
-        backgroundColor={props.grey ? 'rgba(0, 0, 0, 0.2)' : '#0C7FF2'}
+const counterSmallStyle = css`
+    font-size: 10px;
+    line-height: 13px;
+    height: 11px;
+    min-width: 11px;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-radius: 10px;
+`;
 
-        whiteSpace="nowrap"
-        overflow="hidden"
-        textOverflow="ellipsis"
-        minWidth={11}
-        height={11}
-        borderRadius={6}
-        fontSize={10}
-        lineHeight="13px"
-        paddingLeft={2}
-        paddingRight={2}
-    >
+const XCounterSmall = (props: XCounterProps) => (
+    <div className={cx(counterContainer, counterSmallStyle, props.grey && greyStyle)}>
         {props.count}
-    </XView>
+    </div>
 );
 
 export const counterBorderHoverClassname = css`
