@@ -199,14 +199,6 @@ const AutoCompleteComponent = React.memo(
                 }
             }]);
 
-            React.useEffect(() => {
-                if (containerRef.current) {
-                    containerRef.current.style.opacity = word ? '1' : '0';
-                    containerRef.current.style.transform = `translateY(${word ? 0 : 10}px)`;
-                    containerRef.current.style.pointerEvents = word ? 'auto' : 'none';
-                }
-            }, [word]);
-
             const itemRender = React.useCallback(
                 (v: RoomMembers_members_user) => (
                     <MentionUserComponent
@@ -226,16 +218,13 @@ const AutoCompleteComponent = React.memo(
                 [],
             );
 
+            let matched: RoomMembers_members_user[] | undefined = [];
             if (props.groupId) {
                 const client = useClient();
                 let members = client.useWithoutLoaderRoomMembers({ roomId: props.groupId });
-                if (!members || !members.members) {
-                    return fallbackRender.current;
-                }
 
-                if (word && !word.startsWith(':')) {
+                if (members && members.members && word && !word.startsWith(':')) {
                     // Mentions
-                    let matched: RoomMembers_members_user[];
                     if (word) {
                         matched = searchMentions(word, members.members).map(u => u.user);
                     } else {
@@ -243,28 +232,43 @@ const AutoCompleteComponent = React.memo(
                     }
 
                     isActive.current = true;
-                    fallbackRender.current = (
-                        <div
-                            ref={containerRef}
-                            className={mentionsContainer}
-                            onMouseDown={(e) => e.preventDefault()}
-                        >
-                            <UNavigableReactWindow
-                                width={'100%'}
-                                height={Math.min(matched.length * 40, 250)}
-                                data={matched}
-                                itemSize={40}
-                                renderItem={itemRender}
-                                onSelected={props.onSelected}
-                                ref={listRef}
-                            />
-                        </div>
-                    );
                 }
             }
+            let filtered: { name: string, value: string, shortcode: string }[] = [];
             if (word && word.startsWith(':')) {
-                let filtered = emojiSuggest(word);
+                filtered = emojiSuggest(word);
                 isActive.current = true;
+
+            }
+
+            React.useEffect(() => {
+                if (containerRef.current) {
+                    let show = (matched && matched.length) || (filtered && filtered.length);
+                    containerRef.current.style.opacity = show ? '1' : '0';
+                    containerRef.current.style.transform = `translateY(${show ? 0 : 10}px)`;
+                    containerRef.current.style.pointerEvents = show ? 'auto' : 'none';
+                }
+            }, [matched, filtered]);
+
+            if (matched.length) {
+                fallbackRender.current = (
+                    <div
+                        ref={containerRef}
+                        className={mentionsContainer}
+                        onMouseDown={(e) => e.preventDefault()}
+                    >
+                        <UNavigableReactWindow
+                            width={'100%'}
+                            height={Math.min(matched.length * 40, 250)}
+                            data={matched}
+                            itemSize={40}
+                            renderItem={itemRender}
+                            onSelected={props.onSelected}
+                            ref={listRef}
+                        />
+                    </div>
+                );
+            } else if (filtered.length) {
                 fallbackRender.current = (
                     <div
                         ref={containerRef}
@@ -284,6 +288,7 @@ const AutoCompleteComponent = React.memo(
                     </div>
                 );
             }
+
             return fallbackRender.current;
         },
     ),
