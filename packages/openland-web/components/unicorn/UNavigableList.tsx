@@ -72,7 +72,7 @@ const focusedStyle = css`
     background-color: #F0F2F5;
 `;
 
-export const Item = React.memo((props: { focused: boolean, children?: any, item: any, onSelected: (item: any) => void }) => {
+export const Item = React.memo((props: { style?: any, focused: boolean, children?: any, item: any, onSelected: (item: any) => void }) => {
     let ref = React.useRef<HTMLDivElement>(null);
     React.useLayoutEffect(() => {
         if (props.focused) {
@@ -83,7 +83,7 @@ export const Item = React.memo((props: { focused: boolean, children?: any, item:
         props.onSelected(props.item);
     }, []);
     return (
-        <div className={cx(itemStyle, props.focused && focusedStyle)} ref={ref} onClick={callback}>
+        <div className={cx(itemStyle, props.focused && focusedStyle)} style={props.style} ref={ref} onClick={callback}>
             {props.children}
         </div>
     );

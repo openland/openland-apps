@@ -8,7 +8,7 @@ import {
 } from 'openland-web/components/unicorn/URickInput';
 import AttachIcon from 'openland-icons/s/ic-attach-24.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
-import { UNavigableList, UNavigableListRef } from 'openland-web/components/unicorn/UNavigableList';
+import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableList';
 import { useClient } from 'openland-web/utils/useClient';
 import { RoomMembers_members_user } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
@@ -17,6 +17,7 @@ import { emojiSuggest } from 'openland-y-utils/emojiSuggest';
 import { emojiComponent } from 'openland-y-utils/emojiComponent';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { UNavigableReactWindow } from 'openland-web/components/unicorn/UNavigableReactWindow';
 
 interface MentionUserComponentProps {
     id: string;
@@ -34,6 +35,16 @@ const mentionUserContainer = css`
     height: 40px;
     padding-left: 16px;
     padding-right: 16px;
+`;
+
+const mentionEmojiContainer = css`
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    height: 28px;
+    padding-left: 16px;
+    padding-right: 16px;
+    transform: translateY(-0.1em);
 `;
 
 const mentionUserDataWrap = css`
@@ -71,8 +82,8 @@ const MentionUserComponent = (props: MentionUserComponentProps) => (
 );
 
 const EmojiSuggestionComponent = (props: { name: string; value: string; display: string }) => (
-    <div className={mentionUserContainer}>
-        <XView fontSize={18} width={28} height={28} marginRight={6}>
+    <div className={mentionEmojiContainer}>
+        <XView fontSize={18} width={28} height={28} marginRight={6} alignItems="center" justifyContent="center" >
             {emojiComponent(props.name)}
         </XView>
         <div className={userName}>{props.display}</div>
@@ -93,9 +104,8 @@ const mentionsContainer = css`
     transform: translateY(10px);
     will-change: opacity;
     transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     overflow-x: none;
-    max-height: 250px;
     z-index: 2;
 `;
 
@@ -198,7 +208,7 @@ const AutoCompleteComponent = React.memo(
             }, [word]);
 
             const itemRender = React.useCallback(
-                (v: any) => (
+                (v: RoomMembers_members_user) => (
                     <MentionUserComponent
                         name={v.name}
                         id={v.id}
@@ -225,12 +235,9 @@ const AutoCompleteComponent = React.memo(
 
                 if (word && !word.startsWith(':')) {
                     // Mentions
-                    let matched: any[];
+                    let matched: RoomMembers_members_user[];
                     if (word) {
-                        matched = searchMentions(word, members.members).map(v => ({
-                            key: v.user.id,
-                            data: v.user,
-                        }));
+                        matched = searchMentions(word, members.members).map(u => u.user);
                     } else {
                         matched = [];
                     }
@@ -242,9 +249,12 @@ const AutoCompleteComponent = React.memo(
                             className={mentionsContainer}
                             onMouseDown={(e) => e.preventDefault()}
                         >
-                            <UNavigableList
+                            <UNavigableReactWindow
+                                width={'100%'}
+                                height={Math.min(matched.length * 40, 250)}
                                 data={matched}
-                                render={itemRender}
+                                itemSize={40}
+                                renderItem={itemRender}
                                 onSelected={props.onSelected}
                                 ref={listRef}
                             />
@@ -253,7 +263,7 @@ const AutoCompleteComponent = React.memo(
                 }
             }
             if (word && word.startsWith(':')) {
-                let filtered = emojiSuggest(word).map(v => ({ key: v.name, data: v }));
+                let filtered = emojiSuggest(word);
                 isActive.current = true;
                 fallbackRender.current = (
                     <div
@@ -262,9 +272,12 @@ const AutoCompleteComponent = React.memo(
                         onMouseDown={(e) => e.preventDefault()}
                     >
                         {/* <UButton text={'filtered-' + filtered.length} onClick={() => props.onEmojiSelected({ name: '1f923', value: '🤣' })} /> */}
-                        <UNavigableList
+                        <UNavigableReactWindow
+                            width={'100%'}
+                            height={Math.min(filtered.length * 28, 250)}
                             data={filtered}
-                            render={emojiItemRender}
+                            itemSize={28}
+                            renderItem={emojiItemRender}
                             onSelected={props.onEmojiSelected}
                             ref={listRef}
                         />
