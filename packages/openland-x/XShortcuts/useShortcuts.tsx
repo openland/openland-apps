@@ -3,7 +3,7 @@ import { randomKey } from 'openland-unicorn/components/utils/randomKey';
 
 // https://github.com/Microsoft/TypeScript/issues/29729#issuecomment-505826972
 type StringUnionAutocompleteFix<T extends U, U = string> = T | (U & {});
-type ShortcutKeys = StringUnionAutocompleteFix<'Control' | 'Meta' | 'Shift' | 'Alt' | 'Escape'>;
+type ShortcutKeys = StringUnionAutocompleteFix<'Control' | 'Meta' | 'Shift' | 'Alt' | 'Escape' | 'Enter' | 'Backspace'>;
 
 interface ShortcutsProps {
     uuid: string;
@@ -44,6 +44,7 @@ const init = () => {
     inited = true;
 
     window.addEventListener('keydown', async (ev) => {
+        // console.warn(ev);
         let listener: ShortcutsProps;
         for (let i = listeners.length - 1; i >= 0; i--) {
             listener = listeners[i];

@@ -7,6 +7,7 @@ import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XView } from 'react-mental';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { useShortcuts } from './XShortcuts/useShortcuts';
 
 export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, controller: XModalController }>(props => {
     const { builder, controller } = props;
@@ -20,6 +21,8 @@ export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, 
             controller.hide();
         });
     };
+
+    useShortcuts({ keys: ['Enter'], callback: doConfirm });
 
     return (
         <>

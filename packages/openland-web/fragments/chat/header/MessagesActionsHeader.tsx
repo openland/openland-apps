@@ -121,7 +121,7 @@ const Counter = (props: { engine: MessagesActionsStateEngine }) => {
 const Buttons = (props: { chatId: string, engine: MessagesActionsStateEngine, messenger: MessengerEngine }) => {
     let deleteCallback = React.useCallback(() => {
         let ids = props.engine.getState().messages.filter(m => !!m.id).map(m => m.id!);
-        showDeleteMessagesModal(ids, props.engine.clear);
+        showDeleteMessagesModal(ids, props.messenger.client, props.engine.clear);
     }, []);
     const router = React.useContext(XViewRouterContext);
     let forwardCallback = React.useCallback(() => {

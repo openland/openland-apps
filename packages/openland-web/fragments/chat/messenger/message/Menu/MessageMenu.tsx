@@ -36,7 +36,7 @@ export const buildMessageMenu = (ctx: UPopperController, message: DataSourceWebM
     }
     if (message.senderId === engine.engine.user.id) {
         menu.item({
-            title: 'Delete', icon: <DeleteIcon />, onClick: () => showDeleteMessageModal([message.id!])
+            title: 'Delete', icon: <DeleteIcon />, onClick: () => showDeleteMessageModal([message.id!], engine.engine.client)
         });
     }
 
