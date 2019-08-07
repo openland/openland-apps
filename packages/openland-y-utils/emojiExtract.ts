@@ -46,12 +46,13 @@ export function emojiConvertToName(src: string) {
     return toCodePoints(removeVS16s(src)).join('-');
 }
 
-export function emojiExtract(src: string): { name: string, start: number, length: number }[] {
-    let res: { name: string, start: number, length: number }[] = [];
+export function emojiExtract(src: string): { src: string, name: string, start: number, length: number }[] {
+    let res: { src: string, name: string, start: number, length: number }[] = [];
     let regex = emojiRegex();
     let match: RegExpMatchArray | null;
     while (match = regex.exec(src)) {
         res.push({
+            src: match[0],
             name: emojiConvertToName(match[0]),
             start: match.index!,
             length: match[0].length

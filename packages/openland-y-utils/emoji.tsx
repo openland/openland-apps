@@ -14,7 +14,7 @@ export function emoji(src: string) {
         if (e.start > offset) {
             res.push(src.substring(offset, e.start));
         }
-        res.push(emojiComponent(e.name, 'e-' + e.start));
+        res.push(emojiComponent(e.name, e.src, 'e-' + e.start));
         offset = e.start + e.length;
     }
     if (offset < src.length) {
