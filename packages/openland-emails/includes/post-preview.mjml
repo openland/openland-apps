@@ -6,8 +6,8 @@
               <span class="post-preview-text" style="padding-left: 12px;">{{this.sender.name}}</span>
             </a>
             <span class="post-preview-text post-preview-dot">•</span>
-            <a href="{{this.sender.companyLink}}" class="post-preview-link">
-              <span class="post-preview-text">{{this.sender.company}}</span>
+            <a href="{{this.sender.orgLink}}" class="post-preview-link">
+              <span class="post-preview-text">{{this.sender.orgName}}</span>
             </a>
         </mj-text>
     </mj-column>
@@ -15,9 +15,7 @@
 
 <mj-section mj-class="post-preview-content container-narrow">
     <mj-column>
-        <mj-text font-size="0" line-height="0">
-            <span style="color: #171B1F; font-size: 15px; line-height: 24px; font-weight: 400;">{{this.message}}</span>
-        </mj-text>
+        <mj-include path="./message-spans.mjml" />
     </mj-column>
 </mj-section>
 

@@ -48,6 +48,11 @@
 
             .post-preview-top {}
 
+            .link {
+                text-decoration: none;
+                display: inline-block;
+            }
+
             .post-preview-link {
                 text-decoration: none;
                 vertical-align: middle;
@@ -69,6 +74,41 @@
                 padding-left: 6px;
                 padding-right: 6px;
                 color: #969AA3;
+            }
+
+            /* spans */
+
+            .foo {
+                font-size: 15px;
+            }
+
+            .inline-it {
+                display: inline-block;
+            }
+
+            .message-span {
+                color: #171B1F;
+                font-size: 15px;
+                line-height: 24px;
+                font-weight: 400;
+                white-space: pre-wrap;
+                display: inline-block;
+            }
+
+            .message-span-bold {
+                font-weight: 600;
+            }
+
+            .message-span-loud {
+                font-size: 17px;
+            }
+
+            .message-span-mention {
+                color: #1885f2;
+            }
+
+            .message-span-link {
+                color: #1790ff;
             }
         </mj-style>
         <mj-breakpoint width="517px" />

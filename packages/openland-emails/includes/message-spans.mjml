@@ -1,0 +1,25 @@
+<mj-text font-size="0" line-height="0">
+    <span>
+        <mj-raw>{{#each this.spans}}</mj-raw>
+            <mj-raw>{{#if this.user_mention}}</mj-raw>
+              <a href="{{this.user.profileLink}}" class="link message-span">
+                <span class="message-span message-span-bold message-span-mention">{{this.user.name}}</span>
+              </a>
+            <mj-raw>{{else if this.link}}</mj-raw>
+              <a href="{{this.url}}" class="link message-span">
+                <span class="message-span message-span-link">{{this.url}}</span>
+              </a>
+            <mj-raw>{{else if this.loud_text}}</mj-raw>
+              <span class="message-span message-span-bold message-span-loud">{{this.text}}</span>
+            <mj-raw>{{else if this.bold_text}}</mj-raw>
+              <span class="message-span message-span-bold">{{this.text}}</span>
+            <mj-raw>{{else if this.new_line}}</mj-raw>
+              <br />
+            <mj-raw>{{else if this.plain_text}}</mj-raw>
+              <span class="message-span">{{this.text}}</span>
+            <mj-raw>{{else}}</mj-raw>
+              <!-- nope -->
+            <mj-raw>{{/if}}</mj-raw>
+        <mj-raw>{{/each}}</mj-raw>
+    </span>
+</mj-text>
