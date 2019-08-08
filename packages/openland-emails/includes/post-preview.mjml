@@ -19,6 +19,7 @@
     </mj-column>
 </mj-section>
 
+<!-- 
 <mj-section mj-class="post-preview-bottom container-narrow">
     <mj-column>
         <mj-text font-size="0" line-height="0">
@@ -32,3 +33,4 @@
         </mj-text>
     </mj-column>
 </mj-section>
+ -->
