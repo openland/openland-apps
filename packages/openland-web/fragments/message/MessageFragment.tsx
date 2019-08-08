@@ -6,7 +6,7 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 import { CommentInput } from './components/CommentInput';
 import { CommentsList } from './components/CommentsList';
 import { MessageView } from './components/MessageView';
-import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
+import { URickTextValue, AllMention } from 'openland-web/components/unicorn/URickInput';
 import { findSpans } from 'openland-y-utils/findSpans';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import UUID from 'uuid/v4';
@@ -40,12 +40,15 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
 
     const handleCommentSent = React.useCallback((data: URickTextValue, replyId?: string) => {
         let text = '';
-        let mentions: UserForMention[] = [];
+        let mentions: (UserForMention | AllMention)[] = [];
         for (let t of data) {
             if (typeof t === 'string') {
                 text += t;
-            } else {
+            } else if (t.__typename === 'User') {
                 text += '@' + t.name;
+                mentions.push(t);
+            } else {
+                text += '@All';
                 mentions.push(t);
             }
         }

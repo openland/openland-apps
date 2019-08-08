@@ -24,7 +24,7 @@ import { pluralForm } from 'openland-y-utils/plural';
 import { MessageListComponent } from '../messenger/view/MessageListComponent';
 import { TypingsView } from '../messenger/typings/TypingsView';
 import { XLoader } from 'openland-x/XLoader';
-import { URickInputInstance, URickTextValue } from 'openland-web/components/unicorn/URickInput';
+import { URickInputInstance, URickTextValue, AllMention } from 'openland-web/components/unicorn/URickInput';
 import { InputMessageActionComponent } from './InputMessageActionComponent';
 import { SpanType, SpanUser } from 'openland-y-utils/spans/Span';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
@@ -192,7 +192,11 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                         value.push(textStringTail.substring(0, spanStart));
 
                     }
-                    value.push({ __typename: 'User', ...userSpan.user });
+                    if (userSpan.textRaw === '@All') {
+                        value.push({ __typename: 'AllMention' });
+                    } else {
+                        value.push({ __typename: 'User', ...userSpan.user });
+                    }
 
                     textStringTail = textStringTail.substring(spanStart + rawText.length, textStringTail.length);
                 }
@@ -286,7 +290,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     }
 
     onInputPressUp = () => {
-        if (this.rickRef.current && this.rickRef.current.getText().map(c => typeof c === 'string' ? c : c.name).join().trim()) {
+        if (this.rickRef.current && this.rickRef.current.getText().map(c => typeof c === 'string' ? c : c.__typename === 'User' ? c.name : 'All').join().trim()) {
             return false;
         }
         let myMessages = this.conversation!.dataSource.getItems().filter(m => m.type === 'message' && m.isOut && m.text && !m.isSending && !m.isService);
@@ -305,12 +309,15 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         let actionMessage = actionState.messages[0];
 
         let textValue = '';
-        let mentions: UserForMention[] = [];
+        let mentions: (UserForMention | AllMention)[] = [];
         for (let t of text) {
             if (typeof t === 'string') {
                 textValue += t;
-            } else {
+            } else if (t.__typename === 'User') {
                 textValue += '@' + t.name;
+                mentions.push(t);
+            } else if (t.__typename === 'AllMention') {
+                textValue += '@All';
                 mentions.push(t);
             }
         }

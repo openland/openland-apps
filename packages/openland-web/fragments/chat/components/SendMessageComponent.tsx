@@ -4,9 +4,11 @@ import { XView } from 'react-mental';
 import {
     URickInput,
     URickInputInstance,
-    URickTextValue
+    URickTextValue,
+    AllMention
 } from 'openland-web/components/unicorn/URickInput';
 import AttachIcon from 'openland-icons/s/ic-attach-24.svg';
+import AllIcon from 'openland-icons/s/ic-channel-16.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
 import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { useClient } from 'openland-web/utils/useClient';
@@ -37,6 +39,7 @@ const mentionUserContainer = css`
     height: 40px;
     padding-left: 16px;
     padding-right: 16px;
+    justify-content: start;
 `;
 
 const mentionEmojiContainer = css`
@@ -69,6 +72,13 @@ const userOrg = css`
     font-size: 12px;
     line-height: 1.5;
     color: #676d7a;
+`;
+
+const allMentionIcon = css`
+    flex-grow: 0;
+    width: 28px;
+    height: 28px;
+    margin-right: 12px;
 `;
 
 const MentionUserComponent = (props: MentionUserComponentProps) => (
@@ -202,14 +212,19 @@ const AutoCompleteComponent = React.memo(
             }]);
 
             const itemRender = React.useCallback(
-                (v: RoomMembers_members_user) => (
-                    <MentionUserComponent
-                        name={v.name}
-                        id={v.id}
-                        photo={v.photo}
-                        primaryOrganization={v.primaryOrganization}
-                    />
-                ),
+                (v: RoomMembers_members_user | AllMention) => v.__typename === 'AllMention' ? (
+                    <div className={mentionUserContainer}>
+                        <UIcon className={allMentionIcon} icon={<AllIcon />} />
+                        <span className={userName}>@All<span style={{ opacity: 0.4, marginLeft: 7 }}>Notify everyone in this group</span></span>
+                    </div>
+                ) : (
+                        <MentionUserComponent
+                            name={v.name}
+                            id={v.id}
+                            photo={v.photo}
+                            primaryOrganization={v.primaryOrganization}
+                        />
+                    ),
                 [],
             );
 
@@ -220,19 +235,14 @@ const AutoCompleteComponent = React.memo(
                 [],
             );
 
-            let matched: RoomMembers_members_user[] | undefined = [];
+            let matched: (RoomMembers_members_user | AllMention)[] | undefined = [];
             if (props.groupId) {
                 const client = useClient();
                 let members = client.useWithoutLoaderRoomMembers({ roomId: props.groupId });
 
                 if (members && members.members && word && !word.startsWith(':')) {
-                    // Mentions
-                    if (word) {
-                        matched = searchMentions(word, members.members).map(u => u.user);
-                    } else {
-                        matched = [];
-                    }
-
+                    matched = searchMentions(word, members.members).map(u => u.user);
+                    matched.unshift({ __typename: 'AllMention' });
                 }
             }
             let filtered: { name: string, value: string, shortcode: string }[] = [];

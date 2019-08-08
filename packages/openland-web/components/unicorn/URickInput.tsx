@@ -47,14 +47,14 @@ const emojiStyle = css`
    margin: 0 .05em 0 .1em;
    vertical-align: -0.1em;
 `;
-
-export type URickTextValue = (string | UserForMention)[];
+export type AllMention = { __typename: 'AllMention' };
+export type URickTextValue = (string | UserForMention | AllMention)[];
 
 export interface URickInputInstance {
     clear: () => void;
     focus: () => void;
     getText: () => URickTextValue;
-    commitSuggestion(type: 'mention' | 'emoji', src: UserForMention | { name: string, value: string }): void;
+    commitSuggestion(type: 'mention' | 'emoji', src: UserForMention | AllMention | { name: string, value: string }): void;
     setContent: (inputValue: URickTextValue) => void;
 }
 
@@ -91,7 +91,7 @@ function loadQuill() {
             static create(data: any) {
                 const node = super.create() as HTMLSpanElement;
                 node.className = mentionStyle;
-                node.innerText = data.name;
+                node.innerText = data.__typename === 'AllMention' ? 'All' : data.name;
                 node.dataset.user = JSON.stringify(data);
                 return node;
             }
@@ -145,7 +145,7 @@ function convertInputValue(content: URickTextValue) {
         if (typeof c === 'string') {
             // TODO: extract emoji
             return { insert: c };
-        } else if (c.__typename === 'User') {
+        } else if (c.__typename === 'User' || c.__typename === 'AllMention') {
             return { insert: { mention: c } };
         } else {
             return { insert: '' };
@@ -154,7 +154,7 @@ function convertInputValue(content: URickTextValue) {
 }
 
 function convertQuillContent(content: QuillType.Delta) {
-    let res: (string | UserForMention)[] = [];
+    let res: (string | UserForMention | AllMention)[] = [];
     for (let c of content.ops!) {
         if (c.insert) {
             if (typeof c.insert === 'string') {
