@@ -1,6 +1,7 @@
 import rankings from './data/emoji-ranking.json'; // from http://emojitracker.com/api/rankings
 import { EMOJI_DATA } from './data/emoji-data';
 import { emojiConvertToName } from './emojiExtract';
+import { emojiWordMap } from './emojiWordMap';
 
 const emojiList: {
     name: string,
@@ -33,20 +34,26 @@ export function emojiSuggest(input: string): { name: string, value: string, shor
     let res: { name: string, value: string, shortcode: string }[] = [];
     input = input.toLowerCase();
 
-    if (input.length <= 1) {
-        for (let i = 0; i < 20; i++) {
-            res.push({ name: emojiList[i].name, value: emojiList[i].value, shortcode: emojiList[i].shortcodes[0] });
-        }
-    } else {
-        for (let i = 0; i < emojiList.length; i++) {
-            let e = emojiList[i];
-            for (let j = 0; j < e.shortcodes.length; j++) {
-                let sc = e.shortcodes[j];
-                if (sc.startsWith(input)) {
-                    res.push({ name: e.name, value: e.value, shortcode: sc });
-                    break;
+    if (input.startsWith(':')) {
+        if (input.length <= 1) {
+            for (let i = 0; i < 20; i++) {
+                res.push({ name: emojiList[i].name, value: emojiList[i].value, shortcode: emojiList[i].shortcodes[0] });
+            }
+        } else {
+            for (let i = 0; i < emojiList.length; i++) {
+                let e = emojiList[i];
+                for (let j = 0; j < e.shortcodes.length; j++) {
+                    let sc = e.shortcodes[j];
+                    if (sc.startsWith(input)) {
+                        res.push({ name: e.name, value: e.value, shortcode: sc });
+                        break;
+                    }
                 }
             }
+        }
+    } else {
+        for (let dt of emojiWordMap[input] || []) {
+            res.push({ name: emojiConvertToName(dt[2] as string), value: dt[2] as string, shortcode: dt[1][0] });
         }
     }
 

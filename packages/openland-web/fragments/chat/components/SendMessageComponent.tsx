@@ -18,6 +18,7 @@ import { emojiComponent } from 'openland-y-utils/emojiComponent';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UNavigableReactWindow } from 'openland-web/components/unicorn/UNavigableReactWindow';
+import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 
 interface MentionUserComponentProps {
     id: string;
@@ -235,10 +236,9 @@ const AutoCompleteComponent = React.memo(
                 }
             }
             let filtered: { name: string, value: string, shortcode: string }[] = [];
-            if (word && word.startsWith(':')) {
-                filtered = emojiSuggest(word);
+            if (word) {
+                filtered.push(...emojiSuggest(word));
                 isActive.current = true;
-
             }
 
             React.useEffect(() => {
@@ -442,7 +442,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 <URickInput
                     ref={ref}
                     initialContent={props.initialText}
-                    autocompletePrefixes={['@', ':']}
+                    autocompletePrefixes={['@', ':', ...Object.keys(emojiWordMap)]}
                     onAutocompleteWordChange={onAutocompleteWordChange}
                     onPressEnter={onPressEnter}
                     onPressUp={onPressUp}

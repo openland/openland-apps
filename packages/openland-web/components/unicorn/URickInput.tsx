@@ -206,8 +206,9 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                         let autocompleteWord: string | null = null;
                         let activeWord = extractActiveWord(ed);
                         if (activeWord) {
+                            let activeWordCheckPrefix = activeWord.toLowerCase();
                             for (let p of props.autocompletePrefixes!) {
-                                if (activeWord.startsWith(p)) {
+                                if (activeWordCheckPrefix.startsWith(p)) {
                                     autocompleteWord = activeWord;
                                     break;
                                 }
@@ -295,8 +296,9 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                     let autocompleteWord: string | null = null;
                     let activeWord = extractActiveWord(q);
                     if (activeWord) {
+                        let activeWordCheckPrefix = activeWord.toLowerCase();
                         for (let p of props.autocompletePrefixes) {
-                            if (activeWord.startsWith(p)) {
+                            if (activeWordCheckPrefix.startsWith(p)) {
                                 autocompleteWord = activeWord;
                                 break;
                             }
@@ -309,6 +311,12 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                 }
             }
         });
+
+        // q.clipboard.addMatcher(Node.CDATA_SECTION_NODE, (data, delta) => {
+        //     console.warn(data);
+        //     return new QuillDelta();
+        //     //
+        // });
 
         editor.current = q;
     }, []);
