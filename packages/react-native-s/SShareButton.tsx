@@ -8,7 +8,7 @@ export class SShareButton extends React.PureComponent<{ tintColor?: string, onPr
         return (
             <STouchable onPress={this.props.onPress}>
                 <View style={{ backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center' }} marginHorizontal={15} height={SDevice.navigationBarHeight}>
-                    <Image source={require('assets/ic-header-share-24.png')} style={{ tintColor: this.props.tintColor }} />
+                    <Image source={require('assets/ic-share-24.png')} style={{ tintColor: this.props.tintColor }} />
                 </View>
             </STouchable>
         );
