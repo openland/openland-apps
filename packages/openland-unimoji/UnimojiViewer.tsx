@@ -35,8 +35,13 @@ export const UnimojiViewer = React.memo(() => {
             // FA.draw.drawDetections(canvasRef.current!, resizedResult);
             // FA.draw.drawFaceLandmarks(canvasRef.current!, resizedResult);
 
-            let nose = r.landmarks.getNose();
-            rotation.current = -Math.atan2(nose[1].y - nose[0].y, nose[1].x - nose[0].x);
+            // let nose = r.landmarks.getNose();
+            // rotation.current = -Math.atan2(nose[6].y - nose[0].y, nose[6].x - nose[0].x);
+
+            let leftEye = r.landmarks.getLeftEye();
+            let rightEye = r.landmarks.getRightEye();
+
+            rotation.current = -Math.atan2(leftEye[0].y - rightEye[0].y, leftEye[0].x - rightEye[0].x);
         }
         setTimeout(() => {
             detect();
@@ -60,6 +65,7 @@ export const UnimojiViewer = React.memo(() => {
         camera: Three.Camera,
         cube: Three.Mesh
     ) => {
+        // cube.rotation.z = rotation.current;
         cube.rotation.z = rotation.current;
     }, []);
 
