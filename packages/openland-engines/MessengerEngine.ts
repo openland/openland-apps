@@ -39,8 +39,7 @@ export class MessengerEngine {
     private isVisible = true;
     private close: any = null;
     private loadingPromise: Promise<void>;
-    // tslint:disable-next-line
-    private typingsWatcher?: TypingsWatcher;
+    private typingsWatcher: TypingsWatcher;
     private onlineWatcher: OnlineWatcher;
 
     constructor(client: OpenlandClient, user: UserShort, platform: string, options?: Partial<EngineOptions>) {
@@ -116,6 +115,7 @@ export class MessengerEngine {
     }
 
     handleNewMessage = (message: ChatUpdateFragment_ChatMessageReceived, cid: string) => {
+        this.typingsWatcher.clearTyping(cid, message.message.sender.id);
         this.dialogList.handleChatNewMessage(message, cid);
     }
 

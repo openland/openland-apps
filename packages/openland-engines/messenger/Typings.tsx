@@ -73,6 +73,17 @@ export class TypingsWatcher {
         });
     }
 
+    clearTyping = (cid: string, uid: string) => {
+        let existing = this.typings[cid] || {};
+        let existingTimeouts = this.timeouts[cid] || {};
+        clearTimeout(existingTimeouts[uid]);
+        existingTimeouts[uid] = window.setTimeout(
+            () => {
+                existing[uid] = undefined;
+                this.onChange(cid, this.renderTypings(cid));
+            }, 0);
+    }
+
     renderTypings = (cId: string, type?: string) => {
         let t = this.typings[cId];
         if (!t) {
