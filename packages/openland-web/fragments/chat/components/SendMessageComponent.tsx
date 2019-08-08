@@ -8,7 +8,7 @@ import {
 } from 'openland-web/components/unicorn/URickInput';
 import AttachIcon from 'openland-icons/s/ic-attach-24.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
-import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableList';
+import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { useClient } from 'openland-web/utils/useClient';
 import { RoomMembers_members_user } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
@@ -152,7 +152,7 @@ const AutoCompleteComponent = React.memo(
                         return false;
                     }
                     let r = listRef.current;
-                    if (r) {
+                    if (r && isActive.current) {
                         r.onPressDown();
                         return true;
                     }
@@ -163,7 +163,7 @@ const AutoCompleteComponent = React.memo(
                         return false;
                     }
                     let r = listRef.current;
-                    if (r) {
+                    if (r && isActive.current) {
                         r.onPressUp();
                         return true;
                     }
@@ -174,14 +174,14 @@ const AutoCompleteComponent = React.memo(
                         return false;
                     }
                     let r = listRef.current;
-                    if (r) {
+                    if (r && isActive.current) {
                         return r.onPressEnter();
                     }
                     return false;
                 },
                 onPressTab: () => {
                     let r = listRef.current;
-                    if (r) {
+                    if (r && isActive.current) {
                         return r.onPressEnter();
                     }
                     return false;
@@ -233,14 +233,26 @@ const AutoCompleteComponent = React.memo(
                         matched = [];
                     }
 
-                    isActive.current = true;
                 }
             }
             let filtered: { name: string, value: string, shortcode: string }[] = [];
             if (word) {
                 filtered.push(...emojiSuggest(word));
-                isActive.current = true;
             }
+
+            isActive.current = !!filtered.length || !!matched.length;
+
+            let onSelected = React.useCallback((user: RoomMembers_members_user) => {
+                if (isActive.current) {
+                    props.onSelected(user);
+                }
+            }, []);
+
+            let onEmojiSelected = React.useCallback((emoji: { name: string; value: string }) => {
+                if (isActive.current) {
+                    props.onEmojiSelected(emoji);
+                }
+            }, []);
 
             React.useEffect(() => {
                 if (containerRef.current) {
@@ -248,6 +260,9 @@ const AutoCompleteComponent = React.memo(
                     containerRef.current.style.opacity = show ? '1' : '0';
                     containerRef.current.style.transform = `translateY(${show ? 0 : 10}px)`;
                     containerRef.current.style.pointerEvents = show ? 'auto' : 'none';
+                }
+                if (listRef.current) {
+                    listRef.current.reset();
                 }
             }, [matched, filtered]);
 
@@ -264,7 +279,7 @@ const AutoCompleteComponent = React.memo(
                             data={matched}
                             itemSize={40}
                             renderItem={itemRender}
-                            onSelected={props.onSelected}
+                            onSelected={onSelected}
                             ref={listRef}
                         />
                     </div>
@@ -283,7 +298,7 @@ const AutoCompleteComponent = React.memo(
                             data={filtered}
                             itemSize={28}
                             renderItem={emojiItemRender}
-                            onSelected={props.onEmojiSelected}
+                            onSelected={onEmojiSelected}
                             ref={listRef}
                         />
                     </div>
