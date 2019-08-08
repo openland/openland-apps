@@ -5,15 +5,119 @@ import { XDate } from 'openland-x/XDate';
 import PhotoIcon from 'openland-icons/ic-photo.svg';
 import FileIcon from 'openland-icons/ic-file-2.svg';
 import ForwardIcon from 'openland-icons/ic-reply-2.svg';
-import MentionIcon from 'openland-icons/ic-mention-2.svg';
+import IcLock from 'openland-icons/s/ic-lock-16.svg';
+import IcChannel from 'openland-icons/s/ic-channel-16.svg';
+import IcMention from 'openland-icons/s/ic-mention-16.svg';
 import { XCounter } from 'openland-x/XCounter';
-import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
-import LockIcon from 'openland-icons/ic-group.svg';
-import ChanneSecretIcon from 'openland-icons/ic-channel-dialog.svg';
 import { DialogListWebItem } from './DialogListWebDataSource';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
 
-export let iconClass = css`
+const dialogContainer = css`
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    padding: 8px 16px;
+    height: 80px;
+    min-width: 0;
+    align-items: center;
+
+    &:hover {
+        background-color: #f0f2f5;
+    }
+`;
+
+const dialogActiveContainer = css`
+    background-color: #4596e1;
+
+    &:hover {
+        background-color: #509be6;
+    }
+`;
+
+const dialogContentContainer = css`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-left: 16px;
+    min-width: 0;
+    height: 100%;
+`;
+
+const dialogIconContainer = css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+`;
+
+const dialogDataContainer = css`
+    display: flex;
+    flex-direction: row;
+    min-width: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+`;
+
+const dialogTitleContent = css`
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #1c2229;
+`;
+
+const highlightSecretChatColor = css`
+    color: #36b36a;
+`;
+
+const dialogDateContent = css`
+    height: 18px;
+    margin-left: 5px;
+    white-space: nowrap;
+    align-self: center;
+    color: #a9aeb8;
+`;
+
+const dialogMessageContent = css`
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+    height: 40px;
+    min-width: 0;
+    overflow: hidden;
+    color: #78808f;
+`;
+
+const dialogActiveColor = css`
+    color: #fff;
+`;
+
+const dialogUnreadContainer = css`
+    display: flex;
+    align-items: center;
+    align-self: flex-end;
+`;
+
+const unreadCounterContainer = css`
+    display: flex;
+    align-items: center;
+    align-self: center;
+    margin-left: 12px;
+`;
+
+const mentionContainer = css`
+    margin-right: -6px;
+`;
+
+const iconClass = css`
     display: inline-block;
     vertical-align: top;
     margin: 2px 5px -1px 1px;
@@ -23,71 +127,13 @@ export let iconClass = css`
     }
 `;
 
-export let iconActiveClass = css`
-    display: inline-block;
-    vertical-align: top;
-    margin: 2px 5px -1px 1px;
-
+const iconActiveClass = css`
     path {
         fill: rgba(255, 255, 255, 0.9);
     }
 `;
 
-export let channelIconClass = css`
-    margin: 0px 0px -2px 0px;
-    path {
-        fill: black;
-    }
-`;
-
-const DialogTitleClassName = css`
-    overflow: hidden;
-    text-overflow: ellipsis;
-    letter-spacing: 0.2px;
-`;
-
-const LetterSpacingClassName = css`
-    letter-spacing: 0.5px;
-`;
-
-export let channelSecretIconClass = css`
-    margin: 0px 0px -2px 0px;
-    & path:last-child {
-        fill: #129f25;
-    }
-`;
-
-export let channelIconActiveClass = css`
-    margin: 0px 0px -2px 0px;
-    & path:last-child {
-        fill: #fff;
-    }
-`;
-
-export let documentIcon = css`
-    margin-top: 0;
-    margin-bottom: 0;
-`;
-
-const GroupIconClass = css`
-    width: 15px;
-    height: 19px;
-`;
-
-const GroupActiveIconClass = css`
-    & path:last-child {
-        fill: #fff;
-    }
-`;
-
-const EmojiStyle = css`
-    & img {
-        margin-left: 1px;
-        margin-right: 1px;
-    }
-`;
-
-export interface DialogViewProps {
+interface DialogViewProps {
     item: DialogListWebItem;
     onPress?: (id: string) => void;
     selected?: boolean;
@@ -106,18 +152,17 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     ) : dialog.sender ? (
         <>{dialog.senderEmojify}: </>
     ) : (
-                    ''
-                );
-    let message: any = undefined;
-    let theme = React.useContext(ThemeContext);
+        ''
+    );
+    let message: JSX.Element | null = null;
 
     if (dialog.typingEmojify) {
-        message = <>{dialog.typingEmojify}</>;
+        message = <span>{dialog.typingEmojify}</span>;
     } else {
-        message = dialog.fallback;
+        message = <span>{dialog.fallback}</span>;
         if (dialog.message) {
             message = (
-                <span className={EmojiStyle}>
+                <span>
                     {!isService && sender}
                     {dialog.messageEmojify}
                 </span>
@@ -131,7 +176,9 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                             {sender}
                             <XViewSelectedContext.Consumer>
                                 {active => (
-                                    <PhotoIcon className={active ? iconActiveClass : iconClass} />
+                                    <PhotoIcon
+                                        className={cx(iconClass, active && iconActiveClass)}
+                                    />
                                 )}
                             </XViewSelectedContext.Consumer>
                             Photo
@@ -144,11 +191,10 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                             <XViewSelectedContext.Consumer>
                                 {active => (
                                     <FileIcon
-                                        className={
-                                            (active ? iconActiveClass : iconClass) +
-                                            ' ' +
-                                            documentIcon
-                                        }
+                                        className={cx(
+                                            iconClass,
+                                            active && iconActiveClass,
+                                        )}
                                     />
                                 )}
                             </XViewSelectedContext.Consumer>
@@ -165,9 +211,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                     <XViewSelectedContext.Consumer>
                         {active => (
                             <ForwardIcon
-                                className={
-                                    (active ? iconActiveClass : iconClass) + ' ' + documentIcon
-                                }
+                                className={cx(iconClass, active && iconActiveClass)}
                             />
                         )}
                     </XViewSelectedContext.Consumer>
@@ -177,151 +221,109 @@ export const DialogView = React.memo<DialogViewProps>(props => {
         }
     }
 
-    let highlightSecretChat = false;
-    if (localStorage.getItem('highlight_secret_chat') === 'true') {
-        highlightSecretChat = true;
-    }
+    const highlightSecretChat =
+        localStorage.getItem('highlight_secret_chat') === 'true' && dialog.kind === 'GROUP';
 
     return (
         <XView
             selected={props.selected}
-            as="a"
             onMouseDown={() => props.onPress && props.onPress(dialog.key)}
-            height={80}
-            flexDirection="row"
-            paddingLeft={16}
-            paddingTop={8}
-            paddingBottom={8}
-            minWidth={0}
-            alignItems="center"
-            hoverBackgroundColor="#F0F2F5"
-            selectedBackgroundColor="#4596e1"
-            selectedHoverBackgroundColor="#509BE6"
             linkSelectable={true}
-            hoverTextDecoration="none"
         >
-            <UAvatar
-                title={dialog.title}
-                titleEmoji={dialog.titlePlaceholderEmojify}
-                id={dialog.kind === 'PRIVATE' ? dialog.flexibleId : dialog.key}
-                photo={dialog.photo}
-                online={dialog.online}
-                size="large"
-            />
-            <XView
-                flexDirection="column"
-                flexGrow={1}
-                flexShrink={1}
-                paddingLeft={16}
-                paddingRight={16}
-                minWidth={0}
-                height="100%"
-            >
-                <XViewSelectedContext.Consumer>
-                    {active => (
-                        <XView flexDirection="row" flexGrow={1} flexShrink={0} minWidth={0}>
-                            <XView
-                                flexDirection="row"
-                                flexGrow={1}
-                                flexShrink={1}
-                                minWidth={0}
-                                fontSize={15}
-                                fontWeight="600"
-                                lineHeight="18px"
-                                color={
-                                    active
-                                        ? '#fff'
-                                        : highlightSecretChat && dialog.kind === 'GROUP'
-                                            ? '#129f25'
-                                            : '#1C2229'
-                                }
-                                overflow="hidden"
-                                whiteSpace="nowrap"
-                                textOverflow="ellipsis"
-                            >
-                                {highlightSecretChat &&
-                                    !dialog.isChannel &&
-                                    dialog.kind === 'GROUP' && (
-                                        <XView>
-                                            <LockIcon
-                                                className={cx(
-                                                    GroupIconClass,
-                                                    active && GroupActiveIconClass,
-                                                )}
-                                            />
-                                        </XView>
+            <XViewSelectedContext.Consumer>
+                {active => (
+                    <div className={cx(dialogContainer, active && dialogActiveContainer)}>
+                        <UAvatar
+                            title={dialog.title}
+                            titleEmoji={dialog.titlePlaceholderEmojify}
+                            id={dialog.kind === 'PRIVATE' ? dialog.flexibleId : dialog.key}
+                            photo={dialog.photo}
+                            online={dialog.online}
+                            size="large"
+                        />
+                        <div className={dialogContentContainer}>
+                            <div className={dialogDataContainer}>
+                                <div
+                                    className={cx(
+                                        TextLabel1,
+                                        dialogDataContainer,
+                                        dialogTitleContent,
+                                        active && dialogActiveColor,
+                                        highlightSecretChat && highlightSecretChatColor,
                                     )}
-                                {dialog.isChannel && (
-                                    <XView
-                                        alignSelf="stretch"
-                                        justifyContent="center"
-                                        marginRight={2}
-                                    >
-                                        <ChanneSecretIcon
-                                            className={
-                                                active
-                                                    ? channelIconActiveClass
-                                                    : dialog.kind === 'GROUP' && highlightSecretChat
-                                                        ? channelSecretIconClass
-                                                        : channelIconClass
-                                            }
-                                        />
-                                    </XView>
-                                )}
-                                <span className={DialogTitleClassName}>{dialog.titleEmojify}</span>
-                            </XView>
-                            {dialog.date && (
-                                <XView
-                                    height={18}
-                                    marginLeft={5}
-                                    fontSize={13}
-                                    lineHeight="19px"
-                                    whiteSpace="nowrap"
-                                    alignSelf="center"
-                                    color={active ? '#fff' : '#A9AEB8'}
                                 >
-                                    <span className={LetterSpacingClassName}>
+                                    {highlightSecretChat &&
+                                        !dialog.isChannel && (
+                                            <div className={dialogIconContainer}>
+                                                <UIcon
+                                                    icon={<IcLock />}
+                                                    color={active ? '#fff' : '#36b36a'}
+                                                />
+                                            </div>
+                                        )}
+                                    {dialog.isChannel && (
+                                        <div className={dialogIconContainer}>
+                                            <UIcon
+                                                icon={<IcChannel />}
+                                                color={
+                                                    active
+                                                        ? '#fff'
+                                                        : highlightSecretChat
+                                                            ? '#36b36a'
+                                                            : '#000'
+                                                }
+                                            />
+                                        </div>
+                                    )}
+                                    <span>{dialog.titleEmojify}</span>
+                                </div>
+                                {dialog.date && (
+                                    <div
+                                        className={cx(
+                                            TextCaption,
+                                            dialogDateContent,
+                                            active && dialogActiveColor,
+                                        )}
+                                    >
                                         <XDate
                                             value={dialog.date.toString()}
                                             format="datetime_short"
                                         />
-                                    </span>
-                                </XView>
-                            )}
-                        </XView>
-                    )}
-                </XViewSelectedContext.Consumer>
-                <XView flexDirection="row" minWidth={0} flexGrow={1} flexShrink={1}>
-                    <XView
-                        height={40}
-                        flexGrow={1}
-                        flexShrink={1}
-                        flexBasis={0}
-                        minWidth={0}
-                        fontSize={14}
-                        fontWeight="400"
-                        lineHeight="20px"
-                        overflow="hidden"
-                        selectedOpacity={1}
-                        color="#78808F"
-                        selectedColor={theme.contrastSpecial}
-                    >
-                        {message}
-                    </XView>
-                    {dialog.unread > 0 && (
-                        <XView flexDirection="row" alignItems="center" alignSelf="flex-end">
-                            {haveMention && (
-                                <XView alignSelf="center" paddingLeft={12} marginRight={-6}>
-                                    <MentionIcon />
-                                </XView>
-                            )}
-                            <XView paddingLeft={12} alignSelf="center">
-                                <XCounter grey={isMuted} big={true} count={dialog.unread} />
-                            </XView>
-                        </XView>
-                    )}
-                </XView>
-            </XView>
+                                    </div>
+                                )}
+                            </div>
+                            <div className={dialogDataContainer}>
+                                <div
+                                    className={cx(
+                                        TextDensed,
+                                        dialogMessageContent,
+                                        active && dialogActiveColor,
+                                    )}
+                                >
+                                    {message}
+                                </div>
+                                {dialog.unread > 0 && (
+                                    <div className={dialogUnreadContainer}>
+                                        {haveMention && (
+                                            <div
+                                                className={cx(
+                                                    unreadCounterContainer,
+                                                    mentionContainer,
+                                                )}
+                                            >
+                                                <UIcon icon={<IcMention />} color={'#1885F2'} />
+                                            </div>
+                                        )}
+                                        <div className={unreadCounterContainer}>
+                                            <XCounter grey={isMuted} count={dialog.unread} big />
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </XViewSelectedContext.Consumer>
         </XView>
     );
 });

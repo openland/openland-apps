@@ -8,7 +8,7 @@ import {
 } from 'openland-web/components/unicorn/URickInput';
 import AttachIcon from 'openland-icons/s/ic-attach-24.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
-import { UNavigableList, UNavigableListRef } from 'openland-web/components/unicorn/UNavigableList';
+import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { useClient } from 'openland-web/utils/useClient';
 import { RoomMembers_members_user } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
@@ -17,6 +17,9 @@ import { emojiSuggest } from 'openland-y-utils/emojiSuggest';
 import { emojiComponent } from 'openland-y-utils/emojiComponent';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { UNavigableReactWindow } from 'openland-web/components/unicorn/UNavigableReactWindow';
+import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
+import { fileListToArray } from './DropZone';
 
 interface MentionUserComponentProps {
     id: string;
@@ -34,6 +37,16 @@ const mentionUserContainer = css`
     height: 40px;
     padding-left: 16px;
     padding-right: 16px;
+`;
+
+const mentionEmojiContainer = css`
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    height: 28px;
+    padding-left: 16px;
+    padding-right: 16px;
+    transform: translateY(-0.1em);
 `;
 
 const mentionUserDataWrap = css`
@@ -71,8 +84,8 @@ const MentionUserComponent = (props: MentionUserComponentProps) => (
 );
 
 const EmojiSuggestionComponent = (props: { name: string; value: string; display: string }) => (
-    <div className={mentionUserContainer}>
-        <XView fontSize={18} width={28} height={28} marginRight={6}>
+    <div className={mentionEmojiContainer}>
+        <XView fontSize={18} width={28} height={28} marginRight={6} alignItems="center" justifyContent="center" >
             {emojiComponent(props.name)}
         </XView>
         <div className={userName}>{props.display}</div>
@@ -93,9 +106,8 @@ const mentionsContainer = css`
     transform: translateY(10px);
     will-change: opacity;
     transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     overflow-x: none;
-    max-height: 250px;
     z-index: 2;
 `;
 
@@ -140,7 +152,7 @@ const AutoCompleteComponent = React.memo(
                         return false;
                     }
                     let r = listRef.current;
-                    if (r) {
+                    if (r && isActive.current) {
                         r.onPressDown();
                         return true;
                     }
@@ -151,7 +163,7 @@ const AutoCompleteComponent = React.memo(
                         return false;
                     }
                     let r = listRef.current;
-                    if (r) {
+                    if (r && isActive.current) {
                         r.onPressUp();
                         return true;
                     }
@@ -162,14 +174,14 @@ const AutoCompleteComponent = React.memo(
                         return false;
                     }
                     let r = listRef.current;
-                    if (r) {
+                    if (r && isActive.current) {
                         return r.onPressEnter();
                     }
                     return false;
                 },
                 onPressTab: () => {
                     let r = listRef.current;
-                    if (r) {
+                    if (r && isActive.current) {
                         return r.onPressEnter();
                     }
                     return false;
@@ -189,16 +201,8 @@ const AutoCompleteComponent = React.memo(
                 }
             }]);
 
-            React.useEffect(() => {
-                if (containerRef.current) {
-                    containerRef.current.style.opacity = word ? '1' : '0';
-                    containerRef.current.style.transform = `translateY(${word ? 0 : 10}px)`;
-                    containerRef.current.style.pointerEvents = word ? 'auto' : 'none';
-                }
-            }, [word]);
-
             const itemRender = React.useCallback(
-                (v: any) => (
+                (v: RoomMembers_members_user) => (
                     <MentionUserComponent
                         name={v.name}
                         id={v.id}
@@ -216,45 +220,71 @@ const AutoCompleteComponent = React.memo(
                 [],
             );
 
+            let matched: RoomMembers_members_user[] | undefined = [];
             if (props.groupId) {
                 const client = useClient();
                 let members = client.useWithoutLoaderRoomMembers({ roomId: props.groupId });
-                if (!members || !members.members) {
-                    return fallbackRender.current;
-                }
 
-                if (word && !word.startsWith(':')) {
+                if (members && members.members && word && !word.startsWith(':')) {
                     // Mentions
-                    let matched: any[];
                     if (word) {
-                        matched = searchMentions(word, members.members).map(v => ({
-                            key: v.user.id,
-                            data: v.user,
-                        }));
+                        matched = searchMentions(word, members.members).map(u => u.user);
                     } else {
                         matched = [];
                     }
 
-                    isActive.current = true;
-                    fallbackRender.current = (
-                        <div
-                            ref={containerRef}
-                            className={mentionsContainer}
-                            onMouseDown={(e) => e.preventDefault()}
-                        >
-                            <UNavigableList
-                                data={matched}
-                                render={itemRender}
-                                onSelected={props.onSelected}
-                                ref={listRef}
-                            />
-                        </div>
-                    );
                 }
             }
-            if (word && word.startsWith(':')) {
-                let filtered = emojiSuggest(word).map(v => ({ key: v.name, data: v }));
-                isActive.current = true;
+            let filtered: { name: string, value: string, shortcode: string }[] = [];
+            if (word) {
+                filtered.push(...emojiSuggest(word));
+            }
+
+            isActive.current = !!filtered.length || !!matched.length;
+
+            let onSelected = React.useCallback((user: RoomMembers_members_user) => {
+                if (isActive.current) {
+                    props.onSelected(user);
+                }
+            }, []);
+
+            let onEmojiSelected = React.useCallback((emoji: { name: string; value: string }) => {
+                if (isActive.current) {
+                    props.onEmojiSelected(emoji);
+                }
+            }, []);
+
+            React.useEffect(() => {
+                if (containerRef.current) {
+                    let show = (matched && matched.length) || (filtered && filtered.length);
+                    containerRef.current.style.opacity = show ? '1' : '0';
+                    containerRef.current.style.transform = `translateY(${show ? 0 : 10}px)`;
+                    containerRef.current.style.pointerEvents = show ? 'auto' : 'none';
+                }
+                if (listRef.current) {
+                    listRef.current.reset();
+                }
+            }, [matched, filtered]);
+
+            if (matched.length) {
+                fallbackRender.current = (
+                    <div
+                        ref={containerRef}
+                        className={mentionsContainer}
+                        onMouseDown={(e) => e.preventDefault()}
+                    >
+                        <UNavigableReactWindow
+                            width={'100%'}
+                            height={Math.min(matched.length * 40, 250)}
+                            data={matched}
+                            itemSize={40}
+                            renderItem={itemRender}
+                            onSelected={onSelected}
+                            ref={listRef}
+                        />
+                    </div>
+                );
+            } else if (filtered.length) {
                 fallbackRender.current = (
                     <div
                         ref={containerRef}
@@ -262,15 +292,20 @@ const AutoCompleteComponent = React.memo(
                         onMouseDown={(e) => e.preventDefault()}
                     >
                         {/* <UButton text={'filtered-' + filtered.length} onClick={() => props.onEmojiSelected({ name: '1f923', value: '🤣' })} /> */}
-                        <UNavigableList
+                        <UNavigableReactWindow
+                            width={'100%'}
+                            focusedByDefault={!!(word && word.startsWith(':'))}
+                            height={Math.min(filtered.length * 28, 250)}
                             data={filtered}
-                            render={emojiItemRender}
-                            onSelected={props.onEmojiSelected}
+                            itemSize={28}
+                            renderItem={emojiItemRender}
+                            onSelected={onEmojiSelected}
                             ref={listRef}
                         />
                     </div>
                 );
             }
+
             return fallbackRender.current;
         },
     ),
@@ -377,13 +412,8 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     }, []);
 
     const onFileInputChange = React.useCallback((e) => {
-        let files: FileList | undefined = e.target.files;
-        if (files && files.length && props.onAttach) {
-            let res = [];
-            for (let i = 0; i < files.length; i++) {
-                res.push(files[i]);
-            }
-            props.onAttach(res);
+        if (props.onAttach) {
+            props.onAttach(fileListToArray(e.target.files));
         }
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
@@ -424,7 +454,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 <URickInput
                     ref={ref}
                     initialContent={props.initialText}
-                    autocompletePrefixes={['@', ':']}
+                    autocompletePrefixes={['@', ':', ...Object.keys(emojiWordMap)]}
                     onAutocompleteWordChange={onAutocompleteWordChange}
                     onPressEnter={onPressEnter}
                     onPressUp={onPressUp}
@@ -434,6 +464,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     onContentChange={props.onContentChange}
                     autofocus={true}
                     placeholder={props.placeholder || 'Write a message...'}
+                    onFilesPaste={props.onAttach}
                 />
             </XView>
             <div className={actionButtonContainer} onClick={onPressEnter}>

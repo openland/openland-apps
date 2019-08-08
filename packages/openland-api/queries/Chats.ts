@@ -596,15 +596,6 @@ export const RoomReadMutation = gql`
         roomRead(id: $id, mid: $mid)
     }
 `;
-// keep it until web compose redesigned
-export const ChatSearchGroupQuery = gql`
-    query ChatSearchGroup($members: [ID!]!) {
-        group: alphaChatSearch(members: $members) {
-            id
-            flexibleId
-        }
-    }
-`;
 
 export const RoomCreateMutation = gql`
     mutation RoomCreate(

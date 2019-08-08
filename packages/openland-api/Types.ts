@@ -30697,28 +30697,6 @@ export interface RoomReadVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: ChatSearchGroup
-// ====================================================
-
-export interface ChatSearchGroup_group {
-  __typename: "ChannelConversation" | "AnonymousConversation" | "GroupConversation" | "PrivateConversation" | "SharedConversation";
-  id: string;
-  flexibleId: string;
-}
-
-export interface ChatSearchGroup {
-  group: ChatSearchGroup_group | null;
-}
-
-export interface ChatSearchGroupVariables {
-  members: string[];
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL mutation operation: RoomCreate
 // ====================================================
 
@@ -57751,6 +57729,22 @@ export interface GlobalFeedHome {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: GlobalFeedPost
+// ====================================================
+
+export interface GlobalFeedPost {
+  alphaCreateGlobalFeedPost: boolean;
+}
+
+export interface GlobalFeedPostVariables {
+  message: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: FeedPost
 // ====================================================
 
@@ -57764,22 +57758,6 @@ export interface FeedPost {
 }
 
 export interface FeedPostVariables {
-  message: string;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: GlobalFeedPost
-// ====================================================
-
-export interface GlobalFeedPost {
-  alphaCreateGlobalFeedPost: boolean;
-}
-
-export interface GlobalFeedPostVariables {
   message: string;
 }
 

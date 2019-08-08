@@ -204,36 +204,6 @@ const RoomSignupWrapper = Glamorous.div({
     paddingBottom: 20,
 });
 
-const RoomToggler = Glamorous.div({
-    alignSelf: 'flex-end',
-    display: 'flex',
-    color: '#ffffff',
-    marginBottom: -24,
-    '@media(max-height: 600px)': {
-        marginBottom: 20,
-    },
-});
-
-const RoomTogglerText = Glamorous.div({
-    fontSize: 14,
-    lineHeight: '24px',
-    letterSpacing: -0.15,
-    color: '#000000',
-});
-
-const RoomTogglerLink = Glamorous(XLink)({
-    fontSize: 14,
-    lineHeight: '24px',
-    fontWeight: 600,
-    letterSpacing: -0.4,
-    color: '#000000',
-    marginLeft: 7,
-    '&:hover': {
-        opacity: 0.7,
-        color: '#000000',
-    },
-});
-
 const RoomSignupBox = Glamorous.div({
     background: '#ffffff',
     borderRadius: 10,
@@ -319,20 +289,12 @@ const RoomSignupHeader = Glamorous.div<{
 interface RoomSignupContainerProps {
     pageMode: PageModeT;
     headerStyle?: 'signin' | 'signup' | 'profile' | 'organization';
-    text?: string;
     onClick: (event: React.MouseEvent<any, MouseEvent>) => void;
-    linkText?: string;
     children?: any;
 }
 
 export const RoomSignupContainer = (props: RoomSignupContainerProps) => (
     <RoomSignupWrapper>
-        {props.text && (
-            <RoomToggler>
-                <RoomTogglerText>{props.text}</RoomTogglerText>
-                <RoomTogglerLink onClick={props.onClick}>{props.linkText}</RoomTogglerLink>
-            </RoomToggler>
-        )}
         <RoomSignupBox>
             <RoomSignupHeader headerStyle={props.headerStyle || 'signin'} />
             {props.children}

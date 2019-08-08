@@ -9,9 +9,10 @@ const emojiStyle = css`
    transform: translateY(0.1em);
 `;
 
-export function emojiComponent(name: string, key?: string) {
+export function emojiComponent(name: string, src?: string, key?: string) {
     return (
         <img
+            alt={src}
             className={emojiStyle}
             src={emojiLink(name)}
             key={key}

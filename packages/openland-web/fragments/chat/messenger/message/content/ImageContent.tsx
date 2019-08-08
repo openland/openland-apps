@@ -101,7 +101,7 @@ const imgContainer = css`
     min-height: 72px;
     min-width: 72px;
     max-width: 680px;
-    max-height: 500px;
+    max-height: 600px;
     overflow: hidden;
     border-radius: 8px;
     background-color: #f0f2f5;

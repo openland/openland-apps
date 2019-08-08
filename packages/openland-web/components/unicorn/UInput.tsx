@@ -38,6 +38,7 @@ const labelStyle = css`
     color: #969aa3;
     line-height: 24px;
     top: 14px;
+    transition: all 0.15s ease;
 `;
 
 const labelValueStyle = css`

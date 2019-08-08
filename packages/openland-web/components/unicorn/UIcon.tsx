@@ -27,7 +27,7 @@ export const UIcon = React.memo((props: UIconProps) => {
     return (
         <div
             className={cx(wrapper, props.className)}
-            style={{ '--icon-color': color || ThemeDefault.foregroundSecondary } as any}
+            style={{ '--icon-color': color || ThemeDefault.foregroundSecondary } as React.CSSProperties}
         >
             {icon}
         </div>
