@@ -12,7 +12,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     let router = useStackRouter();
     useShortcuts({
         keys: ['Escape'], callback: () => {
-            return router.pop();
+            return router.pages.length > 1 ? router.pop() : false;
         }
     });
     let appearance = props.config.appearance || 'normal';

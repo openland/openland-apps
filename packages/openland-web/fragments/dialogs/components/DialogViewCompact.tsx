@@ -30,6 +30,8 @@ export const DialogViewCompact = React.memo(
                 minWidth={0}
                 alignItems="center"
                 hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                selectedBackgroundColor="rgba(0, 0, 0, 0.05)"
+                selectedColor="#000"
                 hoverTextDecoration="none"
                 cursor="pointer"
             >

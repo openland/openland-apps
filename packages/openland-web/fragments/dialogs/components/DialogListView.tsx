@@ -8,7 +8,6 @@ import { XListView } from 'openland-web/components/XListView';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DialogView } from './DialogView';
 import { DialogSearchResults } from './DialogSearchResults';
-import { XShortcuts } from 'openland-x/XShortcuts';
 import { XInput } from 'openland-x/XInput';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -16,6 +15,7 @@ import { dialogListWebDataSource, DialogListWebItem } from './DialogListWebDataS
 import { XLoader } from 'openland-x/XLoader';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const dialogSearchWrapperClassName = css`
     justify-content: flex-start !important;
@@ -126,44 +126,47 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
         }
     };
 
+    useShortcuts([
+        {
+            keys: ['Escape'], callback: () => {
+                // TODO: check input focus (implement is useShortcuts via ref?)
+                if (ref.current && query) {
+                    setQuery('');
+                    return true;
+                }
+                return false;
+            }
+        },
+        { keys: ['Meta', 'ArrowUp'], callback: handleOptionUp },
+        { keys: ['Meta', 'ArrowDown'], callback: handleOptionDown },
+        { keys: ['Control', 's'], callback: handleCtrlS },
+    ]);
+
     return (
-        <XShortcuts
-            handlerMap={{
-                SHIFT_COMMAND_UP: handleOptionUp,
-                SHIFT_COMMAND_DOWN: handleOptionDown,
-                CTRL_S: handleCtrlS,
-            }}
-            keymap={{
-                CTRL_S: {
-                    osx: ['ctrl+s'],
-                },
-            }}
-        >
+        <XView flexGrow={1} flexBasis={0} minHeight={0}>
+            <DialogSearchInput value={query} onChange={setQuery} ref={ref} />
             <XView flexGrow={1} flexBasis={0} minHeight={0}>
-                <DialogSearchInput value={query} onChange={setQuery} ref={ref} />
-                <XView flexGrow={1} flexBasis={0} minHeight={0}>
-                    {isSearching && (
-                        <div className={dialogSearchWrapperClassName}>
-                            <DialogSearchResults
-                                variables={{ query: query }}
-                                onClick={() => setQuery('')}
-                                onSearchItemPress={props.onSearchItemPress}
-                                onSearchItemSelected={props.onSearchItemSelected}
-                            />
-                        </div>
-                    )}
-                    {canUseDOM && !isSearching && (
-                        <XListView
-                            dataSource={dataSource}
-                            itemHeight={72}
-                            loadingHeight={200}
-                            renderItem={renderDialog}
-                            renderLoading={renderLoading}
+                {isSearching && (
+                    <div className={dialogSearchWrapperClassName}>
+                        <DialogSearchResults
+                            variables={{ query: query }}
+                            onClick={() => setQuery('')}
+                            onSearchItemPress={props.onSearchItemPress}
+                            onSearchItemSelected={props.onSearchItemSelected}
                         />
-                    )}
-                </XView>
+                    </div>
+                )}
+                {canUseDOM && !isSearching && (
+                    <XListView
+                        dataSource={dataSource}
+                        itemHeight={72}
+                        loadingHeight={200}
+                        renderItem={renderDialog}
+                        renderLoading={renderLoading}
+                    />
+                )}
             </XView>
-        </XShortcuts>
+        </XView>
     );
 });
 

@@ -1,14 +1,14 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XView } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { DialogViewCompact } from './DialogViewCompact';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';
-import { XShortcuts } from 'openland-x/XShortcuts';
 import { GlobalSearch_items } from 'openland-api/Types';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { MessagesSearch } from './MessagesSearch';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const NoResultWrapper = Glamorous(XVertical)({
     marginTop: 34,
@@ -34,6 +34,7 @@ type DialogSearchResultsT = {
 const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
     const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
     const client = useClient();
+    const router = React.useContext(XViewRouterContext);
     const data = client.useGlobalSearch(props.variables, {
         fetchPolicy: 'cache-and-network',
     });
@@ -80,6 +81,20 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
         }
     }, [selectedIndex]);
 
+    useShortcuts([
+        { keys: ['ArrowUp'], callback: handleOptionUp },
+        { keys: ['ArrowDown'], callback: handleOptionDown },
+        {
+            keys: ['Enter'], callback: () => {
+                let d = items[selectedIndex || -1];
+                if (d) {
+                    props.onClick();
+                    router!.navigate((d.isOrganization ? '/' : '/mail/') + d.id);
+                }
+            }
+        },
+    ]);
+
     if (items.length === 0) {
         return (
             <NoResultWrapper separator={10} alignItems="center">
@@ -90,14 +105,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
     }
 
     return (
-        <XShortcuts
-            supressOtherShortcuts
-            handlerMap={{
-                SHIFT_COMMAND_UP: handleOptionUp,
-                SHIFT_COMMAND_DOWN: handleOptionDown,
-            }}
-            keymap={{}}
-        >
+        <>
             {items.map((i, index) => {
                 let item;
 
@@ -142,7 +150,12 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                         selected={selectedIndex === index}
                         key={i.id}
                         onSelect={props.onSelect}
-                        onClick={() => props.onSearchItemPress ? props.onSearchItemPress(i.id) : props.onClick()}
+                        onClick={() => {
+                            props.onClick();
+                            if (props.onSearchItemPress) {
+                                props.onSearchItemPress(i.id);
+                            }
+                        }}
                         item={item}
                     />
                 );
@@ -150,7 +163,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
             <XWithRole role="feature-non-production">
                 <MessagesSearch {...props} />
             </XWithRole>
-        </XShortcuts>
+        </>
     );
 };
 
