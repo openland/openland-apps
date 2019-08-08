@@ -19,6 +19,7 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UNavigableReactWindow } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
+import { fileListToArray } from './DropZone';
 
 interface MentionUserComponentProps {
     id: string;
@@ -395,13 +396,8 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     }, []);
 
     const onFileInputChange = React.useCallback((e) => {
-        let files: FileList | undefined = e.target.files;
-        if (files && files.length && props.onAttach) {
-            let res = [];
-            for (let i = 0; i < files.length; i++) {
-                res.push(files[i]);
-            }
-            props.onAttach(res);
+        if (props.onAttach) {
+            props.onAttach(fileListToArray(e.target.files));
         }
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
@@ -452,6 +448,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     onContentChange={props.onContentChange}
                     autofocus={true}
                     placeholder={props.placeholder || 'Write a message...'}
+                    onFilesPaste={props.onAttach}
                 />
             </XView>
             <div className={actionButtonContainer} onClick={onPressEnter}>

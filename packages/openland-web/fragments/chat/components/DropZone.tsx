@@ -3,6 +3,16 @@ import { css } from 'linaria';
 import IconUpload from 'openland-icons/s/ic-drop-72.svg';
 import { TextTitle1 } from 'openland-web/utils/TextStyles';
 
+export const fileListToArray = (files?: FileList) => {
+    let res = [];
+    if (files && files.length) {
+        for (let i = 0; i < files.length; i++) {
+            res.push(files[i]);
+        }
+    }
+    return res;
+};
+
 const dropZoneClass = css`
     position: absolute;
     left: 0;
@@ -120,14 +130,7 @@ export const DropZone = (props: { onDrop: (files: File[]) => void }) => {
     }, []);
 
     const onDrop = React.useCallback((ev: React.DragEvent) => {
-        let files: FileList | undefined = ev.dataTransfer.files;
-        if (files && files.length && props.onDrop) {
-            let res = [];
-            for (let i = 0; i < files.length; i++) {
-                res.push(files[i]);
-            }
-            props.onDrop(res);
-        }
+        props.onDrop(fileListToArray(ev.dataTransfer.files));
     }, []);
     return (
         <div ref={containerRef} className={dropZoneClass} onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}>

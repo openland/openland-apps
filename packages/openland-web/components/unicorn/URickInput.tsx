@@ -6,6 +6,7 @@ import { UserForMention } from 'openland-api/Types';
 import { emojiLink } from 'openland-y-utils/emojiLink';
 import { EmojiPicker } from './emoji/EmojiPicker';
 import { emojiConvertToName } from 'openland-y-utils/emojiExtract';
+import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone';
 
 const quillStyle = css`
     flex-grow: 1;
@@ -71,6 +72,8 @@ export interface URickInputProps {
     onPressDown?: () => boolean;
     onPressTab?: () => boolean;
     onPressEsc?: () => boolean;
+
+    onFilesPaste?: (files: File[]) => void;
 }
 
 let Quill: typeof QuillType.Quill;
@@ -239,6 +242,21 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
         }
     }));
 
+    React.useEffect(() => {
+        if (containerRef.current && containerRef.current.firstChild && props.onFilesPaste) {
+            let q = containerRef.current.firstChild;
+            let listener = (ev: ClipboardEvent) => {
+                if (props.onFilesPaste && ev.clipboardData && ev.clipboardData.files) {
+                    props.onFilesPaste(fileListToArray(ev.clipboardData.files));
+                }
+            };
+            q.addEventListener('paste', listener);
+
+            return () => q.removeEventListener('paste', listener);
+        }
+        return () => false;
+    }, [props.onFilesPaste]);
+
     React.useLayoutEffect(() => {
         let q = new Quill(containerRef.current!, { formats: ['mention', 'emoji'], placeholder: props.placeholder });
         if (props.initialContent) {
@@ -311,12 +329,6 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                 }
             }
         });
-
-        // q.clipboard.addMatcher(Node.CDATA_SECTION_NODE, (data, delta) => {
-        //     console.warn(data);
-        //     return new QuillDelta();
-        //     //
-        // });
 
         editor.current = q;
     }, []);

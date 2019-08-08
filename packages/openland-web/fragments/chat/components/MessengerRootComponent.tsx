@@ -340,10 +340,12 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     }
 
     onAttach = (files: File[]) => {
-        showAttachConfirm(files, (res) => {
-            res.map(f => new UploadCareUploading(UploadCare.fileFrom('object', f), f.name))
-                .map(this.conversation!.sendFile);
-        });
+        if (files.length) {
+            showAttachConfirm(files, (res) => {
+                res.map(f => new UploadCareUploading(UploadCare.fileFrom('object', f), f.name))
+                    .map(this.conversation!.sendFile);
+            });
+        }
     }
 
     //
