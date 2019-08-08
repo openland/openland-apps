@@ -117,10 +117,15 @@
     <mj-body width="690px">
         <mj-include path="./includes/header.mjml" />
 
-        <mj-section mj-class="wrapper">
-            <mj-column mj-class="container-narrow">
+        <mj-section mj-class="wrapper container-narrow">
+            <mj-column width="180px" vertical-align="middle">
                 <mj-text mj-class="title bold-text">
                     {{title}}
+                </mj-text>
+            </mj-column>
+             <mj-column vertical-align="middle">
+                <mj-text mj-class="title-small" color="#404040">
+                    {{date}}
                 </mj-text>
             </mj-column>
         </mj-section>
