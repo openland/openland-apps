@@ -314,15 +314,18 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 mentions.push(t);
             }
         }
+        textValue = textValue.trim();
 
         if (actionState.action === 'edit' && actionMessage && actionMessage.text && actionMessage.id!) {
             this.conversation!.messagesActionsStateEngine.clear();
-            this.conversation!.engine.client.mutateEditMessage({
-                messageId: actionMessage.id!,
-                message: textValue,
-                mentions: prepareLegacyMentionsForSend(textValue, mentions),
-                spans: findSpans(textValue)
-            });
+            if (textValue.length > 0) {
+                this.conversation!.engine.client.mutateEditMessage({
+                    messageId: actionMessage.id!,
+                    message: textValue,
+                    mentions: prepareLegacyMentionsForSend(textValue, mentions),
+                    spans: findSpans(textValue)
+                });
+            }
         } else {
             if (textValue.length > 0 || actionState.action === 'reply' || actionState.action === 'forward') {
                 localStorage.removeItem('drafts-' + this.props.conversationId);
