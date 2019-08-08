@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import * as Three from 'three';
+import * as FA from 'face-api.js';
+import { XView } from 'react-mental';
 
 const container = css`
     width: 200px;
@@ -10,12 +12,55 @@ const container = css`
 
 export const UnimojiViewer = React.memo(() => {
     let ref = React.useRef<HTMLDivElement>(null);
+    let videoRef = React.useRef<HTMLVideoElement>(null);
+    let canvasRef = React.useRef<HTMLCanvasElement>(null);
+    let rotation = React.useRef<number>(0);
+
+    React.useLayoutEffect(() => {
+        (async () => {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
+            videoRef.current!.srcObject = stream;
+        })();
+    }, []);
+
+    const detect = React.useCallback(async () => {
+        const options = new FA.TinyFaceDetectorOptions({
+            inputSize: 224,
+            scoreThreshold: 0.5
+        });
+        let r = await FA.detectSingleFace(videoRef.current!, options).withFaceLandmarks(true);
+        if (r) {
+            const dims = FA.matchDimensions(canvasRef.current!, videoRef.current!, true);
+            // const resizedResult = FA.resizeResults(r, dims)!;
+            // FA.draw.drawDetections(canvasRef.current!, resizedResult);
+            // FA.draw.drawFaceLandmarks(canvasRef.current!, resizedResult);
+
+            let nose = r.landmarks.getNose();
+            rotation.current = -Math.atan2(nose[1].y - nose[0].y, nose[1].x - nose[0].x);
+        }
+        setTimeout(() => {
+            detect();
+        }, 1);
+    }, []);
+
+    const start = React.useCallback((e: any) => {
+        (async () => {
+            // console.log(getCurrentFaceDetectionNet());
+            // await FA.nets.tinyYolov2.load('/static/models');
+            // await FA.nets.faceLandmark68Net.load('/static/models');
+            await FA.nets.faceLandmark68TinyNet.load('/static/models');
+            await FA.loadTinyFaceDetectorModel('/static/models');
+            // await FA.loadFaceLandmarkModel('/static/models');
+            detect();
+        })();
+    }, []);
 
     const renderLoop = React.useCallback((
         scene: Three.Scene,
-        camera: Three.Camera
+        camera: Three.Camera,
+        cube: Three.Mesh
     ) => {
-        //
+        cube.rotation.z = rotation.current;
     }, []);
 
     React.useLayoutEffect(() => {
@@ -58,7 +103,7 @@ export const UnimojiViewer = React.memo(() => {
         scene.add(lights[2]);
 
         const callback = () => {
-            renderLoop(scene, camera);
+            renderLoop(scene, camera, cube);
             renderer.render(scene, camera);
             requestAnimationFrame(callback);
         };
@@ -66,6 +111,10 @@ export const UnimojiViewer = React.memo(() => {
     }, []);
 
     return (
-        <div className={container} ref={ref} />
+        <XView width={600} height={200} flexDirection="row">
+            <div className={container} ref={ref} />
+            <video onLoadedData={start} className={container} ref={videoRef} autoPlay={true} muted={true} playsinline={true} />
+            <canvas ref={canvasRef} className={container} />
+        </XView>
     );
 });
