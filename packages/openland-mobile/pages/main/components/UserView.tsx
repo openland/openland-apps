@@ -32,7 +32,7 @@ export const UserView = (props: UserViewProps) => {
                 <View flexDirection="row">
                     {(role === 'OWNER' || role === 'ADMIN') && <Image source={require('assets/ic-crown-16.png')} style={{ tintColor: (role === 'OWNER' ? '#fbc139' : '#c0c0c0'), alignSelf: 'center', marginRight: 3 }} />}
                     {!!badge && <Image source={require('assets/ic-star-admin-16.png')} style={{ tintColor: theme.accentPrimary, alignSelf: 'center', marginRight: 3 }} />}
-                    <Text style={{ ...TypeStyles.label1, color: theme.foregroundPrimary, flexGrow: 1, flexBasis: 0 }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{user.name}{user.primaryOrganization && <Text style={{ ...TypeStyles.body, color: theme.foregroundSecondary }}>  {user.primaryOrganization.name}</Text>}</Text>
+                    <Text style={{ ...TypeStyles.label1, color: theme.foregroundPrimary, flexGrow: 1, flexBasis: 0 }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{user.name}{user.primaryOrganization && <Text style={{ ...TypeStyles.label2, color: theme.foregroundTertiary }}> {user.primaryOrganization.name}</Text>}</Text>
                 </View>
                 {subtitle ? <Text style={{ ...TypeStyles.subhead, color: subtitleColor ? subtitleColor : theme.foregroundTertiary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{subtitle}</Text> : <PresenceComponent isBot={user.isBot} uid={user.id} lastSeen={user.lastSeen} online={user.online} style={{ ...TypeStyles.subhead, color: theme.foregroundTertiary }} onlineStyle={{ color: theme.accentPrimary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false} />}
             </View>
