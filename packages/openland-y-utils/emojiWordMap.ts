@@ -31,6 +31,7 @@ const emojiWordCollection = {
         ['1f645-200d-2642-fe0f', [':man_gesturing_no:'], '🙅‍♂️'],
         ['1f44e', [':thumbsdown:', ':-1:', ':thumbdown:'], '👎'],
         ['1f648', [':see_no_evil:'], '🙈'],
+        // ['1f3f3-fe0f-200d-1f308', [':rainbow_flag:', ':gay_pride_flag:'], '🏳️‍🌈'],
     ],
 
     hi: [
