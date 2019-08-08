@@ -319,18 +319,6 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderChatInit(variables: Types.ChatInitVariables, opts?: QueryWatchParameters): Types.ChatInit | null {
         return this.useQuery(Source.ChatInitQuery, variables, opts);
     }
-    async queryChatSearchGroup(variables: Types.ChatSearchGroupVariables, opts?: OperationParameters): Promise<Types.ChatSearchGroup> {
-        return this.client.query(Source.ChatSearchGroupQuery, variables, opts);
-    }
-    async refetchChatSearchGroup(variables: Types.ChatSearchGroupVariables): Promise<Types.ChatSearchGroup> {
-        return this.refetch(Source.ChatSearchGroupQuery, variables);
-    }
-    useChatSearchGroup(variables: Types.ChatSearchGroupVariables, opts?: QueryWatchParameters): Types.ChatSearchGroup {
-        return this.useQuerySuspense(Source.ChatSearchGroupQuery, variables, opts);
-    }
-    useWithoutLoaderChatSearchGroup(variables: Types.ChatSearchGroupVariables, opts?: QueryWatchParameters): Types.ChatSearchGroup | null {
-        return this.useQuery(Source.ChatSearchGroupQuery, variables, opts);
-    }
     async queryRoomSearchText(variables: Types.RoomSearchTextVariables, opts?: OperationParameters): Promise<Types.RoomSearchText> {
         return this.client.query(Source.RoomSearchTextQuery, variables, opts);
     }
@@ -1183,11 +1171,11 @@ export class OpenlandClient extends BaseApiClient {
     async mutateFeatureFlagDisable(variables: Types.FeatureFlagDisableVariables): Promise<Types.FeatureFlagDisable> {
         return this.client.mutate(Source.FeatureFlagDisableMutation, variables);
     }
-    async mutateFeedPost(variables: Types.FeedPostVariables): Promise<Types.FeedPost> {
-        return this.client.mutate(Source.FeedPostMutation, variables);
-    }
     async mutateGlobalFeedPost(variables: Types.GlobalFeedPostVariables): Promise<Types.GlobalFeedPost> {
         return this.client.mutate(Source.GlobalFeedPostMutation, variables);
+    }
+    async mutateFeedPost(variables: Types.FeedPostVariables): Promise<Types.FeedPost> {
+        return this.client.mutate(Source.FeedPostMutation, variables);
     }
     async mutateMyNotificationCenterMarkSeqRead(variables: Types.MyNotificationCenterMarkSeqReadVariables): Promise<Types.MyNotificationCenterMarkSeqRead> {
         return this.client.mutate(Source.MyNotificationCenterMarkSeqReadMutation, variables);

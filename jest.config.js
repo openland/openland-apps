@@ -29,6 +29,8 @@ module.exports = {
         //
         // WARNING: ORDER MATTERS
         //
+        'openland-unimoji/(.*)': '<rootDir>/packages/openland-unimoji/$1',
+        'openland-unimoji': '<rootDir>/packages/openland-unimoji',
         'openland-unicorn/(.*)': '<rootDir>/packages/openland-unicorn/$1',
         'openland-unicorn': '<rootDir>/packages/openland-unicorn',
         'openland-form/(.*)': '<rootDir>/packages/openland-form/$1',

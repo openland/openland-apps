@@ -160,6 +160,9 @@
             ],
             "openland-unicorn": [
                 "openland-unicorn"
+            ],
+            "openland-unimoji": [
+                "openland-unimoji"
             ]
         },
         "importHelpers": true
@@ -223,6 +226,7 @@
         "./packages/react-native-fast-navigation",
         "./packages/react-native-s",
         "./packages/react-native-auth0-s",
-        "./packages/openland-unicorn"
+        "./packages/openland-unicorn",
+        "./packages/openland-unimoji"
     ]
 }

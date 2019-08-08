@@ -1,7 +1,0 @@
-query ChatSearchGroup($members: [ID!]!) {
-  group: alphaChatSearch(members: $members) {
-    __typename
-    flexibleId
-    id
-  }
-}
