@@ -332,8 +332,16 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
 
         q.clipboard.addMatcher('img', (node, delta) => {
             let src = node.alt;
-            let emojiName = emojiConvertToName(src);
+            let emojiName = src && emojiConvertToName(src);
             return new QuillDelta().insert(emojiName ? { emoji: { name: emojiName, value: src } } : src);
+        });
+
+        q.clipboard.addMatcher('td', (node, delta) => {
+            return delta.insert(' ');
+        });
+
+        q.clipboard.addMatcher('th', (node, delta) => {
+            return delta.insert(' ');
         });
 
         editor.current = q;

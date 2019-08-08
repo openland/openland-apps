@@ -294,6 +294,7 @@ const AutoCompleteComponent = React.memo(
                         {/* <UButton text={'filtered-' + filtered.length} onClick={() => props.onEmojiSelected({ name: '1f923', value: '🤣' })} /> */}
                         <UNavigableReactWindow
                             width={'100%'}
+                            focusedByDefault={!!(word && word.startsWith(':'))}
                             height={Math.min(filtered.length * 28, 250)}
                             data={filtered}
                             itemSize={28}
