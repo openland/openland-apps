@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
+import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { UserShort, UserBadge, OrganizationMemberRole, RoomMemberRole } from 'openland-api/Types';
 import { UPresence } from '../UPresence';
 import { XView } from 'react-mental';
@@ -8,25 +9,25 @@ import { css } from 'linaria';
 
 const OwnerIconClass = css`
     & * {
-        fill: #F2AA00;
+        fill: #f2aa00;
     }
 `;
 
 const AdminIconClass = css`
     & * {
-        fill: #B4B4B4;
+        fill: #b4b4b4;
     }
 `;
 
 const AdminIcon = (props: { role: RoomMemberRole | OrganizationMemberRole }) => {
     const { role } = props;
-
+    const [show] = useCaptionPopper(role);
     if (role !== 'ADMIN' && role !== 'OWNER') {
         return null;
     }
 
     return (
-        <XView width={14} height={14} marginRight={5}>
+        <XView width={14} height={14} marginRight={5} onMouseEnter={show}>
             <CrownIcon className={role === 'OWNER' ? OwnerIconClass : AdminIconClass} />
         </XView>
     );
@@ -48,7 +49,9 @@ export const UUserView = React.memo((props: UUserViewProps) => {
             title={name}
             titleIcon={role ? <AdminIcon role={role} /> : undefined}
             subtitle={primaryOrganization ? primaryOrganization.name : undefined}
-            description={<UPresence suffix={badge ? ' · ' + badge.name : undefined} user={props.user} />}
+            description={
+                <UPresence suffix={badge ? ' · ' + badge.name : undefined} user={props.user} />
+            }
             avatar={{ photo, id, title: name, online }}
             useRadius={true}
             path={`/${shortname || id}`}

@@ -5,7 +5,6 @@ import { MessageContent } from './MessageContent';
 import { MAvatar } from './MAvatar';
 import { css, cx } from 'linaria';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
 import StarIcon from 'openland-icons/s/ic-star-16.svg';
 import { formatTime } from 'openland-y-utils/formatTime';
@@ -14,6 +13,7 @@ import { HoverMenu } from './Menu/HoverMenu';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
+import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 
 const senderContainer = css`
     display: flex;
@@ -42,31 +42,6 @@ const senderBadgeStyle = css`
     margin-left: 4px;
 `;
 
-const senderBadgeContentStyle = css`
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #000;
-    text-align: center;
-    border-radius: 8px;
-    color: #fff;
-    min-width: 80px;
-    height: 30px;
-    padding: 0 12px;
-
-    &::after {
-        position: absolute;
-        content: '';
-        width: 10px;
-        height: 10px;
-        background-color: #000;
-        transform: rotate(45deg);
-        border-radius: 2px;
-        bottom: -2px;
-    }
-`;
-
 const botBadgeStyle = css`
     align-self: center;
     font-size: 11px;
@@ -93,11 +68,7 @@ const MessageSenderName = (props: {
 );
 
 const MessageSenderBadge = (props: { senderBadgeNameEmojify: string | JSX.Element }) => {
-    const [, show] = usePopper({ placement: 'top', hideOnLeave: true, borderRadius: 8 }, () => (
-        <div className={senderBadgeContentStyle}>
-            <span className={TextCaption}>{props.senderBadgeNameEmojify}</span>
-        </div>
-    ));
+    const [show] = useCaptionPopper(props.senderBadgeNameEmojify);
     return (
         <div className={senderBadgeStyle} onMouseEnter={show}>
             <StarIcon />

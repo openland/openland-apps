@@ -1,43 +1,14 @@
 import * as React from 'react';
-import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { UAvatar } from './UAvatar';
-import { TextCaption, TextStyles } from 'openland-web/utils/TextStyles';
-import { usePopper } from 'openland-web/components/unicorn/usePopper';
+import { TextStyles } from 'openland-web/utils/TextStyles';
+import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { ThemeDefault } from 'openland-y-utils/themes';
 import { showAvatarModal } from '../showAvatarModal';
 
-const scoreContent = css`
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #000;
-    text-align: center;
-    border-radius: 8px;
-    color: #fff;
-    width: 280px;
-    padding: 6px 12px 8px;
-
-    &::before {
-        position: absolute;
-        content: '';
-        width: 10px;
-        height: 10px;
-        background-color: #000;
-        transform: rotate(45deg);
-        border-radius: 2px;
-        top: -2px;
-        z-index: -1;
-    }
-`;
-
 const Score = (props: { value: number }) => {
-    const [, show] = usePopper({ placement: 'bottom', hideOnLeave: true, borderRadius: 8 }, () => (
-        <div className={scoreContent}>
-            <span className={TextCaption}>User's reach is the total number of people in community groups they are in</span>
-        </div>
-    ));
+    const richText = 'User\'s reach is the total number of people in community groups they are in';
+    const [show] = useCaptionPopper(richText, 'bottom');
     return (
         <XView position="absolute" left={0} bottom={-6} right={0} alignItems="center" onMouseEnter={show}>
             <XView
