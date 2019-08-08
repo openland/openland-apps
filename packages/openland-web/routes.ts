@@ -142,6 +142,9 @@ routes.add('/ui/rick/', '/dev/ui/rick');
 routes.add('/ui/shortcuts', '/dev/ui/shortcuts');
 routes.add('/ui/shortcuts/', '/dev/ui/shortcuts');
 
+routes.add('/ui/unimoji', '/dev/ui/unimoji');
+routes.add('/ui/unimoji/', '/dev/ui/unimoji');
+
 //
 // Dev Tools
 //
