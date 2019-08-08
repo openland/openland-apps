@@ -14,7 +14,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextCaption, TextTitle2, TextBody } from 'openland-web/utils/TextStyles';
 import { resolveLinkAction } from 'openland-web/utils/resolveLinkAction';
 
-type messageRitchAttachs = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
+type messageRichAttach = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
 type unicornKeyboard = FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard;
 
 const richWrapper = css`
@@ -28,15 +28,21 @@ const richWrapper = css`
 `;
 
 const richImageContainer = css`
+    position: relative;
+    overflow: hidden;
     display: flex;
     flex-shrink: 0;
     flex-direction: row;
     align-items: center;
     min-height: 100%;
     cursor: pointer;
+    width: var(--image-width);
 `;
 
 const richImageStyle = css`
+    position: absolute;
+    left: 0;
+    top: var(--image-top-position);
     object-fit: cover;
     flex-shrink: 0;
     min-width: 100%;
@@ -143,7 +149,7 @@ const UnicornBotButton = ({ keyboard }: { keyboard: unicornKeyboard }) => (
     </>
 );
 
-const InternalComponent = ({ attach }: { attach: messageRitchAttachs }) => {
+const InternalComponent = ({ attach }: { attach: messageRichAttach }) => {
     if (!attach.title && !attach.subTitle && attach.keyboard) {
         return <UnicornBotButton keyboard={attach.keyboard} />;
     }
@@ -233,7 +239,7 @@ const showImageModal = (src: string, width: number, height: number) => {
     ));
 };
 
-export const RichAttachContent = ({ attach }: { attach: messageRitchAttachs }) => {
+export const RichAttachContent = ({ attach }: { attach: messageRichAttach }) => {
     if (!attach.title && !attach.titleLink && !attach.subTitle && !attach.keyboard) {
         return null;
     }
@@ -256,6 +262,7 @@ export const RichAttachContent = ({ attach }: { attach: messageRitchAttachs }) =
         img = (
             <div
                 className={richImageContainer}
+                style={{ '--image-width': `${layout.width}px` } as React.CSSProperties}
                 onClick={(e: React.MouseEvent) => {
                     e.stopPropagation();
                     showImageModal(attach.image!!.url, layout.width * 2, layout.height * 2);
@@ -266,6 +273,11 @@ export const RichAttachContent = ({ attach }: { attach: messageRitchAttachs }) =
                     width={layout.width}
                     height={layout.height}
                     src={attach.image.url}
+                    style={
+                        {
+                            '--image-top-position': `calc(50% - ${layout.height / 2})`,
+                        } as React.CSSProperties
+                    }
                 />
             </div>
         );
