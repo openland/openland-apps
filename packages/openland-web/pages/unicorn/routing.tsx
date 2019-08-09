@@ -14,6 +14,7 @@ import { InviteFriendsFragment } from 'openland-web/fragments/account/SettingsIn
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 import { GroupProfileFragment } from 'openland-web/fragments/group/GroupProfileFragment';
 import { MessageFragment } from 'openland-web/fragments/message/MessageFragment';
+import { FeedFragment } from 'openland-web/fragments/feed/FeedFragment';
 
 const routing = new URouting();
 
@@ -32,6 +33,7 @@ routing.addRoute('/message/:id', () => MessageFragment);
 routing.addRoute('/notifications', () => NotificationsFragment);
 
 // Discover
+routing.addRoute('/feed', () => FeedFragment);
 routing.addRoute('/discover/recommended', () => RecommendedFragment);
 routing.addRoute('/discover/groups', () => DiscoverGroupsFragment);
 

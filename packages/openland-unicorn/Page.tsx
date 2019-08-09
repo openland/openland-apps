@@ -12,7 +12,7 @@ interface PageProps {
 
 export const Page = React.memo((props: PageProps) => {
     const { style = 'normal', scroll = 'enable', padded, onScroll, children } = props;
-    const width = style === 'normal' ? 600 : 950;
+    const width = style === 'normal' ? 600 : 856;
     const marginHorizontal = padded ? 16 : 0;
 
     if (scroll !== 'enable') {

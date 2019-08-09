@@ -55,6 +55,8 @@ routes.add('/authorization/:step', '/auth/root');
 // Discover
 //
 
+routes.add('/feed', '/unicorn/index');
+routes.add('/feed/', '/unicorn/index');
 routes.add('/discover/recommended', '/unicorn/index');
 routes.add('/discover/groups', '/unicorn/index');
 routes.add('/discover/communities', '/unicorn/index');
