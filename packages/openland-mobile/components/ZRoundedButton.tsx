@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ViewStyle, TextStyle, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, TextStyle, TouchableOpacity, Platform, TouchableHighlight } from 'react-native';
 import { withRouter } from 'react-native-s/withRouter';
 import { SRouter } from 'react-native-s/SRouter';
 import Alert from './AlertBlanket';
@@ -97,23 +97,37 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
     const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : style === 'secondary-inverted' ? theme.backgroundInverted : theme.backgroundTertiary);
     const textColor = style === 'primary' ? theme.contrastSpecial : (style === 'danger' ? theme.contrastPrimary : theme.foregroundSecondary);
 
-    return (
-        <TouchableOpacity onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined} disabled={actionInProgress || props.enabled === false} activeOpacity={0.6}>
-            <View style={[styles.container, { backgroundColor: backgroundColor, opacity: props.enabled === false ? 0.6 : undefined }]}>
-                <Text
-                    style={[styles.title, { color: actionInProgress ? 'transparent' : textColor, paddingBottom: Platform.OS === 'android' ? 2 : undefined }]}
-                    allowFontScaling={false}
-                >
-                    {props.title}
-                </Text>
+    const highlightedColors = {
+        'primary': theme.accentPrimaryActive,
+        'secondary': theme.backgroundTertiaryActive,
+        'secondary-inverted': theme.backgroundTertiaryActive,
+        'danger': theme.accentNegativeActive
+    };
 
-                {actionInProgress && (
-                    <View width="100%" height="100%" justifyContent="center" alignItems="center" position="absolute">
-                        <LoaderSpinner color={textColor} size={size === 'default' ? 'small' : 'medium'} />
-                    </View>
-                )}
-            </View>
-        </TouchableOpacity>
+    return (
+        <View style={{ borderRadius: RadiusStyles.medium, overflow: 'hidden' }}>
+            <TouchableHighlight 
+                style={[styles.container, { backgroundColor: backgroundColor, opacity: props.enabled === false ? 0.6 : undefined }]} 
+                onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined} 
+                disabled={actionInProgress || props.enabled === false} 
+                underlayColor={highlightedColors[style]} 
+            >
+                <>
+                    <Text
+                        style={[styles.title, { color: actionInProgress ? 'transparent' : textColor, paddingBottom: Platform.OS === 'android' ? 2 : undefined }]}
+                        allowFontScaling={false}
+                    >
+                        {props.title}
+                    </Text>
+
+                    {actionInProgress && (
+                        <View width="100%" height="100%" justifyContent="center" alignItems="center" position="absolute">
+                            <LoaderSpinner color={textColor} size={size === 'default' ? 'small' : 'medium'} />
+                        </View>
+                    )}
+                </>
+            </TouchableHighlight>
+        </View>
     );
 });
 
