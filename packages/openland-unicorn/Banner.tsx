@@ -5,6 +5,7 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
 import { defaultHover } from 'openland-web/utils/Styles';
+import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 
 const bannerContainetClass = css`
     display: flex;
@@ -53,9 +54,23 @@ const bannerContentWrapper = css`
     flex-grow: 1;
     display: flex;
     flex-direction: 'row';
-    justify-content: space-between;
     align-items: center;
     max-width: 592px;
+`;
+
+const bannerMobileApps = css`
+    display: flex;
+    flex-direction: 'row';
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+const bannerNotification = css`
+    display: flex;
+    flex-direction: 'row';
+    align-items: center;
+    justify-content: center;
 `;
 
 const BannerContainer = (props: { onClosePress?: () => void, children?: any }) => {
@@ -72,13 +87,13 @@ const BannerContainer = (props: { onClosePress?: () => void, children?: any }) =
 };
 
 let useMobileAppsBanner = () => {
-    let [show, setShow] = React.useState(!window.localStorage.getItem('banner-apps-closed-1'));
+    let [show, setShow] = React.useState(!window.localStorage.getItem('banner-apps-closed'));
     let onClose = React.useCallback(() => {
         window.localStorage.setItem('banner-apps-closed', 'true');
         setShow(false);
     }, []);
     let content = (
-        <>
+        <div className={bannerMobileApps}>
             <span className={cx(TextLabel1, bannerTextClass)}>Install mobile app</span>
             <div className={buttonsContainer}>
                 <div className={bannerButton}>
@@ -88,27 +103,38 @@ let useMobileAppsBanner = () => {
                     <UButton color="rgba(255,255,255, 0.16)" text="Get Android app" target="_blank" href="https://play.google.com/store/apps/details?id=com.openland.app" as="a" />
                 </div>
             </div>
-        </>
+        </div>
     );
     return { show, onClose, content };
 };
 
 let useNotificationsBanner = () => {
-    let ttlStr = window.localStorage.getItem('banner-notifications-closed-ttl') || '0';
-    let ttl = Number.parseInt(ttlStr, 10);
-    let [show, setShow] = React.useState(ttl <= new Date().getTime());
-    let onClose = React.useCallback(() => {
-        window.localStorage.setItem('banner-notifications-closed-ttl', new Date().getTime() + 1000 + ''); // 1000 * 60 * 60 * 24 * 30
-        setShow(false);
+    let [ttl, setTTL] = React.useState(Number.parseInt(window.localStorage.getItem('banner-notifications-closed-ttl') || '0', 10));
+    let [permissionState, setPermissionNeeded] = React.useState(AppNotifications.state);
+    React.useEffect(() => {
+        AppNotifications.watch(s => {
+            console.warn('boom!', s);
+            setPermissionNeeded(s);
+        });
     }, []);
+    let onPress = React.useCallback(() => {
+        AppNotifications.requestPermission();
+
+    }, []);
+
+    let onClose = React.useCallback(() => {
+        let newttl = new Date().getTime() + 1000 * 60 * 60 * 24 * 30; // ask again after 30d
+        window.localStorage.setItem('banner-notifications-closed-ttl', newttl + '');
+        setTTL(newttl);
+    }, []);
+
     let content = (
-        <>
-            <span className={cx(TextLabel1, bannerTextClass)}>Notifications!</span>
-            <div className={bannerButton}>
-                <UButton color="rgba(255,255,255, 0.16)" text="Get Android app" />
-            </div>
-        </>
+        <div className={bannerNotification}>
+            <span className={cx(TextLabel1, bannerTextClass)}>Openland needs your permission <span onClick={onPress} style={{ textDecoration: 'underline', cursor: 'pointer' }}>to enable desktop notifications</span> </span>
+        </div>
     );
+    let ttlOK = ttl <= new Date().getTime();
+    let show = ttlOK && (permissionState === 'temporary_denied' || permissionState === 'default');
     return { show, onClose, content };
 };
 

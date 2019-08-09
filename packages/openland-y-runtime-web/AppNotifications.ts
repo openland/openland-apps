@@ -55,6 +55,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
 
     watch(handler: (state: AppNotifcationsState) => void) {
         this.watchers.push(handler);
+        handler(this.state);
     }
 
     unwatch(handler: (state: AppNotifcationsState) => void) {
