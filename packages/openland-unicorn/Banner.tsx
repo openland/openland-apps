@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import IcClose from '../openland-icons/s/ic-close-16.svg'
+import IcClose from '../openland-icons/s/ic-close-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
