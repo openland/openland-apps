@@ -6,6 +6,9 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
 import { defaultHover } from 'openland-web/utils/Styles';
 import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
+import { useLayout } from './components/utils/LayoutContext';
+import { isElectron } from 'openland-y-utils/isElectron';
+import { detectOS } from 'openland-x-utils/detectOS';
 
 const bannerContainetClass = css`
     display: flex;
@@ -86,22 +89,33 @@ const BannerContainer = (props: { onClosePress?: () => void, children?: any }) =
     );
 };
 
+const links = {
+    'Mac': 'https://oplnd.com/mac',
+    'Windows': 'https://oplnd.com/windows',
+    'Linux': 'https://oplnd.com/linux'
+};
 let useMobileAppsBanner = () => {
     let [show, setShow] = React.useState(!window.localStorage.getItem('banner-apps-closed'));
     let onClose = React.useCallback(() => {
         window.localStorage.setItem('banner-apps-closed', 'true');
         setShow(false);
     }, []);
+    let os = detectOS() || 'none';
+
     let content = (
         <div className={bannerMobileApps}>
-            <span className={cx(TextLabel1, bannerTextClass)}>Install mobile app</span>
+            <span className={cx(TextLabel1, bannerTextClass)}>Install app</span>
             <div className={buttonsContainer}>
                 <div className={bannerButton}>
-                    <UButton color="rgba(255,255,255, 0.16)" text="Get iOS app" target="_blank" href="https://apps.apple.com/ru/app/openland-messenger/id1435537685" as="a" />
+                    <UButton color="rgba(255,255,255, 0.16)" text="Get iOS app" target="_blank" href="https://oplnd.com/ios" as="a" />
                 </div>
                 <div className={bannerButton}>
-                    <UButton color="rgba(255,255,255, 0.16)" text="Get Android app" target="_blank" href="https://play.google.com/store/apps/details?id=com.openland.app" as="a" />
+                    <UButton color="rgba(255,255,255, 0.16)" text="Get Android app" target="_blank" href="https://oplnd.com/android" as="a" />
                 </div>
+                {(['Mac', 'Windows', 'Linux'].includes(os)) && <div className={bannerButton}>
+                    <UButton color="rgba(255,255,255, 0.16)" text="Get Desktop app" target="_blank" href={links[os]} as="a" />
+                </div>}
+
             </div>
         </div>
     );
@@ -139,7 +153,8 @@ let useNotificationsBanner = () => {
 };
 
 export const Banners = () => {
-    let banners = [useMobileAppsBanner(), useNotificationsBanner()];
+    let layout = useLayout();
+    let banners = [useNotificationsBanner(), useMobileAppsBanner()];
 
     let content, onClose;
     for (let b of banners) {
@@ -150,7 +165,7 @@ export const Banners = () => {
         }
     }
 
-    if (content) {
+    if (content && (layout === 'desktop') && !isElectron) {
         return <BannerContainer onClosePress={onClose}>{content}</BannerContainer>;
     }
     return null;
