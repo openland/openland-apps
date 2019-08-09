@@ -51,13 +51,12 @@ export const UnimojiViewer = React.memo(() => {
 
             let eyesCenterX = (rightEye.x + leftEye.x) / 2;
             let noseBetweenEyesX = ((noseEnd.x - eyesCenterX) / ((rightEye.x - leftEye.x) / 2));
-            rotationY.current = 0.785398 * noseBetweenEyesX;
+            rotationY.current = 0.785398 * Math.min(Math.max(-1, noseBetweenEyesX), 1);
 
             // not so good - too much noize
             let noseAligmentY = (Math.max(noseEnd.y - noseTop.y, 0)) / (Math.max(noseUnder.y - noseEnd.y, 0)) / 3.3 - 1;
             debugVal.current = noseAligmentY + '';
-            rotationX.current = 0.785398 * noseAligmentY;
-
+            rotationX.current = 0.785398 * Math.min(Math.max(-1, noseAligmentY), 1);
         }
         setTimeout(() => {
             detect();

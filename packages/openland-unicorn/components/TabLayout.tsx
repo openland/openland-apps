@@ -8,6 +8,7 @@ import { css } from 'linaria';
 import { TabBarDesktop } from './TabBarDesktop';
 import { TabBarMobile } from './TabBarMobile';
 import { CounterContext } from './CounterContext';
+import { Banners } from 'openland-unicorn/Banner';
 
 const containerMobile = css`
     display: flex;    
@@ -130,6 +131,7 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
         return (
             <XViewRouterContext.Provider value={xRouting}>
                 <Container>
+                    <Banners />
                     <InnerContainer>
                         {props.router.stacks.map((v, i) => (
                             <div key={'tab-' + i} className={selectedMounted === i ? visibleContainer : invisibleContainer}>
