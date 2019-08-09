@@ -240,7 +240,7 @@ const AutoCompleteComponent = React.memo(
                 const client = useClient();
                 let members = client.useWithoutLoaderRoomMembers({ roomId: props.groupId });
 
-                if (members && members.members && word && !word.startsWith(':')) {
+                if (members && members.members && word && word.startsWith('@')) {
                     matched = searchMentions(word, members.members).map(u => u.user);
                     matched.unshift({ __typename: 'AllMention' });
                 }
