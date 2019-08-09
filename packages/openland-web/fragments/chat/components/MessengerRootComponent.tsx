@@ -324,8 +324,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         textValue = textValue.trim();
 
         if (actionState.action === 'edit' && actionMessage && actionMessage.text && actionMessage.id!) {
-            this.conversation!.messagesActionsStateEngine.clear();
             if (textValue.length > 0) {
+                this.conversation!.messagesActionsStateEngine.clear();
                 this.conversation!.engine.client.mutateEditMessage({
                     messageId: actionMessage.id!,
                     message: textValue,
