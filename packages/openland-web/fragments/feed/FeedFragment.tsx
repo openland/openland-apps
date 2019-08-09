@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { UHeader } from 'openland-unicorn/UHeader';
 import { css } from 'linaria';
 import { Page } from 'openland-unicorn/Page';
 import { XView } from 'react-mental';
