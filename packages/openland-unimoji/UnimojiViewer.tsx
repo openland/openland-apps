@@ -14,8 +14,10 @@ export const UnimojiViewer = React.memo(() => {
     let ref = React.useRef<HTMLDivElement>(null);
     let videoRef = React.useRef<HTMLVideoElement>(null);
     let canvasRef = React.useRef<HTMLCanvasElement>(null);
-    let rotation = React.useRef<number>(0);
-
+    let rotationZ = React.useRef<number>(0);
+    let rotationY = React.useRef<number>(0);
+    let debugDivRef = React.useRef<HTMLDivElement>(null);
+    let debugVal = React.useRef<string>('');
     React.useLayoutEffect(() => {
         (async () => {
             const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
@@ -30,7 +32,7 @@ export const UnimojiViewer = React.memo(() => {
         });
         let r = await FA.detectSingleFace(videoRef.current!, options).withFaceLandmarks(true);
         if (r) {
-            const dims = FA.matchDimensions(canvasRef.current!, videoRef.current!, true);
+            // const dims = FA.matchDimensions(canvasRef.current!, videoRef.current!, true);
             // const resizedResult = FA.resizeResults(r, dims)!;
             // FA.draw.drawDetections(canvasRef.current!, resizedResult);
             // FA.draw.drawFaceLandmarks(canvasRef.current!, resizedResult);
@@ -38,10 +40,19 @@ export const UnimojiViewer = React.memo(() => {
             // let nose = r.landmarks.getNose();
             // rotation.current = -Math.atan2(nose[6].y - nose[0].y, nose[6].x - nose[0].x);
 
-            let leftEye = r.landmarks.getLeftEye();
-            let rightEye = r.landmarks.getRightEye();
+            // outer eyes dots 
+            let leftEye = r.landmarks.getLeftEye()[0];
+            let rightEye = r.landmarks.getRightEye()[3];
+            rotationZ.current = -Math.atan2(leftEye.y - rightEye.y, leftEye.x - rightEye.x);
 
-            rotation.current = -Math.atan2(leftEye[0].y - rightEye[0].y, leftEye[0].x - rightEye[0].x);
+            // nose end dot
+            let nose = r.landmarks.getNose()[3];
+            let center = (rightEye.x + leftEye.x) / 2;
+            let noseBetweenEyes = ((nose.x - center) / ((rightEye.x - leftEye.x) / 2));
+            debugVal.current = noseBetweenEyes + '';
+            // 45deg 
+            rotationY.current = 0.785398 * noseBetweenEyes;
+
         }
         setTimeout(() => {
             detect();
@@ -66,7 +77,12 @@ export const UnimojiViewer = React.memo(() => {
         cube: Three.Mesh
     ) => {
         // cube.rotation.z = rotation.current;
-        cube.rotation.z = rotation.current;
+        cube.rotation.z = rotationZ.current;
+        cube.rotation.y = rotationY.current;
+
+        if (debugDivRef.current) {
+            debugDivRef.current.textContent = debugVal.current;
+        }
     }, []);
 
     React.useLayoutEffect(() => {
@@ -121,6 +137,8 @@ export const UnimojiViewer = React.memo(() => {
             <div className={container} ref={ref} />
             <video onLoadedData={start} className={container} ref={videoRef} autoPlay={true} muted={true} playsinline={true} />
             <canvas ref={canvasRef} className={container} />
+            <div style={{ position: 'absolute' }} ref={debugDivRef} />
+
         </XView>
     );
 });
