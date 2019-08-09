@@ -33,7 +33,7 @@ routing.addRoute('/message/:id', () => MessageFragment);
 routing.addRoute('/notifications', () => NotificationsFragment);
 
 // Discover
-routing.addRoute('/feed', () => FeedFragment);
+routing.addRoute('/all', () => FeedFragment);
 routing.addRoute('/discover/recommended', () => RecommendedFragment);
 routing.addRoute('/discover/groups', () => DiscoverGroupsFragment);
 

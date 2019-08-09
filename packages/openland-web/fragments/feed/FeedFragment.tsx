@@ -50,7 +50,6 @@ const bg = css`
 export const FeedFragment = React.memo(() => {
     return (
         <>
-            <UHeader title="Home" appearance="wide" />
             <Page style="wide">
                 <XView paddingTop={16}>
                     <div className={containerStyle}>
