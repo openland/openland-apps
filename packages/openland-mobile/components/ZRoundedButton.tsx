@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ViewStyle, TextStyle, TouchableOpacity, Platform, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, TextStyle, Platform, TouchableHighlight } from 'react-native';
 import { withRouter } from 'react-native-s/withRouter';
 import { SRouter } from 'react-native-s/SRouter';
 import Alert from './AlertBlanket';
