@@ -14,12 +14,12 @@ import {
 } from 'openland-web/pages/init/components/SignComponents';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { XInput } from 'openland-x/XInput';
-import { XShortcuts } from 'openland-x/XShortcuts';
 import {
     ActivationCodeInnerProps,
     ActivationCodeProps,
     ActivationCodeOuterProps,
 } from '../ask-activation-code.page';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const SmallerText = Glamorous.div({
     opacity: 0.6,
@@ -75,53 +75,41 @@ export const RoomActivationCode = ({
         [codeField.value, emailValue],
     );
 
-    const onEnter = () => {
-        doConfirm();
-    };
+    useShortcuts({ keys: ['Enter'], callback: doConfirm });
 
     const errorText = (codeField.input.invalid && codeField.input.errorText) || codeError;
     const isInvalid = !!errorText;
 
     return (
-        <XShortcuts
-            handlerMap={{
-                ENTER: onEnter,
-            }}
-            keymap={{
-                ENTER: {
-                    osx: ['enter'],
-                    windows: ['enter'],
-                },
-            }}
-        >
-            <RoomSignupContainer pageMode="ActivationCode" {...roomContainerParams!!}>
-                <Title roomView={true}>{InitTexts.auth.enterActivationCode}</Title>
-                {emailSendedTo && (
-                    <SubTitle>
-                        We just sent it to <strong>{emailSendedTo}</strong>
-                    </SubTitle>
-                )}
-                <ButtonsWrapper marginTop={40} width={280}>
-                    <XInput
-                        pattern="[0-9]*"
-                        type="number"
-                        autofocus={true}
-                        size="large"
-                        placeholder={InitTexts.auth.codePlaceholder}
-                        flexGrow={1}
-                        flexShrink={0}
-                        {...codeField.input}
-                        invalid={isInvalid}
-                    />
-                    {isInvalid && <ErrorText>{errorText}</ErrorText>}
-                </ButtonsWrapper>
-                <ResendCodeRow alignItems="center">
-                    <XHorizontal alignItems="center" separator="none">
-                        {emailSending ? (
-                            <>
-                                <SmallerText>Sending code...</SmallerText>
-                            </>
-                        ) : (
+
+        <RoomSignupContainer pageMode="ActivationCode" {...roomContainerParams!!}>
+            <Title roomView={true}>{InitTexts.auth.enterActivationCode}</Title>
+            {emailSendedTo && (
+                <SubTitle>
+                    We just sent it to <strong>{emailSendedTo}</strong>
+                </SubTitle>
+            )}
+            <ButtonsWrapper marginTop={40} width={280}>
+                <XInput
+                    pattern="[0-9]*"
+                    type="number"
+                    autofocus={true}
+                    size="large"
+                    placeholder={InitTexts.auth.codePlaceholder}
+                    flexGrow={1}
+                    flexShrink={0}
+                    {...codeField.input}
+                    invalid={isInvalid}
+                />
+                {isInvalid && <ErrorText>{errorText}</ErrorText>}
+            </ButtonsWrapper>
+            <ResendCodeRow alignItems="center">
+                <XHorizontal alignItems="center" separator="none">
+                    {emailSending ? (
+                        <>
+                            <SmallerText>Sending code...</SmallerText>
+                        </>
+                    ) : (
                             <>
                                 <SmallerText>
                                     {emailWasResend
@@ -135,30 +123,29 @@ export const RoomActivationCode = ({
                                 />
                             </>
                         )}
+                </XHorizontal>
+            </ResendCodeRow>
+            <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
+                <XVertical alignItems="center">
+                    <XHorizontal alignItems="center">
+                        <XButton
+                            onClick={backButtonClick}
+                            size="large"
+                            style="ghost"
+                            alignSelf="center"
+                            text={'Back'}
+                        />
+                        <XButton
+                            loading={codeSending}
+                            onClick={doConfirm}
+                            size="large"
+                            style="primary"
+                            alignSelf="center"
+                            text={InitTexts.auth.continue}
+                        />
                     </XHorizontal>
-                </ResendCodeRow>
-                <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
-                    <XVertical alignItems="center">
-                        <XHorizontal alignItems="center">
-                            <XButton
-                                onClick={backButtonClick}
-                                size="large"
-                                style="ghost"
-                                alignSelf="center"
-                                text={'Back'}
-                            />
-                            <XButton
-                                loading={codeSending}
-                                onClick={doConfirm}
-                                size="large"
-                                style="primary"
-                                alignSelf="center"
-                                text={InitTexts.auth.continue}
-                            />
-                        </XHorizontal>
-                    </XVertical>
-                </ButtonsWrapper>
-            </RoomSignupContainer>
-        </XShortcuts>
+                </XVertical>
+            </ButtonsWrapper>
+        </RoomSignupContainer>
     );
 };

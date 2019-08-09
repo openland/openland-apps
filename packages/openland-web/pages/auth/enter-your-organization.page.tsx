@@ -14,13 +14,13 @@ import { InitTexts } from 'openland-web/pages/init/_text';
 import { trackEvent } from 'openland-x-analytics';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
-import { XShortcuts } from 'openland-x/XShortcuts';
 import * as Cookie from 'js-cookie';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { RoomContainerParams } from './root.page';
 import { Wrapper } from '../onboarding/components/wrapper';
 import { Title, Subtitle, ContinueButtonContainer } from './components/authComponents';
 import { CreateOrganizationFormInnerRoom } from './components/createOrganizationFormInnerRoom';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 export type EnterYourOrganizationPageProps = { inviteKey?: string | null };
 
@@ -72,9 +72,7 @@ const CreateOrganizationFormInnerWeb = ({
 
     const subtitle = 'Give others context about your work';
 
-    const onEnter = () => {
-        doConfirm();
-    };
+    useShortcuts({ keys: ['Enter'], callback: doConfirm });
 
     const errorText = organizationField.input.errorText;
     const isInvalid = !!errorText && organizationField.input.invalid;
@@ -91,48 +89,36 @@ const CreateOrganizationFormInnerWeb = ({
     );
 
     return (
-        <XShortcuts
-            handlerMap={{
-                ENTER: onEnter,
-            }}
-            keymap={{
-                ENTER: {
-                    osx: ['enter'],
-                    windows: ['enter'],
-                },
-            }}
+        <XView
+            alignItems="center"
+            flexGrow={1}
+            paddingHorizontal={20}
+            justifyContent="center"
+            marginTop={-100}
         >
-            <XView
-                alignItems="center"
-                flexGrow={1}
-                paddingHorizontal={20}
-                justifyContent="center"
-                marginTop={-100}
-            >
-                <Title text={InitTexts.create_organization.title} />
-                <Subtitle text={subtitle} />
-                <XView width={isMobile ? '100%' : 360} maxWidth={360}>
-                    <InputField
-                        title="Organization name"
-                        dataTestId="organization"
-                        flexGrow={1}
-                        className={organizationInputClassName}
-                        hideErrorText
-                        field={organizationField}
-                    />
-                    {isInvalid && <XErrorMessage2 message={errorText} />}
-                </XView>
-                <ContinueButtonContainer
-                    marginTop={
-                        organizationField.input.invalid && organizationField.input.errorText
-                            ? 14
-                            : 40
-                    }
-                    isMobile={isMobile}
-                    button={button}
+            <Title text={InitTexts.create_organization.title} />
+            <Subtitle text={subtitle} />
+            <XView width={isMobile ? '100%' : 360} maxWidth={360}>
+                <InputField
+                    title="Organization name"
+                    dataTestId="organization"
+                    flexGrow={1}
+                    className={organizationInputClassName}
+                    hideErrorText
+                    field={organizationField}
                 />
+                {isInvalid && <XErrorMessage2 message={errorText} />}
             </XView>
-        </XShortcuts>
+            <ContinueButtonContainer
+                marginTop={
+                    organizationField.input.invalid && organizationField.input.errorText
+                        ? 14
+                        : 40
+                }
+                isMobile={isMobile}
+                button={button}
+            />
+        </XView>
     );
 };
 

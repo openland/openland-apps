@@ -13,12 +13,12 @@ import { InitTexts } from 'openland-web/pages/init/_text';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { trackEvent } from 'openland-x-analytics';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
-import { XShortcuts } from 'openland-x/XShortcuts';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { RoomActivationCode } from './components/roomActivationCode';
 import { RoomContainerParams } from './root.page';
 import { Wrapper } from '../onboarding/components/wrapper';
 import { Title, Subtitle, ContinueButtonContainer } from './components/authComponents';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 export type ActivationCodeProps = {
     emailValue: string;
@@ -95,9 +95,7 @@ export const WebSignUpActivationCode = ({
 
     const sendingCodeText = 'Sending code...';
 
-    const onEnter = () => {
-        doConfirm();
-    };
+    useShortcuts({ keys: ['Enter'], callback: doConfirm });
 
     const errorText = (codeField.input.invalid && codeField.input.errorText) || codeError;
     const isInvalid = !!errorText;
@@ -125,82 +123,71 @@ export const WebSignUpActivationCode = ({
     );
 
     return (
-        <XShortcuts
-            handlerMap={{
-                ENTER: onEnter,
-            }}
-            keymap={{
-                ENTER: {
-                    osx: ['enter'],
-                    windows: ['enter'],
-                },
-            }}
+
+        <XView
+            alignItems="center"
+            flexGrow={1}
+            paddingHorizontal={20}
+            justifyContent="center"
+            marginTop={-100}
         >
-            <XView
-                alignItems="center"
-                flexGrow={1}
-                paddingHorizontal={20}
-                justifyContent="center"
-                marginTop={-100}
-            >
-                <Title text={InitTexts.auth.enterActivationCode} />
-                {emailSending && <Subtitle text={sendingCodeText} />}
-                {!emailSending &&
-                    emailSendedTo && (
-                        <XView
-                            fontSize={16}
-                            color="#000"
-                            marginBottom={34}
-                            flexDirection={emailSendedTo.length > 20 && isMobile ? 'column' : 'row'}
-                            alignItems="center"
-                        >
-                            <XView
-                                marginRight={emailSendedTo.length > 20 && isMobile ? undefined : 6}
-                                marginBottom={emailSendedTo.length > 20 && isMobile ? 6 : undefined}
-                            >
-                                We just sent it to
-                            </XView>
-                            <strong>{emailSendedTo}</strong>
-                        </XView>
-                    )}
-                <XView width={isMobile ? '100%' : 360} maxWidth={360}>
-                    <InputField
-                        width={isMobile ? '100%' : 360}
-                        pattern="[0-9]*"
-                        type="number"
-                        autofocus={true}
-                        title={InitTexts.auth.codePlaceholder}
-                        flexGrow={1}
-                        flexShrink={0}
-                        hideErrorText
-                        field={codeField}
-                        invalid={isInvalid}
-                    />
-                    {isInvalid && <XErrorMessage2 message={errorText} />}
-                    {isMobile && (
-                        <XView marginTop={30} flexDirection="row" justifyContent="center">
-                            {resendEmail}
-                        </XView>
-                    )}
-                </XView>
-                <ContinueButtonContainer
-                    marginTop={isInvalid ? 14 : 40}
-                    isMobile={isMobile}
-                    button={button}
-                />
-                {!isMobile && (
+            <Title text={InitTexts.auth.enterActivationCode} />
+            {emailSending && <Subtitle text={sendingCodeText} />}
+            {!emailSending &&
+                emailSendedTo && (
                     <XView
-                        position="absolute"
-                        bottom={20}
-                        width="100%"
-                        flexDirection="row"
-                        justifyContent="center"
+                        fontSize={16}
+                        color="#000"
+                        marginBottom={34}
+                        flexDirection={emailSendedTo.length > 20 && isMobile ? 'column' : 'row'}
+                        alignItems="center"
                     >
+                        <XView
+                            marginRight={emailSendedTo.length > 20 && isMobile ? undefined : 6}
+                            marginBottom={emailSendedTo.length > 20 && isMobile ? 6 : undefined}
+                        >
+                            We just sent it to
+                        </XView>
+                        <strong>{emailSendedTo}</strong>
+                    </XView>
+                )}
+            <XView width={isMobile ? '100%' : 360} maxWidth={360}>
+                <InputField
+                    width={isMobile ? '100%' : 360}
+                    pattern="[0-9]*"
+                    type="number"
+                    autofocus={true}
+                    title={InitTexts.auth.codePlaceholder}
+                    flexGrow={1}
+                    flexShrink={0}
+                    hideErrorText
+                    field={codeField}
+                    invalid={isInvalid}
+                />
+                {isInvalid && <XErrorMessage2 message={errorText} />}
+                {isMobile && (
+                    <XView marginTop={30} flexDirection="row" justifyContent="center">
                         {resendEmail}
                     </XView>
                 )}
             </XView>
-        </XShortcuts>
+            <ContinueButtonContainer
+                marginTop={isInvalid ? 14 : 40}
+                isMobile={isMobile}
+                button={button}
+            />
+            {!isMobile && (
+                <XView
+                    position="absolute"
+                    bottom={20}
+                    width="100%"
+                    flexDirection="row"
+                    justifyContent="center"
+                >
+                    {resendEmail}
+                </XView>
+            )}
+        </XView>
     );
 };
 

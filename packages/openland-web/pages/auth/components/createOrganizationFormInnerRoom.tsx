@@ -13,7 +13,6 @@ import {
     SubTitle,
     RoomSignupContainer,
 } from 'openland-web/pages/init/components/SignComponents';
-import { XShortcuts } from 'openland-x/XShortcuts';
 import { XInput } from 'openland-x/XInput';
 import IcInfo from 'openland-icons/ic-info.svg';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -21,6 +20,7 @@ import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { processCreateOrganizationT } from '../enter-your-organization.page';
 import { RoomContainerParams } from '../root.page';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const InfoText = Glamorous.span({
     fontSize: 14,
@@ -78,98 +78,85 @@ export const CreateOrganizationFormInnerRoom = ({
 
     const subtitle = 'Give others context about your work';
 
-    const onEnter = () => {
-        doConfirm();
-    };
+    useShortcuts({ keys: ['Enter'], callback: doConfirm });
 
     const errorText = organizationField.input.errorText;
     const isInvalid = !!errorText && organizationField.input.invalid;
 
     return (
-        <XShortcuts
-            handlerMap={{
-                ENTER: onEnter,
-            }}
-            keymap={{
-                ENTER: {
-                    osx: ['enter'],
-                    windows: ['enter'],
-                },
-            }}
-        >
-            <RoomSignupContainer pageMode="CreateOrganization" {...roomContainerParams!!}>
-                <XView alignItems="center" flexGrow={1} justifyContent="center">
-                    <ContentWrapper>
-                        <Title roomView={true} className="title">
-                            {InitTexts.create_organization.title}
-                        </Title>
-                        <SubTitle className="subtitle">{subtitle}</SubTitle>
-                        <ButtonsWrapper marginBottom={84} marginTop={34} width={350}>
-                            <XVertical alignItems="center" separator="none">
-                                <XView width={330}>
-                                    <XHorizontal alignItems="center" separator="none">
-                                        <XInput
-                                            title="Organization name"
-                                            dataTestId="organization"
-                                            flexGrow={1}
-                                            invalid={!!form.error}
-                                            size="large"
-                                            {...organizationField.input}
-                                        />
-                                        <XPolitePopper
-                                            content={
-                                                <InfoText>
-                                                    To register as an individual, simply enter your
-                                                    name
-                                                </InfoText>
-                                            }
-                                            showOnHover={true}
-                                            placement="top"
-                                            style="dark"
-                                        >
-                                            <XIconWrapper>
-                                                <IcInfo />
-                                            </XIconWrapper>
-                                        </XPolitePopper>
-                                    </XHorizontal>
-                                    {isInvalid && <XErrorMessage2 message={errorText} />}
-                                </XView>
 
-                                <XView
-                                    flexDirection="row"
-                                    marginTop={
-                                        organizationField.input.invalid &&
-                                        organizationField.input.errorText
-                                            ? 50 - 26
-                                            : 50
-                                    }
-                                >
-                                    {onSkip && (
-                                        <XView marginRight={16}>
-                                            <XButton
-                                                loading={skiping}
-                                                onClick={onSkip}
-                                                size="large"
-                                                style="ghost"
-                                                alignSelf="center"
-                                                text={'Skip'}
-                                            />
-                                        </XView>
-                                    )}
-                                    <XButton
-                                        loading={sending}
-                                        dataTestId="continue-button"
-                                        style="primary"
-                                        text={InitTexts.create_organization.continue}
+        <RoomSignupContainer pageMode="CreateOrganization" {...roomContainerParams!!}>
+            <XView alignItems="center" flexGrow={1} justifyContent="center">
+                <ContentWrapper>
+                    <Title roomView={true} className="title">
+                        {InitTexts.create_organization.title}
+                    </Title>
+                    <SubTitle className="subtitle">{subtitle}</SubTitle>
+                    <ButtonsWrapper marginBottom={84} marginTop={34} width={350}>
+                        <XVertical alignItems="center" separator="none">
+                            <XView width={330}>
+                                <XHorizontal alignItems="center" separator="none">
+                                    <XInput
+                                        title="Organization name"
+                                        dataTestId="organization"
+                                        flexGrow={1}
+                                        invalid={!!form.error}
                                         size="large"
-                                        onClick={doConfirm}
+                                        {...organizationField.input}
                                     />
-                                </XView>
-                            </XVertical>
-                        </ButtonsWrapper>
-                    </ContentWrapper>
-                </XView>
-            </RoomSignupContainer>
-        </XShortcuts>
+                                    <XPolitePopper
+                                        content={
+                                            <InfoText>
+                                                To register as an individual, simply enter your
+                                                name
+                                                </InfoText>
+                                        }
+                                        showOnHover={true}
+                                        placement="top"
+                                        style="dark"
+                                    >
+                                        <XIconWrapper>
+                                            <IcInfo />
+                                        </XIconWrapper>
+                                    </XPolitePopper>
+                                </XHorizontal>
+                                {isInvalid && <XErrorMessage2 message={errorText} />}
+                            </XView>
+
+                            <XView
+                                flexDirection="row"
+                                marginTop={
+                                    organizationField.input.invalid &&
+                                        organizationField.input.errorText
+                                        ? 50 - 26
+                                        : 50
+                                }
+                            >
+                                {onSkip && (
+                                    <XView marginRight={16}>
+                                        <XButton
+                                            loading={skiping}
+                                            onClick={onSkip}
+                                            size="large"
+                                            style="ghost"
+                                            alignSelf="center"
+                                            text={'Skip'}
+                                        />
+                                    </XView>
+                                )}
+                                <XButton
+                                    loading={sending}
+                                    dataTestId="continue-button"
+                                    style="primary"
+                                    text={InitTexts.create_organization.continue}
+                                    size="large"
+                                    onClick={doConfirm}
+                                />
+                            </XView>
+                        </XVertical>
+                    </ButtonsWrapper>
+                </ContentWrapper>
+            </XView>
+        </RoomSignupContainer>
     );
 };

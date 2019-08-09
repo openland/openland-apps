@@ -12,12 +12,12 @@ import { InitTexts } from 'openland-web/pages/init/_text';
 import * as Cookie from 'js-cookie';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XButton } from 'openland-x/XButton';
-import { XShortcuts } from 'openland-x/XShortcuts';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { RoomContainerParams } from './root.page';
 import { Wrapper } from '../onboarding/components/wrapper';
 import { RoomCreateWithEmail } from './components/roomCreateWithEmail';
 import { Title, Subtitle, ContinueButtonContainer } from './components/authComponents';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 export type CreateWithEmailProps = {
     fireEmail: Function;
@@ -76,9 +76,7 @@ export const WebSignUpCreateWithEmail = ({
         [emailField.value],
     );
 
-    const onEnter = () => {
-        doConfirm();
-    };
+    useShortcuts({ keys: ['Enter'], callback: doConfirm });
 
     const errorText = (emailField.input.invalid && emailField.input.errorText) || emailError;
     const isInvalid = !!errorText;
@@ -96,46 +94,35 @@ export const WebSignUpCreateWithEmail = ({
     );
 
     return (
-        <XShortcuts
-            handlerMap={{
-                ENTER: onEnter,
-            }}
-            keymap={{
-                ENTER: {
-                    osx: ['enter'],
-                    windows: ['enter'],
-                },
-            }}
+
+        <XView
+            alignItems="center"
+            flexGrow={1}
+            paddingHorizontal={20}
+            justifyContent="center"
+            marginTop={-100}
         >
-            <XView
-                alignItems="center"
-                flexGrow={1}
-                paddingHorizontal={20}
-                justifyContent="center"
-                marginTop={-100}
-            >
-                <Title text={title} />
-                <Subtitle text={subTitle} />
-                <XView width={isMobile ? '100%' : 360} maxWidth={360}>
-                    <InputField
-                        autofocus
-                        width={isMobile ? '100%' : 360}
-                        dataTestId="email"
-                        type="email"
-                        title={InitTexts.auth.emailPlaceholder}
-                        field={emailField}
-                        hideErrorText
-                        invalid={isInvalid}
-                    />
-                    {isInvalid && <XErrorMessage2 message={errorText} />}
-                </XView>
-                <ContinueButtonContainer
-                    marginTop={emailField.input.invalid && emailField.input.errorText ? 14 : 40}
-                    isMobile={isMobile}
-                    button={button}
+            <Title text={title} />
+            <Subtitle text={subTitle} />
+            <XView width={isMobile ? '100%' : 360} maxWidth={360}>
+                <InputField
+                    autofocus
+                    width={isMobile ? '100%' : 360}
+                    dataTestId="email"
+                    type="email"
+                    title={InitTexts.auth.emailPlaceholder}
+                    field={emailField}
+                    hideErrorText
+                    invalid={isInvalid}
                 />
+                {isInvalid && <XErrorMessage2 message={errorText} />}
             </XView>
-        </XShortcuts>
+            <ContinueButtonContainer
+                marginTop={emailField.input.invalid && emailField.input.errorText ? 14 : 40}
+                isMobile={isMobile}
+                button={button}
+            />
+        </XView>
     );
 };
 
