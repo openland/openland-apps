@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ViewStyle, TextStyle, Platform, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, TextStyle, Platform, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { withRouter } from 'react-native-s/withRouter';
 import { SRouter } from 'react-native-s/SRouter';
 import Alert from './AlertBlanket';
@@ -96,21 +96,22 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
     const styles = resolveStylesBySize[size];
     const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : style === 'secondary-inverted' ? theme.backgroundInverted : theme.backgroundTertiary);
     const textColor = style === 'primary' ? theme.contrastSpecial : (style === 'danger' ? theme.contrastPrimary : theme.foregroundSecondary);
-
+    
     const highlightedColors = {
         'primary': theme.accentPrimaryActive,
-        'secondary': theme.backgroundTertiaryActive,
-        'secondary-inverted': theme.backgroundTertiaryActive,
         'danger': theme.accentNegativeActive
     };
 
+    const underlayColor = highlightedColors[style];
+    const TouchableComponent = underlayColor ? TouchableHighlight : TouchableOpacity;
+
     return (
         <View style={{ borderRadius: RadiusStyles.medium, overflow: 'hidden' }}>
-            <TouchableHighlight 
+            <TouchableComponent
                 style={[styles.container, { backgroundColor: backgroundColor, opacity: props.enabled === false ? 0.6 : undefined }]} 
                 onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined} 
                 disabled={actionInProgress || props.enabled === false} 
-                underlayColor={highlightedColors[style]} 
+                {...(underlayColor ? { underlayColor } : { activeOpacity: 0.6 })}
             >
                 <>
                     <Text
@@ -126,7 +127,7 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
                         </View>
                     )}
                 </>
-            </TouchableHighlight>
+            </TouchableComponent>
         </View>
     );
 });
