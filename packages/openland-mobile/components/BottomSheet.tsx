@@ -152,7 +152,7 @@ class BottomSheetProviderComponent extends React.Component<
                 overlayStyle={overlayStyle}
                 adjustToContentHeight
                 handlePosition={'inside'}
-                style={modalizeStyle}
+                modalStyle={modalizeStyle}
                 handleStyle={handleStyle}
                 FooterComponent={this.renderFooter(modal)}
             >
