@@ -40,7 +40,7 @@ export const forward = (conversationEngine: ConversationEngine, messages: DataSo
 
     getMessenger().history.navigationManager.push('HomeDialogs', {
         title: 'Forward to', pressCallback: (id: string) => {
-            getMessenger().engine.getConversation(id).messagesActionsStateEngine.forward(messages);
+            getMessenger().engine.getConversation(id).messagesActionsStateEngine.forward(messages, conversationEngine.messagesActionsStateEngine);
             if (conversationEngine.conversationId === id) {
                 getMessenger().history.navigationManager.pushAndReset('Conversation', { id });
             } else {
