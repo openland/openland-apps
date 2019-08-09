@@ -5,6 +5,7 @@ import { NotificationsButton, NewOptionsButton } from 'openland-web/components/N
 import { DialogListFragment } from './DialogListFragment';
 import { UCounter } from 'openland-unicorn/UCounter';
 import { useClient } from 'openland-web/utils/useClient';
+import { emoji } from 'openland-y-utils/emoji';
 
 const DialogsCounter = React.memo(() => {
     const client = useClient();
@@ -33,8 +34,8 @@ export const DialogsFragment = React.memo(() => {
                     flexDirection="row"
                 >
                     <XView flexGrow={1} minWidth={0} flexBasis={0}>
-                        Chats
-                </XView>
+                        {emoji('✍️ Chats')}
+                    </XView>
                     <XView flexDirection="row" alignItems="center" paddingLeft={12}>
                         <XView marginRight={7} justifyContent="center" alignItems="center">
                             <NotificationsButton />

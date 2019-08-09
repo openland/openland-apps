@@ -22,6 +22,7 @@ import { showLogoutConfirmation } from './LogoutFragment';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextStyles } from 'openland-web/utils/TextStyles';
+import { emoji } from 'openland-y-utils/emoji';
 
 const SelectableSVG = React.memo((props: { icon: JSX.Element }) => {
     const selected = React.useContext(XViewSelectedContext);
@@ -110,7 +111,7 @@ export const AccountFragment = React.memo(() => {
                 justifyContent="center"
             >
                 <XView flexGrow={1} minWidth={0} flexBasis={0}>
-                    Account
+                    {emoji('🤔 Account')}
                 </XView>
                 <UIconButton icon={<LeaveIcon />} size="large" onClick={showLogoutConfirmation} />
             </XView>
