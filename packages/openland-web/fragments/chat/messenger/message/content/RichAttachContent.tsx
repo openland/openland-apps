@@ -249,7 +249,7 @@ export const RichAttachContent = ({ attach }: { attach: messageRichAttach }) => 
     }
     let img = null;
     let siteIcon = null;
-    const text = attach.text && attach.text.length > 150 ? attach.text.slice(0, 130) + '...' : null;
+    const text = attach.text && attach.text.length > 150 ? attach.text.slice(0, 130) + '...' : attach.text;
     if (attach.image && attach.image.metadata) {
         let layout = layoutMedia(
             attach.image.metadata.imageWidth || 0,
