@@ -67,16 +67,6 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
         }
     }, [messageId]);
 
-    const handleAttachSent = React.useCallback((files: File[], replyId?: string) => {
-        if (files.length) {
-            showAttachConfirm(files, (res) => {
-                console.warn('boom', { res, replyId });
-                // res.map(f => new UploadCareUploading(UploadCare.fileFrom('object', f), f.name))
-                //     .map(this.conversation!.sendFile);
-            });
-        }
-    }, [messageId]);
-
     const groupId = message.source && message.source.__typename === 'MessageSourceChat' && message.source.chat.__typename === 'SharedRoom' ? message.source.chat.id : undefined;
 
     return (
