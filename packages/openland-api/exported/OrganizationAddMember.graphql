@@ -1,6 +1,10 @@
 mutation OrganizationAddMember($organizationId: ID!, $userIds: [ID!]) {
-  betaOrganizationMemberAdd(organizationId: $organizationId, userIds: $userIds) {
+  alphaOrganizationMemberAdd(organizationId: $organizationId, userIds: $userIds) {
     __typename
-    ...OrganizationFull
+    role
+    user {
+      __typename
+      ...UserShort
+    }
   }
 }

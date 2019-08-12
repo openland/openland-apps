@@ -4,7 +4,6 @@ import {
     OrganizationMembers_organization_members,
 } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
-import { XText } from 'openland-x/XText';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
@@ -85,62 +84,5 @@ export const showRoleOrgMemberModal = (props: PermissionsModalProps): void => {
             ),
         },
         ctx => <PermissionsModal {...props} hide={ctx.hide} />,
-    );
-};
-
-interface RemoveJoinedModalProps {
-    orgName: string;
-    orgId: string;
-    member: OrganizationMembers_organization_members;
-}
-
-const RemoveJoinedModal = (props: RemoveJoinedModalProps & { hide: () => void }) => {
-    const client = useClient();
-
-    const { member } = props;
-
-    return (
-        <XView borderRadius={8}>
-            <XModalContent>
-                <XText>
-                    {TextProfiles.Organization.members.remove.text(
-                        member.user.firstName,
-                        props.orgName,
-                    )}
-                </XText>
-            </XModalContent>
-            <XModalFooter>
-                <XView marginRight={12}>
-                    <XButton text="Cancel" style="ghost" size="large" onClick={props.hide} />
-                </XView>
-                <XButton
-                    text={TextProfiles.Organization.members.remove.submit}
-                    style="danger"
-                    size="large"
-                    onClick={async () => {
-                        await client.mutateOrganizationRemoveMember({
-                            memberId: member.user.id,
-                            organizationId: props.orgId,
-                        });
-
-                        await client.refetchOrganization({ organizationId: props.orgId });
-
-                        props.hide();
-                    }}
-                />
-            </XModalFooter>
-        </XView>
-    );
-};
-
-export const showRemoveOrgMemberModal = (props: RemoveJoinedModalProps): void => {
-    showModalBox(
-        {
-            title: TextProfiles.Organization.members.remove.title(
-                props.member.user.name,
-                props.orgName,
-            ),
-        },
-        ctx => <RemoveJoinedModal {...props} hide={ctx.hide} />,
     );
 };

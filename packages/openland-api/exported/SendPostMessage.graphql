@@ -1,6 +1,0 @@
-mutation SendPostMessage($attachments: [String!], $conversationId: ID!, $postType: PostMessageType!, $text: String!, $title: String!) {
-  sendPostMessage: alphaSendPostMessage(attachments: $attachments, conversationId: $conversationId, postType: $postType, text: $text, title: $title) {
-    __typename
-    seq
-  }
-}

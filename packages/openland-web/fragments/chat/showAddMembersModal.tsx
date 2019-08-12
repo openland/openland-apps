@@ -10,6 +10,7 @@ import {
     OrganizationAddMemberVariables,
     OrganizationMembersShort,
     RoomMembersShort,
+    OrganizationMembers_organization_members,
 } from 'openland-api/Types';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
@@ -578,6 +579,8 @@ type AddMemberModalT = {
     isChannel?: boolean;
     isOrganization: boolean;
     isCommunity?: boolean;
+
+    onOrganizationMembersAdd?: (members: OrganizationMembers_organization_members[]) => void;
 };
 
 interface AddMemberToRoom {
@@ -601,6 +604,7 @@ export const AddMembersModal = React.memo(
         isChannel,
         isOrganization,
         isCommunity,
+        onOrganizationMembersAdd,
         hide,
     }: AddMemberModalT & XModalProps & { hide?: () => void }) => {
         const isMobile = React.useContext(IsMobileContext);
@@ -616,10 +620,14 @@ export const AddMembersModal = React.memo(
         };
 
         const addMembersToOrganization = async ({ variables }: AddMemberToOrganization) => {
-            await client.mutateOrganizationAddMember({
+            const addedMembers = (await client.mutateOrganizationAddMember({
                 organizationId: id,
                 userIds: variables.userIds,
-            });
+            })).alphaOrganizationMemberAdd;
+
+            if (onOrganizationMembersAdd) {
+                onOrganizationMembersAdd(addedMembers);
+            }
 
             await client.refetchOrganizationMembersShort({ organizationId: id });
         };

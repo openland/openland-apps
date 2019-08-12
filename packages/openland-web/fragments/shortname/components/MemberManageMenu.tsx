@@ -2,18 +2,25 @@ import * as React from 'react';
 import { OrganizationMembers_organization_members, OrganizationWithoutMembers_organization, OrganizationMemberRole } from 'openland-api/Types';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
-import { showRoleOrgMemberModal, showRemoveOrgMemberModal } from 'openland-web/fragments/account/components/OrganizationProfileComponent';
-import { showLeaveOrganizationModal } from 'openland-web/fragments/account/components/modals';
+import { showRoleOrgMemberModal } from 'openland-web/fragments/account/components/OrganizationProfileComponent';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
+import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
+import { useClient } from 'openland-web/utils/useClient';
+import { showLeaveConfirmation } from 'openland-web/fragments/org/showLeaveConfirmation';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 interface MemberManageMenu {
     organization: OrganizationWithoutMembers_organization;
     member: OrganizationMembers_organization_members;
+    onRemove: (memberId: string) => void;
 }
 
 export const MemberManageMenu = React.memo((props: MemberManageMenu) => {
-    const { organization, member } = props;
+    const client = useClient();
+    const messenger = React.useContext(MessengerContext);
+
+    const { organization, member, onRemove } = props;
     const { id, name, isOwner, isAdmin, isCommunity } = organization;
     const { user, role } = member;
 
@@ -34,13 +41,28 @@ export const MemberManageMenu = React.memo((props: MemberManageMenu) => {
     const handleLeaveClick = React.useCallback((e: React.MouseEvent) => {
         e.preventDefault();
 
-        showLeaveOrganizationModal(id);
+        showLeaveConfirmation(organization, messenger, onRemove);
     }, []);
 
     const handleRemoveClick = React.useCallback((e: React.MouseEvent) => {
         e.preventDefault();
 
-        showRemoveOrgMemberModal({ orgName: name, orgId: id, member });
+        const builder = new AlertBlanketBuilder;
+
+        builder.title(`Remove ${user.name} from ${name}`);
+        builder.message(`Are you sure you want to remove ${user.name}? They will be removed from all internal chats at ${name}.`);
+        builder.action(`Remove from ${typeString}`, async () => {
+            await client.mutateOrganizationRemoveMember({
+                memberId: member.user.id,
+                organizationId: id,
+            });
+
+            onRemove(user.id);
+
+            await client.refetchOrganization({ organizationId: id });
+        }, 'danger');
+
+        builder.show();
     }, []);
 
     if (!showButton) {

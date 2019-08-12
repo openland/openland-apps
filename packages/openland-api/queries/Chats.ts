@@ -440,53 +440,6 @@ export const MessageUnsetReactionMutation = gql`
     }
 `;
 
-export const SendPostMessageMutation = gql`
-    mutation SendPostMessage(
-        $conversationId: ID!
-        $title: String!
-        $text: String!
-        $attachments: [String!]
-        $postType: PostMessageType!
-    ) {
-        sendPostMessage: alphaSendPostMessage(
-            conversationId: $conversationId
-            title: $title
-            text: $text
-            attachments: $attachments
-            postType: $postType
-        ) {
-            seq
-        }
-    }
-`;
-
-export const EditPostMessageMutation = gql`
-    mutation EditPostMessage(
-        $messageId: ID!
-        $title: String!
-        $text: String!
-        $attachments: [String!]
-        $postType: PostMessageType!
-    ) {
-        editPostMessage: alphaEditPostMessage(
-            messageId: $messageId
-            title: $title
-            text: $text
-            attachments: $attachments
-            postType: $postType
-        ) {
-            seq
-        }
-    }
-`;
-
-export const RespondPostMessageMutation = gql`
-    mutation RespondPostMessage($messageId: ID!, $buttonId: ID!, $reaction: String!) {
-        alphaRespondPostMessage(messageId: $messageId, buttonId: $buttonId)
-        betaReactionSet(mid: $messageId, reaction: $reaction)
-    }
-`;
-
 export const SaveDraftMessageMutation = gql`
     mutation SaveDraftMessage($conversationId: ID!, $message: String!) {
         conversationDraftUpdate(conversationId: $conversationId, message: $message)

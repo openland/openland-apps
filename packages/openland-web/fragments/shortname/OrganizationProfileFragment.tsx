@@ -16,6 +16,7 @@ import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { ThemeDefault } from 'openland-y-utils/themes';
 import MoreHIcon from 'openland-icons/s/ic-more-h-24.svg';
 import { CreateGroupButton } from './components/CreateGroupButton';
+import { OrganizationMembers_organization_members } from 'openland-api/Types';
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
@@ -47,6 +48,14 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
         }
     }, [membersCount, members, loading]);
 
+    const handleAddMembers = React.useCallback((addedMembers: OrganizationMembers_organization_members[]) => {
+        setMembers([...members, ...addedMembers]);
+    }, [members]);
+
+    const handleRemoveMember = React.useCallback((memberId: string) => {
+        setMembers(members.filter(m => m.user.id !== memberId));
+    }, [members]);
+
     return (
         <UFlatList
             loadMore={handleLoadMore}
@@ -57,7 +66,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                     key={'member-' + member.user.id}
                     user={member.user}
                     role={member.role}
-                    rightElement={<MemberManageMenu organization={organization} member={member} />}
+                    rightElement={<MemberManageMenu organization={organization} member={member} onRemove={handleRemoveMember} />}
                 />
             )}
             padded={false}
@@ -67,7 +76,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 description={isCommunity ? 'Community' : 'Organization'}
                 avatar={{ photo, id, title: name }}
             >
-                <OrganizationManageButtons organization={organization} />
+                <OrganizationManageButtons organization={organization} onLeave={handleRemoveMember} />
             </UListHero>
             <UListGroup header="About">
                 {!!about && <UListText value={about} marginBottom={16} />}
@@ -118,6 +127,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                             isCommunity,
                             isRoom: false,
                             isOrganization: true,
+                            onOrganizationMembersAdd: handleAddMembers
                         });
                     }}
                 />

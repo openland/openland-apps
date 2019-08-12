@@ -15,9 +15,8 @@ const getRows = (value: string) => {
     const processedRows: (JSX.Element | string)[] = [];
     const rows = value.split('\n');
 
-    rows.map(row => {
-        processedRows.push(emoji(row));
-        processedRows.push(<br />);
+    rows.map((row, index) => {
+        processedRows.push(<div key={`line-${index}-${row}`}>{emoji(row)}</div>);
     });
 
     return processedRows;

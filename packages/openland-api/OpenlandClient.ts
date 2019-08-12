@@ -991,15 +991,6 @@ export class OpenlandClient extends BaseApiClient {
     async mutateMessageUnsetReaction(variables: Types.MessageUnsetReactionVariables): Promise<Types.MessageUnsetReaction> {
         return this.client.mutate(Source.MessageUnsetReactionMutation, variables);
     }
-    async mutateSendPostMessage(variables: Types.SendPostMessageVariables): Promise<Types.SendPostMessage> {
-        return this.client.mutate(Source.SendPostMessageMutation, variables);
-    }
-    async mutateEditPostMessage(variables: Types.EditPostMessageVariables): Promise<Types.EditPostMessage> {
-        return this.client.mutate(Source.EditPostMessageMutation, variables);
-    }
-    async mutateRespondPostMessage(variables: Types.RespondPostMessageVariables): Promise<Types.RespondPostMessage> {
-        return this.client.mutate(Source.RespondPostMessageMutation, variables);
-    }
     async mutateSaveDraftMessage(variables: Types.SaveDraftMessageVariables): Promise<Types.SaveDraftMessage> {
         return this.client.mutate(Source.SaveDraftMessageMutation, variables);
     }

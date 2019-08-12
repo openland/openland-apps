@@ -182,11 +182,14 @@ export const OrganizationChangeMemberRoleMutation = gql`
 
 export const OrganizationAddMemberMutation = gql`
     mutation OrganizationAddMember($userIds: [ID!], $organizationId: ID!) {
-        betaOrganizationMemberAdd(userIds: $userIds, organizationId: $organizationId) {
-            ...OrganizationFull
+        alphaOrganizationMemberAdd(userIds: $userIds, organizationId: $organizationId) {
+            role
+            user {
+                ...UserShort
+            }
         }
     }
-    ${OrganizationFull}
+    ${UserShort}
 `;
 
 export const OrganizationRemoveMemberMutation = gql`

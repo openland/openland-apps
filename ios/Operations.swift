@@ -2619,12 +2619,6 @@ private let EditCommentSelector = obj(
 private let EditMessageSelector = obj(
             field("editMessage","editMessage", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("messageId", refValue("messageId")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
         )
-private let EditPostMessageSelector = obj(
-            field("alphaEditPostMessage","editPostMessage", arguments(fieldValue("attachments", refValue("attachments")), fieldValue("messageId", refValue("messageId")), fieldValue("postType", refValue("postType")), fieldValue("text", refValue("text")), fieldValue("title", refValue("title"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("seq","seq", notNull(scalar("Int")))
-                )))
-        )
 private let FeatureFlagAddSelector = obj(
             field("featureFlagAdd","featureFlagAdd", arguments(fieldValue("key", refValue("key")), fieldValue("title", refValue("title"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2747,10 +2741,14 @@ private let OrganizationActivateByInviteSelector = obj(
             field("joinAppInvite","joinAppInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
         )
 private let OrganizationAddMemberSelector = obj(
-            field("betaOrganizationMemberAdd","betaOrganizationMemberAdd", arguments(fieldValue("organizationId", refValue("organizationId")), fieldValue("userIds", refValue("userIds"))), notNull(obj(
+            field("alphaOrganizationMemberAdd","alphaOrganizationMemberAdd", arguments(fieldValue("organizationId", refValue("organizationId")), fieldValue("userIds", refValue("userIds"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    fragment("Organization", OrganizationFullSelector)
-                )))
+                    field("role","role", notNull(scalar("String"))),
+                    field("user","user", notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            fragment("User", UserShortSelector)
+                        )))
+                )))))
         )
 private let OrganizationAlterPublishedSelector = obj(
             field("alphaAlterPublished","alphaAlterPublished", arguments(fieldValue("id", refValue("organizationId")), fieldValue("published", refValue("published"))), notNull(obj(
@@ -2871,10 +2869,6 @@ private let ReplyMessageSelector = obj(
         )
 private let ReportOnlineSelector = obj(
             field("presenceReportOnline","presenceReportOnline", arguments(fieldValue("active", refValue("active")), fieldValue("platform", refValue("platform")), fieldValue("timeout", intValue(5000))), notNull(scalar("String")))
-        )
-private let RespondPostMessageSelector = obj(
-            field("alphaRespondPostMessage","alphaRespondPostMessage", arguments(fieldValue("buttonId", refValue("buttonId")), fieldValue("messageId", refValue("messageId"))), scalar("Boolean")),
-            field("betaReactionSet","betaReactionSet", arguments(fieldValue("mid", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
 private let RoomAddMemberSelector = obj(
             field("betaRoomInvite","betaRoomInvite", arguments(fieldValue("invites", listValue(objectValue(fieldValue("userId", refValue("userId")),fieldValue("role", stringValue("MEMBER"))))), fieldValue("roomId", refValue("roomId"))), notNull(obj(
@@ -3009,12 +3003,6 @@ private let SaveDraftMessageSelector = obj(
         )
 private let SendMessageSelector = obj(
             field("sendMessage","sentMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
-        )
-private let SendPostMessageSelector = obj(
-            field("alphaSendPostMessage","sendPostMessage", arguments(fieldValue("attachments", refValue("attachments")), fieldValue("conversationId", refValue("conversationId")), fieldValue("postType", refValue("postType")), fieldValue("text", refValue("text")), fieldValue("title", refValue("title"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("seq","seq", notNull(scalar("Int")))
-                )))
         )
 private let SetOrgShortnameSelector = obj(
             field("alphaSetOrgShortName","alphaSetOrgShortName", arguments(fieldValue("id", refValue("organizationId")), fieldValue("shortname", refValue("shortname"))), scalar("String"))
@@ -3933,12 +3921,6 @@ class Operations {
         "mutation EditMessage($fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$messageId:ID!,$replyMessages:[ID!],$spans:[MessageSpanInput!]){editMessage(fileAttachments:$fileAttachments,mentions:$mentions,message:$message,messageId:$messageId,replyMessages:$replyMessages,spans:$spans)}",
         EditMessageSelector
     )
-    let EditPostMessage = OperationDefinition(
-        "EditPostMessage",
-        .mutation, 
-        "mutation EditPostMessage($attachments:[String!],$messageId:ID!,$postType:PostMessageType!,$text:String!,$title:String!){editPostMessage:alphaEditPostMessage(attachments:$attachments,messageId:$messageId,postType:$postType,text:$text,title:$title){__typename seq}}",
-        EditPostMessageSelector
-    )
     let FeatureFlagAdd = OperationDefinition(
         "FeatureFlagAdd",
         .mutation, 
@@ -4032,7 +4014,7 @@ class Operations {
     let OrganizationAddMember = OperationDefinition(
         "OrganizationAddMember",
         .mutation, 
-        "mutation OrganizationAddMember($organizationId:ID!,$userIds:[ID!]){betaOrganizationMemberAdd(organizationId:$organizationId,userIds:$userIds){__typename ...OrganizationFull}}fragment OrganizationFull on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity isPrivate:alphaIsPrivate requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about audienceSize email firstName id isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment RoomShort on Room{__typename ... on PrivateRoom{id myBadge{__typename ...UserBadge}pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership myBadge{__typename ...UserBadge}organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserBadge on UserBadge{__typename id name verified}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}",
+        "mutation OrganizationAddMember($organizationId:ID!,$userIds:[ID!]){alphaOrganizationMemberAdd(organizationId:$organizationId,userIds:$userIds){__typename role user{__typename ...UserShort}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}",
         OrganizationAddMemberSelector
     )
     let OrganizationAlterPublished = OperationDefinition(
@@ -4130,12 +4112,6 @@ class Operations {
         .mutation, 
         "mutation ReportOnline($active:Boolean,$platform:String){presenceReportOnline(active:$active,platform:$platform,timeout:5000)}",
         ReportOnlineSelector
-    )
-    let RespondPostMessage = OperationDefinition(
-        "RespondPostMessage",
-        .mutation, 
-        "mutation RespondPostMessage($buttonId:ID!,$messageId:ID!,$reaction:String!){alphaRespondPostMessage(buttonId:$buttonId,messageId:$messageId)betaReactionSet(mid:$messageId,reaction:$reaction)}",
-        RespondPostMessageSelector
     )
     let RoomAddMember = OperationDefinition(
         "RoomAddMember",
@@ -4286,12 +4262,6 @@ class Operations {
         .mutation, 
         "mutation SendMessage($chatId:ID!,$fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$repeatKey:String,$replyMessages:[ID!],$spans:[MessageSpanInput!]){sentMessage:sendMessage(chatId:$chatId,fileAttachments:$fileAttachments,mentions:$mentions,message:$message,repeatKey:$repeatKey,replyMessages:$replyMessages,spans:$spans)}",
         SendMessageSelector
-    )
-    let SendPostMessage = OperationDefinition(
-        "SendPostMessage",
-        .mutation, 
-        "mutation SendPostMessage($attachments:[String!],$conversationId:ID!,$postType:PostMessageType!,$text:String!,$title:String!){sendPostMessage:alphaSendPostMessage(attachments:$attachments,conversationId:$conversationId,postType:$postType,text:$text,title:$title){__typename seq}}",
-        SendPostMessageSelector
     )
     let SetOrgShortname = OperationDefinition(
         "SetOrgShortname",
@@ -4604,7 +4574,6 @@ class Operations {
         if name == "DeleteUser" { return DeleteUser }
         if name == "EditComment" { return EditComment }
         if name == "EditMessage" { return EditMessage }
-        if name == "EditPostMessage" { return EditPostMessage }
         if name == "FeatureFlagAdd" { return FeatureFlagAdd }
         if name == "FeatureFlagDisable" { return FeatureFlagDisable }
         if name == "FeatureFlagEnable" { return FeatureFlagEnable }
@@ -4637,7 +4606,6 @@ class Operations {
         if name == "RegisterWebPush" { return RegisterWebPush }
         if name == "ReplyMessage" { return ReplyMessage }
         if name == "ReportOnline" { return ReportOnline }
-        if name == "RespondPostMessage" { return RespondPostMessage }
         if name == "RoomAddMember" { return RoomAddMember }
         if name == "RoomAddMembers" { return RoomAddMembers }
         if name == "RoomAlterFeatured" { return RoomAlterFeatured }
@@ -4663,7 +4631,6 @@ class Operations {
         if name == "RoomsJoin" { return RoomsJoin }
         if name == "SaveDraftMessage" { return SaveDraftMessage }
         if name == "SendMessage" { return SendMessage }
-        if name == "SendPostMessage" { return SendPostMessage }
         if name == "SetOrgShortname" { return SetOrgShortname }
         if name == "SetTyping" { return SetTyping }
         if name == "SetUserShortname" { return SetUserShortname }

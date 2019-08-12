@@ -1,6 +1,0 @@
-mutation EditPostMessage($attachments: [String!], $messageId: ID!, $postType: PostMessageType!, $text: String!, $title: String!) {
-  editPostMessage: alphaEditPostMessage(attachments: $attachments, messageId: $messageId, postType: $postType, text: $text, title: $title) {
-    __typename
-    seq
-  }
-}

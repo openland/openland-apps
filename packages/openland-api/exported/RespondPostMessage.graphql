@@ -1,4 +1,0 @@
-mutation RespondPostMessage($buttonId: ID!, $messageId: ID!, $reaction: String!) {
-  alphaRespondPostMessage(buttonId: $buttonId, messageId: $messageId)
-  betaReactionSet(mid: $messageId, reaction: $reaction)
-}

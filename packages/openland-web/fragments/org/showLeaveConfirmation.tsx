@@ -1,69 +1,28 @@
-import * as React from 'react';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { useClient } from 'openland-web/utils/useClient';
-import { UserInfoContext } from 'openland-web/components/UserInfo';
-import { showModalBox } from 'openland-x/showModalBox';
-import { XModalController } from 'openland-x/showModal';
-import { useForm } from 'openland-form/useForm';
-import { XErrorMessage } from 'openland-x/XErrorMessage';
-import { XModalFooter } from 'openland-web/components/XModalFooter';
-import { XModalFooterButton } from 'openland-web/components/XModalFooterButton';
-import { XModalContent } from 'openland-web/components/XModalContent';
-import { XView } from 'react-mental';
+import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
+import { OrganizationWithoutMembers_organization } from 'openland-api/Types';
+import { MessengerEngine } from 'openland-engines/MessengerEngine';
 
-const LeaveDialog = React.memo<{ id: string; ctx: XModalController }>(props => {
-    const router = React.useContext(XRouterContext)!;
-    const user = React.useContext(UserInfoContext)!!;
-    const client = useClient();
-    const data = client.useOrganizationProfile({ organizationId: props.id });
-    const form = useForm();
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            // Apply mutation
-            await client.mutateOrganizationMemberRemove({
-                organizationId: props.id,
-                userId: user.user!.id,
-            });
-            await client.refetchMyOrganizations();
-            await client.refetchAccount();
-            props.ctx.hide();
+export const showLeaveConfirmation = (organization: OrganizationWithoutMembers_organization, messenger: MessengerEngine, onLeave: (id: string) => void) => {
+    const { id, name, isCommunity } = organization;
+    const client = messenger.client;
+    const user = messenger.user;
+    const typeString = isCommunity ? 'community' : 'organization';
 
-            // Redirect to the home
-            setTimeout(() => {
-                router.push('/');
-            });
+    const builder = new AlertBlanketBuilder;
+
+    builder.title(`Leave ${typeString}`);
+    builder.message(`Are you sure you want to leave? You will lose access to all internal chats at ${name}. You can only join ${name} by invitation in the future.`);
+    builder.action(`Leave`, async () => {
+        await client.mutateOrganizationMemberRemove({
+            userId: user.id,
+            organizationId: id,
         });
-    }, []);
 
-    return (
-        <>
-            {form.error && <XErrorMessage message={form.error} />}
-            <XView flexDirection="column" borderRadius={8} overflow="hidden">
-                <XModalContent fontSize={18} lineHeight="28px">
-                    Are you sure you want to leave? You will lose access to all internal chats at{' '}
-                    {data.organizationProfile.name}. You can only join{' '}
-                    {data.organizationProfile.name} by invitation in the future.
-                </XModalContent>
-                <XModalFooter>
-                    <XModalFooterButton
-                        text="Cancel"
-                        style="ghost"
-                        onClick={() => props.ctx.hide()}
-                    />
-                    <XModalFooterButton
-                        text="Yes, I am sure"
-                        style="danger"
-                        onClick={doConfirm}
-                        loading={form.loading}
-                    />
-                </XModalFooter>
-            </XView>
-        </>
-    );
-});
+        onLeave(user.id);
 
-export function showLeaveConfirmation(id: string) {
-    showModalBox({ title: 'Leave organization' }, ctx => {
-        return <LeaveDialog id={id} ctx={ctx} />;
-    });
-}
+        await client.refetchMyOrganizations();
+        await client.refetchAccount();
+    }, 'danger');
+
+    builder.show();
+};
