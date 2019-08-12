@@ -75,8 +75,8 @@ export const emojiWordMap = {
     'воу': emojiWordCollection.wow,
     'омг': emojiWordCollection.wow,
 
-    'o': emojiWordCollection.o,
-    'о': emojiWordCollection.o,
+    // 'o': emojiWordCollection.o,
+    // 'о': emojiWordCollection.o,
 
     'hah': emojiWordCollection.hah,
     'хах': emojiWordCollection.hah,
@@ -95,7 +95,7 @@ export const emojiWordMap = {
     'да': emojiWordCollection.ok,
 
     'no': emojiWordCollection.no,
-    'не': emojiWordCollection.no,
+    // 'не': emojiWordCollection.no,
     'нет': emojiWordCollection.no,
 
     'hi': emojiWordCollection.hi,
