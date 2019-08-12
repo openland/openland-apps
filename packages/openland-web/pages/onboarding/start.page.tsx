@@ -31,7 +31,7 @@ export const DiscoverStart = ({
     const isMobile = useIsMobile();
     const button = <XButton text="Start" style="primary" size="large" onClick={onStartClick} />;
     return (
-        <Wrapper>
+        <>
             <XDocumentHead title="Discover" />
             {!noTopBar && <TopBar progressInPercents={getPercentageOfOnboarding(6)} />}
             {!noBackSkipLogo && (
@@ -67,7 +67,7 @@ export const DiscoverStart = ({
                     </XView>
                 )}
             </XView>
-        </Wrapper>
+        </>
     );
 };
 

@@ -3,8 +3,10 @@ import { XView } from 'react-mental';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { ThemeDefault } from 'openland-y-utils/themes';
 import { emoji } from 'openland-y-utils/emoji';
+import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 
 export const DiscoverFragment = React.memo(() => {
+    let isNP = AppConfig.isNonProduction();
     return (
         <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
             <XView
@@ -24,7 +26,7 @@ export const DiscoverFragment = React.memo(() => {
             </XView>
             <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
                 <XView flexDirection="column">
-                    <UListItem title="All" path="/all" />
+                    {isNP && <UListItem title="All" path="/all" />}
                     <UListItem title="Recommended" path="/discover/recommended" />
                     <UListItem title="Groups" path="/discover/groups" />
                 </XView>
