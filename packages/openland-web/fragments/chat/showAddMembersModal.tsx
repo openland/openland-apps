@@ -13,7 +13,7 @@ import {
 } from 'openland-api/Types';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
-import { XModalProps, XModalFooter } from 'openland-x-modal/XModal';
+import { XModalProps } from 'openland-x-modal/XModal';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XUserCard } from 'openland-x/cards/XUserCard';
@@ -30,6 +30,7 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import { trackEvent } from 'openland-x-analytics';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalContent } from 'openland-web/components/XModalContent';
+import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { XButton } from 'openland-x/XButton';
 
 interface RenewInviteLinkButtonProps {
@@ -486,92 +487,87 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                 : 'organization';
 
         return (
-            <XModalContent>
-                <XTrack event="invite_view" params={{ invite_type: objType }} />
-                <XView
-                    height={props.isMobile ? '100%' : '65vh'}
-                    flexGrow={1}
-                    marginHorizontal={-24}
-                    marginTop={props.isMobile ? undefined : -6}
-                    marginBottom={props.isMobile ? undefined : -24}
-                >
-                    <XView paddingHorizontal={24} marginBottom={26}>
-                        <OwnerLink
-                            id={props.id}
-                            isRoom={props.isRoom}
-                            isChannel={props.isChannel}
-                            isOrganization={props.isOrganization}
-                            isCommunity={props.isCommunity}
-                        />
-                    </XView>
-                    <XView fontSize={16} fontWeight="600" marginBottom={16} marginLeft={24}>
-                        Add people directly
-                    </XView>
-                    <XView paddingHorizontal={24}>
-                        <SearchBox
-                            onInputChange={this.onInputChange}
-                            value={options}
-                            onChange={this.onChange}
-                        />
-                    </XView>
-                    <React.Suspense
-                        fallback={
-                            <XView flexGrow={1} flexShrink={0}>
-                                <XLoader loading={true} />
-                            </XView>
-                        }
+            <>
+                <XModalContent>
+                    <XTrack event="invite_view" params={{ invite_type: objType }} />
+                    <XView
+                        height={props.isMobile ? '100%' : '65vh'}
+                        flexGrow={1}
+                        marginBottom={-30}
                     >
-                        <ExplorePeople
-                            variables={{ query: this.state.searchQuery }}
-                            onPick={this.selectMembers}
-                            selectedUsers={selectedUsers}
-                            roomUsers={props.members}
-                        />
-                    </React.Suspense>
-                    <XModalFooter>
-                        <XView marginRight={12}>
-                            <XButton
-                                text="Cancel"
-                                style="ghost"
-                                size="large"
-                                onClick={props.hide}
+                        <XView marginBottom={26}>
+                            <OwnerLink
+                                id={props.id}
+                                isRoom={props.isRoom}
+                                isChannel={props.isChannel}
+                                isOrganization={props.isOrganization}
+                                isCommunity={props.isCommunity}
                             />
                         </XView>
-                        <XButton
-                            text="Add"
-                            style="primary"
-                            size="large"
-                            onClick={async () => {
-                                if (props.isRoom) {
-                                    await (props.addMembers as RoomAddMembersType)({
-                                        variables: {
-                                            roomId: props.id,
-                                            invites: invitesUsers,
-                                        },
-                                    });
-                                }
-
-                                if (props.isOrganization) {
-                                    await (props.addMembers as OrganizationAddMembersType)({
-                                        variables: {
-                                            organizationId: props.id,
-                                            userIds: invitesUsersIds,
-                                        },
-                                    });
-                                }
-
-                                this.setState({
-                                    selectedUsers: null,
+                        <XView fontSize={16} fontWeight="600" marginBottom={16}>
+                            Add people directly
+                        </XView>
+                        <XView>
+                            <SearchBox
+                                onInputChange={this.onInputChange}
+                                value={options}
+                                onChange={this.onChange}
+                            />
+                        </XView>
+                        <React.Suspense
+                            fallback={
+                                <XView flexGrow={1} flexShrink={0}>
+                                    <XLoader loading={true} />
+                                </XView>
+                            }
+                        >
+                            <ExplorePeople
+                                variables={{ query: this.state.searchQuery }}
+                                onPick={this.selectMembers}
+                                selectedUsers={selectedUsers}
+                                roomUsers={props.members}
+                            />
+                        </React.Suspense>
+                    </XView>
+                </XModalContent>
+                <XModalFooter>
+                    <XView marginRight={12}>
+                        <XButton text="Cancel" style="ghost" size="large" onClick={props.hide} />
+                    </XView>
+                    <XButton
+                        text="Add"
+                        style="primary"
+                        size="large"
+                        onClick={async () => {
+                            if (props.isRoom) {
+                                await (props.addMembers as RoomAddMembersType)({
+                                    variables: {
+                                        roomId: props.id,
+                                        invites: invitesUsers,
+                                    },
                                 });
+                            }
 
-                                if (props.hide) {
-                                    props.hide();
-                                }
-                            }}
-                        />
-                    </XModalFooter>
-                </XView>
-            </XModalContent>
+                            if (props.isOrganization) {
+                                await (props.addMembers as OrganizationAddMembersType)({
+                                    variables: {
+                                        organizationId: props.id,
+                                        userIds: invitesUsersIds,
+                                    },
+                                });
+                            }
+
+                            this.setState({
+                                selectedUsers: null,
+                            });
+
+                            if (props.hide) {
+                                props.hide();
+                            }
+                        }}
+                    />
+                </XModalFooter>
+            </>
         );
     }
 }
