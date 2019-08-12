@@ -24,7 +24,6 @@ const RootClassName = css`
     overflow: scroll;
     display: flex;
     flex-direction: column;
-    flex-shrink: 0;
     flex-grow: 1;
     background-color: #fff;
     min-width: 100%;
@@ -234,8 +233,8 @@ const InviteLandingComponentLayout = ({
                 {invitedByUser ? (
                     <InviteByUser invitedByUser={invitedByUser} chatTypeStr={whereToInvite} />
                 ) : (
-                    <XView height={50} flexShrink={0} />
-                )}
+                        <XView height={50} flexShrink={0} />
+                    )}
             </XView>
             <EntityInfoColumn
                 photo={photo}
