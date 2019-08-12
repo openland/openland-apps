@@ -15,7 +15,7 @@ export function UserAvatar(props: AsyncAvatarProps & { online?: boolean, theme: 
             alignItems="center"
             justifyContent="center"
         >
-            <ASAvatar {...props} />
+            <ASAvatar {...props} backgroundColor={props.theme.backgroundTertiary} />
 
             <ASFlex overlay={true} alignItems="flex-end" justifyContent="flex-end">
                 {props.online && (

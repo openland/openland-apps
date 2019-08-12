@@ -59,6 +59,7 @@ export const GlobalSearchItemSharedRoom = XMemo<ItemRoomProps>((props) => {
                     size="medium"
                     placeholderKey={item.id}
                     placeholderTitle={item.title}
+                    backgroundColor={theme.backgroundTertiary}
                 />
             }
         />

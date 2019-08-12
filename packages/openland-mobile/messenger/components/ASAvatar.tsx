@@ -6,7 +6,6 @@ import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { ZAvatarSize, avatarSizes } from 'openland-mobile/components/ZAvatar';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 interface ASAvatarProps {
     size: ZAvatarSize;
@@ -17,11 +16,11 @@ interface ASAvatarProps {
     marginRight?: number;
     marginTop?: number;
     marginBottom?: number;
+    backgroundColor?: string;
 }
 
 export function ASAvatar(props: ASAvatarProps) {
     const { size, placeholder: textSize } = avatarSizes[props.size];
-    const theme = React.useContext(ThemeContext);
 
     if (props.src && !props.src.startsWith('ph://')) {
         let url = props.src;
@@ -29,7 +28,7 @@ export function ASAvatar(props: ASAvatarProps) {
         return (
             <ASFlex 
                 borderRadius={size / 2}
-                backgroundColor={theme.backgroundTertiary}
+                backgroundColor={props.backgroundColor}
             >
                 <ASImage
                     marginLeft={props.marginLeft}
