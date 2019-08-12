@@ -74,7 +74,7 @@ export const Post = XMemo<PostProps>((props) => {
 
                         {like && (
                             <View style={{ position: 'absolute', left: 30 }}>
-                                <Text style={{ ...TextStyles.Body, color: like ? theme.tintRed : theme.foregroundTertiary }}>1</Text>
+                                <Text style={{ ...TextStyles.Body, color: like ? theme.accentNegative : theme.foregroundTertiary }}>1</Text>
                             </View>
                         )}
                     </View>
