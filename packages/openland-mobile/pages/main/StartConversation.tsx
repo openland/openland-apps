@@ -44,7 +44,7 @@ const Chat = (props: { item: DialogDataSourceItem, onPress: (key: string) => voi
         </View>
 
         {/* <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.selected ? theme.accentPrimary : theme.backgroundPrimary} opacity={props.selected ? 1 : 0.8} borderColor={props.selected ? theme.accentPrimary : theme.foregroundTertiary} borderWidth={2} borderRadius={12} width={24} height={24} >
-            {props.selected && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.contrastPrimary }} />}
+            {props.selected && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.foregroundContrast }} />}
         </View> */}
     </ZListItemBase>;
 };

@@ -72,7 +72,7 @@ export class ZCounter extends React.PureComponent<ZCounterProps, { value: number
         return (
             <Animated.View style={[{ opacity: this.opacity }, styles.container, { backgroundColor: theme.backgroundPrimary }]}>
                 <View style={[styles.containerInner, { backgroundColor: theme.accentNegative }]}>
-                    <Text style={[styles.text, { color: theme.contrastPrimary }]} allowFontScaling={false}>{this.state.value}</Text>
+                    <Text style={[styles.text, { color: theme.foregroundContrast }]} allowFontScaling={false}>{this.state.value}</Text>
                 </View>
             </Animated.View>
         );

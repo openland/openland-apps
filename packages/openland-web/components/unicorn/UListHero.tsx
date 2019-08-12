@@ -18,7 +18,7 @@ const Score = (props: { value: number }) => {
                 borderColor={ThemeDefault.backgroundPrimary}
                 paddingVertical={1}
                 paddingHorizontal={8}
-                color={ThemeDefault.contrastPrimary}
+                color={ThemeDefault.foregroundContrast}
                 backgroundImage="linear-gradient(138deg, #FEBD17, #FF9B04)"
             >
                 {props.value}

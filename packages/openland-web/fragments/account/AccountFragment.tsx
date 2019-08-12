@@ -27,7 +27,7 @@ import { emoji } from 'openland-y-utils/emoji';
 const SelectableSVG = React.memo((props: { icon: JSX.Element }) => {
     const selected = React.useContext(XViewSelectedContext);
 
-    return <UIcon icon={props.icon} color={selected ? ThemeDefault.contrastSpecial : ThemeDefault.foregroundSecondary} />;
+    return <UIcon icon={props.icon} color={selected ? ThemeDefault.foregroundInverted : ThemeDefault.foregroundSecondary} />;
 });
 
 const UserProfileCard = withUserInfo(({ user }) => {
@@ -40,7 +40,7 @@ const UserProfileCard = withUserInfo(({ user }) => {
                 hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
                 selectedBackgroundColor={ThemeDefault.accentPrimary}
                 selectedHoverBackgroundColor={ThemeDefault.accentPrimaryHover}
-                selectedColor={ThemeDefault.contrastSpecial}
+                selectedColor={ThemeDefault.foregroundInverted}
                 height={70}
                 flexDirection="row"
                 paddingHorizontal={16}
@@ -56,7 +56,7 @@ const UserProfileCard = withUserInfo(({ user }) => {
                     <SelectableText
                         {...TextStyles.Body}
                         color={ThemeDefault.foregroundSecondary}
-                        selectedColor={ThemeDefault.contrastSpecial}
+                        selectedColor={ThemeDefault.foregroundInverted}
                     >
                         {user.email}
                     </SelectableText>

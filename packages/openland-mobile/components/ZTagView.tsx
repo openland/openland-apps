@@ -106,7 +106,7 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
                                 <TouchableWithoutFeedback onPress={() => this.handleFocus(v.id)}>
                                     <View paddingLeft={1} paddingRight={1} paddingTop={2} paddingBottom={2}>
                                         <View height={28} borderRadius={RadiusStyles.Medium} backgroundColor={this.state.focused === v.id ? this.props.theme.accentPrimary : undefined} paddingLeft={1} paddingRight={1}>
-                                            <Text style={{ color: this.state.focused === v.id ? this.props.theme.contrastPrimary : this.props.theme.accentPrimary, height: 24, lineHeight: 28, textAlignVertical: 'center', fontSize: 15 }}>{v.text},</Text>
+                                            <Text style={{ color: this.state.focused === v.id ? this.props.theme.foregroundContrast : this.props.theme.accentPrimary, height: 24, lineHeight: 28, textAlignVertical: 'center', fontSize: 15 }}>{v.text},</Text>
                                         </View>
                                     </View>
                                 </TouchableWithoutFeedback>

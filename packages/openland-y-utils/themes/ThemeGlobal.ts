@@ -23,11 +23,12 @@ export type ThemeGlobal = {
     backgroundTertiaryHover: string;
     backgroundTertiaryActive: string;
 
-    backgroundHighlight: string;
     backgroundInverted: string;
+    backgroundInvertedHover: string;
+    backgroundInvertedActive: string;
 
-    contrastPrimary: string;
-    contrastSpecial: string;
+    foregroundContrast: string;
+    foregroundInverted: string;
 
     overlayHeavy: string;
     overlayMedium: string;
@@ -46,12 +47,12 @@ export type ThemeGlobal = {
     accentNegativeHover: string;
     accentNegativeActive: string;
 
-    tint1: string;
-    tint2: string;
-    tint3: string;
-    tint4: string;
-    tint5: string;
-    tint6: string;
+    tintRed: string;
+    tintOrange: string;
+    tintGreen: string;
+    tintCyan: string;
+    tintBlue: string;
+    tintPurple: string;
 
     bubbleIn: string;
     bubbleOut: string;

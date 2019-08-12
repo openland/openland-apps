@@ -49,7 +49,7 @@ interface RenderSpansProps {
 export class RenderSpans extends React.PureComponent<RenderSpansProps> {
     render() {
         const { emojiOnly, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetTop, onUserPress, onGroupPress } = this.props;
-        const mainTextColor = emojiOnly ? theme.foregroundPrimary : (message.isOut ? theme.contrastPrimary : theme.foregroundPrimary);
+        const mainTextColor = emojiOnly ? theme.foregroundPrimary : (message.isOut ? theme.foregroundContrast : theme.foregroundPrimary);
         const content = getSpansSlices(spans, padded);
 
         return (

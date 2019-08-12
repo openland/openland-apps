@@ -117,7 +117,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
             <ASFlex flexDirection="column" alignItems="stretch" alignSelf={'stretch'}>
                 {!!this.props.attach.titleLinkHostname && imgCompact && <ASText
                     maxWidth={maxWidth}
-                    color={out ? theme.contrastPrimary : theme.foregroundPrimary}
+                    color={out ? theme.foregroundContrast : theme.foregroundPrimary}
                     opacity={out ? 0.7 : 0.6}
                     fontSize={14}
                     numberOfLines={1}
@@ -161,7 +161,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                 {!!this.props.attach.titleLinkHostname && !imgCompact && <ASText
                     marginTop={5}
                     maxWidth={maxWidth}
-                    color={out ? theme.contrastPrimary : theme.foregroundPrimary}
+                    color={out ? theme.foregroundContrast : theme.foregroundPrimary}
                     opacity={out ? 0.7 : 0.6}
                     fontSize={14}
                     numberOfLines={1}
@@ -191,7 +191,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
 
                         {!!this.props.attach.title && <ASText
                             maxWidth={maxWidth - 36}
-                            color={out ? theme.contrastPrimary : theme.foregroundPrimary}
+                            color={out ? theme.foregroundContrast : theme.foregroundPrimary}
                             letterSpacing={0}
                             fontSize={14}
                             marginTop={Platform.OS === 'android' ? -4 : -1}
@@ -206,7 +206,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                         {!!subTitle && <ASText
                             marginTop={(Platform.OS === 'android' ? -4 : -1)}
                             maxWidth={maxWidth - 36}
-                            color={out ? theme.contrastPrimary : theme.foregroundPrimary}
+                            color={out ? theme.foregroundContrast : theme.foregroundPrimary}
                             opacity={out ? 0.7 : 0.6}
                             fontSize={14}
                             numberOfLines={1}
@@ -221,7 +221,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
 
                 {!!text && <ASText
                     maxWidth={maxWidth}
-                    color={out ? theme.contrastPrimary : theme.foregroundPrimary}
+                    color={out ? theme.foregroundContrast : theme.foregroundPrimary}
                     fontSize={14}
                     marginTop={this.imageCompact && imgLayout ? (subTitle ? 4 : -19) : 0}
                     marginBottom={4}

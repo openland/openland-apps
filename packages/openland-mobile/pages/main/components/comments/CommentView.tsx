@@ -160,7 +160,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     return (
         <TouchableWithoutFeedback disabled={deleted} onPress={handleDoublePress} onLongPress={() => props.onLongPress(comment)}>
-            <View onLayout={onLayout} style={{ backgroundColor: highlighted ? theme.backgroundHighlight : theme.backgroundPrimary, marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 }}>
+            <View onLayout={onLayout} style={{ backgroundColor: highlighted ? theme.backgroundTertiary : theme.backgroundPrimary, marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 }}>
                 {lines}
 
                 <View flexDirection="row">

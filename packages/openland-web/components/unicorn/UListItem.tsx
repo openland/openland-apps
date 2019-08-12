@@ -8,7 +8,7 @@ import { UIcon } from './UIcon';
 const SelectableSVG = React.memo((props: { icon: JSX.Element }) => {
     const selected = React.useContext(XViewSelectedContext);
 
-    return <UIcon icon={props.icon} color={selected ? ThemeDefault.contrastSpecial : ThemeDefault.foregroundSecondary} />;
+    return <UIcon icon={props.icon} color={selected ? ThemeDefault.foregroundInverted : ThemeDefault.foregroundSecondary} />;
 });
 
 export const SelectableText = React.memo((props: XViewProps) => {
@@ -60,7 +60,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
             hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
             selectedBackgroundColor={ThemeDefault.accentPrimary}
             selectedHoverBackgroundColor={ThemeDefault.accentPrimaryHover}
-            selectedColor={ThemeDefault.contrastSpecial}
+            selectedColor={ThemeDefault.foregroundInverted}
             cursor="pointer"
             borderRadius={useRadius ? 8 : 0}
             onClick={onClick}
@@ -82,26 +82,26 @@ export const UListItem = React.memo((props: UListItemProps) => {
                             {titleIcon}
                         </XView>
                     )}
-                    <SelectableText {...titleFont} color={ThemeDefault.foregroundPrimary} selectedColor={ThemeDefault.contrastSpecial}>
+                    <SelectableText {...titleFont} color={ThemeDefault.foregroundPrimary} selectedColor={ThemeDefault.foregroundInverted}>
                         {title}
                     </SelectableText>
 
                     {!!subtitle && (
-                        <SelectableText {...subtitleFont} color={ThemeDefault.foregroundTertiary} selectedColor={ThemeDefault.contrastSpecial} marginLeft={8}>
+                        <SelectableText {...subtitleFont} color={ThemeDefault.foregroundTertiary} selectedColor={ThemeDefault.foregroundInverted} marginLeft={8}>
                             {subtitle}
                         </SelectableText>
                     )}
                 </XView>
 
                 {!!description && (
-                    <SelectableText {...descriptionFont} color={descriptionColor ? descriptionColor : ThemeDefault.foregroundTertiary} selectedColor={ThemeDefault.contrastSpecial} textOverflow="ellipsis" height={descriptionFont.lineHeight} white-space="nowrap" overflow="hidden">
+                    <SelectableText {...descriptionFont} color={descriptionColor ? descriptionColor : ThemeDefault.foregroundTertiary} selectedColor={ThemeDefault.foregroundInverted} textOverflow="ellipsis" height={descriptionFont.lineHeight} white-space="nowrap" overflow="hidden">
                         {description}
                     </SelectableText>
                 )}
             </XView>
 
             {!!textRight && (
-                <SelectableText {...textRightFont} color={ThemeDefault.foregroundTertiary} selectedColor={ThemeDefault.contrastSpecial}>
+                <SelectableText {...textRightFont} color={ThemeDefault.foregroundTertiary} selectedColor={ThemeDefault.foregroundInverted}>
                     {textRight}
                 </SelectableText>
             )}

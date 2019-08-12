@@ -101,7 +101,7 @@ export class AsyncReplyMessageDocumentView extends React.PureComponent<AsyncRepl
                     marginRight={14}
                 >
                     <ASText
-                        color={this.props.parent.isOut ? this.props.theme.contrastPrimary : this.props.theme.foregroundPrimary}
+                        color={this.props.parent.isOut ? this.props.theme.foregroundContrast : this.props.theme.foregroundPrimary}
                         height={18}
                         fontSize={15}
                         lineHeight={18}

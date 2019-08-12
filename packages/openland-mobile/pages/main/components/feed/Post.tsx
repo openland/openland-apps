@@ -70,11 +70,11 @@ export const Post = XMemo<PostProps>((props) => {
             <View style={styles.actions}>
                 <TouchableOpacity onPress={() => toggleLike(!like)}>
                     <View style={styles.actionIcon}>
-                        <Image source={like ? require('assets/ic-like-active-24.png') : require('assets/ic-like-24.png')} style={{ tintColor: like ? theme.tint1 : theme.foregroundTertiary }} />
+                        <Image source={like ? require('assets/ic-like-active-24.png') : require('assets/ic-like-24.png')} style={{ tintColor: like ? theme.tintRed : theme.foregroundTertiary }} />
 
                         {like && (
                             <View style={{ position: 'absolute', left: 30 }}>
-                                <Text style={{ ...TextStyles.Body, color: like ? theme.tint1 : theme.foregroundTertiary }}>1</Text>
+                                <Text style={{ ...TextStyles.Body, color: like ? theme.tintRed : theme.foregroundTertiary }}>1</Text>
                             </View>
                         )}
                     </View>

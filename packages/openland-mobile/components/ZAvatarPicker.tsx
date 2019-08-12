@@ -152,7 +152,7 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
                         {!loading && (
                             <View position="absolute" bottom={2} right={2} width={28} height={28} padding={2} backgroundColor={theme.backgroundPrimary} borderRadius={14}>
                                 <View width={24} height={24} backgroundColor={theme.accentPrimary} borderRadius={12} alignItems="center" justifyContent="center">
-                                    <Image source={require('assets/ic-picker-selected-16.png')} style={{ tintColor: theme.contrastSpecial, width: 16, height: 16 }} />
+                                    <Image source={require('assets/ic-picker-selected-16.png')} style={{ tintColor: theme.foregroundInverted, width: 16, height: 16 }} />
                                 </View>
                             </View>
                         )}

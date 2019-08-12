@@ -27,7 +27,7 @@ const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMe
             <ASFlex onPress={toggleSelect} width={24} height={24} borderRadius={12} backgroundColor={selected ? props.theme.accentPrimary : props.theme.foregroundQuaternary} >
                 <ASFlex overlay={true} alignItems="center" justifyContent="center">
                     <ASFlex width={22} height={22} borderRadius={11} alignItems="center" justifyContent="center" backgroundColor={selected ? props.theme.accentPrimary : props.theme.backgroundPrimary}>
-                        {selected && <ASImage source={require('assets/ic-checkmark.png')} tintColor={props.theme.contrastSpecial} width={14} height={14} />}
+                        {selected && <ASImage source={require('assets/ic-checkmark.png')} tintColor={props.theme.foregroundInverted} width={14} height={14} />}
                     </ASFlex>
                 </ASFlex>
             </ASFlex>

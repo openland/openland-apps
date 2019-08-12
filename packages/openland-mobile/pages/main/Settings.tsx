@@ -86,26 +86,26 @@ let SettingsContent = ((props: PageProps) => {
                 }}
             />
             <ZListItem
-                leftIconColor={theme.tint2}
+                leftIconColor={theme.tintOrange}
                 leftIcon={require('assets/ic-invite-fill-24.png')}
                 text="Invite friends"
                 onPress={handleGlobalInvitePress}
             />
             <ZListGroup header="Settings">
                 <ZListItem
-                    leftIconColor={theme.tint5}
+                    leftIconColor={theme.tintBlue}
                     leftIcon={require('assets/ic-notifications-fill-24.png')}
                     text="Notifications"
                     path="SettingsNotifications"
                 />
                 <ZListItem
-                    leftIconColor={theme.tint1}
+                    leftIconColor={theme.tintRed}
                     leftIcon={require('assets/ic-appearance-fill-24.png')}
                     text="Appearance"
                     path="SettingsAppearance"
                 />
                 <ZListItem
-                    leftIconColor={theme.tint6}
+                    leftIconColor={theme.tintPurple}
                     leftIcon={require('assets/ic-rate-fill-24.png')}
                     text="Rate the App"
                     onPress={() => {
@@ -118,7 +118,7 @@ let SettingsContent = ((props: PageProps) => {
             </ZListGroup>
             <ZListGroup header="Support">
                 <ZListItem
-                    leftIconColor={theme.tint4}
+                    leftIconColor={theme.tintCyan}
                     leftIcon={require('assets/ic-help-fill-24.png')}
                     text="Ask for help"
                     onPress={() => props.router.push('Conversation', { flexibleId: '9KkDvyowQgcYAn0WvYgXFrdqAp' })}

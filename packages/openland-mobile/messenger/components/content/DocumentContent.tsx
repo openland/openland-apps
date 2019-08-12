@@ -111,7 +111,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                 >
                     <ASText
                         maxWidth={bubbleMaxWidth - 110}
-                        color={message.isOut ? this.props.theme.contrastPrimary : this.props.theme.foregroundPrimary}
+                        color={message.isOut ? this.props.theme.foregroundContrast : this.props.theme.foregroundPrimary}
                         height={18}
                         fontSize={15}
                         lineHeight={18}

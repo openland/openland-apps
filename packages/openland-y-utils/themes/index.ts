@@ -19,15 +19,16 @@ export const ThemeLightBlue: ThemeGlobal = {
     backgroundSecondaryHover: '#F0F2F5',
     backgroundSecondaryActive: '#F0F2F5',
 
-    backgroundTertiary: '#F0F2F5',
-    backgroundTertiaryHover: '#F0F2F5',
-    backgroundTertiaryActive: '#F0F2F5',
+    backgroundTertiary: '#F2F3F5',
+    backgroundTertiaryHover: '#EBEDF0',
+    backgroundTertiaryActive: '#E6E7EB',
 
-    backgroundHighlight: '#FFFEE8',
-    backgroundInverted: '#F0F2F5',
+    backgroundInverted: '#F2F3F5',
+    backgroundInvertedHover: '#EBEDF0',
+    backgroundInvertedActive: '#F2F3F5',
 
-    contrastPrimary: '#FFFFFF',
-    contrastSpecial: '#FFFFFF',
+    foregroundContrast: '#FFFFFF',
+    foregroundInverted: '#FFFFFF',
 
     overlayHeavy: '#000000',
     overlayMedium: 'rgba(0, 0, 0, 0.48)',
@@ -35,30 +36,30 @@ export const ThemeLightBlue: ThemeGlobal = {
     overlayInverted: 'rgba(0, 0, 0, 0.24)',
 
     accentPrimary: '#1885F2',
-    accentPrimaryHover: '#0D86FF',
-    accentPrimaryActive: '#0B78E6',
+    accentPrimaryHover: '#2693FF',
+    accentPrimaryActive: '#0B72D9',
 
     accentPositive: '#30BF6C',
     accentPositiveHover: '#2BD974',
     accentPositiveActive: '#24B35F',
 
-    accentNegative: '#F22447',
-    accentNegativeHover: '#FF0D35',
-    accentNegativeActive: '#E60C30',
+    accentNegative: '#E62233',
+    accentNegativeHover: '#F23041',
+    accentNegativeActive: '#CC1424',
 
-    tint1: '#FF5148',
-    tint2: '#FFA201',
-    tint3: '#3DBF1E',
-    tint4: '#01C1CE',
-    tint5: '#0C7FF2',
-    tint6: '#9C10F2',
+    tintRed: '#E52233',
+    tintOrange: '#FFAE0D',
+    tintGreen: '#36B25F',
+    tintCyan: '#21C9D9',
+    tintBlue: '#1885F2',
+    tintPurple: '#8518F2',
 
     blurType: 'light',
     keyboardAppearance: 'light',
     statusBar: 'dark-content',
 
-    bubbleIn: '#f3f5f7',
-    bubbleOut: '#1970ff',
+    bubbleIn: '#F2F3F5',
+    bubbleOut: '#1885F2',
 
     ironySpan: {
         backgroundOut: 'rgba(255, 56, 46, 0.9)',
@@ -102,11 +103,12 @@ export const ThemeDark: ThemeGlobal = {
     backgroundTertiaryHover: '#1F1F1F',
     backgroundTertiaryActive: '#1F1F1F',
 
-    backgroundHighlight: '#002140',
     backgroundInverted: '#000000',
+    backgroundInvertedHover: '#000000',
+    backgroundInvertedActive: '#000000',
 
-    contrastPrimary: '#FFFFFF',
-    contrastSpecial: '#000000',
+    foregroundContrast: '#FFFFFF',
+    foregroundInverted: '#000000',
 
     overlayHeavy: '#000000',
     overlayMedium: 'rgba(0, 0, 0, 0.48)',
@@ -125,12 +127,12 @@ export const ThemeDark: ThemeGlobal = {
     accentNegativeHover: '#FF0D35',
     accentNegativeActive: '#E60C30',
 
-    tint1: '#262626',
-    tint2: '#262626',
-    tint3: '#262626',
-    tint4: '#262626',
-    tint5: '#262626',
-    tint6: '#262626',
+    tintRed: '#262626',
+    tintOrange: '#262626',
+    tintGreen: '#262626',
+    tintCyan: '#262626',
+    tintBlue: '#262626',
+    tintPurple: '#262626',
 
     blurType: 'dark',
     keyboardAppearance: 'dark',

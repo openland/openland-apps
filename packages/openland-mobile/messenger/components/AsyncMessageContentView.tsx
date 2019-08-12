@@ -39,19 +39,19 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         const { span, children } = props;
 
         if (span.type === 'link') {
-            return <ASText key={'link'} color={(message.isOut && !message.isService) ? theme.contrastPrimary : theme.accentPrimary} onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
+            return <ASText key={'link'} color={(message.isOut && !message.isService) ? theme.foregroundContrast : theme.accentPrimary} onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
         } else if (span.type === 'mention_user') {
-            return <ASText key={'mention-user'} fontWeight={message.isService ? FontStyles.Weight.Bold : undefined} color={!message.isService ? (message.isOut ? theme.contrastPrimary : theme.accentPrimary) : undefined} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(span.user.id)}>{children}</ASText>;
+            return <ASText key={'mention-user'} fontWeight={message.isService ? FontStyles.Weight.Bold : undefined} color={!message.isService ? (message.isOut ? theme.foregroundContrast : theme.accentPrimary) : undefined} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(span.user.id)}>{children}</ASText>;
         } else if (span.type === 'mention_all') {
-            return <ASText key={'mention-all'} color={(message.isOut && !message.isService) ? theme.contrastPrimary : theme.accentPrimary} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'}>{children}</ASText>;
+            return <ASText key={'mention-all'} color={(message.isOut && !message.isService) ? theme.foregroundContrast : theme.accentPrimary} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'}>{children}</ASText>;
         } else if (span.type === 'mention_room') {
-            return <ASText key={'mention-room'} color={(message.isOut && !message.isService) ? theme.contrastPrimary : theme.accentPrimary} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onGroupPress(span.id)}>{children}</ASText>;
+            return <ASText key={'mention-room'} color={(message.isOut && !message.isService) ? theme.foregroundContrast : theme.accentPrimary} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onGroupPress(span.id)}>{children}</ASText>;
         } else if (span.type === 'mention_users') {
             return <OthersUsersWrapper key={'mentions'} theme={theme} onUserPress={uid => onUserPress(uid)} users={span.users} useAsync={true}>{children}</OthersUsersWrapper>;
         } else if (span.type === 'bold') {
             return <ASText key={'bold'} fontWeight={FontStyles.Weight.Bold}>{children}</ASText>;
         } else if (span.type === 'date') {
-            return <ASText key={'date'} color={(message.isOut && !message.isService) ? theme.contrastPrimary : theme.accentPrimary} onPress={openCalendar(span.date)} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
+            return <ASText key={'date'} color={(message.isOut && !message.isService) ? theme.foregroundContrast : theme.accentPrimary} onPress={openCalendar(span.date)} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
         } else if (span.type === 'code_block') {
             return <ASText key={'code-block'} fontType="monospace">{children}</ASText>;
         } else if (span.type === 'code_inline') {
@@ -224,14 +224,14 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                         >
                             {props.message.isEdited && (
                                 <ASFlex width={10} height={10} marginTop={1} justifyContent="flex-start" alignItems="center">
-                                    <ASImage source={require('assets/ic-edited-10.png')} width={10} height={10} tintColor={props.message.isOut ? props.theme.contrastPrimary : props.theme.foregroundPrimary} opacity={props.message.isOut ? 0.7 : 0.5} />
+                                    <ASImage source={require('assets/ic-edited-10.png')} width={10} height={10} tintColor={props.message.isOut ? props.theme.foregroundContrast : props.theme.foregroundPrimary} opacity={props.message.isOut ? 0.7 : 0.5} />
                                 </ASFlex>
                             )}
                             <ASText
                                 marginLeft={3}
                                 marginRight={!props.message.isOut ? 3 : 0}
                                 fontSize={11}
-                                color={isImageBottom ? '#fff' : props.message.isOut ? props.theme.contrastPrimary : props.theme.foregroundPrimary}
+                                color={isImageBottom ? '#fff' : props.message.isOut ? props.theme.foregroundContrast : props.theme.foregroundPrimary}
                                 opacity={(props.message.isOut || isImageBottom) ? 0.7 : 0.6}
                             >
                                 {formatTime(props.message.date)}
