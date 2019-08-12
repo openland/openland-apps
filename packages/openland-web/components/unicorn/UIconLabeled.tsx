@@ -4,6 +4,7 @@ import { css, cx } from 'linaria';
 import { UIcon } from './UIcon';
 import { ThemeDefault } from 'openland-y-utils/themes';
 import { TextLabel2 } from 'openland-web/utils/TextStyles';
+import { defaultHover } from 'openland-web/utils/Styles';
 
 type UIconLabeledStyle = 'default' | 'danger';
 
@@ -18,10 +19,6 @@ const containerClass = css`
     svg {
         width: 16px;
         height: 16px;
-    }
-
-    &:hover {
-        opacity: 0.64;
     }
 `;
 
@@ -40,11 +37,8 @@ export const UIconLabeled = React.memo((props: UIconLabeledProps) => {
     const color = style === 'danger' ? ThemeDefault.accentNegative : ThemeDefault.foregroundSecondary;
 
     return (
-        <XView
-            {...other}
-            cursor="pointer"
-        >
-            <div className={containerClass}>
+        <XView {...other}>
+            <div className={cx(containerClass, defaultHover)}>
                 <UIcon icon={icon} color={color} />
                 <span className={cx(TextLabel2, labelClass)} style={{ color }}>{label}</span>
             </div>

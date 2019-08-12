@@ -12,6 +12,7 @@ import {
 } from 'openland-api/Types';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { defaultHover } from 'openland-web/utils/Styles';
 
 interface PinMessageProps {
     engine: ConversationEngine;
@@ -91,10 +92,6 @@ const unpinIconContainer = css`
     align-items: center;
     justify-content: center;
     margin-left: 16px;
-    
-    &:hover {
-        opacity: 0.64;
-    }
 `;
 
 export const PinMessageComponent = React.memo((props: PinMessageProps) => {
@@ -122,7 +119,7 @@ export const PinMessageComponent = React.memo((props: PinMessageProps) => {
                 </div>
                 {engine.canPin && (
                     <div
-                        className={unpinIconContainer}
+                        className={cx(unpinIconContainer, defaultHover)}
                         onClick={(e: any) => {
                             e.stopPropagation();
                             e.preventDefault();
