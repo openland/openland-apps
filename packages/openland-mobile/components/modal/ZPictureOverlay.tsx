@@ -172,7 +172,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
         return () => BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     });
 
-    let handleTap = React.useCallback(() => { 
+    let handleTap = React.useCallback(() => {
         if (barVisible) {
             barVisible = false;
             Animated.timing(barOpacity, {
@@ -253,6 +253,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                     height: SDevice.navigationBarHeight + SDevice.statusBarHeight + SDevice.safeArea.top,
                     paddingTop: SDevice.statusBarHeight + SDevice.safeArea.top,
                     backgroundColor: 'rgba(0,0,0,0.6)',
+                    justifyContent: 'center',
                     opacity: Animated.multiply(progressLinear, barOpacity),
                     transform: [{
                         translateY:

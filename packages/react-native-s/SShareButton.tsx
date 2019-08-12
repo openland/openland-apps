@@ -1,16 +1,11 @@
 import * as React from 'react';
-import { STouchable } from './STouchable';
-import { View, Image } from 'react-native';
-import { SDevice } from './SDevice';
+import { ActionButton } from './navigation/buttons/ActionButton';
 
-export class SShareButton extends React.PureComponent<{ tintColor?: string, onPress?: () => void }> {
-    render() {
-        return (
-            <STouchable onPress={this.props.onPress}>
-                <View style={{ backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center' }} marginHorizontal={15} height={SDevice.navigationBarHeight}>
-                    <Image source={require('assets/ic-share-24.png')} style={{ tintColor: this.props.tintColor }} />
-                </View>
-            </STouchable>
-        );
-    }
+interface SShareButtonProps {
+    tintColor?: string;
+    onPress?: () => void;
 }
+
+export const SShareButton = React.memo((props: SShareButtonProps) => (
+    <ActionButton icon={require('assets/ic-share-24.png')} iconColor={props.tintColor} onPress={props.onPress} title="Share" />
+));
