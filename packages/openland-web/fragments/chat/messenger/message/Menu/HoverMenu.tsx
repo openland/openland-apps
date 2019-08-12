@@ -47,7 +47,7 @@ const menuContainerClass = css`
     border-radius: 8px;
 `;
 const attachTop = css`
-    top: 0;
+    top: -4px;
 `;
 const forceVisible = css`
     opacity: 1;
@@ -100,7 +100,7 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
 
     return (
         <div className={cx(menuContainerClass, message.attachTop && attachTop, 'hover-menu-container', visible && forceVisible, message.isSending && forceInvisible)}>
-            <div className={cx(menuButton)} onMouseEnter={reactionsShow}>
+            <div className={cx(menuButton)} onMouseEnter={reactionsShow} onClick={(e) => { e.stopPropagation(); handleReactionClick(MessageReactionType.LIKE); }}>
                 <UIcon icon={<LikeIcon />} color={ThemeDefault.foregroundTertiary} />
             </div>
             <div className={cx(menuButton)} onClick={handleCommentClick}>
