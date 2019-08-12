@@ -9,7 +9,7 @@ import { randomKey } from 'openland-graphql/utils/randomKey';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 
 const Tasks = React.memo(() => {
     let userStorage = getMessenger().engine.userStorage;
@@ -41,7 +41,7 @@ const Tasks = React.memo(() => {
         <>
             <SHeaderButton title="Create" onPress={callback} />
             <SScrollView>
-                <ZListItemGroup header="Projects">
+                <ZListGroup header="Projects">
                     {data.map((v) => (
                         <ZListItem
                             key={v.id}
@@ -61,9 +61,9 @@ const Tasks = React.memo(() => {
                             }}
                         />
                     ))}
-                </ZListItemGroup>
+                </ZListGroup>
 
-                <ZListItemGroup header="Tasks" actionRight={{ title: '+ add', onPress: callback }}>
+                <ZListGroup header="Tasks" actionRight={{ title: '+ add', onPress: callback }}>
                     {inbox.map((v) => (
                         <ZListItem
                             key={v.id}
@@ -83,7 +83,7 @@ const Tasks = React.memo(() => {
                             }}
                         />
                     ))}
-                </ZListItemGroup>
+                </ZListGroup>
             </SScrollView>
         </>
     );

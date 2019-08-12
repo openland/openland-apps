@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 
 type Item<T> = {
@@ -23,7 +23,7 @@ export function ZCheckmarkGroup<T>(props: ZCheckmarkGroupProps<T>) {
     }, []);
 
     return (
-        <ZListItemGroup header={props.header} footer={props.footer}>
+        <ZListGroup header={props.header} footer={props.footer}>
             {props.items.map((item, key) => (
                 <ZListItem
                     key={`${key}-checkmark`}
@@ -32,6 +32,6 @@ export function ZCheckmarkGroup<T>(props: ZCheckmarkGroupProps<T>) {
                     checkmark={props.value === item.value}
                 />
             ))}
-        </ZListItemGroup>
+        </ZListGroup>
     );
 }

@@ -6,7 +6,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZInput } from 'openland-mobile/components/ZInput';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { Modals } from './modals/Modals';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
@@ -106,12 +106,12 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
             <SHeader title="Advanced settings" />
             <SHeaderButton title="Save" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
-                <ZListItemGroup header={null} footer="Send an automatic message in 1:1 chat to every new member who joins this group">
+                <ZListGroup header={null} footer="Send an automatic message in 1:1 chat to every new member who joins this group">
                     <ZListItem text="Welcome message" toggle={welcomeMessageEnabled} onToggle={(value) => setWelcomeMessageEnabled(value)} />
-                </ZListItemGroup>
+                </ZListGroup>
 
                 {welcomeMessageEnabled && (
-                    <ZListItemGroup header={null}>
+                    <ZListGroup header={null}>
                         <ZPickField
                             label="Sender"
                             value={welcomeMessageSender ? welcomeMessageSender.name : undefined}
@@ -133,17 +133,17 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                             }}
                         />
                         <ZInput multiline={true} placeholder="Text message" field={welcomeMessageField} />
-                    </ZListItemGroup>
+                    </ZListGroup>
                 )}
 
-                <ZListItemGroup
+                <ZListGroup
                     header="Social sharing image"
                     footer="Choose an image to display when sharing invite to this group on social networks"
                 >
                     <View paddingHorizontal={16}>
                         <ZAvatarPicker field={socialImageField} render={SocialPicker} pickSize={{ width: 1200, height: 630 }} />
                     </View>
-                </ZListItemGroup>
+                </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>
     );

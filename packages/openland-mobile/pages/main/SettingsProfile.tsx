@@ -7,7 +7,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZInput } from 'openland-mobile/components/ZInput';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { useForm } from 'openland-form/useForm';
@@ -32,7 +32,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
     const websiteField = useField('website', profile.website || '', form);
     const linkedinField = useField('linkedin', profile.linkedin || '', form);
 
-    const handleSave = () => 
+    const handleSave = () =>
         form.doAction(async () => {
             await getClient().mutateProfileUpdate({
                 input: {
@@ -56,11 +56,11 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
         <>
             <SHeaderButton title="Save" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
-                <ZListItemGroup header={null} alignItems="center">
+                <ZListGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field={photoField} />
-                </ZListItemGroup>
+                </ZListGroup>
 
-                <ZListItemGroup header="Info" headerMarginTop={0}>
+                <ZListGroup header="Info" headerMarginTop={0}>
                     <ZInput
                         placeholder="First name"
                         field={firstNameField}
@@ -83,17 +83,17 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                         placeholder="Location"
                         field={locationField}
                     />
-                </ZListItemGroup>
+                </ZListGroup>
 
-                <ZListItemGroup header="Username" headerMarginTop={0}>
+                <ZListGroup header="Username" headerMarginTop={0}>
                     <ZPickField
                         label="Username"
                         value={user.shortname ? '@' + user.shortname : undefined}
                         path="SetUserShortname"
                     />
-                </ZListItemGroup>
+                </ZListGroup>
 
-                <ZListItemGroup header="Contacts" headerMarginTop={0}>
+                <ZListGroup header="Contacts" headerMarginTop={0}>
                     <ZInput
                         placeholder="Phone"
                         field={phoneField}
@@ -110,7 +110,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                         placeholder="LinkedIn"
                         field={linkedinField}
                     />
-                </ZListItemGroup>
+                </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>
     );

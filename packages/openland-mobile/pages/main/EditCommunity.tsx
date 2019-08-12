@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
+import { ZListGroup } from '../../components/ZListGroup';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -43,7 +43,7 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
         }
     }, [organization, profile]);
 
-    const handleSave = () => 
+    const handleSave = () =>
         form.doAction(async () => {
             try {
                 await client.mutateUpdateOrganization({
@@ -58,7 +58,7 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                 await client.refetchOrganization({ organizationId });
             } catch (e) {
                 console.warn(e);
-            } 
+            }
 
             props.router.back();
         });
@@ -68,11 +68,11 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
             <SHeader title="Edit community" />
             <SHeaderButton title="Save" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
-                <ZListItemGroup header={null} alignItems="center">
+                <ZListGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field={photoField} />
-                </ZListItemGroup>
+                </ZListGroup>
 
-                <ZListItemGroup header="Info" headerMarginTop={0}>
+                <ZListGroup header="Info" headerMarginTop={0}>
                     <ZInput
                         placeholder="Community name"
                         field={nameField}
@@ -96,9 +96,9 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                         ]}
                         description="Set by creator"
                     />
-                </ZListItemGroup>
+                </ZListGroup>
 
-                <ZListItemGroup header="Shortname" headerMarginTop={0}>
+                <ZListGroup header="Shortname" headerMarginTop={0}>
                     <ZPickField
                         label="Shortname"
                         value={organization.shortname ? '@' + organization.shortname : undefined}
@@ -106,7 +106,7 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                         pathParams={{ id: organization.id }}
                         description="People will be able to find your community by this shortname"
                     />
-                </ZListItemGroup>
+                </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>
     );

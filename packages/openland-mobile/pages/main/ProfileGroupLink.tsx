@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
+import { ZListGroup } from '../../components/ZListGroup';
 import { Share, Clipboard } from 'react-native';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
@@ -42,7 +42,7 @@ const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
 
     return (
         <ZTrack event="invite_view" params={{ invite_type: chatType }}>
-            <ZListItemGroup header={null} footer="Anyone with link can join as group member">
+            <ZListGroup header={null} footer="Anyone with link can join as group member">
                 <ZListItem
                     key="add"
                     text={link}
@@ -50,8 +50,8 @@ const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
                     onPress={handleShareClick}
                     copy={true}
                 />
-            </ZListItemGroup>
-            <ZListItemGroup>
+            </ZListGroup>
+            <ZListGroup>
                 <ZListItem
                     appearance="action"
                     text="Copy link"
@@ -77,7 +77,7 @@ const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
 
                     }}
                 />
-            </ZListItemGroup>
+            </ZListGroup>
         </ZTrack>
     );
 });

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { PageProps } from 'openland-mobile/components/PageProps';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ThemeController } from 'openland-mobile/themes/ThemeControler';
@@ -13,7 +13,7 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
         <>
             <SHeader title="Appearance" />
             <SScrollView>
-                <ZListItemGroup header="Theme">
+                <ZListGroup header="Theme">
                     <ZListItem
                         text="Light"
                         checkmark={theme === 'LightBlue'}
@@ -34,7 +34,7 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                             }, 10);
                         }}
                     />
-                </ZListItemGroup>
+                </ZListGroup>
             </SScrollView>
         </>
     );

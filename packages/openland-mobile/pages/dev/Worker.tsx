@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 // import { Thread } from 'react-native-threads';
 
 export const Worker = withApp(() => {
@@ -28,9 +28,9 @@ export const Worker = withApp(() => {
         <>
             <SHeader title="Worker" />
             <SScrollView>
-                <ZListItemGroup header={null}>
+                <ZListGroup header={null}>
                     {}
-                </ZListItemGroup>
+                </ZListGroup>
             </SScrollView>
         </>
     );

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
+import { ZListGroup } from '../../components/ZListGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
@@ -31,20 +31,20 @@ const sendMutate = debounce(async (state: Settings_settings) => {
 
 const SettingsNotificationsContent = XMemo<PageProps>(props => {
     const settingsData = getClient().useSettings({ fetchPolicy: 'network-only' }).settings;
-    const [ settings, setSettings ] = React.useState<Settings_settings>(settingsData);
+    const [settings, setSettings] = React.useState<Settings_settings>(settingsData);
 
     const handleSave: <T>(field: string, value: T) => void = (field, value) => {
         setSettings((prevState) => ({ ...prevState, [field]: value }));
     };
-    
+
     React.useEffect(() => {
         sendMutate(settings);
-    }, [ settings ]);
+    }, [settings]);
 
     return (
         <SScrollView>
             {NON_PRODUCTION && (
-                <ZListItemGroup header="Counter">
+                <ZListGroup header="Counter">
                     <ZListItem
                         text="Show unread chats"
                         onToggle={value => handleSave('countUnreadChats', value)}
@@ -55,10 +55,10 @@ const SettingsNotificationsContent = XMemo<PageProps>(props => {
                         onToggle={value => handleSave('excludeMutedChats', value)}
                         toggle={settings.excludeMutedChats}
                     />
-                </ZListItemGroup>
+                </ZListGroup>
             )}
 
-            <ZListItemGroup header="Push notifications">
+            <ZListGroup header="Push notifications">
                 <ZListItem
                     text="Alert"
                     onToggle={value => handleSave('mobileAlert', value)}
@@ -69,7 +69,7 @@ const SettingsNotificationsContent = XMemo<PageProps>(props => {
                     onToggle={value => handleSave('mobileIncludeText', value)}
                     toggle={settings.mobileIncludeText}
                 />
-            </ZListItemGroup>
+            </ZListGroup>
 
             <ZCheckmarkGroup
                 header={'Comments notifications'}

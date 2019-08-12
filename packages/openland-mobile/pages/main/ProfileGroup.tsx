@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { Platform, Text } from 'react-native';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
-import { ZListItemHeader } from '../../components/ZListItemHeader';
+import { ZListGroup } from '../../components/ZListGroup';
+import { ZListHero } from '../../components/ZListHero';
 import { ZListItem } from '../../components/ZListItem';
 import { Modals } from './modals/Modals';
 import { PageProps } from '../../components/PageProps';
@@ -20,6 +20,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
+import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 
 const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -140,7 +141,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             },
             'Add members',
             members.map(m => m.user.id),
-            [ getMessenger().engine.user.id ],
+            [getMessenger().engine.user.id],
             { path: 'ProfileGroupLink', pathParams: { room } }
         );
     }, [members]);
@@ -187,7 +188,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
 
     const content = (
         <>
-            <ZListItemHeader
+            <ZListHero
                 titleIcon={room.isChannel ? require('assets/ic-channel-18.png') : room.kind === 'GROUP' ? require('assets/ic-lock-18.png') : undefined}
                 titleColor={room.kind === 'GROUP' ? theme.accentPositive : undefined}
                 title={room.title}
@@ -200,7 +201,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                 }}
             />
 
-            <ZListItemGroup header="About" headerMarginTop={0}>
+            <ZListGroup header="About" headerMarginTop={0}>
                 {!!room.description && (
                     <ZListItem
                         text={room.description}
@@ -219,36 +220,35 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                         pathParams={{ id: room.organization.id }}
                     />
                 )}
-            </ZListItemGroup>
+            </ZListGroup>
 
-            <ZListItemGroup header="Settings" headerMarginTop={!hasAbout ? 0 : undefined}>
+            <ZListGroup header="Settings" headerMarginTop={!hasAbout ? 0 : undefined}>
                 <NotificationSettings id={room.id} mute={!!room.settings.mute} />
-            </ZListItemGroup>
+            </ZListGroup>
 
-            <ZListItemGroup header="Members" counter={room.membersCount}>
+            <ZListHeader text="Members" counter={room.membersCount} />
+            <ZListItem
+                text="Add members"
+                leftIcon={require('assets/ic-add-24.png')}
+                onPress={handleAddMember}
+            />
+
+            {(room.role === 'ADMIN' || room.role === 'OWNER' || room.role === 'MEMBER') && (
                 <ZListItem
-                    text="Add members"
-                    leftIcon={require('assets/ic-add-24.png')}
-                    onPress={handleAddMember}
+                    leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
+                    text={`Invite to ${chatTypeStr} with a link`}
+                    onPress={() => props.router.present('ProfileGroupLink', { room })}
                 />
+            )}
 
-                {(room.role === 'ADMIN' || room.role === 'OWNER' || room.role === 'MEMBER') && (
-                    <ZListItem
-                        leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
-                        text={`Invite to ${chatTypeStr} with a link`}
-                        onPress={() => props.router.present('ProfileGroupLink', { room })}
-                    />
-                )}
-
-                {room.featuredMembersCount > 0 && (
-                    <ZListItem
-                        leftIcon={require('assets/ic-star-admin-16.png')}
-                        text="Featured members"
-                        onPress={() => props.router.push('ProfileGroupFeatured', { id: room.id })}
-                        description={room.featuredMembersCount + ''}
-                    />
-                )}
-            </ZListItemGroup>
+            {room.featuredMembersCount > 0 && (
+                <ZListItem
+                    leftIcon={require('assets/ic-star-admin-16.png')}
+                    text="Featured members"
+                    onPress={() => props.router.push('ProfileGroupFeatured', { id: room.id })}
+                    description={room.featuredMembersCount + ''}
+                />
+            )}
         </>
     );
 

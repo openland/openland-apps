@@ -10,7 +10,7 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZInput } from 'openland-mobile/components/ZInput';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
@@ -47,11 +47,11 @@ const SignupUserContent = XMemo<PageProps>((props) => {
         }
 
         form.doAction(async () => {
-            await getClient().mutateProfileCreate({ 
-                input: { 
-                    firstName: firstNameField.value, 
-                    lastName: lastNameField.value 
-                } 
+            await getClient().mutateProfileCreate({
+                input: {
+                    firstName: firstNameField.value,
+                    lastName: lastNameField.value
+                }
             });
             await getClient().refetchAccount();
             await next(props.router);
@@ -62,10 +62,10 @@ const SignupUserContent = XMemo<PageProps>((props) => {
         <>
             <SHeaderButton title="Next" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
-                <ZListItemGroup header={null} alignItems="center">
+                <ZListGroup header={null} alignItems="center">
                     <ZAvatarPicker field={photoField} initialUrl={prefill && prefill.picture || undefined} size="xx-large" />
-                </ZListItemGroup>
-                <ZListItemGroup header={null}>
+                </ZListGroup>
+                <ZListGroup header={null}>
                     <ZInput
                         field={firstNameField}
                         placeholder="First name"
@@ -75,7 +75,7 @@ const SignupUserContent = XMemo<PageProps>((props) => {
                         placeholder="Last name"
                         description="Please, provide your name. This information is part of your public profile."
                     />
-                </ZListItemGroup>
+                </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>
     );

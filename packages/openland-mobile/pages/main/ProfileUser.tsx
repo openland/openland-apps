@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { ZListItemHeader } from '../../components/ZListItemHeader';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
+import { ZListHero } from '../../components/ZListHero';
+import { ZListGroup } from '../../components/ZListGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
@@ -68,7 +68,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
         <>
             <SHeader title={Platform.OS === 'android' ? 'Info' : user.name} />
             <SScrollView>
-                <ZListItemHeader
+                <ZListHero
                     photo={user.photo}
                     id={user.id}
                     title={user.name}
@@ -92,7 +92,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     } : undefined}
                 />
 
-                <ZListItemGroup header="About" headerMarginTop={0}>
+                <ZListGroup header="About" headerMarginTop={0}>
                     {!!user.about && <ZListItem multiline={true} text={user.about} copy={true} />}
                     {!!user.about && <View height={10} />}
                     {!!user.shortname && (<ZListItem title="Username" text={'@' + user.shortname} copy={true} />)}
@@ -101,10 +101,10 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     {!!user.website && <ZListItem title="Website" text={user.website} copy={true} />}
                     {!!user.location && <ZListItem title="Location" text={user.location} copy={true} />}
                     {!!user.linkedin && <ZListItem title="Linkedin" text={user.linkedin} copy={true} />}
-                </ZListItemGroup>
+                </ZListGroup>
 
                 {!!user.primaryOrganization && (
-                    <ZListItemGroup header="Organization">
+                    <ZListGroup header="Organization">
                         <ZListItem
                             leftAvatar={{
                                 photo: user.primaryOrganization.photo,
@@ -116,11 +116,11 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                             path="ProfileOrganization"
                             pathParams={{ id: user.primaryOrganization.id }}
                         />
-                    </ZListItemGroup>
+                    </ZListGroup>
                 )}
 
                 {(myID !== user.id) && (
-                    <ZListItemGroup header="Settings">
+                    <ZListGroup header="Settings">
                         <NotificationSettings
                             id={(conversation as User_conversation_PrivateRoom).id}
                             mute={!!(conversation as User_conversation_PrivateRoom).settings.mute}
@@ -132,10 +132,10 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                                 onPress={handleAddMember}
                             />
                         )}
-                    </ZListItemGroup>
+                    </ZListGroup>
                 )}
 
-                <ZListItemGroup header="Featured in" counter={user.chatsWithBadge.length}>
+                <ZListGroup header="Featured in" counter={user.chatsWithBadge.length}>
                     {user.chatsWithBadge.map((item, index) => (
                         <ZListItem
                             leftAvatar={{
@@ -149,7 +149,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                             pathParams={{ id: item.chat.id }}
                         />
                     ))}
-                </ZListItemGroup>
+                </ZListGroup>
             </SScrollView>
         </>
     );

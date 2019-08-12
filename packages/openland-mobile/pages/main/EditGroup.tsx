@@ -7,7 +7,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
@@ -60,10 +60,10 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
             <SHeader title="Edit group info" />
             <SHeaderButton title="Save" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
-                <ZListItemGroup header={null} alignItems="center">
+                <ZListGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field={photoField} />
-                </ZListItemGroup>
-                <ZListItemGroup header="Info" headerMarginTop={0}>
+                </ZListGroup>
+                <ZListGroup header="Info" headerMarginTop={0}>
                     <ZInput
                         placeholder="Group name"
                         field={titleField}
@@ -73,7 +73,7 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
                         placeholder="Description"
                         multiline={true}
                     />
-                </ZListItemGroup>
+                </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>
     );

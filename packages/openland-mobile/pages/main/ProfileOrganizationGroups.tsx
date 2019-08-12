@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Organization_organization_rooms } from 'openland-api/Types';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
+import { ZListGroup } from '../../components/ZListGroup';
 import { SRouter } from 'react-native-s/SRouter';
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
@@ -14,7 +14,7 @@ class GroupsList extends React.PureComponent<{ groups: (Organization_organizatio
     render() {
         return (
             <SScrollView>
-                <ZListItemGroup>
+                <ZListGroup>
                     {this.props.groups
                         .sort((a, b) => (b!.membersCount || 0) - (a!.membersCount || 0))
                         .map((v) => (
@@ -25,7 +25,7 @@ class GroupsList extends React.PureComponent<{ groups: (Organization_organizatio
                                 photo={v!.photo}
                             />
                         ))}
-                </ZListItemGroup>
+                </ZListGroup>
             </SScrollView>
         );
     }

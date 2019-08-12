@@ -9,7 +9,7 @@ import { randomEmptyPlaceholderEmoji } from '../../utils/tolerance';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { UserView } from './components/UserView';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -66,11 +66,11 @@ const ComposeComponent = XMemo<PageProps>((props) => {
             >
                 <SScrollView keyboardDismissMode="interactive">
                     <SDeferred>
-                        <ZListItemGroup>
+                        <ZListGroup>
                             <ZListItem leftIcon={require('assets/ic-room-24.png')} text="Create group" path="CreateGroupAttrs" />
                             <ZListItem leftIcon={require('assets/ic-cell-channel-24.png')} text="Create channel" path="CreateGroupAttrs" pathParams={{ isChannel: true }} />
                             <ZListItem leftIcon={require('assets/ic-community-24.png')} text="Create community" path="NewOrganization" pathParams={{ isCommunity: true }} />
-                        </ZListItemGroup>
+                        </ZListGroup>
                         <View height={15} />
                         <React.Suspense fallback={<ActivityIndicator />}>
                             <UserSearchComponent query="" router={props.router} useScroll={false} />

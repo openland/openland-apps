@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import RNRestart from 'react-native-restart';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
@@ -19,7 +19,7 @@ export const Developer = withApp(() => {
         <>
             <SHeader title="Developer" />
             <SScrollView>
-                <ZListItemGroup header={null}>
+                <ZListGroup header={null}>
                     <ZListItem text="Feed" path="Feed" />
                     <ZListItem text="Colors" path="DevColors" />
                     <ZListItem text="Avatars" path="DevAvatars" />
@@ -37,7 +37,7 @@ export const Developer = withApp(() => {
                     <ZListItem text="Navigation" path="DevNavigation" />
                     <ZListItem text="Bad User Profile" path="ProfileUser" pathParams={{ id: "1" }} />
                     <ZListItem text="Log out" onPress={handleLogout} />
-                </ZListItemGroup>
+                </ZListGroup>
             </SScrollView>
         </>
     );

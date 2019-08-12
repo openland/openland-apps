@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Share } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { ZListItem } from '../../components/ZListItem';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
-import { ZListItemHeader } from '../../components/ZListItemHeader';
+import { ZListGroup } from '../../components/ZListGroup';
+import { ZListHero } from '../../components/ZListHero';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
@@ -70,7 +70,7 @@ let SettingsContent = ((props: PageProps) => {
 
     return (
         <SScrollView>
-            <ZListItemHeader
+            <ZListHero
                 photo={resp.me.photo}
                 id={resp.me.id}
                 title={resp!!.me!!.name}
@@ -91,7 +91,7 @@ let SettingsContent = ((props: PageProps) => {
                 text="Invite friends"
                 onPress={handleGlobalInvitePress}
             />
-            <ZListItemGroup header="Settings">
+            <ZListGroup header="Settings">
                 <ZListItem
                     leftIconColor={theme.tint5}
                     leftIcon={require('assets/ic-notifications-fill-24.png')}
@@ -115,17 +115,17 @@ let SettingsContent = ((props: PageProps) => {
                         }, () => { /**/ });
                     }}
                 />
-            </ZListItemGroup>
-            <ZListItemGroup header="Support">
+            </ZListGroup>
+            <ZListGroup header="Support">
                 <ZListItem
                     leftIconColor={theme.tint4}
                     leftIcon={require('assets/ic-help-fill-24.png')}
                     text="Ask for help"
                     onPress={() => props.router.push('Conversation', { flexibleId: '9KkDvyowQgcYAn0WvYgXFrdqAp' })}
                 />
-            </ZListItemGroup>
+            </ZListGroup>
 
-            <ZListItemGroup header="Organizations" actionRight={{ title: '+ New', onPress: () => props.router.push('NewOrganization') }}>
+            <ZListGroup header="Organizations" actionRight={{ title: '+ New', onPress: () => props.router.push('NewOrganization') }}>
                 {primary && <ZListItem
                     text={primary.name}
                     leftAvatar={{ photo: primary.photo, key: primary.id, title: primary.name }}
@@ -140,11 +140,11 @@ let SettingsContent = ((props: PageProps) => {
                         onPress={() => props.router.push('ProfileOrganization', { id: v.id })}
                     />
                 ))}
-            </ZListItemGroup>
+            </ZListGroup>
             {(NON_PRODUCTION) && (
-                <ZListItemGroup header={null}>
+                <ZListGroup header={null}>
                     <ZListItem text="Developer Menu" path="Dev" />
-                </ZListItemGroup>
+                </ZListGroup>
             )}
         </SScrollView>
     );

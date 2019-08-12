@@ -8,7 +8,7 @@ import { Modals } from '../main/modals/Modals';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
@@ -48,7 +48,7 @@ const showMembersModal = (router: SRouter, res: RoomCreate) => {
         },
         'Add members',
         [],
-        [ getMessenger().engine.user.id ],
+        [getMessenger().engine.user.id],
         {
             path: 'ProfileGroupLink',
             pathParams: { id: res.room.id },
@@ -86,7 +86,7 @@ const CreateGroupComponent = (props: PageProps) => {
             Alert.builder().title(`Please enter a name for this ${chatTypeString.toLowerCase()}`).button('GOT IT!').show();
             return;
         }
-        
+
         form.doAction(async () => {
             const orgId = selectedKind === SharedRoomKind.PUBLIC ? selectedOrg : undefined;
             const res = await getClient().mutateRoomCreate({
@@ -111,10 +111,10 @@ const CreateGroupComponent = (props: PageProps) => {
             <SHeader title={`Create ${chatTypeString.toLowerCase()}`} />
             <SHeaderButton title="Next" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
-                <ZListItemGroup header={null} alignItems="center">
+                <ZListGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field={photoField} />
-                </ZListItemGroup>
-                <ZListItemGroup header={null}>
+                </ZListGroup>
+                <ZListGroup header={null}>
                     <ZInput
                         placeholder={`${chatTypeString} name`}
                         field={titleField}
@@ -132,10 +132,10 @@ const CreateGroupComponent = (props: PageProps) => {
                         ]}
                         description={selectedKind === SharedRoomKind.GROUP ? `Secret ${chatTypeString.toLowerCase()} is a place that people can view and join only by invite from a ${chatTypeString.toLowerCase()} member.` : undefined}
                     />
-                </ZListItemGroup>
+                </ZListGroup>
 
                 {selectedKind === SharedRoomKind.PUBLIC && (
-                    <ZListItemGroup header="Share with" headerMarginTop={0}>
+                    <ZListGroup header="Share with" headerMarginTop={0}>
                         {sortedOrganizations.map(org => (
                             <ZListItem
                                 key={'org-' + org.id}
@@ -149,7 +149,7 @@ const CreateGroupComponent = (props: PageProps) => {
                                 onPress={() => setSelectedOrg(org.id)}
                             />
                         ))}
-                    </ZListItemGroup>
+                    </ZListGroup>
                 )}
             </KeyboardAvoidingScrollView>
         </>

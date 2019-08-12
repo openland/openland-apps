@@ -7,7 +7,7 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { Platform, View } from 'react-native';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 
 const SelectPrimaryOrganizationComponent = (props: PageProps) => {
     let organizations = getClient().useMyOrganizations({ fetchPolicy: 'network-only' }).myOrganizations;
@@ -18,7 +18,7 @@ const SelectPrimaryOrganizationComponent = (props: PageProps) => {
             <SScrollView>
                 <View marginTop={Platform.OS === 'ios' ? 5 : undefined} />
 
-                <ZListItemGroup footer="Choose organization that people will see in your profile.">
+                <ZListGroup footer="Choose organization that people will see in your profile.">
                     {organizations.map(org => (
                         <ZListItem
                             text={org.name}
@@ -46,7 +46,7 @@ const SelectPrimaryOrganizationComponent = (props: PageProps) => {
                             }}
                         />
                     ))}
-                </ZListItemGroup>
+                </ZListGroup>
             </SScrollView>
         </>
     );

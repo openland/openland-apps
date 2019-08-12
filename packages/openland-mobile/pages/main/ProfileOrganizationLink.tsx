@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
+import { ZListGroup } from '../../components/ZListGroup';
 import { Share, Clipboard } from 'react-native';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
@@ -44,7 +44,7 @@ const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
 
     return (
         <ZTrack event="invite_view" params={{ invite_type: orgType }}>
-            <ZListItemGroup footer={'People can join ' + orgType + ' by following this link. You can renew the link at any time'}>
+            <ZListGroup footer={'People can join ' + orgType + ' by following this link. You can renew the link at any time'}>
                 <ZListItem
                     key="add"
                     text={link}
@@ -52,8 +52,8 @@ const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
                     onPress={handleShareClick}
                     copy={true}
                 />
-            </ZListItemGroup>
-            <ZListItemGroup >
+            </ZListGroup>
+            <ZListGroup >
                 <ZListItem appearance="action" text="Copy link" onPress={handleCopyClick} />
                 <ZListItem appearance="action" text="Share link" onPress={handleShareClick} />
                 <ZListItem
@@ -71,7 +71,7 @@ const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
 
                     }}
                 />
-            </ZListItemGroup>
+            </ZListGroup>
         </ZTrack>
     );
 });

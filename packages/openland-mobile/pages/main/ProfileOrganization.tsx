@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { ZListItemHeader } from '../../components/ZListItemHeader';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
+import { ZListHero } from '../../components/ZListHero';
+import { ZListGroup } from '../../components/ZListGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
@@ -24,6 +24,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
+import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 
 const PrivateProfile = XMemo<PageProps & { organization: OrganizationWithoutMembers_organization }>((props) => {
     const { router, organization } = props;
@@ -283,14 +284,14 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
 
     const content = (
         <>
-            <ZListItemHeader
+            <ZListHero
                 photo={organization.photo}
                 id={organization.id}
                 title={organization.name}
                 subtitle={organization.isCommunity ? 'Community' : 'Organization'}
             />
 
-            <ZListItemGroup header="About" headerMarginTop={0}>
+            <ZListGroup header="About" headerMarginTop={0}>
                 {organization.about && (
                     <ZListItem multiline={true} text={organization.about} copy={true} />
                 )}
@@ -312,9 +313,9 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 {organization.linkedin && (
                     <ZListItem title="Linkedin" text={organization.linkedin} copy={true} />
                 )}
-            </ZListItemGroup>
+            </ZListGroup>
 
-            <ZListItemGroup
+            <ZListGroup
                 header="Groups and Channels"
                 counter={organization.rooms.length}
                 actionRight={organization.rooms.length > 3 ? { title: 'See All', onPress: () => props.router.push('ProfileOrganizationGroups', { organizationId: organization.id, title: organization.name }) } : undefined}
@@ -338,20 +339,16 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                         />
                     ))
                 }
-            </ZListItemGroup>
+            </ZListGroup>
 
-            <ZListItemGroup
-                header="Members"
-                counter={organization.membersCount}
-            >
-                {organization.isMine && (
-                    <ZListItem
-                        leftIcon={require('assets/ic-add-24.png')}
-                        text="Add members"
-                        onPress={handleAddMember}
-                    />
-                )}
-            </ZListItemGroup>
+            <ZListHeader text="Members" counter={organization.membersCount} />
+            {organization.isMine && (
+                <ZListItem
+                    leftIcon={require('assets/ic-add-24.png')}
+                    text="Add members"
+                    onPress={handleAddMember}
+                />
+            )}
         </>
     );
 

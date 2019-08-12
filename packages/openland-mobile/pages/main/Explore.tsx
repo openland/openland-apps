@@ -6,7 +6,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SDeferred } from 'react-native-s/SDeferred';
@@ -30,7 +30,7 @@ const RoomsList = (props: { router: SRouter }) => {
         <>
             {/* {NON_PRODUCTION && <ZListItem text="Tasks" path="Apps/Tasks" />} */}
 
-            <ZListItemGroup
+            <ZListGroup
                 header="Top groups"
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('GroupList', {
@@ -55,9 +55,9 @@ const RoomsList = (props: { router: SRouter }) => {
                         pathParams={{ flexibleId: v.id }}
                     />
                 ))}
-            </ZListItemGroup>
+            </ZListGroup>
 
-            <ZListItemGroup
+            <ZListGroup
                 header="Top channels"
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('GroupList', {
@@ -82,9 +82,9 @@ const RoomsList = (props: { router: SRouter }) => {
                         pathParams={{ flexibleId: v.id }}
                     />
                 ))}
-            </ZListItemGroup>
+            </ZListGroup>
 
-            <ZListItemGroup
+            <ZListGroup
                 header="Top communities"
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('CommunityList', {
@@ -107,9 +107,9 @@ const RoomsList = (props: { router: SRouter }) => {
                         pathParams={{ id: v.id }}
                     />
                 ))}
-            </ZListItemGroup>
+            </ZListGroup>
 
-            <ZListItemGroup
+            <ZListGroup
                 header="Chats for you"
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('GroupList', {
@@ -132,7 +132,7 @@ const RoomsList = (props: { router: SRouter }) => {
                         pathParams={{ flexibleId: v.id }}
                     /> : null
                 ))}
-            </ZListItemGroup>
+            </ZListGroup>
         </>
     );
 };

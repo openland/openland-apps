@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
+import { ZListGroup } from '../../components/ZListGroup';
 import { View } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
@@ -29,7 +29,7 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
     const facebookField = useField('facebook', profile.facebook || '', form);
     const linkedinField = useField('linkedin', profile.linkedin || '', form);
 
-    const handleSave = () => 
+    const handleSave = () =>
         form.doAction(async () => {
             await client.mutateUpdateOrganization({
                 organizationId,
@@ -54,10 +54,10 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
             <SHeader title="Edit organization" />
             <SHeaderButton title="Save" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
-                <ZListItemGroup header={null} alignItems="center">
+                <ZListGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field={photoField} />
-                </ZListItemGroup>
-                <ZListItemGroup header="Info" headerMarginTop={0}>
+                </ZListGroup>
+                <ZListGroup header="Info" headerMarginTop={0}>
                     <ZInput
                         placeholder="Organization name"
                         field={nameField}
@@ -68,9 +68,9 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                         multiline={true}
                         description="Publicly describe this organization for all to see"
                     />
-                </ZListItemGroup>
+                </ZListGroup>
                 <View height={15} />
-                <ZListItemGroup header="Shortname" headerMarginTop={0}>
+                <ZListGroup header="Shortname" headerMarginTop={0}>
                     <ZPickField
                         label="Shortname"
                         value={profile.shortname ? '@' + profile.shortname : undefined}
@@ -78,8 +78,8 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                         pathParams={{ id: organizationId }}
                         description="People will be able to find your organization by this shortname"
                     />
-                </ZListItemGroup>
-                <ZListItemGroup header="Contacts" headerMarginTop={0}>
+                </ZListGroup>
+                <ZListGroup header="Contacts" headerMarginTop={0}>
                     <ZInput
                         placeholder="Website"
                         field={websiteField}
@@ -96,7 +96,7 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                         placeholder="LinkedIn"
                         field={linkedinField}
                     />
-                </ZListItemGroup>
+                </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>
     );

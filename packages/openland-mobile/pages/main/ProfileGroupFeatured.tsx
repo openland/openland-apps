@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
+import { ZListGroup } from '../../components/ZListGroup';
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -17,7 +17,7 @@ const ProfileGroupFeaturedComponent = XMemo<PageProps>((props) => {
         <>
             <SHeader title="Featured members" />
             <SScrollView>
-                <ZListItemGroup>
+                <ZListGroup>
                     {members.map((item, index) => (
                         <UserView
                             user={item.user}
@@ -26,7 +26,7 @@ const ProfileGroupFeaturedComponent = XMemo<PageProps>((props) => {
                             onPress={() => props.router.push('ProfileUser', { id: item.user.id })}
                         />
                     ))}
-                </ZListItemGroup>
+                </ZListGroup>
             </SScrollView>
         </>
     );

@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     } as ViewStyle
 });
 
-export interface ZListItemHeaderProps {
+export interface ZListHeroProps {
     photo?: string | null;
     id?: string;
     title?: string | null;
@@ -76,7 +76,7 @@ export interface ZListItemHeaderProps {
     };
 }
 
-export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
+export const ZListHero = React.memo<ZListHeroProps>((props) => {
     const theme = React.useContext(ThemeContext);
     const { photo, id, title, titleIcon, titleColor, subtitle, subtitleColor, action, score, iconRight } = props;
     const colorTitle = titleColor ? titleColor : theme.foregroundPrimary;

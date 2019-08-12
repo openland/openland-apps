@@ -7,7 +7,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { ZInput } from 'openland-mobile/components/ZInput';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
@@ -23,7 +23,7 @@ const NewOrganizationComponent = (props: PageProps) => {
 
     const handleSave = () => {
         if (nameField.value === '') {
-            Alert.builder().title('Please enter a name for this ' + (isCommunity ? 'community' : 'organization')).button('GOT IT!').show();    
+            Alert.builder().title('Please enter a name for this ' + (isCommunity ? 'community' : 'organization')).button('GOT IT!').show();
             return;
         }
 
@@ -56,11 +56,11 @@ const NewOrganizationComponent = (props: PageProps) => {
             <SHeader title={isCommunity ? 'New community' : 'New organization'} />
             <SHeaderButton title={isCommunity ? 'Create' : 'Next'} onPress={handleSave} />
             <KeyboardAvoidingScrollView>
-                <ZListItemGroup header={null} alignItems="center">
+                <ZListGroup header={null} alignItems="center">
                     <ZAvatarPicker field={photoField} size="xx-large" />
-                </ZListItemGroup>
+                </ZListGroup>
 
-                <ZListItemGroup header={null}>
+                <ZListGroup header={null}>
                     {!isCommunity && (
                         <ZInput
                             placeholder="Organization name"
@@ -76,7 +76,7 @@ const NewOrganizationComponent = (props: PageProps) => {
                             <ZInput placeholder="About" field={aboutField} multiline={true} />
                         </>
                     )}
-                </ZListItemGroup>
+                </ZListGroup>
             </KeyboardAvoidingScrollView>
         </ZTrack>
     );

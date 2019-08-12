@@ -7,7 +7,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { Clipboard } from 'react-native';
-import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import ActionSheet from 'openland-mobile/components/ActionSheet';
 import { ErrorText, validateShortname, getErrorByShortname } from './SetUserShortname';
 import { formatError } from 'openland-y-forms/errorHandling';
@@ -57,7 +57,7 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
         <>
             <SHeaderButton title="Save" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
-                <ZListItemGroup
+                <ZListGroup
                     header={null}
                     footer={{
                         text: 'You can choose a shortname for ' + profile.name + ' in Openland.' + '\n' +
@@ -89,7 +89,7 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
 
                     {error && <ErrorText color="red" text={error} />}
                     {!error && greenErrorLabel && <ErrorText color="green" text={greenErrorLabel} />}
-                </ZListItemGroup>
+                </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>
     );

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { PageProps } from '../../../components/PageProps';
-import { ZListItemGroup } from '../../../components/ZListItemGroup';
+import { ZListGroup } from '../../../components/ZListGroup';
 import { ZListItem } from '../../../components/ZListItem';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
@@ -15,7 +15,7 @@ const SettingsOrganizatonsContent = XMemo<PageProps>((props) => {
     secondary.sort((a, b) => a.name.localeCompare(b.name));
     return (
         <>
-            <ZListItemGroup>
+            <ZListGroup>
                 <ZListItem
                     text={primary.name}
                     leftAvatar={{ photo: primary.photo, key: primary.id, title: primary.name }}
@@ -29,7 +29,7 @@ const SettingsOrganizatonsContent = XMemo<PageProps>((props) => {
                         onPress={() => props.router.push('ProfileOrganization', { id: v.id })}
                     />
                 ))}
-            </ZListItemGroup>
+            </ZListGroup>
         </>
     );
 });
