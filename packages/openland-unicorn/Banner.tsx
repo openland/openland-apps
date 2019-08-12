@@ -127,7 +127,6 @@ let useNotificationsBanner = () => {
     let [permissionState, setPermissionNeeded] = React.useState(AppNotifications.state);
     React.useEffect(() => {
         AppNotifications.watch(s => {
-            console.warn('boom!', s);
             setPermissionNeeded(s);
         });
     }, []);

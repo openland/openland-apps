@@ -53,14 +53,26 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
             }
         }
 
-        if (text.length > 0) {
+        const textValue = text.trim();
+
+        if (textValue.length > 0) {
             client.mutateAddMessageComment({
                 messageId,
                 repeatKey: UUID(),
-                mentions: prepareLegacyMentionsForSend(text, mentions),
-                message: text,
-                spans: findSpans(text),
+                mentions: prepareLegacyMentionsForSend(textValue, mentions),
+                message: textValue,
+                spans: findSpans(textValue),
                 replyComment: replyId
+            });
+        }
+    }, [messageId]);
+
+    const handleAttachSent = React.useCallback((files: File[], replyId?: string) => {
+        if (files.length) {
+            showAttachConfirm(files, (res) => {
+                console.warn('boom', { res, replyId });
+                // res.map(f => new UploadCareUploading(UploadCare.fileFrom('object', f), f.name))
+                //     .map(this.conversation!.sendFile);
             });
         }
     }, [messageId]);
