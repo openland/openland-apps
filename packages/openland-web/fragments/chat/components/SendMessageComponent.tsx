@@ -242,7 +242,9 @@ const AutoCompleteComponent = React.memo(
 
                 if (members && members.members && word && word.startsWith('@')) {
                     matched = searchMentions(word, members.members).map(u => u.user);
-                    matched.unshift({ __typename: 'AllMention' });
+                    if ('@all'.startsWith(word.toLowerCase())) {
+                        matched.unshift({ __typename: 'AllMention' });
+                    }
                 }
             }
             let filtered: { name: string, value: string, shortcode: string }[] = [];
