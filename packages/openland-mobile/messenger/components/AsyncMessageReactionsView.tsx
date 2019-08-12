@@ -4,7 +4,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { getMessenger } from '../../utils/messenger';
 import { ASText } from 'react-native-async-view/ASText';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { Stopwatch } from 'openland-y-utils/stopwatch';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { FullMessage_GeneralMessage_reactions, MessageReactionType } from 'openland-api/Types';
@@ -81,17 +81,17 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
         <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33} backgroundColor={theme.backgroundPrimary} >
             <ASFlex renderModes={props.message.isOut ? undefined : rm({ 'selection': { marginLeft: 60 + 30 } })} flexGrow={1} justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={props.message.isOut ? 14 : 0} marginLeft={props.message.isOut ? 0 : 60} marginTop={5} alignItems="center">
                 {(props.isChannel || commentsCount > 0) && (
-                    <ASFlex backgroundColor={theme.backgroundTertiary} borderRadius={RadiusStyles.medium} marginRight={5} onPress={props.onCommentsPress}>
+                    <ASFlex backgroundColor={theme.backgroundTertiary} borderRadius={RadiusStyles.Medium} marginRight={5} onPress={props.onCommentsPress}>
                         <ASFlex marginLeft={7} marginRight={7} height={26} alignItems="center" justifyContent="center">
                             {commentsCount <= 0 && <ASImage source={require('assets/ic-comments-24.png')} tintColor={theme.accentPrimary} width={24} height={24} />}
                             {commentsCount > 0 && <ASImage source={require('assets/ic-comments-full-24.png')} tintColor={theme.accentPrimary} width={24} height={24} />}
-                            {commentsCount > 0 && <ASText fontSize={14} fontWeight={TextStyles.weight.medium} marginLeft={2} marginRight={1} color={theme.foregroundTertiary}>{commentsCount}</ASText>}
+                            {commentsCount > 0 && <ASText fontSize={14} fontWeight={FontStyles.Weight.Medium} marginLeft={2} marginRight={1} color={theme.foregroundTertiary}>{commentsCount}</ASText>}
                         </ASFlex>
                     </ASFlex>
                 )}
 
                 {reactions.reactionsSorted.length > 0 && (
-                    <ASFlex backgroundColor={theme.backgroundTertiary} borderRadius={RadiusStyles.medium} onPress={props.onReactionsPress}>
+                    <ASFlex backgroundColor={theme.backgroundTertiary} borderRadius={RadiusStyles.Medium} onPress={props.onReactionsPress}>
                         <ASFlex marginLeft={5} marginRight={1} height={26} alignItems="center" justifyContent="center">
                             {[...reactions.reactionsSorted].map((i) =>
                                 (
@@ -99,7 +99,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
                                 )
                             )}
 
-                            {reactions.usersString.length > 0 && <ASText fontWeight={TextStyles.weight.medium} marginLeft={5} marginRight={7} fontSize={13} key={'users'} color={theme.foregroundTertiary}>{reactions.usersString}</ASText>}
+                            {reactions.usersString.length > 0 && <ASText fontWeight={FontStyles.Weight.Medium} marginLeft={5} marginRight={7} fontSize={13} key={'users'} color={theme.foregroundTertiary}>{reactions.usersString}</ASText>}
                         </ASFlex>
                     </ASFlex>
                 )}

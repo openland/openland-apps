@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { TextInput, View, TextInputProps, Text, StyleSheet, ViewStyle, TextStyle, NativeSyntheticEvent, TextInputFocusEventData, LayoutChangeEvent, Platform, Animated, Easing } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 
 const DURATION_PLACEHOLDER_ANIMATION = 100;
 const PLACEHOLDER_SCALE_RATIO = 0.8;
 
 const styles = StyleSheet.create({
     container: {
-        borderRadius: RadiusStyles.medium
+        borderRadius: RadiusStyles.Medium
     } as ViewStyle,
     placeholderContainer: {
         position: 'absolute',
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16
     } as ViewStyle,
     placeholder: {
-        ...TypeStyles.densed
+        ...TextStyles.Densed
     } as TextStyle,
     prefixContainer: {
         position: 'absolute',
@@ -31,14 +31,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     } as ViewStyle,
     prefix: {
-        ...TypeStyles.densed
+        ...TextStyles.Densed
     } as TextStyle,
     descriptionContainer: {
         paddingHorizontal: 16,
         paddingTop: 8
     } as ViewStyle,
     description: {
-        ...TypeStyles.caption
+        ...TextStyles.Caption
     } as TextStyle,
 });
 
@@ -53,9 +53,9 @@ export interface ZInputBasicProps extends TextInputProps {
 export const ZInputBasic = (props: ZInputBasicProps) => {
     const { placeholder, prefix, invalid, description, enabled, noWrapper, ...other } = props;
     const theme = React.useContext(ThemeContext);
-    const [ focused, setFocused ] = React.useState<boolean>(false);
-    const [ filled, setFilled ] = React.useState<boolean>(!!(props.value && props.value.length > 0));
-    const [ prefixWidth, setPrefixWidth ] = React.useState<number>(0);
+    const [focused, setFocused] = React.useState<boolean>(false);
+    const [filled, setFilled] = React.useState<boolean>(!!(props.value && props.value.length > 0));
+    const [prefixWidth, setPrefixWidth] = React.useState<number>(0);
     const animation = React.useRef(new Animated.Value(filled ? 1 : 0)).current;
     const [placeholderWidth, setPlaceholderWidth] = React.useState<number>(0);
 
@@ -105,7 +105,7 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
     const handlePlaceholderLayout = React.useCallback((e: LayoutChangeEvent) => {
         setPlaceholderWidth(e.nativeEvent.layout.width);
     }, []);
-  
+
     const placeholderAimatedStyle = {
         transform: [
             {
@@ -157,7 +157,7 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
                     allowFontScaling={false}
                     selectionColor={theme.accentPrimary}
                     style={[props.style, {
-                        ...TypeStyles.densed,
+                        ...TextStyles.Densed,
                         color: theme.foregroundPrimary,
                         flex: 1,
                         borderWidth: 0,
@@ -179,7 +179,7 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
 
             {!!description && (
                 <View style={styles.descriptionContainer}>
-                    <Text style={[styles.description,  { color: invalid ? theme.accentNegative : theme.foregroundSecondary }]} allowFontScaling={false}>
+                    <Text style={[styles.description, { color: invalid ? theme.accentNegative : theme.foregroundSecondary }]} allowFontScaling={false}>
                         {description}
                     </Text>
                 </View>

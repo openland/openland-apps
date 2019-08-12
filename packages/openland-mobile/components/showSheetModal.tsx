@@ -181,7 +181,7 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
                     )}
                     {isPad && (
                         <View
-                            borderRadius={RadiusStyles.medium}
+                            borderRadius={RadiusStyles.Medium}
                             marginHorizontal={10}
                             overflow="hidden"
                             width={350}

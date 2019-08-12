@@ -6,7 +6,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { TextInput, StyleSheet, ScrollView } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useForm } from 'openland-form/useForm';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { useField } from 'openland-form/useField';
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         paddingHorizontal: 16,
         paddingVertical: 8,
-        ...TypeStyles.body,
+        ...TextStyles.Body,
     },
 });
 

@@ -13,7 +13,7 @@ import { SStatusBar } from 'react-native-s/SStatusBar';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import Toast from '../Toast';
 
 export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose: () => void }>((props) => {
@@ -282,7 +282,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                     }}
                 >
                     <View flexDirection="column" height={50} justifyContent="center">
-                        {!!props.config.title && <Text style={{ color: '#ffffff', textAlign: 'center', fontSize: 15, fontWeight: TextStyles.weight.medium }}>{props.config.title}</Text>}
+                        {!!props.config.title && <Text style={{ color: '#ffffff', textAlign: 'center', fontSize: 15, fontWeight: FontStyles.Weight.Medium }}>{props.config.title}</Text>}
                         {!!props.config.subtitle && <Text style={{ color: '#ffffff', textAlign: 'center', fontSize: 13, opacity: 0.8, marginTop: 2 }}>{props.config.subtitle}</Text>}
                     </View>
                 </Animated.View>

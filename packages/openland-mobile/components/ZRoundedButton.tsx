@@ -4,7 +4,7 @@ import { withRouter } from 'react-native-s/withRouter';
 import { SRouter } from 'react-native-s/SRouter';
 import Alert from './AlertBlanket';
 import { formatError } from 'openland-y-forms/errorHandling';
-import { RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import LoaderSpinner from './LoaderSpinner';
 
@@ -15,12 +15,12 @@ const stylesDefault = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: RadiusStyles.large,
+        borderRadius: RadiusStyles.Large,
         height: 36,
         paddingHorizontal: 16,
     } as ViewStyle,
     title: {
-        ...TypeStyles.label1,
+        ...TextStyles.Label1,
         textAlignVertical: 'center',
     } as TextStyle
 });
@@ -29,12 +29,12 @@ const stylesLarge = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: RadiusStyles.medium,
+        borderRadius: RadiusStyles.Medium,
         height: 48,
         paddingHorizontal: 24,
     } as ViewStyle,
     title: {
-        ...TypeStyles.label1,
+        ...TextStyles.Label1,
         textAlignVertical: 'center',
     } as TextStyle
 });
@@ -59,7 +59,7 @@ export interface ZRoundedButtonProps {
 }
 
 const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRouter }>((props) => {
-    const [ actionInProgress, setActionInProgress ] = React.useState(props.loading || false);
+    const [actionInProgress, setActionInProgress] = React.useState(props.loading || false);
     const theme = React.useContext(ThemeContext);
     const handlePress = React.useCallback(async () => {
         if (props.onPress) {
@@ -96,7 +96,7 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
     const styles = resolveStylesBySize[size];
     const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : style === 'secondary-inverted' ? theme.backgroundInverted : theme.backgroundTertiary);
     const textColor = style === 'primary' ? theme.contrastSpecial : (style === 'danger' ? theme.contrastPrimary : theme.foregroundSecondary);
-    
+
     const highlightedColors = {
         'primary': theme.accentPrimaryActive,
         'danger': theme.accentNegativeActive
@@ -106,11 +106,11 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
     const TouchableComponent = underlayColor ? TouchableHighlight : TouchableOpacity;
 
     return (
-        <View style={{ borderRadius: RadiusStyles.medium, overflow: 'hidden' }}>
+        <View style={{ borderRadius: RadiusStyles.Medium, overflow: 'hidden' }}>
             <TouchableComponent
-                style={[styles.container, { backgroundColor: backgroundColor, opacity: props.enabled === false ? 0.6 : undefined }]} 
-                onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined} 
-                disabled={actionInProgress || props.enabled === false} 
+                style={[styles.container, { backgroundColor: backgroundColor, opacity: props.enabled === false ? 0.6 : undefined }]}
+                onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined}
+                disabled={actionInProgress || props.enabled === false}
                 {...(underlayColor ? { underlayColor } : { activeOpacity: 0.6 })}
             >
                 <>

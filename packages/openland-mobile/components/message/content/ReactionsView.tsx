@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { View, Image, Text, TouchableWithoutFeedback } from 'react-native';
 import { reactionsImagesMap, extractReactionsSorted } from 'openland-mobile/messenger/components/AsyncMessageReactionsView';
@@ -28,7 +28,7 @@ export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
                     {usersString.length > 0 && (
                         <Text
                             style={{
-                                fontWeight: TextStyles.weight.medium,
+                                fontWeight: FontStyles.Weight.Medium,
                                 marginLeft: 2,
                                 marginRight: 7,
                                 marginTop: 2,

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { Text, TextStyle, View, TextProps } from 'react-native';
 import { FullMessage_GeneralMessage_quotedMessages, FullMessage } from 'openland-api/Types';
 import { renderPreprocessedText } from '../renderPreprocessedText';
@@ -18,7 +18,7 @@ const TextWrapper = (props: TextWrapperProps) => (
             props.style,
             {
                 color: props.color,
-                fontWeight: TextStyles.weight.regular,
+                fontWeight: FontStyles.Weight.Regular,
             } as TextStyle
         ]}
         allowFontScaling={false}

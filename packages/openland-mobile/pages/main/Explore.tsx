@@ -15,7 +15,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 
 const RoomsList = (props: { router: SRouter }) => {
@@ -153,7 +153,7 @@ const ExplorePage = (props: PageProps) => {
                         <View width="100%" height="100%" justifyContent="space-between" alignItems="center" paddingTop={sa.top} paddingBottom={sa.bottom + (small ? 0 : 50)}>
                             <Image marginTop={(theme.blurType === 'light' ? -30 : 0) - (small ? 25 : 0)} marginBottom={-25} source={theme.blurType === 'dark' ? require('assets/img-unsupported_dark.png') : require('assets/img-unsupported.png')} />
                             <View alignItems="center" justifyContent="center">
-                                {!small && <Text numberOfLines={1} style={{ fontSize: 30, color: theme.foregroundPrimary, marginBottom: 10, fontWeight: TextStyles.weight.bold }}>Discover chats</Text>}
+                                {!small && <Text numberOfLines={1} style={{ fontSize: 30, color: theme.foregroundPrimary, marginBottom: 10, fontWeight: FontStyles.Weight.Bold }}>Discover chats</Text>}
                                 {<Text numberOfLines={1} style={{ fontSize: 18, color: theme.foregroundPrimary }}>Find the right chats for you</Text>}
                             </View>
                             <ZRoundedButton size={small ? 'default' : 'large'} title="Start" onPress={() => props.router.push("Discover")} />

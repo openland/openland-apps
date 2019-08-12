@@ -5,7 +5,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { RoomInviteInfo_invite } from 'openland-api/Types';
 import { Text, TextStyle, View, StyleSheet, Image, ImageStyle, Dimensions } from 'react-native';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     } as TextStyle,
 
     userName: {
-        fontWeight: TextStyles.weight.bold
+        fontWeight: FontStyles.Weight.Bold
     } as TextStyle,
 
     title: {
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         lineHeight: 28,
         marginTop: 20,
         textAlign: 'center',
-        fontWeight: TextStyles.weight.medium,
+        fontWeight: FontStyles.Weight.Medium,
     } as TextStyle,
 
     members: {

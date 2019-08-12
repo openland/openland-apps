@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, Image, TouchableOpacity } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SRouter } from 'react-native-s/SRouter';
 import { withRouter } from 'react-native-s/withRouter';
 
 const styles = StyleSheet.create({
     container: {
-        borderRadius: RadiusStyles.medium,
+        borderRadius: RadiusStyles.Medium,
         paddingLeft: 16,
         paddingRight: 48,
         paddingTop: 18,
@@ -28,10 +28,10 @@ const styles = StyleSheet.create({
         paddingTop: 8,
     } as ViewStyle,
     label: {
-        ...TypeStyles.densed
+        ...TextStyles.Densed
     } as TextStyle,
     labelFocused: {
-        ...TypeStyles.caption
+        ...TextStyles.Caption
     } as TextStyle,
     iconContainer: {
         position: 'absolute',
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         paddingTop: 8
     } as ViewStyle,
     description: {
-        ...TypeStyles.caption
+        ...TextStyles.Caption
     } as TextStyle,
 });
 
@@ -98,14 +98,14 @@ const ZPickFieldComponent = (props: ZPickFieldProps & { router: SRouter }) => {
                             numberOfLines={1}
                             ellipsizeMode="tail"
                             style={{
-                                ...TypeStyles.densed,
+                                ...TextStyles.Densed,
                                 color: theme.foregroundPrimary,
                             }}
                         >
                             {value}
                         </Text>
                     )}
-                    
+
                     {!disabled && (
                         <View style={styles.iconContainer}>
                             <Image source={arrowIcon[arrow]} style={{ width: 16, height: 16, tintColor: theme.foregroundTertiary }} />
@@ -116,7 +116,7 @@ const ZPickFieldComponent = (props: ZPickFieldProps & { router: SRouter }) => {
 
             {!!description && (
                 <View style={styles.descriptionContainer}>
-                    <Text style={[styles.description,  { color: theme.foregroundSecondary }]} allowFontScaling={false}>
+                    <Text style={[styles.description, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
                         {description}
                     </Text>
                 </View>

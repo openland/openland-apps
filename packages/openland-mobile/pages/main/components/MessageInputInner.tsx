@@ -63,7 +63,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
                     flexBasis={0}
                     style={{
                         backgroundColor: theme.backgroundInverted,
-                        borderRadius: RadiusStyles.large,
+                        borderRadius: RadiusStyles.Large,
                         paddingHorizontal: 12,
                         paddingVertical: 7,
                         marginVertical: 8
@@ -90,7 +90,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
                         maxHeight: 100,
                         fontSize: 17,
                         backgroundColor: theme.backgroundInverted,
-                        borderRadius: RadiusStyles.large,
+                        borderRadius: RadiusStyles.Large,
                         paddingHorizontal: 12,
                         paddingTop: 3,
                         paddingBottom: 5,

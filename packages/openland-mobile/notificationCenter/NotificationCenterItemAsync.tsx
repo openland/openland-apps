@@ -7,7 +7,7 @@ import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenter
 import { extractContent } from 'openland-mobile/messenger/components/AsyncMessageContentView';
 import { Dimensions, Image } from 'react-native';
 import { ZRelativeDateAsync } from 'openland-mobile/components/ZRelativeDateAsync';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { AsyncAvatar } from 'openland-mobile/messenger/components/AsyncAvatar';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { isPad } from 'openland-mobile/pages/Root';
@@ -73,7 +73,7 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
                     <ASText
                         fontSize={14}
                         lineHeight={18}
-                        fontWeight={TextStyles.weight.medium}
+                        fontWeight={FontStyles.Weight.Medium}
                         color={theme.foregroundPrimary}
                         marginLeft={8}
                     >
@@ -95,7 +95,7 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
                             <ASText
                                 fontSize={14}
                                 lineHeight={18}
-                                fontWeight={TextStyles.weight.medium}
+                                fontWeight={FontStyles.Weight.Medium}
                                 color={theme.foregroundPrimary}
                                 marginLeft={8}
                             >
@@ -134,7 +134,7 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
             {item.notificationType !== 'unsupported' && (
                 <ASFlex marginTop={2}>
                     <ZRelativeDateAsync
-                        fontWeight={TextStyles.weight.medium}
+                        fontWeight={FontStyles.Weight.Medium}
                         fontSize={13}
                         lineHeight={20}
                         color={theme.foregroundSecondary}
@@ -144,7 +144,7 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
                     <ASFlex onPress={handleReplyPress} marginLeft={12} alignItems="center">
                         <ASImage source={require('assets/ic-reply-16.png')} marginTop={4} tintColor={theme.accentPrimary} width={16} height={16} opacity={0.7} />
                         <ASText
-                            fontWeight={TextStyles.weight.medium}
+                            fontWeight={FontStyles.Weight.Medium}
                             color={theme.accentPrimary}
                             fontSize={13}
                             lineHeight={20}

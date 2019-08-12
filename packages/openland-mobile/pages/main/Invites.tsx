@@ -9,7 +9,7 @@ import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 const InvitesComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -35,7 +35,7 @@ const InvitesComponent = XMemo<PageProps>((props) => {
             <SHeaderButton title="More" onPress={() => props.router.push("InvitesMore")} />
             <ASSafeAreaView width="100%" height="100%" backgroundColor={theme.backgroundPrimary}>
                 <Text style={{ fontSize: 18, marginBottom: 40, marginHorizontal: 16, color: theme.foregroundPrimary, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Share access to Openland community"}</Text>
-                <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginBottom: 10, marginHorizontal: 16, color: theme.foregroundSecondary }}>{"Write a post".toUpperCase()}</Text>
+                <Text style={{ fontSize: 16, fontWeight: FontStyles.Weight.Medium, marginBottom: 10, marginHorizontal: 16, color: theme.foregroundSecondary }}>{"Write a post".toUpperCase()}</Text>
                 <Text style={{ fontSize: 15, marginBottom: 10, marginHorizontal: 16, color: theme.foregroundPrimary }}>{text}</Text>
                 <View backgroundColor={theme.separatorColor} marginLeft={16} marginBottom={21} height={1} />
                 <ZListItem
@@ -57,9 +57,9 @@ const InvitesComponent = XMemo<PageProps>((props) => {
                 />
                 <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
                 <View flexGrow={1} />
-                {!!(invitesCount && invitesCount.mySuccessfulInvitesCount) && <View flexDirection="row" alignSelf="stretch" justifyContent="center" alignItems="center" marginHorizontal={16} marginBottom={16} borderRadius={RadiusStyles.medium} height={50} backgroundColor={theme.bubbleIn}>
+                {!!(invitesCount && invitesCount.mySuccessfulInvitesCount) && <View flexDirection="row" alignSelf="stretch" justifyContent="center" alignItems="center" marginHorizontal={16} marginBottom={16} borderRadius={RadiusStyles.Medium} height={50} backgroundColor={theme.bubbleIn}>
                     <Image source={require('assets/ic-user-fill-24.png')} />
-                    <Text style={{ fontSize: 16, fontWeight: TextStyles.weight.medium, marginHorizontal: 16, color: '#717171' }}>{invitesCount.mySuccessfulInvitesCount + (invitesCount.mySuccessfulInvitesCount === 1 ? ' Friend ' : ' Friends ') + 'invited'}</Text>
+                    <Text style={{ fontSize: 16, fontWeight: FontStyles.Weight.Medium, marginHorizontal: 16, color: '#717171' }}>{invitesCount.mySuccessfulInvitesCount + (invitesCount.mySuccessfulInvitesCount === 1 ? ' Friend ' : ' Friends ') + 'invited'}</Text>
                 </View>}
             </ASSafeAreaView>
 

@@ -3,7 +3,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { Platform } from 'react-native';
 import { ASAvatar } from './ASAvatar';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { formatDate } from 'openland-mobile/utils/formatDate';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { UserAvatar } from './UserAvatar';
@@ -16,7 +16,7 @@ import { avatarSizes } from 'openland-mobile/components/ZAvatar';
 const ASCounter = (props: { value: number | string, muted?: boolean, theme: ThemeGlobal }) => (
     <ASFlex borderRadius={10} backgroundColor={props.muted ? props.theme.foregroundQuaternary : props.theme.accentPrimary} height={20} minWidth={20} justifyContent="center" alignItems="center">
         <ASFlex justifyContent="center" alignItems="center" marginLeft={6} marginRight={6}>
-            <ASText color={props.muted ? props.theme.contrastPrimary : props.theme.contrastSpecial} fontSize={13} textAlign="center" fontWeight={TextStyles.weight.bold}>{props.value}</ASText>
+            <ASText color={props.muted ? props.theme.contrastPrimary : props.theme.contrastSpecial} fontSize={13} textAlign="center" fontWeight={FontStyles.Weight.Bold}>{props.value}</ASText>
         </ASFlex>
     </ASFlex>
 );
@@ -62,7 +62,7 @@ const DialogItemViewAsyncRender = React.memo<{ theme: ThemeGlobal, item: DialogD
                 <ASFlex height={24} alignItems="center">
                     {isGroup && !isChannel && <ASFlex alignItems="center" marginRight={2} marginTop={2}><ASImage tintColor={theme.accentPositive} width={13} height={13} source={require('assets/ic-lock-13.png')} marginBottom={Platform.OS === 'android' ? 4 : 3} /></ASFlex>}
                     {isChannel && <ASFlex alignItems="center" marginRight={2} marginTop={2}><ASImage key={theme.foregroundPrimary} tintColor={isGroup ? theme.accentPositive : theme.foregroundPrimary} width={13} height={13} source={require('assets/ic-channel-13.png')} /></ASFlex>}
-                    <ASText fontSize={17} fontWeight={TextStyles.weight.medium} color={isGroup ? theme.accentPositive : theme.foregroundPrimary} flexGrow={1} flexBasis={0}>{item.title}</ASText>
+                    <ASText fontSize={17} fontWeight={FontStyles.Weight.Medium} color={isGroup ? theme.accentPositive : theme.foregroundPrimary} flexGrow={1} flexBasis={0}>{item.title}</ASText>
                     {item.date !== undefined && <ASText fontSize={13} marginLeft={10} color={theme.foregroundTertiary}>{formatDate(item.date)}</ASText>}
                 </ASFlex>
                 {!props.compact && <ASFlex flexDirection="row" alignItems="stretch" height={40}>

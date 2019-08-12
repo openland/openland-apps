@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, StyleSheet, TextStyle, ViewStyle, Animated, View } from 'react-native';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({
     container: {
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 10,
         lineHeight: 16,
-        fontWeight: TextStyles.weight.bold
+        fontWeight: FontStyles.Weight.Bold
     } as TextStyle
 });
 

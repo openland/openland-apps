@@ -102,7 +102,7 @@ export class MobileMessenger {
                 y: event.y,
                 width: event.w,
                 height: event.h,
-                borderRadius: typeof radius !== 'undefined' ? radius : RadiusStyles.large
+                borderRadius: typeof radius !== 'undefined' ? radius : RadiusStyles.Large
             },
             ...Platform.OS === 'ios' ? {
                 onBegin: () => {

@@ -7,7 +7,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 
@@ -37,7 +37,7 @@ const Chat = (props: { item: DialogDataSourceItem, onPress: (key: string) => voi
                     lineHeight: 19,
                     height: 19,
                     color: theme.foregroundPrimary,
-                    fontWeight: TextStyles.weight.medium
+                    fontWeight: FontStyles.Weight.Medium
                 }}
             >{props.item.title}
             </Text>
@@ -83,7 +83,7 @@ const StartConversationComponent = XMemo<PageProps>((props) => {
     return (
         <>
             <SScrollView justifyContent="flex-start" alignContent="center">
-                <Text style={{ fontSize: 34, marginHorizontal: 16, fontWeight: TextStyles.weight.bold, color: theme.foregroundPrimary, marginBottom: 8 }} >Get help from Openland community</Text>
+                <Text style={{ fontSize: 34, marginHorizontal: 16, fontWeight: FontStyles.Weight.Bold, color: theme.foregroundPrimary, marginBottom: 8 }} >Get help from Openland community</Text>
                 <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.foregroundPrimary, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>Choose a chat and share your challenges</Text>
                 {items.map((item) => (
                     <Chat key={item.key} item={item} onPress={goToChat} />

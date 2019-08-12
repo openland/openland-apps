@@ -4,7 +4,7 @@ import { withApp } from 'openland-mobile/components/withApp';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { SRouter } from 'react-native-s/SRouter';
@@ -32,13 +32,13 @@ const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => 
                 marginBottom: 12,
                 paddingHorizontal: 16,
                 paddingVertical: 10,
-                borderRadius: RadiusStyles.medium,
+                borderRadius: RadiusStyles.Medium,
                 backgroundColor: props.tag.id === 'button_more' ? undefined : props.selected ? (style === 'fill' ? theme.accentPrimary : theme.backgroundTertiary) : theme.backgroundTertiary,
             }}
         >
             <Text
                 style={{
-                    ...TypeStyles.label1,
+                    ...TextStyles.Label1,
                     color: props.selected ? (style === 'fill' ? theme.contrastSpecial : theme.foregroundSecondary) : theme.foregroundSecondary
                 }}
             >

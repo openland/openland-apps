@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { Platform, Linking, PixelRatio } from 'react-native';
 import { paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
@@ -121,7 +121,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                     opacity={out ? 0.7 : 0.6}
                     fontSize={14}
                     numberOfLines={1}
-                    fontWeight={TextStyles.weight.regular}
+                    fontWeight={FontStyles.Weight.Regular}
                 >
                     {this.props.attach.titleLinkHostname}
                 </ASText>}
@@ -165,7 +165,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                     opacity={out ? 0.7 : 0.6}
                     fontSize={14}
                     numberOfLines={1}
-                    fontWeight={TextStyles.weight.regular}
+                    fontWeight={FontStyles.Weight.Regular}
                 >
                     {this.props.attach.titleLinkHostname}
                 </ASText>}
@@ -197,7 +197,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             marginTop={Platform.OS === 'android' ? -4 : -1}
                             numberOfLines={this.imageCompact ? 1 : 3}
                             marginBottom={4}
-                            fontWeight={TextStyles.weight.medium}
+                            fontWeight={FontStyles.Weight.Medium}
                             onPress={this.onTitleClick}
                         >
                             {this.props.attach.title}
@@ -211,7 +211,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             fontSize={14}
                             numberOfLines={1}
                             marginBottom={4}
-                            fontWeight={TextStyles.weight.regular}
+                            fontWeight={FontStyles.Weight.Regular}
                         >
                             {subTitle}
                             {this.props.padded && (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited))}
@@ -227,7 +227,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                     marginBottom={4}
                     lineHeight={19}
                     numberOfLines={5}
-                    fontWeight={TextStyles.weight.regular}
+                    fontWeight={FontStyles.Weight.Regular}
                 >
                     {!subTitle && this.imageCompact && imgLayout && paddedTextPrfix}
                     {text}
@@ -256,7 +256,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                                     textAlign='center'
                                     color={theme.accentPrimary}
                                     fontSize={14}
-                                    fontWeight={TextStyles.weight.medium}
+                                    fontWeight={FontStyles.Weight.Medium}
                                     maxWidth={maxWidth - 24 - 16}
                                 >
                                     {button.title}

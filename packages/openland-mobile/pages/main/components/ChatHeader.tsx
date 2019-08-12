@@ -10,21 +10,21 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({
     title: {
-        ...TypeStyles.label2,
+        ...TextStyles.Label2,
         flexShrink: 1
     } as TextStyle,
     subTitle: {
-        ...TypeStyles.caption,
+        ...TextStyles.Caption,
     } as TextStyle,
 });
 
 const SharedChatHeaderContent = XMemo<{ room: Room_room_SharedRoom, typing?: string, theme: ThemeGlobal }>((props) => {
     const { room, typing, theme } = props;
-    const [ onlineCount, setOnlineCount ] = React.useState<number>(0);
+    const [onlineCount, setOnlineCount] = React.useState<number>(0);
 
     getChatOnlinesCount(room.id, useClient(), (count) => setOnlineCount(count));
 
@@ -104,7 +104,7 @@ const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typin
     if (sharedRoom) {
         return <SharedChatHeaderContent room={sharedRoom} typing={props.typing} theme={theme} />;
     }
-    
+
     if (privateRoom) {
         return <PrivateChatHeaderContent room={privateRoom} typing={props.typing} theme={theme} />;
     }

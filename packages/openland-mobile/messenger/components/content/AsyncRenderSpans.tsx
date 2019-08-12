@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASText, ASTextProps } from 'react-native-async-view/ASText';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { getSpansSlices } from 'openland-y-utils/spans/utils';
@@ -21,7 +21,7 @@ const TextWrapper = (props: TextWrapperProps) => {
             key={'text-' + props.color}
             {...other}
             letterSpacing={0}
-            fontWeight={TextStyles.weight.regular}
+            fontWeight={FontStyles.Weight.Regular}
         >
             {children}
         </ASText>
@@ -50,7 +50,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
     render() {
         const { emojiOnly, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetTop, onUserPress, onGroupPress } = this.props;
         const mainTextColor = emojiOnly ? theme.foregroundPrimary : (message.isOut ? theme.contrastPrimary : theme.foregroundPrimary);
-        const content = getSpansSlices(spans, padded);  
+        const content = getSpansSlices(spans, padded);
 
         return (
             <>

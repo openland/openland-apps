@@ -6,7 +6,7 @@ import { Text, View } from 'react-native';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ZUserView } from 'openland-mobile/components/ZUserView';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 
 interface OthersUsersWrapperProps {
     children?: any;
@@ -39,7 +39,7 @@ export class OthersUsersWrapper extends React.Component<OthersUsersWrapperProps>
             <ASText
                 key={'service_text'}
                 color={this.props.theme.foregroundSecondary}
-                fontWeight={TextStyles.weight.bold}
+                fontWeight={FontStyles.Weight.Bold}
                 fontSize={13}
                 lineHeight={18}
                 marginLeft={6}
@@ -53,7 +53,7 @@ export class OthersUsersWrapper extends React.Component<OthersUsersWrapperProps>
                     key={'service_text'}
                     style={{
                         color: this.props.theme.foregroundSecondary,
-                        fontWeight: TextStyles.weight.bold,
+                        fontWeight: FontStyles.Weight.Bold,
                         fontSize: 13,
                         lineHeight: 18,
                         marginLeft: 6,

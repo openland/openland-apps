@@ -3,15 +3,15 @@ import { View, Text } from 'react-native';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
-import { TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export const TypographyComponent = (props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const variants: JSX.Element[] = [];
 
-    Object.keys(TypeStyles).forEach((style) => {
-        const variant = TypeStyles[style];
+    Object.keys(TextStyles).forEach((style) => {
+        const variant = TextStyles[style];
 
         variants.push(
             <View marginVertical={10} marginHorizontal={16}>

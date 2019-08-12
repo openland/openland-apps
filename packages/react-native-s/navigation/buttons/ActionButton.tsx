@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, Image, View, Platform } from 'react-native';
 import { STouchable } from 'react-native-s/STouchable';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 export const ActionButton = XMemo<{ title: string, icon?: any, iconColor?: string, accentColor?: string, onPress?: () => void }>(props => {
     const { title, iconColor, accentColor, icon, onPress } = props;
@@ -21,7 +21,7 @@ export const ActionButton = XMemo<{ title: string, icon?: any, iconColor?: strin
     return (
         <STouchable onPress={onPress}>
             <View style={{ height: size, alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={[TypeStyles.label1, { marginLeft: 12, marginRight: 12, color: accentColor || '#78808F' }]} allowFontScaling={false}>
+                <Text style={[TextStyles.Label1, { marginLeft: 12, marginRight: 12, color: accentColor || '#78808F' }]} allowFontScaling={false}>
                     {title}
                 </Text>
             </View>

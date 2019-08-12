@@ -20,7 +20,7 @@ import { SFlatList } from 'react-native-s/SFlatList';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
@@ -38,12 +38,12 @@ const PrivateProfile = XMemo<PageProps & { organization: OrganizationWithoutMemb
             <ASSafeAreaView flexGrow={1}>
                 <View flexGrow={1}>
                     <View paddingHorizontal={16} paddingVertical={15} backgroundColor={theme.backgroundTertiary}>
-                        <Text style={{ color: theme.foregroundPrimary, textAlign: 'center', fontSize: 15, fontWeight: TextStyles.weight.medium, marginBottom: 5 }}>You must be invited to view this {typeString}</Text>
+                        <Text style={{ color: theme.foregroundPrimary, textAlign: 'center', fontSize: 15, fontWeight: FontStyles.Weight.Medium, marginBottom: 5 }}>You must be invited to view this {typeString}</Text>
                         <Text style={{ color: theme.foregroundPrimary, textAlign: 'center', fontSize: 13, opacity: 0.6 }}>Creator of this {typeString} made it private</Text>
                     </View>
                     <View paddingTop={screenHeight <= 640 ? 60 : 100} paddingHorizontal={16} alignItems="center" flexDirection="column">
                         <ZAvatar size="x-large" src={organization.photo} placeholderKey={organization.id} placeholderTitle={organization.name} />
-                        <Text style={{ color: theme.foregroundPrimary, fontSize: 20, lineHeight: 28, marginTop: 20, textAlign: 'center', fontWeight: TextStyles.weight.medium }}>{organization.name}</Text>
+                        <Text style={{ color: theme.foregroundPrimary, fontSize: 20, lineHeight: 28, marginTop: 20, textAlign: 'center', fontWeight: FontStyles.Weight.Medium }}>{organization.name}</Text>
 
                         {!!organization.about && (
                             <Text style={{ color: theme.foregroundPrimary, fontSize: 15, lineHeight: 22, marginTop: 8, textAlign: 'center' }}>{organization.about}</Text>

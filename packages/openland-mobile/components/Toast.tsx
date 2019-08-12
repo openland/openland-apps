@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F0F2F5',
-        borderRadius: RadiusStyles.large,
+        borderRadius: RadiusStyles.Large,
     } as ViewStyle,
     toastContainerWithoutText: {
         paddingHorizontal: 32,

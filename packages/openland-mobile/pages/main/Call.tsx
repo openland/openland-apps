@@ -19,7 +19,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { CallStatus } from 'openland-engines/CallsEngine';
 import { formatTimerTime } from 'openland-y-utils/formatTime';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
@@ -101,7 +101,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                     <ZAvatar size="xx-large" placeholderKey={placeholderKey} placeholderTitle={title} src={photo} />
                 </View>
                 <Text
-                    style={{ fontSize: 28, fontWeight: TextStyles.weight.medium, color: 'white', textAlign: 'center', marginTop: 25 }}
+                    style={{ fontSize: 28, fontWeight: FontStyles.Weight.Medium, color: 'white', textAlign: 'center', marginTop: 25 }}
                     numberOfLines={4}
                 >
                     {title}

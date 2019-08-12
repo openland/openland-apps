@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextStyle, ViewStyle, Image } from 'react-nativ
 import { ZRoundedButton } from './ZRoundedButton';
 import { XPAvatarWithPreview } from './XPAvatarWithPreview';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZReach } from './ZReach';
 import { ZIconButton } from './ZIconButton';
 
@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
         minWidth: 0,
     } as ViewStyle,
     title: {
-        ...TypeStyles.title2,
+        ...TextStyles.Title2,
         textAlignVertical: 'center'
     } as TextStyle,
     subtitle: {
-        ...TypeStyles.subhead,
+        ...TextStyles.Subhead,
         textAlignVertical: 'center',
         marginTop: 4
     } as TextStyle,
@@ -89,7 +89,7 @@ export const ZListHero = React.memo<ZListHeroProps>((props) => {
                     <XPAvatarWithPreview size="x-large" src={photo} placeholderKey={id} placeholderTitle={title} />
                     {score && (
                         <View position="absolute" bottom={-7} left={0} right={0} alignItems="center">
-                            <View style={{ borderWidth: 3, borderColor: theme.backgroundPrimary, borderRadius: RadiusStyles.large }}>
+                            <View style={{ borderWidth: 3, borderColor: theme.backgroundPrimary, borderRadius: RadiusStyles.Large }}>
                                 <ZReach value={score.value} onPress={score.onPress} />
                             </View>
                         </View>

@@ -3,7 +3,7 @@ import { Text, Linking, Clipboard, Share } from 'react-native';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
 import { OthersUsersWrapper } from 'openland-mobile/messenger/components/service/views/OthersUsersWrapper';
 import { ActionSheetBuilder } from '../ActionSheet';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { openCalendar, openCalendarContextMenu } from 'openland-mobile/utils/openCalendar';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { Span } from 'openland-y-utils/spans/Span';
@@ -84,7 +84,7 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
                 <Text
                     key={'text-bold'}
                     allowFontScaling={false}
-                    style={{ fontWeight: TextStyles.weight.bold }}
+                    style={{ fontWeight: FontStyles.Weight.Bold }}
                 >
                     {children}
                 </Text>
@@ -102,9 +102,9 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
                 </Text>
             );
         } else if (span.type === 'code_block') {
-            return <Text key={'code-block'} style={{ fontFamily: TextStyles.family.monospace }} allowFontScaling={false}>{children}</Text>;
+            return <Text key={'code-block'} style={{ fontFamily: FontStyles.Family.Monospace }} allowFontScaling={false}>{children}</Text>;
         } else if (span.type === 'code_inline') {
-            return <Text key={'code-inline'} style={{ fontSize: 14, fontFamily: TextStyles.family.monospace, backgroundColor: theme.codeSpan.background }} allowFontScaling={false}>{theme.codeSpan.paddedText}{children}{theme.codeSpan.paddedText}</Text>;
+            return <Text key={'code-inline'} style={{ fontSize: 14, fontFamily: FontStyles.Family.Monospace, backgroundColor: theme.codeSpan.background }} allowFontScaling={false}>{theme.codeSpan.paddedText}{children}{theme.codeSpan.paddedText}</Text>;
         } else if (span.type === 'insane') {
             return <Text key={'insane'} allowFontScaling={false}>{children}</Text>;
         } else if (span.type === 'irony') {
@@ -112,19 +112,19 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
         } else if (span.type === 'italic') {
             return <Text key={'italic'} allowFontScaling={false} style={{ fontStyle: 'italic' }}>{children}</Text>;
         } else if (span.type === 'loud') {
-            return <Text key={'loud'} allowFontScaling={false} style={{ fontWeight: TextStyles.weight.medium }}>{children}</Text>;
+            return <Text key={'loud'} allowFontScaling={false} style={{ fontWeight: FontStyles.Weight.Medium }}>{children}</Text>;
         } else if (span.type === 'rotating') {
             return <Text key={'rotating'} allowFontScaling={false}>{children}</Text>;
         } else if (span.type === 'new_line') {
             return <Text key={'br'}>{'\n'}</Text>;
         } else if (span.type === 'emoji') {
             return <Text key={'emoji'}>{children}</Text>;
-        }  if (span.type === 'text') {
+        } if (span.type === 'text') {
             return <Text key={'text'}>{span.text}</Text>;
         }
-    
+
         return props.children ? <Text key={'unknown'}>{props.children}</Text> : null;
     };
-    
+
     return renderSpans(SpanView, spans);
 };

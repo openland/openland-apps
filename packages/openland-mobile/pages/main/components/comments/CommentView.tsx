@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MessageComments_messageComments_comments_comment, MessageReactionType } from 'openland-api/Types';
 import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, LayoutChangeEvent } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import Alert from 'openland-mobile/components/AlertBlanket';
@@ -15,7 +15,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 const styles = StyleSheet.create({
     senderName: {
         fontSize: 13,
-        fontWeight: TextStyles.weight.medium,
+        fontWeight: FontStyles.Weight.Medium,
         lineHeight: 15
     } as TextStyle,
     editedLabel: {
@@ -25,12 +25,12 @@ const styles = StyleSheet.create({
     } as TextStyle,
     date: {
         fontSize: 13,
-        fontWeight: TextStyles.weight.medium,
+        fontWeight: FontStyles.Weight.Medium,
         lineHeight: 15,
     } as TextStyle,
     reply: {
         fontSize: 13,
-        fontWeight: TextStyles.weight.medium,
+        fontWeight: FontStyles.Weight.Medium,
         lineHeight: 15,
         marginLeft: 6,
     } as TextStyle
@@ -147,7 +147,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         <TouchableWithoutFeedback onPress={handleReactionPress} onLongPress={handleReactionLongPress}>
             <View width={34} alignItems="center" justifyContent="center" paddingRight={4}>
                 <Image source={require('assets/ic-likes-full-24.png')} style={{ tintColor: myLike ? theme.accentNegative : theme.foregroundQuaternary, width: 18, height: 18 }} />
-                {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: TextStyles.weight.medium, color: myLike ? theme.foregroundPrimary : theme.foregroundPrimary }} allowFontScaling={false}>{likesCount}</Text>}
+                {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: FontStyles.Weight.Medium, color: myLike ? theme.foregroundPrimary : theme.foregroundPrimary }} allowFontScaling={false}>{likesCount}</Text>}
             </View>
         </TouchableWithoutFeedback>
     ) : undefined;

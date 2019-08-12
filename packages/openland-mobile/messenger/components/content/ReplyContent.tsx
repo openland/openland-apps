@@ -3,7 +3,7 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
 import { AsyncReplyMessageMediaView } from '../AsyncReplyMessageMediaView';
 import { AsyncReplyMessageDocumentView } from '../AsyncReplyMessageDocumentView';
@@ -58,7 +58,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         letterSpacing={0}
                                         fontSize={13}
                                         onPress={() => this.props.onUserPress(repliedMessage!.sender.id)}
-                                        fontWeight={TextStyles.weight.medium}
+                                        fontWeight={FontStyles.Weight.Medium}
                                         marginBottom={2}
                                     >
                                         {repliedMessage.sender.name || ''}

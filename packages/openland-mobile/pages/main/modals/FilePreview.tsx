@@ -16,17 +16,17 @@ import { PdfPreview } from './PdfPreview';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({
     name: {
-        ...TypeStyles.label1,
+        ...TextStyles.Label1,
         marginTop: 20,
         marginHorizontal: 64,
         textAlign: 'center'
     } as TextStyle,
     size: {
-        ...TypeStyles.subhead,
+        ...TextStyles.Subhead,
         marginTop: 2
     } as TextStyle
 });

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text, Keyboard, TextInput, } from 'react-native';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { ZRoundedButton } from './ZRoundedButton';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -18,7 +18,7 @@ export const PromptComponent = XMemo((props: { builder: PromptBuilder; modalCont
             paddingHorizontal={24}
             paddingVertical={20}
         >
-            {builder._title && <Text style={{ marginBottom: 12, color: theme.foregroundPrimary, fontSize: 20, fontWeight: TextStyles.weight.medium as any }}>{builder._title}</Text>}
+            {builder._title && <Text style={{ marginBottom: 12, color: theme.foregroundPrimary, fontSize: 20, fontWeight: FontStyles.Weight.Medium as any }}>{builder._title}</Text>}
             <TextInput defaultValue={builder._value} onChangeText={builder.onTextChange} autoFocus={true} multiline={true} maxHeight={100} marginBottom={15} style={{ color: theme.foregroundPrimary }} keyboardAppearance={theme.keyboardAppearance} />
             <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
                 {builder._actions.map((a, i) => (

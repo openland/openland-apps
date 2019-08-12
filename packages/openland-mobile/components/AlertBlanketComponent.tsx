@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Platform, View, Text, Image } from 'react-native';
 import { ZRoundedButton } from './ZRoundedButton';
-import { RadiusStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZModalController } from './ZModal';
 import { delay } from 'openland-y-utils/timer';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
@@ -14,7 +14,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modalController: ZModalController }>((props) => {
     let theme = React.useContext(ThemeContext);
-    let [ state, setState ] = React.useState<'initial' | 'done' | 'error'>('initial');
+    let [state, setState] = React.useState<'initial' | 'done' | 'error'>('initial');
     let key = randomKey();
 
     let contentView = new SAnimatedShadowView(key + '--ctns', { opacity: 1 });
@@ -67,7 +67,7 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
             flexDirection="column"
             justifyContent="center"
             backgroundColor={state === 'error' ? theme.accentNegative : theme.backgroundSecondary}
-            borderRadius={RadiusStyles.large}
+            borderRadius={RadiusStyles.Large}
         >
             <SAnimated.View
                 name={key + '--ctns'}
@@ -77,8 +77,8 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
                     padding: 24,
                 }}
             >
-                {props.builder._title && <Text style={{ ...TypeStyles.title2, marginBottom: props.builder._message ? 4 : 16, color: theme.foregroundPrimary }} allowFontScaling={false}>{props.builder._title}</Text>}
-                {props.builder._message && <Text style={{ ...TypeStyles.body, marginBottom: 16, color: theme.foregroundPrimary }} allowFontScaling={false}>{props.builder._message}</Text>}
+                {props.builder._title && <Text style={{ ...TextStyles.Title2, marginBottom: props.builder._message ? 4 : 16, color: theme.foregroundPrimary }} allowFontScaling={false}>{props.builder._title}</Text>}
+                {props.builder._message && <Text style={{ ...TextStyles.Body, marginBottom: 16, color: theme.foregroundPrimary }} allowFontScaling={false}>{props.builder._message}</Text>}
                 {props.builder._view}
                 <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
                     {props.builder._actions.map((a, i) => (

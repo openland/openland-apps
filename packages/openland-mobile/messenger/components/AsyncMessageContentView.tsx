@@ -7,7 +7,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { formatTime } from '../../../openland-y-utils/formatTime';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { resolveInternalLink } from '../../utils/internalLnksResolver';
-import { TextStyles } from '../../styles/AppStyles';
+import { FontStyles } from '../../styles/AppStyles';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ReplyContent } from './content/ReplyContent';
 import { TextContent } from './content/TextContent';
@@ -41,7 +41,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         if (span.type === 'link') {
             return <ASText key={'link'} color={(message.isOut && !message.isService) ? theme.contrastPrimary : theme.accentPrimary} onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
         } else if (span.type === 'mention_user') {
-            return <ASText key={'mention-user'} fontWeight={message.isService ? TextStyles.weight.bold : undefined} color={!message.isService ? (message.isOut ? theme.contrastPrimary : theme.accentPrimary) : undefined} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(span.user.id)}>{children}</ASText>;
+            return <ASText key={'mention-user'} fontWeight={message.isService ? FontStyles.Weight.Bold : undefined} color={!message.isService ? (message.isOut ? theme.contrastPrimary : theme.accentPrimary) : undefined} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(span.user.id)}>{children}</ASText>;
         } else if (span.type === 'mention_all') {
             return <ASText key={'mention-all'} color={(message.isOut && !message.isService) ? theme.contrastPrimary : theme.accentPrimary} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'}>{children}</ASText>;
         } else if (span.type === 'mention_room') {
@@ -49,7 +49,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'mention_users') {
             return <OthersUsersWrapper key={'mentions'} theme={theme} onUserPress={uid => onUserPress(uid)} users={span.users} useAsync={true}>{children}</OthersUsersWrapper>;
         } else if (span.type === 'bold') {
-            return <ASText key={'bold'} fontWeight={TextStyles.weight.bold}>{children}</ASText>;
+            return <ASText key={'bold'} fontWeight={FontStyles.Weight.Bold}>{children}</ASText>;
         } else if (span.type === 'date') {
             return <ASText key={'date'} color={(message.isOut && !message.isService) ? theme.contrastPrimary : theme.accentPrimary} onPress={openCalendar(span.date)} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
         } else if (span.type === 'code_block') {
@@ -63,7 +63,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'italic') {
             return <ASText key={'italic'} fontStyle="italic">{children}</ASText>;
         } else if (span.type === 'loud') {
-            return <ASText key={'loud'} fontSize={20} lineHeight={24} fontWeight={TextStyles.weight.medium}>{children}</ASText>;
+            return <ASText key={'loud'} fontSize={20} lineHeight={24} fontWeight={FontStyles.Weight.Medium}>{children}</ASText>;
         } else if (span.type === 'rotating') {
             return <ASText key={'rotating'}>{children}</ASText>;
         } else if (span.type === 'new_line') {
@@ -145,7 +145,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
                 )}
                 <ASText
                     fontSize={15}
-                    fontWeight={TextStyles.weight.medium}
+                    fontWeight={FontStyles.Weight.Medium}
                     color={props.theme.foregroundPrimary}
                 >
                     {props.message.senderName}

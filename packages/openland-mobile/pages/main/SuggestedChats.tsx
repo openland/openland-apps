@@ -5,7 +5,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { View, Text } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -43,7 +43,7 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
                     lineHeight: 19,
                     height: 19,
                     color: theme.foregroundPrimary,
-                    fontWeight: TextStyles.weight.medium
+                    fontWeight: FontStyles.Weight.Medium
                 }}
             >
                 {props.item.title}
@@ -62,7 +62,7 @@ const Chat = (props: { item: RoomShort_SharedRoom, selected: boolean, onPress: (
             </Text>
         </View>
 
-        <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.selected ? theme.accentPrimary : theme.backgroundPrimary} opacity={props.selected ? 1 : 0.8} borderColor={props.selected ? theme.accentPrimary : theme.foregroundTertiary} borderWidth={2} borderRadius={RadiusStyles.medium} width={24} height={24} >
+        <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.selected ? theme.accentPrimary : theme.backgroundPrimary} opacity={props.selected ? 1 : 0.8} borderColor={props.selected ? theme.accentPrimary : theme.foregroundTertiary} borderWidth={2} borderRadius={RadiusStyles.Medium} width={24} height={24} >
             {props.selected && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.contrastPrimary }} />}
         </View>
     </ZListItemBase>;
@@ -130,7 +130,7 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, sel
                             flexGrow: 1,
                             fontSize: 16,
                             color: theme.foregroundSecondary,
-                            fontWeight: TextStyles.weight.medium
+                            fontWeight: FontStyles.Weight.Medium
                         }}
                     >
                         {props.chats.length + (props.chats.length === 1 ? ' CHAT' : ' CHATS')}

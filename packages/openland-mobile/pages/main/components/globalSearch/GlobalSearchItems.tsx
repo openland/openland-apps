@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { GlobalSearch_items_User, GlobalSearch_items_Organization, GlobalSearch_items_SharedRoom } from 'openland-api/Types';
 import { ASAvatar } from 'openland-mobile/messenger/components/ASAvatar';
 import { UserAvatar } from 'openland-mobile/messenger/components/UserAvatar';
@@ -27,7 +27,7 @@ const ItemBase = XMemo<ItemBaseProps>((props) => {
                 {avatar}
             </ASFlex>
             <ASFlex marginLeft={16} flexGrow={1} flexBasis={0} alignItems="center">
-                <ASText fontSize={17} fontWeight={TextStyles.weight.medium} color={theme.foregroundPrimary} flexGrow={1} flexBasis={0} numberOfLines={1}>
+                <ASText fontSize={17} fontWeight={FontStyles.Weight.Medium} color={theme.foregroundPrimary} flexGrow={1} flexBasis={0} numberOfLines={1}>
                     {name}
                 </ASText>
             </ASFlex>

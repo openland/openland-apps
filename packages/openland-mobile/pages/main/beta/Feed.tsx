@@ -18,7 +18,7 @@ class FeedComponent extends React.PureComponent<PageProps> {
                 <SScrollView style={{ flexGrow: 1 }}>
                     <View marginHorizontal={15} marginVertical={15}>
                         <ASView style={{ height: 345 }}>
-                            <ASFlex flexDirection="column" backgroundGradient={{ start: '#3023ae', end: '#c86dd7' }} borderRadius={RadiusStyles.medium} alignItems="stretch">
+                            <ASFlex flexDirection="column" backgroundGradient={{ start: '#3023ae', end: '#c86dd7' }} borderRadius={RadiusStyles.Medium} alignItems="stretch">
                                 <ASFlex flexDirection="row" height={64} marginLeft={15} marginRight={15} marginTop={15}>
                                     <AsyncAvatar size="small" placeholderKey="key" placeholderTitle="T T" />
                                     {}
@@ -34,7 +34,7 @@ class FeedComponent extends React.PureComponent<PageProps> {
                     </View>
                     <View marginHorizontal={15} marginVertical={15}>
                         <ASView style={{ height: 345 }}>
-                            <ASFlex flexDirection="column" backgroundGradient={{ start: '#fad961', end: '#f76b1c' }} borderRadius={RadiusStyles.medium} alignItems="stretch">
+                            <ASFlex flexDirection="column" backgroundGradient={{ start: '#fad961', end: '#f76b1c' }} borderRadius={RadiusStyles.Medium} alignItems="stretch">
                                 <ASFlex flexDirection="row" height={64} marginLeft={15} marginRight={15} marginTop={15}>
                                     <AsyncAvatar size="small" placeholderKey="key" placeholderTitle="T T" />
                                     {}

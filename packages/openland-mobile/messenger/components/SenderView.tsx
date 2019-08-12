@@ -3,7 +3,7 @@ import { FullMessage_GeneralMessage_sender } from 'openland-api/Types';
 import { View, Text, TouchableWithoutFeedback, Platform } from 'react-native';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { formatDate } from 'openland-mobile/utils/formatDate';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
@@ -30,9 +30,9 @@ export const SenderView = React.memo<SenderViewProps>((props) => {
                     />
                 </View>
                 <View flexDirection="column" flexGrow={1} flexShrink={1}>
-                    <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.medium, color: theme.foregroundPrimary }} allowFontScaling={false} numberOfLines={1}>{sender.name}
+                    <Text style={{ fontSize: 15, fontWeight: FontStyles.Weight.Medium, color: theme.foregroundPrimary }} allowFontScaling={false} numberOfLines={1}>{sender.name}
                         {sender.primaryOrganization &&
-                            <Text style={{ fontSize: 13, fontWeight: TextStyles.weight.medium, color: '#99a2b0'}} allowFontScaling={false}>
+                            <Text style={{ fontSize: 13, fontWeight: FontStyles.Weight.Medium, color: '#99a2b0' }} allowFontScaling={false}>
                                 {' ' + sender.primaryOrganization.name}
                             </Text>}
                     </Text>

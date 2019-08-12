@@ -8,11 +8,11 @@ import { NavigationManager } from '../NavigationManager';
 import { SNavigationViewStyle } from '../../SNavigationView';
 import { SEquisiteCentered } from '../../SExquisiteCentered';
 import { SCloseButton } from '../../SCloseButton';
-import { TypeStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({
     title: {
-        ...TypeStyles.headline,
+        ...TextStyles.Headline,
 
         width: '100%',
         textAlignVertical: 'center',
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         lineHeight: 44,
     } as TextStyle,
     titleLarge: {
-        ...TypeStyles.large,
+        ...TextStyles.Large,
 
         width: '100%',
         textAlign: 'left',
@@ -134,7 +134,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                         <SAnimated.View name={'header-search-container--' + v.page.key} style={{ position: 'absolute', top: SDevice.navigationBarHeightExpanded, left: 0, right: 0, height: MAX_SIZE, overflow: 'hidden' }} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                             <SAnimated.View name={'header-search--' + v.page.key}>
                                 <View style={{ flexDirection: 'row', height: 36, marginLeft: 16, marginRight: 16, alignItems: 'center' }}>
-                                    <SAnimated.View name={'header-search-input--' + v.page.key} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: this.props.style.searchBackground, height: 36, borderRadius: RadiusStyles.large }} />
+                                    <SAnimated.View name={'header-search-input--' + v.page.key} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: this.props.style.searchBackground, height: 36, borderRadius: RadiusStyles.Large }} />
                                     {!v.config.searchActive && (
                                         <TouchableWithoutFeedback onPress={v.config.searchPress}>
                                             <View style={{ flexDirection: 'row', height: 36, alignItems: 'center', flexGrow: 1 }}>

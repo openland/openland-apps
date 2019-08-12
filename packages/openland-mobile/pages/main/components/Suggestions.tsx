@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text, Dimensions } from 'react-native';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
@@ -19,7 +19,7 @@ export const SuggestionsItemName = (props: { theme: ThemeGlobal, name: string; d
         style={{
             fontSize: 14,
             width: Dimensions.get('window').width - 63,
-            fontWeight: TextStyles.weight.medium,
+            fontWeight: FontStyles.Weight.Medium,
             color: props.theme.foregroundPrimary
         }}
         numberOfLines={1}
@@ -31,7 +31,7 @@ export const SuggestionsItemName = (props: { theme: ThemeGlobal, name: string; d
             <Text
                 style={{
                     color: props.theme.foregroundSecondary,
-                    fontWeight: TextStyles.weight.regular
+                    fontWeight: FontStyles.Weight.Regular
                 }}
                 allowFontScaling={false}
             >

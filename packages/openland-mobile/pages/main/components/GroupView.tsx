@@ -4,7 +4,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { View, Text } from 'react-native';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 interface GroupViewProps {
     item: RoomShort_SharedRoom | GlobalSearch_items_SharedRoom;
@@ -37,7 +37,7 @@ export const GroupView = React.memo<GroupViewProps>((props) => {
                 <Text
                     numberOfLines={1}
                     style={{
-                        ...TypeStyles.label1,
+                        ...TextStyles.Label1,
                         color: theme.foregroundPrimary,
                     }}
                 >
@@ -46,7 +46,7 @@ export const GroupView = React.memo<GroupViewProps>((props) => {
                 <Text
                     numberOfLines={1}
                     style={{
-                        ...TypeStyles.subhead,
+                        ...TextStyles.Subhead,
                         color: theme.foregroundTertiary,
                     }}
                 >

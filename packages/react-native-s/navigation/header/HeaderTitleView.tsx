@@ -9,7 +9,7 @@ import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SBackButton } from 'react-native-s/SBackButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { HeaderTitleViewProps } from './HeaderTitleView.ios';
-import { TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({
     root: {
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
     } as ViewStyle,
     title: {
-        ...TypeStyles.headline,
+        ...TextStyles.Headline,
         textAlign: 'left',
         textAlignVertical: 'center',
         height: SDevice.navigationBarHeight,

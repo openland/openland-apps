@@ -13,7 +13,7 @@ import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { trackEvent } from 'openland-mobile/analytics';
 import { TrackAuthError } from './TrackAuthError';
-import { TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
@@ -22,7 +22,7 @@ export const ACTIVATION_CODE_LENGTH = 6;
 
 const styles = StyleSheet.create({
     hint: {
-        ...TypeStyles.body,
+        ...TextStyles.Body,
         paddingHorizontal: 16,
         marginTop: 15,
         marginBottom: 26,

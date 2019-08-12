@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, Platform, TouchableOpacity } from 'react-native';
 import { ZKeyboardAwareBar } from 'openland-mobile/components/layout/ZKeyboardAwareBar';
 import { SDevice } from 'react-native-s/SDevice';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
@@ -32,7 +32,7 @@ export const ChannelMuteButton = (props: ChannelMuteButtonProps) => {
             <ZKeyboardAwareBar>
                 <TouchableOpacity onPress={handleNotifications}>
                     <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: theme.accentPrimary }}>
+                        <Text style={{ fontSize: 15, fontWeight: FontStyles.Weight.Bold, color: theme.accentPrimary }}>
                             {notifications ? 'Mute' : 'Unmute'}
                         </Text>
                     </View>
@@ -45,7 +45,7 @@ export const ChannelMuteButton = (props: ChannelMuteButtonProps) => {
         <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundPrimary}>
             <TouchableOpacity onPress={handleNotifications}>
                 <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: theme.accentPrimary }}>
+                    <Text style={{ fontSize: 15, fontWeight: FontStyles.Weight.Bold, color: theme.accentPrimary }}>
                         {notifications ? 'Mute' : 'Unmute'}
                     </Text>
                 </View>
@@ -61,7 +61,7 @@ export const ChatInputPlaceholder = (props: { onPress?: () => void, text: string
             <ZKeyboardAwareBar>
                 <TouchableOpacity onPress={props.onPress}>
                     <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: theme.accentPrimary }}>
+                        <Text style={{ fontSize: 15, fontWeight: FontStyles.Weight.Bold, color: theme.accentPrimary }}>
                             {props.text}
                         </Text>
                     </View>
@@ -74,7 +74,7 @@ export const ChatInputPlaceholder = (props: { onPress?: () => void, text: string
         <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundPrimary}>
             <TouchableOpacity onPress={props.onPress}>
                 <View style={{ height: 44, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 15, fontWeight: TextStyles.weight.bold, color: theme.accentPrimary }}>
+                    <Text style={{ fontSize: 15, fontWeight: FontStyles.Weight.Bold, color: theme.accentPrimary }}>
                         {props.text}
                     </Text>
                 </View>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessageComments_messageComments_comments, MessageComments_messageComments_comments_comment } from 'openland-api/Types';
 import { View, Image, Text, Clipboard, LayoutChangeEvent } from 'react-native';
-import { TextStyles, TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { CommentView } from 'openland-mobile/pages/main/components/comments/CommentView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -38,7 +38,7 @@ export const CommentsList = (props: CommentsListProps) => {
                 Clipboard.setString(comment.message!!);
             }, false, require('assets/ic-copy-24.png'));
         }
-        
+
         if (comment.sender.id === engine.user.id) {
             builder.action('Delete', async () => {
                 try {
@@ -66,7 +66,7 @@ export const CommentsList = (props: CommentsListProps) => {
         return (
             <View flexGrow={1} flexShrink={1} alignItems="center" justifyContent="center" paddingVertical={40}>
                 <Image source={theme.type === 'Light' ? require('assets/img-empty.png') : require('assets/img-empty-dark.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
-                <Text style={{ ...TypeStyles.body, color: theme.foregroundSecondary }} allowFontScaling={false}>Write the first comment</Text>
+                <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary }} allowFontScaling={false}>Write the first comment</Text>
             </View>
         );
     }
@@ -84,7 +84,7 @@ export const CommentsList = (props: CommentsListProps) => {
             <View height={1} backgroundColor={theme.separatorColor} marginTop={15} />
 
             <View marginTop={20} marginBottom={15}>
-                <Text style={{ fontSize: 16, color: theme.foregroundSecondary, fontWeight: TextStyles.weight.medium }} allowFontScaling={false}>COMMENTS <Text style={{ color: '#b9c1cd' }}>{comments.length}</Text></Text>
+                <Text style={{ fontSize: 16, color: theme.foregroundSecondary, fontWeight: FontStyles.Weight.Medium }} allowFontScaling={false}>COMMENTS <Text style={{ color: '#b9c1cd' }}>{comments.length}</Text></Text>
             </View>
 
             <View marginHorizontal={-16}>

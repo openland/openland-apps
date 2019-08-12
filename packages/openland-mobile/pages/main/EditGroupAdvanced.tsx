@@ -23,7 +23,7 @@ import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardA
 const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
     const width = 190;
     const height = 100;
-    const radius = RadiusStyles.medium;
+    const radius = RadiusStyles.Medium;
 
     return (
         <TouchableOpacity onPress={props.showPicker}>
@@ -32,7 +32,7 @@ const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
                 <View position="absolute" alignItems="center" justifyContent="center" style={{ width, height, borderRadius: radius, borderWidth: 1, borderColor: '#eff0f2' }}>
                     {!props.loading && <Image style={{ tintColor: props.url ? 'white' : 'gray', opacity: 0.8, width: 26, height: 21 }} resizeMode="stretch" source={require('assets/ic-photo-full.png')} />}
                     {props.loading && (
-                        <View width={34} height={34} backgroundColor="rgba(255, 255, 255, 0.6)" borderRadius={RadiusStyles.large} justifyContent="center">
+                        <View width={34} height={34} backgroundColor="rgba(255, 255, 255, 0.6)" borderRadius={RadiusStyles.Large} justifyContent="center">
                             <ActivityIndicator color="rgba(0, 0, 0, 0.4)" />
                         </View>
                     )}
@@ -47,14 +47,14 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
     const client = getClient();
     const rawGroup = client.useRoom({ id: roomId }, { fetchPolicy: 'network-only' }).room;
     const group = (rawGroup && rawGroup.__typename === 'SharedRoom') ? rawGroup : undefined;
-    
+
     if (!group) {
         return null;
-    }   
+    }
 
     const form = useForm();
     const socialImageField = useField('socialImageRef', group.socialImage ? { uuid: group.socialImage } : null, form);
-    
+
     const welcomeMessageText = group.welcomeMessage && group.welcomeMessage.message ? group.welcomeMessage.message : '';
     const welcomeMessageField = useField('welcomeMessageText', welcomeMessageText, form);
 
@@ -88,8 +88,8 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                 roomId,
                 input: {
                     ...(
-                        socialImageField.value && 
-                        socialImageField.value.uuid !== group.socialImage && 
+                        socialImageField.value &&
+                        socialImageField.value.uuid !== group.socialImage &&
                         { socialImageRef: socialImageField.value }
                     )
                 }

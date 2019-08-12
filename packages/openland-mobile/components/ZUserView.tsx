@@ -3,7 +3,7 @@ import { UserForMention } from 'openland-api/Types';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { View, Text, Dimensions } from 'react-native';
 import { ZAvatar } from './ZAvatar';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { ZListItemBase } from './ZListItemBase';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
@@ -16,7 +16,7 @@ export const ZUserView = XMemo<ZUserViewProps>((props) => {
     const theme = React.useContext(ThemeContext);
 
     return (
-        <ZListItemBase height={40} onPress={() => props.onPress(props.user.id) } separator={false}>
+        <ZListItemBase height={40} onPress={() => props.onPress(props.user.id)} separator={false}>
             <View paddingHorizontal={16} paddingVertical={6} flexDirection="row" alignItems="center">
                 <ZAvatar
                     size="small"
@@ -26,7 +26,7 @@ export const ZUserView = XMemo<ZUserViewProps>((props) => {
                 />
                 <View flexGrow={1} flexShrink={1} paddingLeft={12}>
                     <Text
-                        style={{ color: theme.foregroundPrimary, fontWeight: TextStyles.weight.medium, width: Dimensions.get('screen').width - 72 }}
+                        style={{ color: theme.foregroundPrimary, fontWeight: FontStyles.Weight.Medium, width: Dimensions.get('screen').width - 72 }}
                         numberOfLines={1}
                         ellipsizeMode="tail"
                         allowFontScaling={false}
@@ -34,7 +34,7 @@ export const ZUserView = XMemo<ZUserViewProps>((props) => {
                         {props.user.name}{'   '}
                         {props.user.primaryOrganization && (
                             <Text
-                                style={{ color: theme.foregroundSecondary, fontWeight: TextStyles.weight.regular }}
+                                style={{ color: theme.foregroundSecondary, fontWeight: FontStyles.Weight.Regular }}
                                 allowFontScaling={false}
                             >
                                 {props.user.primaryOrganization.name}

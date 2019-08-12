@@ -11,7 +11,7 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { SRouter } from 'react-native-s/SRouter';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { TypeStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 interface ChatJoinProps {
     room: Room_room_SharedRoom;
@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     } as ViewStyle,
     infoWrapper: {
-        flexDirection: 'column', 
-        zIndex: -1, 
+        flexDirection: 'column',
+        zIndex: -1,
         padding: 24
     } as ViewStyle,
     container: {
@@ -43,17 +43,17 @@ const styles = StyleSheet.create({
         flexGrow: 1
     } as ViewStyle,
     title: {
-        ...TypeStyles.title2,
+        ...TextStyles.Title2,
         textAlign: 'center'
     } as TextStyle,
     description: {
-        fontSize: 15, 
-        textAlign: 'center', 
-        marginTop: 4, 
-        lineHeight: 22 
+        fontSize: 15,
+        textAlign: 'center',
+        marginTop: 4,
+        lineHeight: 22
     } as TextStyle,
     members: {
-        ...TypeStyles.body,
+        ...TextStyles.Body,
         textAlign: 'center',
         marginTop: 4
     } as TextStyle,
