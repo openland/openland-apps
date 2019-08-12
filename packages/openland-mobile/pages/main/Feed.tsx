@@ -8,13 +8,13 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SFlatList } from 'react-native-s/SFlatList';
 
 const FeedPage = (props: PageProps) => {
-    const feed = getClient().useGlobalFeedHome();
+    const feed = getClient().useGlobalFeedHome({ fetchPolicy: 'cache-and-network' });
 
     return (
         <>
             <SHeader title="Feed" />
-            <SHeaderButton title="New" icon={require('assets/ic-add-24.png')} onPress={() => props.router.present('CreatePost')}/>
-            <SFlatList 
+            <SHeaderButton title="New" icon={require('assets/ic-add-24.png')} onPress={() => props.router.present('CreatePost')} />
+            <SFlatList
                 data={feed.homeFeed}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => {
