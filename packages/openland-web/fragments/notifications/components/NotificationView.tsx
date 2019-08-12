@@ -30,6 +30,9 @@ const replyWrapper = css`
     border-left: 2px solid #C4C7CC; // ThemeDefault.foregroundQuaternary
     margin: 4px 0;
     padding-left: 12px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 `;
 
 const toolsWrapperClass = css`

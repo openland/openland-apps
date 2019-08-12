@@ -11,6 +11,7 @@ import { MessageReactions } from 'openland-web/fragments/chat/messenger/message/
 import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { css } from 'linaria';
+import { showAvatarModal } from 'openland-web/components/showAvatarModal';
 
 const avatarWrapper = css`
     flex-shrink: 0;
@@ -64,6 +65,7 @@ export const MessageView = React.memo((props: { message: Message_message_General
                     id={sender.id}
                     title={sender.name}
                     photo={sender.photo}
+                    onClick={sender.photo && !sender.photo.startsWith('ph://') ? () => showAvatarModal(sender.photo!) : undefined}
                 />
             </div>
             <div className={content}>

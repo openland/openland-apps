@@ -11,6 +11,7 @@ import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import { showAvatarModal } from 'openland-web/components/showAvatarModal';
 
 const avatarWrapper = css`
     flex-shrink: 0;
@@ -69,6 +70,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                     title={sender.name}
                     photo={sender.photo}
                     size={depth > 0 ? 'x-small' : 'medium'}
+                    onClick={sender.photo && !sender.photo.startsWith('ph://') ? () => showAvatarModal(sender.photo!) : undefined}
                 />
             </div>
             <div className={content}>
