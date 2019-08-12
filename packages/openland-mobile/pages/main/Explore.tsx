@@ -32,6 +32,7 @@ const RoomsList = (props: { router: SRouter }) => {
 
             <ZListGroup
                 header="Top groups"
+                headerMarginTop={0}
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('GroupList', {
                         query: 'available',
