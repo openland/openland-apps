@@ -71,6 +71,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
                 >
                     <TextInput
                         ref={ref}
+                        selectionColor={theme.accentPrimary}
                         style={{
                             paddingTop: 0,
                             color: theme.foregroundPrimary,
@@ -85,6 +86,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
             {Platform.OS === 'android' && (
                 <TextInput
                     ref={ref}
+                    selectionColor={theme.accentPrimary}
                     style={{
                         color: theme.foregroundPrimary,
                         maxHeight: 100,
