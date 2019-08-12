@@ -7,6 +7,7 @@ import { XButton } from 'openland-x/XButton';
 import SearchIcon from 'openland-icons/ic-search-small.svg';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 
 const SearchWrapper = Glamorous.div({
     borderBottom: '1px solid #ececec',
@@ -53,6 +54,7 @@ interface SearchBoxProps {
 }
 
 export const SearchBox = XMemo<SearchBoxProps>(props => {
+    const layout = useLayout();
     const isMobile = React.useContext(IsMobileContext);
     const onChange = (value: string) => {
         props.onChange(value);
@@ -78,7 +80,7 @@ export const SearchBox = XMemo<SearchBoxProps>(props => {
                     {props.value.length > 0 && (
                         <XButton text="Clear" onClick={onClear} flexShrink={0} />
                     )}
-                    <XButton text="Search" style="primary" />
+                    {layout !== 'mobile' && <XButton text="Search" style="primary" />}
                 </SearchInner>
             </XContentWrapper>
         </SearchWrapper>
