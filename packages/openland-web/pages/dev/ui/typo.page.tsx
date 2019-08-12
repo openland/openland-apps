@@ -11,13 +11,13 @@ export default withApp('Typography', 'viewer', props => {
         <DevDocsScaffold title="Typography">
             <XHorizontal>
                 <XVertical>
-                    <XView {...TextStyles.title1}>XView Title1</XView>
-                    <XView {...TextStyles.title2}>XView Title2</XView>
-                    <XView {...TextStyles.label1}>XView Label1</XView>
-                    <XView {...TextStyles.label2}>XView Label2</XView>
-                    <XView {...TextStyles.body}>XView Body</XView>
-                    <XView {...TextStyles.densed}>XView Densed</XView>
-                    <XView {...TextStyles.caption}>XView Caption</XView>
+                    <XView {...TextStyles.Title1}>XView Title1</XView>
+                    <XView {...TextStyles.Title2}>XView Title2</XView>
+                    <XView {...TextStyles.Label1}>XView Label1</XView>
+                    <XView {...TextStyles.Label2}>XView Label2</XView>
+                    <XView {...TextStyles.Body}>XView Body</XView>
+                    <XView {...TextStyles.Densed}>XView Densed</XView>
+                    <XView {...TextStyles.Caption}>XView Caption</XView>
                 </XVertical>
                 <XVertical>
                     <div className={TextTitle1}>Linaria Title1</div>

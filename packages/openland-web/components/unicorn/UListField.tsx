@@ -21,7 +21,7 @@ export const UListField = (props: UListFieldProps) => {
         >
             {!!label && (
                 <XView
-                    {...TextStyles.body}
+                    {...TextStyles.Body}
                     color={ThemeDefault.foregroundSecondary}
                     width={104}
                     marginRight={56}
@@ -31,7 +31,7 @@ export const UListField = (props: UListFieldProps) => {
             )}
 
             <XView
-                {...TextStyles.body}
+                {...TextStyles.Body}
                 color={ThemeDefault.foregroundPrimary}
                 flexGrow={1}
                 flexShrink={1}

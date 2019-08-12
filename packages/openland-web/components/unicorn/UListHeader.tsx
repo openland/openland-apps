@@ -26,12 +26,12 @@ export const UListHeader = (props: UListHeaderProps) => {
             alignItems="center"
         >
             <XView flexDirection="row" flexGrow={1} justifyContent="flex-start">
-                <XView {...TextStyles.title2} color={ThemeDefault.foregroundPrimary}>
+                <XView {...TextStyles.Title2} color={ThemeDefault.foregroundPrimary}>
                     {text}
                 </XView>
 
                 {!!counter && (
-                    <XView {...TextStyles.label1} color={ThemeDefault.foregroundTertiary} marginLeft={8}>
+                    <XView {...TextStyles.Label1} color={ThemeDefault.foregroundTertiary} marginLeft={8}>
                         {counter}
                     </XView>
                 )}
@@ -39,7 +39,7 @@ export const UListHeader = (props: UListHeaderProps) => {
 
             {!!action && (
                 <XView
-                    {...TextStyles.label1}
+                    {...TextStyles.Label1}
                     cursor="pointer"
                     color={ThemeDefault.foregroundTertiary}
                     hoverColor={ThemeDefault.foregroundSecondary}

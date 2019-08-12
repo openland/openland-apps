@@ -46,10 +46,10 @@ export const UListItem = React.memo((props: UListItemProps) => {
     const { title, titleIcon, subtitle, description, descriptionColor, icon, iconBackground, iconColor, avatar, onClick, path, large, useRadius, textRight, rightElement } = props;
     const height = large ? 80 : ((!!avatar || !!iconBackground) ? 56 : 48);
 
-    const titleFont = !!description ? TextStyles.label1 : TextStyles.body;
-    const subtitleFont = TextStyles.caption;
-    const descriptionFont = large ? TextStyles.densed : TextStyles.caption;
-    const textRightFont = TextStyles.body;
+    const titleFont = !!description ? TextStyles.Label1 : TextStyles.Body;
+    const subtitleFont = TextStyles.Caption;
+    const descriptionFont = large ? TextStyles.Densed : TextStyles.Caption;
+    const textRightFont = TextStyles.Body;
 
     return (
         <XView

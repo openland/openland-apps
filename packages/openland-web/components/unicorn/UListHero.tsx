@@ -12,7 +12,7 @@ const Score = (props: { value: number }) => {
     return (
         <XView position="absolute" left={0} bottom={-6} right={0} alignItems="center" onMouseEnter={show}>
             <XView
-                {...TextStyles.label2}
+                {...TextStyles.Label2}
                 borderWidth={2}
                 borderRadius={12}
                 borderColor={ThemeDefault.backgroundPrimary}
@@ -62,7 +62,7 @@ export const UListHero = (props: UListHeroProps) => {
 
             <XView flexGrow={1} flexDirection="column" justifyContent="center">
                 <XView
-                    {...TextStyles.title2}
+                    {...TextStyles.Title2}
                     color={ThemeDefault.foregroundPrimary}
                 >
                     {title}
@@ -70,7 +70,7 @@ export const UListHero = (props: UListHeroProps) => {
 
                 {!!description && (
                     <XView
-                        {...TextStyles.densed}
+                        {...TextStyles.Densed}
                         color={descriptionColor ? descriptionColor : ThemeDefault.foregroundSecondary}
                         marginTop={4}
                     >

@@ -50,11 +50,11 @@ const UserProfileCard = withUserInfo(({ user }) => {
             >
                 <UAvatar size="medium" photo={user.photo} title={user.name} id={user.id} marginRight={16} />
                 <XView flexGrow={1}>
-                    <XView {...TextStyles.title2}>
+                    <XView {...TextStyles.Title2}>
                         {user.name}
                     </XView>
                     <SelectableText
-                        {...TextStyles.body}
+                        {...TextStyles.Body}
                         color={ThemeDefault.foregroundSecondary}
                         selectedColor={ThemeDefault.contrastSpecial}
                     >

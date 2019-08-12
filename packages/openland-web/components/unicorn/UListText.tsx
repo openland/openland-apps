@@ -33,7 +33,7 @@ export const UListText = (props: UListTextProps) => {
     return (
         <XView
             {...other}
-            {...TextStyles.body}
+            {...TextStyles.Body}
             paddingHorizontal={16}
             color={ThemeDefault.foregroundPrimary}
             flexGrow={1}

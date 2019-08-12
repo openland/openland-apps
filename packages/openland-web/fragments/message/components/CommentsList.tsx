@@ -63,7 +63,7 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Mes
 
     if (comments.length <= 0) {
         return (
-            <XView {...TextStyles.body} alignItems="center" justifyContent="center" flexGrow={1} color={ThemeDefault.foregroundSecondary}>
+            <XView {...TextStyles.Body} alignItems="center" justifyContent="center" flexGrow={1} color={ThemeDefault.foregroundSecondary}>
                 Write first comment
             </XView>
         );

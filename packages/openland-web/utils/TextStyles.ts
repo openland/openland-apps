@@ -9,14 +9,16 @@ export const TextBody = css` font-size: 15px; line-height: 24px; font-weight: 40
 export const TextDensed = css` font-size: 14px; line-height: 20px; font-weight: 400; `;
 export const TextCaption = css` font-size: 13px; line-height: 18px; font-weight: 400; `;
 
-export const TextStyles: { [key in string]: XViewProps } = {
-    title1: { fontSize: 24, lineHeight: '32px', fontWeight: '700' },
-    title2: { fontSize: 17, lineHeight: '24px', fontWeight: '700' },
-    label1: { fontSize: 15, lineHeight: '24px', fontWeight: '600' },
-    label2: { fontSize: 13, lineHeight: '18px', fontWeight: '600' },
-    body: { fontSize: 15, lineHeight: '24px', fontWeight: '400' },
-    densed: { fontSize: 14, lineHeight: '20px', fontWeight: '400' },
-    caption: { fontSize: 13, lineHeight: '18px', fontWeight: '400' },
+type TextStylesVariants = 'Title1' | 'Title2' | 'Label1' | 'Label2' | 'Body' | 'Densed' | 'Caption';
+
+export const TextStyles: { [key in TextStylesVariants]: XViewProps } = {
+    Title1: { fontSize: 24, lineHeight: '32px', fontWeight: '700' },
+    Title2: { fontSize: 17, lineHeight: '24px', fontWeight: '700' },
+    Label1: { fontSize: 15, lineHeight: '24px', fontWeight: '600' },
+    Label2: { fontSize: 13, lineHeight: '18px', fontWeight: '600' },
+    Body: { fontSize: 15, lineHeight: '24px', fontWeight: '400' },
+    Densed: { fontSize: 14, lineHeight: '20px', fontWeight: '400' },
+    Caption: { fontSize: 13, lineHeight: '18px', fontWeight: '400' },
 };
 
 // !!! Never customize letterSpacing
