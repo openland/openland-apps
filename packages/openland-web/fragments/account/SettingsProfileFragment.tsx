@@ -16,15 +16,21 @@ import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import EditPhotoIcon from 'openland-icons/ic-edit-photo.svg';
+import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 export const SettingsProfileFragment = React.memo(() => {
     const form = useForm();
     const client = useClient();
     const layout = useLayout();
+    const shortnameMinLength = AppConfig.isSuperAdmin() ? 3 : 5;
+    const shortnameMaxLength = 16;
 
-    const profile = client.useProfile().profile!;
-    const user = client.useProfile().user!;
+    const { profile, user } = client.useProfile();
     const organizations = client.useMyOrganizations();
+
+    if (!user || !profile) {
+        return null;
+    }
 
     const firstNameField = useField('input.firstName', profile.firstName || '', form, [
         {
@@ -46,7 +52,20 @@ export const SettingsProfileFragment = React.memo(() => {
 
     const aboutField = useField('input.about', profile.about || '', form);
     const locationField = useField('input.location', profile.location || '', form);
-    const usernameField = useField('input.username', user.shortname || '', form);
+    const usernameField = useField('input.username', user.shortname || '', form, [
+        {
+            checkIsValid: value => !!value && value.length > 0 ? value.length >= shortnameMinLength : true,
+            text: 'Username must have at least ' + shortnameMinLength + ' characters.',
+        },
+        {
+            checkIsValid: value => !!value && value.length > 0 ? value.length < shortnameMaxLength : true,
+            text: 'Username must have no more than ' + shortnameMaxLength + ' characters.',
+        },
+        {
+            checkIsValid: value => !!value && value.length > 0 ? !!value.match('^[a-z0-9_]+$') : true,
+            text: 'A username can only contain a-z, 0-9, and underscores.',
+        },
+    ]);
     const phoneNumberField = useField('input.phoneNumber', profile.phone || '', form);
     const emailField = useField('input.email', profile.email || '', form);
     const websiteField = useField('input.website', profile.website || '', form);
@@ -127,14 +146,14 @@ export const SettingsProfileFragment = React.memo(() => {
                         <FormSection title="Info">
                             <XView marginBottom={16}>
                                 <InputField
-                                    title={'First name'}
+                                    title="First name"
                                     field={firstNameField}
                                     size="large"
                                 />
                             </XView>
                             <XView marginBottom={16}>
                                 <InputField
-                                    title={'Last name'}
+                                    title="Last name"
                                     field={lastNameField}
                                     size="large"
                                 />
@@ -143,7 +162,7 @@ export const SettingsProfileFragment = React.memo(() => {
                                 <SelectWithDropdown
                                     {...primaryOrganizationField.input}
                                     size="large"
-                                    title={'Primary organization'}
+                                    title="Primary organization"
                                     selectOptions={organizationsWithoutCommunity.map(
                                         (org: any) => ({
                                             value: org.id,
@@ -161,11 +180,11 @@ export const SettingsProfileFragment = React.memo(() => {
                                     resize={false}
                                 />
                             </XView>
-                            <InputField title={'Location'} field={locationField} size="large" />
+                            <InputField title="Location" field={locationField} size="large" />
                         </FormSection>
                         <FormSection title="Username">
                             <InputField
-                                title={'Username'}
+                                title="Username"
                                 field={usernameField}
                                 size="large"
                                 invalid={!!form.error}
@@ -175,18 +194,18 @@ export const SettingsProfileFragment = React.memo(() => {
                         <FormSection title="Contacts">
                             <XView marginBottom={16}>
                                 <InputField
-                                    title={'Phone number'}
+                                    title="Phone number"
                                     field={phoneNumberField}
                                     size="large"
                                 />
                             </XView>
                             <XView marginBottom={16}>
-                                <InputField title={'Email'} field={emailField} size="large" />
+                                <InputField title="Email" field={emailField} size="large" />
                             </XView>
                             <XView marginBottom={16}>
-                                <InputField title={'Website'} field={websiteField} size="large" />
+                                <InputField title="Website" field={websiteField} size="large" />
                             </XView>
-                            <InputField title={'Linkedin'} field={linkedinField} size="large" />
+                            <InputField title="Linkedin" field={linkedinField} size="large" />
                         </FormSection>
                         <FormFooter>
                             <XButton

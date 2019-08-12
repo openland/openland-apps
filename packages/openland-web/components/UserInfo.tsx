@@ -56,6 +56,7 @@ export class UserInfoProvider extends React.Component<UserInfoProps> {
             isBlocked: this.props.sessionState.isBlocked,
         };
         AppConfig.setNonProduction(this.props.roles.indexOf('feature-non-production') >= 0);
+        AppConfig.setSuperAdmin(this.props.roles.indexOf('super-admin') >= 0);
         this.rolesCtx = {
             roles: this.props.roles,
             currentOrganizatonId: this.props.organization ? this.props.organization.id : undefined,

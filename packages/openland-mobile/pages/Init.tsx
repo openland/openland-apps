@@ -174,6 +174,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0 || __DEV__;
                         SUPER_ADMIN = res.myPermissions.roles.indexOf('super-admin') >= 0;
                         AppConfig.setNonProduction(NON_PRODUCTION);
+                        AppConfig.setSuperAdmin(SUPER_ADMIN);
                         this.setState({ state: 'app' });
                     } else {
                         this.setState({ state: 'signup' });
@@ -195,6 +196,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                             NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0 || __DEV__;
                             SUPER_ADMIN = res.myPermissions.roles.indexOf('super-admin') >= 0;
                             AppConfig.setNonProduction(NON_PRODUCTION);
+                            AppConfig.setSuperAdmin(SUPER_ADMIN);
 
                             let messenger = buildMessenger(getClient(), res.me, { store: new NativeKeyValue('engines') });
                             setMessenger(new MobileMessenger(messenger, this.history));

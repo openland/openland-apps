@@ -7,6 +7,12 @@ class AppConfigStab implements AppConfigApi {
     setNonProduction(isNonProd: boolean) {
         //
     }
+    isSuperAdmin() {
+        return false;
+    }
+    setSuperAdmin(isSuper: boolean) {
+        //
+    }
 }
 
 export const AppConfig = new AppConfigStab();
