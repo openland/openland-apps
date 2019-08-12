@@ -99,7 +99,9 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
 
     const highlightedColors = {
         'primary': theme.accentPrimaryActive,
-        'danger': theme.accentNegativeActive
+        'secondary': theme.backgroundTertiaryActive,
+        'danger': theme.accentNegativeActive,
+        // 'secondary-inverted': theme.backgroundInvertedActive
     };
 
     const underlayColor = highlightedColors[style];
