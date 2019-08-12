@@ -37,7 +37,7 @@ let safeAreaBottom = Platform.OS === 'ios' ? ((isIphoneX || isIphoneXSMAX) ? 34 
 // Sizes of UINavigationController/AppBar
 //
 const navigationBarHeight = Platform.OS === 'ios' ? 44 : 56; // Default size of navigation bar
-const navigationBarHeightExpanded = Platform.OS === 'ios' ? 96 : 96; // Size of expanded navigation bar
+const navigationBarHeightExpanded = Platform.OS === 'ios' ? 100 : 96; // Size of expanded navigation bar
 
 //
 // Sizes of Status Bars

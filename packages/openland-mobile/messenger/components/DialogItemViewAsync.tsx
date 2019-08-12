@@ -48,7 +48,7 @@ const DialogItemViewAsyncRender = React.memo<{ theme: ThemeGlobal, item: DialogD
                     size={avatarSize}
                     placeholderKey={item.key}
                     placeholderTitle={item.title}
-                    backgroundColor={theme.backgroundTertiary}
+                    theme={theme}
                 />}
                 {isUser && <UserAvatar
                     src={item.photo}
