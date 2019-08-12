@@ -5,13 +5,13 @@ import { LayoutProvider } from './utils/LayoutContext';
 const body = css`
     overflow: hidden;
     width: 100vw;
-    height: 100vh;
+    /* do not add 100vh! it will overflow on mobile */
     background-color: #F0F2F5;
 `;
 
 const inner = css`
     position: relative;
-    display: 'flex';
+    display: flex;
     flex-direction: column;
     overflow-y: scroll;
     display: flex;

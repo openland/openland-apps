@@ -109,10 +109,13 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
         return (
             <XViewRouterContext.Provider value={xRouting}>
                 <Container>
+                    <XView position="absolute" bottom={0} left={0} right={0} height={52}>
+                        <TabBarMobile selected={selected} setSelected={setSelectedClb} router={props.router} />
+                    </XView>
                     <InnerContainer>
                         {props.router.stacks.map((v, i) => (
                             <div key={'tab-' + i} className={selectedMounted === i ? visibleContainer : invisibleContainer}>
-                                <XView width="100%" height="100%" flexDirection="row" overflow="hidden" paddingBottom={52}>
+                                <XView width="100%" height="100%" flexDirection="row" overflow="hidden" paddingBottom={52} >
                                     <XView key="root" width="100%" height="100%" position="relative" alignItems="flex-start" backgroundColor="#fff">
                                         <TabContainer index={i} router={props.router} />
                                     </XView>
@@ -121,9 +124,6 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
                             </div>
                         ))}
                     </InnerContainer>
-                    <XView position="absolute" bottom={0} left={0} right={0} height={52}>
-                        <TabBarMobile selected={selected} setSelected={setSelectedClb} router={props.router} />
-                    </XView>
                 </Container>
             </XViewRouterContext.Provider>
         );
