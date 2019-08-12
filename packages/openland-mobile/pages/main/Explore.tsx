@@ -17,7 +17,6 @@ import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
-import { NON_PRODUCTION } from '../Init';
 
 const RoomsList = (props: { router: SRouter }) => {
     let rooms = getClient().useAvailableRooms({ fetchPolicy: 'network-only' });
@@ -29,7 +28,7 @@ const RoomsList = (props: { router: SRouter }) => {
 
     return (
         <>
-            {NON_PRODUCTION && <ZListItem text="Tasks" path="Apps/Tasks" />}
+            {/* {NON_PRODUCTION && <ZListItem text="Tasks" path="Apps/Tasks" />} */}
 
             <ZListItemGroup
                 header="Top groups"
