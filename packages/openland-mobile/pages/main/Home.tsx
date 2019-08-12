@@ -48,12 +48,21 @@ export const Home = XMemo<PageProps>((props) => {
             <View style={{ position: Platform.OS === 'ios' ? 'absolute' : 'relative', bottom: 0, left: 0, right: 0 }}>
                 <AppBarBottom>
                     {NON_PRODUCTION && (
-                        <AppBarBottomItem
-                            icon={require('assets/ic-feed-24.png')}
-                            iconSelected={require('assets/ic-feed-filled-24.png')}
-                            selected={tab === 3}
-                            onPress={() => setTab(3)}
-                        />
+                        <>
+                            <AppBarBottomItem
+                                icon={require('assets/ic-feed-24.png')}
+                                iconSelected={require('assets/ic-feed-filled-24.png')}
+                                selected={tab === 3}
+                                onPress={() => setTab(3)}
+                            />
+                            <AppBarBottomItem
+                                counter={counter && counter.alphaNotificationCounter.unreadCount || undefined}
+                                icon={require('assets/ic-chat-24.png')}
+                                iconSelected={require('assets/ic-chat-filled-24.png')}
+                                selected={tab === 1}
+                                onPress={() => setTab(1)}
+                            />
+                        </>
                     )}
                     <AppBarBottomItem
                         dot={discoverDone !== null && !discoverDone.betaIsDiscoverDone}
@@ -62,13 +71,15 @@ export const Home = XMemo<PageProps>((props) => {
                         selected={tab === 0}
                         onPress={() => setTab(0)}
                     />
-                    <AppBarBottomItem
-                        counter={counter && counter.alphaNotificationCounter.unreadCount || undefined}
-                        icon={require('assets/ic-chat-24.png')}
-                        iconSelected={require('assets/ic-chat-filled-24.png')}
-                        selected={tab === 1}
-                        onPress={() => setTab(1)}
-                    />
+                    {!NON_PRODUCTION && (
+                        <AppBarBottomItem
+                            counter={counter && counter.alphaNotificationCounter.unreadCount || undefined}
+                            icon={require('assets/ic-chat-24.png')}
+                            iconSelected={require('assets/ic-chat-filled-24.png')}
+                            selected={tab === 1}
+                            onPress={() => setTab(1)}
+                        />
+                    )}
                     <AppBarBottomItem
                         icon={require('assets/ic-user-24.png')}
                         iconSelected={require('assets/ic-user-filled-24.png')}
