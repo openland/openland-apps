@@ -15,15 +15,14 @@ import { useField } from 'openland-form/useField';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
-import { XText } from 'openland-x/XText';
-import { XModalController } from 'openland-x/showModal';
-import { css } from 'linaria';
 import { StoredFileT, XAvatarFormFieldComponent } from 'openland-x/XAvatarUpload';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
 import { XInput } from 'openland-x/XInput';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 
 export const AdminTools = (props: { id: string; variables: { id: string } }) => {
     let client = useClient();
@@ -183,47 +182,17 @@ export const showRoomEditModal = (chatId: string) => {
     );
 };
 
-const cancelButtonClassName = css`
-    border: 1px solid #e7e7e7 !important;
-    background-color: rgb(242, 243, 244) !important;
-`;
+export const showLeaveChatConfirmation = (client: OpenlandClient, chatId: string) => {
+    const builder = new AlertBlanketBuilder;
 
-const LeaveChatComponent = (props: { id: string; ctx: XModalController }) => {
-    const client = useClient();
-    const form = useForm();
-    const createAction = () => {
-        form.doAction(async () => {
-            await client.mutateRoomLeave({ roomId: props.id });
-            props.ctx.hide();
-        });
-    };
-    return (
-        <XView borderRadius={8}>
-            {form.loading && <XLoader loading={form.loading} />}
-            {form.error && <XErrorMessage message={form.error} />}
-            <XModalContent>
-                <XText>
-                    Are you sure you want to leave? You will need to request access to join it again
-                    in the future.
-                </XText>
-            </XModalContent>
-            <XModalFooter>
-                <XView marginRight={12}>
-                    <XButton
-                        text="Cancel"
-                        size="large"
-                        className={cancelButtonClassName}
-                        onClick={props.ctx.hide}
-                    />
-                </XView>
-                <XButton text="Leave" style="danger" size="large" onClick={createAction} />
-            </XModalFooter>
-        </XView>
-    );
+    builder.title('Leave chat');
+    builder.message('Are you sure you want to leave? You will need to request access to join it again in the future.');
+    builder.action('Leave', async () => {
+        await client.mutateRoomLeave({ roomId: chatId });
+    }, 'danger');
+
+    builder.show();
 };
-
-export const leaveChatModal = (chatId: string) =>
-    showModalBox({ title: 'Leave chat' }, ctx => <LeaveChatComponent id={chatId} ctx={ctx} />);
 
 const DescriptionModalContent = (props: { chatId: string; hide: () => void }) => {
     const { chatId } = props;

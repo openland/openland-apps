@@ -27,7 +27,7 @@ import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { showAddMembersModal } from '../showAddMembersModal';
-import { showRoomEditModal, leaveChatModal } from 'openland-web/fragments/account/components/groupProfileModals';
+import { showRoomEditModal, showLeaveChatConfirmation } from 'openland-web/fragments/account/components/groupProfileModals';
 import { showAdvancedSettingsModal } from '../AdvancedSettingsModal';
 
 const secondary = css`
@@ -146,7 +146,7 @@ const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
     if (chat.__typename === 'SharedRoom') {
         res.item({ title: 'Settings', icon: <SettingsIcon />, action: () => showRoomEditModal(chat.id) });
         res.item({ title: 'Advanced settings', icon: <StarIcon />, action: () => showAdvancedSettingsModal(chat.id) });
-        res.item({ title: 'Leave group', icon: <LeaveIcon />, action: () => leaveChatModal(chat.id) });
+        res.item({ title: 'Leave chat', icon: <LeaveIcon />, action: () => showLeaveChatConfirmation(client, chat.id) });
     }
 
     return (

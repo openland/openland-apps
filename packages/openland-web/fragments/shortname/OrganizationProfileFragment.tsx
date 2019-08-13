@@ -7,8 +7,8 @@ import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
-import { OrganizationManageButtons } from './components/OrganizationManageButtons';
-import { MemberManageMenu } from './components/MemberManageMenu';
+import { OrganizationMenu } from './components/OrganizationMenu';
+import { OrganizationMemberMenu } from './components/OrganizationMemberMenu';
 import { showAddMembersModal } from '../chat/showAddMembersModal';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { UListText } from 'openland-web/components/unicorn/UListText';
@@ -71,7 +71,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                     user={member.user}
                     role={member.role}
                     rightElement={
-                        <MemberManageMenu
+                        <OrganizationMemberMenu
                             organization={organization}
                             member={member}
                             onRemove={handleRemoveMember}
@@ -87,7 +87,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 description={isCommunity ? 'Community' : 'Organization'}
                 avatar={{ photo, id, title: name }}
             >
-                <OrganizationManageButtons organization={organization} onLeave={handleRemoveMember} />
+                <OrganizationMenu organization={organization} onLeave={handleRemoveMember} />
             </UListHero>
             <UListGroup header="About">
                 {!!about && <UListText value={about} marginBottom={16} />}

@@ -104,14 +104,14 @@ const MenuComponent = React.memo((props: { ctx: UPopperController, items: MenuIt
     new UPopperMenuBuilder().items(props.items).build(props.ctx)
 ));
 
-interface MemberManageMenu {
+interface OrganizationMemberMenuProps {
     organization: OrganizationWithoutMembers_organization;
     member: OrganizationMembers_organization_members;
     onRemove: (memberId: string) => void;
     onChangeRole: (memberId: string, newRole: OrganizationMemberRole) => void;
 }
 
-export const MemberManageMenu = React.memo((props: MemberManageMenu) => {
+export const OrganizationMemberMenu = React.memo((props: OrganizationMemberMenuProps) => {
     const client = useClient();
     const { organization, member, onRemove, onChangeRole } = props;
 

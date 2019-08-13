@@ -10,11 +10,11 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
-import { GroupManageButtons } from './components/GroupManageButtons';
+import { GroupMenu } from './components/GroupMenu';
 import { showAddMembersModal } from '../chat/showAddMembersModal';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { UListText } from 'openland-web/components/unicorn/UListText';
-import { MemberManageMenu } from './components/MembersManageMenu';
+import { GroupMemberMenu } from './components/GroupMemberMenu';
 
 export const GroupProfileFragment = React.memo((props) => {
     const client = useClient();
@@ -57,7 +57,7 @@ export const GroupProfileFragment = React.memo((props) => {
                     key={'member-' + member.user.id}
                     user={member.user}
                     role={member.role}
-                    rightElement={<MemberManageMenu group={group} member={member} />}
+                    rightElement={<GroupMemberMenu group={group} member={member} />}
                 />
             )}
             padded={false}
@@ -73,7 +73,7 @@ export const GroupProfileFragment = React.memo((props) => {
                     mute={!!settings.mute}
                     marginLeft={16}
                 />
-                <GroupManageButtons group={group} marginLeft={16} />
+                <GroupMenu group={group} />
             </UListHero>
 
             <UListGroup header="About">
@@ -92,7 +92,7 @@ export const GroupProfileFragment = React.memo((props) => {
                         key={'featured-member-' + member.user.id}
                         user={member.user}
                         badge={member.badge}
-                        rightElement={<MemberManageMenu group={group} member={member} />}
+                        rightElement={<GroupMemberMenu group={group} member={member} />}
                     />
                 ))}
             </UListGroup>

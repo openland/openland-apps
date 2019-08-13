@@ -9,36 +9,8 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UPresence } from 'openland-web/components/unicorn/UPresence';
 import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/UNotificationsSwitch';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { UListText } from 'openland-web/components/unicorn/UListText';
-import copy from 'copy-to-clipboard';
-import EditIcon from 'openland-icons/s/ic-edit-24.svg';
-import CopyIcon from 'openland-icons/s/ic-copy-24.svg';
-import { UPopperController } from 'openland-web/components/unicorn/UPopper';
-import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
-import { User_user } from 'openland-api/Types';
-
-const MenuComponent = React.memo((props: { ctx: UPopperController, user: User_user }) => {
-    const { ctx, user } = props;
-    const { id, isYou, shortname } = user;
-    const builder = new UPopperMenuBuilder();
-
-    builder.item({
-        title: 'Copy link',
-        icon: <CopyIcon />,
-        onClick: () => copy(`https://openland.com/${shortname || id}`)
-    });
-
-    if (isYou) {
-        builder.item({
-            title: 'Edit profile',
-            icon: <EditIcon />,
-            path: '/settings/profile'
-        });
-    }
-
-    return builder.build(ctx);
-});
+import { UserMenu } from './components/UserMenu';
 
 export const UserProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
@@ -62,7 +34,7 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
                         marginLeft={16}
                     />
                 )}
-                <UMoreButton menu={ctx => <MenuComponent ctx={ctx} user={user} />} marginLeft={8} />
+                <UserMenu user={user} />
             </UListHero>
             <UListGroup header="About">
                 {!!about && <UListText value={about} marginBottom={16} />}

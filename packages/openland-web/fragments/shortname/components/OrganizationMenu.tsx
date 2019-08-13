@@ -12,12 +12,12 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 
-interface OrganizationManageButtonsProps {
+interface OrganizationMenuProps {
     organization: OrganizationWithoutMembers_organization;
     onLeave: (id: string) => void;
 }
 
-const MenuComponent = React.memo((props: OrganizationManageButtonsProps & { ctx: UPopperController }) => {
+const MenuComponent = React.memo((props: OrganizationMenuProps & { ctx: UPopperController }) => {
     const messenger = React.useContext(MessengerContext);
     const { ctx, organization, onLeave } = props;
     const { id, isCommunity, isOwner, isAdmin, isMine, shortname } = organization;
@@ -58,6 +58,9 @@ const MenuComponent = React.memo((props: OrganizationManageButtonsProps & { ctx:
     return builder.build(ctx);
 });
 
-export const OrganizationManageButtons = React.memo((props: OrganizationManageButtonsProps) => (
-    <UMoreButton menu={ctx => <MenuComponent {...props} ctx={ctx} />} />
+export const OrganizationMenu = React.memo((props: OrganizationMenuProps) => (
+    <UMoreButton
+        marginRight={-8}
+        menu={ctx => <MenuComponent {...props} ctx={ctx} />}
+    />
 ));

@@ -8,12 +8,12 @@ import { useRole } from 'openland-x-permissions/XWithRole';
 import { showRemoveMemberModal } from 'openland-web/fragments/chat/RemoveMemberModal';
 import { showMakeFeaturedModal } from 'openland-web/fragments/account/components/modals';
 
-interface MemberManageMenu {
+interface GroupMemberMenu {
     group: RoomFullWithoutMembers_SharedRoom;
     member: RoomMembersPaginated_members;
 }
 
-export const MemberManageMenu = React.memo((props: MemberManageMenu) => {
+export const GroupMemberMenu = React.memo((props: GroupMemberMenu) => {
     const { group, member } = props;
     const { id, title, isChannel } = group;
     const { user, badge, canKick } = member;
