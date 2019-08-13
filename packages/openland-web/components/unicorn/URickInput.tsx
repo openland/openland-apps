@@ -13,7 +13,6 @@ const quillStyle = css`
     border-radius: 8px;
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
-    position: relative;
 
     .ql-container {
         background-color: #F0F2F5;
