@@ -182,10 +182,7 @@ const GifContent = React.memo(
         const imgPositionTop = layoutHeight < 72 ? `calc(50% - ${layoutHeight / 2}px)` : '0';
 
         return (
-            <div
-                className={imgContainer}
-                style={{ width: layoutWidth, height: layoutHeight }}
-            >
+            <div className={imgContainer} style={{ width: layoutWidth, height: layoutHeight }}>
                 <img
                     className={cx(imgPreviewClass)}
                     width={layoutWidth}
@@ -205,6 +202,14 @@ const GifContent = React.memo(
                     playsinline={true}
                     className={cx(imgAppearClass, imgMediaClass)}
                 >
+                    <source
+                        src={
+                            'https://ucarecdn.com/' +
+                            props.file.fileId +
+                            '/gif2video/-/format/webm/image.gif'
+                        }
+                        type="video/webm"
+                    />
                     <source
                         src={
                             'https://ucarecdn.com/' +
@@ -256,7 +261,7 @@ export const ImageContent = React.memo(
         const imgPositionLeft = layoutWidth < 72 ? `calc(50% - ${layoutWidth / 2}px)` : '0';
         const imgPositionTop = layoutHeight < 72 ? `calc(50% - ${layoutHeight / 2}px)` : '0';
 
-        const url = `https://ucarecdn.com/${props.file.fileId}/-/format/jpeg/-/`;
+        const url = `https://ucarecdn.com/${props.file.fileId}/-/format/auto/-/`;
         const ops = `scale_crop/${layoutWidth}x${layoutHeight}/`;
         const opsRetina = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/center/ 2x`;
 
