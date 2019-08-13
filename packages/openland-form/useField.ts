@@ -20,8 +20,12 @@ export function useField<T>(
     }[],
 ) {
     let [value, setValue] = React.useState(defaultValue);
+    let [changed, setChanged] = React.useState(false);
 
-    let onChange = React.useCallback((src: T) => setValue(src), []);
+    let onChange = React.useCallback((src: T) => {
+        setValue(src);
+        setChanged(true);
+    }, []);
 
     let field = React.useMemo(() => {
         const isInvalid = !!form.errorFields.find(v => v.key === name);
@@ -43,13 +47,13 @@ export function useField<T>(
             valid: !clientValidationFailed,
         });
 
-        const invalid = isInvalid || clientValidationFailed;
+        const invalid = (isInvalid || clientValidationFailed) && changed;
 
         return {
             input: { value, onChange, invalid, errorText },
             value,
         };
-    }, [value, form, form.loading]);
+    }, [value, form, form.loading, changed]);
 
     return field;
 }
