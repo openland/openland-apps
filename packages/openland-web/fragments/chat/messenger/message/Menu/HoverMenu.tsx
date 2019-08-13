@@ -64,11 +64,6 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
     const messageRef = React.useRef(message);
     messageRef.current = message;
     const [menuVisible, menuShow] = usePopper({ placement: 'bottom-end', hideOnClick: true }, (ctx) => buildMessageMenu(ctx, messageRef.current, props.engine, router!));
-    const showWrapped = React.useCallback((ev: React.MouseEvent) => {
-        ev.stopPropagation();
-        menuShow(ev);
-    }, []);
-
     const handleCommentClick = React.useCallback((e) => {
         e.stopPropagation();
 
@@ -106,7 +101,7 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
             <div className={cx(menuButton)} onClick={handleCommentClick}>
                 <UIcon icon={<CommentIcon />} color={ThemeDefault.foregroundTertiary} />
             </div>
-            <div className={cx(menuButton, menuManageButton)} onClick={showWrapped}>
+            <div className={cx(menuButton, menuManageButton)} onClick={menuShow}>
                 <UIcon icon={<MoreIcon />} color={ThemeDefault.foregroundTertiary} />
             </div>
         </div>

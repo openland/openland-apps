@@ -144,6 +144,10 @@ export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController)
     const show = React.useMemo(() => {
         let lastVisible = false;
         return (arg: HTMLElement | React.MouseEvent<unknown>) => {
+            if ((arg as any).stopPropagation) {
+                (arg as any).stopPropagation();
+            }
+
             if (currentScope) {
                 currentScope.forEach(r => {
                     if (r.current && r !== ctxRef) {
@@ -160,7 +164,7 @@ export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController)
             }
             lastVisible = true;
             setVisible(true);
-            const target = (arg as any).target || arg;
+            const target = (arg as any).currentTarget || arg;
             showPopper({
                 target,
                 placement: config.placement
