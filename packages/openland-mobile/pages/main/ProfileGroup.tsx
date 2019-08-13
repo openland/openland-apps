@@ -7,7 +7,7 @@ import { ZListItem } from '../../components/ZListItem';
 import { Modals } from './modals/Modals';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
-import { RoomMemberRole, UserShort, Room_room_SharedRoom_members, RoomWithoutMembers_room_SharedRoom } from 'openland-api/Types';
+import { RoomMemberRole, UserShort, Room_room_SharedRoom_members, RoomWithoutMembers_room_SharedRoom, RoomMembersPaginated_members } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { UserView } from './components/UserView';
@@ -44,14 +44,17 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const chatTypeStr = room.isChannel ? 'channel' : 'group';
 
     // callbacks
-    const resetMembersList = React.useCallback(async () => {
-        const loaded = await client.queryRoomMembersPaginated({
-            roomId,
-            first: 10,
-        }, { fetchPolicy: 'network-only' });
+    const handleAddMembers = React.useCallback((addedMembers: RoomMembersPaginated_members[]) => {
+        setMembers(current => [...current, ...addedMembers]);
+    }, [members]);
 
-        setMembers(loaded.members);
-    }, [roomId]);
+    const handleRemoveMember = React.useCallback((memberId: string) => {
+        setMembers(current => current.filter(m => m.user.id !== memberId));
+    }, [members]);
+
+    const handleChangeMemberRole = React.useCallback((memberId: string, newRole: RoomMemberRole) => {
+        setMembers(current => current.map(m => m.user.id === memberId ? { ...m, role: newRole } : m));
+    }, [members]);
 
     const handleSend = React.useCallback(() => {
         props.router.pushAndReset('Conversation', { flexibleId: roomId });
@@ -73,7 +76,8 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             .action('Kick', 'destructive', async () => {
                 await client.mutateRoomKick({ userId: user.id, roomId });
                 await client.refetchRoomWithoutMembers({ id: roomId });
-                await resetMembersList();
+
+                handleRemoveMember(user.id);
             })
             .show();
     }, [roomId]);
@@ -83,7 +87,8 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             .button('Cancel', 'cancel')
             .action('Promote', 'destructive', async () => {
                 await client.mutateRoomChangeRole({ userId: user.id, roomId, newRole: RoomMemberRole.ADMIN });
-                await resetMembersList();
+
+                handleChangeMemberRole(user.id, RoomMemberRole.ADMIN);
             })
             .show();
     }, [roomId]);
@@ -93,7 +98,8 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             .button('Cancel', 'cancel')
             .action('Revoke', 'destructive', async () => {
                 await client.mutateRoomChangeRole({ userId: user.id, roomId, newRole: RoomMemberRole.MEMBER });
-                await resetMembersList();
+
+                handleChangeMemberRole(user.id, RoomMemberRole.MEMBER);
             })
             .show();
     }, [roomId]);
@@ -130,8 +136,12 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                 action: async (users) => {
                     startLoader();
                     try {
-                        await client.mutateRoomAddMembers({ invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: room.id });
-                        await resetMembersList();
+                        const addedMembers = (await client.mutateRoomAddMembers({
+                            invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })),
+                            roomId: room.id
+                        })).alphaRoomInvite;
+
+                        handleAddMembers(addedMembers);
                     } catch (e) {
                         Alert.alert(e.message);
                     }
@@ -166,13 +176,13 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
         if (members.length < (room.membersCount || 0) && !loading) {
             setLoading(true);
 
-            const loaded = await client.queryRoomMembersPaginated({
+            const loaded = (await client.queryRoomMembersPaginated({
                 roomId,
                 first: 10,
                 after: members[members.length - 1].user.id,
-            }, { fetchPolicy: 'network-only' });
+            }, { fetchPolicy: 'network-only' })).members;
 
-            setMembers([...members, ...loaded.members.filter(m => !members.find(m2 => m2.user.id === m.user.id))]);
+            setMembers(current => [...current, ...loaded.filter(m => !current.find(m2 => m2.user.id === m.user.id))]);
             setLoading(false);
         }
     }, [room, roomId, members, loading]);

@@ -289,7 +289,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 after: members[members.length - 1].user.id,
             }, { fetchPolicy: 'network-only' })).organization.members;
 
-            setMembers([...members, ...loaded.filter(m => !members.find(m2 => m2.user.id === m.user.id))]);
+            setMembers(current => [...current, ...loaded.filter(m => !current.find(m2 => m2.user.id === m.user.id))]);
             setLoading(false);
         }
     }, [organization, members, loading]);
