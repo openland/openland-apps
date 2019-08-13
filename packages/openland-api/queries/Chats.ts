@@ -638,13 +638,20 @@ export const RoomDeclineJoinReuestMutation = gql`
 
 export const RoomAddMembersMutation = gql`
     mutation RoomAddMembers($roomId: ID!, $invites: [RoomInviteInput!]!) {
-        betaRoomInvite(roomId: $roomId, invites: $invites) {
-            ...RoomFull
+        alphaRoomInvite(roomId: $roomId, invites: $invites) {
+            user {
+                ...UserShort
+            }
+            role
+            membership
+            canKick
+            badge {
+                ...UserBadge
+            }
         }
     }
     ${UserShort}
-    ${OrganizationMedium}
-    ${RoomFull}
+    ${UserBadge}
 `;
 
 export const RoomKickMutation = gql`

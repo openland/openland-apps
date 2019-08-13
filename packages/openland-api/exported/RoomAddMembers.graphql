@@ -1,6 +1,16 @@
 mutation RoomAddMembers($invites: [RoomInviteInput!]!, $roomId: ID!) {
-  betaRoomInvite(invites: $invites, roomId: $roomId) {
+  alphaRoomInvite(invites: $invites, roomId: $roomId) {
     __typename
-    ...RoomFull
+    badge {
+      __typename
+      ...UserBadge
+    }
+    canKick
+    membership
+    role
+    user {
+      __typename
+      ...UserShort
+    }
   }
 }

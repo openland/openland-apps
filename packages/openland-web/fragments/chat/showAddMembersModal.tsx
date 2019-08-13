@@ -602,10 +602,14 @@ export const AddMembersModal = React.memo(
         const client = useClient();
 
         const addMembersToRoom = async ({ variables }: AddMemberToRoom) => {
-            await client.mutateRoomAddMembers({
+            const addedMembers = (await client.mutateRoomAddMembers({
                 roomId: id,
                 invites: variables.invites,
-            });
+            })).alphaRoomInvite;
+
+            if (onGroupMembersAdd) {
+                onGroupMembersAdd(addedMembers);
+            }
 
             await client.refetchRoomMembersShort({ roomId: id });
         };
