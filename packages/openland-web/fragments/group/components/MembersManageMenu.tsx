@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RoomFullWithoutMembers_SharedRoom, RoomMembersPaginated_members } from 'openland-api/Types';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
+import { UMoreButtonDeprecated } from 'openland-web/components/unicorn/templates/UMoreButton';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import { useRole } from 'openland-x-permissions/XWithRole';
@@ -44,10 +44,10 @@ export const MemberManageMenu = React.memo((props: MemberManageMenu) => {
     }
 
     return (
-        <UMoreButton>
+        <UMoreButtonDeprecated>
             {useRole('super-admin') && <UListItem title={badge ? 'Edit featured status' : 'Make featured'} icon={<StarIcon />} onClick={handleFeaturedClick} />}
             {user.isYou && <UListItem title={`Leave ${typeString}`} icon={<LeaveIcon />} onClick={handleLeaveClick} />}
             {!user.isYou && <UListItem title={`Remove from ${typeString}`} icon={<LeaveIcon />} onClick={handleRemoveClick} />}
-        </UMoreButton>
+        </UMoreButtonDeprecated>
     );
 });

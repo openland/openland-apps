@@ -40,10 +40,11 @@ interface UListItemProps {
     useRadius?: boolean;
     textRight?: string;
     rightElement?: JSX.Element;
+    hovered?: boolean;
 }
 
 export const UListItem = React.memo((props: UListItemProps) => {
-    const { title, titleIcon, subtitle, description, descriptionColor, icon, iconBackground, iconColor, avatar, onClick, path, large, useRadius, textRight, rightElement } = props;
+    const { title, titleIcon, subtitle, description, descriptionColor, icon, iconBackground, iconColor, avatar, onClick, path, large, useRadius, textRight, rightElement, hovered } = props;
     const height = large ? 80 : ((!!avatar || !!iconBackground) ? 56 : 48);
 
     const titleFont = !!description ? TextStyles.Label1 : TextStyles.Body;
@@ -57,6 +58,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
             paddingHorizontal={16}
             alignItems="center"
             flexDirection="row"
+            backgroundColor={hovered ? ThemeDefault.backgroundPrimaryHover : undefined}
             hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
             selectedBackgroundColor={ThemeDefault.accentPrimary}
             selectedHoverBackgroundColor={ThemeDefault.accentPrimaryHover}

@@ -5,7 +5,8 @@ import AddIcon from 'openland-icons/s/ic-add-24.svg';
 
 interface UAddItemProps {
     title: string;
-    onClick: () => void;
+    onClick: (event: React.MouseEvent) => void;
+    active?: boolean;
 }
 
 export const UAddItem = React.memo((props: UAddItemProps) => (
@@ -15,5 +16,6 @@ export const UAddItem = React.memo((props: UAddItemProps) => (
         icon={<AddIcon />}
         iconBackground={ThemeDefault.accentPrimary}
         useRadius={true}
+        hovered={props.active}
     />
 ));

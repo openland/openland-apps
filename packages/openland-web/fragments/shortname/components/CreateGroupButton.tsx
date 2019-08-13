@@ -3,37 +3,39 @@ import XPopper from 'openland-x/XPopper';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { showCreateGroupModal } from 'openland-web/fragments/chat/showCreateGroupModal';
+import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
+import { UPopperController } from 'openland-web/components/unicorn/UPopper';
+import { usePopper } from 'openland-web/components/unicorn/usePopper';
 
-export const CreateGroupButton = React.memo((props: { id: string }) => {
-    const [show, setShow] = React.useState(false);
+interface CreateGroupButtonProps {
+    id: string;
+}
 
-    const closer = () => {
-        setShow(false);
-    };
+const MenuComponent = React.memo((props: CreateGroupButtonProps & { ctx: UPopperController }) => {
+    const { ctx, id } = props;
+    const builder = new UPopperMenuBuilder();
 
-    const toggle = () => {
-        setShow(!show);
-    };
+    builder.item({
+        title: 'New group',
+        onClick: () => showCreateGroupModal('group', id)
+    });
+
+    builder.item({
+        title: 'New channel',
+        onClick: () => showCreateGroupModal('channel', id)
+    });
+
+    return builder.build(ctx);
+});
+
+export const CreateGroupButton = React.memo((props: CreateGroupButtonProps) => {
+    const [menuVisible, menuShow] = usePopper({ placement: 'bottom-start', hideOnClick: true }, (ctx) => <MenuComponent ctx={ctx} {...props} />);
 
     return (
-        <XPopper
-            placement="bottom-start"
-            show={show}
-            arrow={null}
-            onClickOutside={closer}
-            content={
-                <>
-                    <UListItem title="New group" onClick={() => showCreateGroupModal('group', props.id)} />
-                    <UListItem title="New channel" onClick={() => showCreateGroupModal('channel', props.id)} />
-                </>
-            }
-        >
-            <div>
-                <UAddItem
-                    title="Create new"
-                    onClick={toggle}
-                />
-            </div>
-        </XPopper>
+        <UAddItem
+            title="Create new"
+            onClick={menuShow}
+            active={menuVisible}
+        />
     );
 });

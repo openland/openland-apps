@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { RoomFullWithoutMembers_SharedRoom } from 'openland-api/Types';
-import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
+import { UMoreButtonDeprecated } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { showRoomEditModal, leaveChatModal } from 'openland-web/fragments/account/components/groupProfileModals';
 import { showAdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
@@ -21,10 +21,10 @@ export const GroupManageButtons = React.memo((props: GroupManageButtons) => {
     const typeString = isChannel ? 'channel' : 'group';
 
     return (
-        <UMoreButton {...other}>
+        <UMoreButtonDeprecated {...other}>
             {canEdit && <UListItem title="Edit" icon={<EditIcon />} onClick={() => showRoomEditModal(id, isChannel)} />}
             {canAdvencedEdit && <UListItem title="Advanced settings" icon={<EditIcon />} onClick={() => showAdvancedSettingsModal(id)} />}
             <UListItem title={'Leave ' + typeString} icon={<LeaveIcon />} onClick={() => leaveChatModal(id)} />
-        </UMoreButton>
+        </UMoreButtonDeprecated>
     );
 });

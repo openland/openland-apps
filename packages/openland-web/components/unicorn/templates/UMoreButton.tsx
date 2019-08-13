@@ -2,9 +2,10 @@ import * as React from 'react';
 import XPopper, { Placement } from 'openland-x/XPopper';
 import { UIconButton } from '../UIconButton';
 import ManageVerticalIcon from 'openland-icons/ic-more-v.svg';
-import ManageHorizontalIcon from 'openland-icons/ic-more-h.svg';
 import { XViewProps } from 'react-mental';
 import { css, cx } from 'linaria';
+import { UPopperController } from '../UPopper';
+import { usePopper } from '../usePopper';
 
 const iconWrapper = css`
     svg {
@@ -14,19 +15,18 @@ const iconWrapper = css`
     }
 `;
 
-interface UMoreButtonProps extends XViewProps {
+interface UMoreButtonDeprecatedProps extends XViewProps {
     placement?: Placement;
     show?: boolean;
-    horizontal?: boolean;
     showOnHover?: boolean;
     onClickOutside?: () => void;
     children: any;
 }
 
-export class UMoreButton extends React.PureComponent<UMoreButtonProps, { show: boolean }> {
+export class UMoreButtonDeprecated extends React.PureComponent<UMoreButtonDeprecatedProps, { show: boolean }> {
     refComp?: Element;
 
-    constructor(props: UMoreButtonProps) {
+    constructor(props: UMoreButtonDeprecatedProps) {
         super(props);
 
         this.state = {
@@ -57,7 +57,7 @@ export class UMoreButton extends React.PureComponent<UMoreButtonProps, { show: b
     }
 
     render() {
-        const { placement = 'bottom-end', show, horizontal = false, showOnHover, onClickOutside, children, ...other } = this.props;
+        const { placement = 'bottom-end', show, showOnHover, onClickOutside, children, ...other } = this.props;
         let computedShow: boolean | undefined =
             typeof show === 'undefined' ? this.state.show : show;
 
@@ -76,7 +76,7 @@ export class UMoreButton extends React.PureComponent<UMoreButtonProps, { show: b
             >
                 <div className={cx(iconWrapper)}>
                     <UIconButton
-                        icon={horizontal ? <ManageHorizontalIcon /> : <ManageVerticalIcon />}
+                        icon={<ManageVerticalIcon />}
                         active={computedShow}
                         onClick={this.switch}
                         {...other}
@@ -86,3 +86,21 @@ export class UMoreButton extends React.PureComponent<UMoreButtonProps, { show: b
         );
     }
 }
+
+interface UMoreButtonProps extends XViewProps {
+    menu: (ctx: UPopperController) => JSX.Element;
+}
+
+export const UMoreButton = React.memo((props: UMoreButtonProps) => {
+    const { menu, ...other } = props;
+    const [menuVisible, menuShow] = usePopper({ placement: 'bottom-end', hideOnClick: true }, menu);
+
+    return (
+        <UIconButton
+            icon={<ManageVerticalIcon />}
+            active={menuVisible}
+            onClick={menuShow}
+            {...other}
+        />
+    );
+});

@@ -16,7 +16,7 @@ import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { ThemeDefault } from 'openland-y-utils/themes';
 import MoreHIcon from 'openland-icons/s/ic-more-h-24.svg';
 import { CreateGroupButton } from './components/CreateGroupButton';
-import { OrganizationMembers_organization_members } from 'openland-api/Types';
+import { OrganizationMembers_organization_members, OrganizationMemberRole } from 'openland-api/Types';
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
@@ -43,17 +43,21 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 after: members[members.length - 1].user.id,
             }, { fetchPolicy: 'network-only' })).organization.members;
 
-            setMembers([...members, ...loaded.filter(m => !members.find(m2 => m2.user.id === m.user.id))]);
+            setMembers(current => [...current, ...loaded.filter(m => !current.find(m2 => m2.user.id === m.user.id))]);
             setLoading(false);
         }
     }, [membersCount, members, loading]);
 
     const handleAddMembers = React.useCallback((addedMembers: OrganizationMembers_organization_members[]) => {
-        setMembers([...members, ...addedMembers]);
+        setMembers(current => [...current, ...addedMembers]);
     }, [members]);
 
     const handleRemoveMember = React.useCallback((memberId: string) => {
-        setMembers(members.filter(m => m.user.id !== memberId));
+        setMembers(current => current.filter(m => m.user.id !== memberId));
+    }, [members]);
+
+    const handleChangeMemberRole = React.useCallback((memberId: string, newRole: OrganizationMemberRole) => {
+        setMembers(current => current.map(m => m.user.id === memberId ? { ...m, role: newRole } : m));
     }, [members]);
 
     return (
@@ -66,7 +70,14 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                     key={'member-' + member.user.id}
                     user={member.user}
                     role={member.role}
-                    rightElement={<MemberManageMenu organization={organization} member={member} onRemove={handleRemoveMember} />}
+                    rightElement={
+                        <MemberManageMenu
+                            organization={organization}
+                            member={member}
+                            onRemove={handleRemoveMember}
+                            onChangeRole={handleChangeMemberRole}
+                        />
+                    }
                 />
             )}
             padded={false}
