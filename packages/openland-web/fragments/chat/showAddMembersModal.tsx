@@ -17,7 +17,6 @@ import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { XModalProps } from 'openland-x-modal/XModal';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
-import { XUserCard } from 'openland-x/cards/XUserCard';
 import { useClient } from 'openland-web/utils/useClient';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -33,6 +32,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { XButton } from 'openland-x/XButton';
+import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 
 interface RenewInviteLinkButtonProps {
     id: string;
@@ -365,30 +365,18 @@ const ExplorePeople = (props: ExplorePeopleProps) => {
     return (
         <XView flexGrow={1} flexShrink={0}>
             <XScrollView2 flexGrow={1} flexShrink={0}>
-                <XView paddingHorizontal={24} marginTop={12} flexDirection="column">
+                <XView marginTop={12} flexDirection="column">
                     {data.items.edges.map(i => {
                         if (props.selectedUsers && props.selectedUsers.has(i.node.id)) {
                             return null;
                         }
-                        if (props.roomUsers && props.roomUsers.find(j => j.user.id === i.node.id)) {
-                            return (
-                                <XView key={i.node.id}>
-                                    <XUserCard
-                                        user={i.node}
-                                        noPath={true}
-                                        customButton={null}
-                                        disable={true}
-                                    />
-                                </XView>
-                            );
-                        }
                         return (
-                            <XView
+                            <UUserView
                                 key={i.node.id}
+                                user={i.node}
                                 onClick={() => props.onPick(i.node.name, i.node.id)}
-                            >
-                                <XUserCard user={i.node} noPath={true} customButton={null} />
-                            </XView>
+                                disabled={!!(props.roomUsers && props.roomUsers.find(j => j.user.id === i.node.id))}
+                            />
                         );
                     })}
                 </XView>

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
-import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 
 interface ExplorePeopleProps {
     variables: { query?: string };
@@ -20,8 +20,6 @@ const UsersPickerWrapperClassName = css`
     flex-shrink: 1;
     margin-top: 16px;
     overflow: scroll;
-    padding-left: 16px;
-    padding-right: 16px;
     flex-direction: column;
     -webkit-overflow-scrolling: touch;
 `;
@@ -59,9 +57,11 @@ export const ExplorePeople = (props: ExplorePeopleProps) => {
                         <XView
                             key={i.node.id}
                             flexShrink={0}
-                            onClick={() => (props as any).onPick(i.node.name, i.node.id)}
                         >
-                            <XUserCard user={i.node} noPath={true} customButton={null} />
+                            <UUserView
+                                user={i.node}
+                                onClick={() => (props as any).onPick(i.node.name, i.node.id)}
+                            />
                         </XView>
                     );
                 })}

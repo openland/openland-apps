@@ -41,10 +41,11 @@ interface UListItemProps {
     textRight?: string;
     rightElement?: JSX.Element;
     hovered?: boolean;
+    disabled?: boolean;
 }
 
 export const UListItem = React.memo((props: UListItemProps) => {
-    const { title, titleIcon, subtitle, description, descriptionColor, icon, iconBackground, iconColor, avatar, onClick, path, large, useRadius, textRight, rightElement, hovered } = props;
+    const { title, titleIcon, subtitle, description, descriptionColor, icon, iconBackground, iconColor, avatar, onClick, path, large, useRadius, textRight, rightElement, hovered, disabled } = props;
     const height = large ? 80 : ((!!avatar || !!iconBackground) ? 56 : 48);
 
     const titleFont = !!description ? TextStyles.Label1 : TextStyles.Body;
@@ -52,23 +53,8 @@ export const UListItem = React.memo((props: UListItemProps) => {
     const descriptionFont = large ? TextStyles.Densed : TextStyles.Caption;
     const textRightFont = TextStyles.Body;
 
-    return (
-        <XView
-            height={height}
-            paddingHorizontal={16}
-            alignItems="center"
-            flexDirection="row"
-            backgroundColor={hovered ? ThemeDefault.backgroundPrimaryHover : undefined}
-            hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
-            selectedBackgroundColor={ThemeDefault.accentPrimary}
-            selectedHoverBackgroundColor={ThemeDefault.accentPrimaryHover}
-            selectedColor={ThemeDefault.foregroundInverted}
-            cursor="pointer"
-            borderRadius={useRadius ? 8 : 0}
-            onClick={onClick}
-            path={path}
-            linkSelectable={true}
-        >
+    const content = (
+        <>
             {!!icon && !iconBackground && <XView marginRight={16} width={24} height={24} alignItems="center" justifyContent="center"><SelectableSVG icon={icon} /></XView>}
             {!!icon && !!iconBackground && <XView marginRight={16} width={40} height={40} borderRadius={20} backgroundColor={iconBackground} alignItems="center" justifyContent="center"><UIcon icon={icon} color={iconColor || '#FFFFFF'} /></XView>}
             {!!avatar && !icon && (
@@ -113,6 +99,41 @@ export const UListItem = React.memo((props: UListItemProps) => {
                     {rightElement}
                 </XView>
             )}
+        </>
+    );
+
+    if (disabled) {
+        return (
+            <XView
+                height={height}
+                paddingHorizontal={16}
+                alignItems="center"
+                flexDirection="row"
+                opacity={0.4}
+            >
+                {content}
+            </XView>
+        );
+    }
+
+    return (
+        <XView
+            height={height}
+            paddingHorizontal={16}
+            alignItems="center"
+            flexDirection="row"
+            backgroundColor={hovered ? ThemeDefault.backgroundPrimaryHover : undefined}
+            hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
+            selectedBackgroundColor={ThemeDefault.accentPrimary}
+            selectedHoverBackgroundColor={ThemeDefault.accentPrimaryHover}
+            selectedColor={ThemeDefault.foregroundInverted}
+            cursor="pointer"
+            borderRadius={useRadius ? 8 : 0}
+            onClick={onClick}
+            path={path}
+            linkSelectable={true}
+        >
+            {content}
         </XView>
     );
 });

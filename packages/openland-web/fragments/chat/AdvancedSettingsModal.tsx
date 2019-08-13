@@ -5,7 +5,6 @@ import { XAvatarFormFieldComponent, StoredFileT } from 'openland-x/XAvatarUpload
 import { XView } from 'react-mental';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { XTextArea } from 'openland-x/XTextArea';
-import { XUserCard } from 'openland-x/cards/XUserCard';
 import {
     Room_room_SharedRoom_welcomeMessage_sender,
     Room_room_SharedRoom,
@@ -18,6 +17,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-x-modal/XModal';
 import { XButton } from 'openland-x/XButton';
+import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 
 interface AdvancedSettingsInnerProps {
     roomId: string;
@@ -29,8 +29,6 @@ interface AdvancedSettingsInnerProps {
 }
 
 const UsersWrapperClassName = css`
-    padding-left: 16px;
-    padding-right: 16px;
     overflow: hidden;
     background-color: #fff;
     border-radius: 6px;
@@ -175,15 +173,13 @@ const ModalBody = (props: ModalBodyProps) => {
                                                 label: i.name,
                                             };
                                             return (
-                                                <XUserCard
+                                                <UUserView
                                                     key={'user_card' + i.id}
                                                     user={i}
-                                                    customButton={null}
                                                     onClick={() => {
                                                         welcomeMsgSenderOnChange(userData);
                                                         setIsOpenUsers(!isOpenUsers);
                                                     }}
-                                                    noPath={true}
                                                 />
                                             );
                                         })}
@@ -258,14 +254,14 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide
     const [socialImageRef, setSocialImageRef] = React.useState<StoredFileT | undefined>(
         chat!.socialImage
             ? {
-                  uuid: chat!.socialImage,
-                  crop: {
-                      w: 190,
-                      h: 100,
-                      x: 0,
-                      y: 0,
-                  },
-              }
+                uuid: chat!.socialImage,
+                crop: {
+                    w: 190,
+                    h: 100,
+                    x: 0,
+                    y: 0,
+                },
+            }
             : undefined,
     );
 
@@ -357,8 +353,8 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide
                             input: {
                                 ...(newSocialImage && newSocialImage.uuid !== chat.socialImage
                                     ? {
-                                          socialImageRef: sanitizeImageRef(newSocialImage),
-                                      }
+                                        socialImageRef: sanitizeImageRef(newSocialImage),
+                                    }
                                     : {}),
                             },
                         });

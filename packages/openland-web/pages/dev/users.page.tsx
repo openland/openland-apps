@@ -6,11 +6,11 @@ import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
 import { XView } from 'react-mental';
 import { XInput } from 'openland-x/XInput';
-import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 
 interface ExplorePeopleProps {
     variables: { query?: string };
@@ -97,10 +97,10 @@ const ExplorePeople = (props: ExplorePeopleProps) => {
             <div className={UsersPickerWrapperClassName}>
                 {data.items.edges.map(i => (
                     <XView key={i.node.id} flexShrink={0}>
-                        <XUserCard
+                        <UUserView
                             user={i.node}
-                            noPath={true}
-                            customButton={<BlockUserButton id={i.node.id} />}
+                            onClick={() => { return; }}
+                            rightElement={<BlockUserButton id={i.node.id} />}
                         />
                     </XView>
                 ))}

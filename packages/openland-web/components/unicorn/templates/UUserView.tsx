@@ -38,10 +38,13 @@ interface UUserViewProps {
     badge?: UserBadge | null;
     role?: RoomMemberRole | OrganizationMemberRole;
     rightElement?: JSX.Element;
+    onClick?: () => void;
+    wrapped?: boolean;
+    disabled?: boolean;
 }
 
 export const UUserView = React.memo((props: UUserViewProps) => {
-    const { user, badge, role, rightElement } = props;
+    const { user, badge, role, rightElement, onClick, wrapped, disabled } = props;
     const { id, photo, name, online, shortname, primaryOrganization } = user;
 
     return (
@@ -53,9 +56,11 @@ export const UUserView = React.memo((props: UUserViewProps) => {
                 <UPresence suffix={badge ? ' · ' + badge.name : undefined} user={props.user} />
             }
             avatar={{ photo, id, title: name, online }}
-            useRadius={true}
-            path={`/${shortname || id}`}
+            useRadius={!wrapped ? true : false}
+            path={!onClick ? `/${shortname || id}` : undefined}
+            onClick={onClick}
             rightElement={rightElement}
+            disabled={disabled}
         />
     );
 });
