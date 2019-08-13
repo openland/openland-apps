@@ -4,7 +4,6 @@ import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButt
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder, MenuItem } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { OpenlandClient } from 'openland-api/OpenlandClient';

@@ -1,7 +1,5 @@
 import * as React from 'react';
-import XPopper from 'openland-x/XPopper';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
-import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { showCreateGroupModal } from 'openland-web/fragments/chat/showCreateGroupModal';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
