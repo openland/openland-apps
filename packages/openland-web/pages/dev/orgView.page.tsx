@@ -6,8 +6,6 @@ import { UserSelect } from '../../api/UserSelect';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { XButton } from 'openland-x/XButton';
-// import { XTable } from 'openland-x/XTable';
-import { XOverflow } from '../../components/XOverflow';
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { XModalFooter } from 'openland-x-modal/XModal';
@@ -570,15 +568,10 @@ export default withApp('Super Organization', 'super-admin', () => {
                 {actionsButton && <SuspendButton accountId={accountId} />}
                 {actionsButton && <PendButton accountId={accountId} />}
                 {actionsButton && <DeleteButton accountId={accountId} orgId={superAccount.orgId} />}
-                <XOverflow
-                    placement="bottom-end"
-                    content={
-                        <AlterOrgPublishedButton
-                            accountId={accountId}
-                            orgId={superAccount.orgId}
-                            published={superAccount.published}
-                        />
-                    }
+                <AlterOrgPublishedButton
+                    accountId={accountId}
+                    orgId={superAccount.orgId}
+                    published={superAccount.published}
                 />
             </XHeader>
             <XHeader text="Members" description={superAccount.members.length + ' total'} />
