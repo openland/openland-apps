@@ -12,11 +12,12 @@ const container = css`
     padding: 8px 0;
 `;
 
-interface MenuItem {
+export interface MenuItem {
     title: string;
     icon?: JSX.Element;
     onClick?: () => void;
     action?: () => void;
+    path?: string;
 }
 interface MenuElementItem {
     element: (ctx: UPopperController) => JSX.Element;
@@ -42,34 +43,42 @@ const MenuItemComponent = (props: { item: MenuItem, ctx: UPopperController }) =>
             title={item.title}
             icon={loading ? <XLoader size="small" transparentBackground={true} /> : item.icon}
             onClick={onClick}
+            path={item.path}
         />
     );
 };
 
 export class UPopperMenuBuilder {
-    private items: ((MenuItem & { _type: 'item' }) | (MenuElementItem & { _type: 'element' }))[] = [];
+    private _items: ((MenuItem & { _type: 'item' }) | (MenuElementItem & { _type: 'element' }))[] = [];
 
     item = (item: MenuItem) => {
-        this.items.push({ ...item, _type: 'item' });
+        this._items.push({ ...item, _type: 'item' });
+        return this;
+    }
+
+    items = (items: MenuItem[]) => {
+        items.map(item => {
+            this._items.push({ ...item, _type: 'item' });
+        });
+
         return this;
     }
 
     element = (element: (ctx: UPopperController) => JSX.Element) => {
-        this.items.push({ element, _type: 'element' });
+        this._items.push({ element, _type: 'element' });
         return this;
     }
 
     build = (ctx: UPopperController) => {
-
         return (
             <div className={container}>
-                {this.items.map(item => {
+                {this._items.map((item, index) => {
                     if (item._type === 'item') {
                         return (
-                            <MenuItemComponent item={item} ctx={ctx} />
+                            <MenuItemComponent item={item} ctx={ctx} key={`item-${index}`} />
                         );
                     } else if (item._type === 'element') {
-                        return item.element(ctx);
+                        return <div key={`item-${index}`}>{item.element(ctx)}</div>;
                     }
                     return null;
                 })}
