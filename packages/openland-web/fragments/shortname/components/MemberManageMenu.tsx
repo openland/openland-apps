@@ -100,11 +100,9 @@ const getMenuContent = (opts: MenuContentOpts) => {
     return res;
 };
 
-const MenuComponent = React.memo((props: { ctx: UPopperController, items: MenuItem[] }) => {
-    const { ctx, items } = props;
-
-    return (new UPopperMenuBuilder()).items(items).build(ctx);
-});
+const MenuComponent = React.memo((props: { ctx: UPopperController, items: MenuItem[] }) => (
+    new UPopperMenuBuilder().items(props.items).build(props.ctx)
+));
 
 interface MemberManageMenu {
     organization: OrganizationWithoutMembers_organization;

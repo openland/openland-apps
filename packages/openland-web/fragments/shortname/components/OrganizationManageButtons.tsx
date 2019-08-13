@@ -58,8 +58,6 @@ const MenuComponent = React.memo((props: OrganizationManageButtonsProps & { ctx:
     return builder.build(ctx);
 });
 
-export const OrganizationManageButtons = React.memo((props: OrganizationManageButtonsProps) => {
-    return (
-        <UMoreButton menu={ctx => <MenuComponent {...props} ctx={ctx} />} />
-    );
-});
+export const OrganizationManageButtons = React.memo((props: OrganizationManageButtonsProps) => (
+    <UMoreButton menu={ctx => <MenuComponent {...props} ctx={ctx} />} />
+));

@@ -26,10 +26,9 @@ interface MenuElementItem {
 }
 
 const MenuItemComponent = (props: { item: MenuItem, ctx: UPopperController }) => {
-    let { item, ctx } = props;
-    let [loading, setLoading] = React.useState(false);
-    let onClick = React.useCallback(async () => {
-
+    const { item, ctx } = props;
+    const [loading, setLoading] = React.useState(false);
+    const onClick = React.useCallback(async () => {
         if (item.action) {
             setLoading(true);
             await item.action();
@@ -48,11 +47,12 @@ const MenuItemComponent = (props: { item: MenuItem, ctx: UPopperController }) =>
             }
         }
     }, []);
+
     return (
         <UListItem
             title={item.title}
             icon={loading ? <XLoader size="small" transparentBackground={true} /> : item.icon}
-            onClick={onClick}
+            onClick={!item.path ? onClick : undefined}
             path={item.path}
         />
     );
