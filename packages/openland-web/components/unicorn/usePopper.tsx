@@ -22,6 +22,10 @@ const pickerInnerBody = css`
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
 `;
 
+const pickerInnerBodyNoWrap = css`
+    display: flex;
+`;
+
 interface PopperBodyRef {
     hide: () => void;
     instantHide: () => void;
@@ -41,6 +45,7 @@ const PopperBody = React.memo(React.forwardRef((props: {
     hideOnLeave: boolean;
     hideOnEsc?: boolean;
     borderRadius?: number;
+    useWrapper?: boolean;
 }, ref: React.Ref<PopperBodyRef>) => {
     const [visible, setVisible] = React.useState(true);
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -106,7 +111,7 @@ const PopperBody = React.memo(React.forwardRef((props: {
             onMouseDown={eventBorder}
             onClick={eventBorder}
         >
-            <div className={pickerInnerBody} style={{ borderRadius: props.borderRadius }}>
+            <div className={props.useWrapper === false ? pickerInnerBodyNoWrap : pickerInnerBody} style={{ borderRadius: props.borderRadius }}>
                 {props.children}
             </div>
         </div>
@@ -122,6 +127,7 @@ interface PopperConfig {
     hideOnEsc?: boolean;
     borderRadius?: number;
     scope?: string;
+    useWrapper?: boolean;
 }
 
 export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController) => React.ReactElement<{}>): [boolean, (element: HTMLElement | React.MouseEvent<unknown>) => void] => {
@@ -190,6 +196,7 @@ export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController)
                         hideOnLeave={config.hideOnLeave !== undefined ? config.hideOnLeave : false}
                         hideOnEsc={config.hideOnEsc}
                         borderRadius={config.borderRadius}
+                        useWrapper={config.useWrapper}
                     >
                         {popper(fakeCtx)}
                     </PopperBody>

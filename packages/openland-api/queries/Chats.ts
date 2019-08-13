@@ -279,6 +279,10 @@ export const RoomChatQuery = gql`
                 pinnedMessage {
                     ...FullMessage
                 }
+                settings{
+                    id
+                    mute
+                }
             }
             ... on SharedRoom {
                 id
@@ -292,6 +296,10 @@ export const RoomChatQuery = gql`
                 membersCount
                 pinnedMessage {
                     ...FullMessage
+                }
+                settings{
+                    id
+                    mute
                 }
             }
         }

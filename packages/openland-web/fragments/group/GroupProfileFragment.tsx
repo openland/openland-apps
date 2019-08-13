@@ -29,8 +29,8 @@ export const GroupProfileFragment = React.memo((props) => {
     const initialMembers = client.useRoomMembersPaginated({ roomId: unicorn.id, first: 15 }, { fetchPolicy: 'cache-and-network' }).members;
     const { id, isChannel, membersCount, photo, title, description, organization, settings } = group;
 
-    const [ members, setMembers ] = React.useState(initialMembers);
-    const [ loading, setLoading ] = React.useState(false);
+    const [members, setMembers] = React.useState(initialMembers);
+    const [loading, setLoading] = React.useState(false);
 
     const handleLoadMore = React.useCallback(async () => {
         if (membersCount && (members.length < membersCount && !loading)) {
@@ -45,7 +45,7 @@ export const GroupProfileFragment = React.memo((props) => {
             setMembers([...members, ...loaded.filter(m => !members.find(m2 => m2.user.id === m.user.id))]);
             setLoading(false);
         }
-    }, [ membersCount, members, loading ]);
+    }, [membersCount, members, loading]);
 
     return (
         <UFlatList

@@ -22,7 +22,7 @@ export const GroupManageButtons = React.memo((props: GroupManageButtons) => {
 
     return (
         <UMoreButtonDeprecated {...other}>
-            {canEdit && <UListItem title="Edit" icon={<EditIcon />} onClick={() => showRoomEditModal(id, isChannel)} />}
+            {canEdit && <UListItem title="Edit" icon={<EditIcon />} onClick={() => showRoomEditModal(id)} />}
             {canAdvencedEdit && <UListItem title="Advanced settings" icon={<EditIcon />} onClick={() => showAdvancedSettingsModal(id)} />}
             <UListItem title={'Leave ' + typeString} icon={<LeaveIcon />} onClick={() => leaveChatModal(id)} />
         </UMoreButtonDeprecated>

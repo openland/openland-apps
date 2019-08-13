@@ -18330,11 +18330,18 @@ export interface RoomChat_room_PrivateRoom_pinnedMessage_ServiceMessage {
 
 export type RoomChat_room_PrivateRoom_pinnedMessage = RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage | RoomChat_room_PrivateRoom_pinnedMessage_ServiceMessage;
 
+export interface RoomChat_room_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface RoomChat_room_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
   user: RoomChat_room_PrivateRoom_user;
   pinnedMessage: RoomChat_room_PrivateRoom_pinnedMessage | null;
+  settings: RoomChat_room_PrivateRoom_settings;
 }
 
 export interface RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage_sender_primaryOrganization {
@@ -19281,6 +19288,12 @@ export interface RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage {
 
 export type RoomChat_room_SharedRoom_pinnedMessage = RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage | RoomChat_room_SharedRoom_pinnedMessage_ServiceMessage;
 
+export interface RoomChat_room_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
 export interface RoomChat_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -19293,6 +19306,7 @@ export interface RoomChat_room_SharedRoom {
   photo: string;
   membersCount: number | null;
   pinnedMessage: RoomChat_room_SharedRoom_pinnedMessage | null;
+  settings: RoomChat_room_SharedRoom_settings;
 }
 
 export type RoomChat_room = RoomChat_room_PrivateRoom | RoomChat_room_SharedRoom;

@@ -174,10 +174,10 @@ const RoomEditModal = ({ chatId, hide }: { chatId: string; hide: () => void }) =
     );
 };
 
-export const showRoomEditModal = (chatId: string, isChannel: boolean) => {
+export const showRoomEditModal = (chatId: string) => {
     showModalBox(
         {
-            title: isChannel ? 'Channel settings' : 'Group settings',
+            title: 'Settings',
         },
         ctx => <RoomEditModal chatId={chatId} hide={ctx.hide} />,
     );

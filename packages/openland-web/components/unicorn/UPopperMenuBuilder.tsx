@@ -18,6 +18,8 @@ export interface MenuItem {
     onClick?: () => void;
     action?: () => void;
     path?: string;
+    closeAfterAction?: boolean;
+    closeDelay?: number;
 }
 interface MenuElementItem {
     element: (ctx: UPopperController) => JSX.Element;
@@ -36,7 +38,15 @@ const MenuItemComponent = (props: { item: MenuItem, ctx: UPopperController }) =>
         if (item.onClick) {
             item.onClick();
         }
-        ctx.hide();
+        if (item.closeAfterAction !== false) {
+            if (item.closeDelay) {
+                setTimeout(() => {
+                    ctx.hide();
+                }, item.closeDelay);
+            } else {
+                ctx.hide();
+            }
+        }
     }, []);
     return (
         <UListItem

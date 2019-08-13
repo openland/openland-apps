@@ -7,6 +7,11 @@ query RoomChat($id: ID!) {
         __typename
         ...FullMessage
       }
+      settings {
+        __typename
+        id
+        mute
+      }
       user {
         __typename
         id
@@ -34,6 +39,11 @@ query RoomChat($id: ID!) {
         ...FullMessage
       }
       role
+      settings {
+        __typename
+        id
+        mute
+      }
       title
     }
   }
