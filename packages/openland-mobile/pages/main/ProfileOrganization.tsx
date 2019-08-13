@@ -66,14 +66,15 @@ const PrivateProfile = XMemo<PageProps & { organization: OrganizationWithoutMemb
 });
 
 const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
-    const settings = getClient().useAccountSettings();
-    const organization = getClient().useOrganizationWithoutMembers({ organizationId: props.router.params.id }, { fetchPolicy: 'cache-and-network' }).organization;
+    const client = getClient();
+    const settings = client.useAccountSettings();
+    const organization = client.useOrganizationWithoutMembers({ organizationId: props.router.params.id }, { fetchPolicy: 'cache-and-network' }).organization;
 
     if (!organization.isMine && organization.isPrivate) {
         return <PrivateProfile {...props} organization={organization} />;
     }
 
-    const initialMembers = getClient().useOrganizationMembers({ organizationId: props.router.params.id, first: 10 }, { fetchPolicy: 'cache-and-network' }).organization.members;
+    const initialMembers = client.useOrganizationMembers({ organizationId: props.router.params.id, first: 10 }, { fetchPolicy: 'cache-and-network' }).organization.members;
 
     const myUserID = getMessenger().engine.user.id;
     const canMakePrimary = organization.isMine && organization.id !== (settings.me && settings.me.primaryOrganization && settings.me.primaryOrganization.id) && !organization.isCommunity;
@@ -85,24 +86,31 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
     const [members, setMembers] = React.useState(initialMembers);
     const [loading, setLoading] = React.useState(false);
 
+    const handleAddMembers = React.useCallback((addedMembers: OrganizationMembers_organization_members[]) => {
+        setMembers(current => [...current, ...addedMembers]);
+    }, [members]);
+
+    const handleRemoveMember = React.useCallback((memberId: string) => {
+        setMembers(current => current.filter(m => m.user.id !== memberId));
+    }, [members]);
+
+    const handleChangeMemberRole = React.useCallback((memberId: string, newRole: OrganizationMemberRole) => {
+        setMembers(current => current.map(m => m.user.id === memberId ? { ...m, role: newRole } : m));
+    }, [members]);
+
     // callbacks
-    const resetMembersList = React.useCallback(async () => {
-        const loaded = await getClient().queryOrganizationMembersShortPaginated({
-            organizationId: organization.id,
-            first: 10,
-        }, { fetchPolicy: 'network-only' });
-
-        setMembers(loaded.organization.members);
-    }, [organization.id]);
-
     const handleAddMember = React.useCallback(() => {
         Modals.showUserMuptiplePicker(props.router, {
             title: 'Add',
             action: async (users) => {
                 startLoader();
                 try {
-                    await getMessenger().engine.client.mutateOrganizationAddMember({ userIds: users.map(u => u.id), organizationId: organization.id });
-                    await resetMembersList();
+                    const addedMembers = (await client.mutateOrganizationAddMember({
+                        userIds: users.map(u => u.id),
+                        organizationId: organization.id
+                    })).alphaOrganizationMemberAdd;
+
+                    handleAddMembers(addedMembers);
                 } catch (e) {
                     Alert.alert(formatError(e));
                 }
@@ -140,12 +148,12 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             builder.action('Make primary', async () => {
                 startLoader();
                 try {
-                    await getClient().mutateProfileUpdate({
+                    await client.mutateProfileUpdate({
                         input: {
                             alphaPrimaryOrganizationId: organization.id,
                         },
                     });
-                    await getClient().refetchAccountSettings();
+                    await client.refetchAccountSettings();
 
                     props.router.back();
                 } finally {
@@ -161,12 +169,12 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                         .title('Are you sure want to leave?')
                         .button('Cancel', 'cancel')
                         .action('Leave', 'destructive', async () => {
-                            await getClient().mutateOrganizationRemoveMember({
+                            await client.mutateOrganizationRemoveMember({
                                 memberId: myUserID,
                                 organizationId: props.router.params.id,
                             });
-                            await getClient().refetchOrganization({ organizationId: props.router.params.id });
-                            await getClient().refetchAccountSettings();
+                            await client.refetchOrganization({ organizationId: props.router.params.id });
+                            await client.refetchAccountSettings();
 
                             props.router.back();
                         })
@@ -182,8 +190,8 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                     .message(`Are you sure you want to delete ${organization.name}? This cannot be undone.`)
                     .button('Cancel', 'cancel')
                     .action('Delete', 'destructive', async () => {
-                        await getClient().mutateDeleteOrganization({ organizationId: organization.id });
-                        await getClient().refetchAccountSettings();
+                        await client.mutateDeleteOrganization({ organizationId: organization.id });
+                        await client.refetchAccountSettings();
 
                         props.router.back();
                     }).show();
@@ -210,13 +218,17 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                             .title(`Change role for ${user.name} to ${member.role === 'MEMBER' ? `Admin? Admins have full control over the ${typeString} account.` : `Member? Members can participate in the ${typeString}\'s chats.`}`)
                             .button('Cancel', 'cancel')
                             .action('Change role', 'default', async () => {
-                                await getClient().mutateOrganizationChangeMemberRole({
+                                const newRole = member.role === 'MEMBER' ? OrganizationMemberRole.ADMIN : OrganizationMemberRole.MEMBER;
+
+                                await client.mutateOrganizationChangeMemberRole({
                                     memberId: user.id,
                                     organizationId: props.router.params.id,
-                                    newRole: (member.role === 'MEMBER' ? OrganizationMemberRole.ADMIN : OrganizationMemberRole.MEMBER),
+                                    newRole
                                 });
-                                await getClient().refetchOrganization({ organizationId: props.router.params.id });
-                                await resetMembersList();
+
+                                await client.refetchOrganization({ organizationId: props.router.params.id });
+
+                                handleChangeMemberRole(user.id, newRole);
                             }).show();
                     }, false, require('assets/ic-star-24.png')
                 );
@@ -229,12 +241,12 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                             .title('Are you sure want to leave?')
                             .button('Cancel', 'cancel')
                             .action('Leave', 'destructive', async () => {
-                                await getClient().mutateOrganizationRemoveMember({
+                                await client.mutateOrganizationRemoveMember({
                                     memberId: user.id,
                                     organizationId: props.router.params.id,
                                 });
-                                await getClient().refetchOrganization({ organizationId: props.router.params.id });
-                                await getClient().refetchAccountSettings();
+                                await client.refetchOrganization({ organizationId: props.router.params.id });
+                                await client.refetchAccountSettings();
 
                                 props.router.back();
                             })
@@ -250,13 +262,13 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                             .title(`Are you sure want to remove ${user.name}? They will be removed from all internal chats at ${organization.name}.`)
                             .button('Cancel', 'cancel')
                             .action('Remove', 'destructive', async () => {
-                                await getClient().mutateOrganizationRemoveMember({
+                                await client.mutateOrganizationRemoveMember({
                                     memberId: user.id,
                                     organizationId: props.router.params.id,
                                 });
-                                await getClient().refetchOrganization({ organizationId: props.router.params.id });
+                                await client.refetchOrganization({ organizationId: props.router.params.id });
 
-                                await resetMembersList();
+                                handleRemoveMember(user.id);
                             })
                             .show();
                     }, false, require('assets/ic-leave-24.png')
@@ -271,7 +283,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
         if (members.length < organization.membersCount && !loading) {
             setLoading(true);
 
-            const loaded = (await getClient().queryOrganizationMembers({
+            const loaded = (await client.queryOrganizationMembers({
                 organizationId: organization.id,
                 first: 10,
                 after: members[members.length - 1].user.id,
