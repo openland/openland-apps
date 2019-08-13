@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { UAvatar } from './UAvatar';
 import { TextStyles } from 'openland-web/utils/TextStyles';
@@ -6,11 +7,24 @@ import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { ThemeDefault } from 'openland-y-utils/themes';
 import { showAvatarModal } from '../showAvatarModal';
 
+const titleStyle = css`
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
+
 const Score = (props: { value: number }) => {
-    const richText = 'User\'s reach is the total number of people in community groups they are in';
+    const richText = "User's reach is the total number of people in community groups they are in";
     const [show] = useCaptionPopper(richText, 'bottom');
     return (
-        <XView position="absolute" left={0} bottom={-6} right={0} alignItems="center" onMouseEnter={show}>
+        <XView
+            position="absolute"
+            left={0}
+            bottom={-6}
+            right={0}
+            alignItems="center"
+            onMouseEnter={show}
+        >
             <XView
                 {...TextStyles.Label2}
                 borderWidth={2}
@@ -32,7 +46,7 @@ interface UListHeroProps {
     score?: number;
     description?: string | JSX.Element;
     descriptionColor?: string;
-    avatar?: { photo: string | null; id: string; title: string; };
+    avatar?: { photo: string | null; id: string; title: string };
     children?: any;
 }
 
@@ -40,12 +54,7 @@ export const UListHero = (props: UListHeroProps) => {
     const { title, score, description, descriptionColor, avatar, children } = props;
 
     return (
-        <XView
-            marginBottom={32}
-            height={72}
-            paddingHorizontal={16}
-            flexDirection="row"
-        >
+        <XView marginBottom={32} height={72} paddingHorizontal={16} flexDirection="row">
             {!!avatar && (
                 <XView marginRight={16} position="relative">
                     <UAvatar
@@ -54,24 +63,30 @@ export const UListHero = (props: UListHeroProps) => {
                         onClick={
                             avatar.photo && !avatar.photo.startsWith('ph://')
                                 ? () => showAvatarModal(avatar.photo!)
-                                : undefined}
+                                : undefined
+                        }
                     />
                     {!!score && <Score value={score} />}
                 </XView>
             )}
 
-            <XView flexGrow={1} flexDirection="column" justifyContent="center">
-                <XView
-                    {...TextStyles.Title2}
-                    color={ThemeDefault.foregroundPrimary}
-                >
-                    {title}
+            <XView
+                flexGrow={1}
+                flexShrink={1}
+                overflow="hidden"
+                flexDirection="column"
+                justifyContent="center"
+            >
+                <XView {...TextStyles.Title2} color={ThemeDefault.foregroundPrimary}>
+                    <span className={titleStyle}>{title}</span>
                 </XView>
 
                 {!!description && (
                     <XView
                         {...TextStyles.Densed}
-                        color={descriptionColor ? descriptionColor : ThemeDefault.foregroundSecondary}
+                        color={
+                            descriptionColor ? descriptionColor : ThemeDefault.foregroundSecondary
+                        }
                         marginTop={4}
                     >
                         {description}

@@ -26,6 +26,12 @@ const secondadyAcent = css`
     color: #1885F2;
 `;
 
+const titleStyle = css`
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
+
 const menuButton = css`
     width: 56px;
     height: 56px;
@@ -141,9 +147,10 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     color={ThemeDefault.foregroundPrimary}
                     hoverColor={ThemeDefault.accentPrimary}
                     cursor="pointer"
+                    overflow="hidden"
                     path={props.chat.__typename === 'PrivateRoom' ? `/${props.chat.user.shortname || props.chat.user.id}` : `/group/${props.chat.id}`}
                 >
-                    <span>
+                    <span className={titleStyle}>
                         {title}
                         {props.chat.__typename === 'PrivateRoom' && props.chat.user.primaryOrganization && (
                             <span className={secondary}>{props.chat.user.primaryOrganization.name}</span>
