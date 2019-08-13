@@ -11,6 +11,7 @@ import {
     OrganizationMembersShort,
     RoomMembersShort,
     OrganizationMembers_organization_members,
+    RoomMembersPaginated_members,
 } from 'openland-api/Types';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
@@ -37,7 +38,7 @@ import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 interface RenewInviteLinkButtonProps {
     id: string;
     onClick: () => void;
-    isRoom: boolean;
+    isGroup: boolean;
     isOrganization: boolean;
 }
 
@@ -46,7 +47,7 @@ const RenewInviteLinkButton = (props: RenewInviteLinkButtonProps) => {
     const id = props.id;
     let renew = undefined;
 
-    if (props.isRoom) {
+    if (props.isGroup) {
         renew = async () => {
             await client.mutateRoomRenewInviteLink({ roomId: id });
             await client.refetchRoomInviteLink({ roomId: id });
@@ -90,7 +91,7 @@ const InputClassName = css`
 interface OwnerLinkComponentProps {
     id: string;
     invite: string;
-    isRoom: boolean;
+    isGroup: boolean;
     isChannel?: boolean;
     isOrganization: boolean;
     isCommunity?: boolean;
@@ -155,7 +156,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
 
     private copy = (e: any) => {
         const { props } = this;
-        const objType = props.isRoom
+        const objType = props.isGroup
             ? props.isChannel
                 ? 'channel'
                 : 'group'
@@ -242,7 +243,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
                                         <RenewInviteLinkButton
                                             id={props.id}
                                             onClick={this.resetLink}
-                                            isRoom={props.isRoom}
+                                            isGroup={props.isGroup}
                                             isOrganization={props.isOrganization}
                                         />
                                     </RenewInviteLinkButtonWrapper>
@@ -278,7 +279,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
 
 type OwnerLinkT = {
     id: string;
-    isRoom: boolean;
+    isGroup: boolean;
     isChannel?: boolean;
     isOrganization: boolean;
     isCommunity?: boolean;
@@ -289,7 +290,7 @@ const OwnerLink = (props: OwnerLinkT) => {
 
     let data = null;
     let link = null;
-    if (props.isRoom) {
+    if (props.isGroup) {
         data = client.useRoomInviteLink({ roomId: props.id });
         link = data.link;
     }
@@ -308,7 +309,7 @@ const OwnerLink = (props: OwnerLinkT) => {
         <OwnerLinkComponent
             invite={link}
             id={props.id}
-            isRoom={props.isRoom}
+            isGroup={props.isGroup}
             isChannel={props.isChannel}
             isOrganization={props.isOrganization}
             isCommunity={props.isCommunity}
@@ -400,7 +401,7 @@ interface InviteModalProps extends XModalProps {
         };
     }[];
     isMobile: boolean;
-    isRoom: boolean;
+    isGroup: boolean;
     isChannel?: boolean;
     isOrganization: boolean;
     isCommunity?: boolean;
@@ -467,7 +468,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                 invitesUsersIds.push(v);
             });
         }
-        const objType = props.isRoom
+        const objType = props.isGroup
             ? props.isChannel
                 ? 'channel'
                 : 'group'
@@ -487,7 +488,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                         <XView marginBottom={26}>
                             <OwnerLink
                                 id={props.id}
-                                isRoom={props.isRoom}
+                                isGroup={props.isGroup}
                                 isChannel={props.isChannel}
                                 isOrganization={props.isOrganization}
                                 isCommunity={props.isCommunity}
@@ -528,7 +529,7 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
                         style="primary"
                         size="large"
                         onClick={async () => {
-                            if (props.isRoom) {
+                            if (props.isGroup) {
                                 await (props.addMembers as RoomAddMembersType)({
                                     variables: {
                                         roomId: props.id,
@@ -563,12 +564,13 @@ class AddMemberModalInner extends React.Component<InviteModalProps, InviteModalS
 
 type AddMemberModalT = {
     id: string;
-    isRoom: boolean;
+    isGroup: boolean;
     isChannel?: boolean;
     isOrganization: boolean;
     isCommunity?: boolean;
 
     onOrganizationMembersAdd?: (members: OrganizationMembers_organization_members[]) => void;
+    onGroupMembersAdd?: (members: RoomMembersPaginated_members[]) => void;
 };
 
 interface AddMemberToRoom {
@@ -588,11 +590,12 @@ interface AddMemberToOrganization {
 export const AddMembersModal = React.memo(
     ({
         id,
-        isRoom,
+        isGroup,
         isChannel,
         isOrganization,
         isCommunity,
         onOrganizationMembersAdd,
+        onGroupMembersAdd,
         hide,
     }: AddMemberModalT & XModalProps & { hide?: () => void }) => {
         const isMobile = React.useContext(IsMobileContext);
@@ -622,7 +625,7 @@ export const AddMembersModal = React.memo(
 
         let data = null;
 
-        if (isRoom) {
+        if (isGroup) {
             data = client.useRoomMembersShort({ roomId: id });
         }
 
@@ -641,7 +644,7 @@ export const AddMembersModal = React.memo(
                         : (data as RoomMembersShort).members
                 }
                 isMobile={isMobile}
-                isRoom={isRoom}
+                isGroup={isGroup}
                 isChannel={isChannel}
                 isOrganization={isOrganization}
                 isCommunity={isCommunity}

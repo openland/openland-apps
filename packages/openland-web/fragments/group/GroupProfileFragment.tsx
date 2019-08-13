@@ -15,6 +15,7 @@ import { showAddMembersModal } from '../chat/showAddMembersModal';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { UListText } from 'openland-web/components/unicorn/UListText';
 import { GroupMemberMenu } from './components/GroupMemberMenu';
+import { RoomMembersPaginated_members } from 'openland-api/Types';
 
 export const GroupProfileFragment = React.memo((props) => {
     const client = useClient();
@@ -42,10 +43,18 @@ export const GroupProfileFragment = React.memo((props) => {
                 after: members[members.length - 1].user.id,
             }, { fetchPolicy: 'network-only' })).members;
 
-            setMembers([...members, ...loaded.filter(m => !members.find(m2 => m2.user.id === m.user.id))]);
+            setMembers(current => [...current, ...loaded.filter(m => !current.find(m2 => m2.user.id === m.user.id))]);
             setLoading(false);
         }
     }, [membersCount, members, loading]);
+
+    const handleAddMembers = React.useCallback((addedMembers: RoomMembersPaginated_members[]) => {
+        setMembers(current => [...current, ...addedMembers]);
+    }, [members]);
+
+    const handleRemoveMember = React.useCallback((memberId: string) => {
+        setMembers(current => current.filter(m => m.user.id !== memberId));
+    }, [members]);
 
     return (
         <UFlatList
@@ -57,7 +66,13 @@ export const GroupProfileFragment = React.memo((props) => {
                     key={'member-' + member.user.id}
                     user={member.user}
                     role={member.role}
-                    rightElement={<GroupMemberMenu group={group} member={member} />}
+                    rightElement={
+                        <GroupMemberMenu
+                            group={group}
+                            member={member}
+                            onRemove={handleRemoveMember}
+                        />
+                    }
                 />
             )}
             padded={false}
@@ -92,7 +107,13 @@ export const GroupProfileFragment = React.memo((props) => {
                         key={'featured-member-' + member.user.id}
                         user={member.user}
                         badge={member.badge}
-                        rightElement={<GroupMemberMenu group={group} member={member} />}
+                        rightElement={
+                            <GroupMemberMenu
+                                group={group}
+                                member={member}
+                                onRemove={handleRemoveMember}
+                            />
+                        }
                     />
                 ))}
             </UListGroup>
@@ -104,8 +125,9 @@ export const GroupProfileFragment = React.memo((props) => {
                     showAddMembersModal({
                         id,
                         isChannel,
-                        isRoom: true,
+                        isGroup: true,
                         isOrganization: false,
+                        onGroupMembersAdd: handleAddMembers
                     });
                 }}
             />

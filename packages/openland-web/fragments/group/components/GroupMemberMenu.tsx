@@ -12,18 +12,18 @@ import { useClient } from 'openland-web/utils/useClient';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 
-interface MenuContentOpts {
+interface GroupMemberMenuProps {
     group: RoomFullWithoutMembers_SharedRoom;
-    memberRef: React.MutableRefObject<RoomMembersPaginated_members>;
-    client: OpenlandClient;
+    member: RoomMembersPaginated_members;
+    onRemove: (memberId: string) => void;
 }
 
-const getMenuContent = (opts: MenuContentOpts) => {
+const getMenuContent = (opts: GroupMemberMenuProps & { client: OpenlandClient }) => {
     const res: MenuItem[] = [];
 
-    const { group, memberRef, client } = opts;
+    const { group, member, onRemove, client } = opts;
     const { id, isChannel } = group;
-    const { user, badge, canKick } = memberRef.current;
+    const { user, badge, canKick } = member;
 
     const typeString = isChannel ? 'channel' : 'group';
 
@@ -59,6 +59,8 @@ const getMenuContent = (opts: MenuContentOpts) => {
                     });
 
                     await client.refetchRoom({ id: group.id });
+
+                    onRemove(user.id);
                 }, 'danger');
 
                 builder.show();
@@ -73,20 +75,9 @@ const MenuComponent = React.memo((props: { ctx: UPopperController, items: MenuIt
     new UPopperMenuBuilder().items(props.items).build(props.ctx)
 ));
 
-interface GroupMemberMenuProps {
-    group: RoomFullWithoutMembers_SharedRoom;
-    member: RoomMembersPaginated_members;
-}
-
 export const GroupMemberMenu = React.memo((props: GroupMemberMenuProps) => {
     const client = useClient();
-    const { group, member } = props;
-
-    // Sorry universe
-    const memberRef = React.useRef(member);
-    memberRef.current = member;
-
-    const menuContent = getMenuContent({ group, memberRef, client });
+    const menuContent = getMenuContent({ ...props, client });
 
     if (menuContent.length <= 0) {
         return null;
@@ -97,7 +88,7 @@ export const GroupMemberMenu = React.memo((props: GroupMemberMenuProps) => {
             menu={ctx => (
                 <MenuComponent
                     ctx={ctx}
-                    items={getMenuContent({ group, memberRef, client })}
+                    items={menuContent}
                 />
             )}
         />

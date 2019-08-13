@@ -136,7 +136,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                         showAddMembersModal({
                             id,
                             isCommunity,
-                            isRoom: false,
+                            isGroup: false,
                             isOrganization: true,
                             onOrganizationMembersAdd: handleAddMembers
                         });
