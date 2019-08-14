@@ -7,7 +7,6 @@ import {
     DataSourceMessageItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { UploadCareUploading } from '../../../utils/UploadCareUploading';
 import {
     UserShort,
     SharedRoomKind,
@@ -29,7 +28,6 @@ import { InputMessageActionComponent } from './InputMessageActionComponent';
 import { SpanType, SpanUser } from 'openland-y-utils/spans/Span';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import { findSpans } from 'openland-y-utils/findSpans';
-import UploadCare from 'uploadcare-widget';
 import { DropZone } from './DropZone';
 import { showAttachConfirm } from './AttachConfirm';
 import AlertBlanket from 'openland-x/AlertBlanket';
@@ -352,8 +350,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     onAttach = (files: File[]) => {
         if (files.length) {
             showAttachConfirm(files, (res) => {
-                res.map(f => new UploadCareUploading(UploadCare.fileFrom('object', f), f.name))
-                    .map(this.conversation!.sendFile);
+                res.map(this.conversation!.sendFile);
             });
         }
     }

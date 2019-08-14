@@ -1,21 +1,26 @@
 import { UploadingFile, FileMetadata, UploadStatus } from 'openland-engines/messenger/types';
+import UploadCare from 'uploadcare-widget';
 
 export class UploadCareUploading implements UploadingFile {
     private file: UploadCare.File;
+    private sourceFile: File;
     private infoPromise: Promise<FileMetadata>;
-    constructor(file: UploadCare.File, origUrl: string) {
-        this.file = file;
+    private origUrl: string;
+    constructor(file: File) {
+        this.file = UploadCare.fileFrom('object', file);
+        this.sourceFile = file;
+        this.origUrl = file.name;
         let isFirst = true;
         let resolved = false;
         this.infoPromise = new Promise((resolver, reject) => {
-            file.fail(v => {
+            this.file.fail(v => {
                 if (resolved) {
                     return;
                 }
                 resolved = true;
                 reject(v);
             });
-            file.progress(v => {
+            this.file.progress(v => {
                 if (resolved) {
                     return;
                 }
@@ -25,17 +30,21 @@ export class UploadCareUploading implements UploadingFile {
                 isFirst = false;
                 let name = v.incompleteFileInfo.name || 'image.jpg';
                 resolved = true;
-                resolver({ name, uri: origUrl, fileSize: parseInt(v.incompleteFileInfo.size || '0', 10) });
+                resolver({ name, uri: this.origUrl, fileSize: parseInt(v.incompleteFileInfo.size || '0', 10) });
             });
-            file.done(v => {
+            this.file.done(v => {
                 if (resolved) {
                     return;
                 }
                 let name = v.name || 'image.jpg';
                 resolved = true;
-                resolver({ name, uri: origUrl, fileSize: parseInt(v.size || '0', 10) });
+                resolver({ name, uri: this.origUrl, fileSize: parseInt(v.size || '0', 10) });
             });
         });
+    }
+
+    getSourceFile(): File {
+        return this.sourceFile;
     }
 
     fetchInfo() {

@@ -43,11 +43,12 @@ interface CommentViewProps {
     onDeleteClick: (id: string) => void;
     onReactionClick: (comment: MessageComments_messageComments_comments_comment) => void;
     onSent: (data: URickTextValue) => void;
+    onSentAttach: (files: File[]) => void;
 }
 
 export const CommentView = React.memo((props: CommentViewProps) => {
     const messenger = React.useContext(MessengerContext);
-    const { comment, deleted, depth, highlighted, groupId, onReplyClick, onDeleteClick, onReactionClick, onSent } = props;
+    const { comment, deleted, depth, highlighted, groupId, onReplyClick, onDeleteClick, onReactionClick, onSent, onSentAttach } = props;
     const { id, sender, message, attachments, spans, fallback, date, reactions } = comment;
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
     const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
@@ -97,6 +98,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                 {highlighted && (
                     <CommentInput
                         onSent={onSent}
+                        onSentAttach={onSentAttach}
                         groupId={groupId}
                         compact={true}
                     />

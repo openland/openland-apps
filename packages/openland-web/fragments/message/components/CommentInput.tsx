@@ -17,18 +17,20 @@ const wrapperCompactClass = css`
 
 interface CommentInputProps {
     onSent: (data: URickTextValue) => void;
+    onSentAttach: (files: File[]) => void;
     groupId?: string;
     compact?: boolean;
 }
 
 export const CommentInput = React.memo((props: CommentInputProps) => {
-    const { onSent, groupId, compact } = props;
+    const { onSent, onSentAttach, groupId, compact } = props;
 
     return (
         <div className={compact ? wrapperCompactClass : wrapperClass}>
             <SendMessageComponent
                 groupId={groupId}
                 onTextSent={onSent}
+                onAttach={onSentAttach}
                 placeholder="Write a comment..."
             />
         </div>

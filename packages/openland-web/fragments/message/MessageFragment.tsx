@@ -12,6 +12,7 @@ import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacyment
 import UUID from 'uuid/v4';
 import { UserForMention } from 'openland-api/Types';
 import { UHeader } from 'openland-unicorn/UHeader';
+import { showAttachConfirm } from '../chat/components/AttachConfirm';
 
 const wrapperClass = css`
     display: flex;
@@ -67,6 +68,33 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
         }
     }, [messageId]);
 
+    const handleCommentSentAttach = React.useCallback((files: File[], replyId?: string) => {
+        if (files.length > 0) {
+            showAttachConfirm(files, (res) => new Promise((resolve, reject) => {
+                const uploadedFiles: string[] = [];
+
+                res.map(u => {
+                    u.watch((state) => {
+                        if (state.uuid && !uploadedFiles.includes(state.uuid)) {
+                            uploadedFiles.push(state.uuid);
+                        }
+
+                        if (uploadedFiles.length === res.length) {
+                            resolve();
+
+                            client.mutateAddMessageComment({
+                                messageId,
+                                repeatKey: UUID(),
+                                fileAttachments: uploadedFiles.map(f => ({ fileId: f })),
+                                replyComment: replyId
+                            });
+                        }
+                    });
+                });
+            }));
+        }
+    }, [messageId]);
+
     const groupId = message.source && message.source.__typename === 'MessageSourceChat' && message.source.chat.__typename === 'SharedRoom' ? message.source.chat.id : undefined;
 
     return (
@@ -74,11 +102,20 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
             <XScrollView3 flexGrow={1} flexBasis={0} flexShrink={1} alignItems="flex-start">
                 <div className={contentClass}>
                     <MessageView message={message} />
-                    <CommentsList messageId={messageId} groupId={groupId} onSent={handleCommentSent} />
+                    <CommentsList
+                        messageId={messageId}
+                        groupId={groupId}
+                        onSent={handleCommentSent}
+                        onSentAttach={handleCommentSentAttach}
+                    />
                 </div>
             </XScrollView3>
 
-            <CommentInput onSent={handleCommentSent} groupId={groupId} />
+            <CommentInput
+                onSent={handleCommentSent}
+                onSentAttach={handleCommentSentAttach}
+                groupId={groupId}
+            />
         </div>
     );
 });

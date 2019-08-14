@@ -6,6 +6,7 @@ import AlertBlanket from 'openland-x/AlertBlanket';
 import { css } from 'linaria';
 import { XModalController } from 'openland-x/showModal';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
+import { UploadCareUploading } from 'openland-web/utils/UploadCareUploading';
 
 const imgClass = css`
     margin-top: 8px;
@@ -94,13 +95,13 @@ const Body = (props: { files: File[][], ctx: XModalController }) => {
     );
 };
 
-export const showAttachConfirm = (files: File[], callback: (files: File[]) => void) => {
-
-    let filesRes = [...files];
+export const showAttachConfirm = (files: File[], callback: (files: UploadCareUploading[]) => void) => {
+    let filesRes = [[...files]];
+    const uploading = files.map(f => new UploadCareUploading(f));
 
     AlertBlanket
         .builder()
-        .body(ctx => <Body files={[filesRes]} ctx={ctx} />)
-        .action('Send', async () => { callback(filesRes); })
+        .body(ctx => <Body files={filesRes} ctx={ctx} />)
+        .action('Send', async () => { await callback(uploading.filter(u => filesRes[0].includes(u.getSourceFile()))); })
         .show();
 };

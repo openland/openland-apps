@@ -21,17 +21,22 @@ interface CommentsListProps {
     messageId: string;
     groupId?: string;
     onSent: (data: URickTextValue, replyId?: string) => void;
+    onSentAttach: (files: File[], replyId?: string) => void;
 }
 
 const CommentsListInner = React.memo((props: CommentsListProps & { comments: MessageComments_messageComments_comments[] }) => {
     const client = useClient();
     const messenger = React.useContext(MessengerContext);
-    const { messageId, groupId, comments, onSent } = props;
+    const { messageId, groupId, comments, onSent, onSentAttach } = props;
     const [highlightId, setHighlightId] = React.useState<string | undefined>(undefined);
 
     const handleCommentSent = React.useCallback((data: URickTextValue) => {
         onSent(data, highlightId);
         setHighlightId(undefined);
+    }, [messageId, highlightId]);
+
+    const handleCommentSentAttach = React.useCallback((files: File[]) => {
+        onSentAttach(files, highlightId);
     }, [messageId, highlightId]);
 
     const handleReplyClick = React.useCallback((id: string) => {
@@ -90,6 +95,7 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Mes
                     highlighted={highlightId === item.comment.id}
                     groupId={groupId}
                     onSent={handleCommentSent}
+                    onSentAttach={handleCommentSentAttach}
                 />
             ))}
         </div>
