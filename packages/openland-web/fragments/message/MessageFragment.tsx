@@ -13,6 +13,7 @@ import UUID from 'uuid/v4';
 import { UserForMention } from 'openland-api/Types';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { showAttachConfirm } from '../chat/components/AttachConfirm';
+import { DropZone } from '../chat/components/DropZone';
 
 const wrapperClass = css`
     display: flex;
@@ -39,7 +40,13 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
         return null;
     }
 
-    const handleCommentSent = React.useCallback((data: URickTextValue, replyId?: string) => {
+    const [highlightId, setHighlightId] = React.useState<string | undefined>(undefined);
+
+    const handleReplyClick = React.useCallback((id: string) => {
+        setHighlightId(current => id === current ? undefined : id);
+    }, [highlightId]);
+
+    const handleCommentSent = React.useCallback((data: URickTextValue) => {
         let text = '';
         let mentions: (UserForMention | AllMention)[] = [];
         for (let t of data) {
@@ -63,14 +70,16 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
                 mentions: prepareLegacyMentionsForSend(textValue, mentions),
                 message: textValue,
                 spans: findSpans(textValue),
-                replyComment: replyId
+                replyComment: highlightId
             });
-        }
-    }, [messageId]);
 
-    const handleCommentSentAttach = React.useCallback((files: File[], replyId?: string) => {
+            setHighlightId(undefined);
+        }
+    }, [messageId, highlightId]);
+
+    const handleCommentSentAttach = React.useCallback((files: File[]) => {
         if (files.length > 0) {
-            showAttachConfirm(files, (res) => new Promise((resolve, reject) => {
+            showAttachConfirm(files, (res) => new Promise(resolve => {
                 const uploadedFiles: string[] = [];
 
                 res.map(u => {
@@ -86,14 +95,16 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
                                 messageId,
                                 repeatKey: UUID(),
                                 fileAttachments: uploadedFiles.map(f => ({ fileId: f })),
-                                replyComment: replyId
+                                replyComment: highlightId
                             });
+
+                            setHighlightId(undefined);
                         }
                     });
                 });
             }));
         }
-    }, [messageId]);
+    }, [messageId, highlightId]);
 
     const groupId = message.source && message.source.__typename === 'MessageSourceChat' && message.source.chat.__typename === 'SharedRoom' ? message.source.chat.id : undefined;
 
@@ -105,8 +116,10 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
                     <CommentsList
                         messageId={messageId}
                         groupId={groupId}
+                        onReply={handleReplyClick}
                         onSent={handleCommentSent}
                         onSentAttach={handleCommentSentAttach}
+                        highlightId={highlightId}
                     />
                 </div>
             </XScrollView3>
@@ -115,6 +128,11 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
                 onSent={handleCommentSent}
                 onSentAttach={handleCommentSentAttach}
                 groupId={groupId}
+            />
+
+            <DropZone
+                onDrop={handleCommentSentAttach}
+                text={highlightId ? 'Drop here to send to the branch' : undefined}
             />
         </div>
     );

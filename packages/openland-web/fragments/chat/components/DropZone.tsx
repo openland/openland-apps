@@ -53,7 +53,13 @@ const iconContainerAnim = css`
     z-index: 2;
     transition: transform 300ms ease, opacity 150ms cubic-bezier(.29, .09, .24, .99);
 `;
-export const DropZone = (props: { onDrop: (files: File[]) => void }) => {
+
+interface DropZoneProps {
+    onDrop: (files: File[]) => void;
+    text?: string;
+}
+
+export const DropZone = (props: DropZoneProps) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const iconContainerRef = React.useRef<HTMLDivElement>(null);
     const iconContainerAnimRef = React.useRef<HTMLDivElement>(null);
@@ -131,15 +137,17 @@ export const DropZone = (props: { onDrop: (files: File[]) => void }) => {
 
     const onDrop = React.useCallback((ev: React.DragEvent) => {
         props.onDrop(fileListToArray(ev.dataTransfer.files));
-    }, []);
+    }, [props.onDrop]);
+
     return (
         <div ref={containerRef} className={dropZoneClass} onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop}>
-
             <div ref={iconContainerRef} className={iconContainer}>
                 <div ref={iconContainerAnimRef} className={iconContainerAnim} />
                 <IconUpload style={{ zIndex: 3 }} />
             </div>
-            <div className={TextTitle1}>Drop here to send</div>
+            <div className={TextTitle1}>
+                {props.text || 'Drop here to send'}
+            </div>
         </div>
     );
 };
