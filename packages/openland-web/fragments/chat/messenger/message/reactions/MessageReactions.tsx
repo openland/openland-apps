@@ -5,18 +5,10 @@ import { css, cx } from 'linaria';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
-import { emojiLink } from 'openland-y-utils/emojiLink';
 import { ReactionReduced, ReactionUser } from 'openland-engines/reactions/types';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 
-export const reactionsImagesMap: { [key in MessageReactionType]: string } = {
-    'LIKE': emojiLink('2764'),
-    'THUMB_UP': emojiLink('1f44d'),
-    'JOY': emojiLink('1f602'),
-    'SCREAM': emojiLink('1f631'),
-    'CRYING': emojiLink('1f622'),
-    'ANGRY': emojiLink('1f92c')
-};
+export const reactionImage = (r: MessageReactionType) => `https://cdn.openland.com/shared/reactions/${r}.png`;
 
 const reactionsWrapper = css`
     display: flex;
@@ -111,7 +103,7 @@ const ReactionItem = React.memo((props: ReactionItemProps) => {
             onClick={() => onClick(value.reaction)}
             onMouseEnter={show}
         >
-            <img src={reactionsImagesMap[value.reaction]} />
+            <img src={reactionImage(value.reaction)} />
         </div>
     );
 });

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessageReactionType } from 'openland-api/Types';
 import { css } from 'linaria';
-import { reactionsImagesMap } from './MessageReactions';
+import { reactionImage } from './MessageReactions';
 
 const SortedReactions = [
     MessageReactionType.LIKE,
@@ -17,7 +17,7 @@ const wrapperClass = css`
     border-radius: 20px;
     display: flex;
     flex-direction: row;
-    padding: 0 8px;
+    padding: 0 12px;
 `;
 
 const reactionClass = css`
@@ -54,7 +54,7 @@ export const ReactionPicker = React.memo<ReactionPickerProps>(props => {
         <div className={wrapperClass}>
             {SortedReactions.map(reaction => (
                 <div key={'reaction-' + reaction} className={reactionClass} onClick={() => onPick(reaction)}>
-                    <img src={reactionsImagesMap[reaction]} />
+                    <img src={reactionImage(reaction)} />
                 </div>
             ))}
         </div>
