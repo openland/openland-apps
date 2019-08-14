@@ -1,6 +1,5 @@
 import { MessengerEngine } from './MessengerEngine';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-import { createComments, notificationUnsupported } from './mocks';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { convertMessage } from 'openland-engines/utils/convertMessage';
 import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';
@@ -13,11 +12,6 @@ import { SequenceModernWatcher } from './core/SequenceModernWatcher';
 import { backoff } from 'openland-y-utils/timer';
 
 const log = createLogger('Engine-NotificationCenter');
-
-type NotificationCenterEngineOptions = {
-    engine: MessengerEngine;
-    mocked?: boolean;
-};
 
 export type NotificationsDataSourceItem = DataSourceMessageItem;
 
@@ -35,6 +29,49 @@ const convertCommentNotification = (id: string, peer: Types.NotificationFragment
         notificationId: id,
         replyQuoteText,
         notificationType: 'new_comment',
+
+        // rewrite results from convertMessage
+        key: id,
+        isOut: false
+    };
+};
+
+const notificationUnsupported = (id: string): NotificationsDataSourceItem => {
+    const date = Date.now();
+
+    return {
+        ...convertMessage({
+            __typename: 'GeneralMessage',
+            id: id,
+            date: date,
+            sender: {
+                __typename: 'User',
+                id: 'mJMk3EkbzBs7dyPBPp9Bck0pxn',
+                name: 'Openland Support',
+                firstName: 'Openland Support',
+                photo: 'https://ucarecdn.com/db12b7df-6005-42d9-87d6-46f15dd5b880/',
+                online: true,
+                isYou: false,
+                isBot: false,
+                lastName: null,
+                email: null,
+                lastSeen: null,
+                shortname: null,
+                primaryOrganization: null,
+            },
+            senderBadge: null,
+            message: '*Notification type not supported*\nNotification is not supported on your version of Openland. Please update the app to view it.',
+            fallback: '*Notification type not supported*\nNotification is not supported on your version of Openland. Please update the app to view it.',
+            edited: false,
+            commentsCount: 0,
+            attachments: [],
+            quotedMessages: [],
+            reactions: [],
+            spans: [{ __typename: 'MessageSpanBold', offset: 0, length: 33 }],
+        }),
+
+        notificationId: id,
+        notificationType: 'unsupported',
 
         // rewrite results from convertMessage
         key: id,
@@ -60,7 +97,6 @@ export const convertNotification = (notification: Types.NotificationFragment): N
 export class NotificationCenterEngine {
     readonly engine: MessengerEngine;
     readonly client: OpenlandClient;
-    readonly isMocked: boolean;
     readonly _dataSourceStored: DataSourceStored<NotificationsDataSourceItem>;
     readonly dataSource: DataSource<NotificationsDataSourceItem>;
     private lastNotificationRead: string | null = null;
@@ -71,45 +107,36 @@ export class NotificationCenterEngine {
     private lastReportedSeq = 0;
     private listenersCount = 0;
 
-    constructor(options: NotificationCenterEngineOptions) {
-        this.engine = options.engine;
+    constructor(engine: MessengerEngine) {
+        this.engine = engine;
         this.client = this.engine.client;
-        this.isMocked = !!options.engine.options.mocked;
 
         let provider: DataSourceStoredProvider<NotificationsDataSourceItem> = {
             loadMore: async (cursor?: string) => {
                 log.log('loadMore (cursor: ' + cursor + ')');
 
-                if (this.isMocked) {
-                    return {
-                        items: createComments().map(convertMessage),
-                        cursor: undefined,
-                        state: '',
-                    };
-                } else {
-                    const notificationsQuery = await this.engine.client.queryMyNotifications(
-                        { first: 20, before: cursor },
-                        { fetchPolicy: 'network-only' }
-                    );
-                    const notificationCenterQuery = await this.engine.client.queryMyNotificationCenter({ fetchPolicy: 'network-only' });
+                const notificationsQuery = await this.engine.client.queryMyNotifications(
+                    { first: 20, before: cursor },
+                    { fetchPolicy: 'network-only' }
+                );
+                const notificationCenterQuery = await this.engine.client.queryMyNotificationCenter({ fetchPolicy: 'network-only' });
 
-                    const notifications = notificationsQuery.myNotifications.items;
-                    const items = [];
+                const notifications = notificationsQuery.myNotifications.items;
+                const items = [];
 
-                    for (let notification of notifications) {
-                        const converted = convertNotification(notification);
+                for (let notification of notifications) {
+                    const converted = convertNotification(notification);
 
-                        items.push(converted);
-                    }
-
-                    this.onNotificationsUpdated();
-
-                    return {
-                        items,
-                        cursor: notificationsQuery.myNotifications.cursor || undefined,
-                        state: notificationCenterQuery.myNotificationCenter.state.state!!,
-                    };
+                    items.push(converted);
                 }
+
+                this.onNotificationsUpdated();
+
+                return {
+                    items,
+                    cursor: notificationsQuery.myNotifications.cursor || undefined,
+                    state: notificationCenterQuery.myNotificationCenter.state.state!!,
+                };
             },
             onStarted: (state: string, items: NotificationsDataSourceItem[]) => {
                 log.log('onStarted');
@@ -124,7 +151,7 @@ export class NotificationCenterEngine {
 
         this._dataSourceStored = new DataSourceStored(
             'notifications5',
-            options.engine.options.store,
+            engine.options.store,
             20,
             provider,
             100
@@ -236,7 +263,7 @@ export class NotificationCenterEngine {
                     if (oldItem.peerRootId === peerRootId) {
                         oldItem.replyQuoteText = peerMessage.message || peerMessage.fallback;
                         oldItem.isSubscribedMessageComments = subscription;
-    
+
                         return oldItem;
                     }
                     return undefined;
