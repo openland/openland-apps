@@ -98,6 +98,7 @@ const dss = new Map<string, DataSource<DataSourceWebMessageItem | DataSourceDate
 
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
     scroller = React.createRef<any>();
+    innerScrollRef = React.createRef<HTMLDivElement>();
     private dataSource: DataSourceWindow<DataSourceWebMessageItem | DataSourceDateItem>;
 
     constructor(props: MessageListProps) {
@@ -183,6 +184,12 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             </>);
     });
 
+    onUpdated = () => {
+        if (this.scroller.current && this.scroller.current.getScrollTop() < 1200) {
+            this.dataSource.needMore();
+        }
+    }
+
     render() {
         return (
             <XScrollViewReverse2
@@ -198,6 +205,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                     wrapWith={this.dataSourceWrapper}
                     renderItem={this.renderMessage}
                     renderLoading={this.renderLoading}
+                    onUpdated={this.onUpdated}
                 />
             </XScrollViewReverse2>
         );
