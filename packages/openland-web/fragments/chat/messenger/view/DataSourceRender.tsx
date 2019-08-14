@@ -68,6 +68,7 @@ export interface XListViewProps<T extends DataSourceItem> {
     renderLoading: React.ComponentClass<any> | React.StatelessComponent<any>;
     reverce?: boolean;
     wrapWith?: any;
+    onUpdated?: () => void;
 }
 
 const WrapWith = React.memo(
@@ -125,6 +126,10 @@ export const DataSourceRender = React.memo(function <T extends DataSourceItem>(
                 item={i}
             />
         ));
+    }
+
+    if (props.onUpdated) {
+        props.onUpdated();
     }
 
     return (
