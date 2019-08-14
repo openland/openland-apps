@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { MessageReactionType, FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { extractReactionsSorted } from './extractReactions';
 import { css, cx } from 'linaria';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
 import { emojiLink } from 'openland-y-utils/emojiLink';
+import { ReactionReduced, ReactionUser } from 'openland-engines/reactions/types';
+import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 
 export const reactionsImagesMap: { [key in MessageReactionType]: string } = {
     'LIKE': emojiLink('2764'),
@@ -52,13 +53,78 @@ const reactionsItem = css`
     }
 `;
 
+interface ReactionItemProps {
+    value: ReactionReduced;
+    onClick: (reaction: MessageReactionType) => void;
+}
+
+interface UsersListInstance {
+    update: (newUsers: ReactionUser[]) => void;
+}
+
+// Sorry universe
+const UsersList = React.memo(React.forwardRef((props: { initialUsers: ReactionUser[] }, ref: React.Ref<UsersListInstance>) => {
+    const [users, setUsers] = React.useState<ReactionUser[]>(props.initialUsers);
+
+    React.useImperativeHandle(ref, () => ({
+        update: (newUsers: ReactionUser[]) => {
+            setUsers(newUsers);
+        },
+    }));
+
+    return (
+        <>
+            {users.map((u, i) =>
+                <div key={`user-${u.name}-${i}`}>
+                    {u.nameProcessed}
+                </div>
+            )}
+        </>
+    );
+}));
+
+const ReactionItem = React.memo((props: ReactionItemProps) => {
+    const { value, onClick } = props;
+
+    // Sorry universe
+    const listRef = React.useRef<UsersListInstance>(null);
+    const usersRef = React.useRef(value.users);
+    usersRef.current = value.users;
+
+    React.useEffect(() => {
+        if (listRef && listRef.current) {
+            listRef.current.update(value.users);
+        }
+    }, [listRef, value.users]);
+
+    const [show] = useCaptionPopper({
+        getText: () => (
+            <UsersList initialUsers={usersRef.current} ref={listRef} />
+        ),
+        placement: 'bottom',
+        scope: 'reaction-item'
+    });
+
+    return (
+        <div
+            className={reactionsItem}
+            onClick={() => onClick(value.reaction)}
+            onMouseEnter={show}
+        >
+            <img src={reactionsImagesMap[value.reaction]} />
+        </div>
+    );
+});
+
 interface MessageReactionsProps {
     messageId?: string;
     reactions: FullMessage_GeneralMessage_reactions[];
+    reactionsReduced: ReactionReduced[];
+    reactionsLabel: string | JSX.Element;
 }
 
 export const MessageReactions = React.memo<MessageReactionsProps>(props => {
-    const { messageId, reactions } = props;
+    const { messageId, reactions, reactionsReduced, reactionsLabel } = props;
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
     const handleReactionClick = React.useCallback((reaction: MessageReactionType) => {
@@ -78,8 +144,6 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
         return null;
     }
 
-    const { reactionsSorted, usersString } = extractReactionsSorted(reactions, messenger.user.id);
-
     return (
         <div
             className={cx(reactionsWrapper, 'message-buttons-wrapper')}
@@ -89,19 +153,17 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
             }}
         >
             <div className={reactionsItems}>
-                {reactionsSorted.map((item, index) => (
-                    <div
-                        key={'reaction-' + item.reaction + '-' + index}
-                        className={reactionsItem}
-                        onClick={() => handleReactionClick(item.reaction)}
-                    >
-                        <img src={reactionsImagesMap[item.reaction]} />
-                    </div>
+                {reactionsReduced.map((r, i) => (
+                    <ReactionItem
+                        key={'reaction-' + r.reaction + '-' + i}
+                        value={r}
+                        onClick={handleReactionClick}
+                    />
                 ))}
             </div>
 
             <div className={cx(TextCaption, reactionsText)}>
-                {usersString}
+                {reactionsLabel}
             </div>
         </div>
     );

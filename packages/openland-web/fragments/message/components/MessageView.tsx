@@ -12,6 +12,9 @@ import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/mess
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { css } from 'linaria';
 import { showAvatarModal } from 'openland-web/components/showAvatarModal';
+import { ReactionReduced } from 'openland-engines/reactions/types';
+import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
+import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
 
 const avatarWrapper = css`
     flex-shrink: 0;
@@ -45,6 +48,8 @@ export const MessageView = React.memo((props: { message: Message_message_General
     const [reply, setReply] = React.useState<DataSourceWebMessageItem[]>([]);
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
     const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
+    const [reactionsReduced, setReactionsReduced] = React.useState<ReactionReduced[]>([]);
+    const [reactionsLabel, setReactionsLabel] = React.useState<string | JSX.Element>('');
 
     React.useEffect(() => {
         setReply(message.quotedMessages.map((r) => convertDsMessage(convertMessage(r as FullMessage, '', messenger))));
@@ -57,6 +62,11 @@ export const MessageView = React.memo((props: { message: Message_message_General
     React.useEffect(() => {
         setSenderNameEmojify(emoji(sender.name));
     }, [sender.name]);
+
+    React.useEffect(() => {
+        setReactionsReduced(reduceReactions(message.reactions, messenger.user.id));
+        setReactionsLabel(getReactionsLabel(message.reactions, messenger.user.id));
+    }, [message.reactions]);
 
     return (
         <div className={wrapper}>
@@ -84,7 +94,12 @@ export const MessageView = React.memo((props: { message: Message_message_General
                     fallback={message.fallback}
                 />
                 <div className={buttonsClass}>
-                    <MessageReactions messageId={message.id} reactions={message.reactions} />
+                    <MessageReactions
+                        messageId={message.id}
+                        reactions={message.reactions}
+                        reactionsReduced={reactionsReduced}
+                        reactionsLabel={reactionsLabel}
+                    />
                 </div>
             </div>
         </div>

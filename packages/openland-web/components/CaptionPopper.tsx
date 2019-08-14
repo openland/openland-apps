@@ -3,7 +3,13 @@ import { css, cx } from 'linaria';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { TextCaption } from '../utils/TextStyles';
 
-const senderBadgeContentStyle = css`
+const captionWrapper = css`
+    width: 280px;
+    display: flex;
+    justify-content: center;
+`;
+
+const captionContent = css`
     position: relative;
     display: flex;
     align-items: center;
@@ -15,6 +21,7 @@ const senderBadgeContentStyle = css`
     min-width: 80px;
     max-width: 280px;
     padding: 6px 12px;
+    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
 
     &::after {
         position: absolute;
@@ -40,17 +47,27 @@ const bottomPlacementArrow = css`
     }
 `;
 
-export const useCaptionPopper = (text: string | JSX.Element, placement?: 'top' | 'bottom') => {
+interface CaptionPopperConfig {
+    text?: string | JSX.Element;
+    getText?: () => string | JSX.Element;
+    placement?: 'top' | 'bottom';
+    scope?: string;
+}
+
+export const useCaptionPopper = (opts: CaptionPopperConfig) => {
+    const { text, getText, placement = 'top', scope } = opts;
     const [, show] = usePopper(
-        { placement: placement || 'top', hideOnLeave: true, borderRadius: 8 },
+        { placement, hideOnLeave: true, borderRadius: 8, scope, useWrapper: false },
         () => (
-            <div
-                className={cx(
-                    senderBadgeContentStyle,
-                    (placement === 'bottom') ? bottomPlacementArrow : topPlacementArrow,
-                )}
-            >
-                <span className={TextCaption}>{text}</span>
+            <div className={captionWrapper}>
+                <div
+                    className={cx(
+                        captionContent,
+                        (placement === 'bottom') ? bottomPlacementArrow : topPlacementArrow,
+                    )}
+                >
+                    <span className={TextCaption}>{getText ? getText() : text}</span>
+                </div>
             </div>
         ),
     );

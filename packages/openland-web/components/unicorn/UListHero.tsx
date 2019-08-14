@@ -15,7 +15,7 @@ const titleStyle = css`
 
 const Score = (props: { value: number }) => {
     const richText = "User's reach is the total number of people in community groups they are in";
-    const [show] = useCaptionPopper(richText, 'bottom');
+    const [show] = useCaptionPopper({ text: richText, placement: 'bottom' });
     return (
         <XView
             position="absolute"

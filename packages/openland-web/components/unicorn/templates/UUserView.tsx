@@ -21,7 +21,7 @@ const AdminIconClass = css`
 
 const AdminIcon = (props: { role: RoomMemberRole | OrganizationMemberRole }) => {
     const { role } = props;
-    const [show] = useCaptionPopper(role);
+    const [show] = useCaptionPopper({ text: role });
     if (role !== 'ADMIN' && role !== 'OWNER') {
         return null;
     }

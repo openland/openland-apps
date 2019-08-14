@@ -59,16 +59,16 @@ const MessageSenderName = (props: {
     sender: UserShort;
     senderNameEmojify?: string | JSX.Element;
 }) => (
-    <ULink
-        path={`/${props.sender.shortname || props.sender.id}`}
-        className={cx(TextLabel1, senderNameStyle)}
-    >
-        {props.senderNameEmojify || props.sender.name}
-    </ULink>
-);
+        <ULink
+            path={`/${props.sender.shortname || props.sender.id}`}
+            className={cx(TextLabel1, senderNameStyle)}
+        >
+            {props.senderNameEmojify || props.sender.name}
+        </ULink>
+    );
 
 const MessageSenderBadge = (props: { senderBadgeNameEmojify: string | JSX.Element }) => {
-    const [show] = useCaptionPopper(props.senderBadgeNameEmojify);
+    const [show] = useCaptionPopper({ text: props.senderBadgeNameEmojify });
     return (
         <div className={senderBadgeStyle} onMouseEnter={show}>
             <StarIcon />
@@ -268,7 +268,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
 
     const buttons = (
         <div className={buttonsClass}>
-            <MessageReactions messageId={message.id} reactions={message.reactions} />
+            <MessageReactions messageId={message.id} reactions={message.reactions} reactionsReduced={message.reactionsReduced} reactionsLabel={message.reactionsLabel} />
             <MessageCommentsButton message={message} isChannel={engine.isChannel || false} />
         </div>
     );

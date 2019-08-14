@@ -5,6 +5,7 @@ import { removeLineBreakers } from 'openland-y-utils/spans/removeLineBreakers';
 import { cropSpecSymbols } from 'openland-y-utils/spans/cropSpecSymbols';
 import { animUnicodeToName } from 'openland-y-utils/data/emoji-data';
 import { emojiAnimated } from 'openland-y-utils/emojiAnimated';
+import { ReactionUser } from 'openland-engines/reactions/types';
 
 export const TextRenderProccessor: TextRenderProccessorApi = {
     processSpan(type: SpanType, text: string, size?: 'default' | 'big' | 'huge') {
@@ -13,6 +14,26 @@ export const TextRenderProccessor: TextRenderProccessorApi = {
         }
 
         return emoji(text);
+    },
+
+    processText(text: string) {
+        return emoji(text);
+    },
+
+    processReactionsLabel(users: ReactionUser[]) {
+        let usersString = '';
+        if (users.length > 0) {
+            if (users.length === 1) {
+                usersString = users[0].name;
+            } else if (users.length === 2) {
+                usersString = users[0].name + ' and ' + users[1].name;
+            } else {
+                const othersCount = users.length - 1;
+                usersString = users[0].name + ` and ${othersCount} others`;
+            }
+        }
+
+        return emoji(usersString);
     },
 
     cropSpecSymbols(spans: Span[], parent: Span, symbolObject: SpecSymbolsType) {
