@@ -22,20 +22,13 @@ const titleClass = css`
     font-size: 36px;
 `;
 
-let Img = React.memo((props: { file: File, onClick: (f: File) => void }) => {
+let Img = React.memo((props: { file: File; onClick: (f: File) => void }) => {
     let ref = React.useRef<HTMLImageElement>(null);
     React.useEffect(() => {
         let reader = new FileReader();
         let image = new Image();
         image.onload = () => {
-            const layout = layoutMedia(
-                image.width || 0,
-                image.height || 0,
-                680,
-                360,
-                32,
-                32,
-            );
+            const layout = layoutMedia(image.width || 0, image.height || 0, 680, 360, 32, 32);
             if (ref.current) {
                 ref.current.src = reader.result as any;
                 ref.current.width = layout.width;
@@ -44,14 +37,13 @@ let Img = React.memo((props: { file: File, onClick: (f: File) => void }) => {
         };
         reader.onloadend = () => {
             image.src = reader.result as any;
-
         };
         reader.readAsDataURL(props.file);
     }, []);
     return <img className={imgClass} ref={ref} onClick={() => props.onClick(props.file)} />;
 });
 
-const Body = (props: { files: File[][], ctx: XModalController }) => {
+const Body = (props: { files: File[][]; ctx: XModalController }) => {
     let { files } = props;
     let [bodyFiles, setFiles] = React.useState(files[0]);
 
@@ -59,35 +51,50 @@ const Body = (props: { files: File[][], ctx: XModalController }) => {
     let filesRef = React.useRef(bodyFiles);
 
     filesRef.current = bodyFiles;
-    let onClick = React.useCallback((fileToRemove: File) => {
-        let res = filesRef.current.filter(f => f !== fileToRemove);
-        setFiles(res);
-        files[0] = res;
-        if (!res.length) {
-            props.ctx.hide();
-        }
-    }, [bodyFiles]);
+    let onClick = React.useCallback(
+        (fileToRemove: File) => {
+            let res = filesRef.current.filter(f => f !== fileToRemove);
+            setFiles(res);
+            files[0] = res;
+            if (!res.length) {
+                props.ctx.hide();
+            }
+        },
+        [bodyFiles],
+    );
     let hasPhoto = false;
     let hasFiles = false;
     let list = bodyFiles.map((f, i) => {
-
         let isImage = f.type.includes('image');
         hasPhoto = hasPhoto || isImage;
         hasFiles = hasFiles || !isImage;
         if (isImage) {
             return <Img key={f.name + f.size + f.lastModified} file={f} onClick={onClick} />;
         } else {
-            return <div key={f.name + f.size + f.lastModified} style={{ marginTop: 16, marginBottom: 16 }}><DocumentContent onClick={() => onClick(f)} file={{ fileMetadata: { name: f.name, size: f.size } }} /></div>;
+            return (
+                <div
+                    key={f.name + f.size + f.lastModified}
+                    style={{ marginTop: 16, marginBottom: 16 }}
+                >
+                    <DocumentContent
+                        onClick={() => onClick(f)}
+                        file={{ fileMetadata: { name: f.name, size: f.size, mimeType: null } }}
+                    />
+                </div>
+            );
         }
-
     });
 
-    let title = `Share ${hasPhoto && !hasFiles ? pluralForm(bodyFiles.length, ['a photo', bodyFiles.length + ' photos']) : pluralForm(bodyFiles.length, ['a file', bodyFiles.length + ' files'])}`;
+    let title = `Share ${
+        hasPhoto && !hasFiles
+            ? pluralForm(bodyFiles.length, ['a photo', bodyFiles.length + ' photos'])
+            : pluralForm(bodyFiles.length, ['a file', bodyFiles.length + ' files'])
+        }`;
 
     return (
         <>
             <span className={titleClass}>{title}</span>
-            <XScrollView3 maxHeight={500} paddingHorizontal={40} >
+            <XScrollView3 maxHeight={500} paddingHorizontal={40}>
                 {list}
                 <div style={{ height: 16 }} />
             </XScrollView3>

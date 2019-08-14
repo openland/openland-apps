@@ -11,18 +11,18 @@ const fileContainer = css`
     justify-content: flex-between;
     flex-shrink: 1;
     align-self: flex-start;
-    background-color: #F2F3F5; // ThemeDefault.backgroundTertiary
+    background-color: #f2f3f5; // ThemeDefault.backgroundTertiary
     border-radius: 8px;
     overflow: hidden;
     padding: 16px;
     padding-right: 24px;
     margin-top: 8px;
     max-width: 480px;
-    transition: background-color 250ms cubic-bezier(.29, .09, .24, .99);
-     
+    transition: background-color 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
+
     &:hover {
-       text-decoration: none;
-       background-color: #EBEDF0; // ThemeDefault.backgroundTertiaryHover
+        text-decoration: none;
+        background-color: #ebedf0; // ThemeDefault.backgroundTertiaryHover
     }
 `;
 
@@ -61,30 +61,87 @@ const subtitle = css`
     color: #171b1f;
 `;
 
-export const DocumentContent = React.memo((props:
-    {
-        file: { fileId?: string, fileMetadata: { name: string, size: number }, uri?: string },
+const videoContainer = css`
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    flex-grow: 1;
+    min-width: 250px;
+    max-width: 550px;
+    min-height: 300px;
+    max-height: 300px;
+    height: 300px;
+`;
+
+const videoStyle = css`
+    height: 100%;
+`;
+
+const VideoContent = React.memo(
+    (props: {
+        file: { fileId?: string; fileMetadata: { name: string; size: number }; uri?: string };
+    }) => {
+        return (
+            <div className={videoContainer}>
+                <video controls={true} className={videoStyle}>
+                    <source src={`https://ucarecdn.com/${props.file.fileId}/`} type="video/mp4" />
+                </video>
+            </div>
+        );
+    },
+);
+
+export const DocumentContent = React.memo(
+    (props: {
+        file: {
+            fileId?: string;
+            fileMetadata: { name: string; size: number; mimeType: string | null };
+            uri?: string;
+        };
         onClick?: (ev: React.MouseEvent) => void;
     }) => {
-    let { file } = props;
-    let onClick = React.useCallback((ev: React.MouseEvent) => {
-        if (props.onClick) {
-            props.onClick(ev);
-        } else {
-            ev.stopPropagation();
+        const { file } = props;
+
+        if (file.fileMetadata.mimeType && !!file.fileMetadata.mimeType.match('video')) {
+            return <VideoContent file={props.file} />;
         }
-    }, []);
-    return (
-        <a className={cx(fileContainer, 'message-document-wrapper')} href={!props.onClick ? file.fileId && `https://ucarecdn.com/${file.fileId}/` : undefined} onClick={onClick} >
-            <div className={infoContent}>
-                <div className={iconContainer}>
-                    {file.uri ? <XLoader size="small" transparentBackground={true} /> : <IconFile />}
+
+        const onClick = React.useCallback((ev: React.MouseEvent) => {
+            if (props.onClick) {
+                props.onClick(ev);
+            } else {
+                ev.stopPropagation();
+            }
+        }, []);
+
+        return (
+            <a
+                className={cx(fileContainer, 'message-document-wrapper')}
+                onClick={onClick}
+                href={
+                    !props.onClick
+                        ? file.fileId && `https://ucarecdn.com/${file.fileId}/`
+                        : undefined
+                }
+            >
+                <div className={infoContent}>
+                    <div className={iconContainer}>
+                        {file.uri ? (
+                            <XLoader size="small" transparentBackground={true} />
+                        ) : (
+                            <IconFile />
+                        )}
+                    </div>
+                    <div className={metadataContainer}>
+                        <div className={cx(title + ' title', TextLabel1)}>
+                            {file.fileMetadata.name}
+                        </div>
+                        <div className={cx(subtitle, TextDensed)}>
+                            {formatBytes(file.fileMetadata.size)}
+                        </div>
+                    </div>
                 </div>
-                <div className={metadataContainer}>
-                    <div className={cx(title + ' title', TextLabel1)}>{file.fileMetadata.name}</div>
-                    <div className={cx(subtitle, TextDensed)}>{formatBytes(file.fileMetadata.size)}</div>
-                </div>
-            </div>
-        </a>
-    );
-});
+            </a>
+        );
+    },
+);
