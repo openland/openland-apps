@@ -17,7 +17,7 @@ import { CallsEngine } from 'openland-engines/CallsEngine';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import MoreIcon from 'openland-icons/s/ic-more-v-24.svg';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
-import CallIcon from 'openland-icons/s/ic-call-24.svg';
+import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
 import InviteIcon from 'openland-icons/s/ic-invite-24.svg';
 import SettingsIcon from 'openland-icons/s/ic-settings-24.svg';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
@@ -45,16 +45,22 @@ const titleStyle = css`
 `;
 
 const menuButton = css`
-    width: 56px;
-    height: 56px;
+    width: 40px;
+    height: 40px;
     display: flex;
+    align-self: center;
+    border-radius: 40px;
     align-items: center;
     justify-content: center;
+    margin-left: 5px;
     padding: 6;
+    &:hover {
+        background-color: var(--backgroundPrimaryHover);
+    }
 `;
 
 const menuButtonSelected = css`
-    opacity: 0.64;
+    background-color: var(--backgroundPrimaryHover);
 `;
 
 const onLiner = css`
@@ -109,7 +115,7 @@ const CallButton = (props: { chat: ChatInfo, calls: CallsEngine }) => {
     let callsState = props.calls.useState();
     return callsState.conversationId !== props.chat.id ? (
         <UIconButton
-            icon={<CallIcon />}
+            icon={<PhoneIcon />}
             onClick={() => props.calls.joinCall(props.chat.id, props.chat.__typename === 'PrivateRoom')}
         />
     ) : null;
@@ -125,7 +131,7 @@ const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
 
     let res = new UPopperMenuBuilder();
     if (layout === 'mobile') {
-        res.item({ title: 'Call', icon: <CallIcon />, action: () => calls.joinCall(chat.id, chat.__typename === 'PrivateRoom') });
+        res.item({ title: 'Call', icon: <PhoneIcon />, action: () => calls.joinCall(chat.id, chat.__typename === 'PrivateRoom') });
     }
 
     if (chat.__typename === 'SharedRoom') {
