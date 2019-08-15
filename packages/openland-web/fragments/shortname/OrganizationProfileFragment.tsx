@@ -100,12 +100,14 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                     <UListField
                         label="Shortname"
                         value={
-                            <a
-                                href={'https://openland.com/' + shortname}
-                                target="_blank"
-                            >
-                                @{shortname}
-                            </a>
+                            <div>
+                                <a
+                                    href={'https://openland.com/' + shortname}
+                                    target="_blank"
+                                >
+                                    @{shortname}
+                                </a>
+                            </div>
                         }
                     />
                 )}

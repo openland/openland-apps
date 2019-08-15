@@ -9,6 +9,7 @@ import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuB
 
 interface UserMenuProps {
     user: User_user;
+    marginLeft?: number;
 }
 
 const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperController }) => {
@@ -35,7 +36,7 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
 
 export const UserMenu = React.memo((props: UserMenuProps) => (
     <UMoreButton
-        marginLeft={8}
+        marginLeft={props.marginLeft ? props.marginLeft : 8}
         marginRight={-8}
         menu={ctx => <MenuComponent {...props} ctx={ctx} />}
     />

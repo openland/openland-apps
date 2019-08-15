@@ -11,8 +11,26 @@ import { UNotificationsSwitch } from 'openland-web/components/unicorn/templates/
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UListText } from 'openland-web/components/unicorn/UListText';
 import { UserMenu } from './components/UserMenu';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
+import MessageIcon from 'openland-icons/s/ic-message-24.svg';
+
+const MessageButton = React.memo((props: {isBot: boolean, id: string}) => {
+    const layout = useLayout();
+
+    if (layout === 'mobile') {
+        return (
+            <UIconButton icon={<MessageIcon/>} path={'/mail/' + props.id}/>
+        );
+    }
+
+    return (
+        <UButton text={props.isBot ? 'View messages' : 'Message'} path={'/mail/' + props.id} />
+    );
+});
 
 export const UserProfileFragment = React.memo((props: { id: string }) => {
+    const isMobile = useLayout() === 'mobile';
     const client = useClient();
     const { user, conversation } = client.useUser({ userId: props.id }, { fetchPolicy: 'cache-and-network' });
     const { id, isBot, name, photo, audienceSize, about, shortname, location, phone, email, linkedin,
@@ -26,15 +44,15 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
                 description={<UPresence user={user} />}
                 avatar={{ photo, id, title: name }}
             >
-                {!isYou && <UButton text={isBot ? 'View messages' : 'Message'} path={'/mail/' + id} />}
+                {!isYou && <MessageButton isBot={isBot} id={id} />}
                 {!isYou && conversation && conversation.__typename === 'PrivateRoom' && (
                     <UNotificationsSwitch
                         id={conversation.id}
                         mute={!!conversation.settings.mute}
-                        marginLeft={16}
+                        marginLeft={isMobile ? 0 : 16}
                     />
                 )}
-                <UserMenu user={user} />
+                <UserMenu user={user} marginLeft={isMobile ? 0 : undefined} />
             </UListHero>
             <UListGroup header="About">
                 {!!about && <UListText value={about} marginBottom={16} />}
