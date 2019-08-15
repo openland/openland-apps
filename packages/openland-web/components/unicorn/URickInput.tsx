@@ -66,7 +66,7 @@ export interface URickInputProps {
     onContentChange?: (content: URickTextValue) => void;
     onAutocompleteWordChange?: (text: string | null) => void;
 
-    onPressEnter?: () => boolean;
+    onPressEnter?: () => Promise<boolean>;
     onPressUp?: () => boolean;
     onPressDown?: () => boolean;
     onPressTab?: () => boolean;
@@ -270,7 +270,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
         }
 
         // Hacky method to add key binding before editor processing
-        function addBinding(key: number, callback?: () => boolean) {
+        function addBinding(key: number, callback?: () => boolean | Promise<boolean>) {
             q.keyboard.addBinding({ key: key as any }, () => {
                 if (callback) {
                     let res = callback();
