@@ -9,8 +9,9 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { useLayout } from './utils/LayoutContext';
 
 export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
-    let router = useStackRouter();
-    let layout = useLayout();
+    const router = useStackRouter();
+    const layout = useLayout();
+    const wideHeader = router.pages.length > 1 || layout === 'mobile';
     useShortcuts({
         keys: ['Escape'], callback: () => {
             return router.pages.length > 1 ? router.pop() : false;
@@ -19,7 +20,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     let appearance = props.config.appearance || 'normal';
     return (
         <XView height={56} flexDirection="row" alignItems="center" zIndex={2}>
-            {router.pages.length > 1 || layout === 'mobile' ?
+            {wideHeader ?
                 <XView
                     height={56}
                     width={56}
@@ -30,10 +31,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                 >
                     <UIcon icon={<BackIcon />} />
                 </XView> :
-                <XView
-                    height={56}
-                    width={56}
-                />}
+                null}
             <XView
                 minWidth={0}
                 flexBasis={0}
@@ -41,7 +39,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                 fontSize={24}
                 flexDirection="row"
                 justifyContent="center"
-                marginRight={56}
+                marginRight={wideHeader ? 56 : undefined}
             >
                 {!!props.config.titleView && (
                     <XView

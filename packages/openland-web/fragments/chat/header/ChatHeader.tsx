@@ -10,6 +10,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MessagesActionsHeader } from './MessagesActionsHeader';
 import { showAvatarModal } from 'openland-web/components/showAvatarModal';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
+// import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { CallsEngine } from 'openland-engines/CallsEngine';
@@ -22,8 +23,8 @@ import SettingsIcon from 'openland-icons/s/ic-settings-24.svg';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
 import NotificationsOffIcon from 'openland-icons/s/ic-notifications-off-24.svg';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
-import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 
+import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { showAddMembersModal } from '../showAddMembersModal';
 import { showRoomEditModal, showLeaveChatConfirmation } from 'openland-web/fragments/account/components/groupProfileModals';
@@ -50,7 +51,6 @@ const menuButton = css`
     align-items: center;
     justify-content: center;
     padding: 6;
-    margin-right: -56px;
 `;
 
 const menuButtonSelected = css`
@@ -157,10 +157,12 @@ const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
 };
 
 export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
+    const layout = useLayout();
+    // const router = useStackRouter();
+    // const wideHeader = router.pages.length > 1 || layout === 'mobile';
     let calls = React.useContext(MessengerContext).calls;
     let title = props.chat.__typename === 'PrivateRoom' ? props.chat.user.name : props.chat.title;
     let photo = props.chat.__typename === 'PrivateRoom' ? props.chat.user.photo : props.chat.photo;
-    let layout = useLayout();
 
     const [menuVisible, menuShow] = usePopper(
         { placement: 'bottom-end', hideOnClick: true, useWrapper: false },
@@ -225,7 +227,6 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                 <UIcon icon={<MoreIcon />} color="var(--foregroundTertiary)" />
             </div>
             <MessagesActionsHeader chatId={props.chat.id} />
-
         </XView>
     );
 });
