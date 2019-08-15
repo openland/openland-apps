@@ -113,7 +113,7 @@ const PopperBody = React.memo(React.forwardRef((props: {
                 cx(
                     pickerBody,
                     !visible && pickerBodyInvisible,
-                    props.wrapperClassName && props.wrapperClassName
+                    props.wrapperClassName
                 )
             }
             ref={containerRef}

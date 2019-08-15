@@ -3,18 +3,19 @@ import { XView } from 'react-mental';
 import { useForm } from 'openland-form/useForm';
 import { useClient } from 'openland-web/utils/useClient';
 import { useField } from 'openland-form/useField';
-import { XButton } from 'openland-x/XButton';
 import { RadioButtonsSelect } from './components/RadioButtonsSelect';
 import {
     EmailFrequency,
     CommentsNotificationDelivery,
     NotificationMessages,
+    UpdateSettingsInput,
 } from 'openland-api/Types';
 import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
 import { FormFooter } from './components/FormFooter';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
+import { debounce } from 'openland-y-utils/timer';
 
 export const SettingsNotificationsFragment = React.memo(() => {
     const form = useForm();
@@ -36,19 +37,24 @@ export const SettingsNotificationsFragment = React.memo(() => {
         settings.settings.emailFrequency,
         form,
     );
-    const doConfirm = () => {
-        form.doAction(async () => {
-            await client.mutateSettingsUpdate({
-                input: {
-                    emailFrequency: emailNotifications.value,
-                    commentNotificationsDelivery: commentsNotifications.value,
-                    desktopNotifications: messagesNotifications.value,
-                    mobileNotifications: messagesNotifications.value,
-                },
-            });
-        });
+    const doConfirm = (input: UpdateSettingsInput) => {
+        client.mutateSettingsUpdate({ input });
     };
 
+    const doConfirmDebounced = React.useRef<null | ((input: UpdateSettingsInput) => void)>();
+    React.useEffect(() => {
+        doConfirmDebounced.current = debounce(doConfirm, 1000);
+    }, []);
+    React.useEffect(() => {
+        if (doConfirmDebounced.current) {
+            doConfirmDebounced.current({
+                emailFrequency: emailNotifications.value,
+                commentNotificationsDelivery: commentsNotifications.value,
+                desktopNotifications: messagesNotifications.value,
+                mobileNotifications: messagesNotifications.value,
+            });
+        }
+    });
     return (
         <Page>
             <UHeader title="Notifications" />
@@ -116,17 +122,6 @@ export const SettingsNotificationsFragment = React.memo(() => {
                         />
                     </XView>
                 </FormSection>
-                <FormFooter>
-                    <XButton
-                        square
-                        text="Save changes"
-                        style="primary"
-                        size="large"
-                        onClick={doConfirm}
-                        loading={form.loading}
-                        alignSelf="flex-start"
-                    />
-                </FormFooter>
             </FormWrapper>
         </Page>
     );

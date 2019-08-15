@@ -12,6 +12,7 @@ import { showDeleteMessageModal as showDeleteMessagesModal } from '../components
 import { showChatPicker } from '../showChatPicker';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { useRole } from 'openland-x-permissions/XWithRole';
 
 const containerClass = css`
     position: absolute;
@@ -134,7 +135,7 @@ const Buttons = (props: { chatId: string, engine: MessagesActionsStateEngine, me
         props.engine.reply();
     }, []);
     let state = props.engine.useState();
-    let canDelete = !state.messages.filter(m => !m.sender.isYou).length; // || useRole('super-admin')
+    let canDelete = useRole('super-admin') || (!state.messages.filter(m => !m.sender.isYou).length);
     return (
         <XView flexDirection="row">
             <div className={canDelete ? animateUpCenter : animateCenterUp}><UButton onClick={deleteCallback} text="Delete" style="secondary" /></div>

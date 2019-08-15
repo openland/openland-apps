@@ -185,7 +185,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     });
 
     onUpdated = () => {
-        if (this.scroller.current && this.scroller.current.getScrollTop() < 1200) {
+        if (this.scroller.current && this.scroller.current.getClientHeight() && this.scroller.current.getScrollTop() < 1200) {
             this.dataSource.needMore();
         }
     }
