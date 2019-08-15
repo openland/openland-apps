@@ -176,7 +176,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                             hasTopContent={hasTopContent}
                             hasBottomContent={hasBottomContent}
                             maskColor={theme.backgroundPrimary}
-                            borderColor={theme.overlayInverted}
+                            borderColor={theme.border}
                             onPress={Platform.OS === 'ios' ? this.handlePress : undefined}
                         />
                     </ASFlex>

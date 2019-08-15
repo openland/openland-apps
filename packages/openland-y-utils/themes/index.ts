@@ -6,18 +6,20 @@ export const ThemeLightBlue: ThemeGlobal = {
 
     transparent: 'rgba(255, 255, 255, 0)',
 
-    foregroundPrimary: '#171B1F',
+    foregroundPrimary: '#171A1F',
     foregroundSecondary: '#676D7A',
     foregroundTertiary: '#969AA3',
     foregroundQuaternary: '#C4C7CC',
+    foregroundContrast: '#FFFFFF',
+    foregroundInverted: '#FFFFFF',
 
     backgroundPrimary: '#FFFFFF',
-    backgroundPrimaryHover: '#F0F2F5',
-    backgroundPrimaryActive: '#F0F2F5',
+    backgroundPrimaryHover: '#F2F3F5',
+    backgroundPrimaryActive: '#EBEDF0',
 
     backgroundSecondary: '#FFFFFF',
-    backgroundSecondaryHover: '#F0F2F5',
-    backgroundSecondaryActive: '#F0F2F5',
+    backgroundSecondaryHover: '#F2F3F5',
+    backgroundSecondaryActive: '#F2F3F5',
 
     backgroundTertiary: '#F2F3F5',
     backgroundTertiaryHover: '#EBEDF0',
@@ -27,25 +29,31 @@ export const ThemeLightBlue: ThemeGlobal = {
     backgroundInvertedHover: '#EBEDF0',
     backgroundInvertedActive: '#F2F3F5',
 
-    foregroundContrast: '#FFFFFF',
-    foregroundInverted: '#FFFFFF',
-
-    overlayHeavy: '#000000',
-    overlayMedium: 'rgba(0, 0, 0, 0.48)',
-    overlayLight: 'rgba(0, 0, 0, 0.24)',
-    overlayInverted: 'rgba(0, 0, 0, 0.24)',
-
     accentPrimary: '#1885F2',
     accentPrimaryHover: '#2693FF',
     accentPrimaryActive: '#0B72D9',
 
-    accentPositive: '#30BF6C',
-    accentPositiveHover: '#2BD974',
-    accentPositiveActive: '#24B35F',
+    accentMuted: '#398FE5',
+    accentMutedHover: '#398FE5',
+    accentMutedActive: '#398FE5',
+
+    accentPositive: '#36B35F',
+    accentPositiveHover: '#41BA69',
+    accentPositiveActive: '#26994D',
 
     accentNegative: '#E62233',
     accentNegativeHover: '#F23041',
     accentNegativeActive: '#CC1424',
+
+    border: 'rgba(0, 0, 0, 0.08)',
+
+    overlayTotal: '#000000',
+    overlayHeavy: 'rgba(0, 0, 0, 0.84)',
+    overlayMedium: 'rgba(0, 0, 0, 0.48)',
+    overlayLight: 'rgba(0, 0, 0, 0.24)',
+
+    bubbleIn: '#F2F3F5',
+    bubbleOut: '#1885F2',
 
     tintRed: '#E52233',
     tintOrange: '#FFAE0D',
@@ -57,9 +65,6 @@ export const ThemeLightBlue: ThemeGlobal = {
     blurType: 'light',
     keyboardAppearance: 'light',
     statusBar: 'dark-content',
-
-    bubbleIn: '#F2F3F5',
-    bubbleOut: '#1885F2',
 
     ironySpan: {
         backgroundOut: 'rgba(255, 56, 46, 0.9)',
@@ -90,6 +95,8 @@ export const ThemeDark: ThemeGlobal = {
     foregroundSecondary: '#8F8F8F',
     foregroundTertiary: '#5C5C5C',
     foregroundQuaternary: '#292929',
+    foregroundContrast: '#FFFFFF',
+    foregroundInverted: '#000000',
 
     backgroundPrimary: '#000000',
     backgroundPrimaryHover: '#1F1F1F',
@@ -107,25 +114,31 @@ export const ThemeDark: ThemeGlobal = {
     backgroundInvertedHover: '#000000',
     backgroundInvertedActive: '#000000',
 
-    foregroundContrast: '#FFFFFF',
-    foregroundInverted: '#000000',
-
-    overlayHeavy: '#000000',
-    overlayMedium: 'rgba(0, 0, 0, 0.48)',
-    overlayLight: 'rgba(0, 0, 0, 0.24)',
-    overlayInverted: 'rgba(255, 255, 255, 0.24)',
-
     accentPrimary: '#FFFFFF',
     accentPrimaryHover: '#FFFFFF',
     accentPrimaryActive: '#FFFFFF',
 
-    accentPositive: '#30BF6C',
-    accentPositiveHover: '#2BD974',
-    accentPositiveActive: '#24B35F',
+    accentMuted: '#FFFFFF',
+    accentMutedHover: '#FFFFFF',
+    accentMutedActive: '#FFFFFF',
 
-    accentNegative: '#F22447',
-    accentNegativeHover: '#FF0D35',
-    accentNegativeActive: '#E60C30',
+    accentPositive: '#36B35F',
+    accentPositiveHover: '#41BA69',
+    accentPositiveActive: '#26994D',
+
+    accentNegative: '#E62233',
+    accentNegativeHover: '#F23041',
+    accentNegativeActive: '#CC1424',
+
+    border: 'rgba(255, 255, 255, 0.08)',
+
+    overlayTotal: '#000000',
+    overlayHeavy: 'rgba(0, 0, 0, 0.84)',
+    overlayMedium: 'rgba(0, 0, 0, 0.48)',
+    overlayLight: 'rgba(0, 0, 0, 0.24)',
+
+    bubbleIn: '#333333',
+    bubbleOut: '#4d4d4d',
 
     tintRed: '#262626',
     tintOrange: '#262626',
@@ -137,9 +150,6 @@ export const ThemeDark: ThemeGlobal = {
     blurType: 'dark',
     keyboardAppearance: 'dark',
     statusBar: 'light-content',
-
-    bubbleIn: '#333333',
-    bubbleOut: '#4d4d4d',
 
     ironySpan: {
         backgroundOut: 'transparent',
