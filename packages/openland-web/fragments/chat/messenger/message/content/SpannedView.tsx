@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UserPopper } from 'openland-web/components/UserPopper';
+import { useUserPopper } from 'openland-web/components/UserPopper';
 import { UserForMention } from 'openland-api/Types';
 import { css, cx } from 'linaria';
 import { Span } from 'openland-y-utils/spans/Span';
@@ -139,8 +139,9 @@ const MentionedUser = React.memo(
         isYou: boolean;
         isService?: boolean;
     }) => {
+        const [show] = useUserPopper({ user: user, isMe: isYou, noCardOnMe: true });
         return (
-            <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
+            <span onMouseEnter={show}>
                 <ULink
                     path={`/${user.shortname || user.id}`}
                     className={cx(
@@ -151,7 +152,7 @@ const MentionedUser = React.memo(
                 >
                     {text}
                 </ULink>
-            </UserPopper>
+            </span>
         );
     },
 );

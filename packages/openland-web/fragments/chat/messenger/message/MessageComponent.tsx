@@ -14,6 +14,7 @@ import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
+import { useUserPopper } from 'openland-web/components/UserPopper';
 
 const senderContainer = css`
     display: flex;
@@ -58,14 +59,21 @@ const botBadgeStyle = css`
 const MessageSenderName = (props: {
     sender: UserShort;
     senderNameEmojify?: string | JSX.Element;
-}) => (
+}) => {
+    const [show] = useUserPopper({
+        user: props.sender,
+        isMe: props.sender.isYou,
+        noCardOnMe: false,
+    });
+    return (
         <ULink
             path={`/${props.sender.shortname || props.sender.id}`}
             className={cx(TextLabel1, senderNameStyle)}
         >
-            {props.senderNameEmojify || props.sender.name}
+            <span onMouseEnter={show}>{props.senderNameEmojify || props.sender.name}</span>
         </ULink>
     );
+};
 
 const MessageSenderBadge = (props: { senderBadgeNameEmojify: string | JSX.Element }) => {
     const [show] = useCaptionPopper({ text: props.senderBadgeNameEmojify });
@@ -268,7 +276,12 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
 
     const buttons = (
         <div className={buttonsClass}>
-            <MessageReactions messageId={message.id} reactions={message.reactions} reactionsReduced={message.reactionsReducedEmojify} reactionsLabel={message.reactionsLabelEmojify} />
+            <MessageReactions
+                messageId={message.id}
+                reactions={message.reactions}
+                reactionsReduced={message.reactionsReducedEmojify}
+                reactionsLabel={message.reactionsLabelEmojify}
+            />
             <MessageCommentsButton message={message} isChannel={engine.isChannel || false} />
         </div>
     );

@@ -1,36 +1,29 @@
 import * as React from 'react';
-import { XButton } from 'openland-x/XButton';
-import { XView } from 'react-mental';
+import { css, cx } from 'linaria';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { XView, XViewRouterContext } from 'react-mental';
 import { UserForMention } from 'openland-api/Types';
-import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar } from 'openland-x/XAvatar';
 import { emoji } from 'openland-y-utils/emoji';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { useClient } from 'openland-web/utils/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { XViewRouterContext } from 'react-mental';
+import { TextCaption, TextDensed } from 'openland-web/utils/TextStyles';
 
-const StatusWrapper = Glamorous.div<{ online: boolean }>(props => ({
-    flex: 1,
-    textAlign: 'right',
-    color: props.online ? '#1790ff' : 'rgba(0, 0, 0, 0.4)',
-    fontSize: 13,
-    fontWeight: 400,
-    lineHeight: '17px',
-}));
+const userStatus = css`
+    flex: 1;
+    text-align: right;
+    color: #676d7a;
+`;
 
-const OrgTitle = Glamorous.div({
-    marginTop: 6,
-    fontSize: 14,
-    opacity: 0.5,
-    color: '#000000',
-});
+const userOnlineStatus = css`
+    color: #1790ff;
+`;
 
-const Buttons = Glamorous(XHorizontal)({
-    marginTop: 20,
-});
+const organizationTitle = css`
+    color: #676d7a;
+`;
 
 const Status = (({ variables }) => {
     const client = useClient();
@@ -42,51 +35,45 @@ const Status = (({ variables }) => {
 
     if (user && (user.lastSeen && user.lastSeen !== 'online' && !user.online)) {
         return (
-            <StatusWrapper online={false}>
+            <div className={cx(userStatus, TextCaption)}>
                 last seen{' '}
                 {user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (
                     <XDate value={user.lastSeen} format="humanize_cute" />
                 )}
-            </StatusWrapper>
+            </div>
         );
     } else if (user && user.online) {
-        return <StatusWrapper online={true}>Online</StatusWrapper>;
+        return <div className={cx(userStatus, userOnlineStatus, TextCaption)}>Online</div>;
     } else {
         return null;
     }
 }) as React.ComponentType<{ variables: { userId: string } }>;
 
-const eventBorder = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-};
+const container = css`
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    min-width: 200px;
+    padding-top: 20px;
+    padding-bottom: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    position: relative;
+`;
 
-const Wrapper = Glamorous.div({
-    maxWidth: 400,
-    minWidth: 200,
-    paddingTop: 20,
-    paddingBottom: 24,
-    paddingLeft: 24,
-    paddingRight: 24,
-    position: 'relative',
-});
-
-const UserPopperContent = XMemo(
+export const UserPopperContent = React.memo(
     ({
         noCardOnMe,
         isMe,
         user,
         hidePopper,
-        customButton,
     }: {
         user: UserForMention;
         isMe: boolean;
-        startSelected: boolean;
         noCardOnMe?: boolean;
         hidePopper: Function;
-        customButton?: (hidePopper: Function) => void;
     }) => {
         const router = React.useContext(XViewRouterContext);
         if (noCardOnMe && isMe) {
@@ -110,10 +97,7 @@ const UserPopperContent = XMemo(
                 messenger.getOnlines().onUserAppears(user.id!);
             }, []);
             return (
-                <Wrapper
-                    onMouseDown={eventBorder}
-                    onClick={eventBorder}
-                >
+                <div className={container}>
                     <XHorizontal>
                         <XView
                             flexShrink={0}
@@ -146,8 +130,9 @@ const UserPopperContent = XMemo(
                         color="rgba(0, 0, 0, 0.9)"
                         hoverColor="#1790ff"
                         cursor="pointer"
-                        onClick={(e: any) => {
-                            e.stopPropagation();
+                        alignSelf="flex-start"
+                        onClick={(e: React.MouseEvent) => {
+                            e.preventDefault();
                             if (router) {
                                 router.navigate('/' + user.id);
                                 hidePopper();
@@ -156,31 +141,24 @@ const UserPopperContent = XMemo(
                     >
                         {emoji(user.name)}
                     </XView>
-                    <OrgTitle>{organizationName}</OrgTitle>
-                    {(!isMe || !!customButton) && (
-                        <Buttons separator={6}>
-                            {!isMe && (
-                                <XButton
-                                    style="primary"
-                                    text="Direct chat"
-                                    size="small"
-                                    autoClose={true}
-                                    onClick={(e: any) => {
-                                        e.stopPropagation();
-                                        if (router) {
-                                            router.navigate('/mail/' + user.id);
-                                            hidePopper();
-                                        }
-                                    }}
-                                />
-                            )}
-                            {!!customButton && customButton(hidePopper)}
-                        </Buttons>
+                    <div className={cx(organizationTitle, TextDensed)}>{organizationName}</div>
+                    {!isMe && (
+                        <UButton
+                            text="Direct chat"
+                            size="small"
+                            marginTop={20}
+                            alignSelf="flex-start"
+                            onClick={(e: React.MouseEvent) => {
+                                e.preventDefault();
+                                if (router) {
+                                    router.navigate('/mail/' + user.id);
+                                    hidePopper();
+                                }
+                            }}
+                        />
                     )}
-                </Wrapper>
+                </div>
             );
         }
     },
 );
-
-export default UserPopperContent;
