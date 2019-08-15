@@ -73,11 +73,17 @@ const dialogTitleContent = css`
     color: #1c2229;
 `;
 
+const dialogTitle = css`
+    text-overflow: ellipsis;
+    overflow: hidden;
+`;
+
 const highlightSecretChatColor = css`
     color: #36b36a;
 `;
 
 const dialogDateContent = css`
+    flex-shrink: 0;
     height: 18px;
     margin-left: 5px;
     white-space: nowrap;
@@ -191,10 +197,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                             <XViewSelectedContext.Consumer>
                                 {active => (
                                     <FileIcon
-                                        className={cx(
-                                            iconClass,
-                                            active && iconActiveClass,
-                                        )}
+                                        className={cx(iconClass, active && iconActiveClass)}
                                     />
                                 )}
                             </XViewSelectedContext.Consumer>
@@ -210,9 +213,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                     {sender}
                     <XViewSelectedContext.Consumer>
                         {active => (
-                            <ForwardIcon
-                                className={cx(iconClass, active && iconActiveClass)}
-                            />
+                            <ForwardIcon className={cx(iconClass, active && iconActiveClass)} />
                         )}
                     </XViewSelectedContext.Consumer>
                     Forward
@@ -275,7 +276,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                             />
                                         </div>
                                     )}
-                                    <span>{dialog.titleEmojify}</span>
+                                    <span className={dialogTitle}>{dialog.titleEmojify}</span>
                                 </div>
                                 {dialog.date && (
                                     <div
