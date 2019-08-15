@@ -540,6 +540,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       self.activeCellsStrong.removeValue(forKey: self.state.items[index].key)
     }
     self.queue.async {
+      self.activeCells.remove(key: self.state.items[index].key)
       DispatchQueue.main.async {
         self.node.performBatch(animated: false, updates: {
           self.state = state
