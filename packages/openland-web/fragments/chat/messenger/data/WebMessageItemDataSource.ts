@@ -44,7 +44,7 @@ export function convertDsMessage(src: DataSourceMessageItem): DataSourceWebMessa
             ? emoji(src.replyQuoteText)
             : undefined,
         reactionsLabelEmojify: emoji(src.reactionsLabel),
-        reactionsReducedEmojify: emojifyReactions(src.reactionsReduced)
+        reactionsReducedEmojify: emojifyReactions(src.reactionsReduced || [])
     };
 }
 
