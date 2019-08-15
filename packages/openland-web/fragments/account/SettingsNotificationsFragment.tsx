@@ -12,7 +12,6 @@ import {
 } from 'openland-api/Types';
 import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
-import { FormFooter } from './components/FormFooter';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { debounce } from 'openland-y-utils/timer';
