@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
-import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XImage } from 'react-mental';
 import MacIcon from 'openland-icons/ic-app-mac.svg';
 import WinIcon from 'openland-icons/ic-app-win.svg';
@@ -151,6 +150,25 @@ const MobileAppButton = (props: { href: string; image: string }) => (
     </XView>
 );
 
+const appsContainer = css`
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 50px;
+    
+    @media (max-width: 800px) {
+        flex-direction: column;
+        margin-left: 0;
+        
+        & > .x {
+            margin-right: 0;
+            margin-left: 0;
+        }
+    }
+`;
+
 interface NativaAppsModalProps {
     title?: string;
     text?: string;
@@ -159,7 +177,6 @@ interface NativaAppsModalProps {
 
 export const DownloadAppsFragment = (props: NativaAppsModalProps) => {
     const { title, text } = props;
-    const isMobile = useIsMobile() || undefined;
     const os = detectOS();
     const modalContext = React.useContext(XModalBoxContext);
 
@@ -169,9 +186,6 @@ export const DownloadAppsFragment = (props: NativaAppsModalProps) => {
             position={'relative'}
             flexGrow={1}
             justifyContent={'center'}
-            paddingLeft={isMobile ? 40 : 0}
-            paddingRight={isMobile ? 40 : 0}
-            paddingBottom={80}
         >
             {modalContext && (
                 <XView position="fixed" top={19} left={32}>
@@ -218,7 +232,7 @@ export const DownloadAppsFragment = (props: NativaAppsModalProps) => {
                         )}
                     </span>
                 </XView>
-                <XView flexDirection="row" alignItems="center" marginLeft={50}>
+                <div className={appsContainer}>
                     <AppCategory
                         title="Mobile"
                         img={<MobileImage />}
@@ -269,7 +283,7 @@ export const DownloadAppsFragment = (props: NativaAppsModalProps) => {
                             </XView>
                         }
                     />
-                </XView>
+                </div>
             </XView>
         </XView>
     );
