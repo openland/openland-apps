@@ -4,7 +4,6 @@ import { XView } from 'react-mental';
 import { UAvatar } from './UAvatar';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
-import { ThemeDefault } from 'openland-y-utils/themes';
 import { showAvatarModal } from '../showAvatarModal';
 
 const titleStyle = css`
@@ -29,10 +28,10 @@ const Score = (props: { value: number }) => {
                 {...TextStyles.Label2}
                 borderWidth={2}
                 borderRadius={12}
-                borderColor={ThemeDefault.backgroundPrimary}
+                borderColor="var(--backgroundPrimary)"
                 paddingVertical={1}
                 paddingHorizontal={8}
-                color={ThemeDefault.foregroundContrast}
+                color="var(--foregroundContrast)"
                 backgroundImage="linear-gradient(138deg, #FEBD17, #FF9B04)"
             >
                 {props.value}
@@ -77,7 +76,7 @@ export const UListHero = (props: UListHeroProps) => {
                 flexDirection="column"
                 justifyContent="center"
             >
-                <XView {...TextStyles.Title2} color={ThemeDefault.foregroundPrimary}>
+                <XView {...TextStyles.Title2} color="var(--foregroundPrimary)">
                     <span className={titleStyle}>{title}</span>
                 </XView>
 
@@ -85,7 +84,7 @@ export const UListHero = (props: UListHeroProps) => {
                     <XView
                         {...TextStyles.Densed}
                         color={
-                            descriptionColor ? descriptionColor : ThemeDefault.foregroundSecondary
+                            descriptionColor ? descriptionColor : 'var(--foregroundSecondary)'
                         }
                         marginTop={4}
                     >

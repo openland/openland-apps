@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ChatInfo } from '../types';
 import { XView } from 'react-mental';
-import { ThemeDefault } from 'openland-y-utils/themes';
 import { css, cx } from 'linaria';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useClient } from 'openland-web/utils/useClient';
@@ -189,8 +188,8 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     height={24}
                     lineHeight="24px"
                     fontWeight="600"
-                    color={ThemeDefault.foregroundPrimary}
-                    hoverColor={ThemeDefault.accentPrimary}
+                    color="var(--foregroundPrimary)"
+                    hoverColor="var(--accentPrimary)"
                     cursor="pointer"
                     overflow="hidden"
                     path={props.chat.__typename === 'PrivateRoom' ? `/${props.chat.user.shortname || props.chat.user.id}` : `/group/${props.chat.id}`}
@@ -206,7 +205,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     fontSize={13}
                     lineHeight="18px"
                     fontWeight="600"
-                    color={ThemeDefault.foregroundTertiary}
+                    color="var(--foregroundTertiary)"
                 >
                     {props.chat.__typename === 'PrivateRoom' && (
                         <HeaderLastSeen id={props.chat.user.id} />
@@ -223,7 +222,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                 <CallButton chat={props.chat} calls={calls} />
             </XView>}
             <div className={cx(menuButton, menuVisible && menuButtonSelected)} onClick={menuShow}>
-                <UIcon icon={<MoreIcon />} color={ThemeDefault.foregroundTertiary} />
+                <UIcon icon={<MoreIcon />} color="var(--foregroundTertiary)" />
             </div>
             <MessagesActionsHeader chatId={props.chat.id} />
 

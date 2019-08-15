@@ -13,7 +13,6 @@ import { showAddMembersModal } from '../chat/showAddMembersModal';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { UListText } from 'openland-web/components/unicorn/UListText';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { ThemeDefault } from 'openland-y-utils/themes';
 import MoreHIcon from 'openland-icons/s/ic-more-h-24.svg';
 import { CreateGroupButton } from './components/CreateGroupButton';
 import { OrganizationMembers_organization_members, OrganizationMemberRole } from 'openland-api/Types';
@@ -127,8 +126,8 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                     <UListItem
                         title="Show more"
                         icon={<MoreHIcon />}
-                        iconColor={ThemeDefault.foregroundSecondary}
-                        iconBackground={ThemeDefault.backgroundTertiary}
+                        iconColor="var(--foregroundSecondary)"
+                        iconBackground="var(--backgroundTertiary)"
                         useRadius={true}
                         onClick={handleGroupsShowMore}
                     />

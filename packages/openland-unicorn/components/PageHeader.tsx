@@ -5,7 +5,6 @@ import BackIcon from 'openland-icons/s/ic-back-24.svg';
 import { useStackRouter } from './StackRouter';
 import { HeaderConfig } from './HeaderConfig';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import { ThemeDefault } from 'openland-y-utils/themes';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { useLayout } from './utils/LayoutContext';
 
@@ -29,7 +28,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                     onClick={() => router.pop()}
                     cursor="pointer"
                 >
-                    <UIcon icon={<BackIcon />} color={ThemeDefault.foregroundSecondary} />
+                    <UIcon icon={<BackIcon />} />
                 </XView> :
                 <XView
                     height={56}

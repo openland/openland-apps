@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { ThemeDefault } from 'openland-y-utils/themes';
 
 const wrapper = css`
     display: flex;
@@ -27,7 +26,7 @@ export const UIcon = React.memo((props: UIconProps) => {
     return (
         <div
             className={cx(wrapper, props.className)}
-            style={{ '--icon-color': color || ThemeDefault.foregroundSecondary } as React.CSSProperties}
+            style={{ '--icon-color': color || 'var(--foregroundSecondary)' } as React.CSSProperties}
         >
             {icon}
         </div>

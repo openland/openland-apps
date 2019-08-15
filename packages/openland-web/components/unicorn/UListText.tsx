@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XView, XViewProps } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
-import { ThemeDefault } from 'openland-y-utils/themes';
 import { emoji } from 'openland-y-utils/emoji';
 import { css } from 'linaria';
 
@@ -34,7 +33,7 @@ export const UListText = (props: UListTextProps) => {
             {...other}
             {...TextStyles.Body}
             paddingHorizontal={16}
-            color={ThemeDefault.foregroundPrimary}
+            color="var(--foregroundPrimary)"
             flexGrow={1}
             flexShrink={1}
         >

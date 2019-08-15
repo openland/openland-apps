@@ -6,7 +6,6 @@ import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { XView } from 'react-mental';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { Page } from 'openland-unicorn/Page';
-import { ThemeDefault } from 'openland-y-utils/themes';
 
 export function DevDocsScaffold(props: {
     title?: string;
@@ -20,7 +19,7 @@ export function DevDocsScaffold(props: {
 
             <XView flexGrow={1} flexDirection="row">
                 {props.hideSidebar !== true && (
-                    <XView width="300px" backgroundColor={ThemeDefault.backgroundTertiary}>
+                    <XView width="300px" backgroundColor="var(--backgroundTertiary)">
                         <UListGroup header="UI">
                             <UListItem title="Typography" path="/ui" />
                             <UListItem title="List items" path="/ui/list" />

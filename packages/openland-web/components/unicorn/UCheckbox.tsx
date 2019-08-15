@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
-import { ThemeDefault } from 'openland-y-utils/themes';
 import CheckIcon from 'openland-icons/ic-checkbox.svg';
 
 const inputClassName = css`
@@ -124,7 +123,7 @@ export const UCheckbox = (props: UCheckboxItemProps) => {
                     fontSize={15}
                     color="#171B1F"
                     lineHeight="24px"
-                    hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
+                    hoverBackgroundColor="var(--backgroundPrimaryHover)"
                 >
                     <span>{props.label}</span>
                     {!props.asSwitcher && <CheckComponent checked={props.checked} />}

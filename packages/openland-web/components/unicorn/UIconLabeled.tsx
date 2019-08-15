@@ -2,7 +2,6 @@ import * as React from 'react';
 import { XView, XViewProps } from 'react-mental';
 import { css, cx } from 'linaria';
 import { UIcon } from './UIcon';
-import { ThemeDefault } from 'openland-y-utils/themes';
 import { TextLabel2 } from 'openland-web/utils/TextStyles';
 import { defaultHover } from 'openland-web/utils/Styles';
 
@@ -34,7 +33,7 @@ interface UIconLabeledProps extends XViewProps {
 
 export const UIconLabeled = React.memo((props: UIconLabeledProps) => {
     const { icon, label, style = 'default', ...other } = props;
-    const color = style === 'danger' ? ThemeDefault.accentNegative : ThemeDefault.foregroundSecondary;
+    const color = style === 'danger' ? 'var(--accentNegative)' : 'var(--foregroundSecondary)';
 
     return (
         <XView {...other}>

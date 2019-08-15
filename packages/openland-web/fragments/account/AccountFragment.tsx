@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XView, XViewSelectedContext } from 'react-mental';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { ThemeDefault } from 'openland-y-utils/themes';
 import { UListItem, SelectableText } from 'openland-web/components/unicorn/UListItem';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 
@@ -27,7 +26,7 @@ import { emoji } from 'openland-y-utils/emoji';
 const SelectableSVG = React.memo((props: { icon: JSX.Element }) => {
     const selected = React.useContext(XViewSelectedContext);
 
-    return <UIcon icon={props.icon} color={selected ? ThemeDefault.foregroundInverted : ThemeDefault.foregroundSecondary} />;
+    return <UIcon icon={props.icon} color={selected ? 'var(--foregroundInverted)' : 'var(--foregroundSecondary)'} />;
 });
 
 const UserProfileCard = withUserInfo(({ user }) => {
@@ -36,11 +35,11 @@ const UserProfileCard = withUserInfo(({ user }) => {
             <XView
                 cursor="pointer"
                 path="/settings/profile"
-                color={ThemeDefault.foregroundPrimary}
-                hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
-                selectedBackgroundColor={ThemeDefault.accentPrimary}
-                selectedHoverBackgroundColor={ThemeDefault.accentPrimaryHover}
-                selectedColor={ThemeDefault.foregroundInverted}
+                color="var(--foregroundPrimary)"
+                hoverBackgroundColor="var(--backgroundPrimaryHover)"
+                selectedBackgroundColor="var(--accentPrimary)"
+                selectedHoverBackgroundColor="var(--accentPrimaryHover)"
+                selectedColor="var(--foregroundInverted)"
                 height={70}
                 flexDirection="row"
                 paddingHorizontal={16}
@@ -55,8 +54,8 @@ const UserProfileCard = withUserInfo(({ user }) => {
                     </XView>
                     <SelectableText
                         {...TextStyles.Body}
-                        color={ThemeDefault.foregroundSecondary}
-                        selectedColor={ThemeDefault.foregroundInverted}
+                        color="var(--foregroundSecondary)"
+                        selectedColor="var(--foregroundInverted)"
                     >
                         {user.email}
                     </SelectableText>
@@ -105,7 +104,7 @@ export const AccountFragment = React.memo(() => {
                 fontSize={24}
                 lineHeight="32px"
                 fontWeight="600"
-                color={ThemeDefault.foregroundPrimary}
+                color="var(--foregroundPrimary)"
                 flexDirection="row"
                 alignItems="center"
                 justifyContent="center"

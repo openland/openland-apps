@@ -2,7 +2,6 @@ import * as React from 'react';
 import { formatLastSeen } from 'openland-y-utils/formatTime';
 import { UserShort } from 'openland-api/Types';
 import { XViewSelectedContext } from 'react-mental';
-import { ThemeDefault } from 'openland-y-utils/themes';
 
 interface UPresenceProps {
     user: UserShort;
@@ -28,7 +27,7 @@ export const UPresence = ((props: UPresenceProps) => {
 
     return (
         <span>
-            <span style={{ color: isOnline && !selected ? ThemeDefault.accentPrimary : undefined }}>
+            <span style={{ color: isOnline && !selected ? 'var(--accentPrimary)' : undefined }}>
                 {sub}
             </span>
             {props.suffix}

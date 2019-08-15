@@ -6,7 +6,6 @@ import { ULink } from 'openland-web/components/unicorn/ULink';
 import { formatTime } from 'openland-y-utils/formatTime';
 import GroupReplyIcon from 'openland-icons/s/ic-chevron-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import { ThemeDefault } from 'openland-y-utils/themes';
 
 const wrapperClass = css`
     display: flex;
@@ -58,7 +57,7 @@ export const NotificationSender = React.memo((props: NotificationSenderProps) =>
             {group && (
                 <>
                     <div className={iconWrapper}>
-                        <UIcon icon={<GroupReplyIcon />} color={ThemeDefault.foregroundTertiary} />
+                        <UIcon icon={<GroupReplyIcon />} color="var(--foregroundTertiary)" />
                     </div>
 
                     <ULink path={`/mail/${group.id}`} className={cx(TextLabel1, linkClass)}>

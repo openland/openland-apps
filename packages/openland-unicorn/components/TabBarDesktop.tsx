@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { ThemeDefault } from 'openland-y-utils/themes';
 import { css } from 'linaria';
 import { TabRouter } from './TabRouter';
 import AppearanceIcon from 'openland-icons/s/ic-appearance-24.svg';
@@ -50,7 +49,7 @@ export const TabBarDesktop = React.memo(
             <XView
                 height="100%"
                 width="100%"
-                backgroundColor={ThemeDefault.backgroundTertiary}
+                backgroundColor="var(--backgroundTertiary)"
                 paddingTop={2}
             >
                 <XView
@@ -76,7 +75,7 @@ export const TabBarDesktop = React.memo(
                         height={54}
                         alignItems="center"
                         justifyContent="center"
-                        hoverBackgroundColor={ThemeDefault.backgroundTertiaryHover}
+                        hoverBackgroundColor="var(--backgroundTertiaryHover)"
                         cursor="pointer"
                         onClick={() => props.setSelected(i)}
                     >
@@ -95,7 +94,7 @@ export const TabBarDesktop = React.memo(
                         height={54}
                         alignItems="center"
                         justifyContent="center"
-                        hoverBackgroundColor={ThemeDefault.backgroundTertiaryHover}
+                        hoverBackgroundColor="var(--backgroundTertiaryHover)"
                         cursor="pointer"
                         path="/ui"
                         position="absolute"

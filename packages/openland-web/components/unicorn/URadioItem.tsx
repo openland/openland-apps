@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
-import { ThemeDefault } from 'openland-y-utils/themes';
 
 const radioDotStyle = css`
     width: 20px;
@@ -71,7 +70,7 @@ export const URadioItem = (props: URadioItemProps) => {
                     fontSize={15}
                     color="#171B1F"
                     lineHeight="24px"
-                    hoverBackgroundColor={ThemeDefault.backgroundPrimaryHover}
+                    hoverBackgroundColor="var(--backgroundPrimaryHover)"
                 >
                     <span>{props.label}</span>
                     <div className={cx(radioDotStyle, props.checked && radioDotCheckedStyle)} />

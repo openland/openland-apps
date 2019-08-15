@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { ThemeDefault } from 'openland-y-utils/themes';
 import AddIcon from 'openland-icons/s/ic-add-24.svg';
 
 interface UAddItemProps {
@@ -14,7 +13,7 @@ export const UAddItem = React.memo((props: UAddItemProps) => (
         title={props.title}
         onClick={props.onClick}
         icon={<AddIcon />}
-        iconBackground={ThemeDefault.accentPrimary}
+        iconBackground="var(--accentPrimary)"
         useRadius={true}
         hovered={props.active}
     />
