@@ -45,6 +45,7 @@ const titleStyle = css`
 `;
 
 const menuButton = css`
+    cursor: pointer;
     width: 40px;
     height: 40px;
     display: flex;
