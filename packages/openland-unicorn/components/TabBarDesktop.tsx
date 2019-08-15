@@ -92,12 +92,6 @@ export const TabBarDesktop = React.memo(
                 <XWithRole role="super-admin">
                     <XView
                         width={64}
-                        height={54}
-                        alignItems="center"
-                        justifyContent="center"
-                        hoverBackgroundColor="var(--backgroundTertiaryHover)"
-                        cursor="pointer"
-                        path="/ui"
                         position="absolute"
                         bottom={0}
                     >
@@ -109,7 +103,6 @@ export const TabBarDesktop = React.memo(
                             hoverBackgroundColor="var(--backgroundTertiaryHover)"
                             cursor="pointer"
                             path="/ui"
-
                         >
                             <UIcon icon={<AppearanceIcon />} color="#676D7A" />
                         </XView>
