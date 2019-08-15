@@ -7,9 +7,11 @@ import { HeaderConfig } from './HeaderConfig';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { ThemeDefault } from 'openland-y-utils/themes';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { useLayout } from './utils/LayoutContext';
 
 export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     let router = useStackRouter();
+    let layout = useLayout();
     useShortcuts({
         keys: ['Escape'], callback: () => {
             return router.pages.length > 1 ? router.pop() : false;
@@ -18,7 +20,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     let appearance = props.config.appearance || 'normal';
     return (
         <XView height={56} flexDirection="row" alignItems="center" zIndex={2}>
-            {router.pages.length > 1 ?
+            {router.pages.length > 1 || layout === 'mobile' ?
                 <XView
                     height={56}
                     width={56}
