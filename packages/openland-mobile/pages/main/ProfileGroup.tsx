@@ -110,7 +110,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
         let user = member.user;
 
         if (user.id !== getMessenger().engine.user.id) {
-            builder.action('Info', () => props.router.push('ProfileUser', { id: user.id }), false, require('assets/ic-user-24.png'));
+            builder.action('Info', () => props.router.push('ProfileUser', { id: user.id }), false, require('assets/ic-info-24.png'));
 
             if (canEdit) {
                 if (member.role === RoomMemberRole.MEMBER) {
@@ -164,7 +164,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
         }
 
         if (room.role === 'OWNER' || room.role === 'ADMIN' || (room.organization && (room.organization.isAdmin || room.organization.isOwner))) {
-            builder.action('Advanced settings', () => props.router.push('EditGroupAdvanced', { id: room.id }), false, require('assets/ic-edit-24.png'));
+            builder.action('Advanced settings', () => props.router.push('EditGroupAdvanced', { id: room.id }), false, require('assets/ic-settings-24.png'));
         }
 
         builder.action('Leave ' + chatTypeStr, handleLeave, false, require('assets/ic-leave-24.png'));
