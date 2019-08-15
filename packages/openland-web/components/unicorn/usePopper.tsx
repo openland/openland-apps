@@ -47,6 +47,7 @@ const PopperBody = React.memo(React.forwardRef((props: {
     hideOnEsc?: boolean;
     borderRadius?: number;
     useWrapper?: boolean;
+    wrapperClassName?: string;
 }, ref: React.Ref<PopperBodyRef>) => {
     const [visible, setVisible] = React.useState(true);
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -105,9 +106,16 @@ const PopperBody = React.memo(React.forwardRef((props: {
             document.removeEventListener('mouseover', mouseOverHandler);
         };
     }, []);
+
     return (
         <div
-            className={cx(pickerBody, !visible && pickerBodyInvisible)}
+            className={
+                cx(
+                    pickerBody,
+                    !visible && pickerBodyInvisible,
+                    props.wrapperClassName && props.wrapperClassName
+                )
+            }
             ref={containerRef}
             onMouseDown={eventBorder}
             onClick={eventBorder}
@@ -129,6 +137,7 @@ interface PopperConfig {
     borderRadius?: number;
     scope?: string;
     useWrapper?: boolean;
+    wrapperClassName?: string;
 }
 
 export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController) => React.ReactElement<{}>): [boolean, (element: HTMLElement | React.MouseEvent<unknown>) => void] => {
@@ -200,6 +209,7 @@ export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController)
                             hideOnEsc={config.hideOnEsc}
                             borderRadius={config.borderRadius}
                             useWrapper={config.useWrapper}
+                            wrapperClassName={config.wrapperClassName}
                         >
                             {popper(fakeCtx)}
                         </PopperBody>

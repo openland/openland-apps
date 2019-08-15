@@ -101,7 +101,7 @@ export const UserPopperContent = React.memo(
                     <XHorizontal>
                         <XView
                             flexShrink={0}
-                            onClick={(e: any) => {
+                            onClick={(e: React.MouseEvent) => {
                                 e.stopPropagation();
                                 if (router) {
                                     router.navigate('/' + user.id);
