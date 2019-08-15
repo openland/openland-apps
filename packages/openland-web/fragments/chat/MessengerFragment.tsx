@@ -32,7 +32,7 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
         if (chat.kind === 'PUBLIC') {
             return <SharedRoomPlaceholder room={chat} />;
         } else {
-            throw Error('Access denied');
+            return null;
         }
     }
 
