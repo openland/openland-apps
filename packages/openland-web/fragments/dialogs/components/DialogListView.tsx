@@ -40,7 +40,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
     if (!ds) {
         ds = dialogListWebDataSource(messenger.dialogList.dataSource);
     }
-    let dataSource = ds;
+    let dataSource = React.useMemo(() => new DataSourceWindow(ds!, 20), [ds]);
     let [query, setQuery] = React.useState('');
     let isSearching = query.trim().length > 0;
     let router = React.useContext(XViewRouterContext);
