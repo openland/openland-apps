@@ -8,7 +8,8 @@ import { defaultHover } from 'openland-web/utils/Styles';
 import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { useLayout } from './components/utils/LayoutContext';
 import { isElectron } from 'openland-y-utils/isElectron';
-import { detectOS } from 'openland-x-utils/detectOS';
+import { detectOS, OS } from 'openland-x-utils/detectOS';
+import { trackEvent } from 'openland-x-analytics';
 
 const bannerContainetClass = css`
     display: flex;
@@ -98,22 +99,52 @@ let useMobileAppsBanner = () => {
     let [show, setShow] = React.useState(!window.localStorage.getItem('banner-apps-closed'));
     let onClose = React.useCallback(() => {
         window.localStorage.setItem('banner-apps-closed', 'true');
+        trackEvent('banner_app_close');
         setShow(false);
     }, []);
-    let os = detectOS() || 'none';
+    let onAppClick = React.useCallback((selectedOS: OS) => {
+        const platform = ['iOS', 'Android'].includes(selectedOS) ? 'mobile' : 'desktop';
+
+        trackEvent('banner_app_download_action', {
+            os: selectedOS.toLowerCase(),
+            app_platform: platform
+        });
+    }, []);
+    let os = detectOS();
 
     let content = (
         <div className={bannerMobileApps}>
             <span className={cx(TextLabel1, bannerTextClass)}>Install app</span>
             <div className={buttonsContainer}>
                 <div className={bannerButton}>
-                    <UButton color="rgba(255,255,255, 0.16)" text="Get iOS app" target="_blank" href="https://oplnd.com/ios" as="a" />
+                    <UButton
+                        color="rgba(255,255,255, 0.16)"
+                        text="Get iOS app"
+                        target="_blank"
+                        href="https://oplnd.com/ios"
+                        as="a"
+                        onClick={() => onAppClick('iOS')}
+                    />
                 </div>
                 <div className={bannerButton}>
-                    <UButton color="rgba(255,255,255, 0.16)" text="Get Android app" target="_blank" href="https://oplnd.com/android" as="a" />
+                    <UButton
+                        color="rgba(255,255,255, 0.16)"
+                        text="Get Android app"
+                        target="_blank"
+                        href="https://oplnd.com/android"
+                        as="a"
+                        onClick={() => onAppClick('Android')}
+                    />
                 </div>
-                {(['Mac', 'Windows', 'Linux'].includes(os)) && <div className={bannerButton}>
-                    <UButton color="rgba(255,255,255, 0.16)" text="Get Desktop app" target="_blank" href={links[os]} as="a" />
+                {(os && ['Mac', 'Windows', 'Linux'].includes(os)) && <div className={bannerButton}>
+                    <UButton
+                        color="rgba(255,255,255, 0.16)"
+                        text="Get Desktop app"
+                        target="_blank"
+                        href={links[os]}
+                        as="a"
+                        onClick={() => onAppClick(os!)}
+                    />
                 </div>}
 
             </div>
@@ -132,13 +163,14 @@ let useNotificationsBanner = () => {
     }, []);
     let onPress = React.useCallback(() => {
         AppNotifications.requestPermission();
-
+        trackEvent('banner_notifications_allow');
     }, []);
 
     let onClose = React.useCallback(() => {
         let newttl = new Date().getTime() + 1000 * 60 * 60 * 24 * 30; // ask again after 30d
         window.localStorage.setItem('banner-notifications-closed-ttl', newttl + '');
         setTTL(newttl);
+        trackEvent('banner_notifications_close');
     }, []);
 
     let content = (

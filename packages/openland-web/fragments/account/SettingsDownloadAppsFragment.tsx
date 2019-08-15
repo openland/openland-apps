@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
+import { XView, XViewProps } from 'react-mental';
 import { css, cx } from 'linaria';
 import { XImage } from 'react-mental';
 import MacIcon from 'openland-icons/ic-app-mac.svg';
 import WinIcon from 'openland-icons/ic-app-win.svg';
 import LinuxIcon from 'openland-icons/ic-app-linux.svg';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
-import { detectOS } from 'openland-x-utils/detectOS';
+import { detectOS, OS } from 'openland-x-utils/detectOS';
+import { trackEvent } from 'openland-x-analytics';
 
 const textAlignClassName = css`
     text-align: center;
@@ -119,36 +120,41 @@ const DesktopAppButtonActiveClass = css`
     }
 `;
 
-interface DesktopAppButtonProps {
+interface DesktopAppButtonProps extends XViewProps {
     active: boolean;
     title: string;
     icon: any;
-    marginRight?: number;
-    href: string;
 }
 
-const DesktopAppButton = (props: DesktopAppButtonProps) => (
-    <XView
-        as="a"
-        target="_blank"
-        marginRight={props.marginRight}
-        href={props.href}
-        hoverTextDecoration="none"
-    >
-        <div className={cx(DesktopAppButtonClass, props.active && DesktopAppButtonActiveClass)}>
-            <XView marginRight={8}>{props.icon}</XView>
-            <XView fontWeight="600" fontSize={15}>
-                {props.title}
-            </XView>
-        </div>
-    </XView>
-);
+const DesktopAppButton = (props: DesktopAppButtonProps) => {
+    const { active, title, icon, ...other } = props;
 
-const MobileAppButton = (props: { href: string; image: string }) => (
-    <XView as="a" href={props.href} target="_blank" hoverOpacity={0.8} hoverTextDecoration="none">
-        <XImage width={124} height={40} src={props.image} />
-    </XView>
-);
+    return (
+        <XView
+            as="a"
+            target="_blank"
+            hoverTextDecoration="none"
+            {...other}
+        >
+            <div className={cx(DesktopAppButtonClass, props.active && DesktopAppButtonActiveClass)}>
+                <XView marginRight={8}>{props.icon}</XView>
+                <XView fontWeight="600" fontSize={15}>
+                    {props.title}
+                </XView>
+            </div>
+        </XView>
+    );
+};
+
+const MobileAppButton = (props: { image: string } & XViewProps) => {
+    const { image, ...other } = props;
+
+    return (
+        <XView as="a" target="_blank" hoverOpacity={0.8} hoverTextDecoration="none" {...other}>
+            <XImage width={124} height={40} src={props.image} />
+        </XView>
+    );
+};
 
 const appsContainer = css`
     display: flex;
@@ -179,6 +185,15 @@ export const DownloadAppsFragment = (props: NativaAppsModalProps) => {
     const { title, text } = props;
     const os = detectOS();
     const modalContext = React.useContext(XModalBoxContext);
+
+    const onAppClick = React.useCallback((selectedOS: OS) => {
+        const platform = ['iOS', 'Android'].includes(selectedOS) ? 'mobile' : 'desktop';
+
+        trackEvent('banner_app_download_action', {
+            os: selectedOS.toLowerCase(),
+            app_platform: platform
+        });
+    }, []);
 
     return (
         <XView
@@ -244,11 +259,13 @@ export const DownloadAppsFragment = (props: NativaAppsModalProps) => {
                                     <MobileAppButton
                                         href="https://oplnd.com/ios"
                                         image="/static/X/settings/appstore@2x.png"
+                                        onClick={() => onAppClick('iOS')}
                                     />
                                 </XView>
                                 <MobileAppButton
                                     href="https://oplnd.com/android"
                                     image="/static/X/settings/googleplay@2x.png"
+                                    onClick={() => onAppClick('Android')}
                                 />
                             </XView>
                         }
@@ -266,6 +283,7 @@ export const DownloadAppsFragment = (props: NativaAppsModalProps) => {
                                     icon={<MacIcon />}
                                     marginRight={12}
                                     href="https://oplnd.com/mac"
+                                    onClick={() => onAppClick('Mac')}
                                 />
                                 <DesktopAppButton
                                     active={os === 'Windows'}
@@ -273,12 +291,14 @@ export const DownloadAppsFragment = (props: NativaAppsModalProps) => {
                                     icon={<WinIcon />}
                                     marginRight={12}
                                     href="https://oplnd.com/windows"
+                                    onClick={() => onAppClick('Windows')}
                                 />
                                 <DesktopAppButton
                                     active={os === 'Linux'}
                                     title="Linux"
                                     icon={<LinuxIcon />}
                                     href="https://oplnd.com/linux"
+                                    onClick={() => onAppClick('Linux')}
                                 />
                             </XView>
                         }
