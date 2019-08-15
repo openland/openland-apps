@@ -7,10 +7,6 @@ export const TextRenderProccessor: TextRenderProccessorApi = {
         return text;
     },
 
-    processText(text: string) {
-        return text;
-    },
-
     processReactionsLabel(users: ReactionUser[]) {
         return '';
     },

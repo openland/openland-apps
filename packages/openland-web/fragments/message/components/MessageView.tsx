@@ -4,7 +4,7 @@ import { convertMessage } from 'openland-engines/messenger/ConversationEngine';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { FullMessage, Message_message_GeneralMessage } from 'openland-api/Types';
 import { MessageContent } from 'openland-web/fragments/chat/messenger/message/MessageContent';
-import { convertDsMessage, DataSourceWebMessageItem } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
+import { convertDsMessage, DataSourceWebMessageItem, emojifyReactions } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { Span } from 'openland-y-utils/spans/Span';
 import { emoji } from 'openland-y-utils/emoji';
 import { MessageReactions } from 'openland-web/fragments/chat/messenger/message/reactions/MessageReactions';
@@ -12,7 +12,7 @@ import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/mess
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { css } from 'linaria';
 import { showAvatarModal } from 'openland-web/components/showAvatarModal';
-import { ReactionReduced } from 'openland-engines/reactions/types';
+import { ReactionReducedEmojify } from 'openland-engines/reactions/types';
 import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
 import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
 
@@ -48,7 +48,7 @@ export const MessageView = React.memo((props: { message: Message_message_General
     const [reply, setReply] = React.useState<DataSourceWebMessageItem[]>([]);
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
     const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
-    const [reactionsReduced, setReactionsReduced] = React.useState<ReactionReduced[]>([]);
+    const [reactionsReduced, setReactionsReduced] = React.useState<ReactionReducedEmojify[]>([]);
     const [reactionsLabel, setReactionsLabel] = React.useState<string | JSX.Element>('');
 
     React.useEffect(() => {
@@ -64,8 +64,8 @@ export const MessageView = React.memo((props: { message: Message_message_General
     }, [sender.name]);
 
     React.useEffect(() => {
-        setReactionsReduced(reduceReactions(message.reactions, messenger.user.id));
-        setReactionsLabel(getReactionsLabel(message.reactions, messenger.user.id));
+        setReactionsReduced(emojifyReactions(reduceReactions(message.reactions, messenger.user.id)));
+        setReactionsLabel(emoji(getReactionsLabel(message.reactions, messenger.user.id)));
     }, [message.reactions]);
 
     return (

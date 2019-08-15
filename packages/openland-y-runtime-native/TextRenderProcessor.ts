@@ -14,10 +14,6 @@ export const TextRenderProccessor: TextRenderProccessorApi = {
         return text;
     },
 
-    processText(text: string) {
-        return useNonBreakingSpaces(text) || text;
-    },
-
     processReactionsLabel(users: ReactionUser[]) {
         let usersString = '';
         if (users.length > 0) {

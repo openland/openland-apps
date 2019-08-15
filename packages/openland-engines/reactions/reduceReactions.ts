@@ -1,6 +1,5 @@
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { ReactionReduced } from './types';
-import { TextRenderProccessor } from 'openland-y-runtime/TextRenderProcessor';
 
 export const reduceReactions = (reactions: FullMessage_GeneralMessage_reactions[], myID: string) => {
     let reactionsReduced = reactions.reduce(
@@ -11,7 +10,6 @@ export const reduceReactions = (reactions: FullMessage_GeneralMessage_reactions[
             data.users.push({
                 id: r.user.id,
                 name: r.user.id === myID ? 'You' : r.user.name,
-                nameProcessed: r.user.id === myID ? 'You' : TextRenderProccessor.processText(r.user.name)
             });
             res.set(r.reaction, data);
             return res;

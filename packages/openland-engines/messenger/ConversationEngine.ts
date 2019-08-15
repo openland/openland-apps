@@ -60,7 +60,7 @@ export interface DataSourceMessageItem {
     textSpans: Span[];
     failed?: boolean;
     reactionsReduced: ReactionReduced[];
-    reactionsLabel: string | JSX.Element;
+    reactionsLabel: string;
 
     // legacy
     isSubscribedMessageComments?: boolean;

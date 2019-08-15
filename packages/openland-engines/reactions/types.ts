@@ -3,7 +3,6 @@ import { MessageReactionType } from 'openland-api/Types';
 export interface ReactionUser {
     id: string;
     name: string;
-    nameProcessed: string | JSX.Element;
 }
 
 export interface ReactionReduced {
@@ -11,4 +10,16 @@ export interface ReactionReduced {
     my: boolean;
     reaction: MessageReactionType;
     users: ReactionUser[];
+}
+
+export interface ReactionUserEmojify {
+    id: string;
+    name: string | JSX.Element;
+}
+
+export interface ReactionReducedEmojify {
+    count: number;
+    my: boolean;
+    reaction: MessageReactionType;
+    users: ReactionUserEmojify[];
 }

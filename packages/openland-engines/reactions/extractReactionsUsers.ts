@@ -1,5 +1,4 @@
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
-import { TextRenderProccessor } from 'openland-y-runtime/TextRenderProcessor';
 import { ReactionUser } from './types';
 
 export const extractReactionsUsers = (reactions: FullMessage_GeneralMessage_reactions[], myID: string): ReactionUser[] => {
@@ -15,7 +14,6 @@ export const extractReactionsUsers = (reactions: FullMessage_GeneralMessage_reac
             return {
                 id: u.id,
                 name: u.id === myID ? 'You' : u.name,
-                nameProcessed: u.id === myID ? 'You' : TextRenderProccessor.processText(u.name)
             };
         });
 };

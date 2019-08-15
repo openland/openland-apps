@@ -16,10 +16,6 @@ export const TextRenderProccessor: TextRenderProccessorApi = {
         return emoji(text);
     },
 
-    processText(text: string) {
-        return emoji(text);
-    },
-
     processReactionsLabel(users: ReactionUser[]) {
         let usersString = '';
         if (users.length > 0) {
@@ -33,7 +29,7 @@ export const TextRenderProccessor: TextRenderProccessorApi = {
             }
         }
 
-        return emoji(usersString);
+        return usersString;
     },
 
     cropSpecSymbols(spans: Span[], parent: Span, symbolObject: SpecSymbolsType) {

@@ -5,7 +5,7 @@ import { css, cx } from 'linaria';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
-import { ReactionReduced, ReactionUser } from 'openland-engines/reactions/types';
+import { ReactionReducedEmojify, ReactionUser, ReactionUserEmojify } from 'openland-engines/reactions/types';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 
 export const reactionImage = (r: MessageReactionType) => `https://cdn.openland.com/shared/reactions/${r}.png`;
@@ -46,17 +46,17 @@ const reactionsItem = css`
 `;
 
 interface ReactionItemProps {
-    value: ReactionReduced;
+    value: ReactionReducedEmojify;
     onClick: (reaction: MessageReactionType) => void;
 }
 
 interface UsersListInstance {
-    update: (newUsers: ReactionUser[]) => void;
+    update: (newUsers: ReactionUserEmojify[]) => void;
 }
 
 // Sorry universe
-const UsersList = React.memo(React.forwardRef((props: { initialUsers: ReactionUser[] }, ref: React.Ref<UsersListInstance>) => {
-    const [users, setUsers] = React.useState<ReactionUser[]>(props.initialUsers);
+const UsersList = React.memo(React.forwardRef((props: { initialUsers: ReactionUserEmojify[] }, ref: React.Ref<UsersListInstance>) => {
+    const [users, setUsers] = React.useState<ReactionUserEmojify[]>(props.initialUsers);
 
     React.useImperativeHandle(ref, () => ({
         update: (newUsers: ReactionUser[]) => {
@@ -68,7 +68,7 @@ const UsersList = React.memo(React.forwardRef((props: { initialUsers: ReactionUs
         <>
             {users.map((u, i) =>
                 <div key={`user-${u.name}-${i}`}>
-                    {u.nameProcessed}
+                    {u.name}
                 </div>
             )}
         </>
@@ -111,7 +111,7 @@ const ReactionItem = React.memo((props: ReactionItemProps) => {
 interface MessageReactionsProps {
     messageId?: string;
     reactions: FullMessage_GeneralMessage_reactions[];
-    reactionsReduced: ReactionReduced[];
+    reactionsReduced: ReactionReducedEmojify[];
     reactionsLabel: string | JSX.Element;
 }
 
