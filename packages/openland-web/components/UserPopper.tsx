@@ -10,13 +10,16 @@ interface UserPopperProps {
 }
 
 export const useUserPopper = (props: UserPopperProps) => {
-    const [, show] = usePopper({ placement: 'top', hideOnLeave: true, borderRadius: 8 }, ctx => (
-        <UserPopperContent
-            hidePopper={ctx.hide}
-            noCardOnMe={props.noCardOnMe}
-            isMe={props.isMe}
-            user={props.user}
-        />
-    ));
+    const [, show] = usePopper(
+        { placement: 'top', hideOnLeave: true, borderRadius: 8, scope: 'user-popper' },
+        ctx => (
+            <UserPopperContent
+                hidePopper={ctx.hide}
+                noCardOnMe={props.noCardOnMe}
+                isMe={props.isMe}
+                user={props.user}
+            />
+        ),
+    );
     return [show];
 };
