@@ -32,6 +32,7 @@ export interface XScrollViewReverse2Props extends XStyles {
 interface XScrollViewReverse2RefProps {
     scrollToBottom: () => void;
     getScrollTop: () => number;
+    getClientHeight: () => number;
 }
 
 const context = React.createContext(() => { /*  */ });
@@ -61,6 +62,9 @@ export const XScrollViewReverse2 = React.memo(
                 getScrollTop: () => {
                     return scrollTop.current;
                 },
+                getClientHeight: () => {
+                    return outerHeight.current;
+                }
             }));
 
             const reportOnScroll = React.useMemo(() => {
