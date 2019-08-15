@@ -5,12 +5,13 @@ import {
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { trackError } from 'openland-x-analytics';
 import { Howl } from 'howler';
+import { XViewRouter } from 'react-mental';
 
 class AppNotiticationsWeb implements AppNotificationsApi {
     state: AppNotifcationsState;
 
     private watchers: ((state: AppNotifcationsState) => void)[] = [];
-    private router: { replaceRoute(path: string): void } | null = null;
+    private router: XViewRouter | null = null;
     private blinkFaviconAlreadyStarted: boolean;
     private sound = canUseDOM
         ? new Howl({
@@ -190,7 +191,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
                 let router = this.router;
                 notification.onclick = function () {
                     if (router) {
-                        router.replaceRoute(content.path);
+                        router.navigate(content.path);
                     }
                     window.focus();
                     this.close();
@@ -201,7 +202,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
         }
     }
 
-    setRouter(router: { replaceRoute(path: string): void }) {
+    setRouter(router: XViewRouter) {
         this.router = router;
     }
 }
