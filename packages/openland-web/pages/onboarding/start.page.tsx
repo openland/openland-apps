@@ -21,16 +21,18 @@ export const DiscoverStart = ({
     onStartClick,
     noTopBar,
     noBackSkipLogo,
+    onLogin,
 }: {
     onSkip: ((event: React.MouseEvent<Element, MouseEvent>) => void) | null;
     onStartClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
     noTopBar?: boolean;
     noBackSkipLogo?: boolean;
+    onLogin?: boolean;
 }) => {
     const isMobile = useIsMobile();
     const button = <XButton text="Start" style="primary" size="large" onClick={onStartClick} />;
     return (
-        <>
+        <XView flexGrow={1}>
             <XDocumentHead title="Discover" />
             {!noTopBar && <TopBar progressInPercents={getPercentageOfOnboarding(6)} />}
             {!noBackSkipLogo && (
@@ -50,14 +52,23 @@ export const DiscoverStart = ({
                     <ImgUnboardingStart />
                 </XView>
                 <XView fontSize={24} marginBottom={12}>
-                    Discover Chat
+                    Discover chats
                 </XView>
                 <XView fontSize={16} marginBottom={40}>
-                    <span className={textAlignClassName}>
-                        Find the most useful chats
-                        <br />
-                        based on your interests and needs
-                    </span>
+                    {!onLogin && (
+                        <span className={textAlignClassName}>
+                            Find the most useful chats
+                            <br />
+                            based on your interests and needs
+                        </span>
+                    )}
+                    {onLogin && (
+                        <span className={textAlignClassName}>
+                            Your account is created!
+                            <br />
+                            Now, let’s find chats based on your interests
+                        </span>
+                    )}
                 </XView>
                 {!isMobile && <XView alignItems="center">{button}</XView>}
                 {isMobile && (
@@ -66,7 +77,7 @@ export const DiscoverStart = ({
                     </XView>
                 )}
             </XView>
-        </>
+        </XView>
     );
 };
 
@@ -85,7 +96,7 @@ export default withApp('Home', 'viewer', () => {
 
     return (
         <React.Suspense fallback={null}>
-            <DiscoverStart onSkip={onSkip} onStartClick={onStartClick} />
+            <DiscoverStart onSkip={onSkip} onStartClick={onStartClick} onLogin />
         </React.Suspense>
     );
 });
