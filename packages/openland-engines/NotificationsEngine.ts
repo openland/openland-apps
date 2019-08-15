@@ -3,7 +3,6 @@ import { SettingsQuery, RoomTinyQuery } from 'openland-api';
 import {
     RoomTiny_room_SharedRoom,
     RoomTiny_room_PrivateRoom,
-    MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived,
     DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message,
 } from 'openland-api/Types';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
