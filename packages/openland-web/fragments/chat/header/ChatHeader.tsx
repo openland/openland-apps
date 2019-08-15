@@ -165,7 +165,10 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
 
     const [menuVisible, menuShow] = usePopper(
         { placement: 'bottom-end', hideOnClick: true, useWrapper: false },
-        (ctx) => <MenuComponent ctx={ctx} id={props.chat.id} />
+        (ctx) =>
+            <React.Suspense fallback={<div style={{ width: 500, height: 100 }} />}>
+                <MenuComponent ctx={ctx} id={props.chat.id} />
+            </React.Suspense>
     );
 
     return (
