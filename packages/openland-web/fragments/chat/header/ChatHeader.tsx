@@ -130,7 +130,7 @@ const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
     }
 
     if (chat.__typename === 'SharedRoom') {
-        res.item({ title: 'Invite friends', icon: <InviteIcon />, action: () => showAddMembersModal({ id: chat.id, isGroup: true, isOrganization: false }) });
+        res.item({ title: 'Add people', icon: <InviteIcon />, action: () => showAddMembersModal({ id: chat.id, isGroup: true, isOrganization: false }) });
     }
 
     res.item({

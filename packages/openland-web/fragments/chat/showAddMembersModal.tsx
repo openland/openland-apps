@@ -658,5 +658,5 @@ export const AddMembersModal = React.memo(
 );
 
 export const showAddMembersModal = (props: AddMemberModalT) => {
-    showModalBox({ title: 'Add members' }, ctx => <AddMembersModal {...props} hide={ctx.hide} />);
+    showModalBox({ title: 'Add people' }, ctx => <AddMembersModal {...props} hide={ctx.hide} />);
 };
