@@ -17,17 +17,17 @@ const wrapperClass = css`
 `;
 
 const linkClass = css`
-    color: #171B1F; // ThemeDefault.foregroundPrimary
+    color: var(--foregroundPrimary);
 
     &:hover {
         text-decoration: none;
-        color: #1885F2; // ThemeDefault.accentPrimary
+        color: var(--accentPrimary);
     }
 `;
 
 const dateWrapper = css`
     margin-left: 8px;
-    color: #676D7A; // ThemeDefault.foregroundSecondary
+    color: var(--foregroundSecondary);
 `;
 
 const iconWrapper = css`

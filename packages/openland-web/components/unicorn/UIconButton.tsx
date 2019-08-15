@@ -21,7 +21,7 @@ const wrapper = css`
 `;
 
 const wrapperActive = css`
-    background: #F0F2F5; // ThemeDefault.backgroundPrimaryHover
+    background: var(--backgroundPrimaryHover);
 `;
 
 const container = css`
@@ -31,7 +31,7 @@ const container = css`
     justify-content: center;
 
     &:hover .${wrapper} {
-        background: #F0F2F5; // ThemeDefault.backgroundPrimaryHover
+        background: var(--backgroundPrimaryHover);
     }
 `;
 

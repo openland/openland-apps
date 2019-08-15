@@ -8,7 +8,6 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
     private readonly _windowSize: number;
     private _isPassThrough = false;
     private _innerCompleted = false;
-    private _innerInited = false;
 
     constructor(inner: ReadableDataSource<T>, windowSize: number) {
         this._inner = inner;
@@ -17,8 +16,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
         this._subscription = inner.watch({
             onDataSourceInited: (data: T[], completed: boolean) => {
                 this._innerCompleted = completed;
-                this._innerInited = true;
-                if (data.length < windowSize) {
+                if (data.length < windowSize || this._isPassThrough) {
                     this._proxy.initialize(data, completed);
                     this._isPassThrough = true;
                 } else {
@@ -90,7 +88,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                 } else {
                     this._proxy.loadedMore(toAdd, this._innerCompleted);
                 }
-            } else if (this._innerInited) {
+            } else {
                 this._isPassThrough = true;
                 if (this._innerCompleted) {
                     this._proxy.complete();

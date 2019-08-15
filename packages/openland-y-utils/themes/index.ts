@@ -33,9 +33,9 @@ export const ThemeLightBlue: ThemeGlobal = {
     accentPrimaryHover: '#2693FF',
     accentPrimaryActive: '#0B72D9',
 
-    accentMuted: '#398FE5',
-    accentMutedHover: '#398FE5',
-    accentMutedActive: '#398FE5',
+    accentMuted: '#4595E5',
+    accentMutedHover: '#4595E5',
+    accentMutedActive: '#4595E5',
 
     accentPositive: '#36B35F',
     accentPositiveHover: '#41BA69',

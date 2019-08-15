@@ -29,10 +29,10 @@ const dialogContainer = css`
 `;
 
 const dialogActiveContainer = css`
-    background-color: #398FE5; // ThemeDefault.accentMuted
+    background-color: var(--accentMuted);
 
     &:hover {
-        background-color: #398FE5; // ThemeDefault.accentMutedHover
+        background-color: var(--accentMutedHover);
     }
 `;
 

@@ -3,15 +3,14 @@ import { SettingsQuery, RoomTinyQuery } from 'openland-api';
 import {
     RoomTiny_room_SharedRoom,
     RoomTiny_room_PrivateRoom,
-    MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived,
     DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message,
 } from 'openland-api/Types';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { AppNotifications } from 'openland-y-runtime/AppNotifications';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
+import { NotificationsDataSourceItem } from './NotificationCenterEngine';
 
-type NewNotification = MyNotificationsCenter_event_NotificationCenterUpdateSingle_update_NotificationReceived;
 type NewMessage = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message;
 
 export class NotificationsEngine {
@@ -35,39 +34,28 @@ export class NotificationsEngine {
         AppBadge.setBadge(counter);
     }
 
-    handleIncomingNotification = async (event: NewNotification) => {
+    handleIncomingNotification = async (comment: NotificationsDataSourceItem) => {
         let settings = (await this.engine.client.client.readQuery(SettingsQuery))!.settings;
         if (settings.commentNotificationsDelivery === 'ALL') {
-            const commentData = event.notification.content[0];
-            const comment = commentData.comment.comment;
-            const commentPeer = commentData.peer;
-            const commentId = comment.id;
-            const commentMessage = comment.message || comment.fallback;
-            const commentSenderName = comment.sender.name;
-            const commentSenderPhoto = comment.sender.photo;
-
-            const room = commentPeer.peerRoot.chat;
-            const privateRoom = room.__typename === 'PrivateRoom' ? (room as RoomTiny_room_PrivateRoom) : null;
-            const sharedRoom = room.__typename === 'SharedRoom' ? (room as RoomTiny_room_SharedRoom) : null;
+            const { key, sender, peerRootId, text, fallback, room } = comment;
 
             AppNotifications.playIncomingSound();
 
-            if (privateRoom) {
+            if (room && room.__typename === 'SharedRoom') {
                 AppNotifications.displayNotification({
-                    title: commentSenderName + ' commented',
-                    body: commentMessage,
-                    path: '/notifications/comments',
-                    image: commentSenderPhoto || '',
-                    id: doSimpleHash(commentId).toString(),
+                    title: sender.name + ' commented in @' + room.title,
+                    body: text || fallback,
+                    path: '/message/' + peerRootId,
+                    image: sender.photo || undefined,
+                    id: doSimpleHash(key).toString(),
                 });
-            }
-            if (sharedRoom) {
+            } else {
                 AppNotifications.displayNotification({
-                    title: commentSenderName + ' commented in @' + sharedRoom.title,
-                    body: commentMessage,
-                    path: '/notifications/comments',
-                    image: commentSenderPhoto || '',
-                    id: doSimpleHash(commentId).toString(),
+                    title: sender.name + ' commented',
+                    body: text || fallback,
+                    path: '/message/' + peerRootId,
+                    image: sender.photo || undefined,
+                    id: doSimpleHash(key).toString(),
                 });
             }
         }

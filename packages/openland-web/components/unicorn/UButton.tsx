@@ -73,52 +73,52 @@ const size40 = css`
 
 const primaryStyle = css`
     color: #fff;
-    background-color: #1885f2; // ThemeDefault.accentPrimary
+    background-color: var(--accentPrimary);
 `;
 
 const primaryHoverStyle = css`
     &:hover {
-        background-color: #0d86ff; // ThemeDefault.accentPrimaryHover
+        background-color: var(--accentPrimaryHover);
     }
 `;
 
 const primaryActiveStyle = css`
     &:active {
-        background-color: #0b78e6; // ThemeDefault.accentPrimaryActive
+        background-color: var(--accentPrimaryActive);
     }
 `;
 
 const secondaryStyle = css`
     color: #676d7a;
-    background-color: #F0F2F5; // ThemeDefault.backgroundTertiary
+    background-color: var(--backgroundTertiary);
 `;
 
 const secondaryHoverStyle = css`
     &:hover {
-        background-color: #F0F2F5; // ThemeDefault.backgroundTertiaryHover
+        background-color: var(--backgroundTertiaryHover);
     }
 `;
 
 const secondaryActiveStyle = css`
     &:active {
-        background-color: #F0F2F5; // ThemeDefault.backgroundTertiaryActive
+        background-color: var(--backgroundTertiaryActive);
     }
 `;
 
 const dangerStyle = css`
     color: #fff;
-    background-color: #f22447; // ThemeDefault.accentNegative
+    background-color: var(--accentNegative);
 `;
 
 const dangerHoverStyle = css`
     &:hover {
-        background-color: #ff0d35; // ThemeDefault.accentNegativeHover
+        background-color: var(--accentNegativeHover);
     }
 `;
 
 const dangerActiveStyle = css`
     &:active {
-        background-color: #e60c30; // ThemeDefault.accentNegativeActive
+        background-color: var(--accentNegativeActive);
     }
 `;
 

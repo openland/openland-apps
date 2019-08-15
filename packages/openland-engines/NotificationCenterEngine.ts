@@ -228,7 +228,7 @@ export class NotificationCenterEngine {
             await this._dataSourceStored.addItem(converted, 0);
 
             if (converted.notificationType === 'new_comment') {
-                this.engine.notifications.handleIncomingNotification(event);
+                this.engine.notifications.handleIncomingNotification(converted);
             }
 
             this.onNotificationsUpdated();

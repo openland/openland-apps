@@ -22,7 +22,7 @@ const styleSpansMessageContainer = css`
     line-height: 24px;
     letter-spacing: 0;
     font-weight: 400;
-    color: #171b1f; // ThemeDefault.foregroundPrimary
+    color: var(--foregroundPrimary);
     
     & > span br:last-child {
         display: none;

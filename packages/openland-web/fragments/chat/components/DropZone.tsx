@@ -20,7 +20,7 @@ const dropZoneClass = css`
     right: 0;
     bottom: 0;
     background-color: rgba(255, 255, 255, 0.92);
-    color: #969AA3; // ThemeDefault.foregroundTertiary
+    color: var(--foregroundTertiary);
     display: none;
     flex-direction: column;
     align-items: center;
@@ -31,8 +31,8 @@ const dropZoneClass = css`
 const iconContainer = css`
     position: relative;
     display: flex;
-    background-color: #969AA3; // ThemeDefault.foregroundTertiary
-    color: #1885F2; // ThemeDefault.foregroundTertiary
+    background-color: var(--foregroundTertiary);
+    color: var(--foregroundTertiary);
     height: 72px;
     border-radius: 72px;
     margin-bottom: 24px;
@@ -45,7 +45,7 @@ const iconContainerAnim = css`
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: #1885F2; // ThemeDefault.foregroundTertiary
+    background-color: var(--foregroundTertiary);
     opacity: 0;
     height: 72px;
     border-radius: 72px;

@@ -26,12 +26,12 @@ const senderContainer = css`
 `;
 
 const senderNameStyle = css`
-    color: #171b1f; // ThemeDefault.foregroundPrimary
+    color: var(--foregroundPrimary);
 `;
 
 const senderOrgAndDateStyle = css`
     margin-left: 8px;
-    color: #676d7a; // ThemeDefault.foregroundSecondary
+    color: var(--foregroundSecondary);
 `;
 
 const senderBadgeStyle = css`
@@ -161,16 +161,16 @@ const messageInnerContainerClass = css`
 
 // Message container seleciton
 const messageContainerSelectedClass = css`
-    background-color: #f0f2f5; // ThemeDefault.backgroundTertiary
+    background-color: var(--backgroundTertiary);
 
     .message-buttons-wrapper,
     .message-rich-wrapper,
     .message-document-wrapper {
-        background-color: #fff; // ThemeDefault.backgroundPrimary
+        background-color: var(--backgroundPrimary);
     }
 
     .hover-menu-container {
-        background-color: #f0f2f5; // ThemeDefault.backgroundTertiary
+        background-color: var(--backgroundTertiary);
     }
 `;
 

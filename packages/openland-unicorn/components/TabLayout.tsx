@@ -9,6 +9,7 @@ import { TabBarDesktop } from './TabBarDesktop';
 import { TabBarMobile } from './TabBarMobile';
 import { CounterContext } from './CounterContext';
 import { Banners } from 'openland-unicorn/Banner';
+import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 
 const containerMobile = css`
     display: flex;    
@@ -105,6 +106,11 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
             props.router.navigate(to);
         }
     }), []);
+
+    React.useEffect(() => {
+        AppNotifications.setRouter(xRouting);
+    }, []);
+
     if (layout === 'mobile') {
         return (
             <XViewRouterContext.Provider value={xRouting}>

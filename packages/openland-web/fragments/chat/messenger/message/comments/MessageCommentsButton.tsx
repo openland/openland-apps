@@ -10,12 +10,12 @@ const messageCommentsButtonWrapper = css`
     display: flex;
     align-self: flex-start;
     align-items: center;
-    background-color: #F0F2F5; // ThemeDefault.backgroundTertiary
+    background-color: var(--backgroundTertiary);
     height: 28px;
     border-radius: 14px;
     padding: 5px 12px;
     margin-right: 8px;
-    color: #676D7A; // ThemeDefault.foregroundSecondary
+    color: var(--foregroundSecondary);
     cursor: pointer;
 `;
 
@@ -29,7 +29,7 @@ const iconWrapper = css`
         height: 16px;
         
         path {
-            fill: #0C7FF2; // ThemeDefault.accentPrimary
+            fill: var(--accentPrimary);
         }
     }
 `;
