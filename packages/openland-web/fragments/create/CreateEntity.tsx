@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
+import { XView, XViewRouter } from 'react-mental';
 import { SharedRoomKind } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
@@ -161,6 +161,7 @@ interface CreateEntityProps {
     entityKind: EntityKind;
     selectOptions?: SelectWithDropdownOption<CommunityType | SharedRoomKind>[];
     ctx: XModalController;
+    router?: XViewRouter;
 }
 
 export const CreateEntity = ({
@@ -170,6 +171,7 @@ export const CreateEntity = ({
     inOrgId,
     selectOptions,
     ctx,
+    router
 }: CreateEntityProps) => {
     const client = useClient();
     const [coverSrc, setCoverSrc] = React.useState<string | null>('');
@@ -215,21 +217,23 @@ export const CreateEntity = ({
         }
 
         if (typeField.value === SharedRoomKind.GROUP || typeField.value === SharedRoomKind.PUBLIC) {
-            await client.mutateRoomCreate({
+            const group = (await client.mutateRoomCreate({
                 title: titleField.value.trim(),
                 kind: typeField.value,
                 photoRef,
                 members: membersToAdd,
                 organizationId: selectedOrgField.value ? selectedOrgField.value : myOrgId || '',
                 channel: entityKind === EntityKind.CHANNEL,
-            });
+            })).room;
 
-            // TODO: Navigate
+            if (router) {
+                router.navigate('/mail/' + group.id);
+            }
+
             ctx.hide();
         } else {
             const isCommunity = entityKind === EntityKind.COMMUNITY;
-
-            let res = await client.mutateCreateOrganization({
+            const organization = (await client.mutateCreateOrganization({
                 input: {
                     personal: false,
                     name: titleField.value.trim(),
@@ -238,18 +242,21 @@ export const CreateEntity = ({
                     isCommunity,
                     isPrivate: typeField.value === CommunityType.COMMUNITY_PRIVATE,
                 },
-            });
+            })).organization;
 
             if (membersToAdd.length) {
                 await client.mutateOrganizationAddMember({
-                    organizationId: res.organization.id,
+                    organizationId: organization.id,
                     userIds: membersToAdd,
                 });
             }
 
             await client.refetchAccount();
 
-            // TODO: Navigate
+            if (router) {
+                router.navigate('/' + organization.id);
+            }
+
             ctx.hide();
         }
     };

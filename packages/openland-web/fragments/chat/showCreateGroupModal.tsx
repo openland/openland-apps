@@ -2,14 +2,24 @@ import * as React from 'react';
 import { showModalBox } from "openland-x/showModalBox";
 import { CreateEntity, EntityKind } from 'openland-web/fragments/create/CreateEntity';
 import { SharedRoomKind } from 'openland-api/Types';
+import { XViewRouter } from 'react-mental';
 
-export function showCreateGroupModal(type: 'group' | 'channel', orgId?: string) {
+interface CreateGroupModalOpts {
+    type: 'group' | 'channel';
+    orgId?: string;
+    router?: XViewRouter;
+}
+
+export function showCreateGroupModal(opts: CreateGroupModalOpts) {
+    const { type, orgId, router } = opts;
+
     showModalBox({ fullScreen: true }, (ctx) => {
         return (
             <CreateEntity
                 ctx={ctx}
                 entityKind={type === 'group' ? EntityKind.GROUP : EntityKind.CHANNEL}
                 inOrgId={orgId}
+                router={router}
                 selectOptions={[
                     {
                         value: SharedRoomKind.GROUP,

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -131,50 +131,54 @@ export const Item = ({
     );
 };
 
-export const NewOptionsMenu = () => (
-    <>
-        <Item
-            onClick={() => showCreateGroupModal('group')}
-            icon={
-                <IconWithBackground>
-                    <CellRoomIcon />
-                </IconWithBackground>
-            }
-            title="New group"
-            description="Chat where everyone can write"
-        />
-        <Item
-            onClick={() => showCreateGroupModal('channel')}
-            icon={
-                <IconWithBackground>
-                    <CreateChannelIcon />
-                </IconWithBackground>
-            }
-            title="New channel"
-            description="Chat where you write, others comment"
-        />
-        <Item
-            onClick={() => showCreateOrganization('community')}
-            icon={
-                <IconWithBackground>
-                    <CreateCommunityIcon />
-                </IconWithBackground>
-            }
-            title="New community"
-            description="A hub for chats for the same audience"
-        />
-        <Item
-            onClick={() => showCreateOrganization('organization')}
-            icon={
-                <IconWithBackground>
-                    <OrganizationIcon />
-                </IconWithBackground>
-            }
-            title="New organization"
-            description="A hub for chats with your teammates"
-        />
-    </>
-);
+export const NewOptionsMenu = React.memo(() => {
+    const router = React.useContext(XViewRouterContext);
+
+    return (
+        <>
+            <Item
+                onClick={() => showCreateGroupModal({ type: 'group', router })}
+                icon={
+                    <IconWithBackground>
+                        <CellRoomIcon />
+                    </IconWithBackground>
+                }
+                title="New group"
+                description="Chat where everyone can write"
+            />
+            <Item
+                onClick={() => showCreateGroupModal({ type: 'channel', router })}
+                icon={
+                    <IconWithBackground>
+                        <CreateChannelIcon />
+                    </IconWithBackground>
+                }
+                title="New channel"
+                description="Chat where you write, others comment"
+            />
+            <Item
+                onClick={() => showCreateOrganization({ type: 'community', router })}
+                icon={
+                    <IconWithBackground>
+                        <CreateCommunityIcon />
+                    </IconWithBackground>
+                }
+                title="New community"
+                description="A hub for chats for the same audience"
+            />
+            <Item
+                onClick={() => showCreateOrganization({ type: 'organization', router })}
+                icon={
+                    <IconWithBackground>
+                        <OrganizationIcon />
+                    </IconWithBackground>
+                }
+                title="New organization"
+                description="A hub for chats with your teammates"
+            />
+        </>
+    );
+});
 
 export const NewOptionsButton = XMemo(() => {
     const [show, setShow] = React.useState(false);
@@ -183,15 +187,6 @@ export const NewOptionsButton = XMemo(() => {
     const closer = React.useCallback(() => {
         setShow(false);
     }, []);
-
-    // const open = React.useCallback(() => {
-    //     setShow(true);
-    // }, []);
-
-    // const ctrlOptionN = () => {
-    //     open();
-    //     router.push(`/mail`);
-    // };
 
     const toggle = React.useCallback(
         () => {
@@ -220,19 +215,6 @@ export const NewOptionsButton = XMemo(() => {
             content={<NewOptionsMenu />}
         >
             <NewButton onClick={toggle} />
-            {/*<XShortcuts*/}
-            {/*    handlerMap={{*/}
-            {/*        CTRL_OPTION_N: ctrlOptionN,*/}
-            {/*    }}*/}
-            {/*    keymap={{*/}
-            {/*        CTRL_OPTION_N: {*/}
-            {/*            osx: ['ctrl+option+n'],*/}
-            {/*            windows: ['ctrl+alt+n'],*/}
-            {/*        },*/}
-            {/*    }}*/}
-            {/*>*/}
-            {/*    <NewButton onClick={toggle} />*/}
-            {/*</XShortcuts>*/}
         </XPopper>
     );
 });
