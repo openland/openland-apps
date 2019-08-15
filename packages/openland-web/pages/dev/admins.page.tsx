@@ -3,7 +3,6 @@ import { withApp } from '../../components/withApp';
 import { UserSelect } from '../../api/UserSelect';
 import { XHeader } from 'openland-x/XHeader';
 import { XButton } from 'openland-x/XButton';
-// import { XTable } from 'openland-x/XTable';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { useClient } from 'openland-web/utils/useClient';
 import { SuperAdminRole } from 'openland-api/Types';
@@ -15,6 +14,9 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { SelectWithDropdown } from '../main/mail/SelectWithDropdown';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
+import { TextLabel1, TextTitle1, TextLabel2 } from 'openland-web/utils/TextStyles';
+import { XScrollView3 } from 'openland-x/XScrollView3';
+import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 
 export const AddSuperAdminForm = ({ hide }: { hide: () => void }) => {
     const client = useClient();
@@ -134,28 +136,21 @@ export default withApp('Super Admins', 'super-admin', () => {
     const superAdmins = client.useSuperAdmins().superAdmins;
     return (
         <DevToolsScaffold title="Super Admins">
-            <XHeader text="Super Admins" description={superAdmins.length + ' total'}>
+            <XView flexDirection="row" alignItems="center">
+                <XView flexGrow={1}>
+                    <span className={TextTitle1}>Super Admins</span>
+                    <span className={TextLabel2}>{superAdmins.length + ' total'}</span>
+                </XView>
                 <XButton text="Add New" onClick={() => showAddSuperAdminFormModal()} />
                 <XButton text="Remove existing" onClick={() => showRemoveSuperAdminFormModal()} />
-            </XHeader>
-            {/* <XTable>
-                <XTable.Header>
-                    <XTable.Cell width={100}>First Name</XTable.Cell>
-                    <XTable.Cell width={100}>Last Name</XTable.Cell>
-                    <XTable.Cell>Email</XTable.Cell>
-                    <XTable.Cell>Role</XTable.Cell>
-                </XTable.Header>
-                <XTable.Body>
+            </XView>
+            <XScrollView3 >
+                <XView maxWidth={600}>
                     {superAdmins.map(v => (
-                        <XTable.Row key={v.user.id}>
-                            <XTable.Cell width={100}>{v.user.firstName}</XTable.Cell>
-                            <XTable.Cell width={100}>{v.user.lastName}</XTable.Cell>
-                            <XTable.Cell>{v.email}</XTable.Cell>
-                            <XTable.Cell>{v.role}</XTable.Cell>
-                        </XTable.Row>
+                        <UUserView user={v.user} rightElement={<span className={TextLabel1}>{v.role}</span>} />
                     ))}
-                </XTable.Body>
-            </XTable> */}
+                </XView>
+            </XScrollView3>
         </DevToolsScaffold>
     );
 });

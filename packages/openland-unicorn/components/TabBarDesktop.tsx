@@ -3,6 +3,7 @@ import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { TabRouter } from './TabRouter';
 import AppearanceIcon from 'openland-icons/s/ic-appearance-24.svg';
+import SuperIcon from 'openland-icons/s/ic-settings-24.svg';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
@@ -57,10 +58,10 @@ export const TabBarDesktop = React.memo(
                     height={64}
                     alignItems="center"
                     justifyContent="center"
-                    // cursor="pointer"
-                    // onClick={() => {
-                    //     props.router.navigate('');
-                    // }}
+                // cursor="pointer"
+                // onClick={() => {
+                //     props.router.navigate('');
+                // }}
                 >
                     <img
                         src="/static/img/logo.png"
@@ -100,8 +101,31 @@ export const TabBarDesktop = React.memo(
                         position="absolute"
                         bottom={0}
                     >
-                        <UIcon icon={<AppearanceIcon />} color="#676D7A" />
+                        <XView
+                            height={54}
+                            width={64}
+                            alignItems="center"
+                            justifyContent="center"
+                            hoverBackgroundColor="var(--backgroundTertiaryHover)"
+                            cursor="pointer"
+                            path="/ui"
+
+                        >
+                            <UIcon icon={<AppearanceIcon />} color="#676D7A" />
+                        </XView>
+                        <XView
+                            height={54}
+                            width={64}
+                            alignItems="center"
+                            justifyContent="center"
+                            hoverBackgroundColor="var(--backgroundTertiaryHover)"
+                            cursor="pointer"
+                            path="/super"
+                        >
+                            <UIcon icon={<SuperIcon />} color="#676D7A" />
+                        </XView>
                     </XView>
+
                 </XWithRole>
             </XView>
         );

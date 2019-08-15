@@ -148,7 +148,7 @@ export const DesktopScaffold = ({
             flexBasis={0}
             flexShrink={1}
             minWidth={0}
-            marginLeft={menu ? 408 : 64}
+            marginLeft={menu ? 450 : 64}
         >
             {content}
         </XView>

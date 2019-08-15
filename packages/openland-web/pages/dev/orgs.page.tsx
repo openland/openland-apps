@@ -20,6 +20,11 @@ import { XModalFooter } from 'openland-x-modal/XModal';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
 import { InputField } from 'openland-web/components/InputField';
+import { UOrganizationView } from 'openland-web/components/unicorn/templates/UOrganizationView';
+import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
+import { DataSource } from 'openland-y-utils/DataSource';
+import { XLoader } from 'openland-x/XLoader';
+import { XListView } from 'openland-web/components/XListView';
 
 const AddAccountForm = ({ hide }: { hide: () => void }) => {
     const client = useClient();
@@ -104,54 +109,53 @@ interface FilteredOptionsProps {
     searchValue: string;
 }
 
-class FilteredOptions extends React.Component<FilteredOptionsProps> {
-    shouldComponentUpdate(nextProps: FilteredOptionsProps) {
-        if (this.props.orgsCurrentTab !== nextProps.orgsCurrentTab) {
-            return true;
-        } else {
-            return this.props.searchValue !== nextProps.searchValue;
-        }
+const FilteredOptions = (props: FilteredOptionsProps) => {
+    let nodes = props.orgsCurrentTab;
+    if (props.searchValue) {
+        nodes = nodes.filter(o => o.title.toLowerCase().match(props.searchValue.toLowerCase()));
     }
 
-    render() {
-        const { props } = this;
-        let nodes = props.orgsCurrentTab;
-        if (props.searchValue) {
-            nodes = nodes.filter(o => o.title.toLowerCase().match(props.searchValue.toLowerCase()));
-        }
-        // return (
-        //     <>
-        //         {nodes.map((v, i) => (
-        //             <XTable.Row key={v.orgId + i} noHover={true}>
-        //                 <XTable.Cell>{v.title}</XTable.Cell>
-        //                 <XTable.Cell>{v.state}</XTable.Cell>
-        //                 <XTable.Cell>
-        //                     <XDate value={v.createdAt || ''} format="date" />
-        //                     <span>&nbsp;</span>
-        //                     <XDate value={v.createdAt || ''} format="time" />
-        //                 </XTable.Cell>
-        //                 <XTable.Cell>
-        //                     <XHorizontal justifyContent="flex-end">
-        //                         <XButton
-        //                             path={'/super/orgs/' + v.id}
-        //                             style="ghost"
-        //                             text="Settings"
-        //                             flexShrink={0}
-        //                         />
-        //                         <XButton
-        //                             path={'/directory/o/' + v.orgId}
-        //                             style="ghost"
-        //                             text="Profile"
-        //                             flexShrink={0}
-        //                         />
-        //                     </XHorizontal>
-        //                 </XTable.Cell>
-        //             </XTable.Row>
-        //         ))}
-        //     </>
-        // );
-        return null;
+    let ds = new DataSource(() => []);
+    ds.initialize(nodes.map(v => ({ ...v, key: v.id })), true)
+    let dsw = new DataSourceWindow(ds, 50);
+
+    const renderLoading = React.useMemo(() => {
+        return () => {
+            return (
+                <XView flexDirection="column" alignItems="center" justifyContent="center" height={80}>
+                    <XLoader />
+                </XView>
+            );
+        };
+    }, []);
+
+    let renderItem = (item: SuperAccounts_superAccounts & { key: string }) => {
+        return <XView maxWidth={600} flexDirection="row">
+            <XView flexGrow={1}>
+                <UOrganizationView
+                    organization={{ id: item.id, name: item.title, __typename: 'Organization', photo: null, shortname: null, about: null, isCommunity: false }}
+
+                />
+            </XView >
+            <XButton
+                path={'/super/orgs/' + item.id}
+                style="ghost"
+                text="Settings"
+                flexShrink={0}
+            />
+            <XButton
+                path={'/directory/o/' + item.orgId}
+                style="ghost"
+                text="Profile"
+                flexShrink={0}
+            />
+        </XView>
+
     }
+    return (
+        <XListView itemHeight={50} loadingHeight={200} dataSource={dsw} renderLoading={renderLoading} renderItem={renderItem} />
+    );
+    return null;
 }
 
 export default withApp('Super Organizations', 'super-admin', () => {
@@ -203,17 +207,11 @@ export default withApp('Super Organizations', 'super-admin', () => {
                     </XSwitcher.Item>
                 </XSwitcher>
             </XView>
-            {/* <XTable>
-                <XTable.Header>
-                    <XTable.Cell>Title</XTable.Cell>
-                    <XTable.Cell>State</XTable.Cell>
-                    <XTable.Cell>Created</XTable.Cell>
-                    <XTable.Cell>{}</XTable.Cell>
-                </XTable.Header>
-                <XTable.Body>
-                    <FilteredOptions orgsCurrentTab={orgsCurrentTab} searchValue={searchValue} />
-                </XTable.Body>
-            </XTable> */}
+            <FilteredOptions orgsCurrentTab={orgsCurrentTab} searchValue={searchValue} />
+
+            <XView>
+
+            </XView>
         </DevToolsScaffold>
     );
 });
