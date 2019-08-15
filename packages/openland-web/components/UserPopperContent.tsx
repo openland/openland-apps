@@ -52,6 +52,7 @@ const Status = (({ variables }) => {
 }) as React.ComponentType<{ variables: { userId: string } }>;
 
 const container = css`
+    background-color: var(--backgroundPrimary);
     display: flex;
     flex-direction: column;
     max-width: 400px;

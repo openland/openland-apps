@@ -20,6 +20,7 @@ const pickerInnerBody = css`
     display: flex;
     background-color: white;
     border-radius: 8px;
+    overflow: hidden;
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
 `;
 
@@ -47,7 +48,7 @@ const PopperBody = React.memo(React.forwardRef((props: {
     hideOnEsc?: boolean;
     borderRadius?: number;
     useWrapper?: boolean;
-    wrapperClassName?: string;
+    wrapWith?: JSX.Element;
 }, ref: React.Ref<PopperBodyRef>) => {
     const [visible, setVisible] = React.useState(true);
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -107,15 +108,24 @@ const PopperBody = React.memo(React.forwardRef((props: {
         };
     }, []);
 
+    if (!!props.wrapWith) {
+        return React.cloneElement(
+            props.wrapWith,
+            {
+                ref: containerRef,
+                onMouseDown: eventBorder,
+                onClick: eventBorder,
+                className: cx(props.wrapWith.props.className, pickerBody, !visible && pickerBodyInvisible)
+            },
+            <div className={props.useWrapper === false ? pickerInnerBodyNoWrap : pickerInnerBody} style={{ borderRadius: props.borderRadius }}>
+                {props.children}
+            </div>
+        );
+    }
+
     return (
         <div
-            className={
-                cx(
-                    pickerBody,
-                    !visible && pickerBodyInvisible,
-                    props.wrapperClassName && props.wrapperClassName
-                )
-            }
+            className={cx(pickerBody, !visible && pickerBodyInvisible)}
             ref={containerRef}
             onMouseDown={eventBorder}
             onClick={eventBorder}
@@ -137,7 +147,7 @@ interface PopperConfig {
     borderRadius?: number;
     scope?: string;
     useWrapper?: boolean;
-    wrapperClassName?: string;
+    wrapWith?: JSX.Element;
 }
 
 export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController) => React.ReactElement<{}>): [boolean, (element: HTMLElement | React.MouseEvent<unknown>) => void] => {
@@ -209,7 +219,7 @@ export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController)
                             hideOnEsc={config.hideOnEsc}
                             borderRadius={config.borderRadius}
                             useWrapper={config.useWrapper}
-                            wrapperClassName={config.wrapperClassName}
+                            wrapWith={config.wrapWith}
                         >
                             {popper(fakeCtx)}
                         </PopperBody>

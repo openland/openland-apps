@@ -5,7 +5,7 @@ import { UserPopperContent } from './UserPopperContent';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 
 const popperContainer = css`
-    animation-duration: 500ms;
+    animation-duration: 200ms;
     animation-name: anim;
 
     @keyframes anim {
@@ -44,7 +44,7 @@ export const useUserPopper = (props: UserPopperProps) => {
             hideOnLeave: true,
             borderRadius: 8,
             scope: 'user-popper',
-            wrapperClassName: popperContainer,
+            wrapWith: <div className={popperContainer}/>
         },
         ctx => (
             <UserPopperContent
