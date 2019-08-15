@@ -29,7 +29,7 @@ export const CommentInput = React.memo((props: CommentInputProps) => {
         <div className={compact ? wrapperCompactClass : wrapperClass}>
             <SendMessageComponent
                 groupId={groupId}
-                onTextSent={onSent}
+                onTextSentAsync={onSent}
                 onAttach={onSentAttach}
                 placeholder="Write a comment..."
             />

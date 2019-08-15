@@ -46,7 +46,7 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
         setHighlightId(current => id === current ? undefined : id);
     }, [highlightId]);
 
-    const handleCommentSent = React.useCallback((data: URickTextValue) => {
+    const handleCommentSent = React.useCallback(async (data: URickTextValue) => {
         let text = '';
         let mentions: (UserForMention | AllMention)[] = [];
         for (let t of data) {
@@ -64,7 +64,7 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
         const textValue = text.trim();
 
         if (textValue.length > 0) {
-            client.mutateAddMessageComment({
+            await client.mutateAddMessageComment({
                 messageId,
                 repeatKey: UUID(),
                 mentions: prepareLegacyMentionsForSend(textValue, mentions),

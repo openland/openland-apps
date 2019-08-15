@@ -22,6 +22,7 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UNavigableReactWindow } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 import { fileListToArray } from './DropZone';
+import { XLoader } from 'openland-x/XLoader';
 
 interface MentionUserComponentProps {
     id: string;
@@ -326,6 +327,7 @@ const AutoCompleteComponent = React.memo(
 interface SendMessageComponentProps {
     groupId?: string;
     onTextSent?: (text: URickTextValue) => void;
+    onTextSentAsync?: (text: URickTextValue) => void;
     onContentChange?: (text: URickTextValue) => void;
     onTextChange?: (text: string) => void;
     placeholder?: string;
@@ -361,12 +363,24 @@ const actionButtonContainer = css`
     }
 `;
 
+const loaderContainer = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    position: relative;
+`;
+
 export const SendMessageComponent = React.memo((props: SendMessageComponentProps) => {
     const ref = props.rickRef || React.useRef<URickInputInstance>(null);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
     const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
+    const [loading, setLoading] = React.useState<boolean>(false);
     const onPressEnter = React.useCallback(
-        () => {
+        async () => {
             let s = suggestRef.current;
             if (s) {
                 if (s.onPressEnter()) {
@@ -376,13 +390,19 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             let ed = ref.current;
             if (ed) {
                 let text = ed.getText();
-                if (props.onTextSent) {
-                    if (text.length > 0) {
+
+                if (text.length > 0) {
+                    if (props.onTextSentAsync) {
+                        setLoading(true);
+                        await props.onTextSentAsync(text);
+                        setLoading(false);
+                    } else if (props.onTextSent) {
                         props.onTextSent(text);
                     }
+
+                    ed.clear();
+                    ed.focus();
                 }
-                ed.clear();
-                ed.focus();
             }
             return true;
         },
@@ -479,9 +499,16 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     onFilesPaste={props.onAttach}
                 />
             </XView>
-            <div className={actionButtonContainer} onClick={onPressEnter}>
-                <UIcon icon={<SendIcon />} color={'#676d7a'} />
-            </div>
+            {!loading && (
+                <div className={actionButtonContainer} onClick={onPressEnter}>
+                    <UIcon icon={<SendIcon />} color={'#676d7a'} />
+                </div>
+            )}
+            {loading && (
+                <div className={loaderContainer}>
+                    <XLoader size="small" />
+                </div>
+            )}
         </div>
     );
 });
