@@ -14,7 +14,7 @@ const reactionsWrapper = css`
     display: flex;
     align-self: flex-start;
     align-items: center;
-    background-color: #F0F2F5; // ThemeDefault.backgroundTertiary
+    background-color: var(--backgroundTertiary);
     height: 28px;
     border-radius: 14px;
     padding: 5px 12px;
@@ -22,7 +22,7 @@ const reactionsWrapper = css`
 `;
 
 const reactionsText = css`
-    color: #676D7A; // ThemeDefault.foregroundSecondary
+    color: var(--foregroundSecondary);
 `;
 
 const reactionsItems = css`

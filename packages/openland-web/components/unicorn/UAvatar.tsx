@@ -90,8 +90,8 @@ const OnlineDotXXLarge = () => (
         height={16}
         borderRadius={8}
         borderWidth={2}
-        borderColor="#ffffff" // ThemeDefault.backgroundPrimary
-        backgroundColor="#0C7FF2" // ThemeDefault.accentPrimary
+        borderColor="var(--backgroundPrimary)"
+        backgroundColor="var(--accentPrimary)"
     />
 );
 
@@ -104,8 +104,8 @@ const OnlineDotXLarge = () => (
         height={14}
         borderRadius={7}
         borderWidth={2}
-        borderColor="#ffffff" // ThemeDefault.backgroundPrimary
-        backgroundColor="#0C7FF2" // ThemeDefault.accentPrimary
+        borderColor="var(--backgroundPrimary)"
+        backgroundColor="var(--accentPrimary)"
     />
 );
 
@@ -118,8 +118,8 @@ const OnlineDotLarge = () => (
         height={12}
         borderRadius={6}
         borderWidth={2}
-        borderColor="#ffffff" // ThemeDefault.backgroundPrimary
-        backgroundColor="#0C7FF2" // ThemeDefault.accentPrimary
+        borderColor="var(--backgroundPrimary)"
+        backgroundColor="var(--accentPrimary)"
     />
 );
 
@@ -132,8 +132,8 @@ const OnlineDotMedium = () => (
         height={12}
         borderRadius={6}
         borderWidth={2}
-        borderColor="#ffffff" // ThemeDefault.backgroundPrimary
-        backgroundColor="#0C7FF2" // ThemeDefault.accentPrimary
+        borderColor="var(--backgroundPrimary)"
+        backgroundColor="var(--accentPrimary)"
     />
 );
 
@@ -146,8 +146,8 @@ const OnlineDotSmall = () => (
         height={10}
         borderRadius={5}
         borderWidth={2}
-        borderColor="#ffffff" // ThemeDefault.backgroundPrimary
-        backgroundColor="#0C7FF2" // ThemeDefault.accentPrimary
+        borderColor="var(--backgroundPrimary)"
+        backgroundColor="var(--accentPrimary)"
     />
 );
 
@@ -160,8 +160,8 @@ const OnlineDotXSmall = () => (
         height={6}
         borderRadius={3}
         borderWidth={1}
-        borderColor="#ffffff" // ThemeDefault.backgroundPrimary
-        backgroundColor="#0C7FF2" // ThemeDefault.accentPrimary
+        borderColor="var(--backgroundPrimary)"
+        backgroundColor="var(--accentPrimary)"
     />
 );
 

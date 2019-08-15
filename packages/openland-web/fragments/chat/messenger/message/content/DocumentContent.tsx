@@ -11,7 +11,7 @@ const fileContainer = css`
     justify-content: flex-between;
     flex-shrink: 1;
     align-self: flex-start;
-    background-color: #f2f3f5; // ThemeDefault.backgroundTertiary
+    background-color: var(--backgroundTertiary);
     border-radius: 8px;
     overflow: hidden;
     padding: 16px;
@@ -22,7 +22,7 @@ const fileContainer = css`
 
     &:hover {
         text-decoration: none;
-        background-color: #ebedf0; // ThemeDefault.backgroundTertiaryHover
+        background-color: var(--backgroundTertiaryHover);
     }
 `;
 

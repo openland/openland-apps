@@ -43,7 +43,7 @@ const menuContainerClass = css`
     display: flex;
     flex-direction: row;
     flex-shrink: 0;
-    background-color: #fff; // ThemeDefault.backgroundPrimary
+    background-color: var(--backgroundPrimary);
     border-radius: 8px;
 `;
 const attachTop = css`

@@ -22,7 +22,7 @@ const containerClass = css`
     right: 0;
     top: 0;
     bottom: 0;
-    background-color: #fff; // ThemeDefault.backgroundPrimary
+    background-color: var(--backgroundPrimary);
     transform: translateY(-56px);
     will-change: transform;
 `;
