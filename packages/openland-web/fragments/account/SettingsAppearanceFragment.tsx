@@ -3,10 +3,8 @@ import { XView } from 'react-mental';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { RadioButtonsSelect } from './components/RadioButtonsSelect';
-import { XButton } from 'openland-x/XButton';
 import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
-import { FormFooter } from './components/FormFooter';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 
@@ -25,14 +23,12 @@ export const SettingsAppearanceFragment = React.memo(() => {
         form,
     );
 
-    const doConfirm = () => {
-        form.doAction(async () => {
-            localStorage.setItem(
-                'highlight_secret_chat',
-                secretGroupDisplay.value === AppearanceOptions.HIGHLIGHTED ? 'true' : 'false',
-            );
-        });
-    };
+    React.useEffect(() => {
+        localStorage.setItem(
+            'highlight_secret_chat',
+            secretGroupDisplay.value === AppearanceOptions.HIGHLIGHTED ? 'true' : 'false',
+        );
+    });
 
     return (
         <Page>
@@ -55,17 +51,6 @@ export const SettingsAppearanceFragment = React.memo(() => {
                         />
                     </XView>
                 </FormSection>
-                <FormFooter>
-                    <XButton
-                        square
-                        loading={form.loading}
-                        text="Save changes"
-                        style="primary"
-                        size="large"
-                        onClick={doConfirm}
-                        alignSelf="flex-start"
-                    />
-                </FormFooter>
             </FormWrapper>
         </Page>
     );

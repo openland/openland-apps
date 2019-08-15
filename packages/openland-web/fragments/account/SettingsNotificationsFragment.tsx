@@ -3,7 +3,6 @@ import { XView } from 'react-mental';
 import { useForm } from 'openland-form/useForm';
 import { useClient } from 'openland-web/utils/useClient';
 import { useField } from 'openland-form/useField';
-import { XButton } from 'openland-x/XButton';
 import { RadioButtonsSelect } from './components/RadioButtonsSelect';
 import {
     EmailFrequency,
