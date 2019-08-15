@@ -17,10 +17,16 @@ import { ThemeDefault } from 'openland-y-utils/themes';
 import MoreHIcon from 'openland-icons/s/ic-more-h-24.svg';
 import { CreateGroupButton } from './components/CreateGroupButton';
 import { OrganizationMembers_organization_members, OrganizationMemberRole } from 'openland-api/Types';
+import { PrivateCommunityView } from '../account/components/PrivateCommunityView';
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
     const organization = client.useOrganizationWithoutMembers({ organizationId: props.id }, { fetchPolicy: 'cache-and-network' }).organization;
+
+    if (!organization.isMine && organization.isPrivate) {
+        return <PrivateCommunityView organization={organization} />;
+    }
+
     const initialMembers = client.useOrganizationMembers({ organizationId: props.id, first: 15 }, { fetchPolicy: 'cache-and-network' }).organization.members;
     const { id, name, photo, about, shortname, website, twitter, facebook, rooms, membersCount, isCommunity,
         linkedin, isMine } = organization;
