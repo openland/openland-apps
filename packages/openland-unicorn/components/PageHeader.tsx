@@ -18,16 +18,21 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     let appearance = props.config.appearance || 'normal';
     return (
         <XView height={56} flexDirection="row" alignItems="center" zIndex={2}>
-            <XView
-                height={56}
-                width={56}
-                alignItems="center"
-                justifyContent="center"
-                onClick={() => router.pop()}
-                cursor="pointer"
-            >
-                <UIcon icon={<BackIcon />} color={ThemeDefault.foregroundSecondary} />
-            </XView>
+            {router.pages.length > 1 ?
+                <XView
+                    height={56}
+                    width={56}
+                    alignItems="center"
+                    justifyContent="center"
+                    onClick={() => router.pop()}
+                    cursor="pointer"
+                >
+                    <UIcon icon={<BackIcon />} color={ThemeDefault.foregroundSecondary} />
+                </XView> :
+                <XView
+                    height={56}
+                    width={56}
+                />}
             <XView
                 minWidth={0}
                 flexBasis={0}
