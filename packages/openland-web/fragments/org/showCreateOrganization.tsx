@@ -1,21 +1,12 @@
 import * as React from 'react';
 import { showModalBox } from 'openland-x/showModalBox';
 import { CreateEntity, EntityKind, CommunityType } from 'openland-web/fragments/create/CreateEntity';
-import { XViewRouter } from 'react-mental';
 
-interface CreateOrganizationOpts {
-    type: 'organization' | 'community';
-    router?: XViewRouter;
-}
-
-export function showCreateOrganization(opts: CreateOrganizationOpts) {
-    const { type, router } = opts;
-
+export function showCreateOrganization(type: 'organization' | 'community') {
     showModalBox({ fullScreen: true }, (ctx) => (
         <CreateEntity
             ctx={ctx}
             entityKind={type === 'organization' ? EntityKind.ORGANIZATION : EntityKind.COMMUNITY}
-            router={router}
             selectOptions={type === 'community' ? [
                 {
                     value: CommunityType.COMMUNITY_PUBLIC,

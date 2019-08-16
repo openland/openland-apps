@@ -3,7 +3,6 @@ import { css, cx } from 'linaria';
 import { Placement } from 'popper.js';
 import { UPopperController, showPopper } from './UPopper';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
-import { XViewRouterContext } from 'react-mental';
 
 const pickerBody = css`
     display: flex;
@@ -141,7 +140,6 @@ interface PopperConfig {
 }
 
 export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController) => React.ReactElement<{}>): [boolean, (element: HTMLElement | React.MouseEvent<unknown>) => void] => {
-    const router = React.useContext(XViewRouterContext);
     const [isVisible, setVisible] = React.useState(false);
     const ctxRef = React.useRef<UPopperController | undefined>(undefined);
     const popperBodyRef = React.useRef<PopperBodyRef>(null);
@@ -195,25 +193,23 @@ export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController)
                     }
                 };
                 return (
-                    <XViewRouterContext.Provider value={router}>
-                        <PopperBody
-                            ref={popperBodyRef}
-                            target={target}
-                            ctx={ctx}
-                            onHide={() => {
-                                lastVisible = false;
-                                setVisible(false);
-                            }}
-                            hideOnClick={config.hideOnClick !== undefined ? config.hideOnClick : true}
-                            hideOnLeave={config.hideOnLeave !== undefined ? config.hideOnLeave : false}
-                            hideOnEsc={config.hideOnEsc}
-                            borderRadius={config.borderRadius}
-                            useWrapper={config.useWrapper}
-                            wrapperClassName={config.wrapperClassName}
-                        >
-                            {popper(fakeCtx)}
-                        </PopperBody>
-                    </XViewRouterContext.Provider>
+                    <PopperBody
+                        ref={popperBodyRef}
+                        target={target}
+                        ctx={ctx}
+                        onHide={() => {
+                            lastVisible = false;
+                            setVisible(false);
+                        }}
+                        hideOnClick={config.hideOnClick !== undefined ? config.hideOnClick : true}
+                        hideOnLeave={config.hideOnLeave !== undefined ? config.hideOnLeave : false}
+                        hideOnEsc={config.hideOnEsc}
+                        borderRadius={config.borderRadius}
+                        useWrapper={config.useWrapper}
+                        wrapperClassName={config.wrapperClassName}
+                    >
+                        {popper(fakeCtx)}
+                    </PopperBody>
                 );
             });
         };

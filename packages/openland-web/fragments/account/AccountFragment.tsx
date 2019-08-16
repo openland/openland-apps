@@ -145,7 +145,7 @@ export const AccountFragment = React.memo(() => {
                         header="Organizations"
                         action={{
                             title: '+ New',
-                            onClick: () => showCreateOrganization({ type: 'organization', router }),
+                            onClick: () => showCreateOrganization('organization'),
                         }}
                     >
                         <React.Suspense fallback={<XLoader loading={true} />}>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView, XViewRouter } from 'react-mental';
+import { XView, XViewRouter, XViewRouterContext } from 'react-mental';
 import { SharedRoomKind } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
@@ -161,7 +161,6 @@ interface CreateEntityProps {
     entityKind: EntityKind;
     selectOptions?: SelectWithDropdownOption<CommunityType | SharedRoomKind>[];
     ctx: XModalController;
-    router?: XViewRouter;
 }
 
 export const CreateEntity = ({
@@ -171,9 +170,9 @@ export const CreateEntity = ({
     inOrgId,
     selectOptions,
     ctx,
-    router
 }: CreateEntityProps) => {
     const client = useClient();
+    const router = React.useContext(XViewRouterContext);
     const [coverSrc, setCoverSrc] = React.useState<string | null>('');
     const [settingsPage, setSettingsPage] = React.useState(true);
     const [searchPeopleQuery, setSearchPeopleQuery] = React.useState<string>('');

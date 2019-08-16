@@ -137,7 +137,7 @@ export const NewOptionsMenu = React.memo(() => {
     return (
         <>
             <Item
-                onClick={() => showCreateGroupModal({ type: 'group', router })}
+                onClick={() => showCreateGroupModal('group')}
                 icon={
                     <IconWithBackground>
                         <CellRoomIcon />
@@ -147,7 +147,7 @@ export const NewOptionsMenu = React.memo(() => {
                 description="Chat where everyone can write"
             />
             <Item
-                onClick={() => showCreateGroupModal({ type: 'channel', router })}
+                onClick={() => showCreateGroupModal('channel')}
                 icon={
                     <IconWithBackground>
                         <CreateChannelIcon />
@@ -157,7 +157,7 @@ export const NewOptionsMenu = React.memo(() => {
                 description="Chat where you write, others comment"
             />
             <Item
-                onClick={() => showCreateOrganization({ type: 'community', router })}
+                onClick={() => showCreateOrganization('community')}
                 icon={
                     <IconWithBackground>
                         <CreateCommunityIcon />
@@ -167,7 +167,7 @@ export const NewOptionsMenu = React.memo(() => {
                 description="A hub for chats for the same audience"
             />
             <Item
-                onClick={() => showCreateOrganization({ type: 'organization', router })}
+                onClick={() => showCreateOrganization('organization')}
                 icon={
                     <IconWithBackground>
                         <OrganizationIcon />

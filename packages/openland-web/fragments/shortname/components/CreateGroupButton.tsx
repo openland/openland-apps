@@ -4,25 +4,23 @@ import { showCreateGroupModal } from 'openland-web/fragments/chat/showCreateGrou
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
-import { XViewRouterContext } from 'react-mental';
 
 interface CreateGroupButtonProps {
     id: string;
 }
 
 const MenuComponent = React.memo((props: CreateGroupButtonProps & { ctx: UPopperController }) => {
-    const router = React.useContext(XViewRouterContext);
     const { ctx, id } = props;
     const builder = new UPopperMenuBuilder();
 
     builder.item({
         title: 'New group',
-        onClick: () => showCreateGroupModal({ type: 'group', orgId: id, router })
+        onClick: () => showCreateGroupModal('group', id)
     });
 
     builder.item({
         title: 'New channel',
-        onClick: () => showCreateGroupModal({ type: 'channel', orgId: id, router })
+        onClick: () => showCreateGroupModal('channel', id)
     });
 
     return builder.build(ctx);
