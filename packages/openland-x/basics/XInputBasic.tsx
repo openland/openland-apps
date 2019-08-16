@@ -4,7 +4,6 @@ import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleRes
 import { XFlexStyles, applyFlex } from './Flex';
 import { XPopper } from '../XPopper';
 import { XIcon } from '../XIcon';
-import CleanIcon from 'openland-icons/ic-close-thinner.svg';
 import IcClose from 'openland-icons/s/ic-close-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
