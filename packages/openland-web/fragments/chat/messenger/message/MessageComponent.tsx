@@ -236,12 +236,15 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
         message.attachBottom && attachBottom,
     );
 
+    const attachesClassNamesRef = React.useRef(attachesClassNames);
+    attachesClassNamesRef.current = attachesClassNames;
+
     React.useEffect(() => {
         props.engine.messagesActionsStateEngine.listenSelect(props.message, selected => {
             if (containerRef.current) {
                 containerRef.current.className = cx(
                     messageContainerClass,
-                    attachesClassNames,
+                    attachesClassNamesRef.current,
                     noBorderRadiusMobile,
                     selected && messageContainerSelectedClass,
                 );
