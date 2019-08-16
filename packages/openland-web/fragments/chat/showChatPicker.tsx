@@ -18,14 +18,13 @@ const ChatPickerComponent = (props: { onSelect: (selecedChatId: string) => void,
 
     return (
         <div style={{ height: layout === 'mobile' ? '100vh' : '70vh', display: 'flex', flexDirection: 'column' }}>
-            {/* <DialogListView onDialogClick={onDialogClick} onSearchItemPress={onSearchItemPress} onSearchItemSelected={() => false} /> */}
-
             <XView flexGrow={1} flexBasis={0} minHeight={0}>
-                <DialogSearchInput value={query} onChange={setQuery} />
+                <DialogSearchInput value={query} onChange={setQuery} modal={true} autofocus={true} />
                 <XScrollView2 flexGrow={1}>
                     <DialogSearchResults
                         variables={{ query: query, limit: 30 }}
                         onPick={onDialogClick}
+                        paddingHorizontal={24}
                     />
                 </XScrollView2>
             </XView>

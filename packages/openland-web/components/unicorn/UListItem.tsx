@@ -23,7 +23,7 @@ export const SelectableText = React.memo((props: XViewProps) => {
     );
 });
 
-interface UListItemProps {
+export interface UListItemProps {
     title: string | JSX.Element;
     titleIcon?: JSX.Element;
     subtitle?: string;
@@ -41,10 +41,11 @@ interface UListItemProps {
     rightElement?: JSX.Element;
     hovered?: boolean;
     disabled?: boolean;
+    paddingHorizontal?: number;
 }
 
 export const UListItem = React.memo((props: UListItemProps) => {
-    const { title, titleIcon, subtitle, description, descriptionColor, icon, iconBackground, iconColor, avatar, onClick, path, large, useRadius, textRight, rightElement, hovered, disabled } = props;
+    const { title, titleIcon, subtitle, description, descriptionColor, icon, iconBackground, iconColor, avatar, onClick, path, large, useRadius, textRight, rightElement, hovered, disabled, paddingHorizontal = 16 } = props;
     const height = large ? 80 : ((!!avatar || !!iconBackground) ? 56 : 48);
 
     const titleFont = !!description ? TextStyles.Label1 : TextStyles.Body;
@@ -113,7 +114,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
             <div ref={containerRef} className="x">
                 <XView
                     height={height}
-                    paddingHorizontal={16}
+                    paddingHorizontal={paddingHorizontal}
                     alignItems="center"
                     flexDirection="row"
                     opacity={0.4}
@@ -128,7 +129,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
         <div ref={containerRef} className="x">
             <XView
                 height={height}
-                paddingHorizontal={16}
+                paddingHorizontal={paddingHorizontal}
                 alignItems="center"
                 flexDirection="row"
                 backgroundColor={hovered ? 'var(--backgroundPrimaryHover)' : undefined}

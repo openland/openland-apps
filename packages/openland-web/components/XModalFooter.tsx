@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { XView, XViewProps } from 'react-mental';
-import { XModalBoxStyles } from 'openland-x/showModalBox';
 
 export const XModalFooter = React.memo<{ children?: any } & XViewProps>(props => {
     return (
@@ -10,7 +9,7 @@ export const XModalFooter = React.memo<{ children?: any } & XViewProps>(props =>
             flexDirection="row"
             justifyContent="flex-end"
             alignItems="center"
-            paddingHorizontal={XModalBoxStyles.contentPadding}
+            paddingHorizontal={24}
             {...props}
         />
     );

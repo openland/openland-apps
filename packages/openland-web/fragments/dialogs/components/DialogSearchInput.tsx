@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { XInputProps, XInput } from 'openland-x/XInput';
 import SearchIcon from 'openland-icons/ic-search-small.svg';
 
 let searchStyle = css`
     border: none !important;
     border-color: transparent !important;
-    margin-left: 15px;
-    margin-right: 15px;
-    margin-bottom: 12px;
+    margin: 0 15px 12px;
     height: 40px !important;
     & svg > path,
     &:focus-within svg > path,
@@ -52,11 +50,15 @@ let searchStyle = css`
     }
 `;
 
-export const DialogSearchInput = React.forwardRef<XInput, XInputProps>((props, ref) => {
+let marginInModalClass = css`
+    margin: 8px 23px 12px;
+`;
+
+export const DialogSearchInput = React.forwardRef<XInput, XInputProps & { modal?: boolean }>((props, ref) => {
     return (
         <XInput
             ref={ref}
-            className={searchStyle}
+            className={cx(searchStyle, props.modal && marginInModalClass)}
             size="large"
             placeholder="Search"
             icon={<SearchIcon />}

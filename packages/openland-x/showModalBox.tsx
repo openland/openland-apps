@@ -7,6 +7,7 @@ import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import ResizeObserver from 'resize-observer-polyfill';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 
 const boxStyle = css`
     overflow: visible;
@@ -172,7 +173,7 @@ const ModalBoxComponent = React.memo<{
         : {
             top,
             left,
-            width: props.config.flowing ? 'auto' : props.config.width ? props.config.width : 575,
+            width: props.config.flowing ? 'auto' : props.config.width ? props.config.width : 440,
         };
 
     return (
@@ -220,20 +221,15 @@ const ModalBoxComponent = React.memo<{
                         </XView>
                     )}
                     {props.config.title && (
-                        <XView paddingTop={30} paddingBottom={20}>
+                        <XView paddingTop={24} paddingBottom={8}>
                             <XView
-                                minHeight={36}
-                                lineHeight="36px"
-                                paddingLeft={40}
+                                paddingLeft={24}
                                 paddingRight={14}
-                                fontSize={30}
-                                fontWeight="600"
                                 flexDirection="row"
                                 alignItems="center"
+                                {...TextStyles.Title1}
                             >
-                                <XView flexGrow={1} flexShrink={1} minWidth={0} paddingRight={8}>
-                                    {props.config.title}
-                                </XView>
+                                {props.config.title}
                                 {/* <CloseButton onClick={tryHide} /> */}
                             </XView>
                         </XView>

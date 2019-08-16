@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UListItem } from 'openland-web/components/unicorn/UListItem';
+import { UListItem, UListItemProps } from 'openland-web/components/unicorn/UListItem';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { UserShort, UserBadge, OrganizationMemberRole, RoomMemberRole } from 'openland-api/Types';
 import { UPresence } from '../UPresence';
@@ -37,16 +37,10 @@ interface UUserViewProps {
     user: UserShort;
     badge?: UserBadge | null;
     role?: RoomMemberRole | OrganizationMemberRole;
-    rightElement?: JSX.Element;
-    onClick?: () => void;
-    useRadius?: boolean;
-    disabled?: boolean;
-    hovered?: boolean;
-    usePath?: boolean;
 }
 
-export const UUserView = React.memo((props: UUserViewProps) => {
-    const { user, badge, role, rightElement, onClick, useRadius, disabled, hovered, usePath } = props;
+export const UUserView = React.memo((props: UUserViewProps & Partial<UListItemProps>) => {
+    const { user, badge, role, onClick, ...other } = props;
     const { id, photo, name, online, shortname, primaryOrganization } = user;
 
     return (
@@ -58,12 +52,9 @@ export const UUserView = React.memo((props: UUserViewProps) => {
                 <UPresence suffix={badge ? ' · ' + badge.name : undefined} user={props.user} />
             }
             avatar={{ photo, id, title: name, online }}
-            useRadius={useRadius}
-            path={!onClick && usePath !== false ? `/${shortname || id}` : undefined}
+            path={!onClick ? `/${shortname || id}` : undefined}
             onClick={onClick}
-            rightElement={rightElement}
-            disabled={disabled}
-            hovered={hovered}
+            {...other}
         />
     );
 });

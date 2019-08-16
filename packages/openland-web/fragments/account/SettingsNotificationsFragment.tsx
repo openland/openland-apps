@@ -50,7 +50,6 @@ export const SettingsNotificationsFragment = React.memo(() => {
                 emailFrequency: emailNotifications.value,
                 commentNotificationsDelivery: commentsNotifications.value,
                 desktopNotifications: messagesNotifications.value,
-                mobileNotifications: messagesNotifications.value,
             });
         }
     });
