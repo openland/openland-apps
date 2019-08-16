@@ -93,67 +93,63 @@ export const Organizations = React.memo(() => {
     );
 });
 
-export const AccountFragment = React.memo(() => {
-    const router = React.useContext(XViewRouterContext);
-
-    return (
-        <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
-            <XView
-                height={56}
-                paddingLeft={16}
-                paddingRight={4}
-                backgroundColor="#fff"
-                fontSize={24}
-                lineHeight="32px"
-                fontWeight="600"
-                color="var(--foregroundPrimary)"
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="center"
-            >
-                <XView flexGrow={1} minWidth={0} flexBasis={0}>
-                    {emoji('🤔 Account')}
-                </XView>
-                <UIconButton icon={<LeaveIcon />} size="large" onClick={showLogoutConfirmation} />
+export const AccountFragment = React.memo(() => (
+    <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
+        <XView
+            height={56}
+            paddingLeft={16}
+            paddingRight={4}
+            backgroundColor="#fff"
+            fontSize={24}
+            lineHeight="32px"
+            fontWeight="600"
+            color="var(--foregroundPrimary)"
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="center"
+        >
+            <XView flexGrow={1} minWidth={0} flexBasis={0}>
+                {emoji('🤔 Account')}
             </XView>
-            <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">
-                <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
-                    <UserProfileCard />
-                    <UListItem
-                        title="Invite Friends"
-                        icon={<InviteFriendsIcon />}
-                        path="/settings/invites"
-                    />
-                    <UListHeader text="Settings" />
-                    <UListItem
-                        title="Notifications"
-                        icon={<NotificationsIcon />}
-                        path="/settings/notifications"
-                    />
-                    <UListItem
-                        title="Appearance"
-                        icon={<AppearanceIcon />}
-                        path="/settings/appearance"
-                    />
-                    <UListItem
-                        title="Download Apps"
-                        icon={<DownloadIcon />}
-                        path="/settings/download"
-                    />
-
-                    <UListGroup
-                        header="Organizations"
-                        action={{
-                            title: '+ New',
-                            onClick: () => showCreateOrganization('organization'),
-                        }}
-                    >
-                        <React.Suspense fallback={<XLoader loading={true} />}>
-                            <Organizations />
-                        </React.Suspense>
-                    </UListGroup>
-                </XScrollView3>
-            </XView>
+            <UIconButton icon={<LeaveIcon />} size="large" onClick={showLogoutConfirmation} />
         </XView>
-    );
-});
+        <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">
+            <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
+                <UserProfileCard />
+                <UListItem
+                    title="Invite Friends"
+                    icon={<InviteFriendsIcon />}
+                    path="/settings/invites"
+                />
+                <UListHeader text="Settings" />
+                <UListItem
+                    title="Notifications"
+                    icon={<NotificationsIcon />}
+                    path="/settings/notifications"
+                />
+                <UListItem
+                    title="Appearance"
+                    icon={<AppearanceIcon />}
+                    path="/settings/appearance"
+                />
+                <UListItem
+                    title="Download Apps"
+                    icon={<DownloadIcon />}
+                    path="/settings/download"
+                />
+
+                <UListGroup
+                    header="Organizations"
+                    action={{
+                        title: '+ New',
+                        onClick: () => showCreateOrganization('organization'),
+                    }}
+                >
+                    <React.Suspense fallback={<XLoader loading={true} />}>
+                        <Organizations />
+                    </React.Suspense>
+                </UListGroup>
+            </XScrollView3>
+        </XView>
+    </XView>
+));

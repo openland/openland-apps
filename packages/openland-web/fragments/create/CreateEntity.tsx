@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView, XViewRouter, XViewRouterContext } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { SharedRoomKind } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';

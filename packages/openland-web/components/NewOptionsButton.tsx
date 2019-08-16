@@ -71,21 +71,21 @@ const textClassName = css`
     letter-spacing: 0.02px;
 `;
 
-export const IconWithBackground = ({ children }: { children: any }) => {
-    return (
-        <XView
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="center"
-            width={36}
-            height={36}
-            backgroundColor="rgba(23, 144, 255, 0.1)"
-            borderRadius={70}
-        >
-            <div className={iconWrapperClass}>{children}</div>
-        </XView>
-    );
-};
+export const IconWithBackground = (props: { children: any }) => (
+    <XView
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="center"
+        width={36}
+        height={36}
+        backgroundColor="rgba(23, 144, 255, 0.1)"
+        borderRadius={70}
+    >
+        <div className={iconWrapperClass}>
+            {props.children}
+        </div>
+    </XView>
+);
 
 export const Item = ({
     title,
@@ -131,54 +131,50 @@ export const Item = ({
     );
 };
 
-export const NewOptionsMenu = React.memo(() => {
-    const router = React.useContext(XViewRouterContext);
-
-    return (
-        <>
-            <Item
-                onClick={() => showCreateGroupModal('group')}
-                icon={
-                    <IconWithBackground>
-                        <CellRoomIcon />
-                    </IconWithBackground>
-                }
-                title="New group"
-                description="Chat where everyone can write"
-            />
-            <Item
-                onClick={() => showCreateGroupModal('channel')}
-                icon={
-                    <IconWithBackground>
-                        <CreateChannelIcon />
-                    </IconWithBackground>
-                }
-                title="New channel"
-                description="Chat where you write, others comment"
-            />
-            <Item
-                onClick={() => showCreateOrganization('community')}
-                icon={
-                    <IconWithBackground>
-                        <CreateCommunityIcon />
-                    </IconWithBackground>
-                }
-                title="New community"
-                description="A hub for chats for the same audience"
-            />
-            <Item
-                onClick={() => showCreateOrganization('organization')}
-                icon={
-                    <IconWithBackground>
-                        <OrganizationIcon />
-                    </IconWithBackground>
-                }
-                title="New organization"
-                description="A hub for chats with your teammates"
-            />
-        </>
-    );
-});
+export const NewOptionsMenu = React.memo(() => (
+    <>
+        <Item
+            onClick={() => showCreateGroupModal('group')}
+            icon={
+                <IconWithBackground>
+                    <CellRoomIcon />
+                </IconWithBackground>
+            }
+            title="New group"
+            description="Chat where everyone can write"
+        />
+        <Item
+            onClick={() => showCreateGroupModal('channel')}
+            icon={
+                <IconWithBackground>
+                    <CreateChannelIcon />
+                </IconWithBackground>
+            }
+            title="New channel"
+            description="Chat where you write, others comment"
+        />
+        <Item
+            onClick={() => showCreateOrganization('community')}
+            icon={
+                <IconWithBackground>
+                    <CreateCommunityIcon />
+                </IconWithBackground>
+            }
+            title="New community"
+            description="A hub for chats for the same audience"
+        />
+        <Item
+            onClick={() => showCreateOrganization('organization')}
+            icon={
+                <IconWithBackground>
+                    <OrganizationIcon />
+                </IconWithBackground>
+            }
+            title="New organization"
+            description="A hub for chats with your teammates"
+        />
+    </>
+));
 
 export const NewOptionsButton = XMemo(() => {
     const [show, setShow] = React.useState(false);
