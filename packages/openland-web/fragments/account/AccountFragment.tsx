@@ -109,7 +109,7 @@ export const AccountFragment = React.memo(() => (
             justifyContent="center"
         >
             <XView flexGrow={1} minWidth={0} flexBasis={0}>
-                {emoji('🤔 Account')}
+                Account
             </XView>
             <UIconButton icon={<LeaveIcon />} size="large" onClick={showLogoutConfirmation} />
         </XView>

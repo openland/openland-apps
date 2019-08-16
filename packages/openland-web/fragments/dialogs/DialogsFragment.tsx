@@ -33,7 +33,7 @@ export const DialogsFragment = React.memo(() => {
                     flexDirection="row"
                 >
                     <XView flexGrow={1} minWidth={0} flexBasis={0}>
-                        {emoji('✍️ Chats')}
+                        Chats
                     </XView>
                     <XView flexDirection="row" alignItems="center" paddingLeft={12}>
                         <XView marginRight={7} justifyContent="center" alignItems="center">
