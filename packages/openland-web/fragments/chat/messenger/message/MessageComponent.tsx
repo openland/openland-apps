@@ -239,8 +239,12 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const attachesClassNamesRef = React.useRef(attachesClassNames);
     attachesClassNamesRef.current = attachesClassNames;
 
+    const selectedRef = React.useRef(false);
+
     React.useEffect(() => {
         props.engine.messagesActionsStateEngine.listenSelect(props.message, selected => {
+            selectedRef.current = selected;
+
             if (containerRef.current) {
                 containerRef.current.className = cx(
                     messageContainerClass,
@@ -313,7 +317,12 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
         <div
             ref={containerRef}
             onClick={onSelect}
-            className={cx(messageContainerClass, attachesClassNames, noBorderRadiusMobile)}
+            className={cx(
+                messageContainerClass,
+                attachesClassNames,
+                noBorderRadiusMobile,
+                selectedRef.current && messageContainerSelectedClass
+            )}
         >
             <div className={messageContentClass}>
                 <div className={messageInnerContainerClass}>

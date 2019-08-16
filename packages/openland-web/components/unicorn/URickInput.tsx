@@ -27,6 +27,7 @@ const quillStyle = css`
     .ql-editor.ql-blank::before {
         color: #969AA3;
         font-style: normal;
+        left: 16px;
     }
 `;
 
