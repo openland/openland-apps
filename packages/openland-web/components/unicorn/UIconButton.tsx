@@ -3,7 +3,7 @@ import { XView, XViewProps } from 'react-mental';
 import { css, cx } from 'linaria';
 import { UIcon } from './UIcon';
 
-type UIconButtonSize = 'medium' | 'large';
+export type UIconButtonSize = 'medium' | 'large' | 'large-wide';
 
 const wrapper = css`
     display: flex;
@@ -42,14 +42,15 @@ interface UIconButtonProps extends XViewProps {
 
 export const UIconButton = React.memo((props: UIconButtonProps) => {
     const { icon, size = 'medium', active, ...other } = props;
-    const boxSize = size === 'medium' ? 40 : 48;
+    const width = (size === 'medium' || size === 'large-wide') ? 40 : 48;
+    const height = size === 'medium' ? 40 : 48;
 
     return (
         <XView
             {...other}
             cursor="pointer"
-            width={boxSize}
-            height={boxSize}
+            width={width}
+            height={height}
         >
             <div className={container}>
                 <div className={cx(wrapper, active && wrapperActive)}>

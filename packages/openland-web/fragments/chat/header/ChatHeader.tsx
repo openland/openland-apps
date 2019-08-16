@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ChatInfo } from '../types';
 import { XView } from 'react-mental';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useClient } from 'openland-web/utils/useClient';
 import { XDate } from 'openland-x/XDate';
@@ -10,12 +10,8 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MessagesActionsHeader } from './MessagesActionsHeader';
 import { showAvatarModal } from 'openland-web/components/showAvatarModal';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
-// import { useStackRouter } from 'openland-unicorn/components/StackRouter';
-import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { CallsEngine } from 'openland-engines/CallsEngine';
-import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import MoreIcon from 'openland-icons/s/ic-more-v-24.svg';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
 import InviteIcon from 'openland-icons/s/ic-invite-24.svg';
@@ -29,6 +25,7 @@ import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { showAddMembersModal } from '../showAddMembersModal';
 import { showRoomEditModal, showLeaveChatConfirmation } from 'openland-web/fragments/account/components/groupProfileModals';
 import { showAdvancedSettingsModal } from '../AdvancedSettingsModal';
+import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 
 const secondary = css`
     color: #969AA3;
@@ -44,30 +41,11 @@ const titleStyle = css`
     text-overflow: ellipsis;
 `;
 
-const menuButton = css`
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-self: center;
-    border-radius: 40px;
-    align-items: center;
-    justify-content: center;
-    margin-left: 5px;
-    padding: 6;
-    &:hover {
-        background-color: var(--backgroundPrimaryHover);
-    }
-`;
-
-const menuButtonSelected = css`
-    background-color: var(--backgroundPrimaryHover);
-`;
-
 const onLiner = css`
    height: 18px;
    overflow: hidden;
 `;
+
 const HeaderLastSeen = (props: { id: string }) => {
     const client = useClient();
     const data = client.useWithoutLoaderOnline({ userId: props.id }, {
@@ -118,6 +96,7 @@ const CallButton = (props: { chat: ChatInfo, calls: CallsEngine }) => {
         <UIconButton
             icon={<PhoneIcon />}
             onClick={() => props.calls.joinCall(props.chat.id, props.chat.__typename === 'PrivateRoom')}
+            size="large"
         />
     ) : null;
 };
@@ -165,19 +144,9 @@ const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
 
 export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const layout = useLayout();
-    // const router = useStackRouter();
-    // const wideHeader = router.pages.length > 1 || layout === 'mobile';
     let calls = React.useContext(MessengerContext).calls;
     let title = props.chat.__typename === 'PrivateRoom' ? props.chat.user.name : props.chat.title;
     let photo = props.chat.__typename === 'PrivateRoom' ? props.chat.user.photo : props.chat.photo;
-
-    const [menuVisible, menuShow] = usePopper(
-        { placement: 'bottom-end', hideOnClick: true, useWrapper: false },
-        (ctx) =>
-            <React.Suspense fallback={<div style={{ width: 500, height: 100 }} />}>
-                <MenuComponent ctx={ctx} id={props.chat.id} />
-            </React.Suspense>
-    );
 
     return (
         <XView flexDirection="row" flexGrow={1} flexBasis={0} minWidth={0} position="relative">
@@ -227,12 +196,19 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     )}
                 </XView>
             </XView>
-            {layout === 'desktop' && <XView alignSelf="center" flexDirection="row">
-                <CallButton chat={props.chat} calls={calls} />
-            </XView>}
-            <div className={cx(menuButton, menuVisible && menuButtonSelected)} onClick={menuShow}>
-                <UIcon icon={<MoreIcon />} color="var(--foregroundTertiary)" />
-            </div>
+            <XView flexDirection="row" alignItems="center">
+                {layout === 'desktop' && <CallButton chat={props.chat} calls={calls} />}
+
+                <UMoreButton
+                    menu={(ctx) =>
+                        <React.Suspense fallback={<div style={{ width: 500, height: 100 }} />}>
+                            <MenuComponent ctx={ctx} id={props.chat.id} />
+                        </React.Suspense>
+                    }
+                    useWrapper={false}
+                    size="large-wide"
+                />
+            </XView>
             <MessagesActionsHeader chatId={props.chat.id} />
         </XView>
     );

@@ -127,7 +127,7 @@ const messageContainerClass = css`
     flex-grow: 1;
     justify-content: space-between;
     align-items: center;
-    padding: 4px;
+    padding: 4px 0;
     border-radius: 8px;
     margin: 4px 0;
     align-self: center;
