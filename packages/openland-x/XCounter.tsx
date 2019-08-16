@@ -5,6 +5,7 @@ type XCounterProps = {
     big?: boolean;
     grey?: boolean;
     count: number;
+    active?: boolean;
 };
 
 const counterContainer = css`
@@ -14,13 +15,18 @@ const counterContainer = css`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: #fff;
-    background-color: #0C7FF2;
+    color: var(--backgroundPrimary);
+    background-color: var(--accentPrimary);
     font-weight: 600;
 `;
 
 const greyStyle = css`
-    background-color: #c4c7cc;
+    background-color: var(--foregroundQuaternary);
+`;
+
+const activeStyle = css`
+    background-color: var(--backgroundPrimary);
+    color: var(--accentMuted);
 `;
 
 const counterBigStyle = css`
@@ -34,7 +40,14 @@ const counterBigStyle = css`
 `;
 
 const XCounterBig = (props: XCounterProps) => (
-    <div className={cx(counterContainer, counterBigStyle, props.grey && greyStyle)}>
+    <div
+        className={cx(
+            counterContainer,
+            counterBigStyle,
+            props.grey && greyStyle,
+            props.active && activeStyle,
+        )}
+    >
         {props.count}
     </div>
 );
@@ -50,7 +63,14 @@ const counterSmallStyle = css`
 `;
 
 const XCounterSmall = (props: XCounterProps) => (
-    <div className={cx(counterContainer, counterSmallStyle, props.grey && greyStyle)}>
+    <div
+        className={cx(
+            counterContainer,
+            counterSmallStyle,
+            props.grey && greyStyle,
+            props.active && activeStyle,
+        )}
+    >
         {props.count}
     </div>
 );

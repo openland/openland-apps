@@ -5,6 +5,8 @@ import { XFlexStyles, applyFlex } from './Flex';
 import { XPopper } from '../XPopper';
 import { XIcon } from '../XIcon';
 import CleanIcon from 'openland-icons/ic-close-thinner.svg';
+import IcClose from 'openland-icons/s/ic-close-16.svg';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
 type XInputSize = 'large' | 'default' | 'small';
 type XInputAttach = 'left' | 'right' | 'both';
@@ -438,7 +440,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         if (e) {
             this.inputRef = e;
         }
-    }
+    };
 
     handleChange = (e: any) => {
         if (this.props.onChange) {
@@ -448,7 +450,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         this.setState({
             value: e.target.value,
         });
-    }
+    };
 
     handleClear = () => {
         if (this.props.onChange) {
@@ -458,7 +460,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         this.setState({
             value: '',
         });
-    }
+    };
 
     handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
@@ -466,7 +468,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                 this.props.onEnter();
             }
         }
-    }
+    };
 
     focus() {
         this.inputRef.focus();
@@ -481,7 +483,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         if (this.props.onFocus) {
             this.props.onFocus();
         }
-    }
+    };
 
     handleBlur = () => {
         this.setState({
@@ -492,7 +494,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         if (this.props.onBlur) {
             this.props.onBlur();
         }
-    }
+    };
 
     render() {
         const {
@@ -624,7 +626,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                                 this.handleClear();
                             }}
                         >
-                            <CleanIcon />
+                            <UIcon icon={<IcClose />} />
                         </ClearButton>
                     )}
             </RootContainer>

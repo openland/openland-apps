@@ -109,7 +109,7 @@ const dialogActiveColor = css`
 const dialogUnreadContainer = css`
     display: flex;
     align-items: center;
-    align-self: flex-end;
+    align-self: center;
 `;
 
 const unreadCounterContainer = css`
@@ -316,7 +316,12 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                             </div>
                                         )}
                                         <div className={unreadCounterContainer}>
-                                            <XCounter grey={isMuted} count={dialog.unread} big />
+                                            <XCounter
+                                                grey={isMuted}
+                                                count={dialog.unread}
+                                                active={active}
+                                                big
+                                            />
                                         </div>
                                     </div>
                                 )}
