@@ -11,7 +11,7 @@ import { formatTime } from 'openland-y-utils/formatTime';
 import { UserShort_primaryOrganization, UserShort } from 'openland-api/Types';
 import { HoverMenu } from './Menu/HoverMenu';
 import { ULink } from 'openland-web/components/unicorn/ULink';
-import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
+import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { useUserPopper } from 'openland-web/components/UserPopper';
@@ -87,7 +87,7 @@ const MessageSenderBadge = (props: { senderBadgeNameEmojify: string | JSX.Elemen
 const MessageSenderOrg = (props: { organization: UserShort_primaryOrganization }) => (
     <ULink
         path={`/${props.organization.shortname || props.organization.id}`}
-        className={cx(TextCaption, senderOrgAndDateStyle)}
+        className={cx(TextDensed, senderOrgAndDateStyle)}
     >
         {props.organization.name}
     </ULink>

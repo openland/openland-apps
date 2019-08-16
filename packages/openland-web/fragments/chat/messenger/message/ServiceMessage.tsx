@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { css, cx } from 'linaria';
 import { SpannedView } from './content/SpannedView';
-import { TextCaption } from 'openland-web/utils/TextStyles';
+import { TextDensed } from 'openland-web/utils/TextStyles';
 
 const messageWrapClass = css`
     display: flex;
@@ -20,7 +20,7 @@ const styleSpansMessageContainer = css`
     white-space: pre-wrap;
     word-wrap: break-word;
     max-width: 100%;
-    color: #676d7a;
+    color: var(--foregroundSecondary);
 `;
 
 interface ServiceMessageProps {
@@ -29,7 +29,7 @@ interface ServiceMessageProps {
 
 export const ServiceMessage = (props: ServiceMessageProps) => (
     <div className={messageWrapClass}>
-        <div className={cx(styleSpansMessageContainer, TextCaption)}>
+        <div className={cx(styleSpansMessageContainer, TextDensed)}>
             <span>
                 <SpannedView spans={props.message.textSpans} isService />
             </span>
