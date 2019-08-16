@@ -47,7 +47,7 @@ export function useField<T>(
             valid: !clientValidationFailed,
         });
 
-        const invalid = (isInvalid || clientValidationFailed) && changed;
+        const invalid = (isInvalid || clientValidationFailed) && (changed || form.triedToSubmit);
 
         return {
             input: { value, onChange, invalid, errorText },
