@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XView } from 'react-mental';
-import { DialogViewCompact } from './DialogViewCompact';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';
@@ -9,7 +8,6 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { MessagesSearch } from './MessagesSearch';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { UOrganizationView } from 'openland-web/components/unicorn/templates/UOrganizationView';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { plural } from 'openland-y-utils/plural';
 

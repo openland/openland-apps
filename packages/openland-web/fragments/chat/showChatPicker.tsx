@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { showModalBox } from 'openland-x/showModalBox';
-import { DialogListView, dialogSearchWrapperClassName } from '../dialogs/components/DialogListView';
 import { XModalController } from 'openland-x/showModal';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { XView } from 'react-mental';
