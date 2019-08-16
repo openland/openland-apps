@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ChatInfo } from '../types';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useClient } from 'openland-web/utils/useClient';
 import { XDate } from 'openland-x/XDate';
@@ -26,9 +26,10 @@ import { showAddMembersModal } from '../showAddMembersModal';
 import { showRoomEditModal, showLeaveChatConfirmation } from 'openland-web/fragments/account/components/groupProfileModals';
 import { showAdvancedSettingsModal } from '../AdvancedSettingsModal';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
+import { TextDensed } from 'openland-web/utils/TextStyles';
 
 const secondary = css`
-    color: #969AA3;
+    color: var(--foregroundSecondary);
     padding-left: 4px;
 `;
 const secondadyAcent = css`
@@ -41,7 +42,7 @@ const titleStyle = css`
     text-overflow: ellipsis;
 `;
 
-const onLiner = css`
+const oneLiner = css`
    height: 18px;
    overflow: hidden;
 `;
@@ -86,7 +87,7 @@ const ChatOnlinesTitle = (props: { id: string }) => {
     }
 
     return (
-        <span>{', '}<span className={secondadyAcent}>{`${onlineCount} online`}</span></span>
+        <span className={secondadyAcent}>&nbsp;&nbsp;{`${onlineCount} online`}</span>
     );
 };
 
@@ -175,7 +176,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     <span className={titleStyle}>
                         {title}
                         {props.chat.__typename === 'PrivateRoom' && props.chat.user.primaryOrganization && (
-                            <span className={secondary}>{props.chat.user.primaryOrganization.name}</span>
+                            <span className={cx(secondary, TextDensed)}>{props.chat.user.primaryOrganization.name}</span>
                         )}
                     </span>
                 </XView>
@@ -189,7 +190,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         <HeaderLastSeen id={props.chat.user.id} />
                     )}
                     {props.chat.__typename === 'SharedRoom' && props.chat.membersCount !== null && props.chat.membersCount !== 0 && (
-                        <span className={onLiner}>
+                        <span className={cx(oneLiner, TextDensed)}>
                             {props.chat.membersCount >= 1 ? `${props.chat.membersCount} members` : `1 member`}
                             <ChatOnlinesTitle id={props.chat.id} />
                         </span>
