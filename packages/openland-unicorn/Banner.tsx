@@ -2,20 +2,23 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import IcClose from '../openland-icons/s/ic-close-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import { UButton } from 'openland-web/components/unicorn/UButton';
-import { TextLabel1 } from 'openland-web/utils/TextStyles';
+import { TextLabel1, TextLabel2 } from 'openland-web/utils/TextStyles';
 import { defaultHover } from 'openland-web/utils/Styles';
 import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { useLayout } from './components/utils/LayoutContext';
 import { isElectron } from 'openland-y-utils/isElectron';
 import { detectOS, OS } from 'openland-x-utils/detectOS';
 import { trackEvent } from 'openland-x-analytics';
+import IcIos from 'openland-icons/s/ic-apple-16.svg';
+import IcAndroid from 'openland-icons/s/ic-android-16.svg';
+import IcWin from 'openland-icons/s/ic-win-16.svg';
+import IcMac from 'openland-icons/s/ic-mac-16.svg';
+import IcLinux from 'openland-icons/s/ic-linux-16.svg';
 
 const bannerContainetClass = css`
     display: flex;
-    height: 48px;
-    background-color: #1885F2;
-    
+    height: 56px;
+    background-color: #1885f2;
     justify-content: center;
 `;
 
@@ -23,8 +26,8 @@ const iconContainetClass = css`
     position: absolute;
     top: 0;
     right: 0;
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,42 +35,34 @@ const iconContainetClass = css`
 
 const bannerTextClass = css`
     color: #fff;
+    margin-right: 12px;
 `;
 
 const bannerButton = css`
-    & > a > div {
-        background-color: rgba(255,255,255, 0.16);
-        :hover{
-            background-color: rgba(255,255,255, 0.24);
-        }
-    }
-    & > a  {
-        text-decoration: none;
-    }
-    margin-left: 8px;
+    margin-right: 12px;
 `;
 
 const buttonsContainer = css`
     display: flex;
     flex-direction: 'row';
-
 `;
 
 const bannerContentWrapper = css`
     align-self: stretch;
     flex-grow: 1;
     display: flex;
-    flex-direction: 'row';
+    justify-content: center;
+    flex-direction: row;
     align-items: center;
     max-width: 592px;
 `;
 
 const bannerMobileApps = css`
     display: flex;
-    flex-direction: 'row';
+    flex-direction: row;
     flex-grow: 1;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 `;
 
 const bannerNotification = css`
@@ -77,12 +72,10 @@ const bannerNotification = css`
     justify-content: center;
 `;
 
-const BannerContainer = (props: { onClosePress?: () => void, children?: any }) => {
+const BannerContainer = (props: { onClosePress?: () => void; children?: any }) => {
     return (
         <div className={bannerContainetClass}>
-            <div className={bannerContentWrapper}>
-                {props.children}
-            </div>
+            <div className={bannerContentWrapper}>{props.children}</div>
             <div onClick={props.onClosePress} className={cx(iconContainetClass, defaultHover)}>
                 <UIcon color="#fff" icon={<IcClose />} />
             </div>
@@ -90,11 +83,54 @@ const BannerContainer = (props: { onClosePress?: () => void, children?: any }) =
     );
 };
 
+const bannerButtonContainer = css`
+    background-color: #009afb;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    height: 32px;
+    color: #fff;
+    border-radius: 100px;
+    padding: 8px 16px;
+    & > div {
+        margin-right: 8px;
+    }
+    &:hover {
+        text-decoration: none;
+        color: #fff;
+        background-color: var(--accentPrimaryHover);
+    }
+`;
+
+const BannerButton = (props: {
+    text: string;
+    icon?: JSX.Element;
+    onClick?: () => void;
+    href?: string;
+}) => (
+    <a
+        target={props.href ? '_blank' : undefined}
+        href={props.href}
+        className={bannerButtonContainer}
+        onClick={props.onClick}
+    >
+        {props.icon && <UIcon icon={props.icon} color="#DDEFFE" />}
+        <span className={TextLabel2}>{props.text}</span>
+    </a>
+);
+
 const links = {
-    'Mac': 'https://oplnd.com/mac',
-    'Windows': 'https://oplnd.com/windows',
-    'Linux': 'https://oplnd.com/linux'
+    Mac: 'https://oplnd.com/mac',
+    Windows: 'https://oplnd.com/windows',
+    Linux: 'https://oplnd.com/linux',
 };
+
+const icons = {
+    Mac: <IcMac />,
+    Windows: <IcWin />,
+    Linux: <IcLinux />,
+};
+
 let useMobileAppsBanner = () => {
     let [show, setShow] = React.useState(!window.localStorage.getItem('banner-apps-closed'));
     let onClose = React.useCallback(() => {
@@ -107,46 +143,40 @@ let useMobileAppsBanner = () => {
 
         trackEvent('banner_app_download_action', {
             os: selectedOS.toLowerCase(),
-            app_platform: platform
+            app_platform: platform,
         });
     }, []);
     let os = detectOS();
 
     let content = (
         <div className={bannerMobileApps}>
-            <span className={cx(TextLabel1, bannerTextClass)}>Install app</span>
+            <span className={cx(TextLabel1, bannerTextClass)}>Install Openland apps</span>
             <div className={buttonsContainer}>
+                {os &&
+                    ['Mac', 'Windows', 'Linux'].includes(os) && (
+                        <div className={bannerButton}>
+                            <BannerButton
+                                text={os}
+                                href={links[os]}
+                                onClick={() => onAppClick(os!)}
+                                icon={icons[os]}
+                            />
+                        </div>
+                    )}
                 <div className={bannerButton}>
-                    <UButton
-                        color="rgba(255,255,255, 0.16)"
-                        text="Get iOS app"
-                        target="_blank"
+                    <BannerButton
+                        text="iOS"
                         href="https://oplnd.com/ios"
-                        as="a"
                         onClick={() => onAppClick('iOS')}
+                        icon={<IcIos />}
                     />
                 </div>
-                <div className={bannerButton}>
-                    <UButton
-                        color="rgba(255,255,255, 0.16)"
-                        text="Get Android app"
-                        target="_blank"
-                        href="https://oplnd.com/android"
-                        as="a"
-                        onClick={() => onAppClick('Android')}
-                    />
-                </div>
-                {(os && ['Mac', 'Windows', 'Linux'].includes(os)) && <div className={bannerButton}>
-                    <UButton
-                        color="rgba(255,255,255, 0.16)"
-                        text="Get Desktop app"
-                        target="_blank"
-                        href={links[os]}
-                        as="a"
-                        onClick={() => onAppClick(os!)}
-                    />
-                </div>}
-
+                <BannerButton
+                    text="Android"
+                    href="https://oplnd.com/android"
+                    onClick={() => onAppClick('Android')}
+                    icon={<IcAndroid />}
+                />
             </div>
         </div>
     );
@@ -154,7 +184,9 @@ let useMobileAppsBanner = () => {
 };
 
 let useNotificationsBanner = () => {
-    let [ttl, setTTL] = React.useState(Number.parseInt(window.localStorage.getItem('banner-notifications-closed-ttl') || '0', 10));
+    let [ttl, setTTL] = React.useState(
+        Number.parseInt(window.localStorage.getItem('banner-notifications-closed-ttl') || '0', 10),
+    );
     let [permissionState, setPermissionNeeded] = React.useState(AppNotifications.state);
     React.useEffect(() => {
         AppNotifications.watch(s => {
@@ -175,7 +207,8 @@ let useNotificationsBanner = () => {
 
     let content = (
         <div className={bannerNotification}>
-            <span className={cx(TextLabel1, bannerTextClass)}>Openland needs your permission <span onClick={onPress} style={{ textDecoration: 'underline', cursor: 'pointer' }}>to enable desktop notifications</span> </span>
+            <div className={cx(TextLabel1, bannerTextClass)}>Get Openland notifications</div>
+            <BannerButton text="Turn on" onClick={onPress} />
         </div>
     );
     let ttlOK = ttl <= new Date().getTime();
@@ -196,7 +229,7 @@ export const Banners = () => {
         }
     }
 
-    if (content && (layout === 'desktop') && !isElectron) {
+    if (content && layout === 'desktop' && !isElectron) {
         return <BannerContainer onClosePress={onClose}>{content}</BannerContainer>;
     }
     return null;
