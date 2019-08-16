@@ -52,6 +52,13 @@ export const UListItem = React.memo((props: UListItemProps) => {
     const descriptionFont = large ? TextStyles.Densed : TextStyles.Caption;
     const textRightFont = TextStyles.Body;
 
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    React.useEffect(() => {
+        if (containerRef.current && hovered) {
+            containerRef.current.scrollIntoView({ behavior: 'auto', block: 'nearest' });
+        }
+    }, [hovered]);
+
     const content = (
         <>
             {!!icon && !iconBackground && <XView marginRight={16} width={24} height={24} alignItems="center" justifyContent="center"><SelectableSVG icon={icon} /></XView>}
@@ -103,36 +110,40 @@ export const UListItem = React.memo((props: UListItemProps) => {
 
     if (disabled) {
         return (
+            <div ref={containerRef} className="x">
+                <XView
+                    height={height}
+                    paddingHorizontal={16}
+                    alignItems="center"
+                    flexDirection="row"
+                    opacity={0.4}
+                >
+                    {content}
+                </XView>
+            </div>
+        );
+    }
+
+    return (
+        <div ref={containerRef} className="x">
             <XView
                 height={height}
                 paddingHorizontal={16}
                 alignItems="center"
                 flexDirection="row"
-                opacity={0.4}
+                backgroundColor={hovered ? 'var(--backgroundPrimaryHover)' : undefined}
+                hoverBackgroundColor="var(--backgroundPrimaryHover)"
+                selectedBackgroundColor="var(--accentPrimary)"
+                selectedHoverBackgroundColor="var(--accentPrimaryHover)"
+                selectedColor="var(--foregroundInverted)"
+                cursor="pointer"
+                borderRadius={useRadius ? 8 : 0}
+                onClick={onClick}
+                path={path}
+                linkSelectable={true}
             >
                 {content}
             </XView>
-        );
-    }
-
-    return (
-        <XView
-            height={height}
-            paddingHorizontal={16}
-            alignItems="center"
-            flexDirection="row"
-            backgroundColor={hovered ? 'var(--backgroundPrimaryHover)' : undefined}
-            hoverBackgroundColor="var(--backgroundPrimaryHover)"
-            selectedBackgroundColor="var(--accentPrimary)"
-            selectedHoverBackgroundColor="var(--accentPrimaryHover)"
-            selectedColor="var(--foregroundInverted)"
-            cursor="pointer"
-            borderRadius={useRadius ? 8 : 0}
-            onClick={onClick}
-            path={path}
-            linkSelectable={true}
-        >
-            {content}
-        </XView>
+        </div>
     );
 });

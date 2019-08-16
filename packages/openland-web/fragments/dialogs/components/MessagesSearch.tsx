@@ -1,24 +1,19 @@
 import * as React from 'react';
-import { XView, XViewRouterContext } from 'react-mental';
+import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';
-import { GlobalSearch_items } from 'openland-api/Types';
 import { DialogView } from './DialogView';
 import { emoji } from '../../../../openland-y-utils/emoji';
 import { extractPlaceholder } from '../../../../openland-y-utils/extractPlaceholder';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 interface MessagesSearchProps {
-    onClick: () => void;
-    onSelect?: () => void;
     variables: { query: string };
-    onSearchItemPress?: (a: string) => void;
-    onSearchItemSelected: (a: GlobalSearch_items) => void;
+    onPick: (chatId: string) => void;
 }
 
 const MessagesSearchInner = (props: MessagesSearchProps) => {
     const messenger = React.useContext(MessengerContext);
-    const router = React.useContext(XViewRouterContext);
     const client = useClient();
     const messages = client.useMessagesSearch(
         {
@@ -70,7 +65,7 @@ const MessagesSearchInner = (props: MessagesSearchProps) => {
                             sender: message.sender.name,
                         }}
                         key={message.id}
-                        onPress={() => props.onSearchItemPress ? props.onSearchItemPress(chat.id) : router!.navigate(`/mail/${chat.id}`)}
+                        onPress={props.onPick}
                     />
                 );
             })}

@@ -14,7 +14,6 @@ import { MessagesActionsStateEngine } from './MessagesActionsState';
 import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
-import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { ReactionReduced } from 'openland-engines/reactions/types';
 import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
 import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
@@ -202,7 +201,7 @@ export class ConversationEngine implements MessageSendHandler {
     badge?: UserBadge;
 
     constructor(engine: MessengerEngine, conversationId: string, onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void) {
-        loadToUnread = AppConfig.isNonProduction();
+        // loadToUnread = AppConfig.isNonProduction();
         this.engine = engine;
         this.conversationId = conversationId;
 

@@ -17,7 +17,7 @@ import { DataSource } from 'openland-y-utils/DataSource';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
-const dialogSearchWrapperClassName = css`
+export const dialogSearchWrapperClassName = css`
     justify-content: flex-start !important;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -142,6 +142,11 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
         { keys: ['Control', 's'], callback: handleCtrlS },
     ]);
 
+    const onPick = React.useCallback((id: string) => {
+        setQuery('');
+        router!.navigate(`/mail/${id}`);
+    }, []);
+
     return (
         <XView flexGrow={1} flexBasis={0} minHeight={0}>
             <DialogSearchInput value={query} onChange={setQuery} ref={ref} />
@@ -150,9 +155,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                     <div className={dialogSearchWrapperClassName}>
                         <DialogSearchResults
                             variables={{ query: query }}
-                            onClick={() => setQuery('')}
-                            onSearchItemPress={props.onSearchItemPress}
-                            onSearchItemSelected={props.onSearchItemSelected}
+                            onPick={onPick}
                         />
                     </div>
                 )}
