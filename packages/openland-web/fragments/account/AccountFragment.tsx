@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView, XViewSelectedContext, XViewRouterContext } from 'react-mental';
+import { XView, XViewSelectedContext } from 'react-mental';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { UListItem, SelectableText } from 'openland-web/components/unicorn/UListItem';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';

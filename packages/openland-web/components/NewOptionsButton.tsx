@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView, XViewRouterContext } from 'react-mental';
+import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
 import { XMemo } from 'openland-y-utils/XMemo';
