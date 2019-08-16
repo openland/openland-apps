@@ -25,6 +25,7 @@ const richWrapper = css`
     background-color: #f0f2f5;
     border-radius: 8px;
     overflow: hidden;
+    margin-top: 8px;
 `;
 
 const richImageContainer = css`

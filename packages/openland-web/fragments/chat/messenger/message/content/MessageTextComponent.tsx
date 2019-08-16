@@ -11,6 +11,7 @@ export interface MessageTextComponentProps {
 
 const spansMessageWrapper = css`
     display: flex;
+    max-width: 680px;
 `;
 
 const styleSpansMessageContainer = css`
