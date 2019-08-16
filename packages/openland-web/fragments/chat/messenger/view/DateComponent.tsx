@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
-import { TextCaption } from 'openland-web/utils/TextStyles';
+import { TextDensed } from 'openland-web/utils/TextStyles';
 
 const dateDividerContainer = css`
     display: flex;
@@ -14,7 +14,7 @@ const dateDividerContainer = css`
 `;
 
 const dateText = css`
-    color: #676d7a;
+    color: var(--foregroundSecondary);
     text-align: center;
 `;
 
@@ -33,7 +33,7 @@ export const DateComponent = (props: { item: DataSourceDateItem }) => {
     }
     return (
         <div key={'date-' + item.date} className={dateDividerContainer}>
-            <div className={cx(dateText, TextCaption)}>{date}</div>
+            <div className={cx(dateText, TextDensed)}>{date}</div>
         </div>
     );
 };

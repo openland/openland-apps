@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { TextCaption } from 'openland-web/utils/TextStyles';
+import { TextDensed } from 'openland-web/utils/TextStyles';
 import { XViewRouterContext } from 'react-mental';
 import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
 import { plural } from 'openland-y-utils/plural';
@@ -47,7 +47,7 @@ export const MessageCommentsButton = React.memo<MessageCommentsButtonProps>(prop
     if ((isChannel || commentsCount > 0) && id) {
         return (
             <div
-                className={cx(TextCaption, messageCommentsButtonWrapper, 'message-buttons-wrapper')}
+                className={cx(TextDensed, messageCommentsButtonWrapper, 'message-buttons-wrapper')}
                 onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();

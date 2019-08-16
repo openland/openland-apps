@@ -20,7 +20,7 @@ export const DiscoverFragment = React.memo(() => {
                 flexDirection="row"
             >
                 <XView flexGrow={1} minWidth={0} flexBasis={0}>
-                    {emoji('🤯 Home')}
+                    Home
                 </XView>
             </XView>
             <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>

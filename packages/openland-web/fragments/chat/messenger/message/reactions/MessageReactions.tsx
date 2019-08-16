@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MessageReactionType, FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { css, cx } from 'linaria';
-import { TextCaption } from 'openland-web/utils/TextStyles';
+import { TextDensed } from 'openland-web/utils/TextStyles';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
 import { ReactionReducedEmojify, ReactionUser, ReactionUserEmojify } from 'openland-engines/reactions/types';
@@ -154,7 +154,7 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
                 ))}
             </div>
 
-            <div className={cx(TextCaption, reactionsText)}>
+            <div className={cx(TextDensed, reactionsText)}>
                 {reactionsLabel}
             </div>
         </div>
