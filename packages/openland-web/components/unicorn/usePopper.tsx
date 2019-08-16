@@ -9,10 +9,12 @@ const pickerBody = css`
     padding-bottom: 8px;
     padding-top: 8px;
     transition: opacity 150ms cubic-bezier(.29, .09, .24, .99);
+    pointer-events: auto;
 `;
 
 const pickerBodyInvisible = css`
     opacity: 0;
+    pointer-events: none;
 `;
 
 const pickerInnerBody = css`
@@ -47,11 +49,14 @@ const PopperBody = React.memo(React.forwardRef((props: {
     borderRadius?: number;
     useWrapper?: boolean;
     wrapperClassName?: string;
+    showTimeout?: number;
 }, ref: React.Ref<PopperBodyRef>) => {
-    const [visible, setVisible] = React.useState(true);
+    const [visible, setVisible] = React.useState(!props.showTimeout);
     const containerRef = React.useRef<HTMLDivElement>(null);
+    const showTimeoutRef = React.useRef<any>(null);
     const hide = React.useCallback(() => {
         setVisible(false);
+        clearTimeout(showTimeoutRef.current);
         props.onHide();
         setTimeout(() => {
             props.ctx.hide();
@@ -59,6 +64,7 @@ const PopperBody = React.memo(React.forwardRef((props: {
     }, []);
 
     const instantHide = React.useCallback(() => {
+        clearTimeout(showTimeoutRef.current);
         setVisible(false);
         props.onHide();
         props.ctx.hide();
@@ -67,6 +73,15 @@ const PopperBody = React.memo(React.forwardRef((props: {
     useShortcuts({ keys: ['Escape'], callback: props.hideOnEsc !== false ? hide : undefined });
 
     React.useImperativeHandle(ref, () => ({ hide, instantHide }));
+
+    React.useEffect(() => {
+        if (props.showTimeout) {
+            showTimeoutRef.current = setTimeout(() => {
+                setVisible(true);
+            }, props.showTimeout);
+        }
+        return () => clearTimeout(showTimeoutRef.current);
+    }, []);
 
     React.useEffect(() => {
         let isOver = true;
@@ -82,6 +97,10 @@ const PopperBody = React.memo(React.forwardRef((props: {
         const mouseOverHandler = (e: MouseEvent) => {
             let overTarget = props.target.contains(e.target as HTMLElement);
             let overMenu = containerRef.current ? containerRef.current!.contains(e.target as HTMLElement) : false;
+            if (props.showTimeout && !overTarget && overMenu && !visible) {
+                clearTimeout(showTimeoutRef.current);
+                return;
+            }
             let isNewOver = overTarget || overMenu;
             if (isOver !== isNewOver) {
                 isOver = isNewOver;
@@ -137,6 +156,7 @@ interface PopperConfig {
     scope?: string;
     useWrapper?: boolean;
     wrapperClassName?: string;
+    showTimeout?: number;
 }
 
 export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController) => React.ReactElement<{}>): [boolean, (element: HTMLElement | React.MouseEvent<unknown>) => void] => {
@@ -207,6 +227,7 @@ export const usePopper = (config: PopperConfig, popper: (ctx: UPopperController)
                         borderRadius={config.borderRadius}
                         useWrapper={config.useWrapper}
                         wrapperClassName={config.wrapperClassName}
+                        showTimeout={config.showTimeout}
                     >
                         {popper(fakeCtx)}
                     </PopperBody>

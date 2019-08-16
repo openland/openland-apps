@@ -123,7 +123,7 @@ const mentionClassName = css`
 
 const mentionBgClassName = css`
     background-color: #d6edff;
-    padding: 2px;
+    padding: 2px 4px;
     border-radius: 4px;
 `;
 
@@ -146,7 +146,7 @@ const MentionedUser = React.memo(
                     path={`/${user.shortname || user.id}`}
                     className={cx(
                         mentionClassName,
-                        isYou && mentionBgClassName,
+                        isYou && !isService && mentionBgClassName,
                         isService && mentionServiceClassName,
                     )}
                 >

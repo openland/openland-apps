@@ -9,6 +9,7 @@ import { css } from 'linaria';
 
 const style = css`
     z-index: 2;
+    pointer-events: none;
 `;
 
 export class XDialogProviderComponent extends React.Component<{}, { modals: { component: React.ReactElement<{}>; key: string; }[] }>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as QuillType from 'quill';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { UserForMention } from 'openland-api/Types';
 import { emojiLink } from 'openland-y-utils/emojiLink';
@@ -32,13 +32,16 @@ const quillStyle = css`
 `;
 
 const mentionStyle = css`
-    background-color: #DAECFD;
     color: #1885F2;
     border-radius: 4px;
     padding-left: 3px;
     padding-right: 3px;
     padding-top: 1px;
     padding-bottom: 1px;
+`;
+
+const meMentionStyle = css`
+    background-color: #DAECFD;
 `;
 
 const emojiStyle = css`
@@ -90,7 +93,7 @@ function loadQuill() {
         class MentionBlot extends Embed {
             static create(data: any) {
                 const node = super.create() as HTMLSpanElement;
-                node.className = mentionStyle;
+                node.className = cx(mentionStyle, data.isYou && meMentionStyle);
                 node.innerText = data.__typename === 'AllMention' ? 'All' : data.name;
                 node.dataset.user = JSON.stringify(data);
                 return node;
