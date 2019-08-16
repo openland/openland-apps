@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import {
     URickInput,
@@ -21,6 +21,7 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UNavigableReactWindow } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
+import { TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
 import { fileListToArray } from './DropZone';
 import { XLoader } from 'openland-x/XLoader';
 
@@ -33,7 +34,7 @@ interface MentionUserComponentProps {
     } | null;
 }
 
-const mentionUserContainer = css`
+const mentionContainer = css`
     display: flex;
     align-items: center;
     flex-grow: 1;
@@ -43,36 +44,21 @@ const mentionUserContainer = css`
     justify-content: start;
 `;
 
-const mentionEmojiContainer = css`
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-    height: 28px;
-    padding-left: 16px;
-    padding-right: 16px;
-    transform: translateY(-0.1em);
-`;
-
 const mentionUserDataWrap = css`
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-left: 12px;
+    margin-left: 16px;
 `;
 
 const userName = css`
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1.54;
-    color: #171b1f;
+    color: var(--foregroundPrimary);
 `;
 
 const userOrg = css`
-    margin-left: 7px;
-    padding-top: 4px;
-    font-size: 12px;
-    line-height: 1.5;
-    color: #676d7a;
+    margin-left: 8px;
+    margin-top: 2px;
+    color: var(--foregroundTertiary);
 `;
 
 const allMentionIcon = css`
@@ -83,23 +69,25 @@ const allMentionIcon = css`
 `;
 
 const MentionUserComponent = (props: MentionUserComponentProps) => (
-    <div className={mentionUserContainer}>
-        <XAvatar2 id={props.id} title={props.name} src={props.photo} size={28} />
+    <div className={mentionContainer}>
+        <XAvatar2 id={props.id} title={props.name} src={props.photo} size={24} />
         <div className={mentionUserDataWrap}>
-            <div className={userName}>{props.name}</div>
+            <div className={cx(userName, TextLabel1)}>{props.name}</div>
             {props.primaryOrganization && (
-                <div className={userOrg}>{props.primaryOrganization.name}</div>
+                <div className={cx(userOrg, TextDensed)}>{props.primaryOrganization.name}</div>
             )}
         </div>
     </div>
 );
 
 const EmojiSuggestionComponent = (props: { name: string; value: string; display: string }) => (
-    <div className={mentionEmojiContainer}>
-        <XView fontSize={18} width={28} height={28} marginRight={6} alignItems="center" justifyContent="center" >
+    <div className={mentionContainer}>
+        <XView fontSize={24} width={24} height={28} alignItems="center" justifyContent="center" >
             {emojiComponent(props.name)}
         </XView>
-        <div className={userName}>{props.display}</div>
+        <div className={mentionUserDataWrap}>
+            <div className={cx(userName, TextLabel1)}>{props.display}</div>
+        </div>
     </div>
 );
 
@@ -214,7 +202,7 @@ const AutoCompleteComponent = React.memo(
 
             const itemRender = React.useCallback(
                 (v: RoomMembers_members_user | AllMention) => v.__typename === 'AllMention' ? (
-                    <div className={mentionUserContainer}>
+                    <div className={mentionContainer}>
                         <UIcon className={allMentionIcon} icon={<AllIcon />} />
                         <span className={userName}>@All<span style={{ opacity: 0.4, marginLeft: 7 }}>Notify everyone in this group</span></span>
                     </div>
@@ -308,9 +296,9 @@ const AutoCompleteComponent = React.memo(
                         <UNavigableReactWindow
                             width={'100%'}
                             focusedByDefault={!!(word && word.startsWith(':'))}
-                            height={Math.min(filtered.length * 28, 250)}
+                            height={Math.min(filtered.length * 40, 250)}
                             data={filtered}
-                            itemSize={28}
+                            itemSize={40}
                             renderItem={emojiItemRender}
                             onSelected={onEmojiSelected}
                             ref={listRef}
