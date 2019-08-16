@@ -4,7 +4,6 @@ import { NotificationsButton, NewOptionsButton } from 'openland-web/components/N
 import { DialogListFragment } from './DialogListFragment';
 import { UCounter } from 'openland-unicorn/UCounter';
 import { useClient } from 'openland-web/utils/useClient';
-import { emoji } from 'openland-y-utils/emoji';
 
 const DialogsCounter = React.memo(() => {
     const client = useClient();

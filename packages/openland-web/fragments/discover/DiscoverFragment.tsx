@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { emoji } from 'openland-y-utils/emoji';
 import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 
 export const DiscoverFragment = React.memo(() => {
