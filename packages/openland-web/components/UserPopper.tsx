@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { css } from 'linaria';
 import { UserForMention } from 'openland-api/Types';
 import { UserPopperContent } from './UserPopperContent';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
