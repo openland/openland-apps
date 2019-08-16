@@ -4,33 +4,6 @@ import { UserForMention } from 'openland-api/Types';
 import { UserPopperContent } from './UserPopperContent';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 
-const popperContainer = css`
-    animation-duration: 500ms;
-    animation-name: anim;
-
-    @keyframes anim {
-        0% {
-            opacity: 0;
-            pointer-events: none;
-            visibility: hidden;
-            display: none;
-        }
-        60% {
-            display: block;
-        }
-        70% {
-            opacity: 0;
-            pointer-events: none;
-            visibility: hidden;
-        }
-        100% {
-            opacity: 1;
-            pointer-events: auto;
-            visibility: auto;
-        }
-    }
-`;
-
 interface UserPopperProps {
     user: UserForMention;
     isMe: boolean;
@@ -44,7 +17,8 @@ export const useUserPopper = (props: UserPopperProps) => {
             hideOnLeave: true,
             borderRadius: 8,
             scope: 'user-popper',
-            wrapperClassName: popperContainer,
+            useWrapper: !props.noCardOnMe || !props.isMe,
+            showTimeout: 400,
         },
         ctx => (
             <UserPopperContent

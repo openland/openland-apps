@@ -39,7 +39,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                 fontSize={24}
                 flexDirection="row"
                 justifyContent="center"
-                marginRight={wideHeader ? 56 : undefined}
+                marginRight={wideHeader && layout !== 'mobile' ? 56 : undefined}
             >
                 {!!props.config.titleView && (
                     <XView
