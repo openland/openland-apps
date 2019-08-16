@@ -189,7 +189,7 @@ export const DownloadAppsFragment = (props: NativaAppsModalProps) => {
     const onAppClick = React.useCallback((selectedOS: OS) => {
         const platform = ['iOS', 'Android'].includes(selectedOS) ? 'mobile' : 'desktop';
 
-        trackEvent('banner_app_download_action', {
+        trackEvent('app_download_action', {
             os: selectedOS.toLowerCase(),
             app_platform: platform
         });
