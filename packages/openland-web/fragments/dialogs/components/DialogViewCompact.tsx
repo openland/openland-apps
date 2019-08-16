@@ -1,29 +1,24 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { XDate } from 'openland-x/XDate';
 import { emoji } from 'openland-y-utils/emoji';
-import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 
 export const DialogViewCompact = React.memo(
     (props: {
-        item: DialogDataSourceItem;
-        onSelect?: (id: string) => void;
-        onClick?: () => void;
+        item: { title: string, key: string, flexibleId: string, photo: string | null | undefined };
+        onPick: (key: string) => void;
         selected?: boolean;
     }) => {
         let dialog = props.item;
 
-        let path = '/mail/' + dialog.key;
-        if (dialog.isOrganization) {
-            path = '/' + dialog.key;
-        }
+        let onPick = React.useCallback(() => {
+            props.onPick(props.item.key);
+        }, []);
 
         return (
             <XView
                 selected={props.selected}
-                path={path}
-                onClick={props.onClick}
+                onClick={onPick}
                 height={50}
                 flexDirection="row"
                 paddingLeft={16}
@@ -71,20 +66,6 @@ export const DialogViewCompact = React.memo(
                         >
                             {emoji(dialog.title)}
                         </XView>
-                        {dialog.date && (
-                            <XView
-                                height={18}
-                                color="rgba(0, 0, 0, 0.3)"
-                                selectedColor="rgba(255, 255, 255, 0.8)"
-                                marginLeft={5}
-                                fontSize={12}
-                                fontWeight="600"
-                                lineHeight="18px"
-                                whiteSpace="nowrap"
-                            >
-                                <XDate value={dialog.date.toString()} format="datetime_short" />
-                            </XView>
-                        )}
                     </XView>
                 </XView>
             </XView>

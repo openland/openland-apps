@@ -202,7 +202,7 @@ export class ConversationEngine implements MessageSendHandler {
     badge?: UserBadge;
 
     constructor(engine: MessengerEngine, conversationId: string, onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void) {
-        loadToUnread = AppConfig.isNonProduction();
+        // loadToUnread = AppConfig.isNonProduction();
         this.engine = engine;
         this.conversationId = conversationId;
 

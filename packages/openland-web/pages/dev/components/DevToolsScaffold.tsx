@@ -3,6 +3,7 @@ import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
 import { Sidebar } from 'openland-web/components/Sidebar';
+import { XDialogProviderComponent } from 'openland-x/XDialogProvider';
 
 export function DevToolsScaffold(props: {
     title: string;
@@ -13,6 +14,8 @@ export function DevToolsScaffold(props: {
     return (
         <>
             <XDocumentHead title={[props.title]} />
+            <XDialogProviderComponent />
+
             <Scaffold>
                 <Scaffold.Menu>
                     <Sidebar title="Dev Tools">

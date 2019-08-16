@@ -9,11 +9,8 @@ import { extractPlaceholder } from '../../../../openland-y-utils/extractPlacehol
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 interface MessagesSearchProps {
-    onClick: () => void;
-    onSelect?: () => void;
     variables: { query: string };
-    onSearchItemPress?: (a: string) => void;
-    onSearchItemSelected: (a: GlobalSearch_items) => void;
+    onPick: (chatId: string) => void;
 }
 
 const MessagesSearchInner = (props: MessagesSearchProps) => {
@@ -70,7 +67,7 @@ const MessagesSearchInner = (props: MessagesSearchProps) => {
                             sender: message.sender.name,
                         }}
                         key={message.id}
-                        onPress={() => props.onSearchItemPress ? props.onSearchItemPress(chat.id) : router!.navigate(`/mail/${chat.id}`)}
+                        onPress={props.onPick}
                     />
                 );
             })}

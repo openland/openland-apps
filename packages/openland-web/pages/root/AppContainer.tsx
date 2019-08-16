@@ -30,7 +30,6 @@ export const AppContainer = (props: { children: any }) => {
                 roles={data.myPermissions.roles}
             >
                 <MessengerProvider user={hasMessenger ? data.me!! : undefined}>
-                    <XDialogProviderComponent />
                     {props.children}
                 </MessengerProvider>
             </UserInfoProvider>

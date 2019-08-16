@@ -6,6 +6,7 @@ import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { XView } from 'react-mental';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { Page } from 'openland-unicorn/Page';
+import { XDialogProviderComponent } from 'openland-x/XDialogProvider';
 
 export function DevDocsScaffold(props: {
     title?: string;
@@ -16,6 +17,7 @@ export function DevDocsScaffold(props: {
     return (
         <>
             {props.title !== undefined && <XDocumentHead title={props.title} />}
+            <XDialogProviderComponent />
 
             <XView flexGrow={1} flexDirection="row">
                 {props.hideSidebar !== true && (

@@ -1,14 +1,17 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XView, XViewRouterContext } from 'react-mental';
+import { XView } from 'react-mental';
 import { DialogViewCompact } from './DialogViewCompact';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';
-import { GlobalSearch_items } from 'openland-api/Types';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { MessagesSearch } from './MessagesSearch';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { UListItem } from 'openland-web/components/unicorn/UListItem';
+import { UOrganizationView } from 'openland-web/components/unicorn/templates/UOrganizationView';
+import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
+import { plural } from 'openland-y-utils/plural';
 
 const NoResultWrapper = Glamorous(XVertical)({
     marginTop: 34,
@@ -24,17 +27,13 @@ const Image = Glamorous.div({
 });
 
 type DialogSearchResultsT = {
-    onClick: () => void;
-    onSelect?: () => void;
-    variables: { query: string };
-    onSearchItemPress?: (a: string) => void;
-    onSearchItemSelected: (a: GlobalSearch_items) => void;
+    variables: { query: string, limit?: number };
+    onPick: (chatId: string) => void;
 };
 
 const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
-    const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
+    const [selectedIndex, setSelectedIndex] = React.useState<number>(-1);
     const client = useClient();
-    const router = React.useContext(XViewRouterContext);
     const data = client.useGlobalSearch(props.variables, {
         fetchPolicy: 'cache-and-network',
     });
@@ -43,16 +42,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
         return <XLoader loading={true} />;
     }
 
-    // Why?
-    let items = data.items.reduce(
-        (p, x) => {
-            if (!p.find(c => c.id === x.id)) {
-                p.push(x);
-            }
-            return p;
-        },
-        [] as any[],
-    );
+    let items = data.items;
 
     const handleOptionUp = () => {
         if (selectedIndex === null) {
@@ -74,22 +64,14 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
         return;
     };
 
-    React.useEffect(() => {
-        if (selectedIndex !== null) {
-            props.onSearchItemSelected(items[selectedIndex]);
-            return;
-        }
-    }, [selectedIndex]);
-
     useShortcuts([
         { keys: ['ArrowUp'], callback: handleOptionUp },
         { keys: ['ArrowDown'], callback: handleOptionDown },
         {
             keys: ['Enter'], callback: () => {
-                let d = items[selectedIndex || -1];
+                let d = items[selectedIndex];
                 if (d) {
-                    props.onClick();
-                    router!.navigate((d.isOrganization ? '/' : '/mail/') + d.id);
+                    props.onPick(d.id);
                 }
             }
         },
@@ -107,58 +89,16 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
     return (
         <>
             {items.map((i, index) => {
-                let item;
-
+                let selected = index === selectedIndex;
                 if (i.__typename === 'SharedRoom') {
-                    item = {
-                        key: i.id,
-                        flexibleId: i.id,
-                        kind: i.kind,
-                        title: i.title,
-                        fallback: i.title,
-                        photo: i.roomPhoto,
-                        isChannel: i.isChannel,
-                        unread: 0,
-                    };
+                    return <UListItem onClick={() => props.onPick(i.id)} hovered={selected} title={i.title} description={plural(i.membersCount || 0, ['member', 'members'])} avatar={({ id: i.id, photo: i.roomPhoto, title: i.title })} useRadius={false} />;
                 } else if (i.__typename === 'Organization') {
-                    item = {
-                        key: i.id,
-                        flexibleId: i.id,
-                        kind: i.kind,
-                        title: i.name || '',
-                        fallback: i.name || '',
-                        photo: i.photo,
-                        unread: 0,
-                        isOrganization: true,
-                    };
+                    return <UListItem onClick={() => props.onPick(i.id)} hovered={selected} title={i.name} description={i.about} avatar={({ id: i.id, photo: i.photo, title: i.name })} useRadius={false} />;
                 } else if (i.__typename === 'User') {
-                    item = {
-                        key: i.id,
-                        flexibleId: i.id,
-                        kind: i.kind,
-                        title: i.name || '',
-                        fallback: i.name || '',
-                        photo: i.photo,
-                        unread: 0,
-                    };
+                    return <UUserView onClick={() => props.onPick(i.id)} hovered={selected} user={i} usePath={false} useRadius={false} />;
                 } else {
                     return null;
                 }
-
-                return (
-                    <DialogViewCompact
-                        selected={selectedIndex === index}
-                        key={i.id}
-                        onSelect={props.onSelect}
-                        onClick={() => {
-                            props.onClick();
-                            if (props.onSearchItemPress) {
-                                props.onSearchItemPress(i.id);
-                            }
-                        }}
-                        item={item}
-                    />
-                );
             })}
             <XWithRole role="feature-non-production">
                 <MessagesSearch {...props} />
