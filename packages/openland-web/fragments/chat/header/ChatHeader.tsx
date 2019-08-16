@@ -26,7 +26,7 @@ import { showAddMembersModal } from '../showAddMembersModal';
 import { showRoomEditModal, showLeaveChatConfirmation } from 'openland-web/fragments/account/components/groupProfileModals';
 import { showAdvancedSettingsModal } from '../AdvancedSettingsModal';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
-import { TextCaption, TextDensed } from 'openland-web/utils/TextStyles';
+import { TextDensed } from 'openland-web/utils/TextStyles';
 
 const secondary = css`
     color: var(--foregroundSecondary);
