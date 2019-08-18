@@ -119,13 +119,12 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     }
 
     return (
-        <ASFlex flexDirection="column" alignItems="stretch" onPress={handleDoublePress} onLongPress={handleLongPress} backgroundColor={!props.message.isOut ? theme.backgroundPrimary : undefined}>
-
-            <ASFlex key="margin-top" backgroundColor={theme.backgroundPrimary} height={props.message.attachTop ? 2 : 6} />
+        <ASFlex flexDirection="column" alignItems="stretch" onPress={handleDoublePress} onLongPress={handleLongPress}>
+            <ASFlex key="margin-top" height={props.message.attachTop ? 2 : 6} />
 
             <ASFlex flexDirection="column" flexGrow={1} alignItems="stretch">
                 <ASFlex flexDirection="row" flexGrow={1} alignItems="stretch">
-                    <ASFlex key="margin-left-1" renderModes={props.message.isOut ? undefined : rm({ 'selection': { width: (props.message.attachBottom ? 44 : 0) + 42 } })} backgroundColor={theme.backgroundPrimary} width={(props.message.attachBottom ? 44 : 0) + 12} />
+                    <ASFlex key="margin-left" renderModes={props.message.isOut ? undefined : rm({ 'selection': { width: (props.message.attachBottom ? 44 : 0) + 42 } })} width={(props.message.attachBottom ? 44 : 0) + 12} />
 
                     {!props.message.isOut && !props.message.attachBottom &&
                         <ASFlex marginRight={12} onPress={() => handleUserPress(props.message.senderId)} alignItems="flex-end">
@@ -138,17 +137,17 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                         </ASFlex>
                     }
 
-                    {props.message.isOut && <ASFlex backgroundColor={theme.backgroundPrimary} flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" />}
+                    {props.message.isOut && <ASFlex flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" />}
 
                     {res}
 
-                    <ASFlex key="margin-right" backgroundColor={theme.backgroundPrimary} width={12} />
+                    <ASFlex key="margin-right" width={12} />
                 </ASFlex>
 
                 {!props.message.isSending && (<AsyncMessageReactionsView theme={theme} message={props.message} isChannel={props.engine.isChannel} onCommentsPress={handleCommentsPress} onReactionsPress={handleReactionsPress} />)}
             </ASFlex>
 
-            <ASFlex key="margin-bottom" backgroundColor={theme.backgroundPrimary} height={props.message.attachBottom ? 2 : 6} />
+            <ASFlex key="margin-bottom" height={props.message.attachBottom ? 2 : 6} />
 
             <SelectCheckbox engine={props.engine} message={props.message} theme={theme} />
         </ASFlex>
