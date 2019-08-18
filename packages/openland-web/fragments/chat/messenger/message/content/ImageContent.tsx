@@ -198,8 +198,6 @@ const GifContent = React.memo(
                     autoPlay={true}
                     loop={true}
                     muted={true}
-                    webkit-playsinline="true"
-                    playsinline={true}
                     className={cx(imgAppearClass, imgMediaClass)}
                 >
                     <source

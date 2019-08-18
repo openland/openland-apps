@@ -78,6 +78,7 @@ export const TabBarDesktop = React.memo(
                         justifyContent="center"
                         hoverBackgroundColor="var(--backgroundTertiaryHover)"
                         cursor="pointer"
+                        key={'tab_index' + i}
                         onClick={() => props.setSelected(i)}
                     >
                         {props.selected !== i && v.icon}
