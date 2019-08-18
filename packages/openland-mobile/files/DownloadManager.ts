@@ -147,6 +147,10 @@ export class DownloadManager implements DownloadManagerInterface {
                 await (RNFetchBlob as any).fs.unlink(fileByName);
             }
 
+            if (!await (RNFetchBlob as any).fs.exists(fileById)) {
+                fileById += '_local';
+            }
+
             await (RNFetchBlob as any).fs.cp(fileById, fileByName);
 
             return fileByName;
