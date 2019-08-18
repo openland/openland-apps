@@ -54,6 +54,7 @@ export const UUserView = React.memo((props: UUserViewProps & Partial<UListItemPr
             avatar={{ photo, id, title: name, online }}
             path={!onClick ? `/${shortname || id}` : undefined}
             onClick={onClick}
+            useRadius={true}
             {...other}
         />
     );
