@@ -12,15 +12,28 @@ const wrapper = css`
     border-radius: 20px;
     align-items: center;
     justify-content: center;
-
+    position: relative;
     svg {
         width: 24px;
         height: 24px;
     }
+    &::before {
+        content: '';
+        transition: all .1s ease;
+        transform: scale3d(0, 0, 0);
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+        position: absolute;
+        z-index: -1;
+    }
 `;
 
 const wrapperActive = css`
-    background: var(--backgroundPrimaryHover);
+    &::before {
+        background: var(--backgroundPrimaryHover);
+        transform: scale3d(1, 1, 1);
+    }
 `;
 
 const container = css`
@@ -29,8 +42,9 @@ const container = css`
     align-items: center;
     justify-content: center;
 
-    &:hover .${wrapper} {
+    &:hover .${wrapper}::before {
         background: var(--backgroundPrimaryHover);
+        transform: scale3d(1, 1, 1);
     }
 `;
 
