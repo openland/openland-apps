@@ -2,7 +2,6 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
-import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XImage } from 'react-mental';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
@@ -12,10 +11,8 @@ import LinkedinIcon from 'openland-icons/linkedin-2.svg';
 import TwitterIcon from 'openland-icons/twitter-2.svg';
 import FacebookIcon from 'openland-icons/ic-fb.svg';
 import { XModalController } from 'openland-x/showModal';
-
-const letterSpasingClassName = css`
-    letter-spacing: 0.9px;
-`;
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
+import { Page } from 'openland-unicorn/Page';
 
 const textAlignCenterClassName = css`
     text-align: center;
@@ -64,8 +61,8 @@ const CopyButton = (props: CopyButtonProps) => (
         {props.copied ? (
             <CheckIcon />
         ) : (
-                <CopiedIcon className={cx(!props.bright && copyIconClassName)} />
-            )}
+            <CopiedIcon className={cx(!props.bright && copyIconClassName)} />
+        )}
         <XView marginLeft={10}>{props.copied ? 'Copied' : props.text ? props.text : 'Copy'}</XView>
     </XView>
 );
@@ -182,7 +179,7 @@ const SocialButton = (props: SocialButtonProps) => (
     </a>
 );
 
-const WritePostBlock = (props: { inviteKey: string }) => {
+const WritePostBlock = (props: { inviteKey: string, isMobile: boolean }) => {
     const sharingUrl = 'https://openland.com/invite/' + props.inviteKey;
     const sharingText =
         "Check out Openland, an invitation-only community where founders helping founders. There are chats for any industry, location, and priority task. If you need help with investor intros, customers, hiring, or tech choices — that's the place! Invite to join:\n";
@@ -224,7 +221,7 @@ const WritePostBlock = (props: { inviteKey: string }) => {
                     value={sharingTextFull}
                     onChange={() => null}
                     flexGrow={1}
-                    height={180}
+                    height={props.isMobile ? 230 : 180}
                     resize={false}
                     mode="modern"
                     padding={16}
@@ -307,13 +304,14 @@ const InviteAcceptedBlock = (props: { accepted: number }) => (
 
 interface InviteFriendsFragmentProps {
     modalContext?: XModalController;
+    onSettingPage?: boolean;
 }
 
-export const InviteFriendsFragment = (props: InviteFriendsFragmentProps) => {
+export const InviteFriendsComponent = (props: InviteFriendsFragmentProps) => {
     const client = useClient(),
         inviteCount = client.useMySuccessfulInvitesCount(),
         { invite: openlandInvite } = client.useAccountAppInvite(),
-        isMobile = useIsMobile() || undefined;
+        isMobile = useLayout() === 'mobile';
 
     return (
         <XView
@@ -326,21 +324,21 @@ export const InviteFriendsFragment = (props: InviteFriendsFragmentProps) => {
             paddingRight={isMobile ? 20 : 0}
             backgroundColor="#fff"
         >
-            {props.modalContext && <XView position={isMobile ? 'absolute' : 'fixed'} top={19} left={32}>
-                <XImage src="/static/landing/logotype.svg" width={145} height={42} />
-            </XView>}
+            {props.modalContext && (
+                <XView position={isMobile ? 'absolute' : 'fixed'} top={19} left={32}>
+                    <XImage src="/static/landing/logotype.svg" width={145} height={42} />
+                </XView>
+            )}
             <XView
                 flexDirection="column"
                 alignItems="center"
                 width={isMobile ? '100%' : 420}
                 maxWidth={420}
-                marginTop={isMobile ? 120 : 32}
+                marginTop={isMobile ? (props.onSettingPage ? undefined : 120) : 32}
                 paddingBottom={40}
             >
                 <XView fontSize={24} fontWeight="600" color="#000" flexGrow={0}>
-                    <span className={cx(textAlignCenterClassName, letterSpasingClassName)}>
-                        Invite friends to Openland
-                    </span>
+                    <span className={textAlignCenterClassName}>Invite friends to Openland</span>
                 </XView>
                 {inviteCount.mySuccessfulInvitesCount > 0 && (
                     <InviteAcceptedBlock accepted={inviteCount.mySuccessfulInvitesCount} />
@@ -359,8 +357,14 @@ export const InviteFriendsFragment = (props: InviteFriendsFragmentProps) => {
                     </XView>
                     <OwnerLinkComponent inviteKey={openlandInvite} />
                 </XView>
-                <WritePostBlock inviteKey={openlandInvite} />
+                <WritePostBlock inviteKey={openlandInvite} isMobile={isMobile} />
             </XView>
         </XView>
     );
 };
+
+export const InviteFriendsFragment = React.memo(() => (
+    <Page>
+        <InviteFriendsComponent onSettingPage />
+    </Page>
+));

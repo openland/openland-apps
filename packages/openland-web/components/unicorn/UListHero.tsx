@@ -6,7 +6,7 @@ import { TextStyles } from 'openland-web/utils/TextStyles';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { showAvatarModal } from '../showAvatarModal';
 
-const titleStyle = css`
+const textStyle = css`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -77,7 +77,7 @@ export const UListHero = (props: UListHeroProps) => {
                 justifyContent="center"
             >
                 <XView {...TextStyles.Title2} color="var(--foregroundPrimary)">
-                    <span className={titleStyle}>{title}</span>
+                    <span className={textStyle}>{title}</span>
                 </XView>
 
                 {!!description && (
@@ -88,7 +88,7 @@ export const UListHero = (props: UListHeroProps) => {
                         }
                         marginTop={4}
                     >
-                        {description}
+                        <span className={textStyle}>{description}</span>
                     </XView>
                 )}
             </XView>

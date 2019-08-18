@@ -2,6 +2,7 @@ import * as React from 'react';
 import { XView, XViewProps } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { UText } from './UText';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 
 interface UListFieldProps extends XViewProps {
     label?: string;
@@ -10,7 +11,7 @@ interface UListFieldProps extends XViewProps {
 
 export const UListField = (props: UListFieldProps) => {
     const { label, value, ...other } = props;
-
+    const isMobile = useLayout() === 'mobile';
     return (
         <XView
             {...other}
@@ -23,7 +24,7 @@ export const UListField = (props: UListFieldProps) => {
                     {...TextStyles.Body}
                     color="var(--foregroundSecondary)"
                     width={104}
-                    marginRight={56}
+                    marginRight={isMobile ? undefined : 56}
                 >
                     {label}
                 </XView>

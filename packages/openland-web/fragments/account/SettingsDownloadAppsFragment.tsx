@@ -8,6 +8,8 @@ import LinuxIcon from 'openland-icons/ic-app-linux.svg';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { detectOS, OS } from 'openland-x-utils/detectOS';
 import { trackEvent } from 'openland-x-analytics';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
+import { Page } from 'openland-unicorn/Page';
 
 const textAlignClassName = css`
     text-align: center;
@@ -130,12 +132,7 @@ const DesktopAppButton = (props: DesktopAppButtonProps) => {
     const { active, title, icon, ...other } = props;
 
     return (
-        <XView
-            as="a"
-            target="_blank"
-            hoverTextDecoration="none"
-            {...other}
-        >
+        <XView as="a" target="_blank" hoverTextDecoration="none" {...other}>
             <div className={cx(DesktopAppButtonClass, props.active && DesktopAppButtonActiveClass)}>
                 <XView marginRight={8}>{props.icon}</XView>
                 <XView fontWeight="600" fontSize={15}>
@@ -163,11 +160,23 @@ const appsContainer = css`
     flex-direction: row;
     align-items: center;
     margin-left: 50px;
-    
+
     @media (max-width: 800px) {
         flex-direction: column;
         margin-left: 0;
-        
+
+        & > .x {
+            margin-right: 0;
+            margin-left: 0;
+        }
+    }
+`;
+
+const appsContainerPage = css`
+    @media (max-width: 1280px) {
+        flex-direction: column;
+        margin-left: 0;
+
         & > .x {
             margin-right: 0;
             margin-left: 0;
@@ -179,11 +188,13 @@ interface NativaAppsModalProps {
     title?: string;
     text?: string;
     hideLogo?: boolean;
+    onSettingPage?: boolean;
 }
 
-export const DownloadAppsFragment = (props: NativaAppsModalProps) => {
+export const DownloadAppsComponent = (props: NativaAppsModalProps) => {
     const { title, text } = props;
     const os = detectOS();
+    const isMobile = useLayout() === 'mobile';
     const modalContext = React.useContext(XModalBoxContext);
 
     const onAppClick = React.useCallback((selectedOS: OS) => {
@@ -191,17 +202,12 @@ export const DownloadAppsFragment = (props: NativaAppsModalProps) => {
 
         trackEvent('app_download_action', {
             os: selectedOS.toLowerCase(),
-            app_platform: platform
+            app_platform: platform,
         });
     }, []);
 
     return (
-        <XView
-            flexDirection="row"
-            position={'relative'}
-            flexGrow={1}
-            justifyContent={'center'}
-        >
+        <XView flexDirection="row" position={'relative'} flexGrow={1} justifyContent={'center'}>
             {modalContext && (
                 <XView position="fixed" top={19} left={32}>
                     <XImage src="/static/landing/logotype.svg" width={145} height={42} />
@@ -222,7 +228,7 @@ export const DownloadAppsFragment = (props: NativaAppsModalProps) => {
                     flexDirection="row"
                     alignItems="center"
                     justifyContent="center"
-                    marginTop={120}
+                    marginTop={isMobile ? undefined : 120}
                 >
                     <span className={textAlignClassName}>{title || 'Install Openland apps'}</span>
                 </XView>
@@ -247,7 +253,7 @@ export const DownloadAppsFragment = (props: NativaAppsModalProps) => {
                         )}
                     </span>
                 </XView>
-                <div className={appsContainer}>
+                <div className={cx(appsContainer, props.onSettingPage && appsContainerPage)}>
                     <AppCategory
                         title="Mobile"
                         img={<MobileImage />}
@@ -308,3 +314,9 @@ export const DownloadAppsFragment = (props: NativaAppsModalProps) => {
         </XView>
     );
 };
+
+export const DownloadAppsFragment = React.memo(() => (
+    <Page>
+        <DownloadAppsComponent onSettingPage />
+    </Page>
+));

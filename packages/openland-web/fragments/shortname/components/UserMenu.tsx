@@ -20,14 +20,14 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
     builder.item({
         title: 'Copy link',
         icon: <CopyIcon />,
-        onClick: () => copy(`https://openland.com/${shortname || id}`)
+        onClick: () => copy(`https://openland.com/${shortname || id}`),
     });
 
     if (isYou) {
         builder.item({
             title: 'Edit profile',
             icon: <EditIcon />,
-            path: '/settings/profile'
+            path: '/settings/profile',
         });
     }
 
@@ -36,7 +36,7 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
 
 export const UserMenu = React.memo((props: UserMenuProps) => (
     <UMoreButton
-        marginLeft={props.marginLeft ? props.marginLeft : 8}
+        marginLeft={typeof props.marginLeft === 'number' ? props.marginLeft : 8}
         marginRight={-8}
         menu={ctx => <MenuComponent {...props} ctx={ctx} />}
     />
