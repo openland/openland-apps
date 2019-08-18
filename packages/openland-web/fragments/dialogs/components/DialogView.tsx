@@ -2,10 +2,8 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView, XViewSelectedContext } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
-import PhotoIcon from 'openland-icons/ic-photo.svg';
-import FileIcon from 'openland-icons/ic-file-2.svg';
-import ForwardIcon from 'openland-icons/ic-reply-2.svg';
 import IcLock from 'openland-icons/s/ic-lock-16.svg';
+import IcReply from 'openland-icons/s/ic-reply-16.svg';
 import IcChannel from 'openland-icons/s/ic-channel-16.svg';
 import IcMention from 'openland-icons/s/ic-mention-16.svg';
 import { XCounter } from 'openland-x/XCounter';
@@ -123,20 +121,13 @@ const mentionContainer = css`
     margin-right: -6px;
 `;
 
-const iconClass = css`
-    display: inline-block;
-    vertical-align: top;
-    margin: 2px 5px -1px 1px;
-
-    path {
-        fill: rgba(0, 0, 0, 0.3);
-    }
+const replyStyle = css`
+    display: flex;
+    align-items: flex-start;
 `;
 
-const iconActiveClass = css`
-    path {
-        fill: rgba(255, 255, 255, 0.9);
-    }
+const replyIconStyle = css`
+    margin: 2px;
 `;
 
 interface DialogViewProps {
@@ -165,58 +156,37 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     if (dialog.typingEmojify) {
         message = <span>{dialog.typingEmojify}</span>;
     } else {
-        message = <span>{dialog.fallback}</span>;
         if (dialog.message) {
-            message = (
-                <span>
-                    {!isService && sender}
-                    {dialog.messageEmojify}
-                </span>
-            );
-        } else if (dialog.attachments && dialog.attachments.length === 1) {
-            let attachment = dialog.attachments[0];
-            if (attachment.__typename === 'MessageAttachmentFile') {
-                if (attachment.fileMetadata.isImage) {
-                    message = (
-                        <span>
-                            {sender}
-                            <XViewSelectedContext.Consumer>
-                                {active => (
-                                    <PhotoIcon
-                                        className={cx(iconClass, active && iconActiveClass)}
-                                    />
-                                )}
-                            </XViewSelectedContext.Consumer>
-                            Photo
-                        </span>
-                    );
-                } else {
-                    message = (
-                        <span>
-                            {sender}
-                            <XViewSelectedContext.Consumer>
-                                {active => (
-                                    <FileIcon
-                                        className={cx(iconClass, active && iconActiveClass)}
-                                    />
-                                )}
-                            </XViewSelectedContext.Consumer>
-                            Document
-                        </span>
-                    );
-                }
+            if (isService) {
+                message = <span>{dialog.fallback}</span>;
+            } else if (!isService && sender) {
+                message = (
+                    <span>
+                        {sender}
+                        {dialog.messageEmojify}
+                    </span>
+                );
             }
-            message = message || attachment.fallback;
         } else if (dialog.forward) {
             message = (
-                <span>
+                <span className={replyStyle}>
                     {sender}
                     <XViewSelectedContext.Consumer>
                         {active => (
-                            <ForwardIcon className={cx(iconClass, active && iconActiveClass)} />
+                            <UIcon
+                                icon={<IcReply className={replyIconStyle} />}
+                                color={active ? '#fff' : '#78808f'}
+                            />
                         )}
                     </XViewSelectedContext.Consumer>
                     Forward
+                </span>
+            );
+        } else {
+            message = (
+                <span>
+                    {sender}
+                    {dialog.fallback}
                 </span>
             );
         }
