@@ -62,7 +62,7 @@ export const ZListHeader = React.memo<ZListHeaderProps>((props) => {
                         <Text
                             style={{
                                 ...TextStyles.Label2,
-                                color: theme.foregroundSecondary,
+                                color: theme.accentPrimary,
                                 paddingLeft: 16,
                                 paddingRight: 16,
                             }}
