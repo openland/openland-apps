@@ -3,7 +3,7 @@ import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { FontStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { MessageReactionType } from 'openland-api/Types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
