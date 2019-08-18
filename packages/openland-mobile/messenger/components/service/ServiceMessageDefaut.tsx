@@ -23,10 +23,10 @@ export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
             alignItems="center"
         >
             <ASFlex
-                marginTop={16}
-                marginBottom={8}
-                marginLeft={10}
-                marginRight={10}
+                marginTop={7}
+                marginBottom={7}
+                marginLeft={36}
+                marginRight={36}
                 flexDirection="column"
                 alignItems="center"
             >
@@ -34,8 +34,6 @@ export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
                     color={props.theme.foregroundSecondary}
                     fontSize={13}
                     lineHeight={18}
-                    marginLeft={6}
-                    marginRight={6}
                     textAlign="center"
                 >
                     {parts}

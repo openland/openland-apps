@@ -15,7 +15,7 @@ export interface MessagesListProps {
     messagesPaddingBottom?: number;
     inverted: boolean;
 }
-export const androidMessageInputListOverlap = 50;
+export const androidMessageInputListOverlap = 52;
 
 class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number, theme: ThemeGlobal, selectionMode: boolean }, { conversation: ConversationState }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;

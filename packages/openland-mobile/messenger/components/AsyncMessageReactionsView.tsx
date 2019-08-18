@@ -36,28 +36,28 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
     }
 
     return (
-        <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33} backgroundColor={theme.backgroundPrimary} >
-            <ASFlex renderModes={props.message.isOut ? undefined : rm({ 'selection': { marginLeft: 60 + 30 } })} flexGrow={1} justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={props.message.isOut ? 14 : 0} marginLeft={props.message.isOut ? 0 : 60} marginTop={5} alignItems="center">
-                {(props.isChannel || commentsCount > 0) && (
-                    <ASFlex backgroundColor={theme.backgroundTertiary} borderRadius={RadiusStyles.Medium} marginRight={5} onPress={props.onCommentsPress}>
-                        <ASFlex marginLeft={7} marginRight={7} height={26} alignItems="center" justifyContent="center">
-                            {commentsCount <= 0 && <ASImage source={require('assets/ic-comments-24.png')} tintColor={theme.accentPrimary} width={24} height={24} />}
-                            {commentsCount > 0 && <ASImage source={require('assets/ic-comments-full-24.png')} tintColor={theme.accentPrimary} width={24} height={24} />}
-                            {commentsCount > 0 && <ASText fontSize={14} fontWeight={FontStyles.Weight.Medium} marginLeft={2} marginRight={1} color={theme.foregroundTertiary}>{commentsCount}</ASText>}
+        <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33} >
+            <ASFlex renderModes={props.message.isOut ? undefined : rm({ 'selection': { marginLeft: 60 + 30 } })} flexGrow={1} justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={props.message.isOut ? 16 : 0} marginLeft={props.message.isOut ? 0 : 60} marginTop={2} marginBottom={6} alignItems="center">
+                {reactionsReduced.length > 0 && (
+                    <ASFlex onPress={props.onReactionsPress}>
+                        <ASFlex marginLeft={4} marginRight={8} height={32} alignItems="center" justifyContent="center">
+                            {reactionsReduced.map((i) =>
+                                (
+                                    <ASImage key={'k' + i.reaction} marginLeft={4} source={reactionsImagesMap[i.reaction]} width={20} height={20} />
+                                )
+                            )}
+
+                            {!!reactionsLabel && <ASText fontWeight={FontStyles.Weight.Medium} marginLeft={4} fontSize={13} key={'users'} color={theme.foregroundTertiary}>{reactionsLabel}</ASText>}
                         </ASFlex>
                     </ASFlex>
                 )}
 
-                {reactionsReduced.length > 0 && (
-                    <ASFlex backgroundColor={theme.backgroundTertiary} borderRadius={RadiusStyles.Medium} onPress={props.onReactionsPress}>
-                        <ASFlex marginLeft={5} marginRight={1} height={26} alignItems="center" justifyContent="center">
-                            {reactionsReduced.map((i) =>
-                                (
-                                    <ASImage key={'k' + i.reaction} marginLeft={3} source={reactionsImagesMap[i.reaction]} width={20} height={20} />
-                                )
-                            )}
-
-                            {!!reactionsLabel && <ASText fontWeight={FontStyles.Weight.Medium} marginLeft={5} marginRight={7} fontSize={13} key={'users'} color={theme.foregroundTertiary}>{reactionsLabel}</ASText>}
+                {(props.isChannel || commentsCount > 0) && (
+                    <ASFlex onPress={props.onCommentsPress}>
+                        <ASFlex marginLeft={8} marginRight={8} height={32} alignItems="center" justifyContent="center">
+                            {commentsCount <= 0 && <ASImage source={require('assets/ic-message-24.png')} tintColor={theme.accentPrimary} width={20} height={20} />}
+                            {commentsCount > 0 && <ASImage source={require('assets/ic-message-filled-24.png')} tintColor={theme.accentPrimary} width={20} height={20} />}
+                            {commentsCount > 0 && <ASText fontSize={13} fontWeight={FontStyles.Weight.Medium} marginLeft={4} color={theme.foregroundTertiary}>{commentsCount}</ASText>}
                         </ASFlex>
                     </ASFlex>
                 )}
