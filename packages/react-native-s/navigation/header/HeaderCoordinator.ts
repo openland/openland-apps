@@ -267,7 +267,7 @@ export class HeaderCoordinator {
             res = (SDevice.safeArea.top + SDevice.statusBarHeight + SDevice.navigationBarHeightExpanded);
             if (config.search) {
                 if (config.searchActive) {
-                    res -= 41;
+                    res -= 45;
                 } else {
                     res += 52;
                 }
