@@ -19,6 +19,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { MessageReactionType } from 'openland-api/Types';
+import { SpanType } from 'openland-y-utils/spans/Span';
 
 const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMessageItem, theme: ThemeGlobal }>((props) => {
     const [selected, toggleSelect] = useMessageSelected(props.engine.messagesActionsStateEngine, props.message);
@@ -96,17 +97,18 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
             <AsyncMessageContentView theme={theme} key={'message-content'} message={props.message} onMediaPress={props.onMediaPress} onDocumentPress={props.onDocumentPress} onUserPress={props.onUserPress} onGroupPress={handleGroupPress} />;
     }
     if (!res) {
+        const unsupportedText = 'Message is not supported on your version of Openland.\nPlease update the app to view it.';
         res =
-            <AsyncBubbleView key={'message-unsupported'} isOut={props.message.isOut} attachTop={props.message.attachTop} attachBottom={props.message.attachBottom} colorIn={theme.bubbleIn} colorOut={theme.bubbleOut}>
+            <AsyncBubbleView key="message-unsupported" isOut={props.message.isOut} attachTop={props.message.attachTop} attachBottom={props.message.attachBottom} colorIn={theme.bubbleIn} colorOut={theme.bubbleOut}>
                 <ASFlex overlay={true} flexGrow={1} alignItems="center">
-                    <ASText marginLeft={Platform.OS === 'android' ? undefined : 20} fontSize={30}>{randomEmptyPlaceholderEmoji()}</ASText>
+                    <ASText marginLeft={Platform.OS === 'ios' ? 15 : 2} fontSize={30}>{randomEmptyPlaceholderEmoji()}</ASText>
                 </ASFlex>
-                <ASFlex flexDirection="column" marginLeft={Platform.OS === 'android' ? 50 : 40}>
+                <ASFlex flexDirection="column" marginLeft={Platform.OS === 'ios' ? 45 : 50}>
                     <TextContent
                         emojiOnly={false}
                         theme={theme}
                         fontStyle="italic"
-                        message={{ ...props.message, spans: undefined, attachments: [], text: 'Message is not supported on your version of Openland.\nPlease update the app to view it.' }}
+                        message={{ ...props.message, spans: undefined, textSpans: [{ type: SpanType.italic, offset: 0, length: unsupportedText.length, childrens: [{ type: SpanType.text, text: unsupportedText, offset: 0, length: unsupportedText.length }] }], attachments: [], text: unsupportedText }}
                         onUserPress={props.onUserPress}
                         onGroupPress={props.onGroupPress}
                         onDocumentPress={props.onDocumentPress}
