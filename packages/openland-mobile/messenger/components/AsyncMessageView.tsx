@@ -121,7 +121,8 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     return (
         <ASFlex flexDirection="column" alignItems="stretch" onPress={handleDoublePress} onLongPress={handleLongPress} backgroundColor={!props.message.isOut ? theme.backgroundPrimary : undefined}>
 
-            <ASFlex key="margin-top" backgroundColor={theme.backgroundPrimary} height={(props.message.attachTop ? 2 : 14) + 2} marginTop={-2} />
+            {/* <ASFlex key="margin-top" backgroundColor={theme.backgroundPrimary} height={(props.message.attachTop ? 2 : 14) + 2} marginTop={-2} /> */}
+            <ASFlex key="margin-top" backgroundColor={theme.backgroundPrimary} height={props.message.attachTop ? 2 : 6} />
 
             <ASFlex flexDirection="column" flexGrow={1} alignItems="stretch">
                 <ASFlex flexDirection="row" flexGrow={1} alignItems="stretch">
@@ -149,8 +150,9 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
                 <ASFlex backgroundColor={theme.backgroundPrimary} height={50} marginBottom={-50} />
             </ASFlex>
-
-            <ASFlex key="margin-bottom" backgroundColor={theme.backgroundPrimary} height={4} marginBottom={-2} />
+            
+            <ASFlex key="margin-bottom" backgroundColor={theme.backgroundPrimary} height={props.message.attachBottom ? 2 : 6} />
+            {/* <ASFlex key="margin-bottom" backgroundColor={theme.backgroundPrimary} height={4} marginBottom={-2} /> */}
             <SelectCheckbox engine={props.engine} message={props.message} theme={theme} />
 
         </ASFlex>

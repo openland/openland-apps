@@ -10,9 +10,9 @@ export const AsyncNewMessageDivider = React.memo((props) => {
     let theme = useThemeGlobal();
     
     return (
-        <ASFlex flexDirection={'column'} alignItems="center" justifyContent="center" backgroundColor={theme.backgroundPrimary} marginLeft={12} marginRight={12} marginTop={20}>
+        <ASFlex flexDirection={'column'} alignItems="center" justifyContent="center" backgroundColor={theme.backgroundPrimary} marginLeft={12} marginRight={12} height={32} marginBottom={-6}>
             <ASFlex width={screenWidth - 24} height={0.5} backgroundColor={theme.foregroundQuaternary} />
-            <ASFlex marginTop={-10} height={18} backgroundColor={theme.backgroundPrimary}>
+            <ASFlex marginTop={-8} backgroundColor={theme.backgroundPrimary}>
                 <ASText color={theme.foregroundSecondary} fontSize={13} marginLeft={12} marginRight={12}>
                     New messages
                 </ASText>
