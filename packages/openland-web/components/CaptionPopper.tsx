@@ -5,7 +5,6 @@ import { TextCaption } from '../utils/TextStyles';
 import { UPopperController } from './unicorn/UPopper';
 
 const captionWrapper = css`
-    width: 280px;
     display: flex;
     justify-content: center;
 `;
