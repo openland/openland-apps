@@ -56,7 +56,7 @@ class RNTouchableNode: ASControlNode, UIGestureRecognizerDelegate {
   }
   
   func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-    return true
+    return false
   }
   
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
