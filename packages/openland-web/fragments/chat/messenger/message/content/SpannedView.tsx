@@ -5,6 +5,7 @@ import { css, cx } from 'linaria';
 import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { ULink } from 'openland-web/components/unicorn/ULink';
+import { OthersPopper } from './OthersPopper';
 
 const boldTextClassName = css`
     font-weight: bold;
@@ -200,19 +201,8 @@ export const SpanView = React.memo<{ span: Span; children?: any; isService?: boo
                 isService={props.isService}
             />
         );
-        // } else if (span.type === 'mention_users') {
-        //     let otherItems: JoinedUserPopperRowProps[] = [];
-
-        //     span.users.map(j => {
-        //         otherItems.push({
-        //             title: j.name,
-        //             subtitle: j.primaryOrganization ? j.primaryOrganization.name : '',
-        //             photo: j.photo || '',
-        //             id: j.id,
-        //         });
-        //     });
-
-        //     return <OthersPopper items={otherItems}>{children}</OthersPopper>;
+    } else if (span.type === 'mention_users') {
+        return <OthersPopper users={span.users}>{children}</OthersPopper>;
         // } else if (span.type === 'mention_all') {
         //     return <MentionComponentInnerText isYou={true}>{children}</MentionComponentInnerText>;
     } else if (span.type === 'new_line') {

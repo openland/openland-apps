@@ -68,7 +68,7 @@ const allMentionIcon = css`
     margin-right: 12px;
 `;
 
-const MentionUserComponent = (props: MentionUserComponentProps) => (
+export const MentionUserComponent = (props: MentionUserComponentProps) => (
     <div className={mentionContainer}>
         <XAvatar2 id={props.id} title={props.name} src={props.photo} size={24} />
         <div className={mentionUserDataWrap}>
