@@ -27,7 +27,7 @@ const captionContent = css`
     text-align: center;
     border-radius: 8px;
     color: #fff;
-    min-width: 80px;
+    // min-width: 80px;
     max-width: 280px;
     padding: 6px 12px;
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
@@ -78,7 +78,7 @@ interface CaptionPopperConfig {
 export const useCaptionPopper = (opts: CaptionPopperConfig) => {
     const { text, getText, placement = 'top', scope } = opts;
     const [, show] = usePopper(
-        { placement, hideOnLeave: true, borderRadius: 8, scope, useWrapper: false },
+        { placement, borderRadius: 8, scope, useWrapper: false },
         ctx => (
             <div
                 className={cx(
@@ -90,13 +90,14 @@ export const useCaptionPopper = (opts: CaptionPopperConfig) => {
                 <div
                     className={cx(
                         captionContent,
+                        TextCaption,
                         placement === 'top' && topPlacementArrow,
                         placement === 'bottom' && bottomPlacementArrow,
                         placement === 'left' && leftPlacementArrow,
                         placement === 'right' && rightPlacementArrow,
                     )}
                 >
-                    <span className={TextCaption}>{getText ? getText(ctx) : text}</span>
+                    {getText ? getText(ctx) : text}
                 </div>
             </div>
         ),
