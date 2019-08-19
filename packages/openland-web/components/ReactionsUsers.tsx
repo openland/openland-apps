@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { ReactionUserEmojify, ReactionUser } from 'openland-engines/reactions/types';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
+import { css } from 'linaria';
+
+const row = css`
+    text-align: left;
+`;
 
 export interface ReactionsUsersInstance {
     update: (newUsers: ReactionUserEmojify[]) => void;
@@ -28,7 +33,7 @@ export const ReactionsUsers = React.memo(React.forwardRef((props: ReactionsUsers
     return (
         <>
             {users.map((u, i) =>
-                <div key={`user-${u.name}-${i}`}>
+                <div key={`user-${u.name}-${i}`} className={row}>
                     {u.name}
                 </div>
             )}
