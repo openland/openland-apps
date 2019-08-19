@@ -37,7 +37,7 @@ export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewPro
 
     return (
         <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33} >
-            <ASFlex renderModes={props.message.isOut ? undefined : rm({ 'selection': { marginLeft: 60 + 30 } })} flexGrow={1} justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={props.message.isOut ? 16 : 0} marginLeft={props.message.isOut ? 0 : 60} marginTop={2} marginBottom={6} alignItems="center">
+            <ASFlex renderModes={props.message.isOut ? undefined : rm({ 'selection': { marginLeft: 60 + 30 } })} flexGrow={1} justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={props.message.isOut ? 16 : 0} marginLeft={props.message.isOut ? 0 : 60} marginTop={2} alignItems="center">
                 {reactionsReduced.length > 0 && (
                     <ASFlex onPress={props.onReactionsPress}>
                         <ASFlex marginLeft={4} marginRight={8} height={32} alignItems="center" justifyContent="center">
