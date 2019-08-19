@@ -125,7 +125,7 @@ let SettingsContent = ((props: PageProps) => {
                 />
             </ZListGroup>
 
-            <ZListGroup header="Organizations" actionRight={{ title: '+ New', onPress: () => props.router.push('NewOrganization') }}>
+            <ZListGroup header="Organizations" actionRight={{ title: 'New', onPress: () => props.router.push('NewOrganization') }}>
                 {primary && <ZListItem
                     text={primary.name}
                     leftAvatar={{ photo: primary.photo, key: primary.id, title: primary.name }}
