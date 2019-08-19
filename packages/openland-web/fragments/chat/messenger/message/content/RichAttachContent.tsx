@@ -36,6 +36,10 @@ const richWrapper = css`
         opacity: 1;
         transform: translateX(0);
     }
+
+    @media (max-width: 1100px) {
+        flex-direction: column;
+    }
 `;
 
 const richImageContainer = css`
@@ -48,6 +52,13 @@ const richImageContainer = css`
     min-height: 100%;
     cursor: pointer;
     width: var(--image-width);
+
+    @media (max-width: 1100px) {
+        flex-direction: column;
+        min-width: 100%;
+        max-height: 162px;
+        height: var(--image-height);
+    }
 `;
 
 const richImageStyle = css`
@@ -116,6 +127,7 @@ const deleteButton = css`
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 8px;
 
     &:hover svg {
         opacity: 0.64;
@@ -288,26 +300,34 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
         return <InternalComponent attach={attach} />;
     }
 
-    const handleDeleteClick = React.useCallback((e: React.MouseEvent) => {
-        e.stopPropagation();
+    const handleDeleteClick = React.useCallback(
+        (e: React.MouseEvent) => {
+            e.stopPropagation();
 
-        if (messageId) {
-            const builder = new AlertBlanketBuilder;
+            if (messageId) {
+                const builder = new AlertBlanketBuilder();
 
-            builder.title('Remove attachment');
-            builder.message('Remove this attachment from the message?');
-            builder.action('Remove', async () => {
-                await client.mutateRoomDeleteUrlAugmentation({
-                    messageId
-                });
-            }, 'danger');
-            builder.show();
-        }
-    }, [messageId]);
+                builder.title('Remove attachment');
+                builder.message('Remove this attachment from the message?');
+                builder.action(
+                    'Remove',
+                    async () => {
+                        await client.mutateRoomDeleteUrlAugmentation({
+                            messageId,
+                        });
+                    },
+                    'danger',
+                );
+                builder.show();
+            }
+        },
+        [messageId],
+    );
 
     let img = null;
     let siteIcon = null;
-    const text = attach.text && attach.text.length > 150 ? attach.text.slice(0, 130) + '...' : attach.text;
+    const text =
+        attach.text && attach.text.length > 150 ? attach.text.slice(0, 130) + '...' : attach.text;
     if (attach.image && attach.image.metadata) {
         let layout = layoutMedia(
             attach.image.metadata.imageWidth || 0,
@@ -320,7 +340,12 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
         img = (
             <div
                 className={richImageContainer}
-                style={{ '--image-width': `${layout.width}px` } as React.CSSProperties}
+                style={
+                    {
+                        '--image-width': `${layout.width}px`,
+                        '--image-height': `${layout.width}px`,
+                    } as React.CSSProperties
+                }
                 onClick={(e: React.MouseEvent) => {
                     e.stopPropagation();
                     showImageModal(attach.image!!.url, layout.width * 2, layout.height * 2);
@@ -369,11 +394,15 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
                 )}
             </div>
 
-            {canDelete && !!messageId && (
-                <div className={cx(deleteButton, 'message-rich-delete')} onClick={handleDeleteClick}>
-                    <UIcon icon={<DeleteIcon />} />
-                </div>
-            )}
+            {canDelete &&
+                !!messageId && (
+                    <div
+                        className={cx(deleteButton, 'message-rich-delete')}
+                        onClick={handleDeleteClick}
+                    >
+                        <UIcon icon={<DeleteIcon />} />
+                    </div>
+                )}
         </div>
     );
 };
