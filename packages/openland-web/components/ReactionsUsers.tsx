@@ -5,6 +5,7 @@ import { css } from 'linaria';
 
 const row = css`
     text-align: left;
+    flex-grow: 1;
 `;
 
 export interface ReactionsUsersInstance {
