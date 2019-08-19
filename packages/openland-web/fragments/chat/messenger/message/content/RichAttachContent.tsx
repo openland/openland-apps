@@ -126,7 +126,7 @@ const deleteButton = css`
 
 const internalWrapper = css`
     max-width: 480px;
-    padding: 16px;
+    padding: 16px 24px 16px 16px;
     align-items: center;
     justify-content: space-between;
 `;
