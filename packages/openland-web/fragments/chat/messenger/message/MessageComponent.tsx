@@ -29,6 +29,13 @@ const senderNameStyle = css`
     color: var(--foregroundPrimary);
 `;
 
+const dateStyle = css`
+    width: 56px;
+    margin-top: 4px;
+    opacity: 0;
+    color: var(--foregroundSecondary);
+`;
+
 const senderOrgAndDateStyle = css`
     margin-left: 8px;
     color: var(--foregroundSecondary);
@@ -133,7 +140,8 @@ const messageContainerClass = css`
     align-self: center;
     width: 100%;
 
-    &:hover .hover-menu-container {
+    &:hover .hover-menu-container,
+    &:hover .message-date {
         opacity: 1;
     }
 `;
@@ -209,6 +217,10 @@ const messageContentAreaClass = css`
     flex-grow: 1;
 `;
 
+const attachMessageContentAreaClass = css`
+    padding-left: 0;
+`;
+
 const messageAvatarWrapper = css`
     padding-top: 6px;
     display: flex;
@@ -216,10 +228,6 @@ const messageAvatarWrapper = css`
     flex-direction: row;
     justify-content: center;
     flex-shrink: 0;
-`;
-
-const noAvatarPlaceholder = css`
-    padding-left: 56px;
 `;
 
 interface MessageComponentProps {
@@ -323,16 +331,21 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                 messageContainerClass,
                 attachesClassNames,
                 noBorderRadiusMobile,
-                selectedRef.current && messageContainerSelectedClass
+                selectedRef.current && messageContainerSelectedClass,
             )}
         >
             <div className={messageContentClass}>
                 <div className={messageInnerContainerClass}>
                     {!message.attachTop && avatar}
+                    {message.attachTop && (
+                        <div className={cx(TextCaption, dateStyle, 'message-date')}>
+                            {formatTime(message.date)}
+                        </div>
+                    )}
                     <div
                         className={cx(
                             messageContentAreaClass,
-                            message.attachTop && noAvatarPlaceholder,
+                            message.attachTop && attachMessageContentAreaClass,
                         )}
                     >
                         {!message.attachTop && sender}
