@@ -12,7 +12,7 @@ export const XErrorMessage = React.memo<{ message: string }>((props) => {
             paddingHorizontal={16}
             paddingVertical={8}
             marginBottom={16}
-            marginHorizontal={40}
+            marginHorizontal={24}
         >
             {props.message}
         </XView>
