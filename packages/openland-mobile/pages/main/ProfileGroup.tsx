@@ -199,7 +199,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const content = (
         <>
             <ZListHero
-                titleIcon={room.isChannel ? require('assets/ic-channel-18.png') : room.kind === 'GROUP' ? require('assets/ic-lock-18.png') : undefined}
+                titleIcon={room.isChannel ? require('assets/ic-channel-18.png') : room.kind === 'GROUP' ? require('assets/ic-lock-16.png') : undefined}
                 titleColor={room.kind === 'GROUP' ? theme.accentPositive : undefined}
                 title={room.title}
                 subtitle={subtitle}

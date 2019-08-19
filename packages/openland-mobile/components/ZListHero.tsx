@@ -98,7 +98,7 @@ export const ZListHero = React.memo<ZListHeroProps>((props) => {
                 <View style={styles.body}>
                     <View style={styles.header} justifyContent={!action ? 'center' : undefined}>
                         <View flexDirection="row">
-                            {titleIcon && <Image source={titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', tintColor: colorTitle }} />}
+                            {titleIcon && <Image source={titleIcon} style={{ width: 20, height: 20, marginRight: 4, alignSelf: 'center', tintColor: colorTitle }} />}
                             <Text style={[styles.title, { color: colorTitle }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
                         </View>
                         <Text style={[styles.subtitle, { color: colorSubtitle }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{subtitle}</Text>
