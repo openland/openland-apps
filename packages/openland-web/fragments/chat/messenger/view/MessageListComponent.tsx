@@ -8,7 +8,7 @@ import {
 } from 'openland-engines/messenger/ConversationEngine';
 import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
 import { EmptyBlock } from 'openland-web/fragments/chat/components/ChatEmptyComponent';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 import { DataSourceRender } from './DataSourceRender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import {
@@ -18,7 +18,6 @@ import {
 import { XScrollViewReverse2, useScrollRefresh } from 'openland-x/XScrollViewReversed2';
 import { XScrollValues } from 'openland-x/XScrollView3';
 import { XLoader } from 'openland-x/XLoader';
-import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { DateComponent } from './DateComponent';
 import { NewMessageDividerComponent } from './NewMessageDividerComponent';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
@@ -34,22 +33,11 @@ const messagesWrapperClassName = css`
 
     padding-left: 16px;
     padding-right: 16px;
-
-    @media (max-width: 750px) {
-        padding-left: 0;
-        padding-right: 0;
-    }
-`;
-
-const mobileMessageWrapperClassName = css`
-    padding-left: 0;
-    padding-right: 0;
 `;
 
 const MessagesWrapper = React.memo(({ children }: { children?: any }) => {
-    const isMobile = React.useContext(IsMobileContext);
     return (
-        <div className={cx(messagesWrapperClassName, isMobile && mobileMessageWrapperClassName)}>
+        <div className={messagesWrapperClassName}>
             {children}
         </div>
     );
