@@ -143,7 +143,7 @@ export const MessageFragment = React.memo(() => {
 
     return (
         <>
-            <UHeader title="Comments" appearance="wide" />
+            <UHeader title="Message" appearance="wide" />
             <MessageFragmentInner messageId={unicorn.id} />
         </>
     );
