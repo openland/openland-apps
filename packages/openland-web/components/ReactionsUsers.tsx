@@ -3,6 +3,12 @@ import { ReactionUserEmojify, ReactionUser } from 'openland-engines/reactions/ty
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { css } from 'linaria';
 
+const wrapper = css`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+`;
+
 const row = css`
     text-align: left;
     flex-grow: 1;
@@ -32,12 +38,12 @@ export const ReactionsUsers = React.memo(React.forwardRef((props: ReactionsUsers
     }));
 
     return (
-        <>
+        <div className={wrapper}>
             {users.map((u, i) =>
                 <div key={`user-${u.name}-${i}`} className={row}>
                     {u.name}
                 </div>
             )}
-        </>
+        </div>
     );
 }));
