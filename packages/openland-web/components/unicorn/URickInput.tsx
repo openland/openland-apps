@@ -17,6 +17,7 @@ const quillStyle = css`
     .ql-container {
         background-color: #F0F2F5;
         border-radius: 8px;
+        font-family: "-apple-system",BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
     }
     .ql-editor {
         padding: 8px 16px;
@@ -34,14 +35,15 @@ const quillStyle = css`
 const mentionStyle = css`
     color: #1885F2;
     border-radius: 4px;
-    padding-left: 3px;
-    padding-right: 3px;
     padding-top: 1px;
     padding-bottom: 1px;
+    font-weight: 600;
 `;
 
 const meMentionStyle = css`
     background-color: #DAECFD;
+    padding-left: 3px;
+    padding-right: 3px;
 `;
 
 const emojiStyle = css`
