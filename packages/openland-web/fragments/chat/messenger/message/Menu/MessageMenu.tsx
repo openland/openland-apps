@@ -23,7 +23,7 @@ export const buildMessageMenu = (ctx: UPopperController, message: DataSourceWebM
         title: 'Forward', icon: <ForwardIcon />, onClick: () => {
             //
             showChatPicker((id: string) => {
-                engine.engine.getConversation(id).messagesActionsStateEngine.forward([message]);
+                engine.engine.forward([message], id);
                 router.navigate('/mail/' + id);
             });
         }

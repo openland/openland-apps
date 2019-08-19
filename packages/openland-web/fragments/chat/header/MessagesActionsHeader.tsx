@@ -127,7 +127,7 @@ const Buttons = (props: { chatId: string, engine: MessagesActionsStateEngine, me
     const router = React.useContext(XViewRouterContext);
     let forwardCallback = React.useCallback(() => {
         showChatPicker((id: string) => {
-            props.messenger.getConversation(id).messagesActionsStateEngine.forward(props.engine.getState().messages, props.engine);
+            props.messenger.forward(props.engine, id);
             router!.navigate('/mail/' + id);
         });
     }, []);

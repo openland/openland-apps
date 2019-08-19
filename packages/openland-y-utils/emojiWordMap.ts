@@ -92,7 +92,7 @@ export const emojiWordMap = {
     'ага': emojiWordCollection.ok,
 
     'yes': emojiWordCollection.ok,
-    'да': emojiWordCollection.ok,
+    // 'да': emojiWordCollection.ok,
 
     'no': emojiWordCollection.no,
     // 'не': emojiWordCollection.no,
@@ -109,7 +109,7 @@ export const emojiWordMap = {
     'хз': emojiWordCollection.dunno,
 
     'wat': emojiWordCollection.wat,
-    'че': emojiWordCollection.wat,
+    // 'че': emojiWordCollection.wat,
     'чё': emojiWordCollection.wat,
 
     'yo': emojiWordCollection.yo,

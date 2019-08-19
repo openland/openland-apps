@@ -268,8 +268,16 @@ export class ConversationEngine implements MessageSendHandler {
                 true;
         this.isChannel = initialChat.room && initialChat.room.__typename === 'SharedRoom' ? initialChat.room.isChannel : false;
         this.isPrivate = initialChat.room && initialChat.room.__typename === 'PrivateRoom' ? true : false;
+        let forwardBufferId = this.conversationId;
         if (initialChat.room && initialChat.room.__typename === 'PrivateRoom') {
             this.user = initialChat.room.user;
+            forwardBufferId = this.user.id;
+        }
+
+        let buffered = this.engine.forwardBuffer.get(forwardBufferId);
+        if (buffered) {
+            this.messagesActionsStateEngine.forward(buffered);
+            this.engine.forwardBuffer.delete(forwardBufferId);
         }
 
         this.state = new ConversationState(false, messages, this.groupMessages(messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MessageSender } from './messenger/MessageSender';
-import { ConversationEngine } from './messenger/ConversationEngine';
+import { ConversationEngine, DataSourceMessageItem } from './messenger/ConversationEngine';
 import { GlobalStateEngine } from './messenger/GlobalStateEngine';
 import { UserShort, ChatUpdateFragment_ChatMessageReceived } from 'openland-api/Types';
 import { NotificationsEngine } from './NotificationsEngine';
@@ -16,6 +16,7 @@ import { createLogger } from 'mental-log';
 import { UserStorageEngine } from './UserStorageEngine';
 import { EngineOptions } from './EnginesOptions';
 import { InMemoryKeyValueStore } from 'openland-y-utils/InMemoryKeyValueStore';
+import { MessagesActionsStateEngine } from './messenger/MessagesActionsState';
 
 const log = createLogger('Engine');
 
@@ -31,7 +32,9 @@ export class MessengerEngine {
     readonly calls: CallsEngine;
     readonly userStorage: UserStorageEngine;
     readonly options: EngineOptions;
+    readonly forwardBuffer = new Map<string, DataSourceMessageItem[]>();
     private readonly activeConversations = new Map<string, ConversationEngine>();
+    private readonly activeUserConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number; unread: number }>();
     private readonly activeTypings = new Map<string, TypingEngine>();
     // private readonly activeOnlines = new Map<string, OnlineWatcher>();
@@ -107,6 +110,9 @@ export class MessengerEngine {
     removeConversation(conversationId: string) {
         if (this.activeConversations.has(conversationId)) {
             const conversationToDestroy = this.activeConversations.get(conversationId)!!;
+            if (conversationToDestroy.user) {
+                this.activeUserConversations.delete(conversationToDestroy.user.id);
+            }
             conversationToDestroy.destroy();
             this.activeConversations.delete(conversationId);
         }
@@ -121,9 +127,27 @@ export class MessengerEngine {
         if (!this.activeConversations.has(conversationId)) {
             let engine = new ConversationEngine(this, conversationId, this.handleNewMessage);
             this.activeConversations.set(conversationId, engine);
-            engine.start();
+            (async () => {
+                await engine.start();
+                this.activeUserConversations.set(this.user.id, engine);
+            })();
         }
         return this.activeConversations.get(conversationId)!!;
+    }
+    forward(from: MessagesActionsStateEngine | DataSourceMessageItem[], toId: string) {
+        let messages: DataSourceMessageItem[] = [];
+        if (Array.isArray(from)) {
+            messages = from;
+        } else {
+            messages = from.getState().messages;
+            from.clear();
+        }
+        let target = this.activeUserConversations.get(toId) || this.activeConversations.get(toId);
+        if (!target) {
+            this.forwardBuffer.set(toId, messages);
+        } else {
+            target.messagesActionsStateEngine.forward(messages);
+        }
     }
 
     getTypings(conversationId?: string) {
