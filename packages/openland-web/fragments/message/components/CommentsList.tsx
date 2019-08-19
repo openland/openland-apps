@@ -9,7 +9,7 @@ import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { css } from 'linaria';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
-import { XView } from 'react-mental';
+import { XView, XImage } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 
 const wrapper = css`
@@ -55,8 +55,16 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Mes
 
     if (comments.length <= 0) {
         return (
-            <XView {...TextStyles.Body} alignItems="center" justifyContent="center" flexGrow={1} color="var(--foregroundSecondary)">
-                Write first comment
+            <XView alignItems="center" justifyContent="center" flexGrow={1} paddingVertical={30}>
+                <XImage
+                    width={178}
+                    height={154}
+                    src="/static/X/messenger/messenger-empty.svg"
+                    marginBottom={40}
+                />
+                <XView {...TextStyles.Body} color="var(--foregroundSecondary)">
+                    Write first comment
+                </XView>
             </XView>
         );
     }
