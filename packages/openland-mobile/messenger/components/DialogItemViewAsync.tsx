@@ -16,7 +16,7 @@ import { avatarSizes } from 'openland-mobile/components/ZAvatar';
 const ASCounter = (props: { value: number | string, muted?: boolean, theme: ThemeGlobal }) => (
     <ASFlex borderRadius={11} backgroundColor={props.muted ? props.theme.foregroundQuaternary : props.theme.accentPrimary} height={22} minWidth={22} justifyContent="center" alignItems="center">
         <ASFlex justifyContent="center" alignItems="center" marginLeft={7} marginRight={7}>
-            <ASText color={props.muted ? props.theme.foregroundContrast : props.theme.foregroundInverted} fontSize={13} textAlign="center" fontWeight={FontStyles.Weight.Bold}>{props.value}</ASText>
+            <ASText color={props.muted ? props.theme.foregroundContrast : props.theme.foregroundInverted} fontSize={13} textAlign="center" fontWeight={FontStyles.Weight.Bold} letterSpacing={-0.08}>{props.value}</ASText>
         </ASFlex>
     </ASFlex>
 );
