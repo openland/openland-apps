@@ -4,9 +4,14 @@ import { MAvatar } from 'openland-web/fragments/chat/messenger/message/MAvatar';
 import { css } from 'linaria';
 import { DataSourceWebMessageItem } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { NotificationSender } from './NotificationSender';
-import { RoomNano_SharedRoom } from 'openland-api/Types';
+import { RoomNano_SharedRoom, CommentSubscriptionType } from 'openland-api/Types';
 import { UIconLabeled } from 'openland-web/components/unicorn/UIconLabeled';
+import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
+import { useClient } from 'openland-web/utils/useClient';
 import ReplyIcon from 'openland-icons/s/ic-reply-24.svg';
+import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
+import FollowIcon from 'openland-icons/s/ic-follow-24.svg';
+import UnfollowIcon from 'openland-icons/s/ic-follow-off-24.svg';
 
 const wrapper = css`
     display: flex;
@@ -46,9 +51,33 @@ interface NotificationViewProps {
 }
 
 export const NotificationView = React.memo((props: NotificationViewProps) => {
+    const client = useClient();
     const { notification } = props;
-    const { id, date, sender, text, attachments, textSpans, fallback, senderNameEmojify, peerRootId, room, replyQuoteTextEmojify, notificationType } = notification;
+    const { id, date, sender, text, attachments, textSpans, fallback, senderNameEmojify, peerRootId, room, replyQuoteTextEmojify, notificationType, notificationId, isSubscribedMessageComments } = notification;
     const sharedRoom = room && room.__typename === 'SharedRoom' ? room as RoomNano_SharedRoom : undefined;
+
+    const handleFollowToggler = React.useCallback(() => {
+        if (notificationId && peerRootId) {
+            if (isSubscribedMessageComments) {
+                client.mutateUnSubscribeMessageComments({ messageId: peerRootId });
+            } else {
+                client.mutateSubscribeMessageComments({ messageId: peerRootId, type: CommentSubscriptionType.ALL });
+            }
+        }
+    }, [notificationId, peerRootId, isSubscribedMessageComments]);
+
+    const handleDeleteClick = React.useCallback(() => {
+        if (notificationId) {
+            const builder = new AlertBlanketBuilder();
+
+            builder.title('Delete notification');
+            builder.message('Delete this notification? This cannot be undone.');
+            builder.action('Delete', async () => {
+                await client.mutateDeleteNotification({ notificationId });
+            }, 'danger');
+            builder.show();
+        }
+    }, [notificationId]);
 
     return (
         <div className={wrapper}>
@@ -82,6 +111,12 @@ export const NotificationView = React.memo((props: NotificationViewProps) => {
                 {notificationType === 'new_comment' && (
                     <div className={toolsWrapperClass}>
                         <UIconLabeled path={`/message/${peerRootId}`} icon={<ReplyIcon />} label="Reply" />
+                        <UIconLabeled
+                            onClick={handleFollowToggler}
+                            icon={isSubscribedMessageComments ? <UnfollowIcon /> : <FollowIcon />}
+                            label={isSubscribedMessageComments ? 'Unfollow thread' : 'Follow thread'}
+                        />
+                        <UIconLabeled onClick={handleDeleteClick} icon={<DeleteIcon />} label="Delete" />
                     </div>
                 )}
             </div>
