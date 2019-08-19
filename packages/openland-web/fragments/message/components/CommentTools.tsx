@@ -29,13 +29,7 @@ export const CommentTools = React.memo((props: CommentToolsProps) => {
     const messenger = React.useContext(MessengerContext);
     const { reactions, onReactionClick, onReplyClick, onDeleteClick } = props;
 
-    let myLike = false;
-    reactions.map(r => {
-        if (r.user.id === messenger.user.id) {
-            myLike = true;
-        }
-    });
-
+    const myLike = reactions.filter(r => r.user.id === messenger.user.id).length > 0;
     const likeLabel = myLike && reactions.length === 1 ? 'Liked' : (reactions.length > 0 ? plural(reactions.length, ['like', 'likes']) : 'Like');
 
     // Sorry universe
