@@ -8,6 +8,11 @@ fragment DialogUpdateFragment on DialogUpdate {
     cid
     globalUnread
     haveMention
+    silent {
+      __typename
+      desktop
+      mobile
+    }
     unread
   }
   ... on DialogMessageUpdated {

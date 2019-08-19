@@ -132,7 +132,7 @@ export class GlobalStateEngine {
             let start2 = currentTimeMillis();
             this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
             if (!visible && event.message.sender.id !== this.engine.user.id) {
-                this.engine.notifications.handleIncomingMessage(event.cid, event.message);
+                this.engine.notifications.handleIncomingMessage(event.cid, event);
             }
             log.log('Notifications handled in ' + (currentTimeMillis() - start2) + ' ms');
 

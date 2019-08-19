@@ -7,6 +7,10 @@ class AppConfigImpl implements AppConfigApi {
     setNonProduction = (isNonProd: boolean) => this.isNonProd = isNonProd;
     isSuperAdmin = () => this.isSuper;
     setSuperAdmin = (isSuper: boolean) => this.isSuper = isSuper;
+    getPlatform(): 'mobile' | 'desktop' | 'unknown' {
+        return 'mobile';
+    }
+
 }
 
 export const AppConfig = new AppConfigImpl();

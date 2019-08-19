@@ -149,6 +149,10 @@ export const DialogUpdateFragment = gql`
                 ...TinyMessage
             }
             haveMention
+            silent {
+                mobile
+                desktop
+            }
         }
         ... on DialogMessageUpdated {
             cid

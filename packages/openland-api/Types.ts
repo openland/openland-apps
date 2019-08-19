@@ -11912,6 +11912,12 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
 
 export type DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message = DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_GeneralMessage;
 
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_silent {
+  __typename: "SilentMessageInfo";
+  mobile: boolean;
+  desktop: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived {
   __typename: "DialogMessageReceived";
   cid: string;
@@ -11919,6 +11925,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRecei
   globalUnread: number;
   message: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message;
   haveMention: boolean;
+  silent: DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_silent;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated_message_ServiceMessage_sender_primaryOrganization {
@@ -12627,6 +12634,12 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
 
 export type DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message = DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_GeneralMessage;
 
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_silent {
+  __typename: "SilentMessageInfo";
+  mobile: boolean;
+  desktop: boolean;
+}
+
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived {
   __typename: "DialogMessageReceived";
   cid: string;
@@ -12634,6 +12647,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRecei
   globalUnread: number;
   message: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message;
   haveMention: boolean;
+  silent: DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_silent;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated_message_ServiceMessage_sender_primaryOrganization {
@@ -84702,6 +84716,12 @@ export interface DialogUpdateFragment_DialogMessageReceived_message_GeneralMessa
 
 export type DialogUpdateFragment_DialogMessageReceived_message = DialogUpdateFragment_DialogMessageReceived_message_ServiceMessage | DialogUpdateFragment_DialogMessageReceived_message_GeneralMessage;
 
+export interface DialogUpdateFragment_DialogMessageReceived_silent {
+  __typename: "SilentMessageInfo";
+  mobile: boolean;
+  desktop: boolean;
+}
+
 export interface DialogUpdateFragment_DialogMessageReceived {
   __typename: "DialogMessageReceived";
   cid: string;
@@ -84709,6 +84729,7 @@ export interface DialogUpdateFragment_DialogMessageReceived {
   globalUnread: number;
   message: DialogUpdateFragment_DialogMessageReceived_message;
   haveMention: boolean;
+  silent: DialogUpdateFragment_DialogMessageReceived_silent;
 }
 
 export interface DialogUpdateFragment_DialogMessageUpdated_message_ServiceMessage_sender_primaryOrganization {

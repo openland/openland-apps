@@ -1,6 +1,9 @@
 import { AppConfigApi } from 'openland-y-runtime-api/AppConfigApi';
 
 class AppConfigStab implements AppConfigApi {
+    getPlatform(): 'mobile' | 'desktop' | 'unknown' {
+        return 'unknown';
+    }
     isNonProduction() {
         return false;
     }
