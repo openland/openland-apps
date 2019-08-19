@@ -145,9 +145,10 @@ const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
 
 export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const layout = useLayout();
-    let calls = React.useContext(MessengerContext).calls;
-    let title = props.chat.__typename === 'PrivateRoom' ? props.chat.user.name : props.chat.title;
-    let photo = props.chat.__typename === 'PrivateRoom' ? props.chat.user.photo : props.chat.photo;
+    const calls = React.useContext(MessengerContext).calls;
+    const title = props.chat.__typename === 'PrivateRoom' ? props.chat.user.name : props.chat.title;
+    const photo = props.chat.__typename === 'PrivateRoom' ? props.chat.user.photo : props.chat.photo;
+    const path = props.chat.__typename === 'PrivateRoom' ? `/${props.chat.user.shortname || props.chat.user.id}` : `/group/${props.chat.id}`;
 
     return (
         <XView flexDirection="row" flexGrow={1} flexBasis={0} minWidth={0} position="relative">
@@ -157,7 +158,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     title={title}
                     photo={photo}
                     id={props.chat.__typename === 'PrivateRoom' ? props.chat.user.id : props.chat.id}
-                    onClick={photo && !photo.startsWith('ph://') ? () => showAvatarModal(photo!) : undefined}
+                    path={path}
                 />
             </XView>
             <XView flexDirection="column" flexGrow={1} flexBasis={0} minWidth={0}>
@@ -171,7 +172,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     hoverColor="var(--accentPrimary)"
                     cursor="pointer"
                     overflow="hidden"
-                    path={props.chat.__typename === 'PrivateRoom' ? `/${props.chat.user.shortname || props.chat.user.id}` : `/group/${props.chat.id}`}
+                    path={path}
                 >
                     <span className={titleStyle}>
                         {title}
