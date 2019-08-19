@@ -11,12 +11,13 @@ import { ZRoundedButton } from '../../../components/ZRoundedButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { formatBytes } from '../../../utils/formatBytes';
 import { DownloadState } from '../../../files/DownloadManagerInterface';
-import { ZCircularLoader } from 'openland-mobile/components/ZCircularLoader';
+// import { ZCircularLoader } from 'openland-mobile/components/ZCircularLoader';
 import { PdfPreview } from './PdfPreview';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
 
 const styles = StyleSheet.create({
     name: {
@@ -89,7 +90,8 @@ class FilePreviewComponent extends React.PureComponent<PageProps & { theme: Them
                         <Text style={[styles.size, { color: theme.foregroundSecondary }]}>{formatBytes(config.size)}</Text>
                         <View height={46} justifyContent="center" marginTop={5}>
                             {this.state.path && <ZRoundedButton title="Open" onPress={this.handleOpen} />}
-                            {!this.state.path && <ZCircularLoader visible={!this.state.path} progress={(this.state.completed ? 1 : (this.state.downloadState ? this.state.downloadState.progress || 0 : 0))} />}
+                            {/* {!this.state.path && <ZCircularLoader visible={!this.state.path} progress={(this.state.completed ? 1 : (this.state.downloadState ? this.state.downloadState.progress || 0 : 0))} />} */}
+                            {!this.state.path && <LoaderSpinner />}
                         </View>
                     </ASSafeAreaView>
                 </TouchableWithoutFeedback>
