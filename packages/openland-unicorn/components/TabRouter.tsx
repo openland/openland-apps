@@ -11,6 +11,7 @@ export interface TabDefinition {
     readonly iconActive: any;
     readonly path: string;
     readonly component: any;
+    readonly caption: string;
 }
 
 export class TabRouter {

@@ -4,7 +4,6 @@ import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { TextCaption } from '../utils/TextStyles';
 
 const captionWrapper = css`
-    width: 280px;
     display: flex;
     justify-content: center;
 `;
@@ -47,10 +46,22 @@ const bottomPlacementArrow = css`
     }
 `;
 
+const leftPlacementArrow = css`
+    &::after {
+        right: -2px;
+    }
+`;
+
+const rightPlacementArrow = css`
+    &::after {
+        left: -2px;
+    }
+`;
+
 interface CaptionPopperConfig {
     text?: string | JSX.Element;
     getText?: () => string | JSX.Element;
-    placement?: 'top' | 'bottom';
+    placement?: 'top' | 'bottom' | 'left' | 'right';
     scope?: string;
 }
 
@@ -63,7 +74,10 @@ export const useCaptionPopper = (opts: CaptionPopperConfig) => {
                 <div
                     className={cx(
                         captionContent,
-                        (placement === 'bottom') ? bottomPlacementArrow : topPlacementArrow,
+                        (placement === 'top') && topPlacementArrow,
+                        (placement === 'bottom') && bottomPlacementArrow,
+                        (placement === 'left') && leftPlacementArrow,
+                        (placement === 'right') && rightPlacementArrow,
                     )}
                 >
                     <span className={TextCaption}>{getText ? getText() : text}</span>

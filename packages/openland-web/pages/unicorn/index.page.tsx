@@ -21,17 +21,20 @@ const Unicorn = React.memo(() => {
         icon: <DiscoverIcon />,
         iconActive: <DiscoverActiveIcon />,
         path: '/discover',
-        component: <DiscoverFragment />
+        component: <DiscoverFragment />,
+        caption: 'Discover'
     }, {
         icon: <ChatIcon />,
         iconActive: <ChatActiveIcon />,
         path: '/mail',
-        component: <DialogsFragment />
+        component: <DialogsFragment />,
+        caption: 'Chats'
     }, {
         icon: <ProfileIcon />,
         iconActive: <ProfileActiveIcon />,
         path: '/settings',
-        component: <AccountFragment />
+        component: <AccountFragment />,
+        caption: 'Account'
     }], 1, Routing), []);
     return (
         <LayoutProvider>
