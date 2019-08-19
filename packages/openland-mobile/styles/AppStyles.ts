@@ -1,4 +1,5 @@
 import { Platform, TextStyle } from 'react-native';
+import { ASTextProps } from 'react-native-async-view/ASText';
 
 export const RadiusStyles = {
     Small: 6,
@@ -50,4 +51,8 @@ const TextStylesAndroid: { [key in TextStylesVariants]: TextStyle } = {
     Caption: { fontSize: 12, lineHeight: 16, fontWeight: FontStyles.Weight.Regular }
 };
 
+const TextStylesAsyncIOS = TextStylesIOS as { [key in TextStylesVariants]: ASTextProps };
+const TextStylesAsyncAndroid = TextStylesAndroid as { [key in TextStylesVariants]: ASTextProps };
+
 export const TextStyles = Platform.OS === 'ios' ? TextStylesIOS : TextStylesAndroid;
+export const TextStylesAsync = Platform.OS === 'ios' ? TextStylesAsyncIOS : TextStylesAsyncAndroid;
