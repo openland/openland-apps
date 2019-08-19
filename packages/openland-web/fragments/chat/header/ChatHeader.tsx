@@ -8,7 +8,6 @@ import { XDate } from 'openland-x/XDate';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MessagesActionsHeader } from './MessagesActionsHeader';
-import { showAvatarModal } from 'openland-web/components/showAvatarModal';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { CallsEngine } from 'openland-engines/CallsEngine';
@@ -136,7 +135,7 @@ const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
     }
 
     return (
-        // hack for fixing jumping nitifications item
+        // hack for fixing jumping notifications item
         <XView flexDirection="column" width={500} alignItems="flex-end">
             {res.build(props.ctx)}
         </XView>
