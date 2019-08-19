@@ -139,6 +139,10 @@ const messageContainerClass = css`
     margin: 4px 0;
     align-self: center;
     width: 100%;
+    
+    @media(max-width: 750px) {
+        padding: 4px 16px;
+    }
 
     &:hover .hover-menu-container,
     &:hover .message-date {

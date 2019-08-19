@@ -8,7 +8,7 @@ import {
 } from 'openland-engines/messenger/ConversationEngine';
 import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
 import { EmptyBlock } from 'openland-web/fragments/chat/components/ChatEmptyComponent';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { DataSourceRender } from './DataSourceRender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import {
@@ -21,6 +21,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { DateComponent } from './DateComponent';
 import { NewMessageDividerComponent } from './NewMessageDividerComponent';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 
 const messagesWrapperClassName = css`
     display: flex;
@@ -35,9 +36,15 @@ const messagesWrapperClassName = css`
     padding-right: 16px;
 `;
 
+const mobileMessageWrapperClassName = css`
+    padding-left: 0;
+    padding-right: 0;
+`;
+
 const MessagesWrapper = React.memo(({ children }: { children?: any }) => {
+    const isMobile = useLayout() === 'mobile';
     return (
-        <div className={messagesWrapperClassName}>
+        <div className={cx(messagesWrapperClassName, isMobile && mobileMessageWrapperClassName)}>
             {children}
         </div>
     );
