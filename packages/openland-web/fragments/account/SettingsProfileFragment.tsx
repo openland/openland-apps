@@ -70,6 +70,7 @@ export const SettingsProfileFragment = React.memo(() => {
     const emailField = useField('input.email', profile.email || '', form);
     const websiteField = useField('input.website', profile.website || '', form);
     const linkedinField = useField('input.linkedin', profile.linkedin || '', form);
+    const instagramField = useField('input.instagram', profile.instagram || '', form);
 
     const doConfirm = () => {
         form.doAction(async () => {
@@ -82,7 +83,8 @@ export const SettingsProfileFragment = React.memo(() => {
                     photoRef: sanitizeImageRef(avatarField.value),
                     email: emailField.value,
                     website: websiteField.value,
-                    alphaLinkedin: linkedinField.value,
+                    linkedin: linkedinField.value,
+                    instagram: instagramField.value,
                     phone: phoneNumberField.value,
                     location: locationField.value,
                 },
@@ -205,7 +207,10 @@ export const SettingsProfileFragment = React.memo(() => {
                             <XView marginBottom={16}>
                                 <InputField title="Website" field={websiteField} size="large" />
                             </XView>
-                            <InputField title="Linkedin" field={linkedinField} size="large" />
+                            <XView marginBottom={16}>
+                                <InputField title="LinkedIn" field={linkedinField} size="large" />
+                            </XView>
+                            <InputField title="Instagram" field={instagramField} size="large" />
                         </FormSection>
                         <FormFooter>
                             <XButton

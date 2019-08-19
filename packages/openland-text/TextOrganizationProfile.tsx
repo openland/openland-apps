@@ -185,6 +185,7 @@ export const TextOrganizationProfile = {
     placeholderSocialModalTwitter: 'Twitter',
     placeholderSocialModalFacebook: 'Facebook',
     placeholderSocialModalLinkedIn: 'LinkedIn',
+    placeholderSocialModalInstagram: 'Instagram',
     placeholderSocialInputPlaceholder: 'Enter a link',
     placeholderSocialLinkTitlePlaceholder: 'Link title (optional)',
 
@@ -194,7 +195,8 @@ export const TextOrganizationProfile = {
     placeholderContactsModalLastNameTitle: 'Last name',
     placeholderContactsModalPhonelTitle: 'Phone',
     placeholderContactsModalEmailTitle: 'Email',
-    placeholderContactsModalLinkedinTitle: 'Linkedin',
+    placeholderContactsModalLinkedInTitle: 'LinkedIn',
+    placeholderContactsModalInstagramTitle: 'Instagram',
     placeholderContactsModalTwitterTitle: 'Twitter',
     placeholderContactsModalPositionTitle: 'Position',
     placeholderContactsModalPhotoTitle: 'Photo',
@@ -203,7 +205,8 @@ export const TextOrganizationProfile = {
     placeholderContactsModalLastNamePlaceholder: 'Last name',
     placeholderContactsModalPhonelPlaceholder: 'Phone',
     placeholderContactsModalEmailPlaceholder: 'Email',
-    placeholderContactsModalLinkedinPlaceholder: 'Enter a link',
+    placeholderContactsModalLinkedInPlaceholder: 'Enter a link',
+    placeholderContactsModalInstagramPlaceholder: 'Enter a link',
     placeholderContactsModalTwitterPlaceholder: 'Enter a link',
     placeholderContactsModalPositionPlaceholder: 'Position',
 

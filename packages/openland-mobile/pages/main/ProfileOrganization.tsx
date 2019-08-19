@@ -323,7 +323,10 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                     <ZListItem title="Facebook" text={organization.facebook} copy={true} />
                 )}
                 {organization.linkedin && (
-                    <ZListItem title="Linkedin" text={organization.linkedin} copy={true} />
+                    <ZListItem title="LinkedIn" text={organization.linkedin} copy={true} />
+                )}
+                {organization.instagram && (
+                    <ZListItem title="Instagram" text={organization.instagram} copy={true} />
                 )}
             </ZListGroup>
 

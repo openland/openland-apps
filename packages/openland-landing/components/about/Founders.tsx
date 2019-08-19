@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView, XImage } from 'react-mental';
 import { css } from 'linaria';
 import MailIcon from 'openland-icons/landing/mail.svg';
-import LinkedinIcon from 'openland-icons/landing/linkedin.svg';
+import LinkedInIcon from 'openland-icons/landing/linkedin.svg';
 
 let founderRootClass = css`
     padding: 7px 0 0 132px;
@@ -138,7 +138,7 @@ const FoundersItem = (props: FoundersItemProps) => (
             <div className={founderPositionClass}>{props.position}</div>
             <div className={founderLinksClass}>
                 <a href={props.linkedin} className={founderLinkClass}>
-                    <LinkedinIcon className="linkedin-icon" />
+                    <LinkedInIcon className="linkedin-icon" />
                 </a>
                 <a href={'mailto:' + props.mail} className={founderLinkClass}>
                     <MailIcon className="mail-icon" />

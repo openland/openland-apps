@@ -5,6 +5,7 @@ fragment UserFull on User {
   email
   firstName
   id
+  instagram
   isBot
   isYou
   lastName

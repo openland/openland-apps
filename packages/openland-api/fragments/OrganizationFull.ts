@@ -22,6 +22,7 @@ export const OrganizationFull = gql`
         twitter
         facebook
         linkedin
+        instagram
         membersCount
 
         members: alphaOrganizationMembers {

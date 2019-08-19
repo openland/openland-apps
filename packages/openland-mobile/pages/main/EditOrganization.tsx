@@ -28,6 +28,7 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
     const twitterField = useField('twitter', profile.twitter || '', form);
     const facebookField = useField('facebook', profile.facebook || '', form);
     const linkedinField = useField('linkedin', profile.linkedin || '', form);
+    const instagramField = useField('instagram', profile.instagram || '', form);
 
     const handleSave = () =>
         form.doAction(async () => {
@@ -41,6 +42,7 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                     twitter: twitterField.value,
                     facebook: facebookField.value,
                     linkedin: linkedinField.value,
+                    instagram: instagramField.value,
                 }
             });
             await client.refetchOrganizationProfile({ organizationId });
@@ -95,6 +97,10 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                     <ZInput
                         placeholder="LinkedIn"
                         field={linkedinField}
+                    />
+                    <ZInput
+                        placeholder="Instagram"
+                        field={instagramField}
                     />
                 </ZListGroup>
             </KeyboardAvoidingScrollView>

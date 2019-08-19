@@ -28,7 +28,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
 
     const initialMembers = client.useOrganizationMembers({ organizationId: props.id, first: 15 }, { fetchPolicy: 'cache-and-network' }).organization.members;
     const { id, name, photo, about, shortname, website, twitter, facebook, rooms, membersCount, isCommunity,
-        linkedin, isMine } = organization;
+        linkedin, instagram, isMine } = organization;
 
     const [displayGroups, setDisplayGroups] = React.useState(rooms.slice(0, 10));
     const [members, setMembers] = React.useState(initialMembers);
@@ -115,6 +115,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 {!!twitter && <UListField label="Twitter" value={twitter} />}
                 {!!facebook && <UListField label="Facebook" value={facebook} />}
                 {!!linkedin && <UListField label="LinkedIn" value={linkedin} />}
+                {!!instagram && <UListField label="Instagram" value={instagram} />}
             </UListGroup>
             <UListGroup header="Groups" counter={rooms.length}>
                 {isMine && <CreateGroupButton id={id} />}

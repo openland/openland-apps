@@ -8,13 +8,14 @@ mutation ProfileUpdate($input: UpdateProfileInput!, $uid: ID) {
       name
     }
     joinedAt: alphaJoinedAt
-    linkedin: alphaLinkedin
     primaryOrganizationId: alphaPrimaryOrganizationId
     role: alphaRole
     email
     firstName
     id
+    instagram
     lastName
+    linkedin
     location
     phone
     photoRef {
