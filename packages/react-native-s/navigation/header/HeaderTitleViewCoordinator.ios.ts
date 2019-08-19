@@ -173,8 +173,8 @@ export class HeaderTitleViewCoordinator {
             //
             if (this.page.config.search) {
                 if (this.page.config.searchActive) {
-                    this.searchView.translateY = 0;
-                    this.searchViewContainer.translateY = 0;
+                    this.searchView.translateY = 0.5;
+                    this.searchViewContainer.translateY = 0.5;
                     this.searchViewContainer.translateX = 0;
                 } else {
                     this.searchView.translateY = -contentOffset;
