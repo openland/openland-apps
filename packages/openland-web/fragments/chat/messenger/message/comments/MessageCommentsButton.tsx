@@ -17,12 +17,18 @@ const messageCommentsButtonWrapper = css`
     margin-right: 8px;
     color: var(--foregroundSecondary);
     cursor: pointer;
+    & span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 `;
 
 const iconWrapper = css`
     display: flex;
     align-items: center;
     margin-right: 6px;
+    flex-shrink: 0;
 
     svg {
         width: 16px;
@@ -60,8 +66,10 @@ export const MessageCommentsButton = React.memo<MessageCommentsButtonProps>(prop
                 <div className={iconWrapper}>
                     <CommentsIcon />
                 </div>
-                {!!commentsCount && plural(commentsCount, ['comment', 'comments'])}
-                {!commentsCount && 'Comments'}
+                <span>
+                    {!!commentsCount && plural(commentsCount, ['comment', 'comments'])}
+                    {!commentsCount && 'Comments'}
+                </span>
             </div>
         );
     }

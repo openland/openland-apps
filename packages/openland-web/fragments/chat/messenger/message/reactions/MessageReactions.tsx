@@ -24,6 +24,9 @@ const reactionsWrapper = css`
 
 const reactionsText = css`
     color: var(--foregroundSecondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 const reactionsItems = css`
