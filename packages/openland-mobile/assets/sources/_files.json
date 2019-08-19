@@ -499,10 +499,11 @@
         },
         {
             "name": "ic-lock",
-            "src": "ic-lock.svg",
+            "src": "ic-lock-16.svg",
             "sizes": [
-                13,
-                18
+                16,
+                18,
+                13
             ]
         },
         {
