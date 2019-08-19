@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { TextCaption } from '../utils/TextStyles';
+import { UPopperController } from './unicorn/UPopper';
 
 const captionWrapper = css`
     width: 280px;
@@ -49,7 +50,7 @@ const bottomPlacementArrow = css`
 
 interface CaptionPopperConfig {
     text?: string | JSX.Element;
-    getText?: () => string | JSX.Element;
+    getText?: (ctx: UPopperController) => string | JSX.Element;
     placement?: 'top' | 'bottom';
     scope?: string;
 }
@@ -58,7 +59,7 @@ export const useCaptionPopper = (opts: CaptionPopperConfig) => {
     const { text, getText, placement = 'top', scope } = opts;
     const [, show] = usePopper(
         { placement, hideOnLeave: true, borderRadius: 8, scope, useWrapper: false },
-        () => (
+        (ctx) => (
             <div className={captionWrapper}>
                 <div
                     className={cx(
@@ -66,7 +67,7 @@ export const useCaptionPopper = (opts: CaptionPopperConfig) => {
                         (placement === 'bottom') ? bottomPlacementArrow : topPlacementArrow,
                     )}
                 >
-                    <span className={TextCaption}>{getText ? getText() : text}</span>
+                    <span className={TextCaption}>{getText ? getText(ctx) : text}</span>
                 </div>
             </div>
         ),
