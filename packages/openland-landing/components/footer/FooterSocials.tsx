@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import LinkedinIcon from 'openland-icons/landing/linkedin.svg';
+import LinkedInIcon from 'openland-icons/landing/linkedin.svg';
 import FacebookIcon from 'openland-icons/landing/facebook.svg';
 import TwitterIcon from 'openland-icons/landing/twitter.svg';
 import AngelIcon from 'openland-icons/landing/angel.svg';
@@ -46,7 +46,7 @@ const FooterSocialsItem = (props: FooterSocialsItemProps) => (
 
 export const FooterSocials = () => (
     <div className={footerSocialsClass}>
-        <FooterSocialsItem path={LandingSocials.linkedin} icon={<LinkedinIcon />} />
+        <FooterSocialsItem path={LandingSocials.linkedin} icon={<LinkedInIcon />} />
         <FooterSocialsItem path={LandingSocials.facebook} icon={<FacebookIcon />} />
         <FooterSocialsItem path={LandingSocials.twitter} icon={<TwitterIcon />} />
         <FooterSocialsItem path={LandingSocials.angellist} icon={<AngelIcon />} />

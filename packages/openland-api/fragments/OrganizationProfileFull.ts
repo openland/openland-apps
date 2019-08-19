@@ -19,6 +19,7 @@ export const OrganizationProfileFull = gql`
         twitter
         facebook
         linkedin
+        instagram
 
         shortname
         private: alphaIsPrivate

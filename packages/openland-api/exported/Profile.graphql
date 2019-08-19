@@ -13,12 +13,13 @@ query Profile {
       name
     }
     joinedAt: alphaJoinedAt
-    linkedin: alphaLinkedin
     role: alphaRole
     email
     firstName
     id
+    instagram
     lastName
+    linkedin
     location
     phone
     photoRef {

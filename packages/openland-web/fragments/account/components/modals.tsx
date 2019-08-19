@@ -241,6 +241,7 @@ const SocialPlaceholder = ({
     const form = useForm();
 
     const linkedinField = useField('input.linkedin', org.linkedin || '', form);
+    const instagramField = useField('input.instagram', org.instagram || '', form);
     const twitterField = useField('input.twitter', org.twitter || '', form);
     const facebookField = useField('input.facebook', org.facebook || '', form);
 
@@ -250,6 +251,7 @@ const SocialPlaceholder = ({
                 organizationId: organizationId,
                 input: {
                     linkedin: linkedinField.value,
+                    instagram: instagramField.value,
                     twitter: twitterField.value,
                     facebook: facebookField.value,
                 },
@@ -268,6 +270,11 @@ const SocialPlaceholder = ({
                     <XInput
                         placeholder={TextOrganizationProfile.placeholderSocialModalLinkedIn}
                         {...linkedinField.input}
+                        size="large"
+                    />
+                    <XInput
+                        placeholder={TextOrganizationProfile.placeholderSocialModalInstagram}
+                        {...instagramField.input}
                         size="large"
                     />
                     <XInput

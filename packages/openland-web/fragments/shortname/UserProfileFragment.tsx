@@ -33,7 +33,7 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
     const isMobile = useLayout() === 'mobile';
     const client = useClient();
     const { user, conversation } = client.useUser({ userId: props.id }, { fetchPolicy: 'cache-and-network' });
-    const { id, isBot, name, photo, audienceSize, about, shortname, location, phone, email, linkedin,
+    const { id, isBot, name, photo, audienceSize, about, shortname, location, phone, email, linkedin, instagram,
         primaryOrganization, isYou, chatsWithBadge, website } = user;
 
     return (
@@ -75,6 +75,7 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
                 {!!phone && <UListField label="Phone" value={phone} />}
                 {!!email && <UListField label="Email" value={email} />}
                 {!!linkedin && <UListField label="LinkedIn" value={linkedin} />}
+                {!!instagram && <UListField label="Instagram" value={instagram} />}
                 {!!location && <UListField label="Location" value={location} />}
             </UListGroup>
             <UListGroup header="Organization">

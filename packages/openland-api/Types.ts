@@ -463,6 +463,7 @@ export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrgan
   online: boolean;
   lastSeen: string | null;
   linkedin: string | null;
+  instagram: string | null;
   twitter: string | null;
   shortname: string | null;
   audienceSize: number;
@@ -61596,6 +61597,7 @@ export interface UpdateOrganization_updateOrganizationProfile {
   twitter: string | null;
   facebook: string | null;
   linkedin: string | null;
+  instagram: string | null;
   shortname: string | null;
   private: boolean;
   featured: boolean;
@@ -61664,6 +61666,7 @@ export interface Organization_organization_members_user {
   online: boolean;
   lastSeen: string | null;
   linkedin: string | null;
+  instagram: string | null;
   twitter: string | null;
   shortname: string | null;
   audienceSize: number;
@@ -61703,6 +61706,7 @@ export interface Organization_organization_requests_user {
   online: boolean;
   lastSeen: string | null;
   linkedin: string | null;
+  instagram: string | null;
   twitter: string | null;
   shortname: string | null;
   audienceSize: number;
@@ -62721,6 +62725,7 @@ export interface Organization_organization {
   twitter: string | null;
   facebook: string | null;
   linkedin: string | null;
+  instagram: string | null;
   membersCount: number;
   members: Organization_organization_members[];
   requests: Organization_organization_requests[];
@@ -62770,6 +62775,7 @@ export interface OrganizationWithoutMembers_organization_requests_user {
   online: boolean;
   lastSeen: string | null;
   linkedin: string | null;
+  instagram: string | null;
   twitter: string | null;
   shortname: string | null;
   audienceSize: number;
@@ -63788,6 +63794,7 @@ export interface OrganizationWithoutMembers_organization {
   twitter: string | null;
   facebook: string | null;
   linkedin: string | null;
+  instagram: string | null;
   membersCount: number;
   requests: OrganizationWithoutMembers_organization_requests[];
   rooms: OrganizationWithoutMembers_organization_rooms[];
@@ -63836,6 +63843,7 @@ export interface OrganizationMembersShort_organization_requests_user {
   online: boolean;
   lastSeen: string | null;
   linkedin: string | null;
+  instagram: string | null;
   twitter: string | null;
   shortname: string | null;
   audienceSize: number;
@@ -64864,6 +64872,7 @@ export interface OrganizationMembersShort_organization {
   twitter: string | null;
   facebook: string | null;
   linkedin: string | null;
+  instagram: string | null;
   membersCount: number;
   requests: OrganizationMembersShort_organization_requests[];
   rooms: OrganizationMembersShort_organization_rooms[];
@@ -64913,6 +64922,7 @@ export interface OrganizationMembersShortPaginated_organization_requests_user {
   online: boolean;
   lastSeen: string | null;
   linkedin: string | null;
+  instagram: string | null;
   twitter: string | null;
   shortname: string | null;
   audienceSize: number;
@@ -65937,6 +65947,7 @@ export interface OrganizationMembersShortPaginated_organization_members_user {
   online: boolean;
   lastSeen: string | null;
   linkedin: string | null;
+  instagram: string | null;
   twitter: string | null;
   shortname: string | null;
   audienceSize: number;
@@ -65970,6 +65981,7 @@ export interface OrganizationMembersShortPaginated_organization {
   twitter: string | null;
   facebook: string | null;
   linkedin: string | null;
+  instagram: string | null;
   membersCount: number;
   requests: OrganizationMembersShortPaginated_organization_requests[];
   rooms: OrganizationMembersShortPaginated_organization_rooms[];
@@ -66075,6 +66087,7 @@ export interface OrganizationProfile_organizationProfile {
   twitter: string | null;
   facebook: string | null;
   linkedin: string | null;
+  instagram: string | null;
   shortname: string | null;
   private: boolean;
   featured: boolean;
@@ -67006,10 +67019,8 @@ export interface Profile_profile {
   about: string | null;
   location: string | null;
   role: string | null;
-  /**
-   * Deprecated
-   */
   linkedin: string | null;
+  instagram: string | null;
   primaryOrganization: Profile_profile_primaryOrganization | null;
   joinedAt: string | null;
   invitedBy: Profile_profile_invitedBy | null;
@@ -67060,10 +67071,8 @@ export interface ProfileUpdate_updateProfile {
   about: string | null;
   location: string | null;
   role: string | null;
-  /**
-   * Deprecated
-   */
   linkedin: string | null;
+  instagram: string | null;
   /**
    * Deprecated
    */
@@ -69276,6 +69285,7 @@ export interface User_user {
   online: boolean;
   lastSeen: string | null;
   linkedin: string | null;
+  instagram: string | null;
   twitter: string | null;
   shortname: string | null;
   audienceSize: number;
@@ -71618,6 +71628,7 @@ export interface OrganizationFull_members_user {
   online: boolean;
   lastSeen: string | null;
   linkedin: string | null;
+  instagram: string | null;
   twitter: string | null;
   shortname: string | null;
   audienceSize: number;
@@ -71657,6 +71668,7 @@ export interface OrganizationFull_requests_user {
   online: boolean;
   lastSeen: string | null;
   linkedin: string | null;
+  instagram: string | null;
   twitter: string | null;
   shortname: string | null;
   audienceSize: number;
@@ -72675,6 +72687,7 @@ export interface OrganizationFull {
   twitter: string | null;
   facebook: string | null;
   linkedin: string | null;
+  instagram: string | null;
   membersCount: number;
   members: OrganizationFull_members[];
   requests: OrganizationFull_requests[];
@@ -72736,6 +72749,7 @@ export interface OrganizationProfileFull {
   twitter: string | null;
   facebook: string | null;
   linkedin: string | null;
+  instagram: string | null;
   shortname: string | null;
   private: boolean;
   featured: boolean;
@@ -72833,6 +72847,7 @@ export interface OrganizationWithoutMembersFragment_requests_user {
   online: boolean;
   lastSeen: string | null;
   linkedin: string | null;
+  instagram: string | null;
   twitter: string | null;
   shortname: string | null;
   audienceSize: number;
@@ -73851,6 +73866,7 @@ export interface OrganizationWithoutMembersFragment {
   twitter: string | null;
   facebook: string | null;
   linkedin: string | null;
+  instagram: string | null;
   membersCount: number;
   requests: OrganizationWithoutMembersFragment_requests[];
   rooms: OrganizationWithoutMembersFragment_rooms[];
@@ -79154,6 +79170,7 @@ export interface UserFull {
   online: boolean;
   lastSeen: string | null;
   linkedin: string | null;
+  instagram: string | null;
   twitter: string | null;
   shortname: string | null;
   audienceSize: number;
@@ -88881,6 +88898,7 @@ export interface ProfileInput {
   about?: string | null;
   location?: string | null;
   linkedin?: string | null;
+  instagram?: string | null;
   twitter?: string | null;
   primaryOrganization?: string | null;
 }
@@ -88918,6 +88936,7 @@ export interface UpdateOrganizationProfileInput {
   twitter?: string | null;
   facebook?: string | null;
   linkedin?: string | null;
+  instagram?: string | null;
   location?: string | null;
   contacts?: ContactPersonInput[] | null;
   alphaPublished?: boolean | null;
@@ -88939,6 +88958,7 @@ export interface UpdateProfileInput {
   about?: string | null;
   location?: string | null;
   linkedin?: string | null;
+  instagram?: string | null;
   twitter?: string | null;
   primaryOrganization?: string | null;
   alphaRole?: string | null;

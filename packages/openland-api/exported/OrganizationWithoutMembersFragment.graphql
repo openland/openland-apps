@@ -20,6 +20,7 @@ fragment OrganizationWithoutMembersFragment on Organization {
   }
   facebook
   id
+  instagram
   isMine
   linkedin
   membersCount

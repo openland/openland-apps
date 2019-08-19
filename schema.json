@@ -4282,6 +4282,18 @@
             "deprecationReason": null
           },
           {
+            "name": "instagram",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "twitter",
             "description": null,
             "args": [],
@@ -6858,6 +6870,18 @@
             "deprecationReason": null
           },
           {
+            "name": "instagram",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "location",
             "description": null,
             "args": [],
@@ -8998,6 +9022,18 @@
           },
           {
             "name": "linkedin",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "instagram",
             "description": null,
             "args": [],
             "type": {
@@ -12399,6 +12435,18 @@
           },
           {
             "name": "linkedin",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "instagram",
             "description": null,
             "args": [],
             "type": {
@@ -23500,6 +23548,16 @@
             "defaultValue": null
           },
           {
+            "name": "instagram",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "twitter",
             "description": null,
             "type": {
@@ -23737,6 +23795,16 @@
           },
           {
             "name": "linkedin",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "instagram",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -24921,6 +24989,16 @@
           },
           {
             "name": "linkedin",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "instagram",
             "description": null,
             "type": {
               "kind": "SCALAR",

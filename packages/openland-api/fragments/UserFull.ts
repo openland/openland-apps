@@ -18,6 +18,7 @@ export const UserFull = gql`
         online
         lastSeen
         linkedin
+        instagram
         twitter
         shortname
         audienceSize

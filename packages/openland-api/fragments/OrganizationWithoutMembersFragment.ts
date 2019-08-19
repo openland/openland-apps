@@ -22,6 +22,7 @@ export const OrganizationWithoutMembersFragment = gql`
         twitter
         facebook
         linkedin
+        instagram
 
         membersCount
 

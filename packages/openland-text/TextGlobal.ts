@@ -21,7 +21,8 @@ export const TextGlobal = {
 
     socials: {
         website: 'Website',
-        linkedin: 'Linkedin',
+        linkedin: 'LinkedIn',
+        instagram: 'Instagram',
         phone: 'Phone',
         facebook: 'Facebook',
         twitter: 'Twitter',

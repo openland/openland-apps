@@ -160,6 +160,7 @@ const EditCommunityEntity = (props: {
     const twitterField = useField('input.twitter', org.twitter || '', form);
     const facebookField = useField('input.facebook', org.facebook || '', form);
     const linkedinField = useField('input.linkedin', org.linkedin || '', form);
+    const instagramField = useField('input.instagram', org.instagram || '', form);
     const typeField = useField<CommunityType>(
         'input.type',
         org.private ? CommunityType.COMMUNITY_PRIVATE : CommunityType.COMMUNITY_PUBLIC,
@@ -366,6 +367,9 @@ const EditCommunityEntity = (props: {
                                 <XView marginBottom={16}>
                                     <InputField field={linkedinField} title={'LinkedIn'} />
                                 </XView>
+                                <XView marginBottom={16}>
+                                    <InputField field={instagramField} title={'Instagram'} />
+                                </XView>
                             </XView>
                         )}
                     </XView>
@@ -457,6 +461,7 @@ const EditCommunityEntity = (props: {
                                     twitter: twitterField.value,
                                     facebook: facebookField.value,
                                     linkedin: linkedinField.value,
+                                    instagram: instagramField.value,
                                     alphaFeatured:
                                         featured !== org.featured ? featured : org.featured,
                                     alphaPublished:

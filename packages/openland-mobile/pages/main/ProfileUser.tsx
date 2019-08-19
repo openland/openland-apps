@@ -100,7 +100,8 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     {!!user.phone && <ZListItem title="Phone" text={'tel:' + user.phone} copy={true} />}
                     {!!user.website && <ZListItem title="Website" text={user.website} copy={true} />}
                     {!!user.location && <ZListItem title="Location" text={user.location} copy={true} />}
-                    {!!user.linkedin && <ZListItem title="Linkedin" text={user.linkedin} copy={true} />}
+                    {!!user.linkedin && <ZListItem title="LinkedIn" text={user.linkedin} copy={true} />}
+                    {!!user.instagram && <ZListItem title="Instagram" text={user.instagram} copy={true} />}
                 </ZListGroup>
 
                 {!!user.primaryOrganization && (
