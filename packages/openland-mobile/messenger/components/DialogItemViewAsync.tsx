@@ -14,8 +14,8 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { avatarSizes } from 'openland-mobile/components/ZAvatar';
 
 const ASCounter = (props: { value: number | string, muted?: boolean, theme: ThemeGlobal }) => (
-    <ASFlex borderRadius={10} backgroundColor={props.muted ? props.theme.foregroundQuaternary : props.theme.accentPrimary} height={20} minWidth={20} justifyContent="center" alignItems="center">
-        <ASFlex justifyContent="center" alignItems="center" marginLeft={6} marginRight={6}>
+    <ASFlex borderRadius={11} backgroundColor={props.muted ? props.theme.foregroundQuaternary : props.theme.accentPrimary} height={22} minWidth={22} justifyContent="center" alignItems="center">
+        <ASFlex justifyContent="center" alignItems="center" marginLeft={7} marginRight={7}>
             <ASText color={props.muted ? props.theme.foregroundContrast : props.theme.foregroundInverted} fontSize={13} textAlign="center" fontWeight={FontStyles.Weight.Bold}>{props.value}</ASText>
         </ASFlex>
     </ASFlex>
@@ -61,15 +61,15 @@ const DialogItemViewAsyncRender = React.memo<{ theme: ThemeGlobal, item: DialogD
             </ASFlex>
             <ASFlex marginLeft={paddingHorizontal} marginRight={paddingHorizontal} marginTop={8} marginBottom={8} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
                 <ASFlex height={24} alignItems="center">
-                    {isGroup && !isChannel && <ASFlex alignItems="center" marginRight={2} marginTop={2}><ASImage tintColor={theme.accentPositive} width={13} height={13} source={require('assets/ic-lock-13.png')} marginBottom={Platform.OS === 'android' ? 4 : 3} /></ASFlex>}
+                    {isGroup && !isChannel && <ASFlex alignItems="center" marginRight={2} marginTop={4}><ASImage opacity={0.84} tintColor={theme.accentPositive} width={16} height={16} source={require('assets/ic-lock-16.png')} marginBottom={Platform.OS === 'android' ? 4 : 3} /></ASFlex>}
                     {isChannel && <ASFlex alignItems="center" marginRight={2} marginTop={2}><ASImage key={theme.foregroundPrimary} tintColor={isGroup ? theme.accentPositive : theme.foregroundPrimary} width={13} height={13} source={require('assets/ic-channel-13.png')} /></ASFlex>}
-                    <ASText fontSize={17} fontWeight={FontStyles.Weight.Medium} color={isGroup ? theme.accentPositive : theme.foregroundPrimary} flexGrow={1} flexBasis={0}>{item.title}</ASText>
+                    <ASText fontSize={17} fontWeight={FontStyles.Weight.Medium} color={isGroup ? theme.accentPositive : theme.foregroundPrimary} flexGrow={1} flexBasis={0} letterSpacing={-0.41}>{item.title}</ASText>
                     {item.date !== undefined && <ASText fontSize={13} marginLeft={10} color={theme.foregroundTertiary}>{formatDate(item.date)}</ASText>}
                 </ASFlex>
                 {!props.compact && <ASFlex flexDirection="row" alignItems="stretch" height={40}>
                     <ASFlex flexGrow={1}>
                         {!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
-                            <ASText fontSize={15} lineHeight={20} height={40} color={theme.foregroundSecondary} numberOfLines={2}>
+                            <ASText fontSize={15} color={theme.foregroundSecondary} numberOfLines={2} letterSpacing={-0.24} lineHeight={20}>
                                 {item.showSenderName && `${item.sender}: `}
                                 {item.fallback}
                             </ASText>
@@ -79,7 +79,7 @@ const DialogItemViewAsyncRender = React.memo<{ theme: ThemeGlobal, item: DialogD
                         </ASFlex>}
                     </ASFlex>
                     {item.unread > 0 && (
-                        <ASFlex flexShrink={0} alignItems="center" marginLeft={10}>
+                        <ASFlex flexShrink={0} alignItems="center" marginLeft={9}>
                             {item.haveMention && <ASImage tintColor={theme.accentPrimary} marginRight={4} marginBottom={1} width={18} height={18} source={require('assets/ic-mention-18.png')} />}
                             <ASCounter value={item.unread} muted={item.isMuted} theme={theme} />
                         </ASFlex>
