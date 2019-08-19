@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { View, Text, Image, StyleSheet, TextStyle, TouchableHighlight } from 'react-native';
+import { View, Text, Image, StyleSheet, TextStyle, TouchableWithoutFeedback } from 'react-native';
 import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import Share from 'react-native-share';
@@ -80,19 +80,21 @@ class FilePreviewComponent extends React.PureComponent<PageProps & { theme: Them
         const config = this.props.router.params.config;
         const { theme } = this.props;
 
-        let content = <View backgroundColor={theme.backgroundPrimary} flexGrow={1}>
-            <TouchableHighlight underlayColor="#fff" onPress={this.handleOpen}>
-                <ASSafeAreaView style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                    <Image source={require('assets/img-file.png')} style={{ width: 50, height: 60, tintColor: theme.foregroundQuaternary }} />
-                    <Text style={[styles.name, { color: theme.foregroundPrimary }]}>{config.name}</Text>
-                    <Text style={[styles.size, { color: theme.foregroundSecondary }]}>{formatBytes(config.size)}</Text>
-                    <View height={46} justifyContent="center" marginTop={5}>
-                        {this.state.path && <ZRoundedButton title="Open" onPress={this.handleOpen} />}
-                        {!this.state.path && <ZCircularLoader visible={!this.state.path} progress={(this.state.completed ? 1 : (this.state.downloadState ? this.state.downloadState.progress || 0 : 0))} />}
-                    </View>
-                </ASSafeAreaView>
-            </TouchableHighlight>
-        </View>;
+        let content = (
+            <View backgroundColor={theme.backgroundPrimary} flexGrow={1}>
+                <TouchableWithoutFeedback onPress={this.handleOpen}>
+                    <ASSafeAreaView style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                        <Image source={require('assets/img-file.png')} style={{ width: 50, height: 60, tintColor: theme.foregroundQuaternary }} />
+                        <Text style={[styles.name, { color: theme.foregroundPrimary }]}>{config.name}</Text>
+                        <Text style={[styles.size, { color: theme.foregroundSecondary }]}>{formatBytes(config.size)}</Text>
+                        <View height={46} justifyContent="center" marginTop={5}>
+                            {this.state.path && <ZRoundedButton title="Open" onPress={this.handleOpen} />}
+                            {!this.state.path && <ZCircularLoader visible={!this.state.path} progress={(this.state.completed ? 1 : (this.state.downloadState ? this.state.downloadState.progress || 0 : 0))} />}
+                        </View>
+                    </ASSafeAreaView>
+                </TouchableWithoutFeedback>
+            </View>
+        );
 
         if (this.state.completed && this.state.path && this.isPdf) {
             content = <PdfPreview path={this.state.path} />;
