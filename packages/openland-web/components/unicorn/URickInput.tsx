@@ -15,7 +15,7 @@ const quillStyle = css`
     -webkit-overflow-scrolling: touch;
 
     .ql-container {
-        background-color: #F0F2F5;
+        background-color: var(--backgroundTertiary);
         border-radius: 8px;
         font-family: "-apple-system",BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
     }
@@ -26,14 +26,14 @@ const quillStyle = css`
         line-height: 24px;
     }
     .ql-editor.ql-blank::before {
-        color: #969AA3;
+        color: var(--foregroundTertiary);
         font-style: normal;
         left: 16px;
     }
 `;
 
 const mentionStyle = css`
-    color: #1885F2;
+    color: var(--accentPrimary);
     border-radius: 4px;
     padding-top: 1px;
     padding-bottom: 1px;
@@ -52,6 +52,7 @@ const emojiStyle = css`
    margin: 0 .05em 0 .1em;
    vertical-align: -0.1em;
 `;
+
 export type AllMention = { __typename: 'AllMention' };
 export type URickTextValue = (string | UserForMention | AllMention)[];
 

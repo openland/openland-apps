@@ -24,7 +24,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                 }
             },
             onDataSourceItemAdded: (item: T, index: number) => {
-                if (index < this._proxy.getSize()) {
+                if (index <= this._proxy.getSize()) {
                     this._proxy.addItem(item, index);
                 }
             },
