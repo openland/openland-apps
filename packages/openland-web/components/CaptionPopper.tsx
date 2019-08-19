@@ -5,8 +5,17 @@ import { TextCaption } from '../utils/TextStyles';
 import { UPopperController } from './unicorn/UPopper';
 
 const captionWrapper = css`
+    width: 280px;
     display: flex;
     justify-content: center;
+`;
+
+const leftAlignment = css`
+    justify-content: flex-end;
+`;
+
+const rightAlignment = css`
+    justify-content: flex-start;
 `;
 
 const captionContent = css`
@@ -70,15 +79,21 @@ export const useCaptionPopper = (opts: CaptionPopperConfig) => {
     const { text, getText, placement = 'top', scope } = opts;
     const [, show] = usePopper(
         { placement, hideOnLeave: true, borderRadius: 8, scope, useWrapper: false },
-        (ctx) => (
-            <div className={captionWrapper}>
+        ctx => (
+            <div
+                className={cx(
+                    captionWrapper,
+                    placement === 'left' && leftAlignment,
+                    placement === 'right' && rightAlignment,
+                )}
+            >
                 <div
                     className={cx(
                         captionContent,
-                        (placement === 'top') && topPlacementArrow,
-                        (placement === 'bottom') && bottomPlacementArrow,
-                        (placement === 'left') && leftPlacementArrow,
-                        (placement === 'right') && rightPlacementArrow,
+                        placement === 'top' && topPlacementArrow,
+                        placement === 'bottom' && bottomPlacementArrow,
+                        placement === 'left' && leftPlacementArrow,
+                        placement === 'right' && rightPlacementArrow,
                     )}
                 >
                     <span className={TextCaption}>{getText ? getText(ctx) : text}</span>
