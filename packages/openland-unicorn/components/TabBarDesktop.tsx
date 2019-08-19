@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { TabRouter } from './TabRouter';
 import AppearanceIcon from 'openland-icons/s/ic-appearance-24.svg';
 import SuperIcon from 'openland-icons/s/ic-settings-24.svg';
@@ -41,6 +41,14 @@ const counterStyle = css`
     padding-right: 2px;
 `;
 
+const counterDozenStyle = css`
+    right: 12px;
+`;
+
+const counterHundredStyle = css`
+    right: 10px;
+`;
+
 interface TabBarButtonProps {
     selected: boolean;
     onClick: () => void;
@@ -57,6 +65,12 @@ const TabBarButton = React.memo((props: TabBarButtonProps) => {
         placement: 'right',
     });
 
+    const counterClassName = cx(
+        counterStyle,
+        props.counters >= 10 && counterDozenStyle,
+        props.counters >= 100 && counterHundredStyle,
+    );
+
     return (
         <XView
             width={64}
@@ -70,7 +84,7 @@ const TabBarButton = React.memo((props: TabBarButtonProps) => {
         >
             {!props.selected && props.icon}
             {props.selected && props.iconActive}
-            {props.counters > 0 && <span className={counterStyle}>{props.counters}</span>}
+            {props.counters > 0 && <span className={counterClassName}>{props.counters}</span>}
         </XView>
     );
 });
