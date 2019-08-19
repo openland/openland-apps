@@ -17,15 +17,13 @@ export const ReactionsUsers = React.memo(React.forwardRef((props: ReactionsUsers
 
     React.useImperativeHandle(ref, () => ({
         update: (newUsers: ReactionUser[]) => {
-            setUsers(newUsers);
+            if (newUsers.length <= 0) {
+                props.ctx.hide();
+            } else {
+                setUsers(newUsers);
+            }
         },
     }));
-
-    React.useEffect(() => {
-        if (users.length <= 0) {
-            props.ctx.hide();
-        }
-    }, [users]);
 
     return (
         <>
