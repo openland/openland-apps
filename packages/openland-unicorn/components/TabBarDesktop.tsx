@@ -79,7 +79,6 @@ interface TabBarDesktopProps {
     selected: number;
     setSelected: (index: number) => void;
     router: TabRouter;
-    caption: string;
 }
 
 export const TabBarDesktop = React.memo((props: TabBarDesktopProps) => {
