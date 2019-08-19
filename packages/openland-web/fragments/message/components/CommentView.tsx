@@ -86,6 +86,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                     textSpans={textSpans}
                     attachments={attachments}
                     fallback={fallback}
+                    isOut={sender.id === messenger.user.id}
                 />
                 {!deleted && (
                     <CommentTools

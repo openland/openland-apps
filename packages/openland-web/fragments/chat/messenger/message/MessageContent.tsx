@@ -16,10 +16,11 @@ interface MessageContentProps {
     reply?: DataSourceWebMessageItem[];
     attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string })[];
     fallback?: string;
+    isOut?: boolean;
 }
 
 export const MessageContent = (props: MessageContentProps) => {
-    const { id, text, textSpans = [], edited, reply, attachments = [], fallback } = props;
+    const { id, text, textSpans = [], edited, reply, attachments = [], fallback, isOut = false } = props;
     const imageAttaches = attachments.filter(a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
     const documentsAttaches = attachments.filter(a => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
     const augmenationAttaches = attachments.filter(a => a.__typename === 'MessageRichAttachment') as FullMessage_GeneralMessage_attachments_MessageRichAttachment[] || [];
@@ -45,7 +46,7 @@ export const MessageContent = (props: MessageContentProps) => {
     });
 
     augmenationAttaches.map(attach => {
-        content.push(<RichAttachContent key={'msg-' + id + '-rich-' + attach.id} attach={attach} />);
+        content.push(<RichAttachContent key={'msg-' + id + '-rich-' + attach.id} attach={attach} canDelete={isOut} messageId={id} />);
     });
 
     if (!content.length) {

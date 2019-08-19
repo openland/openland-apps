@@ -43,6 +43,7 @@ export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessage
                     reply={q.replyWeb}
                     attachments={q.attachments}
                     fallback={q.fallback}
+                    isOut={q.isOut}
                 />
             ))}
         </div>

@@ -165,7 +165,8 @@ const messageContainerSelectedClass = css`
 
     .message-buttons-wrapper,
     .message-rich-wrapper,
-    .message-document-wrapper {
+    .message-document-wrapper,
+    .message-rich-delete {
         background-color: var(--backgroundPrimary);
     }
 
@@ -278,6 +279,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             reply={message.replyWeb}
             attachments={message.attachments}
             fallback={message.fallback}
+            isOut={message.isOut}
         />
     );
 

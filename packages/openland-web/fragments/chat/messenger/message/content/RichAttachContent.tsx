@@ -13,6 +13,10 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextCaption, TextTitle2, TextBody } from 'openland-web/utils/TextStyles';
 import { resolveLinkAction } from 'openland-web/utils/resolveLinkAction';
+import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
+import { useClient } from 'openland-web/utils/useClient';
+import DeleteIcon from 'openland-icons/s/ic-close-16.svg';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
 type messageRichAttach = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
 type unicornKeyboard = FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard;
@@ -22,10 +26,16 @@ const richWrapper = css`
     flex-direction: row;
     flex-shrink: 1;
     max-width: 680px;
-    background-color: #f0f2f5;
+    background-color: var(--backgroundTertiary);
     border-radius: 8px;
     overflow: hidden;
     margin-top: 8px;
+    position: relative;
+
+    &:hover .message-rich-delete {
+        opacity: 1;
+        transform: translateX(0);
+    }
 `;
 
 const richImageContainer = css`
@@ -79,17 +89,37 @@ const siteIconImageStyle = css`
 const linkHostnameContainer = css`
     display: flex;
     align-items: center;
-    color: #676d7a;
+    color: var(--foregroundSecondary);
 `;
 
 const titleStyle = css`
-    color: #171b1f;
+    color: var(--foregroundPrimary);
     margin-top: 2px;
 `;
 
 const textStyle = css`
-    color: #171b1f;
+    color: var(--foregroundPrimary);
     margin-top: 2px;
+`;
+
+const deleteButton = css`
+    opacity: 0;
+    transform: translateX(100%);
+    transition: 150ms opacity ease, 150ms transform ease;
+    width: 40px;
+    height: 40px;
+    background: var(--backgroundTertiary);
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover svg {
+        opacity: 0.64;
+    }
 `;
 
 // internal styles
@@ -240,7 +270,16 @@ const showImageModal = (src: string, width: number, height: number) => {
     ));
 };
 
-export const RichAttachContent = ({ attach }: { attach: messageRichAttach }) => {
+interface RichAttachContentProps {
+    attach: messageRichAttach;
+    canDelete: boolean;
+    messageId?: string;
+}
+
+export const RichAttachContent = (props: RichAttachContentProps) => {
+    const { attach, canDelete, messageId } = props;
+    const client = useClient();
+
     if (!attach.title && !attach.titleLink && !attach.subTitle && !attach.keyboard) {
         return null;
     }
@@ -248,6 +287,24 @@ export const RichAttachContent = ({ attach }: { attach: messageRichAttach }) => 
     if (isInternalLink(attach.titleLink || '') || attach.keyboard) {
         return <InternalComponent attach={attach} />;
     }
+
+    const handleDeleteClick = React.useCallback((e: React.MouseEvent) => {
+        e.stopPropagation();
+
+        if (messageId) {
+            const builder = new AlertBlanketBuilder;
+
+            builder.title('Remove attachment');
+            builder.message('Remove this attachment from the message?');
+            builder.action('Remove', async () => {
+                await client.mutateRoomDeleteUrlAugmentation({
+                    messageId
+                });
+            }, 'danger');
+            builder.show();
+        }
+    }, [messageId]);
+
     let img = null;
     let siteIcon = null;
     const text = attach.text && attach.text.length > 150 ? attach.text.slice(0, 130) + '...' : attach.text;
@@ -311,6 +368,12 @@ export const RichAttachContent = ({ attach }: { attach: messageRichAttach }) => 
                     </div>
                 )}
             </div>
+
+            {canDelete && !!messageId && (
+                <div className={cx(deleteButton, 'message-rich-delete')} onClick={handleDeleteClick}>
+                    <UIcon icon={<DeleteIcon />} />
+                </div>
+            )}
         </div>
     );
 };

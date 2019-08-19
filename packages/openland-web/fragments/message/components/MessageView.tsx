@@ -92,6 +92,7 @@ export const MessageView = React.memo((props: { message: Message_message_General
                     reply={reply}
                     attachments={message.attachments}
                     fallback={message.fallback}
+                    isOut={sender.id === messenger.user.id}
                 />
                 <div className={buttonsClass}>
                     <MessageReactions
