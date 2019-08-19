@@ -63,7 +63,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
         startLoader();
         try {
-            let remove = reactions && reactions.filter(userReaction => userReaction.user.id === engine.user.id && userReaction.reaction === r).length > 0;        
+            let remove = reactions && reactions.filter(userReaction => userReaction.user.id === engine.user.id && userReaction.reaction === r).length > 0;
             if (remove) {
                 await client.mutateCommentUnsetReaction({ commentId: comment.id, reaction: r });
             } else {
@@ -74,11 +74,11 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         } finally {
             stopLoader();
         }
-    }, [ comment, reactions ]);
+    }, [comment, reactions]);
 
     const handleReactionLongPress = React.useCallback(() => {
         showReactionsList(reactions);
-    }, [ comment, reactions ]);
+    }, [comment, reactions]);
 
     const handleDoublePress = React.useCallback(() => {
         const now = Date.now();
@@ -89,18 +89,11 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         } else {
             lastTap = now;
         }
-    }, [ comment, lastTap ]);
+    }, [comment, lastTap]);
 
     const branchIndent = (depth > 0) ? ((15 * depth) + 16) : 16;
-
-    let likesCount = reactions.length;
-    let myLike = false;
-
-    reactions.map(r => {
-        if (r.user.id === getMessenger().engine.user.id) {
-            myLike = true;
-        }
-    });
+    const likesCount = reactions.length;
+    const myLike = reactions.filter(r => r.user.id === messenger.engine.user.id).length > 0;
 
     let avatar = (
         <View marginRight={6}>
@@ -135,7 +128,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
                     {depth !== 0 && (
                         <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
-                            <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.foregroundPrimary, width: 16, height: 16, opacity: 0.7}} />
+                            <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.foregroundPrimary, width: 16, height: 16, opacity: 0.7 }} />
                         </TouchableWithoutFeedback>
                     )}
                 </View>

@@ -31,7 +31,7 @@ class RNTouchableNode: ASControlNode, UIGestureRecognizerDelegate {
     
     let longTap = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressHandler))
     longTap.delegate = self
-    longTap.minimumPressDuration = 0.6
+    longTap.minimumPressDuration = 0.5
     view.addGestureRecognizer(longTap)
     let singleTap = UITapGestureRecognizer(target: self, action: #selector(self.handler))
     singleTap.require(toFail: longTap)
@@ -56,7 +56,7 @@ class RNTouchableNode: ASControlNode, UIGestureRecognizerDelegate {
   }
   
   func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-    return true
+    return false
   }
   
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {

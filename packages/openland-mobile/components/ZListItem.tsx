@@ -171,7 +171,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                             />
                         )}
                     </View>
-                    {this.props.subTitle && <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} allowFontScaling={false} numberOfLines={1} ellipsizeMode={'tail'}>{this.props.subTitle}</Text>}
+                    {this.props.subTitle && <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }} allowFontScaling={false} numberOfLines={1} ellipsizeMode={'tail'}>{this.props.subTitle}</Text>}
                 </View>
                 {this.props.rightAvatar && <View paddingRight={16} alignSelf="center"><ZAvatar size="medium" placeholderKey={this.props.rightAvatar.key} placeholderTitle={this.props.rightAvatar.title} src={this.props.rightAvatar.photo} /></View>}
             </ZListItemBase >

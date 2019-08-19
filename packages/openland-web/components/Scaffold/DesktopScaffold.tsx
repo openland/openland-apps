@@ -4,7 +4,6 @@ import { XView, XImage } from 'react-mental';
 import { XScrollView } from 'openland-x/XScrollView';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XThemeDefault } from 'openland-x/XTheme';
-import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PromoBanner } from './PromoBanner';
 import { DesktopNavigatorItem } from './DesktopNavigatorItem';
@@ -52,18 +51,15 @@ const NavigationScrollerDiv = Glamorous(XScrollView)<{ mobile?: boolean }>(({ mo
     };
 });
 
-const NavigationScroller = XMemo<{ children: any }>(props => {
-    let theme = React.useContext(ThemeContext);
-    return (
-        <NavigationScrollerDiv
-            css={{
-                backgroundColor: theme.backgroundTertiary,
-            }}
-        >
-            {props.children}
-        </NavigationScrollerDiv>
-    );
-});
+const NavigationScroller = XMemo<{ children: any }>(props => (
+    <NavigationScrollerDiv
+        css={{
+            backgroundColor: 'var(--backgroundTertiary)',
+        }}
+    >
+        {props.children}
+    </NavigationScrollerDiv>
+));
 
 const Logo = () => (
     <XView

@@ -159,7 +159,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
         if (dialog.message) {
             if (isService) {
                 message = <span>{dialog.fallback}</span>;
-            } else if (!isService && sender) {
+            } else if (!isService) {
                 message = (
                     <span>
                         {sender}

@@ -8,6 +8,9 @@ import DeleteIcon from 'openland-icons/s/ic-delete-16.svg';
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { plural } from 'openland-y-utils/plural';
+import { extractReactionsUsers } from 'openland-engines/reactions/extractReactionsUsers';
+import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
+import { ReactionsUsersInstance, ReactionsUsers } from 'openland-web/components/ReactionsUsers';
 
 const wrapperClass = css`
     display: flex;
@@ -26,14 +29,27 @@ export const CommentTools = React.memo((props: CommentToolsProps) => {
     const messenger = React.useContext(MessengerContext);
     const { reactions, onReactionClick, onReplyClick, onDeleteClick } = props;
 
-    let myLike = false;
-    reactions.map(r => {
-        if (r.user.id === messenger.user.id) {
-            myLike = true;
-        }
-    });
-
+    const myLike = reactions.filter(r => r.user.id === messenger.user.id).length > 0;
     const likeLabel = myLike && reactions.length === 1 ? 'Liked' : (reactions.length > 0 ? plural(reactions.length, ['like', 'likes']) : 'Like');
+
+    // Sorry universe
+    const listRef = React.useRef<ReactionsUsersInstance>(null);
+    const usersRef = React.useRef(extractReactionsUsers(reactions, messenger.user.id));
+    usersRef.current = extractReactionsUsers(reactions, messenger.user.id);
+
+    React.useEffect(() => {
+        if (listRef && listRef.current) {
+            listRef.current.update(extractReactionsUsers(reactions, messenger.user.id));
+        }
+    }, [listRef, reactions]);
+
+    const [show] = useCaptionPopper({
+        getText: (ctx) => (
+            <ReactionsUsers initialUsers={usersRef.current} ref={listRef} ctx={ctx} />
+        ),
+        placement: 'bottom',
+        scope: 'reaction-item'
+    });
 
     return (
         <div className={wrapperClass}>
@@ -42,6 +58,7 @@ export const CommentTools = React.memo((props: CommentToolsProps) => {
                 label={likeLabel}
                 style={myLike ? 'danger' : 'default'}
                 onClick={onReactionClick}
+                onMouseEnter={reactions.length > 0 ? show : undefined}
             />
 
             <UIconLabeled icon={<ReplyIcon />} label="Reply" onClick={onReplyClick} />

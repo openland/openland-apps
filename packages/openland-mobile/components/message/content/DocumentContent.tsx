@@ -49,15 +49,15 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                     <View
                         width={40}
                         height={40}
-                        backgroundColor="rgba(185, 192, 202, 0.2)"
+                        backgroundColor={this.props.theme.overlayLight}
                         borderRadius={20}
                         marginRight={10}
                         alignItems="center"
                         justifyContent="center"
                     >
                         <Image
-                            source={downloaded ? require('assets/img-file.png') : require('assets/ic-file-download.png')}
-                            style={{ width: 16, height: 20 }}
+                            source={downloaded ? require('assets/ic-file-white-ios.png') : require('assets/ic-file-download-out.png')}
+                            style={{ width: 16, height: 20, tintColor: this.props.theme.foregroundContrast }}
                         />
                         {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && (
                             <View

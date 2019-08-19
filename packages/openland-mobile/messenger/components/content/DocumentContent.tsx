@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
@@ -76,16 +75,16 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                 <ASFlex
                     width={40}
                     height={40}
-                    backgroundColor={message.isOut ? 'rgba(0,0,0,0.15)' : 'rgba(185,192,202,0.20)'}
+                    backgroundColor={this.props.theme.overlayLight}
                     opacity={message.isOut ? 0.15 : 0.2}
                     borderRadius={20}
-
                     marginRight={10}
                     alignItems="center"
                     justifyContent="center"
                 >
                     <ASImage
-                        source={downloaded ? (message.isOut ? require('assets/ic-file-white-ios.png') : require('assets/img-file.png')) : (message.isOut ? require('assets/ic-file-download-out.png') : require('assets/ic-file-download.png'))}
+                        source={downloaded ? require('assets/ic-file-white-ios.png') : require('assets/ic-file-download-out.png')}
+                        tintColor={this.props.theme.foregroundContrast}
                         width={16}
                         height={20}
                     />

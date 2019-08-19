@@ -38,9 +38,20 @@ export const AsyncDateSeparator = React.memo<{ year: number, month: number, date
     } else {
         date = props.year + ', ' + months[props.month] + ' ' + props.date;
     }
+
     return (
         <ASFlex alignItems="center" justifyContent="center" backgroundColor={theme.backgroundPrimary}>
-            <ASText marginTop={10} color={theme.foregroundSecondary} fontSize={13} marginLeft={6} marginRight={6}>{date}</ASText>
+            <ASText
+                marginTop={7}
+                marginBottom={7}
+                color={theme.foregroundSecondary}
+                fontSize={13}
+                lineHeight={18}
+                marginLeft={36}
+                marginRight={36}
+            >
+                {date}
+            </ASText>
         </ASFlex>
     );
 });

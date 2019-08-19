@@ -19,6 +19,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { MessageReactionType } from 'openland-api/Types';
+import { SpanType } from 'openland-y-utils/spans/Span';
 
 const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMessageItem, theme: ThemeGlobal }>((props) => {
     const [selected, toggleSelect] = useMessageSelected(props.engine.messagesActionsStateEngine, props.message);
@@ -96,17 +97,18 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
             <AsyncMessageContentView theme={theme} key={'message-content'} message={props.message} onMediaPress={props.onMediaPress} onDocumentPress={props.onDocumentPress} onUserPress={props.onUserPress} onGroupPress={handleGroupPress} />;
     }
     if (!res) {
+        const unsupportedText = 'Message is not supported on your version of Openland.\nPlease update the app to view it.';
         res =
-            <AsyncBubbleView key={'message-unsupported'} isOut={props.message.isOut} attachTop={props.message.attachTop} attachBottom={props.message.attachBottom} colorIn={theme.bubbleIn} colorOut={theme.bubbleOut}>
+            <AsyncBubbleView key="message-unsupported" isOut={props.message.isOut} attachTop={props.message.attachTop} attachBottom={props.message.attachBottom} colorIn={theme.bubbleIn} colorOut={theme.bubbleOut}>
                 <ASFlex overlay={true} flexGrow={1} alignItems="center">
-                    <ASText marginLeft={Platform.OS === 'android' ? undefined : 20} fontSize={30}>{randomEmptyPlaceholderEmoji()}</ASText>
+                    <ASText marginLeft={Platform.OS === 'ios' ? 15 : 2} fontSize={30}>{randomEmptyPlaceholderEmoji()}</ASText>
                 </ASFlex>
-                <ASFlex flexDirection="column" marginLeft={Platform.OS === 'android' ? 50 : 40}>
+                <ASFlex flexDirection="column" marginLeft={Platform.OS === 'ios' ? 45 : 50}>
                     <TextContent
                         emojiOnly={false}
                         theme={theme}
                         fontStyle="italic"
-                        message={{ ...props.message, spans: undefined, attachments: [], text: 'Message is not supported on your version of Openland.\nPlease update the app to view it.' }}
+                        message={{ ...props.message, spans: undefined, textSpans: [{ type: SpanType.italic, offset: 0, length: unsupportedText.length, childrens: [{ type: SpanType.text, text: unsupportedText, offset: 0, length: unsupportedText.length }] }], attachments: [], text: unsupportedText }}
                         onUserPress={props.onUserPress}
                         onGroupPress={props.onGroupPress}
                         onDocumentPress={props.onDocumentPress}
@@ -117,13 +119,12 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     }
 
     return (
-        <ASFlex flexDirection="column" alignItems="stretch" onPress={handleDoublePress} onLongPress={handleLongPress} backgroundColor={!props.message.isOut ? theme.backgroundPrimary : undefined}>
-
-            <ASFlex key="margin-top" backgroundColor={theme.backgroundPrimary} height={(props.message.attachTop ? 2 : 14) + 2} marginTop={-2} />
+        <ASFlex flexDirection="column" alignItems="stretch" onPress={handleDoublePress} onLongPress={handleLongPress}>
+            <ASFlex key="margin-top" height={props.message.attachTop ? 2 : 6} />
 
             <ASFlex flexDirection="column" flexGrow={1} alignItems="stretch">
                 <ASFlex flexDirection="row" flexGrow={1} alignItems="stretch">
-                    <ASFlex key="margin-left-1" renderModes={props.message.isOut ? undefined : rm({ 'selection': { width: (props.message.attachBottom ? 44 : 0) + 42 } })} backgroundColor={theme.backgroundPrimary} width={(props.message.attachBottom ? 44 : 0) + 12} />
+                    <ASFlex key="margin-left" renderModes={props.message.isOut ? undefined : rm({ 'selection': { width: (props.message.attachBottom ? 44 : 0) + 42 } })} width={(props.message.attachBottom ? 44 : 0) + 12} />
 
                     {!props.message.isOut && !props.message.attachBottom &&
                         <ASFlex marginRight={12} onPress={() => handleUserPress(props.message.senderId)} alignItems="flex-end">
@@ -136,21 +137,19 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                         </ASFlex>
                     }
 
-                    {props.message.isOut && <ASFlex backgroundColor={theme.backgroundPrimary} flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" />}
+                    {props.message.isOut && <ASFlex flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" />}
 
                     {res}
 
-                    <ASFlex key="margin-right" backgroundColor={theme.backgroundPrimary} width={12} />
+                    <ASFlex key="margin-right" width={12} />
                 </ASFlex>
 
                 {!props.message.isSending && (<AsyncMessageReactionsView theme={theme} message={props.message} isChannel={props.engine.isChannel} onCommentsPress={handleCommentsPress} onReactionsPress={handleReactionsPress} />)}
-
-                <ASFlex backgroundColor={theme.backgroundPrimary} height={50} marginBottom={-50} />
             </ASFlex>
 
-            <ASFlex key="margin-bottom" backgroundColor={theme.backgroundPrimary} height={4} marginBottom={-2} />
-            <SelectCheckbox engine={props.engine} message={props.message} theme={theme} />
+            <ASFlex key="margin-bottom" height={props.message.attachBottom ? 2 : 6} />
 
+            <SelectCheckbox engine={props.engine} message={props.message} theme={theme} />
         </ASFlex>
     );
 });

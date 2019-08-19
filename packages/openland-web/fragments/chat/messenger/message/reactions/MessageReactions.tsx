@@ -5,8 +5,9 @@ import { css, cx } from 'linaria';
 import { TextDensed } from 'openland-web/utils/TextStyles';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
-import { ReactionReducedEmojify, ReactionUser, ReactionUserEmojify } from 'openland-engines/reactions/types';
+import { ReactionReducedEmojify } from 'openland-engines/reactions/types';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
+import { ReactionsUsersInstance, ReactionsUsers } from 'openland-web/components/ReactionsUsers';
 
 export const reactionImage = (r: MessageReactionType) => `https://cdn.openland.com/shared/reactions/${r}.png`;
 
@@ -50,36 +51,11 @@ interface ReactionItemProps {
     onClick: (reaction: MessageReactionType) => void;
 }
 
-interface UsersListInstance {
-    update: (newUsers: ReactionUserEmojify[]) => void;
-}
-
-// Sorry universe
-const UsersList = React.memo(React.forwardRef((props: { initialUsers: ReactionUserEmojify[] }, ref: React.Ref<UsersListInstance>) => {
-    const [users, setUsers] = React.useState<ReactionUserEmojify[]>(props.initialUsers);
-
-    React.useImperativeHandle(ref, () => ({
-        update: (newUsers: ReactionUser[]) => {
-            setUsers(newUsers);
-        },
-    }));
-
-    return (
-        <>
-            {users.map((u, i) =>
-                <div key={`user-${u.name}-${i}`}>
-                    {u.name}
-                </div>
-            )}
-        </>
-    );
-}));
-
 const ReactionItem = React.memo((props: ReactionItemProps) => {
     const { value, onClick } = props;
 
     // Sorry universe
-    const listRef = React.useRef<UsersListInstance>(null);
+    const listRef = React.useRef<ReactionsUsersInstance>(null);
     const usersRef = React.useRef(value.users);
     usersRef.current = value.users;
 
@@ -90,8 +66,8 @@ const ReactionItem = React.memo((props: ReactionItemProps) => {
     }, [listRef, value.users]);
 
     const [show] = useCaptionPopper({
-        getText: () => (
-            <UsersList initialUsers={usersRef.current} ref={listRef} />
+        getText: (ctx) => (
+            <ReactionsUsers initialUsers={usersRef.current} ref={listRef} ctx={ctx} />
         ),
         placement: 'bottom',
         scope: 'reaction-item'

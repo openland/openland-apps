@@ -160,7 +160,7 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
                 )}
                 {loading && (
                     <View position="absolute" alignItems="center" justifyContent="center" width={size} height={size} borderRadius={size / 2} backgroundColor={theme.overlayLight}>
-                        <LoaderSpinner />
+                        <LoaderSpinner color={theme.foregroundContrast} />
                     </View>
                 )}
             </View>

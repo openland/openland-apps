@@ -166,7 +166,9 @@ export class MobileMessenger {
                             this.handleReactionSetUnset(message, r);
                         }}
                     >
-                        <Image source={reactionsImagesMap[r]} />
+                        <View style={{ width: 52, height: 52, alignItems: 'center', justifyContent: 'center' }}>
+                            <Image source={reactionsImagesMap[r]} style={{ width: 36, height: 36 }} />
+                        </View>
                     </TouchableOpacity>
                 ))}
             </View>
