@@ -70,7 +70,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         res = <UnsupportedContent message={message} theme={theme} />;
     }
 
-    const showReactions = (engine.isChannel || commentsCount > 0) || reactions.length > 0;
+    const showReactions = ((engine.isChannel || commentsCount > 0) || reactions.length > 0) && !message.isSending;
     const marginTop = attachTop ? 2 : 6;
     const marginBottom = attachBottom ? (showReactions ? 10 : 2) : 6;
 
@@ -93,7 +93,11 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                         </ASFlex>
                     }
 
-                    {isOut && <ASFlex flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" />}
+                    {isOut && (
+                        <ASFlex flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" alignItems="flex-end" justifyContent="flex-end">
+                            {/* <ASFlex backgroundColor="blue" width={16} height={16} marginRight={12} marginBottom={10} /> */}
+                        </ASFlex>
+                    )}
 
                     {res}
 
