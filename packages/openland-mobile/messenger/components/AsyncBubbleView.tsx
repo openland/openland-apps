@@ -5,9 +5,9 @@ import { Image, Platform, Dimensions } from 'react-native';
 export const bubbleMaxWidth = Math.min(Dimensions.get('window').width - 74 - 12, 360);
 export const bubbleMaxWidthIncoming = Math.min(Dimensions.get('window').width - 56 - 36, 360);
 
-export let contentInsetsHorizontal = 13;
-export let contentInsetsTop = 8;
-export let contentInsetsBottom = 9;
+export const contentInsetsHorizontal = 12;
+export const contentInsetsTop = 7;
+export const contentInsetsBottom = 7;
 
 interface AsyncBubbleViewProps {
     isOut: boolean;
@@ -37,12 +37,12 @@ export class AsyncBubbleView extends React.PureComponent<AsyncBubbleViewProps> {
                     bubbleRes === 'incoming-middle' ? require('assets/bubbles/incoming_middle.png') :
                         bubbleRes === 'incoming-bottom' ? require('assets/bubbles/incoming_bottom.png') :
 
-                                bubbleRes === 'outgoing' ? require('assets/bubbles/outgoing.png') :
-                                    bubbleRes === 'outgoing-top' ? require('assets/bubbles/outgoing_top.png') :
-                                        bubbleRes === 'outgoing-middle' ? require('assets/bubbles/outgoing_middle.png') :
-                                                bubbleRes === 'outgoing-bottom' ? require('assets/bubbles/outgoing_bottom.png') :
+                            bubbleRes === 'outgoing' ? require('assets/bubbles/outgoing.png') :
+                                bubbleRes === 'outgoing-top' ? require('assets/bubbles/outgoing_top.png') :
+                                    bubbleRes === 'outgoing-middle' ? require('assets/bubbles/outgoing_middle.png') :
+                                        bubbleRes === 'outgoing-bottom' ? require('assets/bubbles/outgoing_bottom.png') :
 
-                                                    require('assets/bubbles/incoming.png');
+                                            require('assets/bubbles/incoming.png');
 
         let capInsets: { left: number, right: number, top: number, bottom: number };
         if (Platform.OS === 'ios') {
@@ -52,12 +52,10 @@ export class AsyncBubbleView extends React.PureComponent<AsyncBubbleViewProps> {
         }
         let contentInsets: { left: number, right: number, top: number, bottom: number };
 
-        let insetsTop = 8;
-        let insetsBottom = 9;
         if (isOut) {
-            contentInsets = { left: contentInsetsHorizontal, right: contentInsetsHorizontal, top: insetsTop, bottom: insetsBottom };
+            contentInsets = { left: contentInsetsHorizontal, right: contentInsetsHorizontal, top: contentInsetsTop, bottom: contentInsetsBottom };
         } else {
-            contentInsets = { left: contentInsetsHorizontal, right: contentInsetsHorizontal, top: insetsTop, bottom: insetsBottom };
+            contentInsets = { left: contentInsetsHorizontal, right: contentInsetsHorizontal, top: contentInsetsTop, bottom: contentInsetsBottom };
         }
 
         let resolved = Image.resolveAssetSource(image);

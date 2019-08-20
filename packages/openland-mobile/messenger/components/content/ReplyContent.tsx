@@ -75,7 +75,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                                 width={width}
                                                 insetLeft={8}
                                                 insetRight={contentInsetsHorizontal}
-                                                insetTop={4}
+                                                insetVertical={4}
 
                                                 onUserPress={this.props.onUserPress}
                                                 onGroupPress={this.props.onGroupPress}
@@ -116,7 +116,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                                 width={width}
                                                 insetLeft={8}
                                                 insetRight={contentInsetsHorizontal}
-                                                insetTop={4}
+                                                insetVertical={4}
 
                                                 onUserPress={this.props.onUserPress}
                                                 onGroupPress={this.props.onGroupPress}

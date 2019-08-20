@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { ASText } from 'react-native-async-view/ASText';
 import { ASFlex } from 'react-native-async-view/ASFlex';
-import { ASImage } from 'react-native-async-view/ASImage';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { formatTime } from 'openland-y-utils/formatTime';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { MetaInfoIndicator } from './MetaInfoIndicator';
+import { Platform } from 'react-native';
 
 interface EmojiOnlyContentProps {
     theme: ThemeGlobal;
@@ -12,48 +11,21 @@ interface EmojiOnlyContentProps {
     content: any[];
 }
 
+// Sorry universe
+const baselineCompensation = Platform.OS === 'ios' ? 4 : 0;
+
 export const EmojiOnlyContent = React.memo<EmojiOnlyContentProps>((props) => {
     const { theme, message, content } = props;
+    const { isOut } = message;
 
     return (
         <ASFlex backgroundColor={theme.backgroundPrimary}>
-            <ASFlex flexDirection="column" alignItems="stretch" marginRight={message.isOut ? 6 : undefined}>
-                {content}
-
-                <ASFlex
-                    alignItems="flex-end"
-                    justifyContent={message.isOut ? 'flex-end' : 'flex-start'}
-                    marginLeft={!message.isOut ? 2 : undefined}
-                >
-                    <ASFlex
-                        flexDirection="row"
-                        height={14}
-                        backgroundColor={theme.backgroundTertiary}
-                        borderRadius={4}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        {message.isEdited && (
-                            <ASFlex width={10} height={10} marginTop={1} marginLeft={5} justifyContent="flex-start" alignItems="center">
-                                <ASImage source={require('assets/ic-edited-10.png')} width={10} height={10} tintColor={theme.foregroundTertiary} opacity={message.isOut ? 0.7 : 0.5} />
-                            </ASFlex>
-                        )}
-                        <ASText
-                            marginLeft={3}
-                            marginRight={!message.isOut ? 3 : 0}
-                            fontSize={11}
-                            color={theme.foregroundTertiary}
-                        >
-                            {formatTime(message.date)}
-                        </ASText>
-                        {message.isOut && (
-                            <ASFlex width={13} height={13} marginLeft={3} marginTop={1} marginRight={0} justifyContent="flex-start" alignItems="center">
-                                {message.isSending && <ASImage source={require('assets/ic-status-sending-10.png')} width={10} height={10} tintColor={theme.foregroundTertiary} opacity={0.7} />}
-                                {!message.isSending && <ASImage source={require('assets/ic-status-sent-10.png')} width={10} height={10} tintColor={theme.foregroundTertiary} opacity={0.7} />}
-                            </ASFlex>
-                        )}
-                    </ASFlex>
+            <ASFlex flexDirection="row" alignItems="stretch">
+                {isOut && <MetaInfoIndicator type="emoji" message={message} theme={theme} />}
+                <ASFlex marginBottom={-baselineCompensation} marginTop={baselineCompensation}>
+                    {content}
                 </ASFlex>
+                {!isOut && <MetaInfoIndicator type="emoji" message={message} theme={theme} />}
             </ASFlex>
         </ASFlex>
     );

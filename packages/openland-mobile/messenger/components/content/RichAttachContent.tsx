@@ -4,7 +4,7 @@ import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { Platform, Linking, PixelRatio } from 'react-native';
-import { paddedTextOut, paddedText } from '../AsyncMessageContentView';
+import { paddedText } from '../AsyncMessageContentView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
@@ -201,7 +201,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             onPress={this.onTitleClick}
                         >
                             {this.props.attach.title}
-                            {this.props.padded && !subTitle && (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited))}
+                            {this.props.padded && !subTitle && paddedText(message.isEdited)}
                         </ASText>}
                         {!!subTitle && <ASText
                             marginTop={(Platform.OS === 'android' ? -4 : -1)}
@@ -214,7 +214,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             fontWeight={FontStyles.Weight.Regular}
                         >
                             {subTitle}
-                            {this.props.padded && (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited))}
+                            {this.props.padded && paddedText(message.isEdited)}
                         </ASText>}
                     </ASFlex>
                 </ASFlex>
@@ -231,7 +231,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                 >
                     {!subTitle && this.imageCompact && imgLayout && paddedTextPrfix}
                     {text}
-                    {this.props.padded && (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited))}
+                    {this.props.padded && paddedText(message.isEdited)}
                 </ASText>}
 
                 {!!keyboard && keyboard.buttons.map((line, i) =>

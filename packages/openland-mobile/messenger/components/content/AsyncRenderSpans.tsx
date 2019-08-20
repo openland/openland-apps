@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASText, ASTextProps } from 'react-native-async-view/ASText';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
-import { renderPreprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
+import { renderPreprocessedText, paddedText } from '../AsyncMessageContentView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { getSpansSlices } from 'openland-y-utils/spans/utils';
 import { Span } from 'openland-y-utils/spans/Span';
@@ -38,7 +38,7 @@ interface RenderSpansProps {
     width?: number;
     insetLeft: number;
     insetRight: number;
-    insetTop: number;
+    insetVertical: number;
     textAlign?: 'left' | 'right' | 'center';
     emojiOnly?: boolean;
 
@@ -69,7 +69,7 @@ const letterSpacing = {
 
 export class RenderSpans extends React.PureComponent<RenderSpansProps> {
     render() {
-        const { emojiOnly, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetTop, onUserPress, onGroupPress } = this.props;
+        const { emojiOnly, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetVertical, onUserPress, onGroupPress } = this.props;
         const mainTextColor = emojiOnly ? theme.foregroundPrimary : (message.isOut ? theme.foregroundContrast : theme.foregroundPrimary);
         const content = getSpansSlices(spans, padded);
 
@@ -85,14 +85,14 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                 fontSize={fontSize[c.type]}
                                 lineHeight={lineHeight[c.type]}
                                 letterSpacing={letterSpacing[c.type]}
-                                marginTop={(c.type === 'loud' && i !== 0) ? 8 : undefined}
-                                marginBottom={(c.type !== 'emoji' && i !== content.length - 1) ? 8 : undefined}
+                                marginTop={(c.type === 'loud' && i !== 0) ? insetVertical : undefined}
+                                marginBottom={(c.type !== 'emoji' && i !== content.length - 1) ? insetVertical : undefined}
                                 textAlign={textAlign}
                                 maxWidth={!width ? maxWidth : undefined}
                                 width={width}
                             >
                                 {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
-                                {c.padded && (message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited))}
+                                {c.padded && paddedText(message.isEdited)}
                             </TextWrapper>
                         )}
                         {c.type === 'code_block' && (
@@ -100,8 +100,8 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                 key={c.type + '-' + i}
                                 marginLeft={-insetLeft}
                                 marginRight={-insetRight}
-                                marginTop={i === 0 ? insetTop : undefined}
-                                marginBottom={(!(content[i + 1] && content[i + 1].type === 'padded')) ? 8 : undefined}
+                                marginTop={i === 0 ? insetVertical : undefined}
+                                marginBottom={(!(content[i + 1] && content[i + 1].type === 'padded')) ? insetVertical : undefined}
                                 backgroundColor={(message.isOut && !message.isService) ? theme.codeSpan.backgroundOut : theme.codeSpan.background}
                             >
                                 <ASFlex marginLeft={insetLeft} marginRight={insetRight} marginTop={5} marginBottom={5}>

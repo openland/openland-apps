@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
-import { paddedTextOut, paddedText } from '../AsyncMessageContentView';
+import { paddedText } from '../AsyncMessageContentView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
@@ -116,7 +116,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                         lineHeight={18}
                         numberOfLines={1}
                     >
-                        {this.props.attach!!.fileMetadata.name}{message.isOut ? paddedTextOut(message.isEdited) : paddedText(message.isEdited)}
+                        {this.props.attach!!.fileMetadata.name}{paddedText(message.isEdited)}
                     </ASText>
                     <ASText
                         color={message.isOut ? '#ffffff' : '#8a8a8f'}

@@ -21,9 +21,10 @@ import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { EmojiOnlyContent } from './content/EmojiOnlyContent';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { MetaInfoIndicator } from './content/MetaInfoIndicator';
+import { SenderContent } from './content/SenderContent';
 
-export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 14 : 11, ios: edited ? 14 : 11 }))}</ASText>;
-export const paddedTextOut = (edited?: boolean) => <ASText key="padded-text-out" fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 17 : 14, ios: edited ? 17 : 14 }))}</ASText>;
+export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={17}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 18 : 14, ios: edited ? 15 : 12 }))}</ASText>;
 
 interface AsyncMessageTextViewProps {
     theme: ThemeGlobal;
@@ -81,16 +82,18 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
 };
 
 export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number, compensateBubble?: boolean) => {
-    // todo: handle multiple attaches
-    let attaches = (props.message.attachments || []);
-    let fileAttach = attaches.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
-    let augmenationAttach = attaches.filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
-    let hasImage = !!(fileAttach && fileAttach.fileMetadata.isImage);
-    let hasReply = !!(props.message.reply && props.message.reply.length > 0);
-    let hasText = !!(props.message.text);
-    let hasUrlAug = !!augmenationAttach;
+    const { theme, message, onUserPress, onGroupPress, onMediaPress, onDocumentPress } = props;
 
-    let isEmojiOnly = props.message.textSpans.length === 1 && props.message.textSpans[0].type === 'emoji' && (props.message.attachments || []).length === 0 && (props.message.reply || []).length === 0;
+    // todo: handle multiple attaches
+    const attaches = (message.attachments || []);
+    const fileAttach = attaches.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+    const augmenationAttach = attaches.filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
+    const hasImage = !!(fileAttach && fileAttach.fileMetadata.isImage);
+    const hasReply = !!(message.reply && message.reply.length > 0);
+    const hasText = !!(message.text);
+    const hasUrlAug = !!augmenationAttach;
+
+    const isEmojiOnly = message.textSpans.length === 1 && message.textSpans[0].type === 'emoji' && (message.attachments || []).length === 0 && (message.reply || []).length === 0;
 
     let imageLayout;
     if (hasImage) {
@@ -100,31 +103,31 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     if (augmenationAttach && augmenationAttach.image && augmenationAttach.image.metadata) {
         richAttachImageLayout = layoutImage(augmenationAttach.image.metadata, maxSize);
     }
-    let richAttachIsCompact = richAttachImageShouldBeCompact(augmenationAttach);
+    const richAttachIsCompact = richAttachImageShouldBeCompact(augmenationAttach);
 
-    let hasDocument = !!(fileAttach && !hasImage);
-    let imageOnly = hasImage && !(hasReply || hasText || hasUrlAug);
+    const hasDocument = !!(fileAttach && !hasImage);
+    const imageOnly = hasImage && !(hasReply || hasText || hasUrlAug);
 
     let topContent = [];
 
-    let textSize = !compensateBubble ? maxSize : undefined;
+    const textSize = !compensateBubble ? maxSize : undefined;
 
     if (hasReply) {
-        topContent.push(<ReplyContent key="msg-reply" compensateBubble={compensateBubble} width={textSize} theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
+        topContent.push(<ReplyContent key="msg-reply" compensateBubble={compensateBubble} width={textSize} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onMediaPress={onMediaPress} />);
     }
     if (hasImage && imageLayout) {
-        topContent.push(<MediaContent key="msg-media" theme={props.theme} compensateBubble={compensateBubble} layout={imageLayout} message={props.message} attach={fileAttach!} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} hasTopContent={hasReply} hasBottomContent={hasText || hasUrlAug} />);
+        topContent.push(<MediaContent key="msg-media" theme={theme} compensateBubble={compensateBubble} layout={imageLayout} message={message} attach={fileAttach!} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} hasTopContent={hasReply} hasBottomContent={hasText || hasUrlAug} />);
     }
     if (hasText) {
-        topContent.push(<TextContent key="msg-text" compensateBubble={compensateBubble} width={textSize} emojiOnly={isEmojiOnly} theme={props.theme} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onGroupPress={props.onGroupPress} onMediaPress={props.onMediaPress} />);
+        topContent.push(<TextContent key="msg-text" compensateBubble={compensateBubble} width={textSize} emojiOnly={isEmojiOnly} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onMediaPress={onMediaPress} />);
     }
     if (hasDocument) {
-        topContent.push(<DocumentContent key="msg-document" theme={props.theme} compensateBubble={compensateBubble} attach={fileAttach!} message={props.message} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
+        topContent.push(<DocumentContent key="msg-document" theme={theme} compensateBubble={compensateBubble} attach={fileAttach!} message={message} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} />);
     }
 
     let bottomContent: any[] = [];
     if (hasUrlAug) {
-        bottomContent.push(<RichAttachContent key="msg-rich" theme={props.theme} padded={!topContent.length} compensateBubble={compensateBubble} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />);
+        bottomContent.push(<RichAttachContent key="msg-rich" theme={theme} padded={!topContent.length} compensateBubble={compensateBubble} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} />);
     }
 
     if (!topContent.length && bottomContent.length) {
@@ -132,25 +135,14 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         bottomContent = [];
     }
 
-    if (!isEmojiOnly && !props.message.isOut && !props.message.attachTop && !hasImage && !hasDocument && compensateBubble) {
+    if (!isEmojiOnly && !message.isOut && !message.attachTop && !hasImage && !hasDocument && compensateBubble) {
         topContent.unshift(
-            <ASFlex
-                marginBottom={2}
-                onPress={() => props.onUserPress(props.message.senderId)}
-                key={'name-' + props.theme.accentPrimary}
-                alignItems="center"
-            >
-                {!!props.message.senderBadge && (
-                    <ASImage marginRight={3} source={require('assets/ic-featured-12.png')} width={12} height={12} tintColor={props.theme.foregroundPrimary} />
-                )}
-                <ASText
-                    fontSize={15}
-                    fontWeight={FontStyles.Weight.Medium}
-                    color={props.theme.foregroundPrimary}
-                >
-                    {props.message.senderName}
-                </ASText>
-            </ASFlex>
+            <SenderContent
+                key={'name-' + theme.accentPrimary}
+                message={message}
+                theme={theme}
+                onUserPress={onUserPress}
+            />
         );
     }
 
@@ -171,84 +163,38 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
 };
 
 export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((props) => {
-    let theme = props.theme;
-
-    let { hasDocument,
+    const { theme, message } = props;
+    const { isOut, attachTop, attachBottom } = message;
+    const {
+        hasDocument,
         hasImage,
-        // hasReply,
         hasText,
-        // hasUrlAug,
         imageOnly,
         topContent,
         imageLayout,
         richAttachImageLayout,
         bottomContent,
-        // richAttachIsCompact,
         isEmojiOnly
-    } = extractContent(props, (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming), true);
-    // let width = imageLayout ? imageLayout.previewWidth : (richAttachImageLayout && !richAttachIsCompact) ? richAttachImageLayout.previewWidth : undefined;
-    let fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);
+    } = extractContent(props, (isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming), true);
 
     if (isEmojiOnly) {
-        return (
-            <EmojiOnlyContent
-                theme={theme}
-                content={topContent}
-                message={props.message}
-            />
-        );
+        return <EmojiOnlyContent theme={theme} content={topContent} message={message} />;
     }
 
+    const fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);
     const isImageBottom = hasImage && !hasText && !hasDocument;
 
     return (
-        <ASFlex flexDirection="column" alignItems="stretch" marginLeft={props.message.isOut ? -4 : 0}>
-            <AsyncBubbleView width={fixedSize ? (props.message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} isOut={props.message.isOut} attachTop={props.message.attachTop} attachBottom={props.message.attachBottom} colorIn={theme.bubbleIn} colorOut={theme.bubbleOut}>
+        <ASFlex flexDirection="column" alignItems="stretch">
+            <AsyncBubbleView width={fixedSize ? (isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} isOut={isOut} attachTop={attachTop} attachBottom={attachBottom} colorIn={theme.bubbleIn} colorOut={theme.bubbleOut}>
                 <ASFlex flexDirection="column" alignItems="stretch">
                     {topContent}
 
-                    <ASFlex
-                        overlay={true}
-                        alignItems="flex-end"
-                        justifyContent="flex-end"
-                        marginRight={-6}
-                        marginBottom={-2}
-                    >
-                        <ASFlex
-                            flexDirection="row"
-                            height={14}
-                            backgroundColor={isImageBottom ? 'rgba(0,0,0,0.3)' : undefined}
-                            borderRadius={4}
-                            alignItems="center"
-                            justifyContent="center"
-                        >
-                            {props.message.isEdited && (
-                                <ASFlex width={10} height={10} marginTop={1} justifyContent="flex-start" alignItems="center">
-                                    <ASImage source={require('assets/ic-edited-10.png')} width={10} height={10} tintColor={props.message.isOut ? props.theme.foregroundContrast : props.theme.foregroundPrimary} opacity={props.message.isOut ? 0.7 : 0.5} />
-                                </ASFlex>
-                            )}
-                            <ASText
-                                marginLeft={3}
-                                marginRight={!props.message.isOut ? 3 : 0}
-                                fontSize={11}
-                                color={isImageBottom ? '#fff' : props.message.isOut ? props.theme.foregroundContrast : props.theme.foregroundPrimary}
-                                opacity={(props.message.isOut || isImageBottom) ? 0.7 : 0.6}
-                            >
-                                {formatTime(props.message.date)}
-                            </ASText>
-                            {props.message.isOut && (
-                                <ASFlex width={13} height={13} marginLeft={3} marginTop={1} marginRight={0} justifyContent="flex-start" alignItems="center">
-                                    {props.message.isSending && <ASImage source={require('assets/ic-status-sending-10.png')} width={10} height={10} tintColor="white" opacity={0.7} />}
-                                    {!props.message.isSending && <ASImage source={require('assets/ic-status-sent-10.png')} width={10} height={10} tintColor="white" opacity={0.7} />}
-                                </ASFlex>
-                            )}
-                        </ASFlex>
-                    </ASFlex>
+                    <MetaInfoIndicator type={isImageBottom ? 'media' : 'default'} message={message} theme={theme} />
                 </ASFlex>
 
                 {bottomContent}
             </AsyncBubbleView>
         </ASFlex>
-
     );
 });

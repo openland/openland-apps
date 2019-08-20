@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
-import { bubbleMaxWidth, contentInsetsHorizontal, bubbleMaxWidthIncoming } from '../AsyncBubbleView';
+import { bubbleMaxWidth, contentInsetsHorizontal, bubbleMaxWidthIncoming, contentInsetsTop } from '../AsyncBubbleView';
 import { RenderSpans } from './AsyncRenderSpans';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
@@ -36,9 +36,9 @@ export class TextContent extends React.PureComponent<TextContentProps> {
                 width={width}
                 insetLeft={compensateBubble ? contentInsetsHorizontal : 16}
                 insetRight={compensateBubble ? contentInsetsHorizontal : 16}
-                insetTop={8}
+                insetVertical={contentInsetsTop}
                 emojiOnly={emojiOnly}
-            
+
                 onUserPress={onUserPress}
                 onGroupPress={onGroupPress}
             />
