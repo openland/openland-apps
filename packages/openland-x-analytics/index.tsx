@@ -2,10 +2,12 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { Track, TrackPlatform } from 'openland-engines/Tracking';
 import { EventPlatform } from 'openland-api/Types';
 import { isMobile } from 'openland-web/hooks/useIsMobile';
+import { detectOS } from 'openland-x-utils/detectOS';
 
 export function trackEvent(event: string, params?: { [key: string]: any }) {
     const platform: TrackPlatform = {
         name: isMobile() ? EventPlatform.MobileWeb : EventPlatform.WEB,
+        os: detectOS() || 'Mac',
         isProd: location.hostname === 'openland.com'
     };
 

@@ -4,6 +4,7 @@ import { EventPlatform } from 'openland-api/Types';
 
 const platform: TrackPlatform = {
     name: Platform.OS === 'ios' ? EventPlatform.iOS : EventPlatform.Android,
+    os: Platform.OS === 'ios' ? 'iOS' : 'Android',
     isProd: !__DEV__
 };
 

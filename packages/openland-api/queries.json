@@ -17354,15 +17354,11 @@
 					"type": "[Event!]!"
 				},
 				{
-					"name": "platform",
-					"type": "EventPlatform"
-				},
-				{
 					"name": "isProd",
 					"type": "Boolean"
 				}
 			],
-			"source": "mutation PersistEvents($did: String!, $events: [Event!]!, $platform: EventPlatform, $isProd: Boolean) {\n  track(did: $did, events: $events, platform: $platform, isProd: $isProd)\n}",
+			"source": "mutation PersistEvents($did: String!, $events: [Event!]!, $isProd: Boolean) {\n  track(did: $did, events: $events, isProd: $isProd)\n}",
 			"fields": [
 				{
 					"responseName": "track",
@@ -17386,14 +17382,6 @@
 							"type": "[Event!]!"
 						},
 						{
-							"name": "platform",
-							"value": {
-								"kind": "Variable",
-								"variableName": "platform"
-							},
-							"type": "EventPlatform"
-						},
-						{
 							"name": "isProd",
 							"value": {
 								"kind": "Variable",
@@ -17409,8 +17397,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation PersistEvents($did: String!, $events: [Event!]!, $platform: EventPlatform, $isProd: Boolean) {\n  track(did: $did, events: $events, platform: $platform, isProd: $isProd)\n}",
-			"operationId": "a68609c9bfa272b16e27a9d92541e9f8f7f4f1e3e51314d124baec5f9e9a155d"
+			"sourceWithFragments": "mutation PersistEvents($did: String!, $events: [Event!]!, $isProd: Boolean) {\n  track(did: $did, events: $events, isProd: $isProd)\n}",
+			"operationId": "4af9560cbae94fccb6f4a63863f01018f0d5ee0376bf55f4815fc4c7dd07e813"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/User.ts",

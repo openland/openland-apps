@@ -2800,7 +2800,7 @@ private let OrganizationRemoveMemberSelector = obj(
             field("alphaOrganizationRemoveMember","alphaOrganizationRemoveMember", arguments(fieldValue("memberId", refValue("memberId")), fieldValue("organizationId", refValue("organizationId"))), notNull(scalar("String")))
         )
 private let PersistEventsSelector = obj(
-            field("track","track", arguments(fieldValue("did", refValue("did")), fieldValue("events", refValue("events")), fieldValue("isProd", refValue("isProd")), fieldValue("platform", refValue("platform"))), notNull(scalar("String")))
+            field("track","track", arguments(fieldValue("did", refValue("did")), fieldValue("events", refValue("events")), fieldValue("isProd", refValue("isProd"))), notNull(scalar("String")))
         )
 private let PinMessageSelector = obj(
             field("gammaPinMessage","pinMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("messageId", refValue("messageId"))), notNull(obj(
@@ -4087,7 +4087,7 @@ class Operations {
     let PersistEvents = OperationDefinition(
         "PersistEvents",
         .mutation, 
-        "mutation PersistEvents($did:String!,$events:[Event!]!,$isProd:Boolean,$platform:EventPlatform){track(did:$did,events:$events,isProd:$isProd,platform:$platform)}",
+        "mutation PersistEvents($did:String!,$events:[Event!]!,$isProd:Boolean){track(did:$did,events:$events,isProd:$isProd)}",
         PersistEventsSelector
     )
     let PinMessage = OperationDefinition(

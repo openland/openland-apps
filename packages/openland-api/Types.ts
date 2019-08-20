@@ -67228,7 +67228,6 @@ export interface PersistEvents {
 export interface PersistEventsVariables {
   did: string;
   events: Event[];
-  platform?: EventPlatform | null;
   isProd?: boolean | null;
 }
 

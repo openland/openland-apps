@@ -2806,7 +2806,7 @@ private val OrganizationRemoveMemberSelector = obj(
             field("alphaOrganizationRemoveMember","alphaOrganizationRemoveMember", arguments(fieldValue("memberId", refValue("memberId")), fieldValue("organizationId", refValue("organizationId"))), notNull(scalar("String")))
         )
 private val PersistEventsSelector = obj(
-            field("track","track", arguments(fieldValue("did", refValue("did")), fieldValue("events", refValue("events")), fieldValue("isProd", refValue("isProd")), fieldValue("platform", refValue("platform"))), notNull(scalar("String")))
+            field("track","track", arguments(fieldValue("did", refValue("did")), fieldValue("events", refValue("events")), fieldValue("isProd", refValue("isProd"))), notNull(scalar("String")))
         )
 private val PinMessageSelector = obj(
             field("gammaPinMessage","pinMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("messageId", refValue("messageId"))), notNull(obj(
@@ -4090,7 +4090,7 @@ object Operations {
     val PersistEvents = object: OperationDefinition {
         override val name = "PersistEvents"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation PersistEvents(\$did:String!,\$events:[Event!]!,\$isProd:Boolean,\$platform:EventPlatform){track(did:\$did,events:\$events,isProd:\$isProd,platform:\$platform)}"
+        override val body = "mutation PersistEvents(\$did:String!,\$events:[Event!]!,\$isProd:Boolean){track(did:\$did,events:\$events,isProd:\$isProd)}"
         override val selector = PersistEventsSelector
     }
     val PinMessage = object: OperationDefinition {

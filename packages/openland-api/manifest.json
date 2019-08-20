@@ -1304,10 +1304,10 @@
       }
     },
     {
-      "signature": "db5ccf90eb8d231f91cf970f6cab481bacdd9f68a475188729243c3c85acd6dd",
-      "document": "mutation PersistEvents($did:String!,$events:[Event!]!,$isProd:Boolean,$platform:EventPlatform){track(did:$did,events:$events,isProd:$isProd,platform:$platform)}",
+      "signature": "397ebefadf214937fd0b84f08991edf18f143c7ca2ee787475ab462b8d820cc7",
+      "document": "mutation PersistEvents($did:String!,$events:[Event!]!,$isProd:Boolean){track(did:$did,events:$events,isProd:$isProd)}",
       "metadata": {
-        "engineSignature": "mutation PersistEvents($did:String!,$events:[Event!]!,$isProd:Boolean,$platform:EventPlatform){track(did:$did,events:$events,isProd:$isProd,platform:$platform)}"
+        "engineSignature": "mutation PersistEvents($did:String!,$events:[Event!]!,$isProd:Boolean){track(did:$did,events:$events,isProd:$isProd)}"
       }
     },
     {

@@ -13,6 +13,7 @@ const log = createLogger('Engine-Tracking');
 
 export interface TrackPlatform {
     name: EventPlatform;
+    os: string;
     isProd: boolean;
 }
 
@@ -22,7 +23,7 @@ class TrackingEngine {
     private deviceId!: string;
     private pending: Event[] = [];
     private isSending = false;
-    private platform: TrackPlatform = { name: EventPlatform.WEB, isProd: true };
+    private isProd: boolean = true;
     private storage: AppStorageQueued<Event>;
 
     constructor() {
@@ -47,12 +48,14 @@ class TrackingEngine {
             id: uuid(),
             event: event,
             params: params ? JSON.stringify(params) : undefined,
-            time: Date.now().toString()
+            time: Date.now().toString(),
+            platform: platform.name,
+            os: platform.os
         };
 
         log.log('New event: ' + JSON.stringify(item));
 
-        this.platform = platform;
+        this.isProd = platform.isProd;
         this.pending.push(item);
 
         await this.storage.addItem(item);
@@ -89,8 +92,7 @@ class TrackingEngine {
                 await this.client.mutatePersistEvents({
                     did: this.deviceId,
                     events: batch,
-                    platform: this.platform.name,
-                    isProd: this.platform.isProd
+                    isProd: this.isProd
                 });
     
                 log.log('Send events. Count: ' + batch.length);
