@@ -41,6 +41,9 @@ export let layoutImage = (fileMetadata?: { imageWidth: number | null, imageHeigh
     }
     return undefined;
 };
+
+const IMAGE_MIN_SIZE = 120;
+
 export class MediaContent extends React.PureComponent<MediaContentProps, { downloadState?: DownloadState }> {
     mounted = false;
     serverDownloadManager = false;
@@ -63,12 +66,13 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 { imageHeight: h, imageWidth: w },
                 {
                     ...event, path,
-
-                    // Sorry universe. Try to fix bug with distorted images in animation of ZPictureModal
-                    w: layout.width,
-                    h: layout.height,
-                    x: event.w !== layout.width ? event.x + ((event.w - layout.width) / 2) : event.x,
-                    y: event.h !== layout.height ? event.y + ((event.h - layout.height) / 2) : event.y,
+                    ...Platform.OS === 'ios' ? {
+                        // Sorry universe. Try to fix bug with distorted images in animation of ZPictureModal
+                        w: layout.width,
+                        h: layout.height,
+                        x: event.w !== layout.width ? event.x + ((event.w - layout.width) / 2) : event.x,
+                        y: event.h !== layout.height ? event.y + ((event.h - layout.height) / 2) : event.y,
+                    } : {}
                 },
                 8,
                 message.senderName,
@@ -128,12 +132,14 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
         const { downloadState } = this.state;
         const isSingle = !hasTopContent && !hasBottomContent;
         const useBorder = isSingle && !!compensateBubble && layout.height >= 120 && layout.width >= 120;
+        const viewWidth = isSingle ? Math.max(layout.width, IMAGE_MIN_SIZE) : undefined;
+        const viewHeight = Math.max(layout.height, IMAGE_MIN_SIZE);
 
         return (
             <ASFlex
                 flexDirection="column"
-                width={isSingle ? Math.max(layout.width, 120) : undefined}
-                height={Math.max(layout.height, 120)}
+                width={viewWidth}
+                height={viewHeight}
                 marginTop={compensateBubble ? (hasTopContent ? 0 : -contentInsetsTop) : undefined}
                 marginLeft={compensateBubble ? -contentInsetsHorizontal : undefined}
                 marginRight={compensateBubble ? -contentInsetsHorizontal : undefined}
@@ -141,6 +147,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 backgroundColor={isSingle ? theme.backgroundTertiary : theme.bubble(message.isOut).backgroundSecondary}
                 alignItems="center"
                 justifyContent="center"
+                onPress={Platform.OS === 'android' ? this.handlePress : undefined}
             >
                 <ASFlex>
                     <ASImage
@@ -150,7 +157,6 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                         isGif={attach!!.fileMetadata.imageFormat === 'GIF'}
                         width={layout.width}
                         height={layout.height}
-                        onPress={this.handlePress}
                     />
 
                     <ASFlex
@@ -179,8 +185,8 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 {compensateBubble && (
                     <ASFlex
                         overlay={true}
-                        width={isSingle ? layout.width : undefined}
-                        height={layout.height}
+                        width={viewWidth}
+                        height={viewHeight}
                         marginTop={Platform.OS === 'ios' ? (hasTopContent ? 0 : -contentInsetsTop) : undefined}
                         marginLeft={Platform.OS === 'ios' ? -contentInsetsHorizontal : undefined}
                         marginRight={Platform.OS === 'ios' ? -contentInsetsHorizontal : undefined}
