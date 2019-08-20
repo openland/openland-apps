@@ -162,6 +162,18 @@ export class MobileMessenger {
         let conversation: ConversationEngine = this.engine.getConversation(message.chatId);
         let builder = new ActionSheetBuilder();
 
+        if (message.isSending) {
+            if (message.text) {
+                builder.action('Copy', () => {
+                    Clipboard.setString(message.text!!);
+                }, false, require('assets/ic-copy-24.png'));
+
+                builder.show();
+            }
+
+            return;
+        }
+
         builder.view((ctx: ZModalController) => (
             <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={52} paddingHorizontal={10}>
                 {SortedReactions.map(r => (
