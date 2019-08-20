@@ -71,6 +71,10 @@ class AsyncViewStyle {
     var marginRight: Float? = null
     var backgroundColor: Int? = null
     var borderRadius: Float? = null
+    var borderRadiusTopLeft: Float? = null
+    var borderRadiusTopRight: Float? = null
+    var borderRadiusBottomLeft: Float? = null
+    var borderRadiusBottomRight: Float? = null
     var backgroundPatch: AsyncPatch? = null
     var backgroundPatchTintColor: Int? = null
 
@@ -92,6 +96,10 @@ class AsyncViewStyle {
         res.marginRight = with.marginRight.let { marginRight -> if (marginRight !== null) marginRight else this.marginRight }
         res.backgroundColor = with.backgroundColor.let { backgroundColor -> if (backgroundColor !== null) backgroundColor else this.backgroundColor }
         res.borderRadius = with.borderRadius.let { borderRadius -> if (borderRadius !== null) borderRadius else this.borderRadius }
+        res.borderRadiusTopLeft = with.borderRadiusTopLeft.let { borderRadiusTopLeft -> if (borderRadiusTopLeft !== null) borderRadiusTopLeft else this.borderRadiusTopLeft }
+        res.borderRadiusTopRight = with.borderRadiusTopRight.let { borderRadiusTopRight -> if (borderRadiusTopRight !== null) borderRadiusTopRight else this.borderRadiusTopRight }
+        res.borderRadiusBottomLeft = with.borderRadiusBottomLeft.let { borderRadiusBottomLeft -> if (borderRadiusBottomLeft !== null) borderRadiusBottomLeft else this.borderRadiusBottomLeft }
+        res.borderRadiusBottomRight = with.borderRadiusBottomRight.let { borderRadiusBottomRight -> if (borderRadiusBottomRight !== null) borderRadiusBottomRight else this.borderRadiusBottomRight }
         res.backgroundPatch = with.backgroundPatch.let { backgroundPatch -> if (backgroundPatch !== null) backgroundPatch else this.backgroundPatch }
         res.backgroundPatchTintColor = with.backgroundPatchTintColor.let { backgroundPatchTintColor -> if (backgroundPatchTintColor !== null) backgroundPatchTintColor else this.backgroundPatchTintColor }
 
@@ -245,6 +253,10 @@ private fun resolveStyle(src: JSONObject, res: AsyncViewStyle, context: ReactCon
     props.nullableFloat("marginLeft")?.let { res.marginLeft = it }
     props.nullableFloat("marginRight")?.let { res.marginRight = it }
     props.nullableFloat("borderRadius")?.let { res.borderRadius = it }
+    props.nullableFloat("borderRadiusTopLeft")?.let { res.borderRadiusTopLeft = it }
+    props.nullableFloat("borderRadiusTopRight")?.let { res.borderRadiusTopRight = it }
+    props.nullableFloat("borderRadiusBottomLeft")?.let { res.borderRadiusBottomLeft = it }
+    props.nullableFloat("borderRadiusBottomRight")?.let { res.borderRadiusBottomRight = it }
 
     props.nullableInt("backgroundColor")?.let { res.backgroundColor = it }
     props.nullableInt("backgroundPatchTintColor")?.let { res.backgroundPatchTintColor = it }

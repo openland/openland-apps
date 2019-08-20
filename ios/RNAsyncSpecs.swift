@@ -107,6 +107,10 @@ class AsyncStyleSpec {
   var backgroundPatch: AsyncPatch?
   var backgroundPatchTintColor: UIColor?
   var borderRadius: Float?
+  var borderRadiusTopLeft: Float?
+  var borderRadiusTopRight: Float?
+  var borderRadiusBottomLeft: Float?
+  var borderRadiusBottomRight: Float?
   var marginTop: Float?
   var marginBottom: Float?
   var marginRight: Float?
@@ -187,6 +191,22 @@ class AsyncStyleSpec {
     res.borderRadius = self.borderRadius
     if let borderRadius = with.borderRadius{
       res.borderRadius = borderRadius
+    }
+    res.borderRadiusTopLeft = self.borderRadiusTopLeft
+    if let borderRadiusTopLeft = with.borderRadiusTopLeft{
+      res.borderRadiusTopLeft = borderRadiusTopLeft
+    }
+    res.borderRadiusTopRight = self.borderRadiusTopRight
+    if let borderRadiusTopRight = with.borderRadiusTopRight{
+      res.borderRadiusTopRight = borderRadiusTopRight
+    }
+    res.borderRadiusBottomLeft = self.borderRadiusBottomLeft
+    if let borderRadiusBottomLeft = with.borderRadiusBottomLeft{
+      res.borderRadiusBottomLeft = borderRadiusBottomLeft
+    }
+    res.borderRadiusBottomRight = self.borderRadiusBottomRight
+    if let borderRadiusBottomRight = with.borderRadiusBottomRight{
+      res.borderRadiusBottomRight = borderRadiusBottomRight
     }
     res.marginTop = self.marginTop
     if let marginTop = with.marginTop{
@@ -278,6 +298,18 @@ private func resolveStyle(_ src: JSON) -> AsyncStyleSpec {
   }
   if let v = src["props"]["borderRadius"].float {
     res.borderRadius = v
+  }
+  if let v = src["props"]["borderRadiusTopLeft"].float {
+    res.borderRadiusTopLeft = v
+  }
+  if let v = src["props"]["borderRadiusTopRight"].float {
+    res.borderRadiusTopRight = v
+  }
+  if let v = src["props"]["borderRadiusBottomLeft"].float {
+    res.borderRadiusBottomLeft = v
+  }
+  if let v = src["props"]["borderRadiusBottomRight"].float {
+    res.borderRadiusBottomRight = v
   }
   if let v = src["props"]["backgroundColor"].uInt64 {
     res.backgroundColor = resolveColorR(v)
