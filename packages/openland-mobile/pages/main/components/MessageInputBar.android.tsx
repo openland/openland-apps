@@ -11,13 +11,13 @@ export const MessageInputBar = React.forwardRef((props: MessageInputBarProps, re
         <View marginBottom={SDevice.safeArea.bottom}>
             <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
                 {props.suggestions && (
-                    <View style={{ backgroundColor: theme.backgroundPrimary, position: 'absolute', bottom: '100%', left: 0, right: 0 }}>
+                    <View style={{ backgroundColor: theme.backgroundSecondary, position: 'absolute', bottom: '100%', left: 0, right: 0 }}>
                         {props.suggestions}
                     </View>
                 )}
 
                 {props.topView && (
-                    <View backgroundColor={theme.backgroundPrimary}>
+                    <View backgroundColor={theme.backgroundSecondary}>
                         {props.topView}
                     </View>
                 )}
