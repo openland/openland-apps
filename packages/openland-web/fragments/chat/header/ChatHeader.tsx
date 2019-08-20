@@ -26,6 +26,7 @@ import { showRoomEditModal, showLeaveChatConfirmation } from 'openland-web/fragm
 import { showAdvancedSettingsModal } from '../AdvancedSettingsModal';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { TextDensed } from 'openland-web/utils/TextStyles';
+import { emoji } from 'openland-y-utils/emoji';
 
 const secondary = css`
     color: var(--foregroundSecondary);
@@ -150,6 +151,9 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
     const path = chat.__typename === 'PrivateRoom' ? `/${chat.user.shortname || chat.user.id}` : `/group/${chat.id}`;
     const showCallButton = layout === 'desktop' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true);
+    const [titleEmojify, setTitleEmojify] = React.useState<string | JSX.Element>(emoji(title));
+
+    React.useEffect(() => setTitleEmojify(emoji(title)), [title]);
 
     return (
         <XView flexDirection="row" flexGrow={1} flexBasis={0} minWidth={0} position="relative">
@@ -176,7 +180,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     path={path}
                 >
                     <span className={titleStyle}>
-                        {title}
+                        {titleEmojify}
                         {chat.__typename === 'PrivateRoom' && chat.user.primaryOrganization && (
                             <span className={cx(secondary, TextDensed)}>{chat.user.primaryOrganization.name}</span>
                         )}

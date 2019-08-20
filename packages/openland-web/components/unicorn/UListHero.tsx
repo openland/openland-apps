@@ -5,6 +5,7 @@ import { UAvatar } from './UAvatar';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { showAvatarModal } from '../showAvatarModal';
+import { emoji } from 'openland-y-utils/emoji';
 
 const textStyle = css`
     white-space: nowrap;
@@ -51,6 +52,9 @@ interface UListHeroProps {
 
 export const UListHero = (props: UListHeroProps) => {
     const { title, score, description, descriptionColor, avatar, children } = props;
+    const [titleEmojify, setTitleEmojify] = React.useState<string | JSX.Element>(emoji(title));
+
+    React.useEffect(() => setTitleEmojify(emoji(title)), [title]);
 
     return (
         <XView marginBottom={32} height={72} paddingHorizontal={16} flexDirection="row">
@@ -77,7 +81,9 @@ export const UListHero = (props: UListHeroProps) => {
                 justifyContent="center"
             >
                 <XView {...TextStyles.Title2} color="var(--foregroundPrimary)">
-                    <span className={textStyle}>{title}</span>
+                    <span className={textStyle}>
+                        {titleEmojify}
+                    </span>
                 </XView>
 
                 {!!description && (
