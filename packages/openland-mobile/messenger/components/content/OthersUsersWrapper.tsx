@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { ASText } from 'react-native-async-view/ASText';
 import { UserForMention } from 'openland-api/Types';
-import { ActionSheetBuilder } from '../../../../components/ActionSheet';
 import { Text, View } from 'react-native';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ZUserView } from 'openland-mobile/components/ZUserView';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
+import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 
 interface OthersUsersWrapperProps {
     children?: any;

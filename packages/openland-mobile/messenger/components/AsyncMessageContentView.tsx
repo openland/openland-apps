@@ -15,7 +15,7 @@ import { RichAttachContent, richAttachImageShouldBeCompact } from './content/Ric
 import { MediaContent, layoutImage } from './content/MediaContent';
 import { DocumentContent } from './content/DocumentContent';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
-import { OthersUsersWrapper } from './service/views/OthersUsersWrapper';
+import { OthersUsersWrapper } from './content/OthersUsersWrapper';
 import { openCalendar } from 'openland-mobile/utils/openCalendar';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { Span } from 'openland-y-utils/spans/Span';
@@ -63,13 +63,13 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'italic') {
             return <ASText key={'italic'} fontStyle="italic">{children}</ASText>;
         } else if (span.type === 'loud') {
-            return <ASText key={'loud'} fontSize={20} lineHeight={24} fontWeight={FontStyles.Weight.Medium}>{children}</ASText>;
+            return <ASText key={'loud'} fontWeight={FontStyles.Weight.Medium}>{children}</ASText>;
         } else if (span.type === 'rotating') {
             return <ASText key={'rotating'}>{children}</ASText>;
         } else if (span.type === 'new_line') {
             return <ASText key={'br'}>{'\n'}</ASText>;
         } else if (span.type === 'emoji') {
-            return <ASText key={'emoji'} fontSize={48} lineHeight={58}>{children}</ASText>;
+            return <ASText key={'emoji'}>{children}</ASText>;
         } else if (span.type === 'text') {
             return <ASText key={'text'}>{span.text}</ASText>;
         }

@@ -22,7 +22,7 @@ export const AsyncDateSeparator = React.memo<{ year: number, month: number, date
     let theme = useThemeGlobal();
     let now = new Date();
     let date = 'Today';
-    
+
     if (now.getFullYear() === props.year) {
         if ((now.getDate() - 1) === props.date && now.getMonth() === props.month) {
             date = 'Yesterday';
@@ -40,7 +40,7 @@ export const AsyncDateSeparator = React.memo<{ year: number, month: number, date
     }
 
     return (
-        <ASFlex alignItems="center" justifyContent="center" backgroundColor={theme.backgroundPrimary}>
+        <ASFlex alignItems="center" justifyContent="center">
             <ASText
                 marginTop={7}
                 marginBottom={7}

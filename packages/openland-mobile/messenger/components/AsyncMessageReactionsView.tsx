@@ -28,33 +28,38 @@ interface AsyncMessageReactionsViewProps {
 }
 
 export const AsyncMessageReactionsView = React.memo<AsyncMessageReactionsViewProps>((props) => {
-    const { reactionsReduced, reactionsLabel, commentsCount } = props.message;
-    let theme = props.theme;
-
-    if (!props.isChannel && props.message.reactions.length === 0 && commentsCount === 0) {
-        return null;
-    }
+    const { theme, message, isChannel, onCommentsPress, onReactionsPress } = props;
+    const { reactionsReduced, reactionsLabel, commentsCount, isOut } = message;
 
     return (
-        <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33} >
-            <ASFlex renderModes={props.message.isOut ? undefined : rm({ 'selection': { marginLeft: 60 + 30 } })} flexGrow={1} justifyContent={props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={props.message.isOut ? 16 : 0} marginLeft={props.message.isOut ? 0 : 60} marginTop={2} alignItems="center">
+        <ASFlex alignItems="stretch" flexDirection="row" maxHeight={33}>
+            <ASFlex
+                renderModes={isOut ? undefined : rm({ 'selection': { marginLeft: 60 + 30 } })}
+                flexGrow={1}
+                justifyContent={isOut ? 'flex-end' : 'flex-start'}
+                flexDirection="row"
+                marginRight={isOut ? 16 : 0}
+                marginLeft={isOut ? 0 : 60}
+                marginTop={0}
+                alignItems="center"
+            >
                 {reactionsReduced.length > 0 && (
-                    <ASFlex onPress={props.onReactionsPress}>
-                        <ASFlex marginLeft={4} marginRight={8} height={32} alignItems="center" justifyContent="center">
+                    <ASFlex onPress={onReactionsPress}>
+                        <ASFlex marginLeft={4} marginRight={8} height={28} marginTop={4} alignItems="center" justifyContent="center">
                             {reactionsReduced.map((i) =>
                                 (
                                     <ASImage key={'k' + i.reaction} marginLeft={4} source={reactionsImagesMap[i.reaction]} width={20} height={20} />
                                 )
                             )}
 
-                            {!!reactionsLabel && <ASText fontWeight={FontStyles.Weight.Medium} marginLeft={4} fontSize={13} key={'users'} color={theme.foregroundTertiary}>{reactionsLabel}</ASText>}
+                            {!!reactionsLabel && <ASText key={'users'} fontWeight={FontStyles.Weight.Medium} marginLeft={4} fontSize={13} color={theme.foregroundTertiary}>{reactionsLabel}</ASText>}
                         </ASFlex>
                     </ASFlex>
                 )}
 
-                {(props.isChannel || commentsCount > 0) && (
-                    <ASFlex onPress={props.onCommentsPress}>
-                        <ASFlex marginLeft={8} marginRight={8} height={32} alignItems="center" justifyContent="center">
+                {(isChannel || commentsCount > 0) && (
+                    <ASFlex onPress={onCommentsPress}>
+                        <ASFlex marginLeft={8} marginRight={8} height={28} marginTop={4} alignItems="center" justifyContent="center">
                             {commentsCount <= 0 && <ASImage source={require('assets/ic-message-24.png')} tintColor={theme.accentPrimary} width={20} height={20} />}
                             {commentsCount > 0 && <ASImage source={require('assets/ic-message-filled-24.png')} tintColor={theme.accentPrimary} width={20} height={20} />}
                             {commentsCount > 0 && <ASText fontSize={13} fontWeight={FontStyles.Weight.Medium} marginLeft={4} color={theme.foregroundTertiary}>{commentsCount}</ASText>}

@@ -7,6 +7,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { getSpansSlices } from 'openland-y-utils/spans/utils';
 import { Span } from 'openland-y-utils/spans/Span';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { Platform } from 'react-native';
 
 interface TextWrapperProps extends ASTextProps {
     color: string;
@@ -20,7 +21,6 @@ const TextWrapper = (props: TextWrapperProps) => {
         <ASText
             key={'text-' + props.color}
             {...other}
-            letterSpacing={0}
             fontWeight={FontStyles.Weight.Regular}
         >
             {children}
@@ -46,6 +46,27 @@ interface RenderSpansProps {
     onGroupPress: (id: string) => void;
 }
 
+const fontSize = {
+    'emoji': 48,
+    'loud': 20,
+    'slice': 17,
+    'code_block': 14
+};
+
+const lineHeight = {
+    'emoji': Platform.OS === 'ios' ? 56 : 64,
+    'loud': 26,
+    'slice': 22,
+    'code_block': undefined
+};
+
+const letterSpacing = {
+    'emoji': 4,
+    'loud': 0.38,
+    'slice': -0.41,
+    'code_block': undefined
+};
+
 export class RenderSpans extends React.PureComponent<RenderSpansProps> {
     render() {
         const { emojiOnly, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetTop, onUserPress, onGroupPress } = this.props;
@@ -61,7 +82,9 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                 key={c.type + '-' + i}
                                 color={mainTextColor}
                                 fontStyle={fontStyle}
-                                fontSize={c.type === 'emoji' ? 48 : (c.type === 'loud' ? 20 : 16)}
+                                fontSize={fontSize[c.type]}
+                                lineHeight={lineHeight[c.type]}
+                                letterSpacing={letterSpacing[c.type]}
                                 marginTop={(c.type === 'loud' && i !== 0) ? 8 : undefined}
                                 marginBottom={(c.type !== 'emoji' && i !== content.length - 1) ? 8 : undefined}
                                 textAlign={textAlign}
@@ -82,7 +105,14 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                 backgroundColor={(message.isOut && !message.isService) ? theme.codeSpan.backgroundOut : theme.codeSpan.background}
                             >
                                 <ASFlex marginLeft={insetLeft} marginRight={insetRight} marginTop={5} marginBottom={5}>
-                                    <TextWrapper fontSize={14} color={mainTextColor} maxWidth={!width ? maxWidth : undefined} width={width}>
+                                    <TextWrapper
+                                        fontSize={fontSize[c.type]}
+                                        lineHeight={lineHeight[c.type]}
+                                        letterSpacing={letterSpacing[c.type]}
+                                        color={mainTextColor}
+                                        maxWidth={!width ? maxWidth : undefined}
+                                        width={width}
+                                    >
                                         {renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
                                     </TextWrapper>
                                 </ASFlex>

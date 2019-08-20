@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Text, Linking, Clipboard, Share } from 'react-native';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
-import { OthersUsersWrapper } from 'openland-mobile/messenger/components/service/views/OthersUsersWrapper';
 import { ActionSheetBuilder } from '../ActionSheet';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { openCalendar, openCalendarContextMenu } from 'openland-mobile/utils/openCalendar';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { OthersUsersWrapper } from 'openland-mobile/messenger/components/content/OthersUsersWrapper';
 
 let openContextMenu = (link: string) => {
     let builder = new ActionSheetBuilder();

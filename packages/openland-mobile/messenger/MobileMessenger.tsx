@@ -26,6 +26,7 @@ import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenter
 import { trackEvent } from 'openland-mobile/analytics';
 import { AsyncNewMessageDivider } from './components/AsyncNewMessageDivider';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { AsyncServiceMessage } from './components/AsyncServiceMessage';
 
 const SortedReactions = [
     MessageReactionType.LIKE,
@@ -78,9 +79,13 @@ export class MobileMessenger {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
-                    return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onUserPress={this.handleUserClick} onGroupPress={this.handleGroupClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onMessageDoublePress={this.handleMessageDoublePress} onReactionPress={this.handleReactionSetUnset} onCommentsPress={this.handleCommentsClick} onReactionsPress={this.handleReactionsClick} />);
+                    if (item.isService) {
+                        return <AsyncServiceMessage message={item} onUserPress={this.handleUserClick} onGroupPress={this.handleGroupClick} />;
+                    } else {
+                        return <AsyncMessageView message={item} engine={eng} onUserPress={this.handleUserClick} onGroupPress={this.handleGroupClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsClick} onReactionsPress={this.handleReactionsClick} />;
+                    }
                 } else if (item.type === 'date') {
-                    return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
+                    return <AsyncDateSeparator year={item.year} month={item.month} date={item.date} />;
                 } else {
                     return <AsyncNewMessageDivider />;
                 }

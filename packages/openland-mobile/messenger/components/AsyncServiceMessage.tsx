@@ -1,24 +1,23 @@
 import * as React from 'react';
 import { ASText } from 'react-native-async-view/ASText';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { renderPreprocessedText } from '../AsyncMessageContentView';
+import { renderPreprocessedText } from './AsyncMessageContentView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
-import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 
-export interface ServiceMessageDefaultProps {
+export interface AsyncServiceMessageProps {
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
-    theme: ThemeGlobal;
 }
 
-export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
-    const { message, theme, onUserPress, onGroupPress } = props;
+export const AsyncServiceMessage = (props: AsyncServiceMessageProps) => {
+    const { message, onUserPress, onGroupPress } = props;
+    const theme = useThemeGlobal();
     let parts = renderPreprocessedText(message.textSpans, message, theme, onUserPress, onGroupPress);
 
     return (
         <ASFlex
-            backgroundColor={props.theme.backgroundPrimary}
             flexDirection="column"
             alignItems="center"
         >
@@ -31,7 +30,7 @@ export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
                 alignItems="center"
             >
                 <ASText
-                    color={props.theme.foregroundSecondary}
+                    color={theme.foregroundSecondary}
                     fontSize={13}
                     lineHeight={18}
                     textAlign="center"
