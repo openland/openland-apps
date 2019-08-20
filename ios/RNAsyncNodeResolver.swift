@@ -250,6 +250,13 @@ private func resolveAttributedText(spec: AsyncTextSpec, parent: AsyncTextSpec?, 
   if spec.touchableKey != nil {
     innerAttributes[NSAttributedString.Key(rawValue: "RNClickableText")] = spec.touchableKey!
   }
+
+  print(spec.letterSpacing)
+  spec.letterSpacing = spec.letterSpacing != nil ? spec.letterSpacing! : (parent != nil && parent!.letterSpacing != nil) ? parent!.letterSpacing! : nil
+  print(spec.letterSpacing, (parent != nil && parent!.letterSpacing != nil) ? parent!.letterSpacing! : nil)
+  if let v = spec.letterSpacing {
+    innerAttributes[NSAttributedString.Key.kern] = CGFloat(v)
+  }
   
   // innerAttributes[NSLinkAttributeName]
   spec.fontSize = spec.fontSize != nil ? spec.fontSize! : (parent != nil && parent!.fontSize != nil) ? parent!.fontSize! : nil
