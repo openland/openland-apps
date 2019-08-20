@@ -44,7 +44,7 @@ export interface AsyncMessageViewProps {
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal();
     const { message, engine, onMessageDoublePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReactionsPress } = props;
-    const { isOut, attachTop, attachBottom, commentsCount, reactions, isSending, sender } = message;
+    const { isOut, attachTop, attachBottom, commentsCount, reactions, sender } = message;
 
     let lastTap: number;
     const handleDoublePress = () => {
