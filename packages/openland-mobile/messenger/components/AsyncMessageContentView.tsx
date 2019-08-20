@@ -22,7 +22,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { MetaInfoIndicator } from './content/MetaInfoIndicator';
 import { SenderContent } from './content/SenderContent';
 
-export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={17}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 18 : 14, ios: edited ? 15 : 12 }))}</ASText>;
+export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={17}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 19 : 15, ios: edited ? 16 : 13 }))}</ASText>;
 
 interface AsyncMessageTextViewProps {
     theme: ThemeGlobal;
@@ -184,7 +184,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
 
     return (
         <ASFlex flexDirection="column" alignItems="stretch">
-            <AsyncBubbleView width={fixedSize ? (isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} isOut={isOut} attachTop={attachTop} attachBottom={attachBottom} colorIn={theme.bubbleIn} colorOut={theme.bubbleOut}>
+            <AsyncBubbleView width={fixedSize ? (isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} isOut={isOut} attachTop={attachTop} attachBottom={attachBottom} color={theme.bubble(isOut).backgroundPrimary}>
                 <ASFlex flexDirection="column" alignItems="stretch">
                     {topContent}
 

@@ -87,7 +87,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
         const titleMaxWidth = (imgCompact && imgLayout && imageSource) ? maxWidth - 26 - 36 - 9 : undefined;
 
         return (
-            <View flexDirection="column" alignItems="stretch" alignSelf="stretch" marginTop={!isSmall ? 10 : undefined} marginVertical={isSmall ? 5 : undefined} backgroundColor={theme.bubbleIn} borderRadius={8} paddingHorizontal={13} paddingVertical={10}>
+            <View flexDirection="column" alignItems="stretch" alignSelf="stretch" marginTop={!isSmall ? 10 : undefined} marginVertical={isSmall ? 5 : undefined} backgroundColor={theme.bubble(false).backgroundPrimary} borderRadius={8} paddingHorizontal={13} paddingVertical={10}>
                 {!!this.props.attach.titleLinkHostname && imgCompact && (
                     <Text
                         style={{

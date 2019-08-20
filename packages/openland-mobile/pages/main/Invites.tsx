@@ -57,7 +57,7 @@ const InvitesComponent = XMemo<PageProps>((props) => {
                 />
                 <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
                 <View flexGrow={1} />
-                {!!(invitesCount && invitesCount.mySuccessfulInvitesCount) && <View flexDirection="row" alignSelf="stretch" justifyContent="center" alignItems="center" marginHorizontal={16} marginBottom={16} borderRadius={RadiusStyles.Medium} height={50} backgroundColor={theme.bubbleIn}>
+                {!!(invitesCount && invitesCount.mySuccessfulInvitesCount) && <View flexDirection="row" alignSelf="stretch" justifyContent="center" alignItems="center" marginHorizontal={16} marginBottom={16} borderRadius={RadiusStyles.Medium} height={50} backgroundColor={theme.bubble(false).backgroundPrimary}>
                     <Image source={require('assets/ic-user-fill-24.png')} />
                     <Text style={{ fontSize: 16, fontWeight: FontStyles.Weight.Medium, marginHorizontal: 16, color: '#717171' }}>{invitesCount.mySuccessfulInvitesCount + (invitesCount.mySuccessfulInvitesCount === 1 ? ' Friend ' : ' Friends ') + 'invited'}</Text>
                 </View>}

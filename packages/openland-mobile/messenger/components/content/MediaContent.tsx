@@ -51,13 +51,29 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
 
     private downloadManagerWatch?: WatchSubscription;
     private handlePress = (event: ASPressEvent) => {
+        const { attach, message, layout, onMediaPress } = this.props;
+        const { downloadState } = this.state;
         // Ignore clicks for not-downloaded files
-        let path = (this.state.downloadState && this.state.downloadState.path) || (this.props.attach && this.props.attach.uri);
-        if (path && this.props.attach.fileMetadata.imageHeight && this.props.attach.fileMetadata.imageWidth) {
-            let w = this.props.attach.fileMetadata.imageWidth;
-            let h = this.props.attach.fileMetadata.imageHeight;
+        let path = (downloadState && downloadState.path) || (attach && attach.uri);
+        if (path && attach.fileMetadata.imageHeight && attach.fileMetadata.imageWidth) {
+            let w = attach.fileMetadata.imageWidth;
+            let h = attach.fileMetadata.imageHeight;
 
-            this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { path, ...event }, undefined, this.props.message.senderName, this.props.message.date);
+            onMediaPress(
+                { imageHeight: h, imageWidth: w },
+                {
+                    ...event, path,
+
+                    // Sorry universe. Try to fix bug with distorted images in animation of ZPictureModal
+                    w: layout.width,
+                    h: layout.height,
+                    x: event.w !== layout.width ? event.x + ((event.w - layout.width) / 2) : event.x,
+                    y: event.h !== layout.height ? event.y + ((event.h - layout.height) / 2) : event.y,
+                },
+                8,
+                message.senderName,
+                message.date
+            );
         }
     }
 
@@ -111,18 +127,20 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
         const { hasTopContent, hasBottomContent, message, attach, layout, compensateBubble, theme } = this.props;
         const { downloadState } = this.state;
         const isSingle = !hasTopContent && !hasBottomContent;
+        const useBorder = isSingle && !!compensateBubble && layout.height >= 120 && layout.width >= 120;
 
         return (
             <ASFlex
                 flexDirection="column"
-                width={isSingle ? layout.width : undefined}
-                height={layout.height}
+                width={isSingle ? Math.max(layout.width, 120) : undefined}
+                height={Math.max(layout.height, 120)}
                 marginTop={compensateBubble ? (hasTopContent ? 0 : -contentInsetsTop) : undefined}
                 marginLeft={compensateBubble ? -contentInsetsHorizontal : undefined}
                 marginRight={compensateBubble ? -contentInsetsHorizontal : undefined}
                 marginBottom={compensateBubble ? (isSingle || !hasBottomContent ? -contentInsetsBottom : 8) : undefined}
-                backgroundColor={theme.backgroundTertiary}
+                backgroundColor={isSingle ? theme.backgroundTertiary : theme.bubble(message.isOut).backgroundSecondary}
                 alignItems="center"
+                justifyContent="center"
             >
                 <ASFlex>
                     <ASImage
@@ -178,6 +196,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                             maskColor={theme.backgroundPrimary}
                             borderColor={theme.border}
                             onPress={Platform.OS === 'ios' ? this.handlePress : undefined}
+                            useBorder={useBorder}
                         />
                     </ASFlex>
                 )}

@@ -52,8 +52,10 @@ export const ThemeLightBlue: ThemeGlobal = {
     overlayMedium: 'rgba(0, 0, 0, 0.48)',
     overlayLight: 'rgba(0, 0, 0, 0.24)',
 
-    bubbleIn: '#F2F3F5',
-    bubbleOut: '#1885F2',
+    bubble: (isOut) => ({
+        backgroundPrimary: isOut ? '#1885F2' : '#F2F3F5',
+        backgroundSecondary: isOut ? '#0E7CEB' : '#EBEDF0',
+    }),
 
     tintRed: '#E52233',
     tintOrange: '#FFAE0D',
@@ -137,8 +139,10 @@ export const ThemeDark: ThemeGlobal = {
     overlayMedium: 'rgba(0, 0, 0, 0.48)',
     overlayLight: 'rgba(0, 0, 0, 0.24)',
 
-    bubbleIn: '#333333',
-    bubbleOut: '#4d4d4d',
+    bubble: (isOut) => ({
+        backgroundPrimary: isOut ? '#4d4d4d' : '#333333',
+        backgroundSecondary: isOut ? '#4d4d4d' : '#333333',
+    }),
 
     tintRed: '#262626',
     tintOrange: '#262626',

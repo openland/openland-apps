@@ -13,14 +13,13 @@ interface AsyncBubbleViewProps {
     isOut: boolean;
     attachTop: boolean;
     attachBottom: boolean;
-    colorIn: string;
-    colorOut: string;
+    color: string;
     width?: number;
 }
 
 export class AsyncBubbleView extends React.PureComponent<AsyncBubbleViewProps> {
     render() {
-        const { isOut, attachTop, attachBottom, colorIn, colorOut, width, children } = this.props;
+        const { isOut, attachTop, attachBottom, color, width, children } = this.props;
         let bubbleRes = isOut ? 'outgoing' : 'incoming';
 
         if (attachTop && attachBottom) {
@@ -61,7 +60,7 @@ export class AsyncBubbleView extends React.PureComponent<AsyncBubbleViewProps> {
         let resolved = Image.resolveAssetSource(image);
         return (
             <ASFlex flexDirection="column" alignItems="stretch" width={width} maxWidth={(isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming)}>
-                <ASFlex backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }} flexDirection="column" alignItems="stretch" backgroundPatchTintColor={isOut ? colorOut : colorIn}>
+                <ASFlex backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }} flexDirection="column" alignItems="stretch" backgroundPatchTintColor={color}>
                     <ASFlex marginTop={contentInsets.top} marginBottom={contentInsets.bottom} marginLeft={contentInsets.left} marginRight={contentInsets.right} flexDirection="column" alignItems="stretch">
                         {children}
                     </ASFlex>

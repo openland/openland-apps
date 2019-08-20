@@ -71,7 +71,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
 
         return (
             <View
-                backgroundColor={theme.bubbleIn}
+                backgroundColor={theme.bubble(false).backgroundPrimary}
                 borderRadius={8}
                 marginVertical={5}
             >

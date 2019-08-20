@@ -52,8 +52,10 @@ export type ThemeGlobal = {
     overlayMedium: string;
     overlayLight: string;
 
-    bubbleIn: string;
-    bubbleOut: string;
+    bubble: (isOut: boolean) => {
+        backgroundPrimary: string;
+        backgroundSecondary: string;
+    };
 
     tintRed: string;
     tintOrange: string;

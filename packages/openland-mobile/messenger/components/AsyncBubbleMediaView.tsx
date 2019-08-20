@@ -39,12 +39,13 @@ interface AsyncBubbleMediaViewProps {
     hasBottomContent: boolean;
     maskColor: string;
     borderColor: string;
+    useBorder: boolean;
     onPress?: (event: ASPressEvent) => void;
 }
 
 export class AsyncBubbleMediaView extends React.PureComponent<AsyncBubbleMediaViewProps> {
     render() {
-        const { isOut, attachTop, attachBottom, hasTopContent, hasBottomContent, maskColor, borderColor, onPress } = this.props;
+        const { isOut, attachTop, attachBottom, hasTopContent, hasBottomContent, maskColor, borderColor, useBorder, onPress } = this.props;
 
         let bubbleRes = (isOut ? 'outgoing' : 'incoming');
 
@@ -53,16 +54,19 @@ export class AsyncBubbleMediaView extends React.PureComponent<AsyncBubbleMediaVi
                 <ASFlex
                     flexGrow={1}
                     alignItems="stretch"
+                    onPress={!useBorder ? onPress : undefined}
                 >
-                    <AsyncBubbleBorderView
-                        isOut={isOut}
-                        attachTop={attachTop}
-                        attachBottom={attachBottom}
-                        hasTopContent={hasTopContent}
-                        hasBottomContent={hasBottomContent}
-                        tintColor={borderColor}
-                        onPress={onPress}
-                    />
+                    {useBorder && (
+                        <AsyncBubbleBorderView
+                            isOut={isOut}
+                            attachTop={attachTop}
+                            attachBottom={attachBottom}
+                            hasTopContent={hasTopContent}
+                            hasBottomContent={hasBottomContent}
+                            tintColor={borderColor}
+                            onPress={onPress}
+                        />
+                    )}
                 </ASFlex>
             );
         }
@@ -96,16 +100,19 @@ export class AsyncBubbleMediaView extends React.PureComponent<AsyncBubbleMediaVi
                 backgroundPatchTintColor={maskColor}
                 flexGrow={1}
                 alignItems="stretch"
+                onPress={!useBorder ? onPress : undefined}
             >
-                <AsyncBubbleBorderView
-                    isOut={isOut}
-                    attachTop={attachTop}
-                    attachBottom={attachBottom}
-                    hasTopContent={hasTopContent}
-                    hasBottomContent={hasBottomContent}
-                    tintColor={borderColor}
-                    onPress={onPress}
-                />
+                {useBorder && (
+                    <AsyncBubbleBorderView
+                        isOut={isOut}
+                        attachTop={attachTop}
+                        attachBottom={attachBottom}
+                        hasTopContent={hasTopContent}
+                        hasBottomContent={hasBottomContent}
+                        tintColor={borderColor}
+                        onPress={onPress}
+                    />
+                )}
             </ASFlex>
         );
     }

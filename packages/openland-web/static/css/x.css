@@ -55,9 +55,6 @@ body {
     --overlayMedium: rgba(0, 0, 0, 0.48);
     --overlayLight: rgba(0, 0, 0, 0.24);
 
-    --bubbleIn: #F2F3F5;
-    --bubbleOut: #1885F2;
-
     --tintRed: #E52233;
     --tintOrange: #FFAE0D;
     --tintGreen: #36B25F;
