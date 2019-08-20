@@ -421,7 +421,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       self.activeCellsStrong[state.items[index].key] = cell
       
       DispatchQueue.main.async {
-        self.node.performBatch(animated: false, updates: {
+        self.node.performBatch(animated: true, updates: {
           self.state = state
           self.activeCells.set(key: state.items[index].key, value: cell)
           self.node.insertItems(at: [IndexPath(row: index, section: 1)])
@@ -444,7 +444,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   func onUpdated(index: Int, state: RNAsyncDataViewState) {
     self.queue.async {
       DispatchQueue.main.async {
-        self.node.performBatch(animated: false, updates: {
+        self.node.performBatch(animated: true, updates: {
           let c = self.activeCellsStrong[state.items[index].key]
           if(c == nil){
             return
@@ -452,8 +452,8 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           c!.applyModes = self.applyModes
           c!.setSpec(spec: state.items[index].config)
           self.state = state
-           // hack for disabling animations
-           self.node.moveItem(at: IndexPath(item: index, section: 1), to: IndexPath(item: index, section: 1))
+          // hack for disabling animations
+          //  self.node.moveItem(at: IndexPath(item: index, section: 1), to: IndexPath(item: index, section: 1))
         }, completion: nil)
       }
     }
@@ -542,7 +542,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.queue.async {
       self.activeCells.remove(key: self.state.items[index].key)
       DispatchQueue.main.async {
-        self.node.performBatch(animated: false, updates: {
+        self.node.performBatch(animated: true, updates: {
           self.state = state
           self.node.deleteItems(at: [IndexPath(item: index, section: 1)])
         }, completion: nil)

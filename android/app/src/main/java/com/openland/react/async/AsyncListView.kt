@@ -140,7 +140,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
                 )
                 .recyclerConfiguration(ListRecyclerConfiguration.create().orientation(LinearLayoutManager.VERTICAL).reverseLayout(this.inverted).build())
                 .onScrollListener(this.scrollListener)
-                .itemAnimator(null)
+                // .itemAnimator(null)
                 .build()
 
         recycler.clearCachedLayout()
