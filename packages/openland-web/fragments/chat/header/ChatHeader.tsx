@@ -110,7 +110,7 @@ const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
     let [muted, setMuted] = React.useState(chat.settings.mute);
 
     let res = new UPopperMenuBuilder();
-    if (layout === 'mobile') {
+    if (layout === 'mobile' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true)) {
         res.item({ title: 'Call', icon: <PhoneIcon />, action: () => calls.joinCall(chat.id, chat.__typename === 'PrivateRoom') });
     }
 
@@ -143,11 +143,13 @@ const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
 };
 
 export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
+    const { chat } = props;
     const layout = useLayout();
     const calls = React.useContext(MessengerContext).calls;
-    const title = props.chat.__typename === 'PrivateRoom' ? props.chat.user.name : props.chat.title;
-    const photo = props.chat.__typename === 'PrivateRoom' ? props.chat.user.photo : props.chat.photo;
-    const path = props.chat.__typename === 'PrivateRoom' ? `/${props.chat.user.shortname || props.chat.user.id}` : `/group/${props.chat.id}`;
+    const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
+    const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
+    const path = chat.__typename === 'PrivateRoom' ? `/${chat.user.shortname || chat.user.id}` : `/group/${chat.id}`;
+    const showCallButton = layout === 'desktop' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true);
 
     return (
         <XView flexDirection="row" flexGrow={1} flexBasis={0} minWidth={0} position="relative">
@@ -156,7 +158,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     size="medium"
                     title={title}
                     photo={photo}
-                    id={props.chat.__typename === 'PrivateRoom' ? props.chat.user.id : props.chat.id}
+                    id={chat.__typename === 'PrivateRoom' ? chat.user.id : chat.id}
                     path={path}
                 />
             </XView>
@@ -175,8 +177,8 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                 >
                     <span className={titleStyle}>
                         {title}
-                        {props.chat.__typename === 'PrivateRoom' && props.chat.user.primaryOrganization && (
-                            <span className={cx(secondary, TextDensed)}>{props.chat.user.primaryOrganization.name}</span>
+                        {chat.__typename === 'PrivateRoom' && chat.user.primaryOrganization && (
+                            <span className={cx(secondary, TextDensed)}>{chat.user.primaryOrganization.name}</span>
                         )}
                     </span>
                 </XView>
@@ -186,31 +188,31 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     fontWeight="600"
                     color="var(--foregroundTertiary)"
                 >
-                    {props.chat.__typename === 'PrivateRoom' && (
-                        <HeaderLastSeen id={props.chat.user.id} />
+                    {chat.__typename === 'PrivateRoom' && (
+                        <HeaderLastSeen id={chat.user.id} />
                     )}
-                    {props.chat.__typename === 'SharedRoom' && props.chat.membersCount !== null && props.chat.membersCount !== 0 && (
+                    {chat.__typename === 'SharedRoom' && chat.membersCount !== null && chat.membersCount !== 0 && (
                         <span className={cx(oneLiner, TextDensed)}>
-                            {props.chat.membersCount >= 1 ? `${props.chat.membersCount} members` : `1 member`}
-                            <ChatOnlinesTitle id={props.chat.id} />
+                            {chat.membersCount >= 1 ? `${chat.membersCount} members` : `1 member`}
+                            <ChatOnlinesTitle id={chat.id} />
                         </span>
                     )}
                 </XView>
             </XView>
             <XView flexDirection="row" alignItems="center">
-                {layout === 'desktop' && <CallButton chat={props.chat} calls={calls} />}
+                {showCallButton && <CallButton chat={chat} calls={calls} />}
 
                 <UMoreButton
                     menu={(ctx) =>
                         <React.Suspense fallback={<div style={{ width: 500, height: 100 }} />}>
-                            <MenuComponent ctx={ctx} id={props.chat.id} />
+                            <MenuComponent ctx={ctx} id={chat.id} />
                         </React.Suspense>
                     }
                     useWrapper={false}
                     size="large-wide"
                 />
             </XView>
-            <MessagesActionsHeader chatId={props.chat.id} />
+            <MessagesActionsHeader chatId={chat.id} />
         </XView>
     );
 });
