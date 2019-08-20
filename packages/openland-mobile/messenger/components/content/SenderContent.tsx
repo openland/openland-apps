@@ -32,5 +32,5 @@ export const SenderContent = React.memo((props: SenderContentProps) => {
                 {message.senderName}
             </ASText>
         </ASFlex>
-    )
+    );
 });
