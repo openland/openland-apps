@@ -159,7 +159,7 @@ export const ThemeDark: ThemeGlobal = {
     tintBlue: '#262626',
     tintPurple: '#262626',
 
-    blurType: 'dark',
+    blurType: 'none',
     keyboardAppearance: 'dark',
     statusBar: 'light-content',
 

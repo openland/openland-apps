@@ -122,7 +122,7 @@ export const SuggestedChats = (props: { chats: RoomShort[], router: SRouter, sel
             <SHeader title={"Chats for you"} />
             <SHeaderButton title="Skip" onPress={skip} />
             <SScrollView justifyContent="flex-start" alignContent="center">
-                <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.foregroundPrimary, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>Recommendations based on your answers</Text>
+                <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.foregroundPrimary, marginTop: theme.type === 'Dark' ? 8 : 0 }}>Recommendations based on your answers</Text>
                 <View flexDirection="row" style={{ height: 25, marginHorizontal: 16, marginVertical: 12, justifyContent: 'flex-start', alignItems: 'center' }}>
                     <Text
                         numberOfLines={1}

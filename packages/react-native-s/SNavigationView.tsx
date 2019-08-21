@@ -20,7 +20,7 @@ export interface SNavigationViewStyle {
     accentColor: string;
     iconColor: string;
     textColor: string;
-    blurType: 'dark' | 'light';
+    blurType: 'dark' | 'light' | 'none';
     hairlineColor: string;
     keyboardAppearance: 'dark' | 'light';
     headerColor: string;

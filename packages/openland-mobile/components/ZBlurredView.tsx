@@ -7,7 +7,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 export const ZBlurredView = React.memo<ViewProps & { intensity?: 'normal' | 'high', fallbackColor?: string, children?: any }>((props) => {
     let theme = React.useContext(ThemeContext);
     let { intensity, ...other } = props;
-    if (SDevice.renderBlurSupported) {
+    if (SDevice.renderBlurSupported && theme.blurType !== 'none') {
         return (
             <View {...other}>
                 <View

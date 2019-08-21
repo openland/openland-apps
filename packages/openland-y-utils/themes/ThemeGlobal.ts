@@ -83,7 +83,7 @@ export type ThemeGlobal = {
     },
 
     // mobile-only
-    blurType: 'dark' | 'light';
+    blurType: 'dark' | 'light' | 'none';
     keyboardAppearance: 'dark' | 'light';
     statusBar: 'dark-content' | 'light-content';
 

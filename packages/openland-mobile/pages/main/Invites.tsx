@@ -34,7 +34,7 @@ const InvitesComponent = XMemo<PageProps>((props) => {
             <SHeader title="Invite friends" hairline="hidden" />
             <SHeaderButton title="More" onPress={() => props.router.push("InvitesMore")} />
             <ASSafeAreaView width="100%" height="100%" backgroundColor={theme.backgroundPrimary}>
-                <Text style={{ fontSize: 18, marginBottom: 40, marginHorizontal: 16, color: theme.foregroundPrimary, marginTop: theme.blurType === 'dark' ? 8 : 0 }}>{"Share access to Openland community"}</Text>
+                <Text style={{ fontSize: 18, marginBottom: 40, marginHorizontal: 16, color: theme.foregroundPrimary, marginTop: theme.type === 'Dark' ? 8 : 0 }}>{"Share access to Openland community"}</Text>
                 <Text style={{ fontSize: 16, fontWeight: FontStyles.Weight.Medium, marginBottom: 10, marginHorizontal: 16, color: theme.foregroundSecondary }}>{"Write a post".toUpperCase()}</Text>
                 <Text style={{ fontSize: 15, marginBottom: 10, marginHorizontal: 16, color: theme.foregroundPrimary }}>{text}</Text>
                 <View backgroundColor={theme.separatorColor} marginLeft={16} marginBottom={21} height={1} />
