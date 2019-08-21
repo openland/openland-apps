@@ -12,6 +12,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { showAvatarModal } from 'openland-web/components/showAvatarModal';
+import { useRole } from 'openland-x-permissions/XWithRole';
 
 const avatarWrapper = css`
     flex-shrink: 0;
@@ -61,7 +62,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
         setSenderNameEmojify(emoji(sender.name));
     }, [sender.name]);
 
-    const canEdit = sender.id === messenger.user.id;
+    const canEdit = sender.id === messenger.user.id || useRole('super-admin');
 
     return (
         <div className={wrapper} style={{ paddingLeft: depth > 0 ? 56 + ((depth - 1) * 40) : undefined }}>
