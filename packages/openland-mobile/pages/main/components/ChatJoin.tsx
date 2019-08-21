@@ -1,34 +1,22 @@
 import * as React from 'react';
 import { View, Text, Alert, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { SHeaderView } from 'react-native-s/SHeaderView';
 import { Room_room_SharedRoom } from 'openland-api/Types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { SRouter } from 'react-native-s/SRouter';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-
-interface ChatJoinProps {
-    room: Room_room_SharedRoom;
-    theme: ThemeGlobal;
-    router: SRouter;
-}
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
 const styles = StyleSheet.create({
     wrapper: {
         flexDirection: 'column',
         width: '100%',
         height: '100%',
-    } as ViewStyle,
-    safeArea: {
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center'
     } as ViewStyle,
     infoWrapper: {
         flexDirection: 'column',
@@ -62,48 +50,61 @@ const styles = StyleSheet.create({
     } as ViewStyle
 });
 
-export const ChatJoin = XMemo<ChatJoinProps>((props) => (
-    <View style={styles.wrapper}>
-        <SHeaderView />
-        <SHeaderButton />
-        <ASSafeAreaView style={styles.safeArea}>
-            <View style={styles.container}>
-                <ZAvatar
-                    src={props.room.photo}
-                    size="xx-large"
-                    placeholderKey={props.room.id}
-                    placeholderTitle={props.room.title}
-                />
-                <View style={styles.infoWrapper}>
-                    <Text style={[styles.title, { color: props.theme.foregroundPrimary }]}>
-                        {props.room.title}
-                    </Text>
-                    {props.room.description && (
-                        <Text style={[styles.description, { color: props.theme.foregroundPrimary }]}>
-                            {props.room.description}
+interface ChatJoinProps {
+    room: Room_room_SharedRoom;
+    theme: ThemeGlobal;
+}
+
+export const ChatJoin = React.memo((props: ChatJoinProps) => {
+    const client = getClient();
+    const area = React.useContext(ASSafeAreaContext);
+    const { room, theme } = props;
+    const { id, title, photo, description, membersCount, isChannel } = room;
+    const typeStr = isChannel ? 'channel' : 'group';
+
+    return (
+        <>
+            <SHeaderView />
+            <SHeaderButton />
+            <View style={[styles.wrapper, { paddingTop: area.top, paddingBottom: area.bottom || 16 }]}>
+                <View style={styles.container}>
+                    <ZAvatar
+                        src={photo}
+                        size="xx-large"
+                        placeholderKey={id}
+                        placeholderTitle={title}
+                    />
+                    <View style={styles.infoWrapper}>
+                        <Text style={[styles.title, { color: theme.foregroundPrimary }]}>
+                            {title}
                         </Text>
-                    )}
-                    <Text style={[styles.members, { color: props.theme.foregroundTertiary }]}>
-                        {props.room.membersCount + (props.room.membersCount === 1 ? ' member' : ' members')}
-                    </Text>
+                        {!!description && (
+                            <Text style={[styles.description, { color: theme.foregroundPrimary }]}>
+                                {description}
+                            </Text>
+                        )}
+                        <Text style={[styles.members, { color: theme.foregroundTertiary }]}>
+                            {membersCount + (membersCount === 1 ? ' member' : ' members')}
+                        </Text>
+                    </View>
+                </View>
+                <View style={styles.buttonWrapper}>
+                    <ZRoundedButton
+                        title={`Join ${typeStr}`}
+                        size="large"
+                        onPress={async () => {
+                            startLoader();
+                            try {
+                                await client.mutateRoomJoin({ roomId: id });
+                            } catch (e) {
+                                Alert.alert(e.message);
+                            } finally {
+                                stopLoader();
+                            }
+                        }}
+                    />
                 </View>
             </View>
-            <View style={styles.buttonWrapper}>
-                <ZRoundedButton
-                    title={'Join ' + (props.room.isChannel ? 'channel' : 'group')}
-                    size="large"
-                    onPress={async () => {
-                        startLoader();
-                        try {
-                            await getClient().mutateRoomJoin({ roomId: props.room.id });
-                        } catch (e) {
-                            Alert.alert(e.message);
-                        } finally {
-                            stopLoader();
-                        }
-                    }}
-                />
-            </View>
-        </ASSafeAreaView>
-    </View>
-));
+        </>
+    );
+});
