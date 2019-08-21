@@ -31,7 +31,7 @@ const BaseSlide = (props: { index: number, children?: any, background?: string, 
 };
 
 const Background = React.memo(() => {
-    const entering = useClampedTime(0, 0.3);
+    // const entering = useClampedTime(0, 0.3);
     const main = useClampedTime(5 - 0.3, 5);
     const leaving = useClampedTime(5 * 5 - 0.3, 5 * 5);
 
