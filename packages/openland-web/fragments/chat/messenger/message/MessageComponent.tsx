@@ -31,9 +31,21 @@ const senderNameStyle = css`
 
 const dateStyle = css`
     width: 56px;
-    margin-top: 4px;
     opacity: 0;
-    color: var(--foregroundSecondary);
+    color: var(--foregroundTertiary);
+    position: relative;
+    flex-shrink: 0;
+
+    span {
+        position: absolute;
+        top: 4px;
+        right: 16px;
+        white-space: nowrap;
+
+        @media (max-width: 1280px) {
+            right: 8px;
+        }
+    }
 `;
 
 const senderOrgAndDateStyle = css`
@@ -128,7 +140,6 @@ export const MessageSenderContent = (props: MessageSenderContentProps) => (
 ////
 // Message container
 ////
-
 const messageContainerClass = css`
     display: flex;
     flex-direction: row;
@@ -354,8 +365,10 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                 <div className={messageInnerContainerClass}>
                     {!message.attachTop && avatar}
                     {message.attachTop && (
-                        <div className={cx(TextCaption, dateStyle, 'message-date')}>
-                            {formatTime(message.date)}
+                        <div className={cx(dateStyle, 'message-date')}>
+                            <span className={TextCaption}>
+                                {formatTime(message.date)}
+                            </span>
                         </div>
                     )}
                     <div
