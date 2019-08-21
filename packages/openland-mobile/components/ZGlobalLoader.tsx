@@ -1,16 +1,11 @@
 import * as React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
-// import Toast from 'openland-mobile/components/Toast';
 
 var watchers: ((isLoading: boolean) => void)[] = [];
 var loading = false;
 
-// const loader = Toast.loader();
-
 export function startLoader() {
-    // loader.show();
-    
     if (!loading) {
         loading = true;
         for (let w of watchers) {
@@ -20,8 +15,6 @@ export function startLoader() {
 }
 
 export function stopLoader() {
-    // loader.hide();
-    
     if (loading) {
         loading = false;
         for (let w of watchers) {
@@ -39,7 +32,6 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(52, 52, 52, 0.3)'
     } as ViewStyle,
     loader: {
         width: 96,
@@ -55,7 +47,7 @@ function GlobalLoader() {
     return (
         <View style={styles.overlay}>
             <View style={styles.loader}>
-                <LoaderSpinner />
+                <LoaderSpinner size="large" />
             </View>
         </View>
     );
