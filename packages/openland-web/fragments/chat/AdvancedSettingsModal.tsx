@@ -233,7 +233,7 @@ const ModalBody = (props: ModalBodyProps) => {
 
 export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide: () => void }) => {
     const api = useClient();
-    const [saveStatus, setSaveStatus] = React.useState<'default' | 'loading' | 'saved'>('default');
+    const [loading, setLoading] = React.useState(false);
 
     const dataFromApi = api.useRoomWithoutMembers({ id: props.roomId });
 
@@ -335,12 +335,12 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide
                     <XButton text="Cancel" style="ghost" size="large" onClick={props.hide} />
                 </XView>
                 <XButton
-                    text={saveStatus === 'default' ? 'Save' : 'Saved'}
-                    style={saveStatus === 'saved' ? 'success' : 'primary'}
+                    text="Save"
+                    style="primary"
                     size="large"
-                    loading={saveStatus === 'loading'}
+                    loading={loading}
                     onClick={async data => {
-                        setSaveStatus('loading');
+                        setLoading(true);
 
                         if (
                             welcomeMessageIsOn &&
@@ -377,13 +377,8 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide
                         });
 
                         setTriedToSend(true);
-                        setSaveStatus('saved');
 
-                        setTimeout(() => {
-                            setSaveStatus('default');
-                        }, 2000);
-
-                        // props.hide();
+                        props.hide();
                     }}
                 />
             </XModalFooter>
