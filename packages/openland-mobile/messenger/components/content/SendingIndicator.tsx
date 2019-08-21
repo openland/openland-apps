@@ -30,13 +30,14 @@ export const SendingIndicator = React.memo((props: SendingIndicatorProps) => {
 
     return (
         <ASFlex width={16} height={16}>
-            <ASImage
-                source={require('assets/ic-recent-16.png')}
-                width={16}
-                height={16}
-                tintColor={theme.foregroundQuaternary}
-                opacity={visible ? 1 : 0}
-            />
+            {visible && (
+                <ASImage
+                    source={require('assets/ic-recent-16.png')}
+                    width={16}
+                    height={16}
+                    tintColor={theme.foregroundQuaternary}
+                />
+            )}
         </ASFlex>
     );
 });
