@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Alert, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { View, Text, Alert, StyleSheet, ViewStyle, TextStyle, Platform } from 'react-native';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
@@ -60,12 +60,13 @@ export const ChatJoin = React.memo((props: ChatJoinProps) => {
     const { room, theme } = props;
     const { id, title, photo, description, membersCount, isChannel } = room;
     const typeStr = isChannel ? 'channel' : 'group';
+    const paddingBottom = Platform.OS === 'ios' ? (area.bottom || 16) : area.bottom + 16;
 
     return (
         <>
             <SHeaderView />
             <SHeaderButton />
-            <View style={[styles.wrapper, { paddingTop: area.top, paddingBottom: area.bottom || 16 }]}>
+            <View style={[styles.wrapper, { paddingTop: area.top, paddingBottom }]}>
                 <View style={styles.container}>
                     <ZAvatar
                         src={photo}
