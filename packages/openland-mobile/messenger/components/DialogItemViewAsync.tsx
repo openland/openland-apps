@@ -69,13 +69,13 @@ const DialogItemViewAsyncRender = React.memo<{ theme: ThemeGlobal, item: DialogD
                 {!props.compact && <ASFlex flexDirection="row" alignItems="stretch" height={40}>
                     <ASFlex flexGrow={1}>
                         {!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
-                            <ASText fontSize={15} color={theme.foregroundSecondary} numberOfLines={2} {...TextStylesAsync.Subhead}>
+                            <ASText {...TextStylesAsync.Subhead} color={theme.foregroundSecondary} numberOfLines={2}>
                                 {item.showSenderName && `${item.sender}: `}
                                 {item.fallback}
                             </ASText>
                         </ASFlex>}
                         {!!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
-                            <ASText fontSize={14} height={36} lineHeight={18} color={theme.accentPrimary} numberOfLines={2}>{item.typing}</ASText>
+                            <ASText {...TextStylesAsync.Subhead} height={36} color={theme.accentPrimary} numberOfLines={2}>{item.typing}</ASText>
                         </ASFlex>}
                     </ASFlex>
                     {item.unread > 0 && (
