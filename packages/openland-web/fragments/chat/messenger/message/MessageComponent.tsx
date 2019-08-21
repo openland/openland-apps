@@ -114,7 +114,7 @@ interface MessageSenderContentProps {
 export const MessageSenderContent = (props: MessageSenderContentProps) => (
     <div className={senderContainer}>
         <MessageSenderName sender={props.sender} senderNameEmojify={props.senderNameEmojify} />
-        {props.sender.isBot && <div className={botBadgeStyle}>BOT</div>}
+        {props.sender.isBot && <div className={botBadgeStyle}>bot</div>}
         {props.senderBadgeNameEmojify && (
             <MessageSenderBadge senderBadgeNameEmojify={props.senderBadgeNameEmojify} />
         )}
