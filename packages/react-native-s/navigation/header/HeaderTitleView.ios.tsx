@@ -169,7 +169,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                         <View style={{ height: '100%', width: '100%' }} pointerEvents={this.props.page.config.searchActive ? 'box-none' : 'none'}>
                                             <TouchableOpacity onPress={v.config.searchClosed!!} style={{ height: '100%', width: '100%' }}>
                                                 <View style={{ height: '100%', width: '100%' }}>
-                                                    <Text style={{ color: this.props.style.iconColor, fontSize: 17, height: 36, lineHeight: 36 }} allowFontScaling={false}>Cancel</Text>
+                                                    <Text style={{ color: this.props.style.accentColor, fontSize: 17, height: 36, lineHeight: 36 }} allowFontScaling={false}>Cancel</Text>
                                                 </View>
                                             </TouchableOpacity>
                                         </View>

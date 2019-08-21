@@ -10,7 +10,7 @@ body {
     --transparent: rgba(255, 255, 255, 0);
 
     --foregroundPrimary: #171A1F;
-    --foregroundSecondary: #676D7A;
+    --foregroundSecondary: #6C717A;
     --foregroundTertiary: #969AA3;
     --foregroundQuaternary: #C4C7CC;
     --foregroundContrast: #FFFFFF;
@@ -18,19 +18,15 @@ body {
 
     --backgroundPrimary: #FFFFFF;
     --backgroundPrimaryHover: #F2F3F5;
-    --backgroundPrimaryActive: #EBEDF0;
+    --backgroundPrimaryActive: #F2F3F5;
 
     --backgroundSecondary: #FFFFFF;
     --backgroundSecondaryHover: #F2F3F5;
     --backgroundSecondaryActive: #F2F3F5;
 
     --backgroundTertiary: #F2F3F5;
-    --backgroundTertiaryHover: #EBEDF0;
+    --backgroundTertiaryHover: #EDEEF0;
     --backgroundTertiaryActive: #E6E7EB;
-
-    --backgroundInverted: #F2F3F5;
-    --backgroundInvertedHover: #EBEDF0;
-    --backgroundInvertedActive: #F2F3F5;
 
     --accentPrimary: #1885F2;
     --accentPrimaryHover: #2693FF;
@@ -44,7 +40,7 @@ body {
     --accentPositiveHover: #41BA69;
     --accentPositiveActive: #26994D;
 
-    --accentNegative: #E62233;
+    --accentNegative: #F22447;
     --accentNegativeHover: #F23041;
     --accentNegativeActive: #CC1424;
 
@@ -61,4 +57,10 @@ body {
     --tintCyan: #21C9D9;
     --tintBlue: #1885F2;
     --tintPurple: #8518F2;
+    --tintInverted: rgba(255, 255, 255, 0.32);
+
+    --backgroundInverted: #F2F3F5;
+    --backgroundInvertedHover: #EBEDF0;
+    --backgroundInvertedActive: #F2F3F5;
+    --separatorColor: #eaeaea;
 }

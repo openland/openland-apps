@@ -7,7 +7,7 @@ export const ThemeLightBlue: ThemeGlobal = {
     transparent: 'rgba(255, 255, 255, 0)',
 
     foregroundPrimary: '#171A1F',
-    foregroundSecondary: '#676D7A',
+    foregroundSecondary: '#6C717A',
     foregroundTertiary: '#969AA3',
     foregroundQuaternary: '#C4C7CC',
     foregroundContrast: '#FFFFFF',
@@ -15,19 +15,15 @@ export const ThemeLightBlue: ThemeGlobal = {
 
     backgroundPrimary: '#FFFFFF',
     backgroundPrimaryHover: '#F2F3F5',
-    backgroundPrimaryActive: '#EBEDF0',
+    backgroundPrimaryActive: '#F2F3F5',
 
     backgroundSecondary: '#FFFFFF',
     backgroundSecondaryHover: '#F2F3F5',
     backgroundSecondaryActive: '#F2F3F5',
 
     backgroundTertiary: '#F2F3F5',
-    backgroundTertiaryHover: '#EBEDF0',
+    backgroundTertiaryHover: '#EDEEF0',
     backgroundTertiaryActive: '#E6E7EB',
-
-    backgroundInverted: '#F2F3F5',
-    backgroundInvertedHover: '#EBEDF0',
-    backgroundInvertedActive: '#F2F3F5',
 
     accentPrimary: '#1885F2',
     accentPrimaryHover: '#2693FF',
@@ -41,7 +37,7 @@ export const ThemeLightBlue: ThemeGlobal = {
     accentPositiveHover: '#41BA69',
     accentPositiveActive: '#26994D',
 
-    accentNegative: '#E62233',
+    accentNegative: '#F22447',
     accentNegativeHover: '#F23041',
     accentNegativeActive: '#CC1424',
 
@@ -52,6 +48,14 @@ export const ThemeLightBlue: ThemeGlobal = {
     overlayMedium: 'rgba(0, 0, 0, 0.48)',
     overlayLight: 'rgba(0, 0, 0, 0.24)',
 
+    tintRed: '#E52233',
+    tintOrange: '#FFAE0D',
+    tintGreen: '#36B25F',
+    tintCyan: '#21C9D9',
+    tintBlue: '#1885F2',
+    tintPurple: '#8518F2',
+    tintInverted: 'rgba(255, 255, 255, 0.32)',
+
     bubble: (isOut) => ({
         backgroundPrimary: isOut ? '#1885F2' : '#F2F3F5',
         backgroundSecondary: isOut ? '#0E7CEB' : '#EBEDF0',
@@ -60,13 +64,6 @@ export const ThemeLightBlue: ThemeGlobal = {
         foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#969AA3',
         foregroundTertiary: isOut ? 'rgba(255, 255, 255, 0.36)' : '#C4C7CC',
     }),
-
-    tintRed: '#E52233',
-    tintOrange: '#FFAE0D',
-    tintGreen: '#36B25F',
-    tintCyan: '#21C9D9',
-    tintBlue: '#1885F2',
-    tintPurple: '#8518F2',
 
     blurType: 'light',
     keyboardAppearance: 'light',
@@ -87,7 +84,9 @@ export const ThemeLightBlue: ThemeGlobal = {
     },
 
     // legacy
-
+    backgroundInverted: '#F2F3F5',
+    backgroundInvertedHover: '#EBEDF0',
+    backgroundInvertedActive: '#F2F3F5',
     separatorColor: '#eaeaea',
 };
 
@@ -98,27 +97,23 @@ export const ThemeDark: ThemeGlobal = {
     transparent: 'rgba(0, 0, 0, 0)',
 
     foregroundPrimary: '#FFFFFF',
-    foregroundSecondary: '#8F8F8F',
-    foregroundTertiary: '#5C5C5C',
-    foregroundQuaternary: '#292929',
+    foregroundSecondary: '#808185',
+    foregroundTertiary: '#55575C',
+    foregroundQuaternary: '#36383D',
     foregroundContrast: '#FFFFFF',
-    foregroundInverted: '#000000',
+    foregroundInverted: '#111214',
 
-    backgroundPrimary: '#000000',
-    backgroundPrimaryHover: '#1F1F1F',
-    backgroundPrimaryActive: '#1F1F1F',
+    backgroundPrimary: '#111214',
+    backgroundPrimaryHover: '#242629',
+    backgroundPrimaryActive: '#242629',
 
-    backgroundSecondary: '#1F1F1F',
-    backgroundSecondaryHover: '#1F1F1F',
-    backgroundSecondaryActive: '#1F1F1F',
+    backgroundSecondary: '#242629',
+    backgroundSecondaryHover: '#242629',
+    backgroundSecondaryActive: '#242629',
 
-    backgroundTertiary: '#1F1F1F',
-    backgroundTertiaryHover: '#1F1F1F',
-    backgroundTertiaryActive: '#1F1F1F',
-
-    backgroundInverted: '#000000',
-    backgroundInvertedHover: '#000000',
-    backgroundInvertedActive: '#000000',
+    backgroundTertiary: '#242629',
+    backgroundTertiaryHover: '#242629',
+    backgroundTertiaryActive: '#242629',
 
     accentPrimary: '#FFFFFF',
     accentPrimaryHover: '#FFFFFF',
@@ -132,7 +127,7 @@ export const ThemeDark: ThemeGlobal = {
     accentPositiveHover: '#41BA69',
     accentPositiveActive: '#26994D',
 
-    accentNegative: '#E62233',
+    accentNegative: '#F22447',
     accentNegativeHover: '#F23041',
     accentNegativeActive: '#CC1424',
 
@@ -143,6 +138,14 @@ export const ThemeDark: ThemeGlobal = {
     overlayMedium: 'rgba(0, 0, 0, 0.48)',
     overlayLight: 'rgba(0, 0, 0, 0.24)',
 
+    tintRed: '#242629',
+    tintOrange: '#242629',
+    tintGreen: '#242629',
+    tintCyan: '#242629',
+    tintBlue: '#242629',
+    tintPurple: '#242629',
+    tintInverted: 'rgba(255, 255, 255, 0.32)',
+
     bubble: (isOut) => ({
         backgroundPrimary: isOut ? '#4B4E52' : '#242629',
         backgroundSecondary: isOut ? '#424447' : '#2E3033',
@@ -151,13 +154,6 @@ export const ThemeDark: ThemeGlobal = {
         foregroundSecondary: isOut ? '#808185' : '#55575C',
         foregroundTertiary: isOut ? '#808185' : '#55575C',
     }),
-
-    tintRed: '#262626',
-    tintOrange: '#262626',
-    tintGreen: '#262626',
-    tintCyan: '#262626',
-    tintBlue: '#262626',
-    tintPurple: '#262626',
 
     blurType: 'none',
     keyboardAppearance: 'dark',
@@ -178,7 +174,9 @@ export const ThemeDark: ThemeGlobal = {
     },
 
     // legacy
-
+    backgroundInverted: '#000000',
+    backgroundInvertedHover: '#000000',
+    backgroundInvertedActive: '#000000',
     separatorColor: '#262629',
 };
 

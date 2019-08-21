@@ -20,7 +20,7 @@ export const PinnedMessage = XMemo<PinnedMessageProps>((props) => {
     return (
         <ASSafeAreaContext.Consumer>
             {area => (
-                <SBlurView blurType={theme.blurType} color={theme.backgroundSecondary} position="absolute" top={area.top} left={0} right={0} zIndex={2} borderBottomColor={theme.separatorColor} borderBottomWidth={1}>
+                <SBlurView blurType={theme.blurType} color={theme.backgroundPrimary} position="absolute" top={area.top} left={0} right={0} zIndex={2}>
                     <TouchableWithoutFeedback onPress={() => onPress(message.id)}>
                         <View flexDirection="row" paddingRight={16} alignItems="center">
                             <View width={50} height={showAuthor ? 52 : 44} alignItems="center" justifyContent="center">

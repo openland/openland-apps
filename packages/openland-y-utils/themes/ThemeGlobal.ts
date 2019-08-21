@@ -25,10 +25,6 @@ export type ThemeGlobal = {
     backgroundTertiaryHover: string;
     backgroundTertiaryActive: string;
 
-    backgroundInverted: string;
-    backgroundInvertedHover: string;
-    backgroundInvertedActive: string;
-
     accentPrimary: string;
     accentPrimaryHover: string;
     accentPrimaryActive: string;
@@ -52,6 +48,14 @@ export type ThemeGlobal = {
     overlayMedium: string;
     overlayLight: string;
 
+    tintRed: string;
+    tintOrange: string;
+    tintGreen: string;
+    tintCyan: string;
+    tintBlue: string;
+    tintPurple: string;
+    tintInverted: string;
+
     bubble: (isOut: boolean) => {
         backgroundPrimary: string;
         backgroundSecondary: string;
@@ -60,13 +64,6 @@ export type ThemeGlobal = {
         foregroundSecondary: string;
         foregroundTertiary: string;
     };
-
-    tintRed: string;
-    tintOrange: string;
-    tintGreen: string;
-    tintCyan: string;
-    tintBlue: string;
-    tintPurple: string;
 
     ironySpan: {
         backgroundOut: string;
@@ -88,6 +85,9 @@ export type ThemeGlobal = {
     statusBar: 'dark-content' | 'light-content';
 
     // legacy
+    backgroundInverted: string;
+    backgroundInvertedHover: string;
+    backgroundInvertedActive: string;
     separatorColor: string;
 };
 
