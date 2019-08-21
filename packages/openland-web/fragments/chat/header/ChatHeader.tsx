@@ -151,9 +151,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
     const path = chat.__typename === 'PrivateRoom' ? `/${chat.user.shortname || chat.user.id}` : `/group/${chat.id}`;
     const showCallButton = layout === 'desktop' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true);
-    const [titleEmojify, setTitleEmojify] = React.useState<string | JSX.Element>(emoji(title));
-
-    React.useEffect(() => setTitleEmojify(emoji(title)), [title]);
+    const titleEmojify = React.useMemo(() => emoji(title), []);
 
     return (
         <XView flexDirection="row" flexGrow={1} flexBasis={0} minWidth={0} position="relative">
