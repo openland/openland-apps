@@ -6,8 +6,8 @@ export const bubbleMaxWidth = Math.min(Dimensions.get('window').width - 74 - 12 
 export const bubbleMaxWidthIncoming = Math.min(Dimensions.get('window').width - 56 - 36, 360);
 
 export const contentInsetsHorizontal = 12;
-export const contentInsetsTop = 7;
-export const contentInsetsBottom = 7;
+export const contentInsetsTop = Platform.OS === 'ios' ? 6 : 7;
+export const contentInsetsBottom = Platform.OS === 'ios' ? 8 : 7;
 
 interface AsyncBubbleViewProps {
     isOut: boolean;
