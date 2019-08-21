@@ -505,13 +505,6 @@
             ]
         },
         {
-            "name": "ic-link",
-            "src": "ic-link.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
             "name": "ic-lock",
             "src": "ic-lock-16.svg",
             "sizes": [
