@@ -128,6 +128,7 @@ export const MessageSenderContent = (props: MessageSenderContentProps) => (
 ////
 // Message container
 ////
+
 const messageContainerClass = css`
     display: flex;
     flex-direction: row;
@@ -142,11 +143,58 @@ const messageContainerClass = css`
     
     @media(max-width: 750px) {
         padding: 4px 16px;
+        border-radius: 0;
     }
 
     &:hover .hover-menu-container,
     &:hover .message-date {
         opacity: 1;
+    }
+
+    &.message-attached-top {
+        margin-top: 0;
+    }
+
+    &.message-attached-bottom {
+        margin-bottom: 0;
+    }
+
+    &.message-selected {
+        background-color: var(--backgroundTertiary);
+
+        .message-buttons-wrapper,
+        .message-rich-wrapper,
+        .message-document-wrapper,
+        .message-rich-delete {
+            background-color: var(--backgroundPrimary);
+        }
+
+        .hover-menu-container {
+            background-color: var(--backgroundTertiary);
+        }
+
+        @media(min-width: 751px) {
+            & + .message-selected.message-attached-top {
+                position: relative;
+
+                &:before,
+                &:after {
+                    content: "";
+                    position: absolute;
+                    top: -5px;
+                    width: 10px; height: 10px;
+                    background: var(--backgroundTertiary);
+                }
+
+                &:before {
+                    left: 0;
+                }
+
+                &:after {
+                    right: 0;
+                }
+            }
+        }
     }
 `;
 
@@ -169,40 +217,6 @@ const messageInnerContainerClass = css`
     flex-grow: 1;
     justify-content: start;
     align-items: start;
-`;
-
-// Message container seleciton
-const messageContainerSelectedClass = css`
-    background-color: var(--backgroundTertiary);
-
-    .message-buttons-wrapper,
-    .message-rich-wrapper,
-    .message-document-wrapper,
-    .message-rich-delete {
-        background-color: var(--backgroundPrimary);
-    }
-
-    .hover-menu-container {
-        background-color: var(--backgroundTertiary);
-    }
-`;
-
-const attachTop = css`
-    margin-top: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-`;
-
-const attachBottom = css`
-    margin-bottom: 0;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-`;
-
-const noBorderRadiusMobile = css`
-    @media (max-width: 750px) {
-        border-radius: 0;
-    }
 `;
 
 ////
@@ -245,8 +259,8 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const layout = useLayout();
 
     const attachesClassNames = cx(
-        message.attachTop && attachTop,
-        message.attachBottom && attachBottom,
+        message.attachTop && 'message-attached-top',
+        message.attachBottom && 'message-attached-bottom',
     );
 
     const attachesClassNamesRef = React.useRef(attachesClassNames);
@@ -262,8 +276,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                 containerRef.current.className = cx(
                     messageContainerClass,
                     attachesClassNamesRef.current,
-                    noBorderRadiusMobile,
-                    selected && messageContainerSelectedClass,
+                    selected && 'message-selected',
                 );
             }
         });
@@ -334,8 +347,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             className={cx(
                 messageContainerClass,
                 attachesClassNames,
-                noBorderRadiusMobile,
-                selectedRef.current && messageContainerSelectedClass,
+                selectedRef.current && 'message-selected',
             )}
         >
             <div className={messageContentClass}>
