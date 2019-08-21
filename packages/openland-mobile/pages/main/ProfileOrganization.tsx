@@ -275,7 +275,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 );
             }
 
-            builder.show();
+            builder.show(true);
         }
     }, [organization]);
 

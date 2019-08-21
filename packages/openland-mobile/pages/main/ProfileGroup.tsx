@@ -126,7 +126,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             builder.action('Leave', handleLeave, false, require('assets/ic-leave-24.png'));
         }
 
-        builder.show();
+        builder.show(true);
     }, [roomId]);
 
     const handleAddMember = React.useCallback(() => {
