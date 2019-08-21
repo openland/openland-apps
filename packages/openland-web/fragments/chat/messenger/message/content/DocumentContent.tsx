@@ -20,6 +20,10 @@ const fileContainer = css`
     max-width: 480px;
     transition: background-color 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
 
+    @media (max-width: 1010px) {
+        max-width: 100%;
+    }
+
     &:hover {
         text-decoration: none;
         background-color: var(--backgroundTertiaryHover);
