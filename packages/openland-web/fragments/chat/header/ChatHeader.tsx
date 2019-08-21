@@ -25,15 +25,15 @@ import { showAddMembersModal } from '../showAddMembersModal';
 import { showRoomEditModal, showLeaveChatConfirmation } from 'openland-web/fragments/account/components/groupProfileModals';
 import { showAdvancedSettingsModal } from '../AdvancedSettingsModal';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
-import { TextDensed } from 'openland-web/utils/TextStyles';
+import { TextDensed, TextStyles } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';
 
 const secondary = css`
     color: var(--foregroundSecondary);
     padding-left: 4px;
 `;
-const secondadyAcent = css`
-    color: #1885F2;
+const secondaryAccent = css`
+    color: var(--accentPrimary);
 `;
 
 const titleStyle = css`
@@ -70,7 +70,7 @@ const HeaderLastSeen = (props: { id: string }) => {
             </span>
         );
     } else if (user && user.online) {
-        return <span className={secondadyAcent}>online</span>;
+        return <span className={secondaryAccent}>online</span>;
     } else {
         return null;
     }
@@ -87,7 +87,7 @@ const ChatOnlinesTitle = (props: { id: string }) => {
     }
 
     return (
-        <span className={secondadyAcent}>&nbsp;&nbsp;{`${onlineCount} online`}</span>
+        <span className={secondaryAccent}>&nbsp;&nbsp;{`${onlineCount} online`}</span>
     );
 };
 
@@ -185,16 +185,14 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     </span>
                 </XView>
                 <XView
-                    fontSize={13}
-                    lineHeight="18px"
-                    fontWeight="600"
+                    {...TextStyles.Densed}
                     color="var(--foregroundTertiary)"
                 >
                     {chat.__typename === 'PrivateRoom' && (
                         <HeaderLastSeen id={chat.user.id} />
                     )}
                     {chat.__typename === 'SharedRoom' && chat.membersCount !== null && chat.membersCount !== 0 && (
-                        <span className={cx(oneLiner, TextDensed)}>
+                        <span className={oneLiner}>
                             {chat.membersCount >= 1 ? `${chat.membersCount} members` : `1 member`}
                             <ChatOnlinesTitle id={chat.id} />
                         </span>
