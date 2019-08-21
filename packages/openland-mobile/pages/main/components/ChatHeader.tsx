@@ -48,11 +48,11 @@ const SharedChatHeaderContent = XMemo<{ room: Room_room_SharedRoom, typing?: str
             <View flexDirection="row">
                 {(room.kind === 'GROUP' && !room.isChannel) && (<View height={18} alignItems="center" justifyContent="center" marginRight={2}><Image opacity={CompensationAlpha} source={require('assets/ic-lock-16.png')} style={{ tintColor: theme.accentPositive, marginTop: 3 }} /></View>)}
                 {(room.isChannel) && (<View height={18} alignItems="center" justifyContent="center" marginRight={2}><Image source={require('assets/ic-channel-13.png')} style={{ tintColor: room.kind === 'GROUP' ? theme.accentPositive : theme.foregroundPrimary }} /></View>)}
-                <Text style={[styles.title, { color: theme.foregroundPrimary }, room.kind === 'GROUP' && { color: theme.accentPositive }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
+                <Text style={[styles.title, { color: theme.foregroundPrimary }, room.kind === 'GROUP' && { color: theme.accentPositive }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
             </View>
-            <Text style={[styles.subTitle, { color: accent ? theme.accentPrimary : theme.foregroundSecondary }]} numberOfLines={1} ellipsizeMode="tail">
+            <Text style={[styles.subTitle, { color: accent ? theme.accentPrimary : theme.foregroundSecondary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
                 {subtitle}
-                {onlineCount > 0 && (!typing) && (<Text style={{ color: theme.accentPrimary }}>{'  '}{onlineCount} online</Text>)}
+                {onlineCount > 0 && (!typing) && (<Text style={{ color: theme.accentPrimary }} allowFontScaling={false}>{'  '}{onlineCount} online</Text>)}
             </Text>
         </View>
     );
@@ -87,9 +87,9 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
     return (
         <View flexDirection="column" alignItems="flex-start" alignSelf="center" justifyContent="center" pointerEvents="box-none" height={44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
             <View flexDirection="row">
-                <Text style={[styles.title, { color: theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
+                <Text style={[styles.title, { color: theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
             </View>
-            <Text style={[styles.subTitle, { color: accent ? theme.accentPrimary : theme.foregroundSecondary }]}>{subtitle}</Text>
+            <Text style={[styles.subTitle, { color: accent ? theme.accentPrimary : theme.foregroundSecondary }]} allowFontScaling={false}>{subtitle}</Text>
         </View>
     );
 });
