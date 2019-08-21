@@ -6,6 +6,7 @@ import { UPresence } from '../UPresence';
 import { XView } from 'react-mental';
 import CrownIcon from 'openland-icons/ic-crown-4.svg';
 import { css } from 'linaria';
+import { emoji } from 'openland-y-utils/emoji';
 
 const OwnerIconClass = css`
     & * {
@@ -42,15 +43,14 @@ interface UUserViewProps {
 export const UUserView = React.memo((props: UUserViewProps & Partial<UListItemProps>) => {
     const { user, badge, role, onClick, ...other } = props;
     const { id, photo, name, online, shortname, primaryOrganization } = user;
+    const badgeNameEmojify = badge ? React.useMemo(() => emoji(' · ' + badge.name), []) : undefined;
 
     return (
         <UListItem
             title={name}
             titleIcon={role ? <AdminIcon role={role} /> : undefined}
             subtitle={primaryOrganization ? primaryOrganization.name : undefined}
-            description={
-                <UPresence suffix={badge ? ' · ' + badge.name : undefined} user={props.user} />
-            }
+            description={<UPresence suffix={badgeNameEmojify} user={props.user} />}
             avatar={{ photo, id, title: name, online }}
             path={!onClick ? `/${shortname || id}` : undefined}
             onClick={onClick}

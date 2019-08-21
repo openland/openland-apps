@@ -5,7 +5,7 @@ import { XViewSelectedContext } from 'react-mental';
 
 interface UPresenceProps {
     user: UserShort;
-    suffix?: string;
+    suffix?: string | JSX.Element;
 }
 
 export const UPresence = ((props: UPresenceProps) => {
