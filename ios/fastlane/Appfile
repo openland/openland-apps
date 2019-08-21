@@ -1,5 +1,5 @@
 app_identifier("com.openland.app") # The bundle identifier of your app
-apple_id("steve@openland.com") # Your Apple email address
+apple_id("gleb@openland.com") # Your Apple email address
 
 itc_team_id("119280776") # App Store Connect Team ID
 team_id("ATWUYU6747") # Developer Portal Team ID
