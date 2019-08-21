@@ -4,6 +4,7 @@ import { XView, XViewSelectedContext, XViewProps } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { UAvatar } from './UAvatar';
 import { UIcon } from './UIcon';
+import { emoji } from 'openland-y-utils/emoji';
 
 const SelectableSVG = React.memo((props: { icon: JSX.Element }) => {
     const selected = React.useContext(XViewSelectedContext);
@@ -91,6 +92,10 @@ export const UListItem = React.memo((props: UListItemProps) => {
         [hovered],
     );
 
+    const titleEmojify = typeof title === 'string' ? React.useMemo(() => emoji(title), []) : title;
+    const descriptionEmojify = typeof description === 'string' ? React.useMemo(() => emoji(description), []) : description;
+    const subtitleEmojify = typeof subtitle === 'string' ? React.useMemo(() => emoji(subtitle), []) : subtitle;
+
     const content = (
         <>
             {!!icon &&
@@ -134,7 +139,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                         color="var(--foregroundPrimary)"
                         selectedColor="var(--foregroundInverted)"
                     >
-                        {title}
+                        {titleEmojify}
                     </SelectableText>
 
                     {!!subtitle && (
@@ -144,7 +149,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                             selectedColor="var(--foregroundInverted)"
                             marginLeft={8}
                         >
-                            {subtitle}
+                            {subtitleEmojify}
                         </SelectableText>
                     )}
                 </XView>
@@ -159,7 +164,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                         white-space="nowrap"
                         overflow="hidden"
                     >
-                        {description}
+                        {descriptionEmojify}
                     </SelectableText>
                 )}
             </XView>
