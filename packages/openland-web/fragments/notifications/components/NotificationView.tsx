@@ -9,7 +9,7 @@ import { UIconLabeled } from 'openland-web/components/unicorn/UIconLabeled';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { useClient } from 'openland-web/utils/useClient';
 import ReplyIcon from 'openland-icons/s/ic-reply-24.svg';
-import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
+import ClearIcon from 'openland-icons/s/ic-delete-24.svg';
 import FollowIcon from 'openland-icons/s/ic-follow-24.svg';
 import UnfollowIcon from 'openland-icons/s/ic-follow-off-24.svg';
 
@@ -66,13 +66,13 @@ export const NotificationView = React.memo((props: NotificationViewProps) => {
         }
     }, [notificationId, peerRootId, isSubscribedMessageComments]);
 
-    const handleDeleteClick = React.useCallback(() => {
+    const handleClearClick = React.useCallback(() => {
         if (notificationId) {
             const builder = new AlertBlanketBuilder();
 
-            builder.title('Delete notification');
-            builder.message('Delete this notification? This cannot be undone.');
-            builder.action('Delete', async () => {
+            builder.title('Clear notification');
+            builder.message('Clear this notification? This cannot be undone.');
+            builder.action('Clear', async () => {
                 await client.mutateDeleteNotification({ notificationId });
             }, 'danger');
             builder.show();
@@ -116,7 +116,7 @@ export const NotificationView = React.memo((props: NotificationViewProps) => {
                             icon={isSubscribedMessageComments ? <UnfollowIcon /> : <FollowIcon />}
                             label={isSubscribedMessageComments ? 'Unfollow thread' : 'Follow thread'}
                         />
-                        <UIconLabeled onClick={handleDeleteClick} icon={<DeleteIcon />} label="Delete" />
+                        <UIconLabeled onClick={handleClearClick} icon={<ClearIcon />} label="Clear" />
                     </div>
                 )}
             </div>
