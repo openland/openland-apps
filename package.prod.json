@@ -106,6 +106,7 @@
         "emoji-regex": "^8.0.0",
         "copy-to-clipboard": "3.2.0",
         "react-window": "^1.8.5",
-        "three": "^0.107.0"
+        "three": "^0.107.0",
+        "bezier-easing": "^2.1.0"
     }
 }

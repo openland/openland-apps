@@ -91,5 +91,7 @@ module.exports = {
         'openland-landing': '<rootDir>/packages/openland-landing',
         'openland-web/(.*)': '<rootDir>/packages/openland-web/$1',
         'openland-web': '<rootDir>/packages/openland-web',
+        'openland-video/(.*)': '<rootDir>/packages/openland-video/$1',
+        'openland-video': '<rootDir>/packages/openland-video',
     },
 };

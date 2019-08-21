@@ -3,14 +3,14 @@ import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-// import { UnimojiViewer } from 'openland-unimoji/UnimojiViewer';
+import { VideoPreview } from 'openland-video/VideoPreview';
 
-export default withApp('Unimoji', 'viewer', props => {
+export default withApp('Videos', 'viewer', props => {
     return (
-        <DevDocsScaffold title="Unimoji">
+        <DevDocsScaffold title="Videos">
             <XHorizontal>
                 <XVertical>
-                    {/* <UnimojiViewer /> */}
+                    <VideoPreview name="sample" />
                 </XVertical>
             </XHorizontal>
         </DevDocsScaffold>

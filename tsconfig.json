@@ -113,8 +113,8 @@
             "openland-y-forms": [
                 "openland-y-forms"
             ],
-            "openland-mac": [
-                "openland-mac/src"
+            "openland-video": [
+                "openland-video"
             ],
             "openland-xp": [
                 "openland-xp"
@@ -227,6 +227,7 @@
         "./packages/react-native-s",
         "./packages/react-native-auth0-s",
         "./packages/openland-unicorn",
-        "./packages/openland-unimoji"
+        "./packages/openland-unimoji",
+        "./packages/openland-video"
     ]
 }
