@@ -29,7 +29,7 @@ export const CallBarComponent = XMemo<{ id: string }>((props) => {
                 elevation={4}
             >
                 <View flexGrow={1} marginLeft={16} height={20}>
-                    <Text style={{ fontSize: 16, fontWeight: Platform.OS === 'android' ? '500' : '600', color: '#fff' }} >Call in progress</Text>
+                    <Text style={{ fontSize: 16, fontWeight: Platform.OS === 'android' ? '500' : '600', color: '#fff' }} allowFontScaling={false}>Call in progress</Text>
                 </View>
                 <SRouterContext.Consumer>
                     {r => (

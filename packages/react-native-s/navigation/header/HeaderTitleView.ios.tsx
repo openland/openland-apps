@@ -139,14 +139,14 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                         <TouchableWithoutFeedback onPress={v.config.searchPress}>
                                             <View style={{ flexDirection: 'row', height: 36, alignItems: 'center', flexGrow: 1 }}>
                                                 <Image source={require('assets/ic-search-16.png')} style={{ width: 16, height: 16, marginLeft: 12, marginRight: 8, tintColor: this.props.style.searchColor }} />
-                                                <Text style={{ fontSize: 17, marginTop: -1, color: this.props.style.searchColor, lineHeight: 22 }}>Search</Text>
+                                                <Text style={{ fontSize: 17, marginTop: -1, color: this.props.style.searchColor, lineHeight: 22 }} allowFontScaling={false}>Search</Text>
                                             </View>
                                         </TouchableWithoutFeedback>
                                     )}
                                     {v.config.searchActive && (
                                         <View style={{ flexDirection: 'row', height: 36, alignItems: 'center', flexGrow: 1, marginRight: 70 }}>
                                             <Image source={require('assets/ic-search-16.png')} style={{ width: 16, height: 16, marginLeft: 12, marginRight: 8, tintColor: this.props.style.searchColor }} />
-                                            <TextInput value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} style={{ fontSize: 17, height: 24, flexGrow: 1, flexBasis: 0, marginRight: 6, color: this.props.style.textColor }} placeholder="Search" placeholderTextColor={this.props.style.searchColor} keyboardAppearance={this.props.style.keyboardAppearance} selectionColor={this.props.style.selectionColor} />
+                                            <TextInput value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} style={{ fontSize: 17, height: 24, flexGrow: 1, flexBasis: 0, marginRight: 6, color: this.props.style.textColor }} placeholder="Search" placeholderTextColor={this.props.style.searchColor} keyboardAppearance={this.props.style.keyboardAppearance} selectionColor={this.props.style.selectionColor} allowFontScaling={false} />
                                             {this.state.searchText.length > 0 && (
                                                 <TouchableOpacity onPress={() => this.handleTextChange('')}>
                                                     <View style={{ height: 36, width: 36, marginRight: -2, justifyContent: 'center', alignItems: 'center' }}>
