@@ -83,7 +83,7 @@ export const ChatJoin = XMemo<ChatJoinProps>((props) => (
                             {props.room.description}
                         </Text>
                     )}
-                    <Text style={[styles.members, { color: props.theme.foregroundSecondary }]}>
+                    <Text style={[styles.members, { color: props.theme.foregroundTertiary }]}>
                         {props.room.membersCount + (props.room.membersCount === 1 ? ' member' : ' members')}
                     </Text>
                 </View>
