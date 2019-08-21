@@ -32,11 +32,13 @@ const iconContainer = css`
     position: relative;
     display: flex;
     background-color: var(--foregroundTertiary);
-    color: var(--foregroundTertiary);
-    height: 72px;
-    border-radius: 72px;
-    margin-bottom: 24px;
+    color: var(--accentPrimary);
+    width: 80px; height: 80px;
+    border-radius: 40px;
+    margin-bottom: 20px;
     transition: background-color 250ms cubic-bezier(.29, .09, .24, .99);
+    align-items: center;
+    justify-content: center;
 `;
 
 const iconContainerAnim = css`
@@ -45,10 +47,10 @@ const iconContainerAnim = css`
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--foregroundTertiary);
+    background-color: var(--accentPrimary);
     opacity: 0;
-    height: 72px;
-    border-radius: 72px;
+    width: 80px; height: 80px;
+    border-radius: 40px;
     transform: scale(1);
     z-index: 2;
     transition: transform 300ms ease, opacity 150ms cubic-bezier(.29, .09, .24, .99);
@@ -111,23 +113,23 @@ export const DropZone = (props: DropZoneProps) => {
 
     const onDragOver = React.useCallback((ev: React.DragEvent) => {
         if (containerRef.current) {
-            containerRef.current.style.color = '#000';
+            containerRef.current.style.color = 'var(--foregroundPrimary)';
         }
         if (iconContainerRef.current) {
-            iconContainerRef.current.style.backgroundColor = '#1885F2';
+            iconContainerRef.current.style.backgroundColor = 'var(--accentPrimary)';
         }
         if (iconContainerAnimRef.current) {
-            iconContainerAnimRef.current.style.transform = 'scale(1.2)';
-            iconContainerAnimRef.current.style.opacity = '0.5';
+            iconContainerAnimRef.current.style.transform = 'scale(1.4)';
+            iconContainerAnimRef.current.style.opacity = '0.24';
         }
 
     }, []);
     const onDragLeave = React.useCallback(() => {
         if (containerRef.current) {
-            containerRef.current.style.color = '#969AA3';
+            containerRef.current.style.color = 'var(--foregroundTertiary)';
         }
         if (iconContainerRef.current) {
-            iconContainerRef.current.style.backgroundColor = '#969AA3';
+            iconContainerRef.current.style.backgroundColor = 'var(--foregroundTertiary)';
         }
         if (iconContainerAnimRef.current) {
             iconContainerAnimRef.current.style.transform = 'scale(1)';
