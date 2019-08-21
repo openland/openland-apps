@@ -55,6 +55,10 @@ export const ThemeLightBlue: ThemeGlobal = {
     bubble: (isOut) => ({
         backgroundPrimary: isOut ? '#1885F2' : '#F2F3F5',
         backgroundSecondary: isOut ? '#0E7CEB' : '#EBEDF0',
+
+        foregroundPrimary: isOut ? '#FFFFFF' : '#171A1F',
+        foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#969AA3',
+        foregroundTertiary: isOut ? 'rgba(255, 255, 255, 0.36)' : '#C4C7CC',
     }),
 
     tintRed: '#E52233',
@@ -140,8 +144,12 @@ export const ThemeDark: ThemeGlobal = {
     overlayLight: 'rgba(0, 0, 0, 0.24)',
 
     bubble: (isOut) => ({
-        backgroundPrimary: isOut ? '#4d4d4d' : '#333333',
-        backgroundSecondary: isOut ? '#4d4d4d' : '#333333',
+        backgroundPrimary: isOut ? '#4B4E52' : '#242629',
+        backgroundSecondary: isOut ? '#424447' : '#2E3033',
+
+        foregroundPrimary: isOut ? '#FFFFFF' : '#FFFFFF',
+        foregroundSecondary: isOut ? '#808185' : '#55575C',
+        foregroundTertiary: isOut ? '#808185' : '#55575C',
     }),
 
     tintRed: '#262626',

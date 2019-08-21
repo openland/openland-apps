@@ -8,39 +8,33 @@ import { formatTime } from 'openland-y-utils/formatTime';
 import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
 import { Platform } from 'react-native';
 
-const EditIcon = React.memo((props: { color: string; opacity?: number }) => (
-    <ASImage
-        source={require('assets/ic-edited-16.png')}
-        width={16}
-        height={16}
-        marginRight={2}
-        tintColor={props.color}
-        opacity={props.opacity}
-    />
-));
-
 interface LabelProps {
     date: number;
     edited: boolean;
     color: string;
-    iconOpacity?: number;
-    textOpacity?: number;
 }
 
 // Sorry universe
 const baselineCompensation = Platform.OS === 'ios' ? 2 : 0;
-
 const Label = React.memo((props: LabelProps) => {
-    const { date, edited, color, iconOpacity, textOpacity } = props;
+    const { date, edited, color } = props;
 
     return (
         <ASFlex alignItems="center">
-            {edited && <EditIcon color={color} opacity={iconOpacity} />}
+            {edited && (
+                <ASImage
+                    source={require('assets/ic-edited-16.png')}
+                    width={16}
+                    height={16}
+                    marginRight={2}
+                    tintColor={color}
+                    opacity={0.84}
+                />
+            )}
             <ASFlex marginTop={-baselineCompensation} marginBottom={baselineCompensation}>
                 <ASText
                     {...TextStylesAsync.Caption}
                     color={color}
-                    opacity={textOpacity}
                 >
                     {formatTime(date)}
                 </ASText>
@@ -57,7 +51,7 @@ interface MetaInfoIndicatorProps {
 
 export const MetaInfoIndicator = React.memo((props: MetaInfoIndicatorProps) => {
     const { type, message, theme } = props;
-    const { isEdited, isOut, date } = message;
+    const { isEdited = false, isOut, date } = message;
 
     if (type === 'emoji') {
         return (
@@ -68,9 +62,8 @@ export const MetaInfoIndicator = React.memo((props: MetaInfoIndicatorProps) => {
             >
                 <Label
                     date={date}
-                    edited={!!isEdited}
+                    edited={isEdited}
                     color={theme.foregroundTertiary}
-                    iconOpacity={0.84}
                 />
             </ASFlex>
         );
@@ -89,9 +82,8 @@ export const MetaInfoIndicator = React.memo((props: MetaInfoIndicatorProps) => {
                     <ASFlex marginTop={1} marginBottom={1} marginLeft={isEdited ? 6 : 8} marginRight={8}>
                         <Label
                             date={date}
-                            edited={!!isEdited}
+                            edited={isEdited}
                             color={theme.foregroundContrast}
-                            iconOpacity={0.84}
                         />
                     </ASFlex>
                 </ASFlex>
@@ -108,10 +100,8 @@ export const MetaInfoIndicator = React.memo((props: MetaInfoIndicatorProps) => {
         >
             <Label
                 date={date}
-                edited={!!isEdited}
-                color={isOut ? theme.foregroundContrast : theme.foregroundTertiary}
-                iconOpacity={isOut ? 0.7 : 0.84}
-                textOpacity={isOut ? 0.56 : undefined}
+                edited={isEdited}
+                color={theme.bubble(isOut).foregroundSecondary}
             />
         </ASFlex>
     );

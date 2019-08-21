@@ -70,7 +70,7 @@ const letterSpacing = {
 export class RenderSpans extends React.PureComponent<RenderSpansProps> {
     render() {
         const { emojiOnly, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetVertical, onUserPress, onGroupPress } = this.props;
-        const mainTextColor = emojiOnly ? theme.foregroundPrimary : (message.isOut ? theme.foregroundContrast : theme.foregroundPrimary);
+        const color = emojiOnly ? theme.foregroundPrimary : theme.bubble(message.isOut).foregroundPrimary;
         const content = getSpansSlices(spans, padded);
 
         return (
@@ -80,7 +80,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                         {(c.type === 'slice' || c.type === 'loud' || c.type === 'emoji' || c.type === 'padded') && (
                             <TextWrapper
                                 key={c.type + '-' + i}
-                                color={mainTextColor}
+                                color={color}
                                 fontStyle={fontStyle}
                                 fontSize={fontSize[c.type]}
                                 lineHeight={lineHeight[c.type]}
@@ -100,7 +100,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                 key={c.type + '-' + i}
                                 marginLeft={-insetLeft}
                                 marginRight={-insetRight}
-                                marginTop={i === 0 ? insetVertical : undefined}
+                                marginTop={i === 0 ? insetVertical + ((message.isOut || message.attachTop) ? 2 : 0) : undefined}
                                 marginBottom={(!(content[i + 1] && content[i + 1].type === 'padded')) ? insetVertical : undefined}
                                 backgroundColor={(message.isOut && !message.isService) ? theme.codeSpan.backgroundOut : theme.codeSpan.background}
                             >
@@ -109,7 +109,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                         fontSize={fontSize[c.type]}
                                         lineHeight={lineHeight[c.type]}
                                         letterSpacing={letterSpacing[c.type]}
-                                        color={mainTextColor}
+                                        color={color}
                                         maxWidth={!width ? maxWidth : undefined}
                                         width={width}
                                     >

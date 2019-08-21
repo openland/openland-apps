@@ -26,7 +26,7 @@ interface ReplyContentProps {
 export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
     render() {
-        let { message, maxWidth, width, compensateBubble } = this.props;
+        let { message, maxWidth, width, compensateBubble, theme } = this.props;
 
         let lineBackgroundPatch: any;
         let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
@@ -47,14 +47,14 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                             let attachFile = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
 
                             return (
-                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={message.isOut ? this.props.theme.foregroundContrast : this.props.theme.foregroundQuaternary}>
+                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={theme.bubble(message.isOut).foregroundTertiary}>
                                     <ASText
                                         key={'reply-author-' + m.id}
                                         marginTop={-2}
                                         height={15}
                                         lineHeight={15}
                                         marginLeft={10}
-                                        color={message.isOut ? this.props.theme.foregroundContrast : this.props.theme.foregroundPrimary}
+                                        color={theme.bubble(message.isOut).foregroundPrimary}
                                         letterSpacing={0}
                                         fontSize={13}
                                         onPress={() => this.props.onUserPress(repliedMessage!.sender.id)}
@@ -70,7 +70,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                                 spans={repliedMessage.textSpans}
                                                 message={message}
                                                 padded={compensateBubble ? (!message.text && (i + 1 === message.reply!.length)) : false}
-                                                theme={this.props.theme}
+                                                theme={theme}
                                                 maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 70}
                                                 width={width}
                                                 insetLeft={8}
@@ -93,7 +93,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                     {attachFile && !attachFile.fileMetadata.isImage ? (
                                         <AsyncReplyMessageDocumentView
                                             maxWidth={message.isOut ? bubbleMaxWidth - 100 : bubbleMaxWidthIncoming - 80}
-                                            theme={this.props.theme}
+                                            theme={theme}
                                             attach={attachFile}
                                             onPress={this.props.onDocumentPress}
                                             parent={message}
@@ -104,14 +104,14 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                             );
                         } else {
                             return (
-                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={message.isOut ? this.props.theme.foregroundContrast : this.props.theme.foregroundQuaternary}>
+                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={theme.bubble(message.isOut).foregroundTertiary}>
                                     {message.textSpans.length > 0 && (
                                         <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10}>
                                             <RenderSpans
                                                 spans={message.textSpans}
                                                 message={message}
                                                 padded={compensateBubble ? (!message.text && (i + 1 === message.reply!!.length)) : false}
-                                                theme={this.props.theme}
+                                                theme={theme}
                                                 maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 70}
                                                 width={width}
                                                 insetLeft={8}

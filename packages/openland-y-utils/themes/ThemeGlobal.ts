@@ -55,6 +55,10 @@ export type ThemeGlobal = {
     bubble: (isOut: boolean) => {
         backgroundPrimary: string;
         backgroundSecondary: string;
+
+        foregroundPrimary: string;
+        foregroundSecondary: string;
+        foregroundTertiary: string;
     };
 
     tintRed: string;
