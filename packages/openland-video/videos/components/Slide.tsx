@@ -5,7 +5,7 @@ import { Easings } from './Easings';
 
 export const Slide = React.memo((props: { children?: any, start: number, duration: number }) => {
     const time = useTime();
-    const visible = (time >= props.start - 0.3) && (time <= props.start + props.duration + 0.3);
+    // const visible = (time >= props.start - 0.3) && (time <= props.start + props.duration + 0.3);
     const startAnimation = Easings.standart(useClampedTime(props.start - 0.3, props.start));
     // const endAnimation = useClampedTime(props.start + props.duration - 0.3, props.start + props.duration);
 

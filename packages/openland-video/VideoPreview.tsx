@@ -9,7 +9,7 @@ export const VideoPreview = React.memo((props: {
 }) => {
     const video = React.useMemo(() => VideoRegistry.resolve(props.name), []);
     const mountTime = React.useMemo(() => new Date().getTime(), []);
-    const [frame, setFrame] = React.useState(0);
+    const [, setFrame] = React.useState(0);
     React.useEffect(() => {
         let res = setInterval(() => {
             setFrame((v) => v + 1);
