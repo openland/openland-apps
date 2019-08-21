@@ -38,15 +38,13 @@ const MessagesSearchInner = (props: MessagesSearchProps) => {
                 const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
                 const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
 
-                const emojifyText = (msg: string) => emoji(msg);
-
                 return (
                     <DialogView
                         item={{
                             titleEmojify: emoji(title),
                             titlePlaceholderEmojify: emoji(extractPlaceholder(title)),
-                            senderEmojify: message.sender && emojifyText(message.sender.name),
-                            messageEmojify: message.message && emojifyText(message.message),
+                            senderEmojify: message.sender && emoji(message.sender.name),
+                            messageEmojify: (message.message && emoji(message.message)) || undefined,
                             message: message.message || undefined,
                             title,
                             key: chat.id,
@@ -54,6 +52,7 @@ const MessagesSearchInner = (props: MessagesSearchProps) => {
                             kind: chat.__typename === 'PrivateRoom' ? 'PRIVATE' : 'GROUP',
                             unread: 0,
                             fallback: message.fallback,
+                            fallbackEmojify: emoji(message.fallback),
                             date: message.date,
                             photo: photo || undefined,
                             attachments:

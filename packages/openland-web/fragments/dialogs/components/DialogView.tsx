@@ -158,7 +158,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     } else {
         if (dialog.message) {
             if (isService) {
-                message = <span>{dialog.fallback}</span>;
+                message = <span>{dialog.fallbackEmojify}</span>;
             } else if (!isService) {
                 message = (
                     <span>
@@ -186,7 +186,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
             message = (
                 <span>
                     {sender}
-                    {dialog.fallback}
+                    {dialog.fallbackEmojify}
                 </span>
             );
         }
