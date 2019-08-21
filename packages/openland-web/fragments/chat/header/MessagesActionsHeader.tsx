@@ -13,6 +13,7 @@ import { showChatPicker } from '../showChatPicker';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { useRole } from 'openland-x-permissions/XWithRole';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 
 const containerClass = css`
     position: absolute;
@@ -119,7 +120,7 @@ const Counter = (props: { engine: MessagesActionsStateEngine }) => {
     );
 };
 
-const Buttons = (props: { chatId: string, engine: MessagesActionsStateEngine, messenger: MessengerEngine }) => {
+const Buttons = (props: { conversation: ConversationEngine, engine: MessagesActionsStateEngine, messenger: MessengerEngine }) => {
     let deleteCallback = React.useCallback(() => {
         let ids = props.engine.getState().messages.filter(m => !!m.id).map(m => m.id!);
         showDeleteMessagesModal(ids, props.messenger.client, props.engine.clear);
@@ -135,11 +136,12 @@ const Buttons = (props: { chatId: string, engine: MessagesActionsStateEngine, me
         props.engine.reply();
     }, []);
     let state = props.engine.useState();
+    let canReply = props.conversation.canSendMessage;
     let canDelete = useRole('super-admin') || (!state.messages.filter(m => !m.sender.isYou).length);
     return (
         <XView flexDirection="row">
             <div className={canDelete ? animateUpCenter : animateCenterUp}><UButton onClick={deleteCallback} text="Delete" style="secondary" /></div>
-            <UButton onClick={replyCallback} text="Reply" marginLeft={8} />
+            {canReply && <UButton onClick={replyCallback} text="Reply" marginLeft={8} />}
             <UButton onClick={forwardCallback} text="Forward" marginLeft={8} />
         </XView>
     );
@@ -148,7 +150,8 @@ const Buttons = (props: { chatId: string, engine: MessagesActionsStateEngine, me
 export const MessagesActionsHeader = (props: { chatId: string }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
     let messenger = React.useContext(MessengerContext);
-    let engine = messenger.getConversation(props.chatId).messagesActionsStateEngine;
+    let conversation = messenger.getConversation(props.chatId);
+    let engine = conversation.messagesActionsStateEngine;
     useShortcuts({ keys: ['Escape'], callback: () => engine.clear() });
 
     React.useEffect(() => {
@@ -163,7 +166,7 @@ export const MessagesActionsHeader = (props: { chatId: string }) => {
         <div ref={containerRef} className={containerClass} >
             <XView flexGrow={1} justifyContent="space-between" alignItems="center" flexDirection="row">
                 <Counter engine={engine} />
-                <Buttons engine={engine} chatId={props.chatId} messenger={messenger} />
+                <Buttons engine={engine} conversation={conversation} messenger={messenger} />
             </XView>
         </div>
     );
