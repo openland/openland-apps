@@ -53,7 +53,7 @@ export class ActionSheetBuilder {
 
     renderItems = (ctx: ZModalController | BottomSheetActions) => {
         return (
-            <> 
+            <>
                 {this._items.map((a, i) => (
                     <View key={i + 'list-item'}>
                         {a.__typename === 'ActionItem' && (
@@ -72,12 +72,16 @@ export class ActionSheetBuilder {
                             </View>
                         )}
                     </View>
-                ))} 
+                ))}
             </>
         );
     }
 
-    show() {
+    show(haptic?: boolean) {
+        if (haptic) {
+            ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false });
+        }
+
         if (isPad) {
             showSheetModal((ctx) => {
                 return (
