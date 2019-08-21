@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-recent",
+            "src": "ic-recent-16.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
             "name": "ic-edited",
             "src": "ic-edited-16.svg",
             "sizes": [

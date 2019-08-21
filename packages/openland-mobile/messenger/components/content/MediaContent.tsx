@@ -131,7 +131,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
         const { hasTopContent, hasBottomContent, message, attach, layout, compensateBubble, theme } = this.props;
         const { downloadState } = this.state;
         const isSingle = !hasTopContent && !hasBottomContent;
-        const useBorder = isSingle && !!compensateBubble && layout.height >= 120 && layout.width >= 120;
+        const useBorder = isSingle && !!compensateBubble && layout.height >= IMAGE_MIN_SIZE && layout.width >= IMAGE_MIN_SIZE;
         const viewWidth = isSingle ? Math.max(layout.width, IMAGE_MIN_SIZE) : undefined;
         const viewHeight = Math.max(layout.height, IMAGE_MIN_SIZE);
 

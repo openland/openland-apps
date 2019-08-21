@@ -12,6 +12,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { UnsupportedContent } from './content/UnsupportedContent';
+import { SendingIndicator } from './content/SendingIndicator';
 
 const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMessageItem, theme: ThemeGlobal }>((props) => {
     const [selected, toggleSelect] = useMessageSelected(props.engine.messagesActionsStateEngine, props.message);
@@ -44,11 +45,11 @@ export interface AsyncMessageViewProps {
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal();
     const { message, engine, onMessageDoublePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReactionsPress } = props;
-    const { isOut, attachTop, attachBottom, commentsCount, reactions, sender } = message;
+    const { isOut, attachTop, attachBottom, commentsCount, reactions, sender, isSending } = message;
 
     let lastTap: number;
     const handleDoublePress = () => {
-        if (!message.isSending) {
+        if (!isSending) {
             const now = Date.now();
             const DOUBLE_PRESS_DELAY = 300;
 
@@ -70,7 +71,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         res = <UnsupportedContent message={message} theme={theme} />;
     }
 
-    const showReactions = ((engine.isChannel || commentsCount > 0) || reactions.length > 0) && !message.isSending;
+    const showReactions = ((engine.isChannel || commentsCount > 0) || reactions.length > 0) && !isSending;
     const marginTop = attachTop ? 2 : 6;
     const marginBottom = attachBottom ? (showReactions ? 10 : 2) : 6;
 
@@ -95,7 +96,11 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
                     {isOut && (
                         <ASFlex flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" alignItems="flex-end" justifyContent="flex-end">
-                            {/* <ASFlex backgroundColor="blue" width={16} height={16} marginRight={12} marginBottom={10} /> */}
+                            {isSending && (
+                                <ASFlex marginRight={12} marginBottom={10}>
+                                    <SendingIndicator sendTime={message.date} theme={theme} />
+                                </ASFlex>
+                            )}
                         </ASFlex>
                     )}
 
