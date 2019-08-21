@@ -113,6 +113,10 @@ export const SettingsNotificationsFragment = React.memo(() => {
                                     label: `At most once per day`,
                                 },
                                 {
+                                    value: EmailFrequency.WEEK_1,
+                                    label: `At most once per weel`,
+                                },
+                                {
                                     value: EmailFrequency.NEVER,
                                     label: `Never notify me`,
                                 },
