@@ -168,7 +168,7 @@ export class MobileMessenger {
                     Clipboard.setString(message.text!!);
                 }, false, require('assets/ic-copy-24.png'));
 
-                builder.show();
+                builder.show(true);
             }
 
             return;
@@ -248,7 +248,7 @@ export class MobileMessenger {
             }, false, require('assets/ic-delete-24.png'));
         }
 
-        builder.show();
+        builder.show(true);
     }
 
     private handleMessageDoublePress = (message: DataSourceMessageItem) => {

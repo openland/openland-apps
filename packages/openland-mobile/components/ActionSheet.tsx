@@ -6,6 +6,7 @@ import { ZListItem } from './ZListItem';
 import { ZRoundedButton } from './ZRoundedButton';
 import { showBottomSheet, BottomSheetActions } from './BottomSheet';
 import { isPad } from 'openland-mobile/pages/Root';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 interface ActionSheetBuilderActionItem {
     __typename: "ActionItem";
