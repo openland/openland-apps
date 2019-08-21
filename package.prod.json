@@ -107,6 +107,7 @@
         "copy-to-clipboard": "3.2.0",
         "react-window": "^1.8.5",
         "three": "^0.107.0",
-        "bezier-easing": "^2.1.0"
+        "bezier-easing": "^2.1.0",
+        "@openland/react-video-renderer": "^1.0.4"
     }
 }
