@@ -233,6 +233,7 @@ const ModalBody = (props: ModalBodyProps) => {
 
 export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide: () => void }) => {
     const api = useClient();
+    const [saveStatus, setSaveStatus] = React.useState<'default' | 'loading' | 'saved'>('default');
 
     const dataFromApi = api.useRoomWithoutMembers({ id: props.roomId });
 
@@ -334,10 +335,13 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide
                     <XButton text="Cancel" style="ghost" size="large" onClick={props.hide} />
                 </XView>
                 <XButton
-                    text="Add"
-                    style="primary"
+                    text={saveStatus === 'default' ? 'Save' : 'Saved'}
+                    style={saveStatus === 'saved' ? 'success' : 'primary'}
                     size="large"
+                    loading={saveStatus === 'loading'}
                     onClick={async data => {
+                        setSaveStatus('loading');
+
                         if (
                             welcomeMessageIsOn &&
                             (welcomeMessageSenderError || welcomeMessageTextError)
@@ -365,15 +369,21 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide
                             welcomeMessageSender: welcomeMessageSender
                                 ? welcomeMessageSender!!.id
                                 : null,
-                            welcomeMessageText: welcomeMessageText,
+                            welcomeMessageText: welcomeMessageText || undefined,
                         });
 
                         await api.refetchRoom({
                             id: props.roomId,
                         });
-                        setTriedToSend(true);
 
-                        props.hide();
+                        setTriedToSend(true);
+                        setSaveStatus('saved');
+
+                        setTimeout(() => {
+                            setSaveStatus('default');
+                        }, 2000);
+
+                        // props.hide();
                     }}
                 />
             </XModalFooter>
