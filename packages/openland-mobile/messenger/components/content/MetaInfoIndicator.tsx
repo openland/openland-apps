@@ -5,7 +5,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { formatTime } from 'openland-y-utils/formatTime';
-import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
+import { TextStylesAsync, CompensationAlpha } from 'openland-mobile/styles/AppStyles';
 import { Platform } from 'react-native';
 
 interface LabelProps {
@@ -28,7 +28,7 @@ const Label = React.memo((props: LabelProps) => {
                     height={16}
                     marginRight={2}
                     tintColor={color}
-                    opacity={0.84}
+                    opacity={CompensationAlpha}
                 />
             )}
             <ASFlex marginTop={-baselineCompensation} marginBottom={baselineCompensation}>
