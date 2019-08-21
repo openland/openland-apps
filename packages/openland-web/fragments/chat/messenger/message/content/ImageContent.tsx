@@ -137,6 +137,7 @@ const imgPreviewClass = css`
 
 const imgAppearClass = css`
     opacity: 0;
+    background-color: var(--backgroundPrimary);
     transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
     position: absolute;
     border-radius: 8px;
