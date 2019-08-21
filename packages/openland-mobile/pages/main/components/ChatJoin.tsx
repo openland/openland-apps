@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { View, Text, Alert, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';

@@ -381,7 +381,7 @@ const ConversationComponent = XMemo<PageProps>((props) => {
     let privateRoom = room.__typename === 'PrivateRoom' ? room as Room_room_PrivateRoom : null;
 
     if (sharedRoom && sharedRoom.membership !== 'MEMBER' && sharedRoom.kind === 'PUBLIC') {
-        return <ChatJoin room={sharedRoom!} router={props.router} theme={theme} />;
+        return <ChatJoin room={sharedRoom!} theme={theme} />;
     }
 
     return (
