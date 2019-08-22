@@ -160,6 +160,12 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             resolved = true;
             navigate('ProfileGroup', { id: matchGroupProfile.id });
         }
+        let profileGroupUnicornPattern = new UrlPattern(patternBase + 'group/:id');
+        let matchGroupUnicornProfile = profileGroupUnicornPattern.match(link);
+        if (matchGroupUnicornProfile && matchGroupUnicornProfile.id) {
+            resolved = true;
+            navigate('ProfileGroup', { id: matchGroupUnicornProfile.id });
+        }
 
         //
         // CONVERSATION
