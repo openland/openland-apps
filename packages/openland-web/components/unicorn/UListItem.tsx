@@ -92,9 +92,9 @@ export const UListItem = React.memo((props: UListItemProps) => {
         [hovered],
     );
 
-    const titleEmojify = typeof title === 'string' ? React.useMemo(() => emoji(title), []) : title;
-    const descriptionEmojify = typeof description === 'string' ? React.useMemo(() => emoji(description), []) : description;
-    const subtitleEmojify = typeof subtitle === 'string' ? React.useMemo(() => emoji(subtitle), []) : subtitle;
+    const titleEmojify = typeof title === 'string' ? React.useMemo(() => emoji(title), [title]) : title;
+    const descriptionEmojify = typeof description === 'string' ? React.useMemo(() => emoji(description), [description]) : description;
+    const subtitleEmojify = typeof subtitle === 'string' ? React.useMemo(() => emoji(subtitle), [subtitle]) : subtitle;
 
     const content = (
         <>

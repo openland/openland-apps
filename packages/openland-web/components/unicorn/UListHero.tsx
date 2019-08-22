@@ -52,7 +52,7 @@ interface UListHeroProps {
 
 export const UListHero = (props: UListHeroProps) => {
     const { title, score, description, descriptionColor, avatar, children } = props;
-    const titleEmojify = React.useMemo(() => emoji(title), []);
+    const titleEmojify = React.useMemo(() => emoji(title), [title]);
 
     return (
         <XView marginBottom={32} height={72} paddingHorizontal={16} flexDirection="row">

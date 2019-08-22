@@ -43,7 +43,7 @@ interface UUserViewProps {
 export const UUserView = React.memo((props: UUserViewProps & Partial<UListItemProps>) => {
     const { user, badge, role, onClick, ...other } = props;
     const { id, photo, name, online, shortname, primaryOrganization } = user;
-    const badgeNameEmojify = badge ? React.useMemo(() => emoji(' · ' + badge.name), []) : undefined;
+    const badgeNameEmojify = badge ? React.useMemo(() => emoji(' · ' + badge.name), [badge.name]) : undefined;
 
     return (
         <UListItem
