@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextInput } from 'react-native';
+import { View, FlatList, AsyncStorage, Platform, TouchableOpacity, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextInput, Text } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine, convertMessageBack } from 'openland-engines/messenger/ConversationEngine';
 import { MessageInputBar } from './components/MessageInputBar';
@@ -26,7 +26,7 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 import { ChannelMuteButton, ChatInputPlaceholder } from './components/ChannelMuteButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { showCallModal } from './Call';
-import { EmojiRender } from './components/EmojiRender';
+import { EmojiRender, EmojiRenderRow } from './components/EmojiRender';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
 import { MessagesActionsState } from 'openland-engines/messenger/MessagesActionsState';
 import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardReplyView';
@@ -40,6 +40,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { PinnedMessage } from './components/PinnedMessage';
 import { ChatAccessDenied } from './components/ChatAccessDenied';
 import { ChatJoin } from './components/ChatJoin';
+import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -283,6 +284,16 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         if (this.state.inputFocused && activeWord && activeWord.startsWith(':')) {
             suggestions = (
                 <EmojiRender
+                    activeWord={activeWord}
+                    onEmojiPress={this.handleEmojiPress}
+                />
+            );
+        }
+
+        if (this.state.inputFocused && activeWord && emojiWordMap[activeWord.toLowerCase()]) {
+            suggestions = (
+                <EmojiRenderRow
+                    items={emojiWordMap[activeWord.toLowerCase()]}
                     activeWord={activeWord}
                     onEmojiPress={this.handleEmojiPress}
                 />

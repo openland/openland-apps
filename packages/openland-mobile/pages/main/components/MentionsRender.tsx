@@ -34,17 +34,17 @@ interface MentionsRenderProps {
 }
 
 const MentionsRenderInner = (props: MentionsRenderProps) => {
-    let theme = React.useContext(ThemeContext);
-    let mentionsWrapper = null;
-    let mentions = findMentions(props.activeWord, props.groupId);
+    const { activeWord, groupId, onMentionPress } = props;
+    const theme = React.useContext(ThemeContext);
+    const mentions = findMentions(activeWord, groupId);
 
     if (mentions.length > 0) {
-        mentionsWrapper = (
+        return (
             <SuggestionsWrapper>
                 {mentions.map((mention, index) => (
                     <ZListItemBase
                         key={'mention-' + index}
-                        onPress={() => props.onMentionPress(props.activeWord, mention)}
+                        onPress={() => onMentionPress(activeWord, mention)}
                         separator={false}
                         height={48}
                         underlayColor="rgba(0, 0, 0, 0.03)"
@@ -88,11 +88,11 @@ const MentionsRenderInner = (props: MentionsRenderProps) => {
         );
     }
 
-    return mentionsWrapper;
+    return null;
 };
 
 export const MentionsRender = (props: MentionsRenderProps) => (
-    <React.Suspense 
+    <React.Suspense
         fallback={
             <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 10, paddingBottom: 6 }}>
                 <LoaderSpinner size={'medium'} />

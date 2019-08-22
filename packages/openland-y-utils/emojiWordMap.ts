@@ -1,4 +1,6 @@
-const emojiWordCollection = {
+export type EmojiWordCollectionType = [string, string[], string][];
+
+const emojiWordCollection: { [key in string]: EmojiWordCollectionType } = {
     wow: [
         ['1f62e', [':open_mouth:'], '😮'],
         ['1f628', [':fearful:'], '😨'],
@@ -69,7 +71,7 @@ const emojiWordCollection = {
     ]
 };
 
-export const emojiWordMap = {
+export const emojiWordMap: { [key in string]: EmojiWordCollectionType } = {
     'wow': emojiWordCollection.wow,
     'omg': emojiWordCollection.wow,
     'воу': emojiWordCollection.wow,
