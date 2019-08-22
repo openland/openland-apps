@@ -2,19 +2,15 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
-import { getMessenger } from 'openland-mobile/utils/messenger';
 import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, ScrollView, Keyboard, TextInput } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { MessageInputBar } from './components/MessageInputBar';
 import { MessageComments_messageComments_comments, MessageComments_messageComments_comments_comment, CommentWatch_event_CommentUpdateSingle_update, FileAttachmentInput, Message_message, Message_message_GeneralMessage_source_MessageSourceChat_chat } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { MobileMessenger } from 'openland-mobile/messenger/MobileMessenger';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { SenderView } from 'openland-mobile/messenger/components/SenderView';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { EmojiRender } from './components/EmojiRender';
-import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { MentionsRender } from './components/MentionsRender';
@@ -30,13 +26,11 @@ import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { prepareLegacyMentionsForSend, convertMentionsFromMessage } from 'openland-engines/legacy/legacymentions';
 import { trackEvent } from 'openland-mobile/analytics';
 import { getDepthOfCommentByID } from 'openland-y-utils/sortComments';
-import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import UUID from 'uuid/v4';
 
 interface MessageCommentsInnerProps {
     message: Message_message;
     comments: MessageComments_messageComments_comments[];
-    messenger: MobileMessenger;
     chat?: Message_message_GeneralMessage_source_MessageSourceChat_chat;
 
     highlightId?: string;
@@ -46,7 +40,7 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     const inputRef = React.createRef<TextInput>();
     const scrollRef = React.createRef<ScrollView>();
 
-    const { message, comments, chat, messenger, highlightId } = props;
+    const { message, comments, chat, highlightId } = props;
 
     // state
     const [replied, setReplied] = React.useState<MessageComments_messageComments_comments_comment | undefined>(undefined);
@@ -57,8 +51,6 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     const [sending, setSending] = React.useState<boolean>(false);
     const [mentions, setMentions] = React.useState<(MentionToSend)[]>([]);
     const [needScrollTo, setNeedScrollTo] = React.useState<boolean>(false);
-
-    const canPin = chat ? (chat.__typename === 'PrivateRoom') || (chat.__typename === 'SharedRoom' && chat.canEdit) : false;
 
     // callbacks
     const handleScrollToView = (y: number) => {
@@ -138,28 +130,6 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
         setInputText(newText);
         setMentions([...mentions, mention]);
     }, [inputText, inputSelection, mentions]);
-
-    const handleManagePress = React.useCallback(() => {
-        let client = messenger.engine.client;
-        let router = messenger.history.navigationManager;
-
-        let builder = new ActionSheetBuilder();
-
-        if (chat && canPin) {
-            builder.action('Unpin', async () => {
-                startLoader();
-                try {
-                    await client.mutateUnpinMessage({ chatId: chat.id });
-
-                    router.pop();
-                } finally {
-                    stopLoader();
-                }
-            }, false, require('assets/ic-pin-off-24.png'));
-        }
-
-        builder.show();
-    }, [messenger, chat]);
 
     const handleAttach = React.useCallback(() => {
         showAttachMenu((type, name, path, size) => {
@@ -286,9 +256,6 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
     return (
         <>
             <SHeader title="Comments" />
-
-            {chat && canPin && chat.pinnedMessage && (chat.pinnedMessage.id === message.id) && <ZManageButton onPress={handleManagePress} />}
-
             <ASSafeAreaContext.Consumer>
                 {area => (
                     <>
@@ -331,7 +298,6 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
     const messageId = props.router.params.messageId;
     const highlightId = props.router.params.highlightCommentId;
 
-    const messenger = getMessenger();
     const client = getClient();
 
     const message = client.useMessage({ messageId: messageId }, { fetchPolicy: 'cache-and-network' }).message;
@@ -359,7 +325,6 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
         <MessageCommentsInner
             message={message}
             comments={comments}
-            messenger={messenger}
             chat={message.source && message.source.__typename === 'MessageSourceChat' ? message.source.chat : undefined}
             highlightId={highlightId}
         />
