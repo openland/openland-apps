@@ -7,6 +7,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { ZAvatarSize, avatarSizes } from 'openland-mobile/components/ZAvatar';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+// import { Image } from 'react-native';
 
 interface ASAvatarProps {
     size: ZAvatarSize;
