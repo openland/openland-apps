@@ -74,9 +74,9 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
         const content = getSpansSlices(spans, padded);
 
         return (
-            <>
+            <ASFlex flexDirection="column">
                 {content.map((c, i) => (
-                    <>
+                    <ASFlex>
                         {(c.type === 'slice' || c.type === 'loud' || c.type === 'emoji' || c.type === 'padded') && (
                             <TextWrapper
                                 key={c.type + '-' + i}
@@ -118,9 +118,9 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                 </ASFlex>
                             </ASFlex>
                         )}
-                    </>
+                    </ASFlex>
                 ))}
-            </>
+            </ASFlex>
         );
     }
 }
