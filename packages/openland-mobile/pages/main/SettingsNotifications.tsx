@@ -6,7 +6,6 @@ import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { NON_PRODUCTION } from '../Init';
 import { Settings_settings, CommentsNotificationDelivery, NotificationMessages, EmailFrequency } from 'openland-api/Types';
 import { ZCheckmarkGroup } from 'openland-mobile/components/ZCheckmarkGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
@@ -43,20 +42,18 @@ const SettingsNotificationsContent = XMemo<PageProps>(props => {
 
     return (
         <SScrollView>
-            {NON_PRODUCTION && (
-                <ZListGroup header="Counter">
-                    <ZListItem
-                        text="Show unread chats"
-                        onToggle={value => handleSave('countUnreadChats', value)}
-                        toggle={settings.countUnreadChats}
-                    />
-                    <ZListItem
-                        text="Exclude muted chats"
-                        onToggle={value => handleSave('excludeMutedChats', value)}
-                        toggle={settings.excludeMutedChats}
-                    />
-                </ZListGroup>
-            )}
+            <ZListGroup header="Counter">
+                <ZListItem
+                    text="Show unread chats"
+                    onToggle={value => handleSave('countUnreadChats', value)}
+                    toggle={settings.countUnreadChats}
+                />
+                <ZListItem
+                    text="Exclude muted chats"
+                    onToggle={value => handleSave('excludeMutedChats', value)}
+                    toggle={settings.excludeMutedChats}
+                />
+            </ZListGroup>
 
             <ZListGroup header="Push notifications">
                 <ZListItem
