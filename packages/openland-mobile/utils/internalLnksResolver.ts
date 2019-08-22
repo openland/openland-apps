@@ -176,7 +176,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         // SHORT_NAME
         //
         let shortNamePattern = new UrlPattern(patternBase + ':shortname');
-        let matchShortName = shortNamePattern.match(link.toLowerCase());
+        let matchShortName = shortNamePattern.match(link);
         if (matchShortName && matchShortName.shortname) {
             resolved = true;
             startLoader();
@@ -190,6 +190,8 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
                     } else {
                         Alert.alert('No such user or organization');
                     }
+                } else {
+                    Alert.alert('No such user or organization');
                 }
             } catch (e) {
                 Alert.alert(e.message);
