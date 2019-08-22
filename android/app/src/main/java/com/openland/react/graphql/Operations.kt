@@ -697,17 +697,29 @@ private val DialogUpdateFragmentSelector = obj(
                 field("haveMention","haveMention", notNull(scalar("Boolean"))),
                 field("unread","unread", notNull(scalar("Int")))
             )),
-            inline("DialogTitleUpdated", obj(
-                field("cid","cid", notNull(scalar("ID"))),
-                field("title","title", notNull(scalar("String")))
-            )),
             inline("DialogMuteChanged", obj(
                 field("cid","cid", notNull(scalar("ID"))),
                 field("mute","mute", notNull(scalar("Boolean")))
             )),
-            inline("DialogPhotoUpdated", obj(
+            inline("DialogPeerUpdated", obj(
                 field("cid","cid", notNull(scalar("ID"))),
-                field("photo","photo", scalar("String"))
+                field("peer","peer", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        inline("PrivateRoom", obj(
+                            field("id","id", notNull(scalar("ID"))),
+                            field("user","user", notNull(obj(
+                                    field("__typename","__typename", notNull(scalar("String"))),
+                                    field("id","id", notNull(scalar("ID"))),
+                                    field("name","name", notNull(scalar("String"))),
+                                    field("photo","photo", scalar("String"))
+                                )))
+                        )),
+                        inline("SharedRoom", obj(
+                            field("id","id", notNull(scalar("ID"))),
+                            field("photo","photo", notNull(scalar("String"))),
+                            field("title","title", notNull(scalar("String")))
+                        ))
+                    )))
             )),
             inline("DialogDeleted", obj(
                 field("cid","cid", notNull(scalar("ID"))),
@@ -4474,7 +4486,7 @@ object Operations {
     val DialogsWatch = object: OperationDefinition {
         override val name = "DialogsWatch"
         override val kind = OperationKind.SUBSCRIPTION
-        override val body = "subscription DialogsWatch(\$state:String){event:dialogsUpdates(fromState:\$state){__typename ... on DialogUpdateSingle{seq state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{fromSeq seq state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{message:alphaMessage{__typename ...TinyMessage}cid globalUnread haveMention silent{__typename desktop mobile}unread}... on DialogMessageUpdated{message:alphaMessage{__typename ...TinyMessage}cid haveMention}... on DialogMessageDeleted{message:alphaMessage{__typename ...TinyMessage}prevMessage:alphaPrevMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageRead{cid globalUnread haveMention unread}... on DialogTitleUpdated{cid title}... on DialogMuteChanged{cid mute}... on DialogPhotoUpdated{cid photo}... on DialogDeleted{cid globalUnread}... on DialogBump{cid globalUnread haveMention topMessage{__typename ...TinyMessage}unread}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}senderBadge{__typename ...UserBadge}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id isMentioned quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserBadge on UserBadge{__typename id name verified}"
+        override val body = "subscription DialogsWatch(\$state:String){event:dialogsUpdates(fromState:\$state){__typename ... on DialogUpdateSingle{seq state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{fromSeq seq state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{message:alphaMessage{__typename ...TinyMessage}cid globalUnread haveMention silent{__typename desktop mobile}unread}... on DialogMessageUpdated{message:alphaMessage{__typename ...TinyMessage}cid haveMention}... on DialogMessageDeleted{message:alphaMessage{__typename ...TinyMessage}prevMessage:alphaPrevMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageRead{cid globalUnread haveMention unread}... on DialogMuteChanged{cid mute}... on DialogPeerUpdated{cid peer{__typename ... on PrivateRoom{id user{__typename id name photo}}... on SharedRoom{id photo title}}}... on DialogDeleted{cid globalUnread}... on DialogBump{cid globalUnread haveMention topMessage{__typename ...TinyMessage}unread}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}senderBadge{__typename ...UserBadge}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id isMentioned quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserBadge on UserBadge{__typename id name verified}"
         override val selector = DialogsWatchSelector
     }
     val MyNotificationsCenter = object: OperationDefinition {

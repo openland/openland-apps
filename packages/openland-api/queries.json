@@ -2530,8 +2530,8 @@
 				"OrganizationShort",
 				"UserBadge"
 			],
-			"sourceWithFragments": "subscription DialogsWatch($state: String) {\n  event: dialogsUpdates(fromState: $state) {\n    __typename\n    ... on DialogUpdateSingle {\n      seq\n      state\n      update {\n        __typename\n        ...DialogUpdateFragment\n      }\n    }\n    ... on DialogUpdateBatch {\n      fromSeq\n      seq\n      state\n      updates {\n        __typename\n        ...DialogUpdateFragment\n      }\n    }\n  }\n}\nfragment DialogUpdateFragment on DialogUpdate {\n  __typename\n  ... on DialogMessageReceived {\n    cid\n    unread\n    globalUnread\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    haveMention\n    silent {\n      __typename\n      mobile\n      desktop\n    }\n  }\n  ... on DialogMessageUpdated {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    haveMention\n  }\n  ... on DialogMessageDeleted {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    prevMessage: alphaPrevMessage {\n      __typename\n      ...TinyMessage\n    }\n    unread\n    globalUnread\n    haveMention\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n    haveMention\n  }\n  ... on DialogTitleUpdated {\n    cid\n    title\n  }\n  ... on DialogMuteChanged {\n    cid\n    mute\n  }\n  ... on DialogPhotoUpdated {\n    cid\n    photo\n  }\n  ... on DialogDeleted {\n    cid\n    globalUnread\n  }\n  ... on DialogBump {\n    cid\n    globalUnread\n    unread\n    topMessage {\n      __typename\n      ...TinyMessage\n    }\n    haveMention\n  }\n}\nfragment TinyMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserTiny\n  }\n  senderBadge {\n    __typename\n    ...UserBadge\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    id\n    isMentioned\n    commentsCount\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n        filePreview\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}",
-			"operationId": "ec3b09eb64be744cff05732ae79937f7406b293b3fb879be34e4927225517ac4"
+			"sourceWithFragments": "subscription DialogsWatch($state: String) {\n  event: dialogsUpdates(fromState: $state) {\n    __typename\n    ... on DialogUpdateSingle {\n      seq\n      state\n      update {\n        __typename\n        ...DialogUpdateFragment\n      }\n    }\n    ... on DialogUpdateBatch {\n      fromSeq\n      seq\n      state\n      updates {\n        __typename\n        ...DialogUpdateFragment\n      }\n    }\n  }\n}\nfragment DialogUpdateFragment on DialogUpdate {\n  __typename\n  ... on DialogMessageReceived {\n    cid\n    unread\n    globalUnread\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    haveMention\n    silent {\n      __typename\n      mobile\n      desktop\n    }\n  }\n  ... on DialogMessageUpdated {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    haveMention\n  }\n  ... on DialogMessageDeleted {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    prevMessage: alphaPrevMessage {\n      __typename\n      ...TinyMessage\n    }\n    unread\n    globalUnread\n    haveMention\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n    haveMention\n  }\n  ... on DialogMuteChanged {\n    cid\n    mute\n  }\n  ... on DialogPeerUpdated {\n    cid\n    peer {\n      __typename\n      ... on PrivateRoom {\n        id\n        user {\n          __typename\n          id\n          name\n          photo\n        }\n      }\n      ... on SharedRoom {\n        id\n        title\n        photo\n      }\n    }\n  }\n  ... on DialogDeleted {\n    cid\n    globalUnread\n  }\n  ... on DialogBump {\n    cid\n    globalUnread\n    unread\n    topMessage {\n      __typename\n      ...TinyMessage\n    }\n    haveMention\n  }\n}\nfragment TinyMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserTiny\n  }\n  senderBadge {\n    __typename\n    ...UserBadge\n  }\n  message\n  fallback\n  ... on GeneralMessage {\n    id\n    isMentioned\n    commentsCount\n    attachments {\n      __typename\n      id\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          isImage\n          imageFormat\n        }\n        filePreview\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n    }\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}",
+			"operationId": "0f2d47a8f72abf37da00e1a44e4e75b1bb7953bc5c0649b12fdcc868407414b8"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
@@ -25952,11 +25952,12 @@
 				"DialogPhotoUpdated",
 				"DialogMuteChanged",
 				"DialogMentionedChanged",
-				"DialogBump"
+				"DialogBump",
+				"DialogPeerUpdated"
 			],
 			"fragmentName": "DialogUpdateFragment",
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Chats.ts",
-			"source": "fragment DialogUpdateFragment on DialogUpdate {\n  __typename\n  ... on DialogMessageReceived {\n    cid\n    unread\n    globalUnread\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    haveMention\n    silent {\n      __typename\n      mobile\n      desktop\n    }\n  }\n  ... on DialogMessageUpdated {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    haveMention\n  }\n  ... on DialogMessageDeleted {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    prevMessage: alphaPrevMessage {\n      __typename\n      ...TinyMessage\n    }\n    unread\n    globalUnread\n    haveMention\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n    haveMention\n  }\n  ... on DialogTitleUpdated {\n    cid\n    title\n  }\n  ... on DialogMuteChanged {\n    cid\n    mute\n  }\n  ... on DialogPhotoUpdated {\n    cid\n    photo\n  }\n  ... on DialogDeleted {\n    cid\n    globalUnread\n  }\n  ... on DialogBump {\n    cid\n    globalUnread\n    unread\n    topMessage {\n      __typename\n      ...TinyMessage\n    }\n    haveMention\n  }\n}",
+			"source": "fragment DialogUpdateFragment on DialogUpdate {\n  __typename\n  ... on DialogMessageReceived {\n    cid\n    unread\n    globalUnread\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    haveMention\n    silent {\n      __typename\n      mobile\n      desktop\n    }\n  }\n  ... on DialogMessageUpdated {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    haveMention\n  }\n  ... on DialogMessageDeleted {\n    cid\n    message: alphaMessage {\n      __typename\n      ...TinyMessage\n    }\n    prevMessage: alphaPrevMessage {\n      __typename\n      ...TinyMessage\n    }\n    unread\n    globalUnread\n    haveMention\n  }\n  ... on DialogMessageRead {\n    cid\n    unread\n    globalUnread\n    haveMention\n  }\n  ... on DialogMuteChanged {\n    cid\n    mute\n  }\n  ... on DialogPeerUpdated {\n    cid\n    peer {\n      __typename\n      ... on PrivateRoom {\n        id\n        user {\n          __typename\n          id\n          name\n          photo\n        }\n      }\n      ... on SharedRoom {\n        id\n        title\n        photo\n      }\n    }\n  }\n  ... on DialogDeleted {\n    cid\n    globalUnread\n  }\n  ... on DialogBump {\n    cid\n    globalUnread\n    unread\n    topMessage {\n      __typename\n      ...TinyMessage\n    }\n    haveMention\n  }\n}",
 			"fields": [
 				{
 					"responseName": "__typename",
@@ -26233,35 +26234,6 @@
 					"fragmentSpreads": []
 				},
 				{
-					"typeCondition": "DialogTitleUpdated",
-					"possibleTypes": [
-						"DialogTitleUpdated"
-					],
-					"fields": [
-						{
-							"responseName": "__typename",
-							"fieldName": "__typename",
-							"type": "String!",
-							"isConditional": false
-						},
-						{
-							"responseName": "cid",
-							"fieldName": "cid",
-							"type": "ID!",
-							"isConditional": false,
-							"isDeprecated": false
-						},
-						{
-							"responseName": "title",
-							"fieldName": "title",
-							"type": "String!",
-							"isConditional": false,
-							"isDeprecated": false
-						}
-					],
-					"fragmentSpreads": []
-				},
-				{
 					"typeCondition": "DialogMuteChanged",
 					"possibleTypes": [
 						"DialogMuteChanged"
@@ -26291,9 +26263,9 @@
 					"fragmentSpreads": []
 				},
 				{
-					"typeCondition": "DialogPhotoUpdated",
+					"typeCondition": "DialogPeerUpdated",
 					"possibleTypes": [
-						"DialogPhotoUpdated"
+						"DialogPeerUpdated"
 					],
 					"fields": [
 						{
@@ -26310,11 +26282,118 @@
 							"isDeprecated": false
 						},
 						{
-							"responseName": "photo",
-							"fieldName": "photo",
-							"type": "String",
+							"responseName": "peer",
+							"fieldName": "peer",
+							"type": "Room!",
 							"isConditional": false,
-							"isDeprecated": false
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": [
+								{
+									"typeCondition": "PrivateRoom",
+									"possibleTypes": [
+										"PrivateRoom"
+									],
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "user",
+											"fieldName": "user",
+											"type": "User!",
+											"isConditional": false,
+											"isDeprecated": false,
+											"fields": [
+												{
+													"responseName": "__typename",
+													"fieldName": "__typename",
+													"type": "String!",
+													"isConditional": false
+												},
+												{
+													"responseName": "id",
+													"fieldName": "id",
+													"type": "ID!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "name",
+													"fieldName": "name",
+													"type": "String!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "photo",
+													"fieldName": "photo",
+													"type": "String",
+													"isConditional": false,
+													"isDeprecated": false
+												}
+											],
+											"fragmentSpreads": [],
+											"inlineFragments": []
+										}
+									],
+									"fragmentSpreads": []
+								},
+								{
+									"typeCondition": "SharedRoom",
+									"possibleTypes": [
+										"SharedRoom"
+									],
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "title",
+											"fieldName": "title",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "photo",
+											"fieldName": "photo",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										}
+									],
+									"fragmentSpreads": []
+								}
+							]
 						}
 					],
 					"fragmentSpreads": []

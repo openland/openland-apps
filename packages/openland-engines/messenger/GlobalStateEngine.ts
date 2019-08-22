@@ -117,7 +117,7 @@ export class GlobalStateEngine {
         }
     }
 
-    private handleGlobalEvent = async (event: any) => {
+    private handleGlobalEvent = async (event: Types.DialogUpdateFragment) => {
         // console.log(event);
         let start = currentTimeMillis();
         log.log('Event Received');
@@ -139,7 +139,7 @@ export class GlobalStateEngine {
             // Dialogs List
             await this.engine.dialogList.handleNewMessage(event, visible);
         } else if (event.__typename === 'DialogMessageRead') {
-            let visible = this.visibleConversations.has(event.conversationId);
+            let visible = this.visibleConversations.has(event.cid);
 
             // Global counter
             await this.writeGlobalCounter(event.globalUnread, visible);
@@ -150,7 +150,7 @@ export class GlobalStateEngine {
             // Dialogs List
             await this.engine.dialogList.handleUserRead(event.cid, event.unread, visible, event.haveMention);
         } else if (event.__typename === 'DialogMessageDeleted') {
-            let visible = this.visibleConversations.has(event.conversationId);
+            let visible = this.visibleConversations.has(event.cid);
 
             // Global counter
             await this.writeGlobalCounter(event.globalUnread, visible);
@@ -159,10 +159,10 @@ export class GlobalStateEngine {
             await this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
 
             await this.engine.dialogList.handleMessageDeleted(event.cid, event.message.id, event.prevMessage, event.unread, event.haveMention, this.engine.user.id);
-        } else if (event.__typename === 'DialogTitleUpdated') {
-            log.warn('new title ' + event);
-            await this.engine.dialogList.handleTitleUpdated(event.cid, event.title);
-            this.engine.getConversation(event.cid).handleTitleUpdated(event.title);
+        } else if (event.__typename === 'DialogPeerUpdated') {
+            log.warn('peer updated ' + event);
+            await this.engine.dialogList.handlePeerUpdated(event.cid, event.peer);
+            this.engine.getConversation(event.cid).handlePeerUpdated(event.peer);
         } else if (event.__typename === 'DialogBump') {
             let visible = this.visibleConversations.has(event.cid);
             // Global counter
@@ -180,16 +180,12 @@ export class GlobalStateEngine {
             await this.engine.dialogList.handleMuteUpdated(event.cid, event.mute);
             log.log(event.cid);
             this.engine.getConversation(event.cid).handleMuteUpdated(event.mute);
-        } else if (event.__typename === 'DialogPhotoUpdated') {
-            log.warn('new photo ' + event);
-            await this.engine.dialogList.handlePhotoUpdated(event.cid, event.photo);
-            this.engine.getConversation(event.cid).handlePhotoUpdated(event.photo);
         } else if (event.__typename === 'DialogMessageUpdated') {
             // Dialogs List
             // console.log(event);
             await this.engine.dialogList.handleMessageUpdated(event);
         } else if (event.__typename === 'DialogDeleted') {
-            let visible = this.visibleConversations.has(event.conversationId);
+            let visible = this.visibleConversations.has(event.cid);
 
             // Global counter
             await this.writeGlobalCounter(event.globalUnread, visible);

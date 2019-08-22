@@ -43,17 +43,29 @@ fragment DialogUpdateFragment on DialogUpdate {
     haveMention
     unread
   }
-  ... on DialogTitleUpdated {
-    cid
-    title
-  }
   ... on DialogMuteChanged {
     cid
     mute
   }
-  ... on DialogPhotoUpdated {
+  ... on DialogPeerUpdated {
     cid
-    photo
+    peer {
+      __typename
+      ... on PrivateRoom {
+        id
+        user {
+          __typename
+          id
+          name
+          photo
+        }
+      }
+      ... on SharedRoom {
+        id
+        photo
+        title
+      }
+    }
   }
   ... on DialogDeleted {
     cid

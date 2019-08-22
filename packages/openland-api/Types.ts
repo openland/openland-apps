@@ -11782,8 +11782,8 @@ export interface ChatWatchVariables {
 // GraphQL subscription operation: DialogsWatch
 // ====================================================
 
-export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMentionedChanged {
-  __typename: "DialogMentionedChanged";
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogTitleUpdated {
+  __typename: "DialogTitleUpdated" | "DialogPhotoUpdated" | "DialogMentionedChanged";
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived_message_ServiceMessage_sender_primaryOrganization {
@@ -12335,22 +12335,38 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRead 
   haveMention: boolean;
 }
 
-export interface DialogsWatch_event_DialogUpdateSingle_update_DialogTitleUpdated {
-  __typename: "DialogTitleUpdated";
-  cid: string;
-  title: string;
-}
-
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogMuteChanged {
   __typename: "DialogMuteChanged";
   cid: string;
   mute: boolean;
 }
 
-export interface DialogsWatch_event_DialogUpdateSingle_update_DialogPhotoUpdated {
-  __typename: "DialogPhotoUpdated";
-  cid: string;
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogPeerUpdated_peer_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
   photo: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogPeerUpdated_peer_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: DialogsWatch_event_DialogUpdateSingle_update_DialogPeerUpdated_peer_PrivateRoom_user;
+}
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogPeerUpdated_peer_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+  photo: string;
+}
+
+export type DialogsWatch_event_DialogUpdateSingle_update_DialogPeerUpdated_peer = DialogsWatch_event_DialogUpdateSingle_update_DialogPeerUpdated_peer_PrivateRoom | DialogsWatch_event_DialogUpdateSingle_update_DialogPeerUpdated_peer_SharedRoom;
+
+export interface DialogsWatch_event_DialogUpdateSingle_update_DialogPeerUpdated {
+  __typename: "DialogPeerUpdated";
+  cid: string;
+  peer: DialogsWatch_event_DialogUpdateSingle_update_DialogPeerUpdated_peer;
 }
 
 export interface DialogsWatch_event_DialogUpdateSingle_update_DialogDeleted {
@@ -12495,7 +12511,7 @@ export interface DialogsWatch_event_DialogUpdateSingle_update_DialogBump {
   haveMention: boolean;
 }
 
-export type DialogsWatch_event_DialogUpdateSingle_update = DialogsWatch_event_DialogUpdateSingle_update_DialogMentionedChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRead | DialogsWatch_event_DialogUpdateSingle_update_DialogTitleUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMuteChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogPhotoUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogDeleted | DialogsWatch_event_DialogUpdateSingle_update_DialogBump;
+export type DialogsWatch_event_DialogUpdateSingle_update = DialogsWatch_event_DialogUpdateSingle_update_DialogTitleUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageDeleted | DialogsWatch_event_DialogUpdateSingle_update_DialogMessageRead | DialogsWatch_event_DialogUpdateSingle_update_DialogMuteChanged | DialogsWatch_event_DialogUpdateSingle_update_DialogPeerUpdated | DialogsWatch_event_DialogUpdateSingle_update_DialogDeleted | DialogsWatch_event_DialogUpdateSingle_update_DialogBump;
 
 export interface DialogsWatch_event_DialogUpdateSingle {
   __typename: "DialogUpdateSingle";
@@ -12504,8 +12520,8 @@ export interface DialogsWatch_event_DialogUpdateSingle {
   update: DialogsWatch_event_DialogUpdateSingle_update;
 }
 
-export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMentionedChanged {
-  __typename: "DialogMentionedChanged";
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogTitleUpdated {
+  __typename: "DialogTitleUpdated" | "DialogPhotoUpdated" | "DialogMentionedChanged";
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived_message_ServiceMessage_sender_primaryOrganization {
@@ -13057,22 +13073,38 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRead 
   haveMention: boolean;
 }
 
-export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogTitleUpdated {
-  __typename: "DialogTitleUpdated";
-  cid: string;
-  title: string;
-}
-
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogMuteChanged {
   __typename: "DialogMuteChanged";
   cid: string;
   mute: boolean;
 }
 
-export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogPhotoUpdated {
-  __typename: "DialogPhotoUpdated";
-  cid: string;
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogPeerUpdated_peer_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
   photo: string | null;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogPeerUpdated_peer_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: DialogsWatch_event_DialogUpdateBatch_updates_DialogPeerUpdated_peer_PrivateRoom_user;
+}
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogPeerUpdated_peer_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+  photo: string;
+}
+
+export type DialogsWatch_event_DialogUpdateBatch_updates_DialogPeerUpdated_peer = DialogsWatch_event_DialogUpdateBatch_updates_DialogPeerUpdated_peer_PrivateRoom | DialogsWatch_event_DialogUpdateBatch_updates_DialogPeerUpdated_peer_SharedRoom;
+
+export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogPeerUpdated {
+  __typename: "DialogPeerUpdated";
+  cid: string;
+  peer: DialogsWatch_event_DialogUpdateBatch_updates_DialogPeerUpdated_peer;
 }
 
 export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogDeleted {
@@ -13217,7 +13249,7 @@ export interface DialogsWatch_event_DialogUpdateBatch_updates_DialogBump {
   haveMention: boolean;
 }
 
-export type DialogsWatch_event_DialogUpdateBatch_updates = DialogsWatch_event_DialogUpdateBatch_updates_DialogMentionedChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRead | DialogsWatch_event_DialogUpdateBatch_updates_DialogTitleUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMuteChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogPhotoUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogDeleted | DialogsWatch_event_DialogUpdateBatch_updates_DialogBump;
+export type DialogsWatch_event_DialogUpdateBatch_updates = DialogsWatch_event_DialogUpdateBatch_updates_DialogTitleUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageReceived | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageDeleted | DialogsWatch_event_DialogUpdateBatch_updates_DialogMessageRead | DialogsWatch_event_DialogUpdateBatch_updates_DialogMuteChanged | DialogsWatch_event_DialogUpdateBatch_updates_DialogPeerUpdated | DialogsWatch_event_DialogUpdateBatch_updates_DialogDeleted | DialogsWatch_event_DialogUpdateBatch_updates_DialogBump;
 
 export interface DialogsWatch_event_DialogUpdateBatch {
   __typename: "DialogUpdateBatch";
@@ -84601,8 +84633,8 @@ export type ChatUpdateFragment = ChatUpdateFragment_ChatMessageReceived | ChatUp
 // GraphQL fragment: DialogUpdateFragment
 // ====================================================
 
-export interface DialogUpdateFragment_DialogMentionedChanged {
-  __typename: "DialogMentionedChanged";
+export interface DialogUpdateFragment_DialogTitleUpdated {
+  __typename: "DialogTitleUpdated" | "DialogPhotoUpdated" | "DialogMentionedChanged";
 }
 
 export interface DialogUpdateFragment_DialogMessageReceived_message_ServiceMessage_sender_primaryOrganization {
@@ -85154,22 +85186,38 @@ export interface DialogUpdateFragment_DialogMessageRead {
   haveMention: boolean;
 }
 
-export interface DialogUpdateFragment_DialogTitleUpdated {
-  __typename: "DialogTitleUpdated";
-  cid: string;
-  title: string;
-}
-
 export interface DialogUpdateFragment_DialogMuteChanged {
   __typename: "DialogMuteChanged";
   cid: string;
   mute: boolean;
 }
 
-export interface DialogUpdateFragment_DialogPhotoUpdated {
-  __typename: "DialogPhotoUpdated";
-  cid: string;
+export interface DialogUpdateFragment_DialogPeerUpdated_peer_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
   photo: string | null;
+}
+
+export interface DialogUpdateFragment_DialogPeerUpdated_peer_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: DialogUpdateFragment_DialogPeerUpdated_peer_PrivateRoom_user;
+}
+
+export interface DialogUpdateFragment_DialogPeerUpdated_peer_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+  photo: string;
+}
+
+export type DialogUpdateFragment_DialogPeerUpdated_peer = DialogUpdateFragment_DialogPeerUpdated_peer_PrivateRoom | DialogUpdateFragment_DialogPeerUpdated_peer_SharedRoom;
+
+export interface DialogUpdateFragment_DialogPeerUpdated {
+  __typename: "DialogPeerUpdated";
+  cid: string;
+  peer: DialogUpdateFragment_DialogPeerUpdated_peer;
 }
 
 export interface DialogUpdateFragment_DialogDeleted {
@@ -85314,7 +85362,7 @@ export interface DialogUpdateFragment_DialogBump {
   haveMention: boolean;
 }
 
-export type DialogUpdateFragment = DialogUpdateFragment_DialogMentionedChanged | DialogUpdateFragment_DialogMessageReceived | DialogUpdateFragment_DialogMessageUpdated | DialogUpdateFragment_DialogMessageDeleted | DialogUpdateFragment_DialogMessageRead | DialogUpdateFragment_DialogTitleUpdated | DialogUpdateFragment_DialogMuteChanged | DialogUpdateFragment_DialogPhotoUpdated | DialogUpdateFragment_DialogDeleted | DialogUpdateFragment_DialogBump;
+export type DialogUpdateFragment = DialogUpdateFragment_DialogTitleUpdated | DialogUpdateFragment_DialogMessageReceived | DialogUpdateFragment_DialogMessageUpdated | DialogUpdateFragment_DialogMessageDeleted | DialogUpdateFragment_DialogMessageRead | DialogUpdateFragment_DialogMuteChanged | DialogUpdateFragment_DialogPeerUpdated | DialogUpdateFragment_DialogDeleted | DialogUpdateFragment_DialogBump;
 
 /* tslint:disable */
 /* eslint-disable */

@@ -9,6 +9,7 @@ import {
     DialogKind,
     FullMessage,
     ChatUpdateFragment_ChatMessageReceived,
+    DialogUpdateFragment_DialogPeerUpdated_peer,
 } from 'openland-api/Types';
 import { DataSource } from 'openland-y-utils/DataSource';
 // import { createLogger } from 'mental-log';
@@ -264,7 +265,7 @@ export class DialogListEngine {
         }
     }
 
-    handleMessageDeleted = async (cid: string, mid: string, prevMessage: TinyMessage, unread: number, haveMention: boolean, uid: string) => {
+    handleMessageDeleted = async (cid: string, mid: string, prevMessage: TinyMessage | null, unread: number, haveMention: boolean, uid: string) => {
         let existing = await this._dataSourceStored.getItem(cid);
 
         if (existing && existing.messageId === mid) {
@@ -275,12 +276,13 @@ export class DialogListEngine {
         }
     }
 
-    handleTitleUpdated = async (cid: string, title: string) => {
+    handlePeerUpdated = async (cid: string, peer: DialogUpdateFragment_DialogPeerUpdated_peer) => {
         let existing = await this._dataSourceStored.getItem(cid);
         if (existing) {
             await this._dataSourceStored.updateItem({
                 ...existing,
-                title: title,
+                title: peer.__typename === 'PrivateRoom' ? peer.user.name : peer.title,
+                photo: peer.__typename === 'PrivateRoom' ? peer.user.photo || undefined : peer.photo,
             });
         }
     }
@@ -291,16 +293,6 @@ export class DialogListEngine {
             await this._dataSourceStored.updateItem({
                 ...existing,
                 isMuted: mute,
-            });
-        }
-    }
-
-    handlePhotoUpdated = async (cid: string, photo: string) => {
-        let existing = await this._dataSourceStored.getItem(cid);
-        if (existing) {
-            await this._dataSourceStored.updateItem({
-                ...existing,
-                photo: photo,
             });
         }
     }

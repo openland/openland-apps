@@ -179,17 +179,27 @@ export const DialogUpdateFragment = gql`
             globalUnread
             haveMention
         }
-        ... on DialogTitleUpdated {
-            cid
-            title
-        }
         ... on DialogMuteChanged {
             cid
             mute
         }
-        ... on DialogPhotoUpdated {
+        ... on DialogPeerUpdated {
             cid
-            photo
+            peer {
+                ... on PrivateRoom {
+                    id
+                    user {
+                        id
+                        name
+                        photo
+                    }
+                }
+                ... on SharedRoom {
+                    id
+                    title
+                    photo
+                }
+            }
         }
         ... on DialogDeleted {
             cid

@@ -1,7 +1,7 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatInitQuery } from 'openland-api';
 import { backoff, delay } from 'openland-y-utils/timer';
-import { UserBadge, FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_attachments, FullMessage_GeneralMessage_spans, UserShort } from 'openland-api/Types';
+import { UserBadge, FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_attachments, FullMessage_GeneralMessage_spans, UserShort, DialogUpdateFragment_DialogPeerUpdated_peer } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler, MentionToSend } from './MessageSender';
@@ -621,12 +621,21 @@ export class ConversationEngine implements MessageSendHandler {
         }, RoomQuery, { id: this.conversationId });
     }
 
-    handleTitleUpdated = async (title: string) => {
+    handlePeerUpdated = async (peer: DialogUpdateFragment_DialogPeerUpdated_peer) => {
         await this.engine.client.client.updateQuery((data) => {
-            if (data.room && data.room.__typename === 'SharedRoom') {
-                data.room.title = title;
-                return data;
+            if (data.room) {
+                if (peer.__typename === 'SharedRoom' && data.room.__typename === 'SharedRoom') {
+                    data.room.title = peer.title;
+                    data.room.photo = peer.photo;
+                    return data;
+                }
+                if (peer.__typename === 'PrivateRoom' && data.room.__typename === 'PrivateRoom') {
+                    data.room.user.name = peer.user.name;
+                    data.room.user.photo = peer.user.photo;
+                    return data;
+                }
             }
+
             return null;
         }, RoomQuery, { id: this.conversationId });
     }
