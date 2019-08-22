@@ -17,13 +17,18 @@ export const SenderContent = React.memo((props: SenderContentProps) => {
 
     return (
         <ASFlex
-            marginBottom={2}
             onPress={() => onUserPress(message.senderId)}
             key={'name-' + theme.accentPrimary}
             alignItems="center"
         >
             {!!message.senderBadge && (
-                <ASImage marginRight={3} source={require('assets/ic-featured-12.png')} width={12} height={12} tintColor={theme.foregroundPrimary} />
+                <ASImage
+                    marginRight={3}
+                    source={require('assets/ic-featured-12.png')}
+                    width={12}
+                    height={12}
+                    tintColor={theme.foregroundPrimary}
+                />
             )}
             <ASText
                 {...TextStylesAsync.Label2}

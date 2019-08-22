@@ -54,13 +54,13 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
     let subColor = undefined;
     if (user.isBot) {
         sub = 'bot';
-        subColor = '#0084fe';
+        subColor = theme.accentPrimary;
     } else {
         if (!user.online && user.lastSeen) {
             sub = formatLastSeen(user.lastSeen);
         } else {
             sub = 'online';
-            subColor = '#0084fe';
+            subColor = theme.accentPrimary;
         }
     }
 
@@ -95,7 +95,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                 <ZListGroup header="About" headerMarginTop={0}>
                     {!!user.about && <ZListItem multiline={true} text={user.about} copy={true} />}
                     {!!user.about && <View height={10} />}
-                    {!!user.shortname && (<ZListItem title="Username" text={'@' + user.shortname} copy={true} />)}
+                    {!!user.shortname && <ZListItem title="Username" text={'@' + user.shortname} copy={true} />}
                     {!!user.email && <ZListItem title="Email" text={user.email} copy={true} />}
                     {!!user.phone && <ZListItem title="Phone" text={'tel:' + user.phone} copy={true} />}
                     {!!user.website && <ZListItem title="Website" text={user.website} copy={true} />}

@@ -14,8 +14,7 @@ interface LabelProps {
     color: string;
 }
 
-// Sorry universe
-const baselineCompensation = Platform.OS === 'ios' ? 2 : 0;
+const baselineCompensation = Platform.OS === 'ios' ? 1 : 0; // Sorry universe
 const Label = React.memo((props: LabelProps) => {
     const { date, edited, color } = props;
 
@@ -76,7 +75,6 @@ export const MetaInfoIndicator = React.memo((props: MetaInfoIndicatorProps) => {
                 alignItems="flex-end"
                 justifyContent="flex-end"
                 marginRight={-4}
-                marginBottom={1}
             >
                 <ASFlex backgroundColor={theme.overlayMedium} borderRadius={10}>
                     <ASFlex marginTop={1} marginBottom={1} marginLeft={isEdited ? 6 : 8} marginRight={8}>
@@ -96,7 +94,7 @@ export const MetaInfoIndicator = React.memo((props: MetaInfoIndicatorProps) => {
             overlay={true}
             justifyContent="flex-end"
             alignItems="flex-end"
-            marginBottom={-3}
+            marginBottom={-4}
         >
             <Label
                 date={date}

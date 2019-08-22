@@ -42,8 +42,8 @@ export const AsyncDateSeparator = React.memo<{ year: number, month: number, date
     return (
         <ASFlex alignItems="center" justifyContent="center">
             <ASText
-                marginTop={7}
-                marginBottom={7}
+                marginTop={10}
+                marginBottom={0}
                 color={theme.foregroundSecondary}
                 fontSize={13}
                 lineHeight={18}
