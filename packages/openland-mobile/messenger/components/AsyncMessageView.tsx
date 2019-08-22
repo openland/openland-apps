@@ -72,8 +72,8 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     }
 
     const showReactions = ((engine.isChannel || commentsCount > 0) || reactions.length > 0) && !isSending;
-    const marginTop = attachTop ? 2 : 6;
-    const marginBottom = attachBottom ? (showReactions ? 10 : 2) : 6;
+    const marginTop = attachTop ? 4 : 12;
+    const marginBottom = attachBottom && showReactions ? 6 : 0;
 
     return (
         <ASFlex flexDirection="column" alignItems="stretch" onPress={handleDoublePress} onLongPress={() => onMessageLongPress(message)}>

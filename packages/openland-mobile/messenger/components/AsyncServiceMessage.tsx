@@ -22,8 +22,8 @@ export const AsyncServiceMessage = (props: AsyncServiceMessageProps) => {
             alignItems="center"
         >
             <ASFlex
-                marginTop={7}
-                marginBottom={7}
+                marginTop={10}
+                marginBottom={0}
                 marginLeft={36}
                 marginRight={36}
                 flexDirection="column"
