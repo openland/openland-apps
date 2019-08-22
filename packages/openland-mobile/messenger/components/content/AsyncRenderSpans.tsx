@@ -96,7 +96,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                     {c.padded && paddedText(message.isEdited)}
                                 </TextWrapper>
                             </ASFlex>
-                        )
+                        );
                     }
 
                     return (
