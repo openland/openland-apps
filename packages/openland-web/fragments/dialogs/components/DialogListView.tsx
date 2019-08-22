@@ -142,9 +142,18 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
         { keys: ['Control', 's'], callback: handleCtrlS },
     ]);
 
-    const onPick = React.useCallback((id: string) => {
+    const onPick = React.useCallback((item: GlobalSearch_items) => {
         setQuery('');
-        router!.navigate(`/mail/${id}`);
+        if (item.__typename === 'Organization') {
+            router!.navigate(`/${item.shortname || item.id}`);
+            return;
+        }
+        router!.navigate(`/mail/${item.id}`);
+    }, []);
+
+    const onMessagePick = React.useCallback((chatId: string) => {
+        setQuery('');
+        router!.navigate(`/mail/${chatId}`);
     }, []);
 
     return (
@@ -156,6 +165,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                         <DialogSearchResults
                             variables={{ query: query }}
                             onPick={onPick}
+                            onMessagePick={onMessagePick}
                         />
                     </div>
                 )}

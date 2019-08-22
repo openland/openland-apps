@@ -6,11 +6,20 @@ import { XView } from 'react-mental';
 import { DialogSearchInput } from '../dialogs/components/DialogSearchInput';
 import { DialogSearchResults } from '../dialogs/components/DialogSearchResults';
 import { XScrollView2 } from 'openland-x/XScrollView2';
+import { GlobalSearch_items } from 'openland-api/Types';
 
 const ChatPickerComponent = (props: { onSelect: (selecedChatId: string) => void, ctx: XModalController }) => {
     let layout = useLayout();
-    let onDialogClick = (id: string) => {
-        props.onSelect(id);
+    let onDialogClick = (item: GlobalSearch_items) => {
+        if (item.__typename === 'Organization') {
+            return;
+        }
+
+        props.onSelect(item.id);
+        props.ctx.hide();
+    };
+    let onMessageClick = (chatId: string) => {
+        props.onSelect(chatId);
         props.ctx.hide();
     };
 
@@ -24,6 +33,7 @@ const ChatPickerComponent = (props: { onSelect: (selecedChatId: string) => void,
                     <DialogSearchResults
                         variables={{ query: query, limit: 30 }}
                         onPick={onDialogClick}
+                        onMessagePick={onMessageClick}
                         paddingHorizontal={24}
                     />
                 </XScrollView2>

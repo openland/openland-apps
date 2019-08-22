@@ -10,6 +10,7 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { plural } from 'openland-y-utils/plural';
+import { GlobalSearch_items } from 'openland-api/Types';
 
 const NoResultWrapper = Glamorous(XVertical)({
     marginTop: 34,
@@ -26,7 +27,8 @@ const Image = Glamorous.div({
 
 type DialogSearchResultsT = {
     variables: { query: string, limit?: number };
-    onPick: (chatId: string) => void;
+    onPick: (item: GlobalSearch_items) => void;
+    onMessagePick: (chatId: string) => void;
     paddingHorizontal?: number;
 };
 
@@ -70,7 +72,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
             keys: ['Enter'], callback: () => {
                 let d = items[selectedIndex];
                 if (d) {
-                    props.onPick(d.id);
+                    props.onPick(d);
                 }
             }
         },
@@ -90,17 +92,17 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
             {items.map((i, index) => {
                 let selected = index === selectedIndex;
                 if (i.__typename === 'SharedRoom') {
-                    return <UListItem key={i.id} onClick={() => props.onPick(i.id)} hovered={selected} title={i.title} description={plural(i.membersCount || 0, ['member', 'members'])} avatar={({ id: i.id, photo: i.roomPhoto, title: i.title })} useRadius={false} paddingHorizontal={props.paddingHorizontal} />;
+                    return <UListItem key={i.id} onClick={() => props.onPick(i)} hovered={selected} title={i.title} description={plural(i.membersCount || 0, ['member', 'members'])} avatar={({ id: i.id, photo: i.roomPhoto, title: i.title })} useRadius={false} paddingHorizontal={props.paddingHorizontal} />;
                 } else if (i.__typename === 'Organization') {
-                    return <UListItem key={i.id} onClick={() => props.onPick(i.id)} hovered={selected} title={i.name} description={i.about} avatar={({ id: i.id, photo: i.photo, title: i.name })} useRadius={false} paddingHorizontal={props.paddingHorizontal} />;
+                    return <UListItem key={i.id} onClick={() => props.onPick(i)} hovered={selected} title={i.name} description={i.about} avatar={({ id: i.id, photo: i.photo, title: i.name })} useRadius={false} paddingHorizontal={props.paddingHorizontal} />;
                 } else if (i.__typename === 'User') {
-                    return <UUserView key={i.id} onClick={() => props.onPick(i.id)} hovered={selected} user={i} useRadius={false} paddingHorizontal={props.paddingHorizontal} />;
+                    return <UUserView key={i.id} onClick={() => props.onPick(i)} hovered={selected} user={i} useRadius={false} paddingHorizontal={props.paddingHorizontal} />;
                 } else {
                     return null;
                 }
             })}
             <XWithRole role="feature-non-production">
-                <MessagesSearch {...props} />
+                <MessagesSearch variables={props.variables} onPick={props.onMessagePick} />
             </XWithRole>
         </>
     );
