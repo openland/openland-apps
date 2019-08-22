@@ -74,7 +74,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                         y: event.h !== layout.height ? event.y + ((event.h - layout.height) / 2) : event.y,
                     } : {}
                 },
-                8,
+                18,
                 message.senderName,
                 message.date
             );
