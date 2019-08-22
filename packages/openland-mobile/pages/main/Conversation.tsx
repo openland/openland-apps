@@ -41,6 +41,7 @@ import { PinnedMessage } from './components/PinnedMessage';
 import { ChatAccessDenied } from './components/ChatAccessDenied';
 import { ChatJoin } from './components/ChatJoin';
 import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
+import { NON_PRODUCTION } from '../Init';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -290,7 +291,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             );
         }
 
-        if (this.state.inputFocused && activeWord && emojiWordMap[activeWord.toLowerCase()]) {
+        if (NON_PRODUCTION && this.state.inputFocused && activeWord && emojiWordMap[activeWord.toLowerCase()]) {
             suggestions = (
                 <EmojiRenderRow
                     items={emojiWordMap[activeWord.toLowerCase()]}
