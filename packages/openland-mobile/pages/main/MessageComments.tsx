@@ -10,7 +10,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SenderView } from 'openland-mobile/messenger/components/SenderView';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
-import { EmojiRender } from './components/EmojiRender';
+import { EmojiRender, EmojiRenderRow } from './components/EmojiRender';
 import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { MentionsRender } from './components/MentionsRender';
@@ -27,6 +27,7 @@ import { prepareLegacyMentionsForSend, convertMentionsFromMessage } from 'openla
 import { trackEvent } from 'openland-mobile/analytics';
 import { getDepthOfCommentByID } from 'openland-y-utils/sortComments';
 import UUID from 'uuid/v4';
+import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 
 interface MessageCommentsInnerProps {
     message: Message_message;
@@ -229,6 +230,10 @@ const MessageCommentsInner = (props: MessageCommentsInnerProps) => {
 
     if (inputFocused && activeWord && activeWord.startsWith(':')) {
         suggestions = <EmojiRender activeWord={activeWord!} onEmojiPress={handleEmojiPress} />;
+    }
+
+    if (Platform.OS === 'android' && inputFocused && activeWord && emojiWordMap[activeWord.toLowerCase()]) {
+        suggestions = <EmojiRenderRow items={emojiWordMap[activeWord.toLowerCase()]} activeWord={activeWord} onEmojiPress={handleEmojiPress} />;
     }
 
     if (replied) {
