@@ -7,6 +7,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { ZAvatarSize, avatarSizes } from 'openland-mobile/components/ZAvatar';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { Image } from 'react-native';
 
 interface ASAvatarProps {
     size: ZAvatarSize;
@@ -26,11 +27,29 @@ export function ASAvatar(props: ASAvatarProps) {
     if (props.src && !props.src.startsWith('ph://')) {
         let url = props.src;
         url += '-/scale_crop/' + 256 + 'x' + 256 + '/center/';
+
+        const borderImage = require('assets/bubbles/incoming_border.png');
+        const borderResolvedImage = Image.resolveAssetSource(borderImage);
+
         return (
             <ASFlex 
+                marginLeft={props.marginLeft}
+                marginRight={props.marginRight}
+                marginTop={props.marginTop}
+                marginBottom={props.marginBottom}
+                width={size}
+                height={size}
                 borderRadius={size / 2}
                 backgroundColor={props.theme.backgroundTertiary}
-            >
+            >   
+                <ASFlex 
+                    overlay={true}
+                    backgroundPatch={{ source: borderResolvedImage.uri, scale: borderResolvedImage.scale, top: 0, left: 0, right: 0, bottom: 0 }}
+                    backgroundPatchTintColor={props.theme.border}
+                    flexGrow={1}
+                    width={size}
+                    height={size}
+                />
                 <ASImage
                     marginLeft={props.marginLeft}
                     marginRight={props.marginRight}
