@@ -69,3 +69,4 @@ android/captures
 ios/Pods
 .linaria-cache
 packages/openland-desktop/dist
+output

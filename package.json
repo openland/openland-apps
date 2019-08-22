@@ -347,13 +347,7 @@
         "schema:generate": "./scripts/schema_generate.sh",
         "favicon-gen": "convert ./packages/openland-web/static/favicon-16.png ./packages/openland-web/static/favicon-32.png ./packages/openland-web/static/favicon-48.png ./packages/openland-web/static/favicon.ico",
         "postinstall": "patch-package",
-        "mac": "./node_modules/.bin/concurrently \"yarn mac:assets\" \"yarn mac:build:watch\" \"yarn mac:bundler\"",
-        "mac:start": "cd ./packages/openland-mac && node node_modules/react-native-macos/local-cli/cli.js run-macos",
-        "mac:assets": "./node_modules/.bin/cpx \"./packages/openland-mobile/assets/**/*\" ./packages/openland-mac/build/assets",
-        "mac:build": "./node_modules/.bin/tsc -p tsconfig.json --outDir ./packages/openland-mac/build/native",
-        "mac:build:watch": "./node_modules/.bin/tsc -w -p tsconfig.json --preserveWatchOutput --outDir ./packages/openland-mac/build/native",
-        "mac:bundler": "./scripts/mac_bundler.sh",
-        "mac:prepare": "cd ./packages/openland-mac && yarn",
-        "emoji": "./node_modules/.bin/ts-node --project tsconfig.json ./packages/openland-y-utils/data/generate.ts"
+        "emoji": "./node_modules/.bin/ts-node --project tsconfig.json ./packages/openland-y-utils/data/generate.ts",
+        "dev:video": "tsc --project tsconfig.json --outDir build/video --module commonjs && node ./build/video/openland-video/server.js"
     }
 }
