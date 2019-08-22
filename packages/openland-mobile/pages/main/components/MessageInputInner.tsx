@@ -44,7 +44,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
     };
 
     return (
-        <View style={{ flexDirection: 'row', alignItems: 'flex-end', backgroundColor: Platform.OS === 'android' ? theme.backgroundSecondary : undefined }}>
+        <View style={{ flexDirection: 'row', alignItems: 'flex-end', backgroundColor: Platform.OS === 'android' ? theme.backgroundPrimary : undefined }}>
             {props.attachesEnabled !== false && (
                 <View width={56} height={52} alignItems="center" justifyContent="center">
                     <TouchableOpacity onPress={props.onAttachPress}>
