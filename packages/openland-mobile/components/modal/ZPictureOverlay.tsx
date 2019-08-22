@@ -254,13 +254,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                     paddingTop: SDevice.statusBarHeight + SDevice.safeArea.top,
                     backgroundColor: 'rgba(0,0,0,0.6)',
                     justifyContent: 'center',
-                    opacity: Animated.multiply(progressLinear, barOpacity),
-                    transform: [{
-                        translateY:
-                            Animated.multiply(
-                                Animated.add(Animated.multiply(progressLinear, barOpacity), -1),
-                                SDevice.statusBarHeight + SDevice.navigationBarHeight)
-                    }]
+                    opacity: Animated.multiply(progressLinear, barOpacity)
                 }}
             >
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
