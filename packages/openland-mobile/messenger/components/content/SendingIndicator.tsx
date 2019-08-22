@@ -3,7 +3,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
-const SHOW_INDICATOR_AFTER_TIME = 1000;
+const SHOW_INDICATOR_AFTER_TIME = 500;
 
 interface SendingIndicatorProps {
     sendTime: number;
