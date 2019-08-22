@@ -74,52 +74,55 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
         const content = getSpansSlices(spans, padded);
 
         return (
-            <ASFlex flexDirection="column">
-                {content.map((c, i) => (
-                    <ASFlex>
-                        {(c.type === 'slice' || c.type === 'loud' || c.type === 'emoji' || c.type === 'padded') && (
-                            <TextWrapper
-                                key={c.type + '-' + i}
-                                color={color}
-                                fontStyle={fontStyle}
-                                fontSize={fontSize[c.type]}
-                                lineHeight={lineHeight[c.type]}
-                                letterSpacing={letterSpacing[c.type]}
-                                marginTop={(c.type === 'loud' && i !== 0) ? insetVertical : undefined}
-                                marginBottom={(c.type !== 'emoji' && i !== content.length - 1) ? insetVertical : undefined}
-                                textAlign={textAlign}
-                                maxWidth={!width ? maxWidth : undefined}
-                                width={width}
-                            >
-                                {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
-                                {c.padded && paddedText(message.isEdited)}
-                            </TextWrapper>
-                        )}
-                        {c.type === 'code_block' && (
-                            <ASFlex
-                                key={c.type + '-' + i}
-                                marginLeft={-insetLeft}
-                                marginRight={-insetRight}
-                                marginTop={i === 0 ? insetVertical + ((message.isOut || message.attachTop) ? 2 : 0) : undefined}
-                                marginBottom={(!(content[i + 1] && content[i + 1].type === 'padded')) ? insetVertical : undefined}
-                                backgroundColor={(message.isOut && !message.isService) ? theme.codeSpan.backgroundOut : theme.codeSpan.background}
-                            >
-                                <ASFlex marginLeft={insetLeft} marginRight={insetRight} marginTop={5} marginBottom={5}>
-                                    <TextWrapper
-                                        fontSize={fontSize[c.type]}
-                                        lineHeight={lineHeight[c.type]}
-                                        letterSpacing={letterSpacing[c.type]}
-                                        color={color}
-                                        maxWidth={!width ? maxWidth : undefined}
-                                        width={width}
-                                    >
-                                        {renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
-                                    </TextWrapper>
-                                </ASFlex>
+            <ASFlex flexDirection="column" alignItems="stretch">
+                {content.map((c, i) => {
+                    if (c.type === 'slice' || c.type === 'loud' || c.type === 'emoji' || c.type === 'padded') {
+                        return (
+                            <ASFlex>
+                                <TextWrapper
+                                    key={c.type + '-' + i}
+                                    color={color}
+                                    fontStyle={fontStyle}
+                                    fontSize={fontSize[c.type]}
+                                    lineHeight={lineHeight[c.type]}
+                                    letterSpacing={letterSpacing[c.type]}
+                                    marginTop={(c.type === 'loud' && i !== 0) ? insetVertical : undefined}
+                                    marginBottom={(c.type !== 'emoji' && i !== content.length - 1) ? insetVertical : undefined}
+                                    textAlign={textAlign}
+                                    maxWidth={!width ? maxWidth : undefined}
+                                    width={width}
+                                >
+                                    {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
+                                    {c.padded && paddedText(message.isEdited)}
+                                </TextWrapper>
                             </ASFlex>
-                        )}
-                    </ASFlex>
-                ))}
+                        )
+                    }
+
+                    return (
+                        <ASFlex
+                            key={c.type + '-' + i}
+                            marginLeft={-insetLeft}
+                            marginRight={-insetRight}
+                            marginTop={i === 0 ? insetVertical + ((message.isOut || message.attachTop) ? 2 : 0) : undefined}
+                            marginBottom={(!(content[i + 1] && content[i + 1].type === 'padded')) ? insetVertical : undefined}
+                            backgroundColor={(message.isOut && !message.isService) ? theme.codeSpan.backgroundOut : theme.codeSpan.background}
+                        >
+                            <ASFlex marginLeft={insetLeft} marginRight={insetRight} marginTop={5} marginBottom={5}>
+                                <TextWrapper
+                                    fontSize={fontSize[c.type]}
+                                    lineHeight={lineHeight[c.type]}
+                                    letterSpacing={letterSpacing[c.type]}
+                                    color={color}
+                                    maxWidth={!width ? maxWidth : undefined}
+                                    width={width}
+                                >
+                                    {renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
+                                </TextWrapper>
+                            </ASFlex>
+                        </ASFlex>
+                    );
+                })}
             </ASFlex>
         );
     }
