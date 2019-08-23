@@ -73,10 +73,6 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
         }
     }
 
-    onEndReached = () => {
-        this.props.engine.loadBefore();
-    }
-
     render() {
         return (
             <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -androidMessageInputListOverlap })}>

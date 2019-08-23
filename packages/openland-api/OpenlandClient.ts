@@ -307,6 +307,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderChatHistory(variables: Types.ChatHistoryVariables, opts?: QueryWatchParameters): Types.ChatHistory | null {
         return this.useQuery(Source.ChatHistoryQuery, variables, opts);
     }
+    async queryMessagesBatch(variables: Types.MessagesBatchVariables, opts?: OperationParameters): Promise<Types.MessagesBatch> {
+        return this.client.query(Source.MessagesBatchQuery, variables, opts);
+    }
+    async refetchMessagesBatch(variables: Types.MessagesBatchVariables): Promise<Types.MessagesBatch> {
+        return this.refetch(Source.MessagesBatchQuery, variables);
+    }
+    useMessagesBatch(variables: Types.MessagesBatchVariables, opts?: QueryWatchParameters): Types.MessagesBatch {
+        return this.useQuerySuspense(Source.MessagesBatchQuery, variables, opts);
+    }
+    useWithoutLoaderMessagesBatch(variables: Types.MessagesBatchVariables, opts?: QueryWatchParameters): Types.MessagesBatch | null {
+        return this.useQuery(Source.MessagesBatchQuery, variables, opts);
+    }
     async queryChatInit(variables: Types.ChatInitVariables, opts?: OperationParameters): Promise<Types.ChatInit> {
         return this.client.query(Source.ChatInitQuery, variables, opts);
     }
@@ -318,6 +330,18 @@ export class OpenlandClient extends BaseApiClient {
     }
     useWithoutLoaderChatInit(variables: Types.ChatInitVariables, opts?: QueryWatchParameters): Types.ChatInit | null {
         return this.useQuery(Source.ChatInitQuery, variables, opts);
+    }
+    async queryChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts?: OperationParameters): Promise<Types.ChatInitFromUnread> {
+        return this.client.query(Source.ChatInitFromUnreadQuery, variables, opts);
+    }
+    async refetchChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables): Promise<Types.ChatInitFromUnread> {
+        return this.refetch(Source.ChatInitFromUnreadQuery, variables);
+    }
+    useChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts?: QueryWatchParameters): Types.ChatInitFromUnread {
+        return this.useQuerySuspense(Source.ChatInitFromUnreadQuery, variables, opts);
+    }
+    useWithoutLoaderChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts?: QueryWatchParameters): Types.ChatInitFromUnread | null {
+        return this.useQuery(Source.ChatInitFromUnreadQuery, variables, opts);
     }
     async queryRoomSearchText(variables: Types.RoomSearchTextVariables, opts?: OperationParameters): Promise<Types.RoomSearchText> {
         return this.client.query(Source.RoomSearchTextQuery, variables, opts);

@@ -1,20 +1,24 @@
 import * as React from 'react';
 import { DataSourceItem, ReadableDataSource } from 'openland-y-utils/DataSource';
+import { DataSourceLogger } from 'openland-y-utils/DataSourceLogger';
 
 function useDataSource<T extends DataSourceItem>(
     dataSource: ReadableDataSource<T>,
-): [T[], boolean, { key: string | undefined }] {
+): [T[], boolean, boolean, { scrollTo: string | undefined }] {
     let [items, setItems] = React.useState<T[]>([]);
-    let [scrollTo, setScrollTo] = React.useState({ key: undefined as string | undefined });
+    let [scrollToHolder, setScrollTo] = React.useState<{ scrollTo: string | undefined }>({ scrollTo: undefined });
     let [completed, setCompleted] = React.useState<boolean>(false);
+    let [completedForward, setCompletedForward] = React.useState<boolean>(true);
     React.useEffect(
         () => {
             let lastData: T[] = [];
+            let l = new DataSourceLogger('useDataSource ds', dataSource as any);
             let w = dataSource.watch({
-                onDataSourceInited: (data: T[], isCompleted: boolean) => {
-                    lastData = data;
+                onDataSourceInited: (data: T[], isCompleted: boolean, isCompletedForward: boolean) => {
+                    lastData = [...data];
                     setItems(data);
                     setCompleted(isCompleted);
+                    setCompletedForward(isCompletedForward);
                 },
                 onDataSourceItemAdded: (item: T, index: number) => {
                     let data = [...lastData];
@@ -47,21 +51,30 @@ function useDataSource<T extends DataSourceItem>(
                     setItems(data);
                     setCompleted(isCompleted);
                 },
+                onDataSourceLoadedMoreForward: (ndata: T[], isCompleted: boolean) => {
+                    let data = [...ndata, ...lastData];
+                    lastData = data;
+                    setItems(data);
+                    setCompletedForward(isCompleted);
+                },
                 onDataSourceCompleted: () => {
                     setCompleted(true);
                 },
-                onDataSourceScrollToKeyRequested: target => {
-                    setScrollTo({ key: target });
+                onDataSourceCompletedForward: () => {
+                    // setCompletedForward(true);
+                },
+                onDataSourceScrollToKeyRequested: scrollTo => {
+                    setScrollTo({ scrollTo });
                 },
             });
             return w;
         },
         [dataSource],
     );
-    return [items, completed, scrollTo];
+
+    return [items, completed, completedForward, scrollToHolder];
 }
 
-export type ScrollTo = { scrollTo: { key: string | undefined } | undefined };
 export interface XListViewProps<T extends DataSourceItem> {
     dataSource: ReadableDataSource<T>;
     renderItem: React.ComponentClass<{ item: T }> | React.StatelessComponent<{ item: T }>;
@@ -69,6 +82,7 @@ export interface XListViewProps<T extends DataSourceItem> {
     reverce?: boolean;
     wrapWith?: any;
     onUpdated?: () => void;
+    onScrollToReqested?: (target: number) => void;
 }
 
 const WrapWith = React.memo(
@@ -76,29 +90,31 @@ const WrapWith = React.memo(
         WrapWithComponent,
         reverce,
         completed,
+        completedForward,
         LoadingComponent,
         children,
     }: {
         WrapWithComponent: any;
         reverce?: boolean;
         completed: boolean;
+        completedForward: boolean;
         LoadingComponent: any;
         children: any;
     }) => {
         if (!WrapWithComponent) {
             return (
                 <>
-                    {!completed && reverce && <LoadingComponent />}
+                    {(reverce ? !completed : !completedForward) && <LoadingComponent />}
                     {children}
-                    {!completed && !reverce && <LoadingComponent />}
+                    {(reverce ? !completedForward : !completed) && <LoadingComponent />}
                 </>
             );
         }
         return (
             <WrapWithComponent>
-                {!completed && reverce && <LoadingComponent />}
+                {(reverce ? !completed : !completedForward) && <LoadingComponent />}
                 {children}
-                {!completed && !reverce && <LoadingComponent />}
+                {(reverce ? !completedForward : !completed) && <LoadingComponent />}
             </WrapWithComponent>
         );
     },
@@ -107,26 +123,30 @@ const WrapWith = React.memo(
 export const DataSourceRender = React.memo(function <T extends DataSourceItem>(
     props: XListViewProps<T>,
 ) {
-    let [items, completed] = useDataSource(props.dataSource);
+    let [items, completed, completedForward, scrollToHolder] = useDataSource(props.dataSource);
 
-    let renderedItems: any = [];
     if (props.reverce) {
-        for (let i = items.length - 1; i >= 0; i--) {
-            renderedItems.push(
-                <props.renderItem
-                    key={items[i].key}
-                    item={items[i]}
-                />,
-            );
-        }
-    } else {
-        renderedItems = items.map((i, key) => (
-            <props.renderItem
-                key={i.key}
-                item={i}
-            />
-        ));
+        items = [...items];
+        items.reverse();
     }
+
+    let renderedItems = items.map((item, i) => {
+        if (scrollToHolder.scrollTo === item.key) {
+            scrollToHolder.scrollTo = undefined;
+
+            (async () => {
+                await null;
+                if (props.onScrollToReqested) {
+                    props.onScrollToReqested(i);
+
+                }
+            })();
+        }
+        return <props.renderItem
+            key={item.key}
+            item={item}
+        />;
+    });
 
     if (props.onUpdated) {
         props.onUpdated();
@@ -138,6 +158,7 @@ export const DataSourceRender = React.memo(function <T extends DataSourceItem>(
             reverce={props.reverce}
             WrapWithComponent={props.wrapWith}
             completed={completed}
+            completedForward={completedForward}
         >
             {renderedItems}
         </WrapWith>

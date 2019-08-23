@@ -8,19 +8,21 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
     private readonly _windowSize: number;
     private _isPassThrough = false;
     private _innerCompleted = false;
+    private _innerCompletedForward = false;
 
     constructor(inner: ReadableDataSource<T>, windowSize: number) {
         this._inner = inner;
-        this._proxy = new DataSource(() => { /*  */ });
+        this._proxy = new DataSource(() => { /*  */ }, () => { /*  */ });
         this._windowSize = windowSize;
         this._subscription = inner.watch({
-            onDataSourceInited: (data: T[], completed: boolean) => {
+            onDataSourceInited: (data: T[], completed: boolean, completedForward: boolean) => {
                 this._innerCompleted = completed;
                 if (data.length < windowSize || this._isPassThrough) {
-                    this._proxy.initialize(data, completed);
+                    this._proxy.initialize(data, completed, completedForward);
                     this._isPassThrough = true;
                 } else {
-                    this._proxy.initialize(data.slice(0, windowSize), false);
+                    // TODO: init around unread
+                    this._proxy.initialize(data.slice(0, windowSize), false, completedForward);
                 }
             },
             onDataSourceItemAdded: (item: T, index: number) => {
@@ -58,14 +60,26 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                     this._proxy.loadedMore(data, completed);
                 }
             },
+            onDataSourceLoadedMoreForward: (data: T[], completed: boolean) => {
+                this._innerCompletedForward = completed;
+                if (this._isPassThrough) {
+                    this._proxy.loadedMoreForward(data, completed);
+                }
+            },
             onDataSourceCompleted: () => {
                 this._innerCompleted = true;
                 if (this._isPassThrough) {
                     this._proxy.complete();
                 }
             },
+            onDataSourceCompletedForward: () => {
+                this._innerCompletedForward = true;
+                if (this._isPassThrough) {
+                    this._proxy.complete();
+                }
+            },
             onDataSourceScrollToKeyRequested: (key: string) => {
-                // throw Error('Not supported');
+                this._proxy.requestScrollToKey(key);
             },
         });
     }
@@ -73,6 +87,35 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
     needMore() {
         if (this._isPassThrough) {
             this._inner.needMore();
+            return;
+        }
+
+        setTimeout(() => {
+            let available = Math.min(this._proxy.getSize() + this._windowSize, this._inner.getSize()) - this._proxy.getSize();
+            if (available > 0) {
+                let toAdd: T[] = [];
+                for (let i = 0; i < available; i++) {
+                    toAdd.push(this._inner.getAt(i + this._proxy.getSize()));
+                }
+                if (this._proxy.getSize() + available < this._inner.getSize()) {
+                    this._proxy.loadedMore(toAdd, false);
+                } else {
+                    this._proxy.loadedMore(toAdd, this._innerCompleted);
+                }
+            } else {
+                this._isPassThrough = true;
+                if (this._innerCompleted) {
+                    this._proxy.complete();
+                } else {
+                    this._inner.needMore();
+                }
+            }
+        }, 10);
+    }
+
+    needMoreForward() {
+        if (this._isPassThrough) {
+            this._inner.needMoreForward();
             return;
         }
 

@@ -499,10 +499,57 @@ export const ChatHistoryQuery = gql`
     ${UserForMention}
 `;
 
+export const MessagesBatchQuery = gql`
+    query MessagesBatch($chatId: ID!, $first: Int!, $before: ID, $after: ID) {
+        gammaMessages(chatId: $chatId, first: $first, before: $before, after: $after) {
+            messages{
+                ...FullMessage
+            }
+            haveMoreForward
+            haveMoreBackward
+        }
+        state: conversationState(id: $chatId) {
+            state
+        }
+    }
+    ${FullMessage}
+    ${UserTiny}
+    ${UserShort}
+    ${RoomShort}
+    ${UserForMention}
+`;
+
 export const ChatInitQuery = gql`
     query ChatInit($chatId: ID!, $before: ID, $first: Int!) {
         messages(chatId: $chatId, first: $first, before: $before) {
             ...FullMessage
+        }
+        state: conversationState(id: $chatId) {
+            state
+        }
+        room(id: $chatId) {
+            ...RoomShort
+        }
+        lastReadedMessage(chatId: $chatId){
+            id
+        }
+    }
+    ${UserBadge}
+    ${FullMessage}
+    ${UserTiny}
+    ${UserShort}
+    ${RoomShort}
+    ${UserForMention}
+`;
+
+export const ChatInitFromUnreadQuery = gql`
+    query ChatInitFromUnread($chatId: ID!, $before: ID, $first: Int!) {
+        gammaMessages(chatId: $chatId, first: $first, before: $before) {
+            messages{
+                ...FullMessage
+            }
+            haveMoreForward
+            haveMoreBackward
         }
         state: conversationState(id: $chatId) {
             state

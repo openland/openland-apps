@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { MessageComponent } from '../message/MessageComponent';
 import { ServiceMessage } from '../message/ServiceMessage';
 import {
@@ -23,32 +24,32 @@ import { NewMessageDividerComponent } from './NewMessageDividerComponent';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 
-const messagesWrapperClassName = css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    align-self: center;
-    width: 100%;
-    padding-top: 96px;
-    padding-bottom: 35px;
+// const messagesWrapperClassName = css`
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     align-self: center;
+//     width: 100%;
+//     padding-top: 96px;
+//     padding-bottom: 35px;
 
-    padding-left: 16px;
-    padding-right: 16px;
-`;
+//     padding-left: 16px;
+//     padding-right: 16px;
+// `;
 
-const mobileMessageWrapperClassName = css`
-    padding-left: 0;
-    padding-right: 0;
-`;
+// const mobileMessageWrapperClassName = css`
+//     padding-left: 0;
+//     padding-right: 0;
+// `;
 
-const MessagesWrapper = React.memo(({ children }: { children?: any }) => {
-    const isMobile = useLayout() === 'mobile';
-    return (
-        <div className={cx(messagesWrapperClassName, isMobile && mobileMessageWrapperClassName)}>
-            {children}
-        </div>
-    );
-});
+// const MessagesWrapper = React.memo(({ children }: { children?: any }) => {
+//     const isMobile = useLayout() === 'mobile';
+//     return (
+//         <div className={cx(messagesWrapperClassName, isMobile && mobileMessageWrapperClassName)}>
+//             {children}
+//         </div>
+//     );
+// });
 
 const messagesWrapperEmptyClassName = css`
     display: flex;
@@ -119,8 +120,10 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
     handlerScroll = (e: XScrollValues) => {
         if (e.scrollTop < 1200) {
-            // this.props.conversation.loadBefore();
             this.dataSource.needMore();
+        }
+        if (e.clientHeight - e.scrollHeight - e.scrollTop < 1200) {
+            this.dataSource.needMoreForward();
         }
     }
 
@@ -142,12 +145,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             } else if (data.item.type === 'date') {
                 return <DateComponent item={data.item} />;
             } else if (data.item.type === 'new_divider') {
-                return (
-                    <NewMessageDividerComponent
-                        dividerKey={(data.item as any).dataKey}
-                        scrollTo={{ key: '' }}
-                    />
-                );
+                return <NewMessageDividerComponent dividerKey={(data.item as any).dataKey} />;
             }
             return <div />;
         },
@@ -161,27 +159,36 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         );
     });
 
-    dataSourceWrapper = React.memo((props: any) => {
-        useScrollRefresh();
-        console.log('render!');
-        return (
-            <>
-                {this.isEmpty() && (
-                    <MessagesWrapperEmpty>
-                        <EmptyBlock
-                            conversationType={this.props.conversationType}
-                            onClick={this.props.inputShower}
-                        />
-                    </MessagesWrapperEmpty>
-                )}
+    // dataSourceWrapper = React.memo((props: any) => {
+    //     useScrollRefresh();
+    //     console.log('render!');
+    //     return (
+    //         <>
+    //             {this.isEmpty() && (
+    //                 <MessagesWrapperEmpty>
+    //                     <EmptyBlock
+    //                         conversationType={this.props.conversationType}
+    //                         onClick={this.props.inputShower}
+    //                     />
+    //                 </MessagesWrapperEmpty>
+    //             )}
 
-                {!this.isEmpty() && <MessagesWrapper>{props.children}</MessagesWrapper>}
-            </>);
-    });
+    //             {!this.isEmpty() && <MessagesWrapper>{props.children}</MessagesWrapper>}
+    //         </>);
+    // });
 
     onUpdated = () => {
         if (this.scroller.current && this.scroller.current.getClientHeight() && this.scroller.current.getScrollTop() < 100) {
             this.dataSource.needMore();
+        }
+    }
+
+    onScrollRequested = (target: number) => {
+        if (this.innerScrollRef.current) {
+            let targetNode = (this.innerScrollRef.current.childNodes[0] || []).childNodes[target] as any;
+            if (targetNode && targetNode.scrollIntoView) {
+                targetNode.scrollIntoView();
+            }
         }
     }
 
@@ -193,14 +200,15 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                 justifyContent="flex-end"
                 onScroll={this.handlerScroll}
                 ref={this.scroller}
+                innerRef={this.innerScrollRef}
             >
                 <DataSourceRender
                     dataSource={this.dataSource}
                     reverce={true}
-                    wrapWith={this.dataSourceWrapper}
                     renderItem={this.renderMessage}
                     renderLoading={this.renderLoading}
                     onUpdated={this.onUpdated}
+                    onScrollToReqested={this.onScrollRequested}
                 />
             </XScrollViewReverse2>
         );

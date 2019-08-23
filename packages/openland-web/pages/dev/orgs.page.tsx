@@ -115,8 +115,8 @@ const FilteredOptions = (props: FilteredOptionsProps) => {
         nodes = nodes.filter(o => o.title.toLowerCase().match(props.searchValue.toLowerCase()));
     }
 
-    let ds = new DataSource(() => []);
-    ds.initialize(nodes.map(v => ({ ...v, key: v.id })), true)
+    let ds = new DataSource(() => [], () => []);
+    ds.initialize(nodes.map(v => ({ ...v, key: v.id })), true, true)
     let dsw = new DataSourceWindow(ds, 50);
 
     const renderLoading = React.useMemo(() => {

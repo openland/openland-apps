@@ -54,7 +54,7 @@ export class DataSourceStored<T extends DataSourceItem> {
         this._provider = provider;
         this.name = name;
         this.pageSize = pageSize;
-        this.dataSource = new DataSource<T>(() => { this.needMore(); });
+        this.dataSource = new DataSource<T>(() => { this.needMore(); }, () => []);
         storage = new KeyValueStoreVersioned(storage);
         this._storage = storage;
         this._limitStored = limit;
@@ -133,7 +133,7 @@ export class DataSourceStored<T extends DataSourceItem> {
             this._provider.onStarted(this._state, items);
 
             this._inited = true; // Mark inited before data source loading to avoid "loading" hanging
-            this.dataSource.initialize(items, this._loadCompleted && !this._cursor);
+            this.dataSource.initialize(items, this._loadCompleted && !this._cursor, true);
             log.log(this.name + '| Inited in ' + (currentTimeMillis() - start) + ' ms');
         });
     }
