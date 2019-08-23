@@ -36,16 +36,7 @@ interface XScrollViewReverse2RefProps {
     getClientHeight: () => number;
 }
 
-const context = React.createContext(() => { /*  */ });
-
-export const useScrollRefresh = () => {
-    let ct = React.useContext(context);
-    React.useLayoutEffect(() => {
-        ct();
-    });
-};
-
-export const XScrollViewReverse2 = React.memo(
+export const XScrollViewAnchored = React.memo(
     React.forwardRef<XScrollViewReverse2RefProps, XScrollViewReverse2Props>(
         (props: XScrollViewReverse2Props, ref) => {
             const outerRef = React.useRef<HTMLDivElement>(null);
@@ -68,165 +59,91 @@ export const XScrollViewReverse2 = React.memo(
                 }
             }));
 
-            const reportOnScroll = React.useMemo(() => {
-                let reportedClientHeight: number = 0;
-                let reportedScrollTop: number = 0;
-                let reportedScrollHeight: number = 0;
-
-                return () => {
-                    const scrollHeight = innerHeight.current;
-                    const clientHeight = outerHeight.current;
-                    if (
-                        reportedScrollTop !== scrollTop.current ||
-                        reportedScrollHeight !== scrollHeight ||
-                        reportedClientHeight !== clientHeight
-                    ) {
-                        reportedScrollHeight = scrollHeight;
-                        reportedScrollTop = scrollTop.current;
-                        reportedClientHeight = clientHeight;
-                        if (props.onScroll) {
-                            props.onScroll({
-                                scrollHeight,
-                                scrollTop: scrollTop.current,
-                                clientHeight,
-                            });
-                        }
-                    }
-                };
+            const reportOnScroll = React.useCallback(() => {
+                if (props.onScroll) {
+                    props.onScroll({
+                        scrollHeight: innerHeight.current,
+                        scrollTop: scrollTop.current,
+                        clientHeight: outerHeight.current,
+                    });
+                }
             }, []);
 
-            const updateSizes = React.useCallback((outer: number, inner: number) => {
-                const outerDiv = outerRef.current!!;
-                const innerDiv = innerRef.current!!;
-                if (!outerDiv || !innerDiv) {
+            let anchorRef = React.useRef<{ offset: number, anchor: HTMLDivElement } | undefined>();
+            let pickAnchor = React.useCallback(() => {
+                if (!innerRef.current || !outerRef.current) {
                     return;
                 }
-
-                let delta = 0;
-                if (inner !== innerHeight.current) {
-                    let d = inner - innerHeight.current;
-                    innerHeight.current = inner;
-                    if (d > 0) {
-                        // let clientHeight = ref2.current!!.clientHeight;
-                        // let scrollTop = ref.current!!.scrollTop;
-                        // let scrollHeight = ref.current!!.clientHeight;
-                        // let scrollBottom = innerHeight.current - scrollTop.current - outerHeight.current;
-                        // console.log(scrollBottom);
-
-                        // if (scrollTop.current )
-                        delta += d;
+                let prevDistance: number | undefined;
+                for (let i = 1; i < innerRef.current!.childElementCount; i++) {
+                    let node = innerRef.current!.childNodes[i] as HTMLDivElement;
+                    let offset = node.offsetTop - outerRef.current!.scrollTop;
+                    let distance = Math.abs(offset);
+                    if ((prevDistance !== undefined) && distance > prevDistance) {
+                        break;
                     }
-                }
-                if (outer !== outerHeight.current) {
-                    let d = outer - outerHeight.current;
-                    outerHeight.current = outer;
-                    if (d < 0) {
-                        delta -= d;
+                    prevDistance = distance;
+                    node.style.backgroundColor = 'red';
+                    if (anchorRef.current) {
+                        anchorRef.current.anchor.style.backgroundColor = '';
                     }
-                }
-                if (delta !== 0) {
-                    scrollTop.current = outerDiv.scrollTop + delta;
-                    outerDiv.scrollTop = scrollTop.current;
-                    reportOnScroll();
+                    anchorRef.current = { anchor: node, offset };
+
                 }
             }, []);
+
+            let ignoreNextScrollEvent = React.useRef(false);
 
             React.useLayoutEffect(() => {
                 const outerDiv = outerRef.current!!;
                 const innerDiv = innerRef.current!!;
-                innerHeight.current = innerDiv.clientHeight;
-                outerHeight.current = outerDiv.clientHeight;
-                scrollTop.current = innerHeight.current;
-                outerDiv.scrollTop = scrollTop.current;
-                reportOnScroll();
-
-                // Watch for scroll
                 const onScrollHandler = throttle(() => {
+                    if (ignoreNextScrollEvent.current) {
+                        ignoreNextScrollEvent.current = false;
+                    } else {
+                        pickAnchor();
+                    }
                     scrollTop.current = outerDiv.scrollTop;
                     reportOnScroll();
                 }, 150);
                 outerDiv.addEventListener('scroll', onScrollHandler, { passive: true });
 
-                // const onScrollHandlerSync = () => {
-                //     updateSizes(outerDiv.clientHeight, innerDiv.clientHeight);
-                // };
-                // if (!isChrome) {
-                //     outerDiv.addEventListener('scroll', onScrollHandlerSync, { passive: false });
-                // }
-
-                // Watch for size
                 let observer = new ResizeObserver(src => {
-                    let outer = outerHeight.current;
-                    let inner = innerHeight.current;
+                    innerHeight.current = innerDiv.clientHeight;
+                    outerHeight.current = outerDiv.clientHeight;
+                    scrollTop.current = innerHeight.current;
 
-                    for (let s of src) {
-                        if (s.contentRect.height === 0 && s.contentRect.width === 0) {
-                            continue;
-                        }
-                        if (s.target === innerDiv) {
-                            inner = s.contentRect.height;
-                        } else if (s.target === outerDiv) {
-                            outer = s.contentRect.height;
-                        }
+                    if (anchorRef.current) {
+                        let delta = (anchorRef.current.anchor.offsetTop - innerRef.current!.scrollHeight) - anchorRef.current.offset;
+                        scrollTop.current += delta;
+                        outerRef.current!.scrollTop = scrollTop.current;
+                    } else {
+                        scrollTop.current = innerRef.current!.scrollHeight;
+                        outerRef.current!.scrollTop = scrollTop.current;
+                        pickAnchor();
                     }
-                    updateSizes(outer, inner);
+                    reportOnScroll();
+                    ignoreNextScrollEvent.current = true;
                 });
                 observer.observe(innerDiv);
                 observer.observe(outerDiv);
 
                 return () => {
                     outerDiv.removeEventListener('scroll', onScrollHandler);
-                    // if (!isChrome) {
-                    //     outerDiv.removeEventListener('scroll', onScrollHandlerSync);
-                    // }
                     observer.disconnect();
                 };
-            }, []);
-
-            React.useLayoutEffect(
-                () => {
-                    let running = false;
-                    requestAnimationFrame(() => {
-                        if (!running) {
-                            return;
-                        }
-                        const outerDiv = outerRef.current!!;
-                        const innerDiv = innerRef.current!!;
-                        if (!outerDiv || !innerDiv) {
-                            return;
-                        }
-                        updateSizes(outerDiv.clientHeight, innerDiv.clientHeight);
-                        reportOnScroll();
-                    });
-                    return () => {
-                        running = false;
-                    };
-                },
-                [props.children],
-            );
-
-            const ctx = React.useCallback(() => {
-                const outerDiv = outerRef.current!!;
-                const innerDiv = innerRef.current!!;
-                if (!outerDiv || !innerDiv) {
-                    return;
-                }
-                updateSizes(outerDiv.clientHeight, innerDiv.clientHeight);
-                reportOnScroll();
             }, []);
 
             const { children, ...other } = props;
 
             return (
-                <context.Provider value={ctx}>
-                    <XView {...other}>
-                        <div className={NativeScrollStyle} ref={outerRef}>
-                            <div className={NativeScrollContentStyle} ref={innerRef}>
-                                {props.children}
-                            </div>
+                <XView {...other}>
+                    <div className={NativeScrollStyle} ref={outerRef}>
+                        <div className={NativeScrollContentStyle} ref={innerRef}>
+                            {props.children}
                         </div>
-                    </XView>
-                </context.Provider>
+                    </div>
+                </XView>
             );
         },
     ),

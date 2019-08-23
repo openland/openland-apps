@@ -23,6 +23,7 @@ import { DateComponent } from './DateComponent';
 import { NewMessageDividerComponent } from './NewMessageDividerComponent';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
+import { XScrollViewAnchored } from 'openland-x/XScrollViewAnchored';
 
 // const messagesWrapperClassName = css`
 //     display: flex;
@@ -154,7 +155,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     renderLoading = React.memo(() => {
         return (
             <div className={loaderClass}>
-                <XLoader loading={true} size="small" />
+                <XLoader loading={true} transparentBackground={true} size="small" />
             </div>
         );
     });
@@ -185,7 +186,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
     onScrollRequested = (target: number) => {
         if (this.innerScrollRef.current) {
-            let targetNode = (this.innerScrollRef.current.childNodes[0] || []).childNodes[target] as any;
+            let targetNode = this.innerScrollRef.current.childNodes[target] as any;
             if (targetNode && targetNode.scrollIntoView) {
                 targetNode.scrollIntoView();
             }
@@ -194,7 +195,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
     render() {
         return (
-            <XScrollViewReverse2
+            <XScrollViewAnchored
                 flexGrow={1}
                 flexShrink={1}
                 justifyContent="flex-end"
@@ -210,7 +211,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                     onUpdated={this.onUpdated}
                     onScrollToReqested={this.onScrollRequested}
                 />
-            </XScrollViewReverse2>
+            </XScrollViewAnchored>
         );
     }
 }

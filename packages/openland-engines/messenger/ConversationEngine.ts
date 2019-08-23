@@ -355,9 +355,6 @@ export class ConversationEngine implements MessageSendHandler {
     //     await this.load('forward');
     // }
     load = async (direction: 'forward' | 'backward') => {
-        if (direction === 'backward') {
-            return;
-        }
         let id: string | undefined;
         if (
             (direction === 'backward' && (this.historyFullyLoaded || this.loadingHistory)) ||
