@@ -1,0 +1,23 @@
+FROM node:10.14.0-alpine
+
+RUN apk add --no-cache chromium git nss \
+      freetype \
+      freetype-dev \
+      harfbuzz \
+      ca-certificates \
+      ttf-freefont
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+
+WORKDIR /app
+ADD package.prod.json /app/package.json
+ADD yarn.lock /app/yarn.lock
+RUN yarn install
+RUN yarn add puppeteer
+COPY build/video/ /app/
+
+EXPOSE 3000
+ENV NODE_ENV=production
+ARG release_id
+ENV RELEASE_ID=$release_id
+
+CMD [ "node", "./openland-video/server.js" ]

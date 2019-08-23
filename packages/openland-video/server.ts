@@ -7,6 +7,10 @@ import { XStyleFactoryRegistry } from 'react-mental';
 import { css } from 'glamor';
 import { renderStaticOptimized } from 'glamor/server';
 import * as ReactDOM from 'react-dom/server';
+import { exec as execRaw } from 'child_process';
+import * as util from 'util';
+const exec = util.promisify(execRaw);
+
 XStyleFactoryRegistry.registerFactory({
     createStyle: styles => {
         return css(styles).toString();
@@ -34,10 +38,13 @@ app.post('/create', bodyParser.json(), (req, res) => {
                 height: 360,
                 scale: 2,
                 path: 'out.mp4',
-                spriteRendering: false,
+                batchSize: 30,
                 customRenderer: (el) => {
                     let rendered = renderStaticOptimized(() => ReactDOM.renderToStaticMarkup(el));
                     return { body: rendered.html, css: rendered.css };
+                },
+                customScreenshoter: async (src, dst, width, height, scale) => {
+                    await exec(`/usr/bin/chromium-browser --disable-dev-shm-usage --no-sandbox --disable-gpu --disable-software-rasterizer --headless --screenshot=${dst} --window-size=${width}x${height} --device-scale-factor=${scale} file://${src}`);
                 }
             });
             res.send('ok!');
