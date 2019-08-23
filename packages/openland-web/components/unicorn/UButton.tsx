@@ -30,7 +30,6 @@ const buttonWrapperStyle = css`
     align-items: center;
     justify-content: center;
     position: relative;
-    border-radius: 100px;
     cursor: pointer;
     transition: color 0.08s ease-in, all 0.15s ease;
 `;
@@ -53,6 +52,7 @@ const size28 = css`
     height: 28px;
     padding-left: 16px;
     padding-right: 16px;
+    border-radius: 100px;
 `;
 
 const size32 = css`
@@ -61,6 +61,7 @@ const size32 = css`
     height: 32px;
     padding-left: 16px;
     padding-right: 16px;
+    border-radius: 100px;
 `;
 
 const size40 = css`
@@ -69,6 +70,7 @@ const size40 = css`
     height: 40px;
     padding-left: 24px;
     padding-right: 24px;
+    border-radius: 8px;
 `;
 
 const primaryStyle = css`
