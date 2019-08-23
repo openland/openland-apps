@@ -6,7 +6,7 @@ import { XView } from 'react-mental';
 import { DialogSearchInput } from '../dialogs/components/DialogSearchInput';
 import { DialogSearchResults } from '../dialogs/components/DialogSearchResults';
 import { XScrollView2 } from 'openland-x/XScrollView2';
-import { GlobalSearch_items } from 'openland-api/Types';
+import { GlobalSearch_items, GlobalSearchEntryKind } from 'openland-api/Types';
 
 const ChatPickerComponent = (props: { onSelect: (selecedChatId: string) => void, ctx: XModalController }) => {
     let layout = useLayout();
@@ -18,11 +18,6 @@ const ChatPickerComponent = (props: { onSelect: (selecedChatId: string) => void,
         props.onSelect(item.id);
         props.ctx.hide();
     };
-    let onMessageClick = (chatId: string) => {
-        props.onSelect(chatId);
-        props.ctx.hide();
-    };
-
     let [query, setQuery] = React.useState('');
 
     return (
@@ -31,9 +26,11 @@ const ChatPickerComponent = (props: { onSelect: (selecedChatId: string) => void,
                 <DialogSearchInput value={query} onChange={setQuery} modal={true} autofocus={true} />
                 <XScrollView2 flexGrow={1}>
                     <DialogSearchResults
-                        variables={{ query: query, limit: 30 }}
+                        variables={{
+                            query: query,
+                            kinds: [GlobalSearchEntryKind.SHAREDROOM, GlobalSearchEntryKind.USER]
+                        }}
                         onPick={onDialogClick}
-                        onMessagePick={onMessageClick}
                         paddingHorizontal={24}
                     />
                 </XScrollView2>

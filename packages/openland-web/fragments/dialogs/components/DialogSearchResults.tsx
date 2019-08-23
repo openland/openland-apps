@@ -10,7 +10,7 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { plural } from 'openland-y-utils/plural';
-import { GlobalSearch_items } from 'openland-api/Types';
+import { GlobalSearch_items, GlobalSearchVariables } from 'openland-api/Types';
 
 const NoResultWrapper = Glamorous(XVertical)({
     marginTop: 34,
@@ -26,9 +26,9 @@ const Image = Glamorous.div({
 });
 
 type DialogSearchResultsT = {
-    variables: { query: string, limit?: number };
+    variables: GlobalSearchVariables;
     onPick: (item: GlobalSearch_items) => void;
-    onMessagePick: (chatId: string) => void;
+    onMessagePick?: (chatId: string) => void;
     paddingHorizontal?: number;
 };
 
@@ -101,9 +101,11 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
                     return null;
                 }
             })}
-            <XWithRole role="feature-non-production">
-                <MessagesSearch variables={props.variables} onPick={props.onMessagePick} />
-            </XWithRole>
+            {props.onMessagePick && (
+                <XWithRole role="feature-non-production">
+                    <MessagesSearch variables={props.variables} onPick={props.onMessagePick} />
+                </XWithRole>
+            )}
         </>
     );
 };
