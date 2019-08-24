@@ -1,18 +1,14 @@
 FROM node:10.16.3
 
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
-    && apt-get update \
-    && apt-get install -y ffmpeg google-chrome-unstable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst ttf-freefont \
+RUN apt-get update \
+    && apt-get install -y ffmpeg \
       --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 WORKDIR /app
 ADD package.prod.json /app/package.json
 ADD yarn.lock /app/yarn.lock
 RUN yarn install
-RUN yarn add puppeteer
 COPY build/video/ /app/
 COPY utils/encoder-linux-amd64 /app/
 

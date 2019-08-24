@@ -25,6 +25,16 @@ XStyleFactoryRegistry.registerFactory({
     },
 });
 
+const baseCss = `
+.x {
+    display: flex;
+    position: relative;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-direction: column;
+}
+`;
+
 const app = express();
 app.post('/create', bodyParser.json(), (req, res) => {
     console.log(req.body);
@@ -48,7 +58,7 @@ app.post('/create', bodyParser.json(), (req, res) => {
                     resolve(path);
                 }
             }));
-            const fps = 20;
+            const fps = 30;
 
             try {
                 await renderVideo(video.el, {
@@ -58,10 +68,10 @@ app.post('/create', bodyParser.json(), (req, res) => {
                     scale: 2,
                     path: tmpFile,
                     fps: fps,
-                    batchSize: 30,
+                    batchSize: 50,
                     customRenderer: (el) => {
                         let rendered = renderStaticOptimized(() => ReactDOM.renderToStaticMarkup(el));
-                        return { body: rendered.html, css: rendered.css };
+                        return { body: rendered.html, css: baseCss + rendered.css };
                     },
                     customScreenshoter: async (src, dst, width, height, scale) => {
                         const start = Date.now();
@@ -80,12 +90,12 @@ app.post('/create', bodyParser.json(), (req, res) => {
                         await new Promise((resolve, reject) => {
                             screenshot.body.pipe(fileStream);
                             screenshot.body.on("error", (err) => {
-                              reject(err);
+                                reject(err);
                             });
-                            fileStream.on("finish", function() {
-                              resolve();
+                            fileStream.on("finish", function () {
+                                resolve();
                             });
-                          });
+                        });
                         console.log('Screenshotted in ' + (Date.now() - start) + ' ms');
                     },
                     customEncoder: async (count, width, height, dir, out) => {
