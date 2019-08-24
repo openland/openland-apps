@@ -18,7 +18,7 @@
         "@babel/types": "^7.2.0",
         "@mapbox/geo-viewport": "^0.2.2",
         "@mapbox/mapbox-gl-geocoder": "^2.2.0",
-        "@openland/react-video-renderer": "^1.2.0",
+        "@openland/react-video-renderer": "1.2.1",
         "@sentry/browser": "^4.0.5",
         "@turf/bbox": "^5.1.5",
         "@turf/center": "^5.1.5",
