@@ -12,7 +12,8 @@ import { exec as execRaw } from 'child_process';
 import * as tmp from 'tmp';
 import * as util from 'util';
 import * as FormData from 'form-data';
-import fetch from 'node-fetch';
+import * as fs from 'fs';
+import fetch, { Request } from 'node-fetch';
 import { unlink as unlinkRaw, createReadStream } from 'fs';
 import * as ffmpeg from 'fluent-ffmpeg';
 
@@ -64,18 +65,33 @@ app.post('/create', bodyParser.json(), (req, res) => {
                         return { body: rendered.html, css: rendered.css };
                     },
                     customScreenshoter: async (src, dst, width, height, scale) => {
-                        try {
-                            await browserSemaphore.acquire();
-                            const start = Date.now();
-                            await exec(`google-chrome-unstable --disable-dev-shm-usage --no-sandbox --disable-gpu --disable-software-rasterizer --headless --screenshot=${dst} --window-size=${width}x${height} --high-dpi-support=1 --force-device-scale-factor=${scale} --device-scale-factor=${scale} file://${src}`);
-                            console.log('Screenshoted in ' + (Date.now() - start) + ' ms (' + dst + ')');
-                        } finally {
-                            browserSemaphore.release();
-                        }
+                        const start = Date.now();
+                        let contents = fs.readFileSync(src, 'utf8');
+                        let screenshot = await fetch(new Request('https://us-central1-statecraft-188615.cloudfunctions.net/chrome-screenshot ', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                src: contents,
+                                width: width,
+                                height: height,
+                                scale: scale
+                            })
+                        }));
+                        const fileStream = fs.createWriteStream(dst);
+                        await new Promise((resolve, reject) => {
+                            screenshot.body.pipe(fileStream);
+                            screenshot.body.on("error", (err) => {
+                              reject(err);
+                            });
+                            fileStream.on("finish", function() {
+                              resolve();
+                            });
+                          });
+                        console.log('Screenshotted in ' + (Date.now() - start) + ' ms');
                     },
                     customEncoder: async (count, width, height, dir, out) => {
                         const start = Date.now();
-                        await exec(`/app/encoder-linux-amd64 -width=${width} -height=${height} -out=${out} -dir=${dir} -count=${count} -preset=medium`);
+                        await exec(`/app/encoder-linux-amd64 -width=${width} -height=${height} -out=${out} -dir=${dir} -count=${count} -preset=veryslow -tune=animation`);
                         console.log('Encoded in ' + (Date.now() - start) + ' ms');
                     }
                 });
