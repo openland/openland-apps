@@ -1,4 +1,3 @@
-import { Semaphore } from './../openland-y-utils/semaphore';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import './all'; // Init registry
