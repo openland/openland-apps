@@ -75,7 +75,7 @@ app.post('/create', bodyParser.json(), (req, res) => {
                     },
                     customEncoder: async (count, width, height, dir, out) => {
                         const start = Date.now();
-                        await exec(`/app/encoder-linux-amd64 -width=${width} -height=${height} -out=${out} -dir=${dir} -count=${count}`);
+                        await exec(`/app/encoder-linux-amd64 -width=${width} -height=${height} -out=${out} -dir=${dir} -count=${count} -preset=medium`);
                         console.log('Encoded in ' + (Date.now() - start) + ' ms');
                     }
                 });
