@@ -38,13 +38,17 @@ app.post('/create', bodyParser.json(), (req, res) => {
                 height: 360,
                 scale: 2,
                 path: 'out.mp4',
-                batchSize: 30,
+                fps: 20,
+                batchSize: 60,
                 customRenderer: (el) => {
                     let rendered = renderStaticOptimized(() => ReactDOM.renderToStaticMarkup(el));
                     return { body: rendered.html, css: rendered.css };
                 },
                 customScreenshoter: async (src, dst, width, height, scale) => {
-                    await exec(`/usr/bin/chromium-browser --disable-dev-shm-usage --no-sandbox --disable-gpu --disable-software-rasterizer --headless --screenshot=${dst} --window-size=${width}x${height} --device-scale-factor=${scale} file://${src}`);
+                    await exec(`google-chrome-unstable --disable-dev-shm-usage --no-sandbox --disable-gpu --disable-software-rasterizer --headless --screenshot=${dst} --window-size=${width}x${height} --device-scale-factor=${scale} file://${src}`);
+                },
+                customEncoder: async (count, width, height, dir, out) => {
+                    await exec(`/app/encoder-linux-amd64 -width=${width} -height=${height} -fps=${30} -out=${out} -dir=${dir} -count=${count}`);
                 }
             });
             res.send('ok!');
