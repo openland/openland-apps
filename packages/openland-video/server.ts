@@ -48,6 +48,7 @@ app.post('/create', bodyParser.json(), (req, res) => {
     }
 
     const video = VideoRegistry.resolve(name);
+    const batchSize = process.env.BATCH_SIZE ? parseInt(process.env.BATCH_SIZE, 10) : 50;
 
     (async () => {
         try {
@@ -68,7 +69,7 @@ app.post('/create', bodyParser.json(), (req, res) => {
                     scale: 2,
                     path: tmpFile,
                     fps: fps,
-                    batchSize: 50,
+                    batchSize: batchSize,
                     customRenderer: (el) => {
                         let rendered = renderStaticOptimized(() => ReactDOM.renderToStaticMarkup(el));
                         return { body: rendered.html, css: baseCss + rendered.css };
