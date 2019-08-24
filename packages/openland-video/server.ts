@@ -77,7 +77,7 @@ app.post('/create', bodyParser.json(), (req, res) => {
                     customScreenshoter: async (src, dst, width, height, scale) => {
                         const start = Date.now();
                         let contents = fs.readFileSync(src, 'utf8');
-                        let screenshot = await fetch(new Request('https://us-central1-statecraft-188615.cloudfunctions.net/chrome-screenshot ', {
+                        let screenshot = await fetch(new Request('https://screenshot.openland.io/', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
