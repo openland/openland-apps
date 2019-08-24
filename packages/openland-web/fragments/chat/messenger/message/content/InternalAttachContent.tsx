@@ -236,7 +236,7 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
                 <div className={dataContent}>
                     {title && (
                         <div className={cx(titleStyle, ellipsisStyle, TextTitle2)}>
-                            {title === 'Igor Kozlovsky' ? title.repeat(10) : title}
+                            {title}
                         </div>
                     )}
                     {subTitle && (
