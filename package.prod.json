@@ -104,6 +104,8 @@
         "react-window": "^1.8.5",
         "three": "^0.107.0",
         "bezier-easing": "^2.1.0",
-        "@openland/react-video-renderer": "^1.2.0"
+        "@openland/react-video-renderer": "^1.2.0",
+        "tmp": "^0.1.0",
+        "form-data": "^2.5.0"
     }
 }
