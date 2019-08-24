@@ -1,3 +1,4 @@
+import { Semaphore } from './../openland-y-utils/semaphore';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import './all'; // Init registry
@@ -25,6 +26,7 @@ XStyleFactoryRegistry.registerFactory({
 });
 
 const app = express();
+const browserSemaphore = new Semaphore(8);
 app.post('/create', bodyParser.json(), (req, res) => {
     const name = req.body.name;
     const args = req.body.arguments;
@@ -46,7 +48,7 @@ app.post('/create', bodyParser.json(), (req, res) => {
                     resolve(path);
                 }
             }));
-            const fps = 24;
+            const fps = 20;
 
             try {
                 await renderVideo(video.el, {
@@ -56,13 +58,20 @@ app.post('/create', bodyParser.json(), (req, res) => {
                     scale: 2,
                     path: tmpFile,
                     fps: fps,
-                    batchSize: 60,
+                    batchSize: 30,
                     customRenderer: (el) => {
                         let rendered = renderStaticOptimized(() => ReactDOM.renderToStaticMarkup(el));
                         return { body: rendered.html, css: rendered.css };
                     },
                     customScreenshoter: async (src, dst, width, height, scale) => {
-                        await exec(`google-chrome-unstable --disable-dev-shm-usage --no-sandbox --disable-gpu --disable-software-rasterizer --headless --screenshot=${dst} --window-size=${width}x${height} --high-dpi-support=1 --force-device-scale-factor=${scale} --device-scale-factor=${scale} file://${src}`);
+                        try {
+                            await browserSemaphore.acquire();
+                            const start = Date.now();
+                            await exec(`google-chrome-unstable --disable-dev-shm-usage --no-sandbox --disable-gpu --disable-software-rasterizer --headless --screenshot=${dst} --window-size=${width}x${height} --high-dpi-support=1 --force-device-scale-factor=${scale} --device-scale-factor=${scale} file://${src}`);
+                            console.log('Screenshoted in ' + (Date.now() - start) + ' ms (' + dst + ')');
+                        } finally {
+                            browserSemaphore.release();
+                        }
                     },
                     customEncoder: async (count, width, height, dir, out) => {
                         const start = Date.now();
