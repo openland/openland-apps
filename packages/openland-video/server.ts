@@ -27,8 +27,8 @@ XStyleFactoryRegistry.registerFactory({
 });
 
 const app = express();
-const browserSemaphore = new Semaphore(8);
 app.post('/create', bodyParser.json(), (req, res) => {
+    console.log(req.body);
     const name = req.body.name;
     const args = req.body.arguments;
     if (typeof name !== 'string') {
