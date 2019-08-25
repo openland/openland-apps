@@ -70,6 +70,7 @@ app.post('/create', bodyParser.json(), (req, res) => {
                     path: tmpFile,
                     fps: fps,
                     batchSize: batchSize,
+                    tmpDir: 'output',
                     customRenderer: (el) => {
                         let rendered = renderStaticOptimized(() => ReactDOM.renderToStaticMarkup(el));
                         return { body: rendered.html, css: baseCss + rendered.css };
@@ -103,39 +104,34 @@ app.post('/create', bodyParser.json(), (req, res) => {
                         console.log('Screenshot Saved in ' + (Date.now() - start) + ' ms (' + dst + ')');
                     },
                     customEncoder: async (count, width, height, dir, out) => {
-                        const start = Date.now();
-                        await exec(`/app/encoder-linux-amd64 -width=${width} -height=${height} -out=${out} -dir=${dir} -count=${count} -preset=veryslow -tune=animation`);
-                        console.log('Encoded in ' + (Date.now() - start) + ' ms');
+                        let start = Date.now();
+                        await exec(`/app/splitter-linux-amd64 -dir=${dir} -width=${width} -height=${height} -count=${count}`);
+                        console.log('Frames split in ' + (Date.now() - start) + ' ms');
+                        start = Date.now();
+                        await new Promise((resolve, reject) => {
+                            ffmpeg(dir + '/frame-%d.png')
+                                .inputOption('-r ' + fps)
+                                .outputOption('-pix_fmt yuv420p')
+                                .outputOption('-r ' + fps)
+                                .output(out)
+                                .withSize(`${width}x${height}`)
+                                .on('end', () => {
+                                    resolve();
+                                })
+                                .on('error', (e) => {
+                                    reject(e);
+                                })
+                                .run();
+                        });
+                        console.log('Video encoded in ' + (Date.now() - start) + ' ms');
                     }
-                });
-
-                const muxedFileName = await new Promise<string>((resolve, reject) => tmp.file({ postfix: '.mp4' }, (err, path) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(path);
-                    }
-                }));
-
-                await new Promise<void>((resolve, reject) => {
-                    ffmpeg(tmpFile)
-                        .addInputOption(`-r ${fps}`)
-                        .addOutputOption('-c copy')
-                        .addOutput(muxedFileName)
-                        .on('end', () => {
-                            resolve();
-                        })
-                        .on('error', (e) => {
-                            reject(e);
-                        })
-                        .run();
                 });
 
                 // Upload
                 let form = new FormData();
                 form.append('UPLOADCARE_STORE', '1');
                 form.append('UPLOADCARE_PUB_KEY', 'b70227616b5eac21ba88');
-                form.append('file', createReadStream(muxedFileName));
+                form.append('file', createReadStream(tmpFile));
 
                 let uploadRes = await fetch(
                     'https://upload.uploadcare.com/base/',
