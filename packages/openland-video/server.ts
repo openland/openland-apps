@@ -75,9 +75,10 @@ app.post('/create', bodyParser.json(), (req, res) => {
                         return { body: rendered.html, css: baseCss + rendered.css };
                     },
                     customScreenshoter: async (src, dst, width, height, scale) => {
-                        const start = Date.now();
+                        let start = Date.now();
                         let contents = fs.readFileSync(src, 'utf8');
-                        let screenshot = await fetch(new Request('https://screenshot.openland.io/', {
+                        console.log('requested');
+                        let screenshot = await fetch(new Request('http://35.202.176.43/', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
@@ -87,6 +88,8 @@ app.post('/create', bodyParser.json(), (req, res) => {
                                 scale: scale
                             })
                         }));
+                        console.log('Screenshotted in ' + (Date.now() - start) + ' ms');
+                        start = Date.now();
                         const fileStream = fs.createWriteStream(dst);
                         await new Promise((resolve, reject) => {
                             screenshot.body.pipe(fileStream);
@@ -97,7 +100,7 @@ app.post('/create', bodyParser.json(), (req, res) => {
                                 resolve();
                             });
                         });
-                        console.log('Screenshotted in ' + (Date.now() - start) + ' ms');
+                        console.log('Screenshot Saved in ' + (Date.now() - start) + ' ms (' + dst + ')');
                     },
                     customEncoder: async (count, width, height, dir, out) => {
                         const start = Date.now();
