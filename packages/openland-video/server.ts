@@ -70,7 +70,6 @@ app.post('/create', bodyParser.json(), (req, res) => {
                     path: tmpFile,
                     fps: fps,
                     batchSize: batchSize,
-                    tmpDir: 'output',
                     customRenderer: (el) => {
                         let rendered = renderStaticOptimized(() => ReactDOM.renderToStaticMarkup(el));
                         return { body: rendered.html, css: baseCss + rendered.css };
