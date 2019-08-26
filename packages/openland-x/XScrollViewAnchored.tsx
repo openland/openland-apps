@@ -12,7 +12,7 @@ const NativeScrollStyle = css`
     overflow-anchor: none;
     flex-shrink: 1;
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
 `;
 
 const NativeScrollContentStyle = css`

@@ -96,23 +96,22 @@ const dss = new Map<string, DataSource<DataSourceWebMessageItem | DataSourceDate
 export class MessageListComponent extends React.PureComponent<MessageListProps, { bottomAttached?: boolean }> {
     scroller = React.createRef<any>();
     innerScrollRef = React.createRef<HTMLDivElement>();
-    private dataSource: DataSource<DataSourceWebMessageItem | DataSourceDateItem>;
+    private dataSource: DataSourceWindow<DataSourceWebMessageItem | DataSourceDateItem>;
 
     constructor(props: MessageListProps) {
         super(props);
         if (dss.has(props.conversationId)) {
-            // this.dataSource = new DataSourceWindow(dss.get(props.conversationId)!, 20);
-            this.dataSource = dss.get(props.conversationId)!;
+            this.dataSource = new DataSourceWindow(dss.get(props.conversationId)!, 20, () => props.conversation.lastReadedDividerMessageId);
         } else {
-            this.dataSource = buildMessagesDataSource(props.conversation.dataSource);
-            dss.set(props.conversationId, this.dataSource);
-            // this.dataSource = new DataSourceWindow(b, 20);
+            let b = buildMessagesDataSource(props.conversation.dataSource);
+            dss.set(props.conversationId, b);
+            this.dataSource = new DataSourceWindow(b, 20, () => props.conversation.lastReadedDividerMessageId);
         }
         this.state = { bottomAttached: false };
     }
 
     componentWillUnmount() {
-        // this.dataSource.destroy();
+        this.dataSource.destroy();
     }
 
     scrollToBottom = () => {
@@ -184,7 +183,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
 
     onUpdated = () => {
         if (this.scroller.current && this.scroller.current.getClientHeight() && this.scroller.current.getScrollTop() < 100) {
-            this.dataSource.needMore();
+            // this.dataSource.\();
         }
     }
 

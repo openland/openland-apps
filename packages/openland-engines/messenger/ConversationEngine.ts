@@ -186,7 +186,7 @@ export class ConversationEngine implements MessageSendHandler {
     private messages: (FullMessage | PendingMessage)[] = [];
     private state: ConversationState;
     private lastTopMessageRead: string | null = null;
-    private lastReadedDividerMessageId?: string;
+    lastReadedDividerMessageId?: string;
     private listeners: ConversationStateHandler[] = [];
     private loadingHistory?: string = undefined;
     private loadingForward?: string = undefined;
