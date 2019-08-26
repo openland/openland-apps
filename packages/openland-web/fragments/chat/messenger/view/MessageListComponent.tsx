@@ -93,24 +93,26 @@ const loaderClass = css`
 
 const dss = new Map<string, DataSource<DataSourceWebMessageItem | DataSourceDateItem>>();
 
-export class MessageListComponent extends React.PureComponent<MessageListProps> {
+export class MessageListComponent extends React.PureComponent<MessageListProps, { bottomAttached?: boolean }> {
     scroller = React.createRef<any>();
     innerScrollRef = React.createRef<HTMLDivElement>();
-    private dataSource: DataSourceWindow<DataSourceWebMessageItem | DataSourceDateItem>;
+    private dataSource: DataSource<DataSourceWebMessageItem | DataSourceDateItem>;
 
     constructor(props: MessageListProps) {
         super(props);
         if (dss.has(props.conversationId)) {
-            this.dataSource = new DataSourceWindow(dss.get(props.conversationId)!, 20);
+            // this.dataSource = new DataSourceWindow(dss.get(props.conversationId)!, 20);
+            this.dataSource = dss.get(props.conversationId)!;
         } else {
-            let b = buildMessagesDataSource(props.conversation.dataSource);
-            dss.set(props.conversationId, b);
-            this.dataSource = new DataSourceWindow(b, 20);
+            this.dataSource = buildMessagesDataSource(props.conversation.dataSource);
+            dss.set(props.conversationId, this.dataSource);
+            // this.dataSource = new DataSourceWindow(b, 20);
         }
+        this.state = { bottomAttached: false };
     }
 
     componentWillUnmount() {
-        this.dataSource.destroy();
+        // this.dataSource.destroy();
     }
 
     scrollToBottom = () => {
@@ -123,9 +125,11 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         if (e.scrollTop < 1200) {
             this.dataSource.needMore();
         }
-        if (e.clientHeight - e.scrollHeight - e.scrollTop < 1200) {
+        let scrollBottom = e.scrollHeight - e.clientHeight - e.scrollTop;
+        if (scrollBottom < 1200) {
             this.dataSource.needMoreForward();
         }
+        this.setState({ bottomAttached: scrollBottom <= 0 && this.props.conversation.forwardFullyLoaded });
     }
 
     isEmpty = () => {
@@ -187,15 +191,17 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     onScrollRequested = (target: number) => {
         if (this.innerScrollRef.current) {
             let targetNode = this.innerScrollRef.current.childNodes[target] as any;
-            if (targetNode && targetNode.scrollIntoView) {
-                targetNode.scrollIntoView();
+            if (targetNode && targetNode.scrollIntoView && this.scroller.current) {
+                this.scroller.current.scrollTo(targetNode);
             }
         }
     }
 
     render() {
+        console.warn('MessageListComponent', 'render', this.state);
         return (
             <XScrollViewAnchored
+                bottomAttached={this.state.bottomAttached}
                 flexGrow={1}
                 flexShrink={1}
                 justifyContent="flex-end"

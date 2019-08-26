@@ -28,10 +28,12 @@ export interface XScrollViewReverse2Props extends XStyles {
     onScroll?: (values: XScrollValues) => void;
     children?: any;
     innerRef?: React.RefObject<HTMLDivElement>;
+    bottomAttached?: boolean;
 }
 
 interface XScrollViewReverse2RefProps {
     scrollToBottom: () => void;
+    scrollTo: (target: Node) => void;
     getScrollTop: () => number;
     getClientHeight: () => number;
 }
@@ -44,6 +46,10 @@ export const XScrollViewAnchored = React.memo(
             const outerHeight = React.useRef<number>(0);
             const innerHeight = React.useRef<number>(0);
             const scrollTop = React.useRef<number>(0);
+            let ignoreNextScrollEvent = React.useRef(false);
+
+            let bottomAttached = React.useRef(props.bottomAttached);
+            bottomAttached.current = props.bottomAttached;
 
             React.useImperativeHandle<XScrollViewReverse2RefProps, any>(ref, () => ({
                 scrollToBottom: () => {
@@ -56,6 +62,12 @@ export const XScrollViewAnchored = React.memo(
                 },
                 getClientHeight: () => {
                     return outerHeight.current;
+                },
+                scrollTo: (target: any) => {
+                    ignoreNextScrollEvent.current = false;
+                    if (target.scrollIntoView) {
+                        target.scrollIntoView();
+                    }
                 }
             }));
 
@@ -75,9 +87,10 @@ export const XScrollViewAnchored = React.memo(
                     return;
                 }
                 let prevDistance: number | undefined;
+                let targetPosition = outerRef.current!.scrollTop + outerRef.current!.clientHeight / 2;
                 for (let i = 1; i < innerRef.current!.childElementCount; i++) {
                     let node = innerRef.current!.childNodes[i] as HTMLDivElement;
-                    let offset = node.offsetTop - outerRef.current!.scrollTop;
+                    let offset = node.offsetTop - targetPosition;
                     let distance = Math.abs(offset);
                     if ((prevDistance !== undefined) && distance > prevDistance) {
                         break;
@@ -92,20 +105,19 @@ export const XScrollViewAnchored = React.memo(
                 }
             }, []);
 
-            let ignoreNextScrollEvent = React.useRef(false);
-
             React.useLayoutEffect(() => {
                 const outerDiv = outerRef.current!!;
                 const innerDiv = innerRef.current!!;
-                const onScrollHandler = throttle(() => {
+                let trottledOnScrollReport = throttle(reportOnScroll, 150);
+                const onScrollHandler = () => {
                     if (ignoreNextScrollEvent.current) {
                         ignoreNextScrollEvent.current = false;
                     } else {
                         pickAnchor();
                     }
                     scrollTop.current = outerDiv.scrollTop;
-                    reportOnScroll();
-                }, 150);
+                    trottledOnScrollReport();
+                };
                 outerDiv.addEventListener('scroll', onScrollHandler, { passive: true });
 
                 let observer = new ResizeObserver(src => {
@@ -113,8 +125,8 @@ export const XScrollViewAnchored = React.memo(
                     outerHeight.current = outerDiv.clientHeight;
                     scrollTop.current = innerHeight.current;
 
-                    if (anchorRef.current) {
-                        let delta = (anchorRef.current.anchor.offsetTop - innerRef.current!.scrollHeight) - anchorRef.current.offset;
+                    if (anchorRef.current && !bottomAttached.current) {
+                        let delta = anchorRef.current.anchor.offsetTop - innerRef.current!.scrollHeight - anchorRef.current.offset - outerRef.current!.clientHeight / 2;
                         scrollTop.current += delta;
                         outerRef.current!.scrollTop = scrollTop.current;
                     } else {

@@ -355,21 +355,19 @@ export class ConversationEngine implements MessageSendHandler {
     //     await this.load('forward');
     // }
     load = async (direction: 'forward' | 'backward') => {
-        let id: string | undefined;
         if (
             (direction === 'backward' && (this.historyFullyLoaded || this.loadingHistory)) ||
             (direction === 'forward' && (this.forwardFullyLoaded || this.loadingForward))
         ) {
             return;
         }
-        if (id === undefined) {
-            let serverMessages = this.messages.filter(m => isServerMessage(m));
-            let cursor = serverMessages[direction === 'backward' ? 0 : serverMessages.length - 1];
-            if (!cursor) {
-                return;
-            }
-            id = (cursor as FullMessage).id;
+        let serverMessages = this.messages.filter(m => isServerMessage(m));
+        let cursor = serverMessages[direction === 'backward' ? 0 : serverMessages.length - 1];
+        if (!cursor) {
+            return;
         }
+        let id = (cursor as FullMessage).id;
+        console.warn(direction, id);
 
         if (direction === 'backward') {
             this.loadingHistory = id;
@@ -388,7 +386,7 @@ export class ConversationEngine implements MessageSendHandler {
         let batch = [...(loaded.gammaMessages!.messages as any as FullMessage[])].filter((remote: FullMessage) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
         batch.reverse();
 
-        this.messages = [...batch, ...this.messages];
+        this.messages = [...(direction === 'backward' ? batch : []), ...this.messages, ...(direction === 'forward' ? batch : [])];
         this.historyFullyLoaded = loaded.gammaMessages!.haveMoreBackward !== null ? !loaded.gammaMessages!.haveMoreBackward : this.historyFullyLoaded;
         this.forwardFullyLoaded = loaded.gammaMessages!.haveMoreForward !== null ? !loaded.gammaMessages!.haveMoreForward : this.forwardFullyLoaded;
         // this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, false, this.historyFullyLoaded);
