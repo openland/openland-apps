@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animation, TimingAnimation } from './Animation';
+import { Animation, TimingAnimation, SequenceAnimation } from './Animation';
 import * as glamor from 'glamor';
 
 export interface ViewProps {
@@ -20,8 +20,8 @@ export interface ViewProps {
     paddingHorizontal?: number;
 
     opacity?: number | Animation;
-    transformX?: number | Animation;
-    transformY?: number | Animation;
+    translateX?: number | Animation;
+    translateY?: number | Animation;
 
     width?: number | string;
     height?: number | string;
@@ -31,10 +31,35 @@ export interface ViewProps {
     children?: any;
 }
 
+function convertValue(type: 'translateX' | 'translateY' | 'opacity', value: number) {
+    if (type === 'translateY') {
+        return { transform: `translateY(${value}px)` };
+    } else if (type === 'translateX') {
+        return { transform: `translateX(${value}px)` };
+    } else if (type === 'opacity') {
+        return { opacity: value };
+    } else {
+        throw Error();
+    }
+}
+
+function addAnimation(type: 'translateX' | 'translateY' | 'opacity', delay: number, duration: number, animation: Animation, append: (anim: string) => void) {
+    if (animation instanceof TimingAnimation) {
+        const keyframes = glamor.keyframes({
+            '0%': convertValue(type, animation._from),
+            '100%': convertValue(type, animation._to)
+        });
+        append(`${keyframes} ${animation._duration / 1000}s ease ${(delay + animation._delay) / 1000}s 1 normal both`);
+    } else if (animation instanceof SequenceAnimation) {
+        let baseDelay = delay;
+        for (let s of animation._animations) {
+            addAnimation(type, baseDelay, duration, s, append);
+            baseDelay += s._endTime;
+        }
+    }
+}
+
 export const View = React.memo((props: ViewProps) => {
-
-    const duration = 8000;
-
     let marginTop: number | undefined;
     let marginBottom: number | undefined;
     let marginLeft: number | undefined;
@@ -98,21 +123,24 @@ export const View = React.memo((props: ViewProps) => {
         paddingTop = props.paddingTop;
     }
 
+    // Building animations
     let animation: string | undefined = undefined;
-    if (typeof props.transformY === 'object') {
-        let tr = props.transformY;
-        if (tr instanceof TimingAnimation) {
-            const delay = tr._delay;
-            const keyframes = glamor.keyframes({
-                '0%': { transform: `translateY(${tr._from}px)` },
-                '100%': { transform: `translateY(${tr._to}px)` }
-            });
-            if (animation) {
-                animation = `${animation},${keyframes} ${tr._duration / 1000}s ease ${delay / 1000}s infinite`;
-            } else {
-                animation = `${keyframes} ${tr._duration / 1000}s ease ${delay / 1000}s infinite`;
-            }
+    function appendAnimation(anim: string) {
+        if (animation) {
+            animation = `${animation}, ${anim}`;
+        } else {
+            animation = anim;
         }
+    }
+
+    if (typeof props.translateY === 'object') {
+        addAnimation('translateY', 0, 8000, props.translateY, appendAnimation);
+    }
+    if (typeof props.translateX === 'object') {
+        addAnimation('translateX', 0, 8000, props.translateX, appendAnimation);
+    }
+    if (typeof props.opacity === 'object') {
+        addAnimation('opacity', 0, 8000, props.opacity, appendAnimation);
     }
 
     return (
