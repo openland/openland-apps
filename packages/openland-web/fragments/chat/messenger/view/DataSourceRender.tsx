@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { DataSourceItem, ReadableDataSource } from 'openland-y-utils/DataSource';
-import { DataSourceLogger } from 'openland-y-utils/DataSourceLogger';
 
 function useDataSource<T extends DataSourceItem>(
     dataSource: ReadableDataSource<T>,
@@ -12,7 +11,6 @@ function useDataSource<T extends DataSourceItem>(
     React.useEffect(
         () => {
             let lastData: T[] = [];
-            let l = new DataSourceLogger('useDataSource ds', dataSource as any);
             let w = dataSource.watch({
                 onDataSourceInited: (data: T[], isCompleted: boolean, isCompletedForward: boolean) => {
                     lastData = [...data];

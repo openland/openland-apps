@@ -7,7 +7,7 @@ import { throttle } from 'openland-y-utils/timer';
 function useDataSource<T extends DataSourceItem>(dataSource: ReadableDataSource<T>): [T[], boolean] {
     let [items, setItems] = React.useState<T[]>([]);
     let [completed, setCompleted] = React.useState<boolean>(false);
-    let [completedForward, setCompletedForward] = React.useState<boolean>(false);
+    let [, setCompletedForward] = React.useState<boolean>(false);
     React.useEffect(
         () => {
             let lastData: T[] = [];

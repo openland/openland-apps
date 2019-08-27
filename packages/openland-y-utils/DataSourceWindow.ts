@@ -5,7 +5,6 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
     private readonly _inner: ReadableDataSource<T>;
     private readonly _subscription: WatchSubscription;
     private readonly _proxy: DataSource<T>;
-    private readonly _windowSize: number;
     private _innerCompleted = false;
     private _innerCompletedForward = false;
     private _isPassThrough = false;
@@ -17,7 +16,6 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
     constructor(inner: ReadableDataSource<T>, windowSize: number, around?: () => string | undefined) {
         this._inner = inner;
         this._proxy = new DataSource(() => { /*  */ }, () => { /*  */ });
-        this._windowSize = windowSize;
 
         let inWindow = (index: number) => {
             return (index >= this.currentWindow.start) && (index <= this.currentWindow.end);

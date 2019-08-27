@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { MessageComponent } from '../message/MessageComponent';
 import { ServiceMessage } from '../message/ServiceMessage';
 import {
@@ -8,21 +7,18 @@ import {
     DataSourceNewDividerItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
-import { EmptyBlock } from 'openland-web/fragments/chat/components/ChatEmptyComponent';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 import { DataSourceRender } from './DataSourceRender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import {
     DataSourceWebMessageItem,
     buildMessagesDataSource,
 } from '../data/WebMessageItemDataSource';
-import { XScrollViewReverse2, useScrollRefresh } from 'openland-x/XScrollViewReversed2';
 import { XScrollValues } from 'openland-x/XScrollView3';
 import { XLoader } from 'openland-x/XLoader';
 import { DateComponent } from './DateComponent';
 import { NewMessageDividerComponent } from './NewMessageDividerComponent';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
-import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { XScrollViewAnchored } from 'openland-x/XScrollViewAnchored';
 
 // const messagesWrapperClassName = css`
@@ -52,24 +48,20 @@ import { XScrollViewAnchored } from 'openland-x/XScrollViewAnchored';
 //     );
 // });
 
-const messagesWrapperEmptyClassName = css`
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    align-self: center;
-    justify-content: center;
-    flex-grow: 1;
-    padding-bottom: 0px;
-    width: 100%;
-    max-width: 930px;
-    @media (min-width: 750px) {
-        min-width: 512px;
-    }
-`;
-
-const MessagesWrapperEmpty = (props: { children?: any }) => (
-    <div className={messagesWrapperEmptyClassName}>{props.children}</div>
-);
+// const messagesWrapperEmptyClassName = css`
+//     display: flex;
+//     flex-direction: column;
+//     align-items: stretch;
+//     align-self: center;
+//     justify-content: center;
+//     flex-grow: 1;
+//     padding-bottom: 0px;
+//     width: 100%;
+//     max-width: 930px;
+//     @media (min-width: 750px) {
+//         min-width: 512px;
+//     }
+// `;
 
 interface MessageListProps {
     isChannel: boolean;
