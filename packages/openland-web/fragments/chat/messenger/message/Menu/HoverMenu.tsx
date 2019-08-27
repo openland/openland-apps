@@ -14,25 +14,7 @@ import { ReactionPicker } from '../reactions/ReactionPicker';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
-
-const menuButton = css`
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6;
-    cursor: pointer;
-
-    svg {
-        width: 20px;
-        height: 20px;
-    }
-`;
-
-const menuManageButton = css`
-    width: 24px;
-`;
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 
 const menuContainerClass = css`
     position: absolute;
@@ -94,15 +76,27 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
 
     return (
         <div className={cx(menuContainerClass, message.attachTop && attachTop, 'hover-menu-container', visible && forceVisible, message.isSending && forceInvisible)}>
-            <div className={cx(menuButton)} onMouseEnter={reactionsShow} onClick={(e) => { e.stopPropagation(); handleReactionClick(MessageReactionType.LIKE); }}>
-                <UIcon icon={<LikeIcon />} color="var(--foregroundTertiary)" />
-            </div>
-            <div className={cx(menuButton)} onClick={handleCommentClick}>
-                <UIcon icon={<CommentIcon />} color="var(--foregroundTertiary)" />
-            </div>
-            <div className={cx(menuButton, menuManageButton)} onClick={menuShow}>
-                <UIcon icon={<MoreIcon />} color="var(--foregroundTertiary)" />
-            </div>
+            <UIconButton
+                icon={<LikeIcon />}
+                color="var(--foregroundTertiary)"
+                size="small"
+                active={reactionsVisible}
+                onMouseEnter={reactionsShow}
+                onClick={(e) => { e.stopPropagation(); handleReactionClick(MessageReactionType.LIKE); }}
+            />
+            <UIconButton
+                icon={<CommentIcon />}
+                color="var(--foregroundTertiary)"
+                size="small"
+                onClick={handleCommentClick}
+            />
+            <UIconButton
+                icon={<MoreIcon />}
+                color="var(--foregroundTertiary)"
+                size="small-wide"
+                onClick={menuShow}
+                active={menuVisible}
+            />
         </div>
     );
 });
