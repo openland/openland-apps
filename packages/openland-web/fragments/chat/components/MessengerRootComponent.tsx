@@ -56,7 +56,7 @@ interface MessagesComponentState {
 export const showDeleteMessageModal = (messageIds: string[], client: OpenlandClient, action?: () => void) => {
     AlertBlanket.builder()
         .title(`Delete ${pluralForm(messageIds.length, ['message', 'messages'])}`)
-        .message(`Are you sure you want to delete this ${pluralForm(messageIds.length, ['message', 'messages'])}? This cannot be undone.`)
+        .message(`Are you sure you want to delete ${pluralForm(messageIds.length, ['this message', 'these messages'])}? This cannot be undone.`)
         .action('Delete', async () => {
             await client.mutateRoomDeleteMessages({ mids: messageIds });
             if (action) {
