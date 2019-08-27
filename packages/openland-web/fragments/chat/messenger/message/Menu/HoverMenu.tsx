@@ -92,7 +92,7 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
             <UIconButton
                 icon={<MoreIcon />}
                 color="var(--foregroundTertiary)"
-                size="small-wide"
+                size="small-densed"
                 onClick={menuShow}
                 active={menuVisible}
             />

@@ -253,7 +253,7 @@ const attachMessageContentAreaClass = css`
 `;
 
 const messageAvatarWrapper = css`
-    padding-top: 6px;
+    padding-top: 4px;
     display: flex;
     align-items: flex-start;
     flex-direction: row;

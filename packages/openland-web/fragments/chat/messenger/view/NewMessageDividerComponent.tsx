@@ -9,7 +9,7 @@ const dividerContainer = css`
     justify-content: center;
     height: 32px;
     position: relative;
-    margin: 4px 0;
+    margin: 4px 16px;
     width: 100%;
 
     &::before {
@@ -19,7 +19,7 @@ const dividerContainer = css`
         left: 0;
         width: 100%;
         height: 1px;
-        background-color: #f2f3f5;
+        background-color: var(--border);
         z-index: -1;
     }
 `;
@@ -28,7 +28,7 @@ const dividerContent = css`
     color: #676d7a;
     text-align: center;
     padding: 7px 16px;
-    background-color: #fff;
+    background-color: var(--backgroundPrimary);
 `;
 
 export const NewMessageDividerComponent = (props: { dividerKey: string }) => {
