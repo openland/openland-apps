@@ -211,6 +211,10 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
         if (user.id === myUserID || canEdit) {
             let builder = new ActionSheetBuilder();
 
+            if (user.id !== myUserID) {
+                builder.action('Send message', () => props.router.push('Conversation', { id: user.id }), false, require('assets/ic-message-24.png'));
+            }
+
             if (user.id !== myUserID && organization.isOwner) {
                 builder.action(member.role === 'MEMBER' ? 'Make Admin' : 'Remove as Admin',
                     () => {

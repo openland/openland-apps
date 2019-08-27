@@ -110,7 +110,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
         let user = member.user;
 
         if (user.id !== getMessenger().engine.user.id) {
-            builder.action('Info', () => props.router.push('ProfileUser', { id: user.id }), false, require('assets/ic-info-24.png'));
+            builder.action('Send message', () => props.router.push('Conversation', { id: user.id }), false, require('assets/ic-message-24.png'));
 
             if (canEdit) {
                 if (member.role === RoomMemberRole.MEMBER) {
