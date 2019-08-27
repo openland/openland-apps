@@ -11,6 +11,7 @@ import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
 import { ZRelativeDate } from 'openland-mobile/components/ZRelativeDate';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 const styles = StyleSheet.create({
     senderName: {
@@ -85,6 +86,8 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         const DOUBLE_PRESS_DELAY = 300;
 
         if (now - lastTap < DOUBLE_PRESS_DELAY) {
+            ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false });
+
             client.mutateCommentSetReaction({ commentId: comment.id, reaction: MessageReactionType.LIKE });
         } else {
             lastTap = now;
