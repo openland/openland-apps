@@ -21,6 +21,7 @@ import { showLogoutConfirmation } from './LogoutFragment';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextStyles } from 'openland-web/utils/TextStyles';
+import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
 
 const SelectableSVG = React.memo((props: { icon: JSX.Element }) => {
     const selected = React.useContext(XViewSelectedContext);
@@ -94,24 +95,9 @@ export const Organizations = React.memo(() => {
 
 export const AccountFragment = React.memo(() => (
     <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
-        <XView
-            height={56}
-            paddingLeft={16}
-            paddingRight={4}
-            backgroundColor="#fff"
-            fontSize={24}
-            lineHeight="32px"
-            fontWeight="600"
-            color="var(--foregroundPrimary)"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="center"
-        >
-            <XView flexGrow={1} minWidth={0} flexBasis={0}>
-                Account
-            </XView>
+        <USideHeader title="Account">
             <UIconButton icon={<LeaveIcon />} size="large" onClick={showLogoutConfirmation} />
-        </XView>
+        </USideHeader>
         <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">
             <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
                 <UserProfileCard />

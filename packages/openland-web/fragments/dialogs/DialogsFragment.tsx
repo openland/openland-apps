@@ -4,6 +4,7 @@ import { NotificationsButton, NewOptionsButton } from 'openland-web/components/N
 import { DialogListFragment } from './DialogListFragment';
 import { UCounter } from 'openland-unicorn/UCounter';
 import { useClient } from 'openland-web/utils/useClient';
+import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
 
 const DialogsCounter = React.memo(() => {
     const client = useClient();
@@ -20,27 +21,10 @@ export const DialogsFragment = React.memo(() => {
         <>
             <DialogsCounter />
             <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
-                <XView
-                    height={56}
-                    paddingHorizontal={16}
-                    paddingVertical={12}
-                    backgroundColor="#fff"
-                    fontSize={24}
-                    lineHeight="32px"
-                    fontWeight="600"
-                    color="var(--foregroundPrimary)"
-                    flexDirection="row"
-                >
-                    <XView flexGrow={1} minWidth={0} flexBasis={0}>
-                        Chats
-                    </XView>
-                    <XView flexDirection="row" alignItems="center" paddingLeft={12}>
-                        <XView marginRight={7} justifyContent="center" alignItems="center">
-                            <NotificationsButton />
-                        </XView>
-                        <NewOptionsButton />
-                    </XView>
-                </XView>
+                <USideHeader title="Chats">
+                    <NotificationsButton />
+                    <NewOptionsButton />
+                </USideHeader>
                 <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
                     <DialogListFragment
                         onSearchItemSelected={() => { /* */ }}

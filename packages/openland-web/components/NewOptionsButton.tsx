@@ -8,55 +8,47 @@ import CreateCommunityIcon from 'openland-icons/ic-community (1).svg';
 import OrganizationIcon from 'openland-icons/ic-cell-organization.svg';
 import CellRoomIcon from 'openland-icons/ic-cell-room.svg';
 import CreateChannelIcon from 'openland-icons/ic-cell-channel.svg';
-import { makeActionable } from 'openland-x/Actionable';
 import PlusIcon from 'openland-icons/ic-add.svg';
-import NotificationNewIcon from 'openland-icons/ic-notification-new.svg';
-import NotificationIcon from 'openland-icons/ic-notification.svg';
+import NotificationIcon from 'openland-icons/s/ic-notifications-24.svg';
 import { useWithWidth } from '../hooks/useWithWidth';
 import XPopper from 'openland-x/XPopper';
 import { showCreateGroupModal } from 'openland-web/fragments/chat/showCreateGroupModal';
 import { showCreateOrganization } from 'openland-web/fragments/org/showCreateOrganization';
+import { UIconButton } from './unicorn/UIconButton';
 
-const NewButton = makeActionable<{ onClick: () => void }>(props => (
-    <XView
-        width={32}
-        height={32}
-        cursor="pointer"
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="center"
-        borderRadius={32}
-        hoverBackgroundColor="#F0F2F5"
-        onClick={props.onClick}
-    >
-        <PlusIcon />
-    </XView>
-));
+const dotClass = css`
+    position: absolute;
+    top: 11px; right: 14px;
+    width: 10px; height: 10px;
+    border-radius: 5px;
+    border: 2px solid var(--backgroundPrimary);
+    background-color: var(--accentNegative);
+    z-index: 3;
+`;
 
-const NotificationButton = ({ haveNotification }: { haveNotification: boolean }) => {
-    return <>{haveNotification ? <NotificationNewIcon /> : <NotificationIcon />}</>;
-};
+const wrapperClass = css`
+    position: relative;
 
-export const NotificationsButton = makeActionable<{ onClick: () => void }>(() => {
+    &:hover .${dotClass} {
+        border-color: var(--backgroundPrimaryHover);
+    }
+`;
+
+export const NotificationsButton = React.memo(() => {
     const client = useClient();
     const notificationsCenter = client.useWithoutLoaderMyNotificationCenter({ fetchPolicy: 'network-only' });
 
     return (
-        <XView
-            width={32}
-            height={32}
-            cursor="pointer"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="center"
-            borderRadius={32}
-            hoverBackgroundColor="#F0F2F5"
-            path="/notifications"
-        >
-            <NotificationButton
-                haveNotification={notificationsCenter ? !!notificationsCenter.myNotificationCenter.unread : false}
+        <div className={wrapperClass}>
+            <UIconButton
+                path="/notifications"
+                icon={<NotificationIcon />}
+                size="large"
             />
-        </XView>
+            {notificationsCenter && !!notificationsCenter.myNotificationCenter.unread && (
+                <div className={dotClass} />
+            )}
+        </div>
     );
 });
 
@@ -191,7 +183,7 @@ export const NewOptionsButton = XMemo(() => {
         [show],
     );
 
-    let marginRight = 0;
+    let marginRight = 13;
     if (width && width < 951) {
         marginRight = -150;
     }
@@ -204,13 +196,15 @@ export const NewOptionsButton = XMemo(() => {
             contentContainer={<XMenuVertical paddingTop={10} paddingBottom={10} />}
             placement="bottom-end"
             show={show}
-            marginTop={10}
+            marginTop={2}
             marginRight={marginRight}
             arrow={null}
             onClickOutside={closer}
             content={<NewOptionsMenu />}
         >
-            <NewButton onClick={toggle} />
+            <div onClick={toggle}>
+                <UIconButton icon={<PlusIcon />} size="large" />
+            </div>
         </XPopper>
     );
 });
