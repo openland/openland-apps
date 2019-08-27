@@ -50,7 +50,7 @@ const avatarImageClass = css`
     height: 40px;  
     border-radius: 40px;
     overflow: hidden;
-    background-color: #fff;
+    background-color: var(--backgroundTertiary);
     cursor: pointer;
 `;
 

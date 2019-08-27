@@ -76,7 +76,7 @@ const AvatarImage = React.memo((props: UAvatarProps) => {
             srcSet={photo + opsRetina}
             borderRadius="100%"
             overflow="hidden"
-            backgroundColor="#ffffff"
+            backgroundColor="var(--backgroundTertiary)"
         />
     );
 });

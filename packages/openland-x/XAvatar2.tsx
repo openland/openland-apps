@@ -79,6 +79,7 @@ const AvatarImage = (props: XAvatar2Props) => {
             srcSet={baseUrl + opsRetina}
             borderRadius="100%"
             overflow="hidden"
+            backgroundColor="var(--backgroundTertiary)"
         />
     );
 };
