@@ -31,7 +31,8 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                     this._isPassThroughForward = true;
                     this._isPassThroughBackward = true;
                 } else {
-                    let aroundIndex = around ? data.findIndex(i => i.key === around()) : 0;
+                    let aroundKey = around && around();
+                    let aroundIndex = aroundKey ? data.findIndex(i => i.key === aroundKey) : 0;
 
                     let start = aroundIndex ? aroundIndex - windowSize / 2 : 0;
                     let slice = data.slice(start, start + windowSize);
