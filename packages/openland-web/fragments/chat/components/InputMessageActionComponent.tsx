@@ -8,7 +8,7 @@ import CloseIcon from 'openland-icons/s/ic-close-8.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import EditIcon from 'openland-icons/s/ic-edit-24.svg';
 import { emoji } from 'openland-y-utils/emoji';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const messageActonContainerClass = css`
@@ -58,6 +58,12 @@ const messageActionCloseWrap = css`
         fill: #676d7a;
         stroke: #676d7a;
     }
+`;
+
+const contentWrapper = css`
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 `;
 
 export const InputMessageActionComponent = (props: { engine: MessagesActionsStateEngine }) => {
@@ -113,7 +119,7 @@ export const InputMessageActionComponent = (props: { engine: MessagesActionsStat
         content = (
             <>
                 <span className={TextLabel1}>Edit message</span>
-                <span className={TextBody}>
+                <span className={cx(contentWrapper, TextBody)}>
                     {emoji(state.messages[0].text!)}
                 </span>
             </>
