@@ -209,7 +209,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         </React.Suspense>
                     }
                     useWrapper={false}
-                    size="large-wide"
+                    size="large-densed"
                 />
             </XView>
             <MessagesActionsHeader chatId={chat.id} />
