@@ -13,6 +13,7 @@ const messageWrapClass = css`
     text-align: center;
     margin-top: 4px;
     margin-bottom: 4px;
+    min-height: 32px;
 `;
 
 const styleSpansMessageContainer = css`
