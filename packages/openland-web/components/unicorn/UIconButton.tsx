@@ -51,7 +51,6 @@ interface UIconButtonProps extends XViewProps {
     icon: JSX.Element;
     size?: UIconButtonSize;
     active?: boolean;
-    color?: string;
 }
 
 const widthBySize: { [key in UIconButtonSize]: number } = {
@@ -108,7 +107,7 @@ export const UIconButton = React.memo((props: UIconButtonProps) => {
                         '--icon-size': iconSize
                     } as React.CSSProperties}
                 >
-                    <UIcon icon={icon} color={color} />
+                    <UIcon icon={icon} color={color || 'var(--foregroundSecondary)'} />
                 </div>
             </div>
         </XView>
