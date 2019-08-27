@@ -14,19 +14,30 @@ const wrapper = css`
     }
 `;
 
+const wrapperSized = css`
+    svg {
+        width: var(--icon-size);
+        height: var(--icon-size);
+    }
+`;
+
 interface UIconProps {
     icon: JSX.Element;
     color?: string;
     className?: string;
+    size?: number;
 }
 
 export const UIcon = React.memo((props: UIconProps) => {
-    const { icon, color } = props;
+    const { icon, color, size } = props;
 
     return (
         <div
-            className={cx(wrapper, props.className)}
-            style={{ '--icon-color': color || 'var(--foregroundSecondary)' } as React.CSSProperties}
+            className={cx(wrapper, size && wrapperSized, props.className)}
+            style={{
+                '--icon-color': color || 'var(--foregroundSecondary)',
+                ...size ? { '--icon-size': size + 'px' } as React.CSSProperties : {}
+            } as React.CSSProperties}
         >
             {icon}
         </div>

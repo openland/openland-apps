@@ -265,10 +265,10 @@ const CategoryButton = React.memo((props: { iconActive: any, iconInactive: any, 
     return (
         <div className={categoryButton} onClick={() => props.onClick(props.offset)}>
             <div className={props.focused ? categoryIconActive : categoryIconInactive}>
-                <UIcon color="#1885F2" icon={props.iconActive} />
+                <UIcon color="#1885F2" icon={props.iconActive} size={20} />
             </div>
             <div className={props.focused ? categoryIconInactive : categoryIconActive}>
-                <UIcon color="#676D7A" icon={props.iconInactive} />
+                <UIcon color="#676D7A" icon={props.iconInactive} size={20} />
             </div>
         </div>
     );
