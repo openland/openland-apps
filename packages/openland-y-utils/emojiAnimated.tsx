@@ -13,6 +13,7 @@ export function emojiAnimated(unicode: string) {
     return (
         <img
             className={emojiStyle}
+            alt={unicode}
             src={`https://cdn.openland.com/shared/anim/GIF/128/${name}_128.gif`}
         />
     );
