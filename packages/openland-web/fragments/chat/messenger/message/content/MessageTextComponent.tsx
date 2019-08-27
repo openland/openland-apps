@@ -2,6 +2,9 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { SpannedView } from './SpannedView';
 import { Span } from 'openland-y-utils/spans/Span';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import EditIcon from 'openland-icons/s/ic-msg-edit-16.svg';
+import { TextCaption } from 'openland-web/utils/TextStyles';
 
 export interface MessageTextComponentProps {
     spans: Span[];
@@ -24,7 +27,7 @@ const styleSpansMessageContainer = css`
     letter-spacing: 0;
     font-weight: 400;
     color: var(--foregroundPrimary);
-    
+
     & > span br:last-child {
         display: none;
     }
@@ -41,11 +44,9 @@ const cropTextStyle = css`
 
 const EditLabelStyle = css`
     vertical-align: baseline;
-    color: rgba(0, 0, 0, 0.4);
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 22px;
-    letter-spacing: 0;
+    color: var(--foregroundSecondary);
+    display: inline-flex;
+    align-items: center;
 `;
 
 export const MessageTextComponent = React.memo<MessageTextComponentProps>(
@@ -55,7 +56,13 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(
                 <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                     <span>
                         <SpannedView spans={spans} />
-                        {edited && <span className={EditLabelStyle}>{'\u00A0'}(edited)</span>}
+                        {edited && (
+                            <span className={cx(EditLabelStyle, TextCaption)}>
+                                {'\u00A0'}
+                                <UIcon icon={<EditIcon />} color={'var(--foregroundTertiary)'} />
+                                Edited
+                            </span>
+                        )}
                     </span>
                 </div>
             </div>
@@ -69,7 +76,12 @@ export const MessageTextComponentSpanned = React.memo<MessageTextComponentProps>
             <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
                 <span>
                     <SpannedView spans={spans} />
-                    {edited && <span className={EditLabelStyle}>{'\u00A0'}(edited)</span>}
+                    {edited && (
+                        <span className={EditLabelStyle}>
+                            {'\u00A0'}
+                            (edited)
+                        </span>
+                    )}
                 </span>
             </div>
         );

@@ -75,6 +75,7 @@ const videoContainer = css`
     min-height: 300px;
     max-height: 300px;
     height: 300px;
+    margin-top: 8px;
 `;
 
 const videoStyle = css`
