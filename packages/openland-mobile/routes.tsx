@@ -60,6 +60,7 @@ import { Avatars } from './pages/dev/Avatars';
 import { SignupOrg } from './pages/auth/SignupOrg';
 import { Feed } from './pages/main/Feed';
 import { CreatePost } from './pages/main/modals/CreatePost';
+import { Videos } from './pages/dev/Videos';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -118,6 +119,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevButtons', Buttons)
   .addRoute('DevInputs', Inputs)
   .addRoute('DevAvatars', Avatars)
+  .addRoute('DevVideos', Videos)
 
   .addRoute('HomeDialogs', HomeDialogs)
 
