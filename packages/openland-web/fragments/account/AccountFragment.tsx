@@ -132,7 +132,7 @@ export const AccountFragment = React.memo(() => (
                 <UListGroup
                     header="Organizations"
                     action={{
-                        title: '+ New',
+                        title: 'New',
                         onClick: () => showCreateOrganization('organization'),
                     }}
                 >

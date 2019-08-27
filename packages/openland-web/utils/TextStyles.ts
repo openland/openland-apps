@@ -22,3 +22,5 @@ export const TextStyles: { [key in TextStylesVariants]: XViewProps } = {
 };
 
 // !!! Never customize letterSpacing
+
+export const HoverAlpha = 0.64;

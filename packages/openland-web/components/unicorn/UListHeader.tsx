@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { TextStyles } from 'openland-web/utils/TextStyles';
+import { TextStyles, HoverAlpha } from 'openland-web/utils/TextStyles';
 
 interface UListHeaderProps {
     text: string;
@@ -40,8 +40,8 @@ export const UListHeader = (props: UListHeaderProps) => {
                 <XView
                     {...TextStyles.Label1}
                     cursor="pointer"
-                    color="var(--foregroundTertiary)"
-                    hoverColor="var(--foregroundSecondary)"
+                    color="var(--accentPrimary)"
+                    hoverOpacity={HoverAlpha}
                     path={action.path}
                     onClick={action.onClick}
                 >

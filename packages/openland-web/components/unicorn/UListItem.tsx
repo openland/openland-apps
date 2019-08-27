@@ -208,8 +208,8 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 flexDirection="row"
                 backgroundColor={hovered ? 'var(--backgroundPrimaryHover)' : undefined}
                 hoverBackgroundColor="var(--backgroundPrimaryHover)"
-                selectedBackgroundColor="var(--accentPrimary)"
-                selectedHoverBackgroundColor="var(--accentPrimaryHover)"
+                selectedBackgroundColor="var(--accentMuted)"
+                selectedHoverBackgroundColor="var(--accentMutedHover)"
                 selectedColor="var(--foregroundInverted)"
                 cursor="pointer"
                 borderRadius={useRadius ? 8 : 0}
