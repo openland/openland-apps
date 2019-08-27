@@ -45,7 +45,7 @@ export const SettingsNotificationsFragment = React.memo(() => {
                 desktopNotifications: messagesNotifications.value,
             });
         }
-    });
+    }, [messagesNotifications.value, commentsNotifications.value]);
     return (
         <Page>
             <UHeader title="Notifications" />

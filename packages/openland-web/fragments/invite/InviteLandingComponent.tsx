@@ -338,7 +338,6 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
 
     let button: JSX.Element | undefined;
 
-    console.warn(userInfo);
     if (!loggedIn) {
         button = (
             <UButton

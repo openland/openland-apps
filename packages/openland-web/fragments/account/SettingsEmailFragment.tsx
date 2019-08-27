@@ -38,7 +38,7 @@ export const SettingsEmailFragment = React.memo(() => {
                 emailFrequency: emailNotifications.value,
             });
         }
-    });
+    }, [emailNotifications.value]);
     return (
         <Page>
             <UHeader title="Email preferences" />
