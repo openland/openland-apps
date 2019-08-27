@@ -23,7 +23,11 @@ import { pluralForm } from 'openland-y-utils/plural';
 import { MessageListComponent } from '../messenger/view/MessageListComponent';
 import { TypingsView } from '../messenger/typings/TypingsView';
 import { XLoader } from 'openland-x/XLoader';
-import { URickInputInstance, URickTextValue, AllMention } from 'openland-web/components/unicorn/URickInput';
+import {
+    URickInputInstance,
+    URickTextValue,
+    AllMention,
+} from 'openland-web/components/unicorn/URickInput';
 import { InputMessageActionComponent } from './InputMessageActionComponent';
 import { SpanType, SpanUser } from 'openland-y-utils/spans/Span';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
@@ -42,9 +46,9 @@ interface MessagesComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
     pinMessage:
-    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-    | null;
+        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+        | null;
     room: RoomChat_room;
 }
 
@@ -53,16 +57,29 @@ interface MessagesComponentState {
     loading: boolean;
 }
 
-export const showDeleteMessageModal = (messageIds: string[], client: OpenlandClient, action?: () => void) => {
+export const showDeleteMessageModal = (
+    messageIds: string[],
+    client: OpenlandClient,
+    action?: () => void,
+) => {
     AlertBlanket.builder()
         .title(`Delete ${pluralForm(messageIds.length, ['message', 'messages'])}`)
-        .message(`Are you sure you want to delete ${pluralForm(messageIds.length, ['this message', 'these messages'])}? This cannot be undone.`)
-        .action('Delete', async () => {
-            await client.mutateRoomDeleteMessages({ mids: messageIds });
-            if (action) {
-                action();
-            }
-        }, 'danger')
+        .message(
+            `Are you sure you want to delete ${pluralForm(messageIds.length, [
+                'this message',
+                'these messages',
+            ])}? This cannot be undone.`,
+        )
+        .action(
+            'Delete',
+            async () => {
+                await client.mutateRoomDeleteMessages({ mids: messageIds });
+                if (action) {
+                    action();
+                }
+            },
+            'danger',
+        )
         .show();
 };
 
@@ -179,7 +196,9 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             if (state.action === 'edit' && message && message.text) {
                 let value: URickTextValue = [];
                 let textStringTail = message.text;
-                for (let absSpan of message.textSpans.filter(span => span.type === SpanType.mention_user)) {
+                for (let absSpan of message.textSpans.filter(
+                    span => span.type === SpanType.mention_user,
+                )) {
                     let userSpan = absSpan as SpanUser;
                     let rawText = userSpan.textRaw || '';
                     let spanStart = textStringTail.indexOf(rawText);
@@ -188,7 +207,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                     }
                     if (spanStart !== 0) {
                         value.push(textStringTail.substring(0, spanStart));
-
                     }
                     if (userSpan.textRaw === '@All') {
                         value.push({ __typename: 'AllMention' });
@@ -196,7 +214,10 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                         value.push({ __typename: 'User', ...userSpan.user });
                     }
 
-                    textStringTail = textStringTail.substring(spanStart + rawText.length, textStringTail.length);
+                    textStringTail = textStringTail.substring(
+                        spanStart + rawText.length,
+                        textStringTail.length,
+                    );
                 }
                 value.push(textStringTail);
 
@@ -288,18 +309,25 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     }
 
     onInputPressUp = () => {
-        if (this.rickRef.current && this.rickRef.current.getText().map(c => typeof c === 'string' ? c : c.__typename === 'User' ? c.name : 'All').join().trim()) {
+        if (
+            this.rickRef.current &&
+            this.rickRef.current
+                .getText()
+                .map(c => (typeof c === 'string' ? c : c.__typename === 'User' ? c.name : 'All'))
+                .join()
+                .trim()
+        ) {
             return false;
         }
-        let myMessages = this.conversation!.dataSource.getItems().filter(m => m.type === 'message' && m.isOut && m.text && !m.isSending && !m.isService);
+        let myMessages = this.conversation!.dataSource.getItems().filter(
+            m => m.type === 'message' && m.isOut && m.text && !m.isSending && !m.isService,
+        );
         let myMessage = myMessages[0] as DataSourceMessageItem | undefined;
         if (myMessage) {
             this.conversation!.messagesActionsStateEngine.edit(myMessage);
             return true;
-
         }
         return false;
-
     }
 
     onTextSend = (text: URickTextValue) => {
@@ -321,18 +349,27 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         }
         textValue = textValue.trim();
 
-        if (actionState.action === 'edit' && actionMessage && actionMessage.text && actionMessage.id!) {
+        if (
+            actionState.action === 'edit' &&
+            actionMessage &&
+            actionMessage.text &&
+            actionMessage.id!
+        ) {
             if (textValue.length > 0) {
                 this.conversation!.messagesActionsStateEngine.clear();
                 this.conversation!.engine.client.mutateEditMessage({
                     messageId: actionMessage.id!,
                     message: textValue,
                     mentions: prepareLegacyMentionsForSend(textValue, mentions),
-                    spans: findSpans(textValue)
+                    spans: findSpans(textValue),
                 });
             }
         } else {
-            if (textValue.length > 0 || actionState.action === 'reply' || actionState.action === 'forward') {
+            if (
+                textValue.length > 0 ||
+                actionState.action === 'reply' ||
+                actionState.action === 'forward'
+            ) {
                 localStorage.removeItem('drafts-' + this.props.conversationId);
                 this.conversation!.sendMessage(textValue, mentions);
             }
@@ -349,7 +386,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
 
     onAttach = (files: File[]) => {
         if (files.length) {
-            showAttachConfirm(files, (res) => {
+            showAttachConfirm(files, res => {
                 res.map(this.conversation!.sendFile);
             });
         }
@@ -371,14 +408,14 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
 
         const pin = this.props.pinMessage;
         const showInput = !this.state.hideInput && this.conversation.canSendMessage;
-        const groupId = this.props.conversationType !== 'PRIVATE'
-            ? this.props.conversationId
-            : undefined;
+        const groupId =
+            this.props.conversationType !== 'PRIVATE' ? this.props.conversationId : undefined;
         return (
             <div className={messengerContainer}>
-                {pin && !this.state.loading && (
-                    <PinMessageComponent message={pin} engine={this.conversation} />
-                )}
+                {pin &&
+                    !this.state.loading && (
+                        <PinMessageComponent message={pin} engine={this.conversation} />
+                    )}
                 <div className={messagesListContainer}>
                     <MessageListComponent
                         ref={this.messagesList}
@@ -397,7 +434,9 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 {showInput && (
                     <div className={composeContainer}>
                         <div className={composeContent}>
-                            <InputMessageActionComponent engine={this.conversation.messagesActionsStateEngine} />
+                            <InputMessageActionComponent
+                                engine={this.conversation.messagesActionsStateEngine}
+                            />
                             <SendMessageComponent
                                 onAttach={this.onAttach}
                                 initialText={this.initialContent}
@@ -411,7 +450,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                         </div>
                     </div>
                 )}
-                <DropZone onDrop={this.onAttach} />
+                {showInput && <DropZone onDrop={this.onAttach} />}
             </div>
         );
     }
@@ -422,9 +461,9 @@ interface MessengerRootComponentProps {
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
     pinMessage:
-    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-    | null;
+        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+        | null;
     room: RoomChat_room;
 }
 

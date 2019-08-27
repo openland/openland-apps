@@ -12,6 +12,8 @@ const imgClass = css`
     margin-top: 8px;
     margin-bottom: 8px;
     border-radius: 8px;
+    align-self: center;
+    cursor: pointer;
 `;
 
 const titleClass = css`
@@ -28,7 +30,7 @@ let Img = React.memo((props: { file: File; onClick: (f: File) => void }) => {
         let reader = new FileReader();
         let image = new Image();
         image.onload = () => {
-            const layout = layoutMedia(image.width || 0, image.height || 0, 680, 360, 32, 32);
+            const layout = layoutMedia(image.width || 0, image.height || 0, 360, 360, 32, 32);
             if (ref.current) {
                 ref.current.src = reader.result as any;
                 ref.current.width = layout.width;

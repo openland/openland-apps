@@ -216,16 +216,16 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
     if (keyboard && keyboard.buttons) {
         keyboardWrapper = (
             <div className={keyboardContent}>
-                {keyboard.buttons.map(i => {
+                {keyboard.buttons.map((i, j) => {
                     if (i) {
                         return (
-                            <div className={keyboardRow}>
-                                {i.map(j => (
-                                    <div key={j.id} className={keyboardItem}>
+                            <div className={keyboardRow} key={'keyboard_wrapper' + j}>
+                                {i.map(k => (
+                                    <div key={k.id} className={keyboardItem}>
                                         <UButton
-                                            text={j.title}
+                                            text={k.title}
                                             size={layout === 'mobile' ? 'large' : 'medium'}
-                                            onClick={(e) => keyboardAction(e, j.url)}
+                                            onClick={(e) => keyboardAction(e, k.url)}
                                         />
                                     </div>
                                 ))}
