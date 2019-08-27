@@ -29,9 +29,9 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                     this._proxy.initialize(data, completed, completedForward);
                     this._isPassThrough = true;
                 } else {
-                    let aroundIndex = around ? data.findIndex(i => i.key === around()) : windowSize / 2;
+                    let aroundIndex = around ? data.findIndex(i => i.key === around()) : 0;
 
-                    let start = aroundIndex - windowSize / 2;
+                    let start = aroundIndex ? aroundIndex - windowSize / 2 : 0;
                     let slice = data.slice(start, start + windowSize);
                     this.currentWindow.start = start;
                     this.currentWindow.end = start + windowSize;
@@ -73,6 +73,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
             },
 
             onDataSourceLoadedMore: (data: T[], completed: boolean) => {
+                console.warn('onDataSourceLoadedMore', '_isPassThrough', this._isPassThrough, 'currentWindow', this.currentWindow);
                 this._innerCompleted = completed;
                 if (this._isPassThrough || (this.currentWindow.end === this._inner.getSize() - 1)) {
                     this._proxy.loadedMore(data, completed);
@@ -123,7 +124,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                     this._proxy.loadedMore(toAdd, this._innerCompleted);
                 }
             } else {
-                this._isPassThrough = this.currentWindow.end - this.currentWindow.start === this._inner.getSize() - 1;
+                this._isPassThrough = this._isPassThrough || (this.currentWindow.start === 0);
                 if (this._innerCompleted) {
                     this._proxy.complete();
                 } else {
@@ -155,7 +156,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                     this._proxy.loadedMoreForward(toAdd, this._innerCompletedForward);
                 }
             } else {
-                this._isPassThrough = this.currentWindow.end - this.currentWindow.start === this._inner.getSize() - 1;
+                this._isPassThrough = this._isPassThrough || (this.currentWindow.end === this._inner.getSize() - 1);
                 if (this._innerCompletedForward) {
                     this._proxy.completeForward();
                 } else {
