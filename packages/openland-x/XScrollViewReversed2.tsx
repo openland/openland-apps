@@ -27,6 +27,7 @@ const NativeScrollContentStyle = css`
 export interface XScrollViewReverse2Props extends XStyles {
     onScroll?: (values: XScrollValues) => void;
     children?: any;
+    innerRef?: React.RefObject<HTMLDivElement>;
 }
 
 interface XScrollViewReverse2RefProps {
@@ -48,7 +49,7 @@ export const XScrollViewReverse2 = React.memo(
     React.forwardRef<XScrollViewReverse2RefProps, XScrollViewReverse2Props>(
         (props: XScrollViewReverse2Props, ref) => {
             const outerRef = React.useRef<HTMLDivElement>(null);
-            const innerRef = React.useRef<HTMLDivElement>(null);
+            const innerRef = props.innerRef || React.useRef<HTMLDivElement>(null);
             const outerHeight = React.useRef<number>(0);
             const innerHeight = React.useRef<number>(0);
             const scrollTop = React.useRef<number>(0);

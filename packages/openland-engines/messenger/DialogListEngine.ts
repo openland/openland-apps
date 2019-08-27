@@ -167,6 +167,9 @@ export class DialogListEngine {
                     this.loadedConversations.add(i.key);
                 }
             },
+            onDataSourceLoadedMoreForward: (items) => {
+                // Nothing to do
+            },
             onDataSourceItemAdded: (item) => {
                 if (item.kind === 'PRIVATE') {
                     this.userConversationMap.set(item.flexibleId, item.key);
@@ -188,6 +191,9 @@ export class DialogListEngine {
                 // Nothing to do
             },
             onDataSourceCompleted: () => {
+                // Nothing to do
+            },
+            onDataSourceCompletedForward: () => {
                 // Nothing to do
             },
             onDataSourceScrollToKeyRequested: () => {

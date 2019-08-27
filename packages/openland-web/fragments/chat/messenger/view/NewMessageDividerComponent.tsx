@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { ScrollTo } from './DataSourceRender';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 
 const dividerContainer = css`
@@ -32,21 +31,8 @@ const dividerContent = css`
     background-color: #fff;
 `;
 
-export const NewMessageDividerComponent = (props: { dividerKey: string } & ScrollTo) => {
+export const NewMessageDividerComponent = (props: { dividerKey: string }) => {
     const ref = React.useRef<any | null>(null);
-
-    // React.useEffect(
-    //     () => {
-    //         return isChatActive.listen(async active => {
-    //             await delay(0);
-    //             if (ref.current && props.scrollTo && active) {
-    //                 ref.current.scrollIntoView();
-    //                 props.scrollTo.key = undefined;
-    //             }
-    //         });
-    //     },
-    //     [ref.current, props.scrollTo],
-    // );
     return (
         <div key={props.dividerKey} ref={ref} className={dividerContainer}>
             <div className={cx(dividerContent, TextCaption)}>New messages</div>

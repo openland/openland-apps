@@ -11,7 +11,7 @@ class ItemRenderHolder<T extends DataSourceItem> {
     item: T;
     currentState: any;
     readonly dataView: ASDataView<T>;
-    
+
     private container: AsyncRenderer;
     private render: (src: T) => React.ReactElement<{}>;
 
@@ -56,7 +56,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
         NativeDataView.dataViewInit(this.key, '[]', false);
     }
 
-    onDataSourceInited = (data: T[], completed: boolean, scrollToKey?: string) => {
+    onDataSourceInited = (data: T[], completed: boolean) => {
         this.queue.push(async () => {
             // Create initial items
             let start = Date.now();
@@ -134,7 +134,14 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
         });
     }
 
+    onDataSourceLoadedMoreForward = () => {
+        //
+    }
+
     onDataSourceCompleted = () => {
+        //
+    }
+    onDataSourceCompletedForward = () => {
         //
     }
 

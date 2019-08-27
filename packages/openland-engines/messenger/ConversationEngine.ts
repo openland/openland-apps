@@ -1,5 +1,5 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { RoomReadMutation, ChatHistoryQuery, RoomQuery, ChatInitQuery } from 'openland-api';
+import { RoomReadMutation, RoomQuery, ChatInitQuery, ChatInitFromUnreadQuery, MessagesBatchQuery } from 'openland-api';
 import { backoff, delay } from 'openland-y-utils/timer';
 import { UserBadge, FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_attachments, FullMessage_GeneralMessage_spans, UserShort, DialogUpdateFragment_DialogPeerUpdated_peer } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
@@ -17,6 +17,7 @@ import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { ReactionReduced } from 'openland-engines/reactions/types';
 import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
 import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
+import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 const log = createLogger('Engine-Messages');
 
@@ -177,6 +178,7 @@ export class ConversationEngine implements MessageSendHandler {
     readonly dataSource: DataSource<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>;
     // private readonly dataSourceLogger: DataSourceLogger<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>;
     historyFullyLoaded?: boolean;
+    forwardFullyLoaded?: boolean;
 
     private isStarted = false;
     private watcher: SequenceModernWatcher<Types.ChatWatch, Types.ChatWatchVariables> | null = null;
@@ -184,9 +186,10 @@ export class ConversationEngine implements MessageSendHandler {
     private messages: (FullMessage | PendingMessage)[] = [];
     private state: ConversationState;
     private lastTopMessageRead: string | null = null;
-    private lastReadedDividerMessageId?: string;
+    lastReadedDividerMessageId?: string;
     private listeners: ConversationStateHandler[] = [];
     private loadingHistory?: string = undefined;
+    private loadingForward?: string = undefined;
     private localMessagesMap = new Map<string, string>();
     readonly messagesActionsStateEngine: MessagesActionsStateEngine;
     readonly onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void;
@@ -201,13 +204,15 @@ export class ConversationEngine implements MessageSendHandler {
     badge?: UserBadge;
 
     constructor(engine: MessengerEngine, conversationId: string, onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void) {
-        // loadToUnread = AppConfig.isNonProduction();
+        loadToUnread = AppConfig.isNonProduction() && AppConfig.getPlatform() === 'desktop';
         this.engine = engine;
         this.conversationId = conversationId;
 
-        this.state = new ConversationState(true, [], [], undefined, false, false);
+        this.state = new ConversationState(true, [], [], undefined, false, false, false, false);
         this.dataSource = new DataSource(() => {
-            this.loadBefore();
+            this.load('backward');
+        }, () => {
+            this.load('forward');
         });
         // this.dataSourceLogger = new DataSourceLogger('conv:' + conversationId, this.dataSource);
 
@@ -223,7 +228,17 @@ export class ConversationEngine implements MessageSendHandler {
         log.log('Loading initial state for ' + this.conversationId);
         let initialChat = await backoff(async () => {
             try {
-                let history = await this.engine.client.client.query(ChatInitQuery, { chatId: this.conversationId, first: this.engine.options.conversationBatchSize }, { fetchPolicy: 'network-only' });
+                let history;
+                if (loadToUnread) {
+                    history = await this.engine.client.client.query(ChatInitFromUnreadQuery, { chatId: this.conversationId, first: this.engine.options.conversationBatchSize }, { fetchPolicy: 'network-only' });
+                    history = { ...history, messages: history.gammaMessages!.messages };
+                    this.historyFullyLoaded = !history.gammaMessages!.haveMoreBackward;
+                    this.forwardFullyLoaded = !history.gammaMessages!.haveMoreForward;
+                } else {
+                    history = await this.engine.client.client.query(ChatInitQuery, { chatId: this.conversationId, first: this.engine.options.conversationBatchSize }, { fetchPolicy: 'network-only' });
+                    this.historyFullyLoaded = this.historyFullyLoaded || history.messages.length < this.engine.options.conversationBatchSize;
+                    this.forwardFullyLoaded = true;
+                }
                 return history;
             } catch (e) {
                 log.warn(e);
@@ -237,25 +252,6 @@ export class ConversationEngine implements MessageSendHandler {
         messages.reverse();
 
         this.lastReadedDividerMessageId = initialChat.lastReadedMessage && initialChat.lastReadedMessage.id || undefined;
-        let maxPagesToload = 10;
-        let loadToUnreadBatchSize = 40;
-
-        if (loadToUnread) {
-            let unreadIndex = messages.findIndex(m => isServerMessage(m) && m.id === this.lastReadedDividerMessageId);
-            while (messages.length > 0 && this.lastReadedDividerMessageId && unreadIndex === -1 && maxPagesToload--) {
-                let serverMessages = messages.filter(m => isServerMessage(m));
-                let first = serverMessages[0];
-                if (!first) {
-                    break;
-                }
-                let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: (first as Types.FullMessage_GeneralMessage).id, first: loadToUnreadBatchSize }));
-                loadToUnreadBatchSize += 20;
-                let batch = [...loaded.messages];
-                batch.reverse();
-                messages.unshift(...batch);
-                unreadIndex = messages.findIndex(m => isServerMessage(m) && m.id === this.lastReadedDividerMessageId);
-            }
-        }
 
         this.messages = messages;
 
@@ -280,8 +276,7 @@ export class ConversationEngine implements MessageSendHandler {
             this.engine.forwardBuffer.delete(forwardBufferId);
         }
 
-        this.state = new ConversationState(false, messages, this.groupMessages(messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
-        this.historyFullyLoaded = messages.length < this.engine.options.conversationBatchSize;
+        this.state = new ConversationState(false, messages, this.groupMessages(messages), this.state.typing, this.state.loadingHistory, !!this.historyFullyLoaded, this.state.loadingForward, !!this.forwardFullyLoaded);
         log.log('Initial state for ' + this.conversationId);
         this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state: initialChat.state.state }), this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
         this.onMessagesUpdated();
@@ -317,7 +312,7 @@ export class ConversationEngine implements MessageSendHandler {
             dsItems.push(createDateDataSourceItem(d));
         }
 
-        this.dataSource.initialize(dsItems, this.historyFullyLoaded);
+        this.dataSource.initialize(dsItems, !!this.historyFullyLoaded, !!this.forwardFullyLoaded);
         if (loadToUnread) {
             if (newMessagesDivider) {
                 this.dataSource.requestScrollToKey(newMessagesDivider.key);
@@ -336,12 +331,22 @@ export class ConversationEngine implements MessageSendHandler {
         if (loadToUnread) {
             (async () => {
                 await delay(300);
+                if (this.isOpen) {
+                    return;
+                }
                 if (this.lastReadedDividerMessageId) {
                     let toDelete = createNewMessageDividerSourceItem(this.lastReadedDividerMessageId);
                     if (this.dataSource.hasItem(toDelete.key)) {
                         this.dataSource.removeItem(toDelete.key);
                     }
                     this.lastReadedDividerMessageId = undefined;
+                    if (this.lastTopMessageRead && this.dataSource.hasItem(this.lastTopMessageRead)) {
+                        let index = this.dataSource.findIndex(this.lastTopMessageRead);
+                        if (index !== 0) {
+                            let item = createNewMessageDividerSourceItem(this.lastTopMessageRead);
+                            this.dataSource.addItem(item, index);
+                        }
+                    }
                 }
             })();
         }
@@ -353,62 +358,97 @@ export class ConversationEngine implements MessageSendHandler {
 
     // 
 
-    loadBefore = async (id?: string) => {
-        if (this.historyFullyLoaded) {
+    // loadBefore = async () => {
+    //     await this.load('backward');
+    // }
+    // loadAfter = async () => {
+    //     await this.load('forward');
+    // }
+    load = async (direction: 'forward' | 'backward') => {
+        if (
+            (direction === 'backward' && (this.historyFullyLoaded || this.loadingHistory)) ||
+            (direction === 'forward' && (this.forwardFullyLoaded || this.loadingForward))
+        ) {
             return;
         }
-        if (id === undefined) {
-            let serverMessages = this.messages.filter(m => isServerMessage(m));
-            let first = serverMessages[0];
-            if (!first) {
-                return;
-            }
-            id = (first as FullMessage).id;
+        let serverMessages = this.messages.filter(m => isServerMessage(m));
+        let cursor = serverMessages[direction === 'backward' ? 0 : serverMessages.length - 1];
+        if (!cursor) {
+            return;
         }
-        if (this.loadingHistory === undefined) {
+        let id = (cursor as FullMessage).id;
+        console.warn(direction, id);
+
+        if (direction === 'backward') {
             this.loadingHistory = id;
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, true, this.state.historyFullyLoaded);
-            this.onMessagesUpdated();
-            let loaded = await backoff(() => this.engine.client.client.query(ChatHistoryQuery, { chatId: this.conversationId, before: id, first: this.engine.options.conversationBatchSize }));
+        } else {
+            this.loadingForward = id;
+        }
+        this.state = {
+            ...this.state,
+            loading: true,
+            loadingHistory: direction === 'backward' ? true : this.state.loadingHistory,
+            loadingForward: direction === 'forward' ? true : this.state.loadingForward
+        };
+        this.onMessagesUpdated();
+        let loaded = await backoff(() => this.engine.client.client.query(MessagesBatchQuery, { chatId: this.conversationId, first: this.engine.options.conversationBatchSize, ...direction === 'backward' ? { before: id } : { after: id } }));
 
-            let history = [...(loaded.messages as any as FullMessage[])].filter((remote: FullMessage) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
-            history.reverse();
+        let batch = [...(loaded.gammaMessages!.messages as any as FullMessage[])].filter((remote: FullMessage) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
+        batch.reverse();
 
-            this.messages = [...history, ...this.messages];
-            this.historyFullyLoaded = history.length < this.engine.options.conversationBatchSize;
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, false, this.historyFullyLoaded);
-            this.onMessagesUpdated();
+        this.messages = [...(direction === 'backward' ? batch : []), ...this.messages, ...(direction === 'forward' ? batch : [])];
+        this.historyFullyLoaded = loaded.gammaMessages!.haveMoreBackward !== null ? !loaded.gammaMessages!.haveMoreBackward : this.historyFullyLoaded;
+        this.forwardFullyLoaded = loaded.gammaMessages!.haveMoreForward !== null ? !loaded.gammaMessages!.haveMoreForward : this.forwardFullyLoaded;
+        // this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, false, this.historyFullyLoaded);
+        this.state = {
+            ...this.state,
+            loading: false,
+            messages: this.messages,
+            messagesPrepprocessed: this.groupMessages(this.messages),
+            loadingHistory: direction === 'backward' ? true : this.state.loadingHistory,
+            loadingForward: direction === 'forward' ? true : this.state.loadingForward,
+            historyFullyLoaded: !!this.historyFullyLoaded,
+            forwardFullyLoaded: !!this.forwardFullyLoaded,
+        };
+        this.onMessagesUpdated();
+        if (direction === 'backward') {
             this.loadingHistory = undefined;
+        } else {
+            this.loadingForward = undefined;
+        }
 
-            // Data Source
-            let dsItems: (DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem)[] = [];
-            let prevDate: string | undefined;
-            if (this.dataSource.getSize() > 0) {
-                prevDate = (this.dataSource.getAt(this.dataSource.getSize() - 1) as DataSourceMessageItem).date + '';
-            }
-            let sourceFragments = [...loaded.messages];
-            for (let i = 0; i < sourceFragments.length; i++) {
-                if (loadToUnread) {
-                    // append unread mark
-                    if (sourceFragments[i].id === this.lastReadedDividerMessageId && i !== sourceFragments.length - 1) {
-                        // Alert.alert(sourceFragments[i].id);
-                        dsItems.push(createNewMessageDividerSourceItem(sourceFragments[i].id));
-                    }
+        // Data Source
+        let dsItems: (DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem)[] = [];
+        let prevDate: string | undefined;
+        if (this.dataSource.getSize() > 0) {
+            prevDate = (this.dataSource.getAt(this.dataSource.getSize() - 1) as DataSourceMessageItem).date + '';
+        }
+        let sourceFragments = [...loaded.gammaMessages!.messages];
+        for (let i = 0; i < sourceFragments.length; i++) {
+            if (loadToUnread) {
+                // append unread mark
+                if (sourceFragments[i].id === this.lastReadedDividerMessageId && i !== sourceFragments.length - 1) {
+                    // Alert.alert(sourceFragments[i].id);
+                    dsItems.push(createNewMessageDividerSourceItem(sourceFragments[i].id));
                 }
-
-                if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
-                    let d = new Date(parseInt(prevDate, 10));
-                    dsItems.push(createDateDataSourceItem(d));
-                }
-
-                dsItems.push(convertMessage(sourceFragments[i] as any, this.conversationId, this.engine, sourceFragments[i - 1] as any, sourceFragments[i + 1] as any));
-                prevDate = sourceFragments[i].date;
             }
-            if (this.historyFullyLoaded && prevDate) {
+
+            if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
                 let d = new Date(parseInt(prevDate, 10));
                 dsItems.push(createDateDataSourceItem(d));
             }
-            this.dataSource.loadedMore(dsItems, this.historyFullyLoaded);
+
+            dsItems.push(convertMessage(sourceFragments[i] as any, this.conversationId, this.engine, sourceFragments[i - 1] as any, sourceFragments[i + 1] as any));
+            prevDate = sourceFragments[i].date;
+        }
+        if (this.historyFullyLoaded && prevDate) {
+            let d = new Date(parseInt(prevDate, 10));
+            dsItems.push(createDateDataSourceItem(d));
+        }
+        if (direction === 'backward') {
+            this.dataSource.loadedMore(dsItems, !!this.historyFullyLoaded);
+        } else {
+            this.dataSource.loadedMoreForward(dsItems, !!this.forwardFullyLoaded);
         }
     }
 
@@ -450,7 +490,7 @@ export class ConversationEngine implements MessageSendHandler {
         };
 
         this.messages = [...this.messages, msgs];
-        this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+        this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
         this.onMessagesUpdated();
 
         // Data Source
@@ -492,7 +532,8 @@ export class ConversationEngine implements MessageSendHandler {
             } as PendingMessage;
             console.log(pmsg);
             this.messages = [...this.messages, { ...pmsg } as PendingMessage];
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
+
             this.onMessagesUpdated();
 
             // Data Source
@@ -519,7 +560,7 @@ export class ConversationEngine implements MessageSendHandler {
                     return v;
                 }
             });
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
             this.onMessagesUpdated();
             this.engine.sender.retryMessage(key, this);
         }
@@ -529,7 +570,7 @@ export class ConversationEngine implements MessageSendHandler {
         let ex = this.messages.find((v) => isPendingMessage(v) && v.key === key);
         if (ex) {
             this.messages = this.messages.filter((v) => isServerMessage(v) || v.key !== key);
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
             this.onMessagesUpdated();
         }
     }
@@ -548,7 +589,7 @@ export class ConversationEngine implements MessageSendHandler {
                     return v;
                 }
             });
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
             this.onMessagesUpdated();
         }
 
@@ -577,7 +618,7 @@ export class ConversationEngine implements MessageSendHandler {
                     return v;
                 }
             });
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
             this.onMessagesUpdated();
         }
 
@@ -710,7 +751,7 @@ export class ConversationEngine implements MessageSendHandler {
             } else {
                 this.messages = [...this.messages, event.message];
             }
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
             this.onMessagesUpdated();
 
             // Add to datasource
@@ -720,7 +761,7 @@ export class ConversationEngine implements MessageSendHandler {
             log.log('Received delete message');
             this.messages = this.messages.filter((m: any) => m.id !== event.message.id);
 
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
             this.onMessagesUpdated();
 
             // Remove from datasource
@@ -736,7 +777,7 @@ export class ConversationEngine implements MessageSendHandler {
             // Write message to store
             this.messages = this.messages.map((m: any) => m.id !== event.message.id ? m : event.message);
 
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
             this.onMessagesUpdated();
 
             // Update in datasource
