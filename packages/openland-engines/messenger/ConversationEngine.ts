@@ -328,18 +328,28 @@ export class ConversationEngine implements MessageSendHandler {
 
     onClosed = () => {
         this.isOpen = false;
-        // if (loadToUnread) {
-        //     (async () => {
-        //         await delay(300);
-        //         if (this.lastReadedDividerMessageId) {
-        //             let toDelete = createNewMessageDividerSourceItem(this.lastReadedDividerMessageId);
-        //             if (this.dataSource.hasItem(toDelete.key)) {
-        //                 this.dataSource.removeItem(toDelete.key);
-        //             }
-        //             this.lastReadedDividerMessageId = undefined;
-        //         }
-        //     })();
-        // }
+        if (loadToUnread) {
+            (async () => {
+                await delay(300);
+                if (this.isOpen) {
+                    return;
+                }
+                if (this.lastReadedDividerMessageId) {
+                    let toDelete = createNewMessageDividerSourceItem(this.lastReadedDividerMessageId);
+                    if (this.dataSource.hasItem(toDelete.key)) {
+                        this.dataSource.removeItem(toDelete.key);
+                    }
+                    this.lastReadedDividerMessageId = undefined;
+                    if (this.lastTopMessageRead && this.dataSource.hasItem(this.lastTopMessageRead)) {
+                        let index = this.dataSource.findIndex(this.lastTopMessageRead);
+                        if (index !== 0) {
+                            let item = createNewMessageDividerSourceItem(this.lastTopMessageRead);
+                            this.dataSource.addItem(item, index);
+                        }
+                    }
+                }
+            })();
+        }
     }
 
     getState = () => {
@@ -693,21 +703,21 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     private markReadIfNeeded = () => {
-        // let id: string | null = null;
-        // for (let i = this.messages.length - 1; i >= 0; i--) {
-        //     let msg = this.messages[i];
-        //     if (!isPendingMessage(msg)) {
-        //         id = msg.id;
-        //         break;
-        //     }
-        // }
-        // if (id !== null && id !== this.lastTopMessageRead) {
-        //     this.lastTopMessageRead = id;
-        //     this.engine.client.client.mutate(RoomReadMutation, {
-        //         id: this.conversationId,
-        //         mid: id
-        //     });
-        // }
+        let id: string | null = null;
+        for (let i = this.messages.length - 1; i >= 0; i--) {
+            let msg = this.messages[i];
+            if (!isPendingMessage(msg)) {
+                id = msg.id;
+                break;
+            }
+        }
+        if (id !== null && id !== this.lastTopMessageRead) {
+            this.lastTopMessageRead = id;
+            this.engine.client.client.mutate(RoomReadMutation, {
+                id: this.conversationId,
+                mid: id
+            });
+        }
     }
 
     private updateHandler = async (event: any) => {

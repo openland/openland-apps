@@ -20,7 +20,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
         this._windowSize = windowSize;
 
         let inWindow = (index: number) => {
-            return (index <= this.currentWindow.start) && (index >= this.currentWindow.end);
+            return (index >= this.currentWindow.start) && (index <= this.currentWindow.end);
         };
         this._subscription = inner.watch({
             onDataSourceInited: (data: T[], completed: boolean, completedForward: boolean) => {
