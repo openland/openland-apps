@@ -10,7 +10,7 @@ const dateDividerContainer = css`
     justify-content: center;
     height: 32px;
     position: relative;
-    margin: 4px 0;
+    margin: 4px 16px;
 `;
 
 const dateText = css`
