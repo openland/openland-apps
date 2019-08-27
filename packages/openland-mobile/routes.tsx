@@ -4,6 +4,7 @@ import { Typography } from './pages/dev/Typography';
 import { Components } from './pages/dev/Components';
 import { SettingsProfile } from './pages/main/SettingsProfile';
 import { SettingsNotifications } from './pages/main/SettingsNotifications';
+import { SettingsEmail } from './pages/main/SettingsEmail';
 import { ProfileUser } from './pages/main/ProfileUser';
 import { ProfileOrganization } from './pages/main/ProfileOrganization';
 import { ProfileGroup } from './pages/main/ProfileGroup';
@@ -73,6 +74,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('EditGroupAdvanced', EditGroupAdvanced)
   .addRoute('SettingsProfile', SettingsProfile)
   .addRoute('SettingsNotifications', SettingsNotifications)
+  .addRoute('SettingsEmail', SettingsEmail)
   .addRoute('SettingsOrganizations', SettingsOrganizations)
   .addRoute('SettingsAppearance', SettingsAppearance)
   .addRoute('NewOrganization', NewOrganization)

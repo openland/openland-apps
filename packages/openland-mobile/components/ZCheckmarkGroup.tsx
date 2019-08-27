@@ -13,23 +13,25 @@ interface ZCheckmarkGroupProps<T> {
     onChange?: (item: Item<T>) => void;
     items: Item<T>[];
     value?: T;
+    headerMarginTop?: number;
 }
 
 export function ZCheckmarkGroup<T>(props: ZCheckmarkGroupProps<T>) {
+    const { header, footer, onChange, items, value, headerMarginTop } = props;
     const handlePress = React.useCallback((item: Item<T>) => {
-        if (props.onChange) {
-            props.onChange(item);
+        if (onChange) {
+            onChange(item);
         }
     }, []);
 
     return (
-        <ZListGroup header={props.header} footer={props.footer}>
-            {props.items.map((item, key) => (
+        <ZListGroup header={header} footer={footer} headerMarginTop={headerMarginTop}>
+            {items.map((item, key) => (
                 <ZListItem
                     key={`${key}-checkmark`}
                     text={item.label}
                     onPress={() => handlePress(item)}
-                    checkmark={props.value === item.value}
+                    checkmark={value === item.value}
                 />
             ))}
         </ZListGroup>

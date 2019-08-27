@@ -99,6 +99,12 @@ let SettingsContent = ((props: PageProps) => {
                     path="SettingsNotifications"
                 />
                 <ZListItem
+                    leftIconColor={theme.tintGreen}
+                    leftIcon={require('assets/ic-mail-filled-24.png')}
+                    text="Email preferences"
+                    path="SettingsEmail"
+                />
+                <ZListItem
                     leftIconColor={theme.tintRed}
                     leftIcon={require('assets/ic-appearance-fill-24.png')}
                     text="Appearance"
