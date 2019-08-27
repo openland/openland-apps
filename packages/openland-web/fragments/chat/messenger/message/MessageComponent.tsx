@@ -148,12 +148,13 @@ const messageContainerClass = css`
     align-items: center;
     padding: 4px 0;
     border-radius: 8px;
-    margin: 4px 0;
     align-self: center;
-    width: 100%;
+    width: calc(100% - 32px);
+    margin: 4px 0;
     
-    @media(max-width: 750px) {
+    @media(max-width: 1282px) {
         padding: 4px 16px;
+        width: 100%;
         border-radius: 0;
     }
 
@@ -234,9 +235,10 @@ const messageInnerContainerClass = css`
 // Message content
 ////
 const buttonsClass = css`
-    margin-top: 8px;
+    margin-top: 4px;
     display: flex;
     flex-direction: row;
+    padding: 4px 0;
 `;
 
 const messageContentAreaClass = css`
@@ -316,6 +318,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             attachments={message.attachments}
             fallback={message.fallback}
             isOut={message.isOut}
+            attachTop={message.attachTop}
         />
     );
 

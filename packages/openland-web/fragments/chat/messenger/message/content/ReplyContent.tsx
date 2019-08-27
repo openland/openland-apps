@@ -9,18 +9,29 @@ const replyMessageGroupClass = css`
     flex-direction: column;
     padding-left: 14px;
     position: relative;
-    margin-top: 4px;
     margin-bottom: 4px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
 
     &::before {
         content: '';
         position: absolute;
-        height: calc(100% - 6px);
         width: 2px;
         left: 0;
-        top: 6px;
+        top: 4px;
+        bottom: 4px;
         background-color: #c4c7cc;
         border-radius: 2px;
+    }
+`;
+
+const replyItemClass = css`
+    margin-bottom: 8px;
+
+    &:last-child {
+        margin-bottom: 0;
     }
 `;
 
@@ -33,19 +44,23 @@ export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessage
                 senderNameEmojify={firstMessage.senderNameEmojify}
                 date={firstMessage.date}
             />
-            {props.quotedMessages.map(q => (
-                <MessageContent
-                    key={q.id}
-                    id={q.id}
-                    text={q.text}
-                    textSpans={q.textSpans}
-                    edited={q.isEdited}
-                    reply={q.replyWeb}
-                    attachments={q.attachments}
-                    fallback={q.fallback}
-                    isOut={q.isOut}
-                />
-            ))}
+            <div>
+                {props.quotedMessages.map(q => (
+                    <div className={replyItemClass}>
+                        <MessageContent
+                            key={q.id}
+                            id={q.id}
+                            text={q.text}
+                            textSpans={q.textSpans}
+                            edited={q.isEdited}
+                            reply={q.replyWeb}
+                            attachments={q.attachments}
+                            fallback={q.fallback}
+                            isOut={q.isOut}
+                        />
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

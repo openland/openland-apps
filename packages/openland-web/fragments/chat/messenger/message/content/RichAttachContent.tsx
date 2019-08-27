@@ -23,7 +23,6 @@ const richWrapper = css`
     background-color: var(--backgroundTertiary);
     border-radius: 8px;
     overflow: hidden;
-    margin-top: 8px;
     position: relative;
 
     &:hover .message-rich-delete {

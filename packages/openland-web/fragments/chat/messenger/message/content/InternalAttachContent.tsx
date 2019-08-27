@@ -19,7 +19,6 @@ const wrapper = css`
     background-color: var(--backgroundTertiary);
     border-radius: 8px;
     overflow: hidden;
-    margin-top: 8px;
     position: relative;
     align-self: flex-start;
     align-items: center;

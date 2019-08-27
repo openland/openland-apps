@@ -107,7 +107,6 @@ const imgContainer = css`
     background-color: #f0f2f5;
     z-index: 0;
     cursor: pointer;
-    margin: 4px 0;
 
     @media (max-width: 1300px) {
         max-width: 100%;

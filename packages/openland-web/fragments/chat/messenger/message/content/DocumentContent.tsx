@@ -75,7 +75,6 @@ const videoContainer = css`
     min-height: 300px;
     max-height: 300px;
     height: 300px;
-    margin-top: 8px;
 `;
 
 const videoStyle = css`
@@ -134,8 +133,8 @@ export const DocumentContent = React.memo(
                         {file.uri ? (
                             <XLoader size="small" transparentBackground={true} />
                         ) : (
-                            <IconFile />
-                        )}
+                                <IconFile />
+                            )}
                     </div>
                     <div className={metadataContainer}>
                         <div className={cx(title + ' title', TextLabel1)}>
