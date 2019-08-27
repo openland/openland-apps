@@ -61,7 +61,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
 
     const handleLeave = React.useCallback(() => {
         Alert.builder()
-            .title('Leave ${typeString}?')
+            .title(`Leave ${typeString}?`)
             .message('You may not be able to join it again')
             .button('Cancel', 'cancel')
             .action(`Leave ${typeString}`, 'destructive', async () => {
@@ -72,9 +72,9 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     }, [roomId]);
 
     const handleKick = React.useCallback((user: UserShort) => {
-        Alert.builder().title(`Are you sure you want to kick ${user.name}?`)
+        Alert.builder().title(`Remove ${user.name} from ${typeString}?`)
             .button('Cancel', 'cancel')
-            .action('Kick', 'destructive', async () => {
+            .action('Remove', 'destructive', async () => {
                 await client.mutateRoomKick({ userId: user.id, roomId });
                 await client.refetchRoomWithoutMembers({ id: roomId });
 
@@ -84,9 +84,9 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     }, [roomId]);
 
     const handleMakeAdmin = React.useCallback((user: UserShort) => {
-        Alert.builder().title(`Are you sure you want to make ${user.name} admin?`)
+        Alert.builder().title(`Make ${user.name} admin?`)
             .button('Cancel', 'cancel')
-            .action('Promote', 'destructive', async () => {
+            .action('Make', undefined, async () => {
                 await client.mutateRoomChangeRole({ userId: user.id, roomId, newRole: RoomMemberRole.ADMIN });
 
                 handleChangeMemberRole(user.id, RoomMemberRole.ADMIN);
@@ -95,9 +95,9 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     }, [roomId]);
 
     const handleRevokeAdmin = React.useCallback((user: UserShort) => {
-        Alert.builder().title(`Change role for ${user.name} to Member?`)
+        Alert.builder().title(`Dismiss ${user.name} as admin?`)
             .button('Cancel', 'cancel')
-            .action('Revoke', 'destructive', async () => {
+            .action('Dismiss', 'destructive', async () => {
                 await client.mutateRoomChangeRole({ userId: user.id, roomId, newRole: RoomMemberRole.MEMBER });
 
                 handleChangeMemberRole(user.id, RoomMemberRole.MEMBER);
@@ -117,14 +117,14 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                 if (member.role === RoomMemberRole.MEMBER) {
                     builder.action('Make admin', () => handleMakeAdmin(user), false, require('assets/ic-star-24.png'));
                 } else if (member.role === RoomMemberRole.ADMIN) {
-                    builder.action('Revoke admin status', () => handleRevokeAdmin(user), false, require('assets/ic-star-24.png'));
+                    builder.action('Dismiss as admin', () => handleRevokeAdmin(user), false, require('assets/ic-star-24.png'));
                 }
             }
             if (canKick) {
-                builder.action(`Kick from ${typeString}`, () => handleKick(user), false, require('assets/ic-leave-24.png'));
+                builder.action(`Remove from ${typeString}`, () => handleKick(user), false, require('assets/ic-leave-24.png'));
             }
         } else {
-            builder.action('Leave ${typeString}', handleLeave, false, require('assets/ic-leave-24.png'));
+            builder.action(`Leave ${typeString}`, handleLeave, false, require('assets/ic-leave-24.png'));
         }
 
         builder.show(true);

@@ -162,7 +162,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             builder.action('Leave ' + typeString,
                 () => {
                     Alert.builder()
-                        .title('Leave ${typeString}?')
+                        .title(`Leave ${typeString}?`)
                         .message('You may not be able to join it again')
                         .button('Cancel', 'cancel')
                         .action('Leave', 'destructive', async () => {
@@ -213,33 +213,37 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             }
 
             if (user.id !== myUserID && organization.isOwner) {
-                builder.action(member.role === 'MEMBER' ? 'Make Admin' : 'Remove as Admin',
+                builder.action(member.role === 'MEMBER' ? 'Make admin' : 'Dismiss as admin',
                     () => {
                         Alert.builder()
-                            .title(`Change role for ${user.name} to ${member.role === 'MEMBER' ? `Admin? Admins have full control over the ${typeString} account.` : `Member? Members can participate in the ${typeString}\'s chats.`}`)
+                            .title(member.role === 'MEMBER' ? `Make ${user.name} admin?` : `Dismiss ${user.name} as admin?`)
+                            .message(member.role === 'MEMBER' ? `Admins have full control over the ${typeString} account` : `They will only be able to participate in the ${typeString}'s chats`)
                             .button('Cancel', 'cancel')
-                            .action('Change role', 'default', async () => {
-                                const newRole = member.role === 'MEMBER' ? OrganizationMemberRole.ADMIN : OrganizationMemberRole.MEMBER;
+                            .action(
+                                member.role === 'MEMBER' ? 'Make' : 'Dismiss',
+                                member.role === 'MEMBER' ? 'default' : 'destructive',
+                                async () => {
+                                    const newRole = member.role === 'MEMBER' ? OrganizationMemberRole.ADMIN : OrganizationMemberRole.MEMBER;
 
-                                await client.mutateOrganizationChangeMemberRole({
-                                    memberId: user.id,
-                                    organizationId: props.router.params.id,
-                                    newRole
-                                });
+                                    await client.mutateOrganizationChangeMemberRole({
+                                        memberId: user.id,
+                                        organizationId: props.router.params.id,
+                                        newRole
+                                    });
 
-                                await client.refetchOrganization({ organizationId: props.router.params.id });
+                                    await client.refetchOrganization({ organizationId: props.router.params.id });
 
-                                handleChangeMemberRole(user.id, newRole);
-                            }).show();
+                                    handleChangeMemberRole(user.id, newRole);
+                                }).show();
                     }, false, require('assets/ic-star-24.png')
                 );
             }
 
             if (user.id === myUserID) {
-                builder.action('Leave ' + typeString,
+                builder.action(`Leave ${typeString}`,
                     () => {
                         Alert.builder()
-                            .title('Leave ${typeString}?')
+                            .title(`Leave ${typeString}?`)
                             .message('You may not be able to join it again')
                             .button('Cancel', 'cancel')
                             .action('Leave', 'destructive', async () => {
@@ -258,10 +262,11 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             }
 
             if (canEdit && user.id !== myUserID) {
-                builder.action('Remove from ' + typeString,
+                builder.action(`Remove from ${typeString}`,
                     () => {
                         Alert.builder()
-                            .title(`Are you sure want to remove ${user.name}? They will be removed from all internal chats at ${organization.name}.`)
+                            .title(`Remove ${user.name} from ${typeString}?`)
+                            .message(`They will be removed from all internal chats`)
                             .button('Cancel', 'cancel')
                             .action('Remove', 'destructive', async () => {
                                 await client.mutateOrganizationRemoveMember({
