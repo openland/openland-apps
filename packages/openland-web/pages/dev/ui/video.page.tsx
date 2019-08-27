@@ -4,8 +4,8 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { VideoPreview } from 'openland-video/VideoPreview';
+import { VideoPreview2 } from 'openland-video/videos/components/VideoPreview2';
 import { AnimationSampleView } from 'openland-video/videos/AnimationSampleView';
-import { XView } from 'react-mental';
 
 export default withApp('Videos', 'viewer', props => {
     return (
@@ -13,9 +13,9 @@ export default withApp('Videos', 'viewer', props => {
             <XHorizontal>
                 <XVertical>
                     <VideoPreview name="sample" />
-                    <XView width={300} height={300}>
+                    <VideoPreview2 width={300} height={300} duration={8000}>
                         <AnimationSampleView />
-                    </XView>
+                    </VideoPreview2>
                 </XVertical>
             </XHorizontal>
         </DevDocsScaffold>

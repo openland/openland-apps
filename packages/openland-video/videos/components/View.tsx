@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Animation, TimingAnimation, SequenceAnimation } from './Animation';
-import * as glamor from 'glamor';
+import { Animation } from './Animation';
+import { VideoRenderer } from './renderers';
 
 export interface ViewProps {
     margin?: number;
@@ -31,35 +31,12 @@ export interface ViewProps {
     children?: any;
 }
 
-function convertValue(type: 'translateX' | 'translateY' | 'opacity', value: number) {
-    if (type === 'translateY') {
-        return { transform: `translateY(${value}px)` };
-    } else if (type === 'translateX') {
-        return { transform: `translateX(${value}px)` };
-    } else if (type === 'opacity') {
-        return { opacity: value };
-    } else {
-        throw Error();
-    }
-}
-
-function addAnimation(type: 'translateX' | 'translateY' | 'opacity', delay: number, duration: number, animation: Animation, append: (anim: string) => void) {
-    if (animation instanceof TimingAnimation) {
-        const keyframes = glamor.keyframes({
-            '0%': convertValue(type, animation._from),
-            '100%': convertValue(type, animation._to)
-        });
-        append(`${keyframes} ${animation._duration / 1000}s ease ${(delay + animation._delay) / 1000}s 1 normal both`);
-    } else if (animation instanceof SequenceAnimation) {
-        let baseDelay = delay;
-        for (let s of animation._animations) {
-            addAnimation(type, baseDelay, duration, s, append);
-            baseDelay += s._endTime;
-        }
-    }
-}
-
 export const View = React.memo((props: ViewProps) => {
+
+    const renderer = React.useContext(VideoRenderer)!;
+    const duration = 8000;
+    const delay = 0;
+
     let marginTop: number | undefined;
     let marginBottom: number | undefined;
     let marginLeft: number | undefined;
@@ -123,46 +100,24 @@ export const View = React.memo((props: ViewProps) => {
         paddingTop = props.paddingTop;
     }
 
-    // Building animations
-    let animation: string | undefined = undefined;
-    function appendAnimation(anim: string) {
-        if (animation) {
-            animation = `${animation}, ${anim}`;
-        } else {
-            animation = anim;
-        }
-    }
-
-    if (typeof props.translateY === 'object') {
-        addAnimation('translateY', 0, 8000, props.translateY, appendAnimation);
-    }
-    if (typeof props.translateX === 'object') {
-        addAnimation('translateX', 0, 8000, props.translateX, appendAnimation);
-    }
-    if (typeof props.opacity === 'object') {
-        addAnimation('opacity', 0, 8000, props.opacity, appendAnimation);
-    }
-
-    return (
-        <div
-            style={{
-                display: 'flex',
-                marginTop,
-                marginBottom,
-                marginLeft,
-                marginRight,
-                paddingTop,
-                paddingBottom,
-                paddingRight,
-                paddingLeft,
-                width: props.width,
-                height: props.height,
-                background: props.background,
-                backgroundColor: props.backgroundColor,
-                animation
-            }}
-        >
-            {props.children}
-        </div>
-    );
+    return renderer.renderView({
+        marginTop,
+        marginBottom,
+        marginLeft,
+        marginRight,
+        paddingTop,
+        paddingBottom,
+        paddingRight,
+        paddingLeft,
+        width: props.width,
+        height: props.height,
+        background: props.background,
+        backgroundColor: props.backgroundColor,
+        translateX: props.translateX,
+        translateY: props.translateY,
+        opacity: props.opacity,
+        duration,
+        delay,
+        children: props.children
+    });
 });
