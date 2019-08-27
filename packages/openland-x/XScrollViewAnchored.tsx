@@ -66,10 +66,6 @@ export const XScrollViewAnchored = React.memo(
                         break;
                     }
                     prevDistance = distance;
-                    node.style.backgroundColor = 'red';
-                    if (anchorRef.current) {
-                        anchorRef.current.anchor.style.backgroundColor = '';
-                    }
                     anchorRef.current = { anchor: node, offset };
 
                 }
