@@ -24,6 +24,7 @@ import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 import { TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
 import { fileListToArray } from './DropZone';
 import { XLoader } from 'openland-x/XLoader';
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 
 interface MentionUserComponentProps {
     id: string;
@@ -328,7 +329,7 @@ interface SendMessageComponentProps {
 const sendMessageContainer = css`
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-end;
     position: relative;
     flex-grow: 1;
     flex-shrink: 1;
@@ -336,19 +337,7 @@ const sendMessageContainer = css`
 `;
 
 const actionButtonContainer = css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 40px;
-    cursor: pointer;
     flex-shrink: 0;
-
-    &:hover {
-        background-color: #f2f3f5;
-    }
 `;
 
 const loaderContainer = css`
@@ -461,8 +450,8 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 ref={suggestRef}
             />
             <input ref={fileInputRef} type="file" multiple={true} style={{ display: 'none' }} onChange={onFileInputChange} />
-            <div className={actionButtonContainer} onClick={onAttachPress}>
-                <UIcon icon={<AttachIcon />} color={'#676d7a'} />
+            <div className={actionButtonContainer} >
+                <UIconButton icon={<AttachIcon />} onClick={onAttachPress} />
             </div>
             <XView
                 flexGrow={1}
@@ -488,8 +477,8 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 />
             </XView>
             {!loading && (
-                <div className={actionButtonContainer} onClick={onPressEnter}>
-                    <UIcon icon={<SendIcon />} color={'#676d7a'} />
+                <div className={actionButtonContainer}>
+                    <UIconButton icon={<SendIcon />} onClick={onPressEnter} />
                 </div>
             )}
             {loading && (
