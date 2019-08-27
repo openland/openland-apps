@@ -27,6 +27,7 @@ import { trackEvent } from 'openland-mobile/analytics';
 import { AsyncNewMessageDivider } from './components/AsyncNewMessageDivider';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { AsyncServiceMessage } from './components/AsyncServiceMessage';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 const SortedReactions = [
     MessageReactionType.LIKE,
@@ -252,6 +253,8 @@ export class MobileMessenger {
     }
 
     private handleMessageDoublePress = (message: DataSourceMessageItem) => {
+        ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false });
+
         this.handleReactionSetUnset(message, MessageReactionType.LIKE, true);
     }
 

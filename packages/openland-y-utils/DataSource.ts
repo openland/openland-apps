@@ -22,18 +22,21 @@ export interface DataSourceItem {
 }
 
 export interface DataSourceWatcher<T extends DataSourceItem> {
-    onDataSourceInited(data: T[], completed: boolean): void;
+    onDataSourceInited(data: T[], completed: boolean, completedForward: boolean): void;
     onDataSourceScrollToKeyRequested(scrollToKey: string): void;
     onDataSourceItemAdded(item: T, index: number): void;
     onDataSourceItemUpdated(item: T, index: number): void;
     onDataSourceItemRemoved(item: T, index: number): void;
     onDataSourceItemMoved(item: T, fromIndex: number, toIndex: number): void;
     onDataSourceLoadedMore(data: T[], completed: boolean): void;
+    onDataSourceLoadedMoreForward(data: T[], completed: boolean): void;
     onDataSourceCompleted(): void;
+    onDataSourceCompletedForward(): void;
 }
 
 export interface ReadableDataSource<T extends DataSourceItem> {
     needMore(): void;
+    needMoreForward(): void;
     hasItem(key: string): boolean;
     findIndex(key: string): number;
     getAt(index: number): T;
@@ -48,15 +51,23 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
     private inited: boolean = false;
     private destroyed: boolean = false;
     private needMoreCallback: () => void;
+    private needMoreForwardCallback: () => void;
     private completed: boolean = false;
+    private completedForward: boolean = false;
 
-    constructor(needMoreCallback: () => void) {
+    constructor(needMoreCallback: () => void, needMoreForwardCallback: () => void) {
         this.needMoreCallback = needMoreCallback;
+        this.needMoreForwardCallback = needMoreForwardCallback;
     }
 
     needMore() {
         if (!this.completed) {
             this.needMoreCallback();
+        }
+    }
+    needMoreForward() {
+        if (!this.completedForward) {
+            this.needMoreForwardCallback();
         }
     }
 
@@ -78,7 +89,7 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         return this.data.length;
     }
 
-    initialize(data: T[], completed: boolean) {
+    initialize(data: T[], completed: boolean, completedForward: boolean) {
         if (this.destroyed) {
             throw Error('Datasource already destroyed');
         }
@@ -86,13 +97,14 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
             this.inited = false;
         }
         this.completed = completed;
+        this.completedForward = completedForward;
         this.data = data;
         for (let d of data) {
             this.dataByKey.set(d.key, d);
         }
         this.inited = true;
         for (let w of this.watchers) {
-            w.onDataSourceInited(data, completed);
+            w.onDataSourceInited(data, completed, completedForward);
         }
     }
 
@@ -230,6 +242,18 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         }
     }
 
+    loadedMoreForward(items: T[], completed: boolean) {
+        let filtered = items.filter(v => !this.hasItem(v.key));
+        for (let v of filtered) {
+            this.dataByKey.set(v.key, v);
+        }
+        this.data = [...filtered, ...this.data];
+        this.completedForward = completed;
+        for (let w of this.watchers) {
+            w.onDataSourceLoadedMoreForward(filtered, completed);
+        }
+    }
+
     complete() {
         if (this.destroyed) {
             throw Error('Datasource already destroyed');
@@ -243,10 +267,23 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         }
     }
 
+    completeForward() {
+        if (this.destroyed) {
+            throw Error('Datasource already destroyed');
+        }
+        if (this.completeForward) {
+            return;
+        }
+        this.completedForward = true;
+        for (let w of this.watchers) {
+            w.onDataSourceCompletedForward();
+        }
+    }
+
     watch(handler: DataSourceWatcher<T>): WatchSubscription {
         this.watchers.push(handler);
         if (this.inited) {
-            handler.onDataSourceInited(this.data, this.completed);
+            handler.onDataSourceInited(this.data, this.completed, this.completedForward);
         }
         return () => {
             let index = this.watchers.indexOf(handler);
@@ -278,7 +315,13 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
             onDataSourceLoadedMore(data: T[], completed: boolean) {
                 callback();
             },
+            onDataSourceLoadedMoreForward(data: T[], completed: boolean) {
+                callback();
+            },
             onDataSourceCompleted() {
+                callback();
+            },
+            onDataSourceCompletedForward() {
                 callback();
             },
             onDataSourceScrollToKeyRequested(key: string) {
@@ -297,15 +340,17 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
     map<T2 extends DataSourceItem>(map: (src: T) => T2) {
         let res = new DataSource<T2>(() => {
             this.needMore();
+        }, () => {
+            this.needMoreForward();
         });
 
         if (this.inited) {
-            res.initialize(this.data.map(map), this.completed);
+            res.initialize(this.data.map(map), this.completed, this.completedForward);
         }
 
         this.watch({
-            onDataSourceInited(data: T[], completed: boolean) {
-                res.initialize(data.map(map), completed);
+            onDataSourceInited(data: T[], completed: boolean, completedForward: boolean) {
+                res.initialize(data.map(map), completed, completedForward);
             },
             onDataSourceItemAdded(item: T, index: number) {
                 res.addItem(map(item), index);
@@ -322,8 +367,14 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
             onDataSourceLoadedMore(data: T[], completed: boolean) {
                 res.loadedMore(data.map(map), completed);
             },
+            onDataSourceLoadedMoreForward(data: T[], completed: boolean) {
+                res.loadedMoreForward(data.map(map), completed);
+            },
             onDataSourceCompleted() {
                 res.complete();
+            },
+            onDataSourceCompletedForward() {
+                res.completeForward();
             },
             onDataSourceScrollToKeyRequested(key: string) {
                 res.requestScrollToKey(key);
@@ -336,6 +387,8 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
     throttledMap<T2 extends DataSourceItem>(map: (src: T) => T2) {
         let res = new DataSource<T2>(() => {
             this.needMore();
+        }, () => {
+            this.needMoreForward();
         });
 
         let queue = new Queue();
@@ -357,14 +410,14 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
 
         if (this.inited) {
             schedule(async () => {
-                res.initialize(await throttledMap(this.data, map), this.completed);
+                res.initialize(await throttledMap(this.data, map), this.completed, this.completedForward);
             });
         }
 
         this.watch({
-            onDataSourceInited(data: T[], completed: boolean) {
+            onDataSourceInited(data: T[], completed: boolean, completedForward: boolean) {
                 schedule(async () => {
-                    res.initialize(await throttledMap(data, map), completed);
+                    res.initialize(await throttledMap(data, map), completed, completedForward);
                 });
             },
             onDataSourceItemAdded(item: T, index: number) {
@@ -392,9 +445,19 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
                     res.loadedMore(await throttledMap(data, map), completed);
                 });
             },
+            onDataSourceLoadedMoreForward(data: T[], completed: boolean) {
+                schedule(async () => {
+                    res.loadedMoreForward(await throttledMap(data, map), completed);
+                });
+            },
             onDataSourceCompleted() {
                 schedule(async () => {
                     res.complete();
+                });
+            },
+            onDataSourceCompletedForward() {
+                schedule(async () => {
+                    res.completeForward();
                 });
             },
             onDataSourceScrollToKeyRequested(key: string) {
@@ -410,10 +473,12 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
     batched(): DataSource<T> {
         let res = new DataSource<T>(() => {
             this.needMore();
+        }, () => {
+            this.needMoreForward();
         });
 
         if (this.inited) {
-            res.initialize(this.data, this.completed);
+            res.initialize(this.data, this.completed, this.completedForward);
         }
 
         let batch: {
@@ -492,8 +557,8 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         }
 
         this.watch({
-            onDataSourceInited(data: T[], completed: boolean) {
-                res.initialize(data, completed);
+            onDataSourceInited(data: T[], completed: boolean, completedForward: boolean) {
+                res.initialize(data, completed, completedForward);
             },
             onDataSourceItemAdded(item: T, index: number) {
                 batch.push({ op: 'added', item, index });
@@ -518,12 +583,26 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
                 }
                 res.loadedMore(data, completed);
             },
+            onDataSourceLoadedMoreForward(data: T[], completed: boolean) {
+                if (batchScheduled) {
+                    clearTimeout(timer);
+                    doDlush();
+                }
+                res.loadedMoreForward(data, completed);
+            },
             onDataSourceCompleted() {
                 if (batchScheduled) {
                     clearTimeout(timer);
                     doDlush();
                 }
                 res.complete();
+            },
+            onDataSourceCompletedForward() {
+                if (batchScheduled) {
+                    clearTimeout(timer);
+                    doDlush();
+                }
+                res.completeForward();
             },
             onDataSourceScrollToKeyRequested(key: string) {
                 if (batchScheduled) {

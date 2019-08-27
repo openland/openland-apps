@@ -7,67 +7,61 @@ import {
     DataSourceNewDividerItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
-import { EmptyBlock } from 'openland-web/fragments/chat/components/ChatEmptyComponent';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 import { DataSourceRender } from './DataSourceRender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import {
     DataSourceWebMessageItem,
     buildMessagesDataSource,
 } from '../data/WebMessageItemDataSource';
-import { XScrollViewReverse2, useScrollRefresh } from 'openland-x/XScrollViewReversed2';
 import { XScrollValues } from 'openland-x/XScrollView3';
 import { XLoader } from 'openland-x/XLoader';
 import { DateComponent } from './DateComponent';
 import { NewMessageDividerComponent } from './NewMessageDividerComponent';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
-import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
+import { XScrollViewAnchored } from 'openland-x/XScrollViewAnchored';
 
-const messagesWrapperClassName = css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    align-self: center;
-    width: 100%;
-    padding-top: 96px;
-    padding-bottom: 35px;
+// const messagesWrapperClassName = css`
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     align-self: center;
+//     width: 100%;
+//     padding-top: 96px;
+//     padding-bottom: 35px;
 
-    padding-left: 16px;
-    padding-right: 16px;
-`;
+//     padding-left: 16px;
+//     padding-right: 16px;
+// `;
 
-const mobileMessageWrapperClassName = css`
-    padding-left: 0;
-    padding-right: 0;
-`;
+// const mobileMessageWrapperClassName = css`
+//     padding-left: 0;
+//     padding-right: 0;
+// `;
 
-const MessagesWrapper = React.memo(({ children }: { children?: any }) => {
-    const isMobile = useLayout() === 'mobile';
-    return (
-        <div className={cx(messagesWrapperClassName, isMobile && mobileMessageWrapperClassName)}>
-            {children}
-        </div>
-    );
-});
+// const MessagesWrapper = React.memo(({ children }: { children?: any }) => {
+//     const isMobile = useLayout() === 'mobile';
+//     return (
+//         <div className={cx(messagesWrapperClassName, isMobile && mobileMessageWrapperClassName)}>
+//             {children}
+//         </div>
+//     );
+// });
 
-const messagesWrapperEmptyClassName = css`
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    align-self: center;
-    justify-content: center;
-    flex-grow: 1;
-    padding-bottom: 0px;
-    width: 100%;
-    max-width: 930px;
-    @media (min-width: 750px) {
-        min-width: 512px;
-    }
-`;
-
-const MessagesWrapperEmpty = (props: { children?: any }) => (
-    <div className={messagesWrapperEmptyClassName}>{props.children}</div>
-);
+// const messagesWrapperEmptyClassName = css`
+//     display: flex;
+//     flex-direction: column;
+//     align-items: stretch;
+//     align-self: center;
+//     justify-content: center;
+//     flex-grow: 1;
+//     padding-bottom: 0px;
+//     width: 100%;
+//     max-width: 930px;
+//     @media (min-width: 750px) {
+//         min-width: 512px;
+//     }
+// `;
 
 interface MessageListProps {
     isChannel: boolean;
@@ -91,7 +85,7 @@ const loaderClass = css`
 
 const dss = new Map<string, DataSource<DataSourceWebMessageItem | DataSourceDateItem>>();
 
-export class MessageListComponent extends React.PureComponent<MessageListProps> {
+export class MessageListComponent extends React.PureComponent<MessageListProps, { bottomAttached?: boolean }> {
     scroller = React.createRef<any>();
     innerScrollRef = React.createRef<HTMLDivElement>();
     private dataSource: DataSourceWindow<DataSourceWebMessageItem | DataSourceDateItem>;
@@ -99,12 +93,13 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     constructor(props: MessageListProps) {
         super(props);
         if (dss.has(props.conversationId)) {
-            this.dataSource = new DataSourceWindow(dss.get(props.conversationId)!, 20);
+            this.dataSource = new DataSourceWindow(dss.get(props.conversationId)!, 20, () => props.conversation.lastReadedDividerMessageId);
         } else {
             let b = buildMessagesDataSource(props.conversation.dataSource);
             dss.set(props.conversationId, b);
-            this.dataSource = new DataSourceWindow(b, 20);
+            this.dataSource = new DataSourceWindow(b, 20, () => props.conversation.lastReadedDividerMessageId);
         }
+        this.state = { bottomAttached: false };
     }
 
     componentWillUnmount() {
@@ -119,9 +114,13 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
     handlerScroll = (e: XScrollValues) => {
         if (e.scrollTop < 1200) {
-            // this.props.conversation.loadBefore();
             this.dataSource.needMore();
         }
+        let scrollBottom = e.scrollHeight - e.clientHeight - e.scrollTop;
+        if (scrollBottom < 1200) {
+            this.dataSource.needMoreForward();
+        }
+        this.setState({ bottomAttached: scrollBottom <= 0 && this.props.conversation.forwardFullyLoaded });
     }
 
     isEmpty = () => {
@@ -142,12 +141,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             } else if (data.item.type === 'date') {
                 return <DateComponent item={data.item} />;
             } else if (data.item.type === 'new_divider') {
-                return (
-                    <NewMessageDividerComponent
-                        dividerKey={(data.item as any).dataKey}
-                        scrollTo={{ key: '' }}
-                    />
-                );
+                return <NewMessageDividerComponent dividerKey={(data.item as any).dataKey} />;
             }
             return <div />;
         },
@@ -156,53 +150,71 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     renderLoading = React.memo(() => {
         return (
             <div className={loaderClass}>
-                <XLoader loading={true} size="small" />
+                <XLoader loading={true} transparentBackground={true} size="small" />
             </div>
         );
     });
 
-    dataSourceWrapper = React.memo((props: any) => {
-        useScrollRefresh();
-        console.log('render!');
-        return (
-            <>
-                {this.isEmpty() && (
-                    <MessagesWrapperEmpty>
-                        <EmptyBlock
-                            conversationType={this.props.conversationType}
-                            onClick={this.props.inputShower}
-                        />
-                    </MessagesWrapperEmpty>
-                )}
+    // dataSourceWrapper = React.memo((props: any) => {
+    //     useScrollRefresh();
+    //     console.log('render!');
+    //     return (
+    //         <>
+    //             {this.isEmpty() && (
+    //                 <MessagesWrapperEmpty>
+    //                     <EmptyBlock
+    //                         conversationType={this.props.conversationType}
+    //                         onClick={this.props.inputShower}
+    //                     />
+    //                 </MessagesWrapperEmpty>
+    //             )}
 
-                {!this.isEmpty() && <MessagesWrapper>{props.children}</MessagesWrapper>}
-            </>);
-    });
+    //             {!this.isEmpty() && <MessagesWrapper>{props.children}</MessagesWrapper>}
+    //         </>);
+    // });
 
     onUpdated = () => {
         if (this.scroller.current && this.scroller.current.getClientHeight() && this.scroller.current.getScrollTop() < 100) {
-            this.dataSource.needMore();
+            // this.dataSource.\();
         }
     }
 
+    onScrollRequested = (target: number) => {
+        if (this.innerScrollRef.current) {
+            let targetNode = this.innerScrollRef.current.childNodes[target] as any;
+            if (targetNode && targetNode.scrollIntoView && this.scroller.current) {
+                this.scroller.current.scrollTo(targetNode);
+            }
+        }
+    }
+
+    dataSourceWrapper = (props: { children?: any }) => {
+        return <XScrollViewAnchored
+            bottomAttached={this.state.bottomAttached}
+            flexGrow={1}
+            flexShrink={1}
+            justifyContent="flex-end"
+            onScroll={this.handlerScroll}
+            ref={this.scroller}
+            innerRef={this.innerScrollRef}
+        >
+            {props.children}
+        </XScrollViewAnchored>;
+    }
+
     render() {
+        console.warn('MessageListComponent', 'render', this.state);
         return (
-            <XScrollViewReverse2
-                flexGrow={1}
-                flexShrink={1}
-                justifyContent="flex-end"
-                onScroll={this.handlerScroll}
-                ref={this.scroller}
-            >
-                <DataSourceRender
-                    dataSource={this.dataSource}
-                    reverce={true}
-                    wrapWith={this.dataSourceWrapper}
-                    renderItem={this.renderMessage}
-                    renderLoading={this.renderLoading}
-                    onUpdated={this.onUpdated}
-                />
-            </XScrollViewReverse2>
+
+            <DataSourceRender
+                dataSource={this.dataSource}
+                reverce={true}
+                renderItem={this.renderMessage}
+                renderLoading={this.renderLoading}
+                onUpdated={this.onUpdated}
+                onScrollToReqested={this.onScrollRequested}
+                wrapWith={this.dataSourceWrapper}
+            />
         );
     }
 }

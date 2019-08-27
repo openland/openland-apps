@@ -1,0 +1,15 @@
+query MessagesBatch($after: ID, $before: ID, $chatId: ID!, $first: Int!) {
+  state: conversationState(id: $chatId) {
+    __typename
+    state
+  }
+  gammaMessages(after: $after, before: $before, chatId: $chatId, first: $first) {
+    __typename
+    haveMoreBackward
+    haveMoreForward
+    messages {
+      __typename
+      ...FullMessage
+    }
+  }
+}

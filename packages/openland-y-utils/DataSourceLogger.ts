@@ -30,8 +30,14 @@ export class DataSourceLogger<T extends DataSourceItem> implements DataSourceWat
     onDataSourceLoadedMore = (items: T[], completed: boolean) => {
         console.log(this.tag, 'Loaded more with data (completed=' + completed + ')', items);
     }
+    onDataSourceLoadedMoreForward = (items: T[], completed: boolean) => {
+        console.log(this.tag, 'Loaded more forward with data (completed=' + completed + ')', items);
+    }
     onDataSourceCompleted = () => {
         console.log(this.tag, 'Data source completed');
+    }
+    onDataSourceCompletedForward = () => {
+        console.log(this.tag, 'Data source completed forward');
     }
     onDataSourceScrollToKeyRequested = (key: string) => {
         console.log(this.tag, 'Data source scroll requsested to key ' + key);

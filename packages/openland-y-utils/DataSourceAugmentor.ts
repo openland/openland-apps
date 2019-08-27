@@ -8,16 +8,21 @@ export class DataSourceAugmentor<T extends DataSourceItem, V> {
     constructor(src: DataSource<T>) {
         this.dataSource = new DataSource(() => {
             src.needMore();
+        }, () => {
+            src.needMoreForward();
         });
         src.watch({
             onDataSourceCompleted: () => {
                 this.dataSource.complete();
             },
-            onDataSourceInited: (items, completed) => {
+            onDataSourceCompletedForward: () => {
+                this.dataSource.completeForward();
+            },
+            onDataSourceInited: (items, completed, completeForward) => {
                 for (let i of items) {
                     this.source.set(i.key, i);
                 }
-                this.dataSource.initialize(items.map((v) => this.getItem(v.key)), completed);
+                this.dataSource.initialize(items.map((v) => this.getItem(v.key)), completed, completeForward);
             },
             onDataSourceItemAdded: (item, index) => {
                 this.source.set(item.key, item);
@@ -39,6 +44,12 @@ export class DataSourceAugmentor<T extends DataSourceItem, V> {
                     this.source.set(i.key, i);
                 }
                 this.dataSource.loadedMore(items.map((v) => this.getItem(v.key)), completed);
+            },
+            onDataSourceLoadedMoreForward: (items, completed) => {
+                for (let i of items) {
+                    this.source.set(i.key, i);
+                }
+                this.dataSource.loadedMoreForward(items.map((v) => this.getItem(v.key)), completed);
             },
             onDataSourceScrollToKeyRequested: (key: string) => {
                 this.dataSource.requestScrollToKey(key);

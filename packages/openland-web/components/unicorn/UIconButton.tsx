@@ -3,19 +3,16 @@ import { XView, XViewProps } from 'react-mental';
 import { css, cx } from 'linaria';
 import { UIcon } from './UIcon';
 
-export type UIconButtonSize = 'medium' | 'large' | 'large-wide';
+export type UIconButtonSize = 'small' | 'small-wide' | 'medium' | 'large' | 'large-wide';
 
 const wrapper = css`
     display: flex;
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
     align-items: center;
     justify-content: center;
     position: relative;
     svg {
-        width: 24px;
-        height: 24px;
+        width: var(--icon-size);
+        height: var(--icon-size);
         z-index: 2;
         position: relative;
     }
@@ -23,9 +20,9 @@ const wrapper = css`
         content: '';
         transition: all .1s ease;
         transform: scale3d(0, 0, 0);
-        width: 100%;
-        height: 100%;
-        border-radius: 100%;
+        width: var(--ripple-size);
+        height: var(--ripple-size);
+        border-radius: calc(var(--ripple-size) / 2);
         position: absolute;
         z-index: 1;
     }
@@ -56,10 +53,44 @@ interface UIconButtonProps extends XViewProps {
     active?: boolean;
 }
 
+const widthBySize: { [key in UIconButtonSize]: number } = {
+    'small': 32,
+    'small-wide': 24,
+    'medium': 40,
+    'large': 48,
+    'large-wide': 40
+};
+
+const heightBySize: { [key in UIconButtonSize]: number } = {
+    'small': 32,
+    'small-wide': 32,
+    'medium': 40,
+    'large': 48,
+    'large-wide': 48
+};
+
+const rippleBySize: { [key in UIconButtonSize]: string } = {
+    'small': '32px',
+    'small-wide': '32px',
+    'medium': '40px',
+    'large': '40px',
+    'large-wide': '40px'
+};
+
+const iconBySize: { [key in UIconButtonSize]: string } = {
+    'small': '20px',
+    'small-wide': '20px',
+    'medium': '24px',
+    'large': '24px',
+    'large-wide': '24px'
+};
+
 export const UIconButton = React.memo((props: UIconButtonProps) => {
-    const { icon, size = 'medium', active, ...other } = props;
-    const width = (size === 'medium' || size === 'large-wide') ? 40 : 48;
-    const height = size === 'medium' ? 40 : 48;
+    const { icon, size = 'medium', active, color, ...other } = props;
+    const width = widthBySize[size];
+    const height = heightBySize[size];
+    const ripple = rippleBySize[size];
+    const iconSize = iconBySize[size];
 
     return (
         <XView
@@ -69,8 +100,14 @@ export const UIconButton = React.memo((props: UIconButtonProps) => {
             height={height}
         >
             <div className={container}>
-                <div className={cx(wrapper, active && wrapperActive)}>
-                    <UIcon icon={icon} />
+                <div
+                    className={cx(wrapper, active && wrapperActive)}
+                    style={{
+                        '--ripple-size': ripple,
+                        '--icon-size': iconSize
+                    } as React.CSSProperties}
+                >
+                    <UIcon icon={icon} color={color || 'var(--foregroundSecondary)'} />
                 </div>
             </div>
         </XView>
