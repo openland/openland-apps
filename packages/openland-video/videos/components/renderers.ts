@@ -14,7 +14,6 @@ export interface VideoRendererInt {
 
         width?: number | string;
         height?: number | string;
-        background?: string;
         backgroundColor?: string;
 
         opacity?: number | Animation;

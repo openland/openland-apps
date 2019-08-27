@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as glamor from 'glamor';
-import { Animation, TimingAnimation, SequenceAnimation } from './Animation';
+import { Animation, TimingAnimation, SequenceAnimation, SetValueAnimation } from './Animation';
 import { VideoRendererInt, VideoRenderer } from "./renderers";
 import { XView } from 'react-mental';
 
@@ -16,20 +16,46 @@ function convertValue(type: 'translateX' | 'translateY' | 'opacity', value: numb
     }
 }
 
-function addAnimation(type: 'translateX' | 'translateY' | 'opacity', delay: number, duration: number, animation: Animation, append: (anim: string) => void) {
+function addAnimation(
+    ctx: { first: boolean },
+    type: 'translateX' | 'translateY' | 'opacity',
+    from: number,
+    delay: number,
+    duration: number,
+    animation: Animation,
+    append: (anim: string) => void
+) {
     if (animation instanceof TimingAnimation) {
         const keyframes = glamor.keyframes({
-            '0%': convertValue(type, animation._from),
+            '0%': convertValue(type, from),
             '100%': convertValue(type, animation._to)
         });
-        append(`${keyframes} ${animation._duration / 1000}s ease ${(delay + animation._delay) / 1000}s 1 normal both`);
+        append(`${keyframes} ${animation._duration / 1000}s ease ${(delay + animation._delay) / 1000}s 1 ${ctx.first ? 'backwards' : 'none'}`);
+        ctx.first = false;
+        return animation._to;
     } else if (animation instanceof SequenceAnimation) {
         let baseDelay = delay;
+        let baseFrom = from;
+        let to = from;
         for (let s of animation._animations) {
-            addAnimation(type, baseDelay, duration, s, append);
+            baseFrom = addAnimation(ctx, type, baseFrom, baseDelay, duration, s, append);
             baseDelay += s._endTime;
+            to = s._to;
         }
+        return to;
+    } else if (animation instanceof SetValueAnimation) {
+        return animation._to;
+    } else {
+        throw Error('Unknown');
     }
+}
+
+function appendFinal(type: 'translateX' | 'translateY' | 'opacity', after: number, value: number, append: (anim: string) => void) {
+    const keyframes = glamor.keyframes({
+        '0%': convertValue(type, value),
+        '100%': convertValue(type, value)
+    });
+    append(`${keyframes} 1s linear ${after / 1000}s 1 normal forwards`);
 }
 
 const CSSRenderer: VideoRendererInt = {
@@ -45,13 +71,16 @@ const CSSRenderer: VideoRendererInt = {
             }
         }
         if (typeof props.translateY === 'object') {
-            addAnimation('translateY', props.delay, props.duration, props.translateY, appendAnimation);
+            let to = addAnimation({ first: true }, 'translateY', 0, props.delay, props.duration, props.translateY, appendAnimation);
+            appendFinal('translateY', props.translateY._endTime, to, appendAnimation);
         }
         if (typeof props.translateX === 'object') {
-            addAnimation('translateX', props.delay, props.duration, props.translateX, appendAnimation);
+            let to = addAnimation({ first: true }, 'translateX', 0, props.delay, props.duration, props.translateX, appendAnimation);
+            appendFinal('translateX', props.translateX._endTime, to, appendAnimation);
         }
         if (typeof props.opacity === 'object') {
-            addAnimation('opacity', props.delay, props.duration, props.opacity, appendAnimation);
+            let to = addAnimation({ first: true }, 'opacity', 1, props.delay, props.duration, props.opacity, appendAnimation);
+            appendFinal('opacity', props.opacity._endTime, to, appendAnimation);
         }
 
         return (
@@ -68,7 +97,6 @@ const CSSRenderer: VideoRendererInt = {
                     paddingLeft: props.paddingLeft,
                     width: props.width,
                     height: props.height,
-                    background: props.background,
                     backgroundColor: props.backgroundColor,
                     animation
                 }}
@@ -80,8 +108,15 @@ const CSSRenderer: VideoRendererInt = {
 };
 
 export const VideoPreview2 = React.memo((props: { duration: number, width: number, height: number, children?: any }) => {
+    const [iteration, setIteration] = React.useState(0);
+    React.useLayoutEffect(() => {
+        let r = setInterval(() => {
+            setIteration((v) => v + 1);
+        }, props.duration);
+        return () => clearInterval(r);
+    }, []);
     return (
-        <XView width={props.width} height={props.height}>
+        <XView width={props.width} height={props.height} key={'iter-' + iteration}>
             <VideoRenderer.Provider value={CSSRenderer}>
                 {props.children}
             </VideoRenderer.Provider>

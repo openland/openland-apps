@@ -25,7 +25,6 @@ export interface ViewProps {
 
     width?: number | string;
     height?: number | string;
-    background?: string;
     backgroundColor?: string;
 
     children?: any;
@@ -111,7 +110,6 @@ export const View = React.memo((props: ViewProps) => {
         paddingLeft,
         width: props.width,
         height: props.height,
-        background: props.background,
         backgroundColor: props.backgroundColor,
         translateX: props.translateX,
         translateY: props.translateY,
