@@ -25,7 +25,7 @@ const inputStyle = css`
     padding-right: 16px;
     padding-top: 18px;
     font-size: 15px;
-    color: #171b1f;
+    color: var(--foregroundPrimary);
     line-height: 24px;
 `;
 

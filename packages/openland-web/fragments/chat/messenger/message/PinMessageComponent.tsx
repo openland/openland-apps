@@ -67,7 +67,7 @@ const iconContainer = css`
 `;
 
 const senderName = css`
-    color: #171B1F;
+    color: var(--foregroundPrimary);
     margin-right: 10px;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -76,7 +76,7 @@ const senderName = css`
 `;
 
 const pinMessageFallback = css`
-    color: #171b1f;
+    color: var(--foregroundPrimary);
     white-space: pre-wrap;
     text-overflow: ellipsis;
     overflow: hidden;

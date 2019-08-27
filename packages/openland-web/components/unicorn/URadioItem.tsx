@@ -68,7 +68,7 @@ export const URadioItem = (props: URadioItemProps) => {
                     paddingRight={18}
                     borderRadius={8}
                     fontSize={15}
-                    color="#171B1F"
+                    color="var(--foregroundPrimary)"
                     lineHeight="24px"
                     hoverBackgroundColor="var(--backgroundPrimaryHover)"
                 >

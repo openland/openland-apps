@@ -55,14 +55,14 @@ const metadataContainer = css`
 `;
 
 const title = css`
-    color: #171b1f;
+    color: var(--foregroundPrimary);
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
 `;
 
 const subtitle = css`
-    color: #171b1f;
+    color: var(--foregroundPrimary);
 `;
 
 const videoContainer = css`

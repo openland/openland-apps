@@ -97,7 +97,7 @@ const titleStyle = css`
     position: -webkit-sticky !important;
     display: flex;
     height: 40px;
-    color: #171B1F;
+    color: var(--foregroundPrimary);
     font-size: 15px;
     line-height: 40px;
     font-weight: 600;
@@ -309,7 +309,7 @@ const EmojiPickerBody = React.memo((props: { onEmojiPicked: (arg: string) => voi
             <XView
                 paddingHorizontal={16}
                 height={48}
-                color="#171B1F"
+                color="var(--foregroundPrimary)"
                 fontWeight="700"
                 fontSize={17}
                 lineHeight="48px"

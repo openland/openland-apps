@@ -7,6 +7,7 @@ import { HeaderConfig } from './HeaderConfig';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { useLayout } from './utils/LayoutContext';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 
 export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     const router = useStackRouter();
@@ -44,7 +45,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                 {!!props.config.titleView && (
                     <XView
                         height={56}
-                        color="#171B1F"
+                        color="var(--foregroundPrimary)"
                         minWidth={0}
                         flexBasis={0}
                         flexGrow={1}
@@ -60,16 +61,14 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                 {!props.config.titleView && (
                     <XView
                         height={32}
-                        color="#171B1F"
+                        color="var(--foregroundPrimary)"
                         minWidth={0}
                         flexBasis={0}
                         flexGrow={1}
-                        fontSize={24}
                         maxWidth={appearance === 'normal' ? 600 : 824}
-                        lineHeight="32px"
-                        fontWeight="600"
                         flexDirection="row"
                         paddingHorizontal={16}
+                        {...TextStyles.Title1}
                     >
                         {props.config.title}
                     </XView>
