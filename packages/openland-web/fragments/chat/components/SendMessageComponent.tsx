@@ -95,8 +95,8 @@ const EmojiSuggestionComponent = (props: { name: string; value: string; display:
 const mentionsContainer = css`
     position: absolute;
     bottom: calc(100% + 16px);
-    left: 0px;
-    right: 0px;
+    left: 56px;
+    right: 56px;
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
     background-color: white;
     border-radius: 8px;
