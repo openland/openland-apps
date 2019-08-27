@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-
 import BackIcon from 'openland-icons/s/ic-back-24.svg';
 import { useStackRouter } from './StackRouter';
 import { HeaderConfig } from './HeaderConfig';
-import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { useLayout } from './utils/LayoutContext';
 import { TextStyles } from 'openland-web/utils/TextStyles';
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 
 export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     const router = useStackRouter();
@@ -27,10 +26,8 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                     width={56}
                     alignItems="center"
                     justifyContent="center"
-                    onClick={() => router.pop()}
-                    cursor="pointer"
                 >
-                    <UIcon icon={<BackIcon />} />
+                    <UIconButton icon={<BackIcon />} onClick={() => router.pop()} size="large" />
                 </XView> :
                 null}
             <XView
