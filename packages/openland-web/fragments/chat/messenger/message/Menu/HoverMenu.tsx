@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { css, cx } from "linaria";
 import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
-import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import MoreIcon from 'openland-icons/s/ic-more-v-24.svg';
 import CommentIcon from 'openland-icons/s/ic-message-24.svg';
 import LikeIcon from 'openland-icons/s/ic-like-24.svg';
