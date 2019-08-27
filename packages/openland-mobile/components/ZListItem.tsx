@@ -79,7 +79,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
         }
         if (this.props.copy && this.props.text) {
             ActionSheet.builder()
-                .action('Copy', () => Clipboard.setString(this.props.text!))
+                .action('Copy', () => Clipboard.setString(this.props.text!), undefined, require('assets/ic-copy-24.png'))
                 .show();
         }
     }
