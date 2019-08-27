@@ -78,7 +78,7 @@ export const SettingsProfileFragment = React.memo(() => {
                 input: {
                     firstName: firstNameField.value,
                     lastName: lastNameField.value,
-                    alphaPrimaryOrganizationId: primaryOrganizationField.value,
+                    primaryOrganization: primaryOrganizationField.value,
                     about: aboutField.value,
                     photoRef: sanitizeImageRef(avatarField.value),
                     email: emailField.value,

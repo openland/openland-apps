@@ -2851,7 +2851,7 @@ private val ProfileCreateSelector = obj(
                 )))
         )
 private val ProfileUpdateSelector = obj(
-            field("updateProfile","updateProfile", arguments(fieldValue("input", refValue("input")), fieldValue("uid", refValue("uid"))), notNull(obj(
+            field("profileUpdate","profileUpdate", arguments(fieldValue("input", refValue("input")), fieldValue("uid", refValue("uid"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("about","about", scalar("String")),
                     field("alphaInvitedBy","invitedBy", obj(
@@ -4120,7 +4120,7 @@ object Operations {
     val ProfileUpdate = object: OperationDefinition {
         override val name = "ProfileUpdate"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation ProfileUpdate(\$input:UpdateProfileInput!,\$uid:ID){updateProfile(input:\$input,uid:\$uid){__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email firstName id instagram lastName linkedin location phone photoRef{__typename crop{__typename h w x y}uuid}website}}"
+        override val body = "mutation ProfileUpdate(\$input:ProfileInput!,\$uid:ID){profileUpdate(input:\$input,uid:\$uid){__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email firstName id instagram lastName linkedin location phone photoRef{__typename crop{__typename h w x y}uuid}website}}"
         override val selector = ProfileUpdateSelector
     }
     val ReadNotification = object: OperationDefinition {

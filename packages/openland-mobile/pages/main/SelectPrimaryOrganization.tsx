@@ -33,7 +33,7 @@ const SelectPrimaryOrganizationComponent = (props: PageProps) => {
 
                                 await getClient().mutateProfileUpdate({
                                     input: {
-                                        alphaPrimaryOrganizationId: org.id
+                                        primaryOrganization: org.id
                                     }
                                 });
 

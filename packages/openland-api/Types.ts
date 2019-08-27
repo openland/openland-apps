@@ -67071,7 +67071,7 @@ export interface Profile {
 // GraphQL mutation operation: ProfileUpdate
 // ====================================================
 
-export interface ProfileUpdate_updateProfile_photoRef_crop {
+export interface ProfileUpdate_profileUpdate_photoRef_crop {
   __typename: "ImageCrop";
   x: number;
   y: number;
@@ -67079,24 +67079,24 @@ export interface ProfileUpdate_updateProfile_photoRef_crop {
   h: number;
 }
 
-export interface ProfileUpdate_updateProfile_photoRef {
+export interface ProfileUpdate_profileUpdate_photoRef {
   __typename: "ImageRef";
   uuid: string;
-  crop: ProfileUpdate_updateProfile_photoRef_crop | null;
+  crop: ProfileUpdate_profileUpdate_photoRef_crop | null;
 }
 
-export interface ProfileUpdate_updateProfile_invitedBy {
+export interface ProfileUpdate_profileUpdate_invitedBy {
   __typename: "User";
   id: string;
   name: string;
 }
 
-export interface ProfileUpdate_updateProfile {
+export interface ProfileUpdate_profileUpdate {
   __typename: "Profile";
   id: string;
   firstName: string | null;
   lastName: string | null;
-  photoRef: ProfileUpdate_updateProfile_photoRef | null;
+  photoRef: ProfileUpdate_profileUpdate_photoRef | null;
   email: string | null;
   phone: string | null;
   website: string | null;
@@ -67110,15 +67110,15 @@ export interface ProfileUpdate_updateProfile {
    */
   primaryOrganizationId: string | null;
   joinedAt: string | null;
-  invitedBy: ProfileUpdate_updateProfile_invitedBy | null;
+  invitedBy: ProfileUpdate_profileUpdate_invitedBy | null;
 }
 
 export interface ProfileUpdate {
-  updateProfile: ProfileUpdate_updateProfile;
+  profileUpdate: ProfileUpdate_profileUpdate;
 }
 
 export interface ProfileUpdateVariables {
-  input: UpdateProfileInput;
+  input: ProfileInput;
   uid?: string | null;
 }
 
@@ -88990,29 +88990,6 @@ export interface UpdateOrganizationProfileInput {
   alphaEditorial?: boolean | null;
   alphaFeatured?: boolean | null;
   alphaIsPrivate?: boolean | null;
-}
-
-/**
- * Deprecated
- */
-export interface UpdateProfileInput {
-  firstName?: string | null;
-  lastName?: string | null;
-  photoRef?: ImageRefInput | null;
-  phone?: string | null;
-  email?: string | null;
-  website?: string | null;
-  about?: string | null;
-  location?: string | null;
-  linkedin?: string | null;
-  instagram?: string | null;
-  twitter?: string | null;
-  primaryOrganization?: string | null;
-  alphaRole?: string | null;
-  alphaLocations?: string[] | null;
-  alphaLinkedin?: string | null;
-  alphaTwitter?: string | null;
-  alphaPrimaryOrganizationId?: string | null;
 }
 
 export interface UpdateSettingsInput {

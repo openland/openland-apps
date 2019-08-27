@@ -16798,18 +16798,18 @@
 			"variables": [
 				{
 					"name": "input",
-					"type": "UpdateProfileInput!"
+					"type": "ProfileInput!"
 				},
 				{
 					"name": "uid",
 					"type": "ID"
 				}
 			],
-			"source": "mutation ProfileUpdate($input: UpdateProfileInput!, $uid: ID) {\n  updateProfile(input: $input, uid: $uid) {\n    __typename\n    id\n    firstName\n    lastName\n    photoRef {\n      __typename\n      uuid\n      crop {\n        __typename\n        x\n        y\n        w\n        h\n      }\n    }\n    email\n    phone\n    website\n    about\n    location\n    role: alphaRole\n    linkedin\n    instagram\n    primaryOrganizationId: alphaPrimaryOrganizationId\n    joinedAt: alphaJoinedAt\n    invitedBy: alphaInvitedBy {\n      __typename\n      id\n      name\n    }\n  }\n}",
+			"source": "mutation ProfileUpdate($input: ProfileInput!, $uid: ID) {\n  profileUpdate(input: $input, uid: $uid) {\n    __typename\n    id\n    firstName\n    lastName\n    photoRef {\n      __typename\n      uuid\n      crop {\n        __typename\n        x\n        y\n        w\n        h\n      }\n    }\n    email\n    phone\n    website\n    about\n    location\n    role: alphaRole\n    linkedin\n    instagram\n    primaryOrganizationId: alphaPrimaryOrganizationId\n    joinedAt: alphaJoinedAt\n    invitedBy: alphaInvitedBy {\n      __typename\n      id\n      name\n    }\n  }\n}",
 			"fields": [
 				{
-					"responseName": "updateProfile",
-					"fieldName": "updateProfile",
+					"responseName": "profileUpdate",
+					"fieldName": "profileUpdate",
 					"type": "Profile!",
 					"args": [
 						{
@@ -16818,7 +16818,7 @@
 								"kind": "Variable",
 								"variableName": "input"
 							},
-							"type": "UpdateProfileInput!"
+							"type": "ProfileInput!"
 						},
 						{
 							"name": "uid",
@@ -17038,8 +17038,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation ProfileUpdate($input: UpdateProfileInput!, $uid: ID) {\n  updateProfile(input: $input, uid: $uid) {\n    __typename\n    id\n    firstName\n    lastName\n    photoRef {\n      __typename\n      uuid\n      crop {\n        __typename\n        x\n        y\n        w\n        h\n      }\n    }\n    email\n    phone\n    website\n    about\n    location\n    role: alphaRole\n    linkedin\n    instagram\n    primaryOrganizationId: alphaPrimaryOrganizationId\n    joinedAt: alphaJoinedAt\n    invitedBy: alphaInvitedBy {\n      __typename\n      id\n      name\n    }\n  }\n}",
-			"operationId": "f7fba55a8269cc20c0f30f63e7b2def0f0ef77475ed579f998cf8b985c37e2f6"
+			"sourceWithFragments": "mutation ProfileUpdate($input: ProfileInput!, $uid: ID) {\n  profileUpdate(input: $input, uid: $uid) {\n    __typename\n    id\n    firstName\n    lastName\n    photoRef {\n      __typename\n      uuid\n      crop {\n        __typename\n        x\n        y\n        w\n        h\n      }\n    }\n    email\n    phone\n    website\n    about\n    location\n    role: alphaRole\n    linkedin\n    instagram\n    primaryOrganizationId: alphaPrimaryOrganizationId\n    joinedAt: alphaJoinedAt\n    invitedBy: alphaInvitedBy {\n      __typename\n      id\n      name\n    }\n  }\n}",
+			"operationId": "f89e7942c3954d99b54de6559cc19192efe53bc5294a08b3db0cdaa7d9c1cdde"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Settings.ts",
@@ -28009,81 +28009,6 @@
 				{
 					"name": "DELETED",
 					"isDeprecated": false
-				}
-			]
-		},
-		{
-			"kind": "InputObjectType",
-			"name": "UpdateProfileInput",
-			"description": "Deprecated",
-			"fields": [
-				{
-					"name": "firstName",
-					"type": "String"
-				},
-				{
-					"name": "lastName",
-					"type": "String"
-				},
-				{
-					"name": "photoRef",
-					"type": "ImageRefInput"
-				},
-				{
-					"name": "phone",
-					"type": "String"
-				},
-				{
-					"name": "email",
-					"type": "String"
-				},
-				{
-					"name": "website",
-					"type": "String"
-				},
-				{
-					"name": "about",
-					"type": "String"
-				},
-				{
-					"name": "location",
-					"type": "String"
-				},
-				{
-					"name": "linkedin",
-					"type": "String"
-				},
-				{
-					"name": "instagram",
-					"type": "String"
-				},
-				{
-					"name": "twitter",
-					"type": "String"
-				},
-				{
-					"name": "primaryOrganization",
-					"type": "ID"
-				},
-				{
-					"name": "alphaRole",
-					"type": "String"
-				},
-				{
-					"name": "alphaLocations",
-					"type": "[String!]"
-				},
-				{
-					"name": "alphaLinkedin",
-					"type": "String"
-				},
-				{
-					"name": "alphaTwitter",
-					"type": "String"
-				},
-				{
-					"name": "alphaPrimaryOrganizationId",
-					"type": "ID"
 				}
 			]
 		},

@@ -150,7 +150,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 try {
                     await client.mutateProfileUpdate({
                         input: {
-                            alphaPrimaryOrganizationId: organization.id,
+                            primaryOrganization: organization.id,
                         },
                     });
                     await client.refetchAccountSettings();

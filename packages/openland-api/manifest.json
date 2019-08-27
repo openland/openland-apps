@@ -1269,10 +1269,10 @@
       }
     },
     {
-      "signature": "80b2d67c7fb26d5c22feeb6f8b815024a7c798f9c81fcbd0735954e47d301da0",
-      "document": "mutation ProfileUpdate($input:UpdateProfileInput!,$uid:ID){updateProfile(input:$input,uid:$uid){__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email firstName id instagram lastName linkedin location phone photoRef{__typename crop{__typename h w x y}uuid}website}}",
+      "signature": "9ad52a927c84052620fbfe018a936a4f0d1521f465d01491139e1e37a7476ed9",
+      "document": "mutation ProfileUpdate($input:ProfileInput!,$uid:ID){profileUpdate(input:$input,uid:$uid){__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email firstName id instagram lastName linkedin location phone photoRef{__typename crop{__typename h w x y}uuid}website}}",
       "metadata": {
-        "engineSignature": "mutation ProfileUpdate($input:UpdateProfileInput!,$uid:ID){updateProfile(input:$input,uid:$uid){__typename about alphaInvitedBy{__typename id name}alphaJoinedAt alphaPrimaryOrganizationId alphaRole email firstName id instagram lastName linkedin location phone photoRef{__typename crop{__typename h w x y}uuid}website}}"
+        "engineSignature": "mutation ProfileUpdate($input:ProfileInput!,$uid:ID){profileUpdate(input:$input,uid:$uid){__typename about alphaInvitedBy{__typename id name}alphaJoinedAt alphaPrimaryOrganizationId alphaRole email firstName id instagram lastName linkedin location phone photoRef{__typename crop{__typename h w x y}uuid}website}}"
       }
     },
     {
