@@ -196,27 +196,33 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
         }
     }
 
+    dataSourceWrapper = (props: { children?: any }) => {
+        return <XScrollViewAnchored
+            bottomAttached={this.state.bottomAttached}
+            flexGrow={1}
+            flexShrink={1}
+            justifyContent="flex-end"
+            onScroll={this.handlerScroll}
+            ref={this.scroller}
+            innerRef={this.innerScrollRef}
+        >
+            {props.children}
+        </XScrollViewAnchored>;
+    }
+
     render() {
         console.warn('MessageListComponent', 'render', this.state);
         return (
-            <XScrollViewAnchored
-                bottomAttached={this.state.bottomAttached}
-                flexGrow={1}
-                flexShrink={1}
-                justifyContent="flex-end"
-                onScroll={this.handlerScroll}
-                ref={this.scroller}
-                innerRef={this.innerScrollRef}
-            >
-                <DataSourceRender
-                    dataSource={this.dataSource}
-                    reverce={true}
-                    renderItem={this.renderMessage}
-                    renderLoading={this.renderLoading}
-                    onUpdated={this.onUpdated}
-                    onScrollToReqested={this.onScrollRequested}
-                />
-            </XScrollViewAnchored>
+
+            <DataSourceRender
+                dataSource={this.dataSource}
+                reverce={true}
+                renderItem={this.renderMessage}
+                renderLoading={this.renderLoading}
+                onUpdated={this.onUpdated}
+                onScrollToReqested={this.onScrollRequested}
+                wrapWith={this.dataSourceWrapper}
+            />
         );
     }
 }

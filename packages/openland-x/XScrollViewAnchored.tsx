@@ -3,7 +3,7 @@ import { css } from 'linaria';
 import ResizeObserver from 'resize-observer-polyfill';
 import { XView, XStyles } from 'react-mental';
 import { XScrollValues } from './XScrollView3';
-import { throttle } from 'openland-y-utils/timer';
+import { throttle, debounce } from 'openland-y-utils/timer';
 
 const NativeScrollStyle = css`
     overflow-y: overlay;
@@ -46,15 +46,40 @@ export const XScrollViewAnchored = React.memo(
             const outerHeight = React.useRef<number>(0);
             const innerHeight = React.useRef<number>(0);
             const scrollTop = React.useRef<number>(0);
-            let ignoreNextScrollEvent = React.useRef(false);
 
             let bottomAttached = React.useRef(props.bottomAttached);
             bottomAttached.current = props.bottomAttached;
+
+            let anchorRef = React.useRef<{ offset: number, anchor: HTMLDivElement } | undefined>();
+            let pickAnchor = React.useCallback(() => {
+                if (!innerRef.current || !outerRef.current) {
+                    return;
+                }
+                let prevDistance: number | undefined;
+                let targetPosition = outerRef.current!.scrollTop + outerRef.current!.clientHeight / 2;
+                for (let i = 1; i < innerRef.current!.childElementCount; i++) {
+                    let node = innerRef.current!.childNodes[i] as HTMLDivElement;
+                    let offset = node.offsetTop - targetPosition;
+                    let distance = Math.abs(offset);
+                    if ((prevDistance !== undefined) && distance > prevDistance) {
+                        console.warn('anchored', i, node);
+                        break;
+                    }
+                    prevDistance = distance;
+                    node.style.backgroundColor = 'red';
+                    if (anchorRef.current) {
+                        anchorRef.current.anchor.style.backgroundColor = '';
+                    }
+                    anchorRef.current = { anchor: node, offset };
+
+                }
+            }, []);
 
             React.useImperativeHandle<XScrollViewReverse2RefProps, any>(ref, () => ({
                 scrollToBottom: () => {
                     if (outerRef && outerRef.current) {
                         outerRef.current.scrollTop = innerHeight.current;
+                        pickAnchor();
                     }
                 },
                 getScrollTop: () => {
@@ -64,9 +89,10 @@ export const XScrollViewAnchored = React.memo(
                     return outerHeight.current;
                 },
                 scrollTo: (target: any) => {
-                    ignoreNextScrollEvent.current = false;
                     if (target.scrollIntoView) {
+                        console.warn('scrollTo', target);
                         target.scrollIntoView();
+                        pickAnchor();
                     }
                 }
             }));
@@ -81,40 +107,11 @@ export const XScrollViewAnchored = React.memo(
                 }
             }, []);
 
-            let anchorRef = React.useRef<{ offset: number, anchor: HTMLDivElement } | undefined>();
-            let pickAnchor = React.useCallback(() => {
-                if (!innerRef.current || !outerRef.current) {
-                    return;
-                }
-                let prevDistance: number | undefined;
-                let targetPosition = outerRef.current!.scrollTop + outerRef.current!.clientHeight / 2;
-                for (let i = 1; i < innerRef.current!.childElementCount; i++) {
-                    let node = innerRef.current!.childNodes[i] as HTMLDivElement;
-                    let offset = node.offsetTop - targetPosition;
-                    let distance = Math.abs(offset);
-                    if ((prevDistance !== undefined) && distance > prevDistance) {
-                        break;
-                    }
-                    prevDistance = distance;
-                    node.style.backgroundColor = 'red';
-                    if (anchorRef.current) {
-                        anchorRef.current.anchor.style.backgroundColor = '';
-                    }
-                    anchorRef.current = { anchor: node, offset };
-
-                }
-            }, []);
-
-            React.useLayoutEffect(() => {
+            React.useEffect(() => {
                 const outerDiv = outerRef.current!!;
                 const innerDiv = innerRef.current!!;
                 let trottledOnScrollReport = throttle(reportOnScroll, 150);
                 const onScrollHandler = () => {
-                    if (ignoreNextScrollEvent.current) {
-                        ignoreNextScrollEvent.current = false;
-                    } else {
-                        pickAnchor();
-                    }
                     scrollTop.current = outerDiv.scrollTop;
                     trottledOnScrollReport();
                 };
@@ -135,7 +132,6 @@ export const XScrollViewAnchored = React.memo(
                         pickAnchor();
                     }
                     reportOnScroll();
-                    ignoreNextScrollEvent.current = true;
                 });
                 observer.observe(innerDiv);
                 observer.observe(outerDiv);
@@ -145,6 +141,8 @@ export const XScrollViewAnchored = React.memo(
                     observer.disconnect();
                 };
             }, []);
+
+            pickAnchor();
 
             const { children, ...other } = props;
 
