@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import IconSticker from './ic_sticker2.svg';
 import IconAnimal from './ic-animal-24.svg';
 import IconAnimalFilled from './ic-animal-filled-24.svg';
 import IconFood from './ic-food-24.svg';
@@ -24,7 +23,8 @@ import { FixedSizeList, ListOnScrollProps } from 'react-window';
 import { pickerEmoji } from 'openland-y-utils/data/emoji-data';
 import { emojiComponentSprite } from 'openland-y-utils/emojiComponentSprite';
 import { onEmojiSent, getRecent } from './Recent';
-import { UIcon } from '../UIcon';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import IcSticker from 'openland-icons/s/ic-sticker-24.svg';
 
 const categoryButton = css`
     position: relative;
@@ -81,6 +81,8 @@ const emojiPickerIcon = css`
     width: 40px;
     height: 40px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
     transition: opacity 150ms cubic-bezier(.29, .09, .24, .99);
 
     &:hover {
@@ -207,6 +209,7 @@ const RowComponent = React.memo((props: { section: EmojiSection, index: number, 
                     value={v.value}
                     category={v.sprite}
                     onEmojiPicked={props.onEmojiPicked}
+                    key={'emoji' + v.name}
                 />
             ))}
         </XView>
@@ -233,6 +236,7 @@ const Recent = React.memo((props: { index: number, onEmojiPicked: (arg: string) 
                     value={v.value}
                     category={v.sprite}
                     onEmojiPicked={props.onEmojiPicked}
+                    key={'recent_emoji' + v.name}
                 />
             ))}
         </XView>
@@ -249,7 +253,14 @@ const innerElementType = React.forwardRef<HTMLDivElement>(({ children, ...rest }
             </div>
         </div>
         {sections.map((index, i) => (
-            <div style={{ top: (index.start + 3) * 40, left: 0, width: "100%", height: i === sections.length - 1 ? (index.end - index.start - 4) * 40 /* WTF? */ : (index.end - index.start) * 40 }}>
+            <div
+                key={'inner_element_emoji' + i}
+                style={{
+                    top: (index.start + 3) * 40,
+                    left: 0,
+                    width: "100%",
+                    height: i === sections.length - 1 ? (index.end - index.start - 4) * 40 /* WTF? */ : (index.end - index.start) * 40 }}
+            >
                 <div className={titleStyle}>
                     <div className={titleBgStyle}>
                         {index.title}
@@ -418,13 +429,11 @@ export const EmojiPicker = React.memo((props: { onEmojiPicked: (arg: string) => 
     const [visible, show] = usePopper({ placement: 'top-end', hideOnLeave: true }, () => <EmojiPickerBody onEmojiPicked={props.onEmojiPicked} />);
 
     return (
-        <>
-            <div
-                className={cx(emojiPickerIcon, visible && emojiPickerIconOpen)}
-                onMouseEnter={show}
-            >
-                <IconSticker />
-            </div>
-        </>
+        <div
+            className={cx(emojiPickerIcon, visible && emojiPickerIconOpen)}
+            onMouseEnter={show}
+        >
+            <UIcon icon={<IcSticker/>} size={20} />
+        </div>
     );
 });

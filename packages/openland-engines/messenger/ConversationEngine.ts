@@ -46,6 +46,7 @@ export interface DataSourceMessageItem {
     title?: string;
     isEdited?: boolean;
     reply?: DataSourceMessageItem[];
+    source: Types.FullMessage_GeneralMessage_source_MessageSourceChat | null;
     reactions: FullMessage_GeneralMessage_reactions[];
     attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string })[];
     spans?: FullMessage_GeneralMessage_spans[];
@@ -91,6 +92,8 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
 
     const reply = generalMessage && generalMessage.quotedMessages ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date).map(m => convertMessage(m as Types.FullMessage, chaId, engine)) : undefined;
 
+    const generalMessageSourceChat = generalMessage && generalMessage.source && generalMessage.source.__typename === 'MessageSourceChat' ? generalMessage.source : null;
+
     return {
         chatId: chaId,
         type: 'message',
@@ -112,6 +115,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,
         reply,
+        source: generalMessageSourceChat,
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : 0,
@@ -137,6 +141,7 @@ export function convertMessageBack(src: DataSourceMessageItem): Types.FullMessag
         edited: !!src.isEdited,
         quotedMessages: [],
         reactions: [],
+        source: src.source
     };
 
     return res;
@@ -858,6 +863,7 @@ export class ConversationEngine implements MessageSendHandler {
                     }
                 }] : undefined,
                 reply,
+                source: null,
                 attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData && !prev.isService : false,
                 textSpans: src.message ? processSpans(src.message, src.spans) : [],
                 reactions: [],

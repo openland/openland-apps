@@ -319,6 +319,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             fallback={message.fallback}
             isOut={message.isOut}
             attachTop={message.attachTop}
+            chatId={message.chatId}
         />
     );
 

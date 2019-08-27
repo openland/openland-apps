@@ -5,6 +5,7 @@ import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { UserForMention } from 'openland-api/Types';
 import { emojiLink } from 'openland-y-utils/emojiLink';
 import { EmojiPicker } from './emoji/EmojiPicker';
+import { ShortcutButton } from './shortcuts/ShortcutsButton';
 import { emojiConvertToName } from 'openland-y-utils/emojiExtract';
 import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone';
 
@@ -228,7 +229,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
                             return;
                         }
                         // WARNING: Do not change order of lines.
-                        // It seems there is a bug in Quill that inserts a new line when 
+                        // It seems there is a bug in Quill that inserts a new line when
                         // deleting text up to the end
                         ed.insertEmbed(selection.index, type, src, 'user');
                         if (type === 'mention') {
@@ -365,6 +366,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
     return (
         <div className={quillStyle}>
             <div ref={containerRef} />
+            <ShortcutButton />
             <EmojiPicker onEmojiPicked={onEmojiPicked} />
         </div>
     );

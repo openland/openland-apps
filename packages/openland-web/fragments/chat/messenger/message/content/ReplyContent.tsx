@@ -46,9 +46,8 @@ export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessage
             />
             <div>
                 {props.quotedMessages.map(q => (
-                    <div className={replyItemClass}>
+                    <div className={replyItemClass} key={q.id}>
                         <MessageContent
-                            key={q.id}
                             id={q.id}
                             text={q.text}
                             textSpans={q.textSpans}

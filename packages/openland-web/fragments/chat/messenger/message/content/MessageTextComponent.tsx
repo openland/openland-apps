@@ -3,7 +3,7 @@ import { css, cx } from 'linaria';
 import { SpannedView } from './SpannedView';
 import { Span } from 'openland-y-utils/spans/Span';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import EditIcon from 'openland-icons/s/ic-msg-edit-16.svg';
+import EditIcon from 'openland-icons/s/ic-edited-16.svg';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 
 export interface MessageTextComponentProps {
