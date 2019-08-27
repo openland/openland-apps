@@ -12,9 +12,17 @@ export function convertMessage(
 
     let reply =
         generalMessage && generalMessage.quotedMessages
-            ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date)
-                .map(r => convertMessage(r as FullMessage))
+            ? generalMessage.quotedMessages
+                  .sort((a, b) => a.date - b.date)
+                  .map(r => convertMessage(r as FullMessage))
             : undefined;
+
+    const generalMessageSourceChat =
+        generalMessage &&
+        generalMessage.source &&
+        generalMessage.source.__typename === 'MessageSourceChat'
+            ? generalMessage.source
+            : null;
 
     return {
         chatId: '',
@@ -37,12 +45,13 @@ export function convertMessage(
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,
         reply,
+        source: generalMessageSourceChat,
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : 0,
         textSpans: src.message ? processSpans(src.message, src.spans) : [],
         fallback: src.message || '',
         reactionsReduced: [],
-        reactionsLabel: ''
+        reactionsLabel: '',
     };
 }

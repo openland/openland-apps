@@ -42,6 +42,7 @@ interface MessageContentProps {
     fallback?: string;
     isOut?: boolean;
     attachTop?: boolean;
+    chatId?: string;
 }
 
 export const MessageContent = (props: MessageContentProps) => {
@@ -49,9 +50,10 @@ export const MessageContent = (props: MessageContentProps) => {
     const imageAttaches = attachments.filter(a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
     const documentsAttaches = attachments.filter(a => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
     const augmenationAttaches = attachments.filter(a => a.__typename === 'MessageRichAttachment') as FullMessage_GeneralMessage_attachments_MessageRichAttachment[] || [];
-
     const hasText = !!text;
     const content: JSX.Element[] = [];
+
+    const isForward = props.chatId && reply && reply.length && reply[0].source && reply[0].source.chat.id !== props.chatId;
 
     const extraClassName = cx('x', extraWrapper, attachTop && extraInCompactWrapper);
     const textClassName = cx('x', textWrapper);
@@ -78,6 +80,9 @@ export const MessageContent = (props: MessageContentProps) => {
                 <MessageTextComponent spans={textSpans} edited={!!edited} />
             </div>
         );
+        if (isForward) {
+            content.reverse();
+        }
     }
 
     documentsAttaches.map(file => {

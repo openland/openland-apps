@@ -90,7 +90,18 @@ export const FullMessage = gql`
         }
         message
         fallback
-
+        source {
+            ... on MessageSourceChat {
+                chat {
+                    ... on PrivateRoom {
+                        id
+                    }
+                    ... on SharedRoom {
+                        id
+                    }
+                }
+            }
+        }
         ... on GeneralMessage {
             id
             edited
@@ -170,6 +181,18 @@ export const FullMessage = gql`
                 }
                 message
                 fallback
+                source {
+                    ... on MessageSourceChat {
+                        chat {
+                            ... on PrivateRoom {
+                                id
+                            }
+                            ... on SharedRoom {
+                                id
+                            }
+                        }
+                    }
+                }
                 spans {
                     offset
                     length

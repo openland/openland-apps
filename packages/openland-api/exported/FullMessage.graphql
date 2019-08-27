@@ -12,6 +12,20 @@ fragment FullMessage on ModernMessage {
     __typename
     ...UserBadge
   }
+  source {
+    __typename
+    ... on MessageSourceChat {
+      chat {
+        __typename
+        ... on PrivateRoom {
+          id
+        }
+        ... on SharedRoom {
+          id
+        }
+      }
+    }
+  }
   spans {
     __typename
     length
@@ -141,6 +155,20 @@ fragment FullMessage on ModernMessage {
       senderBadge {
         __typename
         ...UserBadge
+      }
+      source {
+        __typename
+        ... on MessageSourceChat {
+          chat {
+            __typename
+            ... on PrivateRoom {
+              id
+            }
+            ... on SharedRoom {
+              id
+            }
+          }
+        }
       }
       spans {
         __typename
