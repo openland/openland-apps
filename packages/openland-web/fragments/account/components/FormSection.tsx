@@ -1,14 +1,33 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { XText, Mode } from 'openland-web/components/XText';
+import { TextStyles, TextCaption } from 'openland-web/utils/TextStyles';
+import { css, cx } from 'linaria';
 
-export const FormSection = ({ title, children }: { title: string; children: any }) => {
+const footerWrapper = css`
+    margin-top: 16px;
+    color: var(--foregroundSecondary);
+`;
+
+interface FormSectionProps {
+    title: string;
+    children: any;
+    footer?: string | JSX.Element;
+}
+
+export const FormSection = (props: FormSectionProps) => {
+    const { title, children, footer } = props;
+
     return (
         <XView marginBottom={16}>
-            <XView height={48} flexDirection="row" alignItems="center">
-                <XText mode={Mode.TitleTwo}>{title}</XText>
+            <XView {...TextStyles.Title2} height={48} justifyContent="center">
+                {title}
             </XView>
             {children}
+            {!!footer && (
+                <div className={cx(footerWrapper, TextCaption)}>
+                    {footer}
+                </div>
+            )}
         </XView>
     );
 };

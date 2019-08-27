@@ -8,6 +8,7 @@ import { SettingsAppearanceFragment } from 'openland-web/fragments/account/Setti
 import { RecommendedFragment } from 'openland-web/fragments/discover/RecommendedFragment';
 import { DiscoverGroupsFragment } from 'openland-web/fragments/discover/DiscoverGroupsFragment';
 import { SettingsNotificationsFragment } from 'openland-web/fragments/account/SettingsNotificationsFragment';
+import { SettingsEmailFragment } from 'openland-web/fragments/account/SettingsEmailFragment';
 import { NotificationsFragment } from 'openland-web/fragments/notifications/NofiticationsFragment';
 import { DownloadAppsFragment } from 'openland-web/fragments/account/SettingsDownloadAppsFragment';
 import { InviteFriendsFragment } from 'openland-web/fragments/account/SettingsInviteFriendsFragment';
@@ -40,6 +41,7 @@ routing.addRoute('/discover/groups', () => DiscoverGroupsFragment);
 // Settings
 routing.addRoute('/settings/profile', () => SettingsProfileFragment);
 routing.addRoute('/settings/notifications', () => SettingsNotificationsFragment);
+routing.addRoute('/settings/email', () => SettingsEmailFragment);
 routing.addRoute('/settings/appearance', () => SettingsAppearanceFragment);
 routing.addRoute('/settings/download', () => DownloadAppsFragment);
 routing.addRoute('/settings/invites', () => InviteFriendsFragment);

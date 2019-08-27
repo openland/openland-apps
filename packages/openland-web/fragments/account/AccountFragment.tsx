@@ -6,6 +6,7 @@ import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
+import EmailIcon from 'openland-icons/s/ic-mail-24.svg';
 import InviteFriendsIcon from 'openland-icons/s/ic-invite-24.svg';
 import EditProfileIcon from 'openland-icons/s/ic-edit-24.svg';
 import AppearanceIcon from 'openland-icons/s/ic-appearance-24.svg';
@@ -102,7 +103,7 @@ export const AccountFragment = React.memo(() => (
             <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
                 <UserProfileCard />
                 <UListItem
-                    title="Invite Friends"
+                    title="Invite friends"
                     icon={<InviteFriendsIcon />}
                     path="/settings/invites"
                 />
@@ -113,12 +114,17 @@ export const AccountFragment = React.memo(() => (
                     path="/settings/notifications"
                 />
                 <UListItem
+                    title="Email preferences"
+                    icon={<EmailIcon />}
+                    path="/settings/email"
+                />
+                <UListItem
                     title="Appearance"
                     icon={<AppearanceIcon />}
                     path="/settings/appearance"
                 />
                 <UListItem
-                    title="Download Apps"
+                    title="Download apps"
                     icon={<DownloadIcon />}
                     path="/settings/download"
                 />
