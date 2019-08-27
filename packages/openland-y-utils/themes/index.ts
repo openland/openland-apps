@@ -25,7 +25,7 @@ export const ThemeLightBlue: ThemeGlobal = {
     backgroundTertiaryHover: '#EDEEF0',
     backgroundTertiaryActive: '#E6E7EB',
 
-    accentPrimary: '#1885F2',
+    accentPrimary: '#248BF2',
     accentPrimaryHover: '#2693FF',
     accentPrimaryActive: '#0B72D9',
 
@@ -33,11 +33,11 @@ export const ThemeLightBlue: ThemeGlobal = {
     accentMutedHover: '#4595E5',
     accentMutedActive: '#4595E5',
 
-    accentPositive: '#36B35F',
+    accentPositive: '#3EB265',
     accentPositiveHover: '#41BA69',
     accentPositiveActive: '#26994D',
 
-    accentNegative: '#F22447',
+    accentNegative: '#E62243',
     accentNegativeHover: '#F23041',
     accentNegativeActive: '#CC1424',
 
@@ -50,14 +50,14 @@ export const ThemeLightBlue: ThemeGlobal = {
 
     tintRed: '#E52233',
     tintOrange: '#FFAE0D',
-    tintGreen: '#36B25F',
+    tintGreen: '#3EB265',
     tintCyan: '#21C9D9',
-    tintBlue: '#1885F2',
+    tintBlue: '#248BF2',
     tintPurple: '#8518F2',
     tintInverted: 'rgba(255, 255, 255, 0.32)',
 
     bubble: (isOut) => ({
-        backgroundPrimary: isOut ? '#1885F2' : '#F2F3F5',
+        backgroundPrimary: isOut ? '#248BF2' : '#F2F3F5',
         backgroundSecondary: isOut ? '#0E7CEB' : '#EBEDF0',
 
         foregroundPrimary: isOut ? '#FFFFFF' : '#171A1F',
@@ -123,11 +123,11 @@ export const ThemeDark: ThemeGlobal = {
     accentMutedHover: '#FFFFFF',
     accentMutedActive: '#FFFFFF',
 
-    accentPositive: '#36B35F',
+    accentPositive: '#3EB265',
     accentPositiveHover: '#41BA69',
     accentPositiveActive: '#26994D',
 
-    accentNegative: '#F22447',
+    accentNegative: '#E62243',
     accentNegativeHover: '#F23041',
     accentNegativeActive: '#CC1424',
 
