@@ -34,10 +34,9 @@ const AvatarSizes: { [key in UAvatarSize]: { size: number, placeholder: number, 
     'xx-large': { size: 96, placeholder: 40, dotSize: 16, dotPosition: 6, dotBorderWidth: 2 },
 };
 
-const AvatarPlaceholder = React.memo((props: UAvatarProps) => {
-    const { title, titleEmoji, id, size = 'medium' } = props;
+const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number }) => {
+    const { title, titleEmoji, index, size = 'medium' } = props;
     const ph = extractPlaceholder(title);
-    const phIndex = Math.abs(doSimpleHash(id)) % PlaceholderColor.length;
 
     return (
         <XView
@@ -46,7 +45,7 @@ const AvatarPlaceholder = React.memo((props: UAvatarProps) => {
             alignItems="center"
             justifyContent="center"
             borderRadius={50}
-            backgroundImage={PlaceholderColor[phIndex]}
+            backgroundImage={PlaceholderColor[index]}
             color="white"
             fontSize={AvatarSizes[size].placeholder}
             overflow="hidden"
@@ -171,12 +170,14 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
 
     if (photo) {
         if (photo.startsWith('ph://')) {
-            content = <AvatarPlaceholder {...props} />;
+            const phIndex = parseInt(photo.substr(4), 10) || 0;
+            content = <AvatarPlaceholder {...props} index={phIndex} />;
         } else {
             content = <AvatarImage {...props} />;
         }
     } else {
-        content = <AvatarPlaceholder {...props} />;
+        const phIndex = Math.abs(doSimpleHash(id)) % 6;
+        content = <AvatarPlaceholder {...props} index={phIndex} />;
     }
 
     const boxSize = AvatarSizes[size].size;

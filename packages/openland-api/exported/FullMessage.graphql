@@ -102,6 +102,11 @@ fragment FullMessage on ModernMessage {
           }
           url
         }
+        imageFallback {
+          __typename
+          photo
+          text
+        }
         keyboard {
           __typename
           buttons {
@@ -226,6 +231,11 @@ fragment FullMessage on ModernMessage {
                 size
               }
               url
+            }
+            imageFallback {
+              __typename
+              photo
+              text
             }
             subTitle
             text

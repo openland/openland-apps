@@ -171,7 +171,7 @@ const UnicornBotButton = (props: { keyboard: FullMessage_GeneralMessage_attachme
 };
 
 export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment }) => {
-    const { title, subTitle, keyboard, image, id, titleLink } = props.attach;
+    const { title, subTitle, keyboard, image, imageFallback, id, titleLink } = props.attach;
     const layout = useLayout();
 
     if (!title && !subTitle && keyboard) {
@@ -196,6 +196,17 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
                     size="large"
                     photo={image.url}
                     title={title || ''}
+                    id={id}
+                />
+            </div>
+        );
+    } else if (imageFallback) {
+        avatarWrapper = (
+            <div className={avatarContainer}>
+                <UAvatar
+                    size="large"
+                    photo={imageFallback.photo}
+                    title={imageFallback.text}
                     id={id}
                 />
             </div>

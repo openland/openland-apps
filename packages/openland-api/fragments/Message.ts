@@ -143,6 +143,10 @@ export const FullMessage = gql`
                             imageFormat
                         }
                     }
+                    imageFallback {
+                        photo
+                        text
+                    }
                     keyboard {
                         buttons {
                             id
@@ -254,6 +258,10 @@ export const FullMessage = gql`
                                     imageHeight
                                     imageFormat
                                 }
+                            }
+                            imageFallback {
+                                photo
+                                text
                             }
                             fallback
                         }
