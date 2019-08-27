@@ -4,7 +4,7 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
-import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
+import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 
 export const LoadersComponent = (props: PageProps) => (
     <SScrollView>

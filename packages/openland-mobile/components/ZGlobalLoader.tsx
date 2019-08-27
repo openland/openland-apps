@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
-import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
+import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 
 var watchers: ((isLoading: boolean) => void)[] = [];
 var loading = false;

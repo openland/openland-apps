@@ -7,7 +7,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { SuggestionsWrapper, SuggestionsItemName } from './Suggestions';
 import { searchMentions } from 'openland-engines/mentions/searchMentions';
-import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
+import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 
 export const findMentions = (activeWord: string, groupId: string): MentionToSend[] => {
     let res: MentionToSend[] = [];

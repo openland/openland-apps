@@ -3,7 +3,7 @@ import { Animated, FlatListProps, View } from 'react-native';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderConfigRegistrator } from './navigation/HeaderConfigRegistrator';
 import { STrackedValue } from './STrackedValue';
-import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
+import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 
 export interface SFlatListProps<T> extends FlatListProps<T> {
     safeAreaViaMargin?: boolean;

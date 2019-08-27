@@ -8,7 +8,7 @@ import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handl
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import LoaderSpinner from './LoaderSpinner';
+import { LoaderSpinner } from './LoaderSpinner';
 import { FormField } from 'openland-form/useField';
 
 interface AvatarImageRef {

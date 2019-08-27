@@ -54,7 +54,7 @@ const NewOrganizationComponent = (props: PageProps) => {
     return (
         <ZTrack event="new_org_view">
             <SHeader title={isCommunity ? 'New community' : 'New organization'} />
-            <SHeaderButton title={isCommunity ? 'Create' : 'Next'} onPress={handleSave} />
+            <SHeaderButton title="Create" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <ZListGroup header={null} alignItems="center">
                     <ZAvatarPicker field={photoField} size="xx-large" />
@@ -82,4 +82,4 @@ const NewOrganizationComponent = (props: PageProps) => {
     );
 };
 
-export const NewOrganization = withApp(NewOrganizationComponent);
+export const NewOrganization = withApp(NewOrganizationComponent, { navigationAppearance: 'small' });

@@ -17,7 +17,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import LoaderSpinner from 'openland-mobile/components/LoaderSpinner';
+import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 
 const styles = StyleSheet.create({
     name: {

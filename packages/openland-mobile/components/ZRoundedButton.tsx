@@ -6,7 +6,7 @@ import Alert from './AlertBlanket';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import LoaderSpinner from './LoaderSpinner';
+import { LoaderSpinner } from './LoaderSpinner';
 
 type ZRoundedButtonStyle = 'primary' | 'secondary' | 'secondary-inverted' | 'danger';
 type ZRoundedButtonSize = 'default' | 'large';

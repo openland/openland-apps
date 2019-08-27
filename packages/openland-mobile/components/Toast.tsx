@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { showBlanketModal } from './showBlanketModal';
 import { ZModalController } from './ZModal';
-import LoaderSpinner from './LoaderSpinner';
+import { LoaderSpinner } from './LoaderSpinner';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({

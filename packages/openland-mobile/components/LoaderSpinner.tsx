@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Easing, Platform, ActivityIndicator } from 'react-native';
+import { Animated, Easing, Platform, ActivityIndicator, View } from 'react-native';
 
 type LoaderSpinnerSize = 'small' | 'medium' | 'large';
 
@@ -47,4 +47,10 @@ export const LoaderSpinnerAndroid = ({ size = 'medium', color }: LoaderSpinnerPr
     <ActivityIndicator color={color || '#C4C7CC'} size={loaderSize[size]} />
 );
 
-export default Platform.OS === 'ios' ? LoaderSpinnerIOS : LoaderSpinnerAndroid;
+export const LoaderSpinner = Platform.OS === 'ios' ? LoaderSpinnerIOS : LoaderSpinnerAndroid;
+
+export const LoaderSpinnerWrapped = React.memo(() => (
+    <View height={56} alignItems="center" justifyContent="center">
+        <LoaderSpinner />
+    </View>
+));

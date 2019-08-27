@@ -62,7 +62,7 @@ class SSearchControlerComponent extends React.PureComponent<SSearchControlerProp
                 <>
                     <SAnimatedView name={this.containerShadowView.name} style={{ flexGrow: 1, flexBasis: 0, width: '100%' }}>
 
-                        <ASSafeAreaProvider top={48}>
+                        <ASSafeAreaProvider top={52}>
                             <View style={{ flexGrow: 1, flexBasis: 0, width: '100%' }}>
                                 <View style={{ flexGrow: 1, flexBasis: 0, width: '100%', marginBottom: this.state.searchMounted ? -96 : 0 }}>
                                     {this.props.children}

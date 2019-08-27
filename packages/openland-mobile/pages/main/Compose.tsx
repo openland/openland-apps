@@ -3,7 +3,7 @@ import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text } from 'react-native';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { randomEmptyPlaceholderEmoji } from '../../utils/tolerance';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
@@ -14,6 +14,7 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SDeferred } from 'react-native-s/SDeferred';
+import { LoaderSpinnerWrapped } from 'openland-mobile/components/LoaderSpinner';
 
 const UserSearchComponent = XMemo<PageProps & { query: string, useScroll: boolean }>((props) => {
     let theme = React.useContext(ThemeContext);
@@ -71,8 +72,7 @@ const ComposeComponent = XMemo<PageProps>((props) => {
                             <ZListItem leftIcon={require('assets/ic-cell-channel-24.png')} text="Create channel" path="CreateGroupAttrs" pathParams={{ isChannel: true }} />
                             <ZListItem leftIcon={require('assets/ic-community-24.png')} text="Create community" path="NewOrganization" pathParams={{ isCommunity: true }} />
                         </ZListGroup>
-                        <View height={15} />
-                        <React.Suspense fallback={<ActivityIndicator />}>
+                        <React.Suspense fallback={<LoaderSpinnerWrapped />}>
                             <UserSearchComponent query="" router={props.router} useScroll={false} />
                         </React.Suspense>
                     </SDeferred>
