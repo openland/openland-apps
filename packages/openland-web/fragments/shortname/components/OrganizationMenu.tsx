@@ -8,19 +8,24 @@ import copy from 'copy-to-clipboard';
 import EditIcon from 'openland-icons/s/ic-edit-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import CopyIcon from 'openland-icons/s/ic-copy-24.svg';
+import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
+import AlertBlanket from 'openland-x/AlertBlanket';
+import { useClient } from 'openland-web/utils/useClient';
+import { useStackRouter, StackRouter } from 'openland-unicorn/components/StackRouter';
 
 interface OrganizationMenuProps {
     organization: OrganizationWithoutMembers_organization;
     onLeave: (id: string) => void;
 }
 
-const MenuComponent = React.memo((props: OrganizationMenuProps & { ctx: UPopperController }) => {
+const MenuComponent = React.memo((props: OrganizationMenuProps & { ctx: UPopperController, router: StackRouter }) => {
     const messenger = React.useContext(MessengerContext);
-    const { ctx, organization, onLeave } = props;
-    const { id, isCommunity, isOwner, isAdmin, isMine, shortname } = organization;
+    const client = useClient();
+    const { ctx, router, organization, onLeave } = props;
+    const { id, name, isCommunity, isOwner, isAdmin, isMine, shortname } = organization;
 
     const typeString = isCommunity ? 'community' : 'organization';
     const builder = new UPopperMenuBuilder();
@@ -55,12 +60,34 @@ const MenuComponent = React.memo((props: OrganizationMenuProps & { ctx: UPopperC
         });
     }
 
+    if (isOwner || isAdmin) {
+        builder.item({
+            title: `Delete ${typeString}`,
+            icon: <DeleteIcon />,
+            onClick: () => {
+                AlertBlanket.builder()
+                    .title(`Delete ${name}`)
+                    .message(`Are you sure you want to delete ${name}? This cannot be undone.`)
+                    .action('Delete', async () => {
+                        await client.mutateDeleteOrganization({ organizationId: organization.id });
+                        await client.refetchAccountSettings();
+
+                        router.pop();
+                    }, 'danger').show();
+            }
+        });
+    }
+
     return builder.build(ctx);
 });
 
-export const OrganizationMenu = React.memo((props: OrganizationMenuProps) => (
-    <UMoreButton
-        marginRight={-8}
-        menu={ctx => <MenuComponent {...props} ctx={ctx} />}
-    />
-));
+export const OrganizationMenu = React.memo((props: OrganizationMenuProps) => {
+    const router = useStackRouter();
+
+    return (
+        <UMoreButton
+            marginRight={-8}
+            menu={ctx => <MenuComponent {...props} router={router} ctx={ctx} />}
+        />
+    );
+});
