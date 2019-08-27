@@ -185,10 +185,10 @@ export const NewOptionsButton = XMemo(() => {
 
     let marginRight = 13;
     if (width && width < 951) {
-        marginRight = -150;
+        marginRight = -137;
     }
     if (width && width < 750) {
-        marginRight = 0;
+        marginRight = 13;
     }
 
     return (
