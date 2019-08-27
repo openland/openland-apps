@@ -20,9 +20,16 @@ const AdminIconClass = css`
     }
 `;
 
+const TooltipContent: { [key in RoomMemberRole | OrganizationMemberRole]: string } = {
+    ADMIN: 'Admin',
+    OWNER: 'Owner',
+    MEMBER: 'Member'
+};
+
 const AdminIcon = (props: { role: RoomMemberRole | OrganizationMemberRole }) => {
     const { role } = props;
-    const [show] = useCaptionPopper({ text: role });
+    const [show] = useCaptionPopper({ text: TooltipContent[role], scope: 'member-role' });
+
     if (role !== 'ADMIN' && role !== 'OWNER') {
         return null;
     }
