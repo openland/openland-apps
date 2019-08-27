@@ -15,11 +15,12 @@ import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardA
 const EditGroupComponent = XMemo<PageProps>((props) => {
     const client = getClient();
     const group = client.useRoom({ id: props.router.params.id }, { fetchPolicy: 'network-only' }).room;
-    
+
     if (!group || group.__typename !== 'SharedRoom') {
         return null;
     }
-    
+
+    const typeString = group.isChannel ? 'channel' : 'group';
     const form = useForm();
 
     const titleField = useField('title', group.title, form);
@@ -29,7 +30,7 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
     const defaultPhotoValue = group.photo.startsWith('ph://') ? null : { uuid: group.photo };
     const photoField = useField('photoRef', defaultPhotoValue, form);
 
-    const handleSave = () => 
+    const handleSave = () =>
         form.doAction(async () => {
             try {
                 const variables = {
@@ -38,8 +39,8 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
                         title: titleField.value,
                         description: descriptionField.value,
                         ...(
-                            photoField.value && 
-                            photoField.value.uuid !== currentPhoto && 
+                            photoField.value &&
+                            photoField.value.uuid !== currentPhoto &&
                             { photoRef: photoField.value }
                         )
                     }
@@ -57,7 +58,7 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
 
     return (
         <>
-            <SHeader title="Edit group info" />
+            <SHeader title={`Edit ${typeString}`} />
             <SHeaderButton title="Save" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <ZListGroup header={null} alignItems="center">
@@ -65,7 +66,7 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
                 </ZListGroup>
                 <ZListGroup header="Info" headerMarginTop={0}>
                     <ZInput
-                        placeholder="Group name"
+                        placeholder="Name"
                         field={titleField}
                     />
                     <ZInput

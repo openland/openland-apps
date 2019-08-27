@@ -113,7 +113,7 @@ let SettingsContent = ((props: PageProps) => {
                 <ZListItem
                     leftIconColor={theme.tintPurple}
                     leftIcon={require('assets/ic-rate-fill-24.png')}
-                    text="Rate the App"
+                    text="Rate the app"
                     onPress={() => {
                         Rate.rate({
                             AppleAppID: '1435537685',

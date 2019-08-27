@@ -63,7 +63,7 @@ const NewOrganizationComponent = (props: PageProps) => {
                 <ZListGroup header={null}>
                     {!isCommunity && (
                         <ZInput
-                            placeholder="Organization name"
+                            placeholder="Name"
                             field={nameField}
                             autoFocus={true}
                             description="Please, provide organization name and optional logo"
@@ -72,8 +72,8 @@ const NewOrganizationComponent = (props: PageProps) => {
 
                     {isCommunity && (
                         <>
-                            <ZInput placeholder="Community name" field={nameField} autoFocus={true} />
-                            <ZInput placeholder="About" field={aboutField} multiline={true} />
+                            <ZInput placeholder="Name" field={nameField} autoFocus={true} />
+                            <ZInput placeholder="Description" field={aboutField} multiline={true} />
                         </>
                     )}
                 </ZListGroup>
