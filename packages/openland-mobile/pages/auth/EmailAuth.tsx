@@ -85,7 +85,7 @@ const EmailStartComponent = (props: PageProps) => {
     };
 
     const submitForm = () =>
-        form.doAction(async () => { 
+        form.doAction(async () => {
             try {
                 validateEmail(emailField.value);
 
@@ -149,7 +149,7 @@ const EmailCodeComponent = (props: PageProps) => {
         codeField.input.onChange('');
     };
 
-    const submitForm = () => 
+    const submitForm = () =>
         form.doAction(async () => {
             try {
                 validateCode(codeField.value);
@@ -184,7 +184,7 @@ const EmailCodeComponent = (props: PageProps) => {
                         .button('Cancel', 'cancel')
                         .action('Resend Code', 'default', resendCode)
                         .show();
-                    
+
                     return;
                 }
 
@@ -209,7 +209,7 @@ const EmailCodeComponent = (props: PageProps) => {
                 </Text>
                 <ZInput
                     field={codeField}
-                    placeholder="Activation Code"
+                    placeholder="Activation code"
                     autoCapitalize="none"
                     keyboardType="number-pad"
                     autoFocus={true}

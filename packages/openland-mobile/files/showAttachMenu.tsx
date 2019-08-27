@@ -9,7 +9,7 @@ import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker
 export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video', name: string, path: string, size: number) => void) => {
     let builder = new ActionSheetBuilder();
 
-    builder.action(Platform.OS === 'android' ? 'Take Photo' : 'Camera', async () => {
+    builder.action(Platform.select({ ios: 'Take photo or video', android: 'Take photo' }), async () => {
         if (await checkPermissions('camera')) {
             Picker.launchCamera({ title: 'Camera', mediaType: 'mixed' }, (response) => {
                 if (response.error) {
@@ -31,7 +31,7 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
     }, false, require('assets/ic-camera-24.png'));
 
     if (Platform.OS === 'android') {
-        builder.action('Record Video', async () => {
+        builder.action('Record video', async () => {
             if (await checkPermissions('camera')) {
                 Picker.launchCamera({
                     mediaType: 'video',
@@ -53,7 +53,7 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
         }, false, require('assets/ic-camera-video-24.png'));
     }
 
-    builder.action(Platform.select({ ios: 'Photo & Video Library', android: 'Photo Gallery' }), async () => {
+    builder.action(Platform.select({ ios: 'Choose from library', android: 'Photo gallery' }), async () => {
         if (await checkPermissions('gallery')) {
             Picker.launchImageLibrary(
                 {
@@ -84,7 +84,7 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
     }, false, require('assets/ic-gallery-24.png'));
 
     if (Platform.OS === 'android') {
-        builder.action('Video Gallery', async () => {
+        builder.action('Video gallery', async () => {
             if (await checkPermissions('gallery')) {
                 Picker.launchImageLibrary({
                     mediaType: 'video',
@@ -106,7 +106,7 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
         }, false, require('assets/ic-video-24.png'));
     }
 
-    builder.action('Document', () => {
+    builder.action(Platform.select({ ios: 'Send document', android: 'Document' }), () => {
         DocumentPicker.show({ filetype: [DocumentPickerUtil.allFiles()] },
             (error, response) => {
                 if (!response) {

@@ -61,12 +61,12 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                 </ZListGroup>
                 <ZListGroup header="Info" headerMarginTop={0}>
                     <ZInput
-                        placeholder="Organization name"
+                        placeholder="Name"
                         field={nameField}
                     />
                     <ZInput
                         field={aboutField}
-                        placeholder="About"
+                        placeholder="Description"
                         multiline={true}
                         description="Publicly describe this organization for all to see"
                     />

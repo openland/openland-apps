@@ -108,7 +108,7 @@ const CreateGroupComponent = (props: PageProps) => {
 
     return (
         <>
-            <SHeader title={`Create ${chatTypeString.toLowerCase()}`} />
+            <SHeader title={`New ${chatTypeString.toLowerCase()}`} />
             <SHeaderButton title="Next" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <ZListGroup header={null} alignItems="center">
@@ -116,7 +116,7 @@ const CreateGroupComponent = (props: PageProps) => {
                 </ZListGroup>
                 <ZListGroup header={null}>
                     <ZInput
-                        placeholder={`${chatTypeString} name`}
+                        placeholder="Name"
                         field={titleField}
                         autoFocus={true}
                     />

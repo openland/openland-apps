@@ -137,11 +137,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
         let builder = new ActionSheetBuilder();
 
         if (canEdit) {
-            if (organization.isCommunity) {
-                builder.action('Edit', () => props.router.push('EditCommunity', { id: props.router.params.id }), false, require('assets/ic-edit-24.png'));
-            } else {
-                builder.action('Edit', () => props.router.push('EditOrganization', { id: props.router.params.id }), false, require('assets/ic-edit-24.png'));
-            }
+            builder.action('Edit info', () => props.router.push(organization.isCommunity ? 'EditCommunity' : 'EditOrganization', { id: props.router.params.id }), false, require('assets/ic-edit-24.png'));
         }
 
         if (canMakePrimary) {
@@ -166,7 +162,8 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             builder.action('Leave ' + typeString,
                 () => {
                     Alert.builder()
-                        .title('Are you sure want to leave?')
+                        .title('Leave ${typeString}?')
+                        .message('You may not be able to join it again')
                         .button('Cancel', 'cancel')
                         .action('Leave', 'destructive', async () => {
                             await client.mutateOrganizationRemoveMember({
@@ -186,8 +183,8 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
         if (canEdit) {
             builder.action('Delete', () => {
                 Alert.builder()
-                    .title(`Delete ${organization.name}`)
-                    .message(`Are you sure you want to delete ${organization.name}? This cannot be undone.`)
+                    .title(`Delete ${typeString}?`)
+                    .message(`This cannot be undone.`)
                     .button('Cancel', 'cancel')
                     .action('Delete', 'destructive', async () => {
                         await client.mutateDeleteOrganization({ organizationId: organization.id });
@@ -242,7 +239,8 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 builder.action('Leave ' + typeString,
                     () => {
                         Alert.builder()
-                            .title('Are you sure want to leave?')
+                            .title('Leave ${typeString}?')
+                            .message('You may not be able to join it again')
                             .button('Cancel', 'cancel')
                             .action('Leave', 'destructive', async () => {
                                 await client.mutateOrganizationRemoveMember({
@@ -335,9 +333,9 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             </ZListGroup>
 
             <ZListGroup
-                header="Groups and Channels"
+                header="Groups and channels"
                 counter={organization.rooms.length}
-                actionRight={organization.rooms.length > 3 ? { title: 'See All', onPress: () => props.router.push('ProfileOrganizationGroups', { organizationId: organization.id, title: organization.name }) } : undefined}
+                actionRight={organization.rooms.length > 3 ? { title: 'See all', onPress: () => props.router.push('ProfileOrganizationGroups', { organizationId: organization.id, title: organization.name }) } : undefined}
             >
                 {organization.isMine && (
                     <ZListItem

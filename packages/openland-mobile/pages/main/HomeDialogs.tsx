@@ -22,7 +22,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
 
     let handlePress = React.useCallback((id: string, title: string) => {
         if (props.router.params.share) {
-            Alert.builder().title('Openland').message('Share with ' + title + '?').button('Cancel', 'cancel').button('Ok', 'default', async () => {
+            Alert.builder().title(`Share with ${title}?`).button('Cancel', 'cancel').button('Share', 'default', async () => {
                 if (props.router.params.share.files) {
                     for (let attach of props.router.params.share.files) {
                         let path = attach.split('/');

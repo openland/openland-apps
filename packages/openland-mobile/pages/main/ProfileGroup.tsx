@@ -30,6 +30,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const room = client.useRoomWithoutMembers({ id: roomId }, { fetchPolicy: 'cache-and-network' }).room as RoomWithoutMembers_room_SharedRoom;
     const initialMembers = client.useRoomMembersPaginated({ roomId: roomId, first: 10 }, { fetchPolicy: 'cache-and-network' }).members;
 
+    const typeString = room.isChannel ? 'channel' : 'group';
     const [members, setMembers] = React.useState(initialMembers);
     const [loading, setLoading] = React.useState(false);
 
@@ -40,8 +41,6 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     }, members);
 
     getChatOnlinesCount(roomId, client, (count) => setOnlineCount(count));
-
-    const chatTypeStr = room.isChannel ? 'channel' : 'group';
 
     // callbacks
     const handleAddMembers = React.useCallback((addedMembers: RoomMembersPaginated_members[]) => {
@@ -61,9 +60,11 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     }, [roomId]);
 
     const handleLeave = React.useCallback(() => {
-        Alert.builder().title(`Are you sure you want to leave ${chatTypeStr}? You may not be able to join it again.`)
+        Alert.builder()
+            .title('Leave ${typeString}?')
+            .message('You may not be able to join it again')
             .button('Cancel', 'cancel')
-            .action('Leave ' + chatTypeStr, 'destructive', async () => {
+            .action(`Leave ${typeString}`, 'destructive', async () => {
                 await client.mutateRoomLeave({ roomId });
                 props.router.pushAndResetRoot('Home');
             })
@@ -120,10 +121,10 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                 }
             }
             if (canKick) {
-                builder.action('Kick', () => handleKick(user), false, require('assets/ic-leave-24.png'));
+                builder.action(`Kick from ${typeString}`, () => handleKick(user), false, require('assets/ic-leave-24.png'));
             }
         } else {
-            builder.action('Leave', handleLeave, false, require('assets/ic-leave-24.png'));
+            builder.action('Leave ${typeString}', handleLeave, false, require('assets/ic-leave-24.png'));
         }
 
         builder.show(true);
@@ -160,14 +161,14 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
         let builder = new ActionSheetBuilder();
 
         if (room.canEdit) {
-            builder.action('Edit', () => props.router.push('EditGroup', { id: room.id }), false, require('assets/ic-edit-24.png'));
+            builder.action('Edit info', () => props.router.push('EditGroup', { id: room.id }), false, require('assets/ic-edit-24.png'));
         }
 
         if (room.role === 'OWNER' || room.role === 'ADMIN' || (room.organization && (room.organization.isAdmin || room.organization.isOwner))) {
             builder.action('Advanced settings', () => props.router.push('EditGroupAdvanced', { id: room.id }), false, require('assets/ic-settings-24.png'));
         }
 
-        builder.action('Leave ' + chatTypeStr, handleLeave, false, require('assets/ic-leave-24.png'));
+        builder.action(`Leave ${typeString}`, handleLeave, false, require('assets/ic-leave-24.png'));
 
         builder.show();
     }, [room]);
@@ -246,7 +247,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             {(room.role === 'ADMIN' || room.role === 'OWNER' || room.role === 'MEMBER') && (
                 <ZListItem
                     leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
-                    text={`Invite to ${chatTypeStr} with a link`}
+                    text={`Invite to ${typeString} with a link`}
                     onPress={() => props.router.present('ProfileGroupLink', { room })}
                 />
             )}

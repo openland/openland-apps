@@ -44,7 +44,7 @@ class NotificationCenterHandlersClass {
     handleManagePress = (items: NotificationsDataSourceItem[]) => {
         const builder = new ActionSheetBuilder();
 
-        builder.action('Clear All', async () => {
+        builder.action('Clear all', async () => {
             await this.deleteNotifications(items.map(item => item.key));
         }, false, require('assets/ic-delete-24.png'));
 
