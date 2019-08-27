@@ -170,7 +170,7 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
 
     if (photo) {
         if (photo.startsWith('ph://')) {
-            const phIndex = parseInt(photo.substr(4), 10) || 0;
+            const phIndex = parseInt(photo.substr(5), 10) || 0;
             content = <AvatarPlaceholder {...props} index={phIndex} />;
         } else {
             content = <AvatarImage {...props} />;
