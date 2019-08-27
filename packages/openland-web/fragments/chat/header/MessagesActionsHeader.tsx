@@ -27,6 +27,7 @@ const containerClass = css`
     background-color: var(--backgroundPrimary);
     transform: translateY(-56px);
     will-change: transform;
+    z-index: 10;
 `;
 
 const containerVisibleClass = css`
