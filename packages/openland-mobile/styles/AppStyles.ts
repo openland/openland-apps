@@ -87,3 +87,4 @@ export const TextStyles = Platform.OS === 'ios' ? TextStylesIOS : TextStylesAndr
 export const TextStylesAsync = Platform.OS === 'ios' ? TextStylesAsyncIOS : TextStylesAsyncAndroid;
 
 export const CompensationAlpha = 0.84;
+export const HighlightAlpha = 0.24;

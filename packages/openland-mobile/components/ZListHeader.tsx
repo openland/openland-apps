@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 
 interface ZListHeaderProps {
     text: string;
@@ -58,7 +58,7 @@ export const ZListHeader = React.memo<ZListHeaderProps>((props) => {
                 <View flexGrow={1} paddingRight={16} />
 
                 {action && (
-                    <TouchableOpacity onPress={action.onPress} activeOpacity={0.7}>
+                    <TouchableOpacity onPress={action.onPress} activeOpacity={HighlightAlpha}>
                         <Text
                             style={{
                                 ...TextStyles.Label2,
