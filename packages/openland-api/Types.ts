@@ -28225,6 +28225,12 @@ export interface MessagesBatch_gammaMessages_messages_GeneralMessage_attachments
   metadata: MessagesBatch_gammaMessages_messages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface MessagesBatch_gammaMessages_messages_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
+  __typename: "ImageFallback";
+  photo: string;
+  text: string;
+}
+
 export interface MessagesBatch_gammaMessages_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
   id: string;
@@ -28249,6 +28255,7 @@ export interface MessagesBatch_gammaMessages_messages_GeneralMessage_attachments
   text: string | null;
   icon: MessagesBatch_gammaMessages_messages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: MessagesBatch_gammaMessages_messages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  imageFallback: MessagesBatch_gammaMessages_messages_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
   keyboard: MessagesBatch_gammaMessages_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
@@ -28626,6 +28633,12 @@ export interface MessagesBatch_gammaMessages_messages_GeneralMessage_quotedMessa
   metadata: MessagesBatch_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface MessagesBatch_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
+  __typename: "ImageFallback";
+  photo: string;
+  text: string;
+}
+
 export interface MessagesBatch_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
@@ -28637,6 +28650,7 @@ export interface MessagesBatch_gammaMessages_messages_GeneralMessage_quotedMessa
   text: string | null;
   icon: MessagesBatch_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: MessagesBatch_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  imageFallback: MessagesBatch_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
 }
 
 export type MessagesBatch_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments = MessagesBatch_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | MessagesBatch_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | MessagesBatch_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
@@ -29201,6 +29215,12 @@ export interface ChatInit_messages_GeneralMessage_attachments_MessageRichAttachm
   metadata: ChatInit_messages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface ChatInit_messages_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
+  __typename: "ImageFallback";
+  photo: string;
+  text: string;
+}
+
 export interface ChatInit_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
   id: string;
@@ -29225,6 +29245,7 @@ export interface ChatInit_messages_GeneralMessage_attachments_MessageRichAttachm
   text: string | null;
   icon: ChatInit_messages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatInit_messages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  imageFallback: ChatInit_messages_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
   keyboard: ChatInit_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
@@ -29602,6 +29623,12 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_
   metadata: ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
+  __typename: "ImageFallback";
+  photo: string;
+  text: string;
+}
+
 export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
@@ -29613,6 +29640,7 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_
   text: string | null;
   icon: ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  imageFallback: ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
 }
 
 export type ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments = ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
@@ -30182,6 +30210,12 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_attachme
   metadata: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
+  __typename: "ImageFallback";
+  photo: string;
+  text: string;
+}
+
 export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
   id: string;
@@ -30206,6 +30240,7 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_attachme
   text: string | null;
   icon: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  imageFallback: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
   keyboard: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
@@ -30583,6 +30618,12 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   metadata: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
+  __typename: "ImageFallback";
+  photo: string;
+  text: string;
+}
+
 export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
@@ -30594,6 +30635,7 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   text: string | null;
   icon: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  imageFallback: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
 }
 
 export type ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments = ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
@@ -31142,6 +31184,12 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachmen
   metadata: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
+  __typename: "ImageFallback";
+  photo: string;
+  text: string;
+}
+
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
   id: string;
@@ -31166,6 +31214,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachmen
   text: string | null;
   icon: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  imageFallback: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
   keyboard: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
@@ -31543,6 +31592,12 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   metadata: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
+export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
+  __typename: "ImageFallback";
+  photo: string;
+  text: string;
+}
+
 export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
@@ -31554,6 +31609,7 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   text: string | null;
   icon: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
   image: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  imageFallback: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
 }
 
 export type ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments = ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
@@ -32158,13 +32214,13 @@ export interface ChatInitFromUnread_gammaMessages_messages_GeneralMessage_attach
   metadata: ChatInitFromUnread_gammaMessages_messages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
-export interface ChatInit_messages_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
+export interface ChatInitFromUnread_gammaMessages_messages_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
   __typename: "ImageFallback";
   photo: string;
   text: string;
 }
 
-export interface ChatInit_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+export interface ChatInitFromUnread_gammaMessages_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
   id: string;
   title: string;
@@ -32186,10 +32242,10 @@ export interface ChatInitFromUnread_gammaMessages_messages_GeneralMessage_attach
   titleLink: string | null;
   titleLinkHostname: string | null;
   text: string | null;
-  icon: ChatInit_messages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: ChatInit_messages_GeneralMessage_attachments_MessageRichAttachment_image | null;
-  imageFallback: ChatInit_messages_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
-  keyboard: ChatInit_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
+  icon: ChatInitFromUnread_gammaMessages_messages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: ChatInitFromUnread_gammaMessages_messages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  imageFallback: ChatInitFromUnread_gammaMessages_messages_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
+  keyboard: ChatInitFromUnread_gammaMessages_messages_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
 export type ChatInitFromUnread_gammaMessages_messages_GeneralMessage_attachments = ChatInitFromUnread_gammaMessages_messages_GeneralMessage_attachments_MessageAttachmentPost | ChatInitFromUnread_gammaMessages_messages_GeneralMessage_attachments_MessageAttachmentFile | ChatInitFromUnread_gammaMessages_messages_GeneralMessage_attachments_MessageRichAttachment;
@@ -32566,13 +32622,13 @@ export interface ChatInitFromUnread_gammaMessages_messages_GeneralMessage_quoted
   metadata: ChatInitFromUnread_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
-export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
+export interface ChatInitFromUnread_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
   __typename: "ImageFallback";
   photo: string;
   text: string;
 }
 
-export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+export interface ChatInitFromUnread_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
   id: string;
@@ -32581,9 +32637,9 @@ export interface ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_
   titleLink: string | null;
   titleLinkHostname: string | null;
   text: string | null;
-  icon: ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
-  imageFallback: ChatInit_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
+  icon: ChatInitFromUnread_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: ChatInitFromUnread_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  imageFallback: ChatInitFromUnread_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
 }
 
 export type ChatInitFromUnread_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments = ChatInitFromUnread_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | ChatInitFromUnread_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | ChatInitFromUnread_gammaMessages_messages_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
@@ -33160,13 +33216,13 @@ export interface ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessag
   metadata: ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
-export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
+export interface ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
   __typename: "ImageFallback";
   photo: string;
   text: string;
 }
 
-export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+export interface ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
   id: string;
   title: string;
@@ -33188,10 +33244,10 @@ export interface ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessag
   titleLink: string | null;
   titleLinkHostname: string | null;
   text: string | null;
-  icon: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image | null;
-  imageFallback: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
-  keyboard: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
+  icon: ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  imageFallback: ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
+  keyboard: ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
 export type ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments = ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile | ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment;
@@ -33568,13 +33624,13 @@ export interface ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessag
   metadata: ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
-export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
+export interface ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
   __typename: "ImageFallback";
   photo: string;
   text: string;
 }
 
-export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+export interface ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
   id: string;
@@ -33583,9 +33639,9 @@ export interface ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMe
   titleLink: string | null;
   titleLinkHostname: string | null;
   text: string | null;
-  icon: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
-  imageFallback: ChatInit_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
+  icon: ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  imageFallback: ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
 }
 
 export type ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments = ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | ChatInitFromUnread_room_PrivateRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
@@ -34134,13 +34190,13 @@ export interface ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage
   metadata: ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
-export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
+export interface ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
   __typename: "ImageFallback";
   photo: string;
   text: string;
 }
 
-export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
+export interface ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard_buttons {
   __typename: "ModernMessageButton";
   id: string;
   title: string;
@@ -34162,10 +34218,10 @@ export interface ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage
   titleLink: string | null;
   titleLinkHostname: string | null;
   text: string | null;
-  icon: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image | null;
-  imageFallback: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
-  keyboard: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
+  icon: ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  imageFallback: ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
+  keyboard: ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard | null;
 }
 
 export type ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_attachments = ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentPost | ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageAttachmentFile | ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_attachments_MessageRichAttachment;
@@ -34542,13 +34598,13 @@ export interface ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage
   metadata: ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image_metadata | null;
 }
 
-export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
+export interface ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback {
   __typename: "ImageFallback";
   photo: string;
   text: string;
 }
 
-export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
+export interface ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment {
   __typename: "MessageRichAttachment";
   fallback: string;
   id: string;
@@ -34557,9 +34613,9 @@ export interface ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMes
   titleLink: string | null;
   titleLinkHostname: string | null;
   text: string | null;
-  icon: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
-  image: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
-  imageFallback: ChatInit_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
+  icon: ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_icon | null;
+  image: ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_image | null;
+  imageFallback: ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment_imageFallback | null;
 }
 
 export type ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments = ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentPost | ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageAttachmentFile | ChatInitFromUnread_room_SharedRoom_pinnedMessage_GeneralMessage_quotedMessages_GeneralMessage_attachments_MessageRichAttachment;
