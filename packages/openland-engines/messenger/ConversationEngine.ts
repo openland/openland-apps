@@ -392,7 +392,6 @@ export class ConversationEngine implements MessageSendHandler {
             return;
         }
         let id = (cursor as FullMessage).id;
-        console.warn(direction, id);
 
         if (direction === 'backward') {
             this.loadingHistory = id;

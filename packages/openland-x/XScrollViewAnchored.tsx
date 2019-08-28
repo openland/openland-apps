@@ -127,7 +127,6 @@ export const XScrollViewAnchored = React.memo(
             React.useLayoutEffect(() => {
                 const outerDiv = outerRef.current!!;
                 const innerDiv = innerRef.current!!;
-                console.warn('resizeGeneration', resizeGeneration.current++);
                 innerHeight.current = innerDiv.clientHeight;
                 outerHeight.current = outerDiv.clientHeight;
                 scrollTop.current = innerHeight.current;

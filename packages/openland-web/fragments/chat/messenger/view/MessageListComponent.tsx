@@ -167,7 +167,6 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
     }
 
     render() {
-        console.warn('MessageListComponent', 'render', this.state);
         return (
 
             <DataSourceRender
