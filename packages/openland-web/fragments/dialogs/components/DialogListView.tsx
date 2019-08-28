@@ -87,24 +87,24 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
         };
     }, [props.onDialogClick, conversationId]);
 
-    const getCurrentConversationId = () => {
-        return route && (route as any).routeQuery ? (route as any).routeQuery.conversationId : null;
-    };
+    // const getCurrentConversationId = () => {
+    //     return route && (route as any).routeQuery ? (route as any).routeQuery.conversationId : null;
+    // };
 
-    const getConversationId = (delta: number) => {
-        const currentConversationId = getCurrentConversationId();
-        if (currentConversationId === null) {
-            return 0;
-        }
+    // const getConversationId = (delta: number) => {
+    //     const currentConversationId = getCurrentConversationId();
+    //     if (currentConversationId === null) {
+    //         return 0;
+    //     }
 
-        const currentDialogIndex = dataSource.findIndex(currentConversationId);
-        const nextIndex = Math.min(
-            Math.max(currentDialogIndex - delta, 0),
-            dataSource.getSize() - 1,
-        );
+    //     const currentDialogIndex = dataSource.findIndex(currentConversationId);
+    //     const nextIndex = Math.min(
+    //         Math.max(currentDialogIndex - delta, 0),
+    //         dataSource.getSize() - 1,
+    //     );
 
-        return dataSource.getAt(nextIndex).key;
-    };
+    //     return dataSource.getAt(nextIndex).key;
+    // };
 
     // const handleOptionUp = () => {
     //     const nextId = getConversationId(+1);
