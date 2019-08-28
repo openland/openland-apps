@@ -2,6 +2,7 @@ import rankings from './data/emoji-ranking.json'; // from http://emojitracker.co
 import { EMOJI_DATA } from './data/emoji-data';
 import { emojiConvertToName } from './emojiExtract';
 import { emojiWordMap } from './emojiWordMap';
+import { getRecent } from 'openland-web/components/unicorn/emoji/Recent';
 
 const emojiList: {
     name: string,
@@ -11,18 +12,31 @@ const emojiList: {
 
 function populateEmoji() {
     const processed = new Set<string>();
+    const recent = getRecent().filter(r => r.used > 0);
+    for (let r of recent) {
+        if (processed.has(r.value)) {
+            continue;
+        }
+        processed.add(r.value);
+        let dt = EMOJI_DATA.find((v) => v[2] === r.value);
+        if (!dt) {
+            continue;
+        }
+        emojiList.push({ name: emojiConvertToName(dt[2] as string), value: dt[2] as string, shortcodes: dt[1] as string[] });
+    }
     for (let r of rankings) {
-        let name = r.id.toLowerCase();
-        processed.add(name);
-
-        let dt = EMOJI_DATA.find((v) => v[0] === name);
+        if (processed.has(r.char)) {
+            continue;
+        }
+        processed.add(r.char);
+        let dt = EMOJI_DATA.find((v) => v[2] === r.char);
         if (!dt) {
             continue;
         }
         emojiList.push({ name: emojiConvertToName(dt[2] as string), value: dt[2] as string, shortcodes: dt[1] as string[] });
     }
     for (let e of EMOJI_DATA) {
-        if (processed.has(e[0] as string)) {
+        if (processed.has(e[2] as string)) {
             continue;
         }
         emojiList.push({ name: emojiConvertToName(e[2] as string), value: e[2] as string, shortcodes: e[1] as string[] });
