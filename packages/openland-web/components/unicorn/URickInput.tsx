@@ -33,6 +33,12 @@ const quillStyle = css`
     }
 `;
 
+const quillWithButtonStyle = css`
+    .ql-editor {
+        padding-right: 72px;
+    }
+`;
+
 const mentionStyle = css`
     color: var(--accentPrimary);
     border-radius: 4px;
@@ -73,6 +79,7 @@ export interface URickInputProps {
     onTextChange?: (text: string) => void;
     onContentChange?: (content: URickTextValue) => void;
     onAutocompleteWordChange?: (text: string | null) => void;
+    withShortcutsButton?: boolean;
 
     onPressEnter?: () => Promise<boolean>;
     onPressUp?: () => boolean;
@@ -364,9 +371,9 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
     }, []);
 
     return (
-        <div className={quillStyle}>
+        <div className={cx(quillStyle, props.withShortcutsButton && quillWithButtonStyle)}>
             <div ref={containerRef} />
-            <ShortcutButton />
+            {props.withShortcutsButton && <ShortcutButton />}
             <EmojiPicker onEmojiPicked={onEmojiPicked} />
         </div>
     );

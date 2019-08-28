@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
+import { css, cx } from 'linaria';
+import { TextTitle2, TextCaption, TextBody } from 'openland-web/utils/TextStyles';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { XView } from 'react-mental';
 import { SpanView } from 'openland-web/fragments/chat/messenger/message/content/SpannedView';
 import {
     SpanType,
@@ -13,76 +13,73 @@ import {
     SpanIrony,
     SpanLoud,
 } from 'openland-y-utils/spans/Span';
-import { css } from 'linaria';
 
-const KeyboardShortcuts = Glamorous.div({
-    padding: '2px 40px 30px',
-});
+type SpanT =
+    | SpanType.code_block
+    | SpanType.code_inline
+    | SpanType.italic
+    | SpanType.bold
+    | SpanType.irony
+    | SpanType.loud;
 
-const KeyboardShortcut = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 400,
-    lineHeight: '20px',
-    letterSpacing: 0,
-    color: '#000000',
-    marginBottom: 12,
-});
+const shortcutsContainer = css`
+    padding: 15px 24px;
+`;
 
-const shortcutSpanClassName = css`
-    padding: 1px 8px 2px;
+const shortcutsGroupStyle = css`
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 29px;
+
+    & .shortcut-row:last-child {
+        margin-bottom: 0;
+    }
+`;
+
+const ShortcutsGroup = (props: { children: JSX.Element[] }) => (
+    <div className={shortcutsGroupStyle}>{props.children}</div>
+);
+
+const shortcutRow = css`
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+`;
+
+const shortcutTagStyle = css`
     display: inline-block;
-    font-size: 13px
-    font-weight: 400;
-    line-height: 20px;
-    color: rgba(0, 0, 0, 0.5);
+    color: var(--foregroundSecondary);
+    background-color: var(--backgroundTertiary);
     border-radius: 8px;
-    background-color: rgba(0, 0, 0, 0.06);
+    margin-right: 8px;
+    padding: 2px 8px;
 `;
 
-const descriptionClassName = css`
-    margin-left: 12px;
-    font-size: 14px;
-    line-height: 1.43;
-    color: #000000;
+const shortcutDescriptionStyle = css`
+    margin-left: 4px;
 `;
 
-const Shortcut = ({ shortcuts, description }: { shortcuts: any[]; description?: string }) => {
-    return (
-        <KeyboardShortcut>
-            {shortcuts.map((shortcut, key) => {
-                if (!(typeof shortcut === 'string')) {
-                    return shortcut;
-                }
-                return (
-                    <span
-                        className={shortcutSpanClassName}
-                        style={{ marginLeft: key === 0 ? 0 : 8 }}
-                        key={key}
-                    >
-                        {shortcut}
-                    </span>
-                );
-            })}
+const shortcutTitle = css`
+    margin-bottom: 16px;
+`;
 
-            <span className={descriptionClassName}>{description}</span>
-        </KeyboardShortcut>
-    );
-};
+const Shortcut = ({ shortcuts, description }: { shortcuts: string[]; description?: string }) => (
+    <div className={cx(shortcutRow, 'shortcut-row')}>
+        {shortcuts.map((shortcut, key) => {
+            return (
+                <span className={cx(shortcutTagStyle, TextCaption)} key={key}>
+                    {shortcut}
+                </span>
+            );
+        })}
 
-const SpanPreview = ({
-    spanType,
-    text,
-}: {
-    spanType:
-        | SpanType.code_block
-        | SpanType.code_inline
-        | SpanType.italic
-        | SpanType.bold
-        | SpanType.irony
-        | SpanType.loud;
+        {description && (
+            <span className={cx(shortcutDescriptionStyle, TextBody)}>{description}</span>
+        )}
+    </div>
+);
 
-    text: string;
-}) => {
+const SpanPreview = ({ spanType, text }: { spanType: SpanT; text: string }) => {
     return (
         <SpanView
             span={
@@ -98,96 +95,94 @@ const SpanPreview = ({
     );
 };
 
-const arrowUpShortcutClassName = css`
-    padding: 3px 6px 4px 6px;
-    font-size: 13px;
-    line-height: 1.54;
-    font-weight: 600;
-    border-radius: 8px;
-    color: rgba(0, 0, 0, 0.5);
-    background-color: rgba(0, 0, 0, 0.06);
+const orStyle = css`
+    margin-left: 4px;
+    margin-right: 8px;
 `;
+
+const Formatting = ({
+    formatting,
+    shortcuts,
+}: {
+    formatting: { type: SpanT; text: string };
+    shortcuts?: string[];
+}) => (
+    <div className={cx(shortcutRow, 'shortcut-row')}>
+        <SpanPreview spanType={formatting.type} text={formatting.text} />
+        {shortcuts && <div className={cx(orStyle, TextBody)}>or</div>}
+        {shortcuts &&
+            shortcuts.map((shortcut, key) => {
+                return (
+                    <span className={cx(shortcutTagStyle, TextCaption)} key={key}>
+                        {shortcut}
+                    </span>
+                );
+            })}
+    </div>
+);
 
 export const ShortcutsBody = () => {
     return (
         <XScrollView3 flexShrink={1} useDefaultScroll={true}>
-            <KeyboardShortcuts>
-                <XView marginBottom={16} fontSize={18} fontWeight={'600'}>
-                    Keyboard shortcuts
-                </XView>
-                <Shortcut shortcuts={['Enter']} description="Send message" />
-                <Shortcut shortcuts={['Shift + Enter']} description="New line" />
-                <Shortcut shortcuts={['Ctrl + E']} description="Edit last message" />
-                <Shortcut
-                    shortcuts={[
-                        <strong className={arrowUpShortcutClassName} key="edit">
-                            ↑
-                        </strong>,
-                    ]}
-                    description="Edit last message (works when the message box is in focus)"
-                />
-                <XView height={22} />
-                {/* overlapse with Cmd + S */}
-                <Shortcut shortcuts={['Ctrl + S']} description="Search chats" />
-                {/* overlapse with option + ↑ behaves weird with scroll */}
-
-                <Shortcut shortcuts={['Esc']} description="Close chat" />
-                <Shortcut
-                    shortcuts={['Ctrl + Option + N (Mac)', 'Ctrl + Alt + N (Windows)']}
-                    description="New chat"
-                />
-                <XView height={20} />
-                <Shortcut
-                    shortcuts={['Ctrl + Cmd + Space (Mac)']}
-                    description="Emojis (standard Mac shortcut)"
-                />
-                <Shortcut
-                    shortcuts={['Cmd + Enter (Mac)', 'Ctrl + Enter (Windows)']}
-                    description="Submit form"
-                />
-                <XView marginTop={33} marginBottom={11} fontSize={18} fontWeight={'600'}>
-                    Text formatting
-                </XView>
-                <XView marginTop={5} marginBottom={17}>
-                    <SpanPreview spanType={SpanType.loud} text={`# Heading 1`} />
-                </XView>
-                <XView flexDirection="row">
-                    <SpanPreview spanType={SpanType.bold} text={`*bold*`} />
-                    <XView paddingLeft={6} paddingRight={8}>
-                        or
-                    </XView>
-                    <Shortcut shortcuts={['Cmd + B (Mac)', 'Ctrl + B (Windows)']} />
-                </XView>
-                <XView flexDirection="row">
-                    <SpanPreview spanType={SpanType.italic} text={`_italic_`} />
-                    <XView paddingLeft={6} paddingRight={8}>
-                        or
-                    </XView>
-                    <Shortcut shortcuts={['Cmd + I (Mac)', 'Ctrl + I (Windows)']} />
-                </XView>
-                <XView flexDirection="row">
-                    <SpanPreview spanType={SpanType.italic} text={`~irony~`} />
-                    <XView paddingLeft={6} paddingRight={8}>
-                        or
-                    </XView>
-                    <Shortcut shortcuts={['Cmd + U (Mac)', 'Ctrl + U (Windows)']} />
-                </XView>
-                <XView marginTop={12}>
-                    <div>
-                        <SpanPreview spanType={SpanType.code_inline} text="`one line code block`" />
-                    </div>
-                </XView>
-                <XView marginTop={12}>
-                    <SpanPreview
-                        spanType={SpanType.code_block}
-                        text="```multiline code blocks```"
+            <div className={shortcutsContainer}>
+                <div className={cx(shortcutTitle, TextTitle2)}>Keyboard shortcuts</div>
+                <ShortcutsGroup>
+                    <Shortcut shortcuts={['Enter']} description="Send message" />
+                    <Shortcut shortcuts={['Shift + Enter']} description="New line" />
+                    <Shortcut shortcuts={['Ctrl + E']} description="Edit last message" />
+                    <Shortcut
+                        shortcuts={['↑']}
+                        description="Edit last message (works when the message box is in focus)"
                     />
-                </XView>
-            </KeyboardShortcuts>
+                </ShortcutsGroup>
+                <ShortcutsGroup>
+                    <Shortcut shortcuts={['Ctrl + S']} description="Search chats" />
+                    <Shortcut shortcuts={['Esc']} description="Close chat" />
+                    <Shortcut
+                        shortcuts={['Ctrl + Option + N (Mac)', 'Ctrl + Alt + N (Windows)']}
+                        description="New chat"
+                    />
+                </ShortcutsGroup>
+                <ShortcutsGroup>
+                    <Shortcut
+                        shortcuts={['Ctrl + Cmd + Space (Mac)']}
+                        description="Emojis (standard Mac shortcut)"
+                    />
+                    <Shortcut
+                        shortcuts={['Cmd + Enter (Mac)', 'Ctrl + Enter (Windows)']}
+                        description="Submit form"
+                    />
+                </ShortcutsGroup>
+                <div className={cx(shortcutTitle, TextTitle2)}>Text formatting</div>
+                <ShortcutsGroup>
+                    <Formatting formatting={{ type: SpanType.loud, text: '# Heading 1' }} />
+                    <Formatting
+                        formatting={{ type: SpanType.bold, text: '*bold*' }}
+                        shortcuts={['Cmd + B (Mac)', 'Ctrl + B (Windows)']}
+                    />
+                    <Formatting
+                        formatting={{ type: SpanType.italic, text: '_italic_' }}
+                        shortcuts={['Cmd + I (Mac)', 'Ctrl + I (Windows)']}
+                    />
+                    <Formatting
+                        formatting={{ type: SpanType.irony, text: '~irony~' }}
+                        shortcuts={['Cmd + U (Mac)', 'Ctrl + U (Windows)']}
+                    />
+                    <Formatting
+                        formatting={{ type: SpanType.code_inline, text: '`one line code block`' }}
+                    />
+                    <Formatting
+                        formatting={{
+                            type: SpanType.code_block,
+                            text: '```multiline code blocks```',
+                        }}
+                    />
+                </ShortcutsGroup>
+            </div>
         </XScrollView3>
     );
 };
 
 export function showShortcutsHelp() {
-    showModalBox({ title: 'Shortcuts' }, () => <ShortcutsBody />);
+    showModalBox({ title: 'Shortcuts', width: 524, useTopCloser: true }, () => <ShortcutsBody />);
 }

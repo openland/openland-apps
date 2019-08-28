@@ -474,6 +474,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     autofocus={true}
                     placeholder={props.placeholder || 'Write a message...'}
                     onFilesPaste={props.onAttach}
+                    withShortcutsButton
                 />
             </XView>
             {!loading && (

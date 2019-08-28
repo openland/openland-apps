@@ -47,9 +47,6 @@ export const XScrollViewAnchored = React.memo(
             const innerHeight = React.useRef<number>(0);
             const scrollTop = React.useRef<number>(0);
 
-            const renderGeneration = React.useRef(0);
-            const resizeGeneration = React.useRef(0);
-
             let bottomAttached = React.useRef(props.bottomAttached);
             bottomAttached.current = props.bottomAttached;
 
@@ -121,7 +118,6 @@ export const XScrollViewAnchored = React.memo(
                 };
             }, []);
 
-            console.warn('renderGeneration', renderGeneration.current++);
             pickAnchor();
 
             React.useLayoutEffect(() => {
