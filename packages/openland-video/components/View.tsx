@@ -37,7 +37,7 @@ export const View = React.memo((props: ViewProps) => {
     const renderer = React.useContext(VideoRenderer)!;
     const duration = React.useContext(TimingDurationContext);
     const delay = React.useContext(TimingShiftContext);
-    const time = useVideoTime();
+    const time = useVideoTime() * 1000;
 
     let marginTop: number | undefined;
     let marginBottom: number | undefined;
