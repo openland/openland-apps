@@ -1,18 +1,9 @@
 import './all';
 import * as React from 'react';
 import { VideoRegistry } from './VideoRegistry';
-import { css } from 'linaria';
 import { TimingDurationContext, TimingShiftContext } from './components/TimingContext';
 import { VideoRenderer, VideoRendererInt } from './components/VideoRenderer';
 import { Animation, TimingAnimation, SetValueAnimation, SequenceAnimation } from './components/Animation';
-
-const classname = css`
-    overflow: hidden;
-    display: flex;
-    font-family: 'Open Sans', sans-serif;
-    width: 100%;
-    height: 100%;
-`;
 
 function resolveValue(animation: Animation, from: number, time: number): number {
     if (animation instanceof TimingAnimation) {
@@ -118,7 +109,15 @@ const offlineRenderer: VideoRendererInt = {
 export const VideoRender = React.memo((props: { name: string }) => {
     const video = React.useMemo(() => VideoRegistry.resolve(props.name), []);
     return (
-        <div className={classname}>
+        <div
+            style={{
+                overflow: 'hidden',
+                display: 'flex',
+                fontFamily: `'Open Sans', sans-serif`,
+                width: '100%',
+                height: '100%'
+            }}
+        >
             <TimingDurationContext.Provider value={video.duration}>
                 <TimingShiftContext.Provider value={0}>
                     <VideoRenderer.Provider value={offlineRenderer}>
