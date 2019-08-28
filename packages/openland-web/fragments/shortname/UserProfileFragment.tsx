@@ -76,9 +76,9 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
                 {!!email && <UListField label="Email" value={email} />}
                 {!!location && <UListField label="Location" value={location} />}
                 {!!twitter && <UListField label="Twitter" value={twitter} />}
-                {!!facebook && <UListField label="Facebook" value={facebook} />}
-                {!!instagram && <UListField label="Instagram" value={instagram} />}
                 {!!linkedin && <UListField label="LinkedIn" value={linkedin} />}
+                {!!instagram && <UListField label="Instagram" value={instagram} />}
+                {!!facebook && <UListField label="Facebook" value={facebook} />}
             </UListGroup>
             <UListGroup header="Organization">
                 {!!primaryOrganization && (
