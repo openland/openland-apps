@@ -76,7 +76,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
     }
 
     handlerScroll = (e: XScrollValues) => {
-        if (e.scrollTop < 800) {
+        if (e.scrollTop < 800 || ((e.scrollHeight === e.clientHeight) && !this.dataSource.isCompleted())) {
             this.dataSource.needMore();
         }
         let scrollBottom = e.scrollHeight - e.clientHeight - e.scrollTop;
@@ -136,12 +136,6 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
     //         </>);
     // });
 
-    onUpdated = () => {
-        if (this.scroller.current && this.scroller.current.getClientHeight() && this.scroller.current.getScrollTop() < 100) {
-            // this.dataSource.\();
-        }
-    }
-
     onScrollRequested = (target: number) => {
         if (this.innerScrollRef.current) {
             let targetNode = this.innerScrollRef.current.childNodes[target] as any;
@@ -174,7 +168,6 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
                 reverce={true}
                 renderItem={this.renderMessage}
                 renderLoading={this.renderLoading}
-                onUpdated={this.onUpdated}
                 onScrollToReqested={this.onScrollRequested}
                 wrapWith={this.dataSourceWrapper}
             />

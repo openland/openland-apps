@@ -10,21 +10,25 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
     private _isPassThrough = false;
     private _isPassThroughBackward = false;
     private _isPassThroughForward = false;
+    private _innerInited = false;
+    private _windowSize: number;
 
     private currentWindow = { start: 0, end: 0 };
 
     constructor(inner: ReadableDataSource<T>, windowSize: number, around?: () => string | undefined) {
         this._inner = inner;
         this._proxy = new DataSource(() => { /*  */ }, () => { /*  */ });
+        this._windowSize = windowSize;
 
         let inWindow = (index: number) => {
             return (index >= this.currentWindow.start) && (index <= this.currentWindow.end);
         };
         this._subscription = inner.watch({
             onDataSourceInited: (data: T[], completed: boolean, completedForward: boolean) => {
+                this._innerInited = true;
                 this._innerCompleted = completed;
                 this._innerCompletedForward = completedForward;
-                if (data.length < windowSize || this._isPassThrough) {
+                if (data.length < windowSize) {
                     this._proxy.initialize(data, completed, completedForward);
                     this._isPassThrough = true;
                     this._isPassThroughForward = true;
@@ -104,18 +108,25 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
         });
     }
 
+    isCompleted = () => {
+        return this._proxy.isCompleted();
+    }
+
     isCompletedForward = () => {
         return this._proxy.isCompletedForward();
     }
 
     needMore() {
+        if (!this._innerInited) {
+            return;
+        }
         if (this._isPassThroughBackward) {
             this._inner.needMore();
             return;
         }
 
         setTimeout(() => {
-            let available = this._inner.getSize() - 1 - this.currentWindow.end;
+            let available = Math.min(this._windowSize, this._inner.getSize() - 1 - this.currentWindow.end);
             if (available > 0) {
                 let toAdd: T[] = [];
                 for (let i = 1; i < available; i++) {
@@ -140,13 +151,16 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
     }
 
     needMoreForward() {
+        if (!this._innerInited) {
+            return;
+        }
         if (this._isPassThroughForward) {
             this._inner.needMoreForward();
             return;
         }
 
         setTimeout(() => {
-            let available = this.currentWindow.start;
+            let available = Math.min(this._windowSize, this.currentWindow.start);
             if (available > 0) {
                 let toAdd: T[] = [];
                 for (let i = 1; i < available; i++) {
