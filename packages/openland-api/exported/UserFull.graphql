@@ -3,6 +3,7 @@ fragment UserFull on User {
   about
   audienceSize
   email
+  facebook
   firstName
   id
   instagram

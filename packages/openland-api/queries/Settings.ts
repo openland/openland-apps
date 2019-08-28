@@ -28,6 +28,8 @@ export const ProfileQuery = gql`
             role: alphaRole
             linkedin
             instagram
+            facebook
+            twitter
             primaryOrganization {
                 id
                 name
@@ -65,6 +67,8 @@ export const ProfileUpdateMutation = gql`
             role: alphaRole
             linkedin
             instagram
+            facebook
+            twitter
             primaryOrganizationId: alphaPrimaryOrganizationId
             joinedAt: alphaJoinedAt
             invitedBy: alphaInvitedBy {

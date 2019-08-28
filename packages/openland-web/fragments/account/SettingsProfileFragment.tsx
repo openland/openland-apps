@@ -71,6 +71,8 @@ export const SettingsProfileFragment = React.memo(() => {
     const websiteField = useField('input.website', profile.website || '', form);
     const linkedinField = useField('input.linkedin', profile.linkedin || '', form);
     const instagramField = useField('input.instagram', profile.instagram || '', form);
+    const twitterField = useField('input.twitter', profile.twitter || '', form);
+    const facebookField = useField('input.facebook', profile.facebook || '', form);
 
     const doConfirm = () => {
         form.doAction(async () => {
@@ -87,6 +89,8 @@ export const SettingsProfileFragment = React.memo(() => {
                     instagram: instagramField.value,
                     phone: phoneNumberField.value,
                     location: locationField.value,
+                    twitter: twitterField.value,
+                    facebook: facebookField.value,
                 },
             });
 
@@ -208,9 +212,15 @@ export const SettingsProfileFragment = React.memo(() => {
                                 <InputField title="Website" field={websiteField} size="large" />
                             </XView>
                             <XView marginBottom={16}>
-                                <InputField title="LinkedIn" field={linkedinField} size="large" />
+                                <InputField title="Twitter" field={twitterField} size="large" />
                             </XView>
-                            <InputField title="Instagram" field={instagramField} size="large" />
+                            <XView marginBottom={16}>
+                                <InputField title="Facebook" field={facebookField} size="large" />
+                            </XView>
+                            <XView marginBottom={16}>
+                                <InputField title="Instagram" field={instagramField} size="large" />
+                            </XView>
+                            <InputField title="LinkedIn" field={linkedinField} size="large" />
                         </FormSection>
                         <FormFooter>
                             <XButton

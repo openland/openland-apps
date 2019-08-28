@@ -32,6 +32,8 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
     const websiteField = useField('website', profile.website || '', form);
     const linkedinField = useField('linkedin', profile.linkedin || '', form);
     const instagramField = useField('instagram', profile.instagram || '', form);
+    const facebookField = useField('facebook', profile.facebook || '', form);
+    const twitterField = useField('twitter', profile.twitter || '', form);
 
     const handleSave = () =>
         form.doAction(async () => {
@@ -47,6 +49,8 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                     website: websiteField.value,
                     linkedin: linkedinField.value,
                     instagram: instagramField.value,
+                    facebook: facebookField.value,
+                    twitter: twitterField.value,
                 },
             });
             await getClient().refetchAccount();
@@ -109,12 +113,20 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                         field={websiteField}
                     />
                     <ZInput
-                        placeholder="LinkedIn"
-                        field={linkedinField}
+                        placeholder="Twitter"
+                        field={twitterField}
+                    />
+                    <ZInput
+                        placeholder="Facebook"
+                        field={facebookField}
                     />
                     <ZInput
                         placeholder="Instagram"
                         field={instagramField}
+                    />
+                    <ZInput
+                        placeholder="LinkedIn"
+                        field={linkedinField}
                     />
                 </ZListGroup>
             </KeyboardAvoidingScrollView>

@@ -11,6 +11,7 @@ mutation ProfileUpdate($input: ProfileInput!, $uid: ID) {
     primaryOrganizationId: alphaPrimaryOrganizationId
     role: alphaRole
     email
+    facebook
     firstName
     id
     instagram
@@ -29,6 +30,7 @@ mutation ProfileUpdate($input: ProfileInput!, $uid: ID) {
       }
       uuid
     }
+    twitter
     website
   }
 }

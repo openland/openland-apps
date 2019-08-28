@@ -4377,6 +4377,18 @@
             "deprecationReason": null
           },
           {
+            "name": "facebook",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "audienceSize",
             "description": null,
             "args": [],
@@ -9117,6 +9129,18 @@
           },
           {
             "name": "twitter",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "facebook",
             "description": null,
             "args": [],
             "type": {
@@ -24009,6 +24033,16 @@
             "defaultValue": null
           },
           {
+            "name": "facebook",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "primaryOrganization",
             "description": null,
             "type": {
@@ -24125,6 +24159,16 @@
           },
           {
             "name": "twitter",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "facebook",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -24256,6 +24300,16 @@
           },
           {
             "name": "twitter",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "facebook",
             "description": null,
             "type": {
               "kind": "SCALAR",

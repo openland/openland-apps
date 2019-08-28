@@ -15,12 +15,12 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import MessageIcon from 'openland-icons/s/ic-message-24.svg';
 
-const MessageButton = React.memo((props: {isBot: boolean, id: string}) => {
+const MessageButton = React.memo((props: { isBot: boolean, id: string }) => {
     const layout = useLayout();
 
     if (layout === 'mobile') {
         return (
-            <UIconButton icon={<MessageIcon/>} path={'/mail/' + props.id}/>
+            <UIconButton icon={<MessageIcon />} path={'/mail/' + props.id} />
         );
     }
 
@@ -34,7 +34,7 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
     const { user, conversation } = client.useUser({ userId: props.id }, { fetchPolicy: 'cache-and-network' });
     const { id, isBot, name, photo, audienceSize, about, shortname, location, phone, email, linkedin, instagram,
-        primaryOrganization, isYou, chatsWithBadge, website } = user;
+        primaryOrganization, isYou, chatsWithBadge, website, twitter, facebook } = user;
 
     return (
         <Page padded={false}>
@@ -74,9 +74,11 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
                 {!!website && <UListField label="Website" value={website} />}
                 {!!phone && <UListField label="Phone" value={phone} />}
                 {!!email && <UListField label="Email" value={email} />}
-                {!!linkedin && <UListField label="LinkedIn" value={linkedin} />}
-                {!!instagram && <UListField label="Instagram" value={instagram} />}
                 {!!location && <UListField label="Location" value={location} />}
+                {!!twitter && <UListField label="Twitter" value={twitter} />}
+                {!!facebook && <UListField label="Facebook" value={facebook} />}
+                {!!instagram && <UListField label="Instagram" value={instagram} />}
+                {!!linkedin && <UListField label="LinkedIn" value={linkedin} />}
             </UListGroup>
             <UListGroup header="Organization">
                 {!!primaryOrganization && (

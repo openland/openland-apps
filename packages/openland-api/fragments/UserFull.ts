@@ -20,6 +20,7 @@ export const UserFull = gql`
         linkedin
         instagram
         twitter
+        facebook
         shortname
         audienceSize
         primaryOrganization {
