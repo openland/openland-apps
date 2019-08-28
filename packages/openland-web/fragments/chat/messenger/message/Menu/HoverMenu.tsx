@@ -18,7 +18,7 @@ import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 const menuContainerClass = css`
     position: absolute;
     opacity: 0;
-    top: 8px;
+    top: 20px;
     right: 0;
     display: flex;
     flex-direction: row;
