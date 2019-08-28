@@ -1,6 +1,8 @@
+import * as React from 'react';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import './all'; // Init registry
+import { VideoRender } from './VideoRender';
 import { VideoRegistry } from './VideoRegistry';
 import { renderVideo } from '@openland/react-video-renderer';
 import { XStyleFactoryRegistry } from 'react-mental';
@@ -62,7 +64,7 @@ app.post('/create', bodyParser.json(), (req, res) => {
             const fps = 30;
 
             try {
-                await renderVideo(video.el, {
+                await renderVideo(<VideoRender name={name} />, {
                     duration: video.duration,
                     width: 360,
                     height: 360,
