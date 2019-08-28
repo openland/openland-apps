@@ -1210,16 +1210,9 @@ export const MessageQuery = gql`
                     chat {
                         ... on PrivateRoom {
                             id
-                            pinnedMessage {
-                                id
-                            }
                         }
                         ... on SharedRoom {
                             id
-                            canEdit
-                            pinnedMessage {
-                                id
-                            }
                         }
                     }
                 }

@@ -305,8 +305,8 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
 
     const client = getClient();
 
-    const message = client.useMessage({ messageId: messageId }, { fetchPolicy: 'cache-and-network' }).message;
-    const comments = client.useMessageComments({ messageId: messageId }, { fetchPolicy: 'cache-and-network' }).messageComments.comments;
+    const message = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' }).message;
+    const comments = client.useMessageComments({ messageId }, { fetchPolicy: 'cache-and-network' }).messageComments.comments;
 
     if (!message) {
         return null;
