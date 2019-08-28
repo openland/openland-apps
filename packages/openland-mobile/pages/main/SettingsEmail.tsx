@@ -35,7 +35,6 @@ const SettingsEmailContent = XMemo<PageProps>(props => {
         <SScrollView>
             <ZCheckmarkGroup
                 header="Messages notifications"
-                headerMarginTop={0}
                 footer={
                     'When you’re busy or not online, Openland can send you email notifications about new messages. We will use ' +
                     settings.primaryEmail +
