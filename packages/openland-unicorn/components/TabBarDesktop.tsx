@@ -6,7 +6,6 @@ import AppearanceIcon from 'openland-icons/s/ic-appearance-24.svg';
 import SuperIcon from 'openland-icons/s/ic-settings-24.svg';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 
 const selectorStyle = css`
     position: absolute;
