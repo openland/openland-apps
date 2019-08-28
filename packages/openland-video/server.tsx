@@ -106,7 +106,11 @@ app.post('/create', bodyParser.json(), (req, res) => {
                     },
                     customEncoder: async (count, width, height, dir, out) => {
                         let start = Date.now();
-                        await exec(`/app/splitter-linux-amd64 -dir=${dir} -width=${width} -height=${height} -count=${count}`);
+                        if (process.platform === 'darwin') {
+                            await exec(`./utils/splitter-macos -dir=${dir} -width=${width} -height=${height} -count=${count}`);
+                        } else {
+                            await exec(`/app/splitter-linux-amd64 -dir=${dir} -width=${width} -height=${height} -count=${count}`);
+                        }
                         console.log('Frames split in ' + (Date.now() - start) + ' ms');
                         start = Date.now();
                         await new Promise((resolve, reject) => {
