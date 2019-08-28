@@ -340,7 +340,7 @@ export class ConversationEngine implements MessageSendHandler {
                 if (this.lastTopMessageRead && (this.lastTopMessageRead !== oldLastReadedDividerMessageId)) {
                     let divider = createNewMessageDividerSourceItem(this.lastTopMessageRead);
                     let targetIndex = this.dataSource.findIndex(this.lastTopMessageRead);
-                    if (targetIndex) {
+                    if (targetIndex > 0) {
                         this.dataSource.addItem(divider, targetIndex);
                     }
                     this.lastReadedDividerMessageId = this.lastTopMessageRead;
