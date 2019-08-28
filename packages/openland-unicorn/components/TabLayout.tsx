@@ -43,6 +43,7 @@ const visibleContainer = css`
     right: 0px;
     bottom: 0px;
     display: flex;
+    background-color: var(--backgroundPrimary);
 `;
 
 const invisibleContainer = css`
@@ -140,13 +141,13 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
                                 {props.router.stacks.map((v, i) => (
                                     <div key={'tab-' + i} className={selectedMounted === i ? visibleContainer : invisibleContainer}>
                                         <XView width="100%" height="100%" flexDirection="row" overflow="hidden" paddingLeft={64}>
-                                            <XView key="sep1" width={1} backgroundColor="#E7E8EA" height="100%" />
+                                            <XView key="sep1" width={1} backgroundColor="var(--border)" height="100%" />
                                             <XView key="root" maxWidth={370} flexShrink={1} flexGrow={1} height="100%" flexDirection="column">
                                                 <XView width="100%" height="100%" position="relative" alignItems="flex-start" backgroundColor="#fff">
                                                     <TabContainer index={i} router={props.router} />
                                                 </XView>
                                             </XView>
-                                            <XView key="sep2" width={1} height="100%" backgroundColor="#EBEBEB" />
+                                            <XView key="sep2" width={1} height="100%" backgroundColor="var(--border)" />
                                             <StackLayout key="stack" className={containerDesktop} router={v} />
                                         </XView>
                                     </div>
