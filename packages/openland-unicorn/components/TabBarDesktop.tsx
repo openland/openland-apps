@@ -59,12 +59,6 @@ interface TabBarButtonProps {
 }
 
 const TabBarButton = React.memo((props: TabBarButtonProps) => {
-    const [show] = useCaptionPopper({
-        text: props.caption,
-        scope: 'tab-bar-popper',
-        placement: 'right',
-    });
-
     const counterClassName = cx(
         counterStyle,
         props.counters >= 10 && counterDozenStyle,
@@ -80,7 +74,6 @@ const TabBarButton = React.memo((props: TabBarButtonProps) => {
             hoverBackgroundColor="var(--backgroundTertiaryHover)"
             cursor="pointer"
             onClick={props.onClick}
-            onMouseEnter={show}
         >
             {!props.selected && props.icon}
             {props.selected && props.iconActive}
@@ -113,10 +106,6 @@ export const TabBarDesktop = React.memo((props: TabBarDesktopProps) => {
                 height={64}
                 alignItems="center"
                 justifyContent="center"
-                // cursor="pointer"
-                // onClick={() => {
-                //     props.router.navigate('');
-                // }}
             >
                 <img
                     src="/static/img/logo.png"
