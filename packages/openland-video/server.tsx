@@ -65,7 +65,7 @@ app.post('/create', bodyParser.json(), (req, res) => {
 
             try {
                 await renderVideo(<VideoRender name={name} />, {
-                    duration: video.duration,
+                    duration: video.duration / 1000,
                     width: 360,
                     height: 360,
                     scale: 2,
