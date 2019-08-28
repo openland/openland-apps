@@ -38,7 +38,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                     let slice = data.slice(start, start + windowSize);
                     this.currentWindow.start = start;
                     this.currentWindow.end = start + windowSize;
-                    this._proxy.initialize(slice, false, false);
+                    this._proxy.initialize(slice, this.currentWindow.start !== 0, this.currentWindow.end !== (data.length - 1));
                 }
             },
             onDataSourceItemAdded: (item: T, index: number) => {

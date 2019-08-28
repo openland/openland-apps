@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
-import ResizeObserver from 'resize-observer-polyfill';
+import { css, cx } from 'linaria';
 import { XView, XStyles } from 'react-mental';
 import { XScrollValues } from './XScrollView3';
 import { throttle } from 'openland-y-utils/timer';
@@ -29,6 +28,7 @@ export interface XScrollViewReverse2Props extends XStyles {
     children?: any;
     innerRef?: React.RefObject<HTMLDivElement>;
     bottomAttached?: boolean;
+    contentClassName?: string;
 }
 
 interface XScrollViewReverse2RefProps {
@@ -68,10 +68,10 @@ export const XScrollViewAnchored = React.memo(
                         break;
                     }
                     prevDistance = distance;
-                    node.style.backgroundColor = 'red';
-                    if (anchorRef.current) {
-                        anchorRef.current.anchor.style.backgroundColor = '';
-                    }
+                    // node.style.backgroundColor = 'red';
+                    // if (anchorRef.current) {
+                    //     anchorRef.current.anchor.style.backgroundColor = '';
+                    // }
                     anchorRef.current = { anchor: node, offset };
 
                 }
@@ -149,7 +149,7 @@ export const XScrollViewAnchored = React.memo(
             return (
                 <XView {...other}>
                     <div className={NativeScrollStyle} ref={outerRef}>
-                        <div className={NativeScrollContentStyle} ref={innerRef}>
+                        <div className={cx(NativeScrollContentStyle, props.contentClassName)} ref={innerRef}>
                             {props.children}
                         </div>
                     </div>

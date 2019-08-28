@@ -21,47 +21,10 @@ import { NewMessageDividerComponent } from './NewMessageDividerComponent';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
 import { XScrollViewAnchored } from 'openland-x/XScrollViewAnchored';
 
-// const messagesWrapperClassName = css`
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-//     align-self: center;
-//     width: 100%;
-//     padding-top: 96px;
-//     padding-bottom: 35px;
-
-//     padding-left: 16px;
-//     padding-right: 16px;
-// `;
-
-// const mobileMessageWrapperClassName = css`
-//     padding-left: 0;
-//     padding-right: 0;
-// `;
-
-// const MessagesWrapper = React.memo(({ children }: { children?: any }) => {
-//     const isMobile = useLayout() === 'mobile';
-//     return (
-//         <div className={cx(messagesWrapperClassName, isMobile && mobileMessageWrapperClassName)}>
-//             {children}
-//         </div>
-//     );
-// });
-
-// const messagesWrapperEmptyClassName = css`
-//     display: flex;
-//     flex-direction: column;
-//     align-items: stretch;
-//     align-self: center;
-//     justify-content: center;
-//     flex-grow: 1;
-//     padding-bottom: 0px;
-//     width: 100%;
-//     max-width: 930px;
-//     @media (min-width: 750px) {
-//         min-width: 512px;
-//     }
-// `;
+const messagesWrapperClassName = css`
+    padding-top: 96px;
+    padding-bottom: 35px;
+`;
 
 interface MessageListProps {
     isChannel: boolean;
@@ -197,6 +160,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
             onScroll={this.handlerScroll}
             ref={this.scroller}
             innerRef={this.innerScrollRef}
+            contentClassName={messagesWrapperClassName}
         >
             {props.children}
         </XScrollViewAnchored>;

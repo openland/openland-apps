@@ -330,6 +330,25 @@ export class ConversationEngine implements MessageSendHandler {
 
     }
 
+    moveOrDeletelastReadedDivider = () => {
+        if (!this.isOpen && this.lastReadedDividerMessageId) {
+            let dividerKey = createNewMessageDividerSourceItem(this.lastReadedDividerMessageId).key;
+            if (this.dataSource.hasItem(dividerKey)) {
+                this.dataSource.removeItem(dividerKey);
+                let oldLastReadedDividerMessageId = this.lastReadedDividerMessageId;
+                this.lastReadedDividerMessageId = undefined;
+                if (this.lastTopMessageRead && (this.lastTopMessageRead !== oldLastReadedDividerMessageId)) {
+                    let divider = createNewMessageDividerSourceItem(this.lastTopMessageRead);
+                    let targetIndex = this.dataSource.findIndex(this.lastTopMessageRead);
+                    if (targetIndex) {
+                        this.dataSource.addItem(divider, targetIndex);
+                    }
+                    this.lastReadedDividerMessageId = this.lastTopMessageRead;
+                }
+            }
+        }
+    }
+
     onOpen = () => {
         this.isOpen = true;
         this.markReadIfNeeded();
@@ -343,20 +362,7 @@ export class ConversationEngine implements MessageSendHandler {
                 if (this.isOpen) {
                     return;
                 }
-                if (this.lastReadedDividerMessageId) {
-                    let dividerKey = createNewMessageDividerSourceItem(this.lastReadedDividerMessageId).key;
-                    if (this.dataSource.hasItem(dividerKey)) {
-                        if (this.lastTopMessageRead) {
-                            let targetIndex = this.dataSource.findIndex(this.lastTopMessageRead);
-                            if (targetIndex) {
-                                this.dataSource.moveItem(dividerKey, targetIndex);
-                            }
-                        }
-                    } else {
-                        this.lastReadedDividerMessageId = undefined;
-                    }
-
-                }
+                this.moveOrDeletelastReadedDivider();
             })();
         }
     }
@@ -395,7 +401,6 @@ export class ConversationEngine implements MessageSendHandler {
         }
         this.state = {
             ...this.state,
-            loading: true,
             loadingHistory: direction === 'backward' ? true : this.state.loadingHistory,
             loadingForward: direction === 'forward' ? true : this.state.loadingForward
         };
@@ -411,7 +416,6 @@ export class ConversationEngine implements MessageSendHandler {
         // this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, false, this.historyFullyLoaded);
         this.state = {
             ...this.state,
-            loading: false,
             messages: this.messages,
             messagesPrepprocessed: this.groupMessages(this.messages),
             loadingHistory: direction === 'backward' ? true : this.state.loadingHistory,
@@ -731,21 +735,23 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     private markReadIfNeeded = () => {
-        // let id: string | null = null;
-        // for (let i = this.messages.length - 1; i >= 0; i--) {
-        //     let msg = this.messages[i];
-        //     if (!isPendingMessage(msg)) {
-        //         id = msg.id;
-        //         break;
-        //     }
-        // }
-        // if (id !== null && id !== this.lastTopMessageRead) {
-        //     this.lastTopMessageRead = id;
-        //     this.engine.client.client.mutate(RoomReadMutation, {
-        //         id: this.conversationId,
-        //         mid: id
-        //     });
-        // }
+        let id: string | null = null;
+        for (let i = this.messages.length - 1; i >= 0; i--) {
+            let msg = this.messages[i];
+            if (!isPendingMessage(msg)) {
+                id = msg.id;
+                break;
+            }
+        }
+        if (id !== null && id !== this.lastTopMessageRead) {
+            this.lastTopMessageRead = id;
+            this.engine.client.client.mutate(RoomReadMutation, {
+                id: this.conversationId,
+                mid: id
+            });
+
+            this.moveOrDeletelastReadedDivider();
+        }
     }
 
     private updateHandler = async (event: any) => {
