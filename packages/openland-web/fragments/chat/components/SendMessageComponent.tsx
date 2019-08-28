@@ -25,6 +25,7 @@ import { TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
 import { fileListToArray } from './DropZone';
 import { XLoader } from 'openland-x/XLoader';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
+import { onEmojiSent } from 'openland-web/components/unicorn/emoji/Recent';
 
 interface MentionUserComponentProps {
     id: string;
@@ -252,6 +253,7 @@ const AutoCompleteComponent = React.memo(
 
             let onEmojiSelected = React.useCallback((emoji: { name: string; value: string }) => {
                 if (isActive.current) {
+                    onEmojiSent(emoji.name);
                     props.onEmojiSelected(emoji);
                 }
             }, []);
