@@ -1,5 +1,5 @@
 import * as React from 'react';
 import { VideoRegistry } from './VideoRegistry';
-import { SampleVideo, SampleVideoDuration } from './videos/SampleVideo';
+import { AnimationSampleView, AnimationSampleViewDuration } from './videos/AnimationSampleView';
 
-VideoRegistry.register('sample', <SampleVideo />, SampleVideoDuration);
+VideoRegistry.register('sample', <AnimationSampleView />, AnimationSampleViewDuration);

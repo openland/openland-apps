@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Animation } from './Animation';
-import { VideoRenderer } from './renderers';
+import { VideoRenderer } from './VideoRenderer';
+import { TimingDurationContext, TimingShiftContext } from './TimingContext';
+import { useVideoTime } from '@openland/react-video-renderer/lib/timing';
 
 export interface ViewProps {
     margin?: number;
@@ -33,8 +35,9 @@ export interface ViewProps {
 export const View = React.memo((props: ViewProps) => {
 
     const renderer = React.useContext(VideoRenderer)!;
-    const duration = 8000;
-    const delay = 0;
+    const duration = React.useContext(TimingDurationContext);
+    const delay = React.useContext(TimingShiftContext);
+    const time = useVideoTime();
 
     let marginTop: number | undefined;
     let marginBottom: number | undefined;
@@ -116,6 +119,9 @@ export const View = React.memo((props: ViewProps) => {
         opacity: props.opacity,
         duration,
         delay,
+        time,
         children: props.children
     });
 });
+
+View.displayName = 'View';

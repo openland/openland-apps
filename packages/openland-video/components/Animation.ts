@@ -1,18 +1,22 @@
+import { Easing } from './Easing';
+
 export class TimingAnimation {
     readonly _to: number;
     readonly _duration: number;
     readonly _delay: number;
     readonly _endTime: number;
+    readonly _easing: Easing;
 
-    constructor(to: number, duration: number, delay: number) {
+    constructor(to: number, duration: number, delay: number, _easing: Easing) {
         this._to = to;
         this._duration = duration;
         this._delay = delay;
         this._endTime = this._delay + this._duration;
+        this._easing = _easing;
     }
 
     delay = (d: number) => {
-        return new TimingAnimation(this._to, this._duration, this._delay + d);
+        return new TimingAnimation(this._to, this._duration, this._delay + d, this._easing);
     }
 }
 

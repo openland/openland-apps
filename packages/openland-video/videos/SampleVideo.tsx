@@ -80,7 +80,7 @@ const Background = React.memo(() => {
     );
 });
 
-export const SampleVideoDuration = 6 * 5;
+export const SampleVideoDuration = 6 * 5 * 1000;
 
 export const SampleVideo = React.memo(() => {
     return (

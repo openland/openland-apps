@@ -24,6 +24,15 @@ export interface VideoRendererInt {
 
         delay: number;
         duration: number;
+        time: number;
+    }): any;
+    renderText(props: {
+        color?: string,
+        fontSize?: number,
+        lineHeight?: number,
+        fontWeight?: '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900',
+        fontFamily?: string,
+        children?: any;
     }): any;
 }
 

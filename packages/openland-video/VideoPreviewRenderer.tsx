@@ -1,8 +1,9 @@
 import * as React from 'react';
 import * as glamor from 'glamor';
-import { Animation, TimingAnimation, SequenceAnimation, SetValueAnimation } from './Animation';
-import { VideoRendererInt, VideoRenderer } from "./renderers";
-import { XView } from 'react-mental';
+import { Animation, TimingAnimation, SequenceAnimation, SetValueAnimation } from './components/Animation';
+import { VideoRendererInt, VideoRenderer } from "./components/VideoRenderer";
+import { css } from 'linaria';
+import { TimingDurationContext, TimingShiftContext } from './components/TimingContext';
 
 function convertValue(type: 'translateX' | 'translateY' | 'opacity', value: number) {
     if (type === 'translateY') {
@@ -30,7 +31,7 @@ function addAnimation(
             '0%': convertValue(type, from),
             '100%': convertValue(type, animation._to)
         });
-        append(`${keyframes} ${animation._duration / 1000}s ease ${(delay + animation._delay) / 1000}s 1 ${ctx.first ? 'backwards' : 'none'}`);
+        append(`${keyframes} ${animation._duration / 1000}s cubic-bezier(${animation._easing.x1},${animation._easing.y1},${animation._easing.x2},${animation._easing.y2}) ${(delay + animation._delay) / 1000}s 1 ${ctx.first ? 'backwards' : 'none'}`);
         ctx.first = false;
         return animation._to;
     } else if (animation instanceof SequenceAnimation) {
@@ -46,7 +47,7 @@ function addAnimation(
     } else if (animation instanceof SetValueAnimation) {
         return animation._to;
     } else {
-        throw Error('Unknown');
+        throw Error();
     }
 }
 
@@ -104,10 +105,31 @@ const CSSRenderer: VideoRendererInt = {
                 {props.children}
             </div>
         );
+    },
+    renderText: (props) => {
+        return (
+            <span
+                style={{
+                    color: props.color,
+                    fontSize: props.fontSize,
+                    lineHeight: props.lineHeight ? `${props.lineHeight}px` : undefined,
+                    fontWeight: props.fontWeight as any,
+                    fontFamily: props.fontFamily
+                }}
+            >
+                {props.children}
+            </span>
+        );
     }
 };
 
-export const VideoPreview2 = React.memo((props: { duration: number, width: number, height: number, children?: any }) => {
+const classname = css`
+    overflow: hidden;
+    display: flex;
+    font-family: 'Open Sans', sans-serif;
+`;
+
+export const VideoPreviewRenderer = React.memo((props: { duration: number, width: number, height: number, children?: any }) => {
     const [iteration, setIteration] = React.useState(0);
     React.useLayoutEffect(() => {
         let r = setInterval(() => {
@@ -116,10 +138,14 @@ export const VideoPreview2 = React.memo((props: { duration: number, width: numbe
         return () => clearInterval(r);
     }, []);
     return (
-        <XView width={props.width} height={props.height} key={'iter-' + iteration}>
-            <VideoRenderer.Provider value={CSSRenderer}>
-                {props.children}
-            </VideoRenderer.Provider>
-        </XView>
+        <div className={classname} style={{ width: props.width, height: props.height }} key={'iter-' + iteration}>
+            <TimingDurationContext.Provider value={props.duration}>
+                <TimingShiftContext.Provider value={0}>
+                    <VideoRenderer.Provider value={CSSRenderer}>
+                        {props.children}
+                    </VideoRenderer.Provider>
+                </TimingShiftContext.Provider>
+            </TimingDurationContext.Provider>
+        </div>
     );
 });

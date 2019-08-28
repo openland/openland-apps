@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { View } from './components/View';
-import { Animations } from './components/Animations';
+import { View } from '../components/View';
+import { Animations } from '../components/Animations';
+import { Text } from '../components/Text';
 
+export const AnimationSampleViewDuration = 6 * 1000;
 export const AnimationSampleView = React.memo(() => {
     const opacity = Animations.sequence(
         Animations.setValue(0),
@@ -19,7 +21,14 @@ export const AnimationSampleView = React.memo(() => {
                 backgroundColor="red"
                 translateY={animation}
                 opacity={opacity}
-            />
+            >
+                <Text
+                    color="blue"
+                    fontSize={28}
+                >
+                    Hello!
+                </Text>
+            </View>
         </View>
     );
 });
