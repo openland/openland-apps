@@ -53,8 +53,6 @@ export const MessageContent = (props: MessageContentProps) => {
     const hasText = !!text;
     const content: JSX.Element[] = [];
 
-    const isForward = props.chatId && reply && reply.length && reply[0].source && reply[0].source.chat.id !== props.chatId;
-
     const extraClassName = cx('x', extraWrapper, attachTop && extraInCompactWrapper);
     const textClassName = cx('x', textWrapper);
 
@@ -66,23 +64,12 @@ export const MessageContent = (props: MessageContentProps) => {
         );
     });
 
-    if (reply && reply.length) {
-        content.push(
-            <div key={'msg-' + id + '-reply'} className={cx(extraClassName, replyWrapper)}>
-                <ReplyContent quotedMessages={reply} />
-            </div>
-        );
-    }
-
     if (hasText) {
         content.push(
             <div key="msg-text" className={textClassName}>
                 <MessageTextComponent spans={textSpans} edited={!!edited} />
             </div>
         );
-        if (isForward) {
-            content.reverse();
-        }
     }
 
     documentsAttaches.map(file => {
@@ -100,6 +87,22 @@ export const MessageContent = (props: MessageContentProps) => {
             </div>
         );
     });
+
+    if (reply && reply.length) {
+        const replyContent = (
+            <div key={'msg-' + id + '-forward'} className={cx(extraClassName, replyWrapper)}>
+                <ReplyContent quotedMessages={reply} />
+            </div>
+        );
+
+        const isForward = props.chatId && reply[0].source && reply[0].source.chat.id !== props.chatId;
+
+        if (isForward) {
+            content.push(replyContent);
+        } else {
+            content.unshift(replyContent);
+        }
+    }
 
     if (!content.length) {
         const unsupportedText = 'Unsupported content' + (fallback ? ': ' + fallback : '');
