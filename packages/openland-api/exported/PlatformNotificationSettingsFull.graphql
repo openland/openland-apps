@@ -1,0 +1,29 @@
+fragment PlatformNotificationSettingsFull on PlatformNotificationSettings {
+  __typename
+  comments {
+    __typename
+    showNotification
+    sound
+  }
+  communityChat {
+    __typename
+    showNotification
+    sound
+  }
+  direct {
+    __typename
+    showNotification
+    sound
+  }
+  notificationPreview
+  organizationChat {
+    __typename
+    showNotification
+    sound
+  }
+  secretChat {
+    __typename
+    showNotification
+    sound
+  }
+}

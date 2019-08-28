@@ -5,31 +5,35 @@ import { useClient } from 'openland-web/utils/useClient';
 import { useField } from 'openland-form/useField';
 import { RadioButtonsSelect } from './components/RadioButtonsSelect';
 import {
-    CommentsNotificationDelivery,
-    NotificationMessages,
     UpdateSettingsInput,
+    NotificationPreview,
 } from 'openland-api/Types';
 import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { debounce } from 'openland-y-utils/timer';
+import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 
 export const SettingsNotificationsFragment = React.memo(() => {
     const form = useForm();
     const client = useClient();
-    const settings = client.useSettings();
+    const settings = client.useSettings({ fetchPolicy: 'network-only' }).settings;
 
-    const messagesNotifications = useField(
-        'input.messagesNotifications',
-        settings.settings.desktopNotifications,
-        form,
-    );
-    const commentsNotifications = useField(
-        'input.commentsNotifications',
-        settings.settings.commentNotificationsDelivery,
-        form,
-    );
+    const directShowNotification = useField('input.desktop.direct.showNotification', settings.desktop.direct.showNotification, form);
+    const directSound = useField('input.desktop.direct.sound', settings.desktop.direct.sound, form);
+    const secretChatShowNotification = useField('input.desktop.secretChat.showNotification', settings.desktop.secretChat.showNotification, form);
+    const secretChatSound = useField('input.desktop.secretChat.sound', settings.desktop.secretChat.sound, form);
+    const organizationChatShowNotification = useField('input.desktop.organizationChat.showNotification', settings.desktop.organizationChat.showNotification, form);
+    const organizationChatSound = useField('input.desktop.organizationChat.sound', settings.desktop.organizationChat.sound, form);
+    const communityChatShowNotification = useField('input.desktop.communityChat.showNotification', settings.desktop.communityChat.showNotification, form);
+    const communityChatSound = useField('input.desktop.communityChat.sound', settings.desktop.communityChat.sound, form);
+    const commentsShowNotification = useField('input.desktop.comments.showNotification', settings.desktop.comments.showNotification, form);
+    const commentsSound = useField('input.desktop.comments.sound', settings.desktop.comments.sound, form);
+    const notificationPreview = useField('input.desktop.notificationPreview', settings.desktop.notificationPreview, form);
+    const excludeMutedChats = useField('input.excludeMutedChats', settings.excludeMutedChats, form);
+    const countUnreadChats = useField('input.countUnreadChats', settings.countUnreadChats, form);
+
     const doConfirm = (input: UpdateSettingsInput) => {
         client.mutateSettingsUpdate({ input });
     };
@@ -41,50 +45,164 @@ export const SettingsNotificationsFragment = React.memo(() => {
     React.useEffect(() => {
         if (doConfirmDebounced.current) {
             doConfirmDebounced.current({
-                commentNotificationsDelivery: commentsNotifications.value,
-                desktopNotifications: messagesNotifications.value,
+                excludeMutedChats: excludeMutedChats.value,
+                countUnreadChats: countUnreadChats.value,
+
+                mobile: {
+                    direct: {
+                        showNotification: directShowNotification.value,
+                        sound: directSound.value,
+                    },
+                    secretChat: {
+                        showNotification: secretChatShowNotification.value,
+                        sound: secretChatSound.value,
+                    },
+                    organizationChat: {
+                        showNotification: organizationChatShowNotification.value,
+                        sound: organizationChatSound.value,
+                    },
+                    communityChat: {
+                        showNotification: communityChatShowNotification.value,
+                        sound: communityChatSound.value,
+                    },
+                    comments: {
+                        showNotification: commentsShowNotification.value,
+                        sound: commentsSound.value,
+                    },
+                    notificationPreview: notificationPreview.value,
+                }
             });
         }
-    }, [messagesNotifications.value, commentsNotifications.value]);
+    }, [
+            excludeMutedChats.value,
+            countUnreadChats.value,
+            directShowNotification.value,
+            directSound.value,
+            secretChatShowNotification.value,
+            secretChatSound.value,
+            organizationChatShowNotification.value,
+            organizationChatSound.value,
+            communityChatShowNotification.value,
+            communityChatSound.value,
+            commentsShowNotification.value,
+            commentsSound.value,
+            notificationPreview.value,
+        ]);
+
     return (
         <Page>
             <UHeader title="Notifications" />
             <FormWrapper title="Notifications">
-                <FormSection title="Messages notifications">
+                <FormSection title="Direct messages">
+                    <XView marginHorizontal={-16}>
+                        <UCheckbox
+                            label="Show notifications"
+                            onChange={directShowNotification.input.onChange}
+                            checked={directShowNotification.value}
+                            asSwitcher={true}
+                        />
+                        <UCheckbox
+                            label="Sound"
+                            onChange={directSound.input.onChange}
+                            checked={directSound.value}
+                            asSwitcher={true}
+                        />
+                    </XView>
+                </FormSection>
+                <FormSection title="Secret groups messages">
+                    <XView marginHorizontal={-16}>
+                        <UCheckbox
+                            label="Show notifications"
+                            onChange={secretChatShowNotification.input.onChange}
+                            checked={secretChatShowNotification.value}
+                            asSwitcher={true}
+                        />
+                        <UCheckbox
+                            label="Sound"
+                            onChange={secretChatSound.input.onChange}
+                            checked={secretChatSound.value}
+                            asSwitcher={true}
+                        />
+                    </XView>
+                </FormSection>
+                <FormSection title="Organization groups messages">
+                    <XView marginHorizontal={-16}>
+                        <UCheckbox
+                            label="Show notifications"
+                            onChange={organizationChatShowNotification.input.onChange}
+                            checked={organizationChatShowNotification.value}
+                            asSwitcher={true}
+                        />
+                        <UCheckbox
+                            label="Sound"
+                            onChange={organizationChatSound.input.onChange}
+                            checked={organizationChatSound.value}
+                            asSwitcher={true}
+                        />
+                    </XView>
+                </FormSection>
+                <FormSection title="Community groups messages">
+                    <XView marginHorizontal={-16}>
+                        <UCheckbox
+                            label="Show notifications"
+                            onChange={communityChatShowNotification.input.onChange}
+                            checked={communityChatShowNotification.value}
+                            asSwitcher={true}
+                        />
+                        <UCheckbox
+                            label="Sound"
+                            onChange={communityChatSound.input.onChange}
+                            checked={communityChatSound.value}
+                            asSwitcher={true}
+                        />
+                    </XView>
+                </FormSection>
+                <FormSection title="New comments">
+                    <XView marginHorizontal={-16}>
+                        <UCheckbox
+                            label="Show notifications"
+                            onChange={commentsShowNotification.input.onChange}
+                            checked={commentsShowNotification.value}
+                            asSwitcher={true}
+                        />
+                        <UCheckbox
+                            label="Sound"
+                            onChange={commentsSound.input.onChange}
+                            checked={commentsSound.value}
+                            asSwitcher={true}
+                        />
+                    </XView>
+                </FormSection>
+                <FormSection title="Notifications preview">
                     <XView marginHorizontal={-16}>
                         <RadioButtonsSelect
-                            {...messagesNotifications.input}
+                            {...notificationPreview.input}
                             selectOptions={[
                                 {
-                                    value: NotificationMessages.ALL,
-                                    label: `All new messages`,
+                                    value: NotificationPreview.NAME_TEXT,
+                                    label: 'Show name and text',
                                 },
                                 {
-                                    value: NotificationMessages.DIRECT,
-                                    label: `Direct messages and mentions`,
-                                },
-                                {
-                                    value: NotificationMessages.NONE,
-                                    label: `Never notify me`,
+                                    value: NotificationPreview.NAME,
+                                    label: 'Show name only',
                                 },
                             ]}
                         />
                     </XView>
                 </FormSection>
-                <FormSection title="Comments notifications">
+                <FormSection title="Badge counter">
                     <XView marginHorizontal={-16}>
-                        <RadioButtonsSelect
-                            {...commentsNotifications.input}
-                            selectOptions={[
-                                {
-                                    value: CommentsNotificationDelivery.ALL,
-                                    label: `All new comments`,
-                                },
-                                {
-                                    value: CommentsNotificationDelivery.NONE,
-                                    label: `Never notify me`,
-                                },
-                            ]}
+                        <UCheckbox
+                            label="Include muted chats"
+                            onChange={(v) => excludeMutedChats.input.onChange(!v)}
+                            checked={!excludeMutedChats.value}
+                            asSwitcher={true}
+                        />
+                        <UCheckbox
+                            label="Count chats instead of messages"
+                            onChange={countUnreadChats.input.onChange}
+                            checked={countUnreadChats.value}
+                            asSwitcher={true}
                         />
                     </XView>
                 </FormSection>

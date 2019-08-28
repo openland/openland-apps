@@ -37,28 +37,33 @@ export class NotificationsEngine {
 
     handleIncomingNotification = async (comment: NotificationsDataSourceItem) => {
         let settings = (await this.engine.client.client.readQuery(SettingsQuery))!.settings;
-        if (settings.commentNotificationsDelivery === 'ALL') {
-            const { key, sender, peerRootId, text, fallback, room } = comment;
 
-            AppNotifications.playIncomingSound();
+        if (AppConfig.getPlatform() === 'mobile' && !settings.mobile.comments.showNotification) {
+            return;
+        } else if (AppConfig.getPlatform() === 'desktop' && !settings.desktop.comments.showNotification) {
+            return;
+        }
 
-            if (room && room.__typename === 'SharedRoom') {
-                AppNotifications.displayNotification({
-                    title: sender.name + ' commented in @' + room.title,
-                    body: text || fallback,
-                    path: '/message/' + peerRootId,
-                    image: sender.photo || undefined,
-                    id: doSimpleHash(key).toString(),
-                });
-            } else {
-                AppNotifications.displayNotification({
-                    title: sender.name + ' commented',
-                    body: text || fallback,
-                    path: '/message/' + peerRootId,
-                    image: sender.photo || undefined,
-                    id: doSimpleHash(key).toString(),
-                });
-            }
+        const { key, sender, peerRootId, text, fallback, room } = comment;
+
+        AppNotifications.playIncomingSound();
+
+        if (room && room.__typename === 'SharedRoom') {
+            AppNotifications.displayNotification({
+                title: sender.name + ' commented in @' + room.title,
+                body: text || fallback,
+                path: '/message/' + peerRootId,
+                image: sender.photo || undefined,
+                id: doSimpleHash(key).toString(),
+            });
+        } else {
+            AppNotifications.displayNotification({
+                title: sender.name + ' commented',
+                body: text || fallback,
+                path: '/message/' + peerRootId,
+                image: sender.photo || undefined,
+                id: doSimpleHash(key).toString(),
+            });
         }
     }
 

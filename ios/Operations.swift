@@ -1105,6 +1105,36 @@ private let OrganizationWithoutMembersFragmentSelector = obj(
             field("website","website", scalar("String"))
         )
 
+private let PlatformNotificationSettingsFullSelector = obj(
+            field("__typename","__typename", notNull(scalar("String"))),
+            field("comments","comments", notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("showNotification","showNotification", notNull(scalar("Boolean"))),
+                    field("sound","sound", notNull(scalar("Boolean")))
+                ))),
+            field("communityChat","communityChat", notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("showNotification","showNotification", notNull(scalar("Boolean"))),
+                    field("sound","sound", notNull(scalar("Boolean")))
+                ))),
+            field("direct","direct", notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("showNotification","showNotification", notNull(scalar("Boolean"))),
+                    field("sound","sound", notNull(scalar("Boolean")))
+                ))),
+            field("notificationPreview","notificationPreview", notNull(scalar("String"))),
+            field("organizationChat","organizationChat", notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("showNotification","showNotification", notNull(scalar("Boolean"))),
+                    field("sound","sound", notNull(scalar("Boolean")))
+                ))),
+            field("secretChat","secretChat", notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("showNotification","showNotification", notNull(scalar("Boolean"))),
+                    field("sound","sound", notNull(scalar("Boolean")))
+                )))
+        )
+
 private let RoomFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             inline("PrivateRoom", obj(
@@ -1267,16 +1297,18 @@ private let SessionStateFullSelector = obj(
 
 private let SettingsFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
-            field("commentNotifications","commentNotifications", notNull(scalar("String"))),
-            field("commentNotificationsDelivery","commentNotificationsDelivery", notNull(scalar("String"))),
             field("countUnreadChats","countUnreadChats", notNull(scalar("Boolean"))),
-            field("desktopNotifications","desktopNotifications", notNull(scalar("String"))),
+            field("desktop","desktop", notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("PlatformNotificationSettings", PlatformNotificationSettingsFullSelector)
+                ))),
             field("emailFrequency","emailFrequency", notNull(scalar("String"))),
             field("excludeMutedChats","excludeMutedChats", notNull(scalar("Boolean"))),
             field("id","id", notNull(scalar("ID"))),
-            field("mobileAlert","mobileAlert", notNull(scalar("Boolean"))),
-            field("mobileIncludeText","mobileIncludeText", notNull(scalar("Boolean"))),
-            field("mobileNotifications","mobileNotifications", notNull(scalar("String"))),
+            field("mobile","mobile", notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("PlatformNotificationSettings", PlatformNotificationSettingsFullSelector)
+                ))),
             field("primaryEmail","primaryEmail", notNull(scalar("String")))
         )
 
@@ -3821,7 +3853,7 @@ class Operations {
     let Settings = OperationDefinition(
         "Settings",
         .query, 
-        "query Settings{settings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}",
+        "query Settings{settings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename countUnreadChats desktop{__typename ...PlatformNotificationSettingsFull}emailFrequency excludeMutedChats id mobile{__typename ...PlatformNotificationSettingsFull}primaryEmail}fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename comments{__typename showNotification sound}communityChat{__typename showNotification sound}direct{__typename showNotification sound}notificationPreview organizationChat{__typename showNotification sound}secretChat{__typename showNotification sound}}",
         SettingsSelector
     )
     let SuggestedRooms = OperationDefinition(
@@ -4415,7 +4447,7 @@ class Operations {
     let SettingsUpdate = OperationDefinition(
         "SettingsUpdate",
         .mutation, 
-        "mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}",
+        "mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename countUnreadChats desktop{__typename ...PlatformNotificationSettingsFull}emailFrequency excludeMutedChats id mobile{__typename ...PlatformNotificationSettingsFull}primaryEmail}fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename comments{__typename showNotification sound}communityChat{__typename showNotification sound}direct{__typename showNotification sound}notificationPreview organizationChat{__typename showNotification sound}secretChat{__typename showNotification sound}}",
         SettingsUpdateSelector
     )
     let SubscribeMessageComments = OperationDefinition(
@@ -4589,7 +4621,7 @@ class Operations {
     let SettingsWatch = OperationDefinition(
         "SettingsWatch",
         .subscription, 
-        "subscription SettingsWatch{watchSettings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}",
+        "subscription SettingsWatch{watchSettings{__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename countUnreadChats desktop{__typename ...PlatformNotificationSettingsFull}emailFrequency excludeMutedChats id mobile{__typename ...PlatformNotificationSettingsFull}primaryEmail}fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename comments{__typename showNotification sound}communityChat{__typename showNotification sound}direct{__typename showNotification sound}notificationPreview organizationChat{__typename showNotification sound}secretChat{__typename showNotification sound}}",
         SettingsWatchSelector
     )
     let TypingsWatch = OperationDefinition(

@@ -1,14 +1,16 @@
 fragment SettingsFull on Settings {
   __typename
-  commentNotifications
-  commentNotificationsDelivery
   countUnreadChats
-  desktopNotifications
+  desktop {
+    __typename
+    ...PlatformNotificationSettingsFull
+  }
   emailFrequency
   excludeMutedChats
   id
-  mobileAlert
-  mobileIncludeText
-  mobileNotifications
+  mobile {
+    __typename
+    ...PlatformNotificationSettingsFull
+  }
   primaryEmail
 }

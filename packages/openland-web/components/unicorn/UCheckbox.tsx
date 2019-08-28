@@ -85,14 +85,14 @@ interface UCheckboxItemProps {
     label: string;
     value?: string;
     checked?: boolean;
-    onChange?: () => void;
+    onChange?: (value: boolean) => void;
     asSwitcher?: boolean;
 }
 
 export const UCheckbox = (props: UCheckboxItemProps) => {
     const handleChange = () => {
         if (props.onChange) {
-            props.onChange();
+            props.onChange(!props.checked);
         }
     };
 

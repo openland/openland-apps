@@ -16,10 +16,10 @@
       }
     },
     {
-      "signature": "7d919da369242dba192aedbd92e67bdc6dea12f78392380669b72a2b05835837",
-      "document": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}subscription SettingsWatch{watchSettings{__typename...SettingsFull}}",
+      "signature": "fa387b50e47f4bb8725ad20a1c81c13b630d801d47483d8ee5c36d94c4c54b74",
+      "document": "fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename comments{__typename showNotification sound}communityChat{__typename showNotification sound}direct{__typename showNotification sound}notificationPreview organizationChat{__typename showNotification sound}secretChat{__typename showNotification sound}}fragment SettingsFull on Settings{__typename countUnreadChats desktop{__typename...PlatformNotificationSettingsFull}emailFrequency excludeMutedChats id mobile{__typename...PlatformNotificationSettingsFull}primaryEmail}subscription SettingsWatch{watchSettings{__typename...SettingsFull}}",
       "metadata": {
-        "engineSignature": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}subscription SettingsWatch{watchSettings{__typename...SettingsFull}}"
+        "engineSignature": "fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename comments{__typename showNotification sound}communityChat{__typename showNotification sound}direct{__typename showNotification sound}notificationPreview organizationChat{__typename showNotification sound}secretChat{__typename showNotification sound}}fragment SettingsFull on Settings{__typename countUnreadChats desktop{__typename...PlatformNotificationSettingsFull}emailFrequency excludeMutedChats id mobile{__typename...PlatformNotificationSettingsFull}primaryEmail}subscription SettingsWatch{watchSettings{__typename...SettingsFull}}"
       }
     },
     {
@@ -1304,17 +1304,17 @@
       }
     },
     {
-      "signature": "e765c54b842799201213ae3ba82ed4d0eb397d2f69e6dafa36847b687bf2e2f5",
-      "document": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}",
+      "signature": "5023f3c4beccf76972d4ff412b95bb4dd807a2a39a8170f8cbc7c6d837956427",
+      "document": "fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename comments{__typename showNotification sound}communityChat{__typename showNotification sound}direct{__typename showNotification sound}notificationPreview organizationChat{__typename showNotification sound}secretChat{__typename showNotification sound}}fragment SettingsFull on Settings{__typename countUnreadChats desktop{__typename...PlatformNotificationSettingsFull}emailFrequency excludeMutedChats id mobile{__typename...PlatformNotificationSettingsFull}primaryEmail}query Settings{settings{__typename...SettingsFull}}",
       "metadata": {
-        "engineSignature": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}query Settings{settings{__typename...SettingsFull}}"
+        "engineSignature": "fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename comments{__typename showNotification sound}communityChat{__typename showNotification sound}direct{__typename showNotification sound}notificationPreview organizationChat{__typename showNotification sound}secretChat{__typename showNotification sound}}fragment SettingsFull on Settings{__typename countUnreadChats desktop{__typename...PlatformNotificationSettingsFull}emailFrequency excludeMutedChats id mobile{__typename...PlatformNotificationSettingsFull}primaryEmail}query Settings{settings{__typename...SettingsFull}}"
       }
     },
     {
-      "signature": "35e14b02b3397fc741ac9c4b8d4308a1eb34caf59a2c9c64956878d692d22cc8",
-      "document": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename...SettingsFull}}",
+      "signature": "3dfff41f6955a15a8ac1dfa5e74c1a1b1806d5c06da25412d1e996de077d3ff3",
+      "document": "fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename comments{__typename showNotification sound}communityChat{__typename showNotification sound}direct{__typename showNotification sound}notificationPreview organizationChat{__typename showNotification sound}secretChat{__typename showNotification sound}}fragment SettingsFull on Settings{__typename countUnreadChats desktop{__typename...PlatformNotificationSettingsFull}emailFrequency excludeMutedChats id mobile{__typename...PlatformNotificationSettingsFull}primaryEmail}mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename...SettingsFull}}",
       "metadata": {
-        "engineSignature": "fragment SettingsFull on Settings{__typename commentNotifications commentNotificationsDelivery countUnreadChats desktopNotifications emailFrequency excludeMutedChats id mobileAlert mobileIncludeText mobileNotifications primaryEmail}mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename...SettingsFull}}"
+        "engineSignature": "fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename comments{__typename showNotification sound}communityChat{__typename showNotification sound}direct{__typename showNotification sound}notificationPreview organizationChat{__typename showNotification sound}secretChat{__typename showNotification sound}}fragment SettingsFull on Settings{__typename countUnreadChats desktop{__typename...PlatformNotificationSettingsFull}emailFrequency excludeMutedChats id mobile{__typename...PlatformNotificationSettingsFull}primaryEmail}mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename...SettingsFull}}"
       }
     },
     {

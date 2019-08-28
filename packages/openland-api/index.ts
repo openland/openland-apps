@@ -261,6 +261,7 @@ export const RoomFullWithoutMembersFragment = typedFragment<Types.RoomFullWithou
 export const RoomNanoFragment = typedFragment<Types.RoomNano>(RoomNano.RoomNano);
 export const RoomShortFragment = typedFragment<Types.RoomShort>(RoomShort.RoomShort);
 export const SessionStateFullFragment = typedFragment<Types.SessionStateFull>(SessionStateFull.SessionStateFull);
+export const PlatformNotificationSettingsFullFragment = typedFragment<Types.PlatformNotificationSettingsFull>(SettingsFragment.PlatformNotificationSettingsFull);
 export const SettingsFullFragment = typedFragment<Types.SettingsFull>(SettingsFragment.SettingsFull);
 export const UserBadgeFragment = typedFragment<Types.UserBadge>(UserBadge.UserBadge);
 export const UserForMentionFragment = typedFragment<Types.UserForMention>(UserForMention.UserForMention);
