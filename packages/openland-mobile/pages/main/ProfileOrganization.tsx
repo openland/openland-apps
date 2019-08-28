@@ -205,85 +205,83 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
     const handleMemberLongPress = React.useCallback((member: OrganizationMembers_organization_members) => {
         const { user } = member;
 
-        if (user.id === myUserID || canEdit) {
-            let builder = new ActionSheetBuilder();
+        let builder = new ActionSheetBuilder();
 
-            if (user.id !== myUserID) {
-                builder.action('Send message', () => props.router.push('Conversation', { id: user.id }), false, require('assets/ic-message-24.png'));
-            }
-
-            if (user.id !== myUserID && organization.isOwner) {
-                builder.action(member.role === 'MEMBER' ? 'Make admin' : 'Dismiss as admin',
-                    () => {
-                        Alert.builder()
-                            .title(member.role === 'MEMBER' ? `Make ${user.name} admin?` : `Dismiss ${user.name} as admin?`)
-                            .message(member.role === 'MEMBER' ? `Admins have full control over the ${typeString} account` : `They will only be able to participate in the ${typeString}'s chats`)
-                            .button('Cancel', 'cancel')
-                            .action(
-                                member.role === 'MEMBER' ? 'Make' : 'Dismiss',
-                                member.role === 'MEMBER' ? 'default' : 'destructive',
-                                async () => {
-                                    const newRole = member.role === 'MEMBER' ? OrganizationMemberRole.ADMIN : OrganizationMemberRole.MEMBER;
-
-                                    await client.mutateOrganizationChangeMemberRole({
-                                        memberId: user.id,
-                                        organizationId: props.router.params.id,
-                                        newRole
-                                    });
-
-                                    await client.refetchOrganization({ organizationId: props.router.params.id });
-
-                                    handleChangeMemberRole(user.id, newRole);
-                                }).show();
-                    }, false, require('assets/ic-star-24.png')
-                );
-            }
-
-            if (user.id === myUserID) {
-                builder.action(`Leave ${typeString}`,
-                    () => {
-                        Alert.builder()
-                            .title(`Leave ${typeString}?`)
-                            .message('You may not be able to join it again')
-                            .button('Cancel', 'cancel')
-                            .action('Leave', 'destructive', async () => {
-                                await client.mutateOrganizationRemoveMember({
-                                    memberId: user.id,
-                                    organizationId: props.router.params.id,
-                                });
-                                await client.refetchOrganization({ organizationId: props.router.params.id });
-                                await client.refetchAccountSettings();
-
-                                props.router.back();
-                            })
-                            .show();
-                    }, false, require('assets/ic-leave-24.png')
-                );
-            }
-
-            if (canEdit && user.id !== myUserID) {
-                builder.action(`Remove from ${typeString}`,
-                    () => {
-                        Alert.builder()
-                            .title(`Remove ${user.name} from ${typeString}?`)
-                            .message(`They will be removed from all internal chats`)
-                            .button('Cancel', 'cancel')
-                            .action('Remove', 'destructive', async () => {
-                                await client.mutateOrganizationRemoveMember({
-                                    memberId: user.id,
-                                    organizationId: props.router.params.id,
-                                });
-                                await client.refetchOrganization({ organizationId: props.router.params.id });
-
-                                handleRemoveMember(user.id);
-                            })
-                            .show();
-                    }, false, require('assets/ic-leave-24.png')
-                );
-            }
-
-            builder.show(true);
+        if (user.id !== myUserID) {
+            builder.action('Send message', () => props.router.push('Conversation', { id: user.id }), false, require('assets/ic-message-24.png'));
         }
+
+        if (user.id !== myUserID && organization.isOwner) {
+            builder.action(member.role === 'MEMBER' ? 'Make admin' : 'Dismiss as admin',
+                () => {
+                    Alert.builder()
+                        .title(member.role === 'MEMBER' ? `Make ${user.name} admin?` : `Dismiss ${user.name} as admin?`)
+                        .message(member.role === 'MEMBER' ? `Admins have full control over the ${typeString} account` : `They will only be able to participate in the ${typeString}'s chats`)
+                        .button('Cancel', 'cancel')
+                        .action(
+                            member.role === 'MEMBER' ? 'Make' : 'Dismiss',
+                            member.role === 'MEMBER' ? 'default' : 'destructive',
+                            async () => {
+                                const newRole = member.role === 'MEMBER' ? OrganizationMemberRole.ADMIN : OrganizationMemberRole.MEMBER;
+
+                                await client.mutateOrganizationChangeMemberRole({
+                                    memberId: user.id,
+                                    organizationId: props.router.params.id,
+                                    newRole
+                                });
+
+                                await client.refetchOrganization({ organizationId: props.router.params.id });
+
+                                handleChangeMemberRole(user.id, newRole);
+                            }).show();
+                }, false, require('assets/ic-star-24.png')
+            );
+        }
+
+        if (user.id === myUserID) {
+            builder.action(`Leave ${typeString}`,
+                () => {
+                    Alert.builder()
+                        .title(`Leave ${typeString}?`)
+                        .message('You may not be able to join it again')
+                        .button('Cancel', 'cancel')
+                        .action('Leave', 'destructive', async () => {
+                            await client.mutateOrganizationRemoveMember({
+                                memberId: user.id,
+                                organizationId: props.router.params.id,
+                            });
+                            await client.refetchOrganization({ organizationId: props.router.params.id });
+                            await client.refetchAccountSettings();
+
+                            props.router.back();
+                        })
+                        .show();
+                }, false, require('assets/ic-leave-24.png')
+            );
+        }
+
+        if (canEdit && user.id !== myUserID) {
+            builder.action(`Remove from ${typeString}`,
+                () => {
+                    Alert.builder()
+                        .title(`Remove ${user.name} from ${typeString}?`)
+                        .message(`They will be removed from all internal chats`)
+                        .button('Cancel', 'cancel')
+                        .action('Remove', 'destructive', async () => {
+                            await client.mutateOrganizationRemoveMember({
+                                memberId: user.id,
+                                organizationId: props.router.params.id,
+                            });
+                            await client.refetchOrganization({ organizationId: props.router.params.id });
+
+                            handleRemoveMember(user.id);
+                        })
+                        .show();
+                }, false, require('assets/ic-leave-24.png')
+            );
+        }
+
+        builder.show(true);
     }, [organization]);
 
     const handleLoadMore = React.useCallback(async () => {
