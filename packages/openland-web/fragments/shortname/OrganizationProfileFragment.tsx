@@ -139,7 +139,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
             <UListHeader text="Members" counter={membersCount} />
             {organization.isMine && (
                 <UAddItem
-                    title="Add members"
+                    title="Add people"
                     onClick={() => {
                         showAddMembersModal({
                             id,

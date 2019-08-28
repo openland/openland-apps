@@ -46,7 +46,7 @@ const showMembersModal = (router: SRouter, res: RoomCreate) => {
                 router.pushAndReset('Conversation', { id: res.room.id });
             }
         },
-        'Add members',
+        'Add people',
         [],
         [getMessenger().engine.user.id],
         {

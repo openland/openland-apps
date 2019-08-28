@@ -118,7 +118,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 props.router.back();
             }
         },
-            'Add members',
+            'Add people',
             members.map(u => u.user.id),
             [getMessenger().engine.user.id],
             { path: 'OrganizationInviteLinkModal', pathParams: { organization } });
@@ -367,7 +367,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             {organization.isMine && (
                 <ZListItem
                     leftIcon={require('assets/ic-add-24.png')}
-                    text="Add members"
+                    text="Add people"
                     onPress={handleAddMember}
                 />
             )}

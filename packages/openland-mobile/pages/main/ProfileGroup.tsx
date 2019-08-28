@@ -150,7 +150,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                     props.router.back();
                 }
             },
-            'Add members',
+            'Add people',
             members.map(m => m.user.id),
             [getMessenger().engine.user.id],
             { path: 'ProfileGroupLink', pathParams: { room } }
@@ -239,7 +239,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
 
             <ZListHeader text="Members" counter={room.membersCount} />
             <ZListItem
-                text="Add members"
+                text="Add people"
                 leftIcon={require('assets/ic-add-24.png')}
                 onPress={handleAddMember}
             />

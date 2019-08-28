@@ -119,7 +119,7 @@ const AddMembers = ({
                 paddingHorizontal={16}
             >
                 <XView fontSize={32} fontWeight="600" color="rgba(0, 0, 0, 0.9)">
-                    Add members
+                    Add people
                 </XView>
                 <XView flexShrink={0} flexDirection="row" alignItems="center">
                     <XView flexShrink={0} flexDirection="row" alignItems="center" marginRight={12}>

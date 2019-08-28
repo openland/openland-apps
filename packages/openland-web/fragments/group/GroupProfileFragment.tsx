@@ -120,7 +120,7 @@ export const GroupProfileFragment = React.memo((props) => {
 
             <UListHeader text="Members" counter={membersCount || 0} />
             <UAddItem
-                title="Add members"
+                title="Add people"
                 onClick={() => {
                     showAddMembersModal({
                         id,
