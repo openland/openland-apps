@@ -164,39 +164,53 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     path={path}
                 />
             </XView>
-            <XView flexDirection="column" flexGrow={1} flexBasis={0} minWidth={0}>
+            <XView
+                flexDirection="column"
+                flexGrow={1}
+                flexBasis={0}
+                minWidth={0}
+            >
                 <XView
-                    fontSize={15}
-                    marginTop={6}
-                    height={24}
-                    lineHeight="24px"
-                    fontWeight="600"
+                    flexDirection="column"
+                    flexGrow={1}
+                    flexBasis={0}
+                    minWidth={0}
+                    maxWidth="100%"
+                    alignSelf="flex-start"
+                    path={path}
+                    cursor="pointer"
                     color="var(--foregroundPrimary)"
                     hoverColor="var(--accentPrimary)"
-                    cursor="pointer"
-                    overflow="hidden"
-                    path={path}
                 >
+                    <XView
+                        fontSize={15}
+                        marginTop={6}
+                        height={24}
+                        lineHeight="24px"
+                        fontWeight="600"
+                        overflow="hidden"
+                    >
                     <span className={titleStyle}>
                         {titleEmojify}
                         {chat.__typename === 'PrivateRoom' && chat.user.primaryOrganization && (
                             <span className={cx(secondary, TextDensed)}>{chat.user.primaryOrganization.name}</span>
                         )}
                     </span>
-                </XView>
-                <XView
-                    {...TextStyles.Densed}
-                    color="var(--foregroundTertiary)"
-                >
-                    {chat.__typename === 'PrivateRoom' && (
-                        <HeaderLastSeen id={chat.user.id} />
-                    )}
-                    {chat.__typename === 'SharedRoom' && chat.membersCount !== null && chat.membersCount !== 0 && (
-                        <span className={oneLiner}>
+                    </XView>
+                    <XView
+                        {...TextStyles.Densed}
+                        color="var(--foregroundTertiary)"
+                    >
+                        {chat.__typename === 'PrivateRoom' && (
+                            <HeaderLastSeen id={chat.user.id} />
+                        )}
+                        {chat.__typename === 'SharedRoom' && chat.membersCount !== null && chat.membersCount !== 0 && (
+                            <span className={oneLiner}>
                             {chat.membersCount >= 1 ? `${chat.membersCount} members` : `1 member`}
-                            <ChatOnlinesTitle id={chat.id} />
+                                <ChatOnlinesTitle id={chat.id} />
                         </span>
-                    )}
+                        )}
+                    </XView>
                 </XView>
             </XView>
             <XView flexDirection="row" alignItems="center">
