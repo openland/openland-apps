@@ -47,6 +47,9 @@ export const XScrollViewAnchored = React.memo(
             const innerHeight = React.useRef<number>(0);
             const scrollTop = React.useRef<number>(0);
 
+            const renderGeneration = React.useRef(0);
+            const resizeGeneration = React.useRef(0);
+
             let bottomAttached = React.useRef(props.bottomAttached);
             bottomAttached.current = props.bottomAttached;
 
@@ -65,6 +68,10 @@ export const XScrollViewAnchored = React.memo(
                         break;
                     }
                     prevDistance = distance;
+                    node.style.backgroundColor = 'red';
+                    if (anchorRef.current) {
+                        anchorRef.current.anchor.style.backgroundColor = '';
+                    }
                     anchorRef.current = { anchor: node, offset };
 
                 }
@@ -103,40 +110,39 @@ export const XScrollViewAnchored = React.memo(
 
             React.useEffect(() => {
                 const outerDiv = outerRef.current!!;
-                const innerDiv = innerRef.current!!;
                 let trottledOnScrollReport = throttle(reportOnScroll, 150);
                 const onScrollHandler = () => {
                     scrollTop.current = outerDiv.scrollTop;
                     trottledOnScrollReport();
                 };
                 outerDiv.addEventListener('scroll', onScrollHandler, { passive: true });
-
-                let observer = new ResizeObserver(src => {
-                    innerHeight.current = innerDiv.clientHeight;
-                    outerHeight.current = outerDiv.clientHeight;
-                    scrollTop.current = innerHeight.current;
-
-                    if (anchorRef.current && !bottomAttached.current) {
-                        let delta = anchorRef.current.anchor.offsetTop - innerRef.current!.scrollHeight - anchorRef.current.offset - outerRef.current!.clientHeight / 2;
-                        scrollTop.current += delta;
-                        outerRef.current!.scrollTop = scrollTop.current;
-                    } else {
-                        scrollTop.current = innerRef.current!.scrollHeight;
-                        outerRef.current!.scrollTop = scrollTop.current;
-                        pickAnchor();
-                    }
-                    reportOnScroll();
-                });
-                observer.observe(innerDiv);
-                observer.observe(outerDiv);
-
                 return () => {
                     outerDiv.removeEventListener('scroll', onScrollHandler);
-                    observer.disconnect();
                 };
             }, []);
 
+            console.warn('renderGeneration', renderGeneration.current++);
             pickAnchor();
+
+            React.useLayoutEffect(() => {
+                const outerDiv = outerRef.current!!;
+                const innerDiv = innerRef.current!!;
+                console.warn('resizeGeneration', resizeGeneration.current++);
+                innerHeight.current = innerDiv.clientHeight;
+                outerHeight.current = outerDiv.clientHeight;
+                scrollTop.current = innerHeight.current;
+
+                if (anchorRef.current && !bottomAttached.current) {
+                    let delta = anchorRef.current.anchor.offsetTop - innerRef.current!.scrollHeight - anchorRef.current.offset - outerRef.current!.clientHeight / 2;
+                    scrollTop.current += delta;
+                    outerRef.current!.scrollTop = scrollTop.current;
+                } else {
+                    scrollTop.current = innerRef.current!.scrollHeight;
+                    outerRef.current!.scrollTop = scrollTop.current;
+                    pickAnchor();
+                }
+                reportOnScroll();
+            });
 
             const { children, ...other } = props;
 

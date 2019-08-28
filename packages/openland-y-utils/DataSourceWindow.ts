@@ -32,12 +32,13 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                 } else {
                     let aroundKey = around && around();
                     let aroundIndex = aroundKey ? data.findIndex(i => i.key === aroundKey) : 0;
+                    console.warn('aroundKey', aroundKey, data);
 
-                    let start = aroundIndex ? aroundIndex - windowSize / 2 : 0;
+                    let start = aroundIndex ? Math.max(0, aroundIndex - windowSize / 2) : 0;
                     let slice = data.slice(start, start + windowSize);
                     this.currentWindow.start = start;
                     this.currentWindow.end = start + windowSize;
-                    this._proxy.initialize(slice, completed, completedForward);
+                    this._proxy.initialize(slice, false, false);
                 }
             },
             onDataSourceItemAdded: (item: T, index: number) => {
@@ -102,6 +103,10 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                 this._proxy.requestScrollToKey(key);
             },
         });
+    }
+
+    isCompletedForward = () => {
+        return this._proxy.isCompletedForward();
     }
 
     needMore() {

@@ -120,7 +120,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
         if (scrollBottom < 1200) {
             this.dataSource.needMoreForward();
         }
-        this.setState({ bottomAttached: scrollBottom <= 0 && this.props.conversation.forwardFullyLoaded });
+        this.setState({ bottomAttached: scrollBottom <= 0 && this.dataSource.isCompletedForward() });
     }
 
     isEmpty = () => {

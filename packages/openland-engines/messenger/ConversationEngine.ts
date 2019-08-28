@@ -209,7 +209,7 @@ export class ConversationEngine implements MessageSendHandler {
     badge?: UserBadge;
 
     constructor(engine: MessengerEngine, conversationId: string, onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void) {
-        loadToUnread = AppConfig.isNonProduction() && AppConfig.getPlatform() === 'desktop';
+        loadToUnread = AppConfig.getPlatform() === 'desktop';
         this.engine = engine;
         this.conversationId = conversationId;
 
@@ -283,7 +283,11 @@ export class ConversationEngine implements MessageSendHandler {
 
         this.state = new ConversationState(false, messages, this.groupMessages(messages), this.state.typing, this.state.loadingHistory, !!this.historyFullyLoaded, this.state.loadingForward, !!this.forwardFullyLoaded);
         log.log('Initial state for ' + this.conversationId);
-        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state: initialChat.state.state }), this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
+        let startSubscription = !loadToUnread || (messages.length && this.lastReadedDividerMessageId === messages[messages.length - 1].id);
+        if (startSubscription) {
+            console.warn(`started ${this.conversationId} Subscription on start`);
+            this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state: initialChat.state.state }), this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
+        }
         this.onMessagesUpdated();
 
         // Update Data Source
@@ -340,18 +344,18 @@ export class ConversationEngine implements MessageSendHandler {
                     return;
                 }
                 if (this.lastReadedDividerMessageId) {
-                    let toDelete = createNewMessageDividerSourceItem(this.lastReadedDividerMessageId);
-                    if (this.dataSource.hasItem(toDelete.key)) {
-                        this.dataSource.removeItem(toDelete.key);
-                    }
-                    this.lastReadedDividerMessageId = undefined;
-                    if (this.lastTopMessageRead && this.dataSource.hasItem(this.lastTopMessageRead)) {
-                        let index = this.dataSource.findIndex(this.lastTopMessageRead);
-                        if (index !== 0) {
-                            let item = createNewMessageDividerSourceItem(this.lastTopMessageRead);
-                            this.dataSource.addItem(item, index);
+                    let dividerKey = createNewMessageDividerSourceItem(this.lastReadedDividerMessageId).key;
+                    if (this.dataSource.hasItem(dividerKey)) {
+                        if (this.lastTopMessageRead) {
+                            let targetIndex = this.dataSource.findIndex(this.lastTopMessageRead);
+                            if (targetIndex) {
+                                this.dataSource.moveItem(dividerKey, targetIndex);
+                            }
                         }
+                    } else {
+                        this.lastReadedDividerMessageId = undefined;
                     }
+
                 }
             })();
         }
@@ -454,6 +458,23 @@ export class ConversationEngine implements MessageSendHandler {
             this.dataSource.loadedMore(dsItems, !!this.historyFullyLoaded);
         } else {
             this.dataSource.loadedMoreForward(dsItems, !!this.forwardFullyLoaded);
+            if (!this.watcher && this.forwardFullyLoaded) {
+                console.warn(`started ${this.conversationId} Subscription on loaded forward`);
+                this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state: loaded.state.state }), this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, loaded.state.state);
+            }
+        }
+    }
+
+    loic = (text: string) => {
+        if (AppConfig.isNonProduction() && text.startsWith('/loic ')) {
+            let count = Number.parseInt(text.replace('/loic ', ''), 10);
+            let interval = setInterval(() => {
+                if (count--) {
+                    this.sendMessage(count + '', []);
+                } else {
+                    clearInterval(interval);
+                }
+            }, 500);
         }
     }
 
@@ -505,6 +526,8 @@ export class ConversationEngine implements MessageSendHandler {
         for (let l of this.listeners) {
             l.onMessageSend();
         }
+
+        this.loic(text);
     }
 
     sendFile = (file: UploadingFile) => {
@@ -708,21 +731,21 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     private markReadIfNeeded = () => {
-        let id: string | null = null;
-        for (let i = this.messages.length - 1; i >= 0; i--) {
-            let msg = this.messages[i];
-            if (!isPendingMessage(msg)) {
-                id = msg.id;
-                break;
-            }
-        }
-        if (id !== null && id !== this.lastTopMessageRead) {
-            this.lastTopMessageRead = id;
-            this.engine.client.client.mutate(RoomReadMutation, {
-                id: this.conversationId,
-                mid: id
-            });
-        }
+        // let id: string | null = null;
+        // for (let i = this.messages.length - 1; i >= 0; i--) {
+        //     let msg = this.messages[i];
+        //     if (!isPendingMessage(msg)) {
+        //         id = msg.id;
+        //         break;
+        //     }
+        // }
+        // if (id !== null && id !== this.lastTopMessageRead) {
+        //     this.lastTopMessageRead = id;
+        //     this.engine.client.client.mutate(RoomReadMutation, {
+        //         id: this.conversationId,
+        //         mid: id
+        //     });
+        // }
     }
 
     private updateHandler = async (event: any) => {

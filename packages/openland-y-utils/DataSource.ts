@@ -112,6 +112,14 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         return this.inited;
     }
 
+    isCompleted = () => {
+        return this.completed;
+    }
+
+    isCompletedForward = () => {
+        return this.completedForward;
+    }
+
     requestScrollToKey(scrollToKey: string) {
         for (let w of this.watchers) {
             if (w.onDataSourceScrollToKeyRequested) {
