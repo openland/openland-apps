@@ -129,7 +129,9 @@ export class MessengerEngine {
             this.activeConversations.set(conversationId, engine);
             (async () => {
                 await engine.start();
-                this.activeUserConversations.set(this.user.id, engine);
+                if (engine.user) {
+                    this.activeUserConversations.set(engine.user.id, engine);
+                }
             })();
         }
         return this.activeConversations.get(conversationId)!!;
