@@ -5,9 +5,11 @@ import { XView } from 'react-mental';
 import { XLoader } from './XLoader';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import ResizeObserver from 'resize-observer-polyfill';
-import CloseIcon from 'openland-icons/ic-close-post.svg';
+import IcClose from 'openland-icons/s/ic-close-16.svg';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { TextStyles } from 'openland-web/utils/TextStyles';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 
 const boxStyle = css`
     overflow: visible;
@@ -155,26 +157,27 @@ const ModalBoxComponent = React.memo<{
 
     let layout = useLayout();
 
-    let isFullscreen = props.config.fullScreen === 'on-mobile' ? layout === 'mobile' : !!props.config.fullScreen;
+    let isFullscreen =
+        props.config.fullScreen === 'on-mobile' ? layout === 'mobile' : !!props.config.fullScreen;
 
     const boxInlineStyle = isFullscreen
         ? {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            maxWidth: 'initial',
-            maxHeight: 'initial',
-            borderRadius: 0,
-            transition: 'none',
-        }
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              maxWidth: 'initial',
+              maxHeight: 'initial',
+              borderRadius: 0,
+              transition: 'none',
+          }
         : {
-            top,
-            left,
-            width: props.config.flowing ? 'auto' : props.config.width ? props.config.width : 440,
-        };
+              top,
+              left,
+              width: props.config.flowing ? 'auto' : props.config.width ? props.config.width : 440,
+          };
 
     return (
         <XModalBoxContext.Provider
@@ -216,7 +219,7 @@ const ModalBoxComponent = React.memo<{
                                 borderRadius={50}
                                 hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
                             >
-                                <CloseIcon width={14} height={14} />
+                                <UIcon icon={<IcClose />} />
                             </XView>
                         </XView>
                     )}
@@ -230,7 +233,17 @@ const ModalBoxComponent = React.memo<{
                                 {...TextStyles.Title1}
                             >
                                 {props.config.title}
-                                {/* <CloseButton onClick={tryHide} /> */}
+                                {!isFullscreen &&
+                                    props.config.useTopCloser && (
+                                        <UIconButton
+                                            onClick={tryHide}
+                                            icon={<UIcon icon={<IcClose />} size={16} />}
+                                            size="small"
+                                            position="absolute"
+                                            right={16}
+                                            top={-8}
+                                        />
+                                    )}
                             </XView>
                         </XView>
                     )}
@@ -251,13 +264,12 @@ export interface XModalBoxConfig {
     width?: number;
     fullScreen?: boolean | 'on-mobile';
     flowing?: boolean;
+    useTopCloser?: boolean;
 }
 
 export function showModalBox(config: XModalBoxConfig, modal: XModal) {
     showModal(ctx => {
         ctx.setOnEscPressed(ctx.hide);
-        return (
-            <ModalBoxComponent modal={modal} ctx={ctx} config={config} />
-        );
+        return <ModalBoxComponent modal={modal} ctx={ctx} config={config} />;
     });
 }
