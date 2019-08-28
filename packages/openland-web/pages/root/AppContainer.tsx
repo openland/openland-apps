@@ -5,7 +5,7 @@ import { MessengerProvider } from 'openland-web/fragments/chat/messenger/Messeng
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { PushEngineComponent } from 'openland-web/modules/push/PushEngineComponent';
 import { useClient } from 'openland-web/utils/useClient';
-import { XLoader } from 'openland-x/XLoader';
+import { UnicornSplash } from 'openland-x/XLoader';
 import { XShortcutsRoot } from 'openland-x/XShortcuts';
 
 export const AppContainer = (props: { children: any }) => {
@@ -14,7 +14,7 @@ export const AppContainer = (props: { children: any }) => {
     const data = client.useWithoutLoaderAccount();
 
     if (!data) {
-        return <XLoader loading={true} />;
+        return <UnicornSplash />;
     }
 
     let hasMessenger = canUseDOM && !!data.me;
