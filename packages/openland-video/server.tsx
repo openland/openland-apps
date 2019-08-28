@@ -54,7 +54,7 @@ app.post('/create', bodyParser.json(), (req, res) => {
 
     (async () => {
         try {
-            const tmpFile = await new Promise<string>((resolve, reject) => tmp.file({ postfix: '.264' }, (err, path) => {
+            const tmpFile = await new Promise<string>((resolve, reject) => tmp.file({ postfix: '.mp4' }, (err, path) => {
                 if (err) {
                     reject(err);
                 } else {
