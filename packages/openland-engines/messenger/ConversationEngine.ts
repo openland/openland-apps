@@ -283,7 +283,7 @@ export class ConversationEngine implements MessageSendHandler {
 
         this.state = new ConversationState(false, messages, this.groupMessages(messages), this.state.typing, this.state.loadingHistory, !!this.historyFullyLoaded, this.state.loadingForward, !!this.forwardFullyLoaded);
         log.log('Initial state for ' + this.conversationId);
-        let startSubscription = !loadToUnread || (messages.length && this.lastReadedDividerMessageId === messages[messages.length - 1].id);
+        let startSubscription = !loadToUnread || this.forwardFullyLoaded;
         if (startSubscription) {
             console.warn(`started ${this.conversationId} Subscription on start`);
             this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state: initialChat.state.state }), this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
