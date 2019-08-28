@@ -22,7 +22,6 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
         };
         this._subscription = inner.watch({
             onDataSourceInited: (data: T[], completed: boolean, completedForward: boolean) => {
-                console.warn('onDataSourceInited', data);
                 this._innerCompleted = completed;
                 this._innerCompletedForward = completedForward;
                 if (data.length < windowSize || this._isPassThrough) {
@@ -76,14 +75,12 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
             },
 
             onDataSourceLoadedMore: (data: T[], completed: boolean) => {
-                console.warn('onDataSourceLoadedMore', this._isPassThroughBackward);
                 this._innerCompleted = completed;
                 if (this._isPassThroughBackward) {
                     this._proxy.loadedMore(data, completed);
                 }
             },
             onDataSourceLoadedMoreForward: (data: T[], completed: boolean) => {
-                console.warn('onDataSourceLoadedMoreForward', this._isPassThroughForward);
                 this._innerCompletedForward = completed;
                 if (this._isPassThroughForward) {
                     this._proxy.loadedMoreForward(data, completed);
@@ -115,7 +112,6 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
 
         setTimeout(() => {
             let available = this._inner.getSize() - 1 - this.currentWindow.end;
-            console.warn('needMore', available);
             if (available > 0) {
                 let toAdd: T[] = [];
                 for (let i = 1; i < available; i++) {
@@ -145,7 +141,6 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
             return;
         }
 
-        console.warn('needMoreForward', this.currentWindow);
         setTimeout(() => {
             let available = this.currentWindow.start;
             if (available > 0) {

@@ -62,7 +62,6 @@ export const XScrollViewAnchored = React.memo(
                     let offset = node.offsetTop - targetPosition;
                     let distance = Math.abs(offset);
                     if ((prevDistance !== undefined) && distance > prevDistance) {
-                        console.warn('anchored', i, node);
                         break;
                     }
                     prevDistance = distance;
@@ -86,7 +85,6 @@ export const XScrollViewAnchored = React.memo(
                 },
                 scrollTo: (target: any) => {
                     if (target.scrollIntoView) {
-                        console.warn('scrollTo', target);
                         target.scrollIntoView();
                         pickAnchor();
                     }
