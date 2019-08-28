@@ -106,19 +106,19 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
         return dataSource.getAt(nextIndex).key;
     };
 
-    const handleOptionUp = () => {
-        const nextId = getConversationId(+1);
-        if (nextId !== getCurrentConversationId()) {
-            router!.navigate(`/mail/${nextId}`);
-        }
-    };
+    // const handleOptionUp = () => {
+    //     const nextId = getConversationId(+1);
+    //     if (nextId !== getCurrentConversationId()) {
+    //         router!.navigate(`/mail/${nextId}`);
+    //     }
+    // };
 
-    const handleOptionDown = () => {
-        const nextId = getConversationId(-1);
-        if (nextId !== getCurrentConversationId()) {
-            router!.navigate(`/mail/${nextId}`);
-        }
-    };
+    // const handleOptionDown = () => {
+    //     const nextId = getConversationId(-1);
+    //     if (nextId !== getCurrentConversationId()) {
+    //         router!.navigate(`/mail/${nextId}`);
+    //     }
+    // };
 
     const handleCtrlS = () => {
         if (ref.current) {
@@ -137,8 +137,8 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                 return false;
             }
         },
-        { keys: ['Meta', 'ArrowUp'], callback: handleOptionUp },
-        { keys: ['Meta', 'ArrowDown'], callback: handleOptionDown },
+        // { keys: ['Meta', 'ArrowUp'], callback: handleOptionUp },
+        // { keys: ['Meta', 'ArrowDown'], callback: handleOptionDown },
         { keys: ['Control', 's'], callback: handleCtrlS },
     ]);
 
