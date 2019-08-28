@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { XView, XViewSelectedContext } from 'react-mental';
+import { XView } from 'react-mental';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { UListItem, SelectableText } from 'openland-web/components/unicorn/UListItem';
-import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
@@ -19,23 +18,16 @@ import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { showCreateOrganization } from '../org/showCreateOrganization';
 import { showLogoutConfirmation } from './LogoutFragment';
-import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
-
-const SelectableSVG = React.memo((props: { icon: JSX.Element }) => {
-    const selected = React.useContext(XViewSelectedContext);
-
-    return <UIcon icon={props.icon} color={selected ? 'var(--foregroundInverted)' : 'var(--foregroundSecondary)'} />;
-});
 
 const UserProfileCard = withUserInfo(({ user }) => {
     if (user) {
         return (
             <XView
                 cursor="pointer"
-                path="/settings/profile"
+                path={`/${user.shortname || user.id}`}
                 color="var(--foregroundPrimary)"
                 hoverBackgroundColor="var(--backgroundPrimaryHover)"
                 selectedBackgroundColor="var(--accentPrimary)"
@@ -60,9 +52,6 @@ const UserProfileCard = withUserInfo(({ user }) => {
                     >
                         {user.email}
                     </SelectableText>
-                </XView>
-                <XView width={24}>
-                    <SelectableSVG icon={<EditProfileIcon />} />
                 </XView>
             </XView>
         );
@@ -103,11 +92,15 @@ export const AccountFragment = React.memo(() => (
             <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
                 <UserProfileCard />
                 <UListItem
+                    title="Edit profile"
+                    icon={<EditProfileIcon />}
+                    path="/settings/profile"
+                />
+                <UListItem
                     title="Invite friends"
                     icon={<InviteFriendsIcon />}
                     path="/settings/invites"
                 />
-                <UListHeader text="Settings" />
                 <UListItem
                     title="Notifications"
                     icon={<NotificationsIcon />}
