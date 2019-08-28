@@ -113,20 +113,20 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                         field={websiteField}
                     />
                     <ZInput
-                        placeholder="Twitter"
-                        field={twitterField}
-                    />
-                    <ZInput
-                        placeholder="LinkedIn"
-                        field={linkedinField}
-                    />
-                    <ZInput
                         placeholder="Instagram"
                         field={instagramField}
                     />
                     <ZInput
+                        placeholder="Twitter"
+                        field={twitterField}
+                    />
+                    <ZInput
                         placeholder="Facebook"
                         field={facebookField}
+                    />
+                    <ZInput
+                        placeholder="LinkedIn"
+                        field={linkedinField}
                     />
                 </ZListGroup>
             </KeyboardAvoidingScrollView>

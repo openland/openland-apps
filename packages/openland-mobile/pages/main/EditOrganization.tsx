@@ -87,6 +87,10 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                         field={websiteField}
                     />
                     <ZInput
+                        placeholder="Instagram"
+                        field={instagramField}
+                    />
+                    <ZInput
                         placeholder="Twitter"
                         field={twitterField}
                     />
@@ -97,10 +101,6 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                     <ZInput
                         placeholder="LinkedIn"
                         field={linkedinField}
-                    />
-                    <ZInput
-                        placeholder="Instagram"
-                        field={instagramField}
                     />
                 </ZListGroup>
             </KeyboardAvoidingScrollView>

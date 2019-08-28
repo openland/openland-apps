@@ -268,11 +268,6 @@ const SocialPlaceholder = ({
             <XModalContent>
                 <XVertical flexGrow={1} separator={8}>
                     <XInput
-                        placeholder={TextOrganizationProfile.placeholderSocialModalLinkedIn}
-                        {...linkedinField.input}
-                        size="large"
-                    />
-                    <XInput
                         placeholder={TextOrganizationProfile.placeholderSocialModalInstagram}
                         {...instagramField.input}
                         size="large"
@@ -285,6 +280,11 @@ const SocialPlaceholder = ({
                     <XInput
                         placeholder={TextOrganizationProfile.placeholderSocialModalFacebook}
                         {...facebookField.input}
+                        size="large"
+                    />
+                    <XInput
+                        placeholder={TextOrganizationProfile.placeholderSocialModalLinkedIn}
+                        {...linkedinField.input}
                         size="large"
                     />
                 </XVertical>

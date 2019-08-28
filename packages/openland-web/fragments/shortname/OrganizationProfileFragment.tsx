@@ -112,10 +112,10 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                     />
                 )}
                 {!!website && <UListField label="Website" value={website} />}
+                {!!instagram && <UListField label="Instagram" value={instagram} />}
                 {!!twitter && <UListField label="Twitter" value={twitter} />}
                 {!!facebook && <UListField label="Facebook" value={facebook} />}
                 {!!linkedin && <UListField label="LinkedIn" value={linkedin} />}
-                {!!instagram && <UListField label="Instagram" value={instagram} />}
             </UListGroup>
             <UListGroup header="Groups" counter={rooms.length}>
                 {isMine && <CreateGroupButton id={id} />}

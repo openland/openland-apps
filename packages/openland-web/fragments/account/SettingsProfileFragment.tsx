@@ -212,15 +212,15 @@ export const SettingsProfileFragment = React.memo(() => {
                                 <InputField title="Website" field={websiteField} size="large" />
                             </XView>
                             <XView marginBottom={16}>
+                                <InputField title="Instagram" field={instagramField} size="large" />
+                            </XView>
+                            <XView marginBottom={16}>
                                 <InputField title="Twitter" field={twitterField} size="large" />
                             </XView>
                             <XView marginBottom={16}>
-                                <InputField title="LinkedIn" field={linkedinField} size="large" />
+                                <InputField title="Facebook" field={facebookField} size="large" />
                             </XView>
-                            <XView marginBottom={16}>
-                                <InputField title="Instagram" field={instagramField} size="large" />
-                            </XView>
-                            <InputField title="Facebook" field={facebookField} size="large" />
+                            <InputField title="LinkedIn" field={linkedinField} size="large" />
                         </FormSection>
                         <FormFooter>
                             <XButton
