@@ -134,6 +134,8 @@ export const XScrollViewAnchored = React.memo(
                 } else {
                     scrollTop.current = innerRef.current!.scrollHeight;
                     outerRef.current!.scrollTop = scrollTop.current;
+                }
+                if (!anchorRef.current) {
                     pickAnchor();
                 }
                 reportOnScroll();

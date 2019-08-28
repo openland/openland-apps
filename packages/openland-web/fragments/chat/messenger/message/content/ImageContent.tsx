@@ -107,7 +107,7 @@ const imgContainer = css`
     background-color: #f0f2f5;
     z-index: 0;
     cursor: pointer;
-
+    /* TODO: remove, causes scroll jump */
     @media (max-width: 1300px) {
         max-width: 100%;
         height: auto !important;
