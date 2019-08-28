@@ -54,6 +54,25 @@ const avatarImageClass = css`
     cursor: pointer;
 `;
 
+const imageWrapper = css`
+    position: relative;
+
+    & > img {
+        z-index: 1;
+        position: relative;
+    }
+
+    &:before {
+        content: "";
+        position: absolute;
+        top: 0; right: 0; bottom: 0; left: 0;
+        border-radius: 100%;
+        border: 1px solid var(--border);
+        z-index: 2;
+        pointer-events: none;
+    }
+`;
+
 const AvatarImage = React.memo((props: { photo: string }) => {
 
     let ops = '-/format/auto/-/scale_crop/40x40/center/-/quality/best/-/progressive/yes/';
@@ -61,16 +80,18 @@ const AvatarImage = React.memo((props: { photo: string }) => {
         '-/format/auto/-/scale_crop/80x80/center/-/quality/best/-/progressive/yes/ 2x';
 
     return (
-        <img
-            className={avatarImageClass}
-            src={props.photo + ops}
-            srcSet={props.photo + opsRetina}
-            onClick={(e) => {
-                e.stopPropagation();
+        <div className={imageWrapper}>
+            <img
+                className={avatarImageClass}
+                src={props.photo + ops}
+                srcSet={props.photo + opsRetina}
+                onClick={(e) => {
+                    e.stopPropagation();
 
-                showAvatarModal(props.photo);
-            }}
-        />
+                    showAvatarModal(props.photo);
+                }}
+            />
+        </div>
     );
 });
 

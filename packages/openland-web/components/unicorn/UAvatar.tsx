@@ -4,6 +4,7 @@ import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { css } from 'linaria';
 
 type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
 
@@ -57,6 +58,25 @@ const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number }) =
     );
 });
 
+const imageWrapper = css`
+    position: relative;
+
+    & > img {
+        z-index: 1;
+        position: relative;
+    }
+
+    &:before {
+        content: "";
+        position: absolute;
+        top: 0; right: 0; bottom: 0; left: 0;
+        border-radius: 100%;
+        border: 1px solid var(--border);
+        z-index: 2;
+        pointer-events: none;
+    }
+`;
+
 const AvatarImage = React.memo((props: UAvatarProps) => {
     const { photo, size = 'medium' } = props;
     const boxSize = AvatarSizes[size].size;
@@ -68,15 +88,17 @@ const AvatarImage = React.memo((props: UAvatarProps) => {
         '/center/-/quality/best/-/progressive/yes/ 2x';
 
     return (
-        <XImage
-            width="100%"
-            height="100%"
-            src={photo + ops}
-            srcSet={photo + opsRetina}
-            borderRadius="100%"
-            overflow="hidden"
-            backgroundColor="var(--backgroundTertiary)"
-        />
+        <div className={imageWrapper}>
+            <XImage
+                width="100%"
+                height="100%"
+                src={photo + ops}
+                srcSet={photo + opsRetina}
+                borderRadius="100%"
+                overflow="hidden"
+                backgroundColor="var(--backgroundTertiary)"
+            />
+        </div>
     );
 });
 

@@ -24,6 +24,7 @@ const Score = (props: { value: number }) => {
             right={0}
             alignItems="center"
             onMouseEnter={show}
+            zIndex={3}
         >
             <XView
                 {...TextStyles.Label2}
