@@ -89,7 +89,7 @@ export const XScrollViewAnchored = React.memo(
                 },
                 scrollTo: (target: any) => {
                     if (target.scrollIntoView) {
-                        target.scrollIntoView();
+                        target.scrollIntoView({ behavior: 'auto', block: 'nearest' });
                         pickAnchor();
                     }
                 }
