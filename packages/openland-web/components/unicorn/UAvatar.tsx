@@ -64,6 +64,7 @@ const imageWrapper = css`
     & > img {
         z-index: 1;
         position: relative;
+        display: block;
     }
 
     &:before {
