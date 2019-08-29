@@ -2,8 +2,6 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { SpannedView } from './SpannedView';
 import { Span } from 'openland-y-utils/spans/Span';
-import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import EditIcon from 'openland-icons/s/ic-edited-16.svg';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 
 export interface MessageTextComponentProps {
@@ -59,30 +57,11 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(
                         {edited && (
                             <span className={cx(EditLabelStyle, TextCaption)}>
                                 {'\u00A0'}
-                                <UIcon icon={<EditIcon />} color={'var(--foregroundTertiary)'} />
                                 Edited
                             </span>
                         )}
                     </span>
                 </div>
-            </div>
-        );
-    },
-);
-
-export const MessageTextComponentSpanned = React.memo<MessageTextComponentProps>(
-    ({ shouldCrop, spans, edited }) => {
-        return (
-            <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
-                <span>
-                    <SpannedView spans={spans} />
-                    {edited && (
-                        <span className={EditLabelStyle}>
-                            {'\u00A0'}
-                            (edited)
-                        </span>
-                    )}
-                </span>
             </div>
         );
     },
