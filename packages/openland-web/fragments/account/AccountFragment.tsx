@@ -32,7 +32,7 @@ const UserProfileCard = withUserInfo(({ user }) => {
                 hoverBackgroundColor="var(--backgroundPrimaryHover)"
                 selectedBackgroundColor="var(--accentMuted)"
                 selectedHoverBackgroundColor="var(--accentMutedHover)"
-                selectedColor="var(--foregroundInverted)"
+                selectedColor="var(--foregroundContrast)"
                 flexDirection="row"
                 paddingHorizontal={16}
                 paddingVertical={12}
@@ -48,7 +48,7 @@ const UserProfileCard = withUserInfo(({ user }) => {
                     <SelectableText
                         {...TextStyles.Body}
                         color="var(--foregroundSecondary)"
-                        selectedColor="var(--foregroundInverted)"
+                        selectedColor="var(--foregroundContrast)"
                     >
                         {user.email}
                     </SelectableText>

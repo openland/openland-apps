@@ -34,9 +34,6 @@ export const OthersPopper = React.memo((props: OthersPopperProps) => {
                 <XView
                     key={`user-${user.name}-${index}`}
                     hoverBackgroundColor="var(--backgroundPrimaryHover)"
-                    selectedBackgroundColor="var(--accentPrimary)"
-                    selectedHoverBackgroundColor="var(--accentPrimaryHover)"
-                    selectedColor="var(--foregroundInverted)"
                     cursor="pointer"
                     path={`/${user.shortname || user.id}`}
                     onClick={() => ctx.hide()}
