@@ -25,7 +25,7 @@ import { showAddMembersModal } from '../showAddMembersModal';
 import { showRoomEditModal, showLeaveChatConfirmation } from 'openland-web/fragments/account/components/groupProfileModals';
 import { showAdvancedSettingsModal } from '../AdvancedSettingsModal';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
-import { TextDensed, TextStyles } from 'openland-web/utils/TextStyles';
+import { TextDensed, TextStyles, HoverAlpha } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';
 
 const secondary = css`
@@ -43,8 +43,9 @@ const titleStyle = css`
 `;
 
 const oneLiner = css`
-   height: 18px;
    overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
 `;
 
 const HeaderLastSeen = (props: { id: string }) => {
@@ -150,61 +151,69 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
 
     return (
         <XView flexDirection="row" flexGrow={1} flexBasis={0} minWidth={0} position="relative">
-            <XView paddingTop={8} paddingRight={16}>
-                <UAvatar
-                    size="medium"
-                    title={title}
-                    photo={photo}
-                    id={chat.__typename === 'PrivateRoom' ? chat.user.id : chat.id}
-                    path={path}
-                />
-            </XView>
             <XView
-                flexDirection="column"
+                hoverOpacity={HoverAlpha}
+                flexDirection="row"
                 flexGrow={1}
                 flexBasis={0}
                 minWidth={0}
+                path={path}
+                cursor="pointer"
             >
+                <XView paddingTop={8} paddingRight={16}>
+                    <UAvatar
+                        size="medium"
+                        title={title}
+                        photo={photo}
+                        id={chat.__typename === 'PrivateRoom' ? chat.user.id : chat.id}
+                    />
+                </XView>
                 <XView
                     flexDirection="column"
                     flexGrow={1}
                     flexBasis={0}
                     minWidth={0}
-                    maxWidth="100%"
-                    alignSelf="flex-start"
-                    path={path}
-                    cursor="pointer"
-                    color="var(--foregroundPrimary)"
-                    hoverColor="var(--accentPrimary)"
                 >
                     <XView
-                        fontSize={15}
-                        marginTop={6}
-                        height={24}
-                        lineHeight="24px"
-                        fontWeight="600"
-                        overflow="hidden"
+                        flexDirection="column"
+                        flexGrow={1}
+                        flexBasis={0}
+                        minWidth={0}
+                        maxWidth="100%"
+                        alignSelf="flex-start"
+                        color="var(--foregroundPrimary)"
                     >
-                    <span className={titleStyle}>
-                        {titleEmojify}
-                        {chat.__typename === 'PrivateRoom' && chat.user.primaryOrganization && (
-                            <span className={cx(secondary, TextDensed)}>{chat.user.primaryOrganization.name}</span>
-                        )}
-                    </span>
-                    </XView>
-                    <XView
-                        {...TextStyles.Densed}
-                        color="var(--foregroundTertiary)"
-                    >
-                        {chat.__typename === 'PrivateRoom' && (
-                            <HeaderLastSeen id={chat.user.id} />
-                        )}
-                        {chat.__typename === 'SharedRoom' && chat.membersCount !== null && chat.membersCount !== 0 && (
+                        <XView
+                            fontSize={15}
+                            marginTop={6}
+                            height={24}
+                            lineHeight="24px"
+                            fontWeight="600"
+                            overflow="hidden"
+                        >
+                            <span className={titleStyle}>
+                                {titleEmojify}
+                                {chat.__typename === 'PrivateRoom' && chat.user.primaryOrganization && (
+                                    <span className={cx(secondary, TextDensed)}>{chat.user.primaryOrganization.name}</span>
+                                )}
+                            </span>
+                        </XView>
+                        <XView
+                            {...TextStyles.Densed}
+                            color="var(--foregroundTertiary)"
+                        >
                             <span className={oneLiner}>
-                            {chat.membersCount >= 1 ? `${chat.membersCount} members` : `1 member`}
-                                <ChatOnlinesTitle id={chat.id} />
-                        </span>
-                        )}
+                                {chat.__typename === 'PrivateRoom' && (
+                                    <HeaderLastSeen id={chat.user.id} />
+                                )}
+                                {chat.__typename === 'SharedRoom' && chat.membersCount !== null && chat.membersCount !== 0 && (
+                                    <>
+                                        {chat.membersCount >= 1 ? `${chat.membersCount} members` : `1 member`}
+                                        <ChatOnlinesTitle id={chat.id} />
+                                    </>
+                                )}
+                            </span>
+                        </XView>
                     </XView>
                 </XView>
             </XView>
