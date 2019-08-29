@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { View, Image, Text, Platform, Animated, Easing } from 'react-native';
+import { View, Text, Platform, Animated, Easing } from 'react-native';
 import { ConversationMessagesView } from './ConversationMessagesView';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
@@ -9,6 +9,7 @@ import { trackEvent } from 'openland-mobile/analytics';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { useChatSelectionMode } from 'openland-engines/messenger/MessagesActionsState';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 
 export interface MessagesListProps {
     engine: ConversationEngine;
@@ -86,10 +87,8 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                 {
                     !this.state.conversation.loading && this.state.conversation.messages.length === 0 && (
                         <ASSafeAreaView style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-                            <View style={{ width: 375, height: 375, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                                <Image source={require('assets/img-messages.png')} style={{ width: 48, height: 42, marginBottom: 13 }} />
-                                <Text style={{ color: '#c8c7cc', fontSize: 13, fontWeight: '500' }}>No messages yet</Text>
-                            </View>
+                            <Text style={{ fontSize: 72, lineHeight: 72, marginBottom: 24 }} allowFontScaling={false} onPress={() => this.props.engine.sendMessage('👋', [])}>👋</Text>
+                            <ZRoundedButton title="Wave" style="secondary" onPress={() => this.props.engine.sendMessage('👋', [])} />
                         </ASSafeAreaView>
                     )
                 }
