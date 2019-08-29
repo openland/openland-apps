@@ -135,12 +135,7 @@ const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
         res.item({ title: 'Leave chat', icon: <LeaveIcon />, action: () => showLeaveChatConfirmation(client, chat.id) });
     }
 
-    return (
-        // hack for fixing jumping notifications item
-        <XView flexDirection="column" width={500} alignItems="flex-end">
-            {res.build(props.ctx)}
-        </XView>
-    );
+    return res.build(props.ctx, 240);
 };
 
 export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
@@ -218,7 +213,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
 
                 <UMoreButton
                     menu={(ctx) =>
-                        <React.Suspense fallback={<div style={{ width: 500, height: 100 }} />}>
+                        <React.Suspense fallback={<div style={{ width: 240, height: 100 }} />}>
                             <MenuComponent ctx={ctx} id={chat.id} />
                         </React.Suspense>
                     }
