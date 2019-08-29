@@ -77,6 +77,7 @@ export interface XListViewProps<T extends DataSourceItem> {
     dataSource: ReadableDataSource<T>;
     renderItem: React.ComponentClass<{ item: T }> | React.StatelessComponent<{ item: T }>;
     renderLoading: React.ComponentClass<any> | React.StatelessComponent<any>;
+    renderEmpty?: () => JSX.Element;
     reverce?: boolean;
     wrapWith?: any;
     onUpdated?: () => void;
@@ -128,7 +129,7 @@ export const DataSourceRender = React.memo(function <T extends DataSourceItem>(
         items.reverse();
     }
 
-    let renderedItems = items.map((item, i) => {
+    let renderedItems = (props.renderEmpty && items.length <= 0) ? props.renderEmpty() : items.map((item, i) => {
         if (scrollToHolder.scrollTo === item.key) {
             scrollToHolder.scrollTo = undefined;
 

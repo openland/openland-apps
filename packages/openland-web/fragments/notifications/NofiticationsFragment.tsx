@@ -105,18 +105,19 @@ class CommentsNotificationsInner extends React.PureComponent<
         );
     }
 
+    private renderEmpty = () => {
+        return (
+            <XView flexDirection="row" alignItems="center" flexGrow={1}>
+                <MessengerEmptyFragment text="Comments in threads you are involved in will be right here" />
+            </XView>
+        );
+    }
+
     render() {
         if (!this.dataSource.isInited()) {
             return (
                 <XView flexGrow={1} flexShrink={0}>
                     <XLoader loading={true} />
-                </XView>
-            );
-        }
-        if (this.dataSource.getSize() === 0 && this.dataSource.isInited()) {
-            return (
-                <XView flexDirection="row" alignItems="center" flexGrow={1}>
-                    <MessengerEmptyFragment text="Comments in threads you are involved in will be right here" />
                 </XView>
             );
         }
@@ -131,6 +132,7 @@ class CommentsNotificationsInner extends React.PureComponent<
                         wrapWith={this.dataSourceWrapper}
                         renderItem={this.renderNotification}
                         renderLoading={this.renderLoading}
+                        renderEmpty={this.renderEmpty}
                     />
                 </XView>
             </>
