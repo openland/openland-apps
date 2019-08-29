@@ -18,7 +18,7 @@ import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { XModalProps } from 'openland-x-modal/XModal';
 import { XLoader } from 'openland-x/XLoader';
-import { XScrollView2 } from 'openland-x/XScrollView2';
+import { XScrollView3 } from 'openland-x/XScrollView3';
 import { useClient } from 'openland-web/utils/useClient';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XMutation } from 'openland-x/XMutation';
@@ -28,13 +28,12 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
-import { TextLabel1, TextBody } from 'openland-web/utils/TextStyles';
+import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
-import IcCopy from 'openland-icons/s/ic-copy-24.svg';
-import IcDone from 'openland-icons/s/ic-done-24.svg';
 import IcDelete from 'openland-icons/s/ic-delete-24.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { CheckComponent } from 'openland-web/components/unicorn/UCheckbox';
 
 interface RenewInviteLinkButtonProps {
     id: string;
@@ -75,40 +74,6 @@ const RenewInviteLinkButton = (props: RenewInviteLinkButtonProps) => {
         </XMutation>
     );
 };
-
-const CopyButtonClassName = css`
-    display: flex;
-    height: 40px;
-    border-radius: 8px;
-    padding-left: 16px;
-    padding-right: 16px;
-    flex-direction: row;
-    align-items: center;
-    background-color: var(--backgroundTertiary);
-    color: var(--foregroundSecondary);
-    transition: all 0.15s ease;
-    cursor: pointer;
-    & svg path {
-        transition: all 0.15s ease;
-    }
-    &:hover {
-        background-color: var(--backgroundTertiaryHover);
-    }
-`;
-
-const CopyButtonHoverClassName = css`
-    background-color: var(--accentPositive);
-    color: var(--backgroundPrimary);
-    & svg path:last-child {
-        fill: var(--backgroundPrimary);
-    }
-    &:hover {
-        background-color: var(--accentPositive);
-        & svg path:last-child {
-            fill: var(--backgroundPrimary);
-        }
-    }
-`;
 
 const linkStyle = css`
     flex-grow: 1;
@@ -157,35 +122,21 @@ const OwnerLinkComponent = (props: OwnerLinkComponentProps) => {
     };
 
     return (
-        <XView flexDirection="column">
-            <XView fontSize={16} fontWeight="600" marginBottom={12}>
-                Invitation link
+        <XView flexDirection="row" alignItems="center">
+            <XView flexDirection="row" alignItems="center" flexGrow={1} marginRight={8}>
+                <div className={cx(linkStyle, TextBody)}>{invitePath}</div>
+                <RenewInviteLinkButton
+                    id={props.id}
+                    isGroup={props.isGroup}
+                    isOrganization={props.isOrganization}
+                />
             </XView>
-            <XView flexDirection="row" alignItems="center">
-                <XView flexDirection="row" alignItems="center" flexGrow={1} marginRight={8}>
-                    <div className={cx(linkStyle, TextBody)}>{invitePath}</div>
-                    <RenewInviteLinkButton
-                        id={props.id}
-                        isGroup={props.isGroup}
-                        isOrganization={props.isOrganization}
-                    />
-                </XView>
-                <div
-                    className={cx(
-                        CopyButtonClassName,
-                        copied && CopyButtonHoverClassName,
-                        TextLabel1,
-                    )}
-                    onClick={copyPath}
-                >
-                    <UIcon
-                        icon={copied ? <IcDone /> : <IcCopy />}
-                        color={copied ? '--backgroundPrimary' : undefined}
-                        size={20}
-                    />
-                    <XView marginLeft={8}>{copied ? 'Copied' : 'Copy'}</XView>
-                </div>
-            </XView>
+            <UButton
+                text={copied ? 'Copied' : 'Copy'}
+                style={copied ? 'success' : 'primary'}
+                size="large"
+                onClick={copyPath}
+            />
         </XView>
     );
 };
@@ -264,29 +215,31 @@ const ExplorePeople = (props: ExplorePeopleProps) => {
     const data = client.useExplorePeople(props.variables);
 
     return (
-        <XView flexGrow={1} flexShrink={0}>
-            <XScrollView2 flexGrow={1} flexShrink={0}>
-                <XView marginTop={12} flexDirection="column">
+        <XView flexGrow={1} flexShrink={1} marginHorizontal={-24}>
+            <XScrollView3 flexGrow={1} flexShrink={1}>
+                <XView marginTop={12} flexDirection="column" paddingHorizontal={12}>
                     {data.items.edges.map(i => {
-                        if (props.selectedUsers && props.selectedUsers.has(i.node.id)) {
-                            return null;
-                        }
+                        const member = !!(
+                            props.roomUsers && props.roomUsers.find(j => j.user.id === i.node.id)
+                        );
+                        const selected =
+                            member || !!(props.selectedUsers && props.selectedUsers.has(i.node.id));
                         return (
                             <UUserView
                                 key={i.node.id}
                                 user={i.node}
                                 onClick={() => props.onPick(i.node.name, i.node.id)}
-                                disabled={
-                                    !!(
-                                        props.roomUsers &&
-                                        props.roomUsers.find(j => j.user.id === i.node.id)
-                                    )
+                                rightElement={
+                                    <XView marginRight={8}>
+                                        <CheckComponent squared checked={selected} />
+                                    </XView>
                                 }
+                                disabled={member}
                             />
                         );
                     })}
                 </XView>
-            </XScrollView2>
+            </XScrollView3>
         </XView>
     );
 };
@@ -313,6 +266,16 @@ interface InviteModalProps extends XModalProps {
 
     hide?: () => void;
 }
+
+const sectionTitleStyle = css`
+    height: 48px;
+    padding: 12px 0;
+    flex-shrink: 0;
+`;
+
+const SectionTitle = (props: { title: string }) => (
+    <div className={cx(sectionTitleStyle, TextTitle3)}>{props.title}</div>
+);
 
 const AddMemberModalInner = (props: InviteModalProps) => {
     const [searchQuery, setSearchQuery] = React.useState('');
@@ -364,8 +327,14 @@ const AddMemberModalInner = (props: InviteModalProps) => {
         <>
             <XModalContent>
                 <XTrack event="invite_view" params={{ invite_type: objType }} />
-                <XView height={props.isMobile ? '100%' : '65vh'} flexGrow={1} marginBottom={-30}>
-                    <XView marginBottom={26}>
+                <XView
+                    height={props.isMobile ? '100%' : '65vh'}
+                    flexGrow={1}
+                    marginBottom={-24}
+                    paddingTop={8}
+                >
+                    <XView marginBottom={16}>
+                        <SectionTitle title="Share invitation link" />
                         <OwnerLink
                             id={props.id}
                             isGroup={props.isGroup}
@@ -374,9 +343,7 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                             isCommunity={props.isCommunity}
                         />
                     </XView>
-                    <XView fontSize={16} fontWeight="600" marginBottom={16}>
-                        Add people directly
-                    </XView>
+                    <SectionTitle title="Add people directly" />
                     <XView>
                         <SearchBox
                             onInputChange={onInputChange}
@@ -406,30 +373,35 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                     text="Add"
                     style="primary"
                     size="large"
-                    onClick={async () => {
-                        if (props.isGroup) {
-                            await (props.addMembers as RoomAddMembersType)({
-                                variables: {
-                                    roomId: props.id,
-                                    invites: options.map(i => ({
-                                        userId: i.value,
-                                        role: RoomMemberRole.MEMBER,
-                                    })),
-                                },
-                            });
-                        } else if (props.isOrganization) {
-                            await (props.addMembers as OrganizationAddMembersType)({
-                                variables: {
-                                    organizationId: props.id,
-                                    userIds: options.map(i => i.value),
-                                },
-                            });
-                        }
-                        setSelectedUsers(null);
-                        if (props.hide) {
-                            props.hide();
-                        }
-                    }}
+                    disable={!options.length}
+                    onClick={
+                        !!options.length
+                            ? async () => {
+                                  if (props.isGroup) {
+                                      await (props.addMembers as RoomAddMembersType)({
+                                          variables: {
+                                              roomId: props.id,
+                                              invites: options.map(i => ({
+                                                  userId: i.value,
+                                                  role: RoomMemberRole.MEMBER,
+                                              })),
+                                          },
+                                      });
+                                  } else if (props.isOrganization) {
+                                      await (props.addMembers as OrganizationAddMembersType)({
+                                          variables: {
+                                              organizationId: props.id,
+                                              userIds: options.map(i => i.value),
+                                          },
+                                      });
+                                  }
+                                  setSelectedUsers(null);
+                                  if (props.hide) {
+                                      props.hide();
+                                  }
+                              }
+                            : undefined
+                    }
                 />
             </XModalFooter>
         </>
