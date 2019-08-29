@@ -80,7 +80,10 @@ const linkStyle = css`
     height: 40px;
     border-radius: 8px;
     padding: 8px 16px;
+    padding-right: 40px;
     background-color: var(--backgroundTertiary);
+    text-overflow: ellipsis;
+    overflow: hidden;
 `;
 
 interface OwnerLinkComponentProps {
@@ -123,7 +126,13 @@ const OwnerLinkComponent = (props: OwnerLinkComponentProps) => {
 
     return (
         <XView flexDirection="row" alignItems="center">
-            <XView flexDirection="row" alignItems="center" flexGrow={1} marginRight={8}>
+            <XView
+                flexDirection="row"
+                alignItems="center"
+                flexGrow={1}
+                flexShrink={1}
+                marginRight={8}
+            >
                 <div className={cx(linkStyle, TextBody)}>{invitePath}</div>
                 <RenewInviteLinkButton
                     id={props.id}
@@ -211,9 +220,7 @@ interface ExplorePeopleProps {
 
 const ExplorePeople = (props: ExplorePeopleProps) => {
     const client = useClient();
-
     const data = client.useExplorePeople(props.variables);
-
     return (
         <XView flexGrow={1} flexShrink={1} marginHorizontal={-24}>
             <XScrollView3 flexGrow={1} flexShrink={1}>
