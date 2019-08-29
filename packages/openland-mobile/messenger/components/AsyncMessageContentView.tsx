@@ -36,11 +36,13 @@ interface AsyncMessageTextViewProps {
 export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageItem, theme: ThemeGlobal, onUserPress: (id: string) => void, onGroupPress: (id: string) => void) => {
     const SpanView = (props: { span: Span, children?: any }) => {
         const { span, children } = props;
+        const linkColor = !message.isService ? (message.isOut ? theme.foregroundContrast : theme.accentPrimary) : undefined;
+        const linkTextDecoration = ((message.isOut || theme.type === 'Dark') && !message.isService) ? 'underline' : 'none';
 
         if (span.type === 'link') {
-            return <ASText key={'link'} color={(message.isOut && !message.isService) ? theme.foregroundContrast : theme.accentPrimary} onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
+            return <ASText key={'link'} color={linkColor} onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))} textDecorationLine={linkTextDecoration}>{children}</ASText>;
         } else if (span.type === 'mention_user') {
-            return <ASText key={'mention-user'} fontWeight={message.isService ? FontStyles.Weight.Bold : undefined} color={!message.isService ? (message.isOut ? theme.foregroundContrast : theme.accentPrimary) : undefined} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onUserPress(span.user.id)}>{children}</ASText>;
+            return <ASText key={'mention-user'} fontWeight={message.isService ? FontStyles.Weight.Bold : undefined} color={linkColor} textDecorationLine={linkTextDecoration} onPress={() => onUserPress(span.user.id)}>{children}</ASText>;
         } else if (span.type === 'mention_all') {
             return <ASText key={'mention-all'} color={(message.isOut && !message.isService) ? theme.foregroundContrast : theme.accentPrimary} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'}>{children}</ASText>;
         } else if (span.type === 'mention_room') {
