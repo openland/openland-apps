@@ -56,6 +56,7 @@ const avatarImageClass = css`
 
 const imageWrapper = css`
     position: relative;
+    z-index: 0;
 
     & > img {
         z-index: 1;
@@ -68,14 +69,13 @@ const imageWrapper = css`
         position: absolute;
         top: 0; right: 0; bottom: 0; left: 0;
         border-radius: 100%;
-        border: 1px solid var(--border);
+        border: 1px solid var(--borderLight);
         z-index: 2;
         pointer-events: none;
     }
 `;
 
 const AvatarImage = React.memo((props: { photo: string }) => {
-
     let ops = '-/format/auto/-/scale_crop/40x40/center/-/quality/best/-/progressive/yes/';
     let opsRetina =
         '-/format/auto/-/scale_crop/80x80/center/-/quality/best/-/progressive/yes/ 2x';

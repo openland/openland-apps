@@ -45,6 +45,7 @@ body {
     --accentNegativeActive: #CC1424;
 
     --border: rgba(0, 0, 0, 0.08);
+    --borderLight: rgba(0, 0, 0, 0.04);
 
     --overlayTotal: #000000;
     --overlayHeavy: rgba(0, 0, 0, 0.84);

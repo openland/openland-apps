@@ -42,6 +42,7 @@ export const ThemeLightBlue: ThemeGlobal = {
     accentNegativeActive: '#CC1424',
 
     border: 'rgba(0, 0, 0, 0.08)',
+    borderLight: 'rgba(0, 0, 0, 0.04)',
 
     overlayTotal: '#000000',
     overlayHeavy: 'rgba(0, 0, 0, 0.84)',
@@ -132,6 +133,7 @@ export const ThemeDark: ThemeGlobal = {
     accentNegativeActive: '#CC1424',
 
     border: 'rgba(255, 255, 255, 0.08)',
+    borderLight: 'rgba(255, 255, 255, 0.04)',
 
     overlayTotal: '#000000',
     overlayHeavy: 'rgba(0, 0, 0, 0.84)',

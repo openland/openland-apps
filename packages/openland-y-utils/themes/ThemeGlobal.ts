@@ -42,6 +42,7 @@ export type ThemeGlobal = {
     accentNegativeActive: string;
 
     border: string;
+    borderLight: string;
 
     overlayTotal: string;
     overlayHeavy: string;
