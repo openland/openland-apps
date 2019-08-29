@@ -18,7 +18,7 @@ import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel'
 
 const avatarWrapper = css`
     flex-shrink: 0;
-    padding-top: 6px;
+    padding-top: 4px;
 `;
 
 const content = css`
