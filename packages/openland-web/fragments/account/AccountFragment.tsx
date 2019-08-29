@@ -65,7 +65,7 @@ export const Organizations = React.memo(() => {
     const myOrganizations = client.useMyOrganizations().myOrganizations;
 
     return (
-        <>
+        <XView paddingBottom={56}>
             {myOrganizations.sort((a, b) => a.isPrimary ? 1 : 0).map((organization, key) => {
                 const { id, photo, name, isPrimary, shortname } = organization;
 
@@ -79,7 +79,7 @@ export const Organizations = React.memo(() => {
                     />
                 );
             })}
-        </>
+        </XView>
     );
 });
 
