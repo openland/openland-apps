@@ -28,8 +28,12 @@ const pinMessageContainer = css`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: #f2f3f5;
+    background-color: var(--backgroundTertiary);
     cursor: pointer;
+
+    &:hover {
+        background-color: var(--backgroundTertiaryHover);
+    }
 `;
 
 const piMessageContent = css`
