@@ -25,7 +25,7 @@ export const UListHeader = (props: UListHeaderProps) => {
             alignItems="center"
         >
             <XView flexDirection="row" flexGrow={1} justifyContent="flex-start">
-                <XView {...TextStyles.Title2} color="var(--foregroundPrimary)">
+                <XView {...TextStyles.Title3} color="var(--foregroundPrimary)">
                     {text}
                 </XView>
 

@@ -19,7 +19,7 @@ export const FormSection = (props: FormSectionProps) => {
 
     return (
         <XView marginBottom={16}>
-            <XView {...TextStyles.Title2} height={48} justifyContent="center">
+            <XView {...TextStyles.Title3} height={48} justifyContent="center">
                 {title}
             </XView>
             {children}

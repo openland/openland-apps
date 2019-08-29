@@ -7,7 +7,7 @@ import {
 } from 'openland-api/Types';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { TextTitle2, TextBody } from 'openland-web/utils/TextStyles';
+import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
 import { resolveLinkAction } from 'openland-web/utils/resolveLinkAction';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
@@ -245,7 +245,7 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
                 {avatarWrapper}
                 <div className={dataContent}>
                     {title && (
-                        <div className={cx(titleStyle, ellipsisStyle, TextTitle2)}>
+                        <div className={cx(titleStyle, ellipsisStyle, TextTitle3)}>
                             {title}
                         </div>
                     )}

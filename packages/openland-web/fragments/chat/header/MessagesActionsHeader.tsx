@@ -7,7 +7,7 @@ import { pluralForm } from 'openland-y-utils/plural';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import CloseIcon from 'openland-icons/s/ic-close-16.svg';
-import { TextTitle2 } from 'openland-web/utils/TextStyles';
+import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import { showDeleteMessageModal as showDeleteMessagesModal } from '../components/MessengerRootComponent';
 import { showChatPicker } from '../showChatPicker';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
@@ -109,7 +109,7 @@ const Counter = (props: { engine: MessagesActionsStateEngine }) => {
     let width = (count.toString()).length * 12;
     return (
         <XView flexDirection="row" alignItems="center" justifyContent="flex-start" onClick={props.engine.clear} cursor="pointer">
-            <span className={TextTitle2}>
+            <span className={TextTitle3}>
                 <span key={count + '_old'} className={increment ? animateCenterDown : animateCenterUp} style={{ width, display: 'inline-block', position: 'absolute' }}>{old}</span>
                 <span key={count + '_new'} className={increment ? animateUpCenter : animateDownCenter} style={{ width, display: 'inline-block' }}>{count}</span>
                 {layout === 'desktop' && ` ${pluralForm(count, ['message', 'messages'])} selected`}

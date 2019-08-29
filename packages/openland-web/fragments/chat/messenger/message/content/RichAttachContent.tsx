@@ -6,7 +6,7 @@ import {
 } from 'openland-api/Types';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
-import { TextCaption, TextTitle2, TextBody } from 'openland-web/utils/TextStyles';
+import { TextCaption, TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { useClient } from 'openland-web/utils/useClient';
 import DeleteIcon from 'openland-icons/s/ic-close-16.svg';
@@ -252,7 +252,7 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
                     </div>
                 )}
                 {attach.title && (
-                    <div className={cx(titleStyle, TextTitle2)}>
+                    <div className={cx(titleStyle, TextTitle3)}>
                         <span>{attach.title}</span>
                     </div>
                 )}

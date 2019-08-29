@@ -42,7 +42,7 @@ const UserProfileCard = withUserInfo(({ user }) => {
             >
                 <UAvatar size="large" photo={user.photo} title={user.name} id={user.id} marginRight={16} />
                 <XView flexGrow={1}>
-                    <XView {...TextStyles.Title2}>
+                    <XView {...TextStyles.Title3}>
                         {user.name}
                     </XView>
                     <SelectableText

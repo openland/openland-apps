@@ -79,7 +79,7 @@ export const UListHero = (props: UListHeroProps) => {
                 flexDirection="column"
                 justifyContent="center"
             >
-                <XView {...TextStyles.Title2} color="var(--foregroundPrimary)">
+                <XView {...TextStyles.Title3} color="var(--foregroundPrimary)">
                     <span className={textStyle}>
                         {titleEmojify}
                     </span>
