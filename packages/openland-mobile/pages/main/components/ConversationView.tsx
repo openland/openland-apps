@@ -74,6 +74,11 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
         }
     }
 
+    sendWave = () => {
+        this.props.engine.sendMessage('👋', []);
+        trackEvent('message_wave_sent');
+    }
+
     render() {
         return (
             <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -androidMessageInputListOverlap })}>
@@ -87,8 +92,8 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                 {
                     !this.state.conversation.loading && this.state.conversation.messages.length === 0 && (
                         <ASSafeAreaView style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={{ fontSize: 72, lineHeight: 72, marginBottom: 24 }} allowFontScaling={false} onPress={() => this.props.engine.sendMessage('👋', [])}>👋</Text>
-                            <ZRoundedButton title="Wave" style="secondary" onPress={() => this.props.engine.sendMessage('👋', [])} />
+                            <Text style={{ fontSize: 72, lineHeight: 72, marginBottom: 24 }} allowFontScaling={false} onPress={this.sendWave}>👋</Text>
+                            <ZRoundedButton title="Wave" style="secondary" onPress={this.sendWave} />
                         </ASSafeAreaView>
                     )
                 }
