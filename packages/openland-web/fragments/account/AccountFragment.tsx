@@ -21,6 +21,7 @@ import { showLogoutConfirmation } from './LogoutFragment';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const UserProfileCard = withUserInfo(({ user }) => {
     if (user) {
@@ -101,6 +102,13 @@ export const AccountFragment = React.memo(() => (
                     icon={<InviteFriendsIcon />}
                     path="/settings/invites"
                 />
+                <XWithRole role="super-admin">
+                    <UListItem
+                        title="Finance"
+                        icon={<NotificationsIcon />}
+                        path="/settings/finance"
+                    />
+                </XWithRole>
                 <UListItem
                     title="Notifications"
                     icon={<NotificationsIcon />}

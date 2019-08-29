@@ -251,6 +251,9 @@ export default class OpenlandDocument extends Document {
 
                     <style dangerouslySetInnerHTML={{ __html: (this.props as any).glamCss }} />
 
+                    {/* Stripe (Can't be bundled) */}
+                    <script src="https://js.stripe.com/v3/" />
+
                     {/* Config */}
                     <script
                         dangerouslySetInnerHTML={{
@@ -260,12 +263,6 @@ export default class OpenlandDocument extends Document {
                                 "'",
                         }}
                     />
-
-                    {/* <script
-                        dangerouslySetInnerHTML={{
-                            __html: "window.perfMeasure='" + JSON.stringify(perfMeasure) + "'",
-                        }}
-                    /> */}
 
                     {/* <script src="/static/bns.js" /> */}
                     <script dangerouslySetInnerHTML={{ __html: saveConfig(config) }} />

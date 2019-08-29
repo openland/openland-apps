@@ -16,6 +16,7 @@ import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLand
 import { GroupProfileFragment } from 'openland-web/fragments/group/GroupProfileFragment';
 import { MessageFragment } from 'openland-web/fragments/message/MessageFragment';
 import { FeedFragment } from 'openland-web/fragments/feed/FeedFragment';
+import { SettingsFinanceFragment } from 'openland-web/fragments/finance/SettingsFinanceFragment';
 
 const routing = new URouting();
 
@@ -45,6 +46,7 @@ routing.addRoute('/settings/email', () => SettingsEmailFragment);
 routing.addRoute('/settings/appearance', () => SettingsAppearanceFragment);
 routing.addRoute('/settings/download', () => DownloadAppsFragment);
 routing.addRoute('/settings/invites', () => InviteFriendsFragment);
+routing.addRoute('/settings/finance', () => SettingsFinanceFragment);
 
 // Profile
 routing.addRoute('/group/:id', () => GroupProfileFragment);

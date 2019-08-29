@@ -183,6 +183,7 @@ routes.add('/settings/notifications', '/unicorn/index');
 routes.add('/settings/email', '/unicorn/index');
 routes.add('/settings/apps', '/unicorn/index');
 routes.add('/settings/apps/', '/unicorn/index');
+routes.add('/settings/finance', '/unicorn/index');
 
 //
 // Group
