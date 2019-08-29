@@ -19,22 +19,25 @@ import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 
 const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
-    const width = 190;
-    const height = 100;
+    const theme = React.useContext(ThemeContext);
+    const width = 240;
+    const height = 126;
     const radius = RadiusStyles.Medium;
 
     return (
         <TouchableOpacity onPress={props.showPicker}>
             <View width={width} height={height} borderRadius={radius}>
                 {props.url && <ZImage highPriority={true} width={width} height={height} source={props.url} borderRadius={radius} />}
-                <View position="absolute" alignItems="center" justifyContent="center" style={{ width, height, borderRadius: radius, borderWidth: 1, borderColor: '#eff0f2' }}>
-                    {!props.loading && <Image style={{ tintColor: props.url ? 'white' : 'gray', opacity: 0.8, width: 26, height: 21 }} resizeMode="stretch" source={require('assets/ic-photo-full.png')} />}
+                <View position="absolute" alignItems="center" justifyContent="center" style={{ width, height, borderRadius: radius, borderWidth: 1, borderColor: theme.border, backgroundColor: props.url ? theme.overlayLight : undefined }}>
+                    {!props.loading && (
+                        <Image style={{ tintColor: props.url ? theme.foregroundContrast : theme.foregroundQuaternary, width: 36, height: 36 }} source={require('assets/ic-camera-36.png')} />
+                    )}
                     {props.loading && (
-                        <View width={34} height={34} backgroundColor="rgba(255, 255, 255, 0.6)" borderRadius={RadiusStyles.Large} justifyContent="center">
-                            <ActivityIndicator color="rgba(0, 0, 0, 0.4)" />
-                        </View>
+                        <LoaderSpinner color={theme.foregroundContrast} />
                     )}
                 </View>
             </View>
