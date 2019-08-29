@@ -33,14 +33,14 @@ const UserProfileCard = withUserInfo(({ user }) => {
                 selectedBackgroundColor="var(--accentPrimary)"
                 selectedHoverBackgroundColor="var(--accentPrimaryHover)"
                 selectedColor="var(--foregroundInverted)"
-                height={70}
                 flexDirection="row"
                 paddingHorizontal={16}
                 paddingVertical={12}
                 alignItems="center"
                 linkSelectable={true}
+                marginBottom={8}
             >
-                <UAvatar size="medium" photo={user.photo} title={user.name} id={user.id} marginRight={16} />
+                <UAvatar size="large" photo={user.photo} title={user.name} id={user.id} marginRight={16} />
                 <XView flexGrow={1}>
                     <XView {...TextStyles.Title2}>
                         {user.name}
