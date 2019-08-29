@@ -69,8 +69,8 @@ const RenewInviteLinkButton = (props: RenewInviteLinkButtonProps) => {
 
     return (
         <XMutation mutation={renew}>
-            <div className={renewContainer}>
-                <UIcon icon={<IcDelete />} size={20} onMouseEnter={show} />
+            <div className={renewContainer} onMouseEnter={show}>
+                <UIcon icon={<IcDelete />} size={20} />
             </div>
         </XMutation>
     );

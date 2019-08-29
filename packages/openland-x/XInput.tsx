@@ -1,9 +1,7 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { XInputBasicProps, XInputBasic } from './basics/XInputBasic';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
-import { XFlexStyles, applyFlex } from './basics/Flex';
 
 export interface XInputProps extends XInputBasicProps {
     field?: string;
