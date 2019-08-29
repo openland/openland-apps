@@ -91,7 +91,7 @@ const primaryActiveStyle = css`
 `;
 
 const secondaryStyle = css`
-    color: #676d7a;
+    color: var(--foregroundSecondary);
     background-color: var(--backgroundTertiary);
 `;
 

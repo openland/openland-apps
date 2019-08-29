@@ -45,6 +45,7 @@ const EditLabelStyle = css`
     color: var(--foregroundSecondary);
     display: inline-flex;
     align-items: center;
+    user-select: none;
 `;
 
 export const MessageTextComponent = React.memo<MessageTextComponentProps>(

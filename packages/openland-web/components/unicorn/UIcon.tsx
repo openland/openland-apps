@@ -26,6 +26,7 @@ interface UIconProps {
     color?: string;
     className?: string;
     size?: number;
+    onMouseEnter?: React.MouseEventHandler<any>;
 }
 
 export const UIcon = React.memo((props: UIconProps) => {
@@ -34,6 +35,7 @@ export const UIcon = React.memo((props: UIconProps) => {
     return (
         <div
             className={cx(wrapper, size && wrapperSized, props.className)}
+            onMouseEnter={props.onMouseEnter}
             style={{
                 '--icon-color': color || 'var(--foregroundSecondary)',
                 ...size ? { '--icon-size': size + 'px' } as React.CSSProperties : {}

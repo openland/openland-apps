@@ -147,6 +147,9 @@ routes.add('/ui/shortcuts/', '/dev/ui/shortcuts');
 routes.add('/ui/video', '/dev/ui/video');
 routes.add('/ui/video/', '/dev/ui/video');
 
+routes.add('/ui/checkbox', '/dev/ui/checkbox');
+routes.add('/ui/checkbox/', '/dev/ui/checkbox');
+
 //
 // Dev Tools
 //
