@@ -101,12 +101,15 @@ const mentionsContainer = css`
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
     background-color: white;
     border-radius: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
     opacity: 0;
     transform: translateY(10px);
     will-change: opacity;
     transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    /* overflow-y: scroll; */
+    overflow-x: none;
     z-index: 2;
-    overflow: hidden;
 `;
 
 interface AutoCompleteComponentRef {
@@ -282,7 +285,6 @@ const AutoCompleteComponent = React.memo(
                             renderItem={itemRender}
                             onSelected={onSelected}
                             ref={listRef}
-                            paddingVertical={8}
                         />
                     </div>
                 );
@@ -303,7 +305,6 @@ const AutoCompleteComponent = React.memo(
                             renderItem={emojiItemRender}
                             onSelected={onEmojiSelected}
                             ref={listRef}
-                            paddingVertical={8}
                         />
                     </div>
                 );
