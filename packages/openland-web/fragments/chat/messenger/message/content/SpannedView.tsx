@@ -6,6 +6,7 @@ import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { OthersPopper } from './OthersPopper';
+import { TextTitle2 } from 'openland-web/utils/TextStyles';
 
 const boldTextClassName = css`
     font-weight: bold;
@@ -25,7 +26,7 @@ const italicTextClassName = css`
 
 const ironyTextClassName = css`
     font-style: italic;
-    color: #d75454;
+    color: var(--accentNegative);
 
     .emojione {
         transform: skew(-12deg);
@@ -51,20 +52,13 @@ const codeBlockClassName = css`
 `;
 
 const loudTextClassName = css`
-    font-size: 20px;
-    line-height: 26px;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.8);
+    color: var(--foregroundPrimary);
     padding-top: 8px;
-    padding-bottom: 8px;
+    padding-bottom: 4px;
     display: inline-block;
 
     &:first-child {
         padding-top: 4px;
-    }
-
-    &:last-child {
-        padding-bottom: 0;
     }
 `;
 
@@ -74,10 +68,7 @@ const onlyEmojiClassName = css`
 `;
 
 const rotatingTextClassName = css`
-    font-size: 20px;
-    line-height: 26px;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.8);
+    color: var(--foregroundPrimary);
     animation: rotate 1s linear infinite;
     display: inline-block;
 
@@ -92,10 +83,7 @@ const rotatingTextClassName = css`
 `;
 
 const insaneTextClassName = css`
-    font-size: 20px;
-    line-height: 26px;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.8);
+    color: var(--foregroundPrimary);
     background: url(https://cdn.openland.com/shared/web/insane.gif);
     background-clip: text, border;
     -webkit-background-clip: text;
@@ -172,11 +160,11 @@ export const SpanView = React.memo<{ span: Span; children?: any; isService?: boo
     } else if (span.type === 'italic') {
         return <span className={italicTextClassName}>{children}</span>;
     } else if (span.type === 'loud') {
-        return <span className={loudTextClassName}>{children}</span>;
+        return <span className={cx(loudTextClassName, TextTitle2)}>{children}</span>;
     } else if (span.type === 'rotating') {
-        return <span className={rotatingTextClassName}>{children}</span>;
+        return <span className={cx(rotatingTextClassName, TextTitle2)}>{children}</span>;
     } else if (span.type === 'insane') {
-        return <span className={insaneTextClassName}>{children}</span>;
+        return <span className={cx(insaneTextClassName, TextTitle2)}>{children}</span>;
     } else if (span.type === 'irony') {
         return <span className={ironyTextClassName}>{children}</span>;
     } else if (span.type === 'code_inline') {

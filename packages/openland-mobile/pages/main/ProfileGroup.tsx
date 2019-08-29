@@ -64,7 +64,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             .title(`Leave ${typeString}?`)
             .message('You may not be able to join it again')
             .button('Cancel', 'cancel')
-            .action(`Leave ${typeString}`, 'destructive', async () => {
+            .action(`Leave`, 'destructive', async () => {
                 await client.mutateRoomLeave({ roomId });
                 props.router.pushAndResetRoot('Home');
             })

@@ -31,25 +31,25 @@ const UserProfileCard = withUserInfo(({ user }) => {
                 path={`/${user.shortname || user.id}`}
                 color="var(--foregroundPrimary)"
                 hoverBackgroundColor="var(--backgroundPrimaryHover)"
-                selectedBackgroundColor="var(--accentPrimary)"
-                selectedHoverBackgroundColor="var(--accentPrimaryHover)"
-                selectedColor="var(--foregroundInverted)"
-                height={70}
+                selectedBackgroundColor="var(--accentMuted)"
+                selectedHoverBackgroundColor="var(--accentMutedHover)"
+                selectedColor="var(--foregroundContrast)"
                 flexDirection="row"
                 paddingHorizontal={16}
                 paddingVertical={12}
                 alignItems="center"
                 linkSelectable={true}
+                marginBottom={8}
             >
-                <UAvatar size="medium" photo={user.photo} title={user.name} id={user.id} marginRight={16} />
+                <UAvatar size="large" photo={user.photo} title={user.name} id={user.id} marginRight={16} />
                 <XView flexGrow={1}>
-                    <XView {...TextStyles.Title2}>
+                    <XView {...TextStyles.Title3}>
                         {user.name}
                     </XView>
                     <SelectableText
                         {...TextStyles.Body}
                         color="var(--foregroundSecondary)"
-                        selectedColor="var(--foregroundInverted)"
+                        selectedColor="var(--foregroundContrast)"
                     >
                         {user.email}
                     </SelectableText>
@@ -66,7 +66,7 @@ export const Organizations = React.memo(() => {
     const myOrganizations = client.useMyOrganizations().myOrganizations;
 
     return (
-        <>
+        <XView paddingBottom={56}>
             {myOrganizations.sort((a, b) => a.isPrimary ? 1 : 0).map((organization, key) => {
                 const { id, photo, name, isPrimary, shortname } = organization;
 
@@ -80,7 +80,7 @@ export const Organizations = React.memo(() => {
                     />
                 );
             })}
-        </>
+        </XView>
     );
 });
 

@@ -57,7 +57,7 @@ routes.add('/authorization/:step', '/auth/root');
 
 routes.add('/all', '/unicorn/index');
 routes.add('/all/', '/unicorn/index');
-routes.add('/discover/recommended', '/unicorn/index');
+routes.add('/discover/recommendations', '/unicorn/index');
 routes.add('/discover/groups', '/unicorn/index');
 routes.add('/discover/communities', '/unicorn/index');
 routes.add('/discover/people', '/unicorn/index');
@@ -146,6 +146,9 @@ routes.add('/ui/shortcuts/', '/dev/ui/shortcuts');
 
 routes.add('/ui/video', '/dev/ui/video');
 routes.add('/ui/video/', '/dev/ui/video');
+
+routes.add('/ui/checkbox', '/dev/ui/checkbox');
+routes.add('/ui/checkbox/', '/dev/ui/checkbox');
 
 //
 // Dev Tools

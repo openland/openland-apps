@@ -105,6 +105,14 @@ class CommentsNotificationsInner extends React.PureComponent<
         );
     }
 
+    private renderEmpty = () => {
+        return (
+            <XView flexDirection="row" alignItems="center" flexGrow={1}>
+                <MessengerEmptyFragment text="Comments in threads you are involved in will be right here" />
+            </XView>
+        );
+    }
+
     render() {
         if (!this.dataSource.isInited()) {
             return (
@@ -113,24 +121,18 @@ class CommentsNotificationsInner extends React.PureComponent<
                 </XView>
             );
         }
-        if (this.dataSource.getSize() === 0 && this.dataSource.isInited()) {
-            return (
-                <XView flexDirection="row" alignItems="center" flexGrow={1}>
-                    <MessengerEmptyFragment text="Comments in threads you are involved in will be right here" />
-                </XView>
-            );
-        }
 
         return (
             <>
                 <UHeader title="Notifications" appearance="wide" />
-                <XView paddingTop={24} flexGrow={1} flexShrink={1}>
+                <XView flexGrow={1} flexShrink={1}>
                     <DataSourceRender
                         dataSource={this.dataSource}
                         reverce={false}
                         wrapWith={this.dataSourceWrapper}
                         renderItem={this.renderNotification}
                         renderLoading={this.renderLoading}
+                        renderEmpty={this.renderEmpty}
                     />
                 </XView>
             </>

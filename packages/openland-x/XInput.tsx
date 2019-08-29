@@ -1,9 +1,7 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { XInputBasicProps, XInputBasic } from './basics/XInputBasic';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
-import { XFlexStyles, applyFlex } from './basics/Flex';
 
 export interface XInputProps extends XInputBasicProps {
     field?: string;
@@ -106,40 +104,3 @@ export class XInput extends React.PureComponent<XInputProps> {
         return (<XInputBasic {...other} ref={this.handler} />);
     }
 }
-
-export const XInputGroup = Glamorous.div<XFlexStyles>([
-    ({
-        display: 'flex',
-
-        '& > *': {
-            flex: 1,
-            zIndex: 2,
-            marginRight: -1,
-            // borderRightColor: 'transparent !important',
-
-            '&:first-child': {
-                borderTopRightRadius: 0,
-                borderBottomRightRadius: 0,
-            },
-
-            '&:not(:first-child):not(:last-child)': {
-                borderRadius: 0
-            },
-
-            '&:last-child': {
-                borderTopLeftRadius: 0,
-                borderBottomLeftRadius: 0,
-                // borderRightColor: 'rgba(220, 222, 228, 0.6) !important'
-            },
-
-            '&:focus-within': {
-                zIndex: 3
-            },
-
-            '& .Select-menu-outer': {
-                width: 'calc(100% - 1px) !important'
-            },
-        }
-    }),
-    (props) => applyFlex(props),
-]);

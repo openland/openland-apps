@@ -9,7 +9,7 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { buildMessageMenu } from './MessageMenu';
 import { XViewRouterContext } from 'react-mental';
 import { MessageReactionType } from 'openland-api/Types';
-import { ReactionPicker } from '../reactions/ReactionPicker';
+import { ReactionPicker, ReactionPickerInstance } from '../reactions/ReactionPicker';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-web/utils/useClient';
 import { trackEvent } from 'openland-x-analytics';
@@ -53,8 +53,15 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
     }, [message.id]);
 
     // Sorry universe
+    const pickerRef = React.useRef<ReactionPickerInstance>(null);
     const reactionsRef = React.useRef(message.reactions);
     reactionsRef.current = message.reactions;
+
+    React.useEffect(() => {
+        if (pickerRef && pickerRef.current) {
+            pickerRef.current.update(reactionsRef.current);
+        }
+    }, [pickerRef, reactionsRef.current]);
 
     const handleReactionClick = (reaction: MessageReactionType) => {
         const reactions = reactionsRef.current;
@@ -70,7 +77,7 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
         }
     };
 
-    const [reactionsVisible, reactionsShow] = usePopper({ placement: 'top', hideOnLeave: true, borderRadius: 20, scope: 'reaction-picker' }, () => <ReactionPicker onPick={handleReactionClick} />);
+    const [reactionsVisible, reactionsShow] = usePopper({ placement: 'top', hideOnLeave: true, borderRadius: 20, scope: 'reaction-picker' }, () => <ReactionPicker ref={pickerRef} reactions={reactionsRef.current} onPick={handleReactionClick} />);
     const visible = menuVisible || reactionsVisible;
 
     return (
@@ -81,7 +88,11 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
                 size="small"
                 active={reactionsVisible}
                 onMouseEnter={reactionsShow}
-                onClick={(e) => { e.stopPropagation(); handleReactionClick(MessageReactionType.LIKE); }}
+                onClick={(e) => {
+                    e.stopPropagation();
+
+                    handleReactionClick(MessageReactionType.LIKE);
+                }}
             />
             <UIconButton
                 icon={<CommentIcon />}

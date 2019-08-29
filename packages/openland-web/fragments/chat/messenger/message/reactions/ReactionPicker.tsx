@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { MessageReactionType } from 'openland-api/Types';
-import { css } from 'linaria';
+import { MessageReactionType, FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
+import { css, cx } from 'linaria';
 import { reactionImage } from './MessageReactions';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const SortedReactions = [
     MessageReactionType.LIKE,
@@ -21,42 +22,116 @@ const wrapperClass = css`
 `;
 
 const reactionClass = css`
-    width: 36px;
-    height: 40px;
+    width: 36px; height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 100ms ease-in-out;
+    position: relative;
 
-    &:hover {
+    img.reaction-main {
+        width: 24px; height: 24px;
+        transition: transform 100ms ease-in-out;
+    }
+
+    img.reaction-duplicate {
+        width: 32px; height: 32px;
+        position: absolute;
+        top: 4px; left: 2px;
+        opacity: 0;
+    }
+
+    &:hover img.reaction-main {
         transform: scale(calc(4 / 3));
     }
 
-    &:active {
+    &:not(.animated):active img.reaction-main {
         transform: scale(1.15);
     }
 
-    img {
-        width: 24px;
-        height: 24px;
+    &.animated img.reaction-duplicate {
+        animation: duplicate 300ms;
+    }
+
+    &.to-remove img.reaction-duplicate {
+        filter: grayscale(1);
+    }
+
+    @keyframes duplicate {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            transform: scale(4);
+            opacity: 0;
+        }
     }
 `;
 
-interface ReactionPickerProps {
+interface ReactionPickerItemProps {
+    reaction: MessageReactionType;
+    toRemove: boolean;
     onPick: (reaction: MessageReactionType) => void;
 }
 
-export const ReactionPicker = React.memo<ReactionPickerProps>(props => {
-    const { onPick } = props;
+const ReactionPickerItem = React.memo<ReactionPickerItemProps>(props => {
+    const { onPick, reaction, toRemove } = props;
+    const [animate, setAnimate] = React.useState(false);
+    const handleClick = () => {
+        if (animate) {
+            return;
+        }
+
+        setAnimate(true);
+        onPick(reaction);
+
+        setTimeout(() => {
+            setAnimate(false);
+        }, 300);
+    };
 
     return (
-        <div className={wrapperClass}>
-            {SortedReactions.map(reaction => (
-                <div key={'reaction-' + reaction} className={reactionClass} onClick={() => onPick(reaction)}>
-                    <img src={reactionImage(reaction)} />
-                </div>
-            ))}
+        <div className={cx(reactionClass, animate && 'animated', toRemove && 'to-remove')} onClick={handleClick}>
+            <img src={reactionImage(reaction)} className="reaction-main" />
+            <img src={reactionImage(reaction)} className="reaction-duplicate" />
         </div>
     );
 });
+
+export interface ReactionPickerInstance {
+    update: (newReactions: FullMessage_GeneralMessage_reactions[]) => void;
+}
+
+interface ReactionPickerProps {
+    reactions: FullMessage_GeneralMessage_reactions[];
+    onPick: (reaction: MessageReactionType) => void;
+}
+
+// Sorry universe
+export const ReactionPicker = React.memo(React.forwardRef((props: ReactionPickerProps, ref: React.Ref<ReactionPickerInstance>) => {
+    const messenger = React.useContext(MessengerContext);
+    const [reactions, setReactions] = React.useState<FullMessage_GeneralMessage_reactions[]>(props.reactions);
+
+    React.useImperativeHandle(ref, () => ({
+        update: (newReactions: FullMessage_GeneralMessage_reactions[]) => {
+            setReactions(newReactions);
+        },
+    }));
+
+    return (
+        <div className={wrapperClass}>
+            {SortedReactions.map(reaction => {
+                const toRemove = reactions && reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === reaction).length > 0;
+
+                return (
+                    <ReactionPickerItem
+                        key={'reaction-' + reaction}
+                        onPick={props.onPick}
+                        reaction={reaction}
+                        toRemove={toRemove}
+                    />
+                );
+            })}
+        </div>
+    );
+}));

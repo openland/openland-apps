@@ -39,7 +39,7 @@ export interface ZAvatarPickerProps {
 const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal }) => {
     const [localPath, setLocalPath] = React.useState<string | undefined>(undefined);
     const [loading, setLoading] = React.useState<boolean>(false);
-    
+
     let currentIteration = 0;
 
     const upload = (data: { path: string, width?: number, height?: number }) => {
@@ -65,7 +65,7 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
                                 } : {}
                         });
                     }
-                
+
                     setLoading(false);
                 } else if (v.status === UploadStatus.FAILED) {
                     setLoading(false);
@@ -142,7 +142,7 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
             <View width={size} height={size} borderRadius={size / 2} backgroundColor={theme.backgroundTertiary}>
                 {!valueUrl && !loading && (
                     <View position="absolute" alignItems="center" justifyContent="center" style={{ width: size, height: size, borderRadius: size / 2 }}>
-                        <Image source={require('assets/ic-picker-48.png')} style={{ tintColor: theme.foregroundTertiary, width: 48, height: 48 }} />
+                        <Image source={require('assets/ic-camera-36.png')} style={{ tintColor: theme.foregroundQuaternary, width: 36, height: 36 }} />
                     </View>
                 )}
                 {!!valueUrl && (
@@ -152,7 +152,7 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
                         {!loading && (
                             <View position="absolute" bottom={2} right={2} width={28} height={28} padding={2} backgroundColor={theme.backgroundPrimary} borderRadius={14}>
                                 <View width={24} height={24} backgroundColor={theme.accentPrimary} borderRadius={12} alignItems="center" justifyContent="center">
-                                    <Image source={require('assets/ic-picker-selected-16.png')} style={{ tintColor: theme.foregroundInverted, width: 16, height: 16 }} />
+                                    <Image source={require('assets/ic-camera-16.png')} style={{ tintColor: theme.foregroundInverted, width: 16, height: 16 }} />
                                 </View>
                             </View>
                         )}
@@ -171,11 +171,11 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
 export const ZAvatarPicker = XMemo<ZAvatarPickerProps>(props => {
     const { field } = props;
     const theme = React.useContext(ThemeContext);
-    
+
     if (field && field.input) {
         return (
-            <ZAvatarPickerComponent 
-                {...props} 
+            <ZAvatarPickerComponent
+                {...props}
                 theme={theme}
                 value={field.input.value}
                 onChanged={(ref) => {
@@ -188,6 +188,6 @@ export const ZAvatarPicker = XMemo<ZAvatarPickerProps>(props => {
             />
         );
     }
-    
+
     return <ZAvatarPickerComponent theme={theme} {...props} />;
 });

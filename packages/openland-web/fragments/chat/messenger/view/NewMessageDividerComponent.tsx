@@ -9,15 +9,15 @@ const dividerContainer = css`
     justify-content: center;
     height: 32px;
     position: relative;
-    margin: 4px 16px;
+    margin: 4px 0;
     width: 100%;
 
     &::before {
         position: absolute;
         content: '';
         top: 17px;
-        left: 0;
-        width: 100%;
+        left: 16px;
+        right: 16px;
         height: 1px;
         background-color: var(--border);
         z-index: -1;

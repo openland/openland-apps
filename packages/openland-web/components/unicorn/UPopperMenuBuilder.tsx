@@ -79,9 +79,9 @@ export class UPopperMenuBuilder {
         return this;
     }
 
-    build = (ctx: UPopperController) => {
+    build = (ctx: UPopperController, width?: number) => {
         return (
-            <div className={container}>
+            <div className={container} style={{ width }}>
                 {this._items.map((item, index) => {
                     if (item._type === 'item') {
                         return (

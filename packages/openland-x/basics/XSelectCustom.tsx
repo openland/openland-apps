@@ -42,6 +42,8 @@ const Container = Glamorous(XHorizontal)<XFlexStyles>([
 const Input = Glamorous.input({
     height: 38,
     flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
     marginTop: -2,
     marginBottom: -4,
     marginRight: -8,

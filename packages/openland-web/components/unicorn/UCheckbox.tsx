@@ -33,6 +33,10 @@ const checkDotStyle = css`
     }
 `;
 
+const checkSquareStyle = css`
+    border-radius: 4px;
+`;
+
 const checkDotCheckedStyle = css`
     background-color: #1885f2;
     border: 0px solid transparent;
@@ -69,13 +73,13 @@ const switcherDotCheckedStyle = css`
     left: 18px;
 `;
 
-const CheckComponent = ({ checked }: { checked?: boolean }) => (
-    <div className={cx(checkDotStyle, checked && checkDotCheckedStyle)}>
+export const CheckComponent = ({ checked, squared }: { checked?: boolean; squared?: boolean }) => (
+    <div className={cx(checkDotStyle, squared && checkSquareStyle, checked && checkDotCheckedStyle)}>
         <CheckIcon />
     </div>
 );
 
-const SwitcherComponent = ({ checked }: { checked?: boolean }) => (
+export const SwitcherComponent = ({ checked }: { checked?: boolean }) => (
     <div className={cx(switcherWrapStyle, checked && switcherWrapCheckedStyle)}>
         <div className={cx(switcherDotStyle, checked && switcherDotCheckedStyle)} />
     </div>
@@ -87,6 +91,7 @@ interface UCheckboxItemProps {
     checked?: boolean;
     onChange?: (value: boolean) => void;
     asSwitcher?: boolean;
+    squared?: boolean;
 }
 
 export const UCheckbox = (props: UCheckboxItemProps) => {
@@ -126,7 +131,7 @@ export const UCheckbox = (props: UCheckboxItemProps) => {
                     hoverBackgroundColor="var(--backgroundPrimaryHover)"
                 >
                     <span>{props.label}</span>
-                    {!props.asSwitcher && <CheckComponent checked={props.checked} />}
+                    {!props.asSwitcher && <CheckComponent checked={props.checked} squared={props.squared} />}
                     {props.asSwitcher && <SwitcherComponent checked={props.checked} />}
                 </XView>
             </label>

@@ -4,7 +4,7 @@ import { XView, XViewProps } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 
 type UButtonSize = 'small' | 'medium' | 'large';
-export type UButtonStyle = 'primary' | 'secondary' | 'danger';
+export type UButtonStyle = 'primary' | 'secondary' | 'danger' | 'success';
 
 export interface UButtonProps extends XViewProps {
     square?: boolean;
@@ -40,6 +40,7 @@ const squareStyle = css`
 
 const disableStyle = css`
     cursor: default;
+    opacity: 0.48;
 `;
 
 const loadingStyle = css`
@@ -91,7 +92,7 @@ const primaryActiveStyle = css`
 `;
 
 const secondaryStyle = css`
-    color: #676d7a;
+    color: var(--foregroundSecondary);
     background-color: var(--backgroundTertiary);
 `;
 
@@ -124,6 +125,23 @@ const dangerActiveStyle = css`
     }
 `;
 
+const successStyle = css`
+    color: #fff;
+    background-color: var(--accentPositive);
+`;
+
+const successHoverStyle = css`
+    &:hover {
+        background-color: var(--accentPositiveHover);
+    }
+`;
+
+const successActiveStyle = css`
+    &:active {
+        background-color: var(--accentPositiveActive);
+    }
+`;
+
 const sizeResolver = {
     small: size28,
     medium: size32,
@@ -134,18 +152,21 @@ const styleResolver = {
     primary: primaryStyle,
     secondary: secondaryStyle,
     danger: dangerStyle,
+    success: successStyle
 };
 
 const styleResolverHover = {
     primary: primaryHoverStyle,
     secondary: secondaryHoverStyle,
     danger: dangerHoverStyle,
+    success: successHoverStyle
 };
 
 const styleResolverActive = {
     primary: primaryActiveStyle,
     secondary: secondaryActiveStyle,
     danger: dangerActiveStyle,
+    success: successActiveStyle
 };
 
 const loaderColor = {
@@ -158,6 +179,9 @@ const loaderColor = {
     danger: {
         color: '#fff',
     },
+    success: {
+        color: '#fff',
+    }
 };
 
 export const UButton = (props: UButtonProps) => {

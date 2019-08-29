@@ -5,7 +5,7 @@ import { MessengerFragment } from 'openland-web/fragments/chat/MessengerFragment
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { SettingsProfileFragment } from 'openland-web/fragments/account/SettingsProfileFragment';
 import { SettingsAppearanceFragment } from 'openland-web/fragments/account/SettingsAppearanceFragment';
-import { RecommendedFragment } from 'openland-web/fragments/discover/RecommendedFragment';
+import { RecommendationsFragment } from 'openland-web/fragments/discover/RecommendationsFragment';
 import { DiscoverGroupsFragment } from 'openland-web/fragments/discover/DiscoverGroupsFragment';
 import { SettingsNotificationsFragment } from 'openland-web/fragments/account/SettingsNotificationsFragment';
 import { SettingsEmailFragment } from 'openland-web/fragments/account/SettingsEmailFragment';
@@ -36,7 +36,7 @@ routing.addRoute('/notifications', () => NotificationsFragment);
 
 // Discover
 routing.addRoute('/all', () => FeedFragment);
-routing.addRoute('/discover/recommended', () => RecommendedFragment);
+routing.addRoute('/discover/recommendations', () => RecommendationsFragment);
 routing.addRoute('/discover/groups', () => DiscoverGroupsFragment);
 
 // Settings

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { TextTitle2, TextCaption, TextBody } from 'openland-web/utils/TextStyles';
+import { TextTitle3, TextCaption, TextBody } from 'openland-web/utils/TextStyles';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { SpanView } from 'openland-web/fragments/chat/messenger/message/content/SpannedView';
@@ -107,25 +107,25 @@ const Formatting = ({
     formatting: { type: SpanT; text: string };
     shortcuts?: string[];
 }) => (
-    <div className={cx(shortcutRow, 'shortcut-row')}>
-        <SpanPreview spanType={formatting.type} text={formatting.text} />
-        {shortcuts && <div className={cx(orStyle, TextBody)}>or</div>}
-        {shortcuts &&
-            shortcuts.map((shortcut, key) => {
-                return (
-                    <span className={cx(shortcutTagStyle, TextCaption)} key={key}>
-                        {shortcut}
-                    </span>
-                );
-            })}
-    </div>
-);
+        <div className={cx(shortcutRow, 'shortcut-row')}>
+            <SpanPreview spanType={formatting.type} text={formatting.text} />
+            {shortcuts && <div className={cx(orStyle, TextBody)}>or</div>}
+            {shortcuts &&
+                shortcuts.map((shortcut, key) => {
+                    return (
+                        <span className={cx(shortcutTagStyle, TextCaption)} key={key}>
+                            {shortcut}
+                        </span>
+                    );
+                })}
+        </div>
+    );
 
 export const ShortcutsBody = () => {
     return (
         <XScrollView3 flexShrink={1} useDefaultScroll={true}>
             <div className={shortcutsContainer}>
-                <div className={cx(shortcutTitle, TextTitle2)}>Keyboard shortcuts</div>
+                <div className={cx(shortcutTitle, TextTitle3)}>Keyboard shortcuts</div>
                 <ShortcutsGroup>
                     <Shortcut shortcuts={['Enter']} description="Send message" />
                     <Shortcut shortcuts={['Shift + Enter']} description="New line" />
@@ -153,7 +153,7 @@ export const ShortcutsBody = () => {
                         description="Submit form"
                     />
                 </ShortcutsGroup>
-                <div className={cx(shortcutTitle, TextTitle2)}>Text formatting</div>
+                <div className={cx(shortcutTitle, TextTitle3)}>Text formatting</div>
                 <ShortcutsGroup>
                     <Formatting formatting={{ type: SpanType.loud, text: '# Heading 1' }} />
                     <Formatting

@@ -5,15 +5,16 @@ import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
 
 export const DiscoverFragment = React.memo(() => {
-    let isNP = AppConfig.isNonProduction();
+    const isNP = AppConfig.isNonProduction();
+
     return (
         <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
-            <USideHeader title="Home" />
+            <USideHeader title="Discover" />
             <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
                 <XView flexDirection="column">
-                    {isNP && <UListItem title="All" path="/all" />}
-                    <UListItem title="Recommended" path="/discover/recommended" />
                     <UListItem title="Groups" path="/discover/groups" />
+                    <UListItem title="Recommendations" path="/discover/recommendations" />
+                    {isNP && <UListItem title="All" path="/all" />}
                 </XView>
             </XView>
         </XView>

@@ -22,6 +22,9 @@ const messageCommentsButtonWrapper = css`
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    &:hover {
+        background-color: var(--backgroundTertiaryHover);
+    }
 `;
 
 const iconWrapper = css`

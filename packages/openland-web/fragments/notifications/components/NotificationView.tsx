@@ -12,14 +12,21 @@ import ReplyIcon from 'openland-icons/s/ic-reply-24.svg';
 import ClearIcon from 'openland-icons/s/ic-delete-24.svg';
 import FollowIcon from 'openland-icons/s/ic-follow-24.svg';
 import UnfollowIcon from 'openland-icons/s/ic-follow-off-24.svg';
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
+import MoreHIcon from 'openland-icons/s/ic-more-h-24.svg';
+import { usePopper } from 'openland-web/components/unicorn/usePopper';
+import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
+import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 
 const wrapper = css`
     display: flex;
     flex-direction: row;
-    margin-bottom: 24px;
+    margin-bottom: 8px;
+    padding: 4px 0;
 `;
 
 const avatarWrapper = css`
+    padding-top: 4px;
     flex-shrink: 0;
 `;
 
@@ -46,6 +53,38 @@ const toolsWrapperClass = css`
     margin-left: -8px;
 `;
 
+interface MenuComponentProps {
+    ctx: UPopperController;
+    subscribed: boolean;
+    onFollowToggle: () => void;
+    onClear: () => void;
+}
+
+const MenuComponent = React.memo((props: MenuComponentProps) => {
+    const { ctx, subscribed, onFollowToggle, onClear } = props;
+    const builder = new UPopperMenuBuilder();
+
+    let [subsribed, setSubsribed] = React.useState(subscribed);
+
+    builder.item({
+        title: subsribed ? 'Unfollow thread' : 'Follow thread',
+        icon: subsribed ? <UnfollowIcon /> : <FollowIcon />,
+        onClick: () => {
+            setSubsribed(!subscribed);
+            onFollowToggle();
+        },
+        closeDelay: 400
+    });
+
+    builder.item({
+        title: 'Clear',
+        icon: <ClearIcon />,
+        onClick: onClear
+    });
+
+    return builder.build(ctx);
+});
+
 interface NotificationViewProps {
     notification: DataSourceWebMessageItem;
 }
@@ -56,9 +95,13 @@ export const NotificationView = React.memo((props: NotificationViewProps) => {
     const { id, date, sender, text, attachments, textSpans, fallback, senderNameEmojify, peerRootId, room, replyQuoteTextEmojify, notificationType, notificationId, isSubscribedMessageComments } = notification;
     const sharedRoom = room && room.__typename === 'SharedRoom' ? room as RoomNano_SharedRoom : undefined;
 
+    // Sorry universe
+    const isSubscribedMessageCommentsRef = React.useRef(!!isSubscribedMessageComments);
+    isSubscribedMessageCommentsRef.current = !!isSubscribedMessageComments;
+
     const handleFollowToggler = React.useCallback(() => {
         if (notificationId && peerRootId) {
-            if (isSubscribedMessageComments) {
+            if (!!isSubscribedMessageCommentsRef.current) {
                 client.mutateUnSubscribeMessageComments({ messageId: peerRootId });
             } else {
                 client.mutateSubscribeMessageComments({ messageId: peerRootId, type: CommentSubscriptionType.ALL });
@@ -78,6 +121,8 @@ export const NotificationView = React.memo((props: NotificationViewProps) => {
             builder.show();
         }
     }, [notificationId]);
+
+    const [toolsVisible, toolsShow] = usePopper({ hideOnClick: true, hideOnEsc: true, placement: 'bottom-start' }, ctx => <MenuComponent ctx={ctx} onClear={handleClearClick} onFollowToggle={handleFollowToggler} subscribed={!!isSubscribedMessageCommentsRef.current} />);
 
     return (
         <div className={wrapper}>
@@ -111,12 +156,7 @@ export const NotificationView = React.memo((props: NotificationViewProps) => {
                 {notificationType === 'new_comment' && (
                     <div className={toolsWrapperClass}>
                         <UIconLabeled path={`/message/${peerRootId}`} icon={<ReplyIcon />} label="Reply" />
-                        <UIconLabeled
-                            onClick={handleFollowToggler}
-                            icon={isSubscribedMessageComments ? <UnfollowIcon /> : <FollowIcon />}
-                            label={isSubscribedMessageComments ? 'Unfollow thread' : 'Follow thread'}
-                        />
-                        <UIconLabeled onClick={handleClearClick} icon={<ClearIcon />} label="Clear" />
+                        <UIconButton size="small" icon={<MoreHIcon />} onClick={toolsShow} active={toolsVisible} />
                     </div>
                 )}
             </div>

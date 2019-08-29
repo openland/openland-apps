@@ -8,7 +8,7 @@ import { Page } from 'openland-unicorn/Page';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { RoomShort_SharedRoom } from 'openland-api/Types';
 
-export const RecommendedFragment = React.memo(() => {
+export const RecommendationsFragment = React.memo(() => {
     const client = useClient();
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
     const data = client.useSuggestedRooms();
