@@ -9,8 +9,20 @@ export interface UNavigableListRef {
     onPressEnter(): boolean;
 }
 
-export const UNavigableReactWindow = React.memo(React.forwardRef(<T extends {}>(props: { data: T[], focusedByDefault?: boolean, itemSize: number, width: number | string, height: number, overscanCount?: number, onSelected: (item: T) => void, renderItem: (item: T) => JSX.Element }, ref: React.Ref<UNavigableListRef>) => {
-    let { data, itemSize, width, height, overscanCount, renderItem } = props;
+interface UNavigableReactWindowProps<T> {
+    paddingVertical?: number;
+    data: T[];
+    focusedByDefault?: boolean;
+    itemSize: number;
+    width: number | string;
+    height: number;
+    overscanCount?: number;
+    onSelected: (item: T) => void;
+    renderItem: (item: T) => JSX.Element;
+}
+
+export const UNavigableReactWindow = React.memo(React.forwardRef(<T extends {}>(props: UNavigableReactWindowProps<T>, ref: React.Ref<UNavigableListRef>) => {
+    let { data, itemSize, width, height, overscanCount, renderItem, paddingVertical = 0 } = props;
 
     let [state, dispatch] = React.useReducer((oldState: { index: number, length: number }, action: { delta?: number, length?: number, reset?: boolean }) => {
         let delta = action.delta !== undefined ? action.delta : 0;
@@ -48,7 +60,17 @@ export const UNavigableReactWindow = React.memo(React.forwardRef(<T extends {}>(
 
     let ItemContainer = (pr: { index: number, style: any }) => {
         return (
-            <Item style={pr.style} focused={pr.index === state.index} item={data[pr.index]} onSelected={props.onSelected}>
+            <Item
+                style={{
+                    ...pr.style,
+                    marginTop: pr.index === 0 ? paddingVertical : undefined,
+                    marginBottom: pr.index === data.length - 1 ? paddingVertical : undefined,
+                    top: pr.index !== 0 ? pr.style.top + paddingVertical : undefined
+                }}
+                focused={pr.index === state.index}
+                item={data[pr.index]}
+                onSelected={props.onSelected}
+            >
                 {renderItem(data[pr.index])}
             </Item>
         );
