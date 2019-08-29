@@ -32,7 +32,7 @@ const content = css`
 const wrapper = css`
     display: flex;
     flex-direction: row;
-    padding: 8px 0;
+    padding: 4px 0;
 `;
 
 const buttonsClass = css`

@@ -124,7 +124,7 @@ class CommentsNotificationsInner extends React.PureComponent<
         return (
             <>
                 <UHeader title="Notifications" appearance="wide" />
-                <XView paddingTop={24} flexGrow={1} flexShrink={1}>
+                <XView flexGrow={1} flexShrink={1}>
                     <DataSourceRender
                         dataSource={this.dataSource}
                         reverce={false}

@@ -16,10 +16,12 @@ import UnfollowIcon from 'openland-icons/s/ic-follow-off-24.svg';
 const wrapper = css`
     display: flex;
     flex-direction: row;
-    margin-bottom: 24px;
+    margin-bottom: 8px;
+    padding: 4px 0;
 `;
 
 const avatarWrapper = css`
+    padding-top: 4px;
     flex-shrink: 0;
 `;
 
