@@ -18,10 +18,10 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { trackEvent } from 'openland-mobile/analytics';
 
 const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
-    const organization = props.router.params.organization as OrganizationMembersShortPaginated_organization;
-    const invite = getClient().useOrganizationPublicInvite({ organizationId: organization.id }, { fetchPolicy: 'network-only' }).publicInvite!;
+    const { id, isCommunity } = props.router.params.organization as OrganizationMembersShortPaginated_organization;
+    const invite = getClient().useOrganizationPublicInvite({ organizationId: id }, { fetchPolicy: 'network-only' }).publicInvite!;
     const link = 'https://openland.com/join/' + invite.key;
-    const orgType = organization.isCommunity ? 'community' : 'organization';
+    const orgType = isCommunity ? 'community' : 'organization';
 
     const handleCopyClick = React.useCallback(() => {
         trackEvent('invite_link_action', {
@@ -62,8 +62,8 @@ const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
                     onPress={async () => {
                         startLoader();
                         try {
-                            await getMessenger().engine.client.mutateOrganizationCreatePublicInvite({ organizationId: props.router.params.id });
-                            await getClient().refetchOrganizationPublicInvite({ organizationId: props.router.params.id });
+                            await getMessenger().engine.client.mutateOrganizationCreatePublicInvite({ organizationId: id });
+                            await getClient().refetchOrganizationPublicInvite({ organizationId: id });
                         } catch (e) {
                             Alert.alert(formatError(e));
                         }

@@ -16,10 +16,10 @@ import { RoomWithoutMembers_room_SharedRoom } from 'openland-api/Types';
 import { trackEvent } from 'openland-mobile/analytics';
 
 const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
-    const room = props.router.params.room as RoomWithoutMembers_room_SharedRoom;
-    const invite = getClient().useRoomInviteLink({ roomId: room.id }, { fetchPolicy: 'network-only' }).link;
+    const { id, isChannel } = props.router.params.room as RoomWithoutMembers_room_SharedRoom;
+    const invite = getClient().useRoomInviteLink({ roomId: id }, { fetchPolicy: 'network-only' }).link;
     const link = 'https://openland.com/invite/' + invite;
-    const chatType = room.isChannel ? 'channel' : 'group';
+    const chatType = isChannel ? 'channel' : 'group';
 
     const handleCopyClick = React.useCallback(() => {
         trackEvent('invite_link_action', {
@@ -68,8 +68,8 @@ const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
                     onPress={async () => {
                         startLoader();
                         try {
-                            await getClient().mutateRoomRenewInviteLink({ roomId: props.router.params.id });
-                            await getClient().refetchRoomInviteLink({ roomId: props.router.params.id });
+                            await getClient().mutateRoomRenewInviteLink({ roomId: id });
+                            await getClient().refetchRoomInviteLink({ roomId: id });
                         } catch (e) {
                             Alert.alert(e);
                         }
