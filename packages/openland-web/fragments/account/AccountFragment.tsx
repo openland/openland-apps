@@ -30,8 +30,8 @@ const UserProfileCard = withUserInfo(({ user }) => {
                 path={`/${user.shortname || user.id}`}
                 color="var(--foregroundPrimary)"
                 hoverBackgroundColor="var(--backgroundPrimaryHover)"
-                selectedBackgroundColor="var(--accentPrimary)"
-                selectedHoverBackgroundColor="var(--accentPrimaryHover)"
+                selectedBackgroundColor="var(--accentMuted)"
+                selectedHoverBackgroundColor="var(--accentMutedHover)"
                 selectedColor="var(--foregroundInverted)"
                 flexDirection="row"
                 paddingHorizontal={16}
