@@ -200,7 +200,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         </XView>
                         <XView
                             {...TextStyles.Densed}
-                            color="var(--foregroundTertiary)"
+                            color="var(--foregroundSecondary)"
                         >
                             <span className={oneLiner}>
                                 {chat.__typename === 'PrivateRoom' && (
