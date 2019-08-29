@@ -121,7 +121,7 @@ const CreateGroupComponent = (props: PageProps) => {
                         autoFocus={true}
                     />
                     <ZSelect
-                        label={`${chatTypeString} type`}
+                        label="Type"
                         defaultValue={selectedKind}
                         onChange={(option: { label: string; value: SharedRoomKind.GROUP | SharedRoomKind.PUBLIC }) => {
                             setSelectedKind(option.value);

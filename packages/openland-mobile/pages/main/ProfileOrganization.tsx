@@ -181,10 +181,10 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
         }
 
         if (canEdit) {
-            builder.action('Delete', () => {
+            builder.action(`Delete ${typeString}`, () => {
                 Alert.builder()
                     .title(`Delete ${typeString}?`)
-                    .message(`This cannot be undone.`)
+                    .message(`This cannot be undone`)
                     .button('Cancel', 'cancel')
                     .action('Delete', 'destructive', async () => {
                         await client.mutateDeleteOrganization({ organizationId: organization.id });

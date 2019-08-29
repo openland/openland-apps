@@ -84,7 +84,7 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                         description="Publicly describe this community for all to see see"
                     />
                     <ZSelect
-                        label="Community type"
+                        label="Type"
                         defaultValue={organization.isPrivate}
                         disabled={!organization.isOwner}
                         onChange={async (option: { label: string; value: boolean }) => {

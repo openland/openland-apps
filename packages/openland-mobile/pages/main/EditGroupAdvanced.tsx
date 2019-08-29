@@ -11,7 +11,7 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { Modals } from './modals/Modals';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import { ZAvatarPicker, ZAvatarPickerRenderProps } from 'openland-mobile/components/ZAvatarPicker';
-import { View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 import { ZImage } from 'openland-mobile/components/ZImage';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';

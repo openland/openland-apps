@@ -21,7 +21,7 @@ const SignupOrgComponent = XMemo<PageProps>((props) => {
 
     const canSkip = nameField.value.length <= 0;
 
-    const handleSave = () => 
+    const handleSave = () =>
         form.doAction(async () => {
             const client = getClient();
 
@@ -53,7 +53,7 @@ const SignupOrgComponent = XMemo<PageProps>((props) => {
 
                 <ZListGroup header={null}>
                     <ZInput
-                        placeholder="Organization name"
+                        placeholder="Name"
                         autoFocus={true}
                         description="Please, provide organization name and optional logo"
                         field={nameField}
