@@ -256,8 +256,6 @@ export class ConversationEngine implements MessageSendHandler {
         let messages = [...(initialChat).messages];
         messages.reverse();
 
-        this.lastReadedDividerMessageId = initialChat.lastReadedMessage && initialChat.lastReadedMessage.id || undefined;
-
         this.messages = messages;
 
         this.role = initialChat.room && initialChat.room.__typename === 'SharedRoom' && initialChat.room.role || null;
@@ -299,10 +297,11 @@ export class ConversationEngine implements MessageSendHandler {
 
             if (loadToUnread) {
                 // append unread mark
-                if (sourceFragments[i].id === this.lastReadedDividerMessageId && i !== sourceFragments.length - 1) {
+                if ((initialChat.lastReadedMessage && initialChat.lastReadedMessage.id) && sourceFragments[i].id === (initialChat.lastReadedMessage && initialChat.lastReadedMessage.id) && i !== sourceFragments.length - 1) {
                     // Alert.alert(sourceFragments[i].id);
                     newMessagesDivider = createNewMessageDividerSourceItem(sourceFragments[i].id);
                     dsItems.push(newMessagesDivider);
+                    this.lastReadedDividerMessageId = initialChat.lastReadedMessage && initialChat.lastReadedMessage.id;
                 }
             }
 
@@ -342,8 +341,8 @@ export class ConversationEngine implements MessageSendHandler {
                     let targetIndex = this.dataSource.findIndex(this.lastTopMessageRead);
                     if (targetIndex > 0) {
                         this.dataSource.addItem(divider, targetIndex);
+                        this.lastReadedDividerMessageId = this.lastTopMessageRead;
                     }
-                    this.lastReadedDividerMessageId = this.lastTopMessageRead;
                 }
             }
         }
