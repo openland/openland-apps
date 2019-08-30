@@ -16,13 +16,13 @@ const spansMessageWrapper = css`
 `;
 
 const styleSpansMessageContainer = css`
-    display: inline;
+    display: block;
     white-space: pre-wrap;
     word-wrap: break-word;
     max-width: 100%;
     font-size: 15px;
     line-height: 24px;
-    letter-spacing: 0;
+    width: 100%;
     font-weight: 400;
     color: var(--foregroundPrimary);
 
