@@ -153,6 +153,10 @@ export const DialogUpdateFragment = gql`
                 mobile
                 desktop
             }
+            showNotification{
+                mobile
+                desktop
+            }
         }
         ... on DialogMessageUpdated {
             cid

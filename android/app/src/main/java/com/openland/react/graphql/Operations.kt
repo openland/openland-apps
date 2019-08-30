@@ -700,6 +700,11 @@ private val DialogUpdateFragmentSelector = obj(
                 field("cid","cid", notNull(scalar("ID"))),
                 field("globalUnread","globalUnread", notNull(scalar("Int"))),
                 field("haveMention","haveMention", notNull(scalar("Boolean"))),
+                field("showNotification","showNotification", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("desktop","desktop", notNull(scalar("Boolean"))),
+                        field("mobile","mobile", notNull(scalar("Boolean")))
+                    ))),
                 field("silent","silent", notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("desktop","desktop", notNull(scalar("Boolean"))),
@@ -1678,18 +1683,6 @@ private val FeatureFlagsSelector = obj(
                     field("title","title", notNull(scalar("String")))
                 )))))
         )
-private val FeedHomeSelector = obj(
-            field("alphaHomeFeed","homeFeed", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("alphaBy","by", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            fragment("User", UserShortSelector)
-                        ))),
-                    field("date","date", notNull(scalar("Date"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("text","text", notNull(scalar("String")))
-                )))))
-        )
 private val FetchPushSettingsSelector = obj(
             field("pushSettings","pushSettings", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -1705,32 +1698,6 @@ private val GlobalCounterSelector = obj(
                     field("id","id", notNull(scalar("ID"))),
                     field("unreadCount","unreadCount", notNull(scalar("Int")))
                 )))
-        )
-private val GlobalFeedHomeSelector = obj(
-            field("alphaHomeFeed","homeFeed", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    inline("FeedItem", obj(
-                        field("content","content", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                inline("FeedPost", obj(
-                                    field("message","message", obj(
-                                            field("__typename","__typename", notNull(scalar("String"))),
-                                            field("id","id", notNull(scalar("ID"))),
-                                            field("message","message", scalar("String")),
-                                            field("reactions","reactions", notNull(list(notNull(obj(
-                                                    field("__typename","__typename", notNull(scalar("String"))),
-                                                    field("reaction","reaction", notNull(scalar("String")))
-                                                ))))),
-                                            field("sender","sender", notNull(obj(
-                                                    field("__typename","__typename", notNull(scalar("String"))),
-                                                    fragment("User", UserShortSelector)
-                                                )))
-                                        ))
-                                ))
-                            )),
-                        field("id","id", notNull(scalar("ID")))
-                    ))
-                )))))
         )
 private val GlobalSearchSelector = obj(
             field("alphaGlobalSearch","items", arguments(fieldValue("kinds", refValue("kinds")), fieldValue("query", refValue("query"))), notNull(list(notNull(obj(
@@ -2791,15 +2758,6 @@ private val FeatureFlagEnableSelector = obj(
                     field("id","id", notNull(scalar("ID")))
                 )))
         )
-private val FeedPostSelector = obj(
-            field("alphaCreateFeedPost","alphaCreateFeedPost", arguments(fieldValue("message", refValue("message"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
-                )))
-        )
-private val GlobalFeedPostSelector = obj(
-            field("alphaCreateGlobalFeedPost","alphaCreateGlobalFeedPost", arguments(fieldValue("message", refValue("message"))), notNull(scalar("Boolean")))
-        )
 private val MarkSequenceReadSelector = obj(
             field("alphaGlobalRead","alphaGlobalRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("String")))
         )
@@ -3561,12 +3519,6 @@ object Operations {
         override val body = "query FeatureFlags{featureFlags{__typename id key title}}"
         override val selector = FeatureFlagsSelector
     }
-    val FeedHome = object: OperationDefinition {
-        override val name = "FeedHome"
-        override val kind = OperationKind.QUERY
-        override val body = "query FeedHome{homeFeed:alphaHomeFeed{__typename by:alphaBy{__typename ...UserShort}date id text}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}"
-        override val selector = FeedHomeSelector
-    }
     val FetchPushSettings = object: OperationDefinition {
         override val name = "FetchPushSettings"
         override val kind = OperationKind.QUERY
@@ -3584,12 +3536,6 @@ object Operations {
         override val kind = OperationKind.QUERY
         override val body = "query GlobalCounter{alphaNotificationCounter{__typename id unreadCount}}"
         override val selector = GlobalCounterSelector
-    }
-    val GlobalFeedHome = object: OperationDefinition {
-        override val name = "GlobalFeedHome"
-        override val kind = OperationKind.QUERY
-        override val body = "query GlobalFeedHome{homeFeed:alphaHomeFeed{__typename ... on FeedItem{content{__typename ... on FeedPost{message{__typename id message reactions{__typename reaction}sender{__typename ...UserShort}}}}id}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}"
-        override val selector = GlobalFeedHomeSelector
     }
     val GlobalSearch = object: OperationDefinition {
         override val name = "GlobalSearch"
@@ -4101,18 +4047,6 @@ object Operations {
         override val body = "mutation FeatureFlagEnable(\$accountId:ID!,\$featureId:ID!){superAccountFeatureAdd(featureId:\$featureId,id:\$accountId){__typename features{__typename id key title}id}}"
         override val selector = FeatureFlagEnableSelector
     }
-    val FeedPost = object: OperationDefinition {
-        override val name = "FeedPost"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation FeedPost(\$message:String!){alphaCreateFeedPost(message:\$message){__typename id}}"
-        override val selector = FeedPostSelector
-    }
-    val GlobalFeedPost = object: OperationDefinition {
-        override val name = "GlobalFeedPost"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation GlobalFeedPost(\$message:String!){alphaCreateGlobalFeedPost(message:\$message)}"
-        override val selector = GlobalFeedPostSelector
-    }
     val MarkSequenceRead = object: OperationDefinition {
         override val name = "MarkSequenceRead"
         override val kind = OperationKind.MUTATION
@@ -4602,7 +4536,7 @@ object Operations {
     val DialogsWatch = object: OperationDefinition {
         override val name = "DialogsWatch"
         override val kind = OperationKind.SUBSCRIPTION
-        override val body = "subscription DialogsWatch(\$state:String){event:dialogsUpdates(fromState:\$state){__typename ... on DialogUpdateSingle{seq state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{fromSeq seq state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{message:alphaMessage{__typename ...TinyMessage}cid globalUnread haveMention silent{__typename desktop mobile}unread}... on DialogMessageUpdated{message:alphaMessage{__typename ...TinyMessage}cid haveMention}... on DialogMessageDeleted{message:alphaMessage{__typename ...TinyMessage}prevMessage:alphaPrevMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageRead{cid globalUnread haveMention unread}... on DialogMuteChanged{cid mute}... on DialogPeerUpdated{cid peer{__typename ... on PrivateRoom{id user{__typename id name photo}}... on SharedRoom{id photo title}}}... on DialogDeleted{cid globalUnread}... on DialogBump{cid globalUnread haveMention topMessage{__typename ...TinyMessage}unread}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}senderBadge{__typename ...UserBadge}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id isMentioned quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserBadge on UserBadge{__typename id name verified}"
+        override val body = "subscription DialogsWatch(\$state:String){event:dialogsUpdates(fromState:\$state){__typename ... on DialogUpdateSingle{seq state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{fromSeq seq state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{message:alphaMessage{__typename ...TinyMessage}cid globalUnread haveMention showNotification{__typename desktop mobile}silent{__typename desktop mobile}unread}... on DialogMessageUpdated{message:alphaMessage{__typename ...TinyMessage}cid haveMention}... on DialogMessageDeleted{message:alphaMessage{__typename ...TinyMessage}prevMessage:alphaPrevMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageRead{cid globalUnread haveMention unread}... on DialogMuteChanged{cid mute}... on DialogPeerUpdated{cid peer{__typename ... on PrivateRoom{id user{__typename id name photo}}... on SharedRoom{id photo title}}}... on DialogDeleted{cid globalUnread}... on DialogBump{cid globalUnread haveMention topMessage{__typename ...TinyMessage}unread}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}senderBadge{__typename ...UserBadge}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id isMentioned quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserBadge on UserBadge{__typename id name verified}"
         override val selector = DialogsWatchSelector
     }
     val MyNotificationsCenter = object: OperationDefinition {
@@ -4650,11 +4584,9 @@ object Operations {
         if (name == "ExploreOrganizations") return ExploreOrganizations
         if (name == "ExplorePeople") return ExplorePeople
         if (name == "FeatureFlags") return FeatureFlags
-        if (name == "FeedHome") return FeedHome
         if (name == "FetchPushSettings") return FetchPushSettings
         if (name == "GetDraftMessage") return GetDraftMessage
         if (name == "GlobalCounter") return GlobalCounter
-        if (name == "GlobalFeedHome") return GlobalFeedHome
         if (name == "GlobalSearch") return GlobalSearch
         if (name == "Message") return Message
         if (name == "MessageComments") return MessageComments
@@ -4740,8 +4672,6 @@ object Operations {
         if (name == "FeatureFlagAdd") return FeatureFlagAdd
         if (name == "FeatureFlagDisable") return FeatureFlagDisable
         if (name == "FeatureFlagEnable") return FeatureFlagEnable
-        if (name == "FeedPost") return FeedPost
-        if (name == "GlobalFeedPost") return GlobalFeedPost
         if (name == "MarkSequenceRead") return MarkSequenceRead
         if (name == "MediaAnswer") return MediaAnswer
         if (name == "MediaCandidate") return MediaCandidate
