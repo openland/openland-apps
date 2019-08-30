@@ -1,5 +1,4 @@
 import * as React from 'react';
-import copy from 'copy-to-clipboard';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import { MutationFunc } from 'react-apollo';
@@ -21,169 +20,15 @@ import { XLoader } from 'openland-x/XLoader';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { useClient } from 'openland-web/utils/useClient';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
-import { XMutation } from 'openland-x/XMutation';
 import { XTrack } from 'openland-x-analytics/XTrack';
-import { trackEvent } from 'openland-x-analytics';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
-import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
-import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
-import IcDelete from 'openland-icons/s/ic-delete-24.svg';
-import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { CheckComponent } from 'openland-web/components/unicorn/UCheckbox';
-
-interface RenewInviteLinkButtonProps {
-    id: string;
-    isGroup: boolean;
-    isOrganization: boolean;
-}
-
-const renewContainer = css`
-    position: absolute;
-    cursor: pointer;
-    right: 14px;
-    top: 11px;
-`;
-
-const RenewInviteLinkButton = (props: RenewInviteLinkButtonProps) => {
-    const [show] = useCaptionPopper({ text: 'Revoke link' });
-    const client = useClient();
-    const id = props.id;
-    let renew = undefined;
-
-    if (props.isGroup) {
-        renew = async () => {
-            await client.mutateRoomRenewInviteLink({ roomId: id });
-            await client.refetchRoomInviteLink({ roomId: id });
-        };
-    } else if (props.isOrganization) {
-        renew = async () => {
-            await client.mutateOrganizationCreatePublicInvite({ organizationId: id });
-            await client.refetchOrganizationPublicInvite({ organizationId: id });
-        };
-    }
-
-    return (
-        <XMutation mutation={renew}>
-            <div className={renewContainer} onMouseEnter={show}>
-                <UIcon icon={<IcDelete />} size={20} />
-            </div>
-        </XMutation>
-    );
-};
-
-const linkStyle = css`
-    flex-grow: 1;
-    height: 40px;
-    border-radius: 8px;
-    padding: 8px 16px;
-    padding-right: 40px;
-    background-color: var(--backgroundTertiary);
-    text-overflow: ellipsis;
-    overflow: hidden;
-`;
-
-interface OwnerLinkComponentProps {
-    id: string;
-    invite: string;
-    isGroup: boolean;
-    isChannel?: boolean;
-    isOrganization: boolean;
-    isCommunity?: boolean;
-}
-
-const OwnerLinkComponent = (props: OwnerLinkComponentProps) => {
-    const [copied, setCopied] = React.useState(false);
-
-    let invitePart = '/invite/';
-    if (props.isOrganization || props.isCommunity) {
-        invitePart = '/join/';
-    }
-    const invitePath = 'https://openland.com' + invitePart + props.invite;
-
-    const copyPath = () => {
-        const objType = props.isGroup
-            ? props.isChannel
-                ? 'channel'
-                : 'group'
-            : props.isCommunity
-                ? 'community'
-                : 'organization';
-
-        trackEvent('invite_link_action', { invite_type: objType, action_type: 'link_copied' });
-        copy(invitePath);
-        setCopied(true);
-
-        const t = setTimeout(() => {
-            setCopied(false);
-        }, 1500);
-
-        return () => clearTimeout(t);
-    };
-
-    return (
-        <XView flexDirection="row" alignItems="center">
-            <XView
-                flexDirection="row"
-                alignItems="center"
-                flexGrow={1}
-                flexShrink={1}
-                marginRight={8}
-            >
-                <div className={cx(linkStyle, TextBody)}>{invitePath}</div>
-                <RenewInviteLinkButton
-                    id={props.id}
-                    isGroup={props.isGroup}
-                    isOrganization={props.isOrganization}
-                />
-            </XView>
-            <UButton
-                text={copied ? 'Copied' : 'Copy'}
-                style={copied ? 'success' : 'primary'}
-                size="large"
-                onClick={copyPath}
-            />
-        </XView>
-    );
-};
-
-type OwnerLinkT = {
-    id: string;
-    isGroup: boolean;
-    isChannel?: boolean;
-    isOrganization: boolean;
-    isCommunity?: boolean;
-};
-
-const OwnerLink = (props: OwnerLinkT) => {
-    const client = useClient();
-    let data = null;
-    let link = null;
-
-    if (props.isGroup) {
-        data = client.useRoomInviteLink({ roomId: props.id });
-        link = data.link;
-    } else if (props.isOrganization) {
-        data = client.useWithoutLoaderOrganizationPublicInvite({
-            organizationId: props.id,
-        });
-        link = data && data.publicInvite ? data.publicInvite.key : null;
-    }
-
-    return (
-        <OwnerLinkComponent
-            invite={link || ''}
-            id={props.id}
-            isGroup={props.isGroup}
-            isChannel={props.isChannel}
-            isOrganization={props.isOrganization}
-            isCommunity={props.isCommunity}
-        />
-    );
-};
+import { OwnerLinkComponent } from 'openland-web/fragments/invite/OwnerLinkComponent';
 
 interface SearchBoxProps {
     value: { label: string; value: string }[] | null;
@@ -342,7 +187,7 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                 >
                     <XView marginBottom={16}>
                         <SectionTitle title="Share invitation link" />
-                        <OwnerLink
+                        <OwnerLinkComponent
                             id={props.id}
                             isGroup={props.isGroup}
                             isChannel={props.isChannel}

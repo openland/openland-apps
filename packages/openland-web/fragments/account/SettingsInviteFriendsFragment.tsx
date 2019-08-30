@@ -1,144 +1,31 @@
 import * as React from 'react';
+import copy from 'copy-to-clipboard';
 import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
 import { XImage } from 'react-mental';
-import { XTextArea } from 'openland-x/XTextArea';
-import { XInput } from 'openland-x/XInput';
-import CheckIcon from 'openland-icons/ic-check.svg';
-import CopiedIcon from 'openland-icons/ic-content-copy.svg';
 import LinkedInIcon from 'openland-icons/linkedin-2.svg';
 import TwitterIcon from 'openland-icons/twitter-2.svg';
 import FacebookIcon from 'openland-icons/ic-fb.svg';
 import { XModalController } from 'openland-x/showModal';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { OwnerLinkComponent } from 'openland-web/fragments/invite/OwnerLinkComponent';
+import { TextBody } from 'openland-web/utils/TextStyles';
 import { Page } from 'openland-unicorn/Page';
 
 const textAlignCenterClassName = css`
     text-align: center;
 `;
 
-const InputClassName = css`
-    font-size: 15px !important;
-    border-radius: 8px !important;
-    background: #f9f9f9 !important;
-    border: none !important;
-    &:focus-within {
-        border: none !important;
-        box-shadow: none !important;
-    }
+const socialTextStyle = css`
+    width: 100%;
+    padding: 16px;
+    border-radius: 8px;
+    background-color: var(--backgroundTertiary);
+    color: var(--foregroundPrimary);
+    white-space: pre-wrap;
 `;
-
-const copyIconClassName = css`
-    & path:last-child {
-        fill: #a2d2ff !important;
-    }
-`;
-
-interface CopyButtonProps {
-    copied: boolean;
-    onClick: () => void;
-    bright?: boolean;
-    text?: string;
-}
-
-const CopyButton = (props: CopyButtonProps) => (
-    <XView
-        height={40}
-        borderRadius={8}
-        paddingLeft={20}
-        paddingRight={20}
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="center"
-        fontSize={13}
-        fontWeight="600"
-        backgroundColor={props.copied ? '#69d06d' : props.bright ? '#e8f4ff' : '#1790ff'}
-        color={props.copied ? '#fff' : props.bright ? '#1790ff' : '#fff'}
-        cursor="pointer"
-        onClick={props.onClick}
-    >
-        {props.copied ? (
-            <CheckIcon />
-        ) : (
-            <CopiedIcon className={cx(!props.bright && copyIconClassName)} />
-        )}
-        <XView marginLeft={10}>{props.copied ? 'Copied' : props.text ? props.text : 'Copy'}</XView>
-    </XView>
-);
-
-interface OwnerLinkComponentProps {
-    inviteKey: string | null;
-    id?: string;
-}
-
-class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps> {
-    input?: any;
-    timer: any;
-
-    state = {
-        copied: false,
-    };
-
-    componentWillUnmount() {
-        clearInterval(this.timer);
-    }
-
-    private handleRef = (e: any) => {
-        if (e === null) {
-            return;
-        }
-        this.input = e;
-    }
-
-    private copy = () => {
-        if (this.input && this.input.inputRef) {
-            const isIos = window.navigator.userAgent.match(/iPhone|iPad|iPod/i);
-            this.input.inputRef.inputRef.select();
-            if (isIos) {
-                this.input.inputRef.inputRef.setSelectionRange(0, 99999);
-            }
-            document.execCommand('copy');
-            this.input.inputRef.inputRef.blur();
-        }
-        this.setState({
-            copied: true,
-        });
-
-        this.timer = setTimeout(() => {
-            this.setState({
-                copied: false,
-            });
-        }, 1500);
-    }
-
-    render() {
-        const { copied } = this.state;
-        const { props } = this;
-        return (
-            <XView flexDirection="row" flexShrink={0} flexGrow={1} alignSelf="stretch">
-                <XView
-                    flexDirection="row"
-                    alignItems="center"
-                    flexGrow={1}
-                    flexShrink={1}
-                    marginRight={12}
-                >
-                    <XInput
-                        size="large"
-                        flexGrow={1}
-                        ref={this.handleRef}
-                        className={InputClassName}
-                        value={'https://openland.com/invite/' + props.inviteKey}
-                    />
-                </XView>
-                <XView flexDirection="row" alignItems="center" flexShrink={0}>
-                    <CopyButton copied={copied} onClick={this.copy} />
-                </XView>
-            </XView>
-        );
-    }
-}
 
 const SocialButtonClassName = css`
     width: 36px;
@@ -179,26 +66,17 @@ const SocialButton = (props: SocialButtonProps) => (
     </a>
 );
 
-const WritePostBlock = (props: { inviteKey: string, isMobile: boolean }) => {
+const WritePostBlock = (props: { inviteKey: string; isMobile: boolean }) => {
     const sharingUrl = 'https://openland.com/invite/' + props.inviteKey;
     const sharingText =
         "Check out Openland, an invitation-only community where founders helping founders. There are chats for any industry, location, and priority task. If you need help with investor intros, customers, hiring, or tech choices — that's the place! Invite to join:\n";
     const sharingTextFull = sharingText + sharingUrl;
     const [copied, setCopied] = React.useState(false);
-    const textAreaRef: any = React.useRef();
     const copyText = () => {
         if (copied) {
             return;
         }
-        if (textAreaRef && textAreaRef.current) {
-            const isIos = window.navigator.userAgent.match(/iPhone|iPad|iPod/i);
-            textAreaRef.current.textAreaRef.textAreaRef.select();
-            if (isIos) {
-                textAreaRef.current.textAreaRef.textAreaRef.setSelectionRange(0, 99999);
-            }
-            document.execCommand('copy');
-            textAreaRef.current.textAreaRef.textAreaRef.blur();
-        }
+        copy(sharingTextFull);
         setCopied(true);
         setTimeout(() => {
             setCopied(false);
@@ -217,33 +95,7 @@ const WritePostBlock = (props: { inviteKey: string, isMobile: boolean }) => {
                 <span className={textAlignCenterClassName}>Write a post</span>
             </XView>
             <XView flexGrow={1} alignSelf="stretch">
-                <XTextArea
-                    value={sharingTextFull}
-                    onChange={() => null}
-                    flexGrow={1}
-                    height={props.isMobile ? 230 : 180}
-                    resize={false}
-                    mode="modern"
-                    padding={16}
-                    ref={textAreaRef}
-                />
-                <XView
-                    position="absolute"
-                    width="100%"
-                    height="100%"
-                    top={0}
-                    left={0}
-                    padding={16}
-                    borderRadius={8}
-                    backgroundColor="#f9f9f9"
-                    fontSize={15}
-                    lineHeight={1.6}
-                    color="rgba(0, 0, 0, 0.9)"
-                >
-                    <span style={{ whiteSpace: 'pre-wrap', letterSpacing: 0.4 }}>
-                        {sharingTextFull}
-                    </span>
-                </XView>
+                <div className={cx(socialTextStyle, TextBody)}>{sharingTextFull}</div>
             </XView>
             <XView
                 marginTop={24}
@@ -252,7 +104,12 @@ const WritePostBlock = (props: { inviteKey: string, isMobile: boolean }) => {
                 alignItems="center"
                 justifyContent="space-between"
             >
-                <CopyButton copied={copied} onClick={copyText} text="Copy text" bright />
+                <UButton
+                    text={copied ? 'Copied' : 'Copy'}
+                    style={copied ? 'success' : 'primary'}
+                    size="large"
+                    onClick={copyText}
+                />
                 <XView flexDirection="row" alignItems="center">
                     <XView fontSize={14} color="#000" marginRight={16}>
                         Share on
@@ -355,7 +212,13 @@ export const InviteFriendsComponent = (props: InviteFriendsFragmentProps) => {
                     >
                         <span className={textAlignCenterClassName}>Invite link</span>
                     </XView>
-                    <OwnerLinkComponent inviteKey={openlandInvite} />
+                    <OwnerLinkComponent
+                        inviteKey={openlandInvite}
+                        isGroup={false}
+                        isOrganization={false}
+                        hideRevoke
+                        isAppInvite
+                    />
                 </XView>
                 <WritePostBlock inviteKey={openlandInvite} isMobile={isMobile} />
             </XView>
