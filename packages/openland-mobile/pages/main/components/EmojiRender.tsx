@@ -94,6 +94,7 @@ interface EmojiRenderRowProps {
 
 export const EmojiRenderRow = (props: EmojiRenderRowProps) => {
     const { activeWord, items, onEmojiPress } = props;
+    const theme = React.useContext(ThemeContext);
 
     if (items.length > 0) {
         return (
@@ -105,7 +106,7 @@ export const EmojiRenderRow = (props: EmojiRenderRowProps) => {
                             onPress={() => onEmojiPress(activeWord, item[2])}
                         >
                             <View width={50} height={40} alignItems="center" justifyContent="center">
-                                <Text style={{ fontSize: 26 }} allowFontScaling={false}>
+                                <Text style={{ fontSize: 26, color: theme.foregroundPrimary }} allowFontScaling={false}>
                                     {item[2]}
                                 </Text>
                             </View>

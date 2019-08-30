@@ -92,7 +92,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                 {
                     !this.state.conversation.loading && this.state.conversation.messages.length === 0 && (
                         <ASSafeAreaView style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={{ fontSize: 72, lineHeight: 120 }} allowFontScaling={false} onPress={this.sendWave}>👋</Text>
+                            <Text style={{ fontSize: 72, lineHeight: 120, color: this.props.theme.foregroundPrimary }} allowFontScaling={false} onPress={this.sendWave}>👋</Text>
                             <ZRoundedButton title="Wave" style="secondary" onPress={this.sendWave} />
                         </ASSafeAreaView>
                     )
