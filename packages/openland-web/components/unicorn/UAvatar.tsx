@@ -115,7 +115,7 @@ const OnlineDotXXLarge = () => (
         borderWidth={2}
         borderColor="var(--backgroundPrimary)"
         backgroundColor="var(--accentPrimary)"
-        zIndex={3}
+        zIndex={2}
     />
 );
 
@@ -130,7 +130,7 @@ const OnlineDotXLarge = () => (
         borderWidth={2}
         borderColor="var(--backgroundPrimary)"
         backgroundColor="var(--accentPrimary)"
-        zIndex={3}
+        zIndex={2}
     />
 );
 
@@ -145,7 +145,7 @@ const OnlineDotLarge = () => (
         borderWidth={2}
         borderColor="var(--backgroundPrimary)"
         backgroundColor="var(--accentPrimary)"
-        zIndex={3}
+        zIndex={2}
     />
 );
 
@@ -160,7 +160,7 @@ const OnlineDotMedium = () => (
         borderWidth={2}
         borderColor="var(--backgroundPrimary)"
         backgroundColor="var(--accentPrimary)"
-        zIndex={3}
+        zIndex={2}
     />
 );
 
@@ -175,7 +175,7 @@ const OnlineDotSmall = () => (
         borderWidth={2}
         borderColor="var(--backgroundPrimary)"
         backgroundColor="var(--accentPrimary)"
-        zIndex={3}
+        zIndex={2}
     />
 );
 
@@ -190,7 +190,7 @@ const OnlineDotXSmall = () => (
         borderWidth={1}
         borderColor="var(--backgroundPrimary)"
         backgroundColor="var(--accentPrimary)"
-        zIndex={3}
+        zIndex={2}
     />
 );
 
