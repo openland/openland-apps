@@ -1,3 +1,0 @@
-mutation GlobalFeedPost($message: String!) {
-  alphaCreateGlobalFeedPost(message: $message)
-}

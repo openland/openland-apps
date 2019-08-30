@@ -13,7 +13,6 @@ import * as Comments from './queries/Comments';
 import * as Conferences from './queries/Conferences';
 import * as Explore from './queries/Explore';
 import * as FeatureFlag from './queries/FeatureFlag';
-import * as Feed from './queries/Feed';
 import * as MyNotificationsCenter from './queries/MyNotificationsCenter';
 import * as Organization from './queries/Organization';
 import * as Permissions from './queries/Permissions';
@@ -180,10 +179,6 @@ export const FeatureFlagsQuery = typedQuery<Types.FeatureFlags, {}>(FeatureFlag.
 export const FeatureFlagAddMutation = typedMutation<Types.FeatureFlagAdd, Types.FeatureFlagAddVariables>(FeatureFlag.FeatureFlagAddMutation);
 export const FeatureFlagEnableMutation = typedMutation<Types.FeatureFlagEnable, Types.FeatureFlagEnableVariables>(FeatureFlag.FeatureFlagEnableMutation);
 export const FeatureFlagDisableMutation = typedMutation<Types.FeatureFlagDisable, Types.FeatureFlagDisableVariables>(FeatureFlag.FeatureFlagDisableMutation);
-export const FeedHomeQuery = typedQuery<Types.FeedHome, {}>(Feed.FeedHomeQuery);
-export const GlobalFeedHomeQuery = typedQuery<Types.GlobalFeedHome, {}>(Feed.GlobalFeedHomeQuery);
-export const GlobalFeedPostMutation = typedMutation<Types.GlobalFeedPost, Types.GlobalFeedPostVariables>(Feed.GlobalFeedPostMutation);
-export const FeedPostMutation = typedMutation<Types.FeedPost, Types.FeedPostVariables>(Feed.FeedPostMutation);
 export const MyNotificationsQuery = typedQuery<Types.MyNotifications, Types.MyNotificationsVariables>(MyNotificationsCenter.MyNotificationsQuery);
 export const MyNotificationsCenterSubscription = typedSubscription<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables>(MyNotificationsCenter.MyNotificationsCenterSubscription);
 export const MyNotificationCenterQuery = typedQuery<Types.MyNotificationCenter, {}>(MyNotificationsCenter.MyNotificationCenterQuery);

@@ -68,22 +68,25 @@ export class NotificationsEngine {
     }
 
     handleIncomingMessage = async (cid: string, event: NewMessageEvent) => {
-        if (AppConfig.getPlatform() === 'mobile' && event.silent.mobile) {
-            return;
-        } else if (AppConfig.getPlatform() === 'desktop' && event.silent.desktop) {
-            return;
-        }
         const msg = event.message;
-
         let room = (await this.engine.client.client.query(RoomTinyQuery, { id: cid })).room!;
         let sharedRoom =
             room.__typename === 'SharedRoom' ? (room as RoomTiny_room_SharedRoom) : null;
         let privateRoom =
             room.__typename === 'PrivateRoom' ? (room as RoomTiny_room_PrivateRoom) : null;
-
-        AppNotifications.playIncomingSound();
         let conversationId = privateRoom ? privateRoom.user.id : sharedRoom!.id;
         let message = msg.message || msg.fallback;
+
+        if ((AppConfig.getPlatform() === 'mobile' && !event.silent.mobile) ||
+            (AppConfig.getPlatform() === 'desktop' && !event.silent.desktop)) {
+            AppNotifications.playIncomingSound();
+        }
+
+        if (AppConfig.getPlatform() === 'mobile' && !event.showNotification.mobile) {
+            return;
+        } else if (AppConfig.getPlatform() === 'desktop' && !event.showNotification.desktop) {
+            return;
+        }
 
         if (sharedRoom) {
             AppNotifications.displayNotification({

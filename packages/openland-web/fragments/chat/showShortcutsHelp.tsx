@@ -13,6 +13,7 @@ import {
     SpanIrony,
     SpanLoud,
 } from 'openland-y-utils/spans/Span';
+import { detectOS } from 'openland-x-utils/detectOS';
 
 type SpanT =
     | SpanType.code_block
@@ -36,7 +37,7 @@ const shortcutsGroupStyle = css`
     }
 `;
 
-const ShortcutsGroup = (props: { children: JSX.Element[] }) => (
+const ShortcutsGroup = (props: { children: any[] }) => (
     <div className={shortcutsGroupStyle}>{props.children}</div>
 );
 
@@ -122,6 +123,7 @@ const Formatting = ({
     );
 
 export const ShortcutsBody = () => {
+    let os = detectOS();
     return (
         <XScrollView3 flexShrink={1} useDefaultScroll={true}>
             <div className={shortcutsContainer}>
@@ -129,7 +131,6 @@ export const ShortcutsBody = () => {
                 <ShortcutsGroup>
                     <Shortcut shortcuts={['Enter']} description="Send message" />
                     <Shortcut shortcuts={['Shift + Enter']} description="New line" />
-                    <Shortcut shortcuts={['Ctrl + E']} description="Edit last message" />
                     <Shortcut
                         shortcuts={['↑']}
                         description="Edit last message (works when the message box is in focus)"
@@ -138,18 +139,18 @@ export const ShortcutsBody = () => {
                 <ShortcutsGroup>
                     <Shortcut shortcuts={['Ctrl + S']} description="Search chats" />
                     <Shortcut shortcuts={['Esc']} description="Close chat" />
-                    <Shortcut
-                        shortcuts={['Ctrl + Option + N (Mac)', 'Ctrl + Alt + N (Windows)']}
+                    {/* <Shortcut
+                        shortcuts={['Ctrl + Option + N', 'Ctrl + Alt + N (Windows)']}
                         description="New chat"
-                    />
+                    /> */}
                 </ShortcutsGroup>
                 <ShortcutsGroup>
-                    <Shortcut
-                        shortcuts={['Ctrl + Cmd + Space (Mac)']}
+                    {os === 'Mac' && <Shortcut
+                        shortcuts={['Ctrl + Cmd + Space']}
                         description="Emojis (standard Mac shortcut)"
-                    />
+                    />}
                     <Shortcut
-                        shortcuts={['Cmd + Enter (Mac)', 'Ctrl + Enter (Windows)']}
+                        shortcuts={[os === 'Mac' ? 'Cmd + Enter' : 'Ctrl + Enter (Windows)']}
                         description="Submit form"
                     />
                 </ShortcutsGroup>
@@ -158,15 +159,15 @@ export const ShortcutsBody = () => {
                     <Formatting formatting={{ type: SpanType.loud, text: '# Heading 1' }} />
                     <Formatting
                         formatting={{ type: SpanType.bold, text: '*bold*' }}
-                        shortcuts={['Cmd + B (Mac)', 'Ctrl + B (Windows)']}
+                    // shortcuts={['Cmd + B', 'Ctrl + B (Windows)']}
                     />
                     <Formatting
                         formatting={{ type: SpanType.italic, text: '_italic_' }}
-                        shortcuts={['Cmd + I (Mac)', 'Ctrl + I (Windows)']}
+                    // shortcuts={['Cmd + I', 'Ctrl + I (Windows)']}
                     />
                     <Formatting
                         formatting={{ type: SpanType.irony, text: '~irony~' }}
-                        shortcuts={['Cmd + U (Mac)', 'Ctrl + U (Windows)']}
+                    // shortcuts={['Cmd + U', 'Ctrl + U (Windows)']}
                     />
                     <Formatting
                         formatting={{ type: SpanType.code_inline, text: '`one line code block`' }}

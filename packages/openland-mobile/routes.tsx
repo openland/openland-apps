@@ -59,8 +59,6 @@ import { Buttons } from './pages/dev/Buttons';
 import { Inputs } from './pages/dev/Inputs';
 import { Avatars } from './pages/dev/Avatars';
 import { SignupOrg } from './pages/auth/SignupOrg';
-import { Feed } from './pages/main/Feed';
-import { CreatePost } from './pages/main/modals/CreatePost';
 import { Videos } from './pages/dev/Videos';
 
 export const Routes = new SRoutesBuilder()
@@ -134,8 +132,5 @@ export const Routes = new SRoutesBuilder()
   .addRoute('CommunityList', CommunityList)
 
   .addRoute('Apps/Tasks', Tasks)
-
-  .addRoute('Feed', Feed)
-  .addRoute('CreatePost', CreatePost)
 
   .build();
