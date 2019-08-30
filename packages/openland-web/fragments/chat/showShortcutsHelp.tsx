@@ -150,7 +150,7 @@ export const ShortcutsBody = () => {
                         description="Emojis (standard Mac shortcut)"
                     />}
                     <Shortcut
-                        shortcuts={[os === 'Mac' ? 'Cmd + Enter' : 'Ctrl + Enter (Windows)']}
+                        shortcuts={[os === 'Mac' ? 'Cmd + Enter' : 'Ctrl + Enter']}
                         description="Submit form"
                     />
                 </ShortcutsGroup>
