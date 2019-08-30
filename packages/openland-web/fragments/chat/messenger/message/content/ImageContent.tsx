@@ -100,35 +100,35 @@ const imgContainer = css`
     justify-content: center;
     min-height: 72px;
     min-width: 72px;
-    max-width: 680px;
+    max-width: 100%;
     max-height: 600px;
     overflow: hidden;
     border-radius: 8px;
     background-color: #f0f2f5;
     z-index: 0;
     cursor: pointer;
-    /* TODO: remove, causes scroll jump */
-    @media (max-width: 1300px) {
-        max-width: 100%;
-        height: auto !important;
+
+    &:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 1px solid var(--borderLight);
+        border-radius: 8px;
     }
 `;
 
 const imgMediaClass = css`
-    @media (max-width: 1300px) {
-        position: static !important;
-        object-fit: contain;
-        display: block;
-        max-width: 100%;
-        max-height: 100%;
-        height: auto;
-    }
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
     will-change: opacity;
 `;
 
 const imgPreviewClass = css`
     position: absolute;
-    border-radius: 8px;
     max-width: 100%;
     max-height: 100%;
     z-index: 0;
@@ -139,14 +139,21 @@ const imgAppearClass = css`
     background-color: var(--backgroundPrimary);
     transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
     position: absolute;
-    border-radius: 8px;
 `;
 
 const imgAppearInstantClass = css`
     opacity: 1;
-    border-radius: 8px;
     position: absolute;
     cursor: pointer;
+`;
+
+const imgSpacer = css`
+    &:before {
+        content: "";
+        display: block;
+        padding-top: var(--ratio);
+        width: 100%;
+    }
 `;
 
 const GifContent = React.memo(
@@ -182,7 +189,14 @@ const GifContent = React.memo(
         const imgPositionTop = layoutHeight < 72 ? `calc(50% - ${layoutHeight / 2}px)` : '0';
 
         return (
-            <div className={imgContainer} style={{ width: layoutWidth, height: layoutHeight }}>
+            <div className={imgContainer} style={{ width: layoutWidth }}>
+                <div
+                    className={imgSpacer}
+                    style={{
+                        width: layoutWidth,
+                        '--ratio': ((layoutHeight / layoutWidth) * 100) + '%'
+                    } as React.CSSProperties}
+                />
                 <img
                     className={cx(imgPreviewClass)}
                     width={layoutWidth}
@@ -279,7 +293,7 @@ export const ImageContent = React.memo(
         return (
             <div
                 className={imgContainer}
-                style={{ width: layoutWidth, height: layoutHeight }}
+                style={{ width: layoutWidth }}
                 onClick={(e: React.MouseEvent) => {
                     e.stopPropagation();
                     showImageModal({
@@ -291,6 +305,13 @@ export const ImageContent = React.memo(
                     });
                 }}
             >
+                <div
+                    className={imgSpacer}
+                    style={{
+                        width: layoutWidth,
+                        '--ratio': ((layoutHeight / layoutWidth) * 100) + '%'
+                    } as React.CSSProperties}
+                />
                 <img
                     className={cx(imgPreviewClass)}
                     width={layoutWidth}
