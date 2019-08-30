@@ -54,6 +54,8 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
 
     // Sorry universe
     const pickerRef = React.useRef<ReactionPickerInstance>(null);
+    const messageIdRef = React.useRef(message.id);
+    messageIdRef.current = message.id;
     const reactionsRef = React.useRef(message.reactions);
     reactionsRef.current = message.reactions;
 
@@ -64,15 +66,17 @@ export const HoverMenu = React.memo((props: { message: DataSourceWebMessageItem,
     }, [pickerRef, reactionsRef.current]);
 
     const handleReactionClick = (reaction: MessageReactionType) => {
+        const messageId = messageIdRef.current;
         const reactions = reactionsRef.current;
-        if (message.id) {
+
+        if (messageId) {
             const remove = reactions && reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === reaction).length > 0;
             if (remove) {
-                client.mutateMessageUnsetReaction({ messageId: message.id, reaction });
+                client.mutateMessageUnsetReaction({ messageId, reaction });
             } else {
                 trackEvent('reaction_sent', { reaction_type: reaction.toLowerCase(), double_tap: 'not' });
 
-                client.mutateMessageSetReaction({ messageId: message.id, reaction });
+                client.mutateMessageSetReaction({ messageId, reaction });
             }
         }
     };
