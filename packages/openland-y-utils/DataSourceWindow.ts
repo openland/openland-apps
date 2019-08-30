@@ -129,7 +129,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
             let available = Math.min(this._windowSize, this._inner.getSize() - 1 - this.currentWindow.end);
             if (available > 0) {
                 let toAdd: T[] = [];
-                for (let i = 1; i < available; i++) {
+                for (let i = 1; i <= available; i++) {
                     toAdd.push(this._inner.getAt(i + this.currentWindow.end));
                 }
                 this.currentWindow.end += available;
@@ -163,7 +163,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
             let available = Math.min(this._windowSize, this.currentWindow.start);
             if (available > 0) {
                 let toAdd: T[] = [];
-                for (let i = 1; i < available; i++) {
+                for (let i = 1; i <= available; i++) {
                     toAdd.push(this._inner.getAt(this.currentWindow.start - i));
                 }
                 toAdd.reverse();
