@@ -20,6 +20,7 @@ import { DateComponent } from './DateComponent';
 import { NewMessageDividerComponent } from './NewMessageDividerComponent';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
 import { XScrollViewAnchored } from 'openland-x/XScrollViewAnchored';
+import { EmptyBlock } from '../../components/ChatEmptyComponent';
 
 const messagesWrapperClassName = css`
     padding-top: 96px;
@@ -146,6 +147,14 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
     }
 
     dataSourceWrapper = (props: { children?: any }) => {
+        if (this.isEmpty()) {
+            return (
+                <EmptyBlock
+                    conversationType={this.props.conversationType}
+                    onClick={this.props.inputShower}
+                />
+            );
+        }
         return <XScrollViewAnchored
             bottomAttached={this.state.bottomAttached}
             flexGrow={1}
