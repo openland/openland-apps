@@ -78,6 +78,11 @@ export const XScrollViewAnchored = React.memo(
                 scrollToBottom: () => {
                     if (outerRef && outerRef.current) {
                         outerRef.current.scrollTop = innerHeight.current;
+                        setTimeout(() => {
+                            if (outerRef.current) {
+                                outerRef.current.scrollTop = innerHeight.current;
+                            }
+                        }, 10);
                         pickAnchor();
                     }
                 },
