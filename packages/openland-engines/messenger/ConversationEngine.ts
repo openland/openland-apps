@@ -502,31 +502,35 @@ export class ConversationEngine implements MessageSendHandler {
             quoted: (quoted || []).map(q => q.id!),
             spans: styledSpans
         });
-        let spans = [...prepareLegacyMentions(message, mentions || []), ...prepareLegacySpans(styledSpans)];
 
-        let msgs = {
-            date,
-            key,
-            local: true,
-            message,
-            progress: 0,
-            file: null,
-            isImage: false,
-            failed: false,
-            spans,
-            quoted: quoted ? quoted.map(q => ({ ...q, reply: undefined })) : undefined
-        };
+        // temp fix, right way is to reload chat from bottom
+        if (this.forwardFullyLoaded || !loadToUnread) {
+            let spans = [...prepareLegacyMentions(message, mentions || []), ...prepareLegacySpans(styledSpans)];
 
-        this.messages = [...this.messages, msgs];
-        this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
-        this.onMessagesUpdated();
+            let msgs = {
+                date,
+                key,
+                local: true,
+                message,
+                progress: 0,
+                file: null,
+                isImage: false,
+                failed: false,
+                spans,
+                quoted: quoted ? quoted.map(q => ({ ...q, reply: undefined })) : undefined
+            };
 
-        // Data Source
-        this.appendMessage(msgs);
+            this.messages = [...this.messages, msgs];
+            this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
+            this.onMessagesUpdated();
 
-        // Notify
-        for (let l of this.listeners) {
-            l.onMessageSend();
+            // Data Source
+            this.appendMessage(msgs);
+
+            // Notify
+            for (let l of this.listeners) {
+                l.onMessageSend();
+            }
         }
 
         this.loic(text);
