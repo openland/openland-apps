@@ -7,12 +7,11 @@ import { Option } from 'react-select';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XPopper } from '../XPopper';
 import { UserPicker } from '../XUserPicker';
-import { isNumber } from 'util';
 import { XPopperContentDEPRECATED } from 'openland-x/popper/XPopperContent';
 
 const Container = Glamorous(XHorizontal)<XFlexStyles>([
     {
-        backgroundColor: '#f9f9f9',
+        backgroundColor: 'var(--backgroundTertiary)',
         minHeight: 52,
         display: 'flex',
         flexDirection: 'row',
@@ -51,7 +50,7 @@ const Input = Glamorous.input({
     paddingLeft: 8,
     paddingRight: 8,
     fontSize: 14,
-    color: '#000',
+    color: 'var(--foregroundPrimary)',
     outline: 'none',
     '&::placeholder': {
         color: '#696c6e',
@@ -78,8 +77,8 @@ const CustomContentDiv = Glamorous<{ paddingTop?: number; paddingBottom?: number
         '0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08)',
     paddingLeft: 0,
     paddingRight: 0,
-    paddingTop: isNumber(props.paddingTop) ? props.paddingTop : 8,
-    paddingBottom: isNumber(props.paddingBottom) ? props.paddingBottom : 8,
+    paddingTop: !!Number(props.paddingTop) ? props.paddingTop : 8,
+    paddingBottom: !!Number(props.paddingBottom) ? props.paddingBottom : 8,
 }));
 
 export class XSelectCustomUsersRender extends React.Component<
