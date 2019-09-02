@@ -10,6 +10,11 @@ export const FeedItemFragment = gql`
                 message {
                     id
                     message
+                    date
+                    sender {
+                        ...UserShort
+                    }
+                    fallback
                 }
             }
         }

@@ -8,6 +8,7 @@ import { ImageContent } from './content/ImageContent';
 import { DocumentContent } from './content/DocumentContent';
 import { RichAttachContent } from './content/RichAttachContent';
 import { css, cx } from 'linaria';
+import { createSimpleSpan } from 'openland-y-utils/spans/processSpans';
 
 const textWrapper = css`
     margin-top: 4px;
@@ -106,10 +107,12 @@ export const MessageContent = (props: MessageContentProps) => {
 
     if (!content.length) {
         const unsupportedText = 'Unsupported content' + (fallback ? ': ' + fallback : '');
+
         content.push(
             <div key="msg-text-unsupported" className={textClassName}>
-                <MessageTextComponent spans={[{ type: SpanType.italic, offset: 0, length: unsupportedText.length, childrens: [{ type: SpanType.text, text: unsupportedText, offset: 0, length: unsupportedText.length } as SpanText] }]} edited={false} />
-            </div>);
+                <MessageTextComponent spans={createSimpleSpan(unsupportedText, SpanType.italic)} />
+            </div>
+        );
     }
 
     return (

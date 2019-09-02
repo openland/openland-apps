@@ -80,23 +80,23 @@ export class FeedEngine {
             return;
         }
 
-        this.loading = true;
+        // this.loading = true;
 
-        const loaded = (await backoff(() => this.engine.client.client.query(FeedQuery, { first: this.engine.options.feedBatchSize, after: this.lastCursor }))).feed;
+        // const loaded = (await backoff(() => this.engine.client.client.query(FeedQuery, { first: this.engine.options.feedBatchSize, after: this.lastCursor }))).feed;
 
-        this.lastCursor = loaded.cursor;
-        this.fullyLoaded = typeof this.lastCursor !== 'string';
-        this.loading = false;
+        // this.lastCursor = loaded.cursor;
+        // this.fullyLoaded = typeof this.lastCursor !== 'string';
+        // this.loading = false;
 
-        const dsItems: FeedDataSourceItem[] = [];
+        // const dsItems: FeedDataSourceItem[] = [];
 
-        loaded.items.map((i) => {
-            const converted = convertPost(i);
+        // loaded.items.map((i) => {
+        //     const converted = convertPost(i);
 
-            dsItems.push(converted);
-        });
+        //     dsItems.push(converted);
+        // });
 
-        this.dataSource.loadedMore(dsItems, this.fullyLoaded);
+        // this.dataSource.loadedMore(dsItems, this.fullyLoaded);
     }
 
     private handleEvent = async (event: Types.FeedUpdateFragment) => {

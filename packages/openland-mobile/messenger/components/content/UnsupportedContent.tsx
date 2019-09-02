@@ -8,6 +8,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { SpanType } from 'openland-y-utils/spans/Span';
 import { AsyncBubbleView } from '../AsyncBubbleView';
 import { TextContent } from './TextContent';
+import { createSimpleSpan } from 'openland-y-utils/spans/processSpans';
 
 const text = 'Message is not supported on your version of Openland.\nPlease update the app to view it.';
 
@@ -30,7 +31,13 @@ export const UnsupportedContent = React.memo((props: UnsupportedContentProps) =>
                     emojiOnly={false}
                     theme={theme}
                     fontStyle="italic"
-                    message={{ ...message, spans: undefined, textSpans: [{ type: SpanType.italic, offset: 0, length: text.length, childrens: [{ type: SpanType.text, text, offset: 0, length: text.length }] }], attachments: [], text }}
+                    message={{
+                        ...message,
+                        spans: undefined,
+                        textSpans: createSimpleSpan(text, SpanType.italic),
+                        attachments: [],
+                        text
+                    }}
                     onUserPress={() => { return; }}
                     onGroupPress={() => { return; }}
                     onDocumentPress={() => { return; }}

@@ -13413,10 +13413,12 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [
-				"FeedItemFragment"
+				"FeedItemFragment",
+				"UserShort",
+				"OrganizationShort"
 			],
-			"sourceWithFragments": "query Feed($first: Int!, $after: String) {\n  feed: alphaHomeFeed(first: $first, after: $after) {\n    __typename\n    items {\n      __typename\n      ...FeedItemFragment\n    }\n    cursor\n  }\n}\nfragment FeedItemFragment on FeedItem {\n  __typename\n  id\n  content {\n    __typename\n    ... on FeedPost {\n      message {\n        __typename\n        id\n        message\n      }\n    }\n  }\n}",
-			"operationId": "579a63a43a91e899e8b511f182619db13ecb17d5bc1ae667db0e7bcf6bea8c17"
+			"sourceWithFragments": "query Feed($first: Int!, $after: String) {\n  feed: alphaHomeFeed(first: $first, after: $after) {\n    __typename\n    items {\n      __typename\n      ...FeedItemFragment\n    }\n    cursor\n  }\n}\nfragment FeedItemFragment on FeedItem {\n  __typename\n  id\n  content {\n    __typename\n    ... on FeedPost {\n      message {\n        __typename\n        id\n        message\n        date\n        sender {\n          __typename\n          ...UserShort\n        }\n        fallback\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}",
+			"operationId": "f29b423320f02d4786c20a4e004f0c5054242caa0714472f733f3775de605323"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
@@ -13467,10 +13469,12 @@
 			"inlineFragments": [],
 			"fragmentsReferenced": [
 				"FeedUpdateFragment",
-				"FeedItemFragment"
+				"FeedItemFragment",
+				"UserShort",
+				"OrganizationShort"
 			],
-			"sourceWithFragments": "subscription FeedUpdates {\n  event: homeFeedUpdates {\n    __typename\n    updates {\n      __typename\n      ...FeedUpdateFragment\n    }\n  }\n}\nfragment FeedUpdateFragment on FeedUpdate {\n  __typename\n  ... on FeedItemReceived {\n    post {\n      __typename\n      ...FeedItemFragment\n    }\n  }\n  ... on FeedItemUpdated {\n    post {\n      __typename\n      ...FeedItemFragment\n    }\n  }\n}\nfragment FeedItemFragment on FeedItem {\n  __typename\n  id\n  content {\n    __typename\n    ... on FeedPost {\n      message {\n        __typename\n        id\n        message\n      }\n    }\n  }\n}",
-			"operationId": "723d973c2a3debf2b812977e3b5c9de819a27c66498c7720466fc9fd8319c926"
+			"sourceWithFragments": "subscription FeedUpdates {\n  event: homeFeedUpdates {\n    __typename\n    updates {\n      __typename\n      ...FeedUpdateFragment\n    }\n  }\n}\nfragment FeedUpdateFragment on FeedUpdate {\n  __typename\n  ... on FeedItemReceived {\n    post {\n      __typename\n      ...FeedItemFragment\n    }\n  }\n  ... on FeedItemUpdated {\n    post {\n      __typename\n      ...FeedItemFragment\n    }\n  }\n}\nfragment FeedItemFragment on FeedItem {\n  __typename\n  id\n  content {\n    __typename\n    ... on FeedPost {\n      message {\n        __typename\n        id\n        message\n        date\n        sender {\n          __typename\n          ...UserShort\n        }\n        fallback\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}",
+			"operationId": "6b4c13d6b98aaff6d1f35f8a86f3396e08aef077b77e2338a3e312bcf1e88137"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/MyNotificationsCenter.ts",
@@ -27430,7 +27434,7 @@
 			],
 			"fragmentName": "FeedItemFragment",
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
-			"source": "fragment FeedItemFragment on FeedItem {\n  __typename\n  id\n  content {\n    __typename\n    ... on FeedPost {\n      message {\n        __typename\n        id\n        message\n      }\n    }\n  }\n}",
+			"source": "fragment FeedItemFragment on FeedItem {\n  __typename\n  id\n  content {\n    __typename\n    ... on FeedPost {\n      message {\n        __typename\n        id\n        message\n        date\n        sender {\n          __typename\n          ...UserShort\n        }\n        fallback\n      }\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "__typename",
@@ -27485,6 +27489,39 @@
 									"type": "String",
 									"isConditional": false,
 									"description": "Content",
+									"isDeprecated": false
+								},
+								{
+									"responseName": "date",
+									"fieldName": "date",
+									"type": "Date!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "sender",
+									"fieldName": "sender",
+									"type": "User!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										}
+									],
+									"fragmentSpreads": [
+										"UserShort"
+									],
+									"inlineFragments": []
+								},
+								{
+									"responseName": "fallback",
+									"fieldName": "fallback",
+									"type": "String!",
+									"isConditional": false,
 									"isDeprecated": false
 								}
 							],

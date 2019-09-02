@@ -781,8 +781,14 @@ private let FeedItemFragmentSelector = obj(
                     inline("FeedPost", obj(
                         field("message","message", obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
+                                field("date","date", notNull(scalar("Date"))),
+                                field("fallback","fallback", notNull(scalar("String"))),
                                 field("id","id", notNull(scalar("ID"))),
-                                field("message","message", scalar("String"))
+                                field("message","message", scalar("String")),
+                                field("sender","sender", notNull(obj(
+                                        field("__typename","__typename", notNull(scalar("String"))),
+                                        fragment("User", UserShortSelector)
+                                    )))
                             ))
                     ))
                 )),
@@ -3569,7 +3575,7 @@ class Operations {
     let Feed = OperationDefinition(
         "Feed",
         .query, 
-        "query Feed($after:String,$first:Int!){feed:alphaHomeFeed(after:$after,first:$first){__typename cursor items{__typename ...FeedItemFragment}}}fragment FeedItemFragment on FeedItem{__typename content{__typename ... on FeedPost{message{__typename id message}}}id}",
+        "query Feed($after:String,$first:Int!){feed:alphaHomeFeed(after:$after,first:$first){__typename cursor items{__typename ...FeedItemFragment}}}fragment FeedItemFragment on FeedItem{__typename content{__typename ... on FeedPost{message{__typename date fallback id message sender{__typename ...UserShort}}}}id}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}",
         FeedSelector
     )
     let FetchPushSettings = OperationDefinition(
@@ -4595,7 +4601,7 @@ class Operations {
     let FeedUpdates = OperationDefinition(
         "FeedUpdates",
         .subscription, 
-        "subscription FeedUpdates{event:homeFeedUpdates{__typename updates{__typename ...FeedUpdateFragment}}}fragment FeedUpdateFragment on FeedUpdate{__typename ... on FeedItemReceived{post{__typename ...FeedItemFragment}}... on FeedItemUpdated{post{__typename ...FeedItemFragment}}}fragment FeedItemFragment on FeedItem{__typename content{__typename ... on FeedPost{message{__typename id message}}}id}",
+        "subscription FeedUpdates{event:homeFeedUpdates{__typename updates{__typename ...FeedUpdateFragment}}}fragment FeedUpdateFragment on FeedUpdate{__typename ... on FeedItemReceived{post{__typename ...FeedItemFragment}}... on FeedItemUpdated{post{__typename ...FeedItemFragment}}}fragment FeedItemFragment on FeedItem{__typename content{__typename ... on FeedPost{message{__typename date fallback id message sender{__typename ...UserShort}}}}id}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}",
         FeedUpdatesSelector
     )
     let MyNotificationsCenter = OperationDefinition(

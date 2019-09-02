@@ -961,17 +961,17 @@
       }
     },
     {
-      "signature": "3baed37d311a4457948e4956a347a6c87d38c24b52a889065e0fcdd089581e5e",
-      "document": "fragment FeedItemFragment on FeedItem{__typename content{__typename...on FeedPost{message{__typename id message}}}id}query Feed($after:String,$first:Int!){feed:alphaHomeFeed(after:$after,first:$first){__typename cursor items{__typename...FeedItemFragment}}}",
+      "signature": "a3c1ce7022f5b8ab19a13e75d0b2d834d39b6f967849def67699cb917c70fbeb",
+      "document": "fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}fragment FeedItemFragment on FeedItem{__typename content{__typename...on FeedPost{message{__typename date fallback id message sender{__typename...UserShort}}}}id}query Feed($after:String,$first:Int!){feed:alphaHomeFeed(after:$after,first:$first){__typename cursor items{__typename...FeedItemFragment}}}",
       "metadata": {
-        "engineSignature": "fragment FeedItemFragment on FeedItem{__typename content{__typename...on FeedPost{message{__typename id message}}}id}query Feed($after:String,$first:Int!){alphaHomeFeed(after:$after,first:$first){__typename cursor items{__typename...FeedItemFragment}}}"
+        "engineSignature": "fragment OrganizationShort on Organization{__typename about alphaIsCommunity id name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}fragment FeedItemFragment on FeedItem{__typename content{__typename...on FeedPost{message{__typename date fallback id message sender{__typename...UserShort}}}}id}query Feed($after:String,$first:Int!){alphaHomeFeed(after:$after,first:$first){__typename cursor items{__typename...FeedItemFragment}}}"
       }
     },
     {
-      "signature": "fffb59ff067df7695a44ed377492755a6cda6dec42a570b52474b35af9db827e",
-      "document": "fragment FeedItemFragment on FeedItem{__typename content{__typename...on FeedPost{message{__typename id message}}}id}fragment FeedUpdateFragment on FeedUpdate{__typename...on FeedItemReceived{post{__typename...FeedItemFragment}}...on FeedItemUpdated{post{__typename...FeedItemFragment}}}subscription FeedUpdates{event:homeFeedUpdates{__typename updates{__typename...FeedUpdateFragment}}}",
+      "signature": "a1c4a56d3d1fc6469414383f6b83a2c031772a1ad046cc1260b1da51e9aafcbb",
+      "document": "fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}fragment FeedItemFragment on FeedItem{__typename content{__typename...on FeedPost{message{__typename date fallback id message sender{__typename...UserShort}}}}id}fragment FeedUpdateFragment on FeedUpdate{__typename...on FeedItemReceived{post{__typename...FeedItemFragment}}...on FeedItemUpdated{post{__typename...FeedItemFragment}}}subscription FeedUpdates{event:homeFeedUpdates{__typename updates{__typename...FeedUpdateFragment}}}",
       "metadata": {
-        "engineSignature": "fragment FeedItemFragment on FeedItem{__typename content{__typename...on FeedPost{message{__typename id message}}}id}fragment FeedUpdateFragment on FeedUpdate{__typename...on FeedItemReceived{post{__typename...FeedItemFragment}}...on FeedItemUpdated{post{__typename...FeedItemFragment}}}subscription FeedUpdates{homeFeedUpdates{__typename updates{__typename...FeedUpdateFragment}}}"
+        "engineSignature": "fragment OrganizationShort on Organization{__typename about alphaIsCommunity id name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}fragment FeedItemFragment on FeedItem{__typename content{__typename...on FeedPost{message{__typename date fallback id message sender{__typename...UserShort}}}}id}fragment FeedUpdateFragment on FeedUpdate{__typename...on FeedItemReceived{post{__typename...FeedItemFragment}}...on FeedItemUpdated{post{__typename...FeedItemFragment}}}subscription FeedUpdates{homeFeedUpdates{__typename updates{__typename...FeedUpdateFragment}}}"
       }
     },
     {

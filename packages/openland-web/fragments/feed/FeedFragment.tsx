@@ -11,6 +11,7 @@ import { DataSource } from 'openland-y-utils/DataSource';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { css } from 'linaria';
 import { FeedEngine, FeedDataSourceItem } from 'openland-engines/feed/FeedEngine';
+import { FeedItemView } from './components/FeedItemView';
 
 const wrapperClass = css`
     padding: 0 16px 32px;
@@ -31,10 +32,7 @@ interface CommentsNotificationsProps {
     engine: FeedEngine;
 }
 
-class FeedInner extends React.PureComponent<
-    CommentsNotificationsProps,
-    { dataSourceGeneration: number }
-    > {
+class FeedInner extends React.PureComponent<CommentsNotificationsProps, { dataSourceGeneration: number }> {
     private unmount?: () => void;
     private dataSource: DataSource<FeedDataSourceItem>;
 
@@ -47,7 +45,9 @@ class FeedInner extends React.PureComponent<
 
     componentWillMount() {
         this.unmount = this.dataSource.dumbWatch(() =>
-            this.setState({ dataSourceGeneration: this.state.dataSourceGeneration + 1 }),
+            this.setState({
+                dataSourceGeneration: this.state.dataSourceGeneration + 1
+            }),
         );
     }
 
@@ -57,13 +57,11 @@ class FeedInner extends React.PureComponent<
         }
     }
 
-    private renderLoading = () => {
-        return (
-            <div className={loaderClass}>
-                <XLoader loading={true} />
-            </div>
-        );
-    }
+    private renderLoading = () => (
+        <div className={loaderClass}>
+            <XLoader loading={true} />
+        </div>
+    )
 
     private handleScroll = (e: XScrollValues) => {
         if (e.scrollTop < 300) {
@@ -71,38 +69,28 @@ class FeedInner extends React.PureComponent<
         }
     }
 
-    private dataSourceWrapper = (props: { children?: any }) => {
-        return (
-            <>
-                <XScrollView3
-                    useDefaultScroll
-                    flexGrow={1}
-                    flexShrink={1}
-                    onScroll={this.handleScroll}
-                >
-                    <div className={wrapperClass}>
-                        {props.children}
-                    </div>
-                </XScrollView3>
-            </>
-        );
-    }
-
-    private renderNotification = ({ item }: { item: (FeedDataSourceItem) }) => {
-        return (
-            <div>
-                {item.id}
+    private dataSourceWrapper = (props: { children?: any }) => (
+        <XScrollView3
+            useDefaultScroll
+            flexGrow={1}
+            flexShrink={1}
+            onScroll={this.handleScroll}
+        >
+            <div className={wrapperClass}>
+                {props.children}
             </div>
-        );
-    }
+        </XScrollView3>
+    )
 
-    private renderEmpty = () => {
-        return (
-            <XView flexDirection="row" alignItems="center" flexGrow={1}>
-                <MessengerEmptyFragment text="--- EMPTY ---" />
-            </XView>
-        );
-    }
+    private renderNotification = (data: { item: FeedDataSourceItem }) => (
+        <FeedItemView item={data.item} />
+    )
+
+    private renderEmpty = () => (
+        <XView flexDirection="row" alignItems="center" flexGrow={1}>
+            <MessengerEmptyFragment text="--- EMPTY ---" />
+        </XView>
+    )
 
     render() {
         if (!this.dataSource.isInited()) {

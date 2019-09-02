@@ -6,7 +6,7 @@ import { TextCaption } from 'openland-web/utils/TextStyles';
 
 export interface MessageTextComponentProps {
     spans: Span[];
-    edited: boolean;
+    edited?: boolean;
     shouldCrop?: boolean;
 }
 
@@ -48,22 +48,22 @@ const EditLabelStyle = css`
     user-select: none;
 `;
 
-export const MessageTextComponent = React.memo<MessageTextComponentProps>(
-    ({ shouldCrop, spans, edited }) => {
-        return (
-            <div className={spansMessageWrapper}>
-                <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
-                    <span>
-                        <SpannedView spans={spans} />
-                        {edited && (
-                            <span className={cx(EditLabelStyle, TextCaption)}>
-                                {'\u00A0'}
-                                Edited
+export const MessageTextComponent = React.memo<MessageTextComponentProps>(props => {
+    const { shouldCrop, spans, edited } = props;
+
+    return (
+        <div className={spansMessageWrapper}>
+            <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
+                <span>
+                    <SpannedView spans={spans} />
+                    {!!edited && (
+                        <span className={cx(EditLabelStyle, TextCaption)}>
+                            {'\u00A0'}
+                            Edited
                             </span>
-                        )}
-                    </span>
-                </div>
+                    )}
+                </span>
             </div>
-        );
-    },
-);
+        </div>
+    );
+});

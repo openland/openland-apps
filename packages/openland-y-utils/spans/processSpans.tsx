@@ -1,4 +1,4 @@
-import { Span, SpanType, ServerSpan } from 'openland-y-utils/spans/Span';
+import { Span, SpanType, ServerSpan, SpanText } from 'openland-y-utils/spans/Span';
 import { findChildSpans, convertServerSpan, getTextSpans } from './utils';
 import { TextRenderProccessor } from 'openland-y-runtime/TextRenderProcessor';
 import { checkSpanRootSize } from './checkSpanRootSize';
@@ -87,3 +87,17 @@ export const processSpans = (text: string, spans?: ServerSpan[], disableBig?: bo
 
     return res;
 };
+
+export const createSimpleSpan = (text: string, type: SpanType) => (
+    [{
+        type: type,
+        offset: 0,
+        length: text.length,
+        childrens: [{
+            type: SpanType.text,
+            text: text,
+            offset: 0,
+            length: text.length
+        } as SpanText]
+    }]
+) as Span[];

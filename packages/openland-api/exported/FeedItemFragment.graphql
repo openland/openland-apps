@@ -5,8 +5,14 @@ fragment FeedItemFragment on FeedItem {
     ... on FeedPost {
       message {
         __typename
+        date
+        fallback
         id
         message
+        sender {
+          __typename
+          ...UserShort
+        }
       }
     }
   }
