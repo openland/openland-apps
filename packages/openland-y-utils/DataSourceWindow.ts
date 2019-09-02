@@ -82,6 +82,8 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                 this._innerCompleted = completed;
                 if (this._isPassThroughBackward) {
                     this._proxy.loadedMore(data, completed);
+
+                    this.currentWindow.end += data.length;
                 }
             },
             onDataSourceLoadedMoreForward: (data: T[], completed: boolean) => {
