@@ -5,7 +5,8 @@ import { PageProps } from 'openland-mobile/components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { isArray } from 'util';
-import { ThemeLightBlue, ThemeDark } from 'openland-y-utils/themes';
+import { ThemeLight } from 'openland-y-utils/themes/light';
+import { ThemeDark } from 'openland-y-utils/themes/dark';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 interface ColorRow {
@@ -28,13 +29,13 @@ const getColorRowFromObject = (key: string, lightObject: any, darkObject: any): 
         row.light = lightObject;
         row.dark = darkObject;
     }
-            
+
     return row;
 };
 
 const ColorsComponent = (props: PageProps) => {
     const theme = React.useContext(ThemeContext);
-    const light = ThemeLightBlue;
+    const light = ThemeLight;
     const dark = ThemeDark;
     const rows: ColorRow[] = [];
 

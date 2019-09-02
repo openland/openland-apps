@@ -1,7 +1,7 @@
 import { ThemeGlobalKind } from 'openland-y-utils/themes/ThemeGlobal';
 
 class ThemeControllerImpl {
-    private _theme: ThemeGlobalKind = 'LightBlue';
+    private _theme: ThemeGlobalKind = 'Light';
     private _watchers: ((theme: ThemeGlobalKind) => void)[] = [];
 
     get theme(): ThemeGlobalKind {

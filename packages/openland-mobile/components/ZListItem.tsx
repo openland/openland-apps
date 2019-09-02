@@ -52,7 +52,7 @@ const LeftIcon = (props: { theme: ThemeGlobal, src: any, flatIcon?: boolean, app
     }
 
     return (
-        <View style={{ width: 40, height: 40, borderRadius: 20, alignContent: 'center', justifyContent: 'center', backgroundColor: leftIconColor || (appearance === 'danger' ? theme.accentNegative : theme.tintBlue), marginLeft: 16, alignSelf: 'center' }}>
+        <View style={{ width: 40, height: 40, borderRadius: 20, alignContent: 'center', justifyContent: 'center', backgroundColor: leftIconColor || (appearance === 'danger' ? theme.accentNegative : theme.accentPrimary), marginLeft: 16, alignSelf: 'center' }}>
             <Image source={src} resizeMode="contain" style={{ width: 24, height: 24, alignSelf: 'center', tintColor: theme.foregroundContrast }} />
         </View>
     );

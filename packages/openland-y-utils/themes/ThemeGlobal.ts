@@ -1,7 +1,8 @@
-export type ThemeGlobalKind = 'LightBlue' | 'Dark';
+export type ThemeGlobalKind = 'Light' | 'LightRed' | 'LightOrange' | 'LightGreen' | 'LightCyan' | 'LightPurple' | 'Dark' | 'DarkBlue' | 'DarkRed' | 'DarkOrange' | 'DarkGreen' | 'DarkCyan' | 'DarkPurple';
+export type ThemeGlobalType = 'Light' | 'Dark';
 
 export type ThemeGlobal = {
-    type: 'Light' | 'Dark';
+    type: ThemeGlobalType;
     kind: ThemeGlobalKind;
 
     transparent: string;
