@@ -28,6 +28,8 @@ import { AsyncNewMessageDivider } from './components/AsyncNewMessageDivider';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { AsyncServiceMessage } from './components/AsyncServiceMessage';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import { FeedDataSourceItem } from 'openland-engines/feed/FeedEngine';
+import { FeedItemAsync } from 'openland-mobile/feed/FeedItemAsync';
 
 const SortedReactions = [
     MessageReactionType.LIKE,
@@ -57,22 +59,26 @@ export class MobileMessenger {
     readonly history: SRouting;
     readonly dialogs: ASDataView<DialogDataSourceItem>;
     readonly notifications: ASDataView<NotificationsDataSourceItem>;
+    readonly feed: ASDataView<FeedDataSourceItem>;
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>>();
 
     constructor(engine: MessengerEngine, history: SRouting) {
         this.engine = engine;
         this.history = history;
-        this.dialogs = new ASDataView(engine.dialogList.dataSource, (item) => {
-            return (
-                <DialogItemViewAsync item={item} onPress={this.handleDialogClick} />
-            );
-        });
+        this.dialogs = new ASDataView(
+            engine.dialogList.dataSource,
+            item => <DialogItemViewAsync item={item} onPress={this.handleDialogClick} />
+        );
 
-        this.notifications = new ASDataView(engine.notificationCenter.dataSource, (item) => {
-            return (
-                <NotificationCenterItemAsync item={item} />
-            );
-        });
+        this.notifications = new ASDataView(
+            engine.notificationCenter.dataSource,
+            item => <NotificationCenterItemAsync item={item} />
+        );
+
+        this.feed = new ASDataView(
+            engine.feed.dataSource,
+            item => <FeedItemAsync item={item} />
+        );
     }
 
     getConversation(id: string) {

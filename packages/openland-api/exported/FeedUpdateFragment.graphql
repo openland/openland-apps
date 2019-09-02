@@ -1,0 +1,15 @@
+fragment FeedUpdateFragment on FeedUpdate {
+  __typename
+  ... on FeedItemReceived {
+    post {
+      __typename
+      ...FeedItemFragment
+    }
+  }
+  ... on FeedItemUpdated {
+    post {
+      __typename
+      ...FeedItemFragment
+    }
+  }
+}

@@ -774,6 +774,37 @@ private let DialogUpdateFragmentSelector = obj(
             ))
         )
 
+private let FeedItemFragmentSelector = obj(
+            field("__typename","__typename", notNull(scalar("String"))),
+            field("content","content", obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("FeedPost", obj(
+                        field("message","message", obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("message","message", scalar("String"))
+                            ))
+                    ))
+                )),
+            field("id","id", notNull(scalar("ID")))
+        )
+
+private let FeedUpdateFragmentSelector = obj(
+            field("__typename","__typename", notNull(scalar("String"))),
+            inline("FeedItemReceived", obj(
+                field("post","post", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        fragment("FeedItem", FeedItemFragmentSelector)
+                    )))
+            )),
+            inline("FeedItemUpdated", obj(
+                field("post","post", notNull(obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        fragment("FeedItem", FeedItemFragmentSelector)
+                    )))
+            ))
+        )
+
 private let RoomNanoSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             inline("PrivateRoom", obj(
@@ -1676,6 +1707,16 @@ private let FeatureFlagsSelector = obj(
                     field("key","key", notNull(scalar("String"))),
                     field("title","title", notNull(scalar("String")))
                 )))))
+        )
+private let FeedSelector = obj(
+            field("alphaHomeFeed","feed", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("cursor","cursor", notNull(scalar("String"))),
+                    field("items","items", notNull(list(notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            fragment("FeedItem", FeedItemFragmentSelector)
+                        )))))
+                )))
         )
 private let FetchPushSettingsSelector = obj(
             field("pushSettings","pushSettings", notNull(obj(
@@ -3330,6 +3371,15 @@ private let DialogsWatchSelector = obj(
                     ))
                 )))
         )
+private let FeedUpdatesSelector = obj(
+            field("homeFeedUpdates","event", obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("updates","updates", notNull(list(notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            fragment("FeedUpdate", FeedUpdateFragmentSelector)
+                        )))))
+                ))
+        )
 private let MyNotificationsCenterSelector = obj(
             field("notificationCenterUpdates","event", arguments(fieldValue("fromState", refValue("state"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3515,6 +3565,12 @@ class Operations {
         .query, 
         "query FeatureFlags{featureFlags{__typename id key title}}",
         FeatureFlagsSelector
+    )
+    let Feed = OperationDefinition(
+        "Feed",
+        .query, 
+        "query Feed($after:String,$first:Int!){feed:alphaHomeFeed(after:$after,first:$first){__typename cursor items{__typename ...FeedItemFragment}}}fragment FeedItemFragment on FeedItem{__typename content{__typename ... on FeedPost{message{__typename id message}}}id}",
+        FeedSelector
     )
     let FetchPushSettings = OperationDefinition(
         "FetchPushSettings",
@@ -4536,6 +4592,12 @@ class Operations {
         "subscription DialogsWatch($state:String){event:dialogsUpdates(fromState:$state){__typename ... on DialogUpdateSingle{seq state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{fromSeq seq state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{message:alphaMessage{__typename ...TinyMessage}cid globalUnread haveMention showNotification{__typename desktop mobile}silent{__typename desktop mobile}unread}... on DialogMessageUpdated{message:alphaMessage{__typename ...TinyMessage}cid haveMention}... on DialogMessageDeleted{message:alphaMessage{__typename ...TinyMessage}prevMessage:alphaPrevMessage{__typename ...TinyMessage}cid globalUnread haveMention unread}... on DialogMessageRead{cid globalUnread haveMention unread}... on DialogMuteChanged{cid mute}... on DialogPeerUpdated{cid peer{__typename ... on PrivateRoom{id user{__typename id name photo}}... on SharedRoom{id photo title}}}... on DialogDeleted{cid globalUnread}... on DialogBump{cid globalUnread haveMention topMessage{__typename ...TinyMessage}unread}}fragment TinyMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserTiny}senderBadge{__typename ...UserBadge}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}filePreview id}}commentsCount id isMentioned quotedMessages{__typename id}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserBadge on UserBadge{__typename id name verified}",
         DialogsWatchSelector
     )
+    let FeedUpdates = OperationDefinition(
+        "FeedUpdates",
+        .subscription, 
+        "subscription FeedUpdates{event:homeFeedUpdates{__typename updates{__typename ...FeedUpdateFragment}}}fragment FeedUpdateFragment on FeedUpdate{__typename ... on FeedItemReceived{post{__typename ...FeedItemFragment}}... on FeedItemUpdated{post{__typename ...FeedItemFragment}}}fragment FeedItemFragment on FeedItem{__typename content{__typename ... on FeedPost{message{__typename id message}}}id}",
+        FeedUpdatesSelector
+    )
     let MyNotificationsCenter = OperationDefinition(
         "MyNotificationsCenter",
         .subscription, 
@@ -4582,6 +4644,7 @@ class Operations {
         if name == "ExploreOrganizations" { return ExploreOrganizations }
         if name == "ExplorePeople" { return ExplorePeople }
         if name == "FeatureFlags" { return FeatureFlags }
+        if name == "Feed" { return Feed }
         if name == "FetchPushSettings" { return FetchPushSettings }
         if name == "GetDraftMessage" { return GetDraftMessage }
         if name == "GlobalCounter" { return GlobalCounter }
@@ -4752,6 +4815,7 @@ class Operations {
         if name == "ConferenceWatch" { return ConferenceWatch }
         if name == "DebugEventsWatch" { return DebugEventsWatch }
         if name == "DialogsWatch" { return DialogsWatch }
+        if name == "FeedUpdates" { return FeedUpdates }
         if name == "MyNotificationsCenter" { return MyNotificationsCenter }
         if name == "OnlineWatch" { return OnlineWatch }
         if name == "SettingsWatch" { return SettingsWatch }

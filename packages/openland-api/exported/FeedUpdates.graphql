@@ -1,0 +1,9 @@
+subscription FeedUpdates {
+  event: homeFeedUpdates {
+    __typename
+    updates {
+      __typename
+      ...FeedUpdateFragment
+    }
+  }
+}

@@ -14,7 +14,7 @@ export const DiscoverFragment = React.memo(() => {
                 <XView flexDirection="column">
                     <UListItem title="Groups" path="/discover/groups" />
                     <UListItem title="Recommendations" path="/discover/recommendations" />
-                    {isNP && <UListItem title="All" path="/all" />}
+                    {isNP && <UListItem title="Feed" path="/feed" />}
                 </XView>
             </XView>
         </XView>

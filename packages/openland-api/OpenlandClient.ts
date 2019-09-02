@@ -631,6 +631,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderFeatureFlags(opts?: QueryWatchParameters): Types.FeatureFlags | null {
         return this.useQuery(Source.FeatureFlagsQuery, undefined, opts);
     }
+    async queryFeed(variables: Types.FeedVariables, opts?: OperationParameters): Promise<Types.Feed> {
+        return this.client.query(Source.FeedQuery, variables, opts);
+    }
+    async refetchFeed(variables: Types.FeedVariables): Promise<Types.Feed> {
+        return this.refetch(Source.FeedQuery, variables);
+    }
+    useFeed(variables: Types.FeedVariables, opts?: QueryWatchParameters): Types.Feed {
+        return this.useQuerySuspense(Source.FeedQuery, variables, opts);
+    }
+    useWithoutLoaderFeed(variables: Types.FeedVariables, opts?: QueryWatchParameters): Types.Feed | null {
+        return this.useQuery(Source.FeedQuery, variables, opts);
+    }
     async queryMyNotifications(variables: Types.MyNotificationsVariables, opts?: OperationParameters): Promise<Types.MyNotifications> {
         return this.client.query(Source.MyNotificationsQuery, variables, opts);
     }
@@ -1272,6 +1284,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     subscribeConferenceWatch(variables: Types.ConferenceWatchVariables): GraphqlActiveSubscription<Types.ConferenceWatch, Types.ConferenceWatchVariables> {
         return this.client.subscribe(Source.ConferenceWatchSubscription, variables);
+    }
+    subscribeFeedUpdates(): GraphqlActiveSubscription<Types.FeedUpdates, {}> {
+        return this.client.subscribe(Source.FeedUpdatesSubscription);
     }
     subscribeMyNotificationsCenter(variables: Types.MyNotificationsCenterVariables): GraphqlActiveSubscription<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> {
         return this.client.subscribe(Source.MyNotificationsCenterSubscription, variables);

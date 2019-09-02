@@ -13,6 +13,7 @@ import * as Comments from './queries/Comments';
 import * as Conferences from './queries/Conferences';
 import * as Explore from './queries/Explore';
 import * as FeatureFlag from './queries/FeatureFlag';
+import * as Feed from './queries/Feed';
 import * as MyNotificationsCenter from './queries/MyNotificationsCenter';
 import * as Organization from './queries/Organization';
 import * as Permissions from './queries/Permissions';
@@ -179,6 +180,8 @@ export const FeatureFlagsQuery = typedQuery<Types.FeatureFlags, {}>(FeatureFlag.
 export const FeatureFlagAddMutation = typedMutation<Types.FeatureFlagAdd, Types.FeatureFlagAddVariables>(FeatureFlag.FeatureFlagAddMutation);
 export const FeatureFlagEnableMutation = typedMutation<Types.FeatureFlagEnable, Types.FeatureFlagEnableVariables>(FeatureFlag.FeatureFlagEnableMutation);
 export const FeatureFlagDisableMutation = typedMutation<Types.FeatureFlagDisable, Types.FeatureFlagDisableVariables>(FeatureFlag.FeatureFlagDisableMutation);
+export const FeedQuery = typedQuery<Types.Feed, Types.FeedVariables>(Feed.FeedQuery);
+export const FeedUpdatesSubscription = typedSubscription<Types.FeedUpdates, {}>(Feed.FeedUpdatesSubscription);
 export const MyNotificationsQuery = typedQuery<Types.MyNotifications, Types.MyNotificationsVariables>(MyNotificationsCenter.MyNotificationsQuery);
 export const MyNotificationsCenterSubscription = typedSubscription<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables>(MyNotificationsCenter.MyNotificationsCenterSubscription);
 export const MyNotificationCenterQuery = typedQuery<Types.MyNotificationCenter, {}>(MyNotificationsCenter.MyNotificationCenterQuery);
@@ -266,5 +269,7 @@ export const UserTinyFragment = typedFragment<Types.UserTiny>(UserTiny.UserTiny)
 export const CommentUpdateFragmentFragment = typedFragment<Types.CommentUpdateFragment>(Chats.CommentUpdateFragment);
 export const ChatUpdateFragmentFragment = typedFragment<Types.ChatUpdateFragment>(Chats.ChatUpdateFragment);
 export const DialogUpdateFragmentFragment = typedFragment<Types.DialogUpdateFragment>(Chats.DialogUpdateFragment);
+export const FeedItemFragmentFragment = typedFragment<Types.FeedItemFragment>(Feed.FeedItemFragment);
+export const FeedUpdateFragmentFragment = typedFragment<Types.FeedUpdateFragment>(Feed.FeedUpdateFragment);
 export const NotificationFragmentFragment = typedFragment<Types.NotificationFragment>(MyNotificationsCenter.NotificationFragment);
 export const NotificationCenterUpdateFragmentFragment = typedFragment<Types.NotificationCenterUpdateFragment>(MyNotificationsCenter.NotificationCenterUpdateFragment);

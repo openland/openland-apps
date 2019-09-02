@@ -60,6 +60,7 @@ import { Inputs } from './pages/dev/Inputs';
 import { Avatars } from './pages/dev/Avatars';
 import { SignupOrg } from './pages/auth/SignupOrg';
 import { Videos } from './pages/dev/Videos';
+import { Feed } from './pages/main/Feed';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -132,5 +133,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('CommunityList', CommunityList)
 
   .addRoute('Apps/Tasks', Tasks)
+
+  .addRoute('Feed', Feed)
 
   .build();

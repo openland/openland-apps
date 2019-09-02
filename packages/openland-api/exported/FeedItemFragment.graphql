@@ -1,0 +1,14 @@
+fragment FeedItemFragment on FeedItem {
+  __typename
+  content {
+    __typename
+    ... on FeedPost {
+      message {
+        __typename
+        id
+        message
+      }
+    }
+  }
+  id
+}
