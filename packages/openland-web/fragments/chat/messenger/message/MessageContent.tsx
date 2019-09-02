@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment, FullMessage_GeneralMessage_attachments } from 'openland-api/Types';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
-import { SpanType, Span, SpanText } from 'openland-y-utils/spans/Span';
+import { SpanType, Span } from 'openland-y-utils/spans/Span';
 import { ReplyContent } from './content/ReplyContent';
 import { ImageContent } from './content/ImageContent';
 import { DocumentContent } from './content/DocumentContent';
