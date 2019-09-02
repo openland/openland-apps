@@ -71,8 +71,6 @@ export class FeedEngine {
         this.watcher = new SequenceModernWatcher('feed', this.engine.client.subscribeFeedUpdates(), this.engine.client.client, this.handleEvent, undefined, undefined, undefined, undefined);
 
         this.dataSource.initialize(dsItems, this.fullyLoaded, true);
-
-        console.warn('boom', dsItems);
     }
 
     private load = async () => {
@@ -82,23 +80,23 @@ export class FeedEngine {
             return;
         }
 
-        // this.loading = true;
+        this.loading = true;
 
-        // const loaded = (await backoff(() => this.engine.client.client.query(FeedQuery, { first: this.engine.options.feedBatchSize, after: this.lastCursor }))).feed;
+        const loaded = (await backoff(() => this.engine.client.client.query(FeedQuery, { first: this.engine.options.feedBatchSize, after: this.lastCursor }))).feed;
 
-        // this.lastCursor = loaded.cursor;
-        // this.fullyLoaded = typeof this.lastCursor !== 'string';
-        // this.loading = false;
+        this.lastCursor = loaded.cursor;
+        this.fullyLoaded = typeof this.lastCursor !== 'string';
+        this.loading = false;
 
-        // const dsItems: FeedDataSourceItem[] = [];
+        const dsItems: FeedDataSourceItem[] = [];
 
-        // loaded.items.map((i) => {
-        //     const converted = convertPost(i);
+        loaded.items.map((i) => {
+            const converted = convertPost(i);
 
-        //     dsItems.push(converted);
-        // });
+            dsItems.push(converted);
+        });
 
-        // this.dataSource.loadedMore(dsItems, this.fullyLoaded);
+        this.dataSource.loadedMore(dsItems, this.fullyLoaded);
     }
 
     private handleEvent = async (event: Types.FeedUpdateFragment) => {
@@ -109,6 +107,8 @@ export class FeedEngine {
             const converted = convertPost(post);
 
             await this.dataSource.addItem(converted, 0);
+
+            return;
         } else if (event.__typename === 'FeedItemUpdated') {
             const { post } = event;
             const converted = convertPost(post);
@@ -116,6 +116,8 @@ export class FeedEngine {
             if (await this.dataSource.hasItem(converted.key)) {
                 await this.dataSource.updateItem(converted);
             }
+
+            return;
         } else {
             log.log('Unhandled update');
         }
