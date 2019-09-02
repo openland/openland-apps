@@ -103,5 +103,21 @@ export class FeedEngine {
 
     private handleEvent = async (event: Types.FeedUpdateFragment) => {
         log.log('Event Recieved: ' + event.__typename);
+
+        if (event.__typename === 'FeedItemReceived') {
+            const { post } = event;
+            const converted = convertPost(post);
+
+            await this.dataSource.addItem(converted, 0);
+        } else if (event.__typename === 'FeedItemUpdated') {
+            const { post } = event;
+            const converted = convertPost(post);
+
+            if (await this.dataSource.hasItem(converted.key)) {
+                await this.dataSource.updateItem(converted);
+            }
+        } else {
+            log.log('Unhandled update');
+        }
     }
 }
