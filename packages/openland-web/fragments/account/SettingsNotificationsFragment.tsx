@@ -48,7 +48,7 @@ export const SettingsNotificationsFragment = React.memo(() => {
                 excludeMutedChats: excludeMutedChats.value,
                 countUnreadChats: countUnreadChats.value,
 
-                mobile: {
+                desktop: {
                     direct: {
                         showNotification: directShowNotification.value,
                         sound: directSound.value,
