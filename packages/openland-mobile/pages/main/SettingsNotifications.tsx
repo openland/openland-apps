@@ -73,13 +73,13 @@ const SettingsNotificationsContent = XMemo<PageProps>(props => {
         directShowNotification: settingsData.mobile.direct.showNotification,
         directSound: settingsData.mobile.direct.sound,
         secretChatShowNotification: settingsData.mobile.secretChat.showNotification,
-        secretChatSound: settingsData.mobile.secretChat.showNotification,
+        secretChatSound: settingsData.mobile.secretChat.sound,
         organizationChatShowNotification: settingsData.mobile.organizationChat.showNotification,
-        organizationChatSound: settingsData.mobile.organizationChat.showNotification,
+        organizationChatSound: settingsData.mobile.organizationChat.sound,
         communityChatShowNotification: settingsData.mobile.communityChat.showNotification,
-        communityChatSound: settingsData.mobile.communityChat.showNotification,
+        communityChatSound: settingsData.mobile.communityChat.sound,
         commentsShowNotification: settingsData.mobile.comments.showNotification,
-        commentsSound: settingsData.mobile.comments.showNotification,
+        commentsSound: settingsData.mobile.comments.sound,
         notificationPreview: settingsData.mobile.notificationPreview
     });
 
