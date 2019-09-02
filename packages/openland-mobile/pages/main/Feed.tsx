@@ -8,6 +8,7 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { FeedEngine } from 'openland-engines/feed/FeedEngine';
 import { SHeader } from 'react-native-s/SHeader';
 import { View, Text } from 'react-native';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
 interface FeedPageProps {
     engine: FeedEngine;
@@ -48,6 +49,7 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
         return (
             <>
                 <SHeader title="Feed" />
+                <SHeaderButton title="Create" icon={require('assets/ic-add-24.png')} />
                 <ASSafeAreaContext.Consumer>
                     {area => (
                         <>
@@ -72,4 +74,4 @@ const FeedWrapper = XMemo<PageProps>((props) => {
     return <FeedPage engine={engine} />;
 });
 
-export const Feed = withApp(FeedWrapper, { navigationAppearance: 'small' });
+export const Feed = withApp(FeedWrapper);
