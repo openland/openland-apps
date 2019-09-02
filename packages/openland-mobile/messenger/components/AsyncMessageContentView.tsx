@@ -186,15 +186,33 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
 
     return (
         <ASFlex flexDirection="column" alignItems="stretch">
-            <AsyncBubbleView width={fixedSize ? (isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined} isOut={isOut} attachTop={attachTop} attachBottom={attachBottom} color={theme.bubble(isOut).backgroundPrimary}>
+            <AsyncBubbleView
+                width={fixedSize ? (isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined}
+                isOut={isOut}
+                attachTop={attachTop}
+                attachBottom={attachBottom}
+                color={theme.bubble(isOut).backgroundPrimary}
+                hasAfter={!!(bottomContent && bottomContent.length)}
+            >
                 <ASFlex flexDirection="column" alignItems="stretch">
                     {topContent}
 
                     <MetaInfoIndicator type={isImageBottom ? 'media' : 'default'} message={message} theme={theme} />
                 </ASFlex>
-
-                {bottomContent}
             </AsyncBubbleView>
+
+            {!!(bottomContent && bottomContent.length) && (
+                <AsyncBubbleView
+                    width={fixedSize ? (isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) : undefined}
+                    isOut={isOut}
+                    attachTop={attachTop}
+                    attachBottom={attachBottom}
+                    color={theme.bubble(isOut).backgroundSecondary}
+                    hasBefore={!!(topContent && topContent.length)}
+                >
+                    {bottomContent}
+                </AsyncBubbleView>
+            )}
         </ASFlex>
     );
 });

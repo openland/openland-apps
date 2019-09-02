@@ -9,7 +9,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
-import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from '../AsyncBubbleView';
+import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal, contentInsetsTop } from '../AsyncBubbleView';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
@@ -114,22 +114,24 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         let maxWidth = this.props.maxWidth || ((imgLayout && !imgCompact) ? (imgLayout.width - contentInsetsHorizontal * 2) : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming));
         return (
 
-            <ASFlex flexDirection="column" alignItems="stretch" alignSelf={'stretch'}>
-                {!!this.props.attach.titleLinkHostname && imgCompact && <ASText
-                    maxWidth={maxWidth}
-                    color={out ? theme.foregroundContrast : theme.foregroundPrimary}
-                    opacity={out ? 0.7 : 0.6}
-                    fontSize={14}
-                    numberOfLines={1}
-                    fontWeight={FontStyles.Weight.Regular}
-                >
-                    {this.props.attach.titleLinkHostname}
-                </ASText>}
+            <ASFlex flexDirection="column" alignItems="stretch" alignSelf="stretch">
+                {!!this.props.attach.titleLinkHostname && imgCompact && (
+                    <ASText
+                        maxWidth={maxWidth}
+                        color={out ? theme.foregroundContrast : theme.foregroundPrimary}
+                        opacity={out ? 0.7 : 0.6}
+                        fontSize={14}
+                        numberOfLines={1}
+                        fontWeight={FontStyles.Weight.Regular}
+                    >
+                        {this.props.attach.titleLinkHostname}
+                    </ASText>
+                )}
 
                 {!imgCompact && this.props.attach.image && imgLayout && (
                     <ASFlex
                         backgroundColor={theme.backgroundTertiary}
-                        marginTop={this.props.compensateBubble ? 10 : 5}
+                        marginTop={this.props.compensateBubble ? -contentInsetsTop : 5}
                         marginLeft={this.props.compensateBubble ? -contentInsetsHorizontal : 0}
                         marginRight={this.props.compensateBubble ? -contentInsetsHorizontal : 0}
                         justifyContent="center"

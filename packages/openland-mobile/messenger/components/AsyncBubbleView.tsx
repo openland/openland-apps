@@ -15,12 +15,21 @@ interface AsyncBubbleViewProps {
     attachBottom: boolean;
     color: string;
     width?: number;
+
+    hasAfter?: boolean;
+    hasBefore?: boolean;
 }
 
 export class AsyncBubbleView extends React.PureComponent<AsyncBubbleViewProps> {
     render() {
-        const { isOut, attachTop, attachBottom, color, width, children } = this.props;
+        const { isOut, attachTop, attachBottom, color, width, hasAfter = false, hasBefore = false, children } = this.props;
         let bubbleRes = isOut ? 'outgoing' : 'incoming';
+
+        if (!hasBefore && hasAfter) {
+            bubbleRes += '-before';
+        } else if (hasBefore && !hasAfter) {
+            bubbleRes += '-after';
+        }
 
         if (attachTop && attachBottom) {
             bubbleRes += '-middle';
@@ -36,12 +45,32 @@ export class AsyncBubbleView extends React.PureComponent<AsyncBubbleViewProps> {
                     bubbleRes === 'incoming-middle' ? require('assets/bubbles/incoming_middle.png') :
                         bubbleRes === 'incoming-bottom' ? require('assets/bubbles/incoming_bottom.png') :
 
-                            bubbleRes === 'outgoing' ? require('assets/bubbles/outgoing.png') :
-                                bubbleRes === 'outgoing-top' ? require('assets/bubbles/outgoing_top.png') :
-                                    bubbleRes === 'outgoing-middle' ? require('assets/bubbles/outgoing_middle.png') :
-                                        bubbleRes === 'outgoing-bottom' ? require('assets/bubbles/outgoing_bottom.png') :
+                            bubbleRes === 'incoming-after' ? require('assets/bubbles/incoming_after.png') :
+                                bubbleRes === 'incoming-after-top' ? require('assets/bubbles/incoming_after_top.png') :
+                                    bubbleRes === 'incoming-after-middle' ? require('assets/bubbles/incoming_after_middle.png') :
+                                        bubbleRes === 'incoming-after-bottom' ? require('assets/bubbles/incoming_after_bottom.png') :
 
-                                            require('assets/bubbles/incoming.png');
+                                            bubbleRes === 'incoming-before' ? require('assets/bubbles/incoming_before.png') :
+                                                bubbleRes === 'incoming-before-top' ? require('assets/bubbles/incoming_before_top.png') :
+                                                    bubbleRes === 'incoming-before-middle' ? require('assets/bubbles/incoming_before_middle.png') :
+                                                        bubbleRes === 'incoming-before-bottom' ? require('assets/bubbles/incoming_before_bottom.png') :
+
+                                                            bubbleRes === 'outgoing' ? require('assets/bubbles/outgoing.png') :
+                                                                bubbleRes === 'outgoing-top' ? require('assets/bubbles/outgoing_top.png') :
+                                                                    bubbleRes === 'outgoing-middle' ? require('assets/bubbles/outgoing_middle.png') :
+                                                                        bubbleRes === 'outgoing-bottom' ? require('assets/bubbles/outgoing_bottom.png') :
+
+                                                                            bubbleRes === 'outgoing-after' ? require('assets/bubbles/outgoing_after.png') :
+                                                                                bubbleRes === 'outgoing-after-top' ? require('assets/bubbles/outgoing_after_top.png') :
+                                                                                    bubbleRes === 'outgoing-after-middle' ? require('assets/bubbles/outgoing_after_middle.png') :
+                                                                                        bubbleRes === 'outgoing-after-bottom' ? require('assets/bubbles/outgoing_after_bottom.png') :
+
+                                                                                            bubbleRes === 'outgoing-before' ? require('assets/bubbles/outgoing_before.png') :
+                                                                                                bubbleRes === 'outgoing-before-top' ? require('assets/bubbles/outgoing_before_top.png') :
+                                                                                                    bubbleRes === 'outgoing-before-middle' ? require('assets/bubbles/outgoing_before_middle.png') :
+                                                                                                        bubbleRes === 'outgoing-before-bottom' ? require('assets/bubbles/outgoing_before_bottom.png') :
+
+                                                                                                            require('assets/bubbles/incoming.png');
 
         let capInsets: { left: number, right: number, top: number, bottom: number };
         if (Platform.OS === 'ios') {
