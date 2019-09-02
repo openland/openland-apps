@@ -130,19 +130,16 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
 
                 {!imgCompact && this.props.attach.image && imgLayout && (
                     <ASFlex
-                        backgroundColor={theme.backgroundTertiary}
                         marginTop={this.props.compensateBubble ? -contentInsetsTop : 5}
                         marginLeft={this.props.compensateBubble ? -contentInsetsHorizontal : 0}
                         marginRight={this.props.compensateBubble ? -contentInsetsHorizontal : 0}
                         justifyContent="center"
-                        borderRadius={8}
                     >
                         <ASImage
-                            onPress={(e) => this.onMediaPress(e, 8)}
+                            onPress={(e) => this.onMediaPress(e, 0)}
                             source={imageSource}
                             width={imgLayout!.width}
                             height={imgLayout!.height}
-                            borderRadius={8}
                         />
                         {this.state && this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path &&
                             <ASFlex
