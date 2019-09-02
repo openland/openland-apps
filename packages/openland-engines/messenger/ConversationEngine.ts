@@ -283,7 +283,6 @@ export class ConversationEngine implements MessageSendHandler {
         log.log('Initial state for ' + this.conversationId);
         let startSubscription = !loadToUnread || this.forwardFullyLoaded;
         if (startSubscription) {
-            console.warn(`started ${this.conversationId} Subscription on start`);
             this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state: initialChat.state.state }), this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
         }
         this.onMessagesUpdated();
@@ -461,7 +460,6 @@ export class ConversationEngine implements MessageSendHandler {
         } else {
             this.dataSource.loadedMoreForward(dsItems, !!this.forwardFullyLoaded);
             if (!this.watcher && this.forwardFullyLoaded) {
-                console.warn(`started ${this.conversationId} Subscription on loaded forward`);
                 this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state: loaded.state.state }), this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, loaded.state.state);
             }
         }
@@ -548,7 +546,6 @@ export class ConversationEngine implements MessageSendHandler {
         let key = this.engine.sender.sendFile(this.conversationId, file, this, (quoted || []).map(q => q.id!));
         (async () => {
             let info = await file.fetchInfo();
-            console.warn(info);
             let name = info.name || 'image.jpg';
             let date = (new Date().getTime()).toString();
             let pmsg = {

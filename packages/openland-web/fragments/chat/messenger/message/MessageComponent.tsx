@@ -271,8 +271,6 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const layout = useLayout();
 
-    console.warn('message render');
-
     const attachesClassNames = cx(
         message.attachTop && 'message-attached-top',
         message.attachBottom && 'message-attached-bottom',
