@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 import { CommentEntryFragment } from 'openland-api/fragments/Comment';
-import { FullMessage } from 'openland-api/fragments/Message';
 import { RoomNano } from 'openland-api/fragments/RoomNano';
 import { UserBadge } from 'openland-api/fragments/UserBadge';
+import { FeedItemFull } from 'openland-api/fragments/FeedItemFull';
 
 export const NotificationFragment = gql`
     fragment NotificationFragment on Notification {
@@ -35,6 +35,11 @@ export const NotificationFragment = gql`
                                 ...RoomNano
                             }
                         }
+                        ... on CommentPeerRootFeedItem {
+                            item {
+                                ...FeedItemFull
+                            }
+                        }
                     }
                     subscription {
                         type
@@ -43,6 +48,11 @@ export const NotificationFragment = gql`
             }
         }
     }
+
+    ${CommentEntryFragment}
+    ${UserBadge}
+    ${RoomNano}
+    ${FeedItemFull}
 `;
 
 export const MyNotificationsQuery = gql`
@@ -55,11 +65,7 @@ export const MyNotificationsQuery = gql`
             cursor
         }
 
-        ${FullMessage}
-        ${CommentEntryFragment}
         ${NotificationFragment}
-        ${RoomNano}
-        ${UserBadge}
     }
 `;
 
@@ -122,6 +128,11 @@ export const NotificationCenterUpdateFragment = gql`
                                     ...RoomNano
                                 }
                             }
+                            ... on CommentPeerRootFeedItem {
+                                item {
+                                    ...FeedItemFull
+                                }
+                            }
                         }
                         id
                         subscription {
@@ -135,6 +146,12 @@ export const NotificationCenterUpdateFragment = gql`
             }
         }
     }
+
+    ${NotificationFragment}
+    ${UserBadge}
+    ${RoomNano}
+    ${FeedItemFull}
+    ${CommentEntryFragment}
 `;
 
 export const MyNotificationsCenterSubscription = gql`
@@ -158,12 +175,7 @@ export const MyNotificationsCenterSubscription = gql`
         }
     }
 
-    ${RoomNano}
-    ${FullMessage}
-    ${CommentEntryFragment}
-    ${NotificationFragment}
     ${NotificationCenterUpdateFragment}
-    ${UserBadge}
 `;
 
 export const MyNotificationCenterQuery = gql`

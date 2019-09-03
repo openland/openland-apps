@@ -76,6 +76,12 @@ fragment NotificationCenterUpdateFragment on NotificationCenterUpdate {
                 }
               }
             }
+            ... on CommentPeerRootFeedItem {
+              item {
+                __typename
+                ...FeedItemFull
+              }
+            }
           }
           subscription {
             __typename

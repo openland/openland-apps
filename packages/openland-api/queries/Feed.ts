@@ -1,57 +1,39 @@
 import gql from 'graphql-tag';
-import { UserShort } from '../fragments/UserShort';
-import { FullMessage } from '../fragments/Message';
-
-export const FeedItemFragment = gql`
-    fragment FeedItemFragment on FeedItem {
-        id
-        content {
-            ... on FeedPost {
-                message {
-                    id
-                    message
-                    date
-                    sender {
-                        ...UserShort
-                    }
-                    fallback
-                }
-            }
-        }
-    }
-
-    ${FullMessage}
-    ${UserShort}
-`;
+import { FeedItemFull } from '../fragments/FeedItemFull';
 
 export const FeedQuery = gql`
     query Feed($first: Int!, $after: String) {
         feed: alphaHomeFeed(first: $first, after: $after) {
             items {
-                ...FeedItemFragment
+                ...FeedItemFull
             }
             cursor
         }
 
-        ${FeedItemFragment}
+        ${FeedItemFull}
     }
 `;
 
 export const FeedUpdateFragment = gql`
     fragment FeedUpdateFragment on FeedUpdate {
         ... on FeedItemReceived {
-            post {
-                ...FeedItemFragment
+            item {
+                ...FeedItemFull
             }
         }
         ... on FeedItemUpdated {
-            post {
-                ...FeedItemFragment
+            item {
+                ...FeedItemFull
+            }
+        }
+        ... on FeedItemDeleted {
+            item {
+                ...FeedItemFull
             }
         }
     }
 
-    ${FeedItemFragment}
+    ${FeedItemFull}
 `;
 
 export const FeedUpdatesSubscription = gql`

@@ -1,15 +1,21 @@
 fragment FeedUpdateFragment on FeedUpdate {
   __typename
   ... on FeedItemReceived {
-    post {
+    item {
       __typename
-      ...FeedItemFragment
+      ...FeedItemFull
     }
   }
   ... on FeedItemUpdated {
-    post {
+    item {
       __typename
-      ...FeedItemFragment
+      ...FeedItemFull
+    }
+  }
+  ... on FeedItemDeleted {
+    item {
+      __typename
+      ...FeedItemFull
     }
   }
 }

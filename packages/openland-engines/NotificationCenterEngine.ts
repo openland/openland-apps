@@ -16,15 +16,18 @@ const log = createLogger('Engine-NotificationCenter');
 export type NotificationsDataSourceItem = DataSourceMessageItem;
 
 const convertCommentNotification = (id: string, peer: Types.NotificationFragment_content_peer, comment: Types.NotificationFragment_content_comment): NotificationsDataSourceItem => {
-    const replyQuoteText = peer.peerRoot.message.message || peer.peerRoot.message.fallback;
+    const peerRoot = peer.peerRoot;
+    const peerRootId = peerRoot.__typename === 'CommentPeerRootMessage' ? peerRoot.message.id : peerRoot.item.id;
+    const room = peerRoot.__typename === 'CommentPeerRootMessage' ? peerRoot.chat : undefined;
+    const replyQuoteText = peerRoot.__typename === 'CommentPeerRootMessage' ? (peerRoot.message.message || peerRoot.message.fallback) : undefined;
 
     return {
         ...convertMessage({
             ...comment.comment,
         }),
 
-        peerRootId: peer.peerRoot.message.id,
-        room: peer.peerRoot.chat,
+        peerRootId,
+        room,
         isSubscribedMessageComments: !!peer.subscription!!,
         notificationId: id,
         replyQuoteText,
@@ -252,8 +255,8 @@ export class NotificationCenterEngine {
         } else if (event.__typename === 'NotificationContentUpdated') {
             if (event.content.__typename === 'UpdatedNotificationContentComment') {
                 const peer = event.content.peer;
-                const peerMessage = peer.peerRoot.message;
-                const peerRootId = peerMessage.id;
+                const peerRoot = peer.peerRoot;
+                const peerRootId = peerRoot.__typename === 'CommentPeerRootMessage' ? peerRoot.message.id : peerRoot.item.id;
                 const comment = event.content.comment;
                 const subscription = !!event.content.peer.subscription;
 
@@ -262,7 +265,7 @@ export class NotificationCenterEngine {
                         return convertCommentNotification(oldItem.key, peer, comment);
                     }
                     if (oldItem.peerRootId === peerRootId) {
-                        oldItem.replyQuoteText = peerMessage.message || peerMessage.fallback;
+                        oldItem.replyQuoteText = peerRoot.__typename === 'CommentPeerRootMessage' ? (peerRoot.message.message || peerRoot.message.fallback) : undefined;
                         oldItem.isSubscribedMessageComments = subscription;
 
                         return oldItem;

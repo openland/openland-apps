@@ -28,8 +28,9 @@ import { AsyncNewMessageDivider } from './components/AsyncNewMessageDivider';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { AsyncServiceMessage } from './components/AsyncServiceMessage';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
-import { FeedDataSourceItem } from 'openland-engines/feed/FeedEngine';
-import { FeedItemAsync } from 'openland-mobile/feed/FeedItemAsync';
+import { DataSourceFeedItem } from 'openland-engines/feed/FeedEngine';
+import { FeedPostAsync } from 'openland-mobile/feed/FeedPostAsync';
+import { ASFlex } from 'react-native-async-view/ASFlex';
 
 const SortedReactions = [
     MessageReactionType.LIKE,
@@ -59,7 +60,7 @@ export class MobileMessenger {
     readonly history: SRouting;
     readonly dialogs: ASDataView<DialogDataSourceItem>;
     readonly notifications: ASDataView<NotificationsDataSourceItem>;
-    readonly feed: ASDataView<FeedDataSourceItem>;
+    readonly feed: ASDataView<DataSourceFeedItem>;
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>>();
 
     constructor(engine: MessengerEngine, history: SRouting) {
@@ -77,7 +78,13 @@ export class MobileMessenger {
 
         this.feed = new ASDataView(
             engine.feed.dataSource,
-            item => <FeedItemAsync item={item} />
+            item => {
+                if (item.type === 'post') {
+                    return <FeedPostAsync item={item} />;
+                }
+
+                return <ASFlex />;
+            }
         );
     }
 

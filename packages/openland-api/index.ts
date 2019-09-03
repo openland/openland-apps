@@ -25,6 +25,7 @@ import * as AppFull from './fragments/AppFull';
 import * as Comment from './fragments/Comment';
 import * as CommunitySearch from './fragments/CommunitySearch';
 import * as ConferenceFull from './fragments/ConferenceFull';
+import * as FeedItemFull from './fragments/FeedItemFull';
 import * as Message from './fragments/Message';
 import * as OrganizationFull from './fragments/OrganizationFull';
 import * as OrganizationMedium from './fragments/OrganizationMedium';
@@ -245,6 +246,7 @@ export const CommentEntryFragmentFragment = typedFragment<Types.CommentEntryFrag
 export const CommunitySearchFragment = typedFragment<Types.CommunitySearch>(CommunitySearch.CommunitySearch);
 export const ConferenceFullFragment = typedFragment<Types.ConferenceFull>(ConferenceFull.ConferenceFull);
 export const ConferenceShortFragment = typedFragment<Types.ConferenceShort>(ConferenceFull.ConferenceShort);
+export const FeedItemFullFragment = typedFragment<Types.FeedItemFull>(FeedItemFull.FeedItemFull);
 export const DaialogListMessageFragment = typedFragment<Types.DaialogListMessage>(Message.DaialogListMessage);
 export const TinyMessageFragment = typedFragment<Types.TinyMessage>(Message.TinyMessage);
 export const FullMessageFragment = typedFragment<Types.FullMessage>(Message.FullMessage);
@@ -269,7 +271,6 @@ export const UserTinyFragment = typedFragment<Types.UserTiny>(UserTiny.UserTiny)
 export const CommentUpdateFragmentFragment = typedFragment<Types.CommentUpdateFragment>(Chats.CommentUpdateFragment);
 export const ChatUpdateFragmentFragment = typedFragment<Types.ChatUpdateFragment>(Chats.ChatUpdateFragment);
 export const DialogUpdateFragmentFragment = typedFragment<Types.DialogUpdateFragment>(Chats.DialogUpdateFragment);
-export const FeedItemFragmentFragment = typedFragment<Types.FeedItemFragment>(Feed.FeedItemFragment);
 export const FeedUpdateFragmentFragment = typedFragment<Types.FeedUpdateFragment>(Feed.FeedUpdateFragment);
 export const NotificationFragmentFragment = typedFragment<Types.NotificationFragment>(MyNotificationsCenter.NotificationFragment);
 export const NotificationCenterUpdateFragmentFragment = typedFragment<Types.NotificationCenterUpdateFragment>(MyNotificationsCenter.NotificationCenterUpdateFragment);

@@ -6,26 +6,57 @@ import * as Types from 'openland-api/Types';
 import { SequenceModernWatcher } from '../core/SequenceModernWatcher';
 import { backoff } from 'openland-y-utils/timer';
 import { FeedQuery } from 'openland-api';
+import { Span } from 'openland-y-utils/spans/Span';
+import { ReactionReduced } from 'openland-engines/reactions/types';
+import { processSpans } from 'openland-y-utils/spans/processSpans';
+import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
+import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
 
 const log = createLogger('Engine-Feed');
 
-export interface FeedDataSourceItem extends DataSourceItem {
+export interface DataSourceFeedPostItem extends DataSourceItem {
+    type: 'post';
     id: string;
-    content: Types.Feed_feed_items_content | null;
+    date: number;
+    sender: Types.UserShort;
+    text?: string;
+    edited: boolean;
+    reactions: Types.FeedItemFull_reactions[];
+    attachments: Types.FeedItemFull_attachments[];
+    spans: Types.FeedItemFull_spans[];
+    commentsCount: number;
+    fallback: string;
+    textSpans: Span[];
+    reactionsReduced: ReactionReduced[];
+    reactionsLabel: string;
 }
 
-export const convertPost = (src: Types.Feed_feed_items): FeedDataSourceItem => {
+export type DataSourceFeedItem = DataSourceFeedPostItem;
+
+export const convertPost = (src: Types.Feed_feed_items, engine: MessengerEngine): DataSourceFeedPostItem => {
     return {
+        type: 'post',
         key: src.id,
         id: src.id,
-        content: src.content
+        date: parseInt(src.date, 10),
+        sender: src.sender,
+        text: src.message || undefined,
+        reactions: src.reactions,
+        attachments: src.attachments,
+        edited: src.edited,
+        spans: src.spans,
+        commentsCount: src.commentsCount,
+        fallback: src.fallback || src.message || '',
+        textSpans: src.message ? processSpans(src.message, src.spans) : [],
+        reactionsReduced: reduceReactions(src.reactions, engine.user.id),
+        reactionsLabel: getReactionsLabel(src.reactions, engine.user.id),
     };
 };
 
 export class FeedEngine {
     readonly engine: MessengerEngine;
     readonly client: OpenlandClient;
-    readonly dataSource: DataSource<FeedDataSourceItem>;
+    readonly dataSource: DataSource<DataSourceFeedItem>;
     // tslint:disable-next-line
     private watcher: SequenceModernWatcher<Types.FeedUpdates, {}> | null = null;
     private lastCursor: string | null = null;
@@ -46,6 +77,8 @@ export class FeedEngine {
     }
 
     private init = async () => {
+        return; // temp disable engine
+
         log.log('Init');
 
         const initialFeed = await backoff(async () => {
@@ -60,12 +93,14 @@ export class FeedEngine {
         this.lastCursor = initialFeed.cursor;
         this.fullyLoaded = typeof this.lastCursor !== 'string';
 
-        const dsItems: FeedDataSourceItem[] = [];
+        const dsItems: DataSourceFeedItem[] = [];
 
         initialFeed.items.map((i) => {
-            const converted = convertPost(i);
+            if (i.__typename === 'FeedPost') {
+                const converted = convertPost(i, this.engine);
 
-            dsItems.push(converted);
+                dsItems.push(converted);
+            }
         });
 
         this.watcher = new SequenceModernWatcher('feed', this.engine.client.subscribeFeedUpdates(), this.engine.client.client, this.handleEvent, undefined, undefined, undefined, undefined);
@@ -80,41 +115,57 @@ export class FeedEngine {
             return;
         }
 
-        // this.loading = true;
+        this.loading = true;
 
-        // const loaded = (await backoff(() => this.engine.client.client.query(FeedQuery, { first: this.engine.options.feedBatchSize, after: this.lastCursor }))).feed;
+        const loaded = (await backoff(() => this.engine.client.client.query(FeedQuery, { first: this.engine.options.feedBatchSize, after: this.lastCursor }))).feed;
 
-        // this.lastCursor = loaded.cursor;
-        // this.fullyLoaded = typeof this.lastCursor !== 'string';
-        // this.loading = false;
+        this.lastCursor = loaded.cursor;
+        this.fullyLoaded = typeof this.lastCursor !== 'string';
+        this.loading = false;
 
-        // const dsItems: FeedDataSourceItem[] = [];
+        const dsItems: DataSourceFeedItem[] = [];
 
-        // loaded.items.map((i) => {
-        //     const converted = convertPost(i);
+        loaded.items.map((i) => {
+            const converted = convertPost(i, this.engine);
 
-        //     dsItems.push(converted);
-        // });
+            dsItems.push(converted);
+        });
 
-        // this.dataSource.loadedMore(dsItems, this.fullyLoaded);
+        this.dataSource.loadedMore(dsItems, this.fullyLoaded);
     }
 
     private handleEvent = async (event: Types.FeedUpdateFragment) => {
         log.log('Event Recieved: ' + event.__typename);
 
         if (event.__typename === 'FeedItemReceived') {
-            const { post } = event;
-            const converted = convertPost(post);
+            let converted;
 
-            await this.dataSource.addItem(converted, 0);
+            if (event.item.__typename === 'FeedPost') {
+                converted = convertPost(event.item, this.engine);
+            }
+
+            if (converted) {
+                await this.dataSource.addItem(converted, 0);
+            }
 
             return;
         } else if (event.__typename === 'FeedItemUpdated') {
-            const { post } = event;
-            const converted = convertPost(post);
+            let converted;
 
-            if (await this.dataSource.hasItem(converted.key)) {
-                await this.dataSource.updateItem(converted);
+            if (event.item.__typename === 'FeedPost') {
+                converted = convertPost(event.item, this.engine);
+            }
+
+            if (converted) {
+                if (await this.dataSource.hasItem(converted.key)) {
+                    await this.dataSource.updateItem(converted);
+                }
+            }
+
+            return;
+        } else if (event.__typename === 'FeedItemDeleted') {
+            if (this.dataSource.hasItem(event.item.id)) {
+                this.dataSource.removeItem(event.item.id);
             }
 
             return;
