@@ -2,22 +2,26 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
-import { ASListView } from 'react-native-async-view/ASListView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { FeedEngine } from 'openland-engines/feed/FeedEngine';
+import { FeedEngine, DataSourceFeedItem } from 'openland-engines/feed/FeedEngine';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { Animated } from 'react-native';
-import { STrackedValue } from 'react-native-s/STrackedValue';
+import { NON_PRODUCTION } from '../Init';
+import { FeedPostView } from 'openland-mobile/feed/FeedPostView';
+import { View, Text } from 'react-native';
+import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
+import { DataSourceRender } from 'openland-mobile/components/DataSourceRender';
+import { GlobalSearch } from './components/globalSearch/GlobalSearch';
+import { SSearchControler } from 'react-native-s/SSearchController';
+import { SRouter } from 'react-native-s/SRouter';
 
 interface FeedPageProps {
     engine: FeedEngine;
+    router: SRouter;
 }
 
 class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration: number }> {
     private unmount?: () => void;
-    private contentOffset = new STrackedValue();
 
     constructor(props: any) {
         super(props);
@@ -34,27 +38,41 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
         }
     }
 
+    private renderEmpty = () => (
+        <View height={56} alignItems="center" justifyContent="center">
+            <Text>--- EMPTY ---</Text>
+        </View>
+    )
+
+    private renderLoading = () => (
+        <View height={56} alignItems="center" justifyContent="center">
+            <LoaderSpinner />
+        </View>
+    )
+
+    private renderItem = (data: { item: DataSourceFeedItem }) => {
+        if (data.item.type === 'post') {
+            return <FeedPostView item={data.item} />;
+        }
+
+        return <View />;
+    }
+
     render() {
         return (
             <>
                 <SHeader title="Feed" />
-                <SHeaderButton title="Create" icon={require('assets/ic-add-24.png')} />
-                <ASSafeAreaContext.Consumer>
-                    {area => (
-                        <ASListView
-                            overscrollCompensation={true}
-                            contentPaddingTop={area.top}
-                            contentPaddingBottom={area.bottom}
-                            dataView={getMessenger().feed}
-                            style={[{ flexGrow: 1 }, {
-                                // Work-around for freezing navive animation driver
-                                opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset)),
-                            } as any]}
-                            onScroll={this.contentOffset.event}
-                            headerPadding={4}
-                        />
-                    )}
-                </ASSafeAreaContext.Consumer>
+                {NON_PRODUCTION && <SHeaderButton title="Create" icon={require('assets/ic-add-24.png')} />}
+                <SSearchControler
+                    searchRender={(p) => <GlobalSearch query={p.query} router={this.props.router} />}
+                >
+                    <DataSourceRender
+                        dataSource={this.props.engine.dataSource}
+                        renderItem={this.renderItem}
+                        renderLoading={this.renderLoading}
+                        renderEmpty={this.renderEmpty}
+                    />
+                </SSearchControler>
             </>
         );
     }
@@ -63,7 +81,7 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
 const FeedWrapper = XMemo<PageProps>((props) => {
     const engine = getMessenger().engine.feed;
 
-    return <FeedPage engine={engine} />;
+    return <FeedPage engine={engine} router={props.router} />;
 });
 
 export const Feed = withApp(FeedWrapper);

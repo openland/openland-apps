@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ScrollViewProps, Animated } from 'react-native';
+import { ScrollViewProps, Animated, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderConfigRegistrator } from './navigation/HeaderConfigRegistrator';
 import { STrackedValue } from './STrackedValue';
@@ -8,6 +8,7 @@ export interface SScrollViewProps extends ScrollViewProps {
     syncWithBar?: boolean;
     adjustPaddings?: 'all' | 'top' | 'bottom' | 'none';
     safeAreaViaMargin?: boolean;
+    onScrollListener?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
 
 export class SScrollView extends React.Component<SScrollViewProps> {
@@ -31,7 +32,13 @@ export class SScrollView extends React.Component<SScrollViewProps> {
                                     opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset)),
                                     marginBottom: this.props.safeAreaViaMargin ? area.bottom : undefined
                                 }]}
-                                onScroll={this.contentOffset.event}
+                                onScroll={Animated.event(
+                                    [{ nativeEvent: { contentOffset: { y: this.contentOffset.offset } } }],
+                                    {
+                                        useNativeDriver: true,
+                                        listener: this.props.onScrollListener as any
+                                    }
+                                )}
                                 scrollEventThrottle={1}
                                 scrollIndicatorInsets={{
                                     bottom: area.bottom,
