@@ -1,8 +1,14 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import Select, { ReactSelectProps, Creatable, ValueComponentProps } from 'react-select';
+import Select, {
+    ReactSelectProps,
+    Creatable,
+    ValueComponentProps,
+    ArrowRendererProps,
+} from 'react-select';
 import { TextLabel1, TextDensed, TextBody } from 'openland-web/utils/TextStyles';
-import IcClose from 'openland-icons/s/ic-close-16.svg';
+import IcBack from 'openland-icons/s/ic-back-24.svg';
+import IcClear from 'openland-icons/s/ic-close-16.svg';
 import { UIcon } from './UIcon';
 
 const style = css`
@@ -12,12 +18,8 @@ const style = css`
         border-radius: 8px;
     }
     &.Select input::-webkit-contacts-auto-fill-button,
-    &.Select input::-webkit-credentials-auto-fill-button {
-        display: none !important;
-    }
-    &.Select input::-ms-clear {
-        display: none !important;
-    }
+    &.Select input::-webkit-credentials-auto-fill-button,
+    &.Select input::-ms-clear,
     &.Select input::-ms-reveal {
         display: none !important;
     }
@@ -27,28 +29,12 @@ const style = css`
     &.Select span {
         box-sizing: border-box;
     }
-    &.Select.is-disabled .Select-arrow-zone {
-        cursor: default;
-        pointer-events: none;
-        opacity: 0.35;
-    }
-    &.Select.is-open > .Select-control .Select-arrow {
-        top: -2px;
-        border-color: transparent transparent #999;
-        border-width: 0 5px 5px;
-    }
-    &.Select.is-searchable.is-open > .Select-control {
-        cursor: text;
-    }
+    &.Select.is-searchable.is-open > .Select-control,
     &.Select.is-searchable.is-focused:not(.is-open) > .Select-control {
         cursor: text;
     }
     &.Select.has-value.is-pseudo-focused .Select-input {
         opacity: 0;
-    }
-    &.Select.is-open .Select-arrow,
-    &.Select .Select-arrow-zone:hover > .Select-arrow {
-        border-top-color: #666;
     }
     &.Select.Select--rtl {
         direction: rtl;
@@ -102,11 +88,11 @@ const style = css`
         margin: 0;
         outline: none;
         -webkit-appearance: none;
-        
+
         //inputttt
-        
+
         font-size: 15px;
-        color: var(--foregroundTertiary);
+        color: var(--foregroundPrimary);
     }
     &.is-focused .Select-input > input {
         cursor: text;
@@ -126,7 +112,6 @@ const style = css`
         width: 16px;
     }
     & .Select-loading {
-        animation: Select-animation-spin 400ms infinite linear;
         width: 16px;
         height: 16px;
         box-sizing: border-box;
@@ -138,50 +123,15 @@ const style = css`
         vertical-align: middle;
     }
     & .Select-clear-zone {
-        animation: Select-animation-fadeIn 200ms;
-        color: #999;
         cursor: pointer;
         display: table-cell;
         position: relative;
         text-align: center;
         vertical-align: middle;
-        width: 17px;
-    }
-    & .Select-clear-zone:hover {
-        color: #d0021b;
-    }
-    & .Select-clear {
-        display: inline-block;
-        font-size: 18px;
-        line-height: 1;
-    }
-    &.Select--multi .Select-clear-zone {
-        width: 17px;
-    }
-    & .Select-arrow-zone {
-        cursor: pointer;
-        display: table-cell;
-        position: relative;
-        text-align: center;
-        vertical-align: middle;
-        width: 25px;
-        padding-right: 5px;
-    }
-    & .Select--rtl .Select-arrow-zone {
-        padding-right: 0;
-        padding-left: 5px;
-    }
-    & .Select-arrow {
-        border-color: #999 transparent transparent;
-        border-style: solid;
-        border-width: 5px 5px 2.5px;
-        display: inline-block;
-        height: 0;
-        width: 0;
-        position: relative;
+        width: 40px;
     }
     & .Select-control > *:last-child {
-        padding-right: 5px;
+        padding-right: 16px;
     }
     & .Select-multi-value-wrapper {
         height: 100%;
@@ -201,13 +151,39 @@ const style = css`
         overflow: hidden;
         float: left;
     }
-    @keyframes Select-animation-fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
+    &.Select--multi .Select-input {
+        vertical-align: middle;
+        margin-left: 10px;
+        margin-top: -4px;
+        padding: 0;
+    }
+    &.Select--multi.Select--rtl .Select-input {
+        margin-left: 0;
+        margin-right: 10px;
+    }
+    &.Select--multi.has-value .Select-input {
+        margin-left: 5px;
+    }
+`;
+
+const withMenuStyle = css`
+    &.Select.is-disabled .Select-arrow-zone {
+        cursor: default;
+        pointer-events: none;
+        opacity: 0.35;
+    }
+    & .Select-arrow-zone {
+        cursor: pointer;
+        display: table-cell;
+        position: relative;
+        text-align: center;
+        vertical-align: middle;
+        width: 25px;
+        padding-right: 16px;
+    }
+    & .Select--rtl .Select-arrow-zone {
+        padding-right: 0;
+        padding-left: 5px;
     }
     & .Select-menu-outer {
         background-color: #fff;
@@ -253,18 +229,11 @@ const style = css`
         display: block;
         padding: 8px 10px;
     }
-    &.Select--multi .Select-input {
-        vertical-align: middle;
-        margin-left: 10px;
-        margin-top: -4px;
-        padding: 0;
-    }
-    &.Select--multi.Select--rtl .Select-input {
-        margin-left: 0;
-        margin-right: 10px;
-    }
-    &.Select--multi.has-value .Select-input {
-        margin-left: 5px;
+`;
+
+const hideMenuSelector = css`
+    & .Select-menu-outer {
+        display: none;
     }
 `;
 
@@ -342,14 +311,15 @@ const MultiValueRender = (props: ValueComponentProps) => (
         <div className={multiValueContent}>
             {props.value.label}
             <div onClick={() => props.onRemove!!(props.value)} className={multiValueIcon}>
-                <UIcon icon={<IcClose />} color="rgba(255, 255, 255, 0.5)" />
+                <UIcon icon={<IcClear />} color="rgba(255, 255, 255, 0.5)" />
             </div>
         </div>
     </div>
 );
 
 const singleValueContainer = css`
-    color: #aaa;
+    color: var(--foregroundPrimary);
+    font-size: 15px;
     line-height: 56px;
     padding-left: 10px;
     padding-right: 10px;
@@ -361,14 +331,40 @@ const singleValueContainer = css`
     float: left;
 `;
 
-const ValueRender = (props: ValueComponentProps) => {
+const SingleValueRender = (props: ValueComponentProps) => {
     return <div className={singleValueContainer}>{props.value.label}</div>;
+};
+
+const ClearRender = () => (
+    <div>
+        <UIcon icon={<IcClear />} size={20} color="var(--foregroundTertiary)" />
+    </div>
+);
+
+const arrowStyle = css`
+    transform: rotate(-90deg);
+`;
+
+const arrowOpenStyle = css`
+    transform: rotate(-270deg);
+`;
+
+const ArrowRender = (props: ArrowRendererProps) => {
+    const isOpen = props.isOpen;
+    return (
+        <UIcon
+            icon={<IcBack className={cx(arrowStyle, isOpen && arrowOpenStyle)} />}
+            size={20}
+            color="var(--foregroundTertiary)"
+        />
+    );
 };
 
 export type USelectBasicProps = ReactSelectProps & {
     options: OptionType[];
     invalid?: boolean;
     creatable?: boolean;
+    hideSelector?: boolean;
 };
 
 export const USelect = React.memo((props: USelectBasicProps) => {
@@ -377,19 +373,23 @@ export const USelect = React.memo((props: USelectBasicProps) => {
         <>
             {props.creatable && (
                 <Creatable
-                    className={style}
                     onChange={onChange}
+                    clearRenderer={ClearRender}
                     optionRenderer={OptionRender}
-                    valueComponent={props.multi ? MultiValueRender : ValueRender}
+                    className={cx(style, !props.hideSelector ? withMenuStyle : hideMenuSelector)}
+                    arrowRenderer={!props.hideSelector ? ArrowRender : null}
+                    valueComponent={props.multi ? MultiValueRender : SingleValueRender}
                     {...other}
                 />
             )}
             {!props.creatable && (
                 <Select
-                    className={style}
                     onChange={onChange}
+                    clearRenderer={ClearRender}
                     optionRenderer={OptionRender}
-                    valueComponent={props.multi ? MultiValueRender : ValueRender}
+                    className={cx(style, !props.hideSelector ? withMenuStyle : hideMenuSelector)}
+                    arrowRenderer={!props.hideSelector ? ArrowRender : null}
+                    valueComponent={props.multi ? MultiValueRender : SingleValueRender}
                     {...other}
                 />
             )}

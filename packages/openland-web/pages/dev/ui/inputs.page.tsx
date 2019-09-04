@@ -10,6 +10,7 @@ const SelectComponents = () => {
     const [value2, setValue2] = React.useState<any>({ value: 200, label: '200' });
     return (
         <>
+            <div>default creatable</div>
             <USelect
                 creatable
                 placeholder="Events count"
@@ -23,9 +24,27 @@ const SelectComponents = () => {
                 onChange={data => setValue(data)}
                 value={value}
             />
+            <div>multi</div>
             <USelect
                 multi
                 creatable
+                placeholder="Events count"
+                options={[
+                    { value: 100, label: '100', labelShort: 'sto', subtitle: 'sotnyia' },
+                    { value: 200, label: '200' },
+                    { value: 300, label: '300' },
+                    { value: 400, label: '400' },
+                    { value: 500, label: '500' },
+                ]}
+                onChange={data => setValue2(data)}
+                value={value2}
+            />
+            <div>hidden select menu / don't clearable</div>
+            <USelect
+                multi
+                creatable
+                clearable={false}
+                hideSelector
                 placeholder="Events count"
                 options={[
                     { value: 100, label: '100', labelShort: 'sto', subtitle: 'sotnyia' },
