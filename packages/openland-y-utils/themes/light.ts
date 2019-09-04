@@ -167,6 +167,25 @@ export const ThemeLightCyan: ThemeGlobal = {
     }),
 };
 
+export const ThemeLightPink: ThemeGlobal = {
+    ...ThemeLight,
+
+    kind: 'LightPink',
+
+    accentPrimary: '#F218A9',
+    accentPrimaryHover: '#F218A9',
+    accentPrimaryActive: '#F218A9',
+
+    bubble: (isOut) => ({
+        backgroundPrimary: isOut ? '#F218A9' : '#F2F3F5',
+        backgroundSecondary: isOut ? '#F218A9' : '#EBEDF0',
+
+        foregroundPrimary: isOut ? '#FFFFFF' : '#171A1F',
+        foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#969AA3',
+        foregroundTertiary: isOut ? 'rgba(255, 255, 255, 0.36)' : '#C4C7CC',
+    }),
+};
+
 export const ThemeLightPurple: ThemeGlobal = {
     ...ThemeLight,
 
@@ -179,6 +198,25 @@ export const ThemeLightPurple: ThemeGlobal = {
     bubble: (isOut) => ({
         backgroundPrimary: isOut ? '#8518F2' : '#F2F3F5',
         backgroundSecondary: isOut ? '#8518F2' : '#EBEDF0',
+
+        foregroundPrimary: isOut ? '#FFFFFF' : '#171A1F',
+        foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#969AA3',
+        foregroundTertiary: isOut ? 'rgba(255, 255, 255, 0.36)' : '#C4C7CC',
+    }),
+};
+
+export const ThemeLightGray: ThemeGlobal = {
+    ...ThemeLight,
+
+    kind: 'LightGray',
+
+    accentPrimary: '#6C717A',
+    accentPrimaryHover: '#6C717A',
+    accentPrimaryActive: '#6C717A',
+
+    bubble: (isOut) => ({
+        backgroundPrimary: isOut ? '#6C717A' : '#F2F3F5',
+        backgroundSecondary: isOut ? '#6C717A' : '#EBEDF0',
 
         foregroundPrimary: isOut ? '#FFFFFF' : '#171A1F',
         foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#969AA3',

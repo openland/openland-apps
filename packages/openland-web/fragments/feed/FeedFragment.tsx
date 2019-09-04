@@ -10,8 +10,8 @@ import { MessengerEmptyFragment } from 'openland-web/fragments/chat/MessengerEmp
 import { DataSource } from 'openland-y-utils/DataSource';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { css } from 'linaria';
-import { FeedEngine, FeedDataSourceItem } from 'openland-engines/feed/FeedEngine';
-import { FeedItemView } from './components/FeedItemView';
+import { FeedEngine, DataSourceFeedItem } from 'openland-engines/feed/FeedEngine';
+import { FeedPostView } from './components/FeedPostView';
 
 const wrapperClass = css`
     padding: 0 16px 32px;
@@ -34,7 +34,7 @@ interface CommentsNotificationsProps {
 
 class FeedInner extends React.PureComponent<CommentsNotificationsProps, { dataSourceGeneration: number }> {
     private unmount?: () => void;
-    private dataSource: DataSource<FeedDataSourceItem>;
+    private dataSource: DataSource<DataSourceFeedItem>;
 
     constructor(props: CommentsNotificationsProps) {
         super(props);
@@ -82,9 +82,13 @@ class FeedInner extends React.PureComponent<CommentsNotificationsProps, { dataSo
         </XScrollView3>
     )
 
-    private renderNotification = (data: { item: FeedDataSourceItem }) => (
-        <FeedItemView item={data.item} />
-    )
+    private renderItem = (data: { item: DataSourceFeedItem }) => {
+        if (data.item.type === 'post') {
+            return <FeedPostView item={data.item} />;
+        }
+
+        return <div />;
+    }
 
     private renderEmpty = () => (
         <XView flexDirection="row" alignItems="center" flexGrow={1}>
@@ -109,7 +113,7 @@ class FeedInner extends React.PureComponent<CommentsNotificationsProps, { dataSo
                         dataSource={this.dataSource}
                         reverce={false}
                         wrapWith={this.dataSourceWrapper}
-                        renderItem={this.renderNotification}
+                        renderItem={this.renderItem}
                         renderLoading={this.renderLoading}
                         renderEmpty={this.renderEmpty}
                     />

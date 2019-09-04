@@ -130,7 +130,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                         />
                         {SUPER_ADMIN && !user.isBot && (
                             <ZListItem
-                                leftIcon={require('assets/ic-invite-fill-24.png')}
+                                leftIcon={require('assets/ic-invite-glyph-24.png')}
                                 text="Add to groups"
                                 onPress={handleAddMember}
                             />

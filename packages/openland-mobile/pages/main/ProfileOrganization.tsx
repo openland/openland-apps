@@ -342,7 +342,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             >
                 {organization.isMine && (
                     <ZListItem
-                        leftIcon={require('assets/ic-add-24.png')}
+                        leftIcon={require('assets/ic-add-glyph-24.png')}
                         text="Create new"
                         onPress={handleCreatePress}
                     />
@@ -364,7 +364,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             <ZListHeader text="Members" counter={organization.membersCount} />
             {organization.isMine && (
                 <ZListItem
-                    leftIcon={require('assets/ic-add-24.png')}
+                    leftIcon={require('assets/ic-add-glyph-24.png')}
                     text="Add people"
                     onPress={handleAddMember}
                 />

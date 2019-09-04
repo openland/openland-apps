@@ -7,20 +7,22 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { FeedEngine } from 'openland-engines/feed/FeedEngine';
 import { SHeader } from 'react-native-s/SHeader';
-import { View, Text } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import { Animated } from 'react-native';
+import { STrackedValue } from 'react-native-s/STrackedValue';
 
 interface FeedPageProps {
     engine: FeedEngine;
 }
 
 class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration: number }> {
+    private unmount?: () => void;
+    private contentOffset = new STrackedValue();
+
     constructor(props: any) {
         super(props);
         this.state = { dataSourceGeneration: 0 };
     }
-
-    private unmount?: () => void;
 
     componentWillMount() {
         this.unmount = this.props.engine.dataSource.dumbWatch(() => this.setState({ dataSourceGeneration: this.state.dataSourceGeneration + 1 }));
@@ -33,34 +35,24 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
     }
 
     render() {
-        const isEmpty = this.props.engine.dataSource.getSize() === 0 && this.props.engine.dataSource.isInited();
-
-        if (isEmpty) {
-            return (
-                <>
-                    <SHeader title="Feed" />
-                    <View>
-                        <Text>--- EMPTY ---</Text>
-                    </View>
-                </>
-            );
-        }
-
         return (
             <>
                 <SHeader title="Feed" />
                 <SHeaderButton title="Create" icon={require('assets/ic-add-24.png')} />
                 <ASSafeAreaContext.Consumer>
                     {area => (
-                        <>
-                            <ASListView
-                                contentPaddingTop={area.top}
-                                contentPaddingBottom={area.bottom}
-                                dataView={getMessenger().feed}
-                                style={{ flexGrow: 1 }}
-                                headerPadding={4}
-                            />
-                        </>
+                        <ASListView
+                            overscrollCompensation={true}
+                            contentPaddingTop={area.top}
+                            contentPaddingBottom={area.bottom}
+                            dataView={getMessenger().feed}
+                            style={[{ flexGrow: 1 }, {
+                                // Work-around for freezing navive animation driver
+                                opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset)),
+                            } as any]}
+                            onScroll={this.contentOffset.event}
+                            headerPadding={4}
+                        />
                     )}
                 </ASSafeAreaContext.Consumer>
             </>

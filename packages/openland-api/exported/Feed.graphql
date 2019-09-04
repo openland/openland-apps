@@ -4,7 +4,7 @@ query Feed($after: String, $first: Int!) {
     cursor
     items {
       __typename
-      ...FeedItemFragment
+      ...FeedItemFull
     }
   }
 }

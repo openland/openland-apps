@@ -1,6 +1,76 @@
 {
     "icons": [
         {
+            "name": "ic-group-glyph",
+            "src": "ic-group-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-channel-glyph",
+            "src": "ic-channel-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-link-glyph",
+            "src": "ic-link-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-add-glyph",
+            "src": "ic-add-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-star-glyph",
+            "src": "ic-star-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-help-glyph",
+            "src": "ic-help-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-mail-glyph",
+            "src": "ic-mail-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-notifications-glyph",
+            "src": "ic-notifications-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-edit-glyph",
+            "src": "ic-edit-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-invite-glyph",
+            "src": "ic-invite-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-camera",
             "src": "ic-camera-36.svg",
             "sizes": [
@@ -12,13 +82,6 @@
             "src": "ic-camera-16.svg",
             "sizes": [
                 16
-            ]
-        },
-        {
-            "name": "ic-mail-filled",
-            "src": "ic-mail-filled-24.svg",
-            "sizes": [
-                24
             ]
         },
         {
@@ -400,13 +463,6 @@
             ]
         },
         {
-            "name": "ic-picker-selected",
-            "src": "ic-picker-selected-16.svg",
-            "sizes": [
-                16
-            ]
-        },
-        {
             "name": "ic-search",
             "src": "ic-search-24.svg",
             "sizes": [
@@ -548,31 +604,10 @@
             ]
         },
         {
-            "name": "ic-help-fill",
-            "src": "ic-help-fill.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-rate-fill",
-            "src": "ic-rate-fill.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
             "name": "ic-star-admin",
             "src": "ic-star-admin.svg",
             "sizes": [
                 16
-            ]
-        },
-        {
-            "name": "ic-link-fill",
-            "src": "ic-link-fill.svg",
-            "sizes": [
-                24
             ]
         },
         {
@@ -623,13 +658,6 @@
         {
             "name": "ic-add-fill",
             "src": "ic-add-fill-24.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-notifications-fill",
-            "src": "ic-notifications-fill.svg",
             "sizes": [
                 24
             ]

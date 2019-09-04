@@ -50,7 +50,7 @@ export class MessengerEngine {
     constructor(client: OpenlandClient, user: UserShort, platform: string, options?: Partial<EngineOptions>) {
         this.options = {
             conversationBatchSize: options && options.conversationBatchSize ? options.conversationBatchSize : 15,
-            feedBatchSize: options && options.feedBatchSize ? options.feedBatchSize : 150,
+            feedBatchSize: options && options.feedBatchSize ? options.feedBatchSize : 15,
             store: options && options.store ? options.store : new InMemoryKeyValueStore()
         };
         this.client = client;

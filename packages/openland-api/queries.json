@@ -13346,7 +13346,7 @@
 					"type": "String"
 				}
 			],
-			"source": "query Feed($first: Int!, $after: String) {\n  feed: alphaHomeFeed(first: $first, after: $after) {\n    __typename\n    items {\n      __typename\n      ...FeedItemFragment\n    }\n    cursor\n  }\n}",
+			"source": "query Feed($first: Int!, $after: String) {\n  feed: alphaHomeFeed(first: $first, after: $after) {\n    __typename\n    items {\n      __typename\n      ...FeedItemFull\n    }\n    cursor\n  }\n}",
 			"fields": [
 				{
 					"responseName": "feed",
@@ -13394,14 +13394,14 @@
 								}
 							],
 							"fragmentSpreads": [
-								"FeedItemFragment"
+								"FeedItemFull"
 							],
 							"inlineFragments": []
 						},
 						{
 							"responseName": "cursor",
 							"fieldName": "cursor",
-							"type": "String!",
+							"type": "String",
 							"isConditional": false,
 							"isDeprecated": false
 						}
@@ -13413,12 +13413,13 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [
-				"FeedItemFragment",
+				"FeedItemFull",
 				"UserShort",
-				"OrganizationShort"
+				"OrganizationShort",
+				"UserForMention"
 			],
-			"sourceWithFragments": "query Feed($first: Int!, $after: String) {\n  feed: alphaHomeFeed(first: $first, after: $after) {\n    __typename\n    items {\n      __typename\n      ...FeedItemFragment\n    }\n    cursor\n  }\n}\nfragment FeedItemFragment on FeedItem {\n  __typename\n  id\n  content {\n    __typename\n    ... on FeedPost {\n      message {\n        __typename\n        id\n        message\n        date\n        sender {\n          __typename\n          ...UserShort\n        }\n        fallback\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}",
-			"operationId": "f29b423320f02d4786c20a4e004f0c5054242caa0714472f733f3775de605323"
+			"sourceWithFragments": "query Feed($first: Int!, $after: String) {\n  feed: alphaHomeFeed(first: $first, after: $after) {\n    __typename\n    items {\n      __typename\n      ...FeedItemFull\n    }\n    cursor\n  }\n}\nfragment FeedItemFull on FeedItem {\n  __typename\n  ... on FeedPost {\n    id\n    date\n    sender {\n      __typename\n      ...UserShort\n    }\n    edited\n    isMentioned\n    message\n    commentsCount\n    fallback\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        id\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        imageFallback {\n          __typename\n          photo\n          text\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            id\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    spans {\n      __typename\n      offset\n      length\n      ... on MessageSpanUserMention {\n        user {\n          __typename\n          ...UserForMention\n        }\n      }\n      ... on MessageSpanMultiUserMention {\n        users {\n          __typename\n          ...UserForMention\n        }\n      }\n      ... on MessageSpanRoomMention {\n        room {\n          __typename\n          ... on PrivateRoom {\n            id\n            user {\n              __typename\n              id\n              name\n            }\n          }\n          ... on SharedRoom {\n            id\n            title\n          }\n        }\n      }\n      ... on MessageSpanLink {\n        url\n      }\n      ... on MessageSpanDate {\n        date\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}",
+			"operationId": "5bbdb82af1ed1ad19e07b5850ef37f757aaf843fc6f7090cb9e404d4435f0dca"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
@@ -13469,12 +13470,13 @@
 			"inlineFragments": [],
 			"fragmentsReferenced": [
 				"FeedUpdateFragment",
-				"FeedItemFragment",
+				"FeedItemFull",
 				"UserShort",
-				"OrganizationShort"
+				"OrganizationShort",
+				"UserForMention"
 			],
-			"sourceWithFragments": "subscription FeedUpdates {\n  event: homeFeedUpdates {\n    __typename\n    updates {\n      __typename\n      ...FeedUpdateFragment\n    }\n  }\n}\nfragment FeedUpdateFragment on FeedUpdate {\n  __typename\n  ... on FeedItemReceived {\n    post {\n      __typename\n      ...FeedItemFragment\n    }\n  }\n  ... on FeedItemUpdated {\n    post {\n      __typename\n      ...FeedItemFragment\n    }\n  }\n}\nfragment FeedItemFragment on FeedItem {\n  __typename\n  id\n  content {\n    __typename\n    ... on FeedPost {\n      message {\n        __typename\n        id\n        message\n        date\n        sender {\n          __typename\n          ...UserShort\n        }\n        fallback\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}",
-			"operationId": "6b4c13d6b98aaff6d1f35f8a86f3396e08aef077b77e2338a3e312bcf1e88137"
+			"sourceWithFragments": "subscription FeedUpdates {\n  event: homeFeedUpdates {\n    __typename\n    updates {\n      __typename\n      ...FeedUpdateFragment\n    }\n  }\n}\nfragment FeedUpdateFragment on FeedUpdate {\n  __typename\n  ... on FeedItemReceived {\n    item {\n      __typename\n      ...FeedItemFull\n    }\n  }\n  ... on FeedItemUpdated {\n    item {\n      __typename\n      ...FeedItemFull\n    }\n  }\n  ... on FeedItemDeleted {\n    item {\n      __typename\n      ...FeedItemFull\n    }\n  }\n}\nfragment FeedItemFull on FeedItem {\n  __typename\n  ... on FeedPost {\n    id\n    date\n    sender {\n      __typename\n      ...UserShort\n    }\n    edited\n    isMentioned\n    message\n    commentsCount\n    fallback\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        id\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        imageFallback {\n          __typename\n          photo\n          text\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            id\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    spans {\n      __typename\n      offset\n      length\n      ... on MessageSpanUserMention {\n        user {\n          __typename\n          ...UserForMention\n        }\n      }\n      ... on MessageSpanMultiUserMention {\n        users {\n          __typename\n          ...UserForMention\n        }\n      }\n      ... on MessageSpanRoomMention {\n        room {\n          __typename\n          ... on PrivateRoom {\n            id\n            user {\n              __typename\n              id\n              name\n            }\n          }\n          ... on SharedRoom {\n            id\n            title\n          }\n        }\n      }\n      ... on MessageSpanLink {\n        url\n      }\n      ... on MessageSpanDate {\n        date\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}",
+			"operationId": "18ab2dfdf650d202c7b562d1f81d2f2f5b0385d27930dda73aa11386621aa256"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/MyNotificationsCenter.ts",
@@ -13566,10 +13568,11 @@
 				"UserBadge",
 				"UserForMention",
 				"UserTiny",
-				"RoomNano"
+				"RoomNano",
+				"FeedItemFull"
 			],
-			"sourceWithFragments": "query MyNotifications($first: Int!, $before: ID) {\n  myNotifications(first: $first, before: $before) {\n    __typename\n    items {\n      __typename\n      ...NotificationFragment\n    }\n    cursor\n  }\n}\nfragment NotificationFragment on Notification {\n  __typename\n  id\n  text\n  content {\n    __typename\n    ... on NewCommentNotification {\n      comment {\n        __typename\n        ...CommentEntryFragment\n      }\n      peer {\n        __typename\n        id\n        peerRoot {\n          __typename\n          ... on CommentPeerRootMessage {\n            message {\n              __typename\n              ... on GeneralMessage {\n                id\n                fallback\n                message\n                sender {\n                  __typename\n                  id\n                  name\n                }\n                senderBadge {\n                  __typename\n                  ...UserBadge\n                }\n              }\n            }\n            chat {\n              __typename\n              ...RoomNano\n            }\n          }\n        }\n        subscription {\n          __typename\n          type\n        }\n      }\n    }\n  }\n}\nfragment CommentEntryFragment on CommentEntry {\n  __typename\n  id\n  deleted\n  comment {\n    __typename\n    ...FullMessage\n    id\n  }\n  parentComment {\n    __typename\n    comment {\n      __typename\n      id\n      message\n    }\n    id\n  }\n  childComments {\n    __typename\n    id\n  }\n}\nfragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  senderBadge {\n    __typename\n    ...UserBadge\n  }\n  message\n  fallback\n  source {\n    __typename\n    ... on MessageSourceChat {\n      chat {\n        __typename\n        ... on PrivateRoom {\n          id\n        }\n        ... on SharedRoom {\n          id\n        }\n      }\n    }\n  }\n  ... on GeneralMessage {\n    id\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        id\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        imageFallback {\n          __typename\n          photo\n          text\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            id\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      senderBadge {\n        __typename\n        ...UserBadge\n      }\n      message\n      fallback\n      source {\n        __typename\n        ... on MessageSourceChat {\n          chat {\n            __typename\n            ... on PrivateRoom {\n              id\n            }\n            ... on SharedRoom {\n              id\n            }\n          }\n        }\n      }\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n        ... on MessageSpanDate {\n          date\n        }\n      }\n      ... on GeneralMessage {\n        id\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            id\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            id\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            imageFallback {\n              __typename\n              photo\n              text\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserForMention\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserForMention\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanDate {\n      date\n    }\n  }\n  ... on ServiceMessage {\n    id\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment RoomNano on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      id\n      name\n      photo\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    isChannel\n    title\n    photo\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n}",
-			"operationId": "a782e80f61e3f3b8fae533923e0d6350a59132941d02918f6dd82ff0df227189"
+			"sourceWithFragments": "query MyNotifications($first: Int!, $before: ID) {\n  myNotifications(first: $first, before: $before) {\n    __typename\n    items {\n      __typename\n      ...NotificationFragment\n    }\n    cursor\n  }\n}\nfragment NotificationFragment on Notification {\n  __typename\n  id\n  text\n  content {\n    __typename\n    ... on NewCommentNotification {\n      comment {\n        __typename\n        ...CommentEntryFragment\n      }\n      peer {\n        __typename\n        id\n        peerRoot {\n          __typename\n          ... on CommentPeerRootMessage {\n            message {\n              __typename\n              ... on GeneralMessage {\n                id\n                fallback\n                message\n                sender {\n                  __typename\n                  id\n                  name\n                }\n                senderBadge {\n                  __typename\n                  ...UserBadge\n                }\n              }\n            }\n            chat {\n              __typename\n              ...RoomNano\n            }\n          }\n          ... on CommentPeerRootFeedItem {\n            item {\n              __typename\n              ...FeedItemFull\n            }\n          }\n        }\n        subscription {\n          __typename\n          type\n        }\n      }\n    }\n  }\n}\nfragment CommentEntryFragment on CommentEntry {\n  __typename\n  id\n  deleted\n  comment {\n    __typename\n    ...FullMessage\n    id\n  }\n  parentComment {\n    __typename\n    comment {\n      __typename\n      id\n      message\n    }\n    id\n  }\n  childComments {\n    __typename\n    id\n  }\n}\nfragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  senderBadge {\n    __typename\n    ...UserBadge\n  }\n  message\n  fallback\n  source {\n    __typename\n    ... on MessageSourceChat {\n      chat {\n        __typename\n        ... on PrivateRoom {\n          id\n        }\n        ... on SharedRoom {\n          id\n        }\n      }\n    }\n  }\n  ... on GeneralMessage {\n    id\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        id\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        imageFallback {\n          __typename\n          photo\n          text\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            id\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      senderBadge {\n        __typename\n        ...UserBadge\n      }\n      message\n      fallback\n      source {\n        __typename\n        ... on MessageSourceChat {\n          chat {\n            __typename\n            ... on PrivateRoom {\n              id\n            }\n            ... on SharedRoom {\n              id\n            }\n          }\n        }\n      }\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n        ... on MessageSpanDate {\n          date\n        }\n      }\n      ... on GeneralMessage {\n        id\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            id\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            id\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            imageFallback {\n              __typename\n              photo\n              text\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserForMention\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserForMention\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanDate {\n      date\n    }\n  }\n  ... on ServiceMessage {\n    id\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment RoomNano on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      id\n      name\n      photo\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    isChannel\n    title\n    photo\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n}\nfragment FeedItemFull on FeedItem {\n  __typename\n  ... on FeedPost {\n    id\n    date\n    sender {\n      __typename\n      ...UserShort\n    }\n    edited\n    isMentioned\n    message\n    commentsCount\n    fallback\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        id\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        imageFallback {\n          __typename\n          photo\n          text\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            id\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    spans {\n      __typename\n      offset\n      length\n      ... on MessageSpanUserMention {\n        user {\n          __typename\n          ...UserForMention\n        }\n      }\n      ... on MessageSpanMultiUserMention {\n        users {\n          __typename\n          ...UserForMention\n        }\n      }\n      ... on MessageSpanRoomMention {\n        room {\n          __typename\n          ... on PrivateRoom {\n            id\n            user {\n              __typename\n              id\n              name\n            }\n          }\n          ... on SharedRoom {\n            id\n            title\n          }\n        }\n      }\n      ... on MessageSpanLink {\n        url\n      }\n      ... on MessageSpanDate {\n        date\n      }\n    }\n  }\n}",
+			"operationId": "521a86b4b74a8b7de083587dc9b66dcff62e7824dfe80da2fc1d8cbaedf5fa58"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/MyNotificationsCenter.ts",
@@ -13728,10 +13731,11 @@
 				"UserBadge",
 				"UserForMention",
 				"UserTiny",
-				"RoomNano"
+				"RoomNano",
+				"FeedItemFull"
 			],
-			"sourceWithFragments": "subscription MyNotificationsCenter($state: String) {\n  event: notificationCenterUpdates(fromState: $state) {\n    __typename\n    ... on NotificationCenterUpdateSingle {\n      seq\n      state\n      update {\n        __typename\n        ...NotificationCenterUpdateFragment\n      }\n    }\n    ... on NotificationCenterUpdateBatch {\n      fromSeq\n      seq\n      state\n      updates {\n        __typename\n        ...NotificationCenterUpdateFragment\n      }\n    }\n  }\n}\nfragment NotificationCenterUpdateFragment on NotificationCenterUpdate {\n  __typename\n  ... on NotificationReceived {\n    center {\n      __typename\n      id\n      unread\n    }\n    notification {\n      __typename\n      ...NotificationFragment\n    }\n  }\n  ... on NotificationUpdated {\n    center {\n      __typename\n      id\n      unread\n    }\n    notification {\n      __typename\n      ...NotificationFragment\n    }\n  }\n  ... on NotificationDeleted {\n    center {\n      __typename\n      id\n      unread\n    }\n    notification {\n      __typename\n      id\n    }\n  }\n  ... on NotificationRead {\n    center {\n      __typename\n      id\n      unread\n    }\n  }\n  ... on NotificationContentUpdated {\n    content {\n      __typename\n      ... on UpdatedNotificationContentComment {\n        peer {\n          __typename\n          peerRoot {\n            __typename\n            ... on CommentPeerRootMessage {\n              message {\n                __typename\n                ... on GeneralMessage {\n                  id\n                  fallback\n                  message\n                  sender {\n                    __typename\n                    id\n                    name\n                  }\n                  senderBadge {\n                    __typename\n                    ...UserBadge\n                  }\n                }\n              }\n              chat {\n                __typename\n                ...RoomNano\n              }\n            }\n          }\n          id\n          subscription {\n            __typename\n            type\n          }\n        }\n        comment {\n          __typename\n          ...CommentEntryFragment\n        }\n      }\n    }\n  }\n}\nfragment NotificationFragment on Notification {\n  __typename\n  id\n  text\n  content {\n    __typename\n    ... on NewCommentNotification {\n      comment {\n        __typename\n        ...CommentEntryFragment\n      }\n      peer {\n        __typename\n        id\n        peerRoot {\n          __typename\n          ... on CommentPeerRootMessage {\n            message {\n              __typename\n              ... on GeneralMessage {\n                id\n                fallback\n                message\n                sender {\n                  __typename\n                  id\n                  name\n                }\n                senderBadge {\n                  __typename\n                  ...UserBadge\n                }\n              }\n            }\n            chat {\n              __typename\n              ...RoomNano\n            }\n          }\n        }\n        subscription {\n          __typename\n          type\n        }\n      }\n    }\n  }\n}\nfragment CommentEntryFragment on CommentEntry {\n  __typename\n  id\n  deleted\n  comment {\n    __typename\n    ...FullMessage\n    id\n  }\n  parentComment {\n    __typename\n    comment {\n      __typename\n      id\n      message\n    }\n    id\n  }\n  childComments {\n    __typename\n    id\n  }\n}\nfragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  senderBadge {\n    __typename\n    ...UserBadge\n  }\n  message\n  fallback\n  source {\n    __typename\n    ... on MessageSourceChat {\n      chat {\n        __typename\n        ... on PrivateRoom {\n          id\n        }\n        ... on SharedRoom {\n          id\n        }\n      }\n    }\n  }\n  ... on GeneralMessage {\n    id\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        id\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        imageFallback {\n          __typename\n          photo\n          text\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            id\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      senderBadge {\n        __typename\n        ...UserBadge\n      }\n      message\n      fallback\n      source {\n        __typename\n        ... on MessageSourceChat {\n          chat {\n            __typename\n            ... on PrivateRoom {\n              id\n            }\n            ... on SharedRoom {\n              id\n            }\n          }\n        }\n      }\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n        ... on MessageSpanDate {\n          date\n        }\n      }\n      ... on GeneralMessage {\n        id\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            id\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            id\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            imageFallback {\n              __typename\n              photo\n              text\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserForMention\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserForMention\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanDate {\n      date\n    }\n  }\n  ... on ServiceMessage {\n    id\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment RoomNano on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      id\n      name\n      photo\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    isChannel\n    title\n    photo\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n}",
-			"operationId": "7e1bdbb4561ee7e6aec8fd5d3599ce080dc6ee230d17465407a73815f68fc1d9"
+			"sourceWithFragments": "subscription MyNotificationsCenter($state: String) {\n  event: notificationCenterUpdates(fromState: $state) {\n    __typename\n    ... on NotificationCenterUpdateSingle {\n      seq\n      state\n      update {\n        __typename\n        ...NotificationCenterUpdateFragment\n      }\n    }\n    ... on NotificationCenterUpdateBatch {\n      fromSeq\n      seq\n      state\n      updates {\n        __typename\n        ...NotificationCenterUpdateFragment\n      }\n    }\n  }\n}\nfragment NotificationCenterUpdateFragment on NotificationCenterUpdate {\n  __typename\n  ... on NotificationReceived {\n    center {\n      __typename\n      id\n      unread\n    }\n    notification {\n      __typename\n      ...NotificationFragment\n    }\n  }\n  ... on NotificationUpdated {\n    center {\n      __typename\n      id\n      unread\n    }\n    notification {\n      __typename\n      ...NotificationFragment\n    }\n  }\n  ... on NotificationDeleted {\n    center {\n      __typename\n      id\n      unread\n    }\n    notification {\n      __typename\n      id\n    }\n  }\n  ... on NotificationRead {\n    center {\n      __typename\n      id\n      unread\n    }\n  }\n  ... on NotificationContentUpdated {\n    content {\n      __typename\n      ... on UpdatedNotificationContentComment {\n        peer {\n          __typename\n          peerRoot {\n            __typename\n            ... on CommentPeerRootMessage {\n              message {\n                __typename\n                ... on GeneralMessage {\n                  id\n                  fallback\n                  message\n                  sender {\n                    __typename\n                    id\n                    name\n                  }\n                  senderBadge {\n                    __typename\n                    ...UserBadge\n                  }\n                }\n              }\n              chat {\n                __typename\n                ...RoomNano\n              }\n            }\n            ... on CommentPeerRootFeedItem {\n              item {\n                __typename\n                ...FeedItemFull\n              }\n            }\n          }\n          id\n          subscription {\n            __typename\n            type\n          }\n        }\n        comment {\n          __typename\n          ...CommentEntryFragment\n        }\n      }\n    }\n  }\n}\nfragment NotificationFragment on Notification {\n  __typename\n  id\n  text\n  content {\n    __typename\n    ... on NewCommentNotification {\n      comment {\n        __typename\n        ...CommentEntryFragment\n      }\n      peer {\n        __typename\n        id\n        peerRoot {\n          __typename\n          ... on CommentPeerRootMessage {\n            message {\n              __typename\n              ... on GeneralMessage {\n                id\n                fallback\n                message\n                sender {\n                  __typename\n                  id\n                  name\n                }\n                senderBadge {\n                  __typename\n                  ...UserBadge\n                }\n              }\n            }\n            chat {\n              __typename\n              ...RoomNano\n            }\n          }\n          ... on CommentPeerRootFeedItem {\n            item {\n              __typename\n              ...FeedItemFull\n            }\n          }\n        }\n        subscription {\n          __typename\n          type\n        }\n      }\n    }\n  }\n}\nfragment CommentEntryFragment on CommentEntry {\n  __typename\n  id\n  deleted\n  comment {\n    __typename\n    ...FullMessage\n    id\n  }\n  parentComment {\n    __typename\n    comment {\n      __typename\n      id\n      message\n    }\n    id\n  }\n  childComments {\n    __typename\n    id\n  }\n}\nfragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  senderBadge {\n    __typename\n    ...UserBadge\n  }\n  message\n  fallback\n  source {\n    __typename\n    ... on MessageSourceChat {\n      chat {\n        __typename\n        ... on PrivateRoom {\n          id\n        }\n        ... on SharedRoom {\n          id\n        }\n      }\n    }\n  }\n  ... on GeneralMessage {\n    id\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        id\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        imageFallback {\n          __typename\n          photo\n          text\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            id\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      senderBadge {\n        __typename\n        ...UserBadge\n      }\n      message\n      fallback\n      source {\n        __typename\n        ... on MessageSourceChat {\n          chat {\n            __typename\n            ... on PrivateRoom {\n              id\n            }\n            ... on SharedRoom {\n              id\n            }\n          }\n        }\n      }\n      spans {\n        __typename\n        offset\n        length\n        ... on MessageSpanUserMention {\n          user {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanMultiUserMention {\n          users {\n            __typename\n            ...UserShort\n          }\n        }\n        ... on MessageSpanRoomMention {\n          room {\n            __typename\n            ... on PrivateRoom {\n              id\n              user {\n                __typename\n                id\n                name\n              }\n            }\n            ... on SharedRoom {\n              id\n              title\n            }\n          }\n        }\n        ... on MessageSpanLink {\n          url\n        }\n        ... on MessageSpanDate {\n          date\n        }\n      }\n      ... on GeneralMessage {\n        id\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            id\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            id\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            imageFallback {\n              __typename\n              photo\n              text\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    offset\n    length\n    ... on MessageSpanUserMention {\n      user {\n        __typename\n        ...UserForMention\n      }\n    }\n    ... on MessageSpanMultiUserMention {\n      users {\n        __typename\n        ...UserForMention\n      }\n    }\n    ... on MessageSpanRoomMention {\n      room {\n        __typename\n        ... on PrivateRoom {\n          id\n          user {\n            __typename\n            id\n            name\n          }\n        }\n        ... on SharedRoom {\n          id\n          title\n        }\n      }\n    }\n    ... on MessageSpanLink {\n      url\n    }\n    ... on MessageSpanDate {\n      date\n    }\n  }\n  ... on ServiceMessage {\n    id\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment RoomNano on Room {\n  __typename\n  ... on PrivateRoom {\n    id\n    user {\n      __typename\n      id\n      name\n      photo\n    }\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n  ... on SharedRoom {\n    id\n    kind\n    isChannel\n    title\n    photo\n    settings {\n      __typename\n      id\n      mute\n    }\n  }\n}\nfragment FeedItemFull on FeedItem {\n  __typename\n  ... on FeedPost {\n    id\n    date\n    sender {\n      __typename\n      ...UserShort\n    }\n    edited\n    isMentioned\n    message\n    commentsCount\n    fallback\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        id\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        imageFallback {\n          __typename\n          photo\n          text\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            id\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    spans {\n      __typename\n      offset\n      length\n      ... on MessageSpanUserMention {\n        user {\n          __typename\n          ...UserForMention\n        }\n      }\n      ... on MessageSpanMultiUserMention {\n        users {\n          __typename\n          ...UserForMention\n        }\n      }\n      ... on MessageSpanRoomMention {\n        room {\n          __typename\n          ... on PrivateRoom {\n            id\n            user {\n              __typename\n              id\n              name\n            }\n          }\n          ... on SharedRoom {\n            id\n            title\n          }\n        }\n      }\n      ... on MessageSpanLink {\n        url\n      }\n      ... on MessageSpanDate {\n        date\n      }\n    }\n  }\n}",
+			"operationId": "6a9c86e661eb23527907890543bb04ca3e4259784452a3644716f6ee5a366708"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/MyNotificationsCenter.ts",
@@ -19076,6 +19080,938 @@
 					],
 					"fragmentSpreads": [],
 					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": []
+		},
+		{
+			"typeCondition": "FeedItem",
+			"possibleTypes": [
+				"FeedPost"
+			],
+			"fragmentName": "FeedItemFull",
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/fragments/FeedItemFull.ts",
+			"source": "fragment FeedItemFull on FeedItem {\n  __typename\n  ... on FeedPost {\n    id\n    date\n    sender {\n      __typename\n      ...UserShort\n    }\n    edited\n    isMentioned\n    message\n    commentsCount\n    fallback\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        id\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        imageFallback {\n          __typename\n          photo\n          text\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            id\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    spans {\n      __typename\n      offset\n      length\n      ... on MessageSpanUserMention {\n        user {\n          __typename\n          ...UserForMention\n        }\n      }\n      ... on MessageSpanMultiUserMention {\n        users {\n          __typename\n          ...UserForMention\n        }\n      }\n      ... on MessageSpanRoomMention {\n        room {\n          __typename\n          ... on PrivateRoom {\n            id\n            user {\n              __typename\n              id\n              name\n            }\n          }\n          ... on SharedRoom {\n            id\n            title\n          }\n        }\n      }\n      ... on MessageSpanLink {\n        url\n      }\n      ... on MessageSpanDate {\n        date\n      }\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "__typename",
+					"fieldName": "__typename",
+					"type": "String!",
+					"isConditional": false
+				},
+				{
+					"responseName": "id",
+					"fieldName": "id",
+					"type": "ID!",
+					"isConditional": false,
+					"description": "State",
+					"isDeprecated": false
+				},
+				{
+					"responseName": "date",
+					"fieldName": "date",
+					"type": "Date!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "sender",
+					"fieldName": "sender",
+					"type": "User!",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [
+						"UserShort"
+					],
+					"inlineFragments": []
+				},
+				{
+					"responseName": "edited",
+					"fieldName": "edited",
+					"type": "Boolean!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "isMentioned",
+					"fieldName": "isMentioned",
+					"type": "Boolean!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "message",
+					"fieldName": "message",
+					"type": "String",
+					"isConditional": false,
+					"description": "Content",
+					"isDeprecated": false
+				},
+				{
+					"responseName": "commentsCount",
+					"fieldName": "commentsCount",
+					"type": "Int!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "fallback",
+					"fieldName": "fallback",
+					"type": "String!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "reactions",
+					"fieldName": "reactions",
+					"type": "[ModernMessageReaction!]!",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "user",
+							"fieldName": "user",
+							"type": "User!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"UserShort"
+							],
+							"inlineFragments": []
+						},
+						{
+							"responseName": "reaction",
+							"fieldName": "reaction",
+							"type": "MessageReactionType!",
+							"isConditional": false,
+							"isDeprecated": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				},
+				{
+					"responseName": "attachments",
+					"fieldName": "attachments",
+					"type": "[ModernMessageAttachment!]!",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "fallback",
+							"fieldName": "fallback",
+							"type": "String!",
+							"isConditional": false,
+							"isDeprecated": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": [
+						{
+							"typeCondition": "MessageAttachmentFile",
+							"possibleTypes": [
+								"MessageAttachmentFile"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "fallback",
+									"fieldName": "fallback",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "fileId",
+									"fieldName": "fileId",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "fileMetadata",
+									"fieldName": "fileMetadata",
+									"type": "FileMetadata!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "name",
+											"fieldName": "name",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "mimeType",
+											"fieldName": "mimeType",
+											"type": "String",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "size",
+											"fieldName": "size",
+											"type": "Int!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "isImage",
+											"fieldName": "isImage",
+											"type": "Boolean!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "imageWidth",
+											"fieldName": "imageWidth",
+											"type": "Int",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "imageHeight",
+											"fieldName": "imageHeight",
+											"type": "Int",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "imageFormat",
+											"fieldName": "imageFormat",
+											"type": "String",
+											"isConditional": false,
+											"isDeprecated": false
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								},
+								{
+									"responseName": "filePreview",
+									"fieldName": "filePreview",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": []
+						},
+						{
+							"typeCondition": "MessageRichAttachment",
+							"possibleTypes": [
+								"MessageRichAttachment"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "fallback",
+									"fieldName": "fallback",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "title",
+									"fieldName": "title",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "subTitle",
+									"fieldName": "subTitle",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "titleLink",
+									"fieldName": "titleLink",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "titleLinkHostname",
+									"fieldName": "titleLinkHostname",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "text",
+									"fieldName": "text",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "icon",
+									"fieldName": "icon",
+									"type": "Image",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "url",
+											"fieldName": "url",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "metadata",
+											"fieldName": "metadata",
+											"type": "FileMetadata",
+											"isConditional": false,
+											"isDeprecated": false,
+											"fields": [
+												{
+													"responseName": "__typename",
+													"fieldName": "__typename",
+													"type": "String!",
+													"isConditional": false
+												},
+												{
+													"responseName": "name",
+													"fieldName": "name",
+													"type": "String!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "mimeType",
+													"fieldName": "mimeType",
+													"type": "String",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "size",
+													"fieldName": "size",
+													"type": "Int!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "isImage",
+													"fieldName": "isImage",
+													"type": "Boolean!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "imageWidth",
+													"fieldName": "imageWidth",
+													"type": "Int",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "imageHeight",
+													"fieldName": "imageHeight",
+													"type": "Int",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "imageFormat",
+													"fieldName": "imageFormat",
+													"type": "String",
+													"isConditional": false,
+													"isDeprecated": false
+												}
+											],
+											"fragmentSpreads": [],
+											"inlineFragments": []
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								},
+								{
+									"responseName": "image",
+									"fieldName": "image",
+									"type": "Image",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "url",
+											"fieldName": "url",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "metadata",
+											"fieldName": "metadata",
+											"type": "FileMetadata",
+											"isConditional": false,
+											"isDeprecated": false,
+											"fields": [
+												{
+													"responseName": "__typename",
+													"fieldName": "__typename",
+													"type": "String!",
+													"isConditional": false
+												},
+												{
+													"responseName": "name",
+													"fieldName": "name",
+													"type": "String!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "mimeType",
+													"fieldName": "mimeType",
+													"type": "String",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "size",
+													"fieldName": "size",
+													"type": "Int!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "isImage",
+													"fieldName": "isImage",
+													"type": "Boolean!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "imageWidth",
+													"fieldName": "imageWidth",
+													"type": "Int",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "imageHeight",
+													"fieldName": "imageHeight",
+													"type": "Int",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "imageFormat",
+													"fieldName": "imageFormat",
+													"type": "String",
+													"isConditional": false,
+													"isDeprecated": false
+												}
+											],
+											"fragmentSpreads": [],
+											"inlineFragments": []
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								},
+								{
+									"responseName": "imageFallback",
+									"fieldName": "imageFallback",
+									"type": "ImageFallback",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "photo",
+											"fieldName": "photo",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "text",
+											"fieldName": "text",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								},
+								{
+									"responseName": "keyboard",
+									"fieldName": "keyboard",
+									"type": "MessageKeyboard",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "buttons",
+											"fieldName": "buttons",
+											"type": "[[ModernMessageButton!]]!",
+											"isConditional": false,
+											"isDeprecated": false,
+											"fields": [
+												{
+													"responseName": "__typename",
+													"fieldName": "__typename",
+													"type": "String!",
+													"isConditional": false
+												},
+												{
+													"responseName": "id",
+													"fieldName": "id",
+													"type": "ID!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "title",
+													"fieldName": "title",
+													"type": "String!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "style",
+													"fieldName": "style",
+													"type": "ModernMessageButtonStyle!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "url",
+													"fieldName": "url",
+													"type": "String",
+													"isConditional": false,
+													"isDeprecated": false
+												}
+											],
+											"fragmentSpreads": [],
+											"inlineFragments": []
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								}
+							],
+							"fragmentSpreads": []
+						}
+					]
+				},
+				{
+					"responseName": "spans",
+					"fieldName": "spans",
+					"type": "[MessageSpan!]!",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "offset",
+							"fieldName": "offset",
+							"type": "Int!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "length",
+							"fieldName": "length",
+							"type": "Int!",
+							"isConditional": false,
+							"isDeprecated": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": [
+						{
+							"typeCondition": "MessageSpanUserMention",
+							"possibleTypes": [
+								"MessageSpanUserMention"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "offset",
+									"fieldName": "offset",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "length",
+									"fieldName": "length",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "user",
+									"fieldName": "user",
+									"type": "User!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										}
+									],
+									"fragmentSpreads": [
+										"UserForMention"
+									],
+									"inlineFragments": []
+								}
+							],
+							"fragmentSpreads": []
+						},
+						{
+							"typeCondition": "MessageSpanMultiUserMention",
+							"possibleTypes": [
+								"MessageSpanMultiUserMention"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "offset",
+									"fieldName": "offset",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "length",
+									"fieldName": "length",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "users",
+									"fieldName": "users",
+									"type": "[User!]!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										}
+									],
+									"fragmentSpreads": [
+										"UserForMention"
+									],
+									"inlineFragments": []
+								}
+							],
+							"fragmentSpreads": []
+						},
+						{
+							"typeCondition": "MessageSpanRoomMention",
+							"possibleTypes": [
+								"MessageSpanRoomMention"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "offset",
+									"fieldName": "offset",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "length",
+									"fieldName": "length",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "room",
+									"fieldName": "room",
+									"type": "Room!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": [
+										{
+											"typeCondition": "PrivateRoom",
+											"possibleTypes": [
+												"PrivateRoom"
+											],
+											"fields": [
+												{
+													"responseName": "__typename",
+													"fieldName": "__typename",
+													"type": "String!",
+													"isConditional": false
+												},
+												{
+													"responseName": "id",
+													"fieldName": "id",
+													"type": "ID!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "user",
+													"fieldName": "user",
+													"type": "User!",
+													"isConditional": false,
+													"isDeprecated": false,
+													"fields": [
+														{
+															"responseName": "__typename",
+															"fieldName": "__typename",
+															"type": "String!",
+															"isConditional": false
+														},
+														{
+															"responseName": "id",
+															"fieldName": "id",
+															"type": "ID!",
+															"isConditional": false,
+															"isDeprecated": false
+														},
+														{
+															"responseName": "name",
+															"fieldName": "name",
+															"type": "String!",
+															"isConditional": false,
+															"isDeprecated": false
+														}
+													],
+													"fragmentSpreads": [],
+													"inlineFragments": []
+												}
+											],
+											"fragmentSpreads": []
+										},
+										{
+											"typeCondition": "SharedRoom",
+											"possibleTypes": [
+												"SharedRoom"
+											],
+											"fields": [
+												{
+													"responseName": "__typename",
+													"fieldName": "__typename",
+													"type": "String!",
+													"isConditional": false
+												},
+												{
+													"responseName": "id",
+													"fieldName": "id",
+													"type": "ID!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "title",
+													"fieldName": "title",
+													"type": "String!",
+													"isConditional": false,
+													"isDeprecated": false
+												}
+											],
+											"fragmentSpreads": []
+										}
+									]
+								}
+							],
+							"fragmentSpreads": []
+						},
+						{
+							"typeCondition": "MessageSpanLink",
+							"possibleTypes": [
+								"MessageSpanLink"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "offset",
+									"fieldName": "offset",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "length",
+									"fieldName": "length",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "url",
+									"fieldName": "url",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": []
+						},
+						{
+							"typeCondition": "MessageSpanDate",
+							"possibleTypes": [
+								"MessageSpanDate"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "offset",
+									"fieldName": "offset",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "length",
+									"fieldName": "length",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "date",
+									"fieldName": "date",
+									"type": "Date!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": []
+						}
+					]
 				}
 			],
 			"fragmentSpreads": [],
@@ -27428,123 +28364,15 @@
 			]
 		},
 		{
-			"typeCondition": "FeedItem",
-			"possibleTypes": [
-				"FeedItem"
-			],
-			"fragmentName": "FeedItemFragment",
-			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
-			"source": "fragment FeedItemFragment on FeedItem {\n  __typename\n  id\n  content {\n    __typename\n    ... on FeedPost {\n      message {\n        __typename\n        id\n        message\n        date\n        sender {\n          __typename\n          ...UserShort\n        }\n        fallback\n      }\n    }\n  }\n}",
-			"fields": [
-				{
-					"responseName": "__typename",
-					"fieldName": "__typename",
-					"type": "String!",
-					"isConditional": false
-				},
-				{
-					"responseName": "id",
-					"fieldName": "id",
-					"type": "ID!",
-					"isConditional": false,
-					"isDeprecated": false
-				},
-				{
-					"responseName": "content",
-					"fieldName": "content",
-					"type": "FeedItemContent",
-					"isConditional": false,
-					"isDeprecated": false,
-					"fields": [
-						{
-							"responseName": "__typename",
-							"fieldName": "__typename",
-							"type": "String!",
-							"isConditional": false
-						},
-						{
-							"responseName": "message",
-							"fieldName": "message",
-							"type": "GeneralMessage",
-							"isConditional": false,
-							"isDeprecated": false,
-							"fields": [
-								{
-									"responseName": "__typename",
-									"fieldName": "__typename",
-									"type": "String!",
-									"isConditional": false
-								},
-								{
-									"responseName": "id",
-									"fieldName": "id",
-									"type": "ID!",
-									"isConditional": false,
-									"description": "State",
-									"isDeprecated": false
-								},
-								{
-									"responseName": "message",
-									"fieldName": "message",
-									"type": "String",
-									"isConditional": false,
-									"description": "Content",
-									"isDeprecated": false
-								},
-								{
-									"responseName": "date",
-									"fieldName": "date",
-									"type": "Date!",
-									"isConditional": false,
-									"isDeprecated": false
-								},
-								{
-									"responseName": "sender",
-									"fieldName": "sender",
-									"type": "User!",
-									"isConditional": false,
-									"isDeprecated": false,
-									"fields": [
-										{
-											"responseName": "__typename",
-											"fieldName": "__typename",
-											"type": "String!",
-											"isConditional": false
-										}
-									],
-									"fragmentSpreads": [
-										"UserShort"
-									],
-									"inlineFragments": []
-								},
-								{
-									"responseName": "fallback",
-									"fieldName": "fallback",
-									"type": "String!",
-									"isConditional": false,
-									"isDeprecated": false
-								}
-							],
-							"fragmentSpreads": [],
-							"inlineFragments": []
-						}
-					],
-					"fragmentSpreads": [],
-					"inlineFragments": []
-				}
-			],
-			"fragmentSpreads": [],
-			"inlineFragments": []
-		},
-		{
 			"typeCondition": "FeedUpdate",
 			"possibleTypes": [
 				"FeedItemReceived",
-				"FeedItemUpdated"
+				"FeedItemUpdated",
+				"FeedItemDeleted"
 			],
 			"fragmentName": "FeedUpdateFragment",
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
-			"source": "fragment FeedUpdateFragment on FeedUpdate {\n  __typename\n  ... on FeedItemReceived {\n    post {\n      __typename\n      ...FeedItemFragment\n    }\n  }\n  ... on FeedItemUpdated {\n    post {\n      __typename\n      ...FeedItemFragment\n    }\n  }\n}",
+			"source": "fragment FeedUpdateFragment on FeedUpdate {\n  __typename\n  ... on FeedItemReceived {\n    item {\n      __typename\n      ...FeedItemFull\n    }\n  }\n  ... on FeedItemUpdated {\n    item {\n      __typename\n      ...FeedItemFull\n    }\n  }\n  ... on FeedItemDeleted {\n    item {\n      __typename\n      ...FeedItemFull\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "__typename",
@@ -27568,8 +28396,8 @@
 							"isConditional": false
 						},
 						{
-							"responseName": "post",
-							"fieldName": "post",
+							"responseName": "item",
+							"fieldName": "item",
 							"type": "FeedItem!",
 							"isConditional": false,
 							"isDeprecated": false,
@@ -27582,7 +28410,7 @@
 								}
 							],
 							"fragmentSpreads": [
-								"FeedItemFragment"
+								"FeedItemFull"
 							],
 							"inlineFragments": []
 						}
@@ -27602,8 +28430,8 @@
 							"isConditional": false
 						},
 						{
-							"responseName": "post",
-							"fieldName": "post",
+							"responseName": "item",
+							"fieldName": "item",
 							"type": "FeedItem!",
 							"isConditional": false,
 							"isDeprecated": false,
@@ -27616,7 +28444,41 @@
 								}
 							],
 							"fragmentSpreads": [
-								"FeedItemFragment"
+								"FeedItemFull"
+							],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": []
+				},
+				{
+					"typeCondition": "FeedItemDeleted",
+					"possibleTypes": [
+						"FeedItemDeleted"
+					],
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "item",
+							"fieldName": "item",
+							"type": "FeedItem!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"FeedItemFull"
 							],
 							"inlineFragments": []
 						}
@@ -27632,7 +28494,7 @@
 			],
 			"fragmentName": "NotificationFragment",
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/MyNotificationsCenter.ts",
-			"source": "fragment NotificationFragment on Notification {\n  __typename\n  id\n  text\n  content {\n    __typename\n    ... on NewCommentNotification {\n      comment {\n        __typename\n        ...CommentEntryFragment\n      }\n      peer {\n        __typename\n        id\n        peerRoot {\n          __typename\n          ... on CommentPeerRootMessage {\n            message {\n              __typename\n              ... on GeneralMessage {\n                id\n                fallback\n                message\n                sender {\n                  __typename\n                  id\n                  name\n                }\n                senderBadge {\n                  __typename\n                  ...UserBadge\n                }\n              }\n            }\n            chat {\n              __typename\n              ...RoomNano\n            }\n          }\n        }\n        subscription {\n          __typename\n          type\n        }\n      }\n    }\n  }\n}",
+			"source": "fragment NotificationFragment on Notification {\n  __typename\n  id\n  text\n  content {\n    __typename\n    ... on NewCommentNotification {\n      comment {\n        __typename\n        ...CommentEntryFragment\n      }\n      peer {\n        __typename\n        id\n        peerRoot {\n          __typename\n          ... on CommentPeerRootMessage {\n            message {\n              __typename\n              ... on GeneralMessage {\n                id\n                fallback\n                message\n                sender {\n                  __typename\n                  id\n                  name\n                }\n                senderBadge {\n                  __typename\n                  ...UserBadge\n                }\n              }\n            }\n            chat {\n              __typename\n              ...RoomNano\n            }\n          }\n          ... on CommentPeerRootFeedItem {\n            item {\n              __typename\n              ...FeedItemFull\n            }\n          }\n        }\n        subscription {\n          __typename\n          type\n        }\n      }\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "__typename",
@@ -27718,13 +28580,15 @@
 											"fieldName": "__typename",
 											"type": "String!",
 											"isConditional": false
-										},
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": [
 										{
-											"responseName": "message",
-											"fieldName": "message",
-											"type": "GeneralMessage!",
-											"isConditional": false,
-											"isDeprecated": false,
+											"typeCondition": "CommentPeerRootMessage",
+											"possibleTypes": [
+												"CommentPeerRootMessage"
+											],
 											"fields": [
 												{
 													"responseName": "__typename",
@@ -27733,32 +28597,9 @@
 													"isConditional": false
 												},
 												{
-													"responseName": "id",
-													"fieldName": "id",
-													"type": "ID!",
-													"isConditional": false,
-													"description": "State",
-													"isDeprecated": false
-												},
-												{
-													"responseName": "fallback",
-													"fieldName": "fallback",
-													"type": "String!",
-													"isConditional": false,
-													"isDeprecated": false
-												},
-												{
 													"responseName": "message",
 													"fieldName": "message",
-													"type": "String",
-													"isConditional": false,
-													"description": "Content",
-													"isDeprecated": false
-												},
-												{
-													"responseName": "sender",
-													"fieldName": "sender",
-													"type": "User!",
+													"type": "GeneralMessage!",
 													"isConditional": false,
 													"isDeprecated": false,
 													"fields": [
@@ -27773,23 +28614,82 @@
 															"fieldName": "id",
 															"type": "ID!",
 															"isConditional": false,
+															"description": "State",
 															"isDeprecated": false
 														},
 														{
-															"responseName": "name",
-															"fieldName": "name",
+															"responseName": "fallback",
+															"fieldName": "fallback",
 															"type": "String!",
 															"isConditional": false,
 															"isDeprecated": false
+														},
+														{
+															"responseName": "message",
+															"fieldName": "message",
+															"type": "String",
+															"isConditional": false,
+															"description": "Content",
+															"isDeprecated": false
+														},
+														{
+															"responseName": "sender",
+															"fieldName": "sender",
+															"type": "User!",
+															"isConditional": false,
+															"isDeprecated": false,
+															"fields": [
+																{
+																	"responseName": "__typename",
+																	"fieldName": "__typename",
+																	"type": "String!",
+																	"isConditional": false
+																},
+																{
+																	"responseName": "id",
+																	"fieldName": "id",
+																	"type": "ID!",
+																	"isConditional": false,
+																	"isDeprecated": false
+																},
+																{
+																	"responseName": "name",
+																	"fieldName": "name",
+																	"type": "String!",
+																	"isConditional": false,
+																	"isDeprecated": false
+																}
+															],
+															"fragmentSpreads": [],
+															"inlineFragments": []
+														},
+														{
+															"responseName": "senderBadge",
+															"fieldName": "senderBadge",
+															"type": "UserBadge",
+															"isConditional": false,
+															"isDeprecated": false,
+															"fields": [
+																{
+																	"responseName": "__typename",
+																	"fieldName": "__typename",
+																	"type": "String!",
+																	"isConditional": false
+																}
+															],
+															"fragmentSpreads": [
+																"UserBadge"
+															],
+															"inlineFragments": []
 														}
 													],
 													"fragmentSpreads": [],
 													"inlineFragments": []
 												},
 												{
-													"responseName": "senderBadge",
-													"fieldName": "senderBadge",
-													"type": "UserBadge",
+													"responseName": "chat",
+													"fieldName": "chat",
+													"type": "Room!",
 													"isConditional": false,
 													"isDeprecated": false,
 													"fields": [
@@ -27801,36 +28701,48 @@
 														}
 													],
 													"fragmentSpreads": [
-														"UserBadge"
+														"RoomNano"
 													],
 													"inlineFragments": []
 												}
 											],
-											"fragmentSpreads": [],
-											"inlineFragments": []
+											"fragmentSpreads": []
 										},
 										{
-											"responseName": "chat",
-											"fieldName": "chat",
-											"type": "Room!",
-											"isConditional": false,
-											"isDeprecated": false,
+											"typeCondition": "CommentPeerRootFeedItem",
+											"possibleTypes": [
+												"CommentPeerRootFeedItem"
+											],
 											"fields": [
 												{
 													"responseName": "__typename",
 													"fieldName": "__typename",
 													"type": "String!",
 													"isConditional": false
+												},
+												{
+													"responseName": "item",
+													"fieldName": "item",
+													"type": "FeedItem!",
+													"isConditional": false,
+													"isDeprecated": false,
+													"fields": [
+														{
+															"responseName": "__typename",
+															"fieldName": "__typename",
+															"type": "String!",
+															"isConditional": false
+														}
+													],
+													"fragmentSpreads": [
+														"FeedItemFull"
+													],
+													"inlineFragments": []
 												}
 											],
-											"fragmentSpreads": [
-												"RoomNano"
-											],
-											"inlineFragments": []
+											"fragmentSpreads": []
 										}
-									],
-									"fragmentSpreads": [],
-									"inlineFragments": []
+									]
 								},
 								{
 									"responseName": "subscription",
@@ -27879,7 +28791,7 @@
 			],
 			"fragmentName": "NotificationCenterUpdateFragment",
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/MyNotificationsCenter.ts",
-			"source": "fragment NotificationCenterUpdateFragment on NotificationCenterUpdate {\n  __typename\n  ... on NotificationReceived {\n    center {\n      __typename\n      id\n      unread\n    }\n    notification {\n      __typename\n      ...NotificationFragment\n    }\n  }\n  ... on NotificationUpdated {\n    center {\n      __typename\n      id\n      unread\n    }\n    notification {\n      __typename\n      ...NotificationFragment\n    }\n  }\n  ... on NotificationDeleted {\n    center {\n      __typename\n      id\n      unread\n    }\n    notification {\n      __typename\n      id\n    }\n  }\n  ... on NotificationRead {\n    center {\n      __typename\n      id\n      unread\n    }\n  }\n  ... on NotificationContentUpdated {\n    content {\n      __typename\n      ... on UpdatedNotificationContentComment {\n        peer {\n          __typename\n          peerRoot {\n            __typename\n            ... on CommentPeerRootMessage {\n              message {\n                __typename\n                ... on GeneralMessage {\n                  id\n                  fallback\n                  message\n                  sender {\n                    __typename\n                    id\n                    name\n                  }\n                  senderBadge {\n                    __typename\n                    ...UserBadge\n                  }\n                }\n              }\n              chat {\n                __typename\n                ...RoomNano\n              }\n            }\n          }\n          id\n          subscription {\n            __typename\n            type\n          }\n        }\n        comment {\n          __typename\n          ...CommentEntryFragment\n        }\n      }\n    }\n  }\n}",
+			"source": "fragment NotificationCenterUpdateFragment on NotificationCenterUpdate {\n  __typename\n  ... on NotificationReceived {\n    center {\n      __typename\n      id\n      unread\n    }\n    notification {\n      __typename\n      ...NotificationFragment\n    }\n  }\n  ... on NotificationUpdated {\n    center {\n      __typename\n      id\n      unread\n    }\n    notification {\n      __typename\n      ...NotificationFragment\n    }\n  }\n  ... on NotificationDeleted {\n    center {\n      __typename\n      id\n      unread\n    }\n    notification {\n      __typename\n      id\n    }\n  }\n  ... on NotificationRead {\n    center {\n      __typename\n      id\n      unread\n    }\n  }\n  ... on NotificationContentUpdated {\n    content {\n      __typename\n      ... on UpdatedNotificationContentComment {\n        peer {\n          __typename\n          peerRoot {\n            __typename\n            ... on CommentPeerRootMessage {\n              message {\n                __typename\n                ... on GeneralMessage {\n                  id\n                  fallback\n                  message\n                  sender {\n                    __typename\n                    id\n                    name\n                  }\n                  senderBadge {\n                    __typename\n                    ...UserBadge\n                  }\n                }\n              }\n              chat {\n                __typename\n                ...RoomNano\n              }\n            }\n            ... on CommentPeerRootFeedItem {\n              item {\n                __typename\n                ...FeedItemFull\n              }\n            }\n          }\n          id\n          subscription {\n            __typename\n            type\n          }\n        }\n        comment {\n          __typename\n          ...CommentEntryFragment\n        }\n      }\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "__typename",
@@ -28186,13 +29098,15 @@
 													"fieldName": "__typename",
 													"type": "String!",
 													"isConditional": false
-												},
+												}
+											],
+											"fragmentSpreads": [],
+											"inlineFragments": [
 												{
-													"responseName": "message",
-													"fieldName": "message",
-													"type": "GeneralMessage!",
-													"isConditional": false,
-													"isDeprecated": false,
+													"typeCondition": "CommentPeerRootMessage",
+													"possibleTypes": [
+														"CommentPeerRootMessage"
+													],
 													"fields": [
 														{
 															"responseName": "__typename",
@@ -28201,32 +29115,9 @@
 															"isConditional": false
 														},
 														{
-															"responseName": "id",
-															"fieldName": "id",
-															"type": "ID!",
-															"isConditional": false,
-															"description": "State",
-															"isDeprecated": false
-														},
-														{
-															"responseName": "fallback",
-															"fieldName": "fallback",
-															"type": "String!",
-															"isConditional": false,
-															"isDeprecated": false
-														},
-														{
 															"responseName": "message",
 															"fieldName": "message",
-															"type": "String",
-															"isConditional": false,
-															"description": "Content",
-															"isDeprecated": false
-														},
-														{
-															"responseName": "sender",
-															"fieldName": "sender",
-															"type": "User!",
+															"type": "GeneralMessage!",
 															"isConditional": false,
 															"isDeprecated": false,
 															"fields": [
@@ -28241,23 +29132,82 @@
 																	"fieldName": "id",
 																	"type": "ID!",
 																	"isConditional": false,
+																	"description": "State",
 																	"isDeprecated": false
 																},
 																{
-																	"responseName": "name",
-																	"fieldName": "name",
+																	"responseName": "fallback",
+																	"fieldName": "fallback",
 																	"type": "String!",
 																	"isConditional": false,
 																	"isDeprecated": false
+																},
+																{
+																	"responseName": "message",
+																	"fieldName": "message",
+																	"type": "String",
+																	"isConditional": false,
+																	"description": "Content",
+																	"isDeprecated": false
+																},
+																{
+																	"responseName": "sender",
+																	"fieldName": "sender",
+																	"type": "User!",
+																	"isConditional": false,
+																	"isDeprecated": false,
+																	"fields": [
+																		{
+																			"responseName": "__typename",
+																			"fieldName": "__typename",
+																			"type": "String!",
+																			"isConditional": false
+																		},
+																		{
+																			"responseName": "id",
+																			"fieldName": "id",
+																			"type": "ID!",
+																			"isConditional": false,
+																			"isDeprecated": false
+																		},
+																		{
+																			"responseName": "name",
+																			"fieldName": "name",
+																			"type": "String!",
+																			"isConditional": false,
+																			"isDeprecated": false
+																		}
+																	],
+																	"fragmentSpreads": [],
+																	"inlineFragments": []
+																},
+																{
+																	"responseName": "senderBadge",
+																	"fieldName": "senderBadge",
+																	"type": "UserBadge",
+																	"isConditional": false,
+																	"isDeprecated": false,
+																	"fields": [
+																		{
+																			"responseName": "__typename",
+																			"fieldName": "__typename",
+																			"type": "String!",
+																			"isConditional": false
+																		}
+																	],
+																	"fragmentSpreads": [
+																		"UserBadge"
+																	],
+																	"inlineFragments": []
 																}
 															],
 															"fragmentSpreads": [],
 															"inlineFragments": []
 														},
 														{
-															"responseName": "senderBadge",
-															"fieldName": "senderBadge",
-															"type": "UserBadge",
+															"responseName": "chat",
+															"fieldName": "chat",
+															"type": "Room!",
 															"isConditional": false,
 															"isDeprecated": false,
 															"fields": [
@@ -28269,36 +29219,48 @@
 																}
 															],
 															"fragmentSpreads": [
-																"UserBadge"
+																"RoomNano"
 															],
 															"inlineFragments": []
 														}
 													],
-													"fragmentSpreads": [],
-													"inlineFragments": []
+													"fragmentSpreads": []
 												},
 												{
-													"responseName": "chat",
-													"fieldName": "chat",
-													"type": "Room!",
-													"isConditional": false,
-													"isDeprecated": false,
+													"typeCondition": "CommentPeerRootFeedItem",
+													"possibleTypes": [
+														"CommentPeerRootFeedItem"
+													],
 													"fields": [
 														{
 															"responseName": "__typename",
 															"fieldName": "__typename",
 															"type": "String!",
 															"isConditional": false
+														},
+														{
+															"responseName": "item",
+															"fieldName": "item",
+															"type": "FeedItem!",
+															"isConditional": false,
+															"isDeprecated": false,
+															"fields": [
+																{
+																	"responseName": "__typename",
+																	"fieldName": "__typename",
+																	"type": "String!",
+																	"isConditional": false
+																}
+															],
+															"fragmentSpreads": [
+																"FeedItemFull"
+															],
+															"inlineFragments": []
 														}
 													],
-													"fragmentSpreads": [
-														"RoomNano"
-													],
-													"inlineFragments": []
+													"fragmentSpreads": []
 												}
-											],
-											"fragmentSpreads": [],
-											"inlineFragments": []
+											]
 										},
 										{
 											"responseName": "id",

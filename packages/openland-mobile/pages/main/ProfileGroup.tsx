@@ -240,13 +240,13 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             <ZListHeader text="Members" counter={room.membersCount} />
             <ZListItem
                 text="Add people"
-                leftIcon={require('assets/ic-add-24.png')}
+                leftIcon={require('assets/ic-add-glyph-24.png')}
                 onPress={handleAddMember}
             />
 
             {(room.role === 'ADMIN' || room.role === 'OWNER' || room.role === 'MEMBER') && (
                 <ZListItem
-                    leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
+                    leftIcon={require('assets/ic-link-glyph-24.png')}
                     text={`Invite to ${typeString} with a link`}
                     onPress={() => props.router.present('ProfileGroupLink', { room })}
                 />

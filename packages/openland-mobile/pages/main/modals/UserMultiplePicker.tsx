@@ -3,7 +3,7 @@ import { PageProps } from '../../../components/PageProps';
 import { withApp } from '../../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { View, LayoutChangeEvent, Image, Platform, Dimensions } from 'react-native';
+import { View, LayoutChangeEvent, Image, Dimensions } from 'react-native';
 import { UserShort } from 'openland-api/Types';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
@@ -42,7 +42,7 @@ const UsersList = XMemo<PageProps & { query: string, users: any, onAdd: (user: U
             {props.router.params.inviteLinkButton &&
                 <View marginBottom={6} marginTop={18}>
                     <ZListItem
-                        leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
+                        leftIcon={require('assets/ic-link-glyph-24.png')}
                         text="Invite with a link"
                         onPress={props.router.params.inviteLinkButton.onPress ? props.router.params.inviteLinkButton.onPress : () => {
                             props.router.pushAndRemove(props.router.params.inviteLinkButton.path, props.router.params.inviteLinkButton.pathParams);

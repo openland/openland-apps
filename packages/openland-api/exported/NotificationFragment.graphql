@@ -35,6 +35,12 @@ fragment NotificationFragment on Notification {
               }
             }
           }
+          ... on CommentPeerRootFeedItem {
+            item {
+              __typename
+              ...FeedItemFull
+            }
+          }
         }
         subscription {
           __typename

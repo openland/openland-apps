@@ -4,13 +4,13 @@ import { ASText } from 'react-native-async-view/ASText';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { FeedDataSourceItem } from 'openland-engines/feed/FeedEngine';
+import { DataSourceFeedPostItem } from 'openland-engines/feed/FeedEngine';
 
-interface FeedItemAsyncProps {
-    item: FeedDataSourceItem;
+interface FeedPostAsyncProps {
+    item: DataSourceFeedPostItem;
 }
 
-const FeedItemAsyncRender = XMemo<FeedItemAsyncProps & { theme: ThemeGlobal }>((props) => {
+const FeedPostAsyncRender = XMemo<FeedPostAsyncProps & { theme: ThemeGlobal }>((props) => {
     const { theme, item } = props;
     const { id } = item;
 
@@ -21,8 +21,8 @@ const FeedItemAsyncRender = XMemo<FeedItemAsyncProps & { theme: ThemeGlobal }>((
     );
 });
 
-export const FeedItemAsync = XMemo<FeedItemAsyncProps>((props) => {
+export const FeedPostAsync = XMemo<FeedPostAsyncProps>((props) => {
     let theme = useThemeGlobal();
 
-    return <FeedItemAsyncRender theme={theme} {...props} />;
+    return <FeedPostAsyncRender theme={theme} {...props} />;
 });
