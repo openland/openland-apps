@@ -1,14 +1,33 @@
 import * as React from 'react';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/FeedEngine';
-import { MessageContent } from 'openland-web/fragments/chat/messenger/message/MessageContent';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { css } from 'linaria';
+import { TextTitle1 } from 'openland-web/utils/TextStyles';
 
-const wrapper = css`
-    background-color: var(--backgroundTertiary);
-    margin-bottom: 8px;
-    padding: 4px 0;
+const wrapperClass = css`
+    background-color: var(--backgroundSecondary);
+    overflow: hidden;
+    border-radius: 18px;
+    margin: 16px 0 32px;
+    padding: calc((4 / 3) * 100%) 0 0;
+    box-shadow: 0px 8px 24px rgba(23, 26, 31, 0.08), 0px 2px 8px rgba(23, 26, 31, 0.02);
+    position: relative;
+`;
+
+const senderClass = css`
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    padding: 16px;
+`;
+
+const contentClass = css`
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    text-align: center;
 `;
 
 interface FeedPostViewProps {
@@ -16,20 +35,16 @@ interface FeedPostViewProps {
 }
 
 export const FeedPostView = React.memo<FeedPostViewProps>(props => {
-    const messenger = React.useContext(MessengerContext);
-    const { id, text, textSpans, fallback, attachments, date, sender } = props.item;
+    const { id, text, date, sender } = props.item;
 
     return (
-        <div className={wrapper}>
-            <MessageSenderContent sender={sender} date={date} />
-            <MessageContent
-                id={id}
-                text={text}
-                textSpans={textSpans}
-                fallback={fallback}
-                isOut={messenger.user.id === sender.id}
-                attachments={attachments}
-            />
+        <div className={wrapperClass}>
+            <div className={senderClass}>
+                <MessageSenderContent sender={sender} date={date} />
+            </div>
+            <div className={contentClass}>
+                <div className={TextTitle1}>{text || id}</div>
+            </div>
         </div>
     );
 });

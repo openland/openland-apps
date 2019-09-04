@@ -66,7 +66,7 @@ export const FeedPostView = XMemo<FeedPostAsyncProps>((props) => {
     const theme = React.useContext(ThemeContext);
     const { id, sender, text } = props.item;
 
-    const width = Dimensions.get('screen').width;
+    const width = Math.min(Dimensions.get('screen').width, 414);
 
     const containerWidth = width - 32;
     const containerHeight = containerWidth * (4 / 3);
