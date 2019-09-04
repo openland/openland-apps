@@ -3,7 +3,6 @@ import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ThemeController } from 'openland-mobile/themes/ThemeControler';
 import { ThemeGlobalKind, ThemeGlobalType } from 'openland-y-utils/themes/ThemeGlobal';
