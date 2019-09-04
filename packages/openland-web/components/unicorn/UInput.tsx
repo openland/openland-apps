@@ -7,13 +7,13 @@ const inputWrapper = css`
     align-items: stretch;
     position: relative;
     border-radius: 8px;
-    background-color: #f0f2f5;
+    background-color: var(--backgroundTertiary);
     height: 56px;
 
     &:focus-within div.input-label {
         font-size: 13px;
         line-height: 18px;
-        color: #1885f2;
+        color: var(--accentPrimary);
         top: 8px;
     }
 `;
@@ -35,7 +35,7 @@ const labelStyle = css`
     padding-left: 16px;
     padding-right: 16px;
     font-size: 15px;
-    color: #969aa3;
+    color: var(--foregroundTertiary);
     line-height: 24px;
     top: 14px;
     transition: all 0.15s ease;
@@ -44,12 +44,12 @@ const labelStyle = css`
 const labelValueStyle = css`
     font-size: 13px;
     line-height: 18px;
-    color: #676d7a;
+    color: var(--foregroundSecondary);
     top: 8px;
 `;
 
 const labelInvalidStyle = css`
-    color: #e62e3d !important;
+    color: var(--accentNegative) !important;
 `;
 
 export interface UInputProps extends XViewProps {
