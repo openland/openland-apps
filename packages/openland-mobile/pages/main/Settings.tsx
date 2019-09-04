@@ -14,7 +14,6 @@ import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { trackEvent } from 'openland-mobile/analytics';
-import { showReachInfo } from 'openland-mobile/components/ZReach';
 
 let useOnlineState = () => {
     let [status, setStatus] = React.useState(useClient().client.status);
@@ -34,14 +33,8 @@ let SettingsContent = ((props: PageProps) => {
         return null;
     }
 
-    const me = resp.me;
     const primary = resp.me.primaryOrganization;
-    const secondary = resp.organizations.filter((v) => v.id !== (primary && primary.id));
-    secondary.sort((a, b) => a.name.localeCompare(b.name));
-    const secondaryFiltered = [];
-    for (let i = 0; i < secondary.length && i < 2; i++) {
-        secondaryFiltered.push(secondary[i]);
-    }
+    const secondary = resp.organizations.filter((v) => v.id !== (primary && primary.id)).sort((a, b) => a.name.localeCompare(b.name));
     const status = useOnlineState();
 
     const handleGlobalInvitePress = React.useCallback(async () => {
@@ -64,43 +57,39 @@ let SettingsContent = ((props: PageProps) => {
         }
     }, []);
 
-    const handleScorePress = React.useCallback(() => {
-        showReachInfo(me.audienceSize, theme);
-    }, [me.audienceSize, theme]);
-
     return (
         <SScrollView>
             <ZListHero
                 photo={resp.me.photo}
                 id={resp.me.id}
-                title={resp!!.me!!.name}
+                title={resp.me.name}
                 subtitle={status.status === 'connected' ? 'online' : 'connecting...'}
                 subtitleColor={status.status === 'connected' ? theme.accentPrimary : undefined}
-                score={(me.audienceSize > 0) ? {
-                    value: me.audienceSize,
-                    onPress: handleScorePress
-                } : undefined}
-                iconRight={{
-                    src: require('assets/ic-edit-24.png'),
-                    path: 'SettingsProfile'
-                }}
+                path="ProfileUser"
+                pathParams={{ id: resp.me.id }}
+            />
+            <ZListItem
+                leftIconColor={theme.tintPurple}
+                leftIcon={require('assets/ic-edit-glyph-24.png')}
+                text="Edit profile"
+                path="SettingsProfile"
             />
             <ZListItem
                 leftIconColor={theme.tintOrange}
-                leftIcon={require('assets/ic-invite-fill-24.png')}
+                leftIcon={require('assets/ic-invite-glyph-24.png')}
                 text="Invite friends"
                 onPress={handleGlobalInvitePress}
             />
             <ZListGroup header="Settings">
                 <ZListItem
                     leftIconColor={theme.tintBlue}
-                    leftIcon={require('assets/ic-notifications-fill-24.png')}
+                    leftIcon={require('assets/ic-notifications-glyph-24.png')}
                     text="Notifications"
                     path="SettingsNotifications"
                 />
                 <ZListItem
                     leftIconColor={theme.tintGreen}
-                    leftIcon={require('assets/ic-mail-filled-24.png')}
+                    leftIcon={require('assets/ic-mail-glyph-24.png')}
                     text="Email preferences"
                     path="SettingsEmail"
                 />
@@ -110,9 +99,17 @@ let SettingsContent = ((props: PageProps) => {
                     text="Appearance"
                     path="SettingsAppearance"
                 />
+            </ZListGroup>
+            <ZListGroup header="About">
+                <ZListItem
+                    leftIconColor={theme.tintCyan}
+                    leftIcon={require('assets/ic-help-glyph-24.png')}
+                    text="Ask for help"
+                    onPress={() => props.router.push('Conversation', { flexibleId: '9KkDvyowQgcYAn0WvYgXFrdqAp' })}
+                />
                 <ZListItem
                     leftIconColor={theme.tintPurple}
-                    leftIcon={require('assets/ic-rate-fill-24.png')}
+                    leftIcon={require('assets/ic-star-glyph-24.png')}
                     text="Rate the app"
                     onPress={() => {
                         Rate.rate({
@@ -120,14 +117,6 @@ let SettingsContent = ((props: PageProps) => {
                             GooglePackageName: 'com.openland.app'
                         }, () => { /**/ });
                     }}
-                />
-            </ZListGroup>
-            <ZListGroup header="Support">
-                <ZListItem
-                    leftIconColor={theme.tintCyan}
-                    leftIcon={require('assets/ic-help-fill-24.png')}
-                    text="Ask for help"
-                    onPress={() => props.router.push('Conversation', { flexibleId: '9KkDvyowQgcYAn0WvYgXFrdqAp' })}
                 />
             </ZListGroup>
 
