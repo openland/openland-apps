@@ -12,19 +12,23 @@ import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/N
 import { NON_PRODUCTION } from '../Init';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
+import { STrackedValue } from 'react-native-s/STrackedValue';
+import { Animated } from 'react-native';
+import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 
 interface NotificationCenterPageProps {
     engine: NotificationCenterEngine;
 }
 
 class NotificationCenterPage extends React.PureComponent<NotificationCenterPageProps, { dataSourceGeneration: number }> {
+    private unmount?: () => void;
+    private unmount1?: () => void;
+    private contentOffset = new STrackedValue();
+
     constructor(props: any) {
         super(props);
         this.state = { dataSourceGeneration: 0 };
     }
-
-    private unmount?: () => void;
-    private unmount1?: () => void;
 
     componentWillMount() {
         this.unmount = this.props.engine.subscribe();
@@ -50,7 +54,7 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
         if (isEmpty) {
             return (
                 <>
-                    <SHeader title="Comments" />
+                    <SHeader title="Notifications" />
                     {NON_PRODUCTION && <SHeaderButton key={'btn-' + isEmpty} />}
                     <NotificationCenterEmpty />
                 </>
@@ -59,7 +63,8 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
 
         return (
             <>
-                <SHeader title="Comments" />
+                <HeaderConfigRegistrator config={{ contentOffset: this.contentOffset }} />
+                <SHeader title="Notifications" />
                 {NON_PRODUCTION && <ZManageButton key={'btn-' + isEmpty} onPress={this.handleManagePress} />}
                 <ASSafeAreaContext.Consumer>
                     {area => (
@@ -68,7 +73,11 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
                                 contentPaddingTop={area.top}
                                 contentPaddingBottom={area.bottom}
                                 dataView={getMessenger().notifications}
-                                style={{ flexGrow: 1 }}
+                                style={[{ flexGrow: 1 }, {
+                                    // Work-around for freezing navive animation driver
+                                    opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset)),
+                                } as any]}
+                                onScroll={this.contentOffset.event}
                                 headerPadding={4}
                             />
                         </>
@@ -85,4 +94,4 @@ const NotificationCenterWrapper = XMemo<PageProps>((props) => {
     return <NotificationCenterPage engine={engine} />;
 });
 
-export const NotificationCenter = withApp(NotificationCenterWrapper, { navigationAppearance: 'small' });
+export const NotificationCenter = withApp(NotificationCenterWrapper);

@@ -15,7 +15,7 @@ import { FeedPostView } from './components/FeedPostView';
 
 const wrapperClass = css`
     padding: 0 16px 32px;
-    max-width: 824px;
+    max-width: 532px;
     margin: 0 auto;
     width: 100%;
 `;
@@ -107,7 +107,7 @@ class FeedInner extends React.PureComponent<CommentsNotificationsProps, { dataSo
 
         return (
             <>
-                <UHeader title="Feed" appearance="wide" />
+                <UHeader title="Feed" />
                 <XView flexGrow={1} flexShrink={1}>
                     <DataSourceRender
                         dataSource={this.dataSource}

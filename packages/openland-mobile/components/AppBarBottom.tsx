@@ -30,7 +30,7 @@ export const AppBarBottomItem = React.memo<AppBarBottomItemProps>((props) => {
             >
                 {selected && (
                     <View style={{ position: 'absolute', top: 0, left: 0, right: 0, alignItems: 'center' }}>
-                        <View style={{ width: 93, height: 2, backgroundColor: theme.accentPrimary, borderBottomLeftRadius: 2, borderBottomRightRadius: 2 }} />
+                        <View style={{ width: 62, height: 2, backgroundColor: theme.accentPrimary, borderBottomLeftRadius: 2, borderBottomRightRadius: 2 }} />
                     </View>
                 )}
                 <View

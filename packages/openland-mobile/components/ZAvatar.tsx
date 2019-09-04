@@ -8,7 +8,7 @@ import { ZStyles } from './ZStyles';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
-export type ZAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
+export type ZAvatarSize = 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
 
 const styles = StyleSheet.create({
     placeholderText: {
@@ -27,8 +27,10 @@ export interface ZAvatarProps {
     online?: boolean;
 }
 
-export const avatarSizes: { [key in ZAvatarSize]: { size: number, placeholder: number, dotSize: number, dotPosition: number, dotBorderWidth: number }} = {
-    'x-small': { size: 16, placeholder: 8, dotSize: 6, dotPosition: 0, dotBorderWidth: 1 },
+export const avatarSizes: { [key in ZAvatarSize]: { size: number, placeholder: number, dotSize: number, dotPosition: number, dotBorderWidth: number } } = {
+    // legacy
+    'xx-small': { size: 16, placeholder: 8, dotSize: 6, dotPosition: 0, dotBorderWidth: 1 },
+    'x-small': { size: 24, placeholder: 8, dotSize: 6, dotPosition: 0, dotBorderWidth: 1 },
     'small': { size: 32, placeholder: 16, dotSize: 10, dotPosition: 0, dotBorderWidth: 2 },
     'medium': { size: 40, placeholder: 20, dotSize: 12, dotPosition: 0, dotBorderWidth: 2 },
     'large': { size: 56, placeholder: 24, dotSize: 12, dotPosition: 2, dotBorderWidth: 2 },

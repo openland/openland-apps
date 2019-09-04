@@ -77,9 +77,9 @@ export class FeedEngine {
     }
 
     private init = async () => {
-        return; // temp disable engine
-
         log.log('Init');
+
+        this.loading = true;
 
         const initialFeed = await backoff(async () => {
             try {
@@ -106,6 +106,8 @@ export class FeedEngine {
         this.watcher = new SequenceModernWatcher('feed', this.engine.client.subscribeFeedUpdates(), this.engine.client.client, this.handleEvent, undefined, undefined, undefined, undefined);
 
         this.dataSource.initialize(dsItems, this.fullyLoaded, true);
+
+        this.loading = false;
     }
 
     private load = async () => {

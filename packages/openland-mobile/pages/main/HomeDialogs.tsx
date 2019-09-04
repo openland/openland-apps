@@ -14,12 +14,9 @@ import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { MainHeaderButtons } from './components/MainHeaderButtons';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
 const DialogsComponent = XMemo<PageProps>((props) => {
-    const theme = React.useContext(ThemeContext);
-
     let handlePress = React.useCallback((id: string, title: string) => {
         if (props.router.params.share) {
             Alert.builder().title(`Share with ${title}?`).button('Cancel', 'cancel').button('Share', 'default', async () => {
@@ -57,7 +54,11 @@ const DialogsComponent = XMemo<PageProps>((props) => {
         <ZTrack event="mail_view">
             <SHeader title={props.router.params.title || (props.router.params.share ? 'Share with' : 'Chats')} />
             {!props.router.params.share && !props.router.params.title && (
-                <MainHeaderButtons theme={theme} router={props.router} />
+                <SHeaderButton
+                    title="New"
+                    icon={require('assets/ic-add-24.png')}
+                    onPress={() => props.router.push('Compose')}
+                />
             )}
 
             {/* ugly fix - ensure list recreated for new page (reseting to root from > 1 stack)  */}
