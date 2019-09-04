@@ -89,7 +89,7 @@ export const FeedPostView = XMemo<FeedPostAsyncProps>((props) => {
                 </View>
 
                 <Text style={{ ...TextStyles.Title1, color: theme.foregroundPrimary, padding: 16, textAlign: 'center' }} allowFontScaling={false}>
-                    {text}
+                    {text || id}
                 </Text>
             </View>
         </View>
