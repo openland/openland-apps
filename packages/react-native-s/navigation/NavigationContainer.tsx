@@ -400,6 +400,9 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             if (dx < 0) {
                 dx = 0;
             }
+            if (dx > this.props.width) {
+                dx = this.props.width;
+            }
             SAnimated.beginTransaction();
             SAnimated.setValue(AnimatedViewKeys.page(this.swipeCurrentKey!), 'translateX', dx);
             SAnimated.setValue(AnimatedViewKeys.page(this.swipePrevKey!), 'translateX', -this.props.width / 3 + dx / 3);
@@ -556,7 +559,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         let contentInset = SDevice.navigationBarHeight + SDevice.statusBarHeight + SDevice.safeArea.top;
 
         return (
-            <View style={[styles.fill, this.props.style.isOpaque && { paddingTop: contentInset }]} {...(Platform.OS === 'ios' ? this.panResponder.panHandlers : {})}>
+            <View style={[styles.fill, this.props.style.isOpaque && { paddingTop: contentInset }]} {...this.panResponder.panHandlers}>
                 <ASSafeAreaProvider
                     top={this.props.style.isOpaque ? 0 : contentInset}
                     bottom={SDevice.safeArea.bottom}
