@@ -17,7 +17,7 @@ const DropdownItem = ({ title, label }: { title: string; label: string }) => {
     );
 };
 
-export interface SelectWithDropdownOption<T> {
+export interface SelectWithDropdownOption<T = string | number | boolean> {
     value: T;
     label: string;
     labelShort?: string;
