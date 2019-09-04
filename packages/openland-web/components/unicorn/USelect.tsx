@@ -100,27 +100,11 @@ const style = css`
     &.has-value.is-pseudo-focused .Select-input {
         opacity: 0;
     }
+    &.Select--single.has-value .Select-input {
+        padding-left: 0;
+    }
     & .Select-control:not(.is-searchable) > .Select-input {
         outline: none;
-    }
-    & .Select-loading-zone {
-        cursor: pointer;
-        display: table-cell;
-        position: relative;
-        text-align: center;
-        vertical-align: middle;
-        width: 16px;
-    }
-    & .Select-loading {
-        width: 16px;
-        height: 16px;
-        box-sizing: border-box;
-        border-radius: 50%;
-        border: 2px solid #ccc;
-        border-right-color: #333;
-        display: inline-block;
-        position: relative;
-        vertical-align: middle;
     }
     & .Select-clear-zone {
         cursor: pointer;
