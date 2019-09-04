@@ -14,8 +14,12 @@ class ThemePersisterImpl {
             ThemeController.theme = 'LightGreen';
         } else if (res === 'LightCyan') {
             ThemeController.theme = 'LightCyan';
+        } else if (res === 'LightPink') {
+            ThemeController.theme = 'LightPink';
         } else if (res === 'LightPurple') {
             ThemeController.theme = 'LightPurple';
+        } else if (res === 'LightGray') {
+            ThemeController.theme = 'LightGray';
         } else if (res === 'Dark') {
             ThemeController.theme = 'Dark';
         } else if (res === 'DarkBlue') {
@@ -28,6 +32,8 @@ class ThemePersisterImpl {
             ThemeController.theme = 'DarkGreen';
         } else if (res === 'DarkCyan') {
             ThemeController.theme = 'DarkCyan';
+        } else if (res === 'DarkPink') {
+            ThemeController.theme = 'DarkPink';
         } else if (res === 'DarkPurple') {
             ThemeController.theme = 'DarkPurple';
         } else {
