@@ -100,6 +100,8 @@ export const ThemeDarkBlue: ThemeGlobal = {
     accentPrimaryHover: '#248BF2',
     accentPrimaryActive: '#248BF2',
 
+    foregroundInverted: '#FFFFFF',
+
     bubble: (isOut) => ({
         backgroundPrimary: isOut ? '#248BF2' : '#242629',
         backgroundSecondary: isOut ? '#248BF2' : '#2E3033',
@@ -118,6 +120,8 @@ export const ThemeDarkRed: ThemeGlobal = {
     accentPrimary: '#E52243',
     accentPrimaryHover: '#E52243',
     accentPrimaryActive: '#E52243',
+
+    foregroundInverted: '#FFFFFF',
 
     bubble: (isOut) => ({
         backgroundPrimary: isOut ? '#E52243' : '#242629',
@@ -138,6 +142,8 @@ export const ThemeDarkOrange: ThemeGlobal = {
     accentPrimaryHover: '#FFAE0D',
     accentPrimaryActive: '#FFAE0D',
 
+    foregroundInverted: '#FFFFFF',
+
     bubble: (isOut) => ({
         backgroundPrimary: isOut ? '#FFAE0D' : '#242629',
         backgroundSecondary: isOut ? '#FFAE0D' : '#2E3033',
@@ -156,6 +162,8 @@ export const ThemeDarkGreen: ThemeGlobal = {
     accentPrimary: '#3EB265',
     accentPrimaryHover: '#3EB265',
     accentPrimaryActive: '#3EB265',
+
+    foregroundInverted: '#FFFFFF',
 
     bubble: (isOut) => ({
         backgroundPrimary: isOut ? '#3EB265' : '#242629',
@@ -176,6 +184,8 @@ export const ThemeDarkCyan: ThemeGlobal = {
     accentPrimaryHover: '#29BECC',
     accentPrimaryActive: '#29BECC',
 
+    foregroundInverted: '#FFFFFF',
+
     bubble: (isOut) => ({
         backgroundPrimary: isOut ? '#29BECC' : '#242629',
         backgroundSecondary: isOut ? '#29BECC' : '#2E3033',
@@ -195,6 +205,8 @@ export const ThemeDarkPink: ThemeGlobal = {
     accentPrimaryHover: '#F218A9',
     accentPrimaryActive: '#F218A9',
 
+    foregroundInverted: '#FFFFFF',
+
     bubble: (isOut) => ({
         backgroundPrimary: isOut ? '#F218A9' : '#242629',
         backgroundSecondary: isOut ? '#F218A9' : '#2E3033',
@@ -213,6 +225,8 @@ export const ThemeDarkPurple: ThemeGlobal = {
     accentPrimary: '#8518F2',
     accentPrimaryHover: '#8518F2',
     accentPrimaryActive: '#8518F2',
+
+    foregroundInverted: '#FFFFFF',
 
     bubble: (isOut) => ({
         backgroundPrimary: isOut ? '#8518F2' : '#242629',

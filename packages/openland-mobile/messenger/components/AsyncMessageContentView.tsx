@@ -36,23 +36,29 @@ interface AsyncMessageTextViewProps {
 export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageItem, theme: ThemeGlobal, onUserPress: (id: string) => void, onGroupPress: (id: string) => void) => {
     const SpanView = (props: { span: Span, children?: any }) => {
         const { span, children } = props;
-        const linkColor = !message.isService ? (message.isOut ? theme.foregroundContrast : theme.accentPrimary) : undefined;
-        const linkTextDecoration = ((message.isOut || theme.type === 'Dark') && !message.isService) ? 'underline' : 'none';
+
+        let linkColor: string | undefined = message.isOut ? theme.foregroundContrast : theme.accentPrimary;
+        let linkTextDecoration: 'underline' | 'none' = linkColor === theme.bubble(message.isOut).foregroundPrimary ? 'underline' : 'none';
+
+        if (!!message.isService) {
+            linkColor = undefined;
+            linkTextDecoration = 'none';
+        }
 
         if (span.type === 'link') {
             return <ASText key={'link'} color={linkColor} onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))} textDecorationLine={linkTextDecoration}>{children}</ASText>;
         } else if (span.type === 'mention_user') {
             return <ASText key={'mention-user'} fontWeight={message.isService ? FontStyles.Weight.Bold : undefined} color={linkColor} textDecorationLine={linkTextDecoration} onPress={() => onUserPress(span.user.id)}>{children}</ASText>;
         } else if (span.type === 'mention_all') {
-            return <ASText key={'mention-all'} color={(message.isOut && !message.isService) ? theme.foregroundContrast : theme.accentPrimary} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'}>{children}</ASText>;
+            return <ASText key={'mention-all'} color={linkColor} textDecorationLine={linkTextDecoration}>{children}</ASText>;
         } else if (span.type === 'mention_room') {
-            return <ASText key={'mention-room'} color={(message.isOut && !message.isService) ? theme.foregroundContrast : theme.accentPrimary} textDecorationLine={(message.isOut && !message.isService) ? 'underline' : 'none'} onPress={() => onGroupPress(span.id)}>{children}</ASText>;
+            return <ASText key={'mention-room'} color={linkColor} textDecorationLine={linkTextDecoration} onPress={() => onGroupPress(span.id)}>{children}</ASText>;
         } else if (span.type === 'mention_users') {
             return <OthersUsersWrapper key={'mentions'} theme={theme} onUserPress={uid => onUserPress(uid)} users={span.users} useAsync={true}>{children}</OthersUsersWrapper>;
         } else if (span.type === 'bold') {
             return <ASText key={'bold'} fontWeight={FontStyles.Weight.Bold}>{children}</ASText>;
         } else if (span.type === 'date') {
-            return <ASText key={'date'} color={(message.isOut && !message.isService) ? theme.foregroundContrast : theme.accentPrimary} onPress={openCalendar(span.date)} textDecorationLine={message.isOut && !message.isService ? 'underline' : undefined}>{children}</ASText>;
+            return <ASText key={'date'} color={linkColor} onPress={openCalendar(span.date)} textDecorationLine={linkTextDecoration}>{children}</ASText>;
         } else if (span.type === 'code_block') {
             return <ASText key={'code-block'} fontType="monospace">{children}</ASText>;
         } else if (span.type === 'code_inline') {

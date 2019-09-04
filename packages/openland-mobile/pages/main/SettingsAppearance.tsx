@@ -13,26 +13,27 @@ import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
-const SortedLightThemes: { [key: string]: string } = {
-    Light: ThemeLight.accentPrimary,
-    LightGray: ThemeLight.foregroundSecondary,
-    LightRed: ThemeLight.tintRed,
-    LightOrange: ThemeLight.tintOrange,
-    LightGreen: ThemeLight.tintGreen,
-    LightCyan: ThemeLight.tintCyan,
-    LightPink: ThemeLightPink.accentPrimary,
-    LightPurple: ThemeLight.tintPurple,
-};
-
-const SortedDarkThemes: { [key: string]: string } = {
-    Dark: ThemeDark.accentPrimary,
-    DarkBlue: ThemeLight.tintBlue,
-    DarkRed: ThemeLight.tintRed,
-    DarkOrange: ThemeLight.tintOrange,
-    DarkGreen: ThemeLight.tintGreen,
-    DarkCyan: ThemeLight.tintCyan,
-    DarkPink: ThemeLightPink.accentPrimary,
-    DarkPurple: ThemeLight.tintPurple,
+const SortedThemes: { [key in ThemeGlobalType]: { [key: string]: string } } = {
+    Light: {
+        Light: ThemeLight.accentPrimary,
+        LightGray: ThemeLight.foregroundSecondary,
+        LightRed: ThemeLight.tintRed,
+        LightOrange: ThemeLight.tintOrange,
+        LightGreen: ThemeLight.tintGreen,
+        LightCyan: ThemeLight.tintCyan,
+        LightPink: ThemeLightPink.accentPrimary,
+        LightPurple: ThemeLight.tintPurple,
+    },
+    Dark: {
+        Dark: ThemeDark.accentPrimary,
+        DarkBlue: ThemeLight.tintBlue,
+        DarkRed: ThemeLight.tintRed,
+        DarkOrange: ThemeLight.tintOrange,
+        DarkGreen: ThemeLight.tintGreen,
+        DarkCyan: ThemeLight.tintCyan,
+        DarkPink: ThemeLightPink.accentPrimary,
+        DarkPurple: ThemeLight.tintPurple,
+    }
 };
 
 const ThemeItem = React.memo((props: { type: ThemeGlobalType, checked: boolean, onPress: () => void }) => {
@@ -51,8 +52,8 @@ const ThemeItem = React.memo((props: { type: ThemeGlobalType, checked: boolean, 
                 <View backgroundColor={secondaryColor} marginBottom={4} width={64} height={16} borderTopLeftRadius={8} borderTopRightRadius={8} borderBottomLeftRadius={4} borderBottomRightRadius={8} />
                 <View backgroundColor={secondaryColor} width={64} height={16} borderTopLeftRadius={4} borderTopRightRadius={8} borderBottomLeftRadius={8} borderBottomRightRadius={8} />
 
-                <View position="absolute" alignSelf="center" bottom={16} backgroundColor={checked ? themeObject.accentPrimary : themeObject.backgroundPrimary} borderColor={checked ? themeObject.accentPrimary : themeObject.foregroundSecondary} borderWidth={2} borderRadius={RadiusStyles.Medium} width={24} height={24}>
-                    {checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: themeObject.foregroundInverted }} />}
+                <View position="absolute" alignSelf="center" bottom={16} backgroundColor={checked ? theme.accentPrimary : themeObject.backgroundPrimary} borderColor={checked ? theme.accentPrimary : themeObject.foregroundSecondary} borderWidth={2} borderRadius={RadiusStyles.Medium} width={24} height={24}>
+                    {checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.foregroundInverted }} />}
                 </View>
             </View>
         </TouchableOpacity>
@@ -111,19 +112,11 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                 {NON_PRODUCTION && (
                     <ZListGroup header="Accent (NON_PRODUCTION)">
                         <View flexDirection="row" justifyContent="space-between" paddingHorizontal={16} flexWrap="wrap">
-                            {theme.type === 'Light' && Object.keys(SortedLightThemes).map(k => (
+                            {Object.keys(SortedThemes[theme.type]).map(k => (
                                 <AccentCircle
                                     key={k}
                                     onPress={() => handleChange(k as ThemeGlobalKind)}
-                                    color={SortedLightThemes[k]}
-                                    checked={theme.kind === k}
-                                />
-                            ))}
-                            {theme.type === 'Dark' && Object.keys(SortedDarkThemes).map(k => (
-                                <AccentCircle
-                                    key={k}
-                                    onPress={() => handleChange(k as ThemeGlobalKind)}
-                                    color={SortedDarkThemes[k]}
+                                    color={SortedThemes[theme.type][k]}
                                     checked={theme.kind === k}
                                 />
                             ))}
