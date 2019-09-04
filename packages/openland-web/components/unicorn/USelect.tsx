@@ -84,15 +84,11 @@ const style = css`
         cursor: default;
         display: inline-block;
         font-family: inherit;
-        font-size: inherit;
         margin: 0;
         outline: none;
-        -webkit-appearance: none;
-
-        //inputttt
-
         font-size: 15px;
         color: var(--foregroundPrimary);
+        -webkit-appearance: none;
     }
     &.is-focused .Select-input > input {
         cursor: text;
@@ -137,7 +133,7 @@ const style = css`
     }
     &.Select--multi .Select-input {
         vertical-align: middle;
-        margin-left: 10px;
+        margin-left: 16px;
         margin-top: -4px;
         padding: 0;
     }
