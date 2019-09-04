@@ -342,7 +342,6 @@ const ArrowRender = (props: ArrowRendererProps) => {
 
 export type USelectBasicProps = ReactSelectProps & {
     options: OptionType[];
-    invalid?: boolean;
     creatable?: boolean;
     hideSelector?: boolean;
 };
