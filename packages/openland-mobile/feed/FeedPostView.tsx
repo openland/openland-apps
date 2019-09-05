@@ -2,10 +2,9 @@ import * as React from 'react';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/FeedEngine';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
-import { Dimensions, View, Text, StyleSheet, ViewStyle, Animated } from 'react-native';
+import { Dimensions, View, Text, StyleSheet, ViewStyle } from 'react-native';
 import { FeedItemShadow } from './FeedItemShadow';
 import { FeedSenderView } from './content/FeedSenderView';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 const styles = StyleSheet.create({
     box: {
