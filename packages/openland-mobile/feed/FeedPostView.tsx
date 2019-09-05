@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/FeedEngine';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
-import { Dimensions, View, Text, StyleSheet, ViewStyle, TextStyle, Image } from 'react-native';
-import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { ASView } from 'react-native-async-view/ASView';
-import { ASFlex } from 'react-native-async-view/ASFlex';
+import { Dimensions, View, Text, StyleSheet, ViewStyle, Animated } from 'react-native';
+import { FeedItemShadow } from './FeedItemShadow';
+import { FeedSenderView } from './content/FeedSenderView';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 const styles = StyleSheet.create({
     box: {
@@ -21,48 +20,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         overflow: 'hidden',
     } as ViewStyle,
-    sender: {
+    meta: {
         position: 'absolute',
-        padding: 16,
         top: 0, left: 0, right: 0,
         flexDirection: 'row',
-        alignItems: 'center',
+        justifyContent: 'space-between'
     } as ViewStyle,
-    senderName: {
-        ...TextStyles.Label2,
-        marginLeft: 8
-    } as TextStyle,
-    senderOrg: {
-        ...TextStyles.Caption,
-        marginLeft: 8
-    } as TextStyle
 });
 
-const PostShadow = React.memo((props: { width: number, height: number }) => {
-    const { width, height } = props;
-    const resolved = Image.resolveAssetSource(require('assets/feed/bg_card_shadow.png'));
-
-    return (
-        <View style={{ position: 'absolute', top: 0, left: -8, right: -8, bottom: 0 }}>
-            <ASView style={{ width: width + 16, height }}>
-                <ASFlex
-                    flexGrow={1}
-                    backgroundPatch={{
-                        source: resolved.uri,
-                        scale: resolved.scale,
-                        top: 16, left: 24, right: 24, bottom: 32
-                    }}
-                />
-            </ASView>
-        </View>
-    );
-});
-
-interface FeedPostAsyncProps {
+interface FeedPostViewProps {
     item: DataSourceFeedPostItem;
 }
 
-export const FeedPostView = XMemo<FeedPostAsyncProps>((props) => {
+export const FeedPostView = React.memo((props: FeedPostViewProps) => {
     const theme = React.useContext(ThemeContext);
     const { id, sender, text } = props.item;
 
@@ -73,19 +43,11 @@ export const FeedPostView = XMemo<FeedPostAsyncProps>((props) => {
 
     return (
         <View style={styles.box}>
-            <PostShadow width={width} height={containerHeight + 16 + 32} />
+            <FeedItemShadow width={width} height={containerHeight + 16 + 32} />
 
             <View style={[styles.container, { width: containerWidth, height: containerHeight, backgroundColor: theme.backgroundSecondary }]}>
-                <View style={styles.sender}>
-                    <ZAvatar size="x-small" src={sender.photo} placeholderKey={sender.id} placeholderTitle={sender.name} />
-                    <Text style={[styles.senderName, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
-                        {sender.name}
-                    </Text>
-                    {sender.primaryOrganization && (
-                        <Text style={[styles.senderOrg, { color: theme.foregroundTertiary }]} allowFontScaling={false}>
-                            {sender.primaryOrganization.name}
-                        </Text>
-                    )}
+                <View style={styles.meta}>
+                    <FeedSenderView sender={sender} style="default" />
                 </View>
 
                 <Text style={{ ...TextStyles.Title1, color: theme.foregroundPrimary, padding: 16, textAlign: 'center' }} allowFontScaling={false}>
