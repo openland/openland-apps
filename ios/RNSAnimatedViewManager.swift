@@ -189,6 +189,9 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
             spring.stiffness = 1000.0
             spring.damping = 500.0
             spring.duration = resolveDuration(source: 0.5)
+            if let duration = s.duration {
+              spring.duration = duration
+            }
             spring.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
             if let velocity = s.velocity {
               spring.initialVelocity = velocity
