@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ZListItemBase } from './ZListItemBase';
-import { View, Text, Switch, Image, Platform, Clipboard } from 'react-native';
+import { View, Text, Switch, Image, Clipboard } from 'react-native';
 import { ZText } from './ZText';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
@@ -106,6 +106,8 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
         const isBig = this.props.subTitle || this.props.leftAvatar || this.props.leftIconColor || (this.props.leftIcon && !this.props.small);
         const height = this.props.multiline ? null : ((isBig) ? 56 : 48);
 
+        const switchTintColor = theme.accentPrimary.toLowerCase() === '#ffffff' ? theme.foregroundSecondary : theme.accentPrimary;
+
         return (
             <ZListItemBase
                 onPress={this.handleOnPress}
@@ -159,7 +161,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                             />
                         )}
                         {((this.props.onToggle !== undefined) || (this.props.toggle !== undefined) || (this.props.toggleDisabled !== undefined) || (this.props.toggleField)) && (
-                            <Switch style={{ marginLeft: 15 }} value={toggleValue} onTintColor={Platform.OS === 'android' ? '#80C0FE' : '#0084fe'} tintColor="#ddd" thumbTintColor={Platform.OS === 'android' ? '#0084fe' : undefined} onValueChange={this.props.toggleField ? this.handleOnPress : this.props.onToggle} disabled={this.props.toggleDisabled !== null ? this.props.toggleDisabled : undefined} />
+                            <Switch style={{ marginLeft: 15 }} value={toggleValue} tintColor={theme.border} onTintColor={switchTintColor} onValueChange={this.props.toggleField ? this.handleOnPress : this.props.onToggle} disabled={this.props.toggleDisabled !== null ? this.props.toggleDisabled : undefined} />
                         )}
                         {showCheckmark && (
                             <View
