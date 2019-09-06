@@ -28,7 +28,6 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { CheckComponent } from 'openland-web/components/unicorn/UCheckbox';
 import { OwnerLinkComponent } from 'openland-web/fragments/invite/OwnerLinkComponent';
 import { USelect } from 'openland-web/components/unicorn/USelect';
-import { Creatable } from 'react-select';
 
 interface SearchBoxProps {
     value: { label: string; value: string }[];
