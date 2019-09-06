@@ -14,6 +14,8 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { RoomWithoutMembers_room_SharedRoom } from 'openland-api/Types';
 import { trackEvent } from 'openland-mobile/analytics';
+import { InviteLinkView } from './components/InviteLinkView';
+import { formatError } from 'openland-y-forms/errorHandling';
 
 const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
     const { id, isChannel } = props.router.params.room as RoomWithoutMembers_room_SharedRoom;
@@ -40,42 +42,42 @@ const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
         Share.share({ message: link });
     }, [link]);
 
+    const handleRevokeClick = React.useCallback(async () => {
+        startLoader();
+        try {
+            await getClient().mutateRoomRenewInviteLink({ roomId: id });
+            await getClient().refetchRoomInviteLink({ roomId: id });
+        } catch (e) {
+            Alert.alert(formatError(e));
+        }
+        stopLoader();
+    }, [id]);
+
     return (
         <ZTrack event="invite_view" params={{ invite_type: chatType }}>
-            <ZListGroup header={null} footer="Anyone with link can join as group member">
-                <ZListItem
-                    key="add"
-                    text={link}
-                    appearance="action"
-                    onPress={handleShareClick}
-                    copy={true}
-                />
-            </ZListGroup>
+            <InviteLinkView
+                link={link}
+                onPress={handleShareClick}
+                footer="Anyone with link can join as group member"
+            />
             <ZListGroup>
                 <ZListItem
-                    appearance="action"
+                    leftIcon={require('assets/ic-copy-24.png')}
+                    small={true}
                     text="Copy link"
                     onPress={handleCopyClick}
                 />
                 <ZListItem
-                    appearance="action"
+                    leftIcon={require('assets/ic-share-24.png')}
+                    small={true}
                     text="Share link"
                     onPress={handleShareClick}
                 />
                 <ZListItem
-                    appearance="action"
+                    leftIcon={require('assets/ic-refresh-24.png')}
+                    small={true}
                     text="Revoke link"
-                    onPress={async () => {
-                        startLoader();
-                        try {
-                            await getClient().mutateRoomRenewInviteLink({ roomId: id });
-                            await getClient().refetchRoomInviteLink({ roomId: id });
-                        } catch (e) {
-                            Alert.alert(e);
-                        }
-                        stopLoader();
-
-                    }}
+                    onPress={handleRevokeClick}
                 />
             </ZListGroup>
         </ZTrack>

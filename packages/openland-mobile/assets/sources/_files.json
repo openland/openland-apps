@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-refresh",
+            "src": "ic-refresh-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-community-glyph",
             "src": "ic-community-glyph-24.svg",
             "sizes": [

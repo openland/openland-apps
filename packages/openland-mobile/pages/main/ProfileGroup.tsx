@@ -248,7 +248,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                 <ZListItem
                     leftIcon={require('assets/ic-link-glyph-24.png')}
                     text={`Invite to ${typeString} with a link`}
-                    onPress={() => props.router.present('ProfileGroupLink', { room })}
+                    onPress={() => props.router.push('ProfileGroupLink', { room })}
                 />
             )}
 

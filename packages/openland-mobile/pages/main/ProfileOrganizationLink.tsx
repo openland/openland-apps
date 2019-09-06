@@ -16,6 +16,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { OrganizationWithoutMembers_organization } from 'openland-api/Types';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { trackEvent } from 'openland-mobile/analytics';
+import { InviteLinkView } from './components/InviteLinkView';
 
 const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
     const { id, isCommunity } = props.router.params.organization as OrganizationWithoutMembers_organization;
@@ -42,34 +43,43 @@ const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
         Share.share({ message: link });
     }, [link]);
 
+    const handleRevokeClick = React.useCallback(async () => {
+        startLoader();
+        try {
+            await getMessenger().engine.client.mutateOrganizationCreatePublicInvite({ organizationId: id });
+            await getClient().refetchOrganizationPublicInvite({ organizationId: id });
+        } catch (e) {
+            Alert.alert(formatError(e));
+        }
+        stopLoader();
+    }, [id]);
+
     return (
         <ZTrack event="invite_view" params={{ invite_type: orgType }}>
-            <ZListGroup footer={'People can join ' + orgType + ' by following this link. You can renew the link at any time'}>
-                <ZListItem
-                    key="add"
-                    text={link}
-                    appearance="action"
-                    onPress={handleShareClick}
-                    copy={true}
-                />
-            </ZListGroup>
-            <ZListGroup >
-                <ZListItem appearance="action" text="Copy link" onPress={handleCopyClick} />
-                <ZListItem appearance="action" text="Share link" onPress={handleShareClick} />
-                <ZListItem
-                    appearance="action"
-                    text="Revoke link"
-                    onPress={async () => {
-                        startLoader();
-                        try {
-                            await getMessenger().engine.client.mutateOrganizationCreatePublicInvite({ organizationId: id });
-                            await getClient().refetchOrganizationPublicInvite({ organizationId: id });
-                        } catch (e) {
-                            Alert.alert(formatError(e));
-                        }
-                        stopLoader();
+            <InviteLinkView
+                link={link}
+                onPress={handleShareClick}
+                footer={`People can join ${orgType} by following this link. You can renew the link at any time`}
+            />
 
-                    }}
+            <ZListGroup>
+                <ZListItem
+                    leftIcon={require('assets/ic-copy-24.png')}
+                    small={true}
+                    text="Copy link"
+                    onPress={handleCopyClick}
+                />
+                <ZListItem
+                    leftIcon={require('assets/ic-share-24.png')}
+                    small={true}
+                    text="Share link"
+                    onPress={handleShareClick}
+                />
+                <ZListItem
+                    leftIcon={require('assets/ic-refresh-24.png')}
+                    small={true}
+                    text="Revoke link"
+                    onPress={handleRevokeClick}
                 />
             </ZListGroup>
         </ZTrack>
