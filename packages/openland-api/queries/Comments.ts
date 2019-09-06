@@ -65,3 +65,87 @@ export const UnSubscribeMessageCommentsMutation = gql`
         unSubscribeMessageComments(messageId: $messageId)
     }
 `;
+
+export const AddMessageCommentMutation = gql`
+    mutation AddMessageComment(
+        $repeatKey: String
+        $messageId: ID!
+        $message: String
+        $replyComment: ID
+        $mentions: [MentionInput!]
+        $fileAttachments: [FileAttachmentInput!]
+        $spans: [MessageSpanInput!]
+    ) {
+        addMessageComment: betaAddMessageComment(
+            repeatKey: $repeatKey
+            messageId: $messageId
+            message: $message
+            replyComment: $replyComment
+            mentions: $mentions
+            fileAttachments: $fileAttachments
+            spans: $spans
+        ) {
+            id
+        }
+    }
+    ${CommentEntryFragment}
+    ${FullMessage}
+`;
+
+export const EditCommentMutation = gql`
+    mutation EditComment(
+        $id: ID!
+        $message: String
+        $mentions: [MentionInput!]
+        $fileAttachments: [FileAttachmentInput!]
+        $spans: [MessageSpanInput!]
+    ) {
+        editComment(
+            id: $id
+            message: $message
+            mentions: $mentions
+            fileAttachments: $fileAttachments
+            spans: $spans
+        )
+    }
+`;
+
+export const CommentUpdateFragment = gql`
+    fragment CommentUpdateFragment on CommentUpdate {
+        ... on CommentReceived {
+            comment {
+                ...CommentEntryFragment
+            }
+        }
+        ... on CommentUpdated {
+            comment {
+                ...CommentEntryFragment
+            }
+        }
+    }
+`;
+
+export const CommentWatchSubscription = gql`
+    subscription CommentWatch($peerId: ID!, $fromState: String) {
+        event: commentUpdates(peerId: $peerId, fromState: $fromState) {
+            ... on CommentUpdateSingle {
+                seq
+                state
+                update {
+                    ...CommentUpdateFragment
+                }
+            }
+            ... on CommentUpdateBatch {
+                fromSeq
+                seq
+                state
+                updates {
+                    ...CommentUpdateFragment
+                }
+            }
+        }
+    }
+    ${CommentUpdateFragment}
+    ${CommentEntryFragment}
+    ${FullMessage}
+`;

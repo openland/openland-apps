@@ -82,8 +82,8 @@ const getMenuContent = (opts: MenuContentOpts) => {
                 builder.title(`Remove ${user.name} from ${name}`);
                 builder.message(`Are you sure you want to remove ${user.name}? They will be removed from all internal chats at ${name}.`);
                 builder.action(`Remove from ${typeString}`, async () => {
-                    await client.mutateOrganizationRemoveMember({
-                        memberId: user.id,
+                    await client.mutateOrganizationMemberRemove({
+                        userId: user.id,
                         organizationId: id,
                     });
 

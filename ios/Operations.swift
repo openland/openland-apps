@@ -1546,26 +1546,6 @@ private let AccountInviteInfoSelector = obj(
                     field("title","title", notNull(scalar("String")))
                 ))
         )
-private let AccountInvitesSelector = obj(
-            field("alphaInvites","invites", list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("key","key", notNull(scalar("String")))
-                ))))
-        )
-private let AccountInvitesHistorySelector = obj(
-            field("alphaInvitesHistory","invites", list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("acceptedBy","acceptedBy", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("name","name", notNull(scalar("String"))),
-                            field("picture","picture", scalar("String"))
-                        )),
-                    field("forEmail","forEmail", notNull(scalar("String"))),
-                    field("isGlobal","isGlobal", notNull(scalar("Boolean")))
-                ))))
-        )
 private let AccountSettingsSelector = obj(
             field("me","me", obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -1639,16 +1619,6 @@ private let AvailableRoomsSelector = obj(
                         field("photo","photo", notNull(scalar("String"))),
                         field("title","title", notNull(scalar("String")))
                     ))
-                )))))
-        )
-private let ChatHistorySelector = obj(
-            field("conversationState","state", arguments(fieldValue("id", refValue("chatId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("state","state", scalar("String"))
-                ))),
-            field("messages","messages", arguments(fieldValue("before", refValue("before")), fieldValue("chatId", refValue("chatId")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    fragment("ModernMessage", FullMessageSelector)
                 )))))
         )
 private let ChatInitSelector = obj(
@@ -1794,28 +1764,6 @@ private let ExploreCommunitySelector = obj(
                         )))
                 )))
         )
-private let ExploreOrganizationsSelector = obj(
-            field("alphaOrganizations","items", arguments(fieldValue("after", refValue("after")), fieldValue("all", refValue("all")), fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("prefix", refValue("prefix")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("cursor","cursor", notNull(scalar("String"))),
-                            field("node","node", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    fragment("Organization", OrganizationSearchSelector)
-                                )))
-                        ))))),
-                    field("pageInfo","pageInfo", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("currentPage","currentPage", notNull(scalar("Int"))),
-                            field("hasNextPage","hasNextPage", notNull(scalar("Boolean"))),
-                            field("hasPreviousPage","hasPreviousPage", notNull(scalar("Boolean"))),
-                            field("itemsCount","itemsCount", notNull(scalar("Int"))),
-                            field("openEnded","openEnded", notNull(scalar("Boolean"))),
-                            field("pagesCount","pagesCount", notNull(scalar("Int")))
-                        )))
-                )))
-        )
 private let ExplorePeopleSelector = obj(
             field("userSearch","items", arguments(fieldValue("after", refValue("after")), fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -1862,9 +1810,6 @@ private let FetchPushSettingsSelector = obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("webPushKey","webPushKey", scalar("String"))
                 )))
-        )
-private let GetDraftMessageSelector = obj(
-            field("conversationDraft","message", arguments(fieldValue("conversationId", refValue("conversationId"))), scalar("String"))
         )
 private let GlobalCounterSelector = obj(
             field("alphaNotificationCounter","alphaNotificationCounter", notNull(obj(
@@ -2114,20 +2059,6 @@ private let OrganizationMembersShortSelector = obj(
                     fragment("Organization", OrganizationWithoutMembersFragmentSelector)
                 )))
         )
-private let OrganizationMembersShortPaginatedSelector = obj(
-            field("organization","organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("alphaOrganizationMembers","members", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("role","role", notNull(scalar("String"))),
-                            field("user","user", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    fragment("User", UserFullSelector)
-                                )))
-                        ))))),
-                    fragment("Organization", OrganizationWithoutMembersFragmentSelector)
-                )))
-        )
 private let OrganizationProfileSelector = obj(
             field("organizationProfile","organizationProfile", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2341,65 +2272,6 @@ private let RoomFeaturedMembersSelector = obj(
                         )))
                 )))))
         )
-private let RoomHeaderSelector = obj(
-            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    inline("PrivateRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("settings","settings", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("mute","mute", scalar("Boolean"))
-                            ))),
-                        field("user","user", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("isBot","isBot", notNull(scalar("Boolean"))),
-                                field("name","name", notNull(scalar("String"))),
-                                field("photo","photo", scalar("String")),
-                                field("primaryOrganization","primaryOrganization", obj(
-                                        field("__typename","__typename", notNull(scalar("String"))),
-                                        field("id","id", notNull(scalar("ID"))),
-                                        field("name","name", notNull(scalar("String")))
-                                    ))
-                            )))
-                    )),
-                    inline("SharedRoom", obj(
-                        field("canEdit","canEdit", notNull(scalar("Boolean"))),
-                        field("description","description", scalar("String")),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("isChannel","isChannel", notNull(scalar("Boolean"))),
-                        field("kind","kind", notNull(scalar("String"))),
-                        field("membersCount","membersCount", scalar("Int")),
-                        field("organization","organization", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("betaIsAdmin","isAdmin", notNull(scalar("Boolean"))),
-                                field("betaIsOwner","isOwner", notNull(scalar("Boolean"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("name","name", notNull(scalar("String")))
-                            )),
-                        field("photo","photo", notNull(scalar("String"))),
-                        field("role","role", notNull(scalar("String"))),
-                        field("settings","settings", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("mute","mute", scalar("Boolean"))
-                            ))),
-                        field("socialImage","socialImage", scalar("String")),
-                        field("title","title", notNull(scalar("String"))),
-                        field("welcomeMessage","welcomeMessage", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("isOn","isOn", notNull(scalar("Boolean"))),
-                                field("message","message", scalar("String")),
-                                field("sender","sender", obj(
-                                        field("__typename","__typename", notNull(scalar("String"))),
-                                        field("id","id", notNull(scalar("ID"))),
-                                        field("name","name", notNull(scalar("String")))
-                                    ))
-                            ))
-                    ))
-                ))
-        )
 private let RoomInviteInfoSelector = obj(
             field("betaRoomInviteInfo","invite", arguments(fieldValue("invite", refValue("invite"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2431,17 +2303,6 @@ private let RoomInviteInfoSelector = obj(
 private let RoomInviteLinkSelector = obj(
             field("betaRoomInviteLink","link", arguments(fieldValue("roomId", refValue("roomId"))), notNull(scalar("String")))
         )
-private let RoomMemberShortSelector = obj(
-            field("roomMember","member", arguments(fieldValue("memberId", refValue("memberId")), fieldValue("roomId", refValue("roomId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("firstName","firstName", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("name","name", notNull(scalar("String")))
-                        )))
-                ))
-        )
 private let RoomMembersSelector = obj(
             field("roomMembers","members", arguments(fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2451,15 +2312,6 @@ private let RoomMembersSelector = obj(
                     field("user","user", notNull(obj(
                             field("__typename","__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
-                        )))
-                )))))
-        )
-private let RoomMembersForMentionsPaginatedSelector = obj(
-            field("roomMembers","members", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            fragment("User", UserForMentionSelector)
                         )))
                 )))))
         )
@@ -2550,17 +2402,6 @@ private let RoomSearchSelector = obj(
                         )))
                 )))
         )
-private let RoomSearchTextSelector = obj(
-            field("betaDialogTextSearch","items", arguments(fieldValue("query", refValue("query"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("cid","id", notNull(scalar("ID"))),
-                    field("fid","flexibleId", notNull(scalar("ID"))),
-                    field("id","id2", notNull(scalar("ID"))),
-                    field("kind","kind", notNull(scalar("String"))),
-                    field("photo","photo", notNull(scalar("String"))),
-                    field("title","title", notNull(scalar("String")))
-                )))))
-        )
 private let RoomSuperSelector = obj(
             field("roomSuper","roomSuper", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2580,12 +2421,6 @@ private let RoomWithoutMembersSelector = obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullWithoutMembersSelector)
                 ))
-        )
-private let RoomsSelector = obj(
-            field("rooms","rooms", arguments(fieldValue("ids", refValue("ids"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    fragment("Room", RoomShortSelector)
-                )))))
         )
 private let SettingsSelector = obj(
             field("settings","settings", notNull(obj(
@@ -2713,25 +2548,6 @@ private let UserAvailableRoomsSelector = obj(
                     ))
                 )))))
         )
-private let UserRoomsSelector = obj(
-            field("betaUserRooms","betaUserRooms", arguments(fieldValue("after", refValue("after")), fieldValue("limit", refValue("limit"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    inline("SharedRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("kind","kind", notNull(scalar("String"))),
-                        field("membersCount","membersCount", scalar("Int")),
-                        field("membership","membership", notNull(scalar("String"))),
-                        field("organization","organization", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("name","name", notNull(scalar("String"))),
-                                field("photo","photo", scalar("String"))
-                            )),
-                        field("photo","photo", notNull(scalar("String"))),
-                        field("title","title", notNull(scalar("String")))
-                    ))
-                )))))
-        )
 private let UserStorageSelector = obj(
             field("userStorage","userStorage", arguments(fieldValue("keys", refValue("keys")), fieldValue("namespace", refValue("namespace"))), notNull(list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2747,16 +2563,6 @@ private let UsersSelector = obj(
                     field("id","id", notNull(scalar("ID"))),
                     field("name","title", notNull(scalar("String")))
                 )))))
-        )
-private let AccountCreateInviteSelector = obj(
-            field("alphaCreateInvite","alphaCreateInvite", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("key","key", notNull(scalar("String")))
-                )))
-        )
-private let AccountDestroyInviteSelector = obj(
-            field("alphaDeleteInvite","alphaDeleteInvite", arguments(fieldValue("id", refValue("id"))), notNull(scalar("String")))
         )
 private let AccountInviteJoinSelector = obj(
             field("alphaJoinInvite","alphaJoinInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
@@ -2785,15 +2591,6 @@ private let BetaDiscoverSkipSelector = obj(
 private let BetaNextDiscoverResetSelector = obj(
             field("betaNextDiscoverReset","betaNextDiscoverReset", notNull(scalar("Boolean")))
         )
-private let BetaSaveSelectedTagsSelector = obj(
-            field("betaSaveSelectedTags","betaSaveSelectedTags", arguments(fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("tagGroup","tagGroup", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("String")))
-                        ))
-                ))
-        )
 private let BetaSubmitNextDiscoverSelector = obj(
             field("betaSubmitNextDiscover","betaSubmitNextDiscover", arguments(fieldValue("excudedGroupsIds", refValue("excudedGroupsIds")), fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2802,9 +2599,6 @@ private let BetaSubmitNextDiscoverSelector = obj(
                             field("id","id", notNull(scalar("String")))
                         ))
                 ))
-        )
-private let CancelTypingSelector = obj(
-            field("typingCancel","typingCancel", arguments(fieldValue("conversationId", refValue("conversationId"))), notNull(scalar("String")))
         )
 private let CommentSetReactionSelector = obj(
             field("commentReactionAdd","commentReactionAdd", arguments(fieldValue("commentId", refValue("commentId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
@@ -3039,17 +2833,11 @@ private let OrganizationCreatePublicInviteSelector = obj(
                     field("ttl","ttl", scalar("String"))
                 )))
         )
-private let OrganizationInviteMembersSelector = obj(
-            field("alphaOrganizationInviteMembers","alphaOrganizationInviteMembers", arguments(fieldValue("inviteRequests", refValue("inviteRequests")), fieldValue("organizationId", refValue("organizationId"))), notNull(scalar("String")))
-        )
 private let OrganizationMemberRemoveSelector = obj(
             field("betaOrganizationMemberRemove","betaOrganizationMemberRemove", arguments(fieldValue("organizationId", refValue("organizationId")), fieldValue("userId", refValue("userId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID")))
                 )))
-        )
-private let OrganizationRemoveMemberSelector = obj(
-            field("alphaOrganizationRemoveMember","alphaOrganizationRemoveMember", arguments(fieldValue("memberId", refValue("memberId")), fieldValue("organizationId", refValue("organizationId"))), notNull(scalar("String")))
         )
 private let PersistEventsSelector = obj(
             field("track","track", arguments(fieldValue("did", refValue("did")), fieldValue("events", refValue("events")), fieldValue("isProd", refValue("isProd"))), notNull(scalar("String")))
@@ -3139,17 +2927,8 @@ private let RegisterPushSelector = obj(
 private let RegisterWebPushSelector = obj(
             field("registerWebPush","registerWebPush", arguments(fieldValue("endpoint", refValue("endpoint"))), notNull(scalar("String")))
         )
-private let ReplyMessageSelector = obj(
-            field("sendMessage","replyMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
-        )
 private let ReportOnlineSelector = obj(
             field("presenceReportOnline","presenceReportOnline", arguments(fieldValue("active", refValue("active")), fieldValue("platform", refValue("platform")), fieldValue("timeout", intValue(5000))), notNull(scalar("String")))
-        )
-private let RoomAddMemberSelector = obj(
-            field("betaRoomInvite","betaRoomInvite", arguments(fieldValue("invites", listValue(objectValue(fieldValue("userId", refValue("userId")),fieldValue("role", stringValue("MEMBER"))))), fieldValue("roomId", refValue("roomId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    fragment("Room", RoomFullSelector)
-                )))
         )
 private let RoomAddMembersSelector = obj(
             field("alphaRoomInvite","alphaRoomInvite", arguments(fieldValue("invites", refValue("invites")), fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
@@ -3195,15 +2974,6 @@ private let RoomCreateSelector = obj(
                     field("id","id", notNull(scalar("ID")))
                 )))
         )
-private let RoomCreateIntroSelector = obj(
-            field("betaIntroSend","intro", arguments(fieldValue("about", refValue("about")), fieldValue("file", refValue("file")), fieldValue("message", refValue("about")), fieldValue("room", refValue("roomId")), fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
-        )
-private let RoomDeclineJoinReuestSelector = obj(
-            field("betaRoomDeclineJoinRequest","betaRoomDeclineJoinRequest", arguments(fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    fragment("Room", RoomFullSelector)
-                )))
-        )
 private let RoomDeleteMessageSelector = obj(
             field("betaMessageDelete","betaMessageDelete", arguments(fieldValue("mid", refValue("messageId"))), notNull(scalar("Boolean")))
         )
@@ -3212,9 +2982,6 @@ private let RoomDeleteMessagesSelector = obj(
         )
 private let RoomDeleteUrlAugmentationSelector = obj(
             field("betaMessageDeleteAugmentation","betaMessageDeleteAugmentation", arguments(fieldValue("mid", refValue("messageId"))), notNull(scalar("Boolean")))
-        )
-private let RoomEditIntroSelector = obj(
-            field("betaIntroEdit","intro", arguments(fieldValue("about", refValue("about")), fieldValue("file", refValue("file")), fieldValue("message", refValue("about")), fieldValue("mid", refValue("messageId")), fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
         )
 private let RoomJoinSelector = obj(
             field("betaRoomJoin","join", arguments(fieldValue("roomId", refValue("roomId"))), notNull(obj(
@@ -3245,9 +3012,6 @@ private let RoomReadSelector = obj(
         )
 private let RoomRenewInviteLinkSelector = obj(
             field("betaRoomInviteLinkRenew","link", arguments(fieldValue("roomId", refValue("roomId"))), notNull(scalar("String")))
-        )
-private let RoomSendEmailInviteSelector = obj(
-            field("betaRoomInviteLinkSendEmail","betaRoomInviteLinkSendEmail", arguments(fieldValue("inviteRequests", refValue("inviteRequests")), fieldValue("roomId", refValue("roomId"))), notNull(scalar("String")))
         )
 private let RoomSettingsUpdateSelector = obj(
             field("betaRoomUpdateUserNotificationSettings","betaRoomUpdateUserNotificationSettings", arguments(fieldValue("roomId", refValue("roomId")), fieldValue("settings", refValue("settings"))), notNull(obj(
@@ -3282,9 +3046,6 @@ private let RoomsJoinSelector = obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
                 )))))
-        )
-private let SaveDraftMessageSelector = obj(
-            field("conversationDraftUpdate","conversationDraftUpdate", arguments(fieldValue("conversationId", refValue("conversationId")), fieldValue("message", refValue("message"))), notNull(scalar("String")))
         )
 private let SendMessageSelector = obj(
             field("sendMessage","sentMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
@@ -3375,10 +3136,6 @@ private let SuperBadgeCreateToRoomSelector = obj(
         )
 private let SuperBadgeUnsetToRoomSelector = obj(
             field("superBadgeUnsetToRoom","superBadgeUnsetToRoom", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
-        )
-private let SwitchReactionSelector = obj(
-            field("messageReactionAdd","messageReactionAdd", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("to"))), notNull(scalar("Boolean"))),
-            field("messageReactionRemove","messageReactionRemove", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("from"))), notNull(scalar("Boolean")))
         )
 private let UnSubscribeMessageCommentsSelector = obj(
             field("unSubscribeMessageComments","unSubscribeMessageComments", arguments(fieldValue("messageId", refValue("messageId"))), notNull(scalar("Boolean")))
@@ -3609,18 +3366,6 @@ class Operations {
         "query AccountInviteInfo($inviteKey:String!){invite:alphaInviteInfo(key:$inviteKey){__typename creator{__typename ...UserShort}forEmail forName id joined key membersCount orgId organization{__typename about isCommunity:alphaIsCommunity id}photo title}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}",
         AccountInviteInfoSelector
     )
-    let AccountInvites = OperationDefinition(
-        "AccountInvites",
-        .query, 
-        "query AccountInvites{invites:alphaInvites{__typename id key}}",
-        AccountInvitesSelector
-    )
-    let AccountInvitesHistory = OperationDefinition(
-        "AccountInvitesHistory",
-        .query, 
-        "query AccountInvitesHistory{invites:alphaInvitesHistory{__typename acceptedBy{__typename id name picture}forEmail isGlobal}}",
-        AccountInvitesHistorySelector
-    )
     let AccountSettings = OperationDefinition(
         "AccountSettings",
         .query, 
@@ -3632,12 +3377,6 @@ class Operations {
         .query, 
         "query AvailableRooms{communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChats:betaUserAvailableRooms(isChannel:false,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChannels:betaUserAvailableRooms(isChannel:true,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}",
         AvailableRoomsSelector
-    )
-    let ChatHistory = OperationDefinition(
-        "ChatHistory",
-        .query, 
-        "query ChatHistory($before:ID,$chatId:ID!,$first:Int!){state:conversationState(id:$chatId){__typename state}messages(before:$before,chatId:$chatId,first:$first){__typename ...FullMessage}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserBadge on UserBadge{__typename id name verified}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}",
-        ChatHistorySelector
     )
     let ChatInit = OperationDefinition(
         "ChatInit",
@@ -3687,12 +3426,6 @@ class Operations {
         "query ExploreCommunity($after:String,$featuredIfEmptyQuery:Boolean,$page:Int,$query:String,$sort:String){items:alphaComunityPrefixSearch(after:$after,featuredIfEmptyQuery:$featuredIfEmptyQuery,first:25,page:$page,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename ...CommunitySearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}",
         ExploreCommunitySelector
     )
-    let ExploreOrganizations = OperationDefinition(
-        "ExploreOrganizations",
-        .query, 
-        "query ExploreOrganizations($after:String,$all:Boolean,$page:Int,$prefix:String,$query:String,$sort:String){items:alphaOrganizations(after:$after,all:$all,first:25,page:$page,prefix:$prefix,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename ...OrganizationSearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment OrganizationSearch on Organization{__typename about featured:alphaFeatured members:alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine membersCount name photo status superAccountId}",
-        ExploreOrganizationsSelector
-    )
     let ExplorePeople = OperationDefinition(
         "ExplorePeople",
         .query, 
@@ -3716,12 +3449,6 @@ class Operations {
         .query, 
         "query FetchPushSettings{pushSettings{__typename webPushKey}}",
         FetchPushSettingsSelector
-    )
-    let GetDraftMessage = OperationDefinition(
-        "GetDraftMessage",
-        .query, 
-        "query GetDraftMessage($conversationId:ID!){message:conversationDraft(conversationId:$conversationId)}",
-        GetDraftMessageSelector
     )
     let GlobalCounter = OperationDefinition(
         "GlobalCounter",
@@ -3819,12 +3546,6 @@ class Operations {
         "query OrganizationMembersShort($organizationId:ID!){organization(id:$organizationId){__typename members:alphaOrganizationMembers{__typename user{__typename id}}...OrganizationWithoutMembersFragment}}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity isPrivate:alphaIsPrivate requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id instagram isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about audienceSize email facebook firstName id instagram isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment RoomShort on Room{__typename ... on PrivateRoom{id myBadge{__typename ...UserBadge}pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership myBadge{__typename ...UserBadge}organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserBadge on UserBadge{__typename id name verified}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}",
         OrganizationMembersShortSelector
     )
-    let OrganizationMembersShortPaginated = OperationDefinition(
-        "OrganizationMembersShortPaginated",
-        .query, 
-        "query OrganizationMembersShortPaginated($after:ID,$first:Int,$organizationId:ID!){organization(id:$organizationId){__typename members:alphaOrganizationMembers(after:$after,first:$first){__typename role user{__typename ...UserFull}}...OrganizationWithoutMembersFragment}}fragment UserFull on User{__typename about audienceSize email facebook firstName id instagram isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity isPrivate:alphaIsPrivate requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id instagram isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment RoomShort on Room{__typename ... on PrivateRoom{id myBadge{__typename ...UserBadge}pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership myBadge{__typename ...UserBadge}organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserBadge on UserBadge{__typename id name verified}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}",
-        OrganizationMembersShortPaginatedSelector
-    )
     let OrganizationProfile = OperationDefinition(
         "OrganizationProfile",
         .query, 
@@ -3891,12 +3612,6 @@ class Operations {
         "query RoomFeaturedMembers($roomId:ID!){roomFeaturedMembers(roomId:$roomId){__typename badge{__typename ...UserBadge}canKick membership role user{__typename ...UserShort}}}fragment UserBadge on UserBadge{__typename id name verified}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}",
         RoomFeaturedMembersSelector
     )
-    let RoomHeader = OperationDefinition(
-        "RoomHeader",
-        .query, 
-        "query RoomHeader($id:ID!){room(id:$id){__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename id isBot name photo primaryOrganization{__typename id name}}}... on SharedRoom{canEdit description id isChannel kind membersCount organization{__typename isAdmin:betaIsAdmin isOwner:betaIsOwner id name}photo role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}}",
-        RoomHeaderSelector
-    )
     let RoomInviteInfo = OperationDefinition(
         "RoomInviteInfo",
         .query, 
@@ -3909,23 +3624,11 @@ class Operations {
         "query RoomInviteLink($roomId:ID!){link:betaRoomInviteLink(roomId:$roomId)}",
         RoomInviteLinkSelector
     )
-    let RoomMemberShort = OperationDefinition(
-        "RoomMemberShort",
-        .query, 
-        "query RoomMemberShort($memberId:ID!,$roomId:ID!){member:roomMember(memberId:$memberId,roomId:$roomId){__typename user{__typename firstName id name}}}",
-        RoomMemberShortSelector
-    )
     let RoomMembers = OperationDefinition(
         "RoomMembers",
         .query, 
         "query RoomMembers($roomId:ID!){members:roomMembers(roomId:$roomId){__typename canKick membership role user{__typename ...UserShort}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}",
         RoomMembersSelector
-    )
-    let RoomMembersForMentionsPaginated = OperationDefinition(
-        "RoomMembersForMentionsPaginated",
-        .query, 
-        "query RoomMembersForMentionsPaginated($after:ID,$first:Int,$roomId:ID!){members:roomMembers(after:$after,first:$first,roomId:$roomId){__typename user{__typename ...UserForMention}}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}",
-        RoomMembersForMentionsPaginatedSelector
     )
     let RoomMembersPaginated = OperationDefinition(
         "RoomMembersPaginated",
@@ -3957,12 +3660,6 @@ class Operations {
         "query RoomSearch($page:Int,$query:String,$sort:String){items:betaRoomSearch(first:25,page:$page,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename ... on SharedRoom{id isChannel kind membersCount membership organization{__typename id name photo}photo title}}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}",
         RoomSearchSelector
     )
-    let RoomSearchText = OperationDefinition(
-        "RoomSearchText",
-        .query, 
-        "query RoomSearchText($query:String!){items:betaDialogTextSearch(query:$query){__typename id:cid flexibleId:fid id2:id kind photo title}}",
-        RoomSearchTextSelector
-    )
     let RoomSuper = OperationDefinition(
         "RoomSuper",
         .query, 
@@ -3980,12 +3677,6 @@ class Operations {
         .query, 
         "query RoomWithoutMembers($id:ID!){room(id:$id){__typename ...RoomFullWithoutMembers}}fragment RoomFullWithoutMembers on Room{__typename ... on PrivateRoom{id myBadge{__typename ...UserBadge}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description featuredMembersCount id isChannel kind membersCount membership myBadge{__typename ...UserBadge}organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserBadge on UserBadge{__typename id name verified}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment OrganizationMedium on Organization{__typename about isCommunity:alphaIsCommunity isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo shortname}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}",
         RoomWithoutMembersSelector
-    )
-    let Rooms = OperationDefinition(
-        "Rooms",
-        .query, 
-        "query Rooms($ids:[ID!]!){rooms(ids:$ids){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id myBadge{__typename ...UserBadge}pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership myBadge{__typename ...UserBadge}organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserBadge on UserBadge{__typename id name verified}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}",
-        RoomsSelector
     )
     let Settings = OperationDefinition(
         "Settings",
@@ -4035,12 +3726,6 @@ class Operations {
         "query UserAvailableRooms($after:ID,$isChannel:Boolean,$limit:Int!){betaUserAvailableRooms(after:$after,isChannel:$isChannel,limit:$limit){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
         UserAvailableRoomsSelector
     )
-    let UserRooms = OperationDefinition(
-        "UserRooms",
-        .query, 
-        "query UserRooms($after:ID,$limit:Int!){betaUserRooms(after:$after,limit:$limit){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
-        UserRoomsSelector
-    )
     let UserStorage = OperationDefinition(
         "UserStorage",
         .query, 
@@ -4052,18 +3737,6 @@ class Operations {
         .query, 
         "query Users($query:String!){items:users(query:$query){__typename subtitle:email id title:name}}",
         UsersSelector
-    )
-    let AccountCreateInvite = OperationDefinition(
-        "AccountCreateInvite",
-        .mutation, 
-        "mutation AccountCreateInvite{alphaCreateInvite{__typename id key}}",
-        AccountCreateInviteSelector
-    )
-    let AccountDestroyInvite = OperationDefinition(
-        "AccountDestroyInvite",
-        .mutation, 
-        "mutation AccountDestroyInvite($id:ID!){alphaDeleteInvite(id:$id)}",
-        AccountDestroyInviteSelector
     )
     let AccountInviteJoin = OperationDefinition(
         "AccountInviteJoin",
@@ -4095,23 +3768,11 @@ class Operations {
         "mutation BetaNextDiscoverReset{betaNextDiscoverReset}",
         BetaNextDiscoverResetSelector
     )
-    let BetaSaveSelectedTags = OperationDefinition(
-        "BetaSaveSelectedTags",
-        .mutation, 
-        "mutation BetaSaveSelectedTags($selectedTagsIds:[String!]!){betaSaveSelectedTags(selectedTagsIds:$selectedTagsIds){__typename tagGroup{__typename id}}}",
-        BetaSaveSelectedTagsSelector
-    )
     let BetaSubmitNextDiscover = OperationDefinition(
         "BetaSubmitNextDiscover",
         .mutation, 
         "mutation BetaSubmitNextDiscover($excudedGroupsIds:[String!]!,$selectedTagsIds:[String!]!){betaSubmitNextDiscover(excudedGroupsIds:$excudedGroupsIds,selectedTagsIds:$selectedTagsIds){__typename tagGroup{__typename id}}}",
         BetaSubmitNextDiscoverSelector
-    )
-    let CancelTyping = OperationDefinition(
-        "CancelTyping",
-        .mutation, 
-        "mutation CancelTyping($conversationId:ID!){typingCancel(conversationId:$conversationId)}",
-        CancelTypingSelector
     )
     let CommentSetReaction = OperationDefinition(
         "CommentSetReaction",
@@ -4323,23 +3984,11 @@ class Operations {
         "mutation OrganizationCreatePublicInvite($expirationDays:Int,$organizationId:ID){alphaOrganizationRefreshInviteLink(expirationDays:$expirationDays,organizationId:$organizationId){__typename id key ttl}}",
         OrganizationCreatePublicInviteSelector
     )
-    let OrganizationInviteMembers = OperationDefinition(
-        "OrganizationInviteMembers",
-        .mutation, 
-        "mutation OrganizationInviteMembers($inviteRequests:[InviteRequest!]!,$organizationId:ID){alphaOrganizationInviteMembers(inviteRequests:$inviteRequests,organizationId:$organizationId)}",
-        OrganizationInviteMembersSelector
-    )
     let OrganizationMemberRemove = OperationDefinition(
         "OrganizationMemberRemove",
         .mutation, 
         "mutation OrganizationMemberRemove($organizationId:ID!,$userId:ID!){betaOrganizationMemberRemove(organizationId:$organizationId,userId:$userId){__typename id}}",
         OrganizationMemberRemoveSelector
-    )
-    let OrganizationRemoveMember = OperationDefinition(
-        "OrganizationRemoveMember",
-        .mutation, 
-        "mutation OrganizationRemoveMember($memberId:ID!,$organizationId:ID!){alphaOrganizationRemoveMember(memberId:$memberId,organizationId:$organizationId)}",
-        OrganizationRemoveMemberSelector
     )
     let PersistEvents = OperationDefinition(
         "PersistEvents",
@@ -4389,23 +4038,11 @@ class Operations {
         "mutation RegisterWebPush($endpoint:String!){registerWebPush(endpoint:$endpoint)}",
         RegisterWebPushSelector
     )
-    let ReplyMessage = OperationDefinition(
-        "ReplyMessage",
-        .mutation, 
-        "mutation ReplyMessage($chatId:ID!,$fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$repeatKey:String,$replyMessages:[ID!],$spans:[MessageSpanInput!]){replyMessage:sendMessage(chatId:$chatId,fileAttachments:$fileAttachments,mentions:$mentions,message:$message,repeatKey:$repeatKey,replyMessages:$replyMessages,spans:$spans)}",
-        ReplyMessageSelector
-    )
     let ReportOnline = OperationDefinition(
         "ReportOnline",
         .mutation, 
         "mutation ReportOnline($active:Boolean,$platform:String){presenceReportOnline(active:$active,platform:$platform,timeout:5000)}",
         ReportOnlineSelector
-    )
-    let RoomAddMember = OperationDefinition(
-        "RoomAddMember",
-        .mutation, 
-        "mutation RoomAddMember($roomId:ID!,$userId:ID!){betaRoomInvite(invites:[{userId:$userId,role:MEMBER}],roomId:$roomId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id myBadge{__typename ...UserBadge}pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description featuredMembersCount id isChannel kind members{__typename badge{__typename ...UserBadge}canKick membership role user{__typename ...UserShort}}membersCount membership myBadge{__typename ...UserBadge}organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserBadge on UserBadge{__typename id name verified}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationMedium on Organization{__typename about isCommunity:alphaIsCommunity isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo shortname}",
-        RoomAddMemberSelector
     )
     let RoomAddMembers = OperationDefinition(
         "RoomAddMembers",
@@ -4437,18 +4074,6 @@ class Operations {
         "mutation RoomCreate($channel:Boolean!,$description:String,$kind:SharedRoomKind!,$members:[ID!]!,$message:String,$organizationId:ID,$photoRef:ImageRefInput,$title:String){room:betaRoomCreate(channel:$channel,description:$description,kind:$kind,members:$members,message:$message,organizationId:$organizationId,photoRef:$photoRef,title:$title){__typename id}}",
         RoomCreateSelector
     )
-    let RoomCreateIntro = OperationDefinition(
-        "RoomCreateIntro",
-        .mutation, 
-        "mutation RoomCreateIntro($about:String,$file:String,$roomId:ID!,$uid:ID!){intro:betaIntroSend(about:$about,file:$file,message:$about,room:$roomId,uid:$uid)}",
-        RoomCreateIntroSelector
-    )
-    let RoomDeclineJoinReuest = OperationDefinition(
-        "RoomDeclineJoinReuest",
-        .mutation, 
-        "mutation RoomDeclineJoinReuest($roomId:ID!,$userId:ID!){betaRoomDeclineJoinRequest(roomId:$roomId,userId:$userId){__typename ...RoomFull}}fragment RoomFull on Room{__typename ... on PrivateRoom{id myBadge{__typename ...UserBadge}pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage description featuredMembersCount id isChannel kind members{__typename badge{__typename ...UserBadge}canKick membership role user{__typename ...UserShort}}membersCount membership myBadge{__typename ...UserBadge}organization{__typename ...OrganizationMedium}photo pinnedMessage{__typename ...FullMessage}requests{__typename user{__typename ...UserShort}}role settings{__typename id mute}socialImage title welcomeMessage{__typename isOn message sender{__typename id name}}}}fragment UserBadge on UserBadge{__typename id name verified}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationMedium on Organization{__typename about isCommunity:alphaIsCommunity isAdmin:betaIsAdmin isOwner:betaIsOwner id isMine membersCount name photo shortname}",
-        RoomDeclineJoinReuestSelector
-    )
     let RoomDeleteMessage = OperationDefinition(
         "RoomDeleteMessage",
         .mutation, 
@@ -4466,12 +4091,6 @@ class Operations {
         .mutation, 
         "mutation RoomDeleteUrlAugmentation($messageId:ID!){betaMessageDeleteAugmentation(mid:$messageId)}",
         RoomDeleteUrlAugmentationSelector
-    )
-    let RoomEditIntro = OperationDefinition(
-        "RoomEditIntro",
-        .mutation, 
-        "mutation RoomEditIntro($about:String,$file:String,$messageId:ID!,$uid:ID!){intro:betaIntroEdit(about:$about,file:$file,message:$about,mid:$messageId,uid:$uid)}",
-        RoomEditIntroSelector
     )
     let RoomJoin = OperationDefinition(
         "RoomJoin",
@@ -4509,12 +4128,6 @@ class Operations {
         "mutation RoomRenewInviteLink($roomId:ID!){link:betaRoomInviteLinkRenew(roomId:$roomId)}",
         RoomRenewInviteLinkSelector
     )
-    let RoomSendEmailInvite = OperationDefinition(
-        "RoomSendEmailInvite",
-        .mutation, 
-        "mutation RoomSendEmailInvite($inviteRequests:[RoomInviteEmailRequest!]!,$roomId:ID!){betaRoomInviteLinkSendEmail(inviteRequests:$inviteRequests,roomId:$roomId)}",
-        RoomSendEmailInviteSelector
-    )
     let RoomSettingsUpdate = OperationDefinition(
         "RoomSettingsUpdate",
         .mutation, 
@@ -4538,12 +4151,6 @@ class Operations {
         .mutation, 
         "mutation RoomsJoin($roomsIds:[ID!]!){join:betaRoomsJoin(roomsIds:$roomsIds){__typename ...RoomShort}}fragment RoomShort on Room{__typename ... on PrivateRoom{id myBadge{__typename ...UserBadge}pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership myBadge{__typename ...UserBadge}organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserBadge on UserBadge{__typename id name verified}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename date fallback id message message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserShort}}... on MessageSpanMultiUserMention{users{__typename ...UserShort}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}}reactions{__typename reaction user{__typename ...UserShort}}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}",
         RoomsJoinSelector
-    )
-    let SaveDraftMessage = OperationDefinition(
-        "SaveDraftMessage",
-        .mutation, 
-        "mutation SaveDraftMessage($conversationId:ID!,$message:String!){conversationDraftUpdate(conversationId:$conversationId,message:$message)}",
-        SaveDraftMessageSelector
     )
     let SendMessage = OperationDefinition(
         "SendMessage",
@@ -4646,12 +4253,6 @@ class Operations {
         .mutation, 
         "mutation SuperBadgeUnsetToRoom($badgeId:ID!,$roomId:ID!,$userId:ID!){superBadgeUnsetToRoom(badgeId:$badgeId,roomId:$roomId,userId:$userId)}",
         SuperBadgeUnsetToRoomSelector
-    )
-    let SwitchReaction = OperationDefinition(
-        "SwitchReaction",
-        .mutation, 
-        "mutation SwitchReaction($from:MessageReactionType!,$messageId:ID!,$to:MessageReactionType!){messageReactionAdd(messageId:$messageId,reaction:$to)messageReactionRemove(messageId:$messageId,reaction:$from)}",
-        SwitchReactionSelector
     )
     let UnSubscribeMessageComments = OperationDefinition(
         "UnSubscribeMessageComments",
@@ -4767,11 +4368,8 @@ class Operations {
         if name == "AccountAppInvite" { return AccountAppInvite }
         if name == "AccountAppInviteInfo" { return AccountAppInviteInfo }
         if name == "AccountInviteInfo" { return AccountInviteInfo }
-        if name == "AccountInvites" { return AccountInvites }
-        if name == "AccountInvitesHistory" { return AccountInvitesHistory }
         if name == "AccountSettings" { return AccountSettings }
         if name == "AvailableRooms" { return AvailableRooms }
-        if name == "ChatHistory" { return ChatHistory }
         if name == "ChatInit" { return ChatInit }
         if name == "ChatInitFromUnread" { return ChatInitFromUnread }
         if name == "Conference" { return Conference }
@@ -4780,12 +4378,10 @@ class Operations {
         if name == "DiscoverIsDone" { return DiscoverIsDone }
         if name == "DiscoverNextPage" { return DiscoverNextPage }
         if name == "ExploreCommunity" { return ExploreCommunity }
-        if name == "ExploreOrganizations" { return ExploreOrganizations }
         if name == "ExplorePeople" { return ExplorePeople }
         if name == "FeatureFlags" { return FeatureFlags }
         if name == "Feed" { return Feed }
         if name == "FetchPushSettings" { return FetchPushSettings }
-        if name == "GetDraftMessage" { return GetDraftMessage }
         if name == "GlobalCounter" { return GlobalCounter }
         if name == "GlobalSearch" { return GlobalSearch }
         if name == "Message" { return Message }
@@ -4802,7 +4398,6 @@ class Operations {
         if name == "OrganizationByPrefix" { return OrganizationByPrefix }
         if name == "OrganizationMembers" { return OrganizationMembers }
         if name == "OrganizationMembersShort" { return OrganizationMembersShort }
-        if name == "OrganizationMembersShortPaginated" { return OrganizationMembersShortPaginated }
         if name == "OrganizationProfile" { return OrganizationProfile }
         if name == "OrganizationPublicInvite" { return OrganizationPublicInvite }
         if name == "OrganizationWithoutMembers" { return OrganizationWithoutMembers }
@@ -4814,22 +4409,17 @@ class Operations {
         if name == "Room" { return Room }
         if name == "RoomChat" { return RoomChat }
         if name == "RoomFeaturedMembers" { return RoomFeaturedMembers }
-        if name == "RoomHeader" { return RoomHeader }
         if name == "RoomInviteInfo" { return RoomInviteInfo }
         if name == "RoomInviteLink" { return RoomInviteLink }
-        if name == "RoomMemberShort" { return RoomMemberShort }
         if name == "RoomMembers" { return RoomMembers }
-        if name == "RoomMembersForMentionsPaginated" { return RoomMembersForMentionsPaginated }
         if name == "RoomMembersPaginated" { return RoomMembersPaginated }
         if name == "RoomMembersShort" { return RoomMembersShort }
         if name == "RoomOrganizationAdminMembers" { return RoomOrganizationAdminMembers }
         if name == "RoomPico" { return RoomPico }
         if name == "RoomSearch" { return RoomSearch }
-        if name == "RoomSearchText" { return RoomSearchText }
         if name == "RoomSuper" { return RoomSuper }
         if name == "RoomTiny" { return RoomTiny }
         if name == "RoomWithoutMembers" { return RoomWithoutMembers }
-        if name == "Rooms" { return Rooms }
         if name == "Settings" { return Settings }
         if name == "SuggestedRooms" { return SuggestedRooms }
         if name == "SuperAccount" { return SuperAccount }
@@ -4838,19 +4428,14 @@ class Operations {
         if name == "SuperBadgeInRoom" { return SuperBadgeInRoom }
         if name == "User" { return User }
         if name == "UserAvailableRooms" { return UserAvailableRooms }
-        if name == "UserRooms" { return UserRooms }
         if name == "UserStorage" { return UserStorage }
         if name == "Users" { return Users }
-        if name == "AccountCreateInvite" { return AccountCreateInvite }
-        if name == "AccountDestroyInvite" { return AccountDestroyInvite }
         if name == "AccountInviteJoin" { return AccountInviteJoin }
         if name == "AddAppToChat" { return AddAppToChat }
         if name == "AddMessageComment" { return AddMessageComment }
         if name == "BetaDiscoverSkip" { return BetaDiscoverSkip }
         if name == "BetaNextDiscoverReset" { return BetaNextDiscoverReset }
-        if name == "BetaSaveSelectedTags" { return BetaSaveSelectedTags }
         if name == "BetaSubmitNextDiscover" { return BetaSubmitNextDiscover }
-        if name == "CancelTyping" { return CancelTyping }
         if name == "CommentSetReaction" { return CommentSetReaction }
         if name == "CommentUnsetReaction" { return CommentUnsetReaction }
         if name == "ConferenceAnswer" { return ConferenceAnswer }
@@ -4886,9 +4471,7 @@ class Operations {
         if name == "OrganizationAlterPublished" { return OrganizationAlterPublished }
         if name == "OrganizationChangeMemberRole" { return OrganizationChangeMemberRole }
         if name == "OrganizationCreatePublicInvite" { return OrganizationCreatePublicInvite }
-        if name == "OrganizationInviteMembers" { return OrganizationInviteMembers }
         if name == "OrganizationMemberRemove" { return OrganizationMemberRemove }
-        if name == "OrganizationRemoveMember" { return OrganizationRemoveMember }
         if name == "PersistEvents" { return PersistEvents }
         if name == "PinMessage" { return PinMessage }
         if name == "ProfileCreate" { return ProfileCreate }
@@ -4897,32 +4480,25 @@ class Operations {
         if name == "RefreshAppToken" { return RefreshAppToken }
         if name == "RegisterPush" { return RegisterPush }
         if name == "RegisterWebPush" { return RegisterWebPush }
-        if name == "ReplyMessage" { return ReplyMessage }
         if name == "ReportOnline" { return ReportOnline }
-        if name == "RoomAddMember" { return RoomAddMember }
         if name == "RoomAddMembers" { return RoomAddMembers }
         if name == "RoomAlterFeatured" { return RoomAlterFeatured }
         if name == "RoomAlterHidden" { return RoomAlterHidden }
         if name == "RoomChangeRole" { return RoomChangeRole }
         if name == "RoomCreate" { return RoomCreate }
-        if name == "RoomCreateIntro" { return RoomCreateIntro }
-        if name == "RoomDeclineJoinReuest" { return RoomDeclineJoinReuest }
         if name == "RoomDeleteMessage" { return RoomDeleteMessage }
         if name == "RoomDeleteMessages" { return RoomDeleteMessages }
         if name == "RoomDeleteUrlAugmentation" { return RoomDeleteUrlAugmentation }
-        if name == "RoomEditIntro" { return RoomEditIntro }
         if name == "RoomJoin" { return RoomJoin }
         if name == "RoomJoinInviteLink" { return RoomJoinInviteLink }
         if name == "RoomKick" { return RoomKick }
         if name == "RoomLeave" { return RoomLeave }
         if name == "RoomRead" { return RoomRead }
         if name == "RoomRenewInviteLink" { return RoomRenewInviteLink }
-        if name == "RoomSendEmailInvite" { return RoomSendEmailInvite }
         if name == "RoomSettingsUpdate" { return RoomSettingsUpdate }
         if name == "RoomUpdate" { return RoomUpdate }
         if name == "RoomsInviteUser" { return RoomsInviteUser }
         if name == "RoomsJoin" { return RoomsJoin }
-        if name == "SaveDraftMessage" { return SaveDraftMessage }
         if name == "SendMessage" { return SendMessage }
         if name == "SetOrgShortname" { return SetOrgShortname }
         if name == "SetTyping" { return SetTyping }
@@ -4940,7 +4516,6 @@ class Operations {
         if name == "SuperAdminRemove" { return SuperAdminRemove }
         if name == "SuperBadgeCreateToRoom" { return SuperBadgeCreateToRoom }
         if name == "SuperBadgeUnsetToRoom" { return SuperBadgeUnsetToRoom }
-        if name == "SwitchReaction" { return SwitchReaction }
         if name == "UnSubscribeMessageComments" { return UnSubscribeMessageComments }
         if name == "UnpinMessage" { return UnpinMessage }
         if name == "UpdateApp" { return UpdateApp }

@@ -1,3 +1,0 @@
-mutation OrganizationRemoveMember($memberId: ID!, $organizationId: ID!) {
-  alphaOrganizationRemoveMember(memberId: $memberId, organizationId: $organizationId)
-}

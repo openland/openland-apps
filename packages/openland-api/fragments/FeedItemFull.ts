@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
-import { FullMessage } from '../fragments/Message';
 
 export const FeedItemFull = gql`
     fragment FeedItemFull on FeedItem {
@@ -123,6 +122,5 @@ export const FeedItemFull = gql`
         }
     }
 
-    ${FullMessage}
     ${UserShort}
 `;
