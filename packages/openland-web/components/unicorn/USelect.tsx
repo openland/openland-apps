@@ -80,8 +80,8 @@ const style = css`
         align-items: center;
         justify-content: center;
         position: relative;
-        width: 40px;
-        height: 40px;
+        max-width: 40px;
+        max-height: 40px;
     }
     & .Select-multi-value-wrapper {
         display: flex;
@@ -141,8 +141,14 @@ const placeholderSingleStyle = css`
     }
 
     &.Select--single.has-value .Select-multi-value-wrapper,
-    &.Select--single.is-searchable.is-focused .Select-multi-value-wrapper {
+    &.Select--single.is-searchable .Select-multi-value-wrapper {
         margin-top: 18px;
+    }
+    &.Select--single:has(~ .Select-control) + .Stranger-placeholder {
+        font-size: 13px;
+        line-height: 18px;
+        color: var(--accentPrimary);
+        top: 8px;
     }
 `;
 
@@ -158,16 +164,14 @@ const withMenuStyle = css`
     }
     & .Select-arrow-zone {
         cursor: pointer;
-
         display: flex;
         flex-shrink: 0;
         align-self: center;
         align-items: center;
         justify-content: center;
-
         position: relative;
-        width: 40px;
-        height: 40px;
+        max-width: 40px;
+        max-height: 40px;
     }
     & .Select-menu-outer {
         background-color: #fff;
@@ -367,6 +371,8 @@ export const USelect = React.memo((props: USelectBasicProps) => {
             {props.creatable && (
                 <Container {...other}>
                     <Creatable
+                        onBlurResetsInput={false}
+                        onCloseResetsInput={false}
                         clearRenderer={ClearRender}
                         optionRenderer={OptionRender}
                         arrowRenderer={!hideSelector ? ArrowRender : null}
@@ -386,6 +392,8 @@ export const USelect = React.memo((props: USelectBasicProps) => {
             {!props.creatable && (
                 <Container {...other}>
                     <Select
+                        onBlurResetsInput={false}
+                        onCloseResetsInput={false}
                         clearRenderer={ClearRender}
                         optionRenderer={OptionRender}
                         arrowRenderer={!hideSelector ? ArrowRender : null}

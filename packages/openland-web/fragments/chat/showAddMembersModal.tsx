@@ -13,8 +13,6 @@ import {
     OrganizationMembers_organization_members,
     RoomMembersPaginated_members,
 } from 'openland-api/Types';
-import { XSelect } from 'openland-x/XSelect';
-import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { XModalProps } from 'openland-x-modal/XModal';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView3 } from 'openland-x/XScrollView3';
@@ -29,26 +27,23 @@ import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { CheckComponent } from 'openland-web/components/unicorn/UCheckbox';
 import { OwnerLinkComponent } from 'openland-web/fragments/invite/OwnerLinkComponent';
+import { USelect } from 'openland-web/components/unicorn/USelect';
 
 interface SearchBoxProps {
-    value: { label: string; value: string }[] | null;
+    value: { label: string; value: string }[];
     onInputChange: (data: string) => string;
     onChange: (data: { label: string; value: string }[] | null) => void;
 }
 
 const SearchBox = (props: SearchBoxProps) => (
-    <XSelect
-        multi={true}
-        render={
-            <XSelectCustomUsersRender
-                popper={false}
-                placeholder="Search"
-                onInputChange={props.onInputChange}
-                onChange={data => props.onChange(data as any)}
-                options={props.value || []}
-                value={props.value || []}
-            />
-        }
+    <USelect
+        multi
+        hideSelector
+        placeholder="Search"
+        onInputChange={props.onInputChange}
+        options={props.value || []}
+        onChange={props.onChange}
+        value={props.value}
     />
 );
 
