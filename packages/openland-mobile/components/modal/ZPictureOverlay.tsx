@@ -13,7 +13,7 @@ import { SStatusBar } from 'react-native-s/SStatusBar';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { FontStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import Toast from '../Toast';
 
 export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose: () => void }>((props) => {
@@ -252,14 +252,14 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                 style={{
                     height: SDevice.navigationBarHeight + SDevice.statusBarHeight + SDevice.safeArea.top,
                     paddingTop: SDevice.statusBarHeight + SDevice.safeArea.top,
-                    backgroundColor: 'rgba(0,0,0,0.6)',
+                    backgroundColor: theme.overlayMedium,
                     justifyContent: 'center',
                     opacity: Animated.multiply(progressLinear, barOpacity)
                 }}
             >
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <SCloseButton tintColor="#fff" onPress={handleCloseClick} />
-                    <SShareButton tintColor="#fff" onPress={handleShareClick} />
+                    <SCloseButton tintColor={theme.foregroundContrast} onPress={handleCloseClick} />
+                    <SShareButton tintColor={theme.foregroundContrast} onPress={handleShareClick} />
                 </View>
             </Animated.View>
 
@@ -267,7 +267,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                 <Animated.View
                     style={{
                         paddingBottom: SDevice.safeArea.bottom,
-                        backgroundColor: 'rgba(0,0,0,0.6)',
+                        backgroundColor: theme.overlayMedium,
                         opacity: Animated.multiply(progressLinear, barOpacity),
                         position: 'absolute',
                         bottom: 0,
@@ -275,9 +275,9 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                         right: 0
                     }}
                 >
-                    <View flexDirection="column" height={50} justifyContent="center">
-                        {!!props.config.title && <Text style={{ color: '#ffffff', textAlign: 'center', fontSize: 15, fontWeight: FontStyles.Weight.Medium }}>{props.config.title}</Text>}
-                        {!!props.config.subtitle && <Text style={{ color: '#ffffff', textAlign: 'center', fontSize: 13, opacity: 0.8, marginTop: 2 }}>{props.config.subtitle}</Text>}
+                    <View flexDirection="column" height={52} paddingHorizontal={56} justifyContent="center">
+                        {!!props.config.title && <Text style={{ ...TextStyles.Label2, color: theme.foregroundContrast, textAlign: 'center' }} allowFontScaling={false} numberOfLines={1} ellipsizeMode="tail">{props.config.title}</Text>}
+                        {!!props.config.subtitle && <Text style={{ ...TextStyles.Caption, color: theme.foregroundContrast, textAlign: 'center', opacity: 0.56 }} allowFontScaling={false} numberOfLines={1} ellipsizeMode="tail">{props.config.subtitle}</Text>}
                     </View>
                 </Animated.View>
             )}
