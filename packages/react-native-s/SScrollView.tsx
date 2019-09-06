@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ScrollViewProps, Animated, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { ScrollViewProps, Animated, NativeSyntheticEvent, NativeScrollEvent, ScrollView } from 'react-native';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderConfigRegistrator } from './navigation/HeaderConfigRegistrator';
 import { STrackedValue } from './STrackedValue';
@@ -9,13 +9,14 @@ export interface SScrollViewProps extends ScrollViewProps {
     adjustPaddings?: 'all' | 'top' | 'bottom' | 'none';
     safeAreaViaMargin?: boolean;
     onScrollListener?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+    scrollRef?: React.RefObject<ScrollView>;
 }
 
 export class SScrollView extends React.Component<SScrollViewProps> {
     private contentOffset = new STrackedValue();
 
     render() {
-        let { syncWithBar, adjustPaddings, ...other } = this.props;
+        let { syncWithBar, adjustPaddings, scrollRef, ...other } = this.props;
         return (
             <>
                 <HeaderConfigRegistrator config={{ contentOffset: this.contentOffset }} />
@@ -26,6 +27,7 @@ export class SScrollView extends React.Component<SScrollViewProps> {
                                 keyboardShouldPersistTaps="always"
                                 keyboardDismissMode="interactive"
                                 {...other}
+                                ref={scrollRef}
                                 style={[other.style, {
                                     // backgroundColor: Platform.OS === 'ios' ? '#fff' : undefined,
                                     // Work-around for freezing navive animation driver

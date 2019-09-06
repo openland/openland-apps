@@ -1,26 +1,50 @@
-
 import * as React from 'react';
-import { View, PanResponderGestureState, PanResponder, Dimensions, Platform } from 'react-native';
+import { View, PanResponderGestureState, PanResponder, Dimensions, Platform, ScrollView, StyleSheet, ViewStyle } from 'react-native';
 import { SAnimated, SAnimatedPropertyName } from 'react-native-s/SAnimated';
 import { SAnimatedView } from 'react-native-s/SAnimatedView';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+
+const SWIPE_BOX_WIDTH = 64;
+const IGNORE_DISTANCE = 25;
+
+const styles = StyleSheet.create({
+    swipeBox: {
+        position: 'absolute',
+        top: 0, bottom: 0,
+        width: SWIPE_BOX_WIDTH + 16,
+        alignItems: 'center',
+        justifyContent: 'center'
+    } as ViewStyle,
+    swipeIcon: {
+        width: 48, height: 48,
+        borderRadius: 24,
+    } as ViewStyle,
+    swipeIconBig: {
+        position: 'absolute',
+        top: -6, left: -6,
+        width: 60, height: 60,
+        borderRadius: 30,
+        opacity: 0
+    } as ViewStyle,
+});
 
 interface FeedSwipeViewProps {
     id: string;
     theme: ThemeGlobal;
     onLeftSwiped: () => void;
     onRightSwiped: () => void;
+    scrollRef: React.RefObject<ScrollView>;
 }
 
 type AnimNamesV = 'container' | 'leftBox' | 'leftIconBig' | 'rightBox' | 'rightIconBig';
 
 export class FeedSwipeView extends React.PureComponent<FeedSwipeViewProps> {
     private names: { [key in AnimNamesV]: string };
-    private swipeBoxWidth = 64;
     private wasSwiped = false;
     private leftIconShowed = false;
     private rightIconShowed = false;
+    private scrollEnabled = true;
 
     constructor(props: FeedSwipeViewProps) {
         super(props);
@@ -34,9 +58,39 @@ export class FeedSwipeView extends React.PureComponent<FeedSwipeViewProps> {
         };
     }
 
-    calcDelta = (dx: number) => dx / 2.5;
-    transSwipeBox = (type: 'left' | 'right', dx: number) => (this.calcDelta(dx) + (type === 'left' ? -this.swipeBoxWidth : this.swipeBoxWidth)) / 2;
-    needTransSwipeBox = (type: 'left' | 'right', dx: number) => (type === 'left') ? (this.calcDelta(dx) > this.swipeBoxWidth) : (this.calcDelta(dx) < -this.swipeBoxWidth);
+    scroll = (scrollEnabled: boolean) => {
+        const { current } = this.props.scrollRef;
+
+        if (current) {
+            this.scrollEnabled = scrollEnabled;
+
+            (current as any).setNativeProps({ scrollEnabled });
+        }
+    }
+
+    disableScroll = () => {
+        if (this.scrollEnabled) {
+            this.scroll(false);
+        }
+    }
+
+    enableScroll = () => {
+        if (!this.scrollEnabled) {
+            this.scroll(true);
+        }
+    }
+
+    filterDx = (dx: number) => {
+        if (dx > 0) {
+            return dx < IGNORE_DISTANCE ? 0 : dx - IGNORE_DISTANCE;
+        }
+
+        return dx > -IGNORE_DISTANCE ? 0 : dx + IGNORE_DISTANCE;
+    }
+
+    calcDelta = (dx: number) => dx / 2;
+    transSwipeBox = (type: 'left' | 'right', dx: number) => (this.calcDelta(dx) + (type === 'left' ? -SWIPE_BOX_WIDTH : SWIPE_BOX_WIDTH)) / 2;
+    needTransSwipeBox = (type: 'left' | 'right', dx: number) => (type === 'left') ? (this.calcDelta(dx) > SWIPE_BOX_WIDTH) : (this.calcDelta(dx) < -SWIPE_BOX_WIDTH);
 
     animate = (name: AnimNamesV, property: SAnimatedPropertyName, from: number, to: number, duration?: number) => {
         if (Platform.OS === 'ios') {
@@ -55,14 +109,14 @@ export class FeedSwipeView extends React.PureComponent<FeedSwipeViewProps> {
             SAnimated.beginTransaction();
 
             if (type === 'left') {
-                this.animate('leftIconBig', 'opacity', 0, 1);
+                SAnimated.setValue(this.names.leftIconBig, 'opacity', 1);
                 this.leftIconShowed = true;
 
                 this.props.onLeftSwiped();
             }
 
             if (type === 'right') {
-                this.animate('rightIconBig', 'opacity', 0, 1);
+                SAnimated.setValue(this.names.rightIconBig, 'opacity', 1);
                 this.rightIconShowed = true;
 
                 this.props.onRightSwiped();
@@ -73,9 +127,11 @@ export class FeedSwipeView extends React.PureComponent<FeedSwipeViewProps> {
     }
 
     onGestureCancelled = (gesture: PanResponderGestureState) => {
+        this.enableScroll();
         this.wasSwiped = false;
 
-        const { dx, vx } = gesture;
+        const { vx } = gesture;
+        const dx = this.filterDx(gesture.dx);
         const translate = this.calcDelta(dx);
 
         const width = Dimensions.get('screen').width;
@@ -91,7 +147,7 @@ export class FeedSwipeView extends React.PureComponent<FeedSwipeViewProps> {
         }
 
         if (this.leftIconShowed) {
-            this.animate('leftIconBig', 'opacity', 1, 0);
+            SAnimated.setValue(this.names.leftIconBig, 'opacity', 0);
             this.leftIconShowed = false;
         }
 
@@ -100,7 +156,7 @@ export class FeedSwipeView extends React.PureComponent<FeedSwipeViewProps> {
         }
 
         if (this.rightIconShowed) {
-            this.animate('rightIconBig', 'opacity', 1, 0);
+            SAnimated.setValue(this.names.rightIconBig, 'opacity', 0);
             this.rightIconShowed = false;
         }
 
@@ -111,9 +167,22 @@ export class FeedSwipeView extends React.PureComponent<FeedSwipeViewProps> {
         onPanResponderGrant: () => {
             // console.warn('boom onPanResponderGrant');
         },
-        onMoveShouldSetPanResponder: () => true,
+        onMoveShouldSetPanResponder: () => {
+            const { current } = this.props.scrollRef;
+
+            if (current) {
+                // current.getScrollResponder().key;
+            }
+
+            return true;
+        },
+        onStartShouldSetPanResponderCapture: () => true,
         onPanResponderMove: (event, gesture) => {
-            const { dx } = gesture;
+            const dx = this.filterDx(gesture.dx);
+
+            if (dx !== 0) {
+                this.disableScroll();
+            }
 
             SAnimated.beginTransaction();
             SAnimated.setValue(this.names.container, 'translateX', this.calcDelta(dx));
@@ -151,24 +220,24 @@ export class FeedSwipeView extends React.PureComponent<FeedSwipeViewProps> {
             <View {...this.panResponder.panHandlers}>
                 <SAnimatedView
                     name={this.names.leftBox}
-                    style={{ position: 'absolute', top: 0, width: this.swipeBoxWidth + 16, bottom: 0, left: 0, alignItems: 'center', justifyContent: 'center' }}
+                    style={[styles.swipeBox, { left: 0 }]}
                 >
-                    <View style={{ width: 48, height: 48, borderRadius: 24, backgroundColor: theme.backgroundTertiary }}>
+                    <View style={[styles.swipeIcon, { backgroundColor: theme.backgroundTertiary }]}>
                         <SAnimatedView
                             name={this.names.leftIconBig}
-                            style={{ position: 'absolute', top: -6, left: -6, width: 60, height: 60, borderRadius: 30, backgroundColor: theme.accentNegative, opacity: 0 }}
+                            style={[styles.swipeIconBig, { backgroundColor: theme.accentNegative }]}
                         />
                     </View>
                 </SAnimatedView>
 
                 <SAnimatedView
                     name={this.names.rightBox}
-                    style={{ position: 'absolute', top: 0, width: this.swipeBoxWidth + 16, bottom: 0, right: 0, alignItems: 'center', justifyContent: 'center' }}
+                    style={[styles.swipeBox, { right: 0 }]}
                 >
-                    <View style={{ width: 48, height: 48, borderRadius: 24, backgroundColor: theme.backgroundTertiary }}>
+                    <View style={[styles.swipeIcon, { backgroundColor: theme.backgroundTertiary }]}>
                         <SAnimatedView
                             name={this.names.rightIconBig}
-                            style={{ position: 'absolute', top: -6, left: -6, width: 60, height: 60, borderRadius: 30, backgroundColor: theme.accentNegative, opacity: 0 }}
+                            style={[styles.swipeIconBig, { backgroundColor: theme.accentNegative }]}
                         />
                     </View>
                 </SAnimatedView>

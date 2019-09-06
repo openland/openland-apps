@@ -8,7 +8,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { NON_PRODUCTION } from '../Init';
 import { FeedPostView } from 'openland-mobile/feed/FeedPostView';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { DataSourceRender } from 'openland-mobile/components/DataSourceRender';
 import { GlobalSearch } from './components/globalSearch/GlobalSearch';
@@ -21,6 +21,7 @@ interface FeedPageProps {
 }
 
 class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration: number }> {
+    private scrollRef = React.createRef<ScrollView>();
     private unmount?: () => void;
 
     constructor(props: any) {
@@ -52,7 +53,7 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
 
     private renderItem = (data: { item: DataSourceFeedItem }) => {
         if (data.item.type === 'post') {
-            return <FeedPostView item={data.item} />;
+            return <FeedPostView item={data.item} scrollRef={this.scrollRef} />;
         }
 
         return <View />;
@@ -71,6 +72,7 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
                         renderItem={this.renderItem}
                         renderLoading={this.renderLoading}
                         renderEmpty={this.renderEmpty}
+                        scrollRef={this.scrollRef}
                     />
                 </SSearchControler>
             </>
