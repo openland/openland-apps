@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataSourceItem, ReadableDataSource, useDataSource } from 'openland-y-utils/DataSource';
 import { throttle } from 'openland-y-utils/timer';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { NativeSyntheticEvent, NativeScrollEvent, ScrollView } from 'react-native';
 
 export interface DataSourceRenderProps<T extends DataSourceItem> {
     dataSource: ReadableDataSource<T>;
@@ -10,12 +10,13 @@ export interface DataSourceRenderProps<T extends DataSourceItem> {
     renderLoading: React.ComponentClass<any> | React.StatelessComponent<any>;
     renderEmpty: () => JSX.Element;
     loadingHeight?: number;
+    scrollRef?: React.RefObject<ScrollView>;
 }
 
 export const DataSourceRender = React.memo(function <T extends DataSourceItem>(
     props: DataSourceRenderProps<T>,
 ) {
-    const { dataSource, renderEmpty, loadingHeight = 200 } = props;
+    const { dataSource, renderEmpty, loadingHeight = 200, scrollRef } = props;
     let [items, completed, completedForward] = useDataSource(dataSource);
 
     const needMore = React.useMemo(
@@ -49,7 +50,7 @@ export const DataSourceRender = React.memo(function <T extends DataSourceItem>(
     });
 
     return (
-        <SScrollView onScrollListener={onScroll}>
+        <SScrollView onScrollListener={onScroll} scrollRef={scrollRef}>
             {!completedForward && <props.renderLoading />}
             {renderedItems}
             {!completed && <props.renderLoading />}

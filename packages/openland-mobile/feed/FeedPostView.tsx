@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/FeedEngine';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
-import { Dimensions, View, Text, StyleSheet, ViewStyle } from 'react-native';
+import { Dimensions, View, Text, StyleSheet, ViewStyle, ScrollView } from 'react-native';
 import { FeedItemShadow } from './FeedItemShadow';
 import { FeedSenderView } from './content/FeedSenderView';
 import { FeedSwipeView } from './FeedSwipeView';
@@ -30,11 +30,12 @@ const styles = StyleSheet.create({
 
 interface FeedPostViewProps {
     item: DataSourceFeedPostItem;
+    scrollRef: React.RefObject<ScrollView>;
 }
 
 export const FeedPostView = React.memo((props: FeedPostViewProps) => {
     const theme = React.useContext(ThemeContext);
-    const { item } = props;
+    const { item, scrollRef } = props;
     const { id, sender, text } = item;
 
     const onLeftSwiped = React.useCallback(() => {
@@ -55,6 +56,7 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
             theme={theme}
             onLeftSwiped={onLeftSwiped}
             onRightSwiped={onRightSwiped}
+            scrollRef={scrollRef}
         >
             <View style={styles.box}>
                 <FeedItemShadow width={width} height={containerHeight + 16 + 32} />
