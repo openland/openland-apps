@@ -365,8 +365,6 @@ export const USelect = React.memo((props: USelectBasicProps) => {
             {props.creatable && (
                 <Container {...other}>
                     <Creatable
-                        onBlurResetsInput={false}
-                        onCloseResetsInput={false}
                         clearRenderer={ClearRender}
                         optionRenderer={OptionRender}
                         arrowRenderer={!hideSelector ? ArrowRender : null}
@@ -386,8 +384,6 @@ export const USelect = React.memo((props: USelectBasicProps) => {
             {!props.creatable && (
                 <Container {...other}>
                     <Select
-                        onBlurResetsInput={false}
-                        onCloseResetsInput={false}
                         clearRenderer={ClearRender}
                         optionRenderer={OptionRender}
                         arrowRenderer={!hideSelector ? ArrowRender : null}
