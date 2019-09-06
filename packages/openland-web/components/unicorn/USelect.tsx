@@ -144,12 +144,6 @@ const placeholderSingleStyle = css`
     &.Select--single.is-searchable .Select-multi-value-wrapper {
         margin-top: 18px;
     }
-    &.Select--single:has(~ .Select-control) + .Stranger-placeholder {
-        font-size: 13px;
-        line-height: 18px;
-        color: var(--accentPrimary);
-        top: 8px;
-    }
 `;
 
 const Placeholder = (props: { placeholder?: string }) => (
