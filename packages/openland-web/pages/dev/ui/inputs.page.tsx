@@ -7,10 +7,29 @@ import { USelect } from 'openland-web/components/unicorn/USelect';
 
 const SelectComponents = () => {
     const [value, setValue] = React.useState<any>(null);
-    const [value2, setValue2] = React.useState<any>({ value: 200, label: '200' });
+    const [value2, setValue2] = React.useState<any>([
+        { value: 200, label: '200' },
+        { value: 300, label: '300' },
+    ]);
+    const [value3, setValue3] = React.useState<any>(null);
     return (
         <>
-            <div>default creatable</div>
+            <div>default select</div>
+            <USelect
+                creatable
+                searchable={false}
+                placeholder="Events count"
+                options={[
+                    { value: 100, label: '100', labelShort: 'sto', subtitle: 'sotnyia' },
+                    { value: 200, label: '200' },
+                    { value: 300, label: '300' },
+                    { value: 400, label: '400' },
+                    { value: 500, label: '500' },
+                ]}
+                onChange={data => setValue(data)}
+                value={value}
+            />
+            <div>default creatable searchable</div>
             <USelect
                 creatable
                 placeholder="Events count"
@@ -24,10 +43,9 @@ const SelectComponents = () => {
                 onChange={data => setValue(data)}
                 value={value}
             />
-            <div>multi</div>
+            <div>multi / !creatable</div>
             <USelect
                 multi
-                creatable
                 placeholder="Events count"
                 options={[
                     { value: 100, label: '100', labelShort: 'sto', subtitle: 'sotnyia' },
@@ -39,11 +57,10 @@ const SelectComponents = () => {
                 onChange={data => setValue2(data)}
                 value={value2}
             />
-            <div>hidden select menu / don't clearable</div>
+            <div>hidden select menu / clearable / creatable</div>
             <USelect
-                multi
                 creatable
-                clearable={false}
+                clearable
                 hideSelector
                 placeholder="Events count"
                 options={[
@@ -53,8 +70,8 @@ const SelectComponents = () => {
                     { value: 400, label: '400' },
                     { value: 500, label: '500' },
                 ]}
-                onChange={data => setValue2(data)}
-                value={value2}
+                onChange={data => setValue3(data)}
+                value={value3}
             />
         </>
     );

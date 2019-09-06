@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
+import { XView } from 'react-mental';
 import Select, {
     ReactSelectProps,
     Creatable,
@@ -13,21 +14,19 @@ import { UIcon } from './UIcon';
 
 const style = css`
     &.Select {
+        display: flex;
+        flex-shrink: 1;
+        flex-grow: 1;
         position: relative;
         background-color: var(--backgroundTertiary);
         border-radius: 8px;
+        max-width: 100%;
     }
     &.Select input::-webkit-contacts-auto-fill-button,
     &.Select input::-webkit-credentials-auto-fill-button,
     &.Select input::-ms-clear,
     &.Select input::-ms-reveal {
         display: none !important;
-    }
-    &.Select,
-    &.Select div,
-    &.Select input,
-    &.Select span {
-        box-sizing: border-box;
     }
     &.Select.is-searchable.is-open > .Select-control,
     &.Select.is-searchable.is-focused:not(.is-open) > .Select-control {
@@ -36,53 +35,30 @@ const style = css`
     &.Select.has-value.is-pseudo-focused .Select-input {
         opacity: 0;
     }
-    &.Select.Select--rtl {
-        direction: rtl;
-        text-align: right;
-    }
     & .Select-control {
-        height: 56px;
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        flex-shrink: 1;
+        padding: 6px 16px;
+        min-height: 56px;
         cursor: default;
-        display: table;
-        outline: none;
         overflow: hidden;
         position: relative;
-        width: 100%;
-    }
-    & .Select-control .Select-input:focus {
-        outline: none;
-    }
-    & .Select-placeholder {
-        color: var(--foregroundTertiary);
-        line-height: 56px;
-        font-size: 15px;
-        padding-left: 16px;
-        padding-right: 16px;
-        max-width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
     }
     & .Select-input {
-        display: inline-block;
-        height: 56px;
-        padding-left: 16px;
-        padding-right: 16px;
-        vertical-align: middle;
+        display: flex;
+        flex-grow: 1;
+        flex-shrink: 1;
     }
     & .Select-input > input {
-        height: 100%;
-        width: 100%;
         background: none transparent;
         border: 0 none;
         box-shadow: none;
         cursor: default;
-        display: inline-block;
+        display: flex;
+        flex-grow: 1;
+        flex-shrink: 1;
         font-family: inherit;
         margin: 0;
         outline: none;
@@ -96,55 +72,80 @@ const style = css`
     &.has-value.is-pseudo-focused .Select-input {
         opacity: 0;
     }
-    &.Select--single.has-value .Select-input {
-        padding-left: 0;
-    }
-    & .Select-control:not(.is-searchable) > .Select-input {
-        outline: none;
-    }
     & .Select-clear-zone {
         cursor: pointer;
-        display: table-cell;
+        display: flex;
+        flex-shrink: 0;
+        align-self: center;
+        align-items: center;
+        justify-content: center;
         position: relative;
-        text-align: center;
-        vertical-align: middle;
         width: 40px;
-    }
-    & .Select-control > *:last-child {
-        padding-right: 16px;
+        height: 40px;
     }
     & .Select-multi-value-wrapper {
-        height: 100%;
-    }
-    &.Select--multi .Select-multi-value-wrapper {
-        height: 100%;
-        display: inline-block;
-        padding-top: 4px;
+        display: flex;
+        flex-wrap: wrap;
+        flex-grow: 1;
+        flex-shrink: 1;
+        align-items: center;
+        overflow: hidden;
     }
     &.Select .Select-aria-only {
-        position: absolute;
-        display: inline-block;
-        height: 1px;
-        width: 1px;
-        margin: -1px;
-        clip: rect(0, 0, 0, 0);
-        overflow: hidden;
-        float: left;
-    }
-    &.Select--multi .Select-input {
-        vertical-align: middle;
-        margin-left: 16px;
-        margin-top: -4px;
-        padding: 0;
-    }
-    &.Select--multi.Select--rtl .Select-input {
-        margin-left: 0;
-        margin-right: 10px;
+        display: none;
     }
     &.Select--multi.has-value .Select-input {
         margin-left: 5px;
     }
 `;
+
+const placeholderMultiStyle = css`
+    &.Select--multi .Select-placeholder {
+        color: var(--foregroundTertiary);
+        font-size: 15px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        position: absolute;
+        max-width: 100%;
+    }
+`;
+
+const placeholderSingleStyle = css`
+    &.Select--single .Select-placeholder {
+        display: none;
+    }
+    &.Select--single + .Stranger-placeholder {
+        color: var(--foregroundTertiary);
+        pointer-events: none;
+        font-size: 15px;
+        line-height: 24px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transition: all 0.15s ease;
+        max-width: 100%;
+        position: absolute;
+        top: 14px;
+        left: 16px;
+    }
+    &.Select--single.is-searchable.is-focused + .Stranger-placeholder,
+    &.Select--single.has-value + .Stranger-placeholder {
+        font-size: 13px;
+        line-height: 18px;
+        color: var(--accentPrimary);
+        top: 8px;
+    }
+
+    &.Select--single.has-value .Select-multi-value-wrapper,
+    &.Select--single.is-searchable.is-focused .Select-multi-value-wrapper {
+        margin-top: 18px;
+    }
+`;
+
+const Placeholder = (props: { placeholder?: string }) => (
+    <div className="Stranger-placeholder">{props.placeholder}</div>
+);
 
 const withMenuStyle = css`
     &.Select.is-disabled .Select-arrow-zone {
@@ -154,26 +155,26 @@ const withMenuStyle = css`
     }
     & .Select-arrow-zone {
         cursor: pointer;
-        display: table-cell;
+
+        display: flex;
+        flex-shrink: 0;
+        align-self: center;
+        align-items: center;
+        justify-content: center;
+
         position: relative;
-        text-align: center;
-        vertical-align: middle;
-        width: 25px;
-        padding-right: 16px;
-    }
-    & .Select--rtl .Select-arrow-zone {
-        padding-right: 0;
-        padding-left: 5px;
+        width: 40px;
+        height: 40px;
     }
     & .Select-menu-outer {
         background-color: #fff;
         box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
-        box-sizing: border-box;
         border-radius: 8px;
         max-height: 200px;
         position: absolute;
         left: 0;
-        top: calc(100% + 8px);
+        margin-top: 8px;
+        top: 100%;
         width: 100%;
         z-index: 1;
         overflow: hidden;
@@ -185,7 +186,6 @@ const withMenuStyle = css`
         overflow-y: auto;
     }
     & .Select-option {
-        box-sizing: border-box;
         background-color: #fff;
         color: #666666;
         cursor: pointer;
@@ -202,7 +202,6 @@ const withMenuStyle = css`
         cursor: default;
     }
     & .Select-noresults {
-        box-sizing: border-box;
         color: var(--foregroundPrimary);
         opacity: 0.5;
         cursor: default;
@@ -224,11 +223,12 @@ const optionContainer = css`
 `;
 
 const optionShortContainer = css`
-    height: 40px;
+    min-height: 40px;
 `;
 
 const optionLabelStyle = css`
     color: var(--foregroundPrimary);
+    word-wrap: break-word;
 `;
 
 const optionSubtitleStyle = css`
@@ -263,10 +263,8 @@ const multiValueContainer = css`
     background-color: var(--accentPrimary);
     border-radius: 8px;
     color: #fff;
-    display: inline-block;
-    margin-left: 8px;
-    margin-top: 8px;
-    vertical-align: top;
+    display: flex;
+    margin: 4px;
     padding: 4px 8px 4px 12px;
 `;
 
@@ -300,15 +298,11 @@ const MultiValueRender = (props: ValueComponentProps) => (
 const singleValueContainer = css`
     color: var(--foregroundPrimary);
     font-size: 15px;
-    line-height: 56px;
-    padding-left: 10px;
-    padding-right: 10px;
-    max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    display: inline-block;
-    float: left;
+    display: block;
+    flex-shrink: 1;
 `;
 
 const SingleValueRender = (props: ValueComponentProps) => {
@@ -340,37 +334,70 @@ const ArrowRender = (props: ArrowRendererProps) => {
     );
 };
 
-export type USelectBasicProps = ReactSelectProps & {
-    options: OptionType[];
-    creatable?: boolean;
-    hideSelector?: boolean;
-};
+interface ContainerProps {
+    flexGrow?: number | null;
+    flexShrink?: number | null;
+    flexBasis?: number | null;
+    minHeight?: number | string | null;
+    minWidth?: number | string | null;
+    maxHeight?: number | string | null;
+    maxWidth?: number | string | null;
+    alignSelf?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | null;
+}
+
+const Container = (props: ContainerProps & { children: any }) => (
+    <XView {...props}>{props.children}</XView>
+);
+
+export type USelectBasicProps = ReactSelectProps &
+    ContainerProps & {
+        options: OptionType[];
+        placeholder?: string;
+        creatable?: boolean;
+        hideSelector?: boolean;
+    };
 
 export const USelect = React.memo((props: USelectBasicProps) => {
-    const { creatable, onChange, ...other } = props;
+    const { creatable, hideSelector, ...other } = props;
     return (
         <>
             {props.creatable && (
-                <Creatable
-                    onChange={onChange}
-                    clearRenderer={ClearRender}
-                    optionRenderer={OptionRender}
-                    className={cx(style, !props.hideSelector ? withMenuStyle : hideMenuSelector)}
-                    arrowRenderer={!props.hideSelector ? ArrowRender : null}
-                    valueComponent={props.multi ? MultiValueRender : SingleValueRender}
-                    {...other}
-                />
+                <Container {...other}>
+                    <Creatable
+                        clearRenderer={ClearRender}
+                        optionRenderer={OptionRender}
+                        arrowRenderer={!hideSelector ? ArrowRender : null}
+                        valueComponent={props.multi ? MultiValueRender : SingleValueRender}
+                        clearable={props.clearable || false}
+                        className={cx(
+                            style,
+                            !hideSelector ? withMenuStyle : hideMenuSelector,
+                            props.multi && placeholderMultiStyle,
+                            !props.multi && placeholderSingleStyle,
+                        )}
+                        {...other}
+                    />
+                    {!props.multi && <Placeholder placeholder={props.placeholder} />}
+                </Container>
             )}
             {!props.creatable && (
-                <Select
-                    onChange={onChange}
-                    clearRenderer={ClearRender}
-                    optionRenderer={OptionRender}
-                    className={cx(style, !props.hideSelector ? withMenuStyle : hideMenuSelector)}
-                    arrowRenderer={!props.hideSelector ? ArrowRender : null}
-                    valueComponent={props.multi ? MultiValueRender : SingleValueRender}
-                    {...other}
-                />
+                <Container {...other}>
+                    <Select
+                        clearRenderer={ClearRender}
+                        optionRenderer={OptionRender}
+                        arrowRenderer={!hideSelector ? ArrowRender : null}
+                        valueComponent={props.multi ? MultiValueRender : SingleValueRender}
+                        clearable={props.clearable || false}
+                        className={cx(
+                            style,
+                            !hideSelector ? withMenuStyle : hideMenuSelector,
+                            props.multi && placeholderMultiStyle,
+                            !props.multi && placeholderSingleStyle,
+                        )}
+                        {...other}
+                    />
+                    {!props.multi && <Placeholder placeholder={props.placeholder} />}
+                </Container>
             )}
         </>
     );
