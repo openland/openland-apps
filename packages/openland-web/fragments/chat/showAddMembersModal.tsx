@@ -40,6 +40,8 @@ const SearchBox = (props: SearchBoxProps) => (
         multi
         hideSelector
         placeholder="Search"
+        onBlurResetsInput={false}
+        onCloseResetsInput={false}
         onInputChange={props.onInputChange}
         options={props.value || []}
         onChange={props.onChange}
