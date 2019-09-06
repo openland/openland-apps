@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, ViewStyle, Platform } from 'react-native';
+import { View, StyleSheet, Image, ViewStyle } from 'react-native';
 import RNRestart from 'react-native-restart';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
