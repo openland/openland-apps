@@ -7,7 +7,7 @@ import { XMutation } from 'openland-x/XMutation';
 import { trackEvent } from 'openland-x-analytics';
 import { TextBody } from 'openland-web/utils/TextStyles';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
-import IcRefresh from 'openland-icons/s/ic-refresh-24.svg';
+import IcRevoke from 'openland-icons/s/ic-refresh-24.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 
@@ -45,7 +45,7 @@ const RenewInviteLinkButton = (props: RenewInviteLinkButtonProps) => {
     return (
         <XMutation mutation={renew}>
             <div className={renewContainer} onMouseEnter={show}>
-                <UIcon icon={<IcRefresh />} size={20} />
+                <UIcon icon={<IcRevoke />} size={20} />
             </div>
         </XMutation>
     );
