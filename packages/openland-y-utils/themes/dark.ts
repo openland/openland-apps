@@ -203,15 +203,15 @@ export const ThemeDarkPink: ThemeGlobal = {
 
     kind: 'DarkPink',
 
-    accentPrimary: '#F218A9',
-    accentPrimaryHover: '#F218A9',
-    accentPrimaryActive: '#F218A9',
+    accentPrimary: '#F23DB6',
+    accentPrimaryHover: '#F23DB6',
+    accentPrimaryActive: '#F23DB6',
 
     foregroundInverted: '#FFFFFF',
 
     bubble: (isOut) => ({
-        backgroundPrimary: isOut ? '#F218A9' : '#242629',
-        backgroundSecondary: isOut ? '#F218A9' : '#2E3033',
+        backgroundPrimary: isOut ? '#F23DB6' : '#242629',
+        backgroundSecondary: isOut ? '#E62EA8' : '#2E3033',
 
         foregroundPrimary: isOut ? '#FFFFFF' : '#FFFFFF',
         foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#55575C',

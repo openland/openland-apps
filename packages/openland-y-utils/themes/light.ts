@@ -174,13 +174,13 @@ export const ThemeLightPink: ThemeGlobal = {
 
     kind: 'LightPink',
 
-    accentPrimary: '#F218A9',
-    accentPrimaryHover: '#F218A9',
-    accentPrimaryActive: '#F218A9',
+    accentPrimary: '#F224AE',
+    accentPrimaryHover: '#F224AE',
+    accentPrimaryActive: '#F224AE',
 
     bubble: (isOut) => ({
-        backgroundPrimary: isOut ? '#F218A9' : '#F2F3F5',
-        backgroundSecondary: isOut ? '#F218A9' : '#EBEDF0',
+        backgroundPrimary: isOut ? '#F224AE' : '#F2F3F5',
+        backgroundSecondary: isOut ? '#E617A1' : '#EBEDF0',
 
         foregroundPrimary: isOut ? '#FFFFFF' : '#171A1F',
         foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#969AA3',

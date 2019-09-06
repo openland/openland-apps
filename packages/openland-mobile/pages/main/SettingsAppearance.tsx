@@ -6,9 +6,9 @@ import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ThemeController } from 'openland-mobile/themes/ThemeControler';
 import { ThemeGlobalKind, ThemeGlobalType } from 'openland-y-utils/themes/ThemeGlobal';
-import { ThemeLight, ThemeLightPink } from 'openland-y-utils/themes/light';
+import { ThemeLight, ThemeLightPink, ThemeLightCyan, ThemeLightGray, ThemeLightRed, ThemeLightOrange, ThemeLightGreen, ThemeLightPurple } from 'openland-y-utils/themes/light';
 import { View, TouchableOpacity, Image } from 'react-native';
-import { ThemeDark } from 'openland-y-utils/themes/dark';
+import { ThemeDark, ThemeDarkBlue, ThemeDarkRed, ThemeDarkOrange, ThemeDarkGreen, ThemeDarkCyan, ThemeDarkPink, ThemeDarkPurple } from 'openland-y-utils/themes/dark';
 import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
@@ -16,23 +16,23 @@ import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 const SortedThemes: { [key in ThemeGlobalType]: { [key: string]: string } } = {
     Light: {
         Light: ThemeLight.accentPrimary,
-        LightGray: ThemeLight.foregroundSecondary,
-        LightRed: ThemeLight.tintRed,
-        LightOrange: ThemeLight.tintOrange,
-        LightGreen: ThemeLight.tintGreen,
-        LightCyan: ThemeLight.tintCyan,
+        LightGray: ThemeLightGray.accentPrimary,
+        LightRed: ThemeLightRed.accentPrimary,
+        LightOrange: ThemeLightOrange.accentPrimary,
+        LightGreen: ThemeLightGreen.accentPrimary,
+        LightCyan: ThemeLightCyan.accentPrimary,
         LightPink: ThemeLightPink.accentPrimary,
-        LightPurple: ThemeLight.tintPurple,
+        LightPurple: ThemeLightPurple.accentPrimary,
     },
     Dark: {
         Dark: ThemeDark.accentPrimary,
-        DarkBlue: ThemeLight.tintBlue,
-        DarkRed: ThemeLight.tintRed,
-        DarkOrange: ThemeLight.tintOrange,
-        DarkGreen: ThemeLight.tintGreen,
-        DarkCyan: ThemeLight.tintCyan,
-        DarkPink: ThemeLightPink.accentPrimary,
-        DarkPurple: ThemeLight.tintPurple,
+        DarkBlue: ThemeDarkBlue.accentPrimary,
+        DarkRed: ThemeDarkRed.accentPrimary,
+        DarkOrange: ThemeDarkOrange.accentPrimary,
+        DarkGreen: ThemeDarkGreen.accentPrimary,
+        DarkCyan: ThemeDarkCyan.accentPrimary,
+        DarkPink: ThemeDarkPink.accentPrimary,
+        DarkPurple: ThemeDarkPurple.accentPrimary,
     }
 };
 
