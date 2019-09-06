@@ -91,6 +91,9 @@ const style = css`
         align-items: center;
         overflow: hidden;
     }
+    &.Select--multi.has-value .Select-multi-value-wrapper {
+        margin-left: -4px;
+    }
     &.Select .Select-aria-only {
         display: none;
     }
