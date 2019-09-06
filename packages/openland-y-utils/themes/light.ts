@@ -84,6 +84,8 @@ export const ThemeLight: ThemeGlobal = {
         paddedText: '\u202F',
     },
 
+    onlineDot: '#29CC44',
+
     // legacy
     backgroundInverted: '#F2F3F5',
     backgroundInvertedHover: '#EBEDF0',

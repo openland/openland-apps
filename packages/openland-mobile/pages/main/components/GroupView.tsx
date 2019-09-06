@@ -40,6 +40,7 @@ export const GroupView = React.memo<GroupViewProps>((props) => {
                         ...TextStyles.Label1,
                         color: theme.foregroundPrimary,
                     }}
+                    allowFontScaling={false}
                 >
                     {item.title}
                 </Text>
@@ -49,6 +50,7 @@ export const GroupView = React.memo<GroupViewProps>((props) => {
                         ...TextStyles.Subhead,
                         color: theme.foregroundTertiary,
                     }}
+                    allowFontScaling={false}
                 >
                     {membersCount + (membersCount > 1 ? ' members' : ' member')}
                 </Text>

@@ -20,7 +20,7 @@ export function UserAvatar(props: AsyncAvatarProps & { online?: boolean, theme: 
             <ASFlex overlay={true} alignItems="flex-end" justifyContent="flex-end">
                 {props.online && (
                     <ASFlex width={dotSize} height={dotSize} borderRadius={dotSize / 2} backgroundColor={props.theme.backgroundPrimary} justifyContent="center" marginRight={dotPosition} marginBottom={dotPosition}>
-                        <ASFlex width={dotSize - (dotBorderWidth * 2)} height={dotSize - (dotBorderWidth * 2)} borderRadius={(dotSize - (dotBorderWidth * 2)) / 2} backgroundColor={props.theme.accentPrimary} marginLeft={dotBorderWidth} marginTop={dotBorderWidth} marginRight={dotBorderWidth} />
+                        <ASFlex width={dotSize - (dotBorderWidth * 2)} height={dotSize - (dotBorderWidth * 2)} borderRadius={(dotSize - (dotBorderWidth * 2)) / 2} backgroundColor={props.theme.onlineDot} marginLeft={dotBorderWidth} marginTop={dotBorderWidth} marginRight={dotBorderWidth} />
                     </ASFlex>
                 )}
             </ASFlex>
