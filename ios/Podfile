@@ -1,37 +1,38 @@
-use_frameworks!
 platform :ios, '9.0'
+# require_relative '../node_modules/react-native/scripts/autolink-ios'
+
+use_frameworks!
 
 target 'openland' do
-    
-  pod 'React', :path => '../node_modules/react-native', :subspecs => [
-    'Core',
-    'CxxBridge', # Include this for RN >= 0.47
-    'DevSupport', # Include this to enable In-App Devmenu if RN >= 0.43
-    'RCTText',
-    'RCTImage',
-    'RCTNetwork',
-    'RCTWebSocket',
-    'RCTAnimation',
-    'RCTBlob',
-    'RCTGeolocation',
-    'RCTLinkingIOS',
-    'RCTSettings',
-    'RCTVibration',
-    'RCTPushNotification',
-    'RCTActionSheet',
-    'RCTCameraRoll'
-  ]
-  # Explicitly include Yoga if you are using RN >= 0.42.0
-  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
-    
-  # Third party deps podspec link
-  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
-  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
-  pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+
+  use_react_native!(path: "..")
+  
+  pod 'React', :path => '../node_modules/react-native/'
+  pod 'React-Core', :path => '../node_modules/react-native/'
+  pod 'React-DevSupport', :path => '../node_modules/react-native/React'
+  pod 'React-RCTActionSheet', :path => '../node_modules/react-native/Libraries/ActionSheetIOS'
+  pod 'React-RCTAnimation', :path => '../node_modules/react-native/Libraries/NativeAnimation'
+  pod 'React-RCTBlob', :path => '../node_modules/react-native/Libraries/Blob'
+  pod 'React-RCTImage', :path => '../node_modules/react-native/Libraries/Image'
+  pod 'React-RCTLinking', :path => '../node_modules/react-native/Libraries/LinkingIOS'
+  pod 'React-RCTNetwork', :path => '../node_modules/react-native/Libraries/Network'
+  pod 'React-RCTSettings', :path => '../node_modules/react-native/Libraries/Settings'
+  pod 'React-RCTText', :path => '../node_modules/react-native/Libraries/Text'
+  pod 'React-RCTVibration', :path => '../node_modules/react-native/Libraries/Vibration'
+  pod 'React-RCTWebSocket', :path => '../node_modules/react-native/Libraries/WebSocket'
+  pod 'React-cxxreact', :path => '../node_modules/react-native/ReactCommon/cxxreact'
+  pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi'
+  pod 'React-jsiexecutor', :path => '../node_modules/react-native/ReactCommon/jsiexecutor'
+  pod 'React-jsinspector', :path => '../node_modules/react-native/ReactCommon/jsinspector'
+
+  # React Related imports
+  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'#, :modular_headers => false
+  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'#, :modular_headers => false
+  pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'#, :modular_headers => false
+  pod 'Yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
     
   pod 'Texture', '2.7'
   pod 'SwiftyJSON', '~> 4.0'
-  pod 'Auth0', '~> 1.14.2'
   pod 'Starscream', '~> 3.0.2'
   pod 'ReachabilitySwift'
 
@@ -41,53 +42,35 @@ target 'openland' do
   pod 'AppCenterReactNativeShared', '~> 1.12.0'
 
   pod 'react-native-webrtc', :path => '../node_modules/react-native-webrtc'
-
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
-
   pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
-
   pod 'A0Auth0', :path => '../node_modules/react-native-auth0'
-
   pod 'react-native-blur', :path => '../node_modules/react-native-blur'
-
   pod 'react-native-fast-image', :path => '../node_modules/react-native-fast-image'
-
-
-  pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
-
-  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
-
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
-
-
   pod 'RNShare', :path => '../node_modules/react-native-share'
-
-
-  pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
   
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
-
   pod 'RCTRestart', :path => '../node_modules/react-native-restart/ios'
-  
   pod 'RNRate', :path => '../node_modules/react-native-rate/ios'
-  pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
 
   pod 'ReactNativeIncallManager', :path => '../node_modules/react-native-incall-manager'
-
   pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
-
   pod 'react-native-haptic-feedback', :path => '../node_modules/react-native-haptic-feedback'
-
   pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
-
   pod 'react-native-background-timer', :path => '../node_modules/react-native-background-timer'
-
   pod 'react-native-pdf', :path => '../node_modules/react-native-pdf'
 
+  pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
+  pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
+  # pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 end
 
 target 'openlandTests' do
     pod 'SwiftyJSON', '~> 4.0'
+    pod 'ReachabilitySwift'
+    pod 'Starscream', '~> 3.0.2'
 end
 
 post_install do |installer|

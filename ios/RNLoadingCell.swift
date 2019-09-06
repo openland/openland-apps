@@ -56,9 +56,10 @@ class RNLoadingCell: ASCellNode {
     container.justifyContent = ASStackLayoutJustifyContent.end
     container.style.width = ASDimension(unit: ASDimensionUnit.points, value: UIScreen.main.bounds.width)
     container.style.height = ASDimension(unit: .points, value: 64.0)
-    
-    container.setChild(overflow, at: 0)
-    container.setChild(ASBackgroundLayoutSpec(child: res, background: resBackground), at: 1)
+    container.children = [
+      overflow,
+      ASBackgroundLayoutSpec(child: res, background: resBackground)
+    ]
     
     return container
   }

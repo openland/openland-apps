@@ -647,7 +647,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
             
             let insets = UIEdgeInsets(top: inverted ? 0 : CGFloat(padding - 10000), left: 0, bottom: inverted ? CGFloat(padding - 10000): 0, right: 0)
             let container = ASInsetLayoutSpec(insets: insets, child: overflow)
-            res.setChild(container, at: 0)
+            res.child = container
           }
           return res
         }
