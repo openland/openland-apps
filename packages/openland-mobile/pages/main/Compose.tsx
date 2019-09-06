@@ -68,9 +68,9 @@ const ComposeComponent = XMemo<PageProps>((props) => {
                 <SScrollView keyboardDismissMode="interactive">
                     <SDeferred>
                         <ZListGroup>
-                            <ZListItem leftIcon={require('assets/ic-room-24.png')} text="Create group" path="CreateGroupAttrs" />
-                            <ZListItem leftIcon={require('assets/ic-cell-channel-24.png')} text="Create channel" path="CreateGroupAttrs" pathParams={{ isChannel: true }} />
-                            <ZListItem leftIcon={require('assets/ic-community-24.png')} text="Create community" path="NewOrganization" pathParams={{ isCommunity: true }} />
+                            <ZListItem leftIcon={require('assets/ic-group-glyph-24.png')} text="Create group" path="CreateGroupAttrs" />
+                            <ZListItem leftIcon={require('assets/ic-channel-glyph-24.png')} text="Create channel" path="CreateGroupAttrs" pathParams={{ isChannel: true }} />
+                            <ZListItem leftIcon={require('assets/ic-community-glyph-24.png')} text="Create community" path="NewOrganization" pathParams={{ isCommunity: true }} />
                         </ZListGroup>
                         <React.Suspense fallback={<LoaderSpinnerWrapped />}>
                             <UserSearchComponent query="" router={props.router} useScroll={false} />

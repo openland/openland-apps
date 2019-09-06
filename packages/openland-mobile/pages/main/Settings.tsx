@@ -95,7 +95,7 @@ let SettingsContent = ((props: PageProps) => {
                 />
                 <ZListItem
                     leftIconColor={theme.tintRed}
-                    leftIcon={require('assets/ic-appearance-fill-24.png')}
+                    leftIcon={require('assets/ic-appearance-glyph-24.png')}
                     text="Appearance"
                     path="SettingsAppearance"
                 />

@@ -254,7 +254,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
 
             {room.featuredMembersCount > 0 && (
                 <ZListItem
-                    leftIcon={require('assets/ic-star-admin-16.png')}
+                    leftIcon={require('assets/ic-star-glyph-24.png')}
                     text="Featured members"
                     onPress={() => props.router.push('ProfileGroupFeatured', { id: room.id })}
                     description={room.featuredMembersCount + ''}
