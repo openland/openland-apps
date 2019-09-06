@@ -166,8 +166,8 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                         .message('You may not be able to join it again')
                         .button('Cancel', 'cancel')
                         .action('Leave', 'destructive', async () => {
-                            await client.mutateOrganizationRemoveMember({
-                                memberId: myUserID,
+                            await client.mutateOrganizationMemberRemove({
+                                userId: myUserID,
                                 organizationId: props.router.params.id,
                             });
                             await client.refetchOrganization({ organizationId: props.router.params.id });
@@ -246,8 +246,8 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                         .message('You may not be able to join it again')
                         .button('Cancel', 'cancel')
                         .action('Leave', 'destructive', async () => {
-                            await client.mutateOrganizationRemoveMember({
-                                memberId: user.id,
+                            await client.mutateOrganizationMemberRemove({
+                                userId: user.id,
                                 organizationId: props.router.params.id,
                             });
                             await client.refetchOrganization({ organizationId: props.router.params.id });
@@ -268,8 +268,8 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                         .message(`They will be removed from all internal chats`)
                         .button('Cancel', 'cancel')
                         .action('Remove', 'destructive', async () => {
-                            await client.mutateOrganizationRemoveMember({
-                                memberId: user.id,
+                            await client.mutateOrganizationMemberRemove({
+                                userId: user.id,
                                 organizationId: props.router.params.id,
                             });
                             await client.refetchOrganization({ organizationId: props.router.params.id });

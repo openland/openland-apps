@@ -85,26 +85,6 @@ export const SuggestedRoomsQuery = gql`
     ${CommunitySearch}
 `;
 
-export const UserRoomsQuery = gql`
-    query UserRooms($limit: Int!, $after: ID) {
-        betaUserRooms(limit: $limit, after: $after) {
-            ... on SharedRoom {
-                id
-                kind
-                title
-                photo
-                membersCount
-                membership
-                organization {
-                    id
-                    name
-                    photo
-                }
-            }
-        }
-    }
-`;
-
 export const UserAvailableRoomsQuery = gql`
     query UserAvailableRooms($limit: Int!, $after: ID, $isChannel: Boolean) {
         betaUserAvailableRooms(limit: $limit, after: $after, isChannel: $isChannel) {
@@ -175,16 +155,6 @@ export const DiscoverNextPageQuery = gql`
     }
     ${RoomShort}
     ${UserShort}
-`;
-
-export const BetaSaveSelectedTagsMutation = gql`
-    mutation BetaSaveSelectedTags($selectedTagsIds: [String!]!) {
-        betaSaveSelectedTags(selectedTagsIds: $selectedTagsIds) {
-            tagGroup {
-                id
-            }
-        }
-    }
 `;
 
 export const BetaSubmitNextDiscoverMutation = gql`

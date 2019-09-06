@@ -1,4 +1,0 @@
-mutation SwitchReaction($from: MessageReactionType!, $messageId: ID!, $to: MessageReactionType!) {
-  messageReactionAdd(messageId: $messageId, reaction: $to)
-  messageReactionRemove(messageId: $messageId, reaction: $from)
-}

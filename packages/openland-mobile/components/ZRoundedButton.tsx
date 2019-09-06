@@ -60,6 +60,13 @@ export interface ZRoundedButtonProps {
 
 const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRouter }>((props) => {
     const [actionInProgress, setActionInProgress] = React.useState(props.loading || false);
+
+    React.useEffect(() => {
+        if (props.loading && !actionInProgress) {
+            setActionInProgress(props.loading);
+        }
+    }, [props.loading, actionInProgress]);
+
     const theme = React.useContext(ThemeContext);
     const handlePress = React.useCallback(async () => {
         if (props.onPress) {

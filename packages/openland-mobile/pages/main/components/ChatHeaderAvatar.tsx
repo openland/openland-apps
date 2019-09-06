@@ -42,7 +42,6 @@ const ChatHeaderAvatarContent = XMemo<{ conversationId: string, router: SRouter 
                     size="small"
                     placeholderKey={privateRoom ? privateRoom.user.id : sharedRoom!.id}
                     placeholderTitle={privateRoom ? privateRoom.user.name : sharedRoom!.title}
-                    online={privateRoom ? privateRoom.user.online : false}
                 />
             </View>
         </TouchableOpacity>

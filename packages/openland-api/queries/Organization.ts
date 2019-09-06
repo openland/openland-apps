@@ -6,7 +6,6 @@ import { OrganizationProfileFull } from '../fragments/OrganizationProfileFull';
 import { OrganizationSearch } from '../fragments/OrganizationSearch';
 import { CommunitySearch } from '../fragments/CommunitySearch';
 import { UserShort } from 'openland-api/fragments/UserShort';
-import { UserFull } from 'openland-api/fragments/UserFull';
 
 export const MyOrganizationsQuery = gql`
     query MyOrganizations {
@@ -67,22 +66,6 @@ export const OrganizationMembersShortQuery = gql`
     ${OrganizationWithoutMembersFragment}
 `;
 
-export const OrganizationMembersShortPaginatedQuery = gql`
-    query OrganizationMembersShortPaginated($organizationId: ID!, $first: Int, $after: ID) {
-        organization(id: $organizationId) {
-            ...OrganizationWithoutMembersFragment
-            members: alphaOrganizationMembers(first: $first, after: $after) {
-                role
-                user {
-                    ...UserFull
-                }
-            }
-        }
-    }
-    ${OrganizationWithoutMembersFragment}
-    ${UserFull}
-`;
-
 export const OrganizationMembersQuery = gql`
     query OrganizationMembers($organizationId: ID!, $first: Int, $after: ID) {
         organization(id: $organizationId) {
@@ -105,43 +88,6 @@ export const OrganizationProfileQuery = gql`
         }
     }
     ${OrganizationProfileFull}
-`;
-
-export const ExploreOrganizationsQuery = gql`
-    query ExploreOrganizations(
-        $query: String
-        $prefix: String
-        $sort: String
-        $page: Int
-        $after: String
-        $all: Boolean
-    ) {
-        items: alphaOrganizations(
-            query: $query
-            prefix: $prefix
-            sort: $sort
-            page: $page
-            first: 25
-            after: $after
-            all: $all
-        ) {
-            edges {
-                node {
-                    ...OrganizationSearch
-                }
-                cursor
-            }
-            pageInfo {
-                hasNextPage
-                hasPreviousPage
-                itemsCount
-                currentPage
-                pagesCount
-                openEnded
-            }
-        }
-    }
-    ${OrganizationSearch}
 `;
 
 export const ExploreCommunityQuery = gql`
@@ -190,21 +136,6 @@ export const OrganizationAddMemberMutation = gql`
         }
     }
     ${UserShort}
-`;
-
-export const OrganizationRemoveMemberMutation = gql`
-    mutation OrganizationRemoveMember($memberId: ID!, $organizationId: ID!) {
-        alphaOrganizationRemoveMember(memberId: $memberId, organizationId: $organizationId)
-    }
-`;
-
-export const OrganizationInviteMembersMutation = gql`
-    mutation OrganizationInviteMembers($inviteRequests: [InviteRequest!]!, $organizationId: ID) {
-        alphaOrganizationInviteMembers(
-            inviteRequests: $inviteRequests
-            organizationId: $organizationId
-        )
-    }
 `;
 
 export const OrganizationPublicInviteQuery = gql`

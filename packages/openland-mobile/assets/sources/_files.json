@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-community-glyph",
+            "src": "ic-community-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-notifications-filled",
             "src": "ic-notifications-filled-24.svg",
             "sizes": [
@@ -665,13 +672,6 @@
         {
             "name": "ic-add-fill",
             "src": "ic-add-fill-24.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-community",
-            "src": "ic-community.svg",
             "sizes": [
                 24
             ]

@@ -136,14 +136,17 @@ export class FeedSwipeView extends React.PureComponent<FeedSwipeViewProps> {
 
         const width = Dimensions.get('screen').width;
         const duration = Math.max(0.05, Math.min(0.2, Math.abs(-width / 3 + dx / 3) / Math.abs(vx * width)));
-        const durationSpring = duration * 1000;
 
         SAnimated.beginTransaction();
 
-        this.animate('container', 'translateX', translate, 0, durationSpring);
+        if (Platform.OS === 'android') {
+            SAnimated.setDuration(duration);
+        }
+
+        this.animate('container', 'translateX', translate, 0, duration);
 
         if (this.needTransSwipeBox('left', dx)) {
-            this.animate('leftBox', 'translateX', this.transSwipeBox('left', dx), 0, durationSpring);
+            this.animate('leftBox', 'translateX', this.transSwipeBox('left', dx), 0, duration);
         }
 
         if (this.leftIconShowed) {
@@ -152,7 +155,7 @@ export class FeedSwipeView extends React.PureComponent<FeedSwipeViewProps> {
         }
 
         if (this.needTransSwipeBox('right', dx)) {
-            this.animate('rightBox', 'translateX', this.transSwipeBox('right', dx), 0, durationSpring);
+            this.animate('rightBox', 'translateX', this.transSwipeBox('right', dx), 0, duration);
         }
 
         if (this.rightIconShowed) {
@@ -167,16 +170,7 @@ export class FeedSwipeView extends React.PureComponent<FeedSwipeViewProps> {
         onPanResponderGrant: () => {
             // console.warn('boom onPanResponderGrant');
         },
-        onMoveShouldSetPanResponder: () => {
-            const { current } = this.props.scrollRef;
-
-            if (current) {
-                // current.getScrollResponder().key;
-            }
-
-            return true;
-        },
-        onStartShouldSetPanResponderCapture: () => true,
+        onMoveShouldSetPanResponder: () => true,
         onPanResponderMove: (event, gesture) => {
             const dx = this.filterDx(gesture.dx);
 
