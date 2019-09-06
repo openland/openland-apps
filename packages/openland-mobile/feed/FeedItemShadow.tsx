@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, ViewStyle, Image } from 'react-native';
+import { View, StyleSheet, ViewStyle, Image, Platform } from 'react-native';
 import { ASView } from 'react-native-async-view/ASView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 
@@ -22,6 +22,12 @@ export const FeedItemShadow = React.memo((props: FeedItemShadowProps) => {
     const { width, height } = props;
     const resolved = Image.resolveAssetSource(require('assets/feed/bg-card-shadow.png'));
 
+    let capInsets = { top: 48, left: 56, right: 56, bottom: 64 };
+
+    if (Platform.OS === 'android') {
+        capInsets = { top: 47, left: 55, right: 55, bottom: 63 };
+    }
+
     return (
         <View style={styles.box}>
             <ASView style={{ width: width + 16, height }}>
@@ -30,7 +36,7 @@ export const FeedItemShadow = React.memo((props: FeedItemShadowProps) => {
                     backgroundPatch={{
                         source: resolved.uri,
                         scale: resolved.scale,
-                        top: 48, left: 56, right: 56, bottom: 64
+                        ...capInsets
                     }}
                 />
             </ASView>
