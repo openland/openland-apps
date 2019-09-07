@@ -83,11 +83,12 @@ target 'openland' do
   pod 'react-native-background-timer', :path => '../node_modules/react-native-background-timer'
 
   pod 'react-native-pdf', :path => '../node_modules/react-native-pdf'
-
+  pod 'ObjectiveRocks', '~> 0.9'
 end
 
 target 'openlandTests' do
     pod 'SwiftyJSON', '~> 4.0'
+    pod 'ObjectiveRocks', '~> 0.9'
 end
 
 post_install do |installer|
