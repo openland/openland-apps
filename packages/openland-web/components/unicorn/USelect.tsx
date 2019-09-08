@@ -358,7 +358,7 @@ export type USelectBasicProps = ReactSelectProps &
         hideSelector?: boolean;
     };
 
-export const USelect = React.memo((props: USelectBasicProps) => {
+export const USelect = (props: USelectBasicProps) => {
     const { creatable, hideSelector, ...other } = props;
     return (
         <>
@@ -402,4 +402,4 @@ export const USelect = React.memo((props: USelectBasicProps) => {
             )}
         </>
     );
-});
+};

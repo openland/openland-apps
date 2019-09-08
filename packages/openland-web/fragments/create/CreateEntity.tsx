@@ -1,20 +1,23 @@
 import * as React from 'react';
 import { XView, XViewRouterContext } from 'react-mental';
 import { SharedRoomKind } from 'openland-api/Types';
-import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import BackIcon from 'openland-icons/ic-back-create-room.svg';
 import { CoverUpload } from '../../pages/main/mail/CoverUpload';
-import { ExplorePeople } from '../discover/components/ExplorePeople';
-import { SearchPeopleBox } from './SearchPeopleBox';
 import { useClient } from 'openland-web/utils/useClient';
 import { OrganizationsList } from '../../pages/main/mail/OrganizationsList';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { SelectWithDropdown, SelectWithDropdownOption } from '../../pages/main/mail/SelectWithDropdown';
-import { InputField } from 'openland-web/components/InputField';
+import {
+    SelectWithDropdown,
+    SelectWithDropdownOption,
+} from '../../pages/main/mail/SelectWithDropdown';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XModalController } from 'openland-x/showModal';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { UInput } from 'openland-web/components/unicorn/UInput';
+import { ExplorePeople } from 'openland-web/fragments/create/ExplorePeople';
+import { SearchBox } from 'openland-web/fragments/create/SearchBox';
 
 export enum EntityKind {
     GROUP = 'GROUP',
@@ -36,11 +39,9 @@ type MainWrapperT = {
     back: boolean;
     onBackClick: () => void;
     children: any;
-    entityKind: EntityKind;
-    showLeaveModal: boolean;
 };
 
-const MainWrapper = ({ entityKind, back, onBackClick, children, showLeaveModal }: MainWrapperT) => {
+const MainWrapper = ({ back, onBackClick, children }: MainWrapperT) => {
     return (
         <XView
             flexGrow={1}
@@ -89,25 +90,51 @@ const MainWrapper = ({ entityKind, back, onBackClick, children, showLeaveModal }
 
 type AddMembersT = {
     onSkip: (event: React.MouseEvent) => void;
-    onSubmit: (event: React.MouseEvent) => void;
-    onSearchPeopleInputChange: (data: string) => string;
-    options: { label: string; value: string }[];
-    handleSearchPeopleInputChange: (data: { label: string; value: string }[] | null) => void;
-    searchPeopleQuery: string;
-    selectMembers: (label: string, value: string) => void;
-    selectedUsers: Map<string, string> | null;
+    onSubmit: (users: Map<string, string> | null) => void;
 };
 
-const AddMembers = ({
-    onSkip,
-    onSubmit,
-    onSearchPeopleInputChange,
-    options,
-    handleSearchPeopleInputChange,
-    searchPeopleQuery,
-    selectMembers,
-    selectedUsers,
-}: AddMembersT) => {
+const AddMembers = React.memo(({ onSkip, onSubmit }: AddMembersT) => {
+    const [searchPeopleQuery, setSearchPeopleQuery] = React.useState<string>('');
+    const [selectedUsers, setSelectedUsers] = React.useState<Map<string, string> | null>(null);
+    const [options, setOptions] = React.useState<{ label: string; value: string }[]>([]);
+
+    const onSearchPeopleInputChange = (data: string) => {
+        setSearchPeopleQuery(data);
+        return data;
+    };
+
+    const onChange = (data: { label: string; value: string }[]) => {
+        const newSelected = new Map();
+        const newOpts: { label: string; value: string }[] = [];
+        data.map(i => {
+            newSelected.set(i.value, i.label);
+            newOpts.push({
+                label: i.label,
+                value: i.value,
+            });
+        });
+        setSelectedUsers(newSelected);
+        setOptions(newOpts);
+    };
+
+    const selectMembers = (label: string, value: string) => {
+        const selected = selectedUsers || new Map();
+        const newOpts: { label: string; value: string }[] = [];
+        if (selected.has(value)) {
+            selected.delete(value);
+        } else {
+            selected.set(value, label);
+        }
+        selected.forEach((l, v) => {
+            newOpts.push({
+                label: l,
+                value: v,
+            });
+        });
+        setSelectedUsers(selected);
+        setOptions(newOpts);
+    };
+
     return (
         <XView flexGrow={1} flexShrink={0} flexDirection="column" maxHeight="100%">
             <XView
@@ -122,18 +149,19 @@ const AddMembers = ({
                     Add people
                 </XView>
                 <XView flexShrink={0} flexDirection="row" alignItems="center">
-                    <XView flexShrink={0} flexDirection="row" alignItems="center" marginRight={12}>
-                        <XButton style="ghost" text="Skip" onClick={onSkip} />
-                    </XView>
-
-                    <XButton style="primary" text="Add" onClick={onSubmit} />
+                    <UButton text="Skip" style="secondary" onClick={onSkip} marginRight={12} />
+                    <UButton
+                        text="Add"
+                        onClick={!!options.length ? () => onSubmit(selectedUsers) : undefined}
+                        disable={!options.length}
+                    />
                 </XView>
             </XView>
             <XView paddingHorizontal={16} flexShrink={0}>
-                <SearchPeopleBox
+                <SearchBox
                     onInputChange={onSearchPeopleInputChange}
                     value={options}
-                    onChange={handleSearchPeopleInputChange}
+                    onChange={onChange}
                 />
             </XView>
             <React.Suspense
@@ -143,16 +171,18 @@ const AddMembers = ({
                     </XView>
                 }
             >
-                <ExplorePeople
-                    variables={{ query: searchPeopleQuery }}
-                    searchQuery={searchPeopleQuery}
-                    onPick={selectMembers}
-                    selectedUsers={selectedUsers}
-                />
+                <XView flexGrow={1} flexShrink={1} marginHorizontal={-12} overflow="hidden">
+                    <ExplorePeople
+                        excludeMe
+                        query={searchPeopleQuery}
+                        onPick={selectMembers}
+                        selectedUsers={selectedUsers}
+                    />
+                </XView>
             </React.Suspense>
         </XView>
     );
-};
+});
 
 interface CreateEntityProps {
     myId?: string;
@@ -173,22 +203,13 @@ export const CreateEntity = ({
 }: CreateEntityProps) => {
     const client = useClient();
     const router = React.useContext(XViewRouterContext);
+    const [title, setTitle] = React.useState<string>('');
     const [coverSrc, setCoverSrc] = React.useState<string | null>('');
     const [settingsPage, setSettingsPage] = React.useState(true);
-    const [searchPeopleQuery, setSearchPeopleQuery] = React.useState<string>('');
-    const [selectedUsers, setSelectedUsers] = React.useState<Map<string, string> | null>(null);
-    let options: { label: string; value: string }[] = [];
 
     let chatTypeStr = entityKind.charAt(0).toUpperCase() + entityKind.slice(1).toLowerCase();
 
     let form = useForm();
-    let titleField = useField('input.title', '', form, [
-        {
-            checkIsValid: value => !!value.trim(),
-            text: `Please enter a name for this ${chatTypeStr.toLocaleLowerCase()}`,
-        },
-    ]);
-
     let typeField = useField<SharedRoomKind | CommunityType>(
         'input.type',
         isDialog(entityKind)
@@ -217,7 +238,7 @@ export const CreateEntity = ({
 
         if (typeField.value === SharedRoomKind.GROUP || typeField.value === SharedRoomKind.PUBLIC) {
             const group = (await client.mutateRoomCreate({
-                title: titleField.value.trim(),
+                title: title.trim(),
                 kind: typeField.value,
                 photoRef,
                 members: membersToAdd,
@@ -235,7 +256,7 @@ export const CreateEntity = ({
             const organization = (await client.mutateCreateOrganization({
                 input: {
                     personal: false,
-                    name: titleField.value.trim(),
+                    name: title.trim(),
                     about: aboutField.value,
                     photoRef,
                     isCommunity,
@@ -260,34 +281,15 @@ export const CreateEntity = ({
         }
     };
 
-    const getOptions = (map: Map<string, string> | null) => {
-        const result: { label: string; value: string }[] = [];
-        if (!map) {
-            return [];
-        }
-        map.forEach((l: string, v: string) => {
-            result.push({
-                label: l,
-                value: v,
-            });
-        });
-        return result;
-    };
-
-    const onSubmit = () =>
+    const onSubmit = (users: Map<string, string> | null) =>
         form.doAction(async () => {
             let membersIds: string[] = [];
             if (myId) {
                 membersIds.push(myId);
             }
 
-            if (selectedUsers) {
-                selectedUsers.forEach((l, v) => {
-                    options.push({
-                        label: l,
-                        value: v,
-                    });
-
+            if (users) {
+                users.forEach((l, v) => {
                     membersIds.push(v);
                 });
             }
@@ -323,7 +325,7 @@ export const CreateEntity = ({
             //
         });
 
-        if (titleField.input.errorText) {
+        if (!title.trim()) {
             return;
         }
 
@@ -336,45 +338,10 @@ export const CreateEntity = ({
 
     const handleBackClick = () => {
         setSettingsPage(true);
-        setSearchPeopleQuery('');
-        setSelectedUsers(null);
     };
-
-    const onSearchPeopleInputChange = (data: string) => {
-        setSearchPeopleQuery(data);
-        return data;
-    };
-
-    const handleSearchPeopleInputChange = (data: { label: string; value: string }[]) => {
-        let newSelected = new Map();
-        data.map(i => {
-            newSelected.set(i.value, i.label);
-        });
-
-        setSelectedUsers(new Map(newSelected));
-    };
-
-    const selectMembers = (label: string, value: string) => {
-        let selected = selectedUsers || new Map();
-
-        selected.set(value, label);
-
-        setSelectedUsers(new Map(selected));
-    };
-
-    let showLeaveModal = false;
-
-    if (aboutField.value || titleField.value || coverSrc || !settingsPage) {
-        showLeaveModal = true;
-    }
 
     return (
-        <MainWrapper
-            back={!settingsPage}
-            onBackClick={handleBackClick}
-            entityKind={entityKind}
-            showLeaveModal={showLeaveModal}
-        >
+        <MainWrapper back={!settingsPage} onBackClick={handleBackClick}>
             {settingsPage && (
                 <XView flexGrow={1} flexShrink={0} flexDirection="column" maxHeight="100%">
                     <XView
@@ -388,14 +355,23 @@ export const CreateEntity = ({
                         <XView fontSize={32} fontWeight="600" color="rgba(0, 0, 0, 0.9)">
                             {`New ${chatTypeStr.toLocaleLowerCase()}`}
                         </XView>
-                        <XButton style="primary" text="Next" onClick={onNext} />
+                        <UButton
+                            text="Next"
+                            onClick={!!title.trim() ? onNext : undefined}
+                            disable={!title.trim()}
+                        />
                     </XView>
                     <XView flexShrink={0} flexDirection="row" paddingHorizontal={16}>
                         <CoverUpload value={coverSrc} onChange={setCoverSrc} />
                         <XView flexGrow={1} flexShrink={0} flexDirection="column" marginLeft={20}>
-                            <XView flexGrow={1} flexShrink={0} marginBottom={16}>
-                                <InputField field={titleField} title={`${chatTypeStr} name`} />
-                            </XView>
+                            <UInput
+                                flexGrow={1}
+                                flexShrink={0}
+                                marginBottom={16}
+                                label={`${chatTypeStr} name`}
+                                value={title}
+                                onChange={setTitle}
+                            />
 
                             {selectOptions &&
                                 entityKind !== EntityKind.ORGANIZATION && (
@@ -444,18 +420,7 @@ export const CreateEntity = ({
                     )}
                 </XView>
             )}
-            {!settingsPage && (
-                <AddMembers
-                    onSkip={onSkip}
-                    onSubmit={onSubmit}
-                    onSearchPeopleInputChange={onSearchPeopleInputChange}
-                    options={getOptions(selectedUsers)}
-                    handleSearchPeopleInputChange={handleSearchPeopleInputChange}
-                    searchPeopleQuery={searchPeopleQuery}
-                    selectMembers={selectMembers}
-                    selectedUsers={selectedUsers}
-                />
-            )}
+            {!settingsPage && <AddMembers onSkip={onSkip} onSubmit={onSubmit} />}
         </MainWrapper>
     );
 };

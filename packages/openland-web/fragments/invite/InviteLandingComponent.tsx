@@ -65,6 +65,7 @@ const JoinLinkButton = (props: {
     invite: string;
     refetchVars: { conversationId: string };
     text: string;
+    onAccept: (data: boolean) => void;
 }) => {
     const client = useClient();
     const router = React.useContext(XViewRouterContext);
@@ -77,6 +78,7 @@ const JoinLinkButton = (props: {
             alignSelf="center"
             flexShrink={0}
             action={async () => {
+                props.onAccept(true);
                 let res = await client.mutateRoomJoinInviteLink({ invite: props.invite });
                 router!.navigate(`/mail/${res.join.id}`);
             }}
@@ -254,6 +256,7 @@ const resolveRoomButton = (
     room: { id: string; membership: SharedRoomMembershipStatus },
     key?: string,
 ) => {
+    const [loading, setLoading] = React.useState(false);
     if (
         room &&
         (room.membership === 'NONE' ||
@@ -270,6 +273,7 @@ const resolveRoomButton = (
                 text="Open room"
                 alignSelf="center"
                 flexShrink={0}
+                loading={loading}
                 path={'/mail/' + room.id}
             />
         );
@@ -278,6 +282,7 @@ const resolveRoomButton = (
             <JoinLinkButton
                 invite={key}
                 refetchVars={{ conversationId: room.id! }}
+                onAccept={setLoading}
                 text="Accept invite"
             />
         );
