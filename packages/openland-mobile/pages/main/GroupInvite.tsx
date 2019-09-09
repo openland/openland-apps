@@ -7,7 +7,6 @@ import { RoomInviteInfo_invite } from 'openland-api/Types';
 import { Text, TextStyle, View, StyleSheet, Image, ImageStyle, Dimensions, ViewStyle, Platform } from 'react-native';
 import { FontStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
