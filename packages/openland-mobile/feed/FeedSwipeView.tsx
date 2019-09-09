@@ -170,7 +170,15 @@ export class FeedSwipeView extends React.PureComponent<FeedSwipeViewProps> {
         onPanResponderGrant: () => {
             // console.warn('boom onPanResponderGrant');
         },
-        onMoveShouldSetPanResponder: () => true,
+        onMoveShouldSetPanResponder: (event, gesture) => {
+            const dx = this.filterDx(gesture.dx);
+
+            if (dx === 0) {
+                return false;
+            }
+
+            return true;
+        },
         onPanResponderMove: (event, gesture) => {
             const dx = this.filterDx(gesture.dx);
 
