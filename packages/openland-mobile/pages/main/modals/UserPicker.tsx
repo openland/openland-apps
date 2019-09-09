@@ -22,7 +22,7 @@ const UserPickerComponent = XMemo<PageProps>((props) => {
             <View style={{ flexDirection: 'column', width: '100%', height: '100%' }}>
                 <SScrollView>
                     {users.map((user) => (
-                        <CheckListBoxWraper checked={user.id === selectedUser}>
+                        <CheckListBoxWraper checked={user.id === selectedUser} isRadio>
                             <UserView
                                 key={user.id}
                                 user={user}
