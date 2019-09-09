@@ -24,8 +24,7 @@ const styles = StyleSheet.create({
     hint: {
         ...TextStyles.Body,
         paddingHorizontal: 16,
-        marginTop: 15,
-        marginBottom: 26,
+        marginBottom: 23,
     } as TextStyle,
 });
 
