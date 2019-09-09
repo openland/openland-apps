@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { FullMessage } from './Message';
 
 export const CommentEntryFragment = gql`
     fragment CommentEntryFragment on CommentEntry {
@@ -20,4 +21,6 @@ export const CommentEntryFragment = gql`
             id
         }
     }
+
+    ${FullMessage}
 `;
