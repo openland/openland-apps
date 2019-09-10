@@ -1,8 +1,11 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { showModalBox } from 'openland-x/showModalBox';
-import { css } from 'linaria';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import IcDownload from 'openland-icons/s/ic-download-24.svg';
+import IcClose from 'openland-icons/s/ic-close-24.svg';
 
 const modalImgContainer = css`
     position: relative;
@@ -15,9 +18,30 @@ const modalImgContainer = css`
 
 const modalImgContent = css`
     position: relative;
-    max-width: 95vw;
     flex-grow: 1;
     flex-shrink: 1;
+`;
+
+const modalButtonsContainer = css`
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+`;
+
+const modalButtonStyle = css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    opacity: 0.56;
+    cursor: pointer;
+    &:hover {
+        opacity: 1;
+    }
 `;
 
 const imgContainer = css`
@@ -80,12 +104,15 @@ const imgSpacer = css`
 `;
 
 interface ModalProps {
+    fileId: string;
     src: string;
     srcSet: string;
     width: number;
     height: number;
     preview: string;
 }
+
+// 'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'
 
 const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
@@ -106,7 +133,22 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
 
     return (
         <div className={modalImgContainer} onClick={props.hide}>
-            <div className={modalImgContent}>
+            <div className={modalButtonsContainer} onClick={e => e.stopPropagation()}>
+                <a
+                    className={modalButtonStyle}
+                    href={'https://ucarecdn.com/' + props.fileId + '/-/preview/-/inline/no/'}
+                >
+                    <UIcon icon={<IcDownload />} color="var(--backgroundPrimary)" />
+                </a>
+                <div className={modalButtonStyle} onClick={props.hide}>
+                    <UIcon icon={<IcClose />} color="var(--backgroundPrimary)" />
+                </div>
+            </div>
+            <div
+                className={modalImgContent}
+                style={{ maxWidth: props.width }}
+                onClick={e => e.stopPropagation()}
+            >
                 <div
                     className={imgSpacer}
                     style={
@@ -128,6 +170,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                         left: 0,
                         right: 0,
                         margin: 'auto',
+                        cursor: 'default',
                     }}
                 />
                 <img
@@ -143,6 +186,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                         left: 0,
                         right: 0,
                         margin: 'auto',
+                        cursor: 'default',
                     }}
                 />
             </div>
@@ -299,6 +343,7 @@ export const ImageContent = React.memo(
                 onClick={(e: React.MouseEvent) => {
                     e.stopPropagation();
                     showImageModal({
+                        fileId: props.file.fileId,
                         src: url + opsModal,
                         srcSet: url + opsRetinaModal,
                         width: layoutModal.width,
