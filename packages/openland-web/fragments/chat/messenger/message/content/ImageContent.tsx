@@ -2,96 +2,23 @@ import * as React from 'react';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { showModalBox } from 'openland-x/showModalBox';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 
 const modalImgContainer = css`
     position: relative;
-    background-color: #000;
-    flex-shrink: 0;
-    flex-grow: 1;
     display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
-    z-index: 0;
 `;
 
-const modalPreviewImgStyle = css`
-    position: absolute;
-    object-fit: contain;
-    left: 0;
-    top: 0;
-    z-index: 0;
-    max-width: 70vw;
-    max-height: 90vh;
+const modalImgContent = css`
+    position: relative;
+    max-width: 95vw;
+    flex-grow: 1;
+    flex-shrink: 1;
 `;
-
-const modalImgStyle = css`
-    opacity: 0;
-    transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    flex-shrink: 0;
-    object-fit: contain;
-    max-width: 70vw;
-    max-height: 90vh;
-    z-index: 1;
-`;
-
-const modalImgAppearStyle = css`
-    opacity: 1;
-`;
-
-interface ModalProps {
-    src: string;
-    srcSet: string;
-    width: number;
-    height: number;
-    preview: string;
-}
-
-const ModalContent = React.memo((props: ModalProps) => {
-    const imgRef = React.useRef<HTMLImageElement>(null);
-    const renderTime = new Date().getTime();
-
-    const onLoad = React.useCallback(() => {
-        let delta = new Date().getTime() - renderTime;
-        if (imgRef.current) {
-            if (delta < 50) {
-                // show image instantly if loaded fast enough
-                imgRef.current.className = cx(modalImgStyle, modalImgAppearStyle);
-            } else {
-                // animate loaded via transition
-                imgRef.current.style.opacity = '1';
-            }
-        }
-    }, []);
-
-    return (
-        <div className={modalImgContainer}>
-            <img
-                className={modalPreviewImgStyle}
-                src={props.preview}
-                style={{
-                    width: props.width,
-                    height: props.height,
-                }}
-            />
-            <img
-                ref={imgRef}
-                onLoad={onLoad}
-                src={props.src}
-                srcSet={props.srcSet}
-                className={modalImgStyle}
-                style={{
-                    width: props.width,
-                    height: props.height,
-                }}
-            />
-        </div>
-    );
-});
-
-const showImageModal = (props: ModalProps) => {
-    showModalBox({ flowing: true }, () => <ModalContent {...props} />);
-};
 
 const imgContainer = css`
     position: relative;
@@ -109,7 +36,7 @@ const imgContainer = css`
     cursor: pointer;
 
     &:after {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
@@ -118,13 +45,6 @@ const imgContainer = css`
         border: 1px solid var(--borderLight);
         border-radius: 8px;
     }
-`;
-
-const imgMediaClass = css`
-    max-width: 100%;
-    max-height: 100%;
-    height: auto;
-    will-change: opacity;
 `;
 
 const imgPreviewClass = css`
@@ -139,22 +59,102 @@ const imgAppearClass = css`
     background-color: var(--backgroundPrimary);
     transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
     position: absolute;
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    will-change: opacity;
 `;
 
 const imgAppearInstantClass = css`
     opacity: 1;
-    position: absolute;
     cursor: pointer;
 `;
 
 const imgSpacer = css`
     &:before {
-        content: "";
+        content: '';
         display: block;
         padding-top: var(--ratio);
         width: 100%;
     }
 `;
+
+interface ModalProps {
+    src: string;
+    srcSet: string;
+    width: number;
+    height: number;
+    preview: string;
+}
+
+const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
+    const imgRef = React.useRef<HTMLImageElement>(null);
+    const renderTime = new Date().getTime();
+
+    const onLoad = React.useCallback(() => {
+        let delta = new Date().getTime() - renderTime;
+        if (imgRef.current) {
+            if (delta < 50) {
+                // show image instantly if loaded fast enough
+                imgRef.current.classList.add(imgAppearInstantClass);
+            } else {
+                // animate loaded via transition
+                imgRef.current.style.opacity = '1';
+            }
+        }
+    }, []);
+
+    return (
+        <div className={modalImgContainer} onClick={props.hide}>
+            <div className={modalImgContent}>
+                <div
+                    className={imgSpacer}
+                    style={
+                        {
+                            width: props.width,
+                            maxWidth: '100%',
+                            margin: 'auto',
+                            '--ratio': (props.height / props.width) * 100 + '%',
+                        } as React.CSSProperties
+                    }
+                />
+                <img
+                    className={imgPreviewClass}
+                    src={props.preview}
+                    style={{
+                        width: props.width,
+                        height: props.height,
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        margin: 'auto',
+                    }}
+                />
+                <img
+                    ref={imgRef}
+                    onLoad={onLoad}
+                    src={props.src}
+                    srcSet={props.srcSet}
+                    className={imgAppearClass}
+                    style={{
+                        width: props.width,
+                        height: props.height,
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        margin: 'auto',
+                    }}
+                />
+            </div>
+        </div>
+    );
+});
+
+const showImageModal = (props: ModalProps) => {
+    showModalBox({ fullScreen: true, darkOverlay: true, useTopCloser: false }, ctx => (
+        <ModalContent {...props} hide={ctx.hide} />
+    ));
+};
 
 const GifContent = React.memo(
     (props: { file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile }) => {
@@ -165,7 +165,7 @@ const GifContent = React.memo(
             if (gifRef.current) {
                 if (delta < 50) {
                     // show image instantly if loaded fast enough
-                    gifRef.current.className = cx(imgAppearInstantClass, imgMediaClass);
+                    gifRef.current.classList.add(imgAppearInstantClass);
                 } else {
                     // animate loaded via transition
                     gifRef.current.style.opacity = '1';
@@ -192,13 +192,15 @@ const GifContent = React.memo(
             <div className={imgContainer} style={{ width: layoutWidth }}>
                 <div
                     className={imgSpacer}
-                    style={{
-                        width: layoutWidth,
-                        '--ratio': ((layoutHeight / layoutWidth) * 100) + '%'
-                    } as React.CSSProperties}
+                    style={
+                        {
+                            width: layoutWidth,
+                            '--ratio': (layoutHeight / layoutWidth) * 100 + '%',
+                        } as React.CSSProperties
+                    }
                 />
                 <img
-                    className={cx(imgPreviewClass)}
+                    className={imgPreviewClass}
                     width={layoutWidth}
                     height={layoutHeight}
                     src={props.file.filePreview || undefined}
@@ -212,7 +214,7 @@ const GifContent = React.memo(
                     autoPlay={true}
                     loop={true}
                     muted={true}
-                    className={cx(imgAppearClass, imgMediaClass)}
+                    className={imgAppearClass}
                 >
                     <source
                         src={
@@ -250,7 +252,7 @@ export const ImageContent = React.memo(
             if (imgRef.current) {
                 if (delta < 50) {
                     // show image instantly if loaded fast enough
-                    imgRef.current.className = cx(imgAppearInstantClass, imgMediaClass);
+                    imgRef.current.classList.add(imgAppearInstantClass);
                 } else {
                     // animate loaded via transition
                     imgRef.current.style.opacity = '1';
@@ -307,13 +309,15 @@ export const ImageContent = React.memo(
             >
                 <div
                     className={imgSpacer}
-                    style={{
-                        width: layoutWidth,
-                        '--ratio': ((layoutHeight / layoutWidth) * 100) + '%'
-                    } as React.CSSProperties}
+                    style={
+                        {
+                            width: layoutWidth,
+                            '--ratio': (layoutHeight / layoutWidth) * 100 + '%',
+                        } as React.CSSProperties
+                    }
                 />
                 <img
-                    className={cx(imgPreviewClass)}
+                    className={imgPreviewClass}
                     width={layoutWidth}
                     height={layoutHeight}
                     src={props.file.filePreview || undefined}
@@ -322,7 +326,7 @@ export const ImageContent = React.memo(
                 <img
                     ref={imgRef}
                     onLoad={onLoad}
-                    className={cx(imgAppearClass, imgMediaClass)}
+                    className={imgAppearClass}
                     width={layoutWidth}
                     height={layoutHeight}
                     src={url + ops}
