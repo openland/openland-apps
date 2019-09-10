@@ -1,6 +1,48 @@
 {
     "icons": [
         {
+            "name": "ic-document-preview",
+            "src": "ic-document-preview-48.svg",
+            "sizes": [
+                48
+            ]
+        },
+        {
+            "name": "ic-document-preview",
+            "src": "ic-document-preview-72.svg",
+            "sizes": [
+                72
+            ]
+        },
+        {
+            "name": "ic-down",
+            "src": "ic-down-16.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
+            "name": "ic-down",
+            "src": "ic-down-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-file-preview-corner-1",
+            "src": "ic-file-preview-corner-1.svg",
+            "sizes": [
+                18
+            ]
+        },
+        {
+            "name": "ic-file-preview-corner-2",
+            "src": "ic-file-preview-corner-2.svg",
+            "sizes": [
+                18
+            ]
+        },
+        {
             "name": "ic-refresh",
             "src": "ic-refresh-24.svg",
             "sizes": [
