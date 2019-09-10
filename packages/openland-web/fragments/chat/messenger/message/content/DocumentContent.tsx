@@ -106,7 +106,11 @@ export const DocumentContent = React.memo(
     }) => {
         const { file } = props;
 
-        if (file.fileMetadata.mimeType && !!file.fileMetadata.mimeType.match('video')) {
+        if (
+            file.fileMetadata.mimeType &&
+            (!!file.fileMetadata.mimeType.match('video') ||
+                !!file.fileMetadata.mimeType.match('octet-stream'))
+        ) {
             return <VideoContent file={props.file} />;
         }
 
@@ -133,8 +137,8 @@ export const DocumentContent = React.memo(
                         {file.uri ? (
                             <XLoader size="small" transparentBackground={true} />
                         ) : (
-                                <IconFile />
-                            )}
+                            <IconFile />
+                        )}
                     </div>
                     <div className={metadataContainer}>
                         <div className={cx(title + ' title', TextLabel1)}>
