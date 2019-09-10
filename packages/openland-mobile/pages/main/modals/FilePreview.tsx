@@ -5,7 +5,7 @@ import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import Share from 'react-native-share';
 import { PageProps } from '../../../components/PageProps';
-import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+// import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZRoundedButton } from '../../../components/ZRoundedButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
