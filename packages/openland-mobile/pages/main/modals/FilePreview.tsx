@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { View, Text, Image, StyleSheet, TextStyle, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Image, StyleSheet, TextStyle, TouchableWithoutFeedback, Platform, ViewStyle, ImageStyle } from 'react-native';
 import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import Share from 'react-native-share';
@@ -18,20 +18,85 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
+import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAreaContext';
 
 const styles = StyleSheet.create({
     name: {
-        ...TextStyles.Label1,
-        marginTop: 20,
-        marginHorizontal: 64,
+        ...TextStyles.Title2,
+        marginTop: 24,
+        marginHorizontal: 24,
         textAlign: 'center'
     } as TextStyle,
     size: {
-        ...TextStyles.Subhead,
-        marginTop: 2
-    } as TextStyle
+        ...TextStyles.Body,
+        marginTop: 4
+    } as TextStyle,
+
+    previewContainer: {
+        width: 72,
+        height: 72,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    } as ViewStyle,
+    ext: {
+        ...TextStyles.Label2,
+        color: '#FFF',
+        position: 'absolute', 
+        bottom: 10, 
+        width: 72,
+        textAlign: 'center'
+    } as TextStyle,
+    previewCornerImages: {
+        position: 'absolute', 
+        right: 0, 
+        top: 0, 
+        flexDirection: 'column'
+    } as ViewStyle,
+    previewBackground: {
+        position: 'absolute', 
+        top: 0, 
+        left: 0
+    },
+    arrowDownIcon: {
+        tintColor: '#FFF'
+    } as ImageStyle
 });
-class FilePreviewComponent extends React.PureComponent<PageProps & { theme: ThemeGlobal }, { completed: boolean, path?: string, downloadState?: DownloadState }> {
+
+const Preview = (props: { ext: string; }) => {
+    const theme = React.useContext(ThemeContext);
+
+    const fileTypesColor = {
+        'xlsx': theme.tintGreen,
+        'zip': theme.tintOrange,
+        'pdf': theme.tintRed
+    };
+    
+    const tintColor = fileTypesColor[props.ext] || theme.accentPrimary;
+    
+    return (
+        <View style={styles.previewContainer}>
+            <Image 
+                source={require('assets/ic-document-preview-72.png')} 
+                style={[styles.previewBackground, { tintColor }]} 
+            />
+            <View style={styles.previewCornerImages}>
+                <Image source={require('assets/ic-file-preview-corner-1-18.png')} />
+                <Image source={require('assets/ic-file-preview-corner-2-18.png')} />
+            </View>
+            {!!props.ext ? (
+                <Text style={styles.ext}>{props.ext.toUpperCase()}</Text>
+            ) : (
+                <Image 
+                    source={require('assets/ic-down-24.png')} 
+                    style={styles.arrowDownIcon}
+                />
+            )}
+        </View> 
+    );
+};
+
+class FilePreviewComponent extends React.PureComponent<PageProps & { theme: ThemeGlobal, area: ASSafeArea }, { completed: boolean, path?: string, downloadState?: DownloadState }> {
 
     subscription?: WatchSubscription;
     isPdf = false;
@@ -79,22 +144,31 @@ class FilePreviewComponent extends React.PureComponent<PageProps & { theme: Them
 
     render() {
         const config = this.props.router.params.config;
-        const { theme } = this.props;
+        const { theme, area } = this.props;
+        const paddingBottom = Platform.OS === 'ios' ? (area.bottom || 16) : area.bottom + 16;
 
         let content = (
-            <View backgroundColor={theme.backgroundPrimary} flexGrow={1}>
+            <View style={{ paddingTop: area.top, paddingBottom }} backgroundColor={theme.backgroundPrimary} flexGrow={1}>
                 <TouchableWithoutFeedback onPress={this.handleOpen}>
-                    <ASSafeAreaView style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                        <Image source={require('assets/img-file.png')} style={{ width: 50, height: 60, tintColor: theme.foregroundQuaternary }} />
+                    <View style={{ alignItems: 'center', justifyContent: 'center', flexGrow: 1, marginTop: 35 }}>
+                        <Preview ext={config.name.split('.')[1] || ''} />
+                        {/* <Image source={require('assets/img-file.png')} style={{ width: 50, height: 60, tintColor: theme.foregroundQuaternary }} /> */}
                         <Text style={[styles.name, { color: theme.foregroundPrimary }]}>{config.name}</Text>
                         <Text style={[styles.size, { color: theme.foregroundSecondary }]}>{formatBytes(config.size)}</Text>
                         <View height={46} justifyContent="center" marginTop={5}>
-                            {this.state.path && <ZRoundedButton title="Open" onPress={this.handleOpen} />}
                             {/* {!this.state.path && <ZCircularLoader visible={!this.state.path} progress={(this.state.completed ? 1 : (this.state.downloadState ? this.state.downloadState.progress || 0 : 0))} />} */}
                             {!this.state.path && <LoaderSpinner />}
                         </View>
-                    </ASSafeAreaView>
+                    </View>
                 </TouchableWithoutFeedback>
+
+                <View style={{ paddingHorizontal: 16 }}>
+                    <ZRoundedButton 
+                        title="Open" 
+                        size="large"
+                        onPress={this.handleOpen} 
+                    />
+                </View>
             </View>
         );
 
@@ -104,7 +178,7 @@ class FilePreviewComponent extends React.PureComponent<PageProps & { theme: Them
         return (
             <>
                 <SHeader title="Document" />
-                <SHeaderButton title="Share" icon={require('assets/ic-header-share-24.png')} onPress={this.handleOpen} />
+                <SHeaderButton title="Share" icon={require('assets/ic-share-24.png')} onPress={this.handleOpen} />
 
                 {content}
             </>
@@ -114,8 +188,9 @@ class FilePreviewComponent extends React.PureComponent<PageProps & { theme: Them
 
 const ThemedFilePreview = XMemo<PageProps>(props => {
     const theme = React.useContext(ThemeContext);
+    const area = React.useContext(ASSafeAreaContext);
 
-    return <FilePreviewComponent {...props} theme={theme} />;
+    return <FilePreviewComponent {...props} theme={theme} area={area} />;
 });
 
 export const FilePreview = withApp(ThemedFilePreview, { navigationAppearance: 'small' });
