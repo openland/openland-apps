@@ -191,7 +191,7 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
         return null;
     }
 
-    if (isInternalLink(attach.titleLink || '') || attach.keyboard) {
+    if ((isInternalLink(attach.titleLink || '') && attach.imageFallback) || attach.keyboard) {
         return <InternalAttachContent attach={attach} />;
     }
 

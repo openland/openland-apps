@@ -64,9 +64,9 @@ export const MyNotificationsQuery = gql`
 
             cursor
         }
-
-        ${NotificationFragment}
     }
+
+    ${NotificationFragment}
 `;
 
 export const NotificationCenterUpdateFragment = gql`

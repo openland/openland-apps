@@ -62,6 +62,10 @@ const overlayStyle = css`
     background-color: rgba(0, 0, 0, 0.3);
 `;
 
+const darkOverlayStyle = css`
+    background-color: var(--overlayHeavy);
+`;
+
 const overlayFullScreenStyle = css`
     position: relative;
     width: 100%;
@@ -189,7 +193,9 @@ const ModalBoxComponent = React.memo<{
                 ref={containerRef}
                 className={cx(
                     // overlayStyle,
-                    isFullscreen ? overlayFullScreenStyle : overlayStyle,
+                    isFullscreen
+                        ? overlayFullScreenStyle
+                        : cx(overlayStyle, props.config.darkOverlay && darkOverlayStyle),
                     state === 'showing' && overlayShowing,
                     state === 'visible' && overlayVisible,
                     state === 'hiding' && overlayHiding,
@@ -200,29 +206,31 @@ const ModalBoxComponent = React.memo<{
                     ref={boxRef}
                     className={cx(
                         boxStyle,
+                        props.config.darkOverlay && darkOverlayStyle,
                         state === 'showing' && boxShowing,
                         state === 'visible' && boxVisible,
                         state === 'hiding' && boxHiding,
                     )}
                     style={boxInlineStyle}
                 >
-                    {isFullscreen && (
-                        <XView position="absolute" right={23} top={23} zIndex={1000}>
-                            <XView
-                                onClick={tryHide}
-                                cursor="pointer"
-                                alignItems="center"
-                                justifyContent="center"
-                                padding={8}
-                                width={36}
-                                height={36}
-                                borderRadius={50}
-                                hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
-                            >
-                                <UIcon icon={<IcClose />} />
+                    {isFullscreen &&
+                        props.config.useTopCloser !== false && (
+                            <XView position="absolute" right={23} top={23} zIndex={1000}>
+                                <XView
+                                    onClick={tryHide}
+                                    cursor="pointer"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    padding={8}
+                                    width={36}
+                                    height={36}
+                                    borderRadius={50}
+                                    hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                                >
+                                    <UIcon icon={<IcClose />} />
+                                </XView>
                             </XView>
-                        </XView>
-                    )}
+                        )}
                     {props.config.title && (
                         <XView paddingTop={24} paddingBottom={8}>
                             <XView
@@ -265,6 +273,7 @@ export interface XModalBoxConfig {
     fullScreen?: boolean | 'on-mobile';
     flowing?: boolean;
     useTopCloser?: boolean;
+    darkOverlay?: boolean;
 }
 
 export function showModalBox(config: XModalBoxConfig, modal: XModal) {
