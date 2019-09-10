@@ -30,25 +30,32 @@ export const CommentTools = React.memo((props: CommentToolsProps) => {
     const { reactions, onReactionClick, onReplyClick, onDeleteClick } = props;
 
     const myLike = reactions.filter(r => r.user.id === messenger.user.id).length > 0;
-    const likeLabel = myLike && reactions.length === 1 ? 'Liked' : (reactions.length > 0 ? plural(reactions.length, ['like', 'likes']) : 'Like');
+    const likeLabel =
+        myLike && reactions.length === 1
+            ? 'Liked'
+            : reactions.length > 0
+                ? plural(reactions.length, ['like', 'likes'])
+                : 'Like';
 
     // Sorry universe
     const listRef = React.useRef<ReactionsUsersInstance>(null);
     const usersRef = React.useRef(extractReactionsUsers(reactions, messenger.user.id));
     usersRef.current = extractReactionsUsers(reactions, messenger.user.id);
 
-    React.useEffect(() => {
-        if (listRef && listRef.current) {
-            listRef.current.update(extractReactionsUsers(reactions, messenger.user.id));
-        }
-    }, [listRef, reactions]);
+    React.useEffect(
+        () => {
+            if (listRef && listRef.current) {
+                listRef.current.update(extractReactionsUsers(reactions, messenger.user.id));
+            }
+        },
+        [listRef, reactions],
+    );
 
     const [show] = useCaptionPopper({
-        getText: (ctx) => (
-            <ReactionsUsers initialUsers={usersRef.current} ref={listRef} ctx={ctx} />
-        ),
+        getText: ctx => <ReactionsUsers initialUsers={usersRef.current} ref={listRef} ctx={ctx} />,
         placement: 'bottom',
-        scope: 'reaction-item'
+        scope: 'reaction-item',
+        width: 280,
     });
 
     return (
