@@ -9,7 +9,8 @@ import { ReactionReducedEmojify } from 'openland-engines/reactions/types';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { ReactionsUsersInstance, ReactionsUsers } from 'openland-web/components/ReactionsUsers';
 
-export const reactionImage = (r: MessageReactionType) => `https://cdn.openland.com/shared/reactions/${r}.png`;
+export const reactionImage = (r: MessageReactionType) =>
+    `https://cdn.openland.com/shared/reactions/${r}.png`;
 
 const reactionsWrapper = css`
     display: flex;
@@ -62,26 +63,24 @@ const ReactionItem = React.memo((props: ReactionItemProps) => {
     const usersRef = React.useRef(value.users);
     usersRef.current = value.users;
 
-    React.useEffect(() => {
-        if (listRef && listRef.current) {
-            listRef.current.update(value.users);
-        }
-    }, [listRef, value.users]);
+    React.useEffect(
+        () => {
+            if (listRef && listRef.current) {
+                listRef.current.update(value.users);
+            }
+        },
+        [listRef, value.users],
+    );
 
     const [show] = useCaptionPopper({
-        getText: (ctx) => (
-            <ReactionsUsers initialUsers={usersRef.current} ref={listRef} ctx={ctx} />
-        ),
+        getText: ctx => <ReactionsUsers initialUsers={usersRef.current} ref={listRef} ctx={ctx} />,
         placement: 'bottom',
-        scope: 'reaction-item'
+        scope: 'reaction-item',
+        width: 280,
     });
 
     return (
-        <div
-            className={reactionsItem}
-            onClick={() => onClick(value.reaction)}
-            onMouseEnter={show}
-        >
+        <div className={reactionsItem} onClick={() => onClick(value.reaction)} onMouseEnter={show}>
             <img src={reactionImage(value.reaction)} />
         </div>
     );
@@ -98,18 +97,30 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
     const { messageId, reactions, reactionsReduced, reactionsLabel } = props;
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
-    const handleReactionClick = React.useCallback((reaction: MessageReactionType) => {
-        if (messageId) {
-            let remove = reactions && reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === reaction).length > 0;
-            if (remove) {
-                client.mutateMessageUnsetReaction({ messageId, reaction });
-            } else {
-                trackEvent('reaction_sent', { reaction_type: reaction.toLowerCase(), double_tap: 'not' });
+    const handleReactionClick = React.useCallback(
+        (reaction: MessageReactionType) => {
+            if (messageId) {
+                let remove =
+                    reactions &&
+                    reactions.filter(
+                        userReaction =>
+                            userReaction.user.id === messenger.user.id &&
+                            userReaction.reaction === reaction,
+                    ).length > 0;
+                if (remove) {
+                    client.mutateMessageUnsetReaction({ messageId, reaction });
+                } else {
+                    trackEvent('reaction_sent', {
+                        reaction_type: reaction.toLowerCase(),
+                        double_tap: 'not',
+                    });
 
-                client.mutateMessageSetReaction({ messageId, reaction });
+                    client.mutateMessageSetReaction({ messageId, reaction });
+                }
             }
-        }
-    }, [messageId, reactions]);
+        },
+        [messageId, reactions],
+    );
 
     if (reactions.length <= 0) {
         return null;
@@ -118,7 +129,7 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
     return (
         <div
             className={cx(reactionsWrapper, 'message-buttons-wrapper')}
-            onClick={(e) => {
+            onClick={e => {
                 e.preventDefault();
                 e.stopPropagation();
             }}
@@ -133,9 +144,7 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
                 ))}
             </div>
 
-            <div className={cx(TextDensed, reactionsText)}>
-                {reactionsLabel}
-            </div>
+            <div className={cx(TextDensed, reactionsText)}>{reactionsLabel}</div>
         </div>
     );
 });

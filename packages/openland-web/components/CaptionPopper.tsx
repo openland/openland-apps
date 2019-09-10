@@ -5,7 +5,6 @@ import { TextCaption } from '../utils/TextStyles';
 import { UPopperController } from './unicorn/UPopper';
 
 const captionWrapper = css`
-    width: 280px;
     display: flex;
     justify-content: center;
 `;
@@ -46,24 +45,36 @@ const captionContent = css`
 const topPlacementArrow = css`
     &::after {
         bottom: -2px;
+        left: 0;
+        right: 0;
+        margin: auto;
     }
 `;
 
 const bottomPlacementArrow = css`
     &::after {
         top: -2px;
+        left: 0;
+        right: 0;
+        margin: auto;
     }
 `;
 
 const leftPlacementArrow = css`
     &::after {
         right: -2px;
+        top: 0;
+        bottom: 0;
+        margin: auto;
     }
 `;
 
 const rightPlacementArrow = css`
     &::after {
         left: -2px;
+        top: 0;
+        bottom: 0;
+        margin: auto;
     }
 `;
 
@@ -72,10 +83,11 @@ interface CaptionPopperConfig {
     getText?: (ctx: UPopperController) => string | JSX.Element;
     placement?: 'top' | 'bottom' | 'left' | 'right';
     scope?: string;
+    width?: number;
 }
 
 export const useCaptionPopper = (opts: CaptionPopperConfig) => {
-    const { text, getText, placement = 'top', scope } = opts;
+    const { text, getText, placement = 'top', scope, width } = opts;
     const [, show] = usePopper(
         { placement, hideOnLeave: true, borderRadius: 8, scope, useWrapper: false },
         ctx => (
@@ -85,6 +97,9 @@ export const useCaptionPopper = (opts: CaptionPopperConfig) => {
                     placement === 'left' && leftAlignment,
                     placement === 'right' && rightAlignment,
                 )}
+                style={{
+                    width: width,
+                }}
             >
                 <div
                     className={cx(
