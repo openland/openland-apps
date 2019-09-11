@@ -59,11 +59,15 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
         return <View />;
     }
 
+    private handleCreate = () => {
+        this.props.router.present('FeedCreatePost');
+    }
+
     render() {
         return (
             <>
                 <SHeader title="Feed" />
-                {NON_PRODUCTION && <SHeaderButton title="Create" icon={require('assets/ic-add-24.png')} />}
+                {NON_PRODUCTION && <SHeaderButton title="Create" icon={require('assets/ic-add-24.png')} onPress={this.handleCreate} />}
                 <SSearchControler
                     searchRender={(p) => <GlobalSearch query={p.query} router={this.props.router} />}
                 >
