@@ -45,6 +45,7 @@ const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
 });
 
 const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
+    const theme = React.useContext(ThemeContext);
     const roomId = props.router.params.id;
     const client = getClient();
     const rawGroup = client.useRoom({ id: roomId }, { fetchPolicy: 'network-only' }).room;
@@ -112,7 +113,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                     <ZListItem text="Welcome message" textStyle={{ ...TextStyles.Title2 }} toggle={welcomeMessageEnabled} onToggle={(value) => setWelcomeMessageEnabled(value)} />
                 </View>
                 <View style={{ paddingHorizontal: 16 }}>
-                    <Text style={{ ...TextStyles.Body }}>Send automatic tet-a-tet message {'\n'}to every new member of the group</Text>
+                    <Text style={{ ...TextStyles.Body, color: theme.foregroundPrimary }}>Send automatic tet-a-tet message {'\n'}to every new member of the group</Text>
                 </View>
 
                 {welcomeMessageEnabled && (
@@ -145,8 +146,8 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                 )}
 
                 <View style={{ paddingHorizontal: 16,  marginTop: 27 }}>
-                    <Text style={{ ...TextStyles.Title2, marginBottom: 11 }}>Social sharing image</Text>
-                    <Text style={{ ...TextStyles.Body, marginBottom: 24 }}>Choose an image to display when sharing invite to the group on social networks</Text>
+                    <Text style={{ ...TextStyles.Title2, marginBottom: 11, color: theme.foregroundPrimary }}>Social sharing image</Text>
+                    <Text style={{ ...TextStyles.Body, marginBottom: 24, color: theme.foregroundPrimary }}>Choose an image to display when sharing invite to the group on social networks</Text>
                     <ZAvatarPicker field={socialImageField} render={SocialPicker} pickSize={{ width: 1200, height: 630 }} />
                 </View>
             </KeyboardAvoidingScrollView>
