@@ -257,6 +257,7 @@ const GifContent = React.memo(
                     src={props.file.filePreview || undefined}
                     style={{ top: imgPositionTop, left: imgPositionLeft }}
                 />
+                <XLoader className={loaderStyle} />
                 <video
                     ref={gifRef}
                     onLoadStart={onLoad}
