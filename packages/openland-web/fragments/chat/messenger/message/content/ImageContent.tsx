@@ -1,11 +1,17 @@
 import * as React from 'react';
-import { css } from 'linaria';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { css, cx } from 'linaria';
+import {
+    FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
+    UserShort,
+} from 'openland-api/Types';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcDownload from 'openland-icons/s/ic-download-24.svg';
 import IcClose from 'openland-icons/s/ic-close-24.svg';
+import { formatDateTime } from 'openland-y-utils/formatTime';
+import { TextLabel1, TextCaption } from 'openland-web/utils/TextStyles';
+import { XLoader } from 'openland-x/XLoader';
 
 const modalImgContainer = css`
     position: relative;
@@ -20,6 +26,27 @@ const modalImgContent = css`
     position: relative;
     flex-grow: 1;
     flex-shrink: 1;
+`;
+
+const modalInfoContainer = css`
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 16px;
+    display: flex;
+    align-items: flex-end;
+    pointer-events: none;
+`;
+
+const modalPrimaryText = css`
+    color: var(--backgroundPrimary);
+`;
+
+const modalSecondaryText = css`
+    opacity: 0.56;
+    margin-bottom: 2px;
+    margin-left: 10px;
+    margin-right: 2px;
 `;
 
 const modalButtonsContainer = css`
@@ -76,6 +103,11 @@ const imgPreviewClass = css`
     max-width: 100%;
     max-height: 100%;
     z-index: 0;
+    filter: blur(5px);
+`;
+
+const loaderStyle = css`
+    background-color: transparent;
 `;
 
 const imgAppearClass = css`
@@ -110,6 +142,9 @@ interface ModalProps {
     width: number;
     height: number;
     preview: string;
+    sender?: UserShort;
+    senderNameEmojify?: string | JSX.Element;
+    date?: number;
 }
 
 // 'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'
@@ -133,6 +168,18 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
 
     return (
         <div className={modalImgContainer} onClick={props.hide}>
+            {(props.sender || props.senderNameEmojify) &&
+                props.date && (
+                    <div className={modalInfoContainer}>
+                        <div className={cx(TextLabel1, modalPrimaryText)}>Photo 1 of 1</div>
+                        <div className={cx(TextCaption, modalPrimaryText, modalSecondaryText)}>
+                            {props.senderNameEmojify || props.sender ? props.sender!!.name : ''}
+                        </div>
+                        <div className={cx(TextCaption, modalPrimaryText, modalSecondaryText)}>
+                            {formatDateTime(props.date)}
+                        </div>
+                    </div>
+                )}
             <div className={modalButtonsContainer} onClick={e => e.stopPropagation()}>
                 <a
                     className={modalButtonStyle}
@@ -173,6 +220,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                         cursor: 'default',
                     }}
                 />
+                <XLoader className={loaderStyle} />
                 <img
                     ref={imgRef}
                     onLoad={onLoad}
@@ -250,6 +298,7 @@ const GifContent = React.memo(
                     src={props.file.filePreview || undefined}
                     style={{ top: imgPositionTop, left: imgPositionLeft }}
                 />
+                <XLoader className={loaderStyle} />
                 <video
                     ref={gifRef}
                     onLoadStart={onLoad}
@@ -282,103 +331,112 @@ const GifContent = React.memo(
     },
 );
 
-export const ImageContent = React.memo(
-    (props: { file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile }) => {
-        if (props.file.fileMetadata.imageFormat === 'GIF') {
-            return <GifContent file={props.file} />;
-        }
+interface ImageContentProps {
+    file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
+    sender?: UserShort;
+    senderNameEmojify?: string | JSX.Element;
+    date?: number;
+}
 
-        const imgRef = React.useRef<HTMLImageElement>(null);
-        const renderTime = new Date().getTime();
+export const ImageContent = React.memo((props: ImageContentProps) => {
+    if (props.file.fileMetadata.imageFormat === 'GIF') {
+        return <GifContent file={props.file} />;
+    }
 
-        const onLoad = React.useCallback(() => {
-            let delta = new Date().getTime() - renderTime;
-            if (imgRef.current) {
-                if (delta < 50) {
-                    // show image instantly if loaded fast enough
-                    imgRef.current.classList.add(imgAppearInstantClass);
-                } else {
-                    // animate loaded via transition
-                    imgRef.current.style.opacity = '1';
-                }
+    const imgRef = React.useRef<HTMLImageElement>(null);
+    const renderTime = new Date().getTime();
+
+    const onLoad = React.useCallback(() => {
+        let delta = new Date().getTime() - renderTime;
+        if (imgRef.current) {
+            if (delta < 50) {
+                // show image instantly if loaded fast enough
+                imgRef.current.classList.add(imgAppearInstantClass);
+            } else {
+                // animate loaded via transition
+                imgRef.current.style.opacity = '1';
             }
-        }, []);
+        }
+    }, []);
 
-        const layout = layoutMedia(
-            props.file.fileMetadata.imageWidth || 0,
-            props.file.fileMetadata.imageHeight || 0,
-            680,
-            360,
-            32,
-            32,
-        );
+    const layout = layoutMedia(
+        props.file.fileMetadata.imageWidth || 0,
+        props.file.fileMetadata.imageHeight || 0,
+        680,
+        360,
+        32,
+        32,
+    );
 
-        const layoutWidth = layout.width;
-        const layoutHeight = layout.height;
+    const layoutWidth = layout.width;
+    const layoutHeight = layout.height;
 
-        const imgPositionLeft = layoutWidth < 72 ? `calc(50% - ${layoutWidth / 2}px)` : '0';
-        const imgPositionTop = layoutHeight < 72 ? `calc(50% - ${layoutHeight / 2}px)` : '0';
+    const imgPositionLeft = layoutWidth < 72 ? `calc(50% - ${layoutWidth / 2}px)` : '0';
+    const imgPositionTop = layoutHeight < 72 ? `calc(50% - ${layoutHeight / 2}px)` : '0';
 
-        const url = `https://ucarecdn.com/${props.file.fileId}/-/format/auto/-/`;
-        const ops = `scale_crop/${layoutWidth}x${layoutHeight}/`;
-        const opsRetina = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/center/ 2x`;
+    const url = `https://ucarecdn.com/${props.file.fileId}/-/format/auto/-/`;
+    const ops = `scale_crop/${layoutWidth}x${layoutHeight}/`;
+    const opsRetina = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/center/ 2x`;
 
-        const layoutModal = layoutMedia(
-            props.file.fileMetadata.imageWidth || 0,
-            props.file.fileMetadata.imageHeight || 0,
-            (window.innerWidth / 100) * 80,
-            (window.innerHeight / 100) * 80,
-            32,
-            32,
-        );
+    const layoutModal = layoutMedia(
+        props.file.fileMetadata.imageWidth || 0,
+        props.file.fileMetadata.imageHeight || 0,
+        (window.innerWidth / 100) * 80,
+        (window.innerHeight / 100) * 80,
+        32,
+        32,
+    );
 
-        const opsModal = `scale_crop/${layoutModal.width}x${layoutModal.height}/`;
-        const opsRetinaModal = `scale_crop/${layoutModal.width * 2}x${layoutModal.height *
-            2}/center/ 2x`;
+    const opsModal = `scale_crop/${layoutModal.width}x${layoutModal.height}/`;
+    const opsRetinaModal = `scale_crop/${layoutModal.width * 2}x${layoutModal.height *
+        2}/center/ 2x`;
 
-        return (
+    return (
+        <div
+            className={imgContainer}
+            style={{ width: layoutWidth }}
+            onClick={(e: React.MouseEvent) => {
+                e.stopPropagation();
+                showImageModal({
+                    fileId: props.file.fileId,
+                    src: url + opsModal,
+                    srcSet: url + opsRetinaModal,
+                    width: layoutModal.width,
+                    height: layoutModal.height,
+                    preview: props.file.filePreview || '',
+                    sender: props.sender,
+                    senderNameEmojify: props.senderNameEmojify,
+                    date: props.date,
+                });
+            }}
+        >
             <div
-                className={imgContainer}
-                style={{ width: layoutWidth }}
-                onClick={(e: React.MouseEvent) => {
-                    e.stopPropagation();
-                    showImageModal({
-                        fileId: props.file.fileId,
-                        src: url + opsModal,
-                        srcSet: url + opsRetinaModal,
-                        width: layoutModal.width,
-                        height: layoutModal.height,
-                        preview: props.file.filePreview || '',
-                    });
-                }}
-            >
-                <div
-                    className={imgSpacer}
-                    style={
-                        {
-                            width: layoutWidth,
-                            '--ratio': (layoutHeight / layoutWidth) * 100 + '%',
-                        } as React.CSSProperties
-                    }
-                />
-                <img
-                    className={imgPreviewClass}
-                    width={layoutWidth}
-                    height={layoutHeight}
-                    src={props.file.filePreview || undefined}
-                    style={{ top: imgPositionTop, left: imgPositionLeft }}
-                />
-                <img
-                    ref={imgRef}
-                    onLoad={onLoad}
-                    className={imgAppearClass}
-                    width={layoutWidth}
-                    height={layoutHeight}
-                    src={url + ops}
-                    srcSet={url + opsRetina}
-                    style={{ top: imgPositionTop, left: imgPositionLeft }}
-                />
-            </div>
-        );
-    },
-);
+                className={imgSpacer}
+                style={
+                    {
+                        width: layoutWidth,
+                        '--ratio': (layoutHeight / layoutWidth) * 100 + '%',
+                    } as React.CSSProperties
+                }
+            />
+            <img
+                className={imgPreviewClass}
+                width={layoutWidth}
+                height={layoutHeight}
+                src={props.file.filePreview || undefined}
+                style={{ top: imgPositionTop, left: imgPositionLeft }}
+            />
+            <XLoader className={loaderStyle} />
+            <img
+                ref={imgRef}
+                onLoad={onLoad}
+                className={imgAppearClass}
+                width={layoutWidth}
+                height={layoutHeight}
+                src={url + ops}
+                srcSet={url + opsRetina}
+                style={{ top: imgPositionTop, left: imgPositionLeft }}
+            />
+        </div>
+    );
+});

@@ -28,7 +28,7 @@ interface GroupsListProps {
 }
 
 const GroupsList = XMemo<GroupsListProps>((props) => {
-    let groups = getClient().useUserAvailableRooms({ limit: 100 }).betaUserAvailableRooms;
+    let groups = getClient().useUserAvailableRooms({ limit: 100 }, { fetchPolicy: 'cache-and-network' }).betaUserAvailableRooms;
 
     return (
         <>
@@ -55,7 +55,7 @@ const GroupsSearchList = XMemo<GroupsListProps>((props) => {
     let groups = getClient().useGlobalSearch({
         query: props.query,
         kinds: [GlobalSearchEntryKind.SHAREDROOM]
-    }).items as GlobalSearch_items_SharedRoom[];
+    }, { fetchPolicy: 'cache-and-network' }).items as GlobalSearch_items_SharedRoom[];
 
     return (
         <>
