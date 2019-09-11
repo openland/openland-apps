@@ -36,31 +36,26 @@ export const FeedAuthorView = XMemo<FeedAuthorViewProps>((props) => {
     const color = style === 'default' ? theme.foregroundPrimary : theme.foregroundContrast;
     const orgOpacity = style === 'default' ? 1 : 0.56;
 
-    if (author.__typename === 'User') {
-        return (
-            <TouchableOpacity onPress={() => router.push('ProfileUser', { id: author.id })} activeOpacity={0.6}>
-                <View style={styles.sender}>
-                    <ZAvatar size="x-small" src={author.photo} placeholderKey={author.id} placeholderTitle={name} />
-                    <Text style={[styles.senderName, { color }]} allowFontScaling={false}>
-                        {author.name}
-                    </Text>
-                    {author.primaryOrganization && (
-                        <Text style={[styles.senderOrg, { color, opacity: orgOpacity }]} allowFontScaling={false}>
-                            {author.primaryOrganization.name}
-                        </Text>
-                    )}
-                </View>
-            </TouchableOpacity>
-        );
-    }
+    const handlePress = React.useCallback(() => {
+        if (author.__typename === 'User') {
+            router.push('ProfileUser', { id: author.id });
+        } else {
+            router.push('ProfileOrganization', { id: author.id });
+        }
+    }, [author]);
 
     return (
-        <TouchableOpacity onPress={() => router.push('ProfileOrganization', { id: author.id })} activeOpacity={0.6}>
+        <TouchableOpacity onPress={handlePress} activeOpacity={0.6}>
             <View style={styles.sender}>
-                <ZAvatar size="x-small" src={author.photo} placeholderKey={author.id} placeholderTitle={name} />
+                <ZAvatar size="x-small" src={author.photo} placeholderKey={author.id} placeholderTitle={author.name} />
                 <Text style={[styles.senderName, { color }]} allowFontScaling={false}>
                     {author.name}
                 </Text>
+                {author.__typename === 'User' && author.primaryOrganization && (
+                    <Text style={[styles.senderOrg, { color, opacity: orgOpacity }]} allowFontScaling={false}>
+                        {author.primaryOrganization.name}
+                    </Text>
+                )}
             </View>
         </TouchableOpacity>
     );
