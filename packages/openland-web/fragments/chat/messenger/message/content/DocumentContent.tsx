@@ -109,7 +109,7 @@ export const DocumentContent = React.memo(
         if (
             file.fileMetadata.mimeType &&
             (!!file.fileMetadata.mimeType.match('video') ||
-                !!file.fileMetadata.mimeType.match('octet-stream'))
+                !!file.fileMetadata.mimeType.match('mp4'))
         ) {
             return <VideoContent file={props.file} />;
         }

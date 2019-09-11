@@ -100,6 +100,11 @@ const imgContainer = css`
 
 const imgPreviewClass = css`
     position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
     max-width: 100%;
     max-height: 100%;
     z-index: 0;
@@ -115,6 +120,11 @@ const imgAppearClass = css`
     background-color: var(--backgroundPrimary);
     transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
     position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
     max-width: 100%;
     max-height: 100%;
     height: auto;
@@ -151,17 +161,20 @@ interface ModalProps {
 
 const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
+    const loaderRef = React.useRef<HTMLDivElement>(null);
     const renderTime = new Date().getTime();
 
     const onLoad = React.useCallback(() => {
         let delta = new Date().getTime() - renderTime;
-        if (imgRef.current) {
+        if (imgRef.current && loaderRef.current) {
             if (delta < 50) {
                 // show image instantly if loaded fast enough
                 imgRef.current.classList.add(imgAppearInstantClass);
+                loaderRef.current.style.opacity = '0';
             } else {
                 // animate loaded via transition
                 imgRef.current.style.opacity = '1';
+                loaderRef.current.style.opacity = '0';
             }
         }
     }, []);
@@ -220,7 +233,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                         cursor: 'default',
                     }}
                 />
-                <XLoader className={loaderStyle} />
+                <XLoader className={loaderStyle} ref={loaderRef} />
                 <img
                     ref={imgRef}
                     onLoad={onLoad}
@@ -251,16 +264,19 @@ const showImageModal = (props: ModalProps) => {
 const GifContent = React.memo(
     (props: { file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile }) => {
         const gifRef = React.useRef<HTMLVideoElement>(null);
+        const loaderRef = React.useRef<HTMLDivElement>(null);
         const renderTime = new Date().getTime();
         const onLoad = React.useCallback(() => {
             let delta = new Date().getTime() - renderTime;
-            if (gifRef.current) {
+            if (gifRef.current && loaderRef.current) {
                 if (delta < 50) {
                     // show image instantly if loaded fast enough
                     gifRef.current.classList.add(imgAppearInstantClass);
+                    loaderRef.current.style.opacity = '0';
                 } else {
                     // animate loaded via transition
                     gifRef.current.style.opacity = '1';
+                    loaderRef.current.style.opacity = '0';
                 }
             }
         }, []);
@@ -298,7 +314,7 @@ const GifContent = React.memo(
                     src={props.file.filePreview || undefined}
                     style={{ top: imgPositionTop, left: imgPositionLeft }}
                 />
-                <XLoader className={loaderStyle} />
+                <XLoader className={loaderStyle} ref={loaderRef} />
                 <video
                     ref={gifRef}
                     onLoadStart={onLoad}
@@ -344,17 +360,20 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     }
 
     const imgRef = React.useRef<HTMLImageElement>(null);
+    const loaderRef = React.useRef<HTMLDivElement>(null);
     const renderTime = new Date().getTime();
 
     const onLoad = React.useCallback(() => {
         let delta = new Date().getTime() - renderTime;
-        if (imgRef.current) {
+        if (imgRef.current && loaderRef.current) {
             if (delta < 50) {
                 // show image instantly if loaded fast enough
                 imgRef.current.classList.add(imgAppearInstantClass);
+                loaderRef.current.style.opacity = '0';
             } else {
                 // animate loaded via transition
                 imgRef.current.style.opacity = '1';
+                loaderRef.current.style.opacity = '0';
             }
         }
     }, []);
@@ -370,9 +389,6 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
 
     const layoutWidth = layout.width;
     const layoutHeight = layout.height;
-
-    const imgPositionLeft = layoutWidth < 72 ? `calc(50% - ${layoutWidth / 2}px)` : '0';
-    const imgPositionTop = layoutHeight < 72 ? `calc(50% - ${layoutHeight / 2}px)` : '0';
 
     const url = `https://ucarecdn.com/${props.file.fileId}/-/format/auto/-/`;
     const ops = `scale_crop/${layoutWidth}x${layoutHeight}/`;
@@ -424,9 +440,8 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                 width={layoutWidth}
                 height={layoutHeight}
                 src={props.file.filePreview || undefined}
-                style={{ top: imgPositionTop, left: imgPositionLeft }}
             />
-            <XLoader className={loaderStyle} />
+            <XLoader className={loaderStyle} ref={loaderRef} />
             <img
                 ref={imgRef}
                 onLoad={onLoad}
@@ -435,7 +450,6 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                 height={layoutHeight}
                 src={url + ops}
                 srcSet={url + opsRetina}
-                style={{ top: imgPositionTop, left: imgPositionLeft }}
             />
         </div>
     );

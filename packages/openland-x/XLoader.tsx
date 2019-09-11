@@ -110,21 +110,20 @@ const SvgLoader = (props: LoaderRenderProps) => {
     );
 };
 
-export const XLoader = (props: XLoaderProps) => {
-    return (
-        <div
-            className={cx(
-                base,
-                props.className,
-                props.loading !== false ? displayFlex : displayNone,
-                props.size === 'small' ? minHeightSmall : minHeightMedium,
-                props.transparentBackground ? undefined : backgroundColor,
-            )}
-        >
-            <SvgLoader size={props.size || 'medium'} color={props.color || '#C4C7CC'} />
-        </div>
-    );
-};
+export const XLoader = React.forwardRef((props: XLoaderProps, ref: React.Ref<HTMLDivElement>) => (
+    <div
+        ref={ref}
+        className={cx(
+            base,
+            props.className,
+            props.loading !== false ? displayFlex : displayNone,
+            props.size === 'small' ? minHeightSmall : minHeightMedium,
+            props.transparentBackground ? undefined : backgroundColor,
+        )}
+    >
+        <SvgLoader size={props.size || 'medium'} color={props.color || '#C4C7CC'} />
+    </div>
+));
 
 const splashWrapper = css`
     position: absolute;
