@@ -12,6 +12,7 @@ import { showBlanketModal } from './showBlanketModal';
 import { ZModalController } from './ZModal';
 import { LoaderSpinner } from './LoaderSpinner';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const styles = StyleSheet.create({
     modalWrapper: {
@@ -23,7 +24,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F0F2F5',
         borderRadius: RadiusStyles.Large,
     } as ViewStyle,
     toastContainerWithoutText: {
@@ -55,12 +55,13 @@ type ToastBuildConfig = {
 };
 
 const ToastComponent = ({ text, iconSource, IconComponent, textStyle }: ToastBuildConfig) => {
+    const theme = React.useContext(ThemeContext);
     const textIndent = !!(iconSource || IconComponent) && { marginTop: 8 };
     const toastContainerStyle = !text && styles.toastContainerWithoutText;
 
     return (
         <View style={styles.modalWrapper}>
-            <View style={[styles.toastContainer, toastContainerStyle]}>
+            <View style={[styles.toastContainer, toastContainerStyle, { backgroundColor: theme.backgroundTertiary, }]}>
                 <View style={styles.toast}>
                     {iconSource && <Image source={iconSource} />}
                     {IconComponent && IconComponent()}
