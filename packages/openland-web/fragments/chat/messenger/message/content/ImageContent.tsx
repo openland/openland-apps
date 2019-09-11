@@ -6,6 +6,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcDownload from 'openland-icons/s/ic-download-24.svg';
 import IcClose from 'openland-icons/s/ic-close-24.svg';
+import { XLoader } from 'openland-x/XLoader';
 
 const modalImgContainer = css`
     position: relative;
@@ -76,6 +77,11 @@ const imgPreviewClass = css`
     max-width: 100%;
     max-height: 100%;
     z-index: 0;
+    filter: blur(5px);
+`;
+
+const loaderStyle = css`
+    background-color: transparent;
 `;
 
 const imgAppearClass = css`
@@ -173,6 +179,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                         cursor: 'default',
                     }}
                 />
+                <XLoader className={loaderStyle} />
                 <img
                     ref={imgRef}
                     onLoad={onLoad}
@@ -368,6 +375,7 @@ export const ImageContent = React.memo(
                     src={props.file.filePreview || undefined}
                     style={{ top: imgPositionTop, left: imgPositionLeft }}
                 />
+                <XLoader className={loaderStyle} />
                 <img
                     ref={imgRef}
                     onLoad={onLoad}
