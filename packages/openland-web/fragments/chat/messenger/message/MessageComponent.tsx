@@ -320,6 +320,9 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             isOut={message.isOut}
             attachTop={message.attachTop}
             chatId={message.chatId}
+            sender={message.sender}
+            senderNameEmojify={message.senderNameEmojify}
+            date={message.date}
         />
     );
 
