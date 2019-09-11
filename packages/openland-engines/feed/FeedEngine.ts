@@ -18,7 +18,7 @@ export interface DataSourceFeedPostItem extends DataSourceItem {
     type: 'post';
     id: string;
     date: number;
-    sender: Types.UserShort;
+    author: Types.FeedPostAuthorFragment;
     text?: string;
     edited: boolean;
     reactions: Types.FeedItemFull_reactions[];
@@ -39,7 +39,7 @@ export const convertPost = (src: Types.Feed_feed_items, engine: MessengerEngine)
         key: src.id,
         id: src.id,
         date: parseInt(src.date, 10),
-        sender: src.sender,
+        author: src.author,
         text: src.message || undefined,
         reactions: src.reactions,
         attachments: src.attachments,

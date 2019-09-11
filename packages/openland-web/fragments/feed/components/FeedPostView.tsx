@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/FeedEngine';
-import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { css } from 'linaria';
 import { TextTitle1 } from 'openland-web/utils/TextStyles';
 
@@ -12,12 +11,6 @@ const wrapperClass = css`
     padding: calc((4 / 3) * 100%) 0 0;
     box-shadow: 0px 8px 24px rgba(23, 26, 31, 0.08), 0px 2px 8px rgba(23, 26, 31, 0.02);
     position: relative;
-`;
-
-const senderClass = css`
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    padding: 16px;
 `;
 
 const contentClass = css`
@@ -35,13 +28,10 @@ interface FeedPostViewProps {
 }
 
 export const FeedPostView = React.memo<FeedPostViewProps>(props => {
-    const { id, text, date, sender } = props.item;
+    const { id, text } = props.item;
 
     return (
         <div className={wrapperClass}>
-            <div className={senderClass}>
-                <MessageSenderContent sender={sender} date={date} />
-            </div>
             <div className={contentClass}>
                 <div className={TextTitle1}>{text || id}</div>
             </div>
