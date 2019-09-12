@@ -119,9 +119,9 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
     }
 
     needMore() {
-        // if (!this._innerInited) {
-        //     return;
-        // }
+        if (!this._innerInited) {
+            return;
+        }
         if (this._isPassThroughBackward) {
             this._inner.needMore();
             return;
