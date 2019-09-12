@@ -11,7 +11,9 @@ import { ZCheckmarkGroup } from 'openland-mobile/components/ZCheckmarkGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { backoff, debounce } from 'openland-y-utils/timer';
 
-const sendMutate = debounce(async (state: SettingsState) => {
+let isMountedSettingsPage = false;
+
+const sendMutate = async (state: SettingsState) => {
     const input: UpdateSettingsInput = {
         excludeMutedChats: state.excludeMutedChats,
         countUnreadChats: state.countUnreadChats,
@@ -44,6 +46,12 @@ const sendMutate = debounce(async (state: SettingsState) => {
     await backoff(async () => {
         await getClient().mutateSettingsUpdate({ input });
     });
+};
+
+const sendMutateDelayed = debounce((state: SettingsState) => {
+    if (isMountedSettingsPage) {
+        sendMutate(state);
+    }
 }, 3000);
 
 type SettingsStateKeys = 'excludeMutedChats' | 'countUnreadChats' | 'directShowNotification' | 'directSound' | 'secretChatShowNotification' | 'secretChatSound' | 'organizationChatShowNotification' | 'organizationChatSound' | 'communityChatShowNotification' | 'communityChatSound' | 'commentsShowNotification' | 'commentsSound' | 'notificationPreview';
@@ -88,7 +96,18 @@ const SettingsNotificationsContent = XMemo<PageProps>(props => {
     };
 
     React.useEffect(() => {
-        sendMutate(settings);
+        isMountedSettingsPage = true;
+        return () => { isMountedSettingsPage = false; };
+    }, []);
+
+    React.useEffect(() => {
+        sendMutateDelayed(settings);
+
+        return () => {
+            if (!isMountedSettingsPage) {
+                sendMutate(settings);
+            }
+        };
     }, [settings]);
 
     return (

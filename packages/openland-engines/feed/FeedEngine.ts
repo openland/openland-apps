@@ -11,6 +11,7 @@ import { ReactionReduced } from 'openland-engines/reactions/types';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
 import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
+import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 const log = createLogger('Engine-Feed');
 
@@ -71,9 +72,11 @@ export class FeedEngine {
             this.load();
         }, () => []);
 
-        (async () => {
-            await this.init();
-        })();
+        if (AppConfig.isNonProduction()) {
+            (async () => {
+                await this.init();
+            })();
+        }
     }
 
     private init = async () => {
