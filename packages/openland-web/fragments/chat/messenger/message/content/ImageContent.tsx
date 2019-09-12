@@ -10,7 +10,7 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcDownload from 'openland-icons/s/ic-download-24.svg';
 import IcClose from 'openland-icons/s/ic-close-24.svg';
 import { formatDateTime } from 'openland-y-utils/formatTime';
-import { TextLabel1, TextCaption } from 'openland-web/utils/TextStyles';
+import { TextCaption } from 'openland-web/utils/TextStyles';
 import { XLoader } from 'openland-x/XLoader';
 
 const modalImgContainer = css`
@@ -22,37 +22,39 @@ const modalImgContainer = css`
     height: 100%;
 `;
 
+const modalToolbarContainer = css`
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.24) 0%, rgba(0, 0, 0, 0) 100%);
+`;
+
 const modalImgContent = css`
     position: relative;
     flex-grow: 1;
     flex-shrink: 1;
+    overflow: hidden;
 `;
 
 const modalInfoContainer = css`
-    position: absolute;
-    left: 0;
-    top: 0;
     padding: 16px;
     display: flex;
     align-items: flex-end;
     pointer-events: none;
 `;
 
-const modalPrimaryText = css`
-    color: var(--backgroundPrimary);
-`;
-
 const modalSecondaryText = css`
     opacity: 0.56;
-    margin-bottom: 2px;
-    margin-left: 10px;
-    margin-right: 2px;
+    color: var(--backgroundPrimary);
+    margin-right: 12px;
 `;
 
 const modalButtonsContainer = css`
-    position: absolute;
-    top: 0;
-    right: 0;
     display: flex;
     align-items: center;
 `;
@@ -85,6 +87,7 @@ const imgContainer = css`
     background-color: #f0f2f5;
     z-index: 0;
     cursor: pointer;
+    overflow: hidden;
 
     &:after {
         content: '';
@@ -181,27 +184,28 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
 
     return (
         <div className={modalImgContainer} onClick={props.hide}>
-            {(props.sender || props.senderNameEmojify) &&
-                props.date && (
-                    <div className={modalInfoContainer}>
-                        <div className={cx(TextLabel1, modalPrimaryText)}>Photo 1 of 1</div>
-                        <div className={cx(TextCaption, modalPrimaryText, modalSecondaryText)}>
-                            {props.senderNameEmojify || props.sender ? props.sender!!.name : ''}
+            <div className={modalToolbarContainer}>
+                {(props.sender || props.senderNameEmojify) &&
+                    props.date && (
+                        <div className={modalInfoContainer}>
+                            <div className={cx(TextCaption, modalSecondaryText)}>
+                                {props.senderNameEmojify || props.sender ? props.sender!!.name : ''}
+                            </div>
+                            <div className={cx(TextCaption, modalSecondaryText)}>
+                                {formatDateTime(props.date)}
+                            </div>
                         </div>
-                        <div className={cx(TextCaption, modalPrimaryText, modalSecondaryText)}>
-                            {formatDateTime(props.date)}
-                        </div>
+                    )}
+                <div className={modalButtonsContainer} onClick={e => e.stopPropagation()}>
+                    <a
+                        className={modalButtonStyle}
+                        href={'https://ucarecdn.com/' + props.fileId + '/-/preview/-/inline/no/'}
+                    >
+                        <UIcon icon={<IcDownload />} color="var(--backgroundPrimary)" />
+                    </a>
+                    <div className={modalButtonStyle} onClick={props.hide}>
+                        <UIcon icon={<IcClose />} color="var(--backgroundPrimary)" />
                     </div>
-                )}
-            <div className={modalButtonsContainer} onClick={e => e.stopPropagation()}>
-                <a
-                    className={modalButtonStyle}
-                    href={'https://ucarecdn.com/' + props.fileId + '/-/preview/-/inline/no/'}
-                >
-                    <UIcon icon={<IcDownload />} color="var(--backgroundPrimary)" />
-                </a>
-                <div className={modalButtonStyle} onClick={props.hide}>
-                    <UIcon icon={<IcClose />} color="var(--backgroundPrimary)" />
                 </div>
             </div>
             <div
