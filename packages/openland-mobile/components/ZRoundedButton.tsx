@@ -62,10 +62,8 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
     const [actionInProgress, setActionInProgress] = React.useState(props.loading || false);
 
     React.useEffect(() => {
-        if (props.loading && !actionInProgress) {
-            setActionInProgress(props.loading);
-        }
-    }, [props.loading, actionInProgress]);
+        setActionInProgress(!!props.loading);
+    }, [props.loading]);
 
     const theme = React.useContext(ThemeContext);
     const handlePress = React.useCallback(async () => {

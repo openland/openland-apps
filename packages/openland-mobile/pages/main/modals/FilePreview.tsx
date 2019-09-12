@@ -5,13 +5,11 @@ import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import Share from 'react-native-share';
 import { PageProps } from '../../../components/PageProps';
-// import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZRoundedButton } from '../../../components/ZRoundedButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { formatBytes } from '../../../utils/formatBytes';
 import { DownloadState } from '../../../files/DownloadManagerInterface';
-// import { ZCircularLoader } from 'openland-mobile/components/ZCircularLoader';
 import { PdfPreview } from './PdfPreview';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -152,13 +150,8 @@ class FilePreviewComponent extends React.PureComponent<PageProps & { theme: Them
                 <TouchableWithoutFeedback onPress={this.handleOpen}>
                     <View style={{ alignItems: 'center', justifyContent: 'center', flexGrow: 1, marginTop: 35 }}>
                         <Preview ext={config.name.split('.')[1] || ''} />
-                        {/* <Image source={require('assets/img-file.png')} style={{ width: 50, height: 60, tintColor: theme.foregroundQuaternary }} /> */}
                         <Text style={[styles.name, { color: theme.foregroundPrimary }]}>{config.name}</Text>
                         <Text style={[styles.size, { color: theme.foregroundSecondary }]}>{formatBytes(config.size)}</Text>
-                        <View height={46} justifyContent="center" marginTop={5}>
-                            {/* {!this.state.path && <ZCircularLoader visible={!this.state.path} progress={(this.state.completed ? 1 : (this.state.downloadState ? this.state.downloadState.progress || 0 : 0))} />} */}
-                            {!this.state.path && <LoaderSpinner />}
-                        </View>
                     </View>
                 </TouchableWithoutFeedback>
 
@@ -167,6 +160,7 @@ class FilePreviewComponent extends React.PureComponent<PageProps & { theme: Them
                         title="Open" 
                         size="large"
                         onPress={this.handleOpen} 
+                        loading={!this.state.path}
                     />
                 </View>
             </View>
