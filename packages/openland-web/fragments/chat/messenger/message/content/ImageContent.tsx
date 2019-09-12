@@ -31,7 +31,12 @@ const modalToolbarContainer = css`
     align-items: center;
     justify-content: space-between;
     z-index: 1;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.24) 0%, rgba(0, 0, 0, 0) 100%);
+    transition: 200ms opacity ease;
+    opacity: 0.56;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0) 100%);
+    :hover{
+        opacity: 1;
+    };
 `;
 
 const modalImgContent = css`
@@ -49,7 +54,6 @@ const modalInfoContainer = css`
 `;
 
 const modalSecondaryText = css`
-    opacity: 0.56;
     color: var(--backgroundPrimary);
     margin-right: 12px;
 `;
@@ -66,7 +70,7 @@ const modalButtonStyle = css`
     flex-shrink: 0;
     width: 48px;
     height: 48px;
-    opacity: 0.56;
+    opacity: 0.72;
     cursor: pointer;
     &:hover {
         opacity: 1;
