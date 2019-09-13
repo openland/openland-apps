@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { MessagePage } from 'openland-web/components/MessagePage';
 import { withAppBase } from 'openland-web/components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { AuthRouter } from 'openland-web/pages/root/AuthRouter';
