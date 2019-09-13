@@ -45,9 +45,10 @@ const Unicorn = React.memo(() => {
 
 export default React.memo(() => {
     const userInfo = React.useContext(UserInfoContext);
-    let loggedIn = userInfo && userInfo.isLoggedIn;
     // invites can be rendered before auth, but we want to keep them in one (unicorn) page to prevent page reload
-    if (!loggedIn && (window.location.pathname.includes('/join') || window.location.pathname.includes('/invite'))) {
+    if (
+        (userInfo && (!userInfo.isLoggedIn || (userInfo.isProfileCreated && !userInfo.isCompleted))) &&
+        (window.location.pathname.includes('/join') || window.location.pathname.includes('/invite'))) {
         return <ResolveInviteComponent />;
     }
     return (

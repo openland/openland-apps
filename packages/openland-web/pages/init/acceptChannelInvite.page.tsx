@@ -36,9 +36,7 @@ export default withAppBase('Room Invite', () => {
                 title={InitTexts.invite.pageTitle}
                 titleSocial={InitTexts.socialPageTitle}
             />
-            <MessagePage>
-                <AcceptInviteComponent mutation={join} />
-            </MessagePage>
+            <AcceptInviteComponent mutation={join} />
         </AuthRouter>
     );
 });
