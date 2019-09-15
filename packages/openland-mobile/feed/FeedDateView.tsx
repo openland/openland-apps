@@ -25,7 +25,7 @@ export const FeedDateView = React.memo((props: FeedDateViewProps) => {
 
     return (
         <View style={styles.box}>
-            <Text style={[styles.text, { color: theme.foregroundPrimary }]}>
+            <Text style={[styles.text, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
                 {label}
             </Text>
         </View>
