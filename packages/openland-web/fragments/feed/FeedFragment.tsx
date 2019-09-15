@@ -10,8 +10,9 @@ import { MessengerEmptyFragment } from 'openland-web/fragments/chat/MessengerEmp
 import { DataSource } from 'openland-y-utils/DataSource';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { css } from 'linaria';
-import { FeedEngine, DataSourceFeedItem } from 'openland-engines/feed/FeedEngine';
+import { FeedEngine } from 'openland-engines/feed/FeedEngine';
 import { FeedPostView } from './components/FeedPostView';
+import { DataSourceFeedItem } from 'openland-engines/feed/types';
 
 const wrapperClass = css`
     padding: 0 16px 32px;

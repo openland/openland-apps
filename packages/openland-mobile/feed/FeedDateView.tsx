@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { DataSourceFeedDateItem } from 'openland-engines/feed/FeedEngine';
+import { DataSourceFeedDateItem } from 'openland-engines/feed/types';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 

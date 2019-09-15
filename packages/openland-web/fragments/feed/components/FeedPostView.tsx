@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataSourceFeedPostItem } from 'openland-engines/feed/FeedEngine';
+import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
 import { css } from 'linaria';
 import { TextTitle1 } from 'openland-web/utils/TextStyles';
 

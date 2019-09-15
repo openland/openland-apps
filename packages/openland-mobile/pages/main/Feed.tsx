@@ -3,7 +3,7 @@ import { withApp } from '../../components/withApp';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { FeedEngine, DataSourceFeedItem } from 'openland-engines/feed/FeedEngine';
+import { FeedEngine } from 'openland-engines/feed/FeedEngine';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { NON_PRODUCTION } from '../Init';
@@ -15,6 +15,7 @@ import { GlobalSearch } from './components/globalSearch/GlobalSearch';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { SRouter } from 'react-native-s/SRouter';
 import { FeedDateView } from 'openland-mobile/feed/FeedDateView';
+import { DataSourceFeedItem } from 'openland-engines/feed/types';
 
 interface FeedPageProps {
     engine: FeedEngine;

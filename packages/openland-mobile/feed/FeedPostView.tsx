@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { DataSourceFeedPostItem } from 'openland-engines/feed/FeedEngine';
+import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Dimensions, View, Text, StyleSheet, ViewStyle, ScrollView } from 'react-native';
 import { FeedItemShadow } from './FeedItemShadow';
