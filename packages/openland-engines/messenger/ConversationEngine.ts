@@ -153,7 +153,7 @@ function isSameIntDate(a1: number, b1: number) {
     return (a2.getFullYear() === b2.getFullYear() && a2.getMonth() === b2.getMonth() && a2.getDate() === b2.getDate());
 }
 
-function isSameDate(a: string, b: string) {
+export function isSameDate(a: string, b: string) {
     let a1 = parseInt(a, 10);
     let b1 = parseInt(b, 10);
     return isSameIntDate(a1, b1);

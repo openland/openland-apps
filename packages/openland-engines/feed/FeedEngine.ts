@@ -12,6 +12,7 @@ import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
 import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
+import { isSameDate } from 'openland-engines/messenger/ConversationEngine';
 
 const log = createLogger('Engine-Feed');
 
@@ -32,9 +33,14 @@ export interface DataSourceFeedPostItem extends DataSourceItem {
     reactionsLabel: string;
 }
 
-export type DataSourceFeedItem = DataSourceFeedPostItem;
+export interface DataSourceFeedDateItem extends DataSourceItem {
+    type: 'date';
+    label: string;
+}
 
-export const convertPost = (src: Types.Feed_feed_items, engine: MessengerEngine): DataSourceFeedPostItem => {
+export type DataSourceFeedItem = DataSourceFeedPostItem | DataSourceFeedDateItem;
+
+const convertPost = (src: Types.Feed_feed_items, engine: MessengerEngine): DataSourceFeedPostItem => {
     return {
         type: 'post',
         key: src.id,
@@ -52,6 +58,50 @@ export const convertPost = (src: Types.Feed_feed_items, engine: MessengerEngine)
         reactionsReduced: reduceReactions(src.reactions, engine.user.id),
         reactionsLabel: getReactionsLabel(src.reactions, engine.user.id),
     };
+};
+
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const convertDate = (src: string): DataSourceFeedDateItem => {
+    const date = new Date(parseInt(src, 10));
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+
+    let now = new Date();
+    let label = 'Today';
+    if (now.getFullYear() === year) {
+        if (now.getMonth() === month && now.getDate() - 1 === day) {
+            label = 'Yesterday';
+        } else if (now.getMonth() !== month || now.getDate() !== day) {
+            label = months[month] + ' ' + day;
+        }
+    } else {
+        label = year + ', ' + months[month] + ' ' + date;
+    }
+
+    return {
+        type: 'date',
+        key: `date-${year}-${month}-${day}`,
+        label
+    };
+};
+
+const convertDSitems = (items: Types.Feed_feed_items[], engine: MessengerEngine): DataSourceFeedItem[] => {
+    const dsItems: DataSourceFeedItem[] = [];
+    let prevDate: string | undefined;
+
+    items.map((i) => {
+        if (prevDate && !isSameDate(prevDate, i.date)) {
+            dsItems.push(convertDate(i.date));
+        }
+
+        const converted = convertPost(i, engine);
+        dsItems.push(converted);
+
+        prevDate = i.date;
+    });
+
+    return dsItems;
 };
 
 export class FeedEngine {
@@ -96,15 +146,7 @@ export class FeedEngine {
         this.lastCursor = initialFeed.cursor;
         this.fullyLoaded = typeof this.lastCursor !== 'string';
 
-        const dsItems: DataSourceFeedItem[] = [];
-
-        initialFeed.items.map((i) => {
-            if (i.__typename === 'FeedPost') {
-                const converted = convertPost(i, this.engine);
-
-                dsItems.push(converted);
-            }
-        });
+        const dsItems = convertDSitems(initialFeed.items, this.engine);
 
         this.watcher = new SequenceModernWatcher('feed', this.engine.client.subscribeFeedUpdates(), this.engine.client.client, this.handleEvent, undefined, undefined, undefined, undefined);
 
@@ -128,18 +170,12 @@ export class FeedEngine {
         this.fullyLoaded = typeof this.lastCursor !== 'string';
         this.loading = false;
 
-        const dsItems: DataSourceFeedItem[] = [];
-
-        loaded.items.map((i) => {
-            const converted = convertPost(i, this.engine);
-
-            dsItems.push(converted);
-        });
+        const dsItems = convertDSitems(loaded.items, this.engine);
 
         this.dataSource.loadedMore(dsItems, this.fullyLoaded);
     }
 
-    private handleEvent = async (event: Types.FeedUpdateFragment) => {
+    private handleEvent = (event: Types.FeedUpdateFragment) => {
         log.log('Event Recieved: ' + event.__typename);
 
         if (event.__typename === 'FeedItemReceived') {
@@ -150,7 +186,7 @@ export class FeedEngine {
             }
 
             if (converted) {
-                await this.dataSource.addItem(converted, 0);
+                this.dataSource.addItem(converted, 0);
             }
 
             return;
@@ -162,8 +198,8 @@ export class FeedEngine {
             }
 
             if (converted) {
-                if (await this.dataSource.hasItem(converted.key)) {
-                    await this.dataSource.updateItem(converted);
+                if (this.dataSource.hasItem(converted.key)) {
+                    this.dataSource.updateItem(converted);
                 }
             }
 

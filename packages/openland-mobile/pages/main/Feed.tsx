@@ -14,6 +14,7 @@ import { DataSourceRender } from 'openland-mobile/components/DataSourceRender';
 import { GlobalSearch } from './components/globalSearch/GlobalSearch';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { SRouter } from 'react-native-s/SRouter';
+import { FeedDateView } from 'openland-mobile/feed/FeedDateView';
 
 interface FeedPageProps {
     engine: FeedEngine;
@@ -54,6 +55,10 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
     private renderItem = (data: { item: DataSourceFeedItem }) => {
         if (data.item.type === 'post') {
             return <FeedPostView item={data.item} scrollRef={this.scrollRef} />;
+        }
+
+        if (data.item.type === 'date') {
+            return <FeedDateView item={data.item} />;
         }
 
         return <View />;
