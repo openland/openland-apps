@@ -257,7 +257,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                     opacity: Animated.multiply(progressLinear, barOpacity)
                 }}
             >
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 4 }}>
                     <SCloseButton tintColor={theme.foregroundContrast} onPress={handleCloseClick} />
                     <SShareButton tintColor={theme.foregroundContrast} onPress={handleShareClick} />
                 </View>
