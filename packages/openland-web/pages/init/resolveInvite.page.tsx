@@ -6,12 +6,15 @@ import { SignInInvite } from './components/signChannelInvite';
 import { JoinFragment } from './JoinFragment';
 import { AppJoinComponent } from './components/AppJoinComponent';
 import { XLoader } from 'openland-x/XLoader';
+import * as Cookie from 'js-cookie';
 
 export const ResolveInviteComponent = () => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
-    const { inviteKey } = router.routeQuery;
+    let { inviteKey } = router.routeQuery;
+
+    inviteKey = Cookie.get('x-openland-app-invite') || Cookie.get('x-openland-org-invite') || inviteKey;
 
     const resolvedInvite = client.useWithoutLoaderResolvedInvite({
         key: inviteKey,

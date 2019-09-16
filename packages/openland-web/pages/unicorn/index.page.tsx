@@ -15,6 +15,7 @@ import ProfileActiveIcon from './navigation/icon_profile_active.svg';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { ResolveInviteComponent } from '../init/resolveInvite.page';
 import { AuthRouter } from '../root/AuthRouter';
+import * as Cookie from 'js-cookie';
 
 const Unicorn = React.memo(() => {
     const router = React.useMemo(() => new TabRouter([{
@@ -44,11 +45,15 @@ const Unicorn = React.memo(() => {
 });
 
 export default React.memo(() => {
-    const userInfo = React.useContext(UserInfoContext);
     // invites can be rendered before auth, but we want to keep them in one (unicorn) page to prevent page reload
+    const userInfo = React.useContext(UserInfoContext);
     if (
-        (userInfo && (!userInfo.isLoggedIn || (userInfo.isProfileCreated && !userInfo.isCompleted))) &&
-        (window.location.pathname.includes('/join') || window.location.pathname.includes('/invite'))) {
+        (userInfo && (userInfo.isProfileCreated && !userInfo.isCompleted)) &&
+        (
+            (window.location.pathname.includes('/join') || window.location.pathname.includes('/invite')) ||
+            (Cookie.get('x-openland-app-invite') || Cookie.get('x-openland-org-invite'))
+        )
+    ) {
         return <ResolveInviteComponent />;
     }
     return (

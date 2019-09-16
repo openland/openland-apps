@@ -16,51 +16,49 @@ const textAlignClassName = css`
 const AcceptInvite = ({
     inviter,
     onAcceptInvite,
-    isMobile,
 }: {
-    signPath: string;
     inviter: { photo: string | null; name: string; id: string };
     onAcceptInvite: (event: React.MouseEvent<any, MouseEvent>) => void;
     isMobile: boolean;
 }) => (
-    <XView width="100%" backgroundColor="white" position={'relative'} justifyContent="center">
-        <XView
-            position="absolute"
-            top={56}
-            alignSelf="center"
-            alignItems="center"
-            flexDirection="row"
-        >
-            <XAvatar2
-                size={32}
-                id={inviter.id}
-                title={inviter.name}
-                src={inviter.photo || undefined}
-            />
-            <XView fontSize={16} color="#000000" marginLeft={12}>
-                {inviter.name + ' invites you to join'}
-            </XView>
-        </XView>
-        <XView alignSelf="center" alignItems="center">
-            <XView marginBottom={24}>
-                <LogoBig />
-            </XView>
-
-            <XView marginBottom={40}>
-                <XView maxWidth={575} paddingHorizontal={20} fontSize={18} lineHeight={1.67}>
-                    <p className={textAlignClassName}>
-                        An invitation-only community <br /> for top startup founders, investors, and
-                        engineers.
-                    </p>
+        <XView width="100%" backgroundColor="white" position={'relative'} justifyContent="center">
+            <XView
+                position="absolute"
+                top={56}
+                alignSelf="center"
+                alignItems="center"
+                flexDirection="row"
+            >
+                <XAvatar2
+                    size={32}
+                    id={inviter.id}
+                    title={inviter.name}
+                    src={inviter.photo || undefined}
+                />
+                <XView fontSize={16} color="#000000" marginLeft={12}>
+                    {inviter.name + ' invites you to join'}
                 </XView>
             </XView>
-            <XButton text="Accept invite" style="primary" size="large" onClick={onAcceptInvite} />
+            <XView alignSelf="center" alignItems="center">
+                <XView marginBottom={24}>
+                    <LogoBig />
+                </XView>
+
+                <XView marginBottom={40}>
+                    <XView maxWidth={575} paddingHorizontal={20} fontSize={18} lineHeight={1.67}>
+                        <p className={textAlignClassName}>
+                            An invitation-only community <br /> for top startup founders, investors, and
+                            engineers.
+                    </p>
+                    </XView>
+                </XView>
+                <XButton text="Accept invite" style="primary" size="large" onClick={onAcceptInvite} />
+            </XView>
+            <XView position="absolute" bottom={20} fontSize={14} opacity={0.5} alignSelf={'center'}>
+                © 2019 Openland
         </XView>
-        <XView position="absolute" bottom={20} fontSize={14} opacity={0.5} alignSelf={'center'}>
-            © 2019 Openland
         </XView>
-    </XView>
-);
+    );
 
 export const AcceptInvitePage = (props: {
     variables: { inviteKey: string };
@@ -97,14 +95,11 @@ export const AcceptInvitePage = (props: {
         return <XPageRedirect path={`/signin/join/${props.variables.inviteKey}`} />;
     }
 
-    let signPath = '/signup?redirect=' + encodeURIComponent((props as any).redirect);
-
     if (!inviter) {
         return <XLoader loading={true} />;
     }
     return (
         <AcceptInvite
-            signPath={signPath}
             inviter={inviter}
             onAcceptInvite={props.onAcceptInvite}
             isMobile={props.isMobile}
