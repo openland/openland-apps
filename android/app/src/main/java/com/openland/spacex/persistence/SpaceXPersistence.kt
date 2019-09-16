@@ -2,6 +2,9 @@ package com.openland.spacex.persistence
 
 import android.content.Context
 import android.util.Log
+import com.openland.lmdb.LMDB
+import com.openland.lmdb.LMDBDatabase
+import com.openland.lmdb.LMDBEnvironment
 import com.openland.spacex.store.Record
 import com.openland.spacex.store.RecordSet
 import com.openland.spacex.store.parseRecord
@@ -56,6 +59,57 @@ class SnappyDBPersistenceProvider(val context: Context, val name: String) : Pers
     }
 }
 
+class LMDBPersistenceProvider(val context: Context, val name: String) : PersistenceProvider {
+
+    private val env: LMDBEnvironment = LMDB.createEnvironment(context.filesDir.absolutePath + "/" + name + "-v2.mdb")
+    private val db: LMDBDatabase
+
+    init {
+        val tx = env.startTransaction()
+        db = tx.openDatabase("persistence")
+        tx.commit()
+    }
+
+    override fun saveRecords(records: Map<String, String>) {
+        Log.d("SpaceX-LMDB", "Saving records")
+        val start = System.currentTimeMillis()
+        val tx = env.startTransaction()
+        try {
+            for (kv in records) {
+                db.put(tx, kv.key, kv.value)
+            }
+            tx.commit()
+        } catch (e: Throwable) {
+            tx.abort()
+            throw e
+        }
+        Log.d("SpaceX-LMDB", records.size.toString() + " written in " + (System.currentTimeMillis() - start) + " ms")
+    }
+
+    override fun loadRecords(keys: Set<String>): Map<String, String> {
+        Log.d("SpaceX-LMDB", "Loading records: " + LMDB.testString())
+        val start = System.currentTimeMillis()
+        val res = mutableMapOf<String, String>()
+        val tx = env.startTransaction(true)
+        Log.d("SpaceX-LMDB", "Loading records1")
+        try {
+            for (k in keys) {
+                Log.d("SpaceX-LMDB", "Get: $k")
+                val ex = db.get(tx, k)
+                if (ex != null) {
+                    res[k] = ex
+                }
+            }
+        } finally {
+            Log.d("SpaceX-LMDB", "Abort")
+            tx.abort()
+        }
+        Log.d("SpaceX-LMDB", res.size.toString() + " loaded in " + (System.currentTimeMillis() - start) + " ms")
+        return res
+    }
+
+}
+
 
 class SpaceXPersistence(val context: Context, val name: String?) {
 
@@ -67,7 +121,7 @@ class SpaceXPersistence(val context: Context, val name: String?) {
             SynchronousQueue<Runnable>()
     )
 
-    private val persistenceProvider = if (name != null) SnappyDBPersistenceProvider(context, name) else EmptyPersistenceProvider()
+    private val persistenceProvider = if (name != null) LMDBPersistenceProvider(context, name) else EmptyPersistenceProvider()
 
     fun saveRecords(records: RecordSet, queue: DispatchQueue, callback: () -> Unit) {
         writerExecutor.submit {

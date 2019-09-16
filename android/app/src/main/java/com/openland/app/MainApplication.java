@@ -7,6 +7,7 @@ import com.facebook.react.ReactApplication;
 import org.wonday.pdf.RCTPdfView;
 import com.ocetnik.timer.BackgroundTimerPackage;
 import com.mkuczera.RNReactNativeHapticFeedbackPackage;
+import com.openland.lmdb.LMDB;
 import com.zxcpoiu.incallmanager.InCallManagerPackage;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
@@ -111,6 +112,7 @@ public class MainApplication extends Application implements ShareApplication, Re
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
         Fresco.initialize(this);
+        LMDB.INSTANCE.loadLibrary(this);
 
         // App Center
         AppCenterReactNativeShared.configureAppCenter(this);
