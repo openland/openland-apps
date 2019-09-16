@@ -430,7 +430,7 @@ export class ConversationEngine implements MessageSendHandler {
         // Data Source
         let dsItems: (DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem)[] = [];
         let prevDate: string | undefined;
-        if (this.dataSource.getSize() > 0) {
+        if (this.dataSource.getSize() > 0 && direction === 'backward') {
             prevDate = (this.dataSource.getAt(this.dataSource.getSize() - 1) as DataSourceMessageItem).date + '';
         }
         let sourceFragments = [...loaded.gammaMessages!.messages];
@@ -451,13 +451,22 @@ export class ConversationEngine implements MessageSendHandler {
             dsItems.push(convertMessage(sourceFragments[i] as any, this.conversationId, this.engine, sourceFragments[i - 1] as any, sourceFragments[i + 1] as any));
             prevDate = sourceFragments[i].date;
         }
-        if (this.historyFullyLoaded && prevDate) {
-            let d = new Date(parseInt(prevDate, 10));
-            dsItems.push(createDateDataSourceItem(d));
-        }
+
         if (direction === 'backward') {
+            if (this.historyFullyLoaded && prevDate) {
+                let d = new Date(parseInt(prevDate, 10));
+                dsItems.push(createDateDataSourceItem(d));
+            }
             this.dataSource.loadedMore(dsItems, !!this.historyFullyLoaded);
         } else {
+            if (this.dataSource.getSize()) {
+                let lastDate = (this.dataSource.getAt(0) as DataSourceMessageItem).date + '';
+                if (prevDate && !isSameDate(prevDate, lastDate)) {
+                    let d = new Date(parseInt(prevDate, 10));
+                    dsItems.push(createDateDataSourceItem(d));
+                }
+            }
+
             this.dataSource.loadedMoreForward(dsItems, !!this.forwardFullyLoaded);
             if (!this.watcher && this.forwardFullyLoaded) {
                 this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state: loaded.state.state }), this.engine.client.client, this.updateHandler, undefined, { chatId: this.conversationId }, loaded.state.state);
