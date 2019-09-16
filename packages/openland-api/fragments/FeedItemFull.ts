@@ -1,13 +1,25 @@
 import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
+import { OrganizationShort } from '../fragments/OrganizationShort';
+
+export const FeedPostAuthorFragment = gql`
+    fragment FeedPostAuthorFragment on FeedPostAuthor {
+        ... on User {
+            ...UserShort
+        }
+        ... on Organization {
+            ...OrganizationShort
+        }
+    }
+`;
 
 export const FeedItemFull = gql`
     fragment FeedItemFull on FeedItem {
         ... on FeedPost {
             id
             date
-            sender {
-                ...UserShort
+            author {
+                ...FeedPostAuthorFragment
             }
             edited
             isMentioned
@@ -122,5 +134,7 @@ export const FeedItemFull = gql`
         }
     }
 
+    ${FeedPostAuthorFragment}
     ${UserShort}
+    ${OrganizationShort}
 `;

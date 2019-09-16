@@ -4,22 +4,20 @@ import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { RoomInviteInfo_invite } from 'openland-api/Types';
-import { Text, TextStyle, View, StyleSheet, Image, ImageStyle, Dimensions } from 'react-native';
-import { FontStyles } from 'openland-mobile/styles/AppStyles';
+import { Text, TextStyle, View, StyleSheet, Image, ImageStyle, Dimensions, ViewStyle, Platform } from 'react-native';
+import { FontStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
 const styles = StyleSheet.create({
     label: {
-        opacity: 0.8,
+        ...TextStyles.Subhead,
         textAlign: 'center',
-        fontSize: 14,
-        lineHeight: 20,
     } as TextStyle,
 
     userName: {
@@ -27,17 +25,13 @@ const styles = StyleSheet.create({
     } as TextStyle,
 
     title: {
-        fontSize: 20,
-        lineHeight: 28,
-        marginTop: 20,
+        ...TextStyles.Title2,
+        marginTop: 24,
         textAlign: 'center',
-        fontWeight: FontStyles.Weight.Medium,
     } as TextStyle,
 
     members: {
-        fontSize: 14,
-        lineHeight: 18,
-        opacity: 0.6,
+        ...TextStyles.Subhead,
         marginTop: 5,
     } as TextStyle,
 
@@ -53,65 +47,69 @@ const styles = StyleSheet.create({
         lineHeight: 22,
         marginTop: 15,
         textAlign: 'center',
-    } as TextStyle
+    } as TextStyle,
+    buttonWrapper: {
+        paddingHorizontal: 16
+    } as ViewStyle
 });
 
 const MIN_MEMBERS_COUNT_TO_SHOW = 10;
 
 const GroupInviteContent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
+    const area = React.useContext(ASSafeAreaContext);
+    const paddingBottom = Platform.OS === 'ios' ? (area.bottom || 16) : area.bottom + 16;
 
     let invite: RoomInviteInfo_invite = props.router.params.invite;
     let inviteId = props.router.params.inviteId;
     let room = invite.room;
     let user = invite.invitedByUser;
-    let screenHeight = Dimensions.get('screen').height;
+    let screenWidth = Dimensions.get('screen').width;
 
     let showMembersCount = room.membersCount ? room.membersCount >= MIN_MEMBERS_COUNT_TO_SHOW : false;
 
     return (
-        <ASSafeAreaView flexGrow={1}>
+        <View style={{ flexGrow: 1, paddingTop: area.top, paddingBottom }}>
             <View paddingHorizontal={32} flexGrow={1}>
-                <View paddingTop={20}>
-                    <Text style={[styles.label, { color: theme.foregroundPrimary }]}>
+                <View position="absolute" top={16} left={0} width={screenWidth}>
+                    <Text style={[styles.label, { color: theme.foregroundSecondary }]}>
                         <Text style={styles.userName}>{user.name}</Text> invites you to join chat
                     </Text>
                 </View>
-                <View paddingTop={screenHeight <= 640 ? 60 : 100} alignItems="center" flexDirection="column">
-                    <ZAvatar size="x-large" src={room.photo} placeholderKey={room.id} placeholderTitle={room.title} />
+           
+                <View flexGrow={1} justifyContent="center" alignItems="center" flexDirection="column" marginTop={-15}>
+                    <ZAvatar size="xx-large" src={room.photo} placeholderKey={room.id} placeholderTitle={room.title} />
                     <Text style={[styles.title, { color: theme.foregroundPrimary }]}>{room.title}</Text>
-
                     <View flexDirection="row">
                         {showMembersCount && (<Image source={require('assets/ic-members-16.png')} style={[styles.membersIcon, { tintColor: theme.foregroundPrimary }]} />)}
-                        <Text style={[styles.members, { color: theme.foregroundPrimary }]}>
+                        <Text style={[styles.members, { color: theme.foregroundTertiary }]}>
                             {showMembersCount ? (room.membersCount + ' members') : 'New ' + (room.isChannel ? 'channel' : 'group')}
                         </Text>
                     </View>
 
-                    {typeof room.description === 'string' && (
+                    {!!room.description && (
                         <Text style={[styles.description, { color: theme.foregroundPrimary }]}>{room.description}</Text>
                     )}
                 </View>
-
-                <View position="absolute" left={0} right={0} bottom={46} alignItems="center">
-                    <ZRoundedButton
-                        size="large"
-                        title="Accept invitation"
-                        onPress={async () => {
-                            startLoader();
-                            try {
-                                await getClient().mutateRoomJoinInviteLink({ invite: inviteId });
-
-                                props.router.pushAndReset('Conversation', { id: room.id });
-                            } catch (e) {
-                                Alert.alert(e.message);
-                            }
-                            stopLoader();
-                        }}
-                    />
-                </View>
             </View>
-        </ASSafeAreaView>
+            <View style={styles.buttonWrapper}>
+                <ZRoundedButton
+                    size="large"
+                    title="Accept invitation"
+                    onPress={async () => {
+                        startLoader();
+                        try {
+                            await getClient().mutateRoomJoinInviteLink({ invite: inviteId });
+
+                            props.router.pushAndReset('Conversation', { id: room.id });
+                        } catch (e) {
+                            Alert.alert(e.message);
+                        }
+                        stopLoader();
+                    }}
+                />
+            </View>
+        </View>
     );
 });
 

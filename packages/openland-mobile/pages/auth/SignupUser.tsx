@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TextStyle } from 'react-native';
+import { StyleSheet, TextStyle, View } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
@@ -10,7 +10,6 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZInput } from 'openland-mobile/components/ZInput';
-import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
@@ -62,20 +61,18 @@ const SignupUserContent = XMemo<PageProps>((props) => {
         <>
             <SHeaderButton title="Next" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
-                <ZListGroup header={null} alignItems="center">
+                <View style={{ marginTop: 16, marginBottom: 32, alignItems: 'center' }}>
                     <ZAvatarPicker field={photoField} initialUrl={prefill && prefill.picture || undefined} size="xx-large" />
-                </ZListGroup>
-                <ZListGroup header={null}>
-                    <ZInput
-                        field={firstNameField}
-                        placeholder="First name"
-                    />
-                    <ZInput
-                        field={lastNameField}
-                        placeholder="Last name"
-                        description="Please, provide your name. This information is part of your public profile."
-                    />
-                </ZListGroup>
+                </View>
+                <ZInput
+                    field={firstNameField}
+                    placeholder="First name"
+                />
+                <ZInput
+                    field={lastNameField}
+                    placeholder="Last name"
+                    description="Please, provide your name. This information is part of your public profile."
+                />
             </KeyboardAvoidingScrollView>
         </>
     );

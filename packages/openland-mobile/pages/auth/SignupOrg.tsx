@@ -6,13 +6,13 @@ import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZInput } from 'openland-mobile/components/ZInput';
-import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { SScrollView } from 'react-native-s/SScrollView';
+import { View } from 'react-native';
 
 const SignupOrgComponent = XMemo<PageProps>((props) => {
     const form = useForm();
@@ -47,18 +47,15 @@ const SignupOrgComponent = XMemo<PageProps>((props) => {
             <SHeader title="New organization" />
             <SHeaderButton key={'btn-' + canSkip} title={canSkip ? 'Skip' : 'Next'} onPress={handleSave} />
             <SScrollView>
-                <ZListGroup header={null} alignItems="center">
+                <View style={{ marginTop: 16, marginBottom: 32, alignItems: 'center' }}>
                     <ZAvatarPicker field={photoField} size="xx-large" />
-                </ZListGroup>
-
-                <ZListGroup header={null}>
-                    <ZInput
-                        placeholder="Name"
-                        autoFocus={true}
-                        description="Please, provide organization name and optional logo"
-                        field={nameField}
-                    />
-                </ZListGroup>
+                </View>
+                <ZInput
+                    placeholder="Name"
+                    autoFocus={true}
+                    description="Please, provide organization name and optional logo"
+                    field={nameField}
+                />
             </SScrollView>
         </ZTrack>
     );

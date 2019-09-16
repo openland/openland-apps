@@ -220,6 +220,7 @@ export const CommentEntryFragmentFragment = typedFragment<Types.CommentEntryFrag
 export const CommunitySearchFragment = typedFragment<Types.CommunitySearch>(CommunitySearch.CommunitySearch);
 export const ConferenceFullFragment = typedFragment<Types.ConferenceFull>(ConferenceFull.ConferenceFull);
 export const ConferenceShortFragment = typedFragment<Types.ConferenceShort>(ConferenceFull.ConferenceShort);
+export const FeedPostAuthorFragmentFragment = typedFragment<Types.FeedPostAuthorFragment>(FeedItemFull.FeedPostAuthorFragment);
 export const FeedItemFullFragment = typedFragment<Types.FeedItemFull>(FeedItemFull.FeedItemFull);
 export const DaialogListMessageFragment = typedFragment<Types.DaialogListMessage>(Message.DaialogListMessage);
 export const TinyMessageFragment = typedFragment<Types.TinyMessage>(Message.TinyMessage);

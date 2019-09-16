@@ -51,7 +51,7 @@ const ZAvatarInner = XMemo<ZAvatarProps>((props) => {
                 </View>
                 {props.online && (
                     <View position="absolute" width={dotSize} height={dotSize} bottom={dotPosition} right={dotPosition} borderRadius={dotSize / 2} padding={dotBorderWidth} backgroundColor={theme.backgroundPrimary}>
-                        <View flexGrow={1} borderRadius={(dotSize - (dotBorderWidth * 2)) / 2} backgroundColor={theme.onlineDot} />
+                        <View flexGrow={1} borderRadius={(dotSize - (dotBorderWidth * 2)) / 2} backgroundColor={theme.accentPrimary} />
                     </View>
                 )}
             </View>
@@ -85,7 +85,7 @@ const ZAvatarInner = XMemo<ZAvatarProps>((props) => {
             </ZLinearGradient>
             {props.online && (
                 <View position="absolute" width={dotSize} height={dotSize} bottom={dotPosition} right={dotPosition} borderRadius={dotSize / 2} padding={dotBorderWidth} backgroundColor={theme.backgroundPrimary}>
-                    <View flexGrow={1} borderRadius={(dotSize - (dotBorderWidth * 2)) / 2} backgroundColor={theme.onlineDot} />
+                    <View flexGrow={1} borderRadius={(dotSize - (dotBorderWidth * 2)) / 2} backgroundColor={theme.accentPrimary} />
                 </View>
             )}
         </View>

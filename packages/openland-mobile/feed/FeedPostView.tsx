@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { DataSourceFeedPostItem } from 'openland-engines/feed/FeedEngine';
+import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Dimensions, View, Text, StyleSheet, ViewStyle, ScrollView } from 'react-native';
 import { FeedItemShadow } from './FeedItemShadow';
-import { FeedSenderView } from './content/FeedSenderView';
+import { FeedAuthorView } from './content/FeedAuthorView';
 import { FeedSwipeView } from './FeedSwipeView';
 
 const styles = StyleSheet.create({
@@ -36,7 +36,7 @@ interface FeedPostViewProps {
 export const FeedPostView = React.memo((props: FeedPostViewProps) => {
     const theme = React.useContext(ThemeContext);
     const { item, scrollRef } = props;
-    const { id, sender, text } = item;
+    const { id, author, text } = item;
 
     const onLeftSwiped = React.useCallback(() => {
         console.warn('boom onLeftSwiped');
@@ -63,7 +63,7 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
 
                 <View style={[styles.container, { width: containerWidth, height: containerHeight, backgroundColor: theme.backgroundSecondary }]}>
                     <View style={styles.meta}>
-                        <FeedSenderView sender={sender} style="default" />
+                        <FeedAuthorView author={author} style="default" />
                     </View>
 
                     <Text style={{ ...TextStyles.Title1, color: theme.foregroundPrimary, padding: 16, textAlign: 'center' }} allowFontScaling={false}>

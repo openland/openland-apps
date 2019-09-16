@@ -23,6 +23,7 @@ import { XInput } from 'openland-x/XInput';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 
 export const AdminTools = (props: { id: string; variables: { id: string } }) => {
     let client = useClient();
@@ -135,7 +136,13 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
                 </XVertical>
             </XView>
             <XModalFooter>
-                <XButton
+                <UButton
+                    text="Cancel"
+                    style="secondary"
+                    size="large"
+                    onClick={() => props.onClose()}
+                />
+                <UButton
                     text="Save"
                     style="primary"
                     size="large"

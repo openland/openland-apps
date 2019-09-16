@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { showModalBox } from 'openland-x/showModalBox';
-import {
-    FullMessage_GeneralMessage_attachments_MessageRichAttachment,
-} from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { TextCaption, TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
@@ -42,7 +40,8 @@ const richImageContainer = css`
     flex-shrink: 0;
     flex-direction: row;
     align-items: center;
-    min-height: 100%;
+    min-height: 120px;
+    max-width: 50%;
     cursor: pointer;
     width: var(--image-width);
 
@@ -67,12 +66,19 @@ const richImageStyle = css`
 const richContentContainer = css`
     display: flex;
     flex-direction: column;
+    justify-content: center;
     flex-grow: 1;
     flex-shrink: 1;
     padding-top: 16px;
     padding-bottom: 16px;
     padding-left: 16px;
     padding-right: 16px;
+    color: var(--foregroundPrimary);
+    &:hover {
+        color: #248bf2;
+        text-decoration: none;
+        background-color: var(--backgroundTertiaryHover);
+    }
 `;
 
 const siteIconContainer = css`
@@ -96,14 +102,33 @@ const linkHostnameContainer = css`
     color: var(--foregroundSecondary);
 `;
 
+const textInner = css`
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+`;
+
 const titleStyle = css`
-    color: var(--foregroundPrimary);
     margin-top: 2px;
+    -webkit-line-clamp: 3;
 `;
 
 const textStyle = css`
     color: var(--foregroundPrimary);
     margin-top: 2px;
+    -webkit-line-clamp: 5;
+`;
+
+const text2line = css`
+    -webkit-line-clamp: 2;
+`;
+
+const text3line = css`
+    -webkit-line-clamp: 3;
+`;
+
+const text4line = css`
+    -webkit-line-clamp: 4;
 `;
 
 const deleteButton = css`
@@ -159,13 +184,15 @@ interface RichAttachContentProps {
 
 export const RichAttachContent = (props: RichAttachContentProps) => {
     const { attach, canDelete, messageId } = props;
+    const titleRef = React.useRef<HTMLDivElement>(null);
+    const textRef = React.useRef<HTMLDivElement>(null);
     const client = useClient();
 
     if (!attach.title && !attach.titleLink && !attach.subTitle && !attach.keyboard) {
         return null;
     }
 
-    if (isInternalLink(attach.titleLink || '') || attach.keyboard) {
+    if ((isInternalLink(attach.titleLink || '') && attach.imageFallback) || attach.keyboard) {
         return <InternalAttachContent attach={attach} />;
     }
 
@@ -193,10 +220,30 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
         [messageId],
     );
 
+    React.useLayoutEffect(() => {
+        let titleHeight;
+        let textHeight;
+        if (titleRef.current) {
+            titleHeight = titleRef.current.clientHeight;
+        }
+        if (textRef.current) {
+            textHeight = textRef.current.clientHeight;
+        }
+        if (titleHeight && textHeight) {
+            if (titleHeight === 24) {
+                textRef.current!!.classList.add(text4line);
+            }
+            if (titleHeight === 48) {
+                textRef.current!!.classList.add(text3line);
+            }
+            if (titleHeight === 72) {
+                textRef.current!!.classList.add(text2line);
+            }
+        }
+    });
+
     let img = null;
     let siteIcon = null;
-    const text =
-        attach.text && attach.text.length > 150 ? attach.text.slice(0, 130) + '...' : attach.text;
     if (attach.image && attach.image.metadata) {
         let layout = layoutMedia(
             attach.image.metadata.imageWidth || 0,
@@ -244,7 +291,12 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
     return (
         <div className={cx(richWrapper, 'message-rich-wrapper')}>
             {img}
-            <div className={richContentContainer}>
+            <a
+                target="_blank"
+                href={attach.titleLink || ''}
+                onClick={e => e.stopPropagation()}
+                className={richContentContainer}
+            >
                 {(siteIcon || attach.titleLinkHostname) && (
                     <div className={cx(linkHostnameContainer, TextCaption)}>
                         {siteIcon}
@@ -252,16 +304,16 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
                     </div>
                 )}
                 {attach.title && (
-                    <div className={cx(titleStyle, TextTitle3)}>
+                    <div className={cx(textInner, titleStyle, TextTitle3)} ref={titleRef}>
                         <span>{attach.title}</span>
                     </div>
                 )}
-                {text && (
-                    <div className={cx(textStyle, TextBody)}>
-                        <span>{text}</span>
+                {attach.text && (
+                    <div className={cx(textInner, textStyle, TextBody)} ref={textRef}>
+                        <span>{attach.text}</span>
                     </div>
                 )}
-            </div>
+            </a>
 
             {canDelete &&
                 !!messageId && (

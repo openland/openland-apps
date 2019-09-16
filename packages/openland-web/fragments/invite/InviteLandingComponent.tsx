@@ -65,6 +65,7 @@ const JoinLinkButton = (props: {
     invite: string;
     refetchVars: { conversationId: string };
     text: string;
+    onAccept: (data: boolean) => void;
 }) => {
     const client = useClient();
     const router = React.useContext(XViewRouterContext);
@@ -77,6 +78,7 @@ const JoinLinkButton = (props: {
             alignSelf="center"
             flexShrink={0}
             action={async () => {
+                props.onAccept(true);
                 let res = await client.mutateRoomJoinInviteLink({ invite: props.invite });
                 router!.navigate(`/mail/${res.join.id}`);
             }}
@@ -254,6 +256,7 @@ const resolveRoomButton = (
     room: { id: string; membership: SharedRoomMembershipStatus },
     key?: string,
 ) => {
+    const [loading, setLoading] = React.useState(false);
     if (
         room &&
         (room.membership === 'NONE' ||
@@ -270,6 +273,7 @@ const resolveRoomButton = (
                 text="Open room"
                 alignSelf="center"
                 flexShrink={0}
+                loading={loading}
                 path={'/mail/' + room.id}
             />
         );
@@ -278,6 +282,7 @@ const resolveRoomButton = (
             <JoinLinkButton
                 invite={key}
                 refetchVars={{ conversationId: room.id! }}
+                onAccept={setLoading}
                 text="Accept invite"
             />
         );
@@ -313,6 +318,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     let loggedIn = userInfo && userInfo.isLoggedIn;
     let client = useClient();
     let unicorn = useUnicorn();
+    let router = React.useContext(XViewRouterContext);
 
     let path = window.location.pathname.split('/');
     let key = unicorn ? unicorn.id : path[path.length - 1];
@@ -333,7 +339,8 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     }
 
     if (invite.invite && invite.invite.__typename === 'AppInvite') {
-        invitedByUser = invite.invite.inviter;
+        router!.navigate('/');
+        return null;
     }
 
     let button: JSX.Element | undefined;
@@ -378,10 +385,6 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
         : organization && organization.isCommunity
             ? 'Community'
             : 'Organization';
-
-    if (!room && !organization) {
-        throw new Error('Invalid invite');
-    }
 
     return (
         <>

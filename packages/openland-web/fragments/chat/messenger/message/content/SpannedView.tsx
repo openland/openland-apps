@@ -18,19 +18,11 @@ const boldTextServiceClassName = css`
 
 const italicTextClassName = css`
     font-style: italic;
-
-    .emojione {
-        transform: skew(-12deg);
-    }
 `;
 
 const ironyTextClassName = css`
     font-style: italic;
     color: var(--accentNegative);
-
-    .emojione {
-        transform: skew(-12deg);
-    }
 `;
 
 const codeInlineClassName = css`
@@ -65,6 +57,11 @@ const loudTextClassName = css`
 const onlyEmojiClassName = css`
     font-size: 38px;
     line-height: 38px;
+
+    * {
+        display: block;
+        transform: none;
+    }
 `;
 
 const rotatingTextClassName = css`

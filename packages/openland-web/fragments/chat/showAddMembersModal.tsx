@@ -15,83 +15,17 @@ import {
 } from 'openland-api/Types';
 import { XModalProps } from 'openland-x-modal/XModal';
 import { XLoader } from 'openland-x/XLoader';
-import { XScrollView3 } from 'openland-x/XScrollView3';
 import { useClient } from 'openland-web/utils/useClient';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
-import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { CheckComponent } from 'openland-web/components/unicorn/UCheckbox';
 import { OwnerLinkComponent } from 'openland-web/fragments/invite/OwnerLinkComponent';
-import { USelect } from 'openland-web/components/unicorn/USelect';
-
-interface SearchBoxProps {
-    value: { label: string; value: string }[];
-    onInputChange: (data: string) => string;
-    onChange: (data: { label: string; value: string }[] | null) => void;
-}
-
-const SearchBox = (props: SearchBoxProps) => (
-    <USelect
-        multi
-        hideSelector
-        placeholder="Search"
-        onBlurResetsInput={false}
-        onCloseResetsInput={false}
-        onInputChange={props.onInputChange}
-        options={props.value || []}
-        onChange={props.onChange}
-        value={props.value}
-    />
-);
-
-interface ExplorePeopleProps {
-    variables: { query?: string };
-    onPick: (label: string, value: string) => void;
-    selectedUsers: Map<string, string> | null;
-    roomUsers: {
-        user: {
-            id: string;
-        };
-    }[];
-}
-
-const ExplorePeople = (props: ExplorePeopleProps) => {
-    const client = useClient();
-    const data = client.useExplorePeople(props.variables);
-    return (
-        <XView flexGrow={1} flexShrink={1} marginHorizontal={-24}>
-            <XScrollView3 flexGrow={1} flexShrink={1}>
-                <XView marginTop={12} flexDirection="column" paddingHorizontal={12}>
-                    {data.items.edges.map(i => {
-                        const member = !!(
-                            props.roomUsers && props.roomUsers.find(j => j.user.id === i.node.id)
-                        );
-                        const selected =
-                            member || !!(props.selectedUsers && props.selectedUsers.has(i.node.id));
-                        return (
-                            <UUserView
-                                key={i.node.id}
-                                user={i.node}
-                                onClick={() => props.onPick(i.node.name, i.node.id)}
-                                rightElement={
-                                    <XView marginRight={8}>
-                                        <CheckComponent squared checked={selected} />
-                                    </XView>
-                                }
-                                disabled={member}
-                            />
-                        );
-                    })}
-                </XView>
-            </XScrollView3>
-        </XView>
-    );
-};
+import { ExplorePeople } from 'openland-web/fragments/create/ExplorePeople';
+import { SearchBox } from 'openland-web/fragments/create/SearchBox';
 
 type RoomAddMembersType = MutationFunc<RoomAddMembers, Partial<RoomAddMembersVariables>>;
 type OrganizationAddMembersType = MutationFunc<
@@ -161,7 +95,11 @@ const AddMemberModalInner = (props: InviteModalProps) => {
     const selectMembers = (label: string, value: string) => {
         const selected = selectedUsers || new Map();
         const newOpts: { label: string; value: string }[] = [];
-        selected.set(value, label);
+        if (selected.has(value)) {
+            selected.delete(value);
+        } else {
+            selected.set(value, label);
+        }
         selected.forEach((l, v) => {
             newOpts.push({
                 label: l,
@@ -195,6 +133,7 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                     <SectionTitle title="Add people directly" />
                     <XView>
                         <SearchBox
+                            small
                             onInputChange={onInputChange}
                             value={options}
                             onChange={onChange}
@@ -207,12 +146,14 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                             </XView>
                         }
                     >
-                        <ExplorePeople
-                            variables={{ query: searchQuery }}
-                            onPick={selectMembers}
-                            selectedUsers={selectedUsers}
-                            roomUsers={props.members}
-                        />
+                        <XView flexGrow={1} flexShrink={1} marginHorizontal={-24}>
+                            <ExplorePeople
+                                query={searchQuery}
+                                onPick={selectMembers}
+                                selectedUsers={selectedUsers}
+                                roomUsers={props.members}
+                            />
+                        </XView>
                     </React.Suspense>
                 </XView>
             </XModalContent>

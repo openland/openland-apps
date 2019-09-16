@@ -1,0 +1,9 @@
+fragment FeedPostAuthorFragment on FeedPostAuthor {
+  __typename
+  ... on User {
+    ...UserShort
+  }
+  ... on Organization {
+    ...OrganizationShort
+  }
+}

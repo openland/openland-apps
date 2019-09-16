@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ZListItemBase } from './ZListItemBase';
-import { View, Text, Switch, Image, Clipboard } from 'react-native';
+import { View, Text, Switch, Image, Clipboard, TextStyle } from 'react-native';
 import { ZText } from './ZText';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
@@ -19,6 +19,7 @@ export interface ZListItemProps {
     title?: string | null;
     subTitle?: string | any | null;
     text?: string | null;
+    textStyle?: TextStyle;
     description?: string;
     descriptionColor?: string;
     descriptionIcon?: any;
@@ -126,7 +127,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                     <View flexDirection="row" alignItems="center" justifyContent="center">
                         <ZText
                             linkify={linkify}
-                            style={{
+                            style={[{
                                 ...((!isBig || this.props.small) ? TextStyles.Body : TextStyles.Label1),
                                 color: this.props.appearance === 'action' ? theme.accentPrimary
                                     : this.props.appearance === 'danger' ? theme.accentNegative
@@ -134,8 +135,8 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                                 textAlignVertical: 'center',
                                 flexGrow: 1,
                                 flexBasis: 0,
-                                alignSelf: !this.props.title || this.props.leftAvatar ? 'center' : 'flex-start'
-                            }}
+                                alignSelf: !this.props.title || this.props.leftAvatar ? 'center' : 'flex-start',
+                            }, this.props.textStyle]}
                             numberOfLines={this.props.multiline ? undefined : 1}
                             text={this.props.text}
                         />

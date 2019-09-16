@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment, FullMessage_GeneralMessage_attachments } from 'openland-api/Types';
+import {
+    FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
+    FullMessage_GeneralMessage_attachments_MessageRichAttachment,
+    FullMessage_GeneralMessage_attachments,
+    UserShort,
+} from 'openland-api/Types';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { SpanType, Span } from 'openland-y-utils/spans/Span';
@@ -44,6 +49,9 @@ interface MessageContentProps {
     isOut?: boolean;
     attachTop?: boolean;
     chatId?: string;
+    sender?: UserShort;
+    senderNameEmojify?: string | JSX.Element;
+    date?: number;
 }
 
 export const MessageContent = (props: MessageContentProps) => {
@@ -57,10 +65,15 @@ export const MessageContent = (props: MessageContentProps) => {
     const extraClassName = cx('x', extraWrapper, attachTop && extraInCompactWrapper);
     const textClassName = cx('x', textWrapper);
 
-    imageAttaches.map((file) => {
+    imageAttaches.map(file => {
         content.push(
             <div key={'msg-' + id + '-media-' + file.fileId} className={extraClassName}>
-                <ImageContent file={file} />
+                <ImageContent
+                    file={file}
+                    sender={props.sender}
+                    senderNameEmojify={props.senderNameEmojify}
+                    date={props.date}
+                />
             </div>
         );
     });

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { MessagePage } from 'openland-web/components/MessagePage';
 import { withAppBase } from 'openland-web/components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { AuthRouter } from 'openland-web/pages/root/AuthRouter';
@@ -36,9 +35,7 @@ export default withAppBase('Room Invite', () => {
                 title={InitTexts.invite.pageTitle}
                 titleSocial={InitTexts.socialPageTitle}
             />
-            <MessagePage>
-                <AcceptInviteComponent mutation={join} />
-            </MessagePage>
+            <AcceptInviteComponent mutation={join} />
         </AuthRouter>
     );
 });

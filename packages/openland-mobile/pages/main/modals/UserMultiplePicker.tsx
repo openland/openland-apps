@@ -17,7 +17,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
-export const CheckListBoxWraper = XMemo<{ checked?: boolean, children: any }>((props) => {
+export const CheckListBoxWraper = XMemo<{ checked?: boolean, isRadio?: boolean, children: any }>((props) => {
     const theme = React.useContext(ThemeContext);
 
     return (
@@ -25,9 +25,26 @@ export const CheckListBoxWraper = XMemo<{ checked?: boolean, children: any }>((p
             <View flexGrow={1}>
                 {props.children}
             </View>
-            <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.checked ? theme.accentPrimary : theme.backgroundPrimary} opacity={props.checked ? 1 : 0.8} borderColor={props.checked ? theme.accentPrimary : theme.foregroundTertiary} borderWidth={2} borderRadius={RadiusStyles.Medium} width={24} height={24} >
-                {props.checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.foregroundInverted }} />}
-            </View>
+            {props.isRadio ? (
+                <View
+                    pointerEvents="none"
+                    style={{
+                        position: 'absolute',
+                        right: 16,
+                        alignSelf: 'center',
+                        width: 22,
+                        height: 22,
+                        borderRadius: 11,
+                        borderWidth: props.checked ? 7 : 2,
+                        borderColor: props.checked ? theme.accentPrimary : theme.foregroundQuaternary,
+                    }}
+                />
+            ) : (
+                <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.checked ? theme.accentPrimary : theme.backgroundPrimary} opacity={props.checked ? 1 : 0.8} borderColor={props.checked ? theme.accentPrimary : theme.foregroundTertiary} borderWidth={2} borderRadius={RadiusStyles.Medium} width={24} height={24} >
+                    {props.checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.foregroundInverted }} />}
+                </View>
+            )}
+            
         </View>
     );
 });

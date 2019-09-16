@@ -22,21 +22,9 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
     let ref = React.createRef<FastImageViewer>();
 
     let progress = React.useRef(new Animated.Value(0)).current;
-    // let progressInverted = Animated.add(1, Animated.multiply(progress, -1));
-    // let unredlayOpacity = progressInverted.interpolate({
-    //     inputRange: [0, 0.5],
-    //     outputRange: [0, 1],
-    //     extrapolate: 'clamp'
-    // });
     let progressLinear = React.useRef(new Animated.Value(0)).current;
-    // let progressLinearInverted = Animated.add(1, Animated.multiply(progressLinear, -1));
     let barOpacity = React.useRef(new Animated.Value(1)).current;
     let barVisible = true;
-
-    // let previewLoaded = true;
-    // let fullLoaded = false;
-
-    // let [closing, setClosing] = React.useState(false);
 
     let handleStarting = React.useCallback(() => {
         if (Platform.OS === 'android') {
@@ -94,43 +82,10 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
     }, []);
 
     let handleCloseClick = React.useCallback(() => {
-        // if (!state.closing) {
-        //     Animated.parallel([
-        //         Animated.spring(progress, {
-        //             toValue: 0,
-        //             stiffness: 500,
-        //             mass: 1,
-        //             damping: 10000,
-        //             useNativeDriver: true
-        //         }),
-        //         Animated.timing(progressLinear, {
-        //             toValue: 0,
-        //             duration: 150,
-        //             useNativeDriver: true
-        //         })
-        //     ]).start(() => {
-        //         if (props.config.onEnd) {
-        //             props.config.onEnd();
-        //         }
-        //         props.onClose();
-        //     });
-        //     // Animated.timing(progress, {
-        //     //     toValue: 0,
-        //     //     duration: 6000,
-        //     //     useNativeDriver: true
-        //     // }).start(() => {
-        //     //     props.onClose();
-        //     // });
-        //     setState({ closing: true });
-        //     if (Platform.OS === 'ios') {
-        //         setTimeout(() => { StatusBar.setBarStyle('dark-content'); }, 50);
-        //     }
-        // }
         if (ref.current) {
             ref.current.close();
         }
-    }
-        , []);
+    }, []);
 
     let handleShareClick = React.useCallback(async () => {
         const url = props.config.url;
@@ -150,11 +105,11 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
         if (file) {
             let builder = new ActionSheetBuilder();
 
-            builder.action('Share', () => Share.open({
+            builder.action('Share photo', () => Share.open({
                 url: 'file://' + file
             }), false, require('assets/ic-share-24.png'));
 
-            builder.action(Platform.select({ ios: 'Save to Camera Roll', android: 'Save to Gallery' }), async () => {
+            builder.action(Platform.select({ ios: 'Save to camera roll', android: 'Save to gallery' }), async () => {
                 await CameraRoll.saveToCameraRoll('file://' + file!);
             }, false, require('assets/ic-download-24.png'));
 
@@ -257,7 +212,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                     opacity: Animated.multiply(progressLinear, barOpacity)
                 }}
             >
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 4 }}>
                     <SCloseButton tintColor={theme.foregroundContrast} onPress={handleCloseClick} />
                     <SShareButton tintColor={theme.foregroundContrast} onPress={handleShareClick} />
                 </View>

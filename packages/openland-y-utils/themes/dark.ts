@@ -84,8 +84,6 @@ export const ThemeDark: ThemeGlobal = {
         paddedText: '\u202F',
     },
 
-    onlineDot: '#29CC44',
-
     // legacy
     backgroundInverted: '#000000',
     backgroundInvertedHover: '#000000',

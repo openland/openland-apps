@@ -59,7 +59,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
                     {!!edited && (
                         <span className={cx(EditLabelStyle, TextCaption)}>
                             {'\u00A0'}
-                            Edited
+                            (edited)
                             </span>
                     )}
                 </span>

@@ -81,8 +81,6 @@ export type ThemeGlobal = {
         paddedText: string;
     },
 
-    onlineDot: string,
-
     // mobile-only
     blurType: 'dark' | 'light' | 'none';
     keyboardAppearance: 'dark' | 'light';

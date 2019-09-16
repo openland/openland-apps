@@ -21,17 +21,19 @@ const UserPickerComponent = XMemo<PageProps>((props) => {
             <SHeader title={title || 'Pick member'} />
             <View style={{ flexDirection: 'column', width: '100%', height: '100%' }}>
                 <SScrollView>
-                    {users.map((user) => (
-                        <CheckListBoxWraper checked={user.id === selectedUser}>
-                            <UserView
-                                key={user.id}
-                                user={user}
-                                enabled={!((disableUsers || []).indexOf(user.id) > -1)}
-                                onPress={() => action(user)}
-                                paddingRight={56}
-                            />
-                        </CheckListBoxWraper>
-                    ))}
+                    <View style={{ paddingTop: 8 }}>
+                        {users.map((user) => (
+                            <CheckListBoxWraper checked={user.id === selectedUser} isRadio>
+                                <UserView
+                                    key={user.id}
+                                    user={user}
+                                    enabled={!((disableUsers || []).indexOf(user.id) > -1)}
+                                    onPress={() => action(user)}
+                                    paddingRight={56}
+                                />
+                            </CheckListBoxWraper>
+                        ))}
+                    </View>
                 </SScrollView>
             </View>
         </>

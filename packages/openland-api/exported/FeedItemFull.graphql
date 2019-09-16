@@ -72,6 +72,10 @@ fragment FeedItemFull on FeedItem {
         titleLinkHostname
       }
     }
+    author {
+      __typename
+      ...FeedPostAuthorFragment
+    }
     commentsCount
     date
     edited
@@ -86,10 +90,6 @@ fragment FeedItemFull on FeedItem {
         __typename
         ...UserShort
       }
-    }
-    sender {
-      __typename
-      ...UserShort
     }
     spans {
       __typename

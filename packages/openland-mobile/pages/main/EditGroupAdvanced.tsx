@@ -6,15 +6,14 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZInput } from 'openland-mobile/components/ZInput';
-import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { Modals } from './modals/Modals';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import { ZAvatarPicker, ZAvatarPickerRenderProps } from 'openland-mobile/components/ZAvatarPicker';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity, Image, Text } from 'react-native';
 import { ZImage } from 'openland-mobile/components/ZImage';
 import Alert from 'openland-mobile/components/AlertBlanket';
-import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
@@ -32,7 +31,7 @@ const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
         <TouchableOpacity onPress={props.showPicker}>
             <View width={width} height={height} borderRadius={radius}>
                 {props.url && <ZImage highPriority={true} width={width} height={height} source={props.url} borderRadius={radius} />}
-                <View position="absolute" alignItems="center" justifyContent="center" style={{ width, height, borderRadius: radius, borderWidth: 1, borderColor: theme.border, backgroundColor: props.url ? theme.overlayLight : undefined }}>
+                <View position="absolute" alignItems="center" justifyContent="center" style={{ width, height, borderRadius: radius, backgroundColor: props.url ? theme.overlayLight : theme.backgroundTertiary }}>
                     {!props.loading && (
                         <Image style={{ tintColor: props.url ? theme.foregroundContrast : theme.foregroundQuaternary, width: 36, height: 36 }} source={require('assets/ic-camera-36.png')} />
                     )}
@@ -46,6 +45,7 @@ const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
 });
 
 const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
+    const theme = React.useContext(ThemeContext);
     const roomId = props.router.params.id;
     const client = getClient();
     const rawGroup = client.useRoom({ id: roomId }, { fetchPolicy: 'network-only' }).room;
@@ -109,13 +109,17 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
             <SHeader title="Advanced settings" />
             <SHeaderButton title="Save" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
-                <ZListGroup header={null} footer="Send an automatic message in 1:1 chat to every new member who joins this group">
-                    <ZListItem text="Welcome message" toggle={welcomeMessageEnabled} onToggle={(value) => setWelcomeMessageEnabled(value)} />
-                </ZListGroup>
+                <View style={{ marginTop: 16 }}>
+                    <ZListItem text="Welcome message" textStyle={{ ...TextStyles.Title2 }} toggle={welcomeMessageEnabled} onToggle={(value) => setWelcomeMessageEnabled(value)} />
+                </View>
+                <View style={{ paddingHorizontal: 16 }}>
+                    <Text style={{ ...TextStyles.Body, color: theme.foregroundPrimary }}>Send automatic tet-a-tet message {'\n'}to every new member of the group</Text>
+                </View>
 
                 {welcomeMessageEnabled && (
-                    <ZListGroup header={null}>
+                    <View style={{ paddingHorizontal: 16, marginTop: 24 }}>
                         <ZPickField
+                            noWrapper
                             label="Sender"
                             value={welcomeMessageSender ? welcomeMessageSender.name : undefined}
                             onPress={() => {
@@ -135,18 +139,17 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                                 );
                             }}
                         />
-                        <ZInput multiline={true} placeholder="Text message" field={welcomeMessageField} />
-                    </ZListGroup>
+                        <View style={{ marginTop: 16 }}>
+                            <ZInput noWrapper multiline={true} placeholder="Message" field={welcomeMessageField} />
+                        </View>
+                    </View>
                 )}
 
-                <ZListGroup
-                    header="Social sharing image"
-                    footer="Choose an image to display when sharing invite to this group on social networks"
-                >
-                    <View paddingHorizontal={16}>
-                        <ZAvatarPicker field={socialImageField} render={SocialPicker} pickSize={{ width: 1200, height: 630 }} />
-                    </View>
-                </ZListGroup>
+                <View style={{ paddingHorizontal: 16,  marginTop: 27 }}>
+                    <Text style={{ ...TextStyles.Title2, marginBottom: 11, color: theme.foregroundPrimary }}>Social sharing image</Text>
+                    <Text style={{ ...TextStyles.Body, marginBottom: 24, color: theme.foregroundPrimary }}>Choose an image to display when sharing invite to the group on social networks</Text>
+                    <ZAvatarPicker field={socialImageField} render={SocialPicker} pickSize={{ width: 1200, height: 630 }} />
+                </View>
             </KeyboardAvoidingScrollView>
         </>
     );

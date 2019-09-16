@@ -45,15 +45,15 @@ export const AppJoinComponent = ({ inviteKey }: { inviteKey: string }) => {
                     title={InitTexts.invite.pageTitle}
                     titleSocial={InitTexts.socialPageTitle}
                 />
-                <MessagePage>
-                    {data.invite ||
-                        (data.appInvite && <AcceptInviteComponent inviteKey={inviteKey} />)}
-                    {!(data.invite || data.appInvite) && (
+                {(data.invite || data.appInvite) && <AcceptInviteComponent inviteKey={inviteKey} />}
+
+                {!(data.invite || data.appInvite) && (
+                    <MessagePage>
                         <MessagePageContent title="Invite">
                             <XView marginBottom={15}>{InitTexts.invite.unableToFindInvite}</XView>
                         </MessagePageContent>
-                    )}
-                </MessagePage>
+                    </MessagePage>
+                )}
             </AuthRouter>
         </XTrack>
     );
