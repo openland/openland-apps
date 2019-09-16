@@ -192,7 +192,7 @@ export const SettingsNotificationsFragment = React.memo(() => {
                 </FormSection>
                 <FormSection
                     title="Badge counter"
-                    footer={'Push notification settings apply to all your desktop devices and don\'t affect mobile. Badge\u00A0settings affect all your devices.'}
+                    footer={'Push notification settings apply to all your desktop devices and don\'t affect mobile. Badge\u00A0settings affect all your devices'}
                 >
                     <XView marginHorizontal={-16}>
                         <UCheckbox

@@ -189,7 +189,7 @@ const SettingsNotificationsContent = XMemo<PageProps>(props => {
 
             <ZListGroup
                 header="Badge counter"
-                footer="Push notification settings apply to all your mobile devices and don't affect desktop. Badge settings affect all your devices."
+                footer="Push notification settings apply to all your mobile devices and don't affect desktop. Badge settings affect all your devices"
             >
                 <ZListItem
                     text="Include muted chats"
