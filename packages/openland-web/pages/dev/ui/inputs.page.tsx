@@ -14,6 +14,38 @@ const SelectComponents = () => {
     const [value3, setValue3] = React.useState<any>(null);
     return (
         <>
+            <div>small default select</div>
+            <USelect
+                creatable
+                searchable={false}
+                placeholder="Events count"
+                size="small"
+                options={[
+                    { value: 100, label: '100', labelShort: 'sto', subtitle: 'sotnyia' },
+                    { value: 200, label: '200' },
+                    { value: 300, label: '300' },
+                    { value: 400, label: '400' },
+                    { value: 500, label: '500' },
+                ]}
+                onChange={data => setValue(data)}
+                value={value}
+            />
+            <div>small multi creatable searchable</div>
+            <USelect
+                creatable
+                multi
+                placeholder="Events count"
+                size="small"
+                options={[
+                    { value: 100, label: '100', labelShort: 'sto', subtitle: 'sotnyia' },
+                    { value: 200, label: '200' },
+                    { value: 300, label: '300' },
+                    { value: 400, label: '400' },
+                    { value: 500, label: '500' },
+                ]}
+                onChange={data => setValue(data)}
+                value={value}
+            />
             <div>default select</div>
             <USelect
                 creatable

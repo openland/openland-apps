@@ -55,7 +55,7 @@ const linkStyle = css`
     flex-grow: 1;
     height: 40px;
     border-radius: 8px;
-    padding: 8px 16px;
+    padding: 8px 16px 8px 8px;
     padding-right: 40px;
     background-color: var(--backgroundTertiary);
     color: var(--foregroundPrimary);

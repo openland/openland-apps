@@ -133,6 +133,7 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                     <SectionTitle title="Add people directly" />
                     <XView>
                         <SearchBox
+                            small
                             onInputChange={onInputChange}
                             value={options}
                             onChange={onChange}

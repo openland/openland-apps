@@ -5,12 +5,14 @@ interface SearchBoxProps {
     value: { label: string; value: string }[];
     onInputChange: (data: string) => string;
     onChange: (data: { label: string; value: string }[] | null) => void;
+    small?: boolean;
 }
 
 export const SearchBox = (props: SearchBoxProps) => (
     <USelect
         multi
         hideSelector
+        size={props.small ? 'small' : undefined}
         placeholder="Search"
         onBlurResetsInput={false}
         onCloseResetsInput={false}

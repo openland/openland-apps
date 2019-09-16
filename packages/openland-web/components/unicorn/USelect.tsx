@@ -146,6 +146,27 @@ const placeholderSingleStyle = css`
     }
 `;
 
+const smallStyle = css`
+    & .Select-control {
+        padding: 2px 8px;
+        min-height: 40px;
+    }
+
+    &.Select--single + .Stranger-placeholder {
+        top: 8px;
+        left: 8px;
+    }
+    &.Select--single.is-searchable.is-focused + .Stranger-placeholder,
+    &.Select--single.has-value + .Stranger-placeholder {
+        top: 2px;
+    }
+
+    &.Select--single.has-value .Select-multi-value-wrapper,
+    &.Select--single.is-searchable .Select-multi-value-wrapper {
+        margin-top: 12px;
+    }
+`;
+
 const Placeholder = (props: { placeholder?: string }) => (
     <div className="Stranger-placeholder">{props.placeholder}</div>
 );
@@ -269,6 +290,10 @@ const multiValueContainer = css`
     padding: 4px 8px 4px 12px;
 `;
 
+const multiValueSmallContainer = css`
+    padding: 0px 8px 0px 8px;
+`;
+
 const multiValueContent = css`
     display: flex;
     align-items: center;
@@ -285,8 +310,18 @@ const multiValueIcon = css`
     }
 `;
 
-const MultiValueRender = (props: ValueComponentProps) => (
-    <div className={cx(multiValueContainer, TextBody)}>
+interface ValueRenderProps extends ValueComponentProps {
+    size?: 'default' | 'small';
+}
+
+const MultiValueRender = (props: ValueRenderProps) => (
+    <div
+        className={cx(
+            multiValueContainer,
+            props.size === 'small' && multiValueSmallContainer,
+            TextBody,
+        )}
+    >
         <div className={multiValueContent}>
             {props.value.label}
             <div onClick={() => props.onRemove!!(props.value)} className={multiValueIcon}>
@@ -306,7 +341,7 @@ const singleValueContainer = css`
     flex-shrink: 1;
 `;
 
-const SingleValueRender = (props: ValueComponentProps) => {
+const SingleValueRender = (props: ValueRenderProps) => {
     return <div className={singleValueContainer}>{props.value.label}</div>;
 };
 
@@ -352,6 +387,7 @@ const Container = (props: ContainerProps & { children: any }) => (
 
 export type USelectBasicProps = ReactSelectProps &
     ContainerProps & {
+        size?: 'default' | 'small';
         options: OptionType[];
         placeholder?: string;
         creatable?: boolean;
@@ -359,7 +395,7 @@ export type USelectBasicProps = ReactSelectProps &
     };
 
 export const USelect = (props: USelectBasicProps) => {
-    const { creatable, hideSelector, ...other } = props;
+    const { creatable, hideSelector, size = 'default', ...other } = props;
     return (
         <>
             {props.creatable && (
@@ -368,10 +404,17 @@ export const USelect = (props: USelectBasicProps) => {
                         clearRenderer={ClearRender}
                         optionRenderer={OptionRender}
                         arrowRenderer={!hideSelector ? ArrowRender : null}
-                        valueComponent={props.multi ? MultiValueRender : SingleValueRender}
+                        valueComponent={valueProps =>
+                            props.multi ? (
+                                <MultiValueRender size={size} {...valueProps} />
+                            ) : (
+                                <SingleValueRender size={size} {...valueProps} />
+                            )
+                        }
                         clearable={props.clearable || false}
                         className={cx(
                             style,
+                            props.size === 'small' && smallStyle,
                             !hideSelector ? withMenuStyle : hideMenuSelector,
                             props.multi && placeholderMultiStyle,
                             !props.multi && placeholderSingleStyle,
@@ -387,10 +430,17 @@ export const USelect = (props: USelectBasicProps) => {
                         clearRenderer={ClearRender}
                         optionRenderer={OptionRender}
                         arrowRenderer={!hideSelector ? ArrowRender : null}
-                        valueComponent={props.multi ? MultiValueRender : SingleValueRender}
+                        valueComponent={valueProps =>
+                            props.multi ? (
+                                <MultiValueRender size={size} {...valueProps} />
+                            ) : (
+                                <SingleValueRender size={size} {...valueProps} />
+                            )
+                        }
                         clearable={props.clearable || false}
                         className={cx(
                             style,
+                            props.size === 'small' && smallStyle,
                             !hideSelector ? withMenuStyle : hideMenuSelector,
                             props.multi && placeholderMultiStyle,
                             !props.multi && placeholderSingleStyle,
