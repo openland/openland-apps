@@ -8,6 +8,7 @@ import { EmojiPicker } from './emoji/EmojiPicker';
 import { ShortcutButton } from './shortcuts/ShortcutsButton';
 import { emojiConvertToName } from 'openland-y-utils/emojiExtract';
 import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone';
+import { Span, SpanType, SpanUser } from 'openland-y-utils/spans/Span';
 
 const quillStyle = css`
     flex-grow: 1;
@@ -184,6 +185,37 @@ function convertQuillContent(content: QuillType.Delta) {
         }
     }
     return res;
+}
+
+export function convertToInputValue(text: string, spans: Span[]): URickTextValue {
+    let value: URickTextValue = [];
+    let textStringTail = text;
+    for (let absSpan of spans.filter(
+        span => span.type === SpanType.mention_user,
+    )) {
+        let userSpan = absSpan as SpanUser;
+        let rawText = userSpan.textRaw || '';
+        let spanStart = textStringTail.indexOf(rawText);
+        if (spanStart === -1) {
+            continue;
+        }
+        if (spanStart !== 0) {
+            value.push(textStringTail.substring(0, spanStart));
+        }
+        if (userSpan.textRaw === '@All') {
+            value.push({ __typename: 'AllMention' });
+        } else {
+            value.push({ __typename: 'User', ...userSpan.user });
+        }
+
+        textStringTail = textStringTail.substring(
+            spanStart + rawText.length,
+            textStringTail.length,
+        );
+    }
+    value.push(textStringTail);
+
+    return value;
 }
 
 export const URickInput = React.memo(React.forwardRef((props: URickInputProps, ref: React.Ref<URickInputInstance>) => {

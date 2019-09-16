@@ -27,9 +27,9 @@ import {
     URickInputInstance,
     URickTextValue,
     AllMention,
+    convertToInputValue,
 } from 'openland-web/components/unicorn/URickInput';
 import { InputMessageActionComponent } from './InputMessageActionComponent';
-import { SpanType, SpanUser } from 'openland-y-utils/spans/Span';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import { findSpans } from 'openland-y-utils/findSpans';
 import { DropZone } from './DropZone';
@@ -194,32 +194,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 return;
             }
             if (state.action === 'edit' && message && message.text) {
-                let value: URickTextValue = [];
-                let textStringTail = message.text;
-                for (let absSpan of message.textSpans.filter(
-                    span => span.type === SpanType.mention_user,
-                )) {
-                    let userSpan = absSpan as SpanUser;
-                    let rawText = userSpan.textRaw || '';
-                    let spanStart = textStringTail.indexOf(rawText);
-                    if (spanStart === -1) {
-                        continue;
-                    }
-                    if (spanStart !== 0) {
-                        value.push(textStringTail.substring(0, spanStart));
-                    }
-                    if (userSpan.textRaw === '@All') {
-                        value.push({ __typename: 'AllMention' });
-                    } else {
-                        value.push({ __typename: 'User', ...userSpan.user });
-                    }
-
-                    textStringTail = textStringTail.substring(
-                        spanStart + rawText.length,
-                        textStringTail.length,
-                    );
-                }
-                value.push(textStringTail);
+                const value = convertToInputValue(message.text, message.textSpans);
 
                 this.rickRef.current.setContent(value);
                 this.rickRef.current.focus();
