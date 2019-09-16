@@ -190,7 +190,10 @@ export const SettingsNotificationsFragment = React.memo(() => {
                         />
                     </XView>
                 </FormSection>
-                <FormSection title="Badge counter">
+                <FormSection
+                    title="Badge counter"
+                    footer={'Push notification settings apply to all your desktop devices and don\'t affect mobile. Badge\u00A0settings affect all your devices.'}
+                >
                     <XView marginHorizontal={-16}>
                         <UCheckbox
                             label="Include muted chats"
