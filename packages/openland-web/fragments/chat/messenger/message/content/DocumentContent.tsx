@@ -34,13 +34,13 @@ const fileContainer = css`
         text-decoration: none;
         background-color: var(--backgroundTertiaryHover);
     }
-    
+
     & .icon-info .format-text {
         transition: all 150ms;
         transform: translateY(0);
         opacity: 1;
     }
-    
+
     & .icon-info .download-icon {
         transition: all 150ms;
         transform: translateY(-20px);
@@ -209,13 +209,19 @@ export const DocumentContent = React.memo(
                 <div className={infoContent}>
                     <div className={iconContainer}>
                         {fileIcon[fileFormat(name)]}
-                        {file.uri && (
+                        {file.uri ? (
                             <XLoader size="small" color="#fff" transparentBackground={true} />
+                        ) : (
+                            <div className={cx(iconInfo, 'icon-info')}>
+                                <UIcon
+                                    icon={<IcDownload />}
+                                    color="#fff"
+                                    size={16}
+                                    className="download-icon"
+                                />
+                                <div className="format-text">{fileFormat(name)}</div>
+                            </div>
                         )}
-                        <div className={cx(iconInfo, 'icon-info')}>
-                            <UIcon icon={<IcDownload/>} color="#fff" size={16} className="download-icon"/>
-                            <div className="format-text">{fileFormat(name)}</div>
-                        </div>
                     </div>
                     <div className={metadataContainer}>
                         <div className={cx(title + ' title', TextLabel1)}>{name}</div>
