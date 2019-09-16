@@ -120,7 +120,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         ndk {
-            abiFilters "armeabi-v7a", "x86"
+            abiFilters "armeabi-v7a", "x86", 'x86_64'
         }
         renderscriptTargetApi 23
         renderscriptSupportModeEnabled true
