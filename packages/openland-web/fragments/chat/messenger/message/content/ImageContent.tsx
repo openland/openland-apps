@@ -24,6 +24,7 @@ const modalImgContainer = css`
 
 const modalToolbarContainer = css`
     width: 100%;
+    height: 56px;
     position: absolute;
     left: 0;
     top: 0;

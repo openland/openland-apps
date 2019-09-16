@@ -77,6 +77,7 @@ const richContentContainer = css`
     &:hover {
         color: #248bf2;
         text-decoration: none;
+        background-color: var(--backgroundTertiaryHover);
     }
 `;
 
