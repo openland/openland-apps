@@ -12,10 +12,7 @@ import ChatIcon from './navigation/icon_chat.svg';
 import ChatActiveIcon from './navigation/icon_chat_active.svg';
 import ProfileIcon from './navigation/icon_profile.svg';
 import ProfileActiveIcon from './navigation/icon_profile_active.svg';
-import { UserInfoContext } from 'openland-web/components/UserInfo';
-import { ResolveInviteComponent } from '../init/resolveInvite.page';
 import { AuthRouter } from '../root/AuthRouter';
-import * as Cookie from 'js-cookie';
 
 const Unicorn = React.memo(() => {
     const router = React.useMemo(() => new TabRouter([{

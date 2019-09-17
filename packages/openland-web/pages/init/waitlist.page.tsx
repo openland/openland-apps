@@ -11,8 +11,6 @@ import { AuthRouter } from 'openland-web/pages/root/AuthRouter';
 import { TextGlobal } from 'openland-text/TextGlobal';
 import { InitTexts } from './_text';
 import * as Cookie from 'js-cookie';
-import { XLoader } from 'openland-x/XLoader';
-import { useClient } from 'openland-web/utils/useClient';
 import { ResolveInviteComponent } from './resolveInvite.page';
 
 const imageStyle = css`
