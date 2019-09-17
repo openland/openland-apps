@@ -2642,6 +2642,18 @@ private val FeatureFlagEnableSelector = obj(
                     field("id","id", notNull(scalar("ID")))
                 )))
         )
+private val FeedCreateGlobalPostSelector = obj(
+            field("alphaCreateGlobalFeedPost","createFeedPost", arguments(fieldValue("slides", refValue("input"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("FeedItem", FeedItemFullSelector)
+                )))
+        )
+private val FeedCreatePostSelector = obj(
+            field("alphaCreateFeedPost","createFeedPost", arguments(fieldValue("slides", refValue("input"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("FeedItem", FeedItemFullSelector)
+                )))
+        )
 private val MarkSequenceReadSelector = obj(
             field("alphaGlobalRead","alphaGlobalRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("String")))
         )
@@ -3813,6 +3825,18 @@ object Operations {
         override val body = "mutation FeatureFlagEnable(\$accountId:ID!,\$featureId:ID!){superAccountFeatureAdd(featureId:\$featureId,id:\$accountId){__typename features{__typename id key title}id}}"
         override val selector = FeatureFlagEnableSelector
     }
+    val FeedCreateGlobalPost = object: OperationDefinition {
+        override val name = "FeedCreateGlobalPost"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation FeedCreateGlobalPost(\$input:[SlideInput!]!){createFeedPost:alphaCreateGlobalFeedPost(slides:\$input){__typename ...FeedItemFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}commentsCount date edited fallback id reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}... on Organization{...OrganizationShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id isChannel kind roomPhoto:photo title}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}"
+        override val selector = FeedCreateGlobalPostSelector
+    }
+    val FeedCreatePost = object: OperationDefinition {
+        override val name = "FeedCreatePost"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation FeedCreatePost(\$input:[SlideInput!]!){createFeedPost:alphaCreateFeedPost(slides:\$input){__typename ...FeedItemFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}commentsCount date edited fallback id reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}... on Organization{...OrganizationShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id isChannel kind roomPhoto:photo title}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}"
+        override val selector = FeedCreatePostSelector
+    }
     val MarkSequenceRead = object: OperationDefinition {
         override val name = "MarkSequenceRead"
         override val kind = OperationKind.MUTATION
@@ -4369,6 +4393,8 @@ object Operations {
         if (name == "FeatureFlagAdd") return FeatureFlagAdd
         if (name == "FeatureFlagDisable") return FeatureFlagDisable
         if (name == "FeatureFlagEnable") return FeatureFlagEnable
+        if (name == "FeedCreateGlobalPost") return FeedCreateGlobalPost
+        if (name == "FeedCreatePost") return FeedCreatePost
         if (name == "MarkSequenceRead") return MarkSequenceRead
         if (name == "MediaAnswer") return MediaAnswer
         if (name == "MediaCandidate") return MediaCandidate

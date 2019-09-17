@@ -994,6 +994,12 @@ export class OpenlandClient extends BaseApiClient {
     async mutateFeatureFlagDisable(variables: Types.FeatureFlagDisableVariables): Promise<Types.FeatureFlagDisable> {
         return this.client.mutate(Source.FeatureFlagDisableMutation, variables);
     }
+    async mutateFeedCreatePost(variables: Types.FeedCreatePostVariables): Promise<Types.FeedCreatePost> {
+        return this.client.mutate(Source.FeedCreatePostMutation, variables);
+    }
+    async mutateFeedCreateGlobalPost(variables: Types.FeedCreateGlobalPostVariables): Promise<Types.FeedCreateGlobalPost> {
+        return this.client.mutate(Source.FeedCreateGlobalPostMutation, variables);
+    }
     async mutateMyNotificationCenterMarkSeqRead(variables: Types.MyNotificationCenterMarkSeqReadVariables): Promise<Types.MyNotificationCenterMarkSeqRead> {
         return this.client.mutate(Source.MyNotificationCenterMarkSeqReadMutation, variables);
     }

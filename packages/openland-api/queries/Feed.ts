@@ -14,6 +14,26 @@ export const FeedQuery = gql`
     }
 `;
 
+export const FeedCreatePostMutation = gql`
+    mutation FeedCreatePost($input: [SlideInput!]!) {
+        createFeedPost: alphaCreateFeedPost(slides: $input) {
+            ...FeedItemFull
+        }
+
+        ${FeedItemFull}
+    }
+`;
+
+export const FeedCreateGlobalPostMutation = gql`
+    mutation FeedCreateGlobalPost($input: [SlideInput!]!) {
+        createFeedPost: alphaCreateGlobalFeedPost(slides: $input) {
+            ...FeedItemFull
+        }
+
+        ${FeedItemFull}
+    }
+`;
+
 export const FeedUpdateFragment = gql`
     fragment FeedUpdateFragment on FeedUpdate {
         ... on FeedItemReceived {
