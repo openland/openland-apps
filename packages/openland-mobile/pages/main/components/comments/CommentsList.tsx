@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Image, Text, Clipboard, LayoutChangeEvent } from 'react-native';
-import { FontStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { CommentView } from 'openland-mobile/pages/main/components/comments/CommentView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
