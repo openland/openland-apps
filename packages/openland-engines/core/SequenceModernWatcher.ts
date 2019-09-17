@@ -36,7 +36,7 @@ export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> 
     private start() {
         (async () => {
             while (true) {
-           
+
                 let update = await this.subscription.get();
                 this.handleUpdate(update);
             }
@@ -44,7 +44,7 @@ export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> 
     }
 
     private handleUpdate = (update: TSubscription) => {
-        
+
         // if (update.errors && update.errors.length > 0) {
         //     throw update.errors;
         // }
@@ -65,6 +65,11 @@ export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> 
                     this.stateHandler(event.state);
                 }
             });
+        } else if (event.updates) {
+            // handle batch updates for subscriptions without state
+            for (let u of event.updates) {
+                this.sequenceHandler.push(u);
+            }
         } else {
             // Do single update
             this.currentState = event.state;
