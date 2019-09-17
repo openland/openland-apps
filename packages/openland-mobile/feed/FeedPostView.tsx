@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     paginator: {
         position: 'absolute',
         top: 0, bottom: 0,
-        width: '25%',
+        width: '33%',
         zIndex: 2,
     } as ViewStyle
 });
