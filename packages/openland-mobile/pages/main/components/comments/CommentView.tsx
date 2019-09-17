@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MessageComments_messageComments_comments_comment, MessageReactionType } from 'openland-api/Types';
+import { CommentEntryFragment_comment, MessageReactionType } from 'openland-api/Types';
 import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, LayoutChangeEvent } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
@@ -38,14 +38,14 @@ const styles = StyleSheet.create({
 });
 
 export interface CommentViewProps {
-    comment: MessageComments_messageComments_comments_comment;
+    comment: CommentEntryFragment_comment;
     depth: number;
     deleted: boolean;
     highlighted: boolean;
     theme: ThemeGlobal;
 
-    onReplyPress: (comment: MessageComments_messageComments_comments_comment) => void;
-    onLongPress: (comment: MessageComments_messageComments_comments_comment) => void;
+    onReplyPress: (comment: CommentEntryFragment_comment) => void;
+    onLongPress: (comment: CommentEntryFragment_comment) => void;
     onLayout?: (e: LayoutChangeEvent) => void;
 }
 

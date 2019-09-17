@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { MessageComments_messageComments_comments, MessageComments_messageComments_comments_comment } from 'openland-api/Types';
 import { View, Image, Text, Clipboard, LayoutChangeEvent } from 'react-native';
 import { FontStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
@@ -8,13 +7,14 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { CommentEntryFragment, CommentEntryFragment_comment } from 'openland-api/Types';
 
 interface CommentsListProps {
-    comments: MessageComments_messageComments_comments[];
+    comments: CommentEntryFragment[];
     highlightedId?: string;
 
-    onReplyPress: (comment: MessageComments_messageComments_comments_comment) => void;
-    onEditPress: (comment: MessageComments_messageComments_comments_comment) => void;
+    onReplyPress: (comment: CommentEntryFragment_comment) => void;
+    onEditPress: (comment: CommentEntryFragment_comment) => void;
     handleScrollTo: (y: number) => void;
 }
 
@@ -23,7 +23,7 @@ export const CommentsList = (props: CommentsListProps) => {
 
     const theme = React.useContext(ThemeContext);
 
-    const handleLongPress = React.useCallback((comment: MessageComments_messageComments_comments_comment) => {
+    const handleLongPress = React.useCallback((comment: CommentEntryFragment_comment) => {
         let engine = getMessenger().engine;
         let builder = new ActionSheetBuilder();
 
@@ -64,7 +64,7 @@ export const CommentsList = (props: CommentsListProps) => {
 
     if (comments.length === 0) {
         return (
-            <View flexGrow={1} flexShrink={1} alignItems="center" justifyContent="center" paddingVertical={40}>
+            <View flexGrow={1} flexShrink={1} alignItems="center" justifyContent="center" paddingVertical={40} paddingHorizontal={16}>
                 <Image source={theme.type === 'Light' ? require('assets/img-empty.png') : require('assets/img-empty-dark.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
                 <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary }} allowFontScaling={false}>Write the first comment</Text>
             </View>
@@ -80,7 +80,7 @@ export const CommentsList = (props: CommentsListProps) => {
     const commentsSorted = sortComments(comments, commentsMap);
 
     return (
-        <>
+        <View paddingHorizontal={16}>
             <View height={1} backgroundColor={theme.separatorColor} marginTop={15} />
 
             <View marginTop={20} marginBottom={15}>
@@ -108,6 +108,6 @@ export const CommentsList = (props: CommentsListProps) => {
 
                 <View backgroundColor={theme.backgroundPrimary} height={8} zIndex={2} marginTop={-8} marginBottom={8} />
             </View>
-        </>
+        </View>
     );
 };

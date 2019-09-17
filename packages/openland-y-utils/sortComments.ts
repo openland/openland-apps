@@ -1,9 +1,9 @@
-import { MessageComments_messageComments_comments } from 'openland-api/Types';
+import { CommentEntryFragment } from 'openland-api/Types';
 
 export const sortComments = (
-    comments: MessageComments_messageComments_comments[],
-    commentsMap: { [key: string]: MessageComments_messageComments_comments | undefined },
-): MessageComments_messageComments_comments[] => {
+    comments: CommentEntryFragment[],
+    commentsMap: { [key: string]: CommentEntryFragment | undefined },
+): CommentEntryFragment[] => {
     function treeSortHelper(node: any, explored: any, s: any) {
         if (node && node.id) {
             const curNode = commentsMap[node.id];
@@ -49,10 +49,10 @@ export const sortComments = (
 };
 
 export function getDepthOfComment(
-    comment: MessageComments_messageComments_comments,
-    commentsMap: { [key: string]: MessageComments_messageComments_comments },
+    comment: CommentEntryFragment,
+    commentsMap: { [key: string]: CommentEntryFragment },
 ): number {
-    let currentComment: MessageComments_messageComments_comments | null = comment;
+    let currentComment: CommentEntryFragment | null = comment;
     let currentDepth = 0;
     while (!!currentComment) {
         if (currentComment.parentComment) {
@@ -69,11 +69,11 @@ export function getDepthOfComment(
 
 export function getDepthOfCommentByID(
     commentID: string,
-    comments: MessageComments_messageComments_comments[],
+    comments: CommentEntryFragment[],
 ): number {
     const commentEntry = comments.filter(c => c.comment.id === commentID)[0];
     const commentsMap = {};
-                
+
     comments.map(comment => {
         commentsMap[comment.id] = comment;
     });

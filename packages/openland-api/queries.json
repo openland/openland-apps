@@ -7650,27 +7650,27 @@
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Comments.ts",
-			"operationName": "MessageComments",
+			"operationName": "Comments",
 			"operationType": "query",
 			"rootType": "Query",
 			"variables": [
 				{
-					"name": "messageId",
+					"name": "peerId",
 					"type": "ID!"
 				}
 			],
-			"source": "query MessageComments($messageId: ID!) {\n  messageComments(messageId: $messageId) {\n    __typename\n    id\n    state {\n      __typename\n      state\n    }\n    count\n    comments {\n      __typename\n      ...CommentEntryFragment\n    }\n  }\n}",
+			"source": "query Comments($peerId: ID!) {\n  comments(peerId: $peerId) {\n    __typename\n    id\n    state {\n      __typename\n      state\n    }\n    count\n    comments {\n      __typename\n      ...CommentEntryFragment\n    }\n  }\n}",
 			"fields": [
 				{
-					"responseName": "messageComments",
-					"fieldName": "messageComments",
+					"responseName": "comments",
+					"fieldName": "comments",
 					"type": "CommentsPeer!",
 					"args": [
 						{
-							"name": "messageId",
+							"name": "peerId",
 							"value": {
 								"kind": "Variable",
-								"variableName": "messageId"
+								"variableName": "peerId"
 							},
 							"type": "ID!"
 						}
@@ -7758,8 +7758,8 @@
 				"UserForMention",
 				"UserTiny"
 			],
-			"sourceWithFragments": "query MessageComments($messageId: ID!) {\n  messageComments(messageId: $messageId) {\n    __typename\n    id\n    state {\n      __typename\n      state\n    }\n    count\n    comments {\n      __typename\n      ...CommentEntryFragment\n    }\n  }\n}\nfragment CommentEntryFragment on CommentEntry {\n  __typename\n  id\n  deleted\n  comment {\n    __typename\n    ...FullMessage\n    id\n  }\n  parentComment {\n    __typename\n    comment {\n      __typename\n      id\n      message\n    }\n    id\n  }\n  childComments {\n    __typename\n    id\n  }\n}\nfragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  senderBadge {\n    __typename\n    ...UserBadge\n  }\n  message\n  fallback\n  source {\n    __typename\n    ... on MessageSourceChat {\n      chat {\n        __typename\n        ... on PrivateRoom {\n          id\n        }\n        ... on SharedRoom {\n          id\n        }\n      }\n    }\n  }\n  ... on GeneralMessage {\n    id\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        id\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        imageFallback {\n          __typename\n          photo\n          text\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            id\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      senderBadge {\n        __typename\n        ...UserBadge\n      }\n      message\n      fallback\n      source {\n        __typename\n        ... on MessageSourceChat {\n          chat {\n            __typename\n            ... on PrivateRoom {\n              id\n            }\n            ... on SharedRoom {\n              id\n            }\n          }\n        }\n      }\n      spans {\n        __typename\n        ...SpanFragment\n      }\n      ... on GeneralMessage {\n        id\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            id\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            id\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            imageFallback {\n              __typename\n              photo\n              text\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    ...SpanFragment\n  }\n  ... on ServiceMessage {\n    id\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}\nfragment SpanFragment on MessageSpan {\n  __typename\n  offset\n  length\n  ... on MessageSpanUserMention {\n    user {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanMultiUserMention {\n    users {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanRoomMention {\n    room {\n      __typename\n      ... on PrivateRoom {\n        id\n        user {\n          __typename\n          id\n          name\n        }\n      }\n      ... on SharedRoom {\n        id\n        title\n      }\n    }\n  }\n  ... on MessageSpanLink {\n    url\n  }\n  ... on MessageSpanDate {\n    date\n  }\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}",
-			"operationId": "205c5acbfefeb64f903970330e9b4d475f8c3c5afb82d04d6af83fdf32edb2bb"
+			"sourceWithFragments": "query Comments($peerId: ID!) {\n  comments(peerId: $peerId) {\n    __typename\n    id\n    state {\n      __typename\n      state\n    }\n    count\n    comments {\n      __typename\n      ...CommentEntryFragment\n    }\n  }\n}\nfragment CommentEntryFragment on CommentEntry {\n  __typename\n  id\n  deleted\n  comment {\n    __typename\n    ...FullMessage\n    id\n  }\n  parentComment {\n    __typename\n    comment {\n      __typename\n      id\n      message\n    }\n    id\n  }\n  childComments {\n    __typename\n    id\n  }\n}\nfragment FullMessage on ModernMessage {\n  __typename\n  id\n  date\n  sender {\n    __typename\n    ...UserShort\n  }\n  senderBadge {\n    __typename\n    ...UserBadge\n  }\n  message\n  fallback\n  source {\n    __typename\n    ... on MessageSourceChat {\n      chat {\n        __typename\n        ... on PrivateRoom {\n          id\n        }\n        ... on SharedRoom {\n          id\n        }\n      }\n    }\n  }\n  ... on GeneralMessage {\n    id\n    edited\n    commentsCount\n    attachments {\n      __typename\n      fallback\n      ... on MessageAttachmentFile {\n        id\n        fileId\n        fileMetadata {\n          __typename\n          name\n          mimeType\n          size\n          isImage\n          imageWidth\n          imageHeight\n          imageFormat\n        }\n        filePreview\n      }\n      ... on MessageRichAttachment {\n        id\n        title\n        subTitle\n        titleLink\n        titleLinkHostname\n        text\n        icon {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        image {\n          __typename\n          url\n          metadata {\n            __typename\n            name\n            mimeType\n            size\n            isImage\n            imageWidth\n            imageHeight\n            imageFormat\n          }\n        }\n        imageFallback {\n          __typename\n          photo\n          text\n        }\n        keyboard {\n          __typename\n          buttons {\n            __typename\n            id\n            title\n            style\n            url\n          }\n        }\n        fallback\n      }\n    }\n    quotedMessages {\n      __typename\n      id\n      date\n      message\n      sender {\n        __typename\n        ...UserShort\n      }\n      senderBadge {\n        __typename\n        ...UserBadge\n      }\n      message\n      fallback\n      source {\n        __typename\n        ... on MessageSourceChat {\n          chat {\n            __typename\n            ... on PrivateRoom {\n              id\n            }\n            ... on SharedRoom {\n              id\n            }\n          }\n        }\n      }\n      spans {\n        __typename\n        ...SpanFragment\n      }\n      ... on GeneralMessage {\n        id\n        commentsCount\n        edited\n        attachments {\n          __typename\n          fallback\n          ... on MessageAttachmentFile {\n            id\n            fileId\n            fileMetadata {\n              __typename\n              name\n              mimeType\n              size\n              isImage\n              imageWidth\n              imageHeight\n              imageFormat\n            }\n            filePreview\n          }\n          ... on MessageRichAttachment {\n            id\n            title\n            subTitle\n            titleLink\n            titleLinkHostname\n            text\n            icon {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            image {\n              __typename\n              url\n              metadata {\n                __typename\n                name\n                mimeType\n                size\n                isImage\n                imageWidth\n                imageHeight\n                imageFormat\n              }\n            }\n            imageFallback {\n              __typename\n              photo\n              text\n            }\n            fallback\n          }\n        }\n      }\n    }\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n  }\n  spans {\n    __typename\n    ...SpanFragment\n  }\n  ... on ServiceMessage {\n    id\n    serviceMetadata {\n      __typename\n      ... on InviteServiceMetadata {\n        users {\n          __typename\n          ...UserTiny\n        }\n        invitedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on KickServiceMetadata {\n        user {\n          __typename\n          ...UserTiny\n        }\n        kickedBy {\n          __typename\n          ...UserTiny\n        }\n      }\n      ... on TitleChangeServiceMetadata {\n        title\n      }\n      ... on PhotoChangeServiceMetadata {\n        photo\n      }\n      ... on PostRespondServiceMetadata {\n        respondType\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment UserBadge on UserBadge {\n  __typename\n  id\n  name\n  verified\n}\nfragment SpanFragment on MessageSpan {\n  __typename\n  offset\n  length\n  ... on MessageSpanUserMention {\n    user {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanMultiUserMention {\n    users {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanRoomMention {\n    room {\n      __typename\n      ... on PrivateRoom {\n        id\n        user {\n          __typename\n          id\n          name\n        }\n      }\n      ... on SharedRoom {\n        id\n        title\n      }\n    }\n  }\n  ... on MessageSpanLink {\n    url\n  }\n  ... on MessageSpanDate {\n    date\n  }\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}",
+			"operationId": "a757e302ad57c96c1b016063cf11b0a395475133eba741bba89ce4752d263069"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Comments.ts",
@@ -7858,67 +7858,6 @@
 			"fragmentsReferenced": [],
 			"sourceWithFragments": "mutation CommentUnsetReaction($commentId: ID!, $reaction: MessageReactionType!) {\n  commentReactionRemove(commentId: $commentId, reaction: $reaction)\n}",
 			"operationId": "d60882350e6c5b03ee3536480f68acc5a170f1c11395b23b98e7d6a432c808db"
-		},
-		{
-			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Comments.ts",
-			"operationName": "ReadNotification",
-			"operationType": "mutation",
-			"rootType": "Mutation",
-			"variables": [
-				{
-					"name": "notificationId",
-					"type": "ID!"
-				}
-			],
-			"source": "mutation ReadNotification($notificationId: ID!) {\n  readNotification(notificationId: $notificationId) {\n    __typename\n    id\n    unread\n  }\n}",
-			"fields": [
-				{
-					"responseName": "readNotification",
-					"fieldName": "readNotification",
-					"type": "NotificationCenter!",
-					"args": [
-						{
-							"name": "notificationId",
-							"value": {
-								"kind": "Variable",
-								"variableName": "notificationId"
-							},
-							"type": "ID!"
-						}
-					],
-					"isConditional": false,
-					"isDeprecated": false,
-					"fields": [
-						{
-							"responseName": "__typename",
-							"fieldName": "__typename",
-							"type": "String!",
-							"isConditional": false
-						},
-						{
-							"responseName": "id",
-							"fieldName": "id",
-							"type": "ID!",
-							"isConditional": false,
-							"isDeprecated": false
-						},
-						{
-							"responseName": "unread",
-							"fieldName": "unread",
-							"type": "Int!",
-							"isConditional": false,
-							"isDeprecated": false
-						}
-					],
-					"fragmentSpreads": [],
-					"inlineFragments": []
-				}
-			],
-			"fragmentSpreads": [],
-			"inlineFragments": [],
-			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation ReadNotification($notificationId: ID!) {\n  readNotification(notificationId: $notificationId) {\n    __typename\n    id\n    unread\n  }\n}",
-			"operationId": "9d1e473f618863cd3c46c84d018a94541d6c974d555cba8c545389eb59cde65b"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Comments.ts",
@@ -8078,10 +8017,10 @@
 					"type": "[MessageSpanInput!]"
 				}
 			],
-			"source": "mutation AddMessageComment($repeatKey: String, $messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  addMessageComment: betaAddMessageComment(repeatKey: $repeatKey, messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans) {\n    __typename\n    id\n  }\n}",
+			"source": "mutation AddMessageComment($repeatKey: String, $messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  betaAddMessageComment(repeatKey: $repeatKey, messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans) {\n    __typename\n    id\n  }\n}",
 			"fields": [
 				{
-					"responseName": "addMessageComment",
+					"responseName": "betaAddMessageComment",
 					"fieldName": "betaAddMessageComment",
 					"type": "CommentEntry!",
 					"args": [
@@ -8166,8 +8105,134 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation AddMessageComment($repeatKey: String, $messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  addMessageComment: betaAddMessageComment(repeatKey: $repeatKey, messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans) {\n    __typename\n    id\n  }\n}",
-			"operationId": "3e4503d7e47839d8ee50963ac17c59901877cb8249fc741fb97ae33a6a07e976"
+			"sourceWithFragments": "mutation AddMessageComment($repeatKey: String, $messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  betaAddMessageComment(repeatKey: $repeatKey, messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans) {\n    __typename\n    id\n  }\n}",
+			"operationId": "e661e3fe4e62195f4fc142ff6b27d0ff539f51638a9d4dd93afed2f984ef65ea"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Comments.ts",
+			"operationName": "AddFeedComment",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "repeatKey",
+					"type": "String"
+				},
+				{
+					"name": "feedItemId",
+					"type": "ID!"
+				},
+				{
+					"name": "message",
+					"type": "String"
+				},
+				{
+					"name": "replyComment",
+					"type": "ID"
+				},
+				{
+					"name": "mentions",
+					"type": "[MentionInput!]"
+				},
+				{
+					"name": "fileAttachments",
+					"type": "[FileAttachmentInput!]"
+				},
+				{
+					"name": "spans",
+					"type": "[MessageSpanInput!]"
+				}
+			],
+			"source": "mutation AddFeedComment($repeatKey: String, $feedItemId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  betaAddFeedComment(repeatKey: $repeatKey, feedItemId: $feedItemId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans) {\n    __typename\n    id\n  }\n}",
+			"fields": [
+				{
+					"responseName": "betaAddFeedComment",
+					"fieldName": "betaAddFeedComment",
+					"type": "CommentEntry!",
+					"args": [
+						{
+							"name": "repeatKey",
+							"value": {
+								"kind": "Variable",
+								"variableName": "repeatKey"
+							},
+							"type": "String"
+						},
+						{
+							"name": "feedItemId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "feedItemId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "message",
+							"value": {
+								"kind": "Variable",
+								"variableName": "message"
+							},
+							"type": "String"
+						},
+						{
+							"name": "replyComment",
+							"value": {
+								"kind": "Variable",
+								"variableName": "replyComment"
+							},
+							"type": "ID"
+						},
+						{
+							"name": "mentions",
+							"value": {
+								"kind": "Variable",
+								"variableName": "mentions"
+							},
+							"type": "[MentionInput!]"
+						},
+						{
+							"name": "fileAttachments",
+							"value": {
+								"kind": "Variable",
+								"variableName": "fileAttachments"
+							},
+							"type": "[FileAttachmentInput!]"
+						},
+						{
+							"name": "spans",
+							"value": {
+								"kind": "Variable",
+								"variableName": "spans"
+							},
+							"type": "[MessageSpanInput!]"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation AddFeedComment($repeatKey: String, $feedItemId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  betaAddFeedComment(repeatKey: $repeatKey, feedItemId: $feedItemId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans) {\n    __typename\n    id\n  }\n}",
+			"operationId": "519bc7aaa899428db302a058509fa56c4a5be23bb5f051df0b9442c6e943d89f"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Comments.ts",
@@ -12144,6 +12209,67 @@
 			"fragmentsReferenced": [],
 			"sourceWithFragments": "mutation MyNotificationCenterMarkSeqRead($seq: Int!) {\n  notificationCenterMarkSeqRead(toSeq: $seq)\n}",
 			"operationId": "9548e014c54213d7170d9c05127bc3f7adb23a3ff8e1fb8059c0859feee0b13a"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/MyNotificationsCenter.ts",
+			"operationName": "ReadNotification",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "notificationId",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation ReadNotification($notificationId: ID!) {\n  readNotification(notificationId: $notificationId) {\n    __typename\n    id\n    unread\n  }\n}",
+			"fields": [
+				{
+					"responseName": "readNotification",
+					"fieldName": "readNotification",
+					"type": "NotificationCenter!",
+					"args": [
+						{
+							"name": "notificationId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "notificationId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "unread",
+							"fieldName": "unread",
+							"type": "Int!",
+							"isConditional": false,
+							"isDeprecated": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation ReadNotification($notificationId: ID!) {\n  readNotification(notificationId: $notificationId) {\n    __typename\n    id\n    unread\n  }\n}",
+			"operationId": "9d1e473f618863cd3c46c84d018a94541d6c974d555cba8c545389eb59cde65b"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Organization.ts",

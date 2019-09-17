@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useClient } from 'openland-web/utils/useClient';
 import { CommentView } from './CommentView';
-import { CommentWatch_event_CommentUpdateSingle_update, MessageComments_messageComments_comments, MessageReactionType, MessageComments_messageComments_comments_comment } from 'openland-api/Types';
+import { CommentWatch_event_CommentUpdateSingle_update, CommentEntryFragment, MessageReactionType, CommentEntryFragment_comment } from 'openland-api/Types';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
@@ -25,7 +25,7 @@ interface CommentsListProps {
     onSentAttach: (files: File[], replyId?: string) => void;
 }
 
-const CommentsListInner = React.memo((props: CommentsListProps & { comments: MessageComments_messageComments_comments[] }) => {
+const CommentsListInner = React.memo((props: CommentsListProps & { comments: CommentEntryFragment[] }) => {
     const client = useClient();
     const messenger = React.useContext(MessengerContext);
     const { groupId, comments, highlightId, onSent, onSentAttach, onReply } = props;
@@ -41,7 +41,7 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Mes
         builder.show();
     }, []);
 
-    const handleReactionClick = React.useCallback((comment: MessageComments_messageComments_comments_comment) => {
+    const handleReactionClick = React.useCallback((comment: CommentEntryFragment_comment) => {
         const { id, reactions } = comment;
         const r = MessageReactionType.LIKE;
         const remove = reactions && reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === r).length > 0;
@@ -100,11 +100,11 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Mes
 export const CommentsList = React.memo((props: CommentsListProps) => {
     const { messageId } = props;
     const client = useClient();
-    const comments = client.useMessageComments({ messageId }, { fetchPolicy: 'cache-and-network' }).messageComments.comments;
+    const comments = client.useComments({ peerId: messageId }, { fetchPolicy: 'cache-and-network' }).comments.comments;
 
     const updateHandler = async (event: CommentWatch_event_CommentUpdateSingle_update) => {
         if (event.__typename === 'CommentReceived') {
-            await client.refetchMessageComments({ messageId });
+            await client.refetchComments({ peerId: messageId });
         }
     };
 

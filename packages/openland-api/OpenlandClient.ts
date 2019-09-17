@@ -391,17 +391,17 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderMessagesSearch(variables: Types.MessagesSearchVariables, opts?: QueryWatchParameters): Types.MessagesSearch | null {
         return this.useQuery(Source.MessagesSearchQuery, variables, opts);
     }
-    async queryMessageComments(variables: Types.MessageCommentsVariables, opts?: OperationParameters): Promise<Types.MessageComments> {
-        return this.client.query(Source.MessageCommentsQuery, variables, opts);
+    async queryComments(variables: Types.CommentsVariables, opts?: OperationParameters): Promise<Types.Comments> {
+        return this.client.query(Source.CommentsQuery, variables, opts);
     }
-    async refetchMessageComments(variables: Types.MessageCommentsVariables): Promise<Types.MessageComments> {
-        return this.refetch(Source.MessageCommentsQuery, variables);
+    async refetchComments(variables: Types.CommentsVariables): Promise<Types.Comments> {
+        return this.refetch(Source.CommentsQuery, variables);
     }
-    useMessageComments(variables: Types.MessageCommentsVariables, opts?: QueryWatchParameters): Types.MessageComments {
-        return this.useQuerySuspense(Source.MessageCommentsQuery, variables, opts);
+    useComments(variables: Types.CommentsVariables, opts?: QueryWatchParameters): Types.Comments {
+        return this.useQuerySuspense(Source.CommentsQuery, variables, opts);
     }
-    useWithoutLoaderMessageComments(variables: Types.MessageCommentsVariables, opts?: QueryWatchParameters): Types.MessageComments | null {
-        return this.useQuery(Source.MessageCommentsQuery, variables, opts);
+    useWithoutLoaderComments(variables: Types.CommentsVariables, opts?: QueryWatchParameters): Types.Comments | null {
+        return this.useQuery(Source.CommentsQuery, variables, opts);
     }
     async queryConference(variables: Types.ConferenceVariables, opts?: OperationParameters): Promise<Types.Conference> {
         return this.client.query(Source.ConferenceQuery, variables, opts);
@@ -940,9 +940,6 @@ export class OpenlandClient extends BaseApiClient {
     async mutateCommentUnsetReaction(variables: Types.CommentUnsetReactionVariables): Promise<Types.CommentUnsetReaction> {
         return this.client.mutate(Source.CommentUnsetReactionMutation, variables);
     }
-    async mutateReadNotification(variables: Types.ReadNotificationVariables): Promise<Types.ReadNotification> {
-        return this.client.mutate(Source.ReadNotificationMutation, variables);
-    }
     async mutateDeleteNotification(variables: Types.DeleteNotificationVariables): Promise<Types.DeleteNotification> {
         return this.client.mutate(Source.DeleteNotificationMutation, variables);
     }
@@ -954,6 +951,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     async mutateAddMessageComment(variables: Types.AddMessageCommentVariables): Promise<Types.AddMessageComment> {
         return this.client.mutate(Source.AddMessageCommentMutation, variables);
+    }
+    async mutateAddFeedComment(variables: Types.AddFeedCommentVariables): Promise<Types.AddFeedComment> {
+        return this.client.mutate(Source.AddFeedCommentMutation, variables);
     }
     async mutateEditComment(variables: Types.EditCommentVariables): Promise<Types.EditComment> {
         return this.client.mutate(Source.EditCommentMutation, variables);
@@ -1017,6 +1017,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     async mutateMyNotificationCenterMarkSeqRead(variables: Types.MyNotificationCenterMarkSeqReadVariables): Promise<Types.MyNotificationCenterMarkSeqRead> {
         return this.client.mutate(Source.MyNotificationCenterMarkSeqReadMutation, variables);
+    }
+    async mutateReadNotification(variables: Types.ReadNotificationVariables): Promise<Types.ReadNotification> {
+        return this.client.mutate(Source.ReadNotificationMutation, variables);
     }
     async mutateUpdateOrganization(variables: Types.UpdateOrganizationVariables): Promise<Types.UpdateOrganization> {
         return this.client.mutate(Source.UpdateOrganizationMutation, variables);
