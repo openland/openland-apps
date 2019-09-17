@@ -8,26 +8,29 @@ import { SHeaderView } from 'react-native-s/SHeaderView';
 import { FeedAuthorHeader } from 'openland-mobile/feed/components/FeedAuthorHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { FeedPostContent } from 'openland-mobile/feed/content/FeedPostContent';
-import { convertSlides } from 'openland-engines/feed/convert';
+import { convertPost } from 'openland-engines/feed/convert';
 import { Dimensions, View } from 'react-native';
+import { FeedPostTools } from 'openland-mobile/feed/components/FeedPostTools';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 const FeedItemComponent = React.memo((props: PageProps) => {
     const id = props.router.params.id;
     const client = getClient();
+    const messenger = getMessenger();
     const item = client.useFeedItem({ id }, { fetchPolicy: 'cache-and-network' }).item;
 
     if (!item || item.__typename !== 'FeedPost') {
         return null;
     }
 
-    const { canEdit, author, date, slides } = item;
-    const slidesProcessed = React.useMemo(() => convertSlides(slides), [slides]);
+    const itemProcessed = React.useMemo(() => convertPost(item, messenger.engine), [item]);
+    const { canEdit, author, date, slides, reactionsReduced } = itemProcessed;
     const width = Dimensions.get('screen').width;
 
     return (
         <>
             <SHeaderView>
-                <FeedAuthorHeader author={author} date={parseInt(date, 10)} />
+                <FeedAuthorHeader author={author} date={date} />
             </SHeaderView>
 
             <ZManageButton onPress={() => FeedHandlers.Manage(id, canEdit)} />
@@ -35,8 +38,12 @@ const FeedItemComponent = React.memo((props: PageProps) => {
             <SScrollView>
                 <View height={8} />
                 <FeedPostContent
-                    slides={slidesProcessed}
+                    slides={slides}
                     width={width}
+                />
+                <FeedPostTools
+                    id={id}
+                    reactions={reactionsReduced}
                 />
             </SScrollView>
         </>
