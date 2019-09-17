@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { SlideProcessed } from 'openland-engines/feed/types';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const styles = StyleSheet.create({
     box: {
@@ -15,11 +16,12 @@ interface FeedSlideProps {
 }
 
 export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
+    const theme = React.useContext(ThemeContext);
     const { text } = props.slide;
 
     return (
         <View style={styles.box}>
-            <Text>
+            <Text style={{ color: theme.foregroundPrimary }} allowFontScaling={false}>
                 {text}
             </Text>
         </View>
