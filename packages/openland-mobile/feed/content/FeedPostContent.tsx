@@ -97,5 +97,5 @@ export const FeedPostContent = React.memo((props: FeedPostContentProps) => {
                 </>
             )}
         </View>
-    )
+    );
 });
