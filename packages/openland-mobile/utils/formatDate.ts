@@ -25,9 +25,19 @@ export function formatAbsoluteDate(date: number) {
     return month + ' ' + day;
 }
 
-export function formatAbsoluteDateFull(date: number) {
+export function formatDateFull(date: number) {
     let dt = new Date(date);
+    let now = new Date();
     let month = monthsFull[dt.getMonth()];
     let day = dt.getDate();
+
+    if (now.getFullYear() === dt.getFullYear() && now.getMonth() === dt.getMonth()) {
+        if (now.getDate() === dt.getDate()) {
+            return 'Today';
+        } else if (now.getDate() === dt.getDate() + 1) {
+            return 'Yesterday';
+        }
+    }
+
     return month + ', ' + day;
 }
