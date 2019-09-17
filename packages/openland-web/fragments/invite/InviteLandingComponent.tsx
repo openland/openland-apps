@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { XAvatar2 } from 'openland-x/XAvatar2';
 import ProfileIcon from 'openland-icons/ic-profile.svg';
 import {
     ResolvedInvite_invite_RoomInvite_room,
@@ -18,6 +17,7 @@ import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { InviteImage } from './InviteImage';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 
 const RootClassName = css`
     position: relative;
@@ -114,11 +114,11 @@ const InviteByUser = ({
             flexShrink={0}
             marginTop={50}
         >
-            <XAvatar2
-                src={invitedByUser.photo || undefined}
+            <UAvatar
+                photo={invitedByUser.photo}
                 title={invitedByUser.name}
                 id={invitedByUser.id}
-                size={24}
+                size="x-small"
             />
             <XView marginLeft={12} fontSize={14} lineHeight={1.43}>
                 {invitedByUser.name} {`invites you to join ${chatTypeStr.toLowerCase()}`}
@@ -147,7 +147,7 @@ const EntityInfoColumn = ({
 }: RoomInfoColumnT) => {
     return (
         <XView marginTop={60} alignSelf="center" alignItems="center" maxWidth={428} zIndex={1}>
-            <XAvatar2 src={photo || undefined} title={title} id={id} size={80} />
+            <UAvatar photo={photo} title={title} id={id} size="x-large" />
             <XView marginTop={28} lineHeight={1} fontSize={24} fontWeight={'600'}>
                 <span className={titleClassName}>{title}</span>
             </XView>

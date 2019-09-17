@@ -3,13 +3,13 @@ import { css } from 'linaria';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withApp } from 'openland-web/components/withApp';
 import { XView } from 'react-mental';
 import LogoBig from 'openland-icons/logo-big.svg';
 import { XButton } from 'openland-x/XButton';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 
 const textAlignClassName = css`
     text-align: center;
@@ -38,11 +38,11 @@ const AcceptInvite = ({
             alignItems="center"
             flexDirection="row"
         >
-            <XAvatar2
-                size={32}
+            <UAvatar
+                size="small"
                 id={inviter.id}
                 title={inviter.name}
-                src={inviter.photo || undefined}
+                photo={inviter.photo}
             />
             <XView fontSize={16} color="#000000" marginLeft={12}>
                 {inviter.name + ' invites you to join'}

@@ -9,12 +9,12 @@ import { getPercentageOfOnboarding } from '../components/utils';
 import { useClient } from 'openland-web/utils/useClient';
 import CheckIcon from 'openland-icons/checked.svg';
 import { SuggestedRooms_suggestedRooms_SharedRoom } from 'openland-api/Types';
-import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XLoader } from 'openland-x/XLoader';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { Wrapper } from './components/wrapper';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 
 const shadowClassName = css`
     margin: auto;
@@ -65,7 +65,7 @@ const ChatsItem = ({
             hoverBackgroundColor="#F5F5F6"
             onClick={() => onSelect(room.id)}
         >
-            <XAvatar2 src={room.photo || undefined} title={room.title} id={room.id} size={40} />
+            <UAvatar photo={room.photo} title={room.title} id={room.id} />
             <XView flexDirection="column" flexGrow={1} marginLeft={16}>
                 <XView fontSize={15} fontWeight="600">
                     {room.title}

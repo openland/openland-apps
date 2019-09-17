@@ -4,11 +4,11 @@ import { XView, XImage } from 'react-mental';
 import ToProfileIcon from 'openland-icons/ic-toprofile.svg';
 import LogoutIcon from 'openland-icons/ic-logout.svg';
 import { XThemeDefault } from 'openland-x/XTheme';
-import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from '../UserInfo';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import CloseIcon from 'openland-icons/ic-close-banner.svg';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { UAvatar } from '../unicorn/UAvatar';
 
 const CloseBannerIconClassName = css`
     & > g > path:last-child {
@@ -206,7 +206,7 @@ const MobileUserProfile = withUserInfo(({ user, onClick }: any) => {
                     height={69}
                 >
                     <XView flexDirection="row" height="100%">
-                        <XAvatar2 size={40} src={user.photo} title={user.name} id={user.id} />
+                        <UAvatar photo={user.photo} title={user.name} id={user.id} />
                         <XView marginLeft={16}>
                             <XView
                                 fontSize={15}
