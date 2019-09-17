@@ -87,37 +87,44 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
                 <FeedItemShadow width={width} height={containerHeight + 16 + 32} />
 
                 <View style={[styles.container, { width: containerWidth, height: containerHeight, backgroundColor: theme.backgroundSecondary }]}>
-                    <View style={styles.meta}>
-                        <FeedAuthorView author={author} style={metaStyle} />
-
-                        {slides.length > 0 && (
-                            <FeedSlideIndicator
-                                current={currentSlide + 1}
-                                items={slides.length}
-                                style={metaStyle}
-                            />
-                        )}
-                    </View>
-
                     {slides.length > 0 && (
-                        <View style={styles.wrapper}>
-                            <FeedSlide slide={slides[currentSlide]} />
+                        <>
+                            <View style={styles.meta}>
+                                <FeedAuthorView author={author} style={metaStyle} />
+                                <FeedSlideIndicator
+                                    current={currentSlide + 1}
+                                    items={slides.length}
+                                    style={metaStyle}
+                                />
+                            </View>
 
-                            {currentSlide > 0 && (
-                                <TouchableWithoutFeedback onPress={onPrevPress}>
-                                    <View style={[styles.paginator, { left: 0 }]} />
-                                </TouchableWithoutFeedback>
-                            )}
+                            <View style={styles.wrapper}>
+                                <FeedSlide slide={slides[currentSlide]} />
 
-                            {currentSlide < slides.length - 1 && (
-                                <TouchableWithoutFeedback onPress={onNextPress}>
-                                    <View style={[styles.paginator, { right: 0 }]} />
-                                </TouchableWithoutFeedback>
-                            )}
-                        </View>
+                                {currentSlide > 0 && (
+                                    <TouchableWithoutFeedback onPress={onPrevPress}>
+                                        <View style={[styles.paginator, { left: 0 }]} />
+                                    </TouchableWithoutFeedback>
+                                )}
+
+                                {currentSlide < slides.length - 1 && (
+                                    <TouchableWithoutFeedback onPress={onNextPress}>
+                                        <View style={[styles.paginator, { right: 0 }]} />
+                                    </TouchableWithoutFeedback>
+                                )}
+                            </View>
+                        </>
                     )}
 
-                    {slides.length <= 0 && <FeedUnsupportedContent />}
+                    {slides.length <= 0 && (
+                        <>
+                            <View style={styles.meta}>
+                                <FeedAuthorView author={author} style={metaStyle} />
+                            </View>
+
+                            <FeedUnsupportedContent />
+                        </>
+                    )}
                 </View>
             </View>
         </FeedSwipeView>
