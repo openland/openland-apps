@@ -8,7 +8,23 @@ class FeedHandlersClass {
         getMessenger().history.navigationManager.push('FeedItem', { id });
     }
 
-    handleLongPress = (id: string, canEdit: boolean, backAfterDelete?: boolean) => {
+    handleLongPress = (id: string, canEdit: boolean) => {
+        this.manageItem(id, canEdit, true);
+    }
+
+    handleManagePress = (id: string, canEdit: boolean) => {
+        this.manageItem(id, canEdit, false);
+    }
+
+    handleLike = (id: string) => {
+        console.warn('Feed: Like post ' + id);
+    }
+
+    handleShare = (id: string) => {
+        console.warn('Feed: Share post ' + id);
+    }
+
+    private manageItem = (id: string, canEdit: boolean, fromLongPress: boolean) => {
         const client = getClient();
         const router = getMessenger().history.navigationManager;
         const builder = new ActionSheetBuilder();
@@ -34,7 +50,7 @@ class FeedHandlersClass {
                     .action('Delete', 'destructive', async () => {
                         await client.mutateFeedDeletePost({ feedItemId: id });
 
-                        if (!!backAfterDelete) {
+                        if (!fromLongPress) {
                             router.pop();
                         }
                     }).show();
@@ -46,18 +62,6 @@ class FeedHandlersClass {
         }
 
         builder.show(true);
-    }
-
-    handleManagePress = (id: string, canEdit: boolean) => {
-        this.handleLongPress(id, canEdit, true);
-    }
-
-    handleLike = (id: string) => {
-        console.warn('Feed: Like post ' + id);
-    }
-
-    handleShare = (id: string) => {
-        console.warn('Feed: Share post ' + id);
     }
 }
 
