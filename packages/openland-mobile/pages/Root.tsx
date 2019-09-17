@@ -87,7 +87,7 @@ class RootContainer extends React.PureComponent<RootProps & { theme: ThemeGlobal
                         routing={this.props.routing}
                         navigationBarStyle={style}
                     />
-                    <View height={'100%'} width={0.5} backgroundColor={this.props.theme.separatorColor} />
+                    <View height={'100%'} width={0.5} backgroundColor={this.props.theme.border} />
                     <View width={this.props.width - sideWidth} height={'100%'} backgroundColor={this.props.theme.backgroundPrimary}>
                         {this.state.masterRouting && (
                             <SNavigationView

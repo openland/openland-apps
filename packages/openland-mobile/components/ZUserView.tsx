@@ -17,14 +17,14 @@ export const ZUserView = XMemo<ZUserViewProps>((props) => {
 
     return (
         <ZListItemBase height={40} onPress={() => props.onPress(props.user.id)} separator={false}>
-            <View paddingHorizontal={16} paddingVertical={6} flexDirection="row" alignItems="center">
+            <View paddingHorizontal={16} flexDirection="row" alignItems="center">
                 <ZAvatar
-                    size="small"
+                    size="x-small"
                     src={props.user.photo}
                     placeholderTitle={props.user.name}
                     placeholderKey={props.user.id}
                 />
-                <View flexGrow={1} flexShrink={1} paddingLeft={12}>
+                <View flexGrow={1} flexShrink={1} paddingLeft={16}>
                     <Text
                         style={{ color: theme.foregroundPrimary, fontWeight: FontStyles.Weight.Medium, width: Dimensions.get('screen').width - 72 }}
                         numberOfLines={1}
