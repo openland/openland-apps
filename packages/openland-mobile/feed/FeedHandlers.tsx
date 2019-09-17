@@ -8,12 +8,9 @@ class FeedHandlersClass {
         getMessenger().history.navigationManager.push('FeedItem', { id });
     }
 
-    handleLongPress = (id: string, canEdit: boolean) => {
-        this.handleManagePress(id, canEdit);
-    }
-
-    handleManagePress = (id: string, canEdit: boolean) => {
+    handleLongPress = (id: string, canEdit: boolean, backAfterDelete?: boolean) => {
         const client = getClient();
+        const router = getMessenger().history.navigationManager;
         const builder = new ActionSheetBuilder();
 
         builder.action('Share', () => {
@@ -36,6 +33,10 @@ class FeedHandlersClass {
                     .button('Cancel', 'cancel')
                     .action('Delete', 'destructive', async () => {
                         await client.mutateFeedDeletePost({ feedItemId: id });
+
+                        if (!!backAfterDelete) {
+                            router.pop();
+                        }
                     }).show();
             }, false, require('assets/ic-delete-24.png'));
         } else {
@@ -45,6 +46,10 @@ class FeedHandlersClass {
         }
 
         builder.show(true);
+    }
+
+    handleManagePress = (id: string, canEdit: boolean) => {
+        this.handleLongPress(id, canEdit, true);
     }
 
     handleLike = (id: string) => {
