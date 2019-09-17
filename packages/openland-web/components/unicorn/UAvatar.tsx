@@ -224,11 +224,12 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
     return (
         <XView
             {...other}
-            width={boxSize}
-            height={boxSize}
             cursor={props.onClick || props.path ? 'pointer' : undefined}
         >
-            <div className={colorProvider} style={{ '--dotBorder': dotBorder, '--dotBackground': dotBackground } as React.CSSProperties}>
+            <div
+                className={colorProvider}
+                style={{ width: boxSize, height: boxSize, '--dotBorder': dotBorder, '--dotBackground': dotBackground } as React.CSSProperties}
+            >
                 <XView width="100%" height="100%" borderRadius={boxSize / 2} overflow="hidden">
                     {content}
                 </XView>
