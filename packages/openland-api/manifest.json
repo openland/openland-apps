@@ -828,6 +828,13 @@
       }
     },
     {
+      "signature": "cc965037838d050ac07953a703be846d8bc730c170b0a99fce8e11618c25bed7",
+      "document": "mutation FeedDeletePost($feedItemId:ID!){alphaDeleteFeedPost(feedItemId:$feedItemId)}",
+      "metadata": {
+        "engineSignature": "mutation FeedDeletePost($feedItemId:ID!){alphaDeleteFeedPost(feedItemId:$feedItemId)}"
+      }
+    },
+    {
       "signature": "df8c40e60e19b78b584f0baf454da316c555c963e82a8f4f9bf345f185069488",
       "document": "fragment FeedPostAuthorFragment on FeedPostAuthor{__typename...on User{...UserShort}...on Organization{...OrganizationShort}}fragment SlideFragment on Slide{__typename...on TextSlide{attachments{__typename...on User{...UserShort}...on SharedRoom{id isChannel kind roomPhoto:photo title}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename...SpanFragment}text}}fragment FeedItemFull on FeedItem{__typename...on FeedPost{author{__typename...FeedPostAuthorFragment}commentsCount date edited fallback id reactions{__typename reaction user{__typename...UserShort}}slides{__typename...SlideFragment}}}fragment SpanFragment on MessageSpan{__typename length offset...on MessageSpanUserMention{user{__typename...UserForMention}}...on MessageSpanMultiUserMention{users{__typename...UserForMention}}...on MessageSpanRoomMention{room{__typename...on PrivateRoom{id user{__typename id name}}...on SharedRoom{id title}}}...on MessageSpanLink{url}...on MessageSpanDate{date}}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}fragment FeedUpdateFragment on FeedUpdate{__typename...on FeedItemReceived{item{__typename...FeedItemFull}}...on FeedItemUpdated{item{__typename...FeedItemFull}}...on FeedItemDeleted{item{__typename...FeedItemFull}}}subscription FeedUpdates{event:homeFeedUpdates{__typename updates{__typename...FeedUpdateFragment}}}",
       "metadata": {

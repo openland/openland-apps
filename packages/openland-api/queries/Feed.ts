@@ -9,9 +9,9 @@ export const FeedQuery = gql`
             }
             cursor
         }
-
-        ${FeedItemFull}
     }
+
+    ${FeedItemFull}
 `;
 
 export const FeedCreatePostMutation = gql`
@@ -19,9 +19,9 @@ export const FeedCreatePostMutation = gql`
         createFeedPost: alphaCreateFeedPost(slides: $input) {
             ...FeedItemFull
         }
-
-        ${FeedItemFull}
     }
+
+    ${FeedItemFull}
 `;
 
 export const FeedCreateGlobalPostMutation = gql`
@@ -29,8 +29,14 @@ export const FeedCreateGlobalPostMutation = gql`
         createFeedPost: alphaCreateGlobalFeedPost(slides: $input) {
             ...FeedItemFull
         }
+    }
 
-        ${FeedItemFull}
+    ${FeedItemFull}
+`;
+
+export const FeedDeletePostMutation = gql`
+    mutation FeedDeletePost($feedItemId: ID!) {
+        alphaDeleteFeedPost(feedItemId: $feedItemId)
     }
 `;
 

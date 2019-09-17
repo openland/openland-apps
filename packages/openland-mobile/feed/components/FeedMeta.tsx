@@ -29,7 +29,7 @@ export const FeedMeta = React.memo((props: FeedMetaProps) => {
         <>
             <FeedAuthorView author={author} style={style} />
 
-            {!!currentSlide && !!slidesCount && (
+            {!!currentSlide && !!slidesCount && slidesCount > 1 && (
                 <FeedSlideIndicator
                     current={currentSlide}
                     items={slidesCount}

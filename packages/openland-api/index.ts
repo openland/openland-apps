@@ -162,6 +162,7 @@ export const FeatureFlagDisableMutation = typedMutation<Types.FeatureFlagDisable
 export const FeedQuery = typedQuery<Types.Feed, Types.FeedVariables>(Feed.FeedQuery);
 export const FeedCreatePostMutation = typedMutation<Types.FeedCreatePost, Types.FeedCreatePostVariables>(Feed.FeedCreatePostMutation);
 export const FeedCreateGlobalPostMutation = typedMutation<Types.FeedCreateGlobalPost, Types.FeedCreateGlobalPostVariables>(Feed.FeedCreateGlobalPostMutation);
+export const FeedDeletePostMutation = typedMutation<Types.FeedDeletePost, Types.FeedDeletePostVariables>(Feed.FeedDeletePostMutation);
 export const FeedUpdatesSubscription = typedSubscription<Types.FeedUpdates, {}>(Feed.FeedUpdatesSubscription);
 export const MyNotificationsQuery = typedQuery<Types.MyNotifications, Types.MyNotificationsVariables>(MyNotificationsCenter.MyNotificationsQuery);
 export const MyNotificationsCenterSubscription = typedSubscription<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables>(MyNotificationsCenter.MyNotificationsCenterSubscription);

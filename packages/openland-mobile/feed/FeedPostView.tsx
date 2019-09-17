@@ -8,6 +8,11 @@ import { FeedMeta } from './components/FeedMeta';
 import { FeedSlide } from './content/FeedSlide';
 import { FeedUnsupportedContent } from './content/FeedUnsupportedContent';
 import { FeedSwipeView } from './FeedSwipeView';
+import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
+import { getMessenger } from 'openland-mobile/utils/messenger';
+import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
+import Alert from 'openland-mobile/components/AlertBlanket';
 
 const styles = StyleSheet.create({
     box: {
@@ -45,20 +50,43 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
     const { id, author, slides } = item;
 
     const [currentSlide, setCurreentSlide] = React.useState(0);
-    const onLeftSwiped = React.useCallback(() => {
-        console.warn('boom onLeftSwiped');
+    const handleLeftSwiped = React.useCallback(() => {
+        console.warn('boom handleLeftSwiped');
     }, []);
 
-    const onRightSwiped = React.useCallback(() => {
-        console.warn('boom onRightSwiped');
+    const handleRightSwiped = React.useCallback(() => {
+        console.warn('boom handleRightSwiped');
     }, []);
 
-    const onPrevPress = React.useCallback(() => {
+    const handlePrevPress = React.useCallback(() => {
         setCurreentSlide(prev => prev - 1);
     }, []);
 
-    const onNextPress = React.useCallback(() => {
+    const handleNextPress = React.useCallback(() => {
         setCurreentSlide(prev => prev + 1);
+    }, []);
+
+    const handlePress = React.useCallback(() => {
+        console.warn('boom handlePostPress');
+    }, []);
+
+    const handleLongPress = React.useCallback(() => {
+        if ((author.__typename === 'User' && author.id === getMessenger().engine.user.id) || SUPER_ADMIN) {
+            const client = getClient();
+            const builder = new ActionSheetBuilder();
+
+            builder.action('Delete', async () => {
+                Alert.builder()
+                    .title('Delete post')
+                    .message('Delete this post for everyone? This cannot be undone.')
+                    .button('Cancel', 'cancel')
+                    .action('Delete', 'destructive', async () => {
+                        await client.mutateFeedDeletePost({ feedItemId: id });
+                    }).show();
+            }, false, require('assets/ic-delete-24.png'));
+
+            builder.show(true);
+        }
     }, []);
 
     const width = Dimensions.get('screen').width;
@@ -75,52 +103,55 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
         <FeedSwipeView
             id={id}
             theme={theme}
-            onLeftSwiped={onLeftSwiped}
-            onRightSwiped={onRightSwiped}
+            onLeftSwiped={handleLeftSwiped}
+            onRightSwiped={handleRightSwiped}
             scrollRef={scrollRef}
         >
             <View style={styles.box}>
                 <FeedItemShadow width={width} height={containerHeight + 16 + 32} />
 
-                <View style={[styles.container, { width: containerWidth, height: containerHeight, backgroundColor: theme.backgroundSecondary }]}>
-                    {slides.length > 0 && (
-                        <>
-                            <FeedMeta
-                                author={author}
-                                style={metaStyle}
-                                currentSlide={currentSlide + 1}
-                                slidesCount={slides.length}
-                            />
+                <TouchableWithoutFeedback onPress={handlePress} onLongPress={handleLongPress}>
+                    <View style={[styles.container, { width: containerWidth, height: containerHeight, backgroundColor: theme.backgroundSecondary }]}>
 
-                            <View style={styles.wrapper}>
-                                <FeedSlide slide={slides[currentSlide]} />
+                        {slides.length > 0 && (
+                            <>
+                                <FeedMeta
+                                    author={author}
+                                    style={metaStyle}
+                                    currentSlide={currentSlide + 1}
+                                    slidesCount={slides.length}
+                                />
 
-                                {currentSlide > 0 && (
-                                    <TouchableWithoutFeedback onPress={onPrevPress}>
-                                        <View style={[styles.paginator, { left: 0 }]} />
-                                    </TouchableWithoutFeedback>
-                                )}
+                                <View style={styles.wrapper}>
+                                    <FeedSlide slide={slides[currentSlide]} />
 
-                                {currentSlide < slides.length - 1 && (
-                                    <TouchableWithoutFeedback onPress={onNextPress}>
-                                        <View style={[styles.paginator, { right: 0 }]} />
-                                    </TouchableWithoutFeedback>
-                                )}
-                            </View>
-                        </>
-                    )}
+                                    {currentSlide > 0 && (
+                                        <TouchableWithoutFeedback onPress={handlePrevPress} onLongPress={handleLongPress}>
+                                            <View style={[styles.paginator, { left: 0 }]} />
+                                        </TouchableWithoutFeedback>
+                                    )}
 
-                    {slides.length <= 0 && (
-                        <>
-                            <FeedMeta
-                                author={author}
-                                style={metaStyle}
-                            />
+                                    {currentSlide < slides.length - 1 && (
+                                        <TouchableWithoutFeedback onPress={handleNextPress} onLongPress={handleLongPress}>
+                                            <View style={[styles.paginator, { right: 0 }]} />
+                                        </TouchableWithoutFeedback>
+                                    )}
+                                </View>
+                            </>
+                        )}
 
-                            <FeedUnsupportedContent />
-                        </>
-                    )}
-                </View>
+                        {slides.length <= 0 && (
+                            <>
+                                <FeedMeta
+                                    author={author}
+                                    style={metaStyle}
+                                />
+
+                                <FeedUnsupportedContent />
+                            </>
+                        )}
+                    </View>
+                </TouchableWithoutFeedback>
             </View>
         </FeedSwipeView>
     );

@@ -38,7 +38,7 @@ class NotificationCenterHandlersClass {
             await this.deleteNotifications([id]);
         }, false, require('assets/ic-delete-24.png'));
 
-        builder.show();
+        builder.show(true);
     }
 
     handleManagePress = (items: NotificationsDataSourceItem[]) => {
