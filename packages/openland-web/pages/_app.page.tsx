@@ -26,7 +26,6 @@ import { withData } from './root/withData';
 import { RootErrorBoundary } from './root/RootErrorBoundary';
 import moment from 'moment-timezone';
 import { getClientStorage, SharedStorage } from 'openland-x-utils/SharedStorage';
-import { trackPage } from 'openland-x-analytics';
 import { XStorageProvider } from 'openland-x-routing/XStorageProvider';
 import { XRouterProvider } from 'openland-x-routing/XRouterProvider';
 import { Routes } from '../routes';
@@ -80,11 +79,6 @@ export default withData(
 
             // This is needed to render errors correctly in development / production
             super.componentDidCatch!!(error, errorInfo);
-        }
-
-        componentDidMount() {
-            // Hack to track initial page view
-            trackPage();
         }
 
         render() {
