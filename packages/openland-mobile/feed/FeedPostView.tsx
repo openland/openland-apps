@@ -4,8 +4,7 @@ import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { Dimensions, View, StyleSheet, ViewStyle, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { FeedItemShadow } from './FeedItemShadow';
-import { FeedAuthorView } from './components/FeedAuthorView';
-import { FeedSlideIndicator } from './components/FeedSlideIndicator';
+import { FeedMeta } from './components/FeedMeta';
 import { FeedSlide } from './content/FeedSlide';
 import { FeedUnsupportedContent } from './content/FeedUnsupportedContent';
 import { FeedSwipeView } from './FeedSwipeView';
@@ -22,13 +21,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
-    } as ViewStyle,
-    meta: {
-        zIndex: 2,
-        position: 'absolute',
-        top: 0, left: 0, right: 0,
-        flexDirection: 'row',
-        justifyContent: 'space-between'
     } as ViewStyle,
     wrapper: {
         flexGrow: 1,
@@ -73,7 +65,11 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
     const containerWidth = width - 32;
     const containerHeight = containerWidth * (4 / 3);
 
-    const metaStyle: 'default' | 'media' = 'default';
+    let metaStyle: 'default' | 'media' = 'default';
+
+    if (slides.length && slides[currentSlide].coverAlign && (slides[currentSlide].coverAlign === 'Top' || slides[currentSlide].coverAlign === 'Cover')) {
+        metaStyle = 'media';
+    }
 
     return (
         <FeedSwipeView
@@ -89,14 +85,12 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
                 <View style={[styles.container, { width: containerWidth, height: containerHeight, backgroundColor: theme.backgroundSecondary }]}>
                     {slides.length > 0 && (
                         <>
-                            <View style={styles.meta}>
-                                <FeedAuthorView author={author} style={metaStyle} />
-                                <FeedSlideIndicator
-                                    current={currentSlide + 1}
-                                    items={slides.length}
-                                    style={metaStyle}
-                                />
-                            </View>
+                            <FeedMeta
+                                author={author}
+                                style={metaStyle}
+                                currentSlide={currentSlide + 1}
+                                slidesCount={slides.length}
+                            />
 
                             <View style={styles.wrapper}>
                                 <FeedSlide slide={slides[currentSlide]} />
@@ -118,9 +112,10 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
 
                     {slides.length <= 0 && (
                         <>
-                            <View style={styles.meta}>
-                                <FeedAuthorView author={author} style={metaStyle} />
-                            </View>
+                            <FeedMeta
+                                author={author}
+                                style={metaStyle}
+                            />
 
                             <FeedUnsupportedContent />
                         </>
