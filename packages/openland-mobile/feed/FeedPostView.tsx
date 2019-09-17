@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
-import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
-import { Dimensions, View, Text, StyleSheet, ViewStyle, ScrollView } from 'react-native';
+import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { Dimensions, View, StyleSheet, ViewStyle, ScrollView } from 'react-native';
 import { FeedItemShadow } from './FeedItemShadow';
 import { FeedAuthorView } from './content/FeedAuthorView';
+import { FeedSlide } from './content/FeedSlide';
+import { FeedUnsupportedContent } from './content/FeedUnsupportedContent';
 import { FeedSwipeView } from './FeedSwipeView';
 
 const styles = StyleSheet.create({
@@ -36,7 +38,7 @@ interface FeedPostViewProps {
 export const FeedPostView = React.memo((props: FeedPostViewProps) => {
     const theme = React.useContext(ThemeContext);
     const { item, scrollRef } = props;
-    const { id, author } = item;
+    const { id, author, slides } = item;
 
     const onLeftSwiped = React.useCallback(() => {
         console.warn('boom onLeftSwiped');
@@ -46,7 +48,7 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
         console.warn('boom onRightSwiped');
     }, []);
 
-    const width = Math.min(Dimensions.get('screen').width, 414);
+    const width = Dimensions.get('screen').width;
     const containerWidth = width - 32;
     const containerHeight = containerWidth * (4 / 3);
 
@@ -66,9 +68,8 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
                         <FeedAuthorView author={author} style="default" />
                     </View>
 
-                    <Text style={{ ...TextStyles.Title1, color: theme.foregroundPrimary, padding: 16, textAlign: 'center' }} allowFontScaling={false}>
-                        {id}
-                    </Text>
+                    {slides.map(s => <FeedSlide key={s.id} slide={s} />)}
+                    {slides.length <= 0 && <FeedUnsupportedContent />}
                 </View>
             </View>
         </FeedSwipeView>
