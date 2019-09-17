@@ -61,6 +61,7 @@ const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number }) =
 const imageWrapper = css`
     position: relative;
     z-index: 0;
+    background-color: var(--backgroundTertiary);
 
     & > img {
         z-index: 1;
@@ -90,7 +91,7 @@ const AvatarImage = React.memo((props: UAvatarProps) => {
         '/center/-/quality/best/-/progressive/yes/ 2x';
 
     return (
-        <div className={imageWrapper}>
+        <div className={imageWrapper} style={{ width: boxSize, height: boxSize }}>
             <XImage
                 width="100%"
                 height="100%"
@@ -98,7 +99,6 @@ const AvatarImage = React.memo((props: UAvatarProps) => {
                 srcSet={photo + opsRetina}
                 borderRadius="100%"
                 overflow="hidden"
-                backgroundColor="var(--backgroundTertiary)"
             />
         </div>
     );
