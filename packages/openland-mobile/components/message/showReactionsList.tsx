@@ -41,7 +41,7 @@ const ReactionsList = (props: ReactionsListProps) => {
 
                             <View flexGrow={1} flexShrink={1} paddingLeft={16}>
                                 <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
-                                    {ReactionLabel[r]}{'   '}
+                                    {ReactionLabel[r]}{'  '}
                                     <Text style={{ ...TextStyles.Label1, color: theme.foregroundTertiary }} allowFontScaling={false}>{users.length}</Text>
                                 </Text>
 

@@ -80,34 +80,33 @@ export const CommentsList = (props: CommentsListProps) => {
     const commentsSorted = sortComments(comments, commentsMap);
 
     return (
-        <View paddingHorizontal={16}>
-            <View height={1} backgroundColor={theme.border} marginTop={15} />
-
-            <View marginTop={20} marginBottom={15}>
-                <Text style={{ fontSize: 16, color: theme.foregroundSecondary, fontWeight: FontStyles.Weight.Medium }} allowFontScaling={false}>COMMENTS <Text style={{ color: '#b9c1cd' }}>{comments.length}</Text></Text>
+        <View>
+            <View height={48} justifyContent="center" paddingHorizontal={16}>
+                <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
+                    Comments{'  '}
+                    <Text style={{ ...TextStyles.Label1, color: theme.foregroundTertiary }} allowFontScaling={false}>
+                        {comments.length}
+                    </Text>
+                </Text>
             </View>
 
-            <View marginHorizontal={-16}>
-                {commentsSorted.map((commentEntry, index) => {
-                    const isHighlighted = (typeof highlightedId === 'string' && highlightedId === commentEntry.comment.id) ? true : false;
+            {commentsSorted.map((commentEntry, index) => {
+                const isHighlighted = (typeof highlightedId === 'string' && highlightedId === commentEntry.comment.id) ? true : false;
 
-                    return (
-                        <CommentView
-                            key={'comment-' + index}
-                            onLayout={isHighlighted ? handleLayout : undefined}
-                            comment={commentEntry.comment}
-                            deleted={commentEntry.deleted}
-                            depth={getDepthOfComment(commentEntry, commentsMap)}
-                            onReplyPress={onReplyPress}
-                            onLongPress={handleLongPress}
-                            highlighted={isHighlighted}
-                            theme={theme}
-                        />
-                    );
-                })}
-
-                <View backgroundColor={theme.backgroundPrimary} height={8} zIndex={2} marginTop={-8} marginBottom={8} />
-            </View>
+                return (
+                    <CommentView
+                        key={'comment-' + index}
+                        onLayout={isHighlighted ? handleLayout : undefined}
+                        comment={commentEntry.comment}
+                        deleted={commentEntry.deleted}
+                        depth={getDepthOfComment(commentEntry, commentsMap)}
+                        onReplyPress={onReplyPress}
+                        onLongPress={handleLongPress}
+                        highlighted={isHighlighted}
+                        theme={theme}
+                    />
+                );
+            })}
         </View>
     );
 };
