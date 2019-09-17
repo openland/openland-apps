@@ -8,61 +8,69 @@ import { withApp } from 'openland-web/components/withApp';
 import { XView } from 'react-mental';
 import LogoBig from 'openland-icons/logo-big.svg';
 import { XButton } from 'openland-x/XButton';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const textAlignClassName = css`
     text-align: center;
 `;
 
 const AcceptInvite = ({
-    inviter,
-    onAcceptInvite,
+    inviter
 }: {
     inviter: { photo: string | null; name: string; id: string };
-    onAcceptInvite: (event: React.MouseEvent<any, MouseEvent>) => void;
     isMobile: boolean;
-}) => (
-        <XView width="100%" backgroundColor="white" position={'relative'} justifyContent="center">
-            <XView
-                position="absolute"
-                top={56}
-                alignSelf="center"
-                alignItems="center"
-                flexDirection="row"
-            >
-                <XAvatar2
-                    size={32}
-                    id={inviter.id}
-                    title={inviter.name}
-                    src={inviter.photo || undefined}
-                />
-                <XView fontSize={16} color="#000000" marginLeft={12}>
-                    {inviter.name + ' invites you to join'}
-                </XView>
+}) => {
+    const userInfo = React.useContext(UserInfoContext);
+    const router = React.useContext(XRouterContext)!;
+    const onAcceptInvite = React.useCallback(() => {
+        if (!userInfo || !userInfo.isLoggedIn) {
+            router.push('/authorization/create-new-account');
+        } else {
+            router.push('/mail');
+        }
+    }, []);
+    return (<XView width="100%" backgroundColor="white" position={'relative'} justifyContent="center">
+        <XView
+            position="absolute"
+            top={56}
+            alignSelf="center"
+            alignItems="center"
+            flexDirection="row"
+        >
+            <XAvatar2
+                size={32}
+                id={inviter.id}
+                title={inviter.name}
+                src={inviter.photo || undefined}
+            />
+            <XView fontSize={16} color="#000000" marginLeft={12}>
+                {inviter.name + ' invites you to join'}
             </XView>
-            <XView alignSelf="center" alignItems="center">
-                <XView marginBottom={24}>
-                    <LogoBig />
-                </XView>
+        </XView>
+        <XView alignSelf="center" alignItems="center">
+            <XView marginBottom={24}>
+                <LogoBig />
+            </XView>
 
-                <XView marginBottom={40}>
-                    <XView maxWidth={575} paddingHorizontal={20} fontSize={18} lineHeight={1.67}>
-                        <p className={textAlignClassName}>
-                            An invitation-only community <br /> for top startup founders, investors, and
-                            engineers.
+            <XView marginBottom={40}>
+                <XView maxWidth={575} paddingHorizontal={20} fontSize={18} lineHeight={1.67}>
+                    <p className={textAlignClassName}>
+                        An invitation-only community <br /> for top startup founders, investors, and
+                        engineers.
                     </p>
-                    </XView>
                 </XView>
-                <XButton text="Accept invite" style="primary" size="large" onClick={onAcceptInvite} />
             </XView>
-            <XView position="absolute" bottom={20} fontSize={14} opacity={0.5} alignSelf={'center'}>
-                © 2019 Openland
+            <XButton text="Accept invite" style="primary" size="large" onClick={onAcceptInvite} />
         </XView>
+        <XView position="absolute" bottom={20} fontSize={14} opacity={0.5} alignSelf={'center'}>
+            © 2019 Openland
         </XView>
-    );
+    </XView>);
+};
 
 export const AcceptInvitePage = (props: {
     variables: { inviteKey: string };
-    onAcceptInvite: (event: React.MouseEvent<any, MouseEvent>) => void;
     isMobile: boolean;
 }) => {
     const client = useClient();
@@ -101,7 +109,6 @@ export const AcceptInvitePage = (props: {
     return (
         <AcceptInvite
             inviter={inviter}
-            onAcceptInvite={props.onAcceptInvite}
             isMobile={props.isMobile}
         />
     );

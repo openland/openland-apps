@@ -45,17 +45,6 @@ const Unicorn = React.memo(() => {
 });
 
 export default React.memo(() => {
-    // invites can be rendered before auth, but we want to keep them in one (unicorn) page to prevent page reload
-    const userInfo = React.useContext(UserInfoContext);
-    if (
-        (userInfo && (userInfo.isProfileCreated && !userInfo.isCompleted)) &&
-        (
-            (window.location.pathname.includes('/join') || window.location.pathname.includes('/invite')) ||
-            (Cookie.get('x-openland-app-invite') || Cookie.get('x-openland-org-invite'))
-        )
-    ) {
-        return <ResolveInviteComponent />;
-    }
     return (
         <AuthRouter>
             <Unicorn />
