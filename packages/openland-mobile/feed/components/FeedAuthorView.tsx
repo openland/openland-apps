@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
@@ -28,7 +27,7 @@ interface FeedAuthorViewProps {
     style: 'default' | 'media';
 }
 
-export const FeedAuthorView = XMemo<FeedAuthorViewProps>((props) => {
+export const FeedAuthorView = React.memo((props: FeedAuthorViewProps) => {
     const router = getMessenger().history.navigationManager;
     const theme = React.useContext(ThemeContext);
     const { author, style } = props;

@@ -4,7 +4,9 @@ import { View, Text, StyleSheet, ViewStyle } from 'react-native';
 
 const styles = StyleSheet.create({
     box: {
-
+        flexGrow: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     } as ViewStyle,
 });
 
