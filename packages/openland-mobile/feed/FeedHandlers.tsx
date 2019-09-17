@@ -4,33 +4,25 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import Alert from 'openland-mobile/components/AlertBlanket';
 
 class FeedHandlersClass {
-    handlePress = (id: string) => {
+    Open = (id: string) => {
         getMessenger().history.navigationManager.push('FeedItem', { id });
     }
 
-    handleLongPress = (id: string, canEdit: boolean) => {
-        this.manageItem(id, canEdit, true);
-    }
-
-    handleManagePress = (id: string, canEdit: boolean) => {
-        this.manageItem(id, canEdit, false);
-    }
-
-    handleLike = (id: string) => {
+    Like = (id: string) => {
         console.warn('Feed: Like post ' + id);
     }
 
-    handleShare = (id: string) => {
+    Share = (id: string) => {
         console.warn('Feed: Share post ' + id);
     }
 
-    private manageItem = (id: string, canEdit: boolean, fromLongPress: boolean) => {
+    Manage = (id: string, canEdit: boolean, fromLongPress?: boolean) => {
         const client = getClient();
         const router = getMessenger().history.navigationManager;
         const builder = new ActionSheetBuilder();
 
         builder.action('Share', () => {
-            this.handleShare(id);
+            this.Share(id);
         }, false, require('assets/ic-share-24.png'));
 
         if (canEdit) {
@@ -61,7 +53,7 @@ class FeedHandlersClass {
             }, false, require('assets/ic-info-24.png'));
         }
 
-        builder.show(true);
+        builder.show(fromLongPress);
     }
 }
 

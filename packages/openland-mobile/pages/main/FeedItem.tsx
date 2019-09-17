@@ -30,7 +30,7 @@ const FeedItemComponent = React.memo((props: PageProps) => {
                 <FeedAuthorHeader author={author} date={parseInt(date, 10)} />
             </SHeaderView>
 
-            <ZManageButton onPress={() => FeedHandlers.handleManagePress(id, canEdit)} />
+            <ZManageButton onPress={() => FeedHandlers.Manage(id, canEdit)} />
 
             <SScrollView>
                 <View height={8} />

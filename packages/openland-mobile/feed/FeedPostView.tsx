@@ -28,11 +28,11 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
     const { id, author, slides, canEdit } = item;
 
     const handlePress = React.useCallback(() => {
-        FeedHandlers.handlePress(id);
+        FeedHandlers.Open(id);
     }, []);
 
     const handleLongPress = React.useCallback(() => {
-        FeedHandlers.handleLongPress(id, canEdit);
+        FeedHandlers.Manage(id, canEdit, true);
     }, []);
 
     const width = Dimensions.get('screen').width;
@@ -43,8 +43,8 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
         <FeedSwipeHandler
             id={id}
             theme={theme}
-            onLeftSwiped={() => FeedHandlers.handleLike(id)}
-            onRightSwiped={() => FeedHandlers.handleShare(id)}
+            onLeftSwiped={() => FeedHandlers.Like(id)}
+            onRightSwiped={() => FeedHandlers.Share(id)}
             scrollRef={scrollRef}
         >
             <View style={styles.box}>
