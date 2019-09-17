@@ -40,11 +40,11 @@ export const CheckListBoxWraper = XMemo<{ checked?: boolean, isRadio?: boolean, 
                     }}
                 />
             ) : (
-                <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.checked ? theme.accentPrimary : theme.backgroundPrimary} opacity={props.checked ? 1 : 0.8} borderColor={props.checked ? theme.accentPrimary : theme.foregroundTertiary} borderWidth={2} borderRadius={RadiusStyles.Medium} width={24} height={24} >
-                    {props.checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.foregroundInverted }} />}
-                </View>
-            )}
-            
+                    <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={props.checked ? theme.accentPrimary : theme.backgroundPrimary} opacity={props.checked ? 1 : 0.8} borderColor={props.checked ? theme.accentPrimary : theme.foregroundTertiary} borderWidth={2} borderRadius={RadiusStyles.Medium} width={24} height={24} >
+                        {props.checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.foregroundInverted }} />}
+                    </View>
+                )}
+
         </View>
     );
 });
@@ -138,7 +138,7 @@ const UserMultiplePickerComponent = XMemo<PageProps>((props) => {
                             title="Members:"
                             theme={theme}
                         />
-                        <View style={{ height: 1, backgroundColor: theme.separatorColor }} />
+                        <View style={{ height: 1, backgroundColor: theme.border }} />
                     </ZBlurredView>
                 )}
             </ASSafeAreaContext.Consumer>

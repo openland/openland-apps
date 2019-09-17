@@ -88,7 +88,6 @@ export const ThemeLight: ThemeGlobal = {
     backgroundInverted: '#F2F3F5',
     backgroundInvertedHover: '#EBEDF0',
     backgroundInvertedActive: '#F2F3F5',
-    separatorColor: '#eaeaea',
 };
 
 export const ThemeLightRed: ThemeGlobal = {

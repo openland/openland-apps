@@ -88,7 +88,6 @@ export const ThemeDark: ThemeGlobal = {
     backgroundInverted: '#000000',
     backgroundInvertedHover: '#000000',
     backgroundInvertedActive: '#000000',
-    separatorColor: '#262629',
 };
 
 export const ThemeDarkBlue: ThemeGlobal = {

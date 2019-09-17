@@ -151,7 +151,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     let lines: JSX.Element[] = [];
 
     for (var i = 1; i <= depth; i++) {
-        lines.push(<View key={'comment-line-' + i} width={1} backgroundColor={theme.separatorColor} position="absolute" left={15 * i} top={0} bottom={-8} />);
+        lines.push(<View key={'comment-line-' + i} width={1} backgroundColor={theme.border} position="absolute" left={15 * i} top={0} bottom={-8} />);
     }
 
     return (

@@ -37,25 +37,25 @@ const InvitesComponent = XMemo<PageProps>((props) => {
                 <Text style={{ fontSize: 18, marginBottom: 40, marginHorizontal: 16, color: theme.foregroundPrimary, marginTop: theme.type === 'Dark' ? 8 : 0 }}>{"Share access to Openland community"}</Text>
                 <Text style={{ fontSize: 16, fontWeight: FontStyles.Weight.Medium, marginBottom: 10, marginHorizontal: 16, color: theme.foregroundSecondary }}>{"Write a post".toUpperCase()}</Text>
                 <Text style={{ fontSize: 15, marginBottom: 10, marginHorizontal: 16, color: theme.foregroundPrimary }}>{text}</Text>
-                <View backgroundColor={theme.separatorColor} marginLeft={16} marginBottom={21} height={1} />
+                <View backgroundColor={theme.border} marginLeft={16} marginBottom={21} height={1} />
                 <ZListItem
                     appearance="action"
                     text="Copy text"
                     onPress={copyTextCallback}
                 />
-                <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
+                <View backgroundColor={theme.border} marginLeft={16} height={1} />
                 <ZListItem
                     appearance="action"
                     text="Copy link"
                     onPress={copyLinkCallback}
                 />
-                <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
+                <View backgroundColor={theme.border} marginLeft={16} height={1} />
                 <ZListItem
                     appearance="action"
                     text="Share"
                     onPress={shareCallback}
                 />
-                <View backgroundColor={theme.separatorColor} marginLeft={16} height={1} />
+                <View backgroundColor={theme.border} marginLeft={16} height={1} />
                 <View flexGrow={1} />
                 {!!(invitesCount && invitesCount.mySuccessfulInvitesCount) && <View flexDirection="row" alignSelf="stretch" justifyContent="center" alignItems="center" marginHorizontal={16} marginBottom={16} borderRadius={RadiusStyles.Medium} height={50} backgroundColor={theme.bubble(false).backgroundPrimary}>
                     <Image source={require('assets/ic-user-fill-24.png')} />
