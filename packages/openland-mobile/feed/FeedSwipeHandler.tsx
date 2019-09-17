@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     } as ViewStyle,
 });
 
-interface FeedSwipeViewProps {
+interface FeedSwipeHandlerProps {
     id: string;
     theme: ThemeGlobal;
     onLeftSwiped: () => void;
@@ -39,14 +39,14 @@ interface FeedSwipeViewProps {
 
 type AnimNamesV = 'container' | 'leftBox' | 'leftIconBig' | 'rightBox' | 'rightIconBig';
 
-export class FeedSwipeView extends React.PureComponent<FeedSwipeViewProps> {
+export class FeedSwipeHandler extends React.PureComponent<FeedSwipeHandlerProps> {
     private names: { [key in AnimNamesV]: string };
     private wasSwiped = false;
     private leftIconShowed = false;
     private rightIconShowed = false;
     private scrollEnabled = true;
 
-    constructor(props: FeedSwipeViewProps) {
+    constructor(props: FeedSwipeHandlerProps) {
         super(props);
 
         this.names = {

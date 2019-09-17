@@ -22,6 +22,7 @@ export const convertPost = (src: Types.Feed_feed_items, engine: MessengerEngine)
         author: src.author,
         reactions: src.reactions,
         edited: src.edited,
+        canEdit: src.canEdit,
         commentsCount: src.commentsCount,
         fallback: src.fallback || '',
         reactionsReduced: reduceReactions(src.reactions, engine.user.id),

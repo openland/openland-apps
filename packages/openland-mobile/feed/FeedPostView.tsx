@@ -7,11 +7,9 @@ import { FeedItemShadow } from './FeedItemShadow';
 import { FeedMeta } from './components/FeedMeta';
 import { FeedSlide } from './content/FeedSlide';
 import { FeedUnsupportedContent } from './content/FeedUnsupportedContent';
-import { FeedSwipeView } from './FeedSwipeView';
+import { FeedSwipeHandler } from './FeedSwipeHandler';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { getMessenger } from 'openland-mobile/utils/messenger';
-import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import Alert from 'openland-mobile/components/AlertBlanket';
 
 const styles = StyleSheet.create({
@@ -47,15 +45,15 @@ interface FeedPostViewProps {
 export const FeedPostView = React.memo((props: FeedPostViewProps) => {
     const theme = React.useContext(ThemeContext);
     const { item, scrollRef } = props;
-    const { id, author, slides } = item;
+    const { id, author, slides, canEdit } = item;
 
     const [currentSlide, setCurreentSlide] = React.useState(0);
-    const handleLeftSwiped = React.useCallback(() => {
-        console.warn('boom handleLeftSwiped');
+    const handleLike = React.useCallback(() => {
+        console.warn('boom handleLike');
     }, []);
 
-    const handleRightSwiped = React.useCallback(() => {
-        console.warn('boom handleRightSwiped');
+    const handleShare = React.useCallback(() => {
+        console.warn('boom handleShare');
     }, []);
 
     const handlePrevPress = React.useCallback(() => {
@@ -71,9 +69,21 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
     }, []);
 
     const handleLongPress = React.useCallback(() => {
-        if ((author.__typename === 'User' && author.id === getMessenger().engine.user.id) || SUPER_ADMIN) {
-            const client = getClient();
-            const builder = new ActionSheetBuilder();
+        const client = getClient();
+        const builder = new ActionSheetBuilder();
+
+        builder.action('Share', () => {
+            handleShare();
+        }, false, require('assets/ic-share-24.png'));
+
+        if (canEdit) {
+            builder.action('Edit', () => {
+                console.warn('boom edit post');
+            }, false, require('assets/ic-edit-24.png'));
+
+            builder.action('Unpublish', () => {
+                console.warn('boom unpublish post');
+            }, false, require('assets/ic-refresh-24.png'));
 
             builder.action('Delete', async () => {
                 Alert.builder()
@@ -84,9 +94,13 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
                         await client.mutateFeedDeletePost({ feedItemId: id });
                     }).show();
             }, false, require('assets/ic-delete-24.png'));
-
-            builder.show(true);
+        } else {
+            builder.action('Report', () => {
+                console.warn('boom report post');
+            }, false, require('assets/ic-info-24.png'));
         }
+
+        builder.show(true);
     }, []);
 
     const width = Dimensions.get('screen').width;
@@ -100,11 +114,11 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
     }
 
     return (
-        <FeedSwipeView
+        <FeedSwipeHandler
             id={id}
             theme={theme}
-            onLeftSwiped={handleLeftSwiped}
-            onRightSwiped={handleRightSwiped}
+            onLeftSwiped={handleLike}
+            onRightSwiped={handleShare}
             scrollRef={scrollRef}
         >
             <View style={styles.box}>
@@ -153,6 +167,6 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
                     </View>
                 </TouchableWithoutFeedback>
             </View>
-        </FeedSwipeView>
+        </FeedSwipeHandler>
     );
 });

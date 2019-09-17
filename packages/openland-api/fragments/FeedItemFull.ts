@@ -65,6 +65,7 @@ export const FeedItemFull = gql`
                 ...FeedPostAuthorFragment
             }
             edited
+            canEdit
             commentsCount
             fallback
             reactions {
