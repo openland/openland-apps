@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import { UserShort } from '../fragments/UserShort';
 import { OrganizationShort } from '../fragments/OrganizationShort';
+import { SpanFragment } from './Message';
 
 export const FeedPostAuthorFragment = gql`
     fragment FeedPostAuthorFragment on FeedPostAuthor {
@@ -11,6 +12,48 @@ export const FeedPostAuthorFragment = gql`
             ...OrganizationShort
         }
     }
+
+    ${UserShort}
+    ${OrganizationShort}
+`;
+
+export const SlideFragment = gql`
+    fragment SlideFragment on Slide {
+        ... on TextSlide {
+            id
+            text
+            spans {
+                ...SpanFragment
+            }
+            cover {
+                url
+                metadata {
+                    name
+                    mimeType
+                    size
+                    isImage
+                    imageWidth
+                    imageHeight
+                    imageFormat
+                }
+            }
+            coverAlign
+            attachments {
+                ... on User {
+                    ...UserShort
+                }
+                ... on SharedRoom {
+                    id
+                    kind
+                    isChannel
+                    title
+                    roomPhoto: photo
+                }
+            }
+        }
+    }
+
+    ${SpanFragment}
 `;
 
 export const FeedItemFull = gql`
@@ -22,8 +65,6 @@ export const FeedItemFull = gql`
                 ...FeedPostAuthorFragment
             }
             edited
-            isMentioned
-            message
             commentsCount
             fallback
             reactions {
@@ -32,109 +73,12 @@ export const FeedItemFull = gql`
                 }
                 reaction
             }
-            attachments {
-                fallback
-                ... on MessageAttachmentFile {
-                    id
-                    fileId
-                    fileMetadata {
-                        name
-                        mimeType
-                        size
-                        isImage
-                        imageWidth
-                        imageHeight
-                        imageFormat
-                    }
-                    filePreview
-                }
-
-                ... on MessageRichAttachment {
-                    id
-                    title
-                    subTitle
-                    titleLink
-                    titleLinkHostname
-                    text
-                    icon {
-                        url
-                        metadata {
-                            name
-                            mimeType
-                            size
-                            isImage
-                            imageWidth
-                            imageHeight
-                            imageFormat
-                        }
-                    }
-                    image {
-                        url
-                        metadata {
-                            name
-                            mimeType
-                            size
-                            isImage
-                            imageWidth
-                            imageHeight
-                            imageFormat
-                        }
-                    }
-                    imageFallback {
-                        photo
-                        text
-                    }
-                    keyboard {
-                        buttons {
-                            id
-                            title
-                            style
-                            url
-                        }
-                    }
-                    fallback
-                }
-            }
-            spans {
-                offset
-                length
-
-                ... on MessageSpanUserMention {
-                    user {
-                        ...UserForMention
-                    }
-                }
-                ... on MessageSpanMultiUserMention {
-                    users {
-                        ...UserForMention
-                    }
-                }
-                ... on MessageSpanRoomMention {
-                    room {
-                        ... on PrivateRoom {
-                            id
-                            user {
-                                id
-                                name
-                            }
-                        }
-                        ... on SharedRoom {
-                            id
-                            title
-                        }
-                    }
-                }
-                ... on MessageSpanLink {
-                    url
-                }
-                ... on MessageSpanDate {
-                    date
-                }
+            slides {
+                ...SlideFragment
             }
         }
     }
 
     ${FeedPostAuthorFragment}
-    ${UserShort}
-    ${OrganizationShort}
+    ${SlideFragment}
 `;

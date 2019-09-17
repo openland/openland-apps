@@ -36,7 +36,7 @@ interface FeedPostViewProps {
 export const FeedPostView = React.memo((props: FeedPostViewProps) => {
     const theme = React.useContext(ThemeContext);
     const { item, scrollRef } = props;
-    const { id, author, text } = item;
+    const { id, author } = item;
 
     const onLeftSwiped = React.useCallback(() => {
         console.warn('boom onLeftSwiped');
@@ -67,7 +67,7 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
                     </View>
 
                     <Text style={{ ...TextStyles.Title1, color: theme.foregroundPrimary, padding: 16, textAlign: 'center' }} allowFontScaling={false}>
-                        {text || id}
+                        {id}
                     </Text>
                 </View>
             </View>

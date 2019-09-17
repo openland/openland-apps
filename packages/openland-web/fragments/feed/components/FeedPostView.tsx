@@ -28,12 +28,12 @@ interface FeedPostViewProps {
 }
 
 export const FeedPostView = React.memo<FeedPostViewProps>(props => {
-    const { id, text } = props.item;
+    const { id } = props.item;
 
     return (
         <div className={wrapperClass}>
             <div className={contentClass}>
-                <div className={TextTitle1}>{text || id}</div>
+                <div className={TextTitle1}>{id}</div>
             </div>
         </div>
     );

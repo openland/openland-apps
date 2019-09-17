@@ -28,43 +28,7 @@ fragment FullMessage on ModernMessage {
   }
   spans {
     __typename
-    length
-    offset
-    ... on MessageSpanUserMention {
-      user {
-        __typename
-        ...UserForMention
-      }
-    }
-    ... on MessageSpanMultiUserMention {
-      users {
-        __typename
-        ...UserForMention
-      }
-    }
-    ... on MessageSpanRoomMention {
-      room {
-        __typename
-        ... on PrivateRoom {
-          id
-          user {
-            __typename
-            id
-            name
-          }
-        }
-        ... on SharedRoom {
-          id
-          title
-        }
-      }
-    }
-    ... on MessageSpanLink {
-      url
-    }
-    ... on MessageSpanDate {
-      date
-    }
+    ...SpanFragment
   }
   ... on GeneralMessage {
     attachments {
@@ -172,43 +136,7 @@ fragment FullMessage on ModernMessage {
       }
       spans {
         __typename
-        length
-        offset
-        ... on MessageSpanUserMention {
-          user {
-            __typename
-            ...UserShort
-          }
-        }
-        ... on MessageSpanMultiUserMention {
-          users {
-            __typename
-            ...UserShort
-          }
-        }
-        ... on MessageSpanRoomMention {
-          room {
-            __typename
-            ... on PrivateRoom {
-              id
-              user {
-                __typename
-                id
-                name
-              }
-            }
-            ... on SharedRoom {
-              id
-              title
-            }
-          }
-        }
-        ... on MessageSpanLink {
-          url
-        }
-        ... on MessageSpanDate {
-          date
-        }
+        ...SpanFragment
       }
       ... on GeneralMessage {
         attachments {
