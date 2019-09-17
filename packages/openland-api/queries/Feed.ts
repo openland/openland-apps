@@ -14,6 +14,16 @@ export const FeedQuery = gql`
     ${FeedItemFull}
 `;
 
+export const FeedItemQuery = gql`
+    query FeedItem($id: ID!) {
+        item: alphaFeedItem(id: $id) {
+            ...FeedItemFull
+        }
+    }
+
+    ${FeedItemFull}
+`;
+
 export const FeedCreatePostMutation = gql`
     mutation FeedCreatePost($input: [SlideInput!]!) {
         createFeedPost: alphaCreateFeedPost(slides: $input) {

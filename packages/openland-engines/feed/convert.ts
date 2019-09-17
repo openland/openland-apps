@@ -6,7 +6,7 @@ import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel'
 import { isSameDate } from 'openland-engines/messenger/ConversationEngine';
 import { DataSourceFeedDateItem, DataSourceFeedPostItem, DataSourceFeedItem, SlideProcessed } from './types';
 
-const convertSlides = (src: Types.FeedItemFull_slides[]): SlideProcessed[] => {
+export const convertSlides = (src: Types.FeedItemFull_slides[]): SlideProcessed[] => {
     return src.map(s => ({
         ...s,
         textSpans: s.text ? processSpans(s.text, s.spans) : [],

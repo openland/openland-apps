@@ -62,6 +62,7 @@ import { SignupOrg } from './pages/auth/SignupOrg';
 import { Videos } from './pages/dev/Videos';
 import { Feed } from './pages/main/Feed';
 import { FeedCreatePost } from './feed/FeedCreatePost';
+import { FeedItem } from './pages/main/FeedItem';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -136,6 +137,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('Apps/Tasks', Tasks)
 
   .addRoute('Feed', Feed)
+  .addRoute('FeedItem', FeedItem)
   .addRoute('FeedCreatePost', FeedCreatePost)
 
   .build();

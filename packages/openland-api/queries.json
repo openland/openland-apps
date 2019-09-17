@@ -11507,6 +11507,63 @@
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
+			"operationName": "FeedItem",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [
+				{
+					"name": "id",
+					"type": "ID!"
+				}
+			],
+			"source": "query FeedItem($id: ID!) {\n  item: alphaFeedItem(id: $id) {\n    __typename\n    ...FeedItemFull\n  }\n}",
+			"fields": [
+				{
+					"responseName": "item",
+					"fieldName": "alphaFeedItem",
+					"type": "FeedItem!",
+					"args": [
+						{
+							"name": "id",
+							"value": {
+								"kind": "Variable",
+								"variableName": "id"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [
+						"FeedItemFull"
+					],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"FeedItemFull",
+				"FeedPostAuthorFragment",
+				"UserShort",
+				"OrganizationShort",
+				"SlideFragment",
+				"SpanFragment",
+				"UserForMention"
+			],
+			"sourceWithFragments": "query FeedItem($id: ID!) {\n  item: alphaFeedItem(id: $id) {\n    __typename\n    ...FeedItemFull\n  }\n}\nfragment FeedItemFull on FeedItem {\n  __typename\n  ... on FeedPost {\n    id\n    date\n    author {\n      __typename\n      ...FeedPostAuthorFragment\n    }\n    edited\n    canEdit\n    commentsCount\n    fallback\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n    slides {\n      __typename\n      ...SlideFragment\n    }\n  }\n}\nfragment FeedPostAuthorFragment on FeedPostAuthor {\n  __typename\n  ... on User {\n    ...UserShort\n  }\n  ... on Organization {\n    ...OrganizationShort\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment SlideFragment on Slide {\n  __typename\n  ... on TextSlide {\n    id\n    text\n    spans {\n      __typename\n      ...SpanFragment\n    }\n    cover {\n      __typename\n      url\n      metadata {\n        __typename\n        name\n        mimeType\n        size\n        isImage\n        imageWidth\n        imageHeight\n        imageFormat\n      }\n    }\n    coverAlign\n    attachments {\n      __typename\n      ... on User {\n        ...UserShort\n      }\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        roomPhoto: photo\n      }\n    }\n  }\n}\nfragment SpanFragment on MessageSpan {\n  __typename\n  offset\n  length\n  ... on MessageSpanUserMention {\n    user {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanMultiUserMention {\n    users {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanRoomMention {\n    room {\n      __typename\n      ... on PrivateRoom {\n        id\n        user {\n          __typename\n          id\n          name\n        }\n      }\n      ... on SharedRoom {\n        id\n        title\n      }\n    }\n  }\n  ... on MessageSpanLink {\n    url\n  }\n  ... on MessageSpanDate {\n    date\n  }\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}",
+			"operationId": "58ad7527d7a107e0dbc77564409beb1558c2685946a5eafe3a1941d2ca0a5a66"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
 			"operationName": "FeedCreatePost",
 			"operationType": "mutation",
 			"rootType": "Mutation",

@@ -1722,6 +1722,12 @@ private val FeedSelector = obj(
                         )))))
                 )))
         )
+private val FeedItemSelector = obj(
+            field("alphaFeedItem","item", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("FeedItem", FeedItemFullSelector)
+                )))
+        )
 private val FetchPushSettingsSelector = obj(
             field("pushSettings","pushSettings", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3373,6 +3379,12 @@ object Operations {
         override val body = "query Feed(\$after:String,\$first:Int!){feed:alphaHomeFeed(after:\$after,first:\$first){__typename cursor items{__typename ...FeedItemFull}}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}... on Organization{...OrganizationShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id isChannel kind roomPhoto:photo title}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}"
         override val selector = FeedSelector
     }
+    val FeedItem = object: OperationDefinition {
+        override val name = "FeedItem"
+        override val kind = OperationKind.QUERY
+        override val body = "query FeedItem(\$id:ID!){item:alphaFeedItem(id:\$id){__typename ...FeedItemFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}... on Organization{...OrganizationShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id isChannel kind roomPhoto:photo title}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}"
+        override val selector = FeedItemSelector
+    }
     val FetchPushSettings = object: OperationDefinition {
         override val name = "FetchPushSettings"
         override val kind = OperationKind.QUERY
@@ -4327,6 +4339,7 @@ object Operations {
         if (name == "ExplorePeople") return ExplorePeople
         if (name == "FeatureFlags") return FeatureFlags
         if (name == "Feed") return Feed
+        if (name == "FeedItem") return FeedItem
         if (name == "FetchPushSettings") return FetchPushSettings
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch
