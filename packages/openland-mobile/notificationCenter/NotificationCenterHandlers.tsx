@@ -7,16 +7,20 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 
 class NotificationCenterHandlersClass {
     handlePress = (id: string, item: NotificationsDataSourceItem) => {
-        getMessenger().history.navigationManager.push('MessageComments', {
-            messageId: item.peerRootId,
-        });
+        const { peerRootId, peerRootType } = item;
+
+        if (peerRootType === 'CommentPeerRootMessage') {
+            getMessenger().history.navigationManager.push('MessageComments', { messageId: peerRootId });
+        } else if (peerRootType === 'CommentPeerRootFeedItem') {
+            getMessenger().history.navigationManager.push('FeedItem', { feedItemId: peerRootId });
+        }
     }
 
     handleLongPress = (id: string, item: NotificationsDataSourceItem) => {
         const client = getClient();
         const builder = new ActionSheetBuilder();
 
-        if (item.notificationType !== 'unsupported') {
+        if (item.notificationType !== 'unsupported' && item.peerRootType === 'CommentPeerRootMessage') {
             builder.action(item.isSubscribedMessageComments ? 'Unfollow thread' : 'Follow thread', async () => {
                 startLoader();
 
@@ -52,10 +56,19 @@ class NotificationCenterHandlersClass {
     }
 
     handleReplyPress = (id: string, item: NotificationsDataSourceItem) => {
-        getMessenger().history.navigationManager.push('MessageComments', {
-            messageId: item.peerRootId,
-            highlightCommentId: item.id
-        });
+        const { peerRootId, peerRootType } = item;
+
+        if (peerRootType === 'CommentPeerRootMessage') {
+            getMessenger().history.navigationManager.push('MessageComments', {
+                messageId: peerRootId,
+                highlightCommentId: item.id
+            });
+        } else if (peerRootType === 'CommentPeerRootFeedItem') {
+            getMessenger().history.navigationManager.push('FeedItem', {
+                feedItemId: peerRootId,
+                highlightCommentId: item.id
+            });
+        }
     }
 
     private deleteNotifications = async (ids: string[]) => {

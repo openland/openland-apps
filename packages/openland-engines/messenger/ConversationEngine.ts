@@ -67,6 +67,7 @@ export interface DataSourceMessageItem {
     isSubscribedMessageComments?: boolean;
     replyQuoteText?: string | null;
     peerRootId?: string;
+    peerRootType?: 'CommentPeerRootMessage' | 'CommentPeerRootFeedItem';
     notificationId?: string;
     notificationType?: 'new_comment' | 'unsupported';
     room?: Types.RoomNano;

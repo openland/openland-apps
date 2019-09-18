@@ -27,6 +27,7 @@ const convertCommentNotification = (id: string, peer: Types.NotificationFragment
         }),
 
         peerRootId,
+        peerRootType: peerRoot.__typename,
         room,
         isSubscribedMessageComments: !!peer.subscription!!,
         notificationId: id,
@@ -154,7 +155,7 @@ export class NotificationCenterEngine {
         };
 
         this._dataSourceStored = new DataSourceStored(
-            'notifications5',
+            'notifications-6',
             engine.options.store,
             20,
             provider,

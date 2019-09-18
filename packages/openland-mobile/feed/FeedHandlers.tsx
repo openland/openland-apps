@@ -5,7 +5,7 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 
 class FeedHandlersClass {
     Open = (id: string) => {
-        getMessenger().history.navigationManager.push('FeedItem', { id });
+        getMessenger().history.navigationManager.push('FeedItem', { feedItemId: id });
     }
 
     Like = (id: string) => {

@@ -14,7 +14,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SHeaderIndicator } from 'react-native-s/SHeaderIndicator';
 
 const FeedItemComponent = React.memo((props: PageProps) => {
-    const feedItemId = props.router.params.id;
+    const feedItemId = props.router.params.feedItemId;
     const highlightId = props.router.params.highlightCommentId;
 
     const client = getClient();
