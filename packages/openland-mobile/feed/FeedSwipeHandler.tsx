@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, PanResponderGestureState, PanResponder, Dimensions, Platform, ScrollView, StyleSheet, ViewStyle } from 'react-native';
+import { View, PanResponderGestureState, PanResponder, Dimensions, Platform, ScrollView, StyleSheet, ViewStyle, Image } from 'react-native';
 import { SAnimated, SAnimatedPropertyName } from 'react-native-s/SAnimated';
 import { SAnimatedView } from 'react-native-s/SAnimatedView';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
@@ -19,13 +19,18 @@ const styles = StyleSheet.create({
     swipeIcon: {
         width: 48, height: 48,
         borderRadius: 24,
+        alignItems: 'center',
+        justifyContent: 'center'
     } as ViewStyle,
     swipeIconBig: {
         position: 'absolute',
         top: -6, left: -6,
         width: 60, height: 60,
         borderRadius: 30,
-        opacity: 0
+        opacity: 0,
+        zIndex: 2,
+        alignItems: 'center',
+        justifyContent: 'center'
     } as ViewStyle,
 });
 
@@ -35,6 +40,10 @@ interface FeedSwipeHandlerProps {
     onLeftSwiped: () => void;
     onRightSwiped: () => void;
     scrollRef: React.RefObject<ScrollView>;
+    leftIcon: NodeRequire;
+    rightIcon: NodeRequire;
+    leftSwipedColor: string;
+    rightSwipedColor: string;
 }
 
 type AnimNamesV = 'container' | 'leftBox' | 'leftIconBig' | 'rightBox' | 'rightIconBig';
@@ -88,7 +97,7 @@ export class FeedSwipeHandler extends React.PureComponent<FeedSwipeHandlerProps>
         return dx > -IGNORE_DISTANCE ? 0 : dx + IGNORE_DISTANCE;
     }
 
-    calcDelta = (dx: number) => dx / 2;
+    calcDelta = (dx: number) => dx / 1.5;
     transSwipeBox = (type: 'left' | 'right', dx: number) => (this.calcDelta(dx) + (type === 'left' ? -SWIPE_BOX_WIDTH : SWIPE_BOX_WIDTH)) / 2;
     needTransSwipeBox = (type: 'left' | 'right', dx: number) => (type === 'left') ? (this.calcDelta(dx) > SWIPE_BOX_WIDTH) : (this.calcDelta(dx) < -SWIPE_BOX_WIDTH);
 
@@ -216,7 +225,7 @@ export class FeedSwipeHandler extends React.PureComponent<FeedSwipeHandlerProps>
     });
 
     render() {
-        const { theme, children } = this.props;
+        const { theme, children, leftIcon, rightIcon, leftSwipedColor, rightSwipedColor } = this.props;
 
         return (
             <View {...this.panResponder.panHandlers}>
@@ -225,10 +234,14 @@ export class FeedSwipeHandler extends React.PureComponent<FeedSwipeHandlerProps>
                     style={[styles.swipeBox, { left: 0 }]}
                 >
                     <View style={[styles.swipeIcon, { backgroundColor: theme.backgroundTertiary }]}>
+                        <Image source={leftIcon} style={{ width: 24, height: 24, tintColor: theme.foregroundSecondary }} />
+
                         <SAnimatedView
                             name={this.names.leftIconBig}
-                            style={[styles.swipeIconBig, { backgroundColor: theme.accentNegative }]}
-                        />
+                            style={[styles.swipeIconBig, { backgroundColor: leftSwipedColor }]}
+                        >
+                            <Image source={leftIcon} style={{ width: 24, height: 24, tintColor: theme.foregroundContrast }} />
+                        </SAnimatedView>
                     </View>
                 </SAnimatedView>
 
@@ -237,10 +250,14 @@ export class FeedSwipeHandler extends React.PureComponent<FeedSwipeHandlerProps>
                     style={[styles.swipeBox, { right: 0 }]}
                 >
                     <View style={[styles.swipeIcon, { backgroundColor: theme.backgroundTertiary }]}>
+                        <Image source={rightIcon} style={{ width: 24, height: 24, tintColor: theme.foregroundSecondary }} />
+
                         <SAnimatedView
                             name={this.names.rightIconBig}
-                            style={[styles.swipeIconBig, { backgroundColor: theme.accentNegative }]}
-                        />
+                            style={[styles.swipeIconBig, { backgroundColor: rightSwipedColor }]}
+                        >
+                            <Image source={rightIcon} style={{ width: 24, height: 24, tintColor: theme.foregroundContrast }} />
+                        </SAnimatedView>
                     </View>
                 </SAnimatedView>
 

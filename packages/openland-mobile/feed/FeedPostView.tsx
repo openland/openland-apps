@@ -45,6 +45,10 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
             theme={theme}
             onLeftSwiped={() => FeedHandlers.Like(id)}
             onRightSwiped={() => FeedHandlers.Share(id)}
+            leftIcon={require('assets/ic-like-24.png')}
+            rightIcon={require('assets/ic-forward-24.png')}
+            leftSwipedColor={theme.accentNegative}
+            rightSwipedColor={theme.accentPositive}
             scrollRef={scrollRef}
         >
             <View style={styles.box}>
