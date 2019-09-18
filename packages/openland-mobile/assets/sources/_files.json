@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-delete",
+            "src": "ic-delete-12.svg",
+            "sizes": [
+                12
+            ]
+        },
+        {
             "name": "ic-document-preview",
             "src": "ic-document-preview-48.svg",
             "sizes": [

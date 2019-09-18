@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, TextProps } from 'react-native';
-import { formatRelativeTime } from 'openland-y-utils/formatTime';
+import { formatRelativeTimeShort } from 'openland-y-utils/formatTime';
 
 interface ZRelativeDateProps extends TextProps {
     date: string | number;
@@ -17,14 +17,14 @@ export class ZRelativeDate extends React.Component<ZRelativeDateProps, ZRelative
         super(props);
 
         this.state = {
-            huminizedDate: formatRelativeTime(this.props.date)
+            huminizedDate: formatRelativeTimeShort(this.props.date)
         };
     }
 
     componentDidMount() {
         this.interval = setInterval(() => {
             this.setState({
-                huminizedDate: formatRelativeTime(this.props.date)
+                huminizedDate: formatRelativeTimeShort(this.props.date)
             });
         }, 1000 * 60);
     }
@@ -35,7 +35,7 @@ export class ZRelativeDate extends React.Component<ZRelativeDateProps, ZRelative
         }
     }
 
-    render () {
+    render() {
         const { date, ...other } = this.props;
 
         return (

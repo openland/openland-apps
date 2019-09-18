@@ -64,3 +64,23 @@ export function formatRelativeTime(date: string | number) {
         return formatDate(time);
     }
 }
+
+export function formatRelativeTimeShort(date: string | number) {
+    const src = new Date((typeof date === 'string') ? parseInt(date, 10) : date);
+    const now = new Date();
+
+    const delta = now.getTime() - src.getTime();
+
+    if (delta < 1000 * 60) {
+        // first minute
+        return 'now';
+    } else if (delta < 1000 * 60 * 60) {
+        // first hour
+        return Math.floor(delta / (1000 * 60)) + ' m';
+    } else if (delta < 1000 * 60 * 60 * 24) {
+        // first day
+        return Math.floor(delta / (1000 * 60 * 60)) + ' h';
+    } else {
+        return Math.floor(delta / (1000 * 60 * 60 * 24)) + ' d';
+    }
+}

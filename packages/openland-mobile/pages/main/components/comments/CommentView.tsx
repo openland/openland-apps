@@ -2,7 +2,7 @@ import * as React from 'react';
 import { CommentEntryFragment_comment, MessageReactionType } from 'openland-api/Types';
 import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, LayoutChangeEvent } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { FontStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import Alert from 'openland-mobile/components/AlertBlanket';
@@ -12,12 +12,13 @@ import { ZRelativeDate } from 'openland-mobile/components/ZRelativeDate';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import { ZLabelButton } from 'openland-mobile/components/ZLabelButton';
+import { plural } from 'openland-y-utils/plural';
 
 const styles = StyleSheet.create({
     senderName: {
-        fontSize: 13,
-        fontWeight: FontStyles.Weight.Medium,
-        lineHeight: 15
+        ...TextStyles.Label2,
+        paddingBottom: 2,
     } as TextStyle,
     editedLabel: {
         fontSize: 13,
@@ -25,16 +26,15 @@ const styles = StyleSheet.create({
         paddingLeft: 3,
     } as TextStyle,
     date: {
-        fontSize: 13,
-        fontWeight: FontStyles.Weight.Medium,
-        lineHeight: 15,
+        ...TextStyles.Subhead,
+        paddingVertical: 2,
+        paddingRight: 8
     } as TextStyle,
-    reply: {
-        fontSize: 13,
-        fontWeight: FontStyles.Weight.Medium,
-        lineHeight: 15,
-        marginLeft: 6,
-    } as TextStyle
+    likesCount: {
+        ...TextStyles.Label2,
+        paddingVertical: 2,
+        paddingLeft: 8
+    } as TextStyle,
 });
 
 export interface CommentViewProps {
@@ -51,7 +51,7 @@ export interface CommentViewProps {
 
 export const CommentView = React.memo<CommentViewProps>((props) => {
     const { comment, deleted, depth, highlighted, theme, onLayout } = props;
-    const { sender, date, reactions } = comment;
+    const { sender, date, reactions, edited } = comment;
 
     let messenger = getMessenger();
     let engine = messenger.engine;
@@ -77,7 +77,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         }
     }, [comment, reactions]);
 
-    const handleReactionLongPress = React.useCallback(() => {
+    const handleReactionListPress = React.useCallback(() => {
         showReactionsList(reactions);
     }, [comment, reactions]);
 
@@ -94,14 +94,19 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         }
     }, [comment, lastTap]);
 
-    const branchIndent = (depth > 0) ? (((16 + 24) * depth) + 16) : 16;
+    const branchIndent = (depth > 0) ? (((16 + 24) * Math.min(depth, 2)) + 16) : 16;
     const likesCount = reactions.length;
     const myLike = reactions.filter(r => r.user.id === messenger.engine.user.id).length > 0;
 
     let avatar = (
         <View marginRight={16}>
             {deleted && (
-                <View width={24} height={24} borderRadius={12} backgroundColor={theme.backgroundTertiary} />
+                <View width={24} height={24} borderRadius={12} backgroundColor={theme.backgroundTertiary} alignItems="center" justifyContent="center">
+                    <Image
+                        source={require('assets/ic-delete-12.png')}
+                        style={{ width: 12, height: 12, tintColor: theme.foregroundTertiary }}
+                    />
+                </View>
             )}
             {!deleted && (
                 <ZAvatar
@@ -115,62 +120,44 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     );
 
     let tools = (
-        <View flexDirection="row" marginTop={4}>
+        <View flexDirection="row" alignItems="center">
+            {!deleted && edited && (
+                <Image
+                    source={require('assets/ic-edited-16.png')}
+                    style={{ width: 16, height: 16, tintColor: theme.foregroundTertiary, marginRight: 2, marginTop: 0.5 }}
+                />
+            )}
+
             <ZRelativeDate style={[styles.date, { color: theme.foregroundSecondary }]} date={date} />
 
             {!deleted && (
-                <View marginLeft={12}>
-                    {depth === 0 && (
-                        <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
-                            <View flexDirection="row">
-                                <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.foregroundPrimary, width: 16, height: 16, opacity: 0.7 }} />
-                                <Text style={[styles.reply, { color: theme.foregroundPrimary }]} allowFontScaling={false}>Reply</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                    )}
+                <>
+                    <ZLabelButton label="Reply" onPress={() => props.onReplyPress(comment)} />
+                    <ZLabelButton label={myLike ? 'Liked' : 'Like'} style={myLike ? 'danger' : 'default'} onPress={handleReactionPress} />
 
-                    {depth !== 0 && (
-                        <TouchableWithoutFeedback onPress={() => props.onReplyPress(comment)}>
-                            <Image source={require('assets/ic-reply-16.png')} style={{ tintColor: theme.foregroundPrimary, width: 16, height: 16, opacity: 0.7 }} />
-                        </TouchableWithoutFeedback>
-                    )}
-                </View>
+                    {likesCount > 0 && <ZLabelButton label={plural(likesCount, ['like', 'likes'])} onPress={handleReactionListPress} />}
+                </>
             )}
         </View>
     );
 
-    let likes = !deleted ? (
-        <TouchableWithoutFeedback onPress={handleReactionPress} onLongPress={handleReactionLongPress}>
-            <View width={34} alignItems="center" justifyContent="center" paddingRight={4}>
-                <Image source={require('assets/ic-likes-full-24.png')} style={{ tintColor: myLike ? theme.accentNegative : theme.foregroundQuaternary, width: 18, height: 18 }} />
-                {likesCount > 0 && <Text style={{ fontSize: 12, fontWeight: FontStyles.Weight.Medium, color: myLike ? theme.foregroundPrimary : theme.foregroundPrimary }} allowFontScaling={false}>{likesCount}</Text>}
-            </View>
-        </TouchableWithoutFeedback>
-    ) : undefined;
-
     return (
         <TouchableWithoutFeedback disabled={deleted} onPress={handleDoublePress} onLongPress={() => props.onLongPress(comment)}>
-            <View onLayout={onLayout} style={{ backgroundColor: highlighted ? theme.backgroundTertiary : undefined, paddingLeft: branchIndent, paddingVertical: 8, paddingRight: 16 }}>
+            <View onLayout={onLayout} style={{ backgroundColor: highlighted ? theme.backgroundTertiary : undefined, paddingLeft: branchIndent, paddingTop: 8, paddingBottom: 6, paddingRight: 16 }}>
                 <View flexDirection="row">
                     {avatar}
 
                     <View flexGrow={1} flexShrink={1}>
-                        <TouchableWithoutFeedback disabled={deleted} onPress={() => router.push('ProfileUser', { id: sender.id })}>
-                            <View flexDirection="row" marginBottom={3}>
-                                <Text style={[styles.senderName, { color: !deleted ? theme.foregroundPrimary : theme.foregroundSecondary }]} allowFontScaling={false}>{sender.name}</Text>
-
-                                {comment.edited && <Text style={[styles.editedLabel, { color: theme.foregroundSecondary }]} allowFontScaling={false}>• Edited</Text>}
-                            </View>
-                        </TouchableWithoutFeedback>
+                        <Text style={[styles.senderName, { color: theme.foregroundPrimary }]} allowFontScaling={false} onPress={!deleted ? () => router.push('ProfileUser', { id: sender.id }) : undefined}>
+                            {sender.name}
+                        </Text>
 
                         <View style={{ opacity: deleted ? 0.5 : undefined }}>
-                            <ZMessageView message={comment} small={true} maxWidth={Dimensions.get('screen').width - branchIndent - 34} />
+                            <ZMessageView message={comment} small={true} maxWidth={Dimensions.get('screen').width - branchIndent - 40 - 16} />
                         </View>
 
                         {tools}
                     </View>
-
-                    {likes}
                 </View>
             </View>
         </TouchableWithoutFeedback>
