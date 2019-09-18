@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, KeyboardAvoidingView, ScrollView, Animated, TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, KeyboardAvoidingView, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
