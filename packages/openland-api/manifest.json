@@ -576,17 +576,17 @@
       }
     },
     {
-      "signature": "b0c475dfe621a1919f7069da956f03720c1f17081b72a33b68358f4291661e4b",
-      "document": "mutation SubscribeMessageComments($messageId:ID!,$type:CommentSubscriptionType!){subscribeMessageComments(messageId:$messageId,type:$type)}",
+      "signature": "bf480b4f41bf4732445763a4bf4ea207de9bd7ce72ebd2fa1a022eb3ed011b72",
+      "document": "mutation SubscribeToComments($peerId:ID!,$type:CommentSubscriptionType!){subscribeToComments(peerId:$peerId,type:$type)}",
       "metadata": {
-        "engineSignature": "mutation SubscribeMessageComments($messageId:ID!,$type:CommentSubscriptionType!){subscribeMessageComments(messageId:$messageId,type:$type)}"
+        "engineSignature": "mutation SubscribeToComments($peerId:ID!,$type:CommentSubscriptionType!){subscribeToComments(peerId:$peerId,type:$type)}"
       }
     },
     {
-      "signature": "c5e0eca1039fbd2257749cb9400ff286b85beaabd982874cec4b20979187dd1c",
-      "document": "mutation UnSubscribeMessageComments($messageId:ID!){unSubscribeMessageComments(messageId:$messageId)}",
+      "signature": "32bedba48580a554c02ebaa839e4f5767405c421dd00c125d66bf26b2680548f",
+      "document": "mutation UnSubscribeFromComments($peerId:ID!){unsubscribeFromComments(peerId:$peerId)}",
       "metadata": {
-        "engineSignature": "mutation UnSubscribeMessageComments($messageId:ID!){unSubscribeMessageComments(messageId:$messageId)}"
+        "engineSignature": "mutation UnSubscribeFromComments($peerId:ID!){unsubscribeFromComments(peerId:$peerId)}"
       }
     },
     {

@@ -943,11 +943,11 @@ export class OpenlandClient extends BaseApiClient {
     async mutateDeleteNotification(variables: Types.DeleteNotificationVariables): Promise<Types.DeleteNotification> {
         return this.client.mutate(Source.DeleteNotificationMutation, variables);
     }
-    async mutateSubscribeMessageComments(variables: Types.SubscribeMessageCommentsVariables): Promise<Types.SubscribeMessageComments> {
-        return this.client.mutate(Source.SubscribeMessageCommentsMutation, variables);
+    async mutateSubscribeToComments(variables: Types.SubscribeToCommentsVariables): Promise<Types.SubscribeToComments> {
+        return this.client.mutate(Source.SubscribeToCommentsMutation, variables);
     }
-    async mutateUnSubscribeMessageComments(variables: Types.UnSubscribeMessageCommentsVariables): Promise<Types.UnSubscribeMessageComments> {
-        return this.client.mutate(Source.UnSubscribeMessageCommentsMutation, variables);
+    async mutateUnSubscribeFromComments(variables: Types.UnSubscribeFromCommentsVariables): Promise<Types.UnSubscribeFromComments> {
+        return this.client.mutate(Source.UnSubscribeFromCommentsMutation, variables);
     }
     async mutateAddComment(variables: Types.AddCommentVariables): Promise<Types.AddComment> {
         return this.client.mutate(Source.AddCommentMutation, variables);

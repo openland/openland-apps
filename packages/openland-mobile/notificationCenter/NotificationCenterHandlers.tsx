@@ -20,15 +20,15 @@ class NotificationCenterHandlersClass {
         const client = getClient();
         const builder = new ActionSheetBuilder();
 
-        if (item.notificationType !== 'unsupported' && item.peerRootType === 'CommentPeerRootMessage') {
+        if (item.notificationType !== 'unsupported' && item.peerRootId) {
             builder.action(item.isSubscribedMessageComments ? 'Unfollow thread' : 'Follow thread', async () => {
                 startLoader();
 
                 try {
                     if (item.isSubscribedMessageComments) {
-                        await client.mutateUnSubscribeMessageComments({ messageId: item.peerRootId!! });
+                        await client.mutateUnSubscribeFromComments({ peerId: item.peerRootId! });
                     } else {
-                        await client.mutateSubscribeMessageComments({ messageId: item.peerRootId!!, type: CommentSubscriptionType.ALL });
+                        await client.mutateSubscribeToComments({ peerId: item.peerRootId!, type: CommentSubscriptionType.ALL });
                     }
                 } catch (e) {
                     console.warn(e);

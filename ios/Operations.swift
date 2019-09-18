@@ -3000,8 +3000,8 @@ private let SettingsUpdateSelector = obj(
                     fragment("Settings", SettingsFullSelector)
                 )))
         )
-private let SubscribeMessageCommentsSelector = obj(
-            field("subscribeMessageComments","subscribeMessageComments", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
+private let SubscribeToCommentsSelector = obj(
+            field("subscribeToComments","subscribeToComments", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
         )
 private let SuperAccountActivateSelector = obj(
             field("superAccountActivate","superAccountActivate", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
@@ -3072,8 +3072,8 @@ private let SuperBadgeCreateToRoomSelector = obj(
 private let SuperBadgeUnsetToRoomSelector = obj(
             field("superBadgeUnsetToRoom","superBadgeUnsetToRoom", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
         )
-private let UnSubscribeMessageCommentsSelector = obj(
-            field("unSubscribeMessageComments","unSubscribeMessageComments", arguments(fieldValue("messageId", refValue("messageId"))), notNull(scalar("Boolean")))
+private let UnSubscribeFromCommentsSelector = obj(
+            field("unsubscribeFromComments","unsubscribeFromComments", arguments(fieldValue("peerId", refValue("peerId"))), notNull(scalar("Boolean")))
         )
 private let UnpinMessageSelector = obj(
             field("gammaUnpinMessage","unpinMessage", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
@@ -4147,11 +4147,11 @@ class Operations {
         "mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename countUnreadChats desktop{__typename ...PlatformNotificationSettingsFull}emailFrequency excludeMutedChats id mobile{__typename ...PlatformNotificationSettingsFull}primaryEmail}fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename comments{__typename showNotification sound}communityChat{__typename showNotification sound}direct{__typename showNotification sound}notificationPreview organizationChat{__typename showNotification sound}secretChat{__typename showNotification sound}}",
         SettingsUpdateSelector
     )
-    let SubscribeMessageComments = OperationDefinition(
-        "SubscribeMessageComments",
+    let SubscribeToComments = OperationDefinition(
+        "SubscribeToComments",
         .mutation, 
-        "mutation SubscribeMessageComments($messageId:ID!,$type:CommentSubscriptionType!){subscribeMessageComments(messageId:$messageId,type:$type)}",
-        SubscribeMessageCommentsSelector
+        "mutation SubscribeToComments($peerId:ID!,$type:CommentSubscriptionType!){subscribeToComments(peerId:$peerId,type:$type)}",
+        SubscribeToCommentsSelector
     )
     let SuperAccountActivate = OperationDefinition(
         "SuperAccountActivate",
@@ -4219,11 +4219,11 @@ class Operations {
         "mutation SuperBadgeUnsetToRoom($badgeId:ID!,$roomId:ID!,$userId:ID!){superBadgeUnsetToRoom(badgeId:$badgeId,roomId:$roomId,userId:$userId)}",
         SuperBadgeUnsetToRoomSelector
     )
-    let UnSubscribeMessageComments = OperationDefinition(
-        "UnSubscribeMessageComments",
+    let UnSubscribeFromComments = OperationDefinition(
+        "UnSubscribeFromComments",
         .mutation, 
-        "mutation UnSubscribeMessageComments($messageId:ID!){unSubscribeMessageComments(messageId:$messageId)}",
-        UnSubscribeMessageCommentsSelector
+        "mutation UnSubscribeFromComments($peerId:ID!){unsubscribeFromComments(peerId:$peerId)}",
+        UnSubscribeFromCommentsSelector
     )
     let UnpinMessage = OperationDefinition(
         "UnpinMessage",
@@ -4474,7 +4474,7 @@ class Operations {
         if name == "SetTyping" { return SetTyping }
         if name == "SetUserShortname" { return SetUserShortname }
         if name == "SettingsUpdate" { return SettingsUpdate }
-        if name == "SubscribeMessageComments" { return SubscribeMessageComments }
+        if name == "SubscribeToComments" { return SubscribeToComments }
         if name == "SuperAccountActivate" { return SuperAccountActivate }
         if name == "SuperAccountAdd" { return SuperAccountAdd }
         if name == "SuperAccountMemberAdd" { return SuperAccountMemberAdd }
@@ -4486,7 +4486,7 @@ class Operations {
         if name == "SuperAdminRemove" { return SuperAdminRemove }
         if name == "SuperBadgeCreateToRoom" { return SuperBadgeCreateToRoom }
         if name == "SuperBadgeUnsetToRoom" { return SuperBadgeUnsetToRoom }
-        if name == "UnSubscribeMessageComments" { return UnSubscribeMessageComments }
+        if name == "UnSubscribeFromComments" { return UnSubscribeFromComments }
         if name == "UnpinMessage" { return UnpinMessage }
         if name == "UpdateApp" { return UpdateApp }
         if name == "UpdateOrganization" { return UpdateOrganization }

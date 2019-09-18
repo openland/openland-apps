@@ -43,15 +43,15 @@ export const DeleteNotificationMutation = gql`
     }
 `;
 
-export const SubscribeMessageCommentsMutation = gql`
-    mutation SubscribeMessageComments($messageId: ID!, $type: CommentSubscriptionType!) {
-        subscribeMessageComments(messageId: $messageId, type: $type)
+export const SubscribeToCommentsMutation = gql`
+    mutation SubscribeToComments($peerId: ID!, $type: CommentSubscriptionType!) {
+        subscribeToComments(peerId: $peerId, type: $type)
     }
 `;
 
-export const UnSubscribeMessageCommentsMutation = gql`
-    mutation UnSubscribeMessageComments($messageId: ID!) {
-        unSubscribeMessageComments(messageId: $messageId)
+export const UnSubscribeFromCommentsMutation = gql`
+    mutation UnSubscribeFromComments($peerId: ID!) {
+        unsubscribeFromComments(peerId: $peerId)
     }
 `;
 

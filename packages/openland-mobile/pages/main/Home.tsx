@@ -14,7 +14,7 @@ import { Feed } from './Feed';
 import { NotificationCenter } from './NotificationCenter';
 
 export const Home = XMemo<PageProps>((props) => {
-    const [tab, setTab] = React.useState(1);
+    const [tab, setTab] = React.useState(0);
     const counter = getClient().useWithoutLoaderGlobalCounter();
     const notificationsCounter = getClient().useWithoutLoaderMyNotificationCenter();
     const discoverDone = getClient().useWithoutLoaderDiscoverIsDone();

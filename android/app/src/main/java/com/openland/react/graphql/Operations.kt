@@ -3006,8 +3006,8 @@ private val SettingsUpdateSelector = obj(
                     fragment("Settings", SettingsFullSelector)
                 )))
         )
-private val SubscribeMessageCommentsSelector = obj(
-            field("subscribeMessageComments","subscribeMessageComments", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
+private val SubscribeToCommentsSelector = obj(
+            field("subscribeToComments","subscribeToComments", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
         )
 private val SuperAccountActivateSelector = obj(
             field("superAccountActivate","superAccountActivate", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
@@ -3078,8 +3078,8 @@ private val SuperBadgeCreateToRoomSelector = obj(
 private val SuperBadgeUnsetToRoomSelector = obj(
             field("superBadgeUnsetToRoom","superBadgeUnsetToRoom", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
         )
-private val UnSubscribeMessageCommentsSelector = obj(
-            field("unSubscribeMessageComments","unSubscribeMessageComments", arguments(fieldValue("messageId", refValue("messageId"))), notNull(scalar("Boolean")))
+private val UnSubscribeFromCommentsSelector = obj(
+            field("unsubscribeFromComments","unsubscribeFromComments", arguments(fieldValue("peerId", refValue("peerId"))), notNull(scalar("Boolean")))
         )
 private val UnpinMessageSelector = obj(
             field("gammaUnpinMessage","unpinMessage", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
@@ -4150,11 +4150,11 @@ object Operations {
         override val body = "mutation SettingsUpdate(\$input:UpdateSettingsInput){updateSettings(settings:\$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename countUnreadChats desktop{__typename ...PlatformNotificationSettingsFull}emailFrequency excludeMutedChats id mobile{__typename ...PlatformNotificationSettingsFull}primaryEmail}fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename comments{__typename showNotification sound}communityChat{__typename showNotification sound}direct{__typename showNotification sound}notificationPreview organizationChat{__typename showNotification sound}secretChat{__typename showNotification sound}}"
         override val selector = SettingsUpdateSelector
     }
-    val SubscribeMessageComments = object: OperationDefinition {
-        override val name = "SubscribeMessageComments"
+    val SubscribeToComments = object: OperationDefinition {
+        override val name = "SubscribeToComments"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation SubscribeMessageComments(\$messageId:ID!,\$type:CommentSubscriptionType!){subscribeMessageComments(messageId:\$messageId,type:\$type)}"
-        override val selector = SubscribeMessageCommentsSelector
+        override val body = "mutation SubscribeToComments(\$peerId:ID!,\$type:CommentSubscriptionType!){subscribeToComments(peerId:\$peerId,type:\$type)}"
+        override val selector = SubscribeToCommentsSelector
     }
     val SuperAccountActivate = object: OperationDefinition {
         override val name = "SuperAccountActivate"
@@ -4222,11 +4222,11 @@ object Operations {
         override val body = "mutation SuperBadgeUnsetToRoom(\$badgeId:ID!,\$roomId:ID!,\$userId:ID!){superBadgeUnsetToRoom(badgeId:\$badgeId,roomId:\$roomId,userId:\$userId)}"
         override val selector = SuperBadgeUnsetToRoomSelector
     }
-    val UnSubscribeMessageComments = object: OperationDefinition {
-        override val name = "UnSubscribeMessageComments"
+    val UnSubscribeFromComments = object: OperationDefinition {
+        override val name = "UnSubscribeFromComments"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation UnSubscribeMessageComments(\$messageId:ID!){unSubscribeMessageComments(messageId:\$messageId)}"
-        override val selector = UnSubscribeMessageCommentsSelector
+        override val body = "mutation UnSubscribeFromComments(\$peerId:ID!){unsubscribeFromComments(peerId:\$peerId)}"
+        override val selector = UnSubscribeFromCommentsSelector
     }
     val UnpinMessage = object: OperationDefinition {
         override val name = "UnpinMessage"
@@ -4476,7 +4476,7 @@ object Operations {
         if (name == "SetTyping") return SetTyping
         if (name == "SetUserShortname") return SetUserShortname
         if (name == "SettingsUpdate") return SettingsUpdate
-        if (name == "SubscribeMessageComments") return SubscribeMessageComments
+        if (name == "SubscribeToComments") return SubscribeToComments
         if (name == "SuperAccountActivate") return SuperAccountActivate
         if (name == "SuperAccountAdd") return SuperAccountAdd
         if (name == "SuperAccountMemberAdd") return SuperAccountMemberAdd
@@ -4488,7 +4488,7 @@ object Operations {
         if (name == "SuperAdminRemove") return SuperAdminRemove
         if (name == "SuperBadgeCreateToRoom") return SuperBadgeCreateToRoom
         if (name == "SuperBadgeUnsetToRoom") return SuperBadgeUnsetToRoom
-        if (name == "UnSubscribeMessageComments") return UnSubscribeMessageComments
+        if (name == "UnSubscribeFromComments") return UnSubscribeFromComments
         if (name == "UnpinMessage") return UnpinMessage
         if (name == "UpdateApp") return UpdateApp
         if (name == "UpdateOrganization") return UpdateOrganization
