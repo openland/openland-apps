@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle } from 'react-native';
+import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, KeyboardAvoidingView, ScrollView, Animated, TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -16,6 +16,8 @@ import { PageProps } from 'openland-mobile/components/PageProps';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SlideInput, SlideType } from 'openland-api/Types';
 import Toast from 'openland-mobile/components/Toast';
+import { backoff } from 'openland-y-utils/timer';
+import UUID from 'uuid/v4';
 
 const styles = StyleSheet.create({
     box: {
@@ -60,29 +62,115 @@ const styles = StyleSheet.create({
 const MAX_LENGTH_TEXT = 50;
 const Loader = Toast.loader();
 
+interface SlideComponentProps {
+    slide: SlideInput;
+    index: number;
+    onChangeText: (index: number, text: string) => void;
+}
+
+const SlideComponent = (props: SlideComponentProps) => {
+    const theme = React.useContext(ThemeContext);
+    const textInputRef = React.useRef<TextInput>(null);
+
+    const handlePressSlide = React.useCallback(() => {
+        if (textInputRef.current) {
+            textInputRef.current.focus();
+        }
+    }, []);
+
+    const width = Math.min(Dimensions.get('screen').width, 414);
+    const containerWidth = width - 32;
+    const containerHeight = containerWidth * (4 / 3);
+
+    return (
+        <TouchableWithoutFeedback onPress={handlePressSlide}>
+            <View style={styles.box}>
+                <FeedItemShadow width={width} height={containerHeight + 16 + 32} />
+
+                <View style={[styles.container, { width: containerWidth, height: containerHeight, backgroundColor: theme.backgroundSecondary }]}>
+                    <View style={[styles.meta, { backgroundColor: theme.backgroundSecondary }]}>
+                        <View style={[styles.templateAvatar, { backgroundColor: theme.backgroundTertiary }]} />
+                        <View style={[styles.templateName, { backgroundColor: theme.backgroundTertiary }]} />
+                    </View>
+                    
+                    <View style={styles.inputContainer}>
+                        {typeof props.slide.text === 'string' && (
+                            <TextInput 
+                                ref={textInputRef}
+                                maxLength={MAX_LENGTH_TEXT}
+                                onChangeText={(text) => props.onChangeText(props.index, text)}
+                                value={props.slide.text}
+                                multiline
+                                style={styles.input}
+                                placeholder={'Enter text'} 
+                                placeholderTextColor={theme.foregroundTertiary}
+                                {...{ scrollEnabled: false }}
+                            />
+                        )}
+                    </View>
+                </View>
+            </View>
+        </TouchableWithoutFeedback>
+    );
+};
+
 const FeedCreatePostComponent = (props: { engine: FeedEngine; router: SRouter; }) => {
     const client = getClient();
-    const theme = React.useContext(ThemeContext);
+    
     const [slides, setSlides] = React.useState<SlideInput[]>([]);
+    const scrollViewRef = React.useRef<ScrollView>(null);
+    const prevSlidesLength = React.useRef<number>(0);
 
-    const handlePost = async () => {
-        Loader.show();
-        await client.mutateFeedCreatePost({ input: slides });
-        Loader.hide();
-        
-        props.router.back();
-    };
+    React.useEffect(() => {
+        if (slides.length > prevSlidesLength.current) {
+            if (scrollViewRef.current) {
+                (scrollViewRef.current as any).getNode().scrollToEnd({ animated: true });
+            }
+        }
+    }, [slides]);
 
-    const addSlide = (text: string = '') => {
-        setSlides([...slides, { type: SlideType.Text, text }]);        
-    };
+    React.useEffect(() => {
+        prevSlidesLength.current = slides.length;
+    });
 
-    const handleChangeTextSlide = React.useCallback((key: number, text: string) => {
-        const updatedSlides = slides.map((slide, index) => {
-            if (index !== key) {
-                return slide;
+    const handlePost = React.useCallback(async () => {
+        const input: SlideInput[] = [];
+        for (let slide of slides) {
+            if (typeof slide.text === 'string')  {
+                slide.text = slide.text.trim();
+
+                if (slide.text === '') {
+                    continue;
+                }
             }
 
+            input.push(slide);
+        }
+
+        if (input.length < 1) {
+            return;
+        }
+
+        Loader.show();
+        
+        try {
+            await backoff(async () => await client.mutateFeedCreatePost({ input, repeatKey: UUID() }));
+        } finally {
+            Loader.hide();
+            props.router.back();
+        }
+    }, [slides]);
+
+    const addSlide = (text: string = '') => {
+        setSlides([...slides, { type: SlideType.Text, text }]); 
+    };
+
+    const handleChangeTextSlide = React.useCallback((index: number, text: string) => {
+        const updatedSlides = slides.map((slide, key) => {
+            if (key !== index) {
+                return slide;
+            }
+            
             return { ...slide, text };
         });
 
@@ -93,51 +181,31 @@ const FeedCreatePostComponent = (props: { engine: FeedEngine; router: SRouter; }
         addSlide();
     }, []);
 
-    const width = Math.min(Dimensions.get('screen').width, 414);
-    const containerWidth = width - 32;
-    const containerHeight = containerWidth * (4 / 3);
-    
     return (
         <>
             <SHeader title="New post" />
             <SHeaderButton title="Post" onPress={handlePost} />
-            <SScrollView>
-                {slides.map((slide, key) => (
-                    <View style={styles.box} key={`post-slide-${key}`}>
-                        <FeedItemShadow width={width} height={containerHeight + 16 + 32} />
-        
-                        <View style={[styles.container, { width: containerWidth, height: containerHeight, backgroundColor: theme.backgroundSecondary }]}>
-                            <View style={[styles.meta, { backgroundColor: theme.backgroundSecondary }]}>
-                                <View style={[styles.templateAvatar, { backgroundColor: theme.backgroundTertiary }]} />
-                                <View style={[styles.templateName, { backgroundColor: theme.backgroundTertiary }]} />
-                            </View>
-        
-                            <View style={styles.inputContainer}>
-                                {typeof slide.text === 'string' && (
-                                    <TextInput 
-                                        maxLength={MAX_LENGTH_TEXT}
-                                        onChangeText={(text) => handleChangeTextSlide(key, text)}
-                                        value={slide.text}
-                                        multiline
-                                        style={styles.input}
-                                        placeholder={'Enter text'} 
-                                        placeholderTextColor={theme.foregroundTertiary}
-                                        {...{ scrollEnabled: false }}
-                                    />
-                                )}
-                            </View>
+            <KeyboardAvoidingView flexGrow={1} behavior={'padding'}>
+                <SScrollView scrollRef={scrollViewRef as React.RefObject<ScrollView>}>
+                    {slides.map((slide, index) => (
+                        <View key={index}>
+                            <SlideComponent 
+                                index={index} 
+                                slide={slide} 
+                                onChangeText={handleChangeTextSlide}
+                            />
                         </View>
+                    ))}
+                    
+                    <View style={{ alignItems: 'center', marginTop: 8 }}>
+                        <ZRoundedButton 
+                            title="Add card"
+                            style="secondary" 
+                            onPress={() => addSlide()}
+                        />
                     </View>
-                ))}
-                
-                <View style={{ alignItems: 'center', marginTop: 8 }}>
-                    <ZRoundedButton 
-                        title="Add card"
-                        style="secondary" 
-                        onPress={() => addSlide()}
-                    />
-                </View>
-            </SScrollView>
+                </SScrollView>
+            </KeyboardAvoidingView>
         </>
     );
 };
