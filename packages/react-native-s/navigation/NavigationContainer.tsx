@@ -400,9 +400,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             if (dx < 0) {
                 dx = 0;
             }
-            if (dx > this.props.width) {
-                dx = this.props.width;
-            }
+            dx = Math.min(dx, this.props.width);
             SAnimated.beginTransaction();
             SAnimated.setValue(AnimatedViewKeys.page(this.swipeCurrentKey!), 'translateX', dx);
             SAnimated.setValue(AnimatedViewKeys.page(this.swipePrevKey!), 'translateX', -this.props.width / 3 + dx / 3);
@@ -413,9 +411,9 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
             SAnimated.commitTransaction();
         },
         onPanResponderRelease: (event, gesture) => {
-            let dx = gesture.dx;
+            let dx = Math.min(gesture.dx, this.props.width);
             if (dx > 0) {
-                if (gesture.vx > 0.5 || gesture.dx > this.props.width / 3) {
+                if (gesture.vx > 0.5 || dx > this.props.width / 3) {
 
                     // Pop history
                     let nstate = this.props.manager.popWihtoutNotification();

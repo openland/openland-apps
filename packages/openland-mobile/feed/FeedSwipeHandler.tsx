@@ -54,6 +54,7 @@ export class FeedSwipeHandler extends React.PureComponent<FeedSwipeHandlerProps>
     private leftIconShowed = false;
     private rightIconShowed = false;
     private scrollEnabled = true;
+    private deviceWidth: number;
 
     constructor(props: FeedSwipeHandlerProps) {
         super(props);
@@ -65,6 +66,8 @@ export class FeedSwipeHandler extends React.PureComponent<FeedSwipeHandlerProps>
             rightBox: `f-${props.id}-right`,
             rightIconBig: `f-${props.id}-right-icon-big`,
         };
+
+        this.deviceWidth = Dimensions.get('screen').width;
     }
 
     scroll = (scrollEnabled: boolean) => {
@@ -91,10 +94,10 @@ export class FeedSwipeHandler extends React.PureComponent<FeedSwipeHandlerProps>
 
     filterDx = (dx: number) => {
         if (dx > 0) {
-            return dx < IGNORE_DISTANCE ? 0 : dx - IGNORE_DISTANCE;
+            return dx < IGNORE_DISTANCE ? 0 : Math.min(dx - IGNORE_DISTANCE, this.deviceWidth);
         }
 
-        return dx > -IGNORE_DISTANCE ? 0 : dx + IGNORE_DISTANCE;
+        return dx > -IGNORE_DISTANCE ? 0 : Math.max(dx + IGNORE_DISTANCE, -this.deviceWidth);
     }
 
     calcDelta = (dx: number) => dx / 1.5;
