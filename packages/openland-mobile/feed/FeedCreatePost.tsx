@@ -154,7 +154,9 @@ const FeedCreatePostComponent = (props: { engine: FeedEngine; router: SRouter; }
         Loader.show();
         
         try {
-            await backoff(async () => await client.mutateFeedCreatePost({ input, repeatKey: UUID() }));
+            const repeatKey = UUID();
+
+            await backoff(async () => await client.mutateFeedCreatePost({ input, repeatKey }));
         } finally {
             Loader.hide();
             props.router.back();
