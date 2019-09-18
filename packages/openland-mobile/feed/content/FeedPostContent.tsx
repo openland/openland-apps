@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SlideProcessed, DataSourceFeedDateItem, DataSourceFeedPostItem } from 'openland-engines/feed/types';
+import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
 import { View, StyleSheet, ViewStyle, TouchableWithoutFeedback } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { FeedSlide } from './FeedSlide';
