@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CommentEntryFragment_comment, MessageReactionType } from 'openland-api/Types';
-import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, LayoutChangeEvent } from 'react-native';
+import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, LayoutChangeEvent, TouchableOpacity } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -109,12 +109,17 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                 </View>
             )}
             {!deleted && (
-                <ZAvatar
-                    size="x-small"
-                    src={sender.photo}
-                    placeholderKey={sender.id}
-                    placeholderTitle={sender.name}
-                />
+                <TouchableOpacity activeOpacity={0.6} onPress={() => router.push('ProfileUser', { id: sender.id })}>
+                    <View>
+                        <ZAvatar
+                            size="x-small"
+                            src={sender.photo}
+                            placeholderKey={sender.id}
+                            placeholderTitle={sender.name}
+                        />
+                    </View>
+                </TouchableOpacity>
+
             )}
         </View>
     );
@@ -148,9 +153,11 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                     {avatar}
 
                     <View flexGrow={1} flexShrink={1}>
-                        <Text style={[styles.senderName, { color: theme.foregroundPrimary }]} allowFontScaling={false} onPress={!deleted ? () => router.push('ProfileUser', { id: sender.id }) : undefined}>
-                            {sender.name}
-                        </Text>
+                        <TouchableOpacity activeOpacity={0.6} disabled={deleted} onPress={() => router.push('ProfileUser', { id: sender.id })}>
+                            <Text style={[styles.senderName, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
+                                {sender.name}
+                            </Text>
+                        </TouchableOpacity>
 
                         <View style={{ opacity: deleted ? 0.5 : undefined }}>
                             <ZMessageView message={comment} wrapped={true} maxWidth={Dimensions.get('screen').width - branchIndent - 40 - 16} />
