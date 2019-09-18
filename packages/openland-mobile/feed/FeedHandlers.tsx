@@ -2,6 +2,7 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import Alert from 'openland-mobile/components/AlertBlanket';
+import { showReportForm } from 'openland-mobile/components/showReportForm';
 
 class FeedHandlersClass {
     Open = (id: string) => {
@@ -49,7 +50,7 @@ class FeedHandlersClass {
             }, false, require('assets/ic-delete-24.png'));
         } else {
             builder.action('Report', () => {
-                console.warn('boom report post');
+                showReportForm(id);
             }, false, require('assets/ic-info-24.png'));
         }
 
