@@ -168,6 +168,16 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         }
 
         //
+        // FEED Item
+        //
+        let feedItemPattern = new UrlPattern(patternBase + 'feed/:id');
+        let matchFeedItemProfile = feedItemPattern.match(link);
+        if (matchFeedItemProfile && matchFeedItemProfile.id) {
+            resolved = true;
+            navigate('FeedItem', { feedItemId: matchFeedItemProfile.id });
+        }
+
+        //
         // CONVERSATION
         //
         let conversationPattern = new UrlPattern(patternBase + 'mail/:id');
