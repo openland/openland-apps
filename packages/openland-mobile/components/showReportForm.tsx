@@ -15,7 +15,7 @@ const report = async (id: string, type: 'SPAM' | 'INAPPROPRIATE') => {
     } finally {
         stopLoader();
     }
-}
+};
 
 export const showReportForm = (id: string) => {
     const builder = new ActionSheetBuilder();
