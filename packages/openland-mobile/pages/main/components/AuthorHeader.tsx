@@ -3,7 +3,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { FeedPostAuthorFragment } from 'openland-api/Types';
+import { UserShort, OrganizationShort } from 'openland-api/Types';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { formatDateAtTime } from 'openland-y-utils/formatTime';
 
@@ -28,12 +28,12 @@ const styles = StyleSheet.create({
     } as TextStyle
 });
 
-interface FeedAuthorHeaderProps {
-    author: FeedPostAuthorFragment;
+interface AuthorHeaderProps {
+    author: UserShort | OrganizationShort;
     date: number;
 }
 
-export const FeedAuthorHeader = React.memo((props: FeedAuthorHeaderProps) => {
+export const AuthorHeader = React.memo((props: AuthorHeaderProps) => {
     const router = getMessenger().history.navigationManager;
     const theme = React.useContext(ThemeContext);
     const { author, date } = props;

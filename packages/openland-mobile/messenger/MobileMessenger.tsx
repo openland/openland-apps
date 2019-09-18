@@ -120,7 +120,7 @@ export class MobileMessenger {
     }
 
     handleCommentsClick = (message: DataSourceMessageItem) => {
-        this.history.navigationManager.push('MessageComments', { messageId: message.id });
+        this.history.navigationManager.push('Message', { messageId: message.id });
     }
 
     handleDocumentClick = (document: DataSourceMessageItem) => {
@@ -205,7 +205,7 @@ export class MobileMessenger {
         }, false, require('assets/ic-forward-24.png'));
 
         builder.action('Comment', () => {
-            this.history.navigationManager.push('MessageComments', { messageId: message.id });
+            this.history.navigationManager.push('Message', { messageId: message.id });
         }, false, require('assets/ic-chat-24.png'));
 
         if (message.text) {

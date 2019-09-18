@@ -10,7 +10,7 @@ class NotificationCenterHandlersClass {
         const { peerRootId, peerRootType } = item;
 
         if (peerRootType === 'CommentPeerRootMessage') {
-            getMessenger().history.navigationManager.push('MessageComments', { messageId: peerRootId });
+            getMessenger().history.navigationManager.push('Message', { messageId: peerRootId });
         } else if (peerRootType === 'CommentPeerRootFeedItem') {
             getMessenger().history.navigationManager.push('FeedItem', { feedItemId: peerRootId });
         }
@@ -59,7 +59,7 @@ class NotificationCenterHandlersClass {
         const { peerRootId, peerRootType } = item;
 
         if (peerRootType === 'CommentPeerRootMessage') {
-            getMessenger().history.navigationManager.push('MessageComments', {
+            getMessenger().history.navigationManager.push('Message', {
                 messageId: peerRootId,
                 highlightCommentId: item.id
             });

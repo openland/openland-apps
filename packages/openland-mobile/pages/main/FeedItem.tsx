@@ -3,7 +3,7 @@ import { withApp } from '../../components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SHeaderView } from 'react-native-s/SHeaderView';
-import { FeedAuthorHeader } from 'openland-mobile/feed/components/FeedAuthorHeader';
+import { AuthorHeader } from 'openland-mobile/pages/main/components/AuthorHeader';
 import { FeedPostContent } from 'openland-mobile/feed/content/FeedPostContent';
 import { convertPost } from 'openland-engines/feed/convert';
 import { Dimensions, View } from 'react-native';
@@ -32,8 +32,7 @@ const FeedItemComponent = React.memo((props: PageProps) => {
     const [currentSlide, setCurreentSlide] = React.useState(0);
 
     const peerView = (
-        <>
-            <View height={8} />
+        <View paddingTop={8}>
             <FeedPostContent
                 slides={slides}
                 width={width}
@@ -44,13 +43,13 @@ const FeedItemComponent = React.memo((props: PageProps) => {
                 reactions={reactionsReduced}
                 canEdit={canEdit}
             />
-        </>
+        </View>
     );
 
     return (
         <>
             <SHeaderView>
-                <FeedAuthorHeader author={author} date={date} />
+                <AuthorHeader author={author} date={date} />
             </SHeaderView>
 
             {slides.length > 1 && (
