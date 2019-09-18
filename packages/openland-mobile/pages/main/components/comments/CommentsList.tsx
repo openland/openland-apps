@@ -25,37 +25,40 @@ export const CommentsList = (props: CommentsListProps) => {
 
     const handleLongPress = React.useCallback((comment: CommentEntryFragment_comment) => {
         let engine = getMessenger().engine;
-        let builder = new ActionSheetBuilder();
 
-        if (comment.message) {
-            if (comment.sender.id === engine.user.id) {
-                builder.action('Edit', () => {
-                    onEditPress(comment);
-                }, false, require('assets/ic-edit-24.png'));
+        if (comment.message || comment.sender.id === engine.user.id) {
+            let builder = new ActionSheetBuilder();
+
+            if (comment.message) {
+                if (comment.sender.id === engine.user.id) {
+                    builder.action('Edit', () => {
+                        onEditPress(comment);
+                    }, false, require('assets/ic-edit-24.png'));
+                }
+
+                builder.action('Copy', () => {
+                    Clipboard.setString(comment.message!!);
+                }, false, require('assets/ic-copy-24.png'));
             }
 
-            builder.action('Copy', () => {
-                Clipboard.setString(comment.message!!);
-            }, false, require('assets/ic-copy-24.png'));
-        }
+            if (comment.sender.id === engine.user.id) {
+                builder.action('Delete', async () => {
+                    try {
+                        Alert.builder()
+                            .title('Delete comment')
+                            .message('Delete this comment for everyone? This cannot be undone.')
+                            .button('Cancel', 'cancel')
+                            .action('Delete', 'destructive', async () => {
+                                await engine.client.mutateDeleteComment({ id: comment.id! });
+                            }).show();
+                    } catch (e) {
+                        Alert.alert(e.message);
+                    }
+                }, false, require('assets/ic-delete-24.png'));
+            }
 
-        if (comment.sender.id === engine.user.id) {
-            builder.action('Delete', async () => {
-                try {
-                    Alert.builder()
-                        .title('Delete comment')
-                        .message('Delete this comment for everyone? This cannot be undone.')
-                        .button('Cancel', 'cancel')
-                        .action('Delete', 'destructive', async () => {
-                            await engine.client.mutateDeleteComment({ id: comment.id! });
-                        }).show();
-                } catch (e) {
-                    Alert.alert(e.message);
-                }
-            }, false, require('assets/ic-delete-24.png'));
+            builder.show();
         }
-
-        builder.show();
     }, []);
 
     const handleLayout = (e: LayoutChangeEvent) => {
