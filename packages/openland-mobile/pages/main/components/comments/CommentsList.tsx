@@ -57,7 +57,7 @@ export const CommentsList = (props: CommentsListProps) => {
                 }, false, require('assets/ic-delete-24.png'));
             }
 
-            builder.show();
+            builder.show(true);
         }
     }, []);
 
