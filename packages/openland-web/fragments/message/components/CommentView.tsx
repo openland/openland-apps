@@ -53,6 +53,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
     const { id, sender, message, attachments, spans, fallback, date, reactions } = comment;
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
     const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
+    const [edit, setEdit] = React.useState(false);
 
     React.useEffect(() => {
         setTextSpans(processSpans(message || '', spans));
@@ -62,7 +63,8 @@ export const CommentView = React.memo((props: CommentViewProps) => {
         setSenderNameEmojify(emoji(sender.name));
     }, [sender.name]);
 
-    const canEdit = sender.id === messenger.user.id || useRole('super-admin');
+    const canEdit = sender.id === messenger.user.id && message && message.length;
+    const canDelete = sender.id === messenger.user.id || useRole('super-admin');
 
     return (
         <div className={wrapper} style={{ paddingLeft: depth > 0 ? 56 + ((depth - 1) * 40) : undefined }}>
@@ -81,29 +83,37 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                     senderNameEmojify={senderNameEmojify}
                     date={parseInt(date, 10)}
                 />
-                <MessageContent
-                    id={id}
-                    text={message}
-                    textSpans={textSpans}
-                    attachments={attachments}
-                    fallback={fallback}
-                    isOut={sender.id === messenger.user.id}
-                />
-                {!deleted && (
-                    <CommentTools
-                        reactions={reactions}
-                        onReactionClick={() => onReactionClick(comment)}
-                        onReplyClick={() => onReplyClick(id)}
-                        onDeleteClick={canEdit ? () => onDeleteClick(id) : undefined}
-                    />
+                {edit && (
+                    <div>Edit</div>
                 )}
-                {highlighted && (
-                    <CommentInput
-                        onSent={onSent}
-                        onSentAttach={onSentAttach}
-                        groupId={groupId}
-                        compact={true}
-                    />
+                {!edit && (
+                    <>
+                        <MessageContent
+                            id={id}
+                            text={message}
+                            textSpans={textSpans}
+                            attachments={attachments}
+                            fallback={fallback}
+                            isOut={sender.id === messenger.user.id}
+                        />
+                        {!deleted && (
+                            <CommentTools
+                                reactions={reactions}
+                                onReactionClick={() => onReactionClick(comment)}
+                                onReplyClick={() => onReplyClick(id)}
+                                onEditClick={canEdit ? () => setEdit(true) : undefined}
+                                onDeleteClick={canDelete ? () => onDeleteClick(id) : undefined}
+                            />
+                        )}
+                        {highlighted && (
+                            <CommentInput
+                                onSent={onSent}
+                                onSentAttach={onSentAttach}
+                                groupId={groupId}
+                                compact={true}
+                            />
+                        )}
+                    </>
                 )}
             </div>
         </div>
