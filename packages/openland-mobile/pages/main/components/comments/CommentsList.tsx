@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, Text, Clipboard, LayoutChangeEvent } from 'react-native';
+import { View, Image, Text, Clipboard, ScrollView } from 'react-native';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { CommentView } from 'openland-mobile/pages/main/components/comments/CommentView';
@@ -12,15 +12,14 @@ import { CommentEntryFragment, CommentEntryFragment_comment } from 'openland-api
 interface CommentsListProps {
     comments: CommentEntryFragment[];
     highlightedId?: string;
+    scrollRef?: React.RefObject<ScrollView>;
 
     onReplyPress: (comment: CommentEntryFragment_comment) => void;
     onEditPress: (comment: CommentEntryFragment_comment) => void;
-    handleScrollTo: (y: number) => void;
 }
 
 export const CommentsList = (props: CommentsListProps) => {
-    const { comments, highlightedId, onReplyPress, onEditPress, handleScrollTo } = props;
-
+    const { comments, highlightedId, onReplyPress, onEditPress, scrollRef } = props;
     const theme = React.useContext(ThemeContext);
 
     const handleLongPress = React.useCallback((comment: CommentEntryFragment_comment) => {
@@ -61,10 +60,6 @@ export const CommentsList = (props: CommentsListProps) => {
         }
     }, []);
 
-    const handleLayout = (e: LayoutChangeEvent) => {
-        handleScrollTo(e.nativeEvent.layout.y);
-    };
-
     if (comments.length === 0) {
         return (
             <View flexGrow={1} flexShrink={1} alignItems="center" justifyContent="center" paddingVertical={40} paddingHorizontal={16}>
@@ -83,7 +78,7 @@ export const CommentsList = (props: CommentsListProps) => {
     const commentsSorted = sortComments(comments, commentsMap);
 
     return (
-        <View>
+        <>
             <View height={48} justifyContent="center" paddingHorizontal={16}>
                 <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
                     Comments{'  '}
@@ -93,13 +88,13 @@ export const CommentsList = (props: CommentsListProps) => {
                 </Text>
             </View>
 
-            {commentsSorted.map((commentEntry, index) => {
+            {commentsSorted.map(commentEntry => {
                 const isHighlighted = (typeof highlightedId === 'string' && highlightedId === commentEntry.comment.id) ? true : false;
 
                 return (
                     <CommentView
-                        key={'comment-' + index}
-                        onLayout={isHighlighted ? handleLayout : undefined}
+                        key={`comment-${commentEntry.comment.id}`}
+                        scrollRef={scrollRef}
                         comment={commentEntry.comment}
                         deleted={commentEntry.deleted}
                         depth={getDepthOfComment(commentEntry, commentsMap)}
@@ -110,6 +105,6 @@ export const CommentsList = (props: CommentsListProps) => {
                     />
                 );
             })}
-        </View>
+        </>
     );
 };

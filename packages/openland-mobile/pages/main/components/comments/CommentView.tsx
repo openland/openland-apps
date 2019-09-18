@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CommentEntryFragment_comment, MessageReactionType } from 'openland-api/Types';
-import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, LayoutChangeEvent, TouchableOpacity } from 'react-native';
+import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, LayoutChangeEvent, TouchableOpacity, ScrollView } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -43,21 +43,29 @@ export interface CommentViewProps {
     deleted: boolean;
     highlighted: boolean;
     theme: ThemeGlobal;
+    scrollRef?: React.RefObject<ScrollView>;
 
     onReplyPress: (comment: CommentEntryFragment_comment) => void;
     onLongPress: (comment: CommentEntryFragment_comment) => void;
-    onLayout?: (e: LayoutChangeEvent) => void;
 }
 
 export const CommentView = React.memo<CommentViewProps>((props) => {
-    const { comment, deleted, depth, highlighted, theme, onLayout } = props;
+    const { comment, deleted, depth, highlighted, theme, scrollRef } = props;
     const { sender, date, reactions, edited } = comment;
 
     let messenger = getMessenger();
     let engine = messenger.engine;
     let client = getClient();
     let router = messenger.history.navigationManager;
-    let lastTap: number = 0;
+
+    const [scrolled, setScrolled] = React.useState(false);
+    const handleLayout = (event: LayoutChangeEvent) => {
+        if (highlighted && !scrolled && scrollRef && scrollRef.current) {
+            scrollRef.current.scrollTo(event.nativeEvent.layout.y - 100);
+
+            setScrolled(true);
+        }
+    };
 
     const handleReactionPress = React.useCallback(async (useLoader: boolean) => {
         let r = MessageReactionType.LIKE;
@@ -83,6 +91,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         showReactionsList(reactions);
     }, [comment, reactions]);
 
+    let lastTap: number = 0;
     const handleDoublePress = React.useCallback(() => {
         const now = Date.now();
         const DOUBLE_PRESS_DELAY = 300;
@@ -150,7 +159,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     return (
         <TouchableWithoutFeedback disabled={deleted} onPress={handleDoublePress} onLongPress={() => props.onLongPress(comment)}>
-            <View onLayout={onLayout} style={{ backgroundColor: highlighted ? theme.backgroundTertiary : undefined, paddingLeft: branchIndent, paddingTop: 8, paddingBottom: 6, paddingRight: 16 }}>
+            <View onLayout={handleLayout} style={{ backgroundColor: highlighted ? theme.backgroundTertiary : undefined, paddingLeft: branchIndent, paddingTop: 8, paddingBottom: 6, paddingRight: 16 }}>
                 <View flexDirection="row">
                     {avatar}
 
