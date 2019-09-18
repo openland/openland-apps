@@ -1,0 +1,6 @@
+mutation FeedCreatePost($input: [SlideInput!]!) {
+  createFeedPost: alphaCreateFeedPost(slides: $input) {
+    __typename
+    ...FeedItemFull
+  }
+}

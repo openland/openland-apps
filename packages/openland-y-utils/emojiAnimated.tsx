@@ -5,6 +5,7 @@ import { animUnicodeToName } from './data/emoji-data';
 const emojiStyle = css`
    height: 50px;
    width: 50px;
+   display: block;
 `;
 
 export function emojiAnimated(unicode: string) {

@@ -1,88 +1,16 @@
 fragment FeedItemFull on FeedItem {
   __typename
   ... on FeedPost {
-    attachments {
-      __typename
-      fallback
-      ... on MessageAttachmentFile {
-        fileId
-        fileMetadata {
-          __typename
-          imageFormat
-          imageHeight
-          imageWidth
-          isImage
-          mimeType
-          name
-          size
-        }
-        filePreview
-        id
-      }
-      ... on MessageRichAttachment {
-        fallback
-        icon {
-          __typename
-          metadata {
-            __typename
-            imageFormat
-            imageHeight
-            imageWidth
-            isImage
-            mimeType
-            name
-            size
-          }
-          url
-        }
-        id
-        image {
-          __typename
-          metadata {
-            __typename
-            imageFormat
-            imageHeight
-            imageWidth
-            isImage
-            mimeType
-            name
-            size
-          }
-          url
-        }
-        imageFallback {
-          __typename
-          photo
-          text
-        }
-        keyboard {
-          __typename
-          buttons {
-            __typename
-            id
-            style
-            title
-            url
-          }
-        }
-        subTitle
-        text
-        title
-        titleLink
-        titleLinkHostname
-      }
-    }
     author {
       __typename
       ...FeedPostAuthorFragment
     }
+    canEdit
     commentsCount
     date
     edited
     fallback
     id
-    isMentioned
-    message
     reactions {
       __typename
       reaction
@@ -91,45 +19,9 @@ fragment FeedItemFull on FeedItem {
         ...UserShort
       }
     }
-    spans {
+    slides {
       __typename
-      length
-      offset
-      ... on MessageSpanUserMention {
-        user {
-          __typename
-          ...UserForMention
-        }
-      }
-      ... on MessageSpanMultiUserMention {
-        users {
-          __typename
-          ...UserForMention
-        }
-      }
-      ... on MessageSpanRoomMention {
-        room {
-          __typename
-          ... on PrivateRoom {
-            id
-            user {
-              __typename
-              id
-              name
-            }
-          }
-          ... on SharedRoom {
-            id
-            title
-          }
-        }
-      }
-      ... on MessageSpanLink {
-        url
-      }
-      ... on MessageSpanDate {
-        date
-      }
+      ...SlideFragment
     }
   }
 }

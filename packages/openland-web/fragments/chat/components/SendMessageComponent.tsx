@@ -13,7 +13,6 @@ import SendIcon from 'openland-icons/s/ic-send-24.svg';
 import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { useClient } from 'openland-web/utils/useClient';
 import { RoomMembers_members_user } from 'openland-api/Types';
-import { XAvatar2 } from 'openland-x/XAvatar2';
 import { searchMentions } from 'openland-engines/mentions/searchMentions';
 import { emojiSuggest } from 'openland-y-utils/emojiSuggest';
 import { emojiComponent } from 'openland-y-utils/emojiComponent';
@@ -26,6 +25,7 @@ import { fileListToArray } from './DropZone';
 import { XLoader } from 'openland-x/XLoader';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { onEmojiSent } from 'openland-web/components/unicorn/emoji/Recent';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 
 interface MentionUserComponentProps {
     id: string;
@@ -72,7 +72,7 @@ const allMentionIcon = css`
 
 export const MentionUserComponent = (props: MentionUserComponentProps) => (
     <div className={mentionContainer}>
-        <XAvatar2 id={props.id} title={props.name} src={props.photo} size={24} />
+        <UAvatar id={props.id} title={props.name} photo={props.photo} size="x-small" />
         <div className={mentionUserDataWrap}>
             <div className={cx(userName, TextLabel1)}>{props.name}</div>
             {props.primaryOrganization && (

@@ -1,17 +1,5 @@
-let months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec'
-];
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const monthsFull = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 export function formatDate(date: number) {
     let dt = new Date(date);
@@ -35,4 +23,21 @@ export function formatAbsoluteDate(date: number) {
     let day = dt.getDate();
 
     return month + ' ' + day;
+}
+
+export function formatDateFull(date: number) {
+    let dt = new Date(date);
+    let now = new Date();
+    let month = monthsFull[dt.getMonth()];
+    let day = dt.getDate();
+
+    if (now.getFullYear() === dt.getFullYear() && now.getMonth() === dt.getMonth()) {
+        if (now.getDate() === dt.getDate()) {
+            return 'Today';
+        } else if (now.getDate() === dt.getDate() + 1) {
+            return 'Yesterday';
+        }
+    }
+
+    return month + ', ' + day;
 }

@@ -195,3 +195,13 @@ export const MyNotificationCenterMarkSeqReadMutation = gql`
         notificationCenterMarkSeqRead(toSeq: $seq)
     }
 `;
+
+export const ReadNotificationMutation = gql`
+    mutation ReadNotification($notificationId: ID!) {
+        readNotification(notificationId: $notificationId) {
+            id
+            unread
+            # state
+        }
+    }
+`;

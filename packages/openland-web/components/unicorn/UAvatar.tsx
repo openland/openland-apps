@@ -15,6 +15,7 @@ export interface UAvatarProps extends XViewProps {
     photo?: string | null;
     online?: boolean;
     size?: UAvatarSize;
+    selected?: boolean;
 }
 
 export const PlaceholderColor = [
@@ -61,6 +62,7 @@ const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number }) =
 const imageWrapper = css`
     position: relative;
     z-index: 0;
+    background-color: var(--backgroundTertiary);
 
     & > img {
         z-index: 1;
@@ -90,7 +92,7 @@ const AvatarImage = React.memo((props: UAvatarProps) => {
         '/center/-/quality/best/-/progressive/yes/ 2x';
 
     return (
-        <div className={imageWrapper}>
+        <div className={imageWrapper} style={{ width: boxSize, height: boxSize }}>
             <XImage
                 width="100%"
                 height="100%"
@@ -98,7 +100,6 @@ const AvatarImage = React.memo((props: UAvatarProps) => {
                 srcSet={photo + opsRetina}
                 borderRadius="100%"
                 overflow="hidden"
-                backgroundColor="var(--backgroundTertiary)"
             />
         </div>
     );
@@ -113,8 +114,8 @@ const OnlineDotXXLarge = () => (
         height={16}
         borderRadius={8}
         borderWidth={2}
-        borderColor="var(--backgroundPrimary)"
-        backgroundColor="var(--accentPrimary)"
+        borderColor="var(--dotBorder)"
+        backgroundColor="var(--dotBackground)"
         zIndex={2}
     />
 );
@@ -128,8 +129,8 @@ const OnlineDotXLarge = () => (
         height={14}
         borderRadius={7}
         borderWidth={2}
-        borderColor="var(--backgroundPrimary)"
-        backgroundColor="var(--accentPrimary)"
+        borderColor="var(--dotBorder)"
+        backgroundColor="var(--dotBackground)"
         zIndex={2}
     />
 );
@@ -143,8 +144,8 @@ const OnlineDotLarge = () => (
         height={12}
         borderRadius={6}
         borderWidth={2}
-        borderColor="var(--backgroundPrimary)"
-        backgroundColor="var(--accentPrimary)"
+        borderColor="var(--dotBorder)"
+        backgroundColor="var(--dotBackground)"
         zIndex={2}
     />
 );
@@ -158,8 +159,8 @@ const OnlineDotMedium = () => (
         height={12}
         borderRadius={6}
         borderWidth={2}
-        borderColor="var(--backgroundPrimary)"
-        backgroundColor="var(--accentPrimary)"
+        borderColor="var(--dotBorder)"
+        backgroundColor="var(--dotBackground)"
         zIndex={2}
     />
 );
@@ -173,8 +174,8 @@ const OnlineDotSmall = () => (
         height={10}
         borderRadius={5}
         borderWidth={2}
-        borderColor="var(--backgroundPrimary)"
-        backgroundColor="var(--accentPrimary)"
+        borderColor="var(--dotBorder)"
+        backgroundColor="var(--dotBackground)"
         zIndex={2}
     />
 );
@@ -188,14 +189,19 @@ const OnlineDotXSmall = () => (
         height={6}
         borderRadius={3}
         borderWidth={1}
-        borderColor="var(--backgroundPrimary)"
-        backgroundColor="var(--accentPrimary)"
+        borderColor="var(--dotBorder)"
+        backgroundColor="var(--dotBackground)"
         zIndex={2}
     />
 );
 
+const colorProvider = css`
+    display: flex;
+    flex-grow: 1;
+`;
+
 export const UAvatar = XMemo<UAvatarProps>(props => {
-    const { title, titleEmoji, id, photo, online, size = 'medium', ...other } = props;
+    const { title, titleEmoji, id, photo, online, size = 'medium', selected, ...other } = props;
     let content: any = undefined;
 
     if (photo) {
@@ -212,23 +218,29 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
 
     const boxSize = AvatarSizes[size].size;
 
+    const dotBorder = selected ? 'var(--accentMuted)' : 'var(--backgroundPrimary)';
+    const dotBackground = selected ? 'var(--foregroundContrast)' : 'var(--accentPrimary)';
+
     return (
         <XView
             {...other}
-            width={boxSize}
-            height={boxSize}
             cursor={props.onClick || props.path ? 'pointer' : undefined}
         >
-            <XView width="100%" height="100%" borderRadius={boxSize / 2} overflow="hidden">
-                {content}
-            </XView>
+            <div
+                className={colorProvider}
+                style={{ width: boxSize, height: boxSize, '--dotBorder': dotBorder, '--dotBackground': dotBackground } as React.CSSProperties}
+            >
+                <XView width="100%" height="100%" borderRadius={boxSize / 2} overflow="hidden">
+                    {content}
+                </XView>
 
-            {online && size === 'x-small' && <OnlineDotXSmall />}
-            {online && size === 'small' && <OnlineDotSmall />}
-            {online && size === 'medium' && <OnlineDotMedium />}
-            {online && size === 'large' && <OnlineDotLarge />}
-            {online && size === 'x-large' && <OnlineDotXLarge />}
-            {online && size === 'xx-large' && <OnlineDotXXLarge />}
-        </XView>
+                {online && size === 'x-small' && <OnlineDotXSmall />}
+                {online && size === 'small' && <OnlineDotSmall />}
+                {online && size === 'medium' && <OnlineDotMedium />}
+                {online && size === 'large' && <OnlineDotLarge />}
+                {online && size === 'x-large' && <OnlineDotXLarge />}
+                {online && size === 'xx-large' && <OnlineDotXXLarge />}
+            </div>
+        </XView >
     );
 });

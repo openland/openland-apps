@@ -1,0 +1,39 @@
+fragment SlideFragment on Slide {
+  __typename
+  ... on TextSlide {
+    attachments {
+      __typename
+      ... on User {
+        ...UserShort
+      }
+      ... on SharedRoom {
+        id
+        isChannel
+        kind
+        roomPhoto: photo
+        title
+      }
+    }
+    cover {
+      __typename
+      metadata {
+        __typename
+        imageFormat
+        imageHeight
+        imageWidth
+        isImage
+        mimeType
+        name
+        size
+      }
+      url
+    }
+    coverAlign
+    id
+    spans {
+      __typename
+      ...SpanFragment
+    }
+    text
+  }
+}

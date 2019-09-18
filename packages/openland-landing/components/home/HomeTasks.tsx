@@ -91,7 +91,7 @@ export const HomeTasks = () => (
             <div className={homeTasksTitleClass}>Perfect for most frequent communication tasks</div>
             <div className={homeTasksListClass}>
                 {TasksList.map((item, index) => (
-                    <div className={homeTasksItemClass}>
+                    <div key={'task-' + index} className={homeTasksItemClass}>
                         <div className={homeTasksIconClass}>
                             <img
                                 src={

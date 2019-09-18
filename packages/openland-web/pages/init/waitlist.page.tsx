@@ -10,6 +10,8 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import { AuthRouter } from 'openland-web/pages/root/AuthRouter';
 import { TextGlobal } from 'openland-text/TextGlobal';
 import { InitTexts } from './_text';
+import * as Cookie from 'js-cookie';
+import { ResolveInviteComponent } from './resolveInvite.page';
 
 const imageStyle = css`
     display: block;
@@ -25,6 +27,9 @@ const textAlignStyle = css`
 `;
 
 export default withAppBase('Waitlist', props => {
+    if (Cookie.get('x-openland-app-invite') || Cookie.get('x-openland-invite')) {
+        return <ResolveInviteComponent />;
+    }
     return (
         <AuthRouter>
             <XDocumentHead

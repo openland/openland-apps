@@ -32,7 +32,7 @@ const GlobalSearchInner = (props: GlobalSearchProps) => {
                 </View>
             )}
             {items.map((item, index) => (
-                <ASView style={{ height: 56 }} key={'search-item-' + index}>
+                <ASView style={{ height: 56 }} key={`search-item-${index}-${item.id}`}>
                     {item.__typename === 'Organization' && (
                         <GlobalSearchItemOrganization
                             item={item}

@@ -171,16 +171,7 @@ export const EnterYourOrganizationPageInner = ({
             result = {
                 organization: updateOrganizationProfile,
             };
-            if (Cookie.get('x-openland-app-invite')) {
-                // app invite invite
-                const inviteKey = Cookie.get('x-openland-app-invite')!!;
-                await client.mutateOrganizationActivateByInvite({
-                    inviteKey,
-                });
-                await client.refetchAccount();
-
-                window.location.href = '/onboarding/start';
-            } else if (Cookie.get('x-openland-invite')) {
+            if (Cookie.get('x-openland-invite')) {
                 // room invite
                 const inviteKey = Cookie.get('x-openland-invite')!!;
 
@@ -191,6 +182,15 @@ export const EnterYourOrganizationPageInner = ({
                 await client.refetchAccount();
 
                 window.location.href = `/mail/${room.join.id}`;
+            } if (Cookie.get('x-openland-app-invite')) {
+                // app invite invite
+                const inviteKey = Cookie.get('x-openland-app-invite')!!;
+                await client.mutateOrganizationActivateByInvite({
+                    inviteKey,
+                });
+                await client.refetchAccount();
+
+                window.location.href = '/onboarding/start';
             } else {
                 Cookie.remove('x-openland-create-new-account');
                 window.location.href = '/';
@@ -202,22 +202,7 @@ export const EnterYourOrganizationPageInner = ({
                     name: organizationFieldValue,
                 },
             });
-            if (Cookie.get('x-openland-app-invite')) {
-                // app invite invite
-                const inviteKey = Cookie.get('x-openland-app-invite')!!;
-                await client.mutateOrganizationActivateByInvite({
-                    inviteKey,
-                });
-                await client.refetchAccount();
-
-                Cookie.set('x-openland-org', result.organization.id, { path: '/' });
-                trackEvent('registration_complete');
-
-                // can not remove cookie or update will break
-                // Cookie.remove('x-openland-app-invite');
-                Cookie.remove('x-openland-create-new-account');
-                window.location.href = '/onboarding/start';
-            } else if (Cookie.get('x-openland-invite')) {
+            if (Cookie.get('x-openland-invite')) {
                 // room invite
                 const inviteKey = Cookie.get('x-openland-invite')!!;
 
@@ -235,6 +220,21 @@ export const EnterYourOrganizationPageInner = ({
                 Cookie.remove('x-openland-create-new-account');
                 await client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
                 window.location.href = `/mail/${room.join.id}`;
+            } else if (Cookie.get('x-openland-app-invite')) {
+                // app invite invite
+                const inviteKey = Cookie.get('x-openland-app-invite')!!;
+                await client.mutateOrganizationActivateByInvite({
+                    inviteKey,
+                });
+                await client.refetchAccount();
+
+                Cookie.set('x-openland-org', result.organization.id, { path: '/' });
+                trackEvent('registration_complete');
+
+                // can not remove cookie or update will break
+                // Cookie.remove('x-openland-app-invite');
+                Cookie.remove('x-openland-create-new-account');
+                window.location.href = '/onboarding/start';
             } else {
                 Cookie.remove('x-openland-create-new-account');
                 window.location.href = '/';

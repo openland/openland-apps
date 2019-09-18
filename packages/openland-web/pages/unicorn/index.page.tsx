@@ -12,8 +12,6 @@ import ChatIcon from './navigation/icon_chat.svg';
 import ChatActiveIcon from './navigation/icon_chat_active.svg';
 import ProfileIcon from './navigation/icon_profile.svg';
 import ProfileActiveIcon from './navigation/icon_profile_active.svg';
-import { UserInfoContext } from 'openland-web/components/UserInfo';
-import { ResolveInviteComponent } from '../init/resolveInvite.page';
 import { AuthRouter } from '../root/AuthRouter';
 
 const Unicorn = React.memo(() => {
@@ -44,13 +42,6 @@ const Unicorn = React.memo(() => {
 });
 
 export default React.memo(() => {
-    const userInfo = React.useContext(UserInfoContext);
-    // invites can be rendered before auth, but we want to keep them in one (unicorn) page to prevent page reload
-    if (
-        (userInfo && (!userInfo.isLoggedIn || (userInfo.isProfileCreated && !userInfo.isCompleted))) &&
-        (window.location.pathname.includes('/join') || window.location.pathname.includes('/invite'))) {
-        return <ResolveInviteComponent />;
-    }
     return (
         <AuthRouter>
             <Unicorn />

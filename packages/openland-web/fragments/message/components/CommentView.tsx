@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { MessageContent } from '../../chat/messenger/message/MessageContent';
-import { MessageComments_messageComments_comments_comment } from 'openland-api/Types';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { emoji } from 'openland-y-utils/emoji';
@@ -13,6 +12,7 @@ import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/mess
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { showAvatarModal } from 'openland-web/components/showAvatarModal';
 import { useRole } from 'openland-x-permissions/XWithRole';
+import { CommentEntryFragment_comment } from 'openland-api/Types';
 
 const avatarWrapper = css`
     flex-shrink: 0;
@@ -35,14 +35,14 @@ const wrapper = css`
 `;
 
 interface CommentViewProps {
-    comment: MessageComments_messageComments_comments_comment;
+    comment: CommentEntryFragment_comment;
     deleted: boolean;
     depth: number;
     highlighted: boolean;
     groupId?: string;
     onReplyClick: (id: string) => void;
     onDeleteClick: (id: string) => void;
-    onReactionClick: (comment: MessageComments_messageComments_comments_comment) => void;
+    onReactionClick: (comment: CommentEntryFragment_comment) => void;
     onSent: (data: URickTextValue) => void;
     onSentAttach: (files: File[]) => void;
 }

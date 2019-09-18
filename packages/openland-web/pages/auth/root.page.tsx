@@ -288,9 +288,6 @@ export default () => {
                     variables={{
                         inviteKey: router.query.redirect.split('/')[2],
                     }}
-                    onAcceptInvite={() => {
-                        router.push('/authorization/create-new-account');
-                    }}
                     isMobile={!!isMobile}
                 />
             )}

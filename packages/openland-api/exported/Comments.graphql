@@ -1,5 +1,5 @@
-query MessageComments($messageId: ID!) {
-  messageComments(messageId: $messageId) {
+query Comments($peerId: ID!) {
+  comments(peerId: $peerId) {
     __typename
     comments {
       __typename

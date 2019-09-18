@@ -131,7 +131,7 @@ const GroupMultiplePickerComponent = XMemo<PageProps>((props) => {
                             title="Groups:"
                             theme={theme}
                         />
-                        <View style={{ height: 1, backgroundColor: theme.separatorColor }} />
+                        <View style={{ height: 1, backgroundColor: theme.border }} />
                     </ZBlurredView>
                 )}
             </ASSafeAreaContext.Consumer>

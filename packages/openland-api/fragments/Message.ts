@@ -4,6 +4,47 @@ import { UserShort } from './UserShort';
 import { UserForMention } from './UserForMention';
 import { UserBadge } from './UserBadge';
 
+export const SpanFragment = gql`
+    fragment SpanFragment on MessageSpan {
+        offset
+        length
+
+        ... on MessageSpanUserMention {
+            user {
+                ...UserForMention
+            }
+        }
+        ... on MessageSpanMultiUserMention {
+            users {
+                ...UserForMention
+            }
+        }
+        ... on MessageSpanRoomMention {
+            room {
+                ... on PrivateRoom {
+                    id
+                    user {
+                        id
+                        name
+                    }
+                }
+                ... on SharedRoom {
+                    id
+                    title
+                }
+            }
+        }
+        ... on MessageSpanLink {
+            url
+        }
+        ... on MessageSpanDate {
+            date
+        }
+    }
+
+    ${UserForMention}
+`;
+
 export const DaialogListMessage = gql`
     fragment DaialogListMessage on ModernMessage {
         id
@@ -194,40 +235,7 @@ export const FullMessage = gql`
                     }
                 }
                 spans {
-                    offset
-                    length
-
-                    ... on MessageSpanUserMention {
-                        user {
-                            ...UserShort
-                        }
-                    }
-                    ... on MessageSpanMultiUserMention {
-                        users {
-                            ...UserShort
-                        }
-                    }
-                    ... on MessageSpanRoomMention {
-                        room {
-                            ... on PrivateRoom {
-                                id
-                                user {
-                                    id
-                                    name
-                                }
-                            }
-                            ... on SharedRoom {
-                                id
-                                title
-                            }
-                        }
-                    }
-                    ... on MessageSpanLink {
-                        url
-                    }
-                    ... on MessageSpanDate {
-                        date
-                    }
+                    ...SpanFragment
                 }
 
                 ... on GeneralMessage {
@@ -301,40 +309,7 @@ export const FullMessage = gql`
         }
 
         spans {
-            offset
-            length
-
-            ... on MessageSpanUserMention {
-                user {
-                    ...UserForMention
-                }
-            }
-            ... on MessageSpanMultiUserMention {
-                users {
-                    ...UserForMention
-                }
-            }
-            ... on MessageSpanRoomMention {
-                room {
-                    ... on PrivateRoom {
-                        id
-                        user {
-                            id
-                            name
-                        }
-                    }
-                    ... on SharedRoom {
-                        id
-                        title
-                    }
-                }
-            }
-            ... on MessageSpanLink {
-                url
-            }
-            ... on MessageSpanDate {
-                date
-            }
+            ...SpanFragment
         }
 
         ... on ServiceMessage {
@@ -374,6 +349,6 @@ export const FullMessage = gql`
     }
     ${UserTiny}
     ${UserShort}
-    ${UserForMention}
     ${UserBadge}
+    ${SpanFragment}
 `;

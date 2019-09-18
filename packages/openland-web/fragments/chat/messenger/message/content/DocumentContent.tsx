@@ -22,7 +22,6 @@ const fileContainer = css`
     overflow: hidden;
     padding: 16px;
     padding-right: 24px;
-    margin-top: 8px;
     max-width: 480px;
     transition: background-color 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
 

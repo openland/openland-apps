@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as Types from 'openland-api/Types';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
-import { trackProfile } from 'openland-x-analytics';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 export interface UserInfo {
@@ -34,16 +33,6 @@ export class UserInfoProvider extends React.Component<UserInfoProps> {
 
         let hasUser = this.props.user !== null && this.props.user !== undefined;
         let hasAccount = this.props.organization !== null && this.props.organization !== undefined;
-        // Where to put this?
-        if (this.props.user) {
-            trackProfile(
-                this.props.user.id!!,
-                this.props.user.firstName,
-                this.props.user.lastName,
-                this.props.user.email,
-            );
-        }
-
         this.ctx = {
             user: hasUser ? this.props.user! : null,
             organization: hasAccount ? this.props.organization! : null,

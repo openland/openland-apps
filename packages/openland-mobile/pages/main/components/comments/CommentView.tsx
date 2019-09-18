@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MessageComments_messageComments_comments_comment, MessageReactionType } from 'openland-api/Types';
+import { CommentEntryFragment_comment, MessageReactionType } from 'openland-api/Types';
 import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, LayoutChangeEvent } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
@@ -38,14 +38,14 @@ const styles = StyleSheet.create({
 });
 
 export interface CommentViewProps {
-    comment: MessageComments_messageComments_comments_comment;
+    comment: CommentEntryFragment_comment;
     depth: number;
     deleted: boolean;
     highlighted: boolean;
     theme: ThemeGlobal;
 
-    onReplyPress: (comment: MessageComments_messageComments_comments_comment) => void;
-    onLongPress: (comment: MessageComments_messageComments_comments_comment) => void;
+    onReplyPress: (comment: CommentEntryFragment_comment) => void;
+    onLongPress: (comment: CommentEntryFragment_comment) => void;
     onLayout?: (e: LayoutChangeEvent) => void;
 }
 
@@ -94,18 +94,18 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         }
     }, [comment, lastTap]);
 
-    const branchIndent = (depth > 0) ? ((15 * depth) + 16) : 16;
+    const branchIndent = (depth > 0) ? (((16 + 24) * depth) + 16) : 16;
     const likesCount = reactions.length;
     const myLike = reactions.filter(r => r.user.id === messenger.engine.user.id).length > 0;
 
     let avatar = (
-        <View marginRight={6}>
+        <View marginRight={16}>
             {deleted && (
-                <View width={16} height={16} borderRadius={8} backgroundColor={theme.foregroundPrimary} opacity={0.4} />
+                <View width={24} height={24} borderRadius={12} backgroundColor={theme.backgroundTertiary} />
             )}
             {!deleted && (
                 <ZAvatar
-                    size="xx-small"
+                    size="x-small"
                     src={sender.photo}
                     placeholderKey={sender.id}
                     placeholderTitle={sender.name}
@@ -148,23 +148,15 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         </TouchableWithoutFeedback>
     ) : undefined;
 
-    let lines: JSX.Element[] = [];
-
-    for (var i = 1; i <= depth; i++) {
-        lines.push(<View key={'comment-line-' + i} width={1} backgroundColor={theme.separatorColor} position="absolute" left={15 * i} top={0} bottom={-8} />);
-    }
-
     return (
         <TouchableWithoutFeedback disabled={deleted} onPress={handleDoublePress} onLongPress={() => props.onLongPress(comment)}>
-            <View onLayout={onLayout} style={{ backgroundColor: highlighted ? theme.backgroundTertiary : theme.backgroundPrimary, marginVertical: -8, marginBottom: 8, paddingLeft: branchIndent, paddingVertical: 8 }}>
-                {lines}
-
+            <View onLayout={onLayout} style={{ backgroundColor: highlighted ? theme.backgroundTertiary : undefined, paddingLeft: branchIndent, paddingVertical: 8, paddingRight: 16 }}>
                 <View flexDirection="row">
+                    {avatar}
+
                     <View flexGrow={1} flexShrink={1}>
                         <TouchableWithoutFeedback disabled={deleted} onPress={() => router.push('ProfileUser', { id: sender.id })}>
                             <View flexDirection="row" marginBottom={3}>
-                                {avatar}
-
                                 <Text style={[styles.senderName, { color: !deleted ? theme.foregroundPrimary : theme.foregroundSecondary }]} allowFontScaling={false}>{sender.name}</Text>
 
                                 {comment.edited && <Text style={[styles.editedLabel, { color: theme.foregroundSecondary }]} allowFontScaling={false}>• Edited</Text>}

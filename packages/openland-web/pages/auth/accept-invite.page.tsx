@@ -3,27 +3,34 @@ import { css } from 'linaria';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withApp } from 'openland-web/components/withApp';
 import { XView } from 'react-mental';
 import LogoBig from 'openland-icons/logo-big.svg';
 import { XButton } from 'openland-x/XButton';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 
 const textAlignClassName = css`
     text-align: center;
 `;
 
 const AcceptInvite = ({
-    inviter,
-    onAcceptInvite,
-    isMobile,
+    inviter
 }: {
-    signPath: string;
     inviter: { photo: string | null; name: string; id: string };
-    onAcceptInvite: (event: React.MouseEvent<any, MouseEvent>) => void;
     isMobile: boolean;
-}) => (
-    <XView width="100%" backgroundColor="white" position={'relative'} justifyContent="center">
+}) => {
+    const userInfo = React.useContext(UserInfoContext);
+    const router = React.useContext(XRouterContext)!;
+    const onAcceptInvite = React.useCallback(() => {
+        if (!userInfo || !userInfo.isLoggedIn) {
+            router.push('/authorization/create-new-account');
+        } else {
+            router.push('/mail');
+        }
+    }, []);
+    return (<XView width="100%" backgroundColor="white" position={'relative'} justifyContent="center">
         <XView
             position="absolute"
             top={56}
@@ -31,11 +38,11 @@ const AcceptInvite = ({
             alignItems="center"
             flexDirection="row"
         >
-            <XAvatar2
-                size={32}
+            <UAvatar
+                size="small"
                 id={inviter.id}
                 title={inviter.name}
-                src={inviter.photo || undefined}
+                photo={inviter.photo}
             />
             <XView fontSize={16} color="#000000" marginLeft={12}>
                 {inviter.name + ' invites you to join'}
@@ -59,12 +66,11 @@ const AcceptInvite = ({
         <XView position="absolute" bottom={20} fontSize={14} opacity={0.5} alignSelf={'center'}>
             © 2019 Openland
         </XView>
-    </XView>
-);
+    </XView>);
+};
 
 export const AcceptInvitePage = (props: {
     variables: { inviteKey: string };
-    onAcceptInvite: (event: React.MouseEvent<any, MouseEvent>) => void;
     isMobile: boolean;
 }) => {
     const client = useClient();
@@ -97,16 +103,12 @@ export const AcceptInvitePage = (props: {
         return <XPageRedirect path={`/signin/join/${props.variables.inviteKey}`} />;
     }
 
-    let signPath = '/signup?redirect=' + encodeURIComponent((props as any).redirect);
-
     if (!inviter) {
         return <XLoader loading={true} />;
     }
     return (
         <AcceptInvite
-            signPath={signPath}
             inviter={inviter}
-            onAcceptInvite={props.onAcceptInvite}
             isMobile={props.isMobile}
         />
     );

@@ -4,7 +4,14 @@ import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
 import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
 import { isSameDate } from 'openland-engines/messenger/ConversationEngine';
-import { DataSourceFeedDateItem, DataSourceFeedPostItem, DataSourceFeedItem } from './types';
+import { DataSourceFeedDateItem, DataSourceFeedPostItem, DataSourceFeedItem, SlideProcessed } from './types';
+
+export const convertSlides = (src: Types.FeedItemFull_slides[]): SlideProcessed[] => {
+    return src.map(s => ({
+        ...s,
+        textSpans: s.text ? processSpans(s.text, s.spans) : [],
+    }));
+};
 
 export const convertPost = (src: Types.Feed_feed_items, engine: MessengerEngine): DataSourceFeedPostItem => {
     return {
@@ -13,16 +20,14 @@ export const convertPost = (src: Types.Feed_feed_items, engine: MessengerEngine)
         id: src.id,
         date: parseInt(src.date, 10),
         author: src.author,
-        text: src.message || undefined,
         reactions: src.reactions,
-        attachments: src.attachments,
         edited: src.edited,
-        spans: src.spans,
+        canEdit: src.canEdit,
         commentsCount: src.commentsCount,
-        fallback: src.fallback || src.message || '',
-        textSpans: src.message ? processSpans(src.message, src.spans) : [],
+        fallback: src.fallback || '',
         reactionsReduced: reduceReactions(src.reactions, engine.user.id),
         reactionsLabel: getReactionsLabel(src.reactions, engine.user.id),
+        slides: convertSlides(src.slides)
     };
 };
 

@@ -211,6 +211,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                             photo={dialog.photo}
                             online={dialog.online}
                             size="large"
+                            selected={active}
                         />
                         <div className={dialogContentContainer}>
                             <div className={dialogDataContainer}>

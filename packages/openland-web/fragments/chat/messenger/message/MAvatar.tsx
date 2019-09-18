@@ -57,6 +57,10 @@ const avatarImageClass = css`
 const imageWrapper = css`
     position: relative;
     z-index: 0;
+    width: 40px;
+    height: 40px;
+    background-color: var(--backgroundTertiary);
+    border-radius: 100%;
 
     & > img {
         z-index: 1;

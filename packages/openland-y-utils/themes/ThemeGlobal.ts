@@ -90,7 +90,6 @@ export type ThemeGlobal = {
     backgroundInverted: string;
     backgroundInvertedHover: string;
     backgroundInvertedActive: string;
-    separatorColor: string;
 };
 
 export type PlaceholderGlobal = {

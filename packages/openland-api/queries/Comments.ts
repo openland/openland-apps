@@ -8,9 +8,9 @@ export const DeleteCommentMutation = gql`
     }
 `;
 
-export const MessageCommentsQuery = gql`
-    query MessageComments($messageId: ID!) {
-        messageComments(messageId: $messageId) {
+export const CommentsQuery = gql`
+    query Comments($peerId: ID!) {
+        comments(peerId: $peerId) {
             id
             state {
                 state
@@ -37,17 +37,6 @@ export const CommentUnsetReactionMutation = gql`
         commentReactionRemove(commentId: $commentId, reaction: $reaction)
     }
 `;
-
-export const ReadNotificationMutation = gql`
-    mutation ReadNotification($notificationId: ID!) {
-        readNotification(notificationId: $notificationId) {
-            id
-            unread
-            # state
-        }
-    }
-`;
-
 export const DeleteNotificationMutation = gql`
     mutation DeleteNotification($notificationId: ID!) {
         deleteNotification(notificationId: $notificationId)
@@ -76,9 +65,35 @@ export const AddMessageCommentMutation = gql`
         $fileAttachments: [FileAttachmentInput!]
         $spans: [MessageSpanInput!]
     ) {
-        addMessageComment: betaAddMessageComment(
+        betaAddMessageComment(
             repeatKey: $repeatKey
             messageId: $messageId
+            message: $message
+            replyComment: $replyComment
+            mentions: $mentions
+            fileAttachments: $fileAttachments
+            spans: $spans
+        ) {
+            id
+        }
+    }
+    ${CommentEntryFragment}
+    ${FullMessage}
+`;
+
+export const AddFeedCommentMutation = gql`
+    mutation AddFeedComment(
+        $repeatKey: String
+        $feedItemId: ID!
+        $message: String
+        $replyComment: ID
+        $mentions: [MentionInput!]
+        $fileAttachments: [FileAttachmentInput!]
+        $spans: [MessageSpanInput!]
+    ) {
+        betaAddFeedComment(
+            repeatKey: $repeatKey
+            feedItemId: $feedItemId
             message: $message
             replyComment: $replyComment
             mentions: $mentions

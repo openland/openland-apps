@@ -391,17 +391,17 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderMessagesSearch(variables: Types.MessagesSearchVariables, opts?: QueryWatchParameters): Types.MessagesSearch | null {
         return this.useQuery(Source.MessagesSearchQuery, variables, opts);
     }
-    async queryMessageComments(variables: Types.MessageCommentsVariables, opts?: OperationParameters): Promise<Types.MessageComments> {
-        return this.client.query(Source.MessageCommentsQuery, variables, opts);
+    async queryComments(variables: Types.CommentsVariables, opts?: OperationParameters): Promise<Types.Comments> {
+        return this.client.query(Source.CommentsQuery, variables, opts);
     }
-    async refetchMessageComments(variables: Types.MessageCommentsVariables): Promise<Types.MessageComments> {
-        return this.refetch(Source.MessageCommentsQuery, variables);
+    async refetchComments(variables: Types.CommentsVariables): Promise<Types.Comments> {
+        return this.refetch(Source.CommentsQuery, variables);
     }
-    useMessageComments(variables: Types.MessageCommentsVariables, opts?: QueryWatchParameters): Types.MessageComments {
-        return this.useQuerySuspense(Source.MessageCommentsQuery, variables, opts);
+    useComments(variables: Types.CommentsVariables, opts?: QueryWatchParameters): Types.Comments {
+        return this.useQuerySuspense(Source.CommentsQuery, variables, opts);
     }
-    useWithoutLoaderMessageComments(variables: Types.MessageCommentsVariables, opts?: QueryWatchParameters): Types.MessageComments | null {
-        return this.useQuery(Source.MessageCommentsQuery, variables, opts);
+    useWithoutLoaderComments(variables: Types.CommentsVariables, opts?: QueryWatchParameters): Types.Comments | null {
+        return this.useQuery(Source.CommentsQuery, variables, opts);
     }
     async queryConference(variables: Types.ConferenceVariables, opts?: OperationParameters): Promise<Types.Conference> {
         return this.client.query(Source.ConferenceQuery, variables, opts);
@@ -522,6 +522,18 @@ export class OpenlandClient extends BaseApiClient {
     }
     useWithoutLoaderFeed(variables: Types.FeedVariables, opts?: QueryWatchParameters): Types.Feed | null {
         return this.useQuery(Source.FeedQuery, variables, opts);
+    }
+    async queryFeedItem(variables: Types.FeedItemVariables, opts?: OperationParameters): Promise<Types.FeedItem> {
+        return this.client.query(Source.FeedItemQuery, variables, opts);
+    }
+    async refetchFeedItem(variables: Types.FeedItemVariables): Promise<Types.FeedItem> {
+        return this.refetch(Source.FeedItemQuery, variables);
+    }
+    useFeedItem(variables: Types.FeedItemVariables, opts?: QueryWatchParameters): Types.FeedItem {
+        return this.useQuerySuspense(Source.FeedItemQuery, variables, opts);
+    }
+    useWithoutLoaderFeedItem(variables: Types.FeedItemVariables, opts?: QueryWatchParameters): Types.FeedItem | null {
+        return this.useQuery(Source.FeedItemQuery, variables, opts);
     }
     async queryMyNotifications(variables: Types.MyNotificationsVariables, opts?: OperationParameters): Promise<Types.MyNotifications> {
         return this.client.query(Source.MyNotificationsQuery, variables, opts);
@@ -928,9 +940,6 @@ export class OpenlandClient extends BaseApiClient {
     async mutateCommentUnsetReaction(variables: Types.CommentUnsetReactionVariables): Promise<Types.CommentUnsetReaction> {
         return this.client.mutate(Source.CommentUnsetReactionMutation, variables);
     }
-    async mutateReadNotification(variables: Types.ReadNotificationVariables): Promise<Types.ReadNotification> {
-        return this.client.mutate(Source.ReadNotificationMutation, variables);
-    }
     async mutateDeleteNotification(variables: Types.DeleteNotificationVariables): Promise<Types.DeleteNotification> {
         return this.client.mutate(Source.DeleteNotificationMutation, variables);
     }
@@ -942,6 +951,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     async mutateAddMessageComment(variables: Types.AddMessageCommentVariables): Promise<Types.AddMessageComment> {
         return this.client.mutate(Source.AddMessageCommentMutation, variables);
+    }
+    async mutateAddFeedComment(variables: Types.AddFeedCommentVariables): Promise<Types.AddFeedComment> {
+        return this.client.mutate(Source.AddFeedCommentMutation, variables);
     }
     async mutateEditComment(variables: Types.EditCommentVariables): Promise<Types.EditComment> {
         return this.client.mutate(Source.EditCommentMutation, variables);
@@ -994,8 +1006,20 @@ export class OpenlandClient extends BaseApiClient {
     async mutateFeatureFlagDisable(variables: Types.FeatureFlagDisableVariables): Promise<Types.FeatureFlagDisable> {
         return this.client.mutate(Source.FeatureFlagDisableMutation, variables);
     }
+    async mutateFeedCreatePost(variables: Types.FeedCreatePostVariables): Promise<Types.FeedCreatePost> {
+        return this.client.mutate(Source.FeedCreatePostMutation, variables);
+    }
+    async mutateFeedCreateGlobalPost(variables: Types.FeedCreateGlobalPostVariables): Promise<Types.FeedCreateGlobalPost> {
+        return this.client.mutate(Source.FeedCreateGlobalPostMutation, variables);
+    }
+    async mutateFeedDeletePost(variables: Types.FeedDeletePostVariables): Promise<Types.FeedDeletePost> {
+        return this.client.mutate(Source.FeedDeletePostMutation, variables);
+    }
     async mutateMyNotificationCenterMarkSeqRead(variables: Types.MyNotificationCenterMarkSeqReadVariables): Promise<Types.MyNotificationCenterMarkSeqRead> {
         return this.client.mutate(Source.MyNotificationCenterMarkSeqReadMutation, variables);
+    }
+    async mutateReadNotification(variables: Types.ReadNotificationVariables): Promise<Types.ReadNotification> {
+        return this.client.mutate(Source.ReadNotificationMutation, variables);
     }
     async mutateUpdateOrganization(variables: Types.UpdateOrganizationVariables): Promise<Types.UpdateOrganization> {
         return this.client.mutate(Source.UpdateOrganizationMutation, variables);

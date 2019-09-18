@@ -39,7 +39,7 @@ routes.add('/activation/', '/init/activation');
 routes.add('/need_info', '/init/need_info');
 routes.add('/need_info/', '/init/need_info');
 routes.add('/waitlist', '/init/waitlist');
-routes.add('/waitlist/', '/init/waitlist');
+routes.add('/waitlist/', '/unicorn/index');
 routes.add('/suspended', '/init/suspended');
 routes.add('/suspended/', '/init/suspended');
 routes.add('/createProfile', '/auth/root');
