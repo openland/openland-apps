@@ -53,7 +53,7 @@ const FeedItemComponent = React.memo((props: PageProps) => {
                 <FeedAuthorHeader author={author} date={date} />
             </SHeaderView>
 
-            {slides.length > 0 && (
+            {slides.length > 1 && (
                 <SHeaderIndicator
                     key={`indicator-${currentSlide}-${theme.kind}`}
                     current={currentSlide + 1}
