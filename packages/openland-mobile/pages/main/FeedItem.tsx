@@ -34,7 +34,7 @@ const FeedItemComponent = React.memo((props: PageProps) => {
     const peerView = (
         <View paddingTop={8}>
             <FeedPostContent
-                slides={slides}
+                post={itemProcessed}
                 width={width}
                 onSlideChange={i => setCurreentSlide(i)}
             />

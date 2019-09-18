@@ -71,7 +71,7 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
                             slidesCount={slides.length}
                         />
                         <FeedPostContent
-                            slides={slides}
+                            post={item}
                             width={containerWidth}
                             onLongPress={handleLongPress}
                             borderRadius={RadiusStyles.Large}

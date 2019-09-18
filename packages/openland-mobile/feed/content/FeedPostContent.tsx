@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SlideProcessed } from 'openland-engines/feed/types';
+import { SlideProcessed, DataSourceFeedDateItem, DataSourceFeedPostItem } from 'openland-engines/feed/types';
 import { View, StyleSheet, ViewStyle, TouchableWithoutFeedback } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { FeedSlide } from './FeedSlide';
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 
 interface FeedPostContentProps {
     width: number;
-    slides: SlideProcessed[];
+    post: DataSourceFeedPostItem;
     borderRadius?: number;
     onLongPress?: () => void;
     onSlideChange?: (index: number) => void;
@@ -33,7 +33,8 @@ interface FeedPostContentProps {
 
 export const FeedPostContent = React.memo((props: FeedPostContentProps) => {
     const theme = React.useContext(ThemeContext);
-    const { width, slides, borderRadius, onLongPress, onSlideChange } = props;
+    const { width, post, borderRadius, onLongPress, onSlideChange } = props;
+    const { slides, fallback } = post;
 
     const [currentSlide, setCurreentSlide] = React.useState(0);
     const handlePrevPress = React.useCallback(() => {
@@ -78,7 +79,7 @@ export const FeedPostContent = React.memo((props: FeedPostContentProps) => {
                 </View>
             )}
 
-            {slides.length <= 0 && <FeedUnsupportedContent />}
+            {slides.length <= 0 && <FeedUnsupportedContent fallback={fallback} />}
         </View>
     );
 });
