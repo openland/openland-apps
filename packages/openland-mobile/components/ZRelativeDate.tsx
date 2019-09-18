@@ -39,7 +39,7 @@ export class ZRelativeDate extends React.Component<ZRelativeDateProps, ZRelative
         const { date, ...other } = this.props;
 
         return (
-            <Text {...other}>{this.state.huminizedDate}</Text>
+            <Text {...other} allowFontScaling={false}>{this.state.huminizedDate}</Text>
         );
     }
 }
