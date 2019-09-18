@@ -15,9 +15,14 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import { SDeferred } from 'react-native-s/SDeferred';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { handleGlobalInvitePress } from './Settings';
 
 const DialogsComponent = XMemo<PageProps>((props) => {
-    let handlePress = React.useCallback((id: string, title: string) => {
+    const theme = React.useContext(ThemeContext);
+    const handlePress = React.useCallback((id: string, title: string) => {
         if (props.router.params.share) {
             Alert.builder().title(`Share with ${title}?`).button('Cancel', 'cancel').button('Share', 'default', async () => {
                 if (props.router.params.share.files) {
@@ -42,7 +47,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
         }
     }, [props.router.params.share, props.router.params.callback]);
 
-    let dialogs = (props.router.params.share || props.router.params.pressCallback) ? new ASDataView(getMessenger().engine.dialogList.dataSource, (item) => {
+    const dialogs = (props.router.params.share || props.router.params.pressCallback) ? new ASDataView(getMessenger().engine.dialogList.dataSource, (item) => {
         return (
             <DialogItemViewAsync item={item} onPress={(id, i) => handlePress(id, (i as DialogDataSourceItem).title)} />
         );
@@ -63,7 +68,24 @@ const DialogsComponent = XMemo<PageProps>((props) => {
 
             {/* ugly fix - ensure list recreated for new page (reseting to root from > 1 stack)  */}
             <SSearchControler
-                searchRender={(p) => (<GlobalSearch query={p.query} router={props.router} onGroupPress={handlePress} onUserPress={handlePress} />)}
+                searchRender={(p) => (
+                    <GlobalSearch
+                        query={p.query}
+                        router={props.router}
+                        onGroupPress={handlePress}
+                        onUserPress={handlePress}
+                        emptyView={(!props.router.params.share && !props.router.params.title) ? (
+                            <SDeferred>
+                                <ZListItem
+                                    leftIconColor={theme.tintOrange}
+                                    leftIcon={require('assets/ic-invite-glyph-24.png')}
+                                    text="Invite friends"
+                                    onPress={handleGlobalInvitePress}
+                                />
+                            </SDeferred>
+                        ) : undefined}
+                    />
+                )}
             >
                 <DialogListComponent dialogs={dialogs} />
             </SSearchControler>
