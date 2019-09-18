@@ -8,6 +8,7 @@ import { SenderView } from 'openland-mobile/messenger/components/SenderView';
 import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
 import { CommentsWrapper } from './components/comments/CommentsWrapper';
 import { View } from 'react-native';
+import { ReactionsView } from 'openland-mobile/components/message/content/ReactionsView';
 
 const MessageCommentsComponent = XMemo<PageProps>((props) => {
     const messageId = props.router.params.messageId;
@@ -29,7 +30,9 @@ const MessageCommentsComponent = XMemo<PageProps>((props) => {
                 />
             )}
 
-            <ZMessageView message={message} showReactions={true} />
+            <ZMessageView message={message} />
+
+            {message.__typename === 'GeneralMessage' && <ReactionsView reactions={message.reactions} />}
         </View>
     );
 

@@ -34,10 +34,10 @@ export const ReplyContent = (props: ReplyContentProps) => {
 
                     fileAttaches.map((file, index) => {
                         let isImage = file.fileMetadata.isImage;
-                    
+
                         if (isImage) {
                             let imageLayout = layoutImage(file.fileMetadata, maxWidth);
-                    
+
                             if (imageLayout) {
                                 contentAttach.push(<MediaContent key={'msg-reply-' + quote.id + '-media-' + index} imageLayout={imageLayout} message={generalMesage!} attach={file} theme={theme} />);
                             }
@@ -65,7 +65,7 @@ export const ReplyContent = (props: ReplyContentProps) => {
                                 {generalMesage!.sender.name || ''}
                             </Text>
 
-                            {!!generalMesage!.message && <TextContent message={generalMesage!} inReply={true} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} isSmall={true} theme={theme} />}
+                            {!!generalMesage!.message && <TextContent message={generalMesage!} inReply={true} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} wrapped={true} theme={theme} />}
                             {contentAttach}
                         </View>
                     );

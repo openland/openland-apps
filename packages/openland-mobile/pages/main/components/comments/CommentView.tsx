@@ -153,7 +153,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                         </Text>
 
                         <View style={{ opacity: deleted ? 0.5 : undefined }}>
-                            <ZMessageView message={comment} small={true} maxWidth={Dimensions.get('screen').width - branchIndent - 40 - 16} />
+                            <ZMessageView message={comment} wrapped={true} maxWidth={Dimensions.get('screen').width - branchIndent - 40 - 16} />
                         </View>
 
                         {tools}

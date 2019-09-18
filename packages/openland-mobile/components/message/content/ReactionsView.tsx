@@ -5,18 +5,18 @@ import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { View, Image, Text, TouchableWithoutFeedback } from 'react-native';
 import { reactionsImagesMap } from 'openland-mobile/messenger/components/AsyncMessageReactionsView';
 import { showReactionsList } from '../showReactionsList';
-import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
 import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 interface ReactionsViewProps {
     reactions: FullMessage_GeneralMessage_reactions[];
-    theme: ThemeGlobal;
 }
 
 export const ReactionsView = React.memo<ReactionsViewProps>((props) => {
-    const { reactions, theme } = props;
+    const theme = React.useContext(ThemeContext);
+    const { reactions } = props;
     const myID = getMessenger().engine.user.id;
 
     if (!reactions || reactions!.length === 0) {

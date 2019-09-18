@@ -31,7 +31,7 @@ interface TextContentProps {
     message: FullMessage | FullMessage_GeneralMessage_quotedMessages;
 
     fontStyle?: 'italic' | 'normal';
-    isSmall?: boolean;
+    wrapped?: boolean;
     theme: ThemeGlobal;
     inReply?: boolean;
 
@@ -40,25 +40,25 @@ interface TextContentProps {
 }
 
 export const TextContent = (props: TextContentProps) => {
-    const { theme, message, inReply, isSmall, fontStyle, onUserPress, onGroupPress } = props;
+    const { theme, message, inReply, wrapped, fontStyle, onUserPress, onGroupPress } = props;
     const preprocessed = processSpans(message.message || '', message.spans);
     const content = getSpansSlices(preprocessed);
 
-    const codeMarginLeft = isSmall ? 0 : -(inReply ? 8 : 16);
-    const codeMarginRight = isSmall ? 0 : -(inReply ? 8 : 16);
-    const codePaddingLeft = isSmall ? 10 : -codeMarginLeft;
-    const codePaddingRight = isSmall ? 10 : -codeMarginRight;
+    const codeMarginLeft = wrapped ? 0 : -(inReply ? 8 : 16);
+    const codeMarginRight = wrapped ? 0 : -(inReply ? 8 : 16);
+    const codePaddingLeft = wrapped ? 10 : -codeMarginLeft;
+    const codePaddingRight = wrapped ? 10 : -codeMarginRight;
 
     const fontSize = {
-        'emoji': isSmall ? 26 : 30,
-        'loud': isSmall ? 16 : 20,
-        'slice': isSmall ? 15 : 16,
+        'emoji': wrapped ? 26 : 30,
+        'loud': wrapped ? 16 : 20,
+        'slice': wrapped ? 15 : 16,
         'code_block': 14,
     };
 
     const lineHeight = {
-        'emoji': isSmall ? 30 : 34,
-        'loud': isSmall ? 20 : 24,
+        'emoji': wrapped ? 30 : 34,
+        'loud': wrapped ? 20 : 24,
         'slice': undefined,
         'code_block': undefined,
     };
@@ -73,8 +73,8 @@ export const TextContent = (props: TextContentProps) => {
                             color={theme.foregroundPrimary}
                             style={{
                                 fontStyle: fontStyle,
-                                marginTop: (c.type === 'loud' && i !== 0) ? (isSmall ? 5 : 8) : undefined,
-                                marginBottom: (c.type !== 'emoji' && i !== content.length - 1) ? (isSmall ? 5 : 8) : undefined,
+                                marginTop: (c.type === 'loud' && i !== 0) ? (wrapped ? 5 : 8) : undefined,
+                                marginBottom: (c.type !== 'emoji' && i !== content.length - 1) ? (wrapped ? 5 : 8) : undefined,
                                 fontSize: fontSize[c.type],
                                 lineHeight: lineHeight[c.type]
                             }}

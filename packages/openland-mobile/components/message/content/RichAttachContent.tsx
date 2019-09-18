@@ -15,7 +15,7 @@ interface RichAttachContentProps {
     message: FullMessage_GeneralMessage;
     attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment;
     imageLayout?: { width: number, height: number };
-    isSmall?: boolean;
+    wrapped?: boolean;
     theme: ThemeGlobal;
     maxWidth: number;
 }
@@ -61,7 +61,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
     }
 
     render() {
-        const { isSmall, maxWidth } = this.props;
+        const { wrapped, maxWidth } = this.props;
         const { theme } = this.props;
         const { title, text, subTitle, keyboard } = this.props.attach;
 
@@ -87,7 +87,7 @@ export class RichAttachContent extends React.PureComponent<RichAttachContentProp
         const titleMaxWidth = (imgCompact && imgLayout && imageSource) ? maxWidth - 26 - 36 - 9 : undefined;
 
         return (
-            <View flexDirection="column" alignItems="stretch" alignSelf="stretch" marginTop={!isSmall ? 10 : undefined} marginVertical={isSmall ? 5 : undefined} backgroundColor={theme.bubble(false).backgroundPrimary} borderRadius={8} paddingHorizontal={13} paddingVertical={10}>
+            <View flexDirection="column" alignItems="stretch" alignSelf="stretch" marginTop={!wrapped ? 10 : undefined} marginVertical={wrapped ? 5 : undefined} backgroundColor={theme.bubble(false).backgroundPrimary} borderRadius={8} paddingHorizontal={13} paddingVertical={10}>
                 {!!this.props.attach.titleLinkHostname && imgCompact && (
                     <Text
                         style={{
