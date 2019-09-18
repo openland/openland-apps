@@ -28,7 +28,7 @@ interface FeedUnsupportedContentProps {
 export const FeedUnsupportedContent = React.memo((props: FeedUnsupportedContentProps) => {
     const theme = React.useContext(ThemeContext);
     const { fallback } = props;
-    const text = fallback.length > 0 ? fallback.trim() : 'Unsupported content'
+    const text = fallback.length > 0 ? fallback.trim() : 'Unsupported content';
     const textStyle = text.length < 200 ? (text.length < 100 ? styles.textLarge : styles.textMedium) : styles.text;
 
     return (
