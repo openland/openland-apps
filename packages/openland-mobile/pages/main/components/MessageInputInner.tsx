@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Image, TextInput, NativeSyntheticEvent, TextInputSelectionChangeEventData, ActivityIndicator, Platform } from 'react-native';
+import { View, TouchableOpacity, Image, TextInput, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform } from 'react-native';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 
 export interface MessageInputBarProps {
     onAttachPress?: () => void;
@@ -112,7 +113,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
             )}
             {props.showLoader && (
                 <View width={52} height={52} alignItems="center" justifyContent="center">
-                    <ActivityIndicator height="100%" color={theme.foregroundSecondary} />
+                    <LoaderSpinner />
                 </View>
             )}
         </View>
