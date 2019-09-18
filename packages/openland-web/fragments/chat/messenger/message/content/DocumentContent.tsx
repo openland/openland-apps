@@ -195,15 +195,26 @@ export const DocumentContent = React.memo(
             }
         }, []);
 
+        let fileSrc = `https://ucarecdn.com/${file.fileId}/`;
+
+        if (fileFormat(name) === 'PDF') {
+            fileSrc = `https://ucarecdn.com/${file.fileId}/-/inline/yes/${file.fileMetadata.name}`;
+            // return (
+            //     <embed
+            //         src={`https://ucarecdn.com/${file.fileId}/-/inline/yes/${file.fileMetadata.name}`}
+            //         width="200px"
+            //         height="200px"
+            //         type="application/pdf"
+            //     />
+            // );
+        }
+
         return (
             <a
                 className={cx(fileContainer, 'message-document-wrapper')}
                 onClick={onClick}
-                href={
-                    !props.onClick
-                        ? file.fileId && `https://ucarecdn.com/${file.fileId}/`
-                        : undefined
-                }
+                href={!props.onClick ? file.fileId && fileSrc : undefined}
+                target={!props.onClick && fileFormat(name) === 'PDF' ? '_blank' : undefined}
             >
                 <div className={infoContent}>
                     <div className={iconContainer}>
