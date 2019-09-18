@@ -3,14 +3,25 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { showReportForm } from 'openland-mobile/components/showReportForm';
+import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
+import { MessageReactionType } from 'openland-api/Types';
 
 class FeedHandlersClass {
     Open = (id: string) => {
         getMessenger().history.navigationManager.push('FeedItem', { feedItemId: id });
     }
 
-    Like = (id: string) => {
-        console.warn('Feed: Like post ' + id);
+    Like = (item: DataSourceFeedPostItem) => {
+        const client = getClient();
+        const { id, reactionsReduced } = item;
+        const likes = reactionsReduced.filter(r => r.reaction === MessageReactionType.LIKE);
+        const myLike = likes.length ? likes[0].my : false;
+
+        if (myLike) {
+            client.mutateFeedReactionRemove({ feedItemId: id, reaction: MessageReactionType.LIKE });
+        } else {
+            client.mutateFeedReactionAdd({ feedItemId: id, reaction: MessageReactionType.LIKE });
+        }
     }
 
     Share = (id: string) => {

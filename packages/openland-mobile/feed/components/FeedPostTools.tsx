@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { View, StyleSheet, ViewStyle, Text, TextStyle } from 'react-native';
-import { ReactionReduced } from 'openland-engines/reactions/types';
 import { MessageReactionType } from 'openland-api/Types';
 import { plural } from 'openland-y-utils/plural';
 import { ZIconButton } from 'openland-mobile/components/ZIconButton';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { FeedHandlers } from '../FeedHandlers';
+import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
 
 const styles = StyleSheet.create({
     box: {
@@ -25,24 +25,24 @@ const styles = StyleSheet.create({
 });
 
 interface FeedPostToolsProps {
-    id: string;
-    reactions: ReactionReduced[];
-    canEdit: boolean;
+    item: DataSourceFeedPostItem;
 }
 
 export const FeedPostTools = React.memo((props: FeedPostToolsProps) => {
     const theme = React.useContext(ThemeContext);
-    const { id, reactions, canEdit } = props;
+    const { item } = props;
+    const { id, reactionsReduced, canEdit } = item;
 
-    const likes = reactions.filter(r => r.reaction === MessageReactionType.LIKE);
+    const likes = reactionsReduced.filter(r => r.reaction === MessageReactionType.LIKE);
     const likesCount = likes.length ? likes[0].count : 0;
+    const myLike = likes.length ? likes[0].my : false;
 
     return (
         <View style={styles.box}>
-            <ZIconButton src={require('assets/ic-like-24.png')} onPress={() => FeedHandlers.Like(id)} />
+            <ZIconButton src={myLike ? require('assets/ic-like-filled-24.png') : require('assets/ic-like-24.png')} style={myLike ? 'danger' : 'default'} onPress={() => FeedHandlers.Like(item)} />
             <View style={styles.counterWrapper}>
                 {likesCount > 0 && (
-                    <Text style={[styles.counter, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
+                    <Text style={[styles.counter, { color: myLike ? theme.accentNegative : theme.foregroundSecondary }]} allowFontScaling={false}>
                         {plural(likesCount, ['like', 'likes'])}
                     </Text>
                 )}

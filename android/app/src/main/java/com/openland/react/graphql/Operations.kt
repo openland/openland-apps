@@ -2664,6 +2664,12 @@ private val FeedCreatePostSelector = obj(
 private val FeedDeletePostSelector = obj(
             field("alphaDeleteFeedPost","alphaDeleteFeedPost", arguments(fieldValue("feedItemId", refValue("feedItemId"))), notNull(scalar("Boolean")))
         )
+private val FeedReactionAddSelector = obj(
+            field("feedReactionAdd","feedReactionAdd", arguments(fieldValue("feedItemId", refValue("feedItemId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+        )
+private val FeedReactionRemoveSelector = obj(
+            field("feedReactionRemove","feedReactionRemove", arguments(fieldValue("feedItemId", refValue("feedItemId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+        )
 private val MarkSequenceReadSelector = obj(
             field("alphaGlobalRead","alphaGlobalRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("String")))
         )
@@ -3862,6 +3868,18 @@ object Operations {
         override val body = "mutation FeedDeletePost(\$feedItemId:ID!){alphaDeleteFeedPost(feedItemId:\$feedItemId)}"
         override val selector = FeedDeletePostSelector
     }
+    val FeedReactionAdd = object: OperationDefinition {
+        override val name = "FeedReactionAdd"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation FeedReactionAdd(\$feedItemId:ID!,\$reaction:MessageReactionType!){feedReactionAdd(feedItemId:\$feedItemId,reaction:\$reaction)}"
+        override val selector = FeedReactionAddSelector
+    }
+    val FeedReactionRemove = object: OperationDefinition {
+        override val name = "FeedReactionRemove"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation FeedReactionRemove(\$feedItemId:ID!,\$reaction:MessageReactionType!){feedReactionRemove(feedItemId:\$feedItemId,reaction:\$reaction)}"
+        override val selector = FeedReactionRemoveSelector
+    }
     val MarkSequenceRead = object: OperationDefinition {
         override val name = "MarkSequenceRead"
         override val kind = OperationKind.MUTATION
@@ -4428,6 +4446,8 @@ object Operations {
         if (name == "FeedCreateGlobalPost") return FeedCreateGlobalPost
         if (name == "FeedCreatePost") return FeedCreatePost
         if (name == "FeedDeletePost") return FeedDeletePost
+        if (name == "FeedReactionAdd") return FeedReactionAdd
+        if (name == "FeedReactionRemove") return FeedReactionRemove
         if (name == "MarkSequenceRead") return MarkSequenceRead
         if (name == "MediaAnswer") return MediaAnswer
         if (name == "MediaCandidate") return MediaCandidate

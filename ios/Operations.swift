@@ -2658,6 +2658,12 @@ private let FeedCreatePostSelector = obj(
 private let FeedDeletePostSelector = obj(
             field("alphaDeleteFeedPost","alphaDeleteFeedPost", arguments(fieldValue("feedItemId", refValue("feedItemId"))), notNull(scalar("Boolean")))
         )
+private let FeedReactionAddSelector = obj(
+            field("feedReactionAdd","feedReactionAdd", arguments(fieldValue("feedItemId", refValue("feedItemId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+        )
+private let FeedReactionRemoveSelector = obj(
+            field("feedReactionRemove","feedReactionRemove", arguments(fieldValue("feedItemId", refValue("feedItemId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+        )
 private let MarkSequenceReadSelector = obj(
             field("alphaGlobalRead","alphaGlobalRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("String")))
         )
@@ -3859,6 +3865,18 @@ class Operations {
         "mutation FeedDeletePost($feedItemId:ID!){alphaDeleteFeedPost(feedItemId:$feedItemId)}",
         FeedDeletePostSelector
     )
+    let FeedReactionAdd = OperationDefinition(
+        "FeedReactionAdd",
+        .mutation, 
+        "mutation FeedReactionAdd($feedItemId:ID!,$reaction:MessageReactionType!){feedReactionAdd(feedItemId:$feedItemId,reaction:$reaction)}",
+        FeedReactionAddSelector
+    )
+    let FeedReactionRemove = OperationDefinition(
+        "FeedReactionRemove",
+        .mutation, 
+        "mutation FeedReactionRemove($feedItemId:ID!,$reaction:MessageReactionType!){feedReactionRemove(feedItemId:$feedItemId,reaction:$reaction)}",
+        FeedReactionRemoveSelector
+    )
     let MarkSequenceRead = OperationDefinition(
         "MarkSequenceRead",
         .mutation, 
@@ -4426,6 +4444,8 @@ class Operations {
         if name == "FeedCreateGlobalPost" { return FeedCreateGlobalPost }
         if name == "FeedCreatePost" { return FeedCreatePost }
         if name == "FeedDeletePost" { return FeedDeletePost }
+        if name == "FeedReactionAdd" { return FeedReactionAdd }
+        if name == "FeedReactionRemove" { return FeedReactionRemove }
         if name == "MarkSequenceRead" { return MarkSequenceRead }
         if name == "MediaAnswer" { return MediaAnswer }
         if name == "MediaCandidate" { return MediaCandidate }

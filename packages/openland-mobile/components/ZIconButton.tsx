@@ -9,23 +9,32 @@ export interface ZIconButtonProps {
     onPress?: () => void;
     path?: string;
     pathParams?: any;
+    style?: 'default' | 'danger';
 }
 
 const ZIconButtonComponent = React.memo<ZIconButtonProps & { router: SRouter }>((props) => {
+    const { src, onPress, path, pathParams, style = 'default', router } = props;
     const theme = React.useContext(ThemeContext);
     const handlePress = React.useCallback(async () => {
-        if (props.onPress) {
-            props.onPress();
+        if (onPress) {
+            onPress();
         }
-        if (props.path) {
-            props.router.push(props.path, props.pathParams);
+        if (path) {
+            router.push(path, pathParams);
         }
-    }, [props.onPress, props.path, props.pathParams]);
+    }, [onPress, path, pathParams]);
 
     return (
         <TouchableOpacity onPress={handlePress} activeOpacity={0.6}>
             <View width={44} height={44} alignItems="center" justifyContent="center">
-                <Image source={props.src} style={{ width: 24, height: 24, tintColor: theme.foregroundSecondary }} />
+                <Image
+                    source={src}
+                    style={{
+                        width: 24,
+                        height: 24,
+                        tintColor: style === 'danger' ? theme.accentNegative : theme.foregroundSecondary
+                    }}
+                />
             </View>
         </TouchableOpacity>
     );

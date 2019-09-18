@@ -42,8 +42,10 @@ interface FeedSwipeHandlerProps {
     scrollRef: React.RefObject<ScrollView>;
     leftIcon: NodeRequire;
     rightIcon: NodeRequire;
-    leftSwipedColor: string;
-    rightSwipedColor: string;
+    leftColor: string;
+    rightColor: string;
+    leftColorSwiped: string;
+    rightColorSwiped: string;
 }
 
 type AnimNamesV = 'container' | 'leftBox' | 'leftIconBig' | 'rightBox' | 'rightIconBig';
@@ -228,7 +230,7 @@ export class FeedSwipeHandler extends React.PureComponent<FeedSwipeHandlerProps>
     });
 
     render() {
-        const { theme, children, leftIcon, rightIcon, leftSwipedColor, rightSwipedColor } = this.props;
+        const { theme, children, leftIcon, rightIcon, leftColor, rightColor, leftColorSwiped, rightColorSwiped } = this.props;
 
         return (
             <View {...this.panResponder.panHandlers}>
@@ -236,12 +238,12 @@ export class FeedSwipeHandler extends React.PureComponent<FeedSwipeHandlerProps>
                     name={this.names.leftBox}
                     style={[styles.swipeBox, { left: 0 }]}
                 >
-                    <View style={[styles.swipeIcon, { backgroundColor: theme.backgroundTertiary }]}>
+                    <View style={[styles.swipeIcon, { backgroundColor: leftColor }]}>
                         <Image source={leftIcon} style={{ width: 24, height: 24, tintColor: theme.foregroundSecondary }} />
 
                         <SAnimatedView
                             name={this.names.leftIconBig}
-                            style={[styles.swipeIconBig, { backgroundColor: leftSwipedColor }]}
+                            style={[styles.swipeIconBig, { backgroundColor: leftColorSwiped }]}
                         >
                             <Image source={leftIcon} style={{ width: 24, height: 24, tintColor: theme.foregroundContrast }} />
                         </SAnimatedView>
@@ -252,12 +254,12 @@ export class FeedSwipeHandler extends React.PureComponent<FeedSwipeHandlerProps>
                     name={this.names.rightBox}
                     style={[styles.swipeBox, { right: 0 }]}
                 >
-                    <View style={[styles.swipeIcon, { backgroundColor: theme.backgroundTertiary }]}>
+                    <View style={[styles.swipeIcon, { backgroundColor: rightColor }]}>
                         <Image source={rightIcon} style={{ width: 24, height: 24, tintColor: theme.foregroundSecondary }} />
 
                         <SAnimatedView
                             name={this.names.rightIconBig}
-                            style={[styles.swipeIconBig, { backgroundColor: rightSwipedColor }]}
+                            style={[styles.swipeIconBig, { backgroundColor: rightColorSwiped }]}
                         >
                             <Image source={rightIcon} style={{ width: 24, height: 24, tintColor: theme.foregroundContrast }} />
                         </SAnimatedView>

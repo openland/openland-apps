@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-like-filled",
+            "src": "ic-like-filled-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-delete",
             "src": "ic-delete-12.svg",
             "sizes": [

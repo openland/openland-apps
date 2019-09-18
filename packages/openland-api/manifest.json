@@ -828,6 +828,20 @@
       }
     },
     {
+      "signature": "6e095aeaaca4f4635334c0a18aa2e86c4d3a5871b4bd651a1ef5dd9f2997dbba",
+      "document": "mutation FeedReactionAdd($feedItemId:ID!,$reaction:MessageReactionType!){feedReactionAdd(feedItemId:$feedItemId,reaction:$reaction)}",
+      "metadata": {
+        "engineSignature": "mutation FeedReactionAdd($feedItemId:ID!,$reaction:MessageReactionType!){feedReactionAdd(feedItemId:$feedItemId,reaction:$reaction)}"
+      }
+    },
+    {
+      "signature": "38ba500cca767acd555d53f3b797124da5098f4e1d71e907dd0ef2cebfbc401e",
+      "document": "mutation FeedReactionRemove($feedItemId:ID!,$reaction:MessageReactionType!){feedReactionRemove(feedItemId:$feedItemId,reaction:$reaction)}",
+      "metadata": {
+        "engineSignature": "mutation FeedReactionRemove($feedItemId:ID!,$reaction:MessageReactionType!){feedReactionRemove(feedItemId:$feedItemId,reaction:$reaction)}"
+      }
+    },
+    {
       "signature": "cc965037838d050ac07953a703be846d8bc730c170b0a99fce8e11618c25bed7",
       "document": "mutation FeedDeletePost($feedItemId:ID!){alphaDeleteFeedPost(feedItemId:$feedItemId)}",
       "metadata": {
