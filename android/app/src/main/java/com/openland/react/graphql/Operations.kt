@@ -2496,14 +2496,8 @@ private val AddAppToChatSelector = obj(
                     fragment("AppChat", AppChatSelector)
                 )))
         )
-private val AddFeedCommentSelector = obj(
-            field("betaAddFeedComment","betaAddFeedComment", arguments(fieldValue("feedItemId", refValue("feedItemId")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
-                )))
-        )
-private val AddMessageCommentSelector = obj(
-            field("betaAddMessageComment","betaAddMessageComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("messageId", refValue("messageId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
+private val AddCommentSelector = obj(
+            field("betaAddComment","betaAddComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("peerId", refValue("peerId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID")))
                 )))
@@ -2870,6 +2864,9 @@ private val RegisterPushSelector = obj(
         )
 private val RegisterWebPushSelector = obj(
             field("registerWebPush","registerWebPush", arguments(fieldValue("endpoint", refValue("endpoint"))), notNull(scalar("String")))
+        )
+private val ReportContentSelector = obj(
+            field("reportContent","reportContent", arguments(fieldValue("contentId", refValue("contentId")), fieldValue("message", refValue("message")), fieldValue("type", refValue("type"))), scalar("Boolean"))
         )
 private val ReportOnlineSelector = obj(
             field("presenceReportOnline","presenceReportOnline", arguments(fieldValue("active", refValue("active")), fieldValue("platform", refValue("platform")), fieldValue("timeout", intValue(5000))), notNull(scalar("String")))
@@ -3697,17 +3694,11 @@ object Operations {
         override val body = "mutation AddAppToChat(\$appId:ID!,\$chatId:ID!){addAppToChat(appId:\$appId,chatId:\$chatId){__typename ...AppChat}}fragment AppChat on AppChat{__typename chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}webhook}"
         override val selector = AddAppToChatSelector
     }
-    val AddFeedComment = object: OperationDefinition {
-        override val name = "AddFeedComment"
+    val AddComment = object: OperationDefinition {
+        override val name = "AddComment"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation AddFeedComment(\$feedItemId:ID!,\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$repeatKey:String,\$replyComment:ID,\$spans:[MessageSpanInput!]){betaAddFeedComment(feedItemId:\$feedItemId,fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,repeatKey:\$repeatKey,replyComment:\$replyComment,spans:\$spans){__typename id}}"
-        override val selector = AddFeedCommentSelector
-    }
-    val AddMessageComment = object: OperationDefinition {
-        override val name = "AddMessageComment"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation AddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$repeatKey:String,\$replyComment:ID,\$spans:[MessageSpanInput!]){betaAddMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,repeatKey:\$repeatKey,replyComment:\$replyComment,spans:\$spans){__typename id}}"
-        override val selector = AddMessageCommentSelector
+        override val body = "mutation AddComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$peerId:ID!,\$repeatKey:String,\$replyComment:ID,\$spans:[MessageSpanInput!]){betaAddComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,peerId:\$peerId,repeatKey:\$repeatKey,replyComment:\$replyComment,spans:\$spans){__typename id}}"
+        override val selector = AddCommentSelector
     }
     val BetaDiscoverSkip = object: OperationDefinition {
         override val name = "BetaDiscoverSkip"
@@ -4008,6 +3999,12 @@ object Operations {
         override val kind = OperationKind.MUTATION
         override val body = "mutation RegisterWebPush(\$endpoint:String!){registerWebPush(endpoint:\$endpoint)}"
         override val selector = RegisterWebPushSelector
+    }
+    val ReportContent = object: OperationDefinition {
+        override val name = "ReportContent"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation ReportContent(\$contentId:ID!,\$message:String,\$type:String!){reportContent(contentId:\$contentId,message:\$message,type:\$type)}"
+        override val selector = ReportContentSelector
     }
     val ReportOnline = object: OperationDefinition {
         override val name = "ReportOnline"
@@ -4403,8 +4400,7 @@ object Operations {
         if (name == "Users") return Users
         if (name == "AccountInviteJoin") return AccountInviteJoin
         if (name == "AddAppToChat") return AddAppToChat
-        if (name == "AddFeedComment") return AddFeedComment
-        if (name == "AddMessageComment") return AddMessageComment
+        if (name == "AddComment") return AddComment
         if (name == "BetaDiscoverSkip") return BetaDiscoverSkip
         if (name == "BetaNextDiscoverReset") return BetaNextDiscoverReset
         if (name == "BetaSubmitNextDiscover") return BetaSubmitNextDiscover
@@ -4455,6 +4451,7 @@ object Operations {
         if (name == "RefreshAppToken") return RefreshAppToken
         if (name == "RegisterPush") return RegisterPush
         if (name == "RegisterWebPush") return RegisterWebPush
+        if (name == "ReportContent") return ReportContent
         if (name == "ReportOnline") return ReportOnline
         if (name == "RoomAddMembers") return RoomAddMembers
         if (name == "RoomAlterFeatured") return RoomAlterFeatured

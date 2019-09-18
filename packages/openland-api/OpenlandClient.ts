@@ -949,11 +949,8 @@ export class OpenlandClient extends BaseApiClient {
     async mutateUnSubscribeMessageComments(variables: Types.UnSubscribeMessageCommentsVariables): Promise<Types.UnSubscribeMessageComments> {
         return this.client.mutate(Source.UnSubscribeMessageCommentsMutation, variables);
     }
-    async mutateAddMessageComment(variables: Types.AddMessageCommentVariables): Promise<Types.AddMessageComment> {
-        return this.client.mutate(Source.AddMessageCommentMutation, variables);
-    }
-    async mutateAddFeedComment(variables: Types.AddFeedCommentVariables): Promise<Types.AddFeedComment> {
-        return this.client.mutate(Source.AddFeedCommentMutation, variables);
+    async mutateAddComment(variables: Types.AddCommentVariables): Promise<Types.AddComment> {
+        return this.client.mutate(Source.AddCommentMutation, variables);
     }
     async mutateEditComment(variables: Types.EditCommentVariables): Promise<Types.EditComment> {
         return this.client.mutate(Source.EditCommentMutation, variables);
@@ -1077,6 +1074,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     async mutateSuperAdminRemove(variables: Types.SuperAdminRemoveVariables): Promise<Types.SuperAdminRemove> {
         return this.client.mutate(Source.SuperAdminRemoveMutation, variables);
+    }
+    async mutateReportContent(variables: Types.ReportContentVariables): Promise<Types.ReportContent> {
+        return this.client.mutate(Source.ReportContentMutation, variables);
     }
     async mutateProfileUpdate(variables: Types.ProfileUpdateVariables): Promise<Types.ProfileUpdate> {
         return this.client.mutate(Source.ProfileUpdateMutation, variables);

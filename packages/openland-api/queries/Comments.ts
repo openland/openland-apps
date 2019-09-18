@@ -55,45 +55,19 @@ export const UnSubscribeMessageCommentsMutation = gql`
     }
 `;
 
-export const AddMessageCommentMutation = gql`
-    mutation AddMessageComment(
+export const AddCommentMutation = gql`
+    mutation AddComment(
         $repeatKey: String
-        $messageId: ID!
+        $peerId: ID!
         $message: String
         $replyComment: ID
         $mentions: [MentionInput!]
         $fileAttachments: [FileAttachmentInput!]
         $spans: [MessageSpanInput!]
     ) {
-        betaAddMessageComment(
+        betaAddComment(
             repeatKey: $repeatKey
-            messageId: $messageId
-            message: $message
-            replyComment: $replyComment
-            mentions: $mentions
-            fileAttachments: $fileAttachments
-            spans: $spans
-        ) {
-            id
-        }
-    }
-    ${CommentEntryFragment}
-    ${FullMessage}
-`;
-
-export const AddFeedCommentMutation = gql`
-    mutation AddFeedComment(
-        $repeatKey: String
-        $feedItemId: ID!
-        $message: String
-        $replyComment: ID
-        $mentions: [MentionInput!]
-        $fileAttachments: [FileAttachmentInput!]
-        $spans: [MessageSpanInput!]
-    ) {
-        betaAddFeedComment(
-            repeatKey: $repeatKey
-            feedItemId: $feedItemId
+            peerId: $peerId
             message: $message
             replyComment: $replyComment
             mentions: $mentions

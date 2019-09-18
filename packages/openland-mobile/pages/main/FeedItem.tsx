@@ -65,12 +65,6 @@ const FeedItemComponent = React.memo((props: PageProps) => {
                 peerView={peerView}
                 peerId={feedItemId}
                 highlightId={highlightId}
-                onAddComment={async (variables) => {
-                    await getClient().mutateAddFeedComment({
-                        ...variables,
-                        feedItemId
-                    });
-                }}
             />
         </>
     );

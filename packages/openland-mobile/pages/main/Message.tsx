@@ -40,12 +40,6 @@ const MessageComponent = XMemo<PageProps>((props) => {
                 peerId={messageId}
                 chat={source && source.__typename === 'MessageSourceChat' ? source.chat : undefined}
                 highlightId={highlightId}
-                onAddComment={async (variables) => {
-                    await getClient().mutateAddMessageComment({
-                        ...variables,
-                        messageId: message.id,
-                    });
-                }}
             />
         </>
     );

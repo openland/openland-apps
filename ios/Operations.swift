@@ -2490,14 +2490,8 @@ private let AddAppToChatSelector = obj(
                     fragment("AppChat", AppChatSelector)
                 )))
         )
-private let AddFeedCommentSelector = obj(
-            field("betaAddFeedComment","betaAddFeedComment", arguments(fieldValue("feedItemId", refValue("feedItemId")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
-                )))
-        )
-private let AddMessageCommentSelector = obj(
-            field("betaAddMessageComment","betaAddMessageComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("messageId", refValue("messageId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
+private let AddCommentSelector = obj(
+            field("betaAddComment","betaAddComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("peerId", refValue("peerId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID")))
                 )))
@@ -2864,6 +2858,9 @@ private let RegisterPushSelector = obj(
         )
 private let RegisterWebPushSelector = obj(
             field("registerWebPush","registerWebPush", arguments(fieldValue("endpoint", refValue("endpoint"))), notNull(scalar("String")))
+        )
+private let ReportContentSelector = obj(
+            field("reportContent","reportContent", arguments(fieldValue("contentId", refValue("contentId")), fieldValue("message", refValue("message")), fieldValue("type", refValue("type"))), scalar("Boolean"))
         )
 private let ReportOnlineSelector = obj(
             field("presenceReportOnline","presenceReportOnline", arguments(fieldValue("active", refValue("active")), fieldValue("platform", refValue("platform")), fieldValue("timeout", intValue(5000))), notNull(scalar("String")))
@@ -3694,17 +3691,11 @@ class Operations {
         "mutation AddAppToChat($appId:ID!,$chatId:ID!){addAppToChat(appId:$appId,chatId:$chatId){__typename ...AppChat}}fragment AppChat on AppChat{__typename chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}webhook}",
         AddAppToChatSelector
     )
-    let AddFeedComment = OperationDefinition(
-        "AddFeedComment",
+    let AddComment = OperationDefinition(
+        "AddComment",
         .mutation, 
-        "mutation AddFeedComment($feedItemId:ID!,$fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$repeatKey:String,$replyComment:ID,$spans:[MessageSpanInput!]){betaAddFeedComment(feedItemId:$feedItemId,fileAttachments:$fileAttachments,mentions:$mentions,message:$message,repeatKey:$repeatKey,replyComment:$replyComment,spans:$spans){__typename id}}",
-        AddFeedCommentSelector
-    )
-    let AddMessageComment = OperationDefinition(
-        "AddMessageComment",
-        .mutation, 
-        "mutation AddMessageComment($fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$messageId:ID!,$repeatKey:String,$replyComment:ID,$spans:[MessageSpanInput!]){betaAddMessageComment(fileAttachments:$fileAttachments,mentions:$mentions,message:$message,messageId:$messageId,repeatKey:$repeatKey,replyComment:$replyComment,spans:$spans){__typename id}}",
-        AddMessageCommentSelector
+        "mutation AddComment($fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$peerId:ID!,$repeatKey:String,$replyComment:ID,$spans:[MessageSpanInput!]){betaAddComment(fileAttachments:$fileAttachments,mentions:$mentions,message:$message,peerId:$peerId,repeatKey:$repeatKey,replyComment:$replyComment,spans:$spans){__typename id}}",
+        AddCommentSelector
     )
     let BetaDiscoverSkip = OperationDefinition(
         "BetaDiscoverSkip",
@@ -4005,6 +3996,12 @@ class Operations {
         .mutation, 
         "mutation RegisterWebPush($endpoint:String!){registerWebPush(endpoint:$endpoint)}",
         RegisterWebPushSelector
+    )
+    let ReportContent = OperationDefinition(
+        "ReportContent",
+        .mutation, 
+        "mutation ReportContent($contentId:ID!,$message:String,$type:String!){reportContent(contentId:$contentId,message:$message,type:$type)}",
+        ReportContentSelector
     )
     let ReportOnline = OperationDefinition(
         "ReportOnline",
@@ -4401,8 +4398,7 @@ class Operations {
         if name == "Users" { return Users }
         if name == "AccountInviteJoin" { return AccountInviteJoin }
         if name == "AddAppToChat" { return AddAppToChat }
-        if name == "AddFeedComment" { return AddFeedComment }
-        if name == "AddMessageComment" { return AddMessageComment }
+        if name == "AddComment" { return AddComment }
         if name == "BetaDiscoverSkip" { return BetaDiscoverSkip }
         if name == "BetaNextDiscoverReset" { return BetaNextDiscoverReset }
         if name == "BetaSubmitNextDiscover" { return BetaSubmitNextDiscover }
@@ -4453,6 +4449,7 @@ class Operations {
         if name == "RefreshAppToken" { return RefreshAppToken }
         if name == "RegisterPush" { return RegisterPush }
         if name == "RegisterWebPush" { return RegisterWebPush }
+        if name == "ReportContent" { return ReportContent }
         if name == "ReportOnline" { return ReportOnline }
         if name == "RoomAddMembers" { return RoomAddMembers }
         if name == "RoomAlterFeatured" { return RoomAlterFeatured }

@@ -590,17 +590,10 @@
       }
     },
     {
-      "signature": "cbf9dbba690a49af9d44ff29fe547221cfbbc257c522d230c92aef668a0e0024",
-      "document": "mutation AddMessageComment($fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$messageId:ID!,$repeatKey:String,$replyComment:ID,$spans:[MessageSpanInput!]){betaAddMessageComment(fileAttachments:$fileAttachments,mentions:$mentions,message:$message,messageId:$messageId,repeatKey:$repeatKey,replyComment:$replyComment,spans:$spans){__typename id}}",
+      "signature": "9e3225a266ab57eccbab7386976cecc256ec02e9b8870ed03f6f317f1f66ea14",
+      "document": "mutation AddComment($fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$peerId:ID!,$repeatKey:String,$replyComment:ID,$spans:[MessageSpanInput!]){betaAddComment(fileAttachments:$fileAttachments,mentions:$mentions,message:$message,peerId:$peerId,repeatKey:$repeatKey,replyComment:$replyComment,spans:$spans){__typename id}}",
       "metadata": {
-        "engineSignature": "mutation AddMessageComment($fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$messageId:ID!,$repeatKey:String,$replyComment:ID,$spans:[MessageSpanInput!]){betaAddMessageComment(fileAttachments:$fileAttachments,mentions:$mentions,message:$message,messageId:$messageId,repeatKey:$repeatKey,replyComment:$replyComment,spans:$spans){__typename id}}"
-      }
-    },
-    {
-      "signature": "253921427d6cdc6807e4a6014b4793a2622e346b70c52571bb5b45ddfcf7c225",
-      "document": "mutation AddFeedComment($feedItemId:ID!,$fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$repeatKey:String,$replyComment:ID,$spans:[MessageSpanInput!]){betaAddFeedComment(feedItemId:$feedItemId,fileAttachments:$fileAttachments,mentions:$mentions,message:$message,repeatKey:$repeatKey,replyComment:$replyComment,spans:$spans){__typename id}}",
-      "metadata": {
-        "engineSignature": "mutation AddFeedComment($feedItemId:ID!,$fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$repeatKey:String,$replyComment:ID,$spans:[MessageSpanInput!]){betaAddFeedComment(feedItemId:$feedItemId,fileAttachments:$fileAttachments,mentions:$mentions,message:$message,repeatKey:$repeatKey,replyComment:$replyComment,spans:$spans){__typename id}}"
+        "engineSignature": "mutation AddComment($fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$peerId:ID!,$repeatKey:String,$replyComment:ID,$spans:[MessageSpanInput!]){betaAddComment(fileAttachments:$fileAttachments,mentions:$mentions,message:$message,peerId:$peerId,repeatKey:$repeatKey,replyComment:$replyComment,spans:$spans){__typename id}}"
       }
     },
     {
@@ -1112,6 +1105,13 @@
       "document": "subscription DebugEventsWatch($eventsCount:Int!,$fromState:String,$randomDelays:Boolean!,$seed:String!){debugEvents(eventsCount:$eventsCount,fromState:$fromState,randomDelays:$randomDelays,seed:$seed){__typename key seq}}",
       "metadata": {
         "engineSignature": "subscription DebugEventsWatch($eventsCount:Int!,$fromState:String,$randomDelays:Boolean!,$seed:String!){debugEvents(eventsCount:$eventsCount,fromState:$fromState,randomDelays:$randomDelays,seed:$seed){__typename key seq}}"
+      }
+    },
+    {
+      "signature": "1f4307e282f473b4d5928bfa6ba47cbb61ace1295447c8b2f55a2e87273a3fe7",
+      "document": "mutation ReportContent($contentId:ID!,$message:String,$type:String!){reportContent(contentId:$contentId,message:$message,type:$type)}",
+      "metadata": {
+        "engineSignature": "mutation ReportContent($contentId:ID!,$message:String,$type:String!){reportContent(contentId:$contentId,message:$message,type:$type)}"
       }
     },
     {

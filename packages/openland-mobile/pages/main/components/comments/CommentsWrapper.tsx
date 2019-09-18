@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, ScrollView, Keyboard, TextInput } from 'react-native';
 import { MessageInputBar } from '../MessageInputBar';
-import { CommentEntryFragment_comment, FileAttachmentInput, Message_message_GeneralMessage_source_MessageSourceChat_chat, MentionInput, MessageSpanInput, CommentEntryFragment, CommentWatch_event_CommentUpdateSingle_update } from 'openland-api/Types';
+import { CommentEntryFragment_comment, FileAttachmentInput, Message_message_GeneralMessage_source_MessageSourceChat_chat, CommentEntryFragment, CommentWatch_event_CommentUpdateSingle_update } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { EmojiRender, EmojiRenderRow } from '../EmojiRender';
@@ -30,22 +30,13 @@ interface CommentsWrapperProps {
 
     chat?: Message_message_GeneralMessage_source_MessageSourceChat_chat;
     highlightId?: string;
-
-    onAddComment: (variables: {
-        repeatKey: string;
-        message: string;
-        replyComment: string | null;
-        mentions: MentionInput[],
-        fileAttachments: FileAttachmentInput[] | null;
-        spans: MessageSpanInput[];
-    }) => Promise<void>;
 }
 
 const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentEntryFragment[] }) => {
     const inputRef = React.createRef<TextInput>();
     const scrollRef = React.createRef<ScrollView>();
 
-    const { peerView, comments, chat, highlightId, onAddComment } = props;
+    const { peerView, peerId, comments, chat, highlightId } = props;
 
     // state
     const [replied, setReplied] = React.useState<CommentEntryFragment_comment | undefined>(undefined);
@@ -90,7 +81,8 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
 
                 const repeatKey = UUID();
 
-                await onAddComment({
+                await getClient().mutateAddComment({
+                    peerId,
                     repeatKey,
                     message: text,
                     replyComment: replied ? replied.id : null,

@@ -64,8 +64,8 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
         const textValue = text.trim();
 
         if (textValue.length > 0) {
-            await client.mutateAddMessageComment({
-                messageId,
+            await client.mutateAddComment({
+                peerId: messageId,
                 repeatKey: UUID(),
                 mentions: prepareLegacyMentionsForSend(textValue, mentions),
                 message: textValue,
@@ -91,8 +91,8 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
                         if (uploadedFiles.length === res.length) {
                             resolve();
 
-                            client.mutateAddMessageComment({
-                                messageId,
+                            client.mutateAddComment({
+                                peerId: messageId,
                                 repeatKey: UUID(),
                                 fileAttachments: uploadedFiles.map(f => ({ fileId: f })),
                                 replyComment: highlightId

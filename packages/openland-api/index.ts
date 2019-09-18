@@ -17,6 +17,7 @@ import * as Feed from './queries/Feed';
 import * as MyNotificationsCenter from './queries/MyNotificationsCenter';
 import * as Organization from './queries/Organization';
 import * as Permissions from './queries/Permissions';
+import * as Report from './queries/Report';
 import * as Settings from './queries/Settings';
 import * as Track from './queries/Track';
 import * as User from './queries/User';
@@ -128,8 +129,7 @@ export const CommentUnsetReactionMutation = typedMutation<Types.CommentUnsetReac
 export const DeleteNotificationMutation = typedMutation<Types.DeleteNotification, Types.DeleteNotificationVariables>(Comments.DeleteNotificationMutation);
 export const SubscribeMessageCommentsMutation = typedMutation<Types.SubscribeMessageComments, Types.SubscribeMessageCommentsVariables>(Comments.SubscribeMessageCommentsMutation);
 export const UnSubscribeMessageCommentsMutation = typedMutation<Types.UnSubscribeMessageComments, Types.UnSubscribeMessageCommentsVariables>(Comments.UnSubscribeMessageCommentsMutation);
-export const AddMessageCommentMutation = typedMutation<Types.AddMessageComment, Types.AddMessageCommentVariables>(Comments.AddMessageCommentMutation);
-export const AddFeedCommentMutation = typedMutation<Types.AddFeedComment, Types.AddFeedCommentVariables>(Comments.AddFeedCommentMutation);
+export const AddCommentMutation = typedMutation<Types.AddComment, Types.AddCommentVariables>(Comments.AddCommentMutation);
 export const EditCommentMutation = typedMutation<Types.EditComment, Types.EditCommentVariables>(Comments.EditCommentMutation);
 export const CommentWatchSubscription = typedSubscription<Types.CommentWatch, Types.CommentWatchVariables>(Comments.CommentWatchSubscription);
 export const ConferenceQuery = typedQuery<Types.Conference, Types.ConferenceVariables>(Conferences.ConferenceQuery);
@@ -203,6 +203,7 @@ export const SuperAccountMemberRemoveMutation = typedMutation<Types.SuperAccount
 export const SuperAdminAddMutation = typedMutation<Types.SuperAdminAdd, Types.SuperAdminAddVariables>(Permissions.SuperAdminAddMutation);
 export const SuperAdminRemoveMutation = typedMutation<Types.SuperAdminRemove, Types.SuperAdminRemoveVariables>(Permissions.SuperAdminRemoveMutation);
 export const DebugEventsWatchSubscription = typedSubscription<Types.DebugEventsWatch, Types.DebugEventsWatchVariables>(Permissions.DebugEventsWatchSubscription);
+export const ReportContentMutation = typedMutation<Types.ReportContent, Types.ReportContentVariables>(Report.ReportContentMutation);
 export const ProfileQuery = typedQuery<Types.Profile, {}>(Settings.ProfileQuery);
 export const ProfileUpdateMutation = typedMutation<Types.ProfileUpdate, Types.ProfileUpdateVariables>(Settings.ProfileUpdateMutation);
 export const SetUserShortnameMutation = typedMutation<Types.SetUserShortname, Types.SetUserShortnameVariables>(Settings.SetUserShortnameMutation);
