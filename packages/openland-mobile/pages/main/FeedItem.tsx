@@ -2,8 +2,6 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { ZManageButton } from 'openland-mobile/components/ZManageButton';
-import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
 import { SHeaderView } from 'react-native-s/SHeaderView';
 import { FeedAuthorHeader } from 'openland-mobile/feed/components/FeedAuthorHeader';
 import { FeedPostContent } from 'openland-mobile/feed/content/FeedPostContent';
@@ -12,6 +10,8 @@ import { Dimensions, View } from 'react-native';
 import { FeedPostTools } from 'openland-mobile/feed/components/FeedPostTools';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { CommentsWrapper } from './components/comments/CommentsWrapper';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { SHeaderIndicator } from 'react-native-s/SHeaderIndicator';
 
 const FeedItemComponent = React.memo((props: PageProps) => {
     const feedItemId = props.router.params.id;
@@ -19,6 +19,7 @@ const FeedItemComponent = React.memo((props: PageProps) => {
 
     const client = getClient();
     const messenger = getMessenger();
+    const theme = React.useContext(ThemeContext);
     const item = client.useFeedItem({ id: feedItemId }, { fetchPolicy: 'cache-and-network' }).item;
 
     if (!item || item.__typename !== 'FeedPost') {
@@ -28,6 +29,7 @@ const FeedItemComponent = React.memo((props: PageProps) => {
     const itemProcessed = React.useMemo(() => convertPost(item, messenger.engine), [item]);
     const { canEdit, author, date, slides, reactionsReduced } = itemProcessed;
     const width = Dimensions.get('screen').width;
+    const [currentSlide, setCurreentSlide] = React.useState(0);
 
     const peerView = (
         <>
@@ -35,10 +37,12 @@ const FeedItemComponent = React.memo((props: PageProps) => {
             <FeedPostContent
                 slides={slides}
                 width={width}
+                onSlideChange={i => setCurreentSlide(i)}
             />
             <FeedPostTools
                 id={feedItemId}
                 reactions={reactionsReduced}
+                canEdit={canEdit}
             />
         </>
     );
@@ -49,7 +53,14 @@ const FeedItemComponent = React.memo((props: PageProps) => {
                 <FeedAuthorHeader author={author} date={date} />
             </SHeaderView>
 
-            <ZManageButton onPress={() => FeedHandlers.Manage(feedItemId, canEdit)} />
+            {slides.length > 0 && (
+                <SHeaderIndicator
+                    key={`indicator-${currentSlide}-${theme.kind}`}
+                    current={currentSlide + 1}
+                    items={slides.length}
+                    theme={theme}
+                />
+            )}
 
             <CommentsWrapper
                 peerView={peerView}

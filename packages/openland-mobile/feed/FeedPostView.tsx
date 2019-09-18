@@ -7,6 +7,7 @@ import { FeedSwipeHandler } from './FeedSwipeHandler';
 import { FeedHandlers } from './FeedHandlers';
 import { FeedPostContent } from './content/FeedPostContent';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { FeedMeta } from './components/FeedMeta';
 
 const styles = StyleSheet.create({
     box: {
@@ -26,6 +27,7 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
     const theme = React.useContext(ThemeContext);
     const { item, scrollRef } = props;
     const { id, author, slides, canEdit } = item;
+    const [currentSlide, setCurreentSlide] = React.useState(0);
 
     const handlePress = React.useCallback(() => {
         FeedHandlers.Open(id);
@@ -38,6 +40,12 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
     const width = Dimensions.get('screen').width;
     const containerWidth = width - 32;
     const containerHeight = containerWidth * (4 / 3);
+
+    let metaStyle: 'default' | 'media' = 'default';
+
+    if (slides.length && slides[currentSlide].coverAlign && (slides[currentSlide].coverAlign === 'Top' || slides[currentSlide].coverAlign === 'Cover')) {
+        metaStyle = 'media';
+    }
 
     return (
         <FeedSwipeHandler
@@ -56,12 +64,18 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
 
                 <TouchableWithoutFeedback onPress={handlePress} onLongPress={handleLongPress}>
                     <View>
+                        <FeedMeta
+                            author={author}
+                            style={metaStyle}
+                            currentSlide={currentSlide + 1}
+                            slidesCount={slides.length}
+                        />
                         <FeedPostContent
                             slides={slides}
-                            author={author}
                             width={containerWidth}
                             onLongPress={handleLongPress}
                             borderRadius={RadiusStyles.Large}
+                            onSlideChange={i => setCurreentSlide(i)}
                         />
                     </View>
                 </TouchableWithoutFeedback>
