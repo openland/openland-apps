@@ -1,30 +1,33 @@
 import * as React from 'react';
-import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
+import { URickTextValue, convertToInputValue } from 'openland-web/components/unicorn/URickInput';
 import { SendMessageComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
 import { css } from 'linaria';
+import { Span } from 'openland-y-utils/spans/Span';
 
 const wrapperClass = css`
     padding: 8px 0;
     width: 100%;
 `;
 
-interface CommentInputProps {
-    onSent: (data: URickTextValue) => void;
-    onSentAttach: (files: File[]) => void;
+interface CommentEditInputProps {
+    onSave: (data: URickTextValue) => void;
+    text: string;
+    textSpans: Span[];
     groupId?: string;
-    compact?: boolean;
 }
 
-export const CommentInput = React.memo((props: CommentInputProps) => {
-    const { onSent, onSentAttach, groupId, compact } = props;
+export const CommentEditInput = React.memo((props: CommentEditInputProps) => {
+    const { onSave, groupId, text, textSpans } = props;
+
+    const value = convertToInputValue(text, textSpans);
 
     return (
         <div className={wrapperClass}>
             <SendMessageComponent
                 groupId={groupId}
-                onTextSentAsync={onSent}
-                onAttach={onSentAttach}
+                onTextSentAsync={onSave}
                 placeholder="Write a comment..."
+                initialText={value}
             />
         </div>
     );

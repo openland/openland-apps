@@ -6,13 +6,17 @@ import { emoji } from 'openland-y-utils/emoji';
 import { css } from 'linaria';
 import { CommentTools } from './CommentTools';
 import { CommentInput } from './CommentInput';
-import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
+import { URickTextValue, convertFromInputValue } from 'openland-web/components/unicorn/URickInput';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { showAvatarModal } from 'openland-web/components/showAvatarModal';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import { CommentEntryFragment_comment } from 'openland-api/Types';
+import { CommentEditInput } from './CommentEditInput';
+import { useClient } from 'openland-web/utils/useClient';
+import { findSpans } from 'openland-y-utils/findSpans';
+import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 
 const avatarWrapper = css`
     flex-shrink: 0;
@@ -49,6 +53,7 @@ interface CommentViewProps {
 
 export const CommentView = React.memo((props: CommentViewProps) => {
     const messenger = React.useContext(MessengerContext);
+    const client = useClient();
     const { comment, deleted, depth, highlighted, groupId, onReplyClick, onDeleteClick, onReactionClick, onSent, onSentAttach } = props;
     const { id, sender, message, attachments, spans, fallback, date, reactions } = comment;
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
@@ -62,6 +67,21 @@ export const CommentView = React.memo((props: CommentViewProps) => {
     React.useEffect(() => {
         setSenderNameEmojify(emoji(sender.name));
     }, [sender.name]);
+
+    const handleEditSave = React.useCallback(async (data: URickTextValue) => {
+        const { text, mentions } = convertFromInputValue(data);
+
+        if (text.length > 0) {
+            await client.mutateEditComment({
+                id,
+                message: text,
+                spans: findSpans(text),
+                mentions: prepareLegacyMentionsForSend(text, mentions),
+            });
+        }
+
+        setEdit(false);
+    }, []);
 
     const canEdit = sender.id === messenger.user.id && message && message.length;
     const canDelete = sender.id === messenger.user.id || useRole('super-admin');
@@ -84,7 +104,11 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                     date={parseInt(date, 10)}
                 />
                 {edit && (
-                    <div>Edit</div>
+                    <CommentEditInput
+                        onSave={handleEditSave}
+                        text={message || ''}
+                        textSpans={textSpans}
+                    />
                 )}
                 {!edit && (
                     <>

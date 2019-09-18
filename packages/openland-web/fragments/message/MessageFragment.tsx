@@ -6,11 +6,10 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 import { CommentInput } from './components/CommentInput';
 import { CommentsList } from './components/CommentsList';
 import { MessageView } from './components/MessageView';
-import { URickTextValue, AllMention } from 'openland-web/components/unicorn/URickInput';
+import { URickTextValue, convertFromInputValue } from 'openland-web/components/unicorn/URickInput';
 import { findSpans } from 'openland-y-utils/findSpans';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import UUID from 'uuid/v4';
-import { UserForMention } from 'openland-api/Types';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { showAttachConfirm } from '../chat/components/AttachConfirm';
 import { DropZone } from '../chat/components/DropZone';
@@ -47,29 +46,15 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
     }, [highlightId]);
 
     const handleCommentSent = React.useCallback(async (data: URickTextValue) => {
-        let text = '';
-        let mentions: (UserForMention | AllMention)[] = [];
-        for (let t of data) {
-            if (typeof t === 'string') {
-                text += t;
-            } else if (t.__typename === 'User') {
-                text += '@' + t.name;
-                mentions.push(t);
-            } else {
-                text += '@All';
-                mentions.push(t);
-            }
-        }
+        const { text, mentions } = convertFromInputValue(data);
 
-        const textValue = text.trim();
-
-        if (textValue.length > 0) {
+        if (text.length > 0) {
             await client.mutateAddComment({
                 peerId: messageId,
                 repeatKey: UUID(),
-                mentions: prepareLegacyMentionsForSend(textValue, mentions),
-                message: textValue,
-                spans: findSpans(textValue),
+                mentions: prepareLegacyMentionsForSend(text, mentions),
+                message: text,
+                spans: findSpans(text),
                 replyComment: highlightId
             });
 

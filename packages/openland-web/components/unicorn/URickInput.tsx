@@ -218,6 +218,29 @@ export function convertToInputValue(text: string, spans: Span[]): URickTextValue
     return value;
 }
 
+export function convertFromInputValue(data: URickTextValue): { text: string, mentions: (UserForMention | AllMention)[] } {
+    let text = '';
+    let mentions: (UserForMention | AllMention)[] = [];
+    for (let t of data) {
+        if (typeof t === 'string') {
+            text += t;
+        } else if (t.__typename === 'User') {
+            text += '@' + t.name;
+            mentions.push(t);
+        } else {
+            text += '@All';
+            mentions.push(t);
+        }
+    }
+
+    const textValue = text.trim();
+
+    return {
+        text: textValue,
+        mentions
+    };
+}
+
 export const URickInput = React.memo(React.forwardRef((props: URickInputProps, ref: React.Ref<URickInputInstance>) => {
     loadQuill();
 
