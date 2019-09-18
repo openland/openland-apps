@@ -1,0 +1,6 @@
+mutation AddComment($fileAttachments: [FileAttachmentInput!], $mentions: [MentionInput!], $message: String, $peerId: ID!, $repeatKey: String, $replyComment: ID, $spans: [MessageSpanInput!]) {
+  betaAddComment(fileAttachments: $fileAttachments, mentions: $mentions, message: $message, peerId: $peerId, repeatKey: $repeatKey, replyComment: $replyComment, spans: $spans) {
+    __typename
+    id
+  }
+}

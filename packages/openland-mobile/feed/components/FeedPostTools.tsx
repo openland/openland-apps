@@ -27,11 +27,12 @@ const styles = StyleSheet.create({
 interface FeedPostToolsProps {
     id: string;
     reactions: ReactionReduced[];
+    canEdit: boolean;
 }
 
 export const FeedPostTools = React.memo((props: FeedPostToolsProps) => {
     const theme = React.useContext(ThemeContext);
-    const { id, reactions } = props;
+    const { id, reactions, canEdit } = props;
 
     const likes = reactions.filter(r => r.reaction === MessageReactionType.LIKE);
     const likesCount = likes.length ? likes[0].count : 0;
@@ -47,6 +48,7 @@ export const FeedPostTools = React.memo((props: FeedPostToolsProps) => {
                 )}
             </View>
             <ZIconButton src={require('assets/ic-forward-24.png')} onPress={() => FeedHandlers.Share(id)} />
+            <ZIconButton src={require('assets/ic-more-24.png')} onPress={() => FeedHandlers.Manage(id, canEdit)} />
         </View>
     );
 });

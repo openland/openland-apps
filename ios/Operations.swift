@@ -2490,14 +2490,8 @@ private let AddAppToChatSelector = obj(
                     fragment("AppChat", AppChatSelector)
                 )))
         )
-private let AddFeedCommentSelector = obj(
-            field("betaAddFeedComment","betaAddFeedComment", arguments(fieldValue("feedItemId", refValue("feedItemId")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
-                )))
-        )
-private let AddMessageCommentSelector = obj(
-            field("betaAddMessageComment","betaAddMessageComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("messageId", refValue("messageId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
+private let AddCommentSelector = obj(
+            field("betaAddComment","betaAddComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("peerId", refValue("peerId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID")))
                 )))
@@ -2650,13 +2644,13 @@ private let FeatureFlagEnableSelector = obj(
                 )))
         )
 private let FeedCreateGlobalPostSelector = obj(
-            field("alphaCreateGlobalFeedPost","createFeedPost", arguments(fieldValue("slides", refValue("input"))), notNull(obj(
+            field("alphaCreateGlobalFeedPost","createFeedPost", arguments(fieldValue("repeatKey", refValue("repeatKey")), fieldValue("slides", refValue("input"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("FeedItem", FeedItemFullSelector)
                 )))
         )
 private let FeedCreatePostSelector = obj(
-            field("alphaCreateFeedPost","createFeedPost", arguments(fieldValue("slides", refValue("input"))), notNull(obj(
+            field("alphaCreateFeedPost","createFeedPost", arguments(fieldValue("repeatKey", refValue("repeatKey")), fieldValue("slides", refValue("input"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("FeedItem", FeedItemFullSelector)
                 )))
@@ -2865,6 +2859,9 @@ private let RegisterPushSelector = obj(
 private let RegisterWebPushSelector = obj(
             field("registerWebPush","registerWebPush", arguments(fieldValue("endpoint", refValue("endpoint"))), notNull(scalar("String")))
         )
+private let ReportContentSelector = obj(
+            field("reportContent","reportContent", arguments(fieldValue("contentId", refValue("contentId")), fieldValue("message", refValue("message")), fieldValue("type", refValue("type"))), scalar("Boolean"))
+        )
 private let ReportOnlineSelector = obj(
             field("presenceReportOnline","presenceReportOnline", arguments(fieldValue("active", refValue("active")), fieldValue("platform", refValue("platform")), fieldValue("timeout", intValue(5000))), notNull(scalar("String")))
         )
@@ -3003,8 +3000,8 @@ private let SettingsUpdateSelector = obj(
                     fragment("Settings", SettingsFullSelector)
                 )))
         )
-private let SubscribeMessageCommentsSelector = obj(
-            field("subscribeMessageComments","subscribeMessageComments", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
+private let SubscribeToCommentsSelector = obj(
+            field("subscribeToComments","subscribeToComments", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
         )
 private let SuperAccountActivateSelector = obj(
             field("superAccountActivate","superAccountActivate", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
@@ -3075,8 +3072,8 @@ private let SuperBadgeCreateToRoomSelector = obj(
 private let SuperBadgeUnsetToRoomSelector = obj(
             field("superBadgeUnsetToRoom","superBadgeUnsetToRoom", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
         )
-private let UnSubscribeMessageCommentsSelector = obj(
-            field("unSubscribeMessageComments","unSubscribeMessageComments", arguments(fieldValue("messageId", refValue("messageId"))), notNull(scalar("Boolean")))
+private let UnSubscribeFromCommentsSelector = obj(
+            field("unsubscribeFromComments","unsubscribeFromComments", arguments(fieldValue("peerId", refValue("peerId"))), notNull(scalar("Boolean")))
         )
 private let UnpinMessageSelector = obj(
             field("gammaUnpinMessage","unpinMessage", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
@@ -3694,17 +3691,11 @@ class Operations {
         "mutation AddAppToChat($appId:ID!,$chatId:ID!){addAppToChat(appId:$appId,chatId:$chatId){__typename ...AppChat}}fragment AppChat on AppChat{__typename chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}webhook}",
         AddAppToChatSelector
     )
-    let AddFeedComment = OperationDefinition(
-        "AddFeedComment",
+    let AddComment = OperationDefinition(
+        "AddComment",
         .mutation, 
-        "mutation AddFeedComment($feedItemId:ID!,$fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$repeatKey:String,$replyComment:ID,$spans:[MessageSpanInput!]){betaAddFeedComment(feedItemId:$feedItemId,fileAttachments:$fileAttachments,mentions:$mentions,message:$message,repeatKey:$repeatKey,replyComment:$replyComment,spans:$spans){__typename id}}",
-        AddFeedCommentSelector
-    )
-    let AddMessageComment = OperationDefinition(
-        "AddMessageComment",
-        .mutation, 
-        "mutation AddMessageComment($fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$messageId:ID!,$repeatKey:String,$replyComment:ID,$spans:[MessageSpanInput!]){betaAddMessageComment(fileAttachments:$fileAttachments,mentions:$mentions,message:$message,messageId:$messageId,repeatKey:$repeatKey,replyComment:$replyComment,spans:$spans){__typename id}}",
-        AddMessageCommentSelector
+        "mutation AddComment($fileAttachments:[FileAttachmentInput!],$mentions:[MentionInput!],$message:String,$peerId:ID!,$repeatKey:String,$replyComment:ID,$spans:[MessageSpanInput!]){betaAddComment(fileAttachments:$fileAttachments,mentions:$mentions,message:$message,peerId:$peerId,repeatKey:$repeatKey,replyComment:$replyComment,spans:$spans){__typename id}}",
+        AddCommentSelector
     )
     let BetaDiscoverSkip = OperationDefinition(
         "BetaDiscoverSkip",
@@ -3853,13 +3844,13 @@ class Operations {
     let FeedCreateGlobalPost = OperationDefinition(
         "FeedCreateGlobalPost",
         .mutation, 
-        "mutation FeedCreateGlobalPost($input:[SlideInput!]!){createFeedPost:alphaCreateGlobalFeedPost(slides:$input){__typename ...FeedItemFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}... on Organization{...OrganizationShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id isChannel kind roomPhoto:photo title}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}",
+        "mutation FeedCreateGlobalPost($input:[SlideInput!]!,$repeatKey:String){createFeedPost:alphaCreateGlobalFeedPost(repeatKey:$repeatKey,slides:$input){__typename ...FeedItemFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}... on Organization{...OrganizationShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id isChannel kind roomPhoto:photo title}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}",
         FeedCreateGlobalPostSelector
     )
     let FeedCreatePost = OperationDefinition(
         "FeedCreatePost",
         .mutation, 
-        "mutation FeedCreatePost($input:[SlideInput!]!){createFeedPost:alphaCreateFeedPost(slides:$input){__typename ...FeedItemFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}... on Organization{...OrganizationShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id isChannel kind roomPhoto:photo title}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}",
+        "mutation FeedCreatePost($input:[SlideInput!]!,$repeatKey:String){createFeedPost:alphaCreateFeedPost(repeatKey:$repeatKey,slides:$input){__typename ...FeedItemFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}... on Organization{...OrganizationShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id isChannel kind roomPhoto:photo title}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}",
         FeedCreatePostSelector
     )
     let FeedDeletePost = OperationDefinition(
@@ -4006,6 +3997,12 @@ class Operations {
         "mutation RegisterWebPush($endpoint:String!){registerWebPush(endpoint:$endpoint)}",
         RegisterWebPushSelector
     )
+    let ReportContent = OperationDefinition(
+        "ReportContent",
+        .mutation, 
+        "mutation ReportContent($contentId:ID!,$message:String,$type:String!){reportContent(contentId:$contentId,message:$message,type:$type)}",
+        ReportContentSelector
+    )
     let ReportOnline = OperationDefinition(
         "ReportOnline",
         .mutation, 
@@ -4150,11 +4147,11 @@ class Operations {
         "mutation SettingsUpdate($input:UpdateSettingsInput){updateSettings(settings:$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename countUnreadChats desktop{__typename ...PlatformNotificationSettingsFull}emailFrequency excludeMutedChats id mobile{__typename ...PlatformNotificationSettingsFull}primaryEmail}fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename comments{__typename showNotification sound}communityChat{__typename showNotification sound}direct{__typename showNotification sound}notificationPreview organizationChat{__typename showNotification sound}secretChat{__typename showNotification sound}}",
         SettingsUpdateSelector
     )
-    let SubscribeMessageComments = OperationDefinition(
-        "SubscribeMessageComments",
+    let SubscribeToComments = OperationDefinition(
+        "SubscribeToComments",
         .mutation, 
-        "mutation SubscribeMessageComments($messageId:ID!,$type:CommentSubscriptionType!){subscribeMessageComments(messageId:$messageId,type:$type)}",
-        SubscribeMessageCommentsSelector
+        "mutation SubscribeToComments($peerId:ID!,$type:CommentSubscriptionType!){subscribeToComments(peerId:$peerId,type:$type)}",
+        SubscribeToCommentsSelector
     )
     let SuperAccountActivate = OperationDefinition(
         "SuperAccountActivate",
@@ -4222,11 +4219,11 @@ class Operations {
         "mutation SuperBadgeUnsetToRoom($badgeId:ID!,$roomId:ID!,$userId:ID!){superBadgeUnsetToRoom(badgeId:$badgeId,roomId:$roomId,userId:$userId)}",
         SuperBadgeUnsetToRoomSelector
     )
-    let UnSubscribeMessageComments = OperationDefinition(
-        "UnSubscribeMessageComments",
+    let UnSubscribeFromComments = OperationDefinition(
+        "UnSubscribeFromComments",
         .mutation, 
-        "mutation UnSubscribeMessageComments($messageId:ID!){unSubscribeMessageComments(messageId:$messageId)}",
-        UnSubscribeMessageCommentsSelector
+        "mutation UnSubscribeFromComments($peerId:ID!){unsubscribeFromComments(peerId:$peerId)}",
+        UnSubscribeFromCommentsSelector
     )
     let UnpinMessage = OperationDefinition(
         "UnpinMessage",
@@ -4401,8 +4398,7 @@ class Operations {
         if name == "Users" { return Users }
         if name == "AccountInviteJoin" { return AccountInviteJoin }
         if name == "AddAppToChat" { return AddAppToChat }
-        if name == "AddFeedComment" { return AddFeedComment }
-        if name == "AddMessageComment" { return AddMessageComment }
+        if name == "AddComment" { return AddComment }
         if name == "BetaDiscoverSkip" { return BetaDiscoverSkip }
         if name == "BetaNextDiscoverReset" { return BetaNextDiscoverReset }
         if name == "BetaSubmitNextDiscover" { return BetaSubmitNextDiscover }
@@ -4453,6 +4449,7 @@ class Operations {
         if name == "RefreshAppToken" { return RefreshAppToken }
         if name == "RegisterPush" { return RegisterPush }
         if name == "RegisterWebPush" { return RegisterWebPush }
+        if name == "ReportContent" { return ReportContent }
         if name == "ReportOnline" { return ReportOnline }
         if name == "RoomAddMembers" { return RoomAddMembers }
         if name == "RoomAlterFeatured" { return RoomAlterFeatured }
@@ -4477,7 +4474,7 @@ class Operations {
         if name == "SetTyping" { return SetTyping }
         if name == "SetUserShortname" { return SetUserShortname }
         if name == "SettingsUpdate" { return SettingsUpdate }
-        if name == "SubscribeMessageComments" { return SubscribeMessageComments }
+        if name == "SubscribeToComments" { return SubscribeToComments }
         if name == "SuperAccountActivate" { return SuperAccountActivate }
         if name == "SuperAccountAdd" { return SuperAccountAdd }
         if name == "SuperAccountMemberAdd" { return SuperAccountMemberAdd }
@@ -4489,7 +4486,7 @@ class Operations {
         if name == "SuperAdminRemove" { return SuperAdminRemove }
         if name == "SuperBadgeCreateToRoom" { return SuperBadgeCreateToRoom }
         if name == "SuperBadgeUnsetToRoom" { return SuperBadgeUnsetToRoom }
-        if name == "UnSubscribeMessageComments" { return UnSubscribeMessageComments }
+        if name == "UnSubscribeFromComments" { return UnSubscribeFromComments }
         if name == "UnpinMessage" { return UnpinMessage }
         if name == "UpdateApp" { return UpdateApp }
         if name == "UpdateOrganization" { return UpdateOrganization }

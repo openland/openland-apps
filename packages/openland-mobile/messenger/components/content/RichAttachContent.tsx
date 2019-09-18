@@ -11,7 +11,7 @@ import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal, contentInsetsTop } from '../AsyncBubbleView';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
-import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
+import { resolveInternalLink } from 'openland-mobile/utils/resolveInternalLink';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 

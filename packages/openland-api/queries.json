@@ -7898,12 +7898,12 @@
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Comments.ts",
-			"operationName": "SubscribeMessageComments",
+			"operationName": "SubscribeToComments",
 			"operationType": "mutation",
 			"rootType": "Mutation",
 			"variables": [
 				{
-					"name": "messageId",
+					"name": "peerId",
 					"type": "ID!"
 				},
 				{
@@ -7911,18 +7911,18 @@
 					"type": "CommentSubscriptionType!"
 				}
 			],
-			"source": "mutation SubscribeMessageComments($messageId: ID!, $type: CommentSubscriptionType!) {\n  subscribeMessageComments(messageId: $messageId, type: $type)\n}",
+			"source": "mutation SubscribeToComments($peerId: ID!, $type: CommentSubscriptionType!) {\n  subscribeToComments(peerId: $peerId, type: $type)\n}",
 			"fields": [
 				{
-					"responseName": "subscribeMessageComments",
-					"fieldName": "subscribeMessageComments",
+					"responseName": "subscribeToComments",
+					"fieldName": "subscribeToComments",
 					"type": "Boolean!",
 					"args": [
 						{
-							"name": "messageId",
+							"name": "peerId",
 							"value": {
 								"kind": "Variable",
-								"variableName": "messageId"
+								"variableName": "peerId"
 							},
 							"type": "ID!"
 						},
@@ -7942,32 +7942,32 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation SubscribeMessageComments($messageId: ID!, $type: CommentSubscriptionType!) {\n  subscribeMessageComments(messageId: $messageId, type: $type)\n}",
-			"operationId": "aa25a08edf5a7160393c42ad8a0f7f9bfc498145e01ab63c2a08f928a7a578eb"
+			"sourceWithFragments": "mutation SubscribeToComments($peerId: ID!, $type: CommentSubscriptionType!) {\n  subscribeToComments(peerId: $peerId, type: $type)\n}",
+			"operationId": "8124f6250183413b6b8d6cfa2edcdfb06b00bf32922cc32e57c39614b45f08d3"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Comments.ts",
-			"operationName": "UnSubscribeMessageComments",
+			"operationName": "UnSubscribeFromComments",
 			"operationType": "mutation",
 			"rootType": "Mutation",
 			"variables": [
 				{
-					"name": "messageId",
+					"name": "peerId",
 					"type": "ID!"
 				}
 			],
-			"source": "mutation UnSubscribeMessageComments($messageId: ID!) {\n  unSubscribeMessageComments(messageId: $messageId)\n}",
+			"source": "mutation UnSubscribeFromComments($peerId: ID!) {\n  unsubscribeFromComments(peerId: $peerId)\n}",
 			"fields": [
 				{
-					"responseName": "unSubscribeMessageComments",
-					"fieldName": "unSubscribeMessageComments",
+					"responseName": "unsubscribeFromComments",
+					"fieldName": "unsubscribeFromComments",
 					"type": "Boolean!",
 					"args": [
 						{
-							"name": "messageId",
+							"name": "peerId",
 							"value": {
 								"kind": "Variable",
-								"variableName": "messageId"
+								"variableName": "peerId"
 							},
 							"type": "ID!"
 						}
@@ -7979,12 +7979,12 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation UnSubscribeMessageComments($messageId: ID!) {\n  unSubscribeMessageComments(messageId: $messageId)\n}",
-			"operationId": "53680ced292f52a20496ea95c56c938a28ee787f4447af70e9015019c40ff41e"
+			"sourceWithFragments": "mutation UnSubscribeFromComments($peerId: ID!) {\n  unsubscribeFromComments(peerId: $peerId)\n}",
+			"operationId": "712d91bee071e2c83f2abaddcb8b0b5323d5378d54a1c1e633a870f8cd9cd8bb"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Comments.ts",
-			"operationName": "AddMessageComment",
+			"operationName": "AddComment",
 			"operationType": "mutation",
 			"rootType": "Mutation",
 			"variables": [
@@ -7993,7 +7993,7 @@
 					"type": "String"
 				},
 				{
-					"name": "messageId",
+					"name": "peerId",
 					"type": "ID!"
 				},
 				{
@@ -8017,11 +8017,11 @@
 					"type": "[MessageSpanInput!]"
 				}
 			],
-			"source": "mutation AddMessageComment($repeatKey: String, $messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  betaAddMessageComment(repeatKey: $repeatKey, messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans) {\n    __typename\n    id\n  }\n}",
+			"source": "mutation AddComment($repeatKey: String, $peerId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  betaAddComment(repeatKey: $repeatKey, peerId: $peerId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans) {\n    __typename\n    id\n  }\n}",
 			"fields": [
 				{
-					"responseName": "betaAddMessageComment",
-					"fieldName": "betaAddMessageComment",
+					"responseName": "betaAddComment",
+					"fieldName": "betaAddComment",
 					"type": "CommentEntry!",
 					"args": [
 						{
@@ -8033,10 +8033,10 @@
 							"type": "String"
 						},
 						{
-							"name": "messageId",
+							"name": "peerId",
 							"value": {
 								"kind": "Variable",
-								"variableName": "messageId"
+								"variableName": "peerId"
 							},
 							"type": "ID!"
 						},
@@ -8105,134 +8105,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation AddMessageComment($repeatKey: String, $messageId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  betaAddMessageComment(repeatKey: $repeatKey, messageId: $messageId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans) {\n    __typename\n    id\n  }\n}",
-			"operationId": "e661e3fe4e62195f4fc142ff6b27d0ff539f51638a9d4dd93afed2f984ef65ea"
-		},
-		{
-			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Comments.ts",
-			"operationName": "AddFeedComment",
-			"operationType": "mutation",
-			"rootType": "Mutation",
-			"variables": [
-				{
-					"name": "repeatKey",
-					"type": "String"
-				},
-				{
-					"name": "feedItemId",
-					"type": "ID!"
-				},
-				{
-					"name": "message",
-					"type": "String"
-				},
-				{
-					"name": "replyComment",
-					"type": "ID"
-				},
-				{
-					"name": "mentions",
-					"type": "[MentionInput!]"
-				},
-				{
-					"name": "fileAttachments",
-					"type": "[FileAttachmentInput!]"
-				},
-				{
-					"name": "spans",
-					"type": "[MessageSpanInput!]"
-				}
-			],
-			"source": "mutation AddFeedComment($repeatKey: String, $feedItemId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  betaAddFeedComment(repeatKey: $repeatKey, feedItemId: $feedItemId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans) {\n    __typename\n    id\n  }\n}",
-			"fields": [
-				{
-					"responseName": "betaAddFeedComment",
-					"fieldName": "betaAddFeedComment",
-					"type": "CommentEntry!",
-					"args": [
-						{
-							"name": "repeatKey",
-							"value": {
-								"kind": "Variable",
-								"variableName": "repeatKey"
-							},
-							"type": "String"
-						},
-						{
-							"name": "feedItemId",
-							"value": {
-								"kind": "Variable",
-								"variableName": "feedItemId"
-							},
-							"type": "ID!"
-						},
-						{
-							"name": "message",
-							"value": {
-								"kind": "Variable",
-								"variableName": "message"
-							},
-							"type": "String"
-						},
-						{
-							"name": "replyComment",
-							"value": {
-								"kind": "Variable",
-								"variableName": "replyComment"
-							},
-							"type": "ID"
-						},
-						{
-							"name": "mentions",
-							"value": {
-								"kind": "Variable",
-								"variableName": "mentions"
-							},
-							"type": "[MentionInput!]"
-						},
-						{
-							"name": "fileAttachments",
-							"value": {
-								"kind": "Variable",
-								"variableName": "fileAttachments"
-							},
-							"type": "[FileAttachmentInput!]"
-						},
-						{
-							"name": "spans",
-							"value": {
-								"kind": "Variable",
-								"variableName": "spans"
-							},
-							"type": "[MessageSpanInput!]"
-						}
-					],
-					"isConditional": false,
-					"isDeprecated": false,
-					"fields": [
-						{
-							"responseName": "__typename",
-							"fieldName": "__typename",
-							"type": "String!",
-							"isConditional": false
-						},
-						{
-							"responseName": "id",
-							"fieldName": "id",
-							"type": "ID!",
-							"isConditional": false,
-							"isDeprecated": false
-						}
-					],
-					"fragmentSpreads": [],
-					"inlineFragments": []
-				}
-			],
-			"fragmentSpreads": [],
-			"inlineFragments": [],
-			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation AddFeedComment($repeatKey: String, $feedItemId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  betaAddFeedComment(repeatKey: $repeatKey, feedItemId: $feedItemId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans) {\n    __typename\n    id\n  }\n}",
-			"operationId": "519bc7aaa899428db302a058509fa56c4a5be23bb5f051df0b9442c6e943d89f"
+			"sourceWithFragments": "mutation AddComment($repeatKey: String, $peerId: ID!, $message: String, $replyComment: ID, $mentions: [MentionInput!], $fileAttachments: [FileAttachmentInput!], $spans: [MessageSpanInput!]) {\n  betaAddComment(repeatKey: $repeatKey, peerId: $peerId, message: $message, replyComment: $replyComment, mentions: $mentions, fileAttachments: $fileAttachments, spans: $spans) {\n    __typename\n    id\n  }\n}",
+			"operationId": "966ffe2a551059f6ebffbe1a5e567c7f013145a933a5a426c15b1cc2f1517390"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Comments.ts",
@@ -11636,9 +11510,13 @@
 				{
 					"name": "input",
 					"type": "[SlideInput!]!"
+				},
+				{
+					"name": "repeatKey",
+					"type": "String"
 				}
 			],
-			"source": "mutation FeedCreatePost($input: [SlideInput!]!) {\n  createFeedPost: alphaCreateFeedPost(slides: $input) {\n    __typename\n    ...FeedItemFull\n  }\n}",
+			"source": "mutation FeedCreatePost($input: [SlideInput!]!, $repeatKey: String) {\n  createFeedPost: alphaCreateFeedPost(slides: $input, repeatKey: $repeatKey) {\n    __typename\n    ...FeedItemFull\n  }\n}",
 			"fields": [
 				{
 					"responseName": "createFeedPost",
@@ -11652,6 +11530,14 @@
 								"variableName": "input"
 							},
 							"type": "[SlideInput!]"
+						},
+						{
+							"name": "repeatKey",
+							"value": {
+								"kind": "Variable",
+								"variableName": "repeatKey"
+							},
+							"type": "String"
 						}
 					],
 					"isConditional": false,
@@ -11681,8 +11567,8 @@
 				"SpanFragment",
 				"UserForMention"
 			],
-			"sourceWithFragments": "mutation FeedCreatePost($input: [SlideInput!]!) {\n  createFeedPost: alphaCreateFeedPost(slides: $input) {\n    __typename\n    ...FeedItemFull\n  }\n}\nfragment FeedItemFull on FeedItem {\n  __typename\n  ... on FeedPost {\n    id\n    date\n    author {\n      __typename\n      ...FeedPostAuthorFragment\n    }\n    edited\n    canEdit\n    commentsCount\n    fallback\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n    slides {\n      __typename\n      ...SlideFragment\n    }\n  }\n}\nfragment FeedPostAuthorFragment on FeedPostAuthor {\n  __typename\n  ... on User {\n    ...UserShort\n  }\n  ... on Organization {\n    ...OrganizationShort\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment SlideFragment on Slide {\n  __typename\n  ... on TextSlide {\n    id\n    text\n    spans {\n      __typename\n      ...SpanFragment\n    }\n    cover {\n      __typename\n      url\n      metadata {\n        __typename\n        name\n        mimeType\n        size\n        isImage\n        imageWidth\n        imageHeight\n        imageFormat\n      }\n    }\n    coverAlign\n    attachments {\n      __typename\n      ... on User {\n        ...UserShort\n      }\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        roomPhoto: photo\n      }\n    }\n  }\n}\nfragment SpanFragment on MessageSpan {\n  __typename\n  offset\n  length\n  ... on MessageSpanUserMention {\n    user {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanMultiUserMention {\n    users {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanRoomMention {\n    room {\n      __typename\n      ... on PrivateRoom {\n        id\n        user {\n          __typename\n          id\n          name\n        }\n      }\n      ... on SharedRoom {\n        id\n        title\n      }\n    }\n  }\n  ... on MessageSpanLink {\n    url\n  }\n  ... on MessageSpanDate {\n    date\n  }\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}",
-			"operationId": "a3dd94240d72e19dca074851a18df2d2863a0208b867b1cb18642b9b39c5b306"
+			"sourceWithFragments": "mutation FeedCreatePost($input: [SlideInput!]!, $repeatKey: String) {\n  createFeedPost: alphaCreateFeedPost(slides: $input, repeatKey: $repeatKey) {\n    __typename\n    ...FeedItemFull\n  }\n}\nfragment FeedItemFull on FeedItem {\n  __typename\n  ... on FeedPost {\n    id\n    date\n    author {\n      __typename\n      ...FeedPostAuthorFragment\n    }\n    edited\n    canEdit\n    commentsCount\n    fallback\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n    slides {\n      __typename\n      ...SlideFragment\n    }\n  }\n}\nfragment FeedPostAuthorFragment on FeedPostAuthor {\n  __typename\n  ... on User {\n    ...UserShort\n  }\n  ... on Organization {\n    ...OrganizationShort\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment SlideFragment on Slide {\n  __typename\n  ... on TextSlide {\n    id\n    text\n    spans {\n      __typename\n      ...SpanFragment\n    }\n    cover {\n      __typename\n      url\n      metadata {\n        __typename\n        name\n        mimeType\n        size\n        isImage\n        imageWidth\n        imageHeight\n        imageFormat\n      }\n    }\n    coverAlign\n    attachments {\n      __typename\n      ... on User {\n        ...UserShort\n      }\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        roomPhoto: photo\n      }\n    }\n  }\n}\nfragment SpanFragment on MessageSpan {\n  __typename\n  offset\n  length\n  ... on MessageSpanUserMention {\n    user {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanMultiUserMention {\n    users {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanRoomMention {\n    room {\n      __typename\n      ... on PrivateRoom {\n        id\n        user {\n          __typename\n          id\n          name\n        }\n      }\n      ... on SharedRoom {\n        id\n        title\n      }\n    }\n  }\n  ... on MessageSpanLink {\n    url\n  }\n  ... on MessageSpanDate {\n    date\n  }\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}",
+			"operationId": "cc83a399a3f5200bee952ebb7f75feae90d445bda5fd4c8c0caa0ed9c716605e"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
@@ -11693,9 +11579,13 @@
 				{
 					"name": "input",
 					"type": "[SlideInput!]!"
+				},
+				{
+					"name": "repeatKey",
+					"type": "String"
 				}
 			],
-			"source": "mutation FeedCreateGlobalPost($input: [SlideInput!]!) {\n  createFeedPost: alphaCreateGlobalFeedPost(slides: $input) {\n    __typename\n    ...FeedItemFull\n  }\n}",
+			"source": "mutation FeedCreateGlobalPost($input: [SlideInput!]!, $repeatKey: String) {\n  createFeedPost: alphaCreateGlobalFeedPost(slides: $input, repeatKey: $repeatKey) {\n    __typename\n    ...FeedItemFull\n  }\n}",
 			"fields": [
 				{
 					"responseName": "createFeedPost",
@@ -11709,6 +11599,14 @@
 								"variableName": "input"
 							},
 							"type": "[SlideInput!]"
+						},
+						{
+							"name": "repeatKey",
+							"value": {
+								"kind": "Variable",
+								"variableName": "repeatKey"
+							},
+							"type": "String"
 						}
 					],
 					"isConditional": false,
@@ -11738,8 +11636,8 @@
 				"SpanFragment",
 				"UserForMention"
 			],
-			"sourceWithFragments": "mutation FeedCreateGlobalPost($input: [SlideInput!]!) {\n  createFeedPost: alphaCreateGlobalFeedPost(slides: $input) {\n    __typename\n    ...FeedItemFull\n  }\n}\nfragment FeedItemFull on FeedItem {\n  __typename\n  ... on FeedPost {\n    id\n    date\n    author {\n      __typename\n      ...FeedPostAuthorFragment\n    }\n    edited\n    canEdit\n    commentsCount\n    fallback\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n    slides {\n      __typename\n      ...SlideFragment\n    }\n  }\n}\nfragment FeedPostAuthorFragment on FeedPostAuthor {\n  __typename\n  ... on User {\n    ...UserShort\n  }\n  ... on Organization {\n    ...OrganizationShort\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment SlideFragment on Slide {\n  __typename\n  ... on TextSlide {\n    id\n    text\n    spans {\n      __typename\n      ...SpanFragment\n    }\n    cover {\n      __typename\n      url\n      metadata {\n        __typename\n        name\n        mimeType\n        size\n        isImage\n        imageWidth\n        imageHeight\n        imageFormat\n      }\n    }\n    coverAlign\n    attachments {\n      __typename\n      ... on User {\n        ...UserShort\n      }\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        roomPhoto: photo\n      }\n    }\n  }\n}\nfragment SpanFragment on MessageSpan {\n  __typename\n  offset\n  length\n  ... on MessageSpanUserMention {\n    user {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanMultiUserMention {\n    users {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanRoomMention {\n    room {\n      __typename\n      ... on PrivateRoom {\n        id\n        user {\n          __typename\n          id\n          name\n        }\n      }\n      ... on SharedRoom {\n        id\n        title\n      }\n    }\n  }\n  ... on MessageSpanLink {\n    url\n  }\n  ... on MessageSpanDate {\n    date\n  }\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}",
-			"operationId": "0e4a89bd6286d2927d13a892dcbf36d54aa61911d1e645ffe7ee01d92530016b"
+			"sourceWithFragments": "mutation FeedCreateGlobalPost($input: [SlideInput!]!, $repeatKey: String) {\n  createFeedPost: alphaCreateGlobalFeedPost(slides: $input, repeatKey: $repeatKey) {\n    __typename\n    ...FeedItemFull\n  }\n}\nfragment FeedItemFull on FeedItem {\n  __typename\n  ... on FeedPost {\n    id\n    date\n    author {\n      __typename\n      ...FeedPostAuthorFragment\n    }\n    edited\n    canEdit\n    commentsCount\n    fallback\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n    slides {\n      __typename\n      ...SlideFragment\n    }\n  }\n}\nfragment FeedPostAuthorFragment on FeedPostAuthor {\n  __typename\n  ... on User {\n    ...UserShort\n  }\n  ... on Organization {\n    ...OrganizationShort\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment SlideFragment on Slide {\n  __typename\n  ... on TextSlide {\n    id\n    text\n    spans {\n      __typename\n      ...SpanFragment\n    }\n    cover {\n      __typename\n      url\n      metadata {\n        __typename\n        name\n        mimeType\n        size\n        isImage\n        imageWidth\n        imageHeight\n        imageFormat\n      }\n    }\n    coverAlign\n    attachments {\n      __typename\n      ... on User {\n        ...UserShort\n      }\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        roomPhoto: photo\n      }\n    }\n  }\n}\nfragment SpanFragment on MessageSpan {\n  __typename\n  offset\n  length\n  ... on MessageSpanUserMention {\n    user {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanMultiUserMention {\n    users {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanRoomMention {\n    room {\n      __typename\n      ... on PrivateRoom {\n        id\n        user {\n          __typename\n          id\n          name\n        }\n      }\n      ... on SharedRoom {\n        id\n        title\n      }\n    }\n  }\n  ... on MessageSpanLink {\n    url\n  }\n  ... on MessageSpanDate {\n    date\n  }\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}",
+			"operationId": "b49eab92e2f989d55cf4c701509ebeb5918c3a163a4e9ec1516eaf285da03812"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
@@ -14650,6 +14548,67 @@
 			"fragmentsReferenced": [],
 			"sourceWithFragments": "subscription DebugEventsWatch($fromState: String, $eventsCount: Int!, $randomDelays: Boolean!, $seed: String!) {\n  debugEvents(fromState: $fromState, eventsCount: $eventsCount, randomDelays: $randomDelays, seed: $seed) {\n    __typename\n    seq\n    key\n  }\n}",
 			"operationId": "4b40c879c733210c70f614db916a9cbe30986fa96df2038022a4c847fcde173c"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Report.ts",
+			"operationName": "ReportContent",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "contentId",
+					"type": "ID!"
+				},
+				{
+					"name": "type",
+					"type": "String!"
+				},
+				{
+					"name": "message",
+					"type": "String"
+				}
+			],
+			"source": "mutation ReportContent($contentId: ID!, $type: String!, $message: String) {\n  reportContent(contentId: $contentId, type: $type, message: $message)\n}",
+			"fields": [
+				{
+					"responseName": "reportContent",
+					"fieldName": "reportContent",
+					"type": "Boolean",
+					"args": [
+						{
+							"name": "contentId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "contentId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "type",
+							"value": {
+								"kind": "Variable",
+								"variableName": "type"
+							},
+							"type": "String!"
+						},
+						{
+							"name": "message",
+							"value": {
+								"kind": "Variable",
+								"variableName": "message"
+							},
+							"type": "String"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation ReportContent($contentId: ID!, $type: String!, $message: String) {\n  reportContent(contentId: $contentId, type: $type, message: $message)\n}",
+			"operationId": "27e5c1eb1980db51d97f95e94b14157eebf49da1892b950e2ece65baa2430f9f"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Settings.ts",

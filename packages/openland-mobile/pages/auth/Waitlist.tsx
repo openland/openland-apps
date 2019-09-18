@@ -6,7 +6,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { View, Image, Dimensions, Text } from 'react-native';
 import RNRestart from 'react-native-restart';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { joinInviteIfHave } from 'openland-mobile/utils/internalLnksResolver';
+import { joinInviteIfHave } from 'openland-mobile/utils/resolveInternalLink';
 import { ZText } from 'openland-mobile/components/ZText';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';

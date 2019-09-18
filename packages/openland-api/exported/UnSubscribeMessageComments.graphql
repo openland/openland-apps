@@ -1,3 +1,0 @@
-mutation UnSubscribeMessageComments($messageId: ID!) {
-  unSubscribeMessageComments(messageId: $messageId)
-}

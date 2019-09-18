@@ -1,6 +1,0 @@
-mutation AddFeedComment($feedItemId: ID!, $fileAttachments: [FileAttachmentInput!], $mentions: [MentionInput!], $message: String, $repeatKey: String, $replyComment: ID, $spans: [MessageSpanInput!]) {
-  betaAddFeedComment(feedItemId: $feedItemId, fileAttachments: $fileAttachments, mentions: $mentions, message: $message, repeatKey: $repeatKey, replyComment: $replyComment, spans: $spans) {
-    __typename
-    id
-  }
-}

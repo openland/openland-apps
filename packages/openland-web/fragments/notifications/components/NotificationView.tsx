@@ -102,9 +102,9 @@ export const NotificationView = React.memo((props: NotificationViewProps) => {
     const handleFollowToggler = React.useCallback(() => {
         if (notificationId && peerRootId) {
             if (!!isSubscribedMessageCommentsRef.current) {
-                client.mutateUnSubscribeMessageComments({ messageId: peerRootId });
+                client.mutateUnSubscribeFromComments({ peerId: peerRootId });
             } else {
-                client.mutateSubscribeMessageComments({ messageId: peerRootId, type: CommentSubscriptionType.ALL });
+                client.mutateSubscribeToComments({ peerId: peerRootId, type: CommentSubscriptionType.ALL });
             }
         }
     }, [notificationId, peerRootId, isSubscribedMessageComments]);

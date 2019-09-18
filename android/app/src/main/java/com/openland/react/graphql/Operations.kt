@@ -2496,14 +2496,8 @@ private val AddAppToChatSelector = obj(
                     fragment("AppChat", AppChatSelector)
                 )))
         )
-private val AddFeedCommentSelector = obj(
-            field("betaAddFeedComment","betaAddFeedComment", arguments(fieldValue("feedItemId", refValue("feedItemId")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
-                )))
-        )
-private val AddMessageCommentSelector = obj(
-            field("betaAddMessageComment","betaAddMessageComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("messageId", refValue("messageId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
+private val AddCommentSelector = obj(
+            field("betaAddComment","betaAddComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("peerId", refValue("peerId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("id","id", notNull(scalar("ID")))
                 )))
@@ -2656,13 +2650,13 @@ private val FeatureFlagEnableSelector = obj(
                 )))
         )
 private val FeedCreateGlobalPostSelector = obj(
-            field("alphaCreateGlobalFeedPost","createFeedPost", arguments(fieldValue("slides", refValue("input"))), notNull(obj(
+            field("alphaCreateGlobalFeedPost","createFeedPost", arguments(fieldValue("repeatKey", refValue("repeatKey")), fieldValue("slides", refValue("input"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("FeedItem", FeedItemFullSelector)
                 )))
         )
 private val FeedCreatePostSelector = obj(
-            field("alphaCreateFeedPost","createFeedPost", arguments(fieldValue("slides", refValue("input"))), notNull(obj(
+            field("alphaCreateFeedPost","createFeedPost", arguments(fieldValue("repeatKey", refValue("repeatKey")), fieldValue("slides", refValue("input"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("FeedItem", FeedItemFullSelector)
                 )))
@@ -2871,6 +2865,9 @@ private val RegisterPushSelector = obj(
 private val RegisterWebPushSelector = obj(
             field("registerWebPush","registerWebPush", arguments(fieldValue("endpoint", refValue("endpoint"))), notNull(scalar("String")))
         )
+private val ReportContentSelector = obj(
+            field("reportContent","reportContent", arguments(fieldValue("contentId", refValue("contentId")), fieldValue("message", refValue("message")), fieldValue("type", refValue("type"))), scalar("Boolean"))
+        )
 private val ReportOnlineSelector = obj(
             field("presenceReportOnline","presenceReportOnline", arguments(fieldValue("active", refValue("active")), fieldValue("platform", refValue("platform")), fieldValue("timeout", intValue(5000))), notNull(scalar("String")))
         )
@@ -3009,8 +3006,8 @@ private val SettingsUpdateSelector = obj(
                     fragment("Settings", SettingsFullSelector)
                 )))
         )
-private val SubscribeMessageCommentsSelector = obj(
-            field("subscribeMessageComments","subscribeMessageComments", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
+private val SubscribeToCommentsSelector = obj(
+            field("subscribeToComments","subscribeToComments", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
         )
 private val SuperAccountActivateSelector = obj(
             field("superAccountActivate","superAccountActivate", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
@@ -3081,8 +3078,8 @@ private val SuperBadgeCreateToRoomSelector = obj(
 private val SuperBadgeUnsetToRoomSelector = obj(
             field("superBadgeUnsetToRoom","superBadgeUnsetToRoom", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
         )
-private val UnSubscribeMessageCommentsSelector = obj(
-            field("unSubscribeMessageComments","unSubscribeMessageComments", arguments(fieldValue("messageId", refValue("messageId"))), notNull(scalar("Boolean")))
+private val UnSubscribeFromCommentsSelector = obj(
+            field("unsubscribeFromComments","unsubscribeFromComments", arguments(fieldValue("peerId", refValue("peerId"))), notNull(scalar("Boolean")))
         )
 private val UnpinMessageSelector = obj(
             field("gammaUnpinMessage","unpinMessage", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
@@ -3697,17 +3694,11 @@ object Operations {
         override val body = "mutation AddAppToChat(\$appId:ID!,\$chatId:ID!){addAppToChat(appId:\$appId,chatId:\$chatId){__typename ...AppChat}}fragment AppChat on AppChat{__typename chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}webhook}"
         override val selector = AddAppToChatSelector
     }
-    val AddFeedComment = object: OperationDefinition {
-        override val name = "AddFeedComment"
+    val AddComment = object: OperationDefinition {
+        override val name = "AddComment"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation AddFeedComment(\$feedItemId:ID!,\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$repeatKey:String,\$replyComment:ID,\$spans:[MessageSpanInput!]){betaAddFeedComment(feedItemId:\$feedItemId,fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,repeatKey:\$repeatKey,replyComment:\$replyComment,spans:\$spans){__typename id}}"
-        override val selector = AddFeedCommentSelector
-    }
-    val AddMessageComment = object: OperationDefinition {
-        override val name = "AddMessageComment"
-        override val kind = OperationKind.MUTATION
-        override val body = "mutation AddMessageComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$repeatKey:String,\$replyComment:ID,\$spans:[MessageSpanInput!]){betaAddMessageComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,repeatKey:\$repeatKey,replyComment:\$replyComment,spans:\$spans){__typename id}}"
-        override val selector = AddMessageCommentSelector
+        override val body = "mutation AddComment(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$peerId:ID!,\$repeatKey:String,\$replyComment:ID,\$spans:[MessageSpanInput!]){betaAddComment(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,peerId:\$peerId,repeatKey:\$repeatKey,replyComment:\$replyComment,spans:\$spans){__typename id}}"
+        override val selector = AddCommentSelector
     }
     val BetaDiscoverSkip = object: OperationDefinition {
         override val name = "BetaDiscoverSkip"
@@ -3856,13 +3847,13 @@ object Operations {
     val FeedCreateGlobalPost = object: OperationDefinition {
         override val name = "FeedCreateGlobalPost"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation FeedCreateGlobalPost(\$input:[SlideInput!]!){createFeedPost:alphaCreateGlobalFeedPost(slides:\$input){__typename ...FeedItemFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}... on Organization{...OrganizationShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id isChannel kind roomPhoto:photo title}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}"
+        override val body = "mutation FeedCreateGlobalPost(\$input:[SlideInput!]!,\$repeatKey:String){createFeedPost:alphaCreateGlobalFeedPost(repeatKey:\$repeatKey,slides:\$input){__typename ...FeedItemFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}... on Organization{...OrganizationShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id isChannel kind roomPhoto:photo title}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}"
         override val selector = FeedCreateGlobalPostSelector
     }
     val FeedCreatePost = object: OperationDefinition {
         override val name = "FeedCreatePost"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation FeedCreatePost(\$input:[SlideInput!]!){createFeedPost:alphaCreateFeedPost(slides:\$input){__typename ...FeedItemFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}... on Organization{...OrganizationShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id isChannel kind roomPhoto:photo title}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}"
+        override val body = "mutation FeedCreatePost(\$input:[SlideInput!]!,\$repeatKey:String){createFeedPost:alphaCreateFeedPost(repeatKey:\$repeatKey,slides:\$input){__typename ...FeedItemFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}... on Organization{...OrganizationShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id isChannel kind roomPhoto:photo title}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}"
         override val selector = FeedCreatePostSelector
     }
     val FeedDeletePost = object: OperationDefinition {
@@ -4009,6 +4000,12 @@ object Operations {
         override val body = "mutation RegisterWebPush(\$endpoint:String!){registerWebPush(endpoint:\$endpoint)}"
         override val selector = RegisterWebPushSelector
     }
+    val ReportContent = object: OperationDefinition {
+        override val name = "ReportContent"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation ReportContent(\$contentId:ID!,\$message:String,\$type:String!){reportContent(contentId:\$contentId,message:\$message,type:\$type)}"
+        override val selector = ReportContentSelector
+    }
     val ReportOnline = object: OperationDefinition {
         override val name = "ReportOnline"
         override val kind = OperationKind.MUTATION
@@ -4153,11 +4150,11 @@ object Operations {
         override val body = "mutation SettingsUpdate(\$input:UpdateSettingsInput){updateSettings(settings:\$input){__typename ...SettingsFull}}fragment SettingsFull on Settings{__typename countUnreadChats desktop{__typename ...PlatformNotificationSettingsFull}emailFrequency excludeMutedChats id mobile{__typename ...PlatformNotificationSettingsFull}primaryEmail}fragment PlatformNotificationSettingsFull on PlatformNotificationSettings{__typename comments{__typename showNotification sound}communityChat{__typename showNotification sound}direct{__typename showNotification sound}notificationPreview organizationChat{__typename showNotification sound}secretChat{__typename showNotification sound}}"
         override val selector = SettingsUpdateSelector
     }
-    val SubscribeMessageComments = object: OperationDefinition {
-        override val name = "SubscribeMessageComments"
+    val SubscribeToComments = object: OperationDefinition {
+        override val name = "SubscribeToComments"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation SubscribeMessageComments(\$messageId:ID!,\$type:CommentSubscriptionType!){subscribeMessageComments(messageId:\$messageId,type:\$type)}"
-        override val selector = SubscribeMessageCommentsSelector
+        override val body = "mutation SubscribeToComments(\$peerId:ID!,\$type:CommentSubscriptionType!){subscribeToComments(peerId:\$peerId,type:\$type)}"
+        override val selector = SubscribeToCommentsSelector
     }
     val SuperAccountActivate = object: OperationDefinition {
         override val name = "SuperAccountActivate"
@@ -4225,11 +4222,11 @@ object Operations {
         override val body = "mutation SuperBadgeUnsetToRoom(\$badgeId:ID!,\$roomId:ID!,\$userId:ID!){superBadgeUnsetToRoom(badgeId:\$badgeId,roomId:\$roomId,userId:\$userId)}"
         override val selector = SuperBadgeUnsetToRoomSelector
     }
-    val UnSubscribeMessageComments = object: OperationDefinition {
-        override val name = "UnSubscribeMessageComments"
+    val UnSubscribeFromComments = object: OperationDefinition {
+        override val name = "UnSubscribeFromComments"
         override val kind = OperationKind.MUTATION
-        override val body = "mutation UnSubscribeMessageComments(\$messageId:ID!){unSubscribeMessageComments(messageId:\$messageId)}"
-        override val selector = UnSubscribeMessageCommentsSelector
+        override val body = "mutation UnSubscribeFromComments(\$peerId:ID!){unsubscribeFromComments(peerId:\$peerId)}"
+        override val selector = UnSubscribeFromCommentsSelector
     }
     val UnpinMessage = object: OperationDefinition {
         override val name = "UnpinMessage"
@@ -4403,8 +4400,7 @@ object Operations {
         if (name == "Users") return Users
         if (name == "AccountInviteJoin") return AccountInviteJoin
         if (name == "AddAppToChat") return AddAppToChat
-        if (name == "AddFeedComment") return AddFeedComment
-        if (name == "AddMessageComment") return AddMessageComment
+        if (name == "AddComment") return AddComment
         if (name == "BetaDiscoverSkip") return BetaDiscoverSkip
         if (name == "BetaNextDiscoverReset") return BetaNextDiscoverReset
         if (name == "BetaSubmitNextDiscover") return BetaSubmitNextDiscover
@@ -4455,6 +4451,7 @@ object Operations {
         if (name == "RefreshAppToken") return RefreshAppToken
         if (name == "RegisterPush") return RegisterPush
         if (name == "RegisterWebPush") return RegisterWebPush
+        if (name == "ReportContent") return ReportContent
         if (name == "ReportOnline") return ReportOnline
         if (name == "RoomAddMembers") return RoomAddMembers
         if (name == "RoomAlterFeatured") return RoomAlterFeatured
@@ -4479,7 +4476,7 @@ object Operations {
         if (name == "SetTyping") return SetTyping
         if (name == "SetUserShortname") return SetUserShortname
         if (name == "SettingsUpdate") return SettingsUpdate
-        if (name == "SubscribeMessageComments") return SubscribeMessageComments
+        if (name == "SubscribeToComments") return SubscribeToComments
         if (name == "SuperAccountActivate") return SuperAccountActivate
         if (name == "SuperAccountAdd") return SuperAccountAdd
         if (name == "SuperAccountMemberAdd") return SuperAccountMemberAdd
@@ -4491,7 +4488,7 @@ object Operations {
         if (name == "SuperAdminRemove") return SuperAdminRemove
         if (name == "SuperBadgeCreateToRoom") return SuperBadgeCreateToRoom
         if (name == "SuperBadgeUnsetToRoom") return SuperBadgeUnsetToRoom
-        if (name == "UnSubscribeMessageComments") return UnSubscribeMessageComments
+        if (name == "UnSubscribeFromComments") return UnSubscribeFromComments
         if (name == "UnpinMessage") return UnpinMessage
         if (name == "UpdateApp") return UpdateApp
         if (name == "UpdateOrganization") return UpdateOrganization

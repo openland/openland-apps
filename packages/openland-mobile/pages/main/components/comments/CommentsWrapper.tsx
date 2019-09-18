@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, ScrollView, Keyboard, TextInput } from 'react-native';
 import { MessageInputBar } from '../MessageInputBar';
-import { CommentEntryFragment_comment, FileAttachmentInput, Message_message_GeneralMessage_source_MessageSourceChat_chat, MentionInput, MessageSpanInput, CommentEntryFragment, CommentWatch_event_CommentUpdateSingle_update } from 'openland-api/Types';
+import { CommentEntryFragment_comment, FileAttachmentInput, Message_message_GeneralMessage_source_MessageSourceChat_chat, CommentEntryFragment, CommentWatch_event_CommentUpdateSingle_update } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { EmojiRender, EmojiRenderRow } from '../EmojiRender';
@@ -27,25 +27,16 @@ import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatch
 interface CommentsWrapperProps {
     peerView: JSX.Element;
     peerId: string;
-
     chat?: Message_message_GeneralMessage_source_MessageSourceChat_chat;
     highlightId?: string;
-
-    onAddComment: (variables: {
-        repeatKey: string;
-        message: string;
-        replyComment: string | null;
-        mentions: MentionInput[],
-        fileAttachments: FileAttachmentInput[] | null;
-        spans: MessageSpanInput[];
-    }) => Promise<void>;
 }
 
 const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentEntryFragment[] }) => {
     const inputRef = React.createRef<TextInput>();
     const scrollRef = React.createRef<ScrollView>();
+    const area = React.useContext(ASSafeAreaContext);
 
-    const { peerView, comments, chat, highlightId, onAddComment } = props;
+    const { peerView, peerId, comments, chat, highlightId } = props;
 
     // state
     const [replied, setReplied] = React.useState<CommentEntryFragment_comment | undefined>(undefined);
@@ -55,16 +46,6 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
     const [inputSelection, setInputSelection] = React.useState<{ start: number, end: number }>({ start: 0, end: 0 });
     const [sending, setSending] = React.useState<boolean>(false);
     const [mentions, setMentions] = React.useState<(MentionToSend)[]>([]);
-    const [needScrollTo, setNeedScrollTo] = React.useState<boolean>(false);
-
-    // callbacks
-    const handleScrollToView = (y: number) => {
-        if (scrollRef.current && needScrollTo) {
-            scrollRef.current.scrollTo(y);
-
-            setNeedScrollTo(false);
-        }
-    };
 
     const handleSubmit = React.useCallback(async (attachment?: FileAttachmentInput) => {
         let text = inputText.trim();
@@ -90,7 +71,8 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
 
                 const repeatKey = UUID();
 
-                await onAddComment({
+                await getClient().mutateAddComment({
+                    peerId,
                     repeatKey,
                     message: text,
                     replyComment: replied ? replied.id : null,
@@ -216,7 +198,6 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
             const filteredComments = comments.filter(c => c.comment.id === highlightId);
 
             if (filteredComments.length > 0) {
-                setNeedScrollTo(true);
                 setReplied(filteredComments[0].comment);
             }
         }
@@ -224,8 +205,8 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
 
     let activeWord = findActiveWord(inputText, inputSelection);
 
-    let suggestions: JSX.Element;
-    let quoted: JSX.Element;
+    let suggestions: JSX.Element | null = null;
+    let quoted: JSX.Element | null = null;
 
     if (chat && chat.__typename === 'SharedRoom' && inputFocused && activeWord && activeWord.startsWith('@')) {
         suggestions = <MentionsRender activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={chat.id} />;
@@ -256,48 +237,42 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
                 onReplyPress={handleReplyPress}
                 onEditPress={handleEditPress}
                 highlightedId={replied ? replied.id : undefined}
-                handleScrollTo={handleScrollToView}
+                scrollRef={scrollRef}
             />
         </View>
     );
 
     return (
         <>
-            <ASSafeAreaContext.Consumer>
-                {area => (
-                    <>
-                        {Platform.OS === 'ios' && (
-                            <ScrollView ref={scrollRef} flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always" contentContainerStyle={{ paddingTop: area.top, paddingBottom: (area.bottom - SDevice.safeArea.bottom <= 0) ? 80 : area.bottom - SDevice.safeArea.bottom }} scrollIndicatorInsets={{ top: area.top, bottom: (area.bottom - SDevice.safeArea.bottom <= 0) ? 80 : area.bottom - SDevice.safeArea.bottom }}>
-                                {content}
-                            </ScrollView>
-                        )}
+            {Platform.OS === 'ios' && (
+                <ScrollView ref={scrollRef} flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always" contentContainerStyle={{ paddingTop: area.top, paddingBottom: (area.bottom - SDevice.safeArea.bottom <= 0) ? 80 : area.bottom - SDevice.safeArea.bottom }} scrollIndicatorInsets={{ top: area.top, bottom: (area.bottom - SDevice.safeArea.bottom <= 0) ? 80 : area.bottom - SDevice.safeArea.bottom }}>
+                    {content}
+                </ScrollView>
+            )}
 
-                        {Platform.OS === 'android' && (
-                            <ScrollView ref={scrollRef} flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always">
-                                {content}
-                            </ScrollView>
-                        )}
+            {Platform.OS === 'android' && (
+                <ScrollView ref={scrollRef} flexGrow={1} flexShrink={1} keyboardDismissMode="interactive" keyboardShouldPersistTaps="always">
+                    {content}
+                </ScrollView>
+            )}
 
-                        <View paddingBottom={Platform.OS === 'android' ? area.keyboardHeight : undefined}>
-                            <MessageInputBar
-                                onAttachPress={handleAttach}
-                                onSubmitPress={() => handleSubmit()}
-                                onChangeText={handleInputTextChange}
-                                onSelectionChange={handleInputSelectionChange}
-                                onFocus={handleInputFocus}
-                                onBlur={handleInputBlur}
-                                text={inputText}
-                                placeholder="Comment"
-                                suggestions={suggestions}
-                                topView={quoted}
-                                showLoader={sending}
-                                ref={inputRef}
-                                canSubmit={inputText.trim().length > 0}
-                            />
-                        </View>
-                    </>
-                )}
-            </ASSafeAreaContext.Consumer>
+            <View paddingBottom={Platform.OS === 'android' ? area.keyboardHeight : undefined}>
+                <MessageInputBar
+                    onAttachPress={handleAttach}
+                    onSubmitPress={() => handleSubmit()}
+                    onChangeText={handleInputTextChange}
+                    onSelectionChange={handleInputSelectionChange}
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
+                    text={inputText}
+                    placeholder="Comment"
+                    suggestions={suggestions}
+                    topView={quoted}
+                    showLoader={sending}
+                    ref={inputRef}
+                    canSubmit={inputText.trim().length > 0}
+                />
+            </View>
         </>
     );
 };

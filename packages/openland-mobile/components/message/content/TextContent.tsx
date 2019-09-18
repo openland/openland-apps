@@ -52,14 +52,14 @@ export const TextContent = (props: TextContentProps) => {
     const fontSize = {
         'emoji': wrapped ? 26 : 30,
         'loud': wrapped ? 16 : 20,
-        'slice': wrapped ? 15 : 16,
+        'slice': 17,
         'code_block': 14,
     };
 
     const lineHeight = {
         'emoji': wrapped ? 30 : 34,
         'loud': wrapped ? 20 : 24,
-        'slice': undefined,
+        'slice': 24,
         'code_block': undefined,
     };
 

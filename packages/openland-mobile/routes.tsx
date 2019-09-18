@@ -44,7 +44,7 @@ import { EditGroupAdvanced } from './pages/main/EditGroupAdvanced';
 import { GroupInvite } from './pages/main/GroupInvite';
 import { UserPicker } from './pages/main/modals/UserPicker';
 import Tasks from './pages/apps/Tasks';
-import { MessageComments } from './pages/main/MessageComments';
+import { Message } from './pages/main/Message';
 import { Colors } from './pages/dev/Colors';
 import { Discover } from './pages/main/Discover';
 import { CommunityList } from './pages/main/CommunityList';
@@ -92,7 +92,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('ProfileOrganizationGroups', ProfileOrganizationGroups)
   .addRoute('GroupList', GroupList)
   .addRoute('GroupInvite', GroupInvite)
-  .addRoute('MessageComments', MessageComments)
+  .addRoute('Message', Message)
   .addRoute('NotificationCenter', NotificationCenter)
 
   .addRoute('SetUserShortname', SetUserShortname)

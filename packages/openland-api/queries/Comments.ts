@@ -43,57 +43,31 @@ export const DeleteNotificationMutation = gql`
     }
 `;
 
-export const SubscribeMessageCommentsMutation = gql`
-    mutation SubscribeMessageComments($messageId: ID!, $type: CommentSubscriptionType!) {
-        subscribeMessageComments(messageId: $messageId, type: $type)
+export const SubscribeToCommentsMutation = gql`
+    mutation SubscribeToComments($peerId: ID!, $type: CommentSubscriptionType!) {
+        subscribeToComments(peerId: $peerId, type: $type)
     }
 `;
 
-export const UnSubscribeMessageCommentsMutation = gql`
-    mutation UnSubscribeMessageComments($messageId: ID!) {
-        unSubscribeMessageComments(messageId: $messageId)
+export const UnSubscribeFromCommentsMutation = gql`
+    mutation UnSubscribeFromComments($peerId: ID!) {
+        unsubscribeFromComments(peerId: $peerId)
     }
 `;
 
-export const AddMessageCommentMutation = gql`
-    mutation AddMessageComment(
+export const AddCommentMutation = gql`
+    mutation AddComment(
         $repeatKey: String
-        $messageId: ID!
+        $peerId: ID!
         $message: String
         $replyComment: ID
         $mentions: [MentionInput!]
         $fileAttachments: [FileAttachmentInput!]
         $spans: [MessageSpanInput!]
     ) {
-        betaAddMessageComment(
+        betaAddComment(
             repeatKey: $repeatKey
-            messageId: $messageId
-            message: $message
-            replyComment: $replyComment
-            mentions: $mentions
-            fileAttachments: $fileAttachments
-            spans: $spans
-        ) {
-            id
-        }
-    }
-    ${CommentEntryFragment}
-    ${FullMessage}
-`;
-
-export const AddFeedCommentMutation = gql`
-    mutation AddFeedComment(
-        $repeatKey: String
-        $feedItemId: ID!
-        $message: String
-        $replyComment: ID
-        $mentions: [MentionInput!]
-        $fileAttachments: [FileAttachmentInput!]
-        $spans: [MessageSpanInput!]
-    ) {
-        betaAddFeedComment(
-            repeatKey: $repeatKey
-            feedItemId: $feedItemId
+            peerId: $peerId
             message: $message
             replyComment: $replyComment
             mentions: $mentions

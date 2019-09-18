@@ -1,5 +1,5 @@
 import { NativeEventEmitter, NativeModules, Platform } from 'react-native';
-import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
+import { resolveInternalLink } from 'openland-mobile/utils/resolveInternalLink';
 
 const NativeEmitter = new NativeEventEmitter(NativeModules.RNNotificationHandler);
 

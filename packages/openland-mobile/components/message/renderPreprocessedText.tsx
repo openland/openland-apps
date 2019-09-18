@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, Linking, Clipboard, Share } from 'react-native';
-import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
+import { resolveInternalLink } from 'openland-mobile/utils/resolveInternalLink';
 import { ActionSheetBuilder } from '../ActionSheet';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { openCalendar, openCalendarContextMenu } from 'openland-mobile/utils/openCalendar';
