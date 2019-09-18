@@ -43,7 +43,7 @@ export const ExplorePeople = (props: ExplorePeopleProps) => {
                             onClick={() => props.onPick(i.node.name, i.node.id)}
                             rightElement={
                                 <XView marginRight={8}>
-                                    <CheckComponent squared checked={selected} />
+                                    <CheckComponent squared={true} checked={selected} />
                                 </XView>
                             }
                             disabled={member}

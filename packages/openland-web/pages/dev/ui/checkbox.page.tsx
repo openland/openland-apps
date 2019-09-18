@@ -8,12 +8,12 @@ export default withApp('Checkbox', 'viewer', props => {
     return (
         <DevDocsScaffold title="Inputs">
             <XVertical>
-                <UCheckbox checked label="default checked" />
+                <UCheckbox checked={true} label="default checked" />
                 <UCheckbox label="default" />
-                <UCheckbox squared checked label="squared checked" />
-                <UCheckbox squared label="squared" />
-                <UCheckbox asSwitcher checked label="as switcher checked" />
-                <UCheckbox asSwitcher label="as switcher" />
+                <UCheckbox squared={true} checked={true} label="squared checked" />
+                <UCheckbox squared={true} label="squared" />
+                <UCheckbox asSwitcher={true} checked={true} label="as switcher checked" />
+                <UCheckbox asSwitcher={true} label="as switcher" />
             </XVertical>
         </DevDocsScaffold>
     );

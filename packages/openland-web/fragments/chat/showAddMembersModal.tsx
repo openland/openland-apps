@@ -133,7 +133,7 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                     <SectionTitle title="Add people directly" />
                     <XView>
                         <SearchBox
-                            small
+                            small={true}
                             onInputChange={onInputChange}
                             value={options}
                             onChange={onChange}
@@ -167,29 +167,29 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                     onClick={
                         !!options.length
                             ? async () => {
-                                  if (props.isGroup) {
-                                      await (props.addMembers as RoomAddMembersType)({
-                                          variables: {
-                                              roomId: props.id,
-                                              invites: options.map(i => ({
-                                                  userId: i.value,
-                                                  role: RoomMemberRole.MEMBER,
-                                              })),
-                                          },
-                                      });
-                                  } else if (props.isOrganization) {
-                                      await (props.addMembers as OrganizationAddMembersType)({
-                                          variables: {
-                                              organizationId: props.id,
-                                              userIds: options.map(i => i.value),
-                                          },
-                                      });
-                                  }
-                                  setSelectedUsers(null);
-                                  if (props.hide) {
-                                      props.hide();
-                                  }
-                              }
+                                if (props.isGroup) {
+                                    await (props.addMembers as RoomAddMembersType)({
+                                        variables: {
+                                            roomId: props.id,
+                                            invites: options.map(i => ({
+                                                userId: i.value,
+                                                role: RoomMemberRole.MEMBER,
+                                            })),
+                                        },
+                                    });
+                                } else if (props.isOrganization) {
+                                    await (props.addMembers as OrganizationAddMembersType)({
+                                        variables: {
+                                            organizationId: props.id,
+                                            userIds: options.map(i => i.value),
+                                        },
+                                    });
+                                }
+                                setSelectedUsers(null);
+                                if (props.hide) {
+                                    props.hide();
+                                }
+                            }
                             : undefined
                     }
                 />

@@ -99,7 +99,7 @@ export const CoverUpload = ({
 
     return (
         <div className={CoverWrapperClassName} onClick={handleSetCover}>
-            {coverUploading && <XLoader size="small" transparentBackground color="#373754" />}
+            {coverUploading && <XLoader size="small" transparentBackground={true} color="#373754" />}
             {!coverUploading && (
                 <>
                     {coverSrc && (

@@ -96,7 +96,7 @@ export default withApp('Home', 'viewer', () => {
 
     return (
         <React.Suspense fallback={null}>
-            <DiscoverStart onSkip={onSkip} onStartClick={onStartClick} onLogin />
+            <DiscoverStart onSkip={onSkip} onStartClick={onStartClick} onLogin={true} />
         </React.Suspense>
     );
 });

@@ -216,8 +216,8 @@ export const InviteFriendsComponent = (props: InviteFriendsFragmentProps) => {
                         inviteKey={openlandInvite}
                         isGroup={false}
                         isOrganization={false}
-                        hideRevoke
-                        isAppInvite
+                        hideRevoke={true}
+                        isAppInvite={true}
                     />
                 </XView>
                 <WritePostBlock inviteKey={openlandInvite} isMobile={isMobile} />
@@ -228,6 +228,6 @@ export const InviteFriendsComponent = (props: InviteFriendsFragmentProps) => {
 
 export const InviteFriendsFragment = React.memo(() => (
     <Page>
-        <InviteFriendsComponent onSettingPage />
+        <InviteFriendsComponent onSettingPage={true} />
     </Page>
 ));

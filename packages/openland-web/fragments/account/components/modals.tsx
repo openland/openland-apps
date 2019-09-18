@@ -445,7 +445,7 @@ const MakeFeaturedModal = (props: {
                             <InputField
                                 title="Description"
                                 field={descriptionField}
-                                setFocusOnError
+                                setFocusOnError={true}
                                 maxLength={40}
                             />
                         </XView>

@@ -246,7 +246,7 @@ const EditCommunityEntity = (props: {
 
     return (
         <XView borderRadius={8} overflow="hidden" flexShrink={1}>
-            <XScrollView3 flexShrink={1} flexGrow={1} useDefaultScroll>
+            <XScrollView3 flexShrink={1} flexGrow={1} useDefaultScroll={true}>
                 <XView paddingHorizontal={40} paddingBottom={34}>
                     <XView
                         flexDirection="row"
@@ -279,8 +279,8 @@ const EditCommunityEntity = (props: {
                             <InputField
                                 field={nameField}
                                 title={'Community name'}
-                                setFocusOnError
-                                hideErrorText
+                                setFocusOnError={true}
+                                hideErrorText={true}
                             />
 
                             {props.isCommunity &&

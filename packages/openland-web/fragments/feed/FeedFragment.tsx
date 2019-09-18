@@ -72,7 +72,7 @@ class FeedInner extends React.PureComponent<CommentsNotificationsProps, { dataSo
 
     private dataSourceWrapper = (props: { children?: any }) => (
         <XScrollView3
-            useDefaultScroll
+            useDefaultScroll={true}
             flexGrow={1}
             flexShrink={1}
             onScroll={this.handleScroll}

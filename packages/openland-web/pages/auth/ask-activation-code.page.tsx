@@ -160,7 +160,7 @@ export const WebSignUpActivationCode = ({
                     title={InitTexts.auth.codePlaceholder}
                     flexGrow={1}
                     flexShrink={0}
-                    hideErrorText
+                    hideErrorText={true}
                     field={codeField}
                     invalid={isInvalid}
                 />

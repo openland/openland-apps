@@ -52,9 +52,9 @@ const styles = StyleSheet.create({
         borderRadius: 80
     } as ViewStyle,
     inputContainer: {
-        paddingHorizontal: 16, 
-        justifyContent: 'center', 
-        flexGrow: 1, 
+        paddingHorizontal: 16,
+        justifyContent: 'center',
+        flexGrow: 1,
         paddingBottom: 32
     } as ViewStyle
 });
@@ -92,17 +92,17 @@ const SlideComponent = (props: SlideComponentProps) => {
                         <View style={[styles.templateAvatar, { backgroundColor: theme.backgroundTertiary }]} />
                         <View style={[styles.templateName, { backgroundColor: theme.backgroundTertiary }]} />
                     </View>
-                    
+
                     <View style={styles.inputContainer}>
                         {typeof props.slide.text === 'string' && (
-                            <TextInput 
+                            <TextInput
                                 ref={textInputRef}
                                 maxLength={MAX_LENGTH_TEXT}
                                 onChangeText={(text) => props.onChangeText(props.index, text)}
                                 value={props.slide.text}
-                                multiline
+                                multiline={true}
                                 style={styles.input}
-                                placeholder={'Enter text'} 
+                                placeholder={'Enter text'}
                                 placeholderTextColor={theme.foregroundTertiary}
                                 {...{ scrollEnabled: false }}
                             />
@@ -116,7 +116,7 @@ const SlideComponent = (props: SlideComponentProps) => {
 
 const FeedCreatePostComponent = (props: { engine: FeedEngine; router: SRouter; }) => {
     const client = getClient();
-    
+
     const [slides, setSlides] = React.useState<SlideInput[]>([]);
     const scrollViewRef = React.useRef<ScrollView>(null);
     const prevSlidesLength = React.useRef<number>(0);
@@ -136,7 +136,7 @@ const FeedCreatePostComponent = (props: { engine: FeedEngine; router: SRouter; }
     const handlePost = React.useCallback(async () => {
         const input: SlideInput[] = [];
         for (let slide of slides) {
-            if (typeof slide.text === 'string')  {
+            if (typeof slide.text === 'string') {
                 slide.text = slide.text.trim();
 
                 if (slide.text === '') {
@@ -152,7 +152,7 @@ const FeedCreatePostComponent = (props: { engine: FeedEngine; router: SRouter; }
         }
 
         Loader.show();
-        
+
         try {
             const repeatKey = UUID();
 
@@ -164,7 +164,7 @@ const FeedCreatePostComponent = (props: { engine: FeedEngine; router: SRouter; }
     }, [slides]);
 
     const addSlide = (text: string = '') => {
-        setSlides([...slides, { type: SlideType.Text, text }]); 
+        setSlides([...slides, { type: SlideType.Text, text }]);
     };
 
     const handleChangeTextSlide = React.useCallback((index: number, text: string) => {
@@ -172,7 +172,7 @@ const FeedCreatePostComponent = (props: { engine: FeedEngine; router: SRouter; }
             if (key !== index) {
                 return slide;
             }
-            
+
             return { ...slide, text };
         });
 
@@ -191,18 +191,18 @@ const FeedCreatePostComponent = (props: { engine: FeedEngine; router: SRouter; }
                 <SScrollView scrollRef={scrollViewRef as React.RefObject<ScrollView>}>
                     {slides.map((slide, index) => (
                         <View key={index}>
-                            <SlideComponent 
-                                index={index} 
-                                slide={slide} 
+                            <SlideComponent
+                                index={index}
+                                slide={slide}
                                 onChangeText={handleChangeTextSlide}
                             />
                         </View>
                     ))}
-                    
+
                     <View style={{ alignItems: 'center', marginTop: 8 }}>
-                        <ZRoundedButton 
+                        <ZRoundedButton
                             title="Add card"
-                            style="secondary" 
+                            style="secondary"
                             onPress={() => addSlide()}
                         />
                     </View>

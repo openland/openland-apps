@@ -118,7 +118,7 @@ const WriteFirstMessageModal = (props: { ctx: XModalController }) => {
 
 export function showWriteFirstMessageModal() {
     showModalBox({ fullScreen: true }, ctx => (
-        <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
+        <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
             <WriteFirstMessageModal ctx={ctx} />
         </XScrollView3>
     ));

@@ -80,7 +80,7 @@ export const RoomCreateWithEmail = ({
                 <SubTitle>{subTitle}</SubTitle>
                 <ButtonsWrapper marginTop={40} width={280}>
                     <XInput
-                        autofocus
+                        autofocus={true}
                         width={isMobile ? undefined : 300}
                         dataTestId="email"
                         type="email"

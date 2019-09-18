@@ -173,7 +173,7 @@ const AddMembers = React.memo(({ onSkip, onSubmit }: AddMembersT) => {
             >
                 <XView flexGrow={1} flexShrink={1} marginHorizontal={-12} overflow="hidden">
                     <ExplorePeople
-                        excludeMe
+                        excludeMe={true}
                         query={searchPeopleQuery}
                         onPick={selectMembers}
                         selectedUsers={selectedUsers}

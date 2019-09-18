@@ -78,7 +78,7 @@ export const PrivateCommunityView = (props: PrivateCommunityViewProps) => {
                 </XView>
             </XView>
 
-            {layout === 'desktop' && <InviteImage onBottom />}
+            {layout === 'desktop' && <InviteImage onBottom={true} />}
         </>
     );
 };

@@ -149,8 +149,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     ) : dialog.sender ? (
         <>{dialog.senderEmojify}: </>
     ) : (
-        ''
-    );
+                    ''
+                );
     let message: JSX.Element | null = null;
 
     if (dialog.typingEmojify) {
@@ -291,7 +291,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                                 grey={isMuted}
                                                 count={dialog.unread}
                                                 active={active}
-                                                big
+                                                big={true}
                                             />
                                         </div>
                                     </div>

@@ -121,7 +121,7 @@ export const SettingsProfileFragment = React.memo(() => {
             <XAvatarFormFieldComponent
                 {...avatarField.input}
                 size="small"
-                rounded
+                rounded={true}
                 placeholder={{
                     add: 'Add photo',
                     change: 'Change Photo',
@@ -230,7 +230,7 @@ export const SettingsProfileFragment = React.memo(() => {
                                 alignSelf="flex-start"
                                 onClick={doConfirm}
                                 loading={form.loading}
-                                square
+                                square={true}
                             />
                         </FormFooter>
                     </XView>

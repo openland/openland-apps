@@ -41,7 +41,7 @@ export const TagsCloud = ({
                         tag={{ title: showAll ? 'Less' : 'More', id: 'button_more' }}
                         onPress={onShowAll}
                         selected={false}
-                        isMore
+                        isMore={true}
                     />
                 )}
             </XView>

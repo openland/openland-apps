@@ -32,7 +32,7 @@ export const ServiceMessage = (props: ServiceMessageProps) => (
     <div className={wrapperClass}>
         <div className={cx(innerClass, TextDensed)}>
             <span>
-                <SpannedView spans={props.message.textSpans} isService />
+                <SpannedView spans={props.message.textSpans} isService={true} />
             </span>
         </div>
     </div>
