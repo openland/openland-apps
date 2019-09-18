@@ -59,10 +59,12 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
     let router = messenger.history.navigationManager;
     let lastTap: number = 0;
 
-    const handleReactionPress = React.useCallback(async () => {
+    const handleReactionPress = React.useCallback(async (useLoader: boolean) => {
         let r = MessageReactionType.LIKE;
 
-        startLoader();
+        if (useLoader) {
+            startLoader();
+        }
         try {
             let remove = reactions && reactions.filter(userReaction => userReaction.user.id === engine.user.id && userReaction.reaction === r).length > 0;
             if (remove) {
@@ -88,7 +90,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         if (now - lastTap < DOUBLE_PRESS_DELAY) {
             ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false });
 
-            client.mutateCommentSetReaction({ commentId: comment.id, reaction: MessageReactionType.LIKE });
+            handleReactionPress(false);
         } else {
             lastTap = now;
         }
@@ -138,7 +140,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
             {!deleted && (
                 <>
                     <ZLabelButton label="Reply" onPress={() => props.onReplyPress(comment)} />
-                    <ZLabelButton label={myLike ? 'Liked' : 'Like'} style={myLike ? 'danger' : 'default'} onPress={handleReactionPress} />
+                    <ZLabelButton label={myLike ? 'Liked' : 'Like'} style={myLike ? 'danger' : 'default'} onPress={() => handleReactionPress(true)} />
 
                     {likesCount > 0 && <ZLabelButton label={plural(likesCount, ['like', 'likes'])} onPress={handleReactionListPress} />}
                 </>
