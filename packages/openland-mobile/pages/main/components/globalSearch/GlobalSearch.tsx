@@ -14,6 +14,7 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 interface GlobalSearchProps {
     query: string;
     router: SRouter;
+    emptyView?: JSX.Element;
 
     onOrganizationPress?: (id: string, title: string) => void;
     onUserPress?: (id: string, title: string) => void;
@@ -58,9 +59,7 @@ const GlobalSearchInner = (props: GlobalSearchProps) => {
 };
 
 export const GlobalSearch = XMemo<GlobalSearchProps>((props) => {
-    if (props.query.trim().length === 0) {
-        return null;
-    }
+    const query = props.query.trim();
 
     return (
         <SScrollView>
@@ -68,7 +67,8 @@ export const GlobalSearch = XMemo<GlobalSearchProps>((props) => {
                 {area => (
                     <View minHeight={Dimensions.get('screen').height - area.top - area.bottom}>
                         <React.Suspense fallback={SNativeConfig.loader}>
-                            <GlobalSearchInner {...props} />
+                            {query.length > 0 && <GlobalSearchInner {...props} />}
+                            {query.length <= 0 && props.emptyView}
                         </React.Suspense>
                     </View>
                 )}

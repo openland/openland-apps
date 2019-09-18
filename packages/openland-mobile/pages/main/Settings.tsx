@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Share } from 'react-native';
+import { Share, View } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListGroup } from '../../components/ZListGroup';
@@ -136,11 +136,13 @@ let SettingsContent = ((props: PageProps) => {
                     />
                 ))}
             </ZListGroup>
-            {(NON_PRODUCTION) && (
+            {NON_PRODUCTION && (
                 <ZListGroup header={null}>
                     <ZListItem text="Developer Menu" path="Dev" />
                 </ZListGroup>
             )}
+
+            <View height={32} />
         </SScrollView>
     );
 });

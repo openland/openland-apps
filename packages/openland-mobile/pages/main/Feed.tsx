@@ -16,6 +16,8 @@ import { SSearchControler } from 'react-native-s/SSearchController';
 import { SRouter } from 'react-native-s/SRouter';
 import { FeedDateView } from 'openland-mobile/feed/FeedDateView';
 import { DataSourceFeedItem } from 'openland-engines/feed/types';
+import { SDeferred } from 'react-native-s/SDeferred';
+import { RoomsList } from './Explore';
 
 interface FeedPageProps {
     engine: FeedEngine;
@@ -70,15 +72,29 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
     }
 
     render() {
+        const { router, engine } = this.props;
+
         return (
             <>
                 <SHeader title="Feed" />
+
                 {NON_PRODUCTION && <SHeaderButton title="Create" icon={require('assets/ic-add-24.png')} onPress={this.handleCreate} />}
+
                 <SSearchControler
-                    searchRender={(p) => <GlobalSearch query={p.query} router={this.props.router} />}
+                    searchRender={(p) => (
+                        <GlobalSearch
+                            query={p.query}
+                            router={router}
+                            emptyView={
+                                <SDeferred>
+                                    <RoomsList router={router} />
+                                </SDeferred>
+                            }
+                        />
+                    )}
                 >
                     <DataSourceRender
-                        dataSource={this.props.engine.dataSource}
+                        dataSource={engine.dataSource}
                         renderItem={this.renderItem}
                         renderLoading={this.renderLoading}
                         renderEmpty={this.renderEmpty}
