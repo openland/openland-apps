@@ -7,6 +7,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { FeedHandlers } from '../FeedHandlers';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
+import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
 
 const styles = StyleSheet.create({
     box: {
@@ -31,7 +32,7 @@ interface FeedPostToolsProps {
 export const FeedPostTools = React.memo((props: FeedPostToolsProps) => {
     const theme = React.useContext(ThemeContext);
     const { item } = props;
-    const { id, reactionsReduced, canEdit } = item;
+    const { id, reactionsReduced, reactions, canEdit } = item;
 
     const likes = reactionsReduced.filter(r => r.reaction === MessageReactionType.LIKE);
     const likesCount = likes.length ? likes[0].count : 0;
@@ -42,7 +43,7 @@ export const FeedPostTools = React.memo((props: FeedPostToolsProps) => {
             <ZIconButton src={myLike ? require('assets/ic-like-filled-24.png') : require('assets/ic-like-24.png')} style={myLike ? 'danger' : 'default'} onPress={() => FeedHandlers.Like(item)} />
             <View style={styles.counterWrapper}>
                 {likesCount > 0 && (
-                    <Text style={[styles.counter, { color: myLike ? theme.accentNegative : theme.foregroundSecondary }]} allowFontScaling={false}>
+                    <Text style={[styles.counter, { color: myLike ? theme.accentNegative : theme.foregroundSecondary }]} allowFontScaling={false} onPress={() => showReactionsList(reactions)}>
                         {plural(likesCount, ['like', 'likes'])}
                     </Text>
                 )}
