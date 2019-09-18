@@ -94,10 +94,10 @@ export class FeedSwipeHandler extends React.PureComponent<FeedSwipeHandlerProps>
 
     filterDx = (dx: number) => {
         if (dx > 0) {
-            return dx < IGNORE_DISTANCE ? 0 : Math.min(dx - IGNORE_DISTANCE, this.deviceWidth);
+            return dx < IGNORE_DISTANCE ? 0 : Math.min(dx, this.deviceWidth) - IGNORE_DISTANCE;
         }
 
-        return dx > -IGNORE_DISTANCE ? 0 : Math.max(dx + IGNORE_DISTANCE, -this.deviceWidth);
+        return dx > -IGNORE_DISTANCE ? 0 : Math.max(dx, -this.deviceWidth) + IGNORE_DISTANCE;
     }
 
     calcDelta = (dx: number) => dx / 1.5;
