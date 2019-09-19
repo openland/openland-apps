@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Share } from 'react-native';
+import { Share, View } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListGroup } from '../../components/ZListGroup';
@@ -25,6 +25,26 @@ let useOnlineState = () => {
     return status;
 };
 
+export const handleGlobalInvitePress = async () => {
+    startLoader();
+
+    try {
+        const inviteCode = await getClient().queryAccountAppInvite({ fetchPolicy: 'network-only' });
+        const inviteLink = 'https://openland.com/invite/' + inviteCode.invite;
+
+        trackEvent('invite_link_action', {
+            invite_type: 'Openland',
+            action_type: 'link_shared'
+        });
+
+        Share.share({ message: inviteLink });
+    } catch (e) {
+        console.warn(e);
+    } finally {
+        stopLoader();
+    }
+};
+
 let SettingsContent = ((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const resp = getClient().useAccountSettings({ fetchPolicy: 'cache-and-network' });
@@ -36,26 +56,6 @@ let SettingsContent = ((props: PageProps) => {
     const primary = resp.me.primaryOrganization;
     const secondary = resp.organizations.filter((v) => v.id !== (primary && primary.id)).sort((a, b) => a.name.localeCompare(b.name));
     const status = useOnlineState();
-
-    const handleGlobalInvitePress = React.useCallback(async () => {
-        startLoader();
-
-        try {
-            const inviteCode = await getClient().queryAccountAppInvite({ fetchPolicy: 'network-only' });
-            const inviteLink = 'https://openland.com/invite/' + inviteCode.invite;
-
-            trackEvent('invite_link_action', {
-                invite_type: 'Openland',
-                action_type: 'link_shared'
-            });
-
-            Share.share({ message: inviteLink });
-        } catch (e) {
-            console.warn(e);
-        } finally {
-            stopLoader();
-        }
-    }, []);
 
     return (
         <SScrollView>
@@ -136,11 +136,13 @@ let SettingsContent = ((props: PageProps) => {
                     />
                 ))}
             </ZListGroup>
-            {(NON_PRODUCTION) && (
+            {NON_PRODUCTION && (
                 <ZListGroup header={null}>
                     <ZListItem text="Developer Menu" path="Dev" />
                 </ZListGroup>
             )}
+
+            <View height={32} />
         </SScrollView>
     );
 });

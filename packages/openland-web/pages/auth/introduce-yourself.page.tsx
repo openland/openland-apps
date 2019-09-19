@@ -163,7 +163,7 @@ const CreateProfileFormInnerWeb = (
                         dataTestId="first-name"
                         flexGrow={1}
                         field={firstName}
-                        hideErrorText
+                        hideErrorText={true}
                     />
                 </XView>
                 {firstName.input.invalid &&
@@ -180,7 +180,7 @@ const CreateProfileFormInnerWeb = (
                         dataTestId="last-name"
                         flexGrow={1}
                         field={lastName}
-                        hideErrorText
+                        hideErrorText={true}
                     />
                 </XView>
                 {lastName.input.invalid &&

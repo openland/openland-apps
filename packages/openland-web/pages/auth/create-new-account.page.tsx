@@ -43,9 +43,9 @@ export const SignUpAuthMechanism = ({
             <XView alignItems="center" flexGrow={1} justifyContent="center" marginTop={-100}>
                 <Title text={title} />
                 <XView marginTop={22} width={220}>
-                    <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText} />
+                    <GoogleButton rounded={true} onClick={loginWithGoogle} text={googleButtonText} />
                     <XView marginTop={15}>
-                        <EmailButton rounded onClick={loginWithEmail} text={emailText} />
+                        <EmailButton rounded={true} onClick={loginWithEmail} text={emailText} />
                     </XView>
                 </XView>
 

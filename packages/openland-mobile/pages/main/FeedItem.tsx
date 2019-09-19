@@ -20,29 +20,25 @@ const FeedItemComponent = React.memo((props: PageProps) => {
     const client = getClient();
     const messenger = getMessenger();
     const theme = React.useContext(ThemeContext);
-    const item = client.useFeedItem({ id: feedItemId }, { fetchPolicy: 'cache-and-network' }).item;
+    const itemSrc = client.useFeedItem({ id: feedItemId }, { fetchPolicy: 'cache-and-network' }).item;
 
-    if (!item || item.__typename !== 'FeedPost') {
+    if (!itemSrc || itemSrc.__typename !== 'FeedPost') {
         return null;
     }
 
-    const itemProcessed = React.useMemo(() => convertPost(item, messenger.engine), [item]);
-    const { canEdit, author, date, slides, reactionsReduced } = itemProcessed;
+    const item = React.useMemo(() => convertPost(itemSrc, messenger.engine), [itemSrc]);
+    const { author, date, slides } = item;
     const width = Dimensions.get('screen').width;
     const [currentSlide, setCurreentSlide] = React.useState(0);
 
     const peerView = (
         <View paddingTop={8}>
             <FeedPostContent
-                slides={slides}
+                post={item}
                 width={width}
                 onSlideChange={i => setCurreentSlide(i)}
             />
-            <FeedPostTools
-                id={feedItemId}
-                reactions={reactionsReduced}
-                canEdit={canEdit}
-            />
+            <FeedPostTools item={item} />
         </View>
     );
 

@@ -1,20 +1,37 @@
 {
-    "extends": ["tslint-react", "tslint-config-prettier", "tslint-react-hooks"],
+    "extends": [
+        "tslint-react",
+        "tslint-config-prettier",
+        "tslint-react-hooks"
+    ],
     "rules": {
         "ban": false,
         "class-name": true,
-        "comment-format": [true, "check-space"],
+        "comment-format": [
+            true,
+            "check-space"
+        ],
         "curly": true,
         "eofline": false,
         "forin": true,
-        "indent": [true, "spaces"],
-        "interface-name": [true, "never-prefix"],
+        "indent": [
+            true,
+            "spaces"
+        ],
+        "interface-name": [
+            true,
+            "never-prefix"
+        ],
         "jsdoc-format": true,
         "jsx-no-lambda": false,
         "jsx-no-multiline-js": false,
         "jsx-alignment": true,
         "label-position": true,
-        "member-ordering": [true, "private-before-public", "static-before-instance"],
+        "member-ordering": [
+            true,
+            "private-before-public",
+            "static-before-instance"
+        ],
         "no-any": false,
         "no-arg": true,
         "no-bitwise": false,
@@ -31,11 +48,24 @@
         "no-unused-expression": true,
         "no-unused-variable": true,
         "no-use-before-declare": true,
-        "one-line": [true, "check-catch", "check-else", "check-open-brace", "check-whitespace"],
+        "one-line": [
+            true,
+            "check-catch",
+            "check-else",
+            "check-open-brace",
+            "check-whitespace"
+        ],
         "radix": true,
         "switch-default": true,
-        "triple-equals": [true, "allow-null-check"],
-        "typedef": [true, "parameter", "property-declaration"],
+        "triple-equals": [
+            true,
+            "allow-null-check"
+        ],
+        "typedef": [
+            true,
+            "parameter",
+            "property-declaration"
+        ],
         "typedef-whitespace": [
             true,
             {
@@ -63,13 +93,21 @@
             "check-type",
             "check-typecast"
         ],
-        "jsx-boolean-value": false,
-        "semicolon": [true, "always"]
+        "jsx-boolean-value": [
+            true,
+            "always"
+        ],
+        "semicolon": [
+            true,
+            "always"
+        ]
     },
     "jsRules": {
         "no-empty": true
     },
     "linterOptions": {
-        "exclude": ["**/*.json"]
+        "exclude": [
+            "**/*.json"
+        ]
     }
 }

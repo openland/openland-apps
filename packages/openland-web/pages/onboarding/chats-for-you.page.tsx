@@ -146,15 +146,15 @@ const ChatsItemList = ({
                         }}
                     />
                 ) : (
-                    <XButton
-                        text={`Select all`}
-                        style="light"
-                        size="default"
-                        onClick={() => {
-                            setSelectedIds(allRoomsIds);
-                        }}
-                    />
-                )}
+                        <XButton
+                            text={`Select all`}
+                            style="light"
+                            size="default"
+                            onClick={() => {
+                                setSelectedIds(allRoomsIds);
+                            }}
+                        />
+                    )}
             </XView>
 
             <XScrollView3 marginBottom={-110} flexGrow={1} flexShrink={1} alignItems="center">
@@ -237,7 +237,7 @@ export const ChatsForYou = ({
             <XDocumentHead title="Choose role" />
             {!noTopBar && <TopBar progressInPercents={getPercentageOfOnboarding(10)} />}
             <XView marginBottom={12} marginTop={isMobile ? 15 : 34}>
-                <BackSkipLogo noLogo onBack={onBack} onSkip={onSkip} />
+                <BackSkipLogo noLogo={true} onBack={onBack} onSkip={onSkip} />
             </XView>
 
             <XView

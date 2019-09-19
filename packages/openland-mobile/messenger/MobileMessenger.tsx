@@ -28,6 +28,7 @@ import { AsyncNewMessageDivider } from './components/AsyncNewMessageDivider';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { AsyncServiceMessage } from './components/AsyncServiceMessage';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import { showFileModal } from 'openland-mobile/components/file/showFileModal';
 
 const SortedReactions = [
     MessageReactionType.LIKE,
@@ -126,7 +127,9 @@ export class MobileMessenger {
     handleDocumentClick = (document: DataSourceMessageItem) => {
         let attach = document.attachments!.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
         // { config: { uuid, name, size }
-        this.history.navigationManager.push('FilePreview', { config: { uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size } });
+        // this.history.navigationManager.push('FilePreview', { config: { uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size } });
+
+        showFileModal({ uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size });
     }
 
     handleDialogClick = (id: string) => {

@@ -75,7 +75,7 @@ export const RoomsExploreComponent = React.memo(() => {
             noQueryText="Featured groups and channels"
             hasQueryText="Groups and channels"
             defaultSortOption="membersCount"
-            withoutFeatured
+            withoutFeatured={true}
             sortOptions={{
                 label: 'Sort by',
                 values: [

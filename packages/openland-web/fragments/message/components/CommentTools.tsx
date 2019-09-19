@@ -5,6 +5,7 @@ import LikeIcon from 'openland-icons/s/ic-like-16.svg';
 import LikeFilledIcon from 'openland-icons/s/ic-like-filled-16.svg';
 import ReplyIcon from 'openland-icons/s/ic-reply-16.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-16.svg';
+import EditIcon from 'openland-icons/s/ic-edit-16.svg';
 import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { plural } from 'openland-y-utils/plural';
@@ -22,12 +23,13 @@ interface CommentToolsProps {
     reactions: FullMessage_GeneralMessage_reactions[];
     onReactionClick: () => void;
     onReplyClick: () => void;
+    onEditClick?: () => void;
     onDeleteClick?: () => void;
 }
 
 export const CommentTools = React.memo((props: CommentToolsProps) => {
     const messenger = React.useContext(MessengerContext);
-    const { reactions, onReactionClick, onReplyClick, onDeleteClick } = props;
+    const { reactions, onReactionClick, onReplyClick, onDeleteClick, onEditClick } = props;
 
     const myLike = reactions.filter(r => r.user.id === messenger.user.id).length > 0;
     const likeLabel =
@@ -70,9 +72,8 @@ export const CommentTools = React.memo((props: CommentToolsProps) => {
 
             <UIconLabeled icon={<ReplyIcon />} label="Reply" onClick={onReplyClick} />
 
-            {!!onDeleteClick && (
-                <UIconLabeled icon={<DeleteIcon />} label="Delete" onClick={onDeleteClick} />
-            )}
+            {!!onEditClick && <UIconLabeled icon={<EditIcon />} label="Edit" onClick={onEditClick} />}
+            {!!onDeleteClick && <UIconLabeled icon={<DeleteIcon />} label="Delete" onClick={onDeleteClick} />}
         </div>
     );
 });

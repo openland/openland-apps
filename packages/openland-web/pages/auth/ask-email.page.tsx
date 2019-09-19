@@ -106,13 +106,13 @@ export const WebSignUpCreateWithEmail = ({
             <Subtitle text={subTitle} />
             <XView width={isMobile ? '100%' : 360} maxWidth={360}>
                 <InputField
-                    autofocus
+                    autofocus={true}
                     width={isMobile ? '100%' : 360}
                     dataTestId="email"
                     type="email"
                     title={InitTexts.auth.emailPlaceholder}
                     field={emailField}
-                    hideErrorText
+                    hideErrorText={true}
                     invalid={isInvalid}
                 />
                 {isInvalid && <XErrorMessage2 message={errorText} />}

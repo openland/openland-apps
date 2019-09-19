@@ -16,7 +16,7 @@ const SelectComponents = () => {
         <>
             <div>small default select</div>
             <USelect
-                creatable
+                creatable={true}
                 searchable={false}
                 placeholder="Events count"
                 size="small"
@@ -32,8 +32,8 @@ const SelectComponents = () => {
             />
             <div>small multi creatable searchable</div>
             <USelect
-                creatable
-                multi
+                creatable={true}
+                multi={true}
                 placeholder="Events count"
                 size="small"
                 options={[
@@ -48,7 +48,7 @@ const SelectComponents = () => {
             />
             <div>default select</div>
             <USelect
-                creatable
+                creatable={true}
                 searchable={false}
                 placeholder="Events count"
                 options={[
@@ -63,7 +63,7 @@ const SelectComponents = () => {
             />
             <div>default creatable searchable</div>
             <USelect
-                creatable
+                creatable={true}
                 placeholder="Events count"
                 options={[
                     { value: 100, label: '100', labelShort: 'sto', subtitle: 'sotnyia' },
@@ -77,7 +77,7 @@ const SelectComponents = () => {
             />
             <div>multi / !creatable</div>
             <USelect
-                multi
+                multi={true}
                 placeholder="Events count"
                 options={[
                     { value: 100, label: '100', labelShort: 'sto', subtitle: 'sotnyia' },
@@ -91,9 +91,9 @@ const SelectComponents = () => {
             />
             <div>hidden select menu / clearable / creatable</div>
             <USelect
-                creatable
-                clearable
-                hideSelector
+                creatable={true}
+                clearable={true}
+                hideSelector={true}
                 placeholder="Events count"
                 options={[
                     { value: 100, label: '100', labelShort: 'sto', subtitle: 'sotnyia' },

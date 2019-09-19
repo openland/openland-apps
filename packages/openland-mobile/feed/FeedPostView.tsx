@@ -51,12 +51,14 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
         <FeedSwipeHandler
             id={id}
             theme={theme}
-            onLeftSwiped={() => FeedHandlers.Like(id)}
+            onLeftSwiped={() => FeedHandlers.Like(item)}
             onRightSwiped={() => FeedHandlers.Share(id)}
             leftIcon={require('assets/ic-like-24.png')}
             rightIcon={require('assets/ic-forward-24.png')}
-            leftSwipedColor={theme.accentNegative}
-            rightSwipedColor={theme.accentPositive}
+            leftColor={theme.backgroundTertiary}
+            rightColor={theme.backgroundTertiary}
+            leftColorSwiped={theme.accentNegative}
+            rightColorSwiped={theme.accentPositive}
             scrollRef={scrollRef}
         >
             <View style={styles.box}>
@@ -71,7 +73,7 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
                             slidesCount={slides.length}
                         />
                         <FeedPostContent
-                            slides={slides}
+                            post={item}
                             width={containerWidth}
                             onLongPress={handleLongPress}
                             borderRadius={RadiusStyles.Large}

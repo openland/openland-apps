@@ -13,7 +13,7 @@ export const resolveLinkAction = (url: string) => {
             action_type: 'invite_friends'
         });
         showModalBox({ fullScreen: true }, ctx => (
-            <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
+            <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
                 <InviteFriendsComponent modalContext={ctx} />
             </XScrollView3>
         ));
@@ -22,7 +22,7 @@ export const resolveLinkAction = (url: string) => {
             action_type: 'install_apps'
         });
         showModalBox({ fullScreen: true }, () => (
-            <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll>
+            <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
                 <DownloadAppsComponent />
             </XScrollView3>
         ));

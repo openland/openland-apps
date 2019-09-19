@@ -104,7 +104,7 @@ const CreateOrganizationFormInnerWeb = ({
                     dataTestId="organization"
                     flexGrow={1}
                     className={organizationInputClassName}
-                    hideErrorText
+                    hideErrorText={true}
                     field={organizationField}
                 />
                 {isInvalid && <XErrorMessage2 message={errorText} />}

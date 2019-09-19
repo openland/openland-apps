@@ -11,7 +11,6 @@ import { ProfileGroup } from './pages/main/ProfileGroup';
 import { Navigation } from './pages/dev/Navigation';
 import { Loader } from './pages/dev/Loader';
 import { Home } from './pages/main/Home';
-import { FilePreview } from './pages/main/modals/FilePreview';
 import { SettingsOrganizations } from './pages/main/beta/SettingsOrganizations';
 import { SRoutesBuilder } from 'react-native-s/SRoutes';
 import { NewOrganization } from './pages/main/NewOrganization';
@@ -81,7 +80,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('NewOrganization', NewOrganization)
   .addRoute('EditCommunity', EditCommunity)
   .addRoute('EditOrganization', EditOrganization)
-  .addRoute('FilePreview', FilePreview)
   .addRoute('Compose', Compose)
   .addRoute('CreateGroupAttrs', CreateGroupAttrs)
   .addRoute('OrganizationInviteLinkModal', ProfileOrganizationLink)

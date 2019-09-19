@@ -224,7 +224,7 @@ export const SettingsProfileFragment = React.memo(() => {
                                 alignSelf="flex-start"
                                 onClick={doConfirm}
                                 loading={form.loading}
-                                square
+                                square={true}
                             />
                         </FormFooter>
                     </XView>

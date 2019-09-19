@@ -21,7 +21,7 @@ export const FontStyles = {
     }
 };
 
-type TextStylesVariants = 'Large' | 'Title1' | 'Title2' | 'Headline' | 'Label1' | 'Label2' | 'Label3' | 'Body' | 'Densed' | 'Subhead' | 'Caption' | 'Detail';
+type TextStylesVariants = 'Large' | 'Title1' | 'Title2' | 'Headline' | 'Label1' | 'Label2' | 'Label3' | 'Body' | 'Densed' | 'Subhead' | 'Caption' | 'Detail' | 'Post1' | 'Post2';
 
 const TextStylesIOS: { [key in TextStylesVariants]: TextStyle } = {
     Large: { fontSize: 34, lineHeight: 40, fontWeight: FontStyles.Weight.Bold },
@@ -35,7 +35,9 @@ const TextStylesIOS: { [key in TextStylesVariants]: TextStyle } = {
     Densed: { fontSize: 17, lineHeight: 22, fontWeight: FontStyles.Weight.Regular },
     Subhead: { fontSize: 15, lineHeight: 20, fontWeight: FontStyles.Weight.Regular },
     Caption: { fontSize: 13, lineHeight: 18, fontWeight: FontStyles.Weight.Regular },
-    Detail: { fontSize: 10, lineHeight: 12, fontWeight: FontStyles.Weight.Bold }
+    Detail: { fontSize: 10, lineHeight: 12, fontWeight: FontStyles.Weight.Bold },
+    Post1: { fontSize: 24, lineHeight: 34, fontWeight: FontStyles.Weight.Regular },
+    Post2: { fontSize: 20, lineHeight: 28, fontWeight: FontStyles.Weight.Regular }
 };
 
 const TextStylesAndroid: { [key in TextStylesVariants]: TextStyle } = {
@@ -50,7 +52,9 @@ const TextStylesAndroid: { [key in TextStylesVariants]: TextStyle } = {
     Densed: { fontSize: 16, lineHeight: 22, fontWeight: FontStyles.Weight.Regular },
     Subhead: { fontSize: 14, lineHeight: 20, fontWeight: FontStyles.Weight.Regular },
     Caption: { fontSize: 12, lineHeight: 16, fontWeight: FontStyles.Weight.Regular },
-    Detail: { fontSize: 10, lineHeight: 12, fontWeight: FontStyles.Weight.Bold }
+    Detail: { fontSize: 10, lineHeight: 12, fontWeight: FontStyles.Weight.Bold },
+    Post1: { fontSize: 24, lineHeight: 34, fontWeight: FontStyles.Weight.Regular },
+    Post2: { fontSize: 20, lineHeight: 28, fontWeight: FontStyles.Weight.Regular }
 };
 
 const TextStylesAsyncIOS: { [key in TextStylesVariants]: ASTextProps } = {
@@ -66,21 +70,25 @@ const TextStylesAsyncIOS: { [key in TextStylesVariants]: ASTextProps } = {
     Subhead: { ...TextStylesIOS.Subhead as ASTextProps, letterSpacing: -0.24 },
     Caption: { ...TextStylesIOS.Caption as ASTextProps, letterSpacing: -0.08 },
     Detail: { ...TextStylesIOS.Caption as ASTextProps, letterSpacing: 0.25 },
+    Post1: { ...TextStylesIOS.Post1 as ASTextProps, letterSpacing: 0.36 },
+    Post2: { ...TextStylesIOS.Post2 as ASTextProps, letterSpacing: 0.38 },
 };
 
 const TextStylesAsyncAndroid: { [key in TextStylesVariants]: ASTextProps } = {
-    Large: { ...TextStylesIOS.Large as ASTextProps, letterSpacing: undefined },
-    Title1: { ...TextStylesIOS.Title1 as ASTextProps, letterSpacing: undefined },
-    Title2: { ...TextStylesIOS.Title2 as ASTextProps, letterSpacing: 0.15 },
-    Headline: { ...TextStylesIOS.Headline as ASTextProps, letterSpacing: 0.15 },
-    Label1: { ...TextStylesIOS.Label1 as ASTextProps, letterSpacing: 0.15 },
-    Label2: { ...TextStylesIOS.Label2 as ASTextProps, letterSpacing: 0.1 },
-    Label3: { ...TextStylesIOS.Label3 as ASTextProps, letterSpacing: 0.4 },
-    Body: { ...TextStylesIOS.Body as ASTextProps, letterSpacing: 0.25 },
-    Densed: { ...TextStylesIOS.Densed as ASTextProps, letterSpacing: 0.25 },
-    Subhead: { ...TextStylesIOS.Subhead as ASTextProps, letterSpacing: 0.25 },
-    Caption: { ...TextStylesIOS.Caption as ASTextProps, letterSpacing: 0.4 },
-    Detail: { ...TextStylesIOS.Caption as ASTextProps, letterSpacing: 0.25 },
+    Large: { ...TextStylesAndroid.Large as ASTextProps, letterSpacing: undefined },
+    Title1: { ...TextStylesAndroid.Title1 as ASTextProps, letterSpacing: undefined },
+    Title2: { ...TextStylesAndroid.Title2 as ASTextProps, letterSpacing: 0.15 },
+    Headline: { ...TextStylesAndroid.Headline as ASTextProps, letterSpacing: 0.15 },
+    Label1: { ...TextStylesAndroid.Label1 as ASTextProps, letterSpacing: 0.15 },
+    Label2: { ...TextStylesAndroid.Label2 as ASTextProps, letterSpacing: 0.1 },
+    Label3: { ...TextStylesAndroid.Label3 as ASTextProps, letterSpacing: 0.4 },
+    Body: { ...TextStylesAndroid.Body as ASTextProps, letterSpacing: 0.25 },
+    Densed: { ...TextStylesAndroid.Densed as ASTextProps, letterSpacing: 0.25 },
+    Subhead: { ...TextStylesAndroid.Subhead as ASTextProps, letterSpacing: 0.25 },
+    Caption: { ...TextStylesAndroid.Caption as ASTextProps, letterSpacing: 0.4 },
+    Detail: { ...TextStylesAndroid.Caption as ASTextProps, letterSpacing: 0.25 },
+    Post1: { ...TextStylesAndroid.Post1 as ASTextProps, letterSpacing: 0.36 },
+    Post2: { ...TextStylesAndroid.Post2 as ASTextProps, letterSpacing: 0.38 },
 };
 
 export const TextStyles = Platform.OS === 'ios' ? TextStylesIOS : TextStylesAndroid;

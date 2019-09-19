@@ -1009,6 +1009,12 @@ export class OpenlandClient extends BaseApiClient {
     async mutateFeedCreateGlobalPost(variables: Types.FeedCreateGlobalPostVariables): Promise<Types.FeedCreateGlobalPost> {
         return this.client.mutate(Source.FeedCreateGlobalPostMutation, variables);
     }
+    async mutateFeedReactionAdd(variables: Types.FeedReactionAddVariables): Promise<Types.FeedReactionAdd> {
+        return this.client.mutate(Source.FeedReactionAddMutation, variables);
+    }
+    async mutateFeedReactionRemove(variables: Types.FeedReactionRemoveVariables): Promise<Types.FeedReactionRemove> {
+        return this.client.mutate(Source.FeedReactionRemoveMutation, variables);
+    }
     async mutateFeedDeletePost(variables: Types.FeedDeletePostVariables): Promise<Types.FeedDeletePost> {
         return this.client.mutate(Source.FeedDeletePostMutation, variables);
     }

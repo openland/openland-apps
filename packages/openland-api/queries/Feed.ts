@@ -44,6 +44,18 @@ export const FeedCreateGlobalPostMutation = gql`
     ${FeedItemFull}
 `;
 
+export const FeedReactionAddMutation = gql`
+    mutation FeedReactionAdd($feedItemId: ID!, $reaction: MessageReactionType!) {
+        feedReactionAdd(feedItemId: $feedItemId, reaction: $reaction)
+    }
+`;
+
+export const FeedReactionRemoveMutation = gql`
+    mutation FeedReactionRemove($feedItemId: ID!, $reaction: MessageReactionType!) {
+        feedReactionRemove(feedItemId: $feedItemId, reaction: $reaction)
+    }
+`;
+
 export const FeedDeletePostMutation = gql`
     mutation FeedDeletePost($feedItemId: ID!) {
         alphaDeleteFeedPost(feedItemId: $feedItemId)

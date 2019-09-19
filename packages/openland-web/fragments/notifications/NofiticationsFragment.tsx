@@ -86,7 +86,7 @@ class CommentsNotificationsInner extends React.PureComponent<
         return (
             <>
                 <XScrollView3
-                    useDefaultScroll
+                    useDefaultScroll={true}
                     flexGrow={1}
                     flexShrink={1}
                     onScroll={this.handleScroll}

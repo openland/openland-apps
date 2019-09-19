@@ -452,13 +452,16 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 ref={suggestRef}
             />
             <input ref={fileInputRef} type="file" multiple={true} style={{ display: 'none' }} onChange={onFileInputChange} />
-            <div className={actionButtonContainer} >
-                <UIconButton icon={<AttachIcon />} onClick={onAttachPress} />
-            </div>
+            {!!props.onAttach && (
+                <div className={actionButtonContainer} >
+                    <UIconButton icon={<AttachIcon />} onClick={onAttachPress} />
+                </div>
+            )}
             <XView
                 flexGrow={1}
                 flexShrink={1}
-                marginHorizontal={16}
+                marginRight={16}
+                marginLeft={!!props.onAttach ? 16 : 0}
                 maxHeight={250}
                 flexDirection="column"
             >
@@ -476,7 +479,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     autofocus={true}
                     placeholder={props.placeholder || 'Write a message...'}
                     onFilesPaste={props.onAttach}
-                    withShortcutsButton
+                    withShortcutsButton={true}
                 />
             </XView>
             {!loading && (

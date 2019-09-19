@@ -11641,6 +11641,104 @@
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
+			"operationName": "FeedReactionAdd",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "feedItemId",
+					"type": "ID!"
+				},
+				{
+					"name": "reaction",
+					"type": "MessageReactionType!"
+				}
+			],
+			"source": "mutation FeedReactionAdd($feedItemId: ID!, $reaction: MessageReactionType!) {\n  feedReactionAdd(feedItemId: $feedItemId, reaction: $reaction)\n}",
+			"fields": [
+				{
+					"responseName": "feedReactionAdd",
+					"fieldName": "feedReactionAdd",
+					"type": "Boolean!",
+					"args": [
+						{
+							"name": "feedItemId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "feedItemId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "reaction",
+							"value": {
+								"kind": "Variable",
+								"variableName": "reaction"
+							},
+							"type": "MessageReactionType!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation FeedReactionAdd($feedItemId: ID!, $reaction: MessageReactionType!) {\n  feedReactionAdd(feedItemId: $feedItemId, reaction: $reaction)\n}",
+			"operationId": "faa802b6aa60a22f4af9a819ee9b764af1d9a6d6fa23f80d3d49380119aa9f4c"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
+			"operationName": "FeedReactionRemove",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "feedItemId",
+					"type": "ID!"
+				},
+				{
+					"name": "reaction",
+					"type": "MessageReactionType!"
+				}
+			],
+			"source": "mutation FeedReactionRemove($feedItemId: ID!, $reaction: MessageReactionType!) {\n  feedReactionRemove(feedItemId: $feedItemId, reaction: $reaction)\n}",
+			"fields": [
+				{
+					"responseName": "feedReactionRemove",
+					"fieldName": "feedReactionRemove",
+					"type": "Boolean!",
+					"args": [
+						{
+							"name": "feedItemId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "feedItemId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "reaction",
+							"value": {
+								"kind": "Variable",
+								"variableName": "reaction"
+							},
+							"type": "MessageReactionType!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation FeedReactionRemove($feedItemId: ID!, $reaction: MessageReactionType!) {\n  feedReactionRemove(feedItemId: $feedItemId, reaction: $reaction)\n}",
+			"operationId": "9d6361c8e453c1d47a37356e41a02a81d13f64c1cea5739e54ab56441fac76f7"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
 			"operationName": "FeedDeletePost",
 			"operationType": "mutation",
 			"rootType": "Mutation",

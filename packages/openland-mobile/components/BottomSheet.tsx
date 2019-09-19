@@ -10,7 +10,7 @@ import { randomKey } from 'react-native-s/utils/randomKey';
 import { SDevice } from 'react-native-s/SDevice';
 
 export interface BottomSheetActions {
-    hide: () => void; 
+    hide: () => void;
     show: () => void;
 }
 interface BuildConfig {
@@ -34,7 +34,7 @@ interface BottomSheetProviderState {
 let provider: BottomSheetProviderComponent;
 
 export function showBottomSheet(
-    view: (actions: BottomSheetActions) => React.ReactElement, 
+    view: (actions: BottomSheetActions) => React.ReactElement,
     { cancelable = true }: { cancelable?: boolean; } = {}
 ) {
     if (provider) {
@@ -45,7 +45,7 @@ export function showBottomSheet(
 class BottomSheetProviderComponent extends React.Component<
     BottomSheetProviderProps,
     BottomSheetProviderState
-> {
+    > {
     private _refs: { key: string; current: Modalize }[] = [];
     state = { modals: [] };
 
@@ -80,9 +80,9 @@ class BottomSheetProviderComponent extends React.Component<
         const modal = { key, actions, ...config };
 
         this.setState({
-            modals: [...modals,  modal],
+            modals: [...modals, modal],
         });
-        
+
         return actions;
     }
 
@@ -111,7 +111,7 @@ class BottomSheetProviderComponent extends React.Component<
         if (modal.cancelable === false) {
             return <View />;
         }
-        
+
         return (
             <View padding={16} paddingBottom={SDevice.safeArea.bottom || undefined}>
                 <ZRoundedButton
@@ -150,7 +150,7 @@ class BottomSheetProviderComponent extends React.Component<
                 ref={this.setRef(modal.key)}
                 onClosed={this.handleClose(modal.key)}
                 overlayStyle={overlayStyle}
-                adjustToContentHeight
+                adjustToContentHeight={true}
                 handlePosition={'inside'}
                 modalStyle={modalizeStyle}
                 handleStyle={handleStyle}

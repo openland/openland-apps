@@ -10,8 +10,8 @@ interface SearchBoxProps {
 
 export const SearchBox = (props: SearchBoxProps) => (
     <USelect
-        multi
-        hideSelector
+        multi={true}
+        hideSelector={true}
         size={props.small ? 'small' : undefined}
         placeholder="Search"
         onBlurResetsInput={false}

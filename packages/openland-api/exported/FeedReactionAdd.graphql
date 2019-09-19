@@ -1,0 +1,3 @@
+mutation FeedReactionAdd($feedItemId: ID!, $reaction: MessageReactionType!) {
+  feedReactionAdd(feedItemId: $feedItemId, reaction: $reaction)
+}

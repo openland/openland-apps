@@ -219,7 +219,7 @@ export const UButton = (props: UButtonProps) => {
                     <XLoader
                         loading={true}
                         size="small"
-                        transparentBackground
+                        transparentBackground={true}
                         {...loaderColor[style]}
                     />
                 )}

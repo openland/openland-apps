@@ -119,7 +119,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                 {welcomeMessageEnabled && (
                     <View style={{ paddingHorizontal: 16, marginTop: 24 }}>
                         <ZPickField
-                            noWrapper
+                            noWrapper={true}
                             label="Sender"
                             value={welcomeMessageSender ? welcomeMessageSender.name : undefined}
                             onPress={() => {
@@ -140,12 +140,12 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                             }}
                         />
                         <View style={{ marginTop: 16 }}>
-                            <ZInput noWrapper multiline={true} placeholder="Message" field={welcomeMessageField} />
+                            <ZInput noWrapper={true} multiline={true} placeholder="Message" field={welcomeMessageField} />
                         </View>
                     </View>
                 )}
 
-                <View style={{ paddingHorizontal: 16,  marginTop: 27 }}>
+                <View style={{ paddingHorizontal: 16, marginTop: 27 }}>
                     <Text style={{ ...TextStyles.Title2, marginBottom: 11, color: theme.foregroundPrimary }}>Social sharing image</Text>
                     <Text style={{ ...TextStyles.Body, marginBottom: 24, color: theme.foregroundPrimary }}>Choose an image to display when sharing invite to the group on social networks</Text>
                     <ZAvatarPicker field={socialImageField} render={SocialPicker} pickSize={{ width: 1200, height: 630 }} />

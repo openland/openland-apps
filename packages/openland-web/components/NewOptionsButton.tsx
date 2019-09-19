@@ -96,7 +96,7 @@ export const Item = ({
         <XMenuItem
             onClick={onClick}
             path={href}
-            customContent
+            customContent={true}
             icon={
                 <XView alignSelf="flex-start">
                     {icon}
