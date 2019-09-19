@@ -2,7 +2,7 @@ import * as React from 'react';
 import { CommentEntryFragment_comment, MessageReactionType } from 'openland-api/Types';
 import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, LayoutChangeEvent, TouchableOpacity, ScrollView } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, HighlightAlpha, CompensationAlpha } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import Alert from 'openland-mobile/components/AlertBlanket';
@@ -137,17 +137,17 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     let tools = (
         <View flexDirection="row" alignItems="center">
-            {!deleted && edited && (
-                <Image
-                    source={require('assets/ic-edited-16.png')}
-                    style={{ width: 16, height: 16, tintColor: theme.foregroundTertiary, marginRight: 2, marginTop: 0.5 }}
-                />
-            )}
-
-            <ZRelativeDate style={[styles.date, { color: theme.foregroundSecondary }]} date={date} />
+            <ZRelativeDate style={[styles.date, { color: theme.foregroundTertiary }]} date={date} />
 
             {!deleted && (
                 <>
+                    {edited && (
+                        <Image
+                            source={require('assets/ic-edited-16.png')}
+                            style={{ width: 16, height: 16, tintColor: theme.foregroundTertiary, marginRight: 8, marginLeft: -6, marginTop: 0.5, opacity: CompensationAlpha }}
+                        />
+                    )}
+
                     <ZLabelButton label="Reply" onPress={() => props.onReplyPress(comment)} />
                     <ZLabelButton label={myLike ? 'Liked' : 'Like'} style={myLike ? 'danger' : 'default'} onPress={() => handleReactionPress(true)} />
 
@@ -164,11 +164,13 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                     {avatar}
 
                     <View flexGrow={1} flexShrink={1}>
-                        <TouchableOpacity activeOpacity={0.6} disabled={deleted} onPress={() => router.push('ProfileUser', { id: sender.id })}>
-                            <Text style={[styles.senderName, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
-                                {sender.name}
-                            </Text>
-                        </TouchableOpacity>
+                        <View flexDirection="row">
+                            <TouchableOpacity activeOpacity={HighlightAlpha} disabled={deleted} onPress={() => router.push('ProfileUser', { id: sender.id })}>
+                                <Text style={[styles.senderName, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
+                                    {sender.name}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
 
                         <View style={{ opacity: deleted ? 0.5 : undefined }}>
                             <ZMessageView message={comment} wrapped={true} maxWidth={Dimensions.get('screen').width - branchIndent - 40 - 16} />

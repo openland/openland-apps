@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text } from 'react-native';
 import { withRouter } from 'react-native-s/withRouter';
 import { SRouter } from 'react-native-s/SRouter';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 
 export interface ZLabelButtonProps {
     label: string;
@@ -26,7 +26,7 @@ const ZLabelButtonComponent = React.memo<ZLabelButtonProps & { router: SRouter }
     }, [onPress, path, pathParams]);
 
     return (
-        <TouchableOpacity onPress={handlePress} activeOpacity={0.6}>
+        <TouchableOpacity onPress={handlePress} activeOpacity={HighlightAlpha}>
             <View paddingVertical={2} paddingHorizontal={8} alignItems="center" justifyContent="center">
                 <Text
                     style={{
