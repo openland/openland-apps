@@ -60,7 +60,7 @@ import { Avatars } from './pages/dev/Avatars';
 import { SignupOrg } from './pages/auth/SignupOrg';
 import { Videos } from './pages/dev/Videos';
 import { Feed } from './pages/main/Feed';
-import { FeedCreatePost } from './feed/FeedCreatePost';
+import { FeedCreatePost } from './feed/create/FeedCreatePost';
 import { FeedItem } from './pages/main/FeedItem';
 
 export const Routes = new SRoutesBuilder()
