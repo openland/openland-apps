@@ -247,7 +247,7 @@ export default class OpenlandDocument extends Document {
                     <link rel="stylesheet" href="https://cdn.openland.com/shared/emoji/sprites/joypixels-sprite-32.css" /> */}
                     <link rel="stylesheet" href="https://cdn.openland.com/shared/emoji/sprites/joypixels-sprite-24.css" />
                     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&display=swap&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese" rel="stylesheet" />
-                    <link rel="stylesheet" href="/static/css/x.css?v=5" />
+                    <link rel="stylesheet" href="/static/css/x.css?v=6" />
 
                     <style dangerouslySetInnerHTML={{ __html: (this.props as any).glamCss }} />
 

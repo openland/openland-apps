@@ -6,7 +6,7 @@ import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ThemeController } from 'openland-mobile/themes/ThemeControler';
 import { ThemeGlobalKind, ThemeGlobalType } from 'openland-y-utils/themes/ThemeGlobal';
-import { ThemeLight, ThemeLightPink, ThemeLightCyan, ThemeLightGray, ThemeLightRed, ThemeLightOrange, ThemeLightGreen, ThemeLightPurple } from 'openland-y-utils/themes/light';
+import { ThemeLight, ThemeLightPink, ThemeLightCyan, ThemeLightGrey, ThemeLightRed, ThemeLightOrange, ThemeLightGreen, ThemeLightPurple } from 'openland-y-utils/themes/light';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { ThemeDark, ThemeDarkBlue, ThemeDarkRed, ThemeDarkOrange, ThemeDarkGreen, ThemeDarkCyan, ThemeDarkPink, ThemeDarkPurple } from 'openland-y-utils/themes/dark';
 import { NON_PRODUCTION } from '../Init';
@@ -16,7 +16,7 @@ import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 const SortedThemes: { [key in ThemeGlobalType]: { [key: string]: string } } = {
     Light: {
         Light: ThemeLight.accentPrimary,
-        LightGray: ThemeLightGray.accentPrimary,
+        LightGrey: ThemeLightGrey.accentPrimary,
         LightRed: ThemeLightRed.accentPrimary,
         LightOrange: ThemeLightOrange.accentPrimary,
         LightGreen: ThemeLightGreen.accentPrimary,

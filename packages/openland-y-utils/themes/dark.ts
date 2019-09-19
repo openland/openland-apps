@@ -1,4 +1,14 @@
-import { ThemeGlobal } from './ThemeGlobal';
+import { ThemeGlobal, TintGlobal, ThemeGlobalKind } from './ThemeGlobal';
+import { TintBlue, TintGreen, TintRed, TintOrange, TintCyan, TintPurple, TintInverted, TintPink } from './tints';
+
+const buildBubbleColor = (tint: TintGlobal, isOut: boolean) => ({
+    backgroundPrimary: isOut ? tint.primary : '#242629',
+    backgroundSecondary: isOut ? tint.secondary : '#2E3033',
+
+    foregroundPrimary: isOut ? '#FFFFFF' : '#FFFFFF',
+    foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#55575C',
+    foregroundTertiary: isOut ? 'rgba(255, 255, 255, 0.36)' : '#55575C',
+});
 
 export const ThemeDark: ThemeGlobal = {
     type: 'Dark',
@@ -33,13 +43,13 @@ export const ThemeDark: ThemeGlobal = {
     accentMutedHover: '#FFFFFF',
     accentMutedActive: '#FFFFFF',
 
-    accentPositive: '#3EB265',
-    accentPositiveHover: '#41BA69',
-    accentPositiveActive: '#26994D',
+    accentPositive: TintGreen.primary,
+    accentPositiveHover: TintGreen.hover,
+    accentPositiveActive: TintGreen.active,
 
-    accentNegative: '#E62243',
-    accentNegativeHover: '#F23041',
-    accentNegativeActive: '#CC1424',
+    accentNegative: TintRed.primary,
+    accentNegativeHover: TintRed.hover,
+    accentNegativeActive: TintRed.active,
 
     border: 'rgba(255, 255, 255, 0.08)',
     borderLight: 'rgba(255, 255, 255, 0.04)',
@@ -55,7 +65,9 @@ export const ThemeDark: ThemeGlobal = {
     tintCyan: '#242629',
     tintBlue: '#242629',
     tintPurple: '#242629',
-    tintInverted: 'rgba(255, 255, 255, 0.32)',
+    tintPink: '#242629',
+    tintGrey: '#242629',
+    tintInverted: TintInverted.primary,
 
     bubble: (isOut) => ({
         backgroundPrimary: isOut ? '#4B4E52' : '#242629',
@@ -90,149 +102,24 @@ export const ThemeDark: ThemeGlobal = {
     backgroundInvertedActive: '#000000',
 };
 
-export const ThemeDarkBlue: ThemeGlobal = {
+const buildTintedTheme: (kind: ThemeGlobalKind, tint: TintGlobal) => ThemeGlobal = (kind, tint) => ({
     ...ThemeDark,
 
-    kind: 'DarkBlue',
+    kind,
 
-    accentPrimary: '#248BF2',
-    accentPrimaryHover: '#248BF2',
-    accentPrimaryActive: '#248BF2',
+    accentPrimary: tint.primary,
+    accentPrimaryHover: tint.hover,
+    accentPrimaryActive: tint.active,
 
     foregroundInverted: '#FFFFFF',
 
-    bubble: (isOut) => ({
-        backgroundPrimary: isOut ? '#248BF2' : '#242629',
-        backgroundSecondary: isOut ? '#248BF2' : '#2E3033',
+    bubble: (isOut) => buildBubbleColor(tint, isOut),
+});
 
-        foregroundPrimary: isOut ? '#FFFFFF' : '#FFFFFF',
-        foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#55575C',
-        foregroundTertiary: isOut ? 'rgba(255, 255, 255, 0.36)' : '#55575C',
-    }),
-};
-
-export const ThemeDarkRed: ThemeGlobal = {
-    ...ThemeDark,
-
-    kind: 'DarkRed',
-
-    accentPrimary: '#E52243',
-    accentPrimaryHover: '#E52243',
-    accentPrimaryActive: '#E52243',
-
-    foregroundInverted: '#FFFFFF',
-
-    bubble: (isOut) => ({
-        backgroundPrimary: isOut ? '#E52243' : '#242629',
-        backgroundSecondary: isOut ? '#E52243' : '#2E3033',
-
-        foregroundPrimary: isOut ? '#FFFFFF' : '#FFFFFF',
-        foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#55575C',
-        foregroundTertiary: isOut ? 'rgba(255, 255, 255, 0.36)' : '#55575C',
-    }),
-};
-
-export const ThemeDarkOrange: ThemeGlobal = {
-    ...ThemeDark,
-
-    kind: 'DarkOrange',
-
-    accentPrimary: '#FFAE0D',
-    accentPrimaryHover: '#FFAE0D',
-    accentPrimaryActive: '#FFAE0D',
-
-    foregroundInverted: '#FFFFFF',
-
-    bubble: (isOut) => ({
-        backgroundPrimary: isOut ? '#FFAE0D' : '#242629',
-        backgroundSecondary: isOut ? '#FFAE0D' : '#2E3033',
-
-        foregroundPrimary: isOut ? '#FFFFFF' : '#FFFFFF',
-        foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#55575C',
-        foregroundTertiary: isOut ? 'rgba(255, 255, 255, 0.36)' : '#55575C',
-    }),
-};
-
-export const ThemeDarkGreen: ThemeGlobal = {
-    ...ThemeDark,
-
-    kind: 'DarkGreen',
-
-    accentPrimary: '#3EB265',
-    accentPrimaryHover: '#3EB265',
-    accentPrimaryActive: '#3EB265',
-
-    foregroundInverted: '#FFFFFF',
-
-    bubble: (isOut) => ({
-        backgroundPrimary: isOut ? '#3EB265' : '#242629',
-        backgroundSecondary: isOut ? '#3EB265' : '#2E3033',
-
-        foregroundPrimary: isOut ? '#FFFFFF' : '#FFFFFF',
-        foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#55575C',
-        foregroundTertiary: isOut ? 'rgba(255, 255, 255, 0.36)' : '#55575C',
-    }),
-};
-
-export const ThemeDarkCyan: ThemeGlobal = {
-    ...ThemeDark,
-
-    kind: 'DarkCyan',
-
-    accentPrimary: '#29BECC',
-    accentPrimaryHover: '#29BECC',
-    accentPrimaryActive: '#29BECC',
-
-    foregroundInverted: '#FFFFFF',
-
-    bubble: (isOut) => ({
-        backgroundPrimary: isOut ? '#29BECC' : '#242629',
-        backgroundSecondary: isOut ? '#29BECC' : '#2E3033',
-
-        foregroundPrimary: isOut ? '#FFFFFF' : '#FFFFFF',
-        foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#55575C',
-        foregroundTertiary: isOut ? 'rgba(255, 255, 255, 0.36)' : '#55575C',
-    }),
-};
-
-export const ThemeDarkPink: ThemeGlobal = {
-    ...ThemeDark,
-
-    kind: 'DarkPink',
-
-    accentPrimary: '#F23DB6',
-    accentPrimaryHover: '#F23DB6',
-    accentPrimaryActive: '#F23DB6',
-
-    foregroundInverted: '#FFFFFF',
-
-    bubble: (isOut) => ({
-        backgroundPrimary: isOut ? '#F23DB6' : '#242629',
-        backgroundSecondary: isOut ? '#E62EA8' : '#2E3033',
-
-        foregroundPrimary: isOut ? '#FFFFFF' : '#FFFFFF',
-        foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#55575C',
-        foregroundTertiary: isOut ? 'rgba(255, 255, 255, 0.36)' : '#55575C',
-    }),
-};
-
-export const ThemeDarkPurple: ThemeGlobal = {
-    ...ThemeDark,
-
-    kind: 'DarkPurple',
-
-    accentPrimary: '#8518F2',
-    accentPrimaryHover: '#8518F2',
-    accentPrimaryActive: '#8518F2',
-
-    foregroundInverted: '#FFFFFF',
-
-    bubble: (isOut) => ({
-        backgroundPrimary: isOut ? '#8518F2' : '#242629',
-        backgroundSecondary: isOut ? '#8518F2' : '#2E3033',
-
-        foregroundPrimary: isOut ? '#FFFFFF' : '#FFFFFF',
-        foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#55575C',
-        foregroundTertiary: isOut ? 'rgba(255, 255, 255, 0.36)' : '#55575C',
-    }),
-};
+export const ThemeDarkBlue = buildTintedTheme('DarkBlue', TintBlue);
+export const ThemeDarkRed = buildTintedTheme('DarkRed', TintRed);
+export const ThemeDarkOrange = buildTintedTheme('DarkOrange', TintOrange);
+export const ThemeDarkGreen = buildTintedTheme('DarkGreen', TintGreen);
+export const ThemeDarkCyan = buildTintedTheme('DarkCyan', TintCyan);
+export const ThemeDarkPink = buildTintedTheme('DarkPink', TintPink);
+export const ThemeDarkPurple = buildTintedTheme('DarkPurple', TintPurple);

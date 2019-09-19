@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ThemeController } from './ThemeControler';
 import { SStatusBar } from 'react-native-s/SStatusBar';
 import { ThemeGlobal, ThemeGlobalKind } from 'openland-y-utils/themes/ThemeGlobal';
-import { ThemeLight, ThemeLightRed, ThemeLightOrange, ThemeLightGreen, ThemeLightCyan, ThemeLightPurple, ThemeLightGray, ThemeLightPink } from 'openland-y-utils/themes/light';
+import { ThemeLight, ThemeLightRed, ThemeLightOrange, ThemeLightGreen, ThemeLightCyan, ThemeLightPurple, ThemeLightGrey, ThemeLightPink } from 'openland-y-utils/themes/light';
 import { ThemeDark, ThemeDarkBlue, ThemeDarkRed, ThemeDarkOrange, ThemeDarkGreen, ThemeDarkCyan, ThemeDarkPurple, ThemeDarkPink } from 'openland-y-utils/themes/dark';
 
 export const ThemeContext = React.createContext<ThemeGlobal>(ThemeLight);
@@ -20,8 +20,8 @@ function resolveTheme(theme: ThemeGlobalKind) {
         return ThemeLightPink;
     } else if (theme === 'LightPurple') {
         return ThemeLightPurple;
-    } else if (theme === 'LightGray') {
-        return ThemeLightGray;
+    } else if (theme === 'LightGrey') {
+        return ThemeLightGrey;
     } else if (theme === 'Dark') {
         return ThemeDark;
     } else if (theme === 'DarkBlue') {
