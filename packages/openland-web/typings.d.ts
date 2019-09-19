@@ -9,8 +9,6 @@ declare module 'worker-loader!*' {
     export default WebpackWorker;
 }
 
-
-
 declare module '*.handlebars' {
     const content: string;
     export = content;
@@ -277,7 +275,7 @@ declare module 'react-lottie' {
             scaleMode?: 'noScale' | any;
             clearCanvas?: boolean;
             progressiveLoad?: boolean; // Boolean, only svg renderer, loads dom elements when needed. Might speed up initialization for large number of elements.
-            hideOnTransparent?: boolean; //Boolean, only svg renderer, hides elements when opacity reaches 0 (defaults to true)
+            hideOnTransparent?: boolean; // Boolean, only svg renderer, hides elements when opacity reaches 0 (defaults to true)
             className?: string;
         };
     }
@@ -368,7 +366,7 @@ declare module '@mapbox/mapbox-gl-geocoder' {
     export = Geocoder;
 }
 
-interface onEveryReturn {
+interface OnEveryReturn {
     /**
      * Callback function you passed to onEvery
      */
@@ -508,7 +506,7 @@ interface IfVisible {
      * @param seconds duration to wait between each interval in seconds
      * @param callback callback function run on every iteration
      */
-    onEvery(seconds: number, callback: () => void): onEveryReturn;
+    onEvery(seconds: number, callback: () => void): OnEveryReturn;
 
     /**
      * Let's you change duration that page becomes idle dynamically

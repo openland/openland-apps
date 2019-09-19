@@ -152,7 +152,7 @@ const EditCommunityEntity = (props: {
             checkIsValid: value => !!value.trim(),
             text: `Please enter a name for this ${
                 props.isCommunity ? 'community' : 'organization'
-                }`,
+            }`,
         },
     ]);
     const aboutField = useField('input.about', org.about || '', form);
@@ -256,22 +256,18 @@ const EditCommunityEntity = (props: {
                     >
                         <XAvatarUploadStyled
                             cropParams="1:1"
-                            placeholder={{
-                                add: 'Add photo',
-                                change: 'Change',
-                            }}
                             onChange={onAvatarChange}
                             value={
                                 newPhoto
                                     ? newPhoto
                                     : org.photoRef
                                         ? fromValue({
-                                            uuid: org.photoRef.uuid,
-                                            isImage: true,
-                                            crop: org.photoRef.crop,
-                                            width: null,
-                                            height: null,
-                                        })
+                                              uuid: org.photoRef.uuid,
+                                              isImage: true,
+                                              crop: org.photoRef.crop,
+                                              width: null,
+                                              height: null,
+                                          })
                                         : null
                             }
                         />
@@ -351,7 +347,7 @@ const EditCommunityEntity = (props: {
                         >
                             {`Publicly describe this ${
                                 props.isCommunity ? 'community' : 'organization'
-                                } for all to see`}
+                            } for all to see`}
                         </XView>
                         {!props.isCommunity && (
                             <XView marginTop={16}>
@@ -408,7 +404,7 @@ const EditCommunityEntity = (props: {
                             >
                                 {`People will be able to find your ${
                                     props.isCommunity ? 'community' : 'organization'
-                                    } by this shortname`}
+                                } by this shortname`}
                             </XView>
                         )}
                         {shortNameError && (
@@ -472,21 +468,21 @@ const EditCommunityEntity = (props: {
                                         typeField.value === CommunityType.COMMUNITY_PRIVATE,
                                     photoRef: newPhoto
                                         ? sanitizeImageRef({
-                                            uuid: newPhoto.uuid,
-                                            crop: newPhoto.crop
-                                                ? {
-                                                    x: newPhoto.crop.left,
-                                                    y: newPhoto.crop.top,
-                                                    w: newPhoto.crop.width,
-                                                    h: newPhoto.crop.height,
-                                                }
-                                                : null,
-                                        })
+                                              uuid: newPhoto.uuid,
+                                              crop: newPhoto.crop
+                                                  ? {
+                                                        x: newPhoto.crop.left,
+                                                        y: newPhoto.crop.top,
+                                                        w: newPhoto.crop.width,
+                                                        h: newPhoto.crop.height,
+                                                    }
+                                                  : null,
+                                          })
                                         : org.photoRef
                                             ? sanitizeImageRef({
-                                                uuid: org.photoRef.uuid,
-                                                crop: org.photoRef.crop,
-                                            })
+                                                  uuid: org.photoRef.uuid,
+                                                  crop: org.photoRef.crop,
+                                              })
                                             : null,
                                 },
                             })

@@ -10,12 +10,12 @@ export interface XFileUploadRenderProps {
     value?: UploadedFile | null;
 }
 
-export interface XImageCropT {
-    x: number;
-    y: number;
-    w: number;
-    h: number;
-}
+// export interface XImageCropT {
+// //     x: number;
+// //     y: number;
+// //     w: number;
+// //     h: number;
+// // }
 
 export interface XUploadCareImageCrop {
     left: number;

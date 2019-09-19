@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { XAvatarUploadBasicProps, XAvatarUploadBasic } from './basics/XAvatarUploadBasic';
+import { UAvatarUploadBasicProps, UAvatarUploadBasic } from 'openland-web/components/unicorn/UAvatarUpload';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
-import { UploadedFile, XImageCropT } from './files/XFileUpload';
+import { UploadedFile, UImageCropT } from 'openland-web/components/unicorn/UFileUpload';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 
 export type StoredFileT = {
@@ -12,7 +12,7 @@ export type StoredFileT = {
     isImage?: boolean;
     width?: number | null;
     height?: number | null;
-    crop: XImageCropT | null;
+    crop: UImageCropT | null;
 };
 
 export const toValue = (file: UploadedFile | null): StoredFileT | null => {
@@ -50,34 +50,30 @@ export const toValue = (file: UploadedFile | null): StoredFileT | null => {
 };
 
 export const fromValue = (value2?: StoredFileT | null): UploadedFile | null => {
-    if (!value2) {
-        return null;
-    }
-    let uuid = value2 ? value2.uuid : null;
-    let name = value2 ? value2.name : null;
-    let size = value2 ? value2.size : null;
-    let crop = uuid
-        ? value2.crop
+    if (value2) {
+        let uuid = value2.uuid;
+        let name = value2.name;
+        let size = value2.size;
+        let crop = value2.crop
             ? {
-                  left: Math.round(value2.crop.x),
-                  top: Math.round(value2.crop.y),
-                  width: Math.round(value2.crop.w),
-                  height: Math.round(value2.crop.h),
-              }
-            : null
-        : null;
+                left: Math.round(value2.crop.x),
+                top: Math.round(value2.crop.y),
+                width: Math.round(value2.crop.w),
+                height: Math.round(value2.crop.h),
+            }
+            : null;
 
-    return uuid
-        ? {
-              uuid: uuid,
-              crop: crop,
-              isImage: true,
-              width: crop ? crop.width : null,
-              height: crop ? crop.height : null,
-              name: name ? name : null,
-              size: size ? size : null,
-          }
-        : null;
+        return {
+            uuid: uuid,
+            crop: crop,
+            isImage: true,
+            width: crop ? crop.width : null,
+            height: crop ? crop.height : null,
+            name: name ? name : null,
+            size: size ? size : null,
+        };
+    }
+    return null;
 };
 
 export const XAvatarFormFieldComponent = ({
@@ -85,18 +81,14 @@ export const XAvatarFormFieldComponent = ({
     value,
     ...rest
 }: {
-    placeholder?: { add: any; change: any };
     value?: StoredFileT | null;
     onChange: (file: StoredFileT | null) => void;
-    size?: 'small' | 'xSmall' | 'normal' | 'large' | 'default';
     initialUrl?: string | null;
     cropParams?: string;
     dataTestId?: string;
-    darkMode?: boolean;
-    rounded?: boolean;
 }) => {
     return (
-        <XAvatarUploadBasic
+        <UAvatarUploadBasic
             {...rest}
             value={fromValue(value)}
             onChange={(file: UploadedFile | null) => {
@@ -123,12 +115,12 @@ class XAvatarUploadStored extends React.PureComponent<XAvatarUploadProps & { sto
         let value2 = this.props.store.readValue(key);
         const value = fromValue(value2);
 
-        return <XAvatarUploadBasic {...other} onChange={this.handleChange} value={value} />;
+        return <UAvatarUploadBasic {...other} onChange={this.handleChange} value={value} />;
     }
 }
 
 // TODO Kill this
-export interface XAvatarUploadProps extends XAvatarUploadBasicProps {
+export interface XAvatarUploadProps extends UAvatarUploadBasicProps {
     field?: string;
     valueStoreKey?: string;
 }
@@ -158,7 +150,7 @@ export class XAvatarUpload extends React.PureComponent<XAvatarUploadProps> {
                 </XStoreContext.Consumer>
             );
         } else {
-            return <XAvatarUploadBasic {...other} />;
+            return <UAvatarUploadBasic {...other} />;
         }
     }
 }

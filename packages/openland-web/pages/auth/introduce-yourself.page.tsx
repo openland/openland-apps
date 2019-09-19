@@ -150,10 +150,8 @@ const CreateProfileFormInnerWeb = (
             />
             <XView marginBottom={20}>
                 <XAvatarFormFieldComponent
-                    size="default"
                     {...photoRef.input}
                     initialUrl={prefill ? prefill.picture : undefined}
-                    darkMode
                 />
             </XView>
 

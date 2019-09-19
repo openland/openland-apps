@@ -120,12 +120,6 @@ export const SettingsProfileFragment = React.memo(() => {
         <XView>
             <XAvatarFormFieldComponent
                 {...avatarField.input}
-                size="small"
-                rounded
-                placeholder={{
-                    add: 'Add photo',
-                    change: 'Change Photo',
-                }}
             />
             <XView
                 position="absolute"

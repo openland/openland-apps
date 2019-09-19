@@ -120,7 +120,6 @@ export const CreateProfileFormInnerRoom = (
                         <XVertical alignItems="center">
                             <XView marginBottom={10}>
                                 <XAvatarFormFieldComponent
-                                    size="default"
                                     {...photoRef.input}
                                     initialUrl={prefill ? prefill.picture : undefined}
                                 />

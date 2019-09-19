@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {
-    XFileUpload,
-    XUploadCareImageCrop,
-    XFileUploadRenderProps,
+    UFileUpload,
+    UUploadCareImageCrop,
+    UFileUploadRenderProps,
     UploadedFile,
-} from '../files/XFileUpload';
+} from 'openland-web/components/unicorn/UFileUpload';
 import Glamorous from 'glamorous';
 import { XCloudImage } from '../XCloudImage';
 import { XLoader } from '../XLoader';
@@ -118,7 +118,7 @@ const Placeholder = Glamorous.div<PlaceholderProps>(props => ({
     },
 }));
 
-function prepareSrc(uuid: string, crop: XUploadCareImageCrop | null) {
+function prepareSrc(uuid: string, crop: UUploadCareImageCrop | null) {
     if (uuid && uuid.startsWith('https://ucarecdn.com/')) {
         return uuid;
     }
@@ -129,7 +129,7 @@ function prepareSrc(uuid: string, crop: XUploadCareImageCrop | null) {
     return res;
 }
 
-interface AvatarRenderProps extends XFileUploadRenderProps {
+interface AvatarRenderProps extends UFileUploadRenderProps {
     placeholder?: {
         add: any;
         change: any;
@@ -159,7 +159,7 @@ class AvatarRender extends React.PureComponent<AvatarRenderProps, { srcLoading: 
         // }
     }
 
-    componentWillReceiveProps(nextProps: XFileUploadRenderProps) {
+    componentWillReceiveProps(nextProps: UFileUploadRenderProps) {
         if (this.props.value !== nextProps.value) {
             if (nextProps.value) {
                 this.setState({ srcLoading: true });
@@ -238,7 +238,7 @@ class AvatarRender extends React.PureComponent<AvatarRenderProps, { srcLoading: 
 export class XAvatarUploadBasic extends React.PureComponent<XAvatarUploadBasicProps> {
     render() {
         return (
-            <XFileUpload
+            <UFileUpload
                 {...this.props}
                 initialUrl={this.props.initialUrl}
                 cropParams={this.props.cropParams || '1:1'}

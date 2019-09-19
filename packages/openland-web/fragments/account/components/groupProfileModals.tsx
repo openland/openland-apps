@@ -105,11 +105,6 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
                     <XHorizontal separator={12}>
                         <XAvatarFormFieldComponent
                             {...avatarField.input}
-                            size="default"
-                            placeholder={{
-                                add: 'Add photo',
-                                change: 'Change Photo',
-                            }}
                         />
                         <XVertical flexGrow={1} separator={10} alignSelf="flex-start">
                             <XInput
