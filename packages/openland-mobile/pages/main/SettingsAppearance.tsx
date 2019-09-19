@@ -9,7 +9,6 @@ import { ThemeGlobalKind, ThemeGlobalType } from 'openland-y-utils/themes/ThemeG
 import { ThemeLight, ThemeLightPink, ThemeLightCyan, ThemeLightGrey, ThemeLightRed, ThemeLightOrange, ThemeLightGreen, ThemeLightPurple } from 'openland-y-utils/themes/light';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { ThemeDark, ThemeDarkBlue, ThemeDarkRed, ThemeDarkOrange, ThemeDarkGreen, ThemeDarkCyan, ThemeDarkPink, ThemeDarkPurple } from 'openland-y-utils/themes/dark';
-import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
@@ -109,20 +108,18 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                     </View>
                 </ZListGroup>
 
-                {NON_PRODUCTION && (
-                    <ZListGroup header="Accent (NON_PRODUCTION)">
-                        <View flexDirection="row" justifyContent="space-between" paddingHorizontal={16} flexWrap="wrap">
-                            {Object.keys(SortedThemes[theme.type]).map(k => (
-                                <AccentCircle
-                                    key={k}
-                                    onPress={() => handleChange(k as ThemeGlobalKind)}
-                                    color={SortedThemes[theme.type][k]}
-                                    checked={theme.kind === k}
-                                />
-                            ))}
-                        </View>
-                    </ZListGroup>
-                )}
+                <ZListGroup header="Accent">
+                    <View flexDirection="row" justifyContent="space-between" paddingHorizontal={16} flexWrap="wrap">
+                        {Object.keys(SortedThemes[theme.type]).map(k => (
+                            <AccentCircle
+                                key={k}
+                                onPress={() => handleChange(k as ThemeGlobalKind)}
+                                color={SortedThemes[theme.type][k]}
+                                checked={theme.kind === k}
+                            />
+                        ))}
+                    </View>
+                </ZListGroup>
             </SScrollView>
         </>
     );
