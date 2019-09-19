@@ -10,6 +10,7 @@ import { XCloudImage } from 'openland-x/XCloudImage';
 import { XLoader } from 'openland-x/XLoader';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcPhoto from 'openland-icons/s/ic-camera-36.svg';
+import IcPhotoIndicator from 'openland-icons/s/ic-camera-16.svg';
 
 export interface UAvatarUploadBasicProps {
     value?: UploadedFile | null;
@@ -70,6 +71,22 @@ const isLoadingContentContainer = css`
     }
 `;
 
+const hasImageIndicator = css`
+    pointer-events: none;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+    border-radius: 100%;
+    background-color: var(--accentPrimary);
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    z-index: 2;
+`;
+
 const avatarContainer = css`
     width: 100%;
     height: 100%;
@@ -123,7 +140,7 @@ interface AvatarRenderProps extends UFileUploadRenderProps {
 
 const AvatarRender = (props: AvatarRenderProps) => {
     const [isLoading, setIsLoading] = React.useState(false);
-    const [oldValue, ] = React.useState(props.value);
+    const [oldValue] = React.useState(props.value);
 
     React.useLayoutEffect(
         () => {
@@ -145,7 +162,7 @@ const AvatarRender = (props: AvatarRenderProps) => {
     const isFreeCrop = value && value.crop && value.crop.height !== value.crop.width;
     return (
         <div
-            onClick={(props.isLoading || isLoading) ? undefined : props.doUpload}
+            onClick={props.isLoading || isLoading ? undefined : props.doUpload}
             className={cx(
                 contentContainer,
                 hasImage && hasImageContentContainer,
@@ -173,6 +190,11 @@ const AvatarRender = (props: AvatarRenderProps) => {
                     />
                 )}
             </div>
+            {hasImage && (
+                <div className={hasImageIndicator}>
+                    <UIcon icon={<IcPhotoIndicator />} color="#fff" />
+                </div>
+            )}
         </div>
     );
 };
@@ -183,11 +205,7 @@ export const UAvatarUploadBasic = React.memo<UAvatarUploadBasicProps>(props => (
         initialUrl={props.initialUrl}
         cropParams={props.cropParams || '1:1'}
         component={rp => {
-            return (
-                <AvatarRender
-                    {...rp}
-                />
-            );
+            return <AvatarRender {...rp} />;
         }}
     />
 ));
