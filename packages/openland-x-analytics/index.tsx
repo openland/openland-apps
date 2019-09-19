@@ -20,32 +20,36 @@ export function trackError(src: any) {
     trackEvent('Error', { error: '' + src });
 }
 
+const getReferrer: () => { host: string, url: string } = () => {
+    let url = 'unknown';
+    let host = 'unknown';
+
+    if (document && document.referrer && document.referrer.length > 0) {
+        url = document.referrer;
+        host = new URL(url).hostname;
+    }
+
+    return { url, host };
+};
+
 const trackLaunch = () => {
     if (canUseDOM) {
         const firstLaunch = localStorage.getItem('openland-first-launch');
         const firstSessionLaunch = sessionStorage.getItem('openland-first-session-launch');
+        const { host, url } = getReferrer();
 
         if (!firstLaunch) {
             const currentDate = new Date();
 
-            trackEvent('launch_first_time');
+            trackEvent('launch_first_time', { 'referral_host': host, 'referral_url': url });
 
             localStorage.setItem('openland-first-launch', currentDate.getTime().toString());
         }
 
         if (!firstSessionLaunch) {
             const currentDate = new Date();
-            let url = '';
-            let hostname = '';
 
-            if (document.referrer && document.referrer.length > 0) {
-                url = document.referrer;
-                hostname = new URL(url).hostname;
-
-                console.warn('referrer', { url, hostname });
-            }
-
-            trackEvent('session_start');
+            trackEvent('session_start', { 'referral_host': host, 'referral_url': url });
 
             sessionStorage.setItem('openland-first-session-launch', currentDate.getTime().toString());
         }
