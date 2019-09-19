@@ -15,7 +15,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
 
     private currentWindow = { start: 0, end: 0 };
 
-    constructor(inner: ReadableDataSource<T>, windowSize: number, around?: () => string | undefined) {
+    constructor(inner: ReadableDataSource<T>, windowSize: number) {
         this._inner = inner;
         this._proxy = new DataSource(() => { /*  */ }, () => { /*  */ });
         this._windowSize = windowSize;
@@ -24,7 +24,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
             return (index >= this.currentWindow.start) && (index <= this.currentWindow.end);
         };
         this._subscription = inner.watch({
-            onDataSourceInited: (data: T[], completed: boolean, completedForward: boolean) => {
+            onDataSourceInited: (data: T[], completed: boolean, completedForward: boolean, anchor?: string) => {
                 this._innerInited = true;
                 this._innerCompleted = completed;
                 this._innerCompletedForward = completedForward;
@@ -34,20 +34,24 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                     this._isPassThroughForward = true;
                     this._isPassThroughBackward = true;
                 } else {
-                    let aroundKey = around && around();
-                    let aroundIndex = aroundKey ? data.findIndex(i => i.key === aroundKey) : 0;
-
-                    let start = aroundIndex ? Math.max(0, aroundIndex - windowSize / 2) : 0;
+                    let start = Math.max(0, data.findIndex(i => i.key === anchor) - windowSize / 2);
+                    console.warn('window', 'onDataSourceInited', start, anchor);
                     let slice = data.slice(start, start + windowSize);
                     this.currentWindow.start = start;
                     this.currentWindow.end = start + windowSize;
-                    this._proxy.initialize(slice, completed && this.currentWindow.end === (data.length - 1), completedForward && this.currentWindow.start === 0);
+                    this._proxy.initialize(slice, completed && this.currentWindow.end === (data.length - 1), completedForward && this.currentWindow.start === 0, anchor);
                 }
             },
-            onDataSourceItemAdded: (item: T, index: number) => {
+            onDataSourceItemAdded: (item: T, index: number, isAnchor?: boolean) => {
                 if (this._isPassThrough || inWindow(index)) {
-                    this._proxy.addItem(item, index + this.currentWindow.start);
+                    this._proxy.addItem(item, index + this.currentWindow.start, isAnchor);
                     this.currentWindow.end++;
+                } else {
+                    if (index < this.currentWindow.start) {
+                        let d = this.currentWindow.start - index;
+                        this.currentWindow.start += d;
+                        this.currentWindow.end += d;
+                    }
                 }
             },
             onDataSourceItemUpdated: (item: T, index: number) => {
@@ -82,7 +86,6 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                 this._innerCompleted = completed;
                 if (this._isPassThroughBackward) {
                     this._proxy.loadedMore(data, completed);
-
                     this.currentWindow.end += data.length;
                 }
             },
@@ -90,6 +93,10 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                 this._innerCompletedForward = completed;
                 if (this._isPassThroughForward) {
                     this._proxy.loadedMoreForward(data, completed);
+                    this.currentWindow.end += data.length;
+                } else {
+                    this.currentWindow.end += data.length;
+                    this.currentWindow.start += data.length;
                 }
             },
             onDataSourceCompleted: () => {

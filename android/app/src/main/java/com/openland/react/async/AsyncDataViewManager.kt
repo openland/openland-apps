@@ -183,6 +183,16 @@ class AsyncDataViewManager(reactContext: ReactApplicationContext) : ReactContext
         }
         getDataView(dataSourceKey, this.reactApplicationContext).handleLoadedMore(items, completed)
     }
+    @ReactMethod
+    fun dataViewLoadedMoreForward(dataSourceKey: String, config: String, completed: Boolean) {
+        val parsed = JSONArray(config)
+        val items = mutableListOf<AsyncDataViewItem>()
+        for (i in 0 until parsed.length()) {
+            val itm = parsed.getJSONObject(i)
+            items.add(AsyncDataViewItem(itm.getString("key"), resolveSpec(itm.getJSONObject("config"), reactApplicationContext)))
+        }
+        getDataView(dataSourceKey, this.reactApplicationContext).handleLoadedMoreForward(items, completed)
+    }
 
     @ReactMethod
     fun dataViewCompleted(dataSourceKey: String) {

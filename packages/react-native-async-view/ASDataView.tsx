@@ -53,10 +53,10 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
         this.dataSource.watch(this);
         // Register for load more events
         ASEventEmitter.registerOnLoadMore(this.key, () => { this.dataSource.needMore(); });
-        NativeDataView.dataViewInit(this.key, '[]', false);
+        NativeDataView.dataViewInit(this.key, '[]', false, this.dataSource.isCompletedForward());
     }
 
-    onDataSourceInited = (data: T[], completed: boolean) => {
+    onDataSourceInited = (data: T[], completed: boolean, completedForward: boolean) => {
         this.queue.push(async () => {
             // Create initial items
             let start = Date.now();
@@ -134,8 +134,18 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
         });
     }
 
-    onDataSourceLoadedMoreForward = () => {
-        //
+    onDataSourceLoadedMoreForward = (items: T[], completed: boolean) => {
+        this.queue.push(async () => {
+            let added = await throttledMap(items, (v) => new ItemRenderHolder(this, v, this.render));
+            this.items = [...added, ...this.items];
+
+            // Forward initial state to native
+            let config = JSON.stringify(await throttledMap(added, (v) => ({
+                key: v.item.key,
+                config: v.currentState
+            })));
+            NativeDataView.dataViewLoadedMore(this.key, config, completed);
+        });
     }
 
     onDataSourceCompleted = () => {

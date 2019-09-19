@@ -237,7 +237,7 @@ export class ConversationEngine implements MessageSendHandler {
     badge?: UserBadge;
 
     constructor(engine: MessengerEngine, conversationId: string, onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void) {
-        loadToUnread = AppConfig.getPlatform() === 'desktop';
+        loadToUnread = true;
         this.engine = engine;
         this.conversationId = conversationId;
 
@@ -320,6 +320,7 @@ export class ConversationEngine implements MessageSendHandler {
         let sourceFragments = messages as FullMessage[];
         let prevDate: string | undefined;
         let newMessagesDivider: DataSourceNewDividerItem | undefined;
+        let anchor;
         for (let i = sourceFragments.length - 1; i >= 0; i--) {
 
             if (loadToUnread) {
@@ -327,6 +328,7 @@ export class ConversationEngine implements MessageSendHandler {
                 if ((initialChat.lastReadedMessage && initialChat.lastReadedMessage.id) && sourceFragments[i].id === (initialChat.lastReadedMessage && initialChat.lastReadedMessage.id) && i !== sourceFragments.length - 1) {
                     // Alert.alert(sourceFragments[i].id);
                     newMessagesDivider = createNewMessageDividerSourceItem(sourceFragments[i].id);
+                    anchor = newMessagesDivider.key;
                     dsItems.push(newMessagesDivider);
                     this.lastReadedDividerMessageId = initialChat.lastReadedMessage && initialChat.lastReadedMessage.id;
                 }
@@ -347,7 +349,7 @@ export class ConversationEngine implements MessageSendHandler {
             dsItems.push(createDateDataSourceItem(d));
         }
 
-        this.dataSource.initialize(dsItems, !!this.historyFullyLoaded, !!this.forwardFullyLoaded);
+        this.dataSource.initialize(dsItems, !!this.historyFullyLoaded, !!this.forwardFullyLoaded, anchor);
         if (loadToUnread) {
             if (newMessagesDivider) {
                 this.dataSource.requestScrollToKey(newMessagesDivider.key);
@@ -361,13 +363,12 @@ export class ConversationEngine implements MessageSendHandler {
             let dividerKey = createNewMessageDividerSourceItem(this.lastReadedDividerMessageId).key;
             if (this.dataSource.hasItem(dividerKey)) {
                 this.dataSource.removeItem(dividerKey);
-                let oldLastReadedDividerMessageId = this.lastReadedDividerMessageId;
                 this.lastReadedDividerMessageId = undefined;
-                if (this.lastTopMessageRead && (this.lastTopMessageRead !== oldLastReadedDividerMessageId)) {
+                if (this.lastTopMessageRead) {
                     let divider = createNewMessageDividerSourceItem(this.lastTopMessageRead);
                     let targetIndex = this.dataSource.findIndex(this.lastTopMessageRead);
-                    if (targetIndex > 0) {
-                        this.dataSource.addItem(divider, targetIndex);
+                    if ((targetIndex > 0 || !this.forwardFullyLoaded) && !this.dataSource.hasItem(divider.key)) {
+                        this.dataSource.addItem(divider, targetIndex, true);
                         this.lastReadedDividerMessageId = this.lastTopMessageRead;
                     }
                 }
@@ -922,7 +923,7 @@ export class ConversationEngine implements MessageSendHandler {
             if (loadToUnread && !this.lastReadedDividerMessageId && prev && this.lastTopMessageRead && !this.isOpen && !src.sender.isYou) {
                 let divider = createNewMessageDividerSourceItem(this.lastTopMessageRead);
                 scrollTo = divider.key;
-                this.dataSource.addItem(divider, 0);
+                this.dataSource.addItem(divider, 0, true);
                 this.lastReadedDividerMessageId = this.lastTopMessageRead;
             }
             conv = convertMessage(src, this.conversationId, this.engine, undefined);

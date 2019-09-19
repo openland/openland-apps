@@ -57,11 +57,11 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
     constructor(props: MessageListProps) {
         super(props);
         if (dss.has(props.conversationId)) {
-            this.dataSource = new DataSourceWindow(dss.get(props.conversationId)!, 20, () => props.conversation.lastReadedDividerMessageId);
+            this.dataSource = new DataSourceWindow(dss.get(props.conversationId)!, 20);
         } else {
             let b = buildMessagesDataSource(props.conversation.dataSource);
             dss.set(props.conversationId, b);
-            this.dataSource = new DataSourceWindow(b, 20, () => props.conversation.lastReadedDividerMessageId);
+            this.dataSource = new DataSourceWindow(b, 20);
         }
         this.state = { bottomAttached: false };
     }
@@ -97,6 +97,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
     renderMessage = React.memo(
         (data: {
             item: DataSourceWebMessageItem | DataSourceDateItem | DataSourceNewDividerItem;
+            index: number;
         }) => {
             if (data.item.type === 'message' && data.item.isService) {
                 return <ServiceMessage message={data.item} />;
