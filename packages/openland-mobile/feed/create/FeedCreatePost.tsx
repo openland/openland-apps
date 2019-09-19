@@ -6,7 +6,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { PageProps } from 'openland-mobile/components/PageProps';
-import { SlideInput, SlideType } from 'openland-api/Types';
+import { SlideInput, SlideType, SlideCoverAlign } from 'openland-api/Types';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { FeedCreateSlide } from './FeedCreateSlide';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
@@ -50,10 +50,32 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
         setSlides(prev => [...prev, { type: SlideType.Text, text }]);
     }, []);
 
-    const handleChangeTextSlide = React.useCallback((index: number, text: string) => {
+    const handleChangeText = React.useCallback((index: number, text: string) => {
         setSlides(prev => prev.map((slide, key) => ({
             ...slide,
             text: key === index ? text : slide.text
+        })));
+    }, []);
+
+    const handleChangeCover = React.useCallback((index: number, uuid: string, width: number, height: number) => {
+        setSlides(prev => prev.map((slide, key) => ({
+            ...slide,
+            cover: key === index ? {
+                uuid,
+                crop: {
+                    x: 0,
+                    y: 0,
+                    w: width,
+                    h: height
+                }
+            } : slide.cover
+        })));
+    }, []);
+
+    const handleChangeCoverAlign = React.useCallback((index: number, align: SlideCoverAlign) => {
+        setSlides(prev => prev.map((slide, key) => ({
+            ...slide,
+            coverAlign: key === index ? align : slide.coverAlign
         })));
     }, []);
 
@@ -80,8 +102,10 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
                             <FeedCreateSlide
                                 index={index}
                                 slide={slide}
-                                onChangeText={handleChangeTextSlide}
-                                onDelete={slides.length > 1 ? handleDeleteSlide : undefined}
+                                onChangeText={v => handleChangeText(index, v)}
+                                onChangeCover={(id, w, h) => handleChangeCover(index, id, w, h)}
+                                onChangeCoverAlign={a => handleChangeCoverAlign(index, a)}
+                                onDelete={slides.length > 1 ? () => handleDeleteSlide(index) : undefined}
                             />
                         </View>
                     ))}

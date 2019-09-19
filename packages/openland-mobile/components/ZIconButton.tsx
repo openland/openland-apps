@@ -4,12 +4,14 @@ import { withRouter } from 'react-native-s/withRouter';
 import { SRouter } from 'react-native-s/SRouter';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
+type ZIconButtonStyle = 'default' | 'danger' | 'contrast';
+
 export interface ZIconButtonProps {
     src: NodeRequire;
     onPress?: () => void;
     path?: string;
     pathParams?: any;
-    style?: 'default' | 'danger';
+    style?: ZIconButtonStyle;
 }
 
 const ZIconButtonComponent = React.memo<ZIconButtonProps & { router: SRouter }>((props) => {
@@ -24,6 +26,12 @@ const ZIconButtonComponent = React.memo<ZIconButtonProps & { router: SRouter }>(
         }
     }, [onPress, path, pathParams]);
 
+    const colors: { [key in ZIconButtonStyle]: string } = {
+        'default': theme.foregroundSecondary,
+        'danger': theme.accentNegative,
+        'contrast': theme.foregroundContrast
+    };
+
     return (
         <TouchableOpacity onPress={handlePress} activeOpacity={0.6}>
             <View width={48} height={48} alignItems="center" justifyContent="center">
@@ -32,7 +40,7 @@ const ZIconButtonComponent = React.memo<ZIconButtonProps & { router: SRouter }>(
                     style={{
                         width: 24,
                         height: 24,
-                        tintColor: style === 'danger' ? theme.accentNegative : theme.foregroundSecondary
+                        tintColor: colors[style]
                     }}
                 />
             </View>
