@@ -162,7 +162,7 @@ export class GlobalStateEngine {
         } else if (event.__typename === 'DialogPeerUpdated') {
             log.warn('peer updated ' + event);
             await this.engine.dialogList.handlePeerUpdated(event.cid, event.peer);
-            this.engine.getConversation(event.cid).handlePeerUpdated(event.peer);
+            await this.engine.getConversation(event.cid).handlePeerUpdated(event.peer);
         } else if (event.__typename === 'DialogBump') {
             let visible = this.visibleConversations.has(event.cid);
             // Global counter
