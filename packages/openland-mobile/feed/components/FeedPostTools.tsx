@@ -14,11 +14,11 @@ const styles = StyleSheet.create({
         height: 56,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 6
+        paddingHorizontal: 4
     } as ViewStyle,
     counterWrapper: {
         flexGrow: 1,
-        paddingHorizontal: 6
+        paddingHorizontal: 4
     } as ViewStyle,
     counter: {
         ...TextStyles.Label1

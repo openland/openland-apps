@@ -69,21 +69,20 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
         props.router.back();
     }, [slides, global]);
 
-    const addSlide = (text: string = '') => {
-        setSlides([...slides, { type: SlideType.Text, text }]);
-    };
+    const addSlide = React.useCallback((text: string = '') => {
+        setSlides(prev => [...prev, { type: SlideType.Text, text }]);
+    }, []);
 
     const handleChangeTextSlide = React.useCallback((index: number, text: string) => {
-        const updatedSlides = slides.map((slide, key) => {
-            if (key !== index) {
-                return slide;
-            }
+        setSlides(prev => prev.map((slide, key) => ({
+            ...slide,
+            text: key === index ? text : slide.text
+        })));
+    }, []);
 
-            return { ...slide, text };
-        });
-
-        setSlides(updatedSlides);
-    }, [slides]);
+    const handleDeleteSlide = React.useCallback((index: number) => {
+        setSlides(prev => prev.filter((slide, key) => key !== index));
+    }, []);
 
     React.useEffect(() => {
         addSlide();
@@ -105,6 +104,7 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
                                 index={index}
                                 slide={slide}
                                 onChangeText={handleChangeTextSlide}
+                                onDelete={slides.length > 1 ? handleDeleteSlide : undefined}
                             />
                         </View>
                     ))}

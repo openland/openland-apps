@@ -5,7 +5,6 @@ import { XPAvatarWithPreview } from './XPAvatarWithPreview';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZReach } from './ZReach';
-import { ZIconButton } from './ZIconButton';
 import { ZListItemBase } from './ZListItemBase';
 
 const styles = StyleSheet.create({
@@ -42,12 +41,6 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         marginTop: 4
     } as TextStyle,
-    iconRight: {
-        marginRight: -10,
-        marginLeft: 6,
-        alignItems: 'center',
-        justifyContent: 'center'
-    } as ViewStyle,
     footer: {
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
@@ -72,18 +65,13 @@ export interface ZListHeroProps {
         value: number;
         onPress?: () => void;
     };
-    iconRight?: {
-        src: NodeRequire;
-        path?: string;
-        onPress?: () => void;
-    };
     path?: string;
     pathParams?: any;
 }
 
 export const ZListHero = React.memo<ZListHeroProps>((props) => {
     const theme = React.useContext(ThemeContext);
-    const { photo, id, title, titleIcon, titleColor, subtitle, subtitleColor, action, score, iconRight, path, pathParams } = props;
+    const { photo, id, title, titleIcon, titleColor, subtitle, subtitleColor, action, score, path, pathParams } = props;
     const colorTitle = titleColor ? titleColor : theme.foregroundPrimary;
     const colorSubtitle = subtitleColor ? subtitleColor : theme.foregroundTertiary;
 
@@ -113,12 +101,6 @@ export const ZListHero = React.memo<ZListHeroProps>((props) => {
                         </View>
                     )}
                 </View>
-
-                {iconRight && (
-                    <View style={styles.iconRight}>
-                        <ZIconButton src={iconRight.src} path={iconRight.path} onPress={iconRight.onPress} />
-                    </View>
-                )}
             </View>
         </View>
     );

@@ -26,7 +26,7 @@ const ZIconButtonComponent = React.memo<ZIconButtonProps & { router: SRouter }>(
 
     return (
         <TouchableOpacity onPress={handlePress} activeOpacity={0.6}>
-            <View width={44} height={44} alignItems="center" justifyContent="center">
+            <View width={48} height={48} alignItems="center" justifyContent="center">
                 <Image
                     source={src}
                     style={{
