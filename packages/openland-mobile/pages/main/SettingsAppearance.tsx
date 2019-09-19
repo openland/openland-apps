@@ -65,7 +65,7 @@ const AccentCircle = React.memo((props: { color: string, checked: boolean, onPre
 
     return (
         <TouchableOpacity onPress={onPress} activeOpacity={0.64}>
-            <View width={74} height={74} borderRadius={37} backgroundColor={color} alignItems="center" justifyContent="center" marginBottom={16}>
+            <View width={74} height={74} borderRadius={37} backgroundColor={color} alignItems="center" justifyContent="center" marginBottom={16} marginLeft={16}>
                 {checked && (
                     <Image
                         source={require('assets/ic-done-24.png')}
@@ -109,7 +109,7 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                 </ZListGroup>
 
                 <ZListGroup header="Accent">
-                    <View flexDirection="row" justifyContent="space-between" paddingHorizontal={16} flexWrap="wrap">
+                    <View flexDirection="row" justifyContent="flex-start" flexWrap="wrap">
                         {Object.keys(SortedThemes[theme.type]).map(k => (
                             <AccentCircle
                                 key={k}
