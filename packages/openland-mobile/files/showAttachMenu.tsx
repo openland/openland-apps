@@ -65,6 +65,8 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
                 },
                 (response) => {
                     if (response.error) {
+                        throw Error(response.error);
+
                         handlePermissionDismiss('gallery');
                         return;
                     }
