@@ -9,6 +9,7 @@ import { FeedQuery } from 'openland-api';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { DataSourceFeedItem } from './types';
 import { convertItems, convertPost } from './convert';
+import UUID from 'uuid/v4';
 
 const log = createLogger('Engine-Feed');
 
@@ -31,9 +32,7 @@ export class FeedEngine {
         }, () => []);
 
         if (AppConfig.isNonProduction()) {
-            (async () => {
-                await this.init();
-            })();
+            this.init();
         }
     }
 
@@ -121,5 +120,36 @@ export class FeedEngine {
         } else {
             log.log('Unhandled update');
         }
+    }
+
+    createPost: (slides: Types.SlideInput[], global?: boolean) => Promise<boolean> = async (slides, global) => {
+        const input: Types.SlideInput[] = [];
+
+        for (let slide of slides) {
+            slide.text = slide.text && slide.text.length > 0 ? slide.text.trim() : undefined;
+
+            const hasCover = slide.cover;
+            const hasText = slide.text && slide.text.length > 0;
+
+            if (hasCover || hasText) {
+                input.push(slide);
+            }
+        }
+
+        if (input.length < 1) {
+            return false;
+        }
+
+        const repeatKey = UUID();
+
+        await backoff(async () => {
+            if (global) {
+                await this.engine.client.mutateFeedCreateGlobalPost({ input, repeatKey });
+            } else {
+                await this.engine.client.mutateFeedCreatePost({ input, repeatKey });
+            }
+        });
+
+        return true;
     }
 }

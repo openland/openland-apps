@@ -6,17 +6,16 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { PageProps } from 'openland-mobile/components/PageProps';
-import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SlideInput, SlideType } from 'openland-api/Types';
-import { backoff } from 'openland-y-utils/timer';
-import UUID from 'uuid/v4';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { FeedCreateSlide } from './FeedCreateSlide';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
+import { getMessenger } from 'openland-mobile/utils/messenger';
+import Toast from 'openland-mobile/components/Toast';
 
 const FeedCreatePostComponent = React.memo((props: PageProps) => {
-    const client = getClient();
+    const feedEngine = getMessenger().engine.feed;
 
     const [slides, setSlides] = React.useState<SlideInput[]>([]);
     const scrollViewRef = React.useRef<ScrollView>(null);
@@ -36,37 +35,15 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
     });
 
     const handlePost = React.useCallback(async () => {
-        const input: SlideInput[] = [];
-        for (let slide of slides) {
-            if (typeof slide.text === 'string') {
-                slide.text = slide.text.trim();
-
-                if (slide.text === '') {
-                    continue;
-                }
-            }
-
-            input.push(slide);
-        }
-
-        if (input.length < 1) {
-            return;
-        }
-
         startLoader();
 
-        const repeatKey = UUID();
-
-        await backoff(async () => {
-            if (global) {
-                await client.mutateFeedCreateGlobalPost({ input, repeatKey });
-            } else {
-                await client.mutateFeedCreatePost({ input, repeatKey });
-            }
-        });
+        if (await feedEngine.createPost(slides, global)) {
+            props.router.back();
+        } else {
+            Toast.failure({ duration: 1000, text: 'Post can\'t be empty' }).show();
+        }
 
         stopLoader();
-        props.router.back();
     }, [slides, global]);
 
     const addSlide = React.useCallback((text: string = '') => {
