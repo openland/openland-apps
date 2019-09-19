@@ -9,7 +9,7 @@ import {
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { XLoader } from 'openland-x/XLoader';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import IcCamera from 'openland-icons/s/ic-camera-36.svg';
+import IcPhoto from 'openland-icons/s/ic-camera-36.svg';
 
 export interface UAvatarUploadBasicProps {
     value?: UploadedFile | null;
@@ -19,8 +19,12 @@ export interface UAvatarUploadBasicProps {
 }
 
 const contentContainer = css`
+    cursor: pointer;
+    width: 96px;
+    height: 96px;
     position: relative;
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
 
@@ -67,11 +71,10 @@ const isLoadingContentContainer = css`
 `;
 
 const avatarContainer = css`
-    width: 96px;
-    height: 96px;
+    width: 100%;
+    height: 100%;
     position: relative;
     background-color: var(--backgroundTertiary);
-    cursor: pointer;
     border-radius: 100%;
     overflow: hidden;
     display: flex;
@@ -120,16 +123,17 @@ interface AvatarRenderProps extends UFileUploadRenderProps {
 
 const AvatarRender = (props: AvatarRenderProps) => {
     const [isLoading, setIsLoading] = React.useState(false);
+    const [oldValue, ] = React.useState(props.value);
 
     React.useLayoutEffect(
         () => {
-            if (props.value) {
+            if (props.value !== oldValue) {
                 setIsLoading(true);
             } else {
                 setIsLoading(false);
             }
         },
-        [props.value],
+        [props.value, oldValue],
     );
 
     const onLoad = () => {
@@ -159,7 +163,7 @@ const AvatarRender = (props: AvatarRenderProps) => {
                         className={avatarImage}
                     />
                 )}
-                <UIcon icon={<IcCamera />} color="#C8C9CC" size={36} className="ic-camera" />
+                <UIcon icon={<IcPhoto />} color="#C8C9CC" className="ic-camera" />
                 {(props.isLoading || isLoading) && (
                     <XLoader
                         transparentBackground={true}
