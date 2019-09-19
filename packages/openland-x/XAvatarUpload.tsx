@@ -1,9 +1,6 @@
 import * as React from 'react';
-import { UAvatarUploadBasicProps, UAvatarUploadBasic } from 'openland-web/components/unicorn/UAvatarUpload';
-import { XStoreState } from 'openland-y-store/XStoreState';
-import { XStoreContext } from 'openland-y-store/XStoreContext';
+import { UAvatarUploadBasic } from 'openland-web/components/unicorn/UAvatarUpload';
 import { UploadedFile, UImageCropT } from 'openland-web/components/unicorn/UFileUpload';
-import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 
 export type StoredFileT = {
     uuid: string;
@@ -97,60 +94,3 @@ export const XAvatarFormFieldComponent = ({
         />
     );
 };
-
-// TODO Kill this
-class XAvatarUploadStored extends React.PureComponent<XAvatarUploadProps & { store: XStoreState }> {
-    handleChange = (file: UploadedFile | null) => {
-        let key = this.props.valueStoreKey || 'fields.' + this.props.field;
-        if (file && file.isImage) {
-            this.props.store.writeValue(key, sanitizeImageRef(toValue(file)));
-        } else {
-            this.props.store.writeValue(key, null);
-        }
-    }
-
-    render() {
-        let { valueStoreKey, field, ...other } = this.props;
-        let key = this.props.valueStoreKey || 'fields.' + this.props.field;
-        let value2 = this.props.store.readValue(key);
-        const value = fromValue(value2);
-
-        return <UAvatarUploadBasic {...other} onChange={this.handleChange} value={value} />;
-    }
-}
-
-// TODO Kill this
-export interface XAvatarUploadProps extends UAvatarUploadBasicProps {
-    field?: string;
-    valueStoreKey?: string;
-}
-
-// TODO Kill this
-export class XAvatarUpload extends React.PureComponent<XAvatarUploadProps> {
-    render() {
-        let { valueStoreKey, field, ...other } = this.props;
-        if (valueStoreKey || field) {
-            let valueStoreKeyCached = valueStoreKey;
-            let fieldCached = field;
-            return (
-                <XStoreContext.Consumer>
-                    {store => {
-                        if (!store) {
-                            throw Error('No store!');
-                        }
-                        return (
-                            <XAvatarUploadStored
-                                {...other}
-                                valueStoreKey={valueStoreKeyCached}
-                                field={fieldCached}
-                                store={store}
-                            />
-                        );
-                    }}
-                </XStoreContext.Consumer>
-            );
-        } else {
-            return <UAvatarUploadBasic {...other} />;
-        }
-    }
-}

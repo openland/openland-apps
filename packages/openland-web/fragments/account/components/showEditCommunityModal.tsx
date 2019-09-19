@@ -8,7 +8,8 @@ import { useClient } from 'openland-web/utils/useClient';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalController } from 'openland-x/showModal';
 import { UploadedFile } from 'openland-x/files/XFileUpload';
-import { fromValue, XAvatarUpload } from 'openland-x/XAvatarUpload';
+import { fromValue } from 'openland-x/XAvatarUpload';
+import { UAvatarUploadBasic } from 'openland-web/components/unicorn/UAvatarUpload';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
@@ -87,21 +88,6 @@ const AdminTools = (props: AdminToolsProps) => {
 
 const CloseButton = Glamorous(XButton)({
     border: 'solid 1px #E3E3E3',
-});
-
-const XAvatarUploadStyled = Glamorous(XAvatarUpload)({
-    width: 120,
-    height: 120,
-    borderRadius: '50%',
-    border: 'none',
-    backgroundColor: '#f4f4f4',
-    '&:hover': {
-        border: 'none',
-    },
-    '& > div:hover': {
-        backgroundColor: '#919292',
-        color: '#fff',
-    },
 });
 
 const ShortNameButton = Glamorous(XButton)({
@@ -254,7 +240,7 @@ const EditCommunityEntity = (props: {
                         marginBottom={28}
                         alignItems="center"
                     >
-                        <XAvatarUploadStyled
+                        <UAvatarUploadBasic
                             cropParams="1:1"
                             onChange={onAvatarChange}
                             value={
