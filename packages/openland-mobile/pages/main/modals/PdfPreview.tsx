@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 
 import Pdf from 'react-native-pdf';
-import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
 const WIN_WIDTH = Dimensions.get('window').width;
 
@@ -43,23 +42,21 @@ export class PdfPreview extends React.PureComponent<{ path: string }, {
     render() {
         let source = { uri: this.url, cache: false };
         return (
-            <ASSafeAreaView style={{ width: '100%', height: '100%' }}>
-                <View style={{ flex: 1, width: this.state.width }}>
-                    <Pdf
-                        ref={(pdf) => {
-                            this.pdf = pdf;
-                        }}
-                        source={source}
-                        page={this.state.page}
-                        scale={this.state.scale}
-                        horizontal={this.state.horizontal}
-                        onError={(error) => {
-                            console.warn(error);
-                        }}
-                        style={{ flex: 1 }}
-                    />
-                </View>
-            </ASSafeAreaView>
+            <View style={{ flexGrow: 1, width: this.state.width }}>
+                <Pdf
+                    ref={(pdf) => {
+                        this.pdf = pdf;
+                    }}
+                    source={source}
+                    page={this.state.page}
+                    scale={this.state.scale}
+                    horizontal={this.state.horizontal}
+                    onError={(error) => {
+                        console.warn(error);
+                    }}
+                    style={{ flex: 1 }}
+                />
+            </View>
         );
     }
 }

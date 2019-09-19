@@ -2203,6 +2203,14 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
+"@types/react-native-video@3.1.5":
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/@types/react-native-video/-/react-native-video-3.1.5.tgz#3617e7e96bd1cffb62e755c8b24fdd33329c843e"
+  integrity sha512-5EvRot5MEEOQroB9XSJsTaYIW1UKiAeDDJfXLNo9Q0AClRwFV4ugYYBTsKoomNUYPZycfJhrvmUbHXb4Vx8oOA==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
 "@types/react-native@*", "@types/react-native@0.56.4":
   version "0.56.4"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.56.4.tgz#2643ca2a9a81e30da9fde96cfd8587fca4e3c19d"
@@ -9777,6 +9785,11 @@ kdbush@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/kdbush/-/kdbush-1.0.1.tgz#3cbd03e9dead9c0f6f66ccdb96450e5cecc640e0"
 
+keymirror@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/keymirror/-/keymirror-0.1.1.tgz#918889ea13f8d0a42e7c557250eee713adc95c35"
+  integrity sha1-kYiJ6hP40KQufFVyUO7nE63JXDU=
+
 keyv@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/keyv/-/keyv-3.0.0.tgz#44923ba39e68b12a7cec7df6c3268c031f2ef373"
@@ -13214,6 +13227,15 @@ react-native-threads@0.0.15:
   resolved "https://registry.yarnpkg.com/react-native-threads/-/react-native-threads-0.0.15.tgz#7dee96658065aa74ca65a27995e29d97da3aae34"
   integrity sha512-WfVQMtqzOfrY4QcMkuCjr37EHE0E4aIgCTVttZzz8fm3WIJKAAfIiuK1hupULQqn3J8VO3+3PuuZh8SMkvtvEw==
 
+react-native-video@4.4.4:
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/react-native-video/-/react-native-video-4.4.4.tgz#e33da29990556a9b2d575d6b2e88190fc04d9b50"
+  integrity sha512-GzC9dqvEV3kPQDgfM41bxuhXK0pf6NF+/PSY0nCqzikaapUtOs/69gPHEoG0D6ykI5ru0TxKdc1ZYM6MfZfgRw==
+  dependencies:
+    keymirror "^0.1.1"
+    prop-types "^15.5.10"
+    shaka-player "^2.4.4"
+
 react-native-web@^0.9.0:
   version "0.9.8"
   resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.9.8.tgz#a87531277d40df48257f73d0a2bbc54d2a400df3"
@@ -14402,6 +14424,11 @@ sha.js@^2.4.0, sha.js@^2.4.11, sha.js@^2.4.8:
   dependencies:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
+
+shaka-player@^2.4.4:
+  version "2.5.5"
+  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-2.5.5.tgz#81e7265f28f631afd3837c06ec6637824bda71e4"
+  integrity sha512-YEWBFapWKjwy2+wIgH9NqoFW9A14LIYNAoJ9cQr3c9BGS7qjqxeiYM/H1BJ8so1FQexpsWUdyjwHvcspdc7/nw==
 
 shallow-copy@~0.0.1:
   version "0.0.1"

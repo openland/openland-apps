@@ -84,6 +84,7 @@ target 'openland' do
 
   pod 'react-native-pdf', :path => '../node_modules/react-native-pdf'
   pod 'ObjectiveRocks', '~> 0.9'
+  pod 'react-native-video', :path => '../node_modules/react-native-video/react-native-video.podspec'
 end
 
 target 'openlandTests' do

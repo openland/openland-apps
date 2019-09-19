@@ -10,6 +10,7 @@ import { layoutImage } from 'openland-mobile/messenger/components/content/MediaC
 import { MediaContent } from './content/MediaContent';
 import { RichAttachContent } from './content/RichAttachContent';
 import { DocumentContent } from './content/DocumentContent';
+import { showFileModal } from '../file/showFileModal';
 
 export interface ZMessageViewProps {
     message: FullMessage;
@@ -33,7 +34,7 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
     }, []);
 
     const handleDocumentPress = React.useCallback((document: FullMessage_GeneralMessage_attachments_MessageAttachmentFile) => {
-        router.push('FilePreview', { config: { uuid: document.fileId, name: document.fileMetadata.name, size: document.fileMetadata.size } });
+        showFileModal({ uuid: document.fileId, name: document.fileMetadata.name, size: document.fileMetadata.size });
     }, []);
 
     let maxWidth = props.maxWidth || Dimensions.get('screen').width - 32;
