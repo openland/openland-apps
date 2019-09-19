@@ -1,5 +1,5 @@
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
-import { Platform, Alert } from 'react-native';
+import { Platform } from 'react-native';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 import Picker from 'react-native-image-picker';
 import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
@@ -65,8 +65,6 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
                 },
                 (response) => {
                     if (response.error) {
-                        Alert.alert(response.error);
-
                         handlePermissionDismiss('gallery');
                         return;
                     }
