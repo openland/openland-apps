@@ -122,6 +122,7 @@ class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePr
         const paddingBottom = Platform.OS === 'ios' ? (SDevice.safeArea.bottom || 16) : SDevice.safeArea.bottom + 16;
 
         const textColor = style === 'default' ? theme.foregroundPrimary : theme.foregroundContrast;
+        const iconColor = style === 'default' ? theme.foregroundSecondary : theme.foregroundContrast;
         const backgroundColor = style === 'default' ? theme.backgroundPrimary : '#000000';
 
         let header = (
@@ -136,11 +137,11 @@ class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePr
                     top: 0, left: 0, right: 0,
                 }}
             >
-                <SCloseButton tintColor={textColor} onPress={this.props.onClose} />
+                <SCloseButton tintColor={iconColor} onPress={this.props.onClose} />
                 <Text style={{ ...TextStyles.Headline, flexGrow: 1, textAlign: 'center', color: textColor }} allowFontScaling={false}>
                     {this.content === 'video' ? 'Video' : 'Document'}
                 </Text>
-                <SShareButton tintColor={textColor} onPress={this.handleOpen} />
+                <SShareButton tintColor={iconColor} onPress={this.handleOpen} />
             </View>
         );
 
