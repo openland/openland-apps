@@ -515,7 +515,8 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
                 if (b.op === 'added') {
                     values[b.item!.key] = b.item!;
                     added[b.item!.key] = true;
-                    removed[b.item!.key] = false;
+                    // if skip remove operation, then delete+add in one batch will crash on itemAlreadyExists
+                    // removed[b.item!.key] = false;
                     updated[b.item!.key] = false;
                 } else if (b.op === 'removed') {
                     if (added[b.item!.key]) {
