@@ -8,6 +8,8 @@ import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import FastImage from 'react-native-fast-image';
+import { SAnimatedView } from 'react-native-s/SAnimatedView';
+import { SAnimated } from 'react-native-s/SAnimated';
 
 const styles = StyleSheet.create({
     box: {
@@ -27,12 +29,17 @@ const styles = StyleSheet.create({
     coverWrapper: {
         flexGrow: 1,
     } as ViewStyle,
-    coverLoader: {
+    cover: {
         position: 'absolute',
         top: 0, right: 0, left: 0, bottom: 0,
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 2
+    } as ViewStyle,
+    coverLoader: {
+        flexGrow: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
     } as ViewStyle
 });
 
@@ -45,8 +52,21 @@ interface FeedSlideProps {
 
 export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
     const theme = React.useContext(ThemeContext);
-    const { text, cover } = props.slide;
+    const { id, text, cover } = props.slide;
     const [downloadState, setDownloadState] = React.useState<DownloadState | undefined>(undefined);
+
+    const coverViewKey = React.useMemo(() => id + '-cover', [id]);
+
+    const handleCoverLoad = React.useCallback(() => {
+        SAnimated.beginTransaction();
+        SAnimated.timing(coverViewKey, {
+            property: 'opacity',
+            from: 0,
+            to: 1,
+            duration: 0.15
+        });
+        SAnimated.commitTransaction();
+    }, [coverViewKey]);
 
     React.useEffect(() => {
         if (cover) {
@@ -60,25 +80,25 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
         }
     }, []);
 
-    const coverLoading = downloadState ? !downloadState.path : true;
     const textStyle = text.length < 200 ? (text.length < 100 ? styles.textLarge : styles.textMedium) : styles.text;
 
     return (
         <View style={styles.box}>
             {cover && (
                 <View style={[styles.coverWrapper, { backgroundColor: theme.backgroundTertiary }]}>
-                    {downloadState && downloadState.path && (
-                        <FastImage
-                            resizeMode="cover"
-                            style={{ width: '100%', flexGrow: 1 }}
-                            source={{ uri: downloadState.path, priority: 'normal', ...{ disableAnimations: true } as any }}
-                        />
-                    )}
+                    <View style={[styles.coverLoader, { backgroundColor: theme.overlayMedium }]}>
+                        <LoaderSpinner />
+                    </View>
 
-                    {coverLoading && (
-                        <View style={[styles.coverLoader, { backgroundColor: theme.overlayMedium }]}>
-                            <LoaderSpinner />
-                        </View>
+                    {downloadState && downloadState.path && (
+                        <SAnimatedView name={coverViewKey} style={[styles.cover, { backgroundColor: theme.overlayMedium, opacity: 0 }]}>
+                            <FastImage
+                                resizeMode="cover"
+                                style={{ width: '100%', flexGrow: 1 }}
+                                source={{ uri: downloadState.path, priority: 'normal', ...{ disableAnimations: true } as any }}
+                                onLoad={handleCoverLoad}
+                            />
+                        </SAnimatedView>
                     )}
                 </View>
             )}
