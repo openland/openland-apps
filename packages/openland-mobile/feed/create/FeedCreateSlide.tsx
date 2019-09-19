@@ -7,7 +7,6 @@ import { SlideInput } from 'openland-api/Types';
 import { ZIconButton } from 'openland-mobile/components/ZIconButton';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 
-const MAX_LENGTH_TEXT = 50;
 const styles = StyleSheet.create({
     box: {
         paddingTop: 16,
@@ -19,17 +18,14 @@ const styles = StyleSheet.create({
         borderRadius: RadiusStyles.Large,
         overflow: 'hidden',
     } as ViewStyle,
-    meta: {
+    header: {
+        position: 'absolute',
+        top: 0, left: 0, right: 0,
         flexDirection: 'row',
         alignItems: 'center',
         padding: 4,
         height: 56
     } as ViewStyle,
-    input: {
-        fontSize: 24,
-        lineHeight: 36,
-        minHeight: 56,
-    } as TextStyle,
     author: {
         height: 48,
         flexGrow: 1,
@@ -49,11 +45,23 @@ const styles = StyleSheet.create({
         borderRadius: 4
     } as ViewStyle,
     inputContainer: {
-        paddingHorizontal: 16,
         justifyContent: 'center',
         flexGrow: 1,
-        paddingBottom: 32
-    } as ViewStyle
+    } as ViewStyle,
+    input: {
+        paddingHorizontal: 16,
+        fontSize: 24,
+        lineHeight: 36,
+    } as TextStyle,
+    footer: {
+        position: 'absolute',
+        bottom: 0, left: 0, right: 0,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        padding: 4,
+        height: 56
+    } as ViewStyle,
 });
 
 interface FeedCreateSlideProps {
@@ -100,7 +108,7 @@ export const FeedCreateSlide = (props: FeedCreateSlideProps) => {
                 <FeedItemShadow width={width} height={containerHeight + 16 + 32} />
 
                 <View style={[styles.container, { width: containerWidth, height: containerHeight, backgroundColor: theme.backgroundSecondary }]}>
-                    <View style={[styles.meta, { backgroundColor: theme.backgroundSecondary }]}>
+                    <View style={styles.header}>
                         <View style={styles.author}>
                             <View style={[styles.authorAvatar, { backgroundColor: theme.backgroundTertiary }]} />
                             <View style={[styles.authorName, { backgroundColor: theme.backgroundTertiary }]} />
@@ -113,16 +121,21 @@ export const FeedCreateSlide = (props: FeedCreateSlideProps) => {
                         {typeof slide.text === 'string' && (
                             <TextInput
                                 ref={textInputRef}
-                                maxLength={MAX_LENGTH_TEXT}
                                 onChangeText={(text) => onChangeText(index, text)}
                                 value={slide.text}
                                 multiline={true}
-                                style={styles.input}
-                                placeholder={'Enter text'}
+                                style={[styles.input, { color: theme.foregroundPrimary }]}
+                                placeholder="Enter text"
                                 placeholderTextColor={theme.foregroundTertiary}
+                                keyboardAppearance={theme.keyboardAppearance}
                                 {...{ scrollEnabled: false }}
                             />
                         )}
+                    </View>
+
+                    <View style={styles.footer}>
+                        <ZIconButton src={require('assets/ic-gallery-24.png')} />
+                        <ZIconButton src={require('assets/ic-at-24.png')} />
                     </View>
                 </View>
             </View>
