@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, TouchableWithoutFeedback, Image } from 'react-native';
+import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, TouchableWithoutFeedback } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { FeedItemShadow } from '../FeedItemShadow';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
@@ -13,6 +13,7 @@ import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import Toast from 'openland-mobile/components/Toast';
 import LinearGradient from 'react-native-linear-gradient';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
+import FastImage from 'react-native-fast-image';
 
 const styles = StyleSheet.create({
     box: {
@@ -210,7 +211,11 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
 
                     {showCover && (
                         <View style={[styles.coverWrapper, { backgroundColor: theme.backgroundTertiary }]}>
-                            <Image source={{ uri: coverLocalPath }} style={{ width: containerWidth, flexGrow: 1, resizeMode: 'cover' }} />
+                            <FastImage
+                                resizeMode="cover"
+                                style={{ width: '100%', flexGrow: 1 }}
+                                source={{ uri: coverLocalPath, priority: 'normal', ...{ disableAnimations: true } as any }}
+                            />
 
                             {coverLoading && (
                                 <View style={[styles.coverLoader, { backgroundColor: theme.overlayMedium }]}>

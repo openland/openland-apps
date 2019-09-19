@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, Platform } from 'react-native';
 import { DownloadState } from '../../../files/DownloadManagerInterface';
-import { layoutMedia } from '../../../../openland-web/utils/MediaLayout';
+import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage } from 'openland-api/Types';
@@ -95,7 +95,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                             right={0}
                             bottom={0}
                         >
-                            <Text style={{ color: '#fff', opacity: 0.8, marginLeft: 20, marginTop: 20, marginRight: 20, marginBottom: 20, textAlign: 'center'}} allowFontScaling={false}>{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</Text>
+                            <Text style={{ color: '#fff', opacity: 0.8, marginLeft: 20, marginTop: 20, marginRight: 20, marginBottom: 20, textAlign: 'center' }} allowFontScaling={false}>{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</Text>
                         </View>
                     )}
                 </View>

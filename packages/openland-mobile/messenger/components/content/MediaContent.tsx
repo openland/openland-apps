@@ -5,7 +5,7 @@ import { ASText } from 'react-native-async-view/ASText';
 import { Platform, Dimensions } from 'react-native';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DownloadState } from '../../../files/DownloadManagerInterface';
-import { layoutMedia } from '../../../../openland-web/utils/MediaLayout';
+import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from '../../../files/DownloadManager';

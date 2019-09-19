@@ -7,7 +7,7 @@ import { FastImageViewer } from 'react-native-s/FastImageViewer';
 import { SShareButton } from 'react-native-s/SShareButton';
 import { ActionSheetBuilder } from '../ActionSheet';
 import Share from 'react-native-share';
-import { layoutMedia } from '../../../openland-web/utils/MediaLayout';
+import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { ZImage } from '../ZImage';
 import { SStatusBar } from 'react-native-s/SStatusBar';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';

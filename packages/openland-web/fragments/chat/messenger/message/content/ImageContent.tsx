@@ -4,7 +4,7 @@ import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     UserShort,
 } from 'openland-api/Types';
-import { layoutMedia } from 'openland-web/utils/MediaLayout';
+import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcDownload from 'openland-icons/s/ic-download-24.svg';

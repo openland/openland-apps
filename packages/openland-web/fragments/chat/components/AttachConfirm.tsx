@@ -5,7 +5,7 @@ import { pluralForm } from 'openland-y-utils/plural';
 import AlertBlanket from 'openland-x/AlertBlanket';
 import { css } from 'linaria';
 import { XModalController } from 'openland-x/showModal';
-import { layoutMedia } from 'openland-web/utils/MediaLayout';
+import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { UploadCareUploading } from 'openland-web/utils/UploadCareUploading';
 
 const imgClass = css`

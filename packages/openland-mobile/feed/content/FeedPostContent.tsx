@@ -26,14 +26,13 @@ const styles = StyleSheet.create({
 interface FeedPostContentProps {
     width: number;
     post: DataSourceFeedPostItem;
-    borderRadius?: number;
     onLongPress?: () => void;
     onSlideChange?: (index: number) => void;
 }
 
 export const FeedPostContent = React.memo((props: FeedPostContentProps) => {
     const theme = React.useContext(ThemeContext);
-    const { width, post, borderRadius, onLongPress, onSlideChange } = props;
+    const { width, post, onLongPress, onSlideChange } = props;
     const { slides, fallback } = post;
 
     const [currentSlide, setCurreentSlide] = React.useState(0);
@@ -60,7 +59,7 @@ export const FeedPostContent = React.memo((props: FeedPostContentProps) => {
     const height = width * (4 / 3);
 
     return (
-        <View style={[styles.container, { width, height, backgroundColor: theme.backgroundSecondary, borderRadius }]}>
+        <View style={[styles.container, { width, height, backgroundColor: theme.backgroundSecondary }]}>
             {slides.length > 0 && (
                 <View style={styles.wrapper}>
                     <FeedSlide slide={slides[currentSlide]} />

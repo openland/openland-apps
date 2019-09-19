@@ -5,7 +5,7 @@ import { DownloadManagerInstance } from '../../files/DownloadManager';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASFlex } from 'react-native-async-view/ASFlex';
-import { layoutMedia } from '../../../openland-web/utils/MediaLayout';
+import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { DownloadState } from '../../files/DownloadManagerInterface';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 

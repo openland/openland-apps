@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { showModalBox } from 'openland-x/showModalBox';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
-import { layoutMedia } from 'openland-web/utils/MediaLayout';
+import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { TextCaption, TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';

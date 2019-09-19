@@ -16,6 +16,10 @@ const styles = StyleSheet.create({
         marginBottom: -16,
         alignItems: 'center'
     } as ViewStyle,
+    container: {
+        borderRadius: RadiusStyles.Large,
+        overflow: 'hidden'
+    } as ViewStyle,
 });
 
 interface FeedPostViewProps {
@@ -65,7 +69,7 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
                 <FeedItemShadow width={width} height={containerHeight + 16 + 32} />
 
                 <TouchableWithoutFeedback onPress={handlePress} onLongPress={handleLongPress}>
-                    <View>
+                    <View style={styles.container}>
                         <FeedMeta
                             author={author}
                             style={metaStyle}
@@ -76,7 +80,6 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
                             post={item}
                             width={containerWidth}
                             onLongPress={handleLongPress}
-                            borderRadius={RadiusStyles.Large}
                             onSlideChange={i => setCurreentSlide(i)}
                         />
                     </View>
