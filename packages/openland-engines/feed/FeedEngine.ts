@@ -10,6 +10,7 @@ import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { DataSourceFeedItem } from './types';
 import { convertItems, convertPost } from './convert';
 import UUID from 'uuid/v4';
+import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 
 const log = createLogger('Engine-Feed');
 
@@ -22,6 +23,7 @@ export class FeedEngine {
     private lastCursor: string | null = null;
     private fullyLoaded: boolean = false;
     private loading: boolean = false;
+    private isVisible: boolean = true;
 
     constructor(engine: MessengerEngine) {
         this.engine = engine;
@@ -33,6 +35,9 @@ export class FeedEngine {
 
         if (AppConfig.isNonProduction()) {
             this.init();
+
+            AppVisibility.watch(this.handleVisibleChanged);
+            this.handleVisibleChanged(AppVisibility.isVisible);
         }
     }
 
@@ -60,6 +65,26 @@ export class FeedEngine {
         this.dataSource.initialize(dsItems, this.fullyLoaded, true);
 
         this.loading = false;
+    }
+
+    private reinit = () => {
+        this.fullyLoaded = false;
+        this.loading = false;
+        this.lastCursor = null;
+        this.dataSource.clear();
+        this.load();
+    }
+
+    private handleVisibleChanged = (isVisible: boolean) => {
+        if (this.isVisible === isVisible) {
+            return;
+        }
+
+        if (!this.isVisible && isVisible) {
+            this.reinit();
+        }
+
+        this.isVisible = isVisible;
     }
 
     private load = async () => {
