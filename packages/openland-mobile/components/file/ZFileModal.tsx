@@ -173,8 +173,8 @@ class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePr
             );
         }
 
-        if (this.state.completed && this.state.path && this.content === 'video') {
-            content = <ZVideoComponent uuid={config.uuid} />;
+        if (this.content === 'video') {
+            content = <ZVideoComponent uuid={config.uuid} completed={this.state.completed} />;
         }
 
         return (
