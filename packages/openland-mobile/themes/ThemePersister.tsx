@@ -18,8 +18,8 @@ class ThemePersisterImpl {
             ThemeController.theme = 'LightPink';
         } else if (res === 'LightPurple') {
             ThemeController.theme = 'LightPurple';
-        } else if (res === 'LightGray') {
-            ThemeController.theme = 'LightGray';
+        } else if (res === 'LightGrey') {
+            ThemeController.theme = 'LightGrey';
         } else if (res === 'Dark') {
             ThemeController.theme = 'Dark';
         } else if (res === 'DarkBlue') {

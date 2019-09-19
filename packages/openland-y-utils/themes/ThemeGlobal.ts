@@ -1,4 +1,4 @@
-export type ThemeGlobalKind = 'Light' | 'LightRed' | 'LightOrange' | 'LightGreen' | 'LightCyan' | 'LightPink' | 'LightPurple' | 'LightGray' | 'Dark' | 'DarkBlue' | 'DarkRed' | 'DarkOrange' | 'DarkGreen' | 'DarkCyan' | 'DarkPink' | 'DarkPurple';
+export type ThemeGlobalKind = 'Light' | 'LightRed' | 'LightOrange' | 'LightGreen' | 'LightCyan' | 'LightPink' | 'LightPurple' | 'LightGrey' | 'Dark' | 'DarkBlue' | 'DarkRed' | 'DarkOrange' | 'DarkGreen' | 'DarkCyan' | 'DarkPink' | 'DarkPurple';
 export type ThemeGlobalType = 'Light' | 'Dark';
 
 export type ThemeGlobal = {
@@ -56,6 +56,8 @@ export type ThemeGlobal = {
     tintCyan: string;
     tintBlue: string;
     tintPurple: string;
+    tintPink: string;
+    tintGrey: string;
     tintInverted: string;
 
     bubble: (isOut: boolean) => {
@@ -90,6 +92,13 @@ export type ThemeGlobal = {
     backgroundInverted: string;
     backgroundInvertedHover: string;
     backgroundInvertedActive: string;
+};
+
+export type TintGlobal = {
+    primary: string;
+    hover: string;
+    active: string;
+    secondary: string;
 };
 
 export type PlaceholderGlobal = {

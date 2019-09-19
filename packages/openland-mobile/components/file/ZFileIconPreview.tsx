@@ -56,7 +56,7 @@ export const ZFileIconPreview = (props: { ext: string; }) => {
                 <Image source={require('assets/ic-file-preview-corner-1-18.png')} />
                 <Image source={require('assets/ic-file-preview-corner-2-18.png')} />
             </View>
-            {!!props.ext ? (
+            {props.ext !== '' ? (
                 <Text style={styles.ext}>{props.ext.toUpperCase()}</Text>
             ) : (
                     <Image

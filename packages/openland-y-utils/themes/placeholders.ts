@@ -1,31 +1,36 @@
 import { PlaceholderGlobal } from './ThemeGlobal';
 
 export const PlaceholderRed: PlaceholderGlobal = {
-    start: '#FF655D',
-    end: '#FF3D33',
+    start: '#FF6633',
+    end: '#E62E5C',
 };
 
 export const PlaceholderOrange: PlaceholderGlobal = {
-    start: '#FFB600',
-    end: '#FF8D00',
+    start: '#FFC619',
+    end: '#FF7919',
 };
 
 export const PlaceholderGreen: PlaceholderGlobal = {
-    start: '#59D23C',
-    end: '#21AC00',
+    start: '#7BD94C',
+    end: '#3AA64C',
 };
 
 export const PlaceholderCyan: PlaceholderGlobal = {
-    start: '#00D1D4',
-    end: '#00AFC8',
+    start: '#36D9CB',
+    end: '#3695D9',
 };
 
 export const PlaceholderBlue: PlaceholderGlobal = {
-    start: '#11B2FF',
-    end: '#1970FF',
+    start: '#24BFF2',
+    end: '#2458F2',
 };
 
 export const PlaceholderPurple: PlaceholderGlobal = {
-    start: '#AA22FF',
-    end: '#8E00E6',
+    start: '#B726FF',
+    end: '#4624F2',
+};
+
+export const PlaceholderPink: PlaceholderGlobal = {
+    start: '#F23CD4',
+    end: '#D9366C',
 };

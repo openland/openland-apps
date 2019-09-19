@@ -10,9 +10,9 @@ body {
     --transparent: rgba(255, 255, 255, 0);
 
     --foregroundPrimary: #171A1F;
-    --foregroundSecondary: #6C717A;
-    --foregroundTertiary: #969AA3;
-    --foregroundQuaternary: #C4C7CC;
+    --foregroundSecondary: #71747A;
+    --foregroundTertiary: #9D9FA3;
+    --foregroundQuaternary: #C8C9CC;
     --foregroundContrast: #FFFFFF;
     --foregroundInverted: #FFFFFF;
 
@@ -29,20 +29,20 @@ body {
     --backgroundTertiaryActive: #E6E7EB;
 
     --accentPrimary: #248BF2;
-    --accentPrimaryHover: #2693FF;
-    --accentPrimaryActive: #0B72D9;
+    --accentPrimaryHover: #3399FF;
+    --accentPrimaryActive: #1677D9;
 
     --accentMuted: #4595E5;
     --accentMutedHover: #4595E5;
     --accentMutedActive: #4595E5;
 
-    --accentPositive: #3EB265;
-    --accentPositiveHover: #41BA69;
-    --accentPositiveActive: #26994D;
+    --accentPositive: #43BF58;
+    --accentPositiveHover: #52CC66;
+    --accentPositiveActive: #32A645;
 
-    --accentNegative: #E62243;
-    --accentNegativeHover: #F23041;
-    --accentNegativeActive: #CC1424;
+    --accentNegative: #F23051;
+    --accentNegativeHover: #FF4060;
+    --accentNegativeActive: #D92140;
 
     --border: rgba(0, 0, 0, 0.08);
     --borderLight: rgba(0, 0, 0, 0.04);
@@ -52,17 +52,18 @@ body {
     --overlayMedium: rgba(0, 0, 0, 0.48);
     --overlayLight: rgba(0, 0, 0, 0.24);
 
-    --tintRed: #E52233;
-    --tintOrange: #FFAE0D;
-    --tintGreen: #3EB265;
-    --tintCyan: #21C9D9;
+    --tintRed: #F23051;
+    --tintOrange: #FF9F1A;
+    --tintGreen: #43BF58;
+    --tintCyan: #36BED9;
     --tintBlue: #248BF2;
-    --tintPurple: #8518F2;
+    --tintPurple: #7A24F2;
+    --tintPink: #E539AC;
+    --tintGrey: #71747A;
     --tintInverted: rgba(255, 255, 255, 0.32);
 
     /* legacy */
     --backgroundInverted: #F2F3F5;
     --backgroundInvertedHover: #EBEDF0;
     --backgroundInvertedActive: #F2F3F5;
-    --separatorColor: #eaeaea;
 }
