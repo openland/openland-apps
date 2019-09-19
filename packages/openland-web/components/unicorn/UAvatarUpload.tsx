@@ -162,7 +162,7 @@ const AvatarRender = (props: AvatarRenderProps) => {
                 <UIcon icon={<IcCamera />} color="#C8C9CC" size={36} className="ic-camera" />
                 {(props.isLoading || isLoading) && (
                     <XLoader
-                        transparentBackground
+                        transparentBackground={true}
                         loading={props.isLoading || isLoading}
                         color="#fff"
                         className="loader"
