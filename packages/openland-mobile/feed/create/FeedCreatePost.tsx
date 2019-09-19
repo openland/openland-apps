@@ -12,6 +12,8 @@ import { backoff } from 'openland-y-utils/timer';
 import UUID from 'uuid/v4';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { FeedCreateSlide } from './FeedCreateSlide';
+import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
 
 const FeedCreatePostComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -19,6 +21,7 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
     const [slides, setSlides] = React.useState<SlideInput[]>([]);
     const scrollViewRef = React.useRef<ScrollView>(null);
     const prevSlidesLength = React.useRef<number>(0);
+    const [global, setGlobal] = React.useState(false);
 
     React.useEffect(() => {
         if (slides.length > prevSlidesLength.current) {
@@ -54,11 +57,17 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
 
         const repeatKey = UUID();
 
-        await backoff(async () => await client.mutateFeedCreatePost({ input, repeatKey }));
+        await backoff(async () => {
+            if (global) {
+                await client.mutateFeedCreateGlobalPost({ input, repeatKey });
+            } else {
+                await client.mutateFeedCreatePost({ input, repeatKey });
+            }
+        });
 
         stopLoader();
         props.router.back();
-    }, [slides]);
+    }, [slides, global]);
 
     const addSlide = (text: string = '') => {
         setSlides([...slides, { type: SlideType.Text, text }]);
@@ -86,6 +95,10 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
             <SHeaderButton title="Post" onPress={handlePost} />
             <KeyboardAvoidingView flexGrow={1} behavior={'padding'}>
                 <SScrollView scrollRef={scrollViewRef as React.RefObject<ScrollView>}>
+                    {SUPER_ADMIN && (
+                        <ZListItem text="Global Post [SUPER_ADMIN]" toggle={global} onToggle={v => setGlobal(v)} />
+                    )}
+
                     {slides.map((slide, index) => (
                         <View key={index}>
                             <FeedCreateSlide
