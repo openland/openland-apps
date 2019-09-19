@@ -104,11 +104,11 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
         } else if (span.type === 'code_block') {
             return <Text key={'code-block'} style={{ fontFamily: FontStyles.Family.Monospace }} allowFontScaling={false}>{children}</Text>;
         } else if (span.type === 'code_inline') {
-            return <Text key={'code-inline'} style={{ fontSize: 14, fontFamily: FontStyles.Family.Monospace, backgroundColor: theme.codeSpan.background }} allowFontScaling={false}>{theme.codeSpan.paddedText}{children}{theme.codeSpan.paddedText}</Text>;
+            return <Text key={'code-inline'} style={{ fontSize: 14, fontFamily: FontStyles.Family.Monospace, backgroundColor: theme.bubble(false).backgroundSecondary }} allowFontScaling={false}>{'\u202F'}{children}{'\u202F'}</Text>;
         } else if (span.type === 'insane') {
             return <Text key={'insane'} allowFontScaling={false}>{children}</Text>;
         } else if (span.type === 'irony') {
-            return <Text key={'irony'} style={{ fontStyle: 'italic', backgroundColor: theme.ironySpan.background, color: theme.ironySpan.color }} allowFontScaling={false}>{theme.ironySpan.paddedText}{children}{theme.ironySpan.paddedText}</Text>;
+            return <Text key={'irony'} style={{ fontStyle: 'italic', backgroundColor: theme.bubble(false).backgroundSecondary, color: theme.bubble(false).foregroundPrimary }} allowFontScaling={false}>{'\u2009'}{children}{'\u2009'}</Text>;
         } else if (span.type === 'italic') {
             return <Text key={'italic'} allowFontScaling={false} style={{ fontStyle: 'italic' }}>{children}</Text>;
         } else if (span.type === 'loud') {

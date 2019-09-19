@@ -85,7 +85,7 @@ export const TextContent = (props: TextContentProps) => {
                     {c.type === 'code_block' && (
                         <View
                             key={c.type + '-' + i}
-                            backgroundColor={theme.codeSpan.background}
+                            backgroundColor={theme.bubble(false).backgroundSecondary}
                             marginTop={i === 0 && inReply ? 4 : undefined}
                             marginLeft={codeMarginLeft}
                             marginRight={codeMarginRight}
@@ -99,7 +99,7 @@ export const TextContent = (props: TextContentProps) => {
                                     fontSize: fontSize[c.type],
                                     lineHeight: lineHeight[c.type]
                                 }}
-                                color={theme.foregroundPrimary}
+                                color={theme.bubble(false).foregroundPrimary}
                             >
                                 {renderPreprocessedText(c.spans, onUserPress, onGroupPress, theme)}
                             </TextWrapper>

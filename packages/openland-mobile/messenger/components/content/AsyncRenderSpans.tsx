@@ -106,7 +106,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                             marginRight={-insetRight}
                             marginTop={i === 0 ? insetVertical + ((message.isOut || message.attachTop) ? 2 : 0) : undefined}
                             marginBottom={(!(content[i + 1] && content[i + 1].type === 'padded')) ? insetVertical : undefined}
-                            backgroundColor={(message.isOut && !message.isService) ? theme.codeSpan.backgroundOut : theme.codeSpan.background}
+                            backgroundColor={theme.bubble(message.isOut).backgroundSecondary}
                         >
                             <ASFlex marginLeft={insetLeft} marginRight={insetRight} marginTop={5} marginBottom={5}>
                                 <TextWrapper

@@ -3,7 +3,7 @@ import { TintBlue, TintGreen, TintRed, TintOrange, TintCyan, TintPurple, TintInv
 
 const buildBubbleColor = (tint: TintGlobal, isOut: boolean) => ({
     backgroundPrimary: isOut ? tint.primary : '#F2F3F5',
-    backgroundSecondary: isOut ? tint.secondary : '#EBEDF0',
+    backgroundSecondary: isOut ? tint.secondary : '#E8EAED',
 
     foregroundPrimary: isOut ? '#FFFFFF' : '#171A1F',
     foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#969AA3',
@@ -74,20 +74,6 @@ export const ThemeLight: ThemeGlobal = {
     blurType: 'light',
     keyboardAppearance: 'light',
     statusBar: 'dark-content',
-
-    ironySpan: {
-        backgroundOut: 'rgba(255, 56, 46, 0.9)',
-        background: 'rgba(255, 56, 46, 0.1)',
-        colorOut: 'white',
-        color: '#f6564e',
-        paddedText: '\u00a0',
-    },
-
-    codeSpan: {
-        backgroundOut: 'rgba(0, 0, 0, 0.2)',
-        background: 'rgba(255, 170, 0, 0.2)',
-        paddedText: '\u202F',
-    },
 
     // legacy
     backgroundInverted: '#F2F3F5',

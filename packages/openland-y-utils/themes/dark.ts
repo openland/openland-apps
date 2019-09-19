@@ -82,20 +82,6 @@ export const ThemeDark: ThemeGlobal = {
     keyboardAppearance: 'dark',
     statusBar: 'light-content',
 
-    ironySpan: {
-        backgroundOut: 'transparent',
-        background: 'transparent',
-        colorOut: '#f6564e',
-        color: '#f6564e',
-        paddedText: '',
-    },
-
-    codeSpan: {
-        backgroundOut: 'rgba(255, 170, 0, 0.3)',
-        background: 'rgba(255, 170, 0, 0.3)',
-        paddedText: '\u202F',
-    },
-
     // legacy
     backgroundInverted: '#000000',
     backgroundInvertedHover: '#000000',

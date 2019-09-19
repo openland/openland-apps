@@ -69,20 +69,6 @@ export type ThemeGlobal = {
         foregroundTertiary: string;
     };
 
-    ironySpan: {
-        backgroundOut: string;
-        background: string;
-        colorOut: string;
-        color: string;
-        paddedText: string;
-    },
-
-    codeSpan: {
-        backgroundOut: string;
-        background: string;
-        paddedText: string;
-    },
-
     // mobile-only
     blurType: 'dark' | 'light' | 'none';
     keyboardAppearance: 'dark' | 'light';
