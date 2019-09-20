@@ -9,14 +9,14 @@ import { Span } from 'openland-y-utils/spans/Span';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { OthersUsersWrapper } from 'openland-mobile/messenger/components/content/OthersUsersWrapper';
 
-let openContextMenu = (link: string) => {
+const openLinkContextMenu = (link: string) => {
     let builder = new ActionSheetBuilder();
 
     builder.action('Copy', () => Clipboard.setString(link), false, require('assets/ic-copy-24.png'));
     builder.action('Share', () => Share.share({ message: link }), false, require('assets/ic-share-24.png'));
     builder.action('Open', resolveInternalLink(link, async () => await Linking.openURL(link)), false, require('assets/ic-discover-24.png'));
 
-    builder.show();
+    builder.show(true);
 };
 
 export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) => void, onGroupPress: (id: string) => void, theme: ThemeGlobal) => {
@@ -29,7 +29,7 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
                     key={'link'}
                     style={{ color: theme.accentPrimary }}
                     onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))}
-                    onLongPress={() => openContextMenu(span.link)}
+                    onLongPress={() => openLinkContextMenu(span.link)}
                     allowFontScaling={false}
                 >
                     {children}
