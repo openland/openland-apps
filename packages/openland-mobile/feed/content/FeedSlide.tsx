@@ -91,7 +91,7 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
     return (
         <View style={styles.box}>
             {!!text && coverAlign && coverAlign === SlideCoverAlign.Bottom && (
-                <Text style={[textStyle, { color: theme.foregroundPrimary, paddingTop: wrapped ? 56 : undefined }]} allowFontScaling={false}>
+                <Text style={[textStyle, { color: theme.foregroundPrimary, paddingTop: wrapped ? 48 : 0 }]} allowFontScaling={false}>
                     {text}
                 </Text>
             )}

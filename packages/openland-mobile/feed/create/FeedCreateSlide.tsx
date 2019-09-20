@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, TouchableWithoutFeedback, Image, Text } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { FeedItemShadow } from '../FeedItemShadow';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
@@ -69,8 +69,21 @@ const styles = StyleSheet.create({
         top: 0, right: 0, left: 0, bottom: 0,
         alignItems: 'center',
         justifyContent: 'center'
-    } as ViewStyle
+    } as ViewStyle,
+    alignContainer: {
+        width: 114,
+        alignItems: 'center',
+        paddingBottom: 16
+    } as ViewStyle,
 });
+
+const SUPPORTED_COVER_ALIGN: ({ align: SlideCoverAlign, icon: NodeRequire })[] = [{
+    align: SlideCoverAlign.Top,
+    icon: require('assets/feed/ic-layout-top-80.png')
+}, {
+    align: SlideCoverAlign.Bottom,
+    icon: require('assets/feed/ic-layout-bottom-80.png')
+}];
 
 interface FeedCreateSlideProps {
     slide: SlideInput;
@@ -179,13 +192,23 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
     const handleChangeLayout = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
 
-        builder.action('Top', () => {
-            onChangeCoverAlign(SlideCoverAlign.Top);
-        }, false, require('assets/ic-edit-24.png'));
-
-        builder.action('Bottom', () => {
-            onChangeCoverAlign(SlideCoverAlign.Bottom);
-        }, false, require('assets/ic-delete-24.png'));
+        builder.view(ctx => (
+            <>
+                <View paddingTop={4} paddingBottom={30} alignItems="center">
+                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>Choose layout</Text>
+                </View>
+                <View flexDirection="row" justifyContent="center">
+                    {SUPPORTED_COVER_ALIGN.map((item, index) => (
+                        <TouchableWithoutFeedback key={index} onPress={() => { onChangeCoverAlign(item.align); ctx.hide(); }}>
+                            <View style={styles.alignContainer}>
+                                <Image source={item.icon} style={{ width: 80, height: 106, tintColor: coverAlign === item.align ? theme.accentPrimary : theme.backgroundTertiary }} />
+                                <View marginTop={17} width={22} height={22} borderRadius={11} borderWidth={coverAlign === item.align ? 7.5 : 2} borderColor={coverAlign === item.align ? theme.accentPrimary : theme.backgroundTertiary} />
+                            </View>
+                        </TouchableWithoutFeedback>
+                    ))}
+                </View>
+            </>
+        ));
 
         builder.show();
     }, [coverAlign]);
@@ -223,7 +246,12 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
     }
 
     const input = (
-        <View style={[...inputBoxStyle, { flexGrow: !showCover ? 1 : undefined }]}>
+        <View
+            style={[...inputBoxStyle, {
+                flexGrow: !showCover ? 1 : undefined,
+                paddingTop: !canAddText && coverAlign && coverAlign === SlideCoverAlign.Bottom ? 48 : undefined
+            }]}
+        >
             <TextInput
                 ref={textInputRef}
                 onChangeText={onChangeText}
@@ -250,15 +278,11 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
                         <View style={[styles.authorName, authorStyles]} />
                     </View>
 
-                    {showCover && !canAddText && <ZIconButton src={require('assets/ic-sort-24.png')} style={headerStyle} onPress={handleChangeLayout} />}
+                    {showCover && !canAddText && <ZIconButton src={require('assets/ic-layout-24.png')} style={headerStyle} onPress={handleChangeLayout} />}
                     {!!onDelete && <ZIconButton src={require('assets/ic-delete-24.png')} style={headerStyle} onPress={handleDeleteSlide} />}
                 </FeedCreateTools>
 
-                {!canAddText && coverAlign && coverAlign === SlideCoverAlign.Bottom && (
-                    <View paddingTop={56}>
-                        {input}
-                    </View>
-                )}
+                {!canAddText && coverAlign && coverAlign === SlideCoverAlign.Bottom && input}
 
                 {showCover && (
                     <TouchableWithoutFeedback onPress={handleCoverPress}>
