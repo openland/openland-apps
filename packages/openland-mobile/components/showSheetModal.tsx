@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ZModalController, showModal, ZModal } from './ZModal';
-import { View, TouchableWithoutFeedback, LayoutChangeEvent, BackHandler, Platform, ScrollView, Dimensions } from 'react-native';
+import { View, TouchableWithoutFeedback, LayoutChangeEvent, BackHandler, Platform, ScrollView, Dimensions, Text } from 'react-native';
 import { SAnimated } from 'react-native-s/SAnimated';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
@@ -9,12 +9,13 @@ import { isPad } from 'openland-mobile/pages/Root';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 
 interface SheetModalProps {
     ctx: ZModalController;
     modal: ZModal;
     safe: ASSafeArea;
+    title?: string;
 }
 
 class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlobal }> implements ZModalController {
@@ -130,7 +131,7 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
     }
 
     render() {
-        const { theme, safe } = this.props;
+        const { theme, safe, title } = this.props;
         const maxScrollHeight = Dimensions.get('screen').height - safe.top - safe.bottom - 100;
 
         return (
@@ -175,6 +176,13 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
                             overflow="hidden"
                         >
                             <ScrollView alwaysBounceVertical={false} maxHeight={maxScrollHeight} contentContainerStyle={{ paddingTop: 20, paddingBottom: Platform.select({ ios: safe.bottom, android: undefined }) }}>
+                                {!!title && (
+                                    <View paddingTop={4} paddingBottom={30} alignItems="center">
+                                        <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
+                                            {title}
+                                        </Text>
+                                    </View>
+                                )}
                                 {this.contents}
                             </ScrollView>
                         </View>
@@ -190,6 +198,13 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
                             onLayout={this.onLayout}
                         >
                             <ScrollView alwaysBounceVertical={false} maxHeight={maxScrollHeight} contentContainerStyle={{ paddingTop: 10 }}>
+                                {!!title && (
+                                    <View paddingTop={4} paddingBottom={30} alignItems="center">
+                                        <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
+                                            {title}
+                                        </Text>
+                                    </View>
+                                )}
                                 {this.contents}
                             </ScrollView>
                         </View>
@@ -205,11 +220,11 @@ const ThemedSheetModal = XMemo((props: SheetModalProps) => {
     return <SheetModal {...props} theme={theme} />;
 });
 
-export function showSheetModal(render: (ctx: ZModalController) => React.ReactElement<{}>) {
+export function showSheetModal(render: (ctx: ZModalController) => React.ReactElement<{}>, title?: string) {
     showModal((ctx) => {
         return (
             <ASSafeAreaContext.Consumer>
-                {safe => <ThemedSheetModal modal={render} safe={safe} ctx={ctx} />}
+                {safe => <ThemedSheetModal modal={render} safe={safe} ctx={ctx} title={title} />}
             </ASSafeAreaContext.Consumer>
         );
     });

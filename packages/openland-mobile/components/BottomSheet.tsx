@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { View, Keyboard } from 'react-native';
+import { View, Keyboard, Text } from 'react-native';
 import Modalize from 'react-native-modalize';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
-import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
@@ -16,6 +16,7 @@ export interface BottomSheetActions {
 interface BuildConfig {
     view: (actions: BottomSheetActions) => React.ReactElement;
     cancelable?: boolean;
+    title?: string;
 }
 
 interface Modal extends BuildConfig {
@@ -33,12 +34,9 @@ interface BottomSheetProviderState {
 
 let provider: BottomSheetProviderComponent;
 
-export function showBottomSheet(
-    view: (actions: BottomSheetActions) => React.ReactElement,
-    { cancelable = true }: { cancelable?: boolean; } = {}
-) {
+export function showBottomSheet(config: BuildConfig) {
     if (provider) {
-        provider.create({ view, cancelable }).show();
+        provider.create(config).show();
     }
 }
 
@@ -157,6 +155,14 @@ class BottomSheetProviderComponent extends React.Component<
                 FooterComponent={this.renderFooter(modal)}
             >
                 <View paddingTop={20} paddingBottom={modal.cancelable === false ? SDevice.safeArea.bottom : 0}>
+                    {!!modal.title && (
+                        <View paddingTop={4} paddingBottom={30} alignItems="center">
+                            <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
+                                {modal.title}
+                            </Text>
+                        </View>
+                    )}
+
                     {modal.view(modal.actions)}
                 </View>
             </Modalize>

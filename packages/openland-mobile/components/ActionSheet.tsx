@@ -24,11 +24,18 @@ interface ActionSheetBuilderViewItem {
 }
 
 export class ActionSheetBuilder {
+    private _title: string | undefined;
     private _items: (ActionSheetBuilderActionItem | ActionSheetBuilderViewItem)[] = [];
     private _cancelable: boolean;
 
     constructor() {
         this._cancelable = Platform.OS === 'ios';
+    }
+
+    title(title: string): ActionSheetBuilder {
+        this._title = title;
+
+        return this;
     }
 
     action(name: string, callback: () => void, distructive?: boolean, icon?: any): ActionSheetBuilder {
@@ -99,9 +106,9 @@ export class ActionSheetBuilder {
                         )}
                     </View>
                 );
-            });
+            }, this._title);
         } else {
-            showBottomSheet(this.renderItems, { cancelable: this._cancelable });
+            showBottomSheet({ view: this.renderItems, cancelable: this._cancelable, title: this._title });
         }
     }
 }

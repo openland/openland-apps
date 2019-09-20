@@ -192,22 +192,18 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
     const handleChangeLayout = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
 
+        builder.title('Choose layout');
         builder.view(ctx => (
-            <>
-                <View paddingTop={4} paddingBottom={30} alignItems="center">
-                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>Choose layout</Text>
-                </View>
-                <View flexDirection="row" justifyContent="center">
-                    {SUPPORTED_COVER_ALIGN.map((item, index) => (
-                        <TouchableWithoutFeedback key={index} onPress={() => { onChangeCoverAlign(item.align); ctx.hide(); }}>
-                            <View style={styles.alignContainer}>
-                                <Image source={item.icon} style={{ width: 80, height: 106, tintColor: coverAlign === item.align ? theme.accentPrimary : theme.backgroundTertiary }} />
-                                <View marginTop={17} width={22} height={22} borderRadius={11} borderWidth={coverAlign === item.align ? 7.5 : 2} borderColor={coverAlign === item.align ? theme.accentPrimary : theme.backgroundTertiary} />
-                            </View>
-                        </TouchableWithoutFeedback>
-                    ))}
-                </View>
-            </>
+            <View flexDirection="row" justifyContent="center">
+                {SUPPORTED_COVER_ALIGN.map((item, index) => (
+                    <TouchableWithoutFeedback key={index} onPress={() => { onChangeCoverAlign(item.align); ctx.hide(); }}>
+                        <View style={styles.alignContainer}>
+                            <Image source={item.icon} style={{ width: 80, height: 106, tintColor: coverAlign === item.align ? theme.accentPrimary : theme.backgroundTertiary }} />
+                            <View marginTop={17} width={22} height={22} borderRadius={11} borderWidth={coverAlign === item.align ? 7.5 : 2} borderColor={coverAlign === item.align ? theme.accentPrimary : theme.backgroundTertiary} />
+                        </View>
+                    </TouchableWithoutFeedback>
+                ))}
+            </View>
         ));
 
         builder.show();
