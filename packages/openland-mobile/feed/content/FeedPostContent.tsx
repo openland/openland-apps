@@ -15,6 +15,12 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         alignSelf: 'stretch'
     } as ViewStyle,
+    carousel: {
+        position: 'absolute',
+        top: 0, right: 0, bottom: 0,
+        flexDirection: 'row',
+        zIndex: 1
+    } as ViewStyle,
     paginator: {
         position: 'absolute',
         top: 0, bottom: 0,
@@ -63,7 +69,7 @@ export const FeedPostContent = React.memo((props: FeedPostContentProps) => {
         <View style={[styles.container, { width, height, backgroundColor: theme.backgroundSecondary }]}>
             {slides.length > 0 && (
                 <View style={styles.wrapper}>
-                    <View style={{ position: 'absolute', top: 0, left: -(currentSlide * width), right: 0, bottom: 0, flexDirection: 'row' }}>
+                    <View style={[styles.carousel, { left: -(currentSlide * width) }]}>
                         {slides.map(slide => (
                             <View key={`slide-${slide.id}`} style={{ width, height }}>
                                 <FeedSlide slide={slide} wrapped={wrapped} />
