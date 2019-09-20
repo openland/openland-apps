@@ -21,6 +21,19 @@ interface ASAvatarProps {
     theme: ThemeGlobal;
 }
 
+const getBorder = (size: ZAvatarSize) => {
+    let res = null;
+    if (size === 'small' || size === 'medium' || size === 'large') {
+        const borderImage = size === 'small' ? require('assets/borders/bg-avatar-border-32.png') :
+            size === 'medium' ? require('assets/borders/bg-avatar-border-40.png') :
+                require('assets/borders/bg-avatar-border-56.png');
+
+        res = Image.resolveAssetSource(borderImage);
+    }
+
+    return res ? res.uri : undefined;
+}
+
 export function ASAvatar(props: ASAvatarProps) {
     const { size, placeholder: textSize } = avatarSizes[props.size];
 
@@ -28,8 +41,7 @@ export function ASAvatar(props: ASAvatarProps) {
         let url = props.src;
         url += '-/scale_crop/' + 256 + 'x' + 256 + '/center/';
 
-        const borderImage = require('assets/bubbles/incoming_border.png');
-        const borderResolvedImage = Image.resolveAssetSource(borderImage);
+        const border = getBorder(props.size);
 
         return (
             <ASFlex
@@ -42,13 +54,20 @@ export function ASAvatar(props: ASAvatarProps) {
                 borderRadius={size / 2}
                 backgroundColor={props.theme.backgroundTertiary}
             >
-                <ASFlex
-                    overlay={true}
-                    backgroundPatch={{ source: borderResolvedImage.uri, scale: borderResolvedImage.scale, top: 0, left: 0, right: 0, bottom: 0 }}
-                    backgroundPatchTintColor={props.theme.border}
-                    width={size}
-                    height={size}
-                />
+                {!!border && (
+                    <ASFlex
+                        overlay={true}
+                        width={size}
+                        height={size}
+                    >
+                        <ASImage
+                            width={size}
+                            height={size}
+                            source={{ uri: border }}
+                            tintColor={props.theme.border}
+                        />
+                    </ASFlex>
+                )}
                 <ASImage
                     width={size}
                     height={size}
