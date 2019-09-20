@@ -1,5 +1,5 @@
-mutation FeedCreatePost($input: [SlideInput!]!, $repeatKey: String) {
-  createFeedPost: alphaCreateFeedPost(repeatKey: $repeatKey, slides: $input) {
+mutation FeedCreatePost($repeatKey: String, $slides: [SlideInput!]!) {
+  createFeedPost: alphaCreateFeedPost(repeatKey: $repeatKey, slides: $slides) {
     __typename
     ...FeedItemFull
   }

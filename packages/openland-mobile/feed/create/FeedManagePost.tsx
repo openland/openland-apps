@@ -1,25 +1,25 @@
 import * as React from 'react';
 import { View, KeyboardAvoidingView, ScrollView } from 'react-native';
-import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SlideType, SlideCoverAlign, ImageRefInput } from 'openland-api/Types';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { FeedCreateSlide } from './FeedCreateSlide';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { getMessenger } from 'openland-mobile/utils/messenger';
-import Toast from 'openland-mobile/components/Toast';
 import UUID from 'uuid/v4';
 import { SlideInputLocal } from 'openland-engines/feed/types';
 
-export const FeedManagePost = React.memo(props => {
-    const messenger = getMessenger();
-    const router = messenger.history.navigationManager;
-    const feedEngine = messenger.engine.feed;
+interface FeedManagePostProps {
+    initial?: SlideInputLocal[];
+    onSent: (slides: SlideInputLocal[], global?: boolean) => void;
+    action: string;
+}
 
-    const [slides, setSlides] = React.useState<SlideInputLocal[]>([]);
+export const FeedManagePost = React.memo((props: FeedManagePostProps) => {
+    const { initial, onSent, action } = props;
+
+    const [slides, setSlides] = React.useState<SlideInputLocal[]>(initial || []);
     const scrollViewRef = React.useRef<ScrollView>(null);
     const prevSlidesLength = React.useRef<number>(0);
     const [global, setGlobal] = React.useState(false);
@@ -36,16 +36,8 @@ export const FeedManagePost = React.memo(props => {
         prevSlidesLength.current = slides.length;
     });
 
-    const handlePost = React.useCallback(async () => {
-        startLoader();
-
-        if (await feedEngine.createPost(slides, global)) {
-            router.pop();
-        } else {
-            Toast.failure({ duration: 1000, text: 'Post can\'t be empty' }).show();
-        }
-
-        stopLoader();
+    const handleSent = React.useCallback(async () => {
+        onSent(slides, global);
     }, [slides, global]);
 
     const addSlide = React.useCallback(() => {
@@ -80,16 +72,17 @@ export const FeedManagePost = React.memo(props => {
     }, []);
 
     React.useEffect(() => {
-        addSlide();
+        if (!initial) {
+            addSlide();
+        }
     }, []);
 
     return (
         <>
-            <SHeader title="New post" />
-            <SHeaderButton title="Post" onPress={handlePost} />
+            <SHeaderButton title={action} onPress={handleSent} />
             <KeyboardAvoidingView flexGrow={1} behavior={'padding'}>
                 <SScrollView scrollRef={scrollViewRef as React.RefObject<ScrollView>}>
-                    {SUPER_ADMIN && (
+                    {!initial && SUPER_ADMIN && (
                         <ZListItem text="Global Post [SUPER_ADMIN]" toggle={global} onToggle={v => setGlobal(v)} />
                     )}
 

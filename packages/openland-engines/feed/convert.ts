@@ -4,7 +4,29 @@ import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
 import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
 import { isSameDate } from 'openland-engines/messenger/ConversationEngine';
-import { DataSourceFeedDateItem, DataSourceFeedPostItem, DataSourceFeedItem, SlideProcessed } from './types';
+import { DataSourceFeedDateItem, DataSourceFeedPostItem, DataSourceFeedItem, SlideProcessed, SlideInputLocal } from './types';
+import UUID from 'uuid/v4';
+
+export const convertSlidesToInput = (src: Types.FeedItemFull_slides[]): SlideInputLocal[] => {
+    const res: SlideInputLocal[] = [];
+
+    src.map(slide => {
+        if (slide.__typename === 'TextSlide') {
+            res.push({
+                key: UUID(),
+                type: Types.SlideType.Text,
+                text: slide.text,
+                cover: slide.cover ? {
+                    uuid: slide.cover.url.split('https://ucarecdn.com/')[1].split('/')[0],
+                } : null,
+                coverAlign: slide.coverAlign,
+                attachments: slide.attachments.map(a => a.id)
+            });
+        }
+    });
+
+    return res;
+};
 
 export const convertSlides = (src: Types.FeedItemFull_slides[]): SlideProcessed[] => {
     return src.map(s => ({

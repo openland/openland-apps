@@ -24,9 +24,19 @@ export const FeedItemQuery = gql`
     ${FeedItemFull}
 `;
 
+export const FeedEditPostMutation = gql`
+    mutation FeedEditPost($feedItemId: ID!, $slides: [SlideInput!]!) {
+        editFeedPost: alphaEditFeedPost(feedItemId: $feedItemId, slides: $slides) {
+            ...FeedItemFull
+        }
+    }
+
+    ${FeedItemFull}
+`;
+
 export const FeedCreatePostMutation = gql`
-    mutation FeedCreatePost($input: [SlideInput!]!, $repeatKey: String) {
-        createFeedPost: alphaCreateFeedPost(slides: $input, repeatKey: $repeatKey) {
+    mutation FeedCreatePost($slides: [SlideInput!]!, $repeatKey: String) {
+        createFeedPost: alphaCreateFeedPost(slides: $slides, repeatKey: $repeatKey) {
             ...FeedItemFull
         }
     }
@@ -35,8 +45,8 @@ export const FeedCreatePostMutation = gql`
 `;
 
 export const FeedCreateGlobalPostMutation = gql`
-    mutation FeedCreateGlobalPost($input: [SlideInput!]!, $repeatKey: String) {
-        createFeedPost: alphaCreateGlobalFeedPost(slides: $input, repeatKey: $repeatKey) {
+    mutation FeedCreateGlobalPost($slides: [SlideInput!]!, $repeatKey: String) {
+        createFeedPost: alphaCreateGlobalFeedPost(slides: $slides, repeatKey: $repeatKey) {
             ...FeedItemFull
         }
     }

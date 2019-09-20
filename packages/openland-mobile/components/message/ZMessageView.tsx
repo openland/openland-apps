@@ -49,6 +49,10 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
         );
     }
 
+    if (message.__typename === 'StickerMessage') {
+        return null;
+    }
+
     let attaches = (message.attachments || []);
     let mediaAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
     let documentsAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];

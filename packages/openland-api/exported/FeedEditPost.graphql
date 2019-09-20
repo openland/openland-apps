@@ -1,0 +1,6 @@
+mutation FeedEditPost($feedItemId: ID!, $slides: [SlideInput!]!) {
+  editFeedPost: alphaEditFeedPost(feedItemId: $feedItemId, slides: $slides) {
+    __typename
+    ...FeedItemFull
+  }
+}

@@ -149,8 +149,8 @@ export class FeedEngine {
         }
     }
 
-    createPost: (slides: SlideInputLocal[], global?: boolean) => Promise<boolean> = async (slides, global) => {
-        const input: Types.SlideInput[] = [];
+    private converSlides = (slides: SlideInputLocal[]) => {
+        const res: Types.SlideInput[] = [];
 
         for (let slide of slides) {
             slide.key = undefined;
@@ -164,11 +164,17 @@ export class FeedEngine {
             }
 
             if (hasCover || hasText) {
-                input.push(slide);
+                res.push(slide);
             }
         }
 
-        if (input.length < 1) {
+        return res;
+    }
+
+    createPost: (input: SlideInputLocal[], global?: boolean) => Promise<boolean> = async (input, global) => {
+        const slides = this.converSlides(input);
+
+        if (slides.length < 1) {
             return false;
         }
 
@@ -176,11 +182,23 @@ export class FeedEngine {
 
         await backoff(async () => {
             if (global) {
-                await this.engine.client.mutateFeedCreateGlobalPost({ input, repeatKey });
+                await this.engine.client.mutateFeedCreateGlobalPost({ slides, repeatKey });
             } else {
-                await this.engine.client.mutateFeedCreatePost({ input, repeatKey });
+                await this.engine.client.mutateFeedCreatePost({ slides, repeatKey });
             }
         });
+
+        return true;
+    }
+
+    editPost: (id: string, input: SlideInputLocal[]) => Promise<boolean> = async (id, input) => {
+        const slides = this.converSlides(input);
+
+        if (slides.length < 1) {
+            return false;
+        }
+
+        await backoff(async () => await this.engine.client.mutateFeedEditPost({ slides, feedItemId: id }));
 
         return true;
     }

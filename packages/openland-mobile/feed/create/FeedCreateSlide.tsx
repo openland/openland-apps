@@ -104,7 +104,7 @@ interface FeedCreateSlideProps {
 
 export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
     const { slide, onChangeText, onChangeCover, onChangeCoverAlign, onDelete } = props;
-    const { text, coverAlign } = slide;
+    const { text, cover, coverAlign } = slide;
     const theme = React.useContext(ThemeContext);
     const textInputRef = React.createRef<TextInput>();
     const [coverLocalPath, setCoverLocalPath] = React.useState<string | undefined>(undefined);
@@ -222,7 +222,7 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
     const containerWidth = width - 32;
     const containerHeight = containerWidth * (4 / 3);
 
-    const showCover = (coverLocalPath || coverLoading);
+    const showCover = (cover || coverLocalPath || coverLoading);
     const inputCover = !!(coverAlign && coverAlign === SlideCoverAlign.Cover);
     const canAddText = showCover && typeof text !== 'string';
 
