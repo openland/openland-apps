@@ -1,5 +1,5 @@
 import { MessageSpanInput, FullMessage_GeneralMessage_spans } from 'openland-api/Types';
-import { SpanSymbolToType } from './spans/Span';
+import { SpanSymbolToType, SpanSymbolToTypeT } from './spans/Span';
 
 const whiteListBeforeSpec = ['', ' ', '	', '\n', ',', '.', '(', '<', '"', '«', '{', '['];
 const whiteListAfterSpec = ['', ' ', '	', '\n', ',', '.', '!', '?', '(', ')', ':', '>', '"', '»', '{', '[', '}', ']', '¿', '¡'];
@@ -23,11 +23,11 @@ const isSpanLined = (symbol: string) => {
     return SpanSymbolToType[symbol] ? !!SpanSymbolToType[symbol].lined : false;
 };
 
-const getCurrentSymbol = (text: string, index: number, currentSpecSymbol: string): string | false => {
+const getCurrentSymbol = (text: string, index: number, currentSpecSymbol: string, allowedSpans?: SpanSymbolToTypeT): string | false => {
     let isSpec = false;
     let symbol = '';
 
-    for (let s in SpanSymbolToType) {
+    for (let s in (allowedSpans || SpanSymbolToType)) {
         if (s === text.slice(index, index + s.length)) {
             isSpec = true;
             symbol = s;
@@ -63,14 +63,14 @@ const createSpan = (symbol: string, offset: number, length: number): MessageSpan
     }
 };
 
-export const findSpans = (text: string): MessageSpanInput[] => {
+export const findSpans = (text: string, allowedSpans?: SpanSymbolToTypeT): MessageSpanInput[] => {
     let res: MessageSpanInput[] = [];
 
     let currentSpecSymbol = '';
     let lastPos = 0;
 
     for (var i = 0; i < text.length; i++) {
-        let mayBeSymbol = getCurrentSymbol(text, i, currentSpecSymbol);
+        let mayBeSymbol = getCurrentSymbol(text, i, currentSpecSymbol, allowedSpans);
 
         if (typeof mayBeSymbol === 'string') {
             if (mayBeSymbol !== currentSpecSymbol) {
@@ -80,7 +80,7 @@ export const findSpans = (text: string): MessageSpanInput[] => {
                 }
             } else {
                 const mayBeSpan = createSpan(currentSpecSymbol, lastPos, i - lastPos + currentSpecSymbol.length);
-                
+
                 if (mayBeSpan !== false) {
                     res.push(mayBeSpan);
                 }
@@ -97,7 +97,7 @@ export const findSpans = (text: string): MessageSpanInput[] => {
                 }
 
                 const mayBeSpan = createSpan(currentSpecSymbol, lastPos, spanLength);
-    
+
                 if (mayBeSpan !== false) {
                     res.push(mayBeSpan);
                 }

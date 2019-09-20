@@ -11,6 +11,8 @@ import { DataSourceFeedItem } from './types';
 import { convertItems, convertPost } from './convert';
 import UUID from 'uuid/v4';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
+import { findSpans } from 'openland-y-utils/findSpans';
+import { PostSpanSymbolToType } from 'openland-y-utils/spans/Span';
 
 const log = createLogger('Engine-Feed');
 
@@ -155,6 +157,10 @@ export class FeedEngine {
 
             const hasCover = slide.cover;
             const hasText = slide.text && slide.text.length > 0;
+
+            if (hasText) {
+                slide.spans = findSpans(slide.text || '', PostSpanSymbolToType);
+            }
 
             if (hasCover || hasText) {
                 input.push(slide);

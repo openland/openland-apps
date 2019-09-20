@@ -131,17 +131,26 @@ export interface SpanRoom extends SpanAbs {
 
 export type ServerSpan = FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans;
 
-export const SpanSymbolToType: {
+export type SpanSymbolToTypeT = {
     [key: string]: { type: MessageSpanType; master?: boolean; lined?: boolean };
-} = {
+};
+
+export const SpanSymbolToType: SpanSymbolToTypeT = {
     '*': { type: MessageSpanType.Bold },
     '```': { type: MessageSpanType.CodeBlock, master: true },
     '`': { type: MessageSpanType.InlineCode },
     '🌈': { type: MessageSpanType.Insane },
     '~': { type: MessageSpanType.Irony },
-    _: { type: MessageSpanType.Italic },
+    '_': { type: MessageSpanType.Italic },
     '# ': { type: MessageSpanType.Loud, lined: true },
     '🔄': { type: MessageSpanType.Rotating },
+};
+
+export const PostSpanSymbolToType: SpanSymbolToTypeT = {
+    '*': { type: MessageSpanType.Bold },
+    '`': { type: MessageSpanType.InlineCode },
+    '~': { type: MessageSpanType.Irony },
+    '_': { type: MessageSpanType.Italic },
 };
 
 export interface SpecSymbolsType {
