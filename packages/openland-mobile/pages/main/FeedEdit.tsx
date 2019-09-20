@@ -4,7 +4,6 @@ import { FeedManagePost } from 'openland-mobile/feed/create/FeedManagePost';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SlideInputLocal } from 'openland-engines/feed/types';
-import { SlideType } from 'openland-api/Types';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import Toast from 'openland-mobile/components/Toast';
