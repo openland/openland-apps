@@ -133,12 +133,13 @@ export class FeedEngine {
 
             const hasCover = slide.cover;
             const hasText = slide.text && slide.text.length > 0;
+            const hasAttachments = slide.attachments && slide.attachments.length > 0;
 
             if (hasText) {
                 slide.spans = findSpans(slide.text || '', PostSpanSymbolToType);
             }
 
-            if (hasCover || hasText) {
+            if (hasCover || hasText || hasAttachments) {
                 res.push(slide);
             }
         }
