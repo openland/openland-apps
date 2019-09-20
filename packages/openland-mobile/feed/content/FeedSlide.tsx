@@ -43,9 +43,6 @@ const styles = StyleSheet.create({
     } as ViewStyle
 });
 
-// Sorry universe
-const getUUID = (url: string) => url.split('/')[3];
-
 interface FeedSlideProps {
     slide: SlideProcessed;
 }
@@ -76,9 +73,9 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
                 layoutMedia(cover.metadata.imageWidth, cover.metadata.imageHeight, 1024, 1024);
             }
 
-            DownloadManagerInstance.watch(getUUID(cover.url), optimalSize, setDownloadState);
+            DownloadManagerInstance.watch(cover.url, optimalSize, setDownloadState);
         }
-    }, []);
+    }, [cover]);
 
     const textStyle = text.length < 200 ? (text.length < 100 ? styles.textLarge : styles.textMedium) : styles.text;
 
