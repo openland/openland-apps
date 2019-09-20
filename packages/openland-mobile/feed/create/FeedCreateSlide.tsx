@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, TouchableWithoutFeedback, Image } from 'react-native';
+import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, TouchableWithoutFeedback, Image, Platform } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { FeedItemShadow } from '../FeedItemShadow';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
@@ -302,7 +302,7 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
                             <FastImage
                                 resizeMode="cover"
                                 style={{ width: '100%', flexGrow: 1 }}
-                                source={{ uri: coverLocalPath, priority: 'normal', ...{ disableAnimations: true } as any }}
+                                source={{ uri: (Platform.OS === 'android' ? 'file://' : '') + coverLocalPath, priority: 'normal', ...{ disableAnimations: true } as any }}
                             />
 
                             {(coverLoading || (!canAddText && inputCover)) && (
