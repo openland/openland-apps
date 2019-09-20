@@ -47,7 +47,13 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         alignItems: 'center',
         justifyContent: 'center',
-    } as ViewStyle
+    } as ViewStyle,
+    textBoxCover: {
+        position: 'absolute',
+        top: 0, right: 0, left: 0, bottom: 0,
+        zIndex: 3,
+        justifyContent: 'center'
+    } as ViewStyle,
 });
 
 interface FeedSlideProps {
@@ -87,6 +93,7 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
     }, [cover]);
 
     const textStyle = cover ? styles.text : text.length < 200 ? (text.length < 100 ? styles.textLarge : styles.textMedium) : styles.text;
+    const textCover = coverAlign && coverAlign === SlideCoverAlign.Cover;
 
     return (
         <View style={styles.box}>
@@ -98,7 +105,7 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
 
             {cover && (
                 <View style={[styles.coverWrapper, { backgroundColor: theme.backgroundTertiary }]}>
-                    <View style={[styles.coverLoader, { backgroundColor: theme.overlayMedium }]}>
+                    <View style={styles.coverLoader}>
                         <LoaderSpinner />
                     </View>
 
@@ -115,7 +122,15 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
                 </View>
             )}
 
-            {!!text && (!coverAlign || coverAlign !== SlideCoverAlign.Bottom) && (
+            {!!text && textCover && (
+                <View style={[styles.textBoxCover, { backgroundColor: theme.overlayMedium, paddingVertical: wrapped ? 56 : 16 }]}>
+                    <Text style={[textStyle, { color: theme.foregroundContrast }]} allowFontScaling={false}>
+                        {text}
+                    </Text>
+                </View>
+            )}
+
+            {!!text && (!coverAlign || coverAlign === SlideCoverAlign.Top) && (
                 <Text style={[textStyle, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
                     {text}
                 </Text>

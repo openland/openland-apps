@@ -50,6 +50,12 @@ const styles = StyleSheet.create({
         paddingVertical: 16,
         justifyContent: 'center',
     } as ViewStyle,
+    inputBoxCover: {
+        position: 'absolute',
+        top: 56, right: 0, left: 0, bottom: 56,
+        paddingVertical: 0,
+        zIndex: 3
+    } as ViewStyle,
     inputBoxLarge: {
         paddingVertical: 10,
     } as ViewStyle,
@@ -78,6 +84,9 @@ const styles = StyleSheet.create({
 });
 
 const SUPPORTED_COVER_ALIGN: ({ align: SlideCoverAlign, icon: NodeRequire })[] = [{
+    align: SlideCoverAlign.Cover,
+    icon: require('assets/feed/ic-layout-full-80.png')
+}, {
     align: SlideCoverAlign.Top,
     icon: require('assets/feed/ic-layout-top-80.png')
 }, {
@@ -120,7 +129,7 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
 
     const handleAddTextPress = React.useCallback(() => {
         onChangeText('');
-        onChangeCoverAlign(SlideCoverAlign.Top);
+        onChangeCoverAlign(SlideCoverAlign.Cover);
 
         if (textInputRef.current) {
             textInputRef.current.focus();
@@ -214,6 +223,7 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
     const containerHeight = containerWidth * (4 / 3);
 
     const showCover = (coverLocalPath || coverLoading);
+    const inputCover = !!(coverAlign && coverAlign === SlideCoverAlign.Cover);
     const canAddText = showCover && typeof text !== 'string';
 
     const headerStyle = showCover && (coverAlign === SlideCoverAlign.Cover || coverAlign === SlideCoverAlign.Top) ? 'contrast' : 'default';
@@ -241,10 +251,14 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
         }
     }
 
+    if (inputCover) {
+        inputBoxStyle.push(styles.inputBoxCover);
+    }
+
     const input = (
         <View
             style={[...inputBoxStyle, {
-                flexGrow: !showCover ? 1 : undefined,
+                flexGrow: (!showCover || inputCover) ? 1 : undefined,
                 paddingTop: !canAddText && coverAlign && coverAlign === SlideCoverAlign.Bottom ? 48 : undefined
             }]}
         >
@@ -253,9 +267,11 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
                 onChangeText={onChangeText}
                 value={text || ''}
                 multiline={true}
-                style={[styles.input, inputTextStyle, { color: theme.foregroundPrimary }]}
+                style={[styles.input, inputTextStyle, {
+                    color: inputCover ? theme.foregroundContrast : theme.foregroundPrimary
+                }]}
                 placeholder="Enter text"
-                placeholderTextColor={theme.foregroundTertiary}
+                placeholderTextColor={inputCover ? theme.foregroundContrast : theme.foregroundTertiary}
                 keyboardAppearance={theme.keyboardAppearance}
                 allowFontScaling={false}
                 {...{ scrollEnabled: false }}
@@ -289,9 +305,9 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
                                 source={{ uri: coverLocalPath, priority: 'normal', ...{ disableAnimations: true } as any }}
                             />
 
-                            {coverLoading && (
+                            {(coverLoading || (!canAddText && inputCover)) && (
                                 <View style={[styles.coverLoader, { backgroundColor: theme.overlayMedium }]}>
-                                    <LoaderSpinner />
+                                    {coverLoading && <LoaderSpinner />}
                                 </View>
                             )}
                         </View>
