@@ -39,7 +39,7 @@ class FeedHandlersClass {
 
         if (canEdit) {
             builder.action('Edit', () => {
-                console.warn('boom edit post');
+                router.push('FeedEdit', { id });
             }, false, require('assets/ic-edit-24.png'));
 
             builder.action('Unpublish', () => {

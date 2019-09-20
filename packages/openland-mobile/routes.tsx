@@ -60,7 +60,8 @@ import { Avatars } from './pages/dev/Avatars';
 import { SignupOrg } from './pages/auth/SignupOrg';
 import { Videos } from './pages/dev/Videos';
 import { Feed } from './pages/main/Feed';
-import { FeedCreatePost } from './feed/create/FeedCreatePost';
+import { FeedCreate } from './pages/main/FeedCreate';
+import { FeedEdit } from './pages/main/FeedEdit';
 import { FeedItem } from './pages/main/FeedItem';
 
 export const Routes = new SRoutesBuilder()
@@ -136,6 +137,7 @@ export const Routes = new SRoutesBuilder()
 
   .addRoute('Feed', Feed)
   .addRoute('FeedItem', FeedItem)
-  .addRoute('FeedCreatePost', FeedCreatePost)
+  .addRoute('FeedCreate', FeedCreate)
+  .addRoute('FeedEdit', FeedEdit)
 
   .build();

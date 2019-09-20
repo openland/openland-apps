@@ -1,23 +1,25 @@
 import * as React from 'react';
 import { View, KeyboardAvoidingView, ScrollView } from 'react-native';
-import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { PageProps } from 'openland-mobile/components/PageProps';
-import { SlideInput, SlideType, SlideCoverAlign, ImageRefInput } from 'openland-api/Types';
+import { SlideType, SlideCoverAlign, ImageRefInput } from 'openland-api/Types';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { FeedCreateSlide } from './FeedCreateSlide';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import Toast from 'openland-mobile/components/Toast';
+import UUID from 'uuid/v4';
+import { SlideInputLocal } from 'openland-engines/feed/types';
 
-const FeedCreatePostComponent = React.memo((props: PageProps) => {
-    const feedEngine = getMessenger().engine.feed;
+export const FeedManagePost = React.memo(props => {
+    const messenger = getMessenger();
+    const router = messenger.history.navigationManager;
+    const feedEngine = messenger.engine.feed;
 
-    const [slides, setSlides] = React.useState<SlideInput[]>([{ type: SlideType.Text }]);
+    const [slides, setSlides] = React.useState<SlideInputLocal[]>([]);
     const scrollViewRef = React.useRef<ScrollView>(null);
     const prevSlidesLength = React.useRef<number>(0);
     const [global, setGlobal] = React.useState(false);
@@ -38,7 +40,7 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
         startLoader();
 
         if (await feedEngine.createPost(slides, global)) {
-            props.router.back();
+            router.pop();
         } else {
             Toast.failure({ duration: 1000, text: 'Post can\'t be empty' }).show();
         }
@@ -47,32 +49,38 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
     }, [slides, global]);
 
     const addSlide = React.useCallback(() => {
-        setSlides(prev => [...prev, { type: SlideType.Text }]);
+        const key = UUID();
+
+        setSlides(prev => [...prev, { key, type: SlideType.Text }]);
     }, []);
 
-    const handleChangeText = React.useCallback((index: number, text: string) => {
-        setSlides(prev => prev.map((slide, key) => ({
+    const handleChangeText = React.useCallback((key: string | undefined, text: string) => {
+        setSlides(prev => prev.map(slide => ({
             ...slide,
-            text: key === index ? text : slide.text
+            text: key === slide.key ? text : slide.text
         })));
     }, []);
 
-    const handleChangeCover = React.useCallback((index: number, cover?: ImageRefInput) => {
-        setSlides(prev => prev.map((slide, key) => ({
+    const handleChangeCover = React.useCallback((key: string | undefined, cover?: ImageRefInput) => {
+        setSlides(prev => prev.map(slide => ({
             ...slide,
-            cover: key === index ? cover : slide.cover
+            cover: key === slide.key ? cover : slide.cover
         })));
     }, []);
 
-    const handleChangeCoverAlign = React.useCallback((index: number, align?: SlideCoverAlign) => {
-        setSlides(prev => prev.map((slide, key) => ({
+    const handleChangeCoverAlign = React.useCallback((key: string | undefined, align?: SlideCoverAlign) => {
+        setSlides(prev => prev.map(slide => ({
             ...slide,
-            coverAlign: key === index ? align : slide.coverAlign
+            coverAlign: key === slide.key ? align : slide.coverAlign
         })));
     }, []);
 
-    const handleDeleteSlide = React.useCallback((index: number) => {
-        setSlides(prev => prev.filter((slide, key) => key !== index));
+    const handleDeleteSlide = React.useCallback((key: string | undefined) => {
+        setSlides(prev => prev.filter(slide => key !== slide.key));
+    }, []);
+
+    React.useEffect(() => {
+        addSlide();
     }, []);
 
     return (
@@ -85,15 +93,14 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
                         <ZListItem text="Global Post [SUPER_ADMIN]" toggle={global} onToggle={v => setGlobal(v)} />
                     )}
 
-                    {slides.map((slide, index) => (
-                        <View key={index}>
+                    {slides.map(slide => (
+                        <View key={`slide-${slide.key}`}>
                             <FeedCreateSlide
-                                index={index}
                                 slide={slide}
-                                onChangeText={v => handleChangeText(index, v)}
-                                onChangeCover={c => handleChangeCover(index, c)}
-                                onChangeCoverAlign={a => handleChangeCoverAlign(index, a)}
-                                onDelete={slides.length > 1 ? () => handleDeleteSlide(index) : undefined}
+                                onChangeText={v => handleChangeText(slide.key, v)}
+                                onChangeCover={c => handleChangeCover(slide.key, c)}
+                                onChangeCoverAlign={a => handleChangeCoverAlign(slide.key, a)}
+                                onDelete={slides.length > 1 ? () => handleDeleteSlide(slide.key) : undefined}
                             />
                         </View>
                     ))}
@@ -110,5 +117,3 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
         </>
     );
 });
-
-export const FeedCreatePost = withApp(FeedCreatePostComponent, { navigationAppearance: 'small' });

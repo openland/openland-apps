@@ -68,7 +68,7 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
     }
 
     private handleCreate = () => {
-        this.props.router.present('FeedCreatePost');
+        this.props.router.present('FeedCreate');
     }
 
     render() {

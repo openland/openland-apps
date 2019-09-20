@@ -96,7 +96,6 @@ const SUPPORTED_COVER_ALIGN: ({ align: SlideCoverAlign, icon: NodeRequire })[] =
 
 interface FeedCreateSlideProps {
     slide: SlideInput;
-    index: number;
     onChangeText: (text: string) => void;
     onChangeCover: (cover?: ImageRefInput) => void;
     onChangeCoverAlign: (align?: SlideCoverAlign) => void;
@@ -115,8 +114,8 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
         if (onDelete) {
             if (text && text.length > 0) {
                 AlertBlanket.builder()
-                    .title('Delete slide')
-                    .message('Delete this slide? This cannot be undone.')
+                    .title('Delete card?')
+                    .message('This cannot be undone.')
                     .button('Cancel', 'cancel')
                     .action('Delete', 'destructive', () => {
                         onDelete();

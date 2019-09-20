@@ -7,7 +7,7 @@ import { SequenceModernWatcher } from '../core/SequenceModernWatcher';
 import { backoff } from 'openland-y-utils/timer';
 import { FeedQuery } from 'openland-api';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
-import { DataSourceFeedItem } from './types';
+import { DataSourceFeedItem, SlideInputLocal } from './types';
 import { convertItems, convertPost } from './convert';
 import UUID from 'uuid/v4';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
@@ -149,10 +149,11 @@ export class FeedEngine {
         }
     }
 
-    createPost: (slides: Types.SlideInput[], global?: boolean) => Promise<boolean> = async (slides, global) => {
+    createPost: (slides: SlideInputLocal[], global?: boolean) => Promise<boolean> = async (slides, global) => {
         const input: Types.SlideInput[] = [];
 
         for (let slide of slides) {
+            slide.key = undefined;
             slide.text = slide.text && slide.text.length > 0 ? slide.text.trim() : undefined;
 
             const hasCover = slide.cover;

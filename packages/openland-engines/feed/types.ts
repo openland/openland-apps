@@ -28,3 +28,7 @@ export interface DataSourceFeedDateItem extends DataSourceItem {
 }
 
 export type DataSourceFeedItem = DataSourceFeedPostItem | DataSourceFeedDateItem;
+
+export interface SlideInputLocal extends Types.SlideInput {
+    key?: string;
+}
