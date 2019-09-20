@@ -98,7 +98,7 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
     const { slide, onChangeText, onChangeCover, onChangeCoverAlign, onDelete } = props;
     const { text, coverAlign } = slide;
     const theme = React.useContext(ThemeContext);
-    const textInputRef = React.useRef<TextInput>(null);
+    const textInputRef = React.createRef<TextInput>();
     const [coverLocalPath, setCoverLocalPath] = React.useState<string | undefined>(undefined);
     const [coverLoading, setCoverLoading] = React.useState(false);
 
