@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, TouchableWithoutFeedback } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { FeedItemShadow } from '../FeedItemShadow';
-import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SlideInput, SlideCoverAlign } from 'openland-api/Types';
 import { ZIconButton } from 'openland-mobile/components/ZIconButton';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
@@ -53,14 +53,20 @@ const styles = StyleSheet.create({
         marginLeft: 8,
         borderRadius: 4
     } as ViewStyle,
-    inputContainer: {
+    inputBox: {
+        paddingVertical: 16,
         justifyContent: 'center',
-        flexGrow: 1,
+    } as ViewStyle,
+    inputBoxLarge: {
+        paddingVertical: 10,
+    } as ViewStyle,
+    inputBoxMedium: {
+        paddingVertical: 12,
     } as ViewStyle,
     input: {
+        paddingTop: 0,
+        paddingBottom: 0,
         paddingHorizontal: 16,
-        fontSize: 24,
-        lineHeight: 36,
     } as TextStyle,
     coverWrapper: {
         flexGrow: 1,
@@ -194,6 +200,24 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
     const headerStyle = showCover && (coverAlign === SlideCoverAlign.Cover || coverAlign === SlideCoverAlign.Top) ? 'contrast' : 'default';
     const footerStyle = showCover && (coverAlign === SlideCoverAlign.Cover || coverAlign === SlideCoverAlign.Bottom) ? 'contrast' : 'default';
 
+    let inputTextStyle = TextStyles.Body;
+    let inputBoxStyle = [styles.inputBox];
+
+    if (!showCover) {
+        if (!text) {
+            inputTextStyle = TextStyles.Post1;
+            inputBoxStyle = [styles.inputBox, styles.inputBoxLarge];
+        } else if (!text || text.length < 200) {
+            if (text.length < 100) {
+                inputTextStyle = TextStyles.Post1;
+                inputBoxStyle = [styles.inputBox, styles.inputBoxLarge];
+            } else {
+                inputTextStyle = TextStyles.Post2;
+                inputBoxStyle = [styles.inputBox, styles.inputBoxMedium];
+            }
+        }
+    }
+
     return (
         <TouchableWithoutFeedback onPress={handlePressSlide}>
             <View style={styles.box}>
@@ -226,21 +250,19 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
                     )}
 
                     {!(showCover && coverAlign === SlideCoverAlign.Cover) && (
-                        <View style={styles.inputContainer}>
-                            {typeof text === 'string' && (
-                                <TextInput
-                                    ref={textInputRef}
-                                    onChangeText={onChangeText}
-                                    value={text}
-                                    multiline={true}
-                                    style={[styles.input, { color: theme.foregroundPrimary }]}
-                                    placeholder="Enter text"
-                                    placeholderTextColor={theme.foregroundTertiary}
-                                    keyboardAppearance={theme.keyboardAppearance}
-                                    allowFontScaling={false}
-                                    {...{ scrollEnabled: false }}
-                                />
-                            )}
+                        <View style={[...inputBoxStyle, { flexGrow: !showCover ? 1 : undefined }]}>
+                            <TextInput
+                                ref={textInputRef}
+                                onChangeText={onChangeText}
+                                value={text || ''}
+                                multiline={true}
+                                style={[styles.input, inputTextStyle, { color: theme.foregroundPrimary }]}
+                                placeholder="Enter text"
+                                placeholderTextColor={theme.foregroundTertiary}
+                                keyboardAppearance={theme.keyboardAppearance}
+                                allowFontScaling={false}
+                                {...{ scrollEnabled: false }}
+                            />
                         </View>
                     )}
 

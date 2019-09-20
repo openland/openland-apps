@@ -18,12 +18,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     } as ViewStyle,
     textLarge: {
+        paddingHorizontal: 16,
+        paddingVertical: 10,
         ...TextStyles.Post1
     } as TextStyle,
     textMedium: {
+        paddingHorizontal: 16,
+        paddingVertical: 12,
         ...TextStyles.Post2
     } as TextStyle,
     text: {
+        paddingHorizontal: 16,
+        paddingVertical: 16,
         ...TextStyles.Body
     } as TextStyle,
     coverWrapper: {
@@ -77,7 +83,7 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
         }
     }, [cover]);
 
-    const textStyle = text.length < 200 ? (text.length < 100 ? styles.textLarge : styles.textMedium) : styles.text;
+    const textStyle = cover ? styles.text : text.length < 200 ? (text.length < 100 ? styles.textLarge : styles.textMedium) : styles.text;
 
     return (
         <View style={styles.box}>
@@ -99,8 +105,8 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
                     )}
                 </View>
             )}
-            {!cover && (
-                <Text style={[textStyle, { color: theme.foregroundPrimary, paddingHorizontal: 16 }]} allowFontScaling={false}>
+            {!!text && (
+                <Text style={[textStyle, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
                     {text}
                 </Text>
             )}
