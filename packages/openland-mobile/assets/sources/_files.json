@@ -1,6 +1,34 @@
 {
     "icons": [
         {
+            "name": "ic-notifications-filled",
+            "src": "ic-notifications-filled-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-notifications-off",
+            "src": "ic-notifications-off-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-notifications",
+            "src": "ic-notifications-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-delete",
+            "src": "ic-delete-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-like-filled",
             "src": "ic-like-filled-24.svg",
             "sizes": [
@@ -66,13 +94,6 @@
         {
             "name": "ic-community-glyph",
             "src": "ic-community-glyph-24.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-notifications-filled",
-            "src": "ic-notifications-filled-24.svg",
             "sizes": [
                 24
             ]
@@ -297,13 +318,6 @@
         {
             "name": "ic-object",
             "src": "ic-object-24.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-notifications-off",
-            "src": "ic-notifications-off-24.svg",
             "sizes": [
                 24
             ]
@@ -577,13 +591,6 @@
         {
             "name": "ic-copy",
             "src": "ic-copy-24.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-delete",
-            "src": "ic-delete-24.svg",
             "sizes": [
                 24
             ]
@@ -925,13 +932,6 @@
         {
             "name": "ic-send",
             "src": "ic-send-24.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-notifications",
-            "src": "ic-notifications-24.svg",
             "sizes": [
                 24
             ]

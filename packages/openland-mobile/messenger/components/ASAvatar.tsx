@@ -32,7 +32,7 @@ const getBorder = (size: ZAvatarSize) => {
     }
 
     return res ? res.uri : undefined;
-}
+};
 
 export function ASAvatar(props: ASAvatarProps) {
     const { size, placeholder: textSize } = avatarSizes[props.size];
