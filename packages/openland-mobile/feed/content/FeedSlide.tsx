@@ -11,6 +11,8 @@ import FastImage from 'react-native-fast-image';
 import { SAnimatedView } from 'react-native-s/SAnimatedView';
 import { SAnimated } from 'react-native-s/SAnimated';
 import { SlideCoverAlign } from 'openland-api/Types';
+import { renderPreprocessedText } from 'openland-mobile/components/message/renderPreprocessedText';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 const styles = StyleSheet.create({
     box: {
@@ -63,8 +65,9 @@ interface FeedSlideProps {
 
 export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
     const theme = React.useContext(ThemeContext);
+    const messenger = getMessenger();
     const { slide, wrapped } = props;
-    const { id, text, cover, coverAlign } = slide;
+    const { id, text, cover, coverAlign, textSpans } = slide;
     const [downloadState, setDownloadState] = React.useState<DownloadState | undefined>(undefined);
 
     const coverViewKey = React.useMemo(() => id + '-cover', [id]);
@@ -95,11 +98,13 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
     const textCover = coverAlign && coverAlign === SlideCoverAlign.Cover;
     const textStyle = (!cover || textCover) ? (text.length < 200 ? (text.length < 100 ? styles.textLarge : styles.textMedium) : styles.text) : styles.text;
 
+    const renderText = React.useMemo(() => renderPreprocessedText(textSpans, messenger.handleUserClick, messenger.handleGroupClick, theme), [textSpans, theme]);
+
     return (
         <View style={styles.box}>
             {!!text && coverAlign && coverAlign === SlideCoverAlign.Bottom && (
                 <Text style={[textStyle, { color: theme.foregroundPrimary, paddingTop: wrapped ? 48 : 0 }]} allowFontScaling={false}>
-                    {text}
+                    {renderText}
                 </Text>
             )}
 
@@ -125,14 +130,14 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
             {!!text && textCover && (
                 <View style={[styles.textBoxCover, { backgroundColor: theme.overlayMedium, paddingVertical: wrapped ? 56 : 16 }]}>
                     <Text style={[textStyle, { color: theme.foregroundContrast }]} allowFontScaling={false}>
-                        {text}
+                        {renderText}
                     </Text>
                 </View>
             )}
 
             {!!text && (!coverAlign || coverAlign === SlideCoverAlign.Top) && (
                 <Text style={[textStyle, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
-                    {text}
+                    {renderText}
                 </Text>
             )}
         </View>

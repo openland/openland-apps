@@ -148,8 +148,6 @@ export const SpanSymbolToType: SpanSymbolToTypeT = {
 
 export const PostSpanSymbolToType: SpanSymbolToTypeT = {
     '*': { type: MessageSpanType.Bold },
-    '`': { type: MessageSpanType.InlineCode },
-    '~': { type: MessageSpanType.Irony },
     '_': { type: MessageSpanType.Italic },
 };
 
