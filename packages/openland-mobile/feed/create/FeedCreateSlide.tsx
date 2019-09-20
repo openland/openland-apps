@@ -236,7 +236,7 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
     let inputTextStyle = TextStyles.Body;
     let inputBoxStyle = [styles.inputBox];
 
-    if (!showCover) {
+    if (!showCover || inputCover) {
         if (!text) {
             inputTextStyle = TextStyles.Post1;
             inputBoxStyle = [styles.inputBox, styles.inputBoxLarge];

@@ -92,8 +92,8 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
         }
     }, [cover]);
 
-    const textStyle = cover ? styles.text : text.length < 200 ? (text.length < 100 ? styles.textLarge : styles.textMedium) : styles.text;
     const textCover = coverAlign && coverAlign === SlideCoverAlign.Cover;
+    const textStyle = (!cover || textCover) ? (text.length < 200 ? (text.length < 100 ? styles.textLarge : styles.textMedium) : styles.text) : styles.text;
 
     return (
         <View style={styles.box}>
