@@ -99,7 +99,7 @@ interface FeedCreateSlideProps {
     index: number;
     onChangeText: (text: string) => void;
     onChangeCover: (cover?: ImageRefInput) => void;
-    onChangeCoverAlign: (align: SlideCoverAlign) => void;
+    onChangeCoverAlign: (align?: SlideCoverAlign) => void;
     onDelete?: () => void;
 }
 
@@ -193,6 +193,7 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
             setCoverLoading(false);
             setCoverLocalPath(undefined);
             onChangeCover();
+            onChangeCoverAlign();
         }, false, require('assets/ic-delete-24.png'));
 
         builder.show();

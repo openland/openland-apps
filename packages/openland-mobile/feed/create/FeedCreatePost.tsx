@@ -64,7 +64,7 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
         })));
     }, []);
 
-    const handleChangeCoverAlign = React.useCallback((index: number, align: SlideCoverAlign) => {
+    const handleChangeCoverAlign = React.useCallback((index: number, align?: SlideCoverAlign) => {
         setSlides(prev => prev.map((slide, key) => ({
             ...slide,
             coverAlign: key === index ? align : slide.coverAlign
