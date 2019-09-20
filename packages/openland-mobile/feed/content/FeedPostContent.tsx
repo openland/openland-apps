@@ -28,11 +28,12 @@ interface FeedPostContentProps {
     post: DataSourceFeedPostItem;
     onLongPress?: () => void;
     onSlideChange?: (index: number) => void;
+    wrapped?: boolean;
 }
 
 export const FeedPostContent = React.memo((props: FeedPostContentProps) => {
     const theme = React.useContext(ThemeContext);
-    const { width, post, onLongPress, onSlideChange } = props;
+    const { width, post, onLongPress, onSlideChange, wrapped } = props;
     const { slides, fallback } = post;
 
     const [currentSlide, setCurreentSlide] = React.useState(0);
@@ -62,7 +63,7 @@ export const FeedPostContent = React.memo((props: FeedPostContentProps) => {
         <View style={[styles.container, { width, height, backgroundColor: theme.backgroundSecondary }]}>
             {slides.length > 0 && (
                 <View style={styles.wrapper}>
-                    <FeedSlide slide={slides[currentSlide]} />
+                    <FeedSlide slide={slides[currentSlide]} wrapped={wrapped} />
 
                     {currentSlide > 0 && (
                         <TouchableWithoutFeedback onPress={handlePrevPress} onLongPress={onLongPress}>

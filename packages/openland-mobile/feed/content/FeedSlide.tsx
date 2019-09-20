@@ -10,6 +10,7 @@ import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import FastImage from 'react-native-fast-image';
 import { SAnimatedView } from 'react-native-s/SAnimatedView';
 import { SAnimated } from 'react-native-s/SAnimated';
+import { SlideCoverAlign } from 'openland-api/Types';
 
 const styles = StyleSheet.create({
     box: {
@@ -51,11 +52,13 @@ const styles = StyleSheet.create({
 
 interface FeedSlideProps {
     slide: SlideProcessed;
+    wrapped?: boolean;
 }
 
 export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
     const theme = React.useContext(ThemeContext);
-    const { id, text, cover } = props.slide;
+    const { slide, wrapped } = props;
+    const { id, text, cover, coverAlign } = slide;
     const [downloadState, setDownloadState] = React.useState<DownloadState | undefined>(undefined);
 
     const coverViewKey = React.useMemo(() => id + '-cover', [id]);
@@ -87,6 +90,12 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
 
     return (
         <View style={styles.box}>
+            {!!text && coverAlign && coverAlign === SlideCoverAlign.Bottom && (
+                <Text style={[textStyle, { color: theme.foregroundPrimary, paddingTop: wrapped ? 56 : undefined }]} allowFontScaling={false}>
+                    {text}
+                </Text>
+            )}
+
             {cover && (
                 <View style={[styles.coverWrapper, { backgroundColor: theme.backgroundTertiary }]}>
                     <View style={[styles.coverLoader, { backgroundColor: theme.overlayMedium }]}>
@@ -105,7 +114,8 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
                     )}
                 </View>
             )}
-            {!!text && (
+
+            {!!text && (!coverAlign || coverAlign !== SlideCoverAlign.Bottom) && (
                 <Text style={[textStyle, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
                     {text}
                 </Text>

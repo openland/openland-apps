@@ -81,6 +81,7 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
                             width={containerWidth}
                             onLongPress={handleLongPress}
                             onSlideChange={i => setCurreentSlide(i)}
+                            wrapped={true}
                         />
                     </View>
                 </TouchableWithoutFeedback>

@@ -176,6 +176,20 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
         builder.show();
     }, [coverAlign]);
 
+    const handleChangeLayout = React.useCallback(() => {
+        let builder = new ActionSheetBuilder();
+
+        builder.action('Top', () => {
+            onChangeCoverAlign(SlideCoverAlign.Top);
+        }, false, require('assets/ic-edit-24.png'));
+
+        builder.action('Bottom', () => {
+            onChangeCoverAlign(SlideCoverAlign.Bottom);
+        }, false, require('assets/ic-delete-24.png'));
+
+        builder.show();
+    }, [coverAlign]);
+
     const width = Math.min(Dimensions.get('screen').width, 414);
     const containerWidth = width - 32;
     const containerHeight = containerWidth * (4 / 3);
@@ -208,6 +222,23 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
         }
     }
 
+    const input = (
+        <View style={[...inputBoxStyle, { flexGrow: !showCover ? 1 : undefined }]}>
+            <TextInput
+                ref={textInputRef}
+                onChangeText={onChangeText}
+                value={text || ''}
+                multiline={true}
+                style={[styles.input, inputTextStyle, { color: theme.foregroundPrimary }]}
+                placeholder="Enter text"
+                placeholderTextColor={theme.foregroundTertiary}
+                keyboardAppearance={theme.keyboardAppearance}
+                allowFontScaling={false}
+                {...{ scrollEnabled: false }}
+            />
+        </View>
+    );
+
     return (
         <View style={styles.box}>
             <FeedItemShadow width={width} height={containerHeight + 16 + 32} />
@@ -219,8 +250,15 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
                         <View style={[styles.authorName, authorStyles]} />
                     </View>
 
+                    {showCover && !canAddText && <ZIconButton src={require('assets/ic-sort-24.png')} style={headerStyle} onPress={handleChangeLayout} />}
                     {!!onDelete && <ZIconButton src={require('assets/ic-delete-24.png')} style={headerStyle} onPress={handleDeleteSlide} />}
                 </FeedCreateTools>
+
+                {!canAddText && coverAlign && coverAlign === SlideCoverAlign.Bottom && (
+                    <View paddingTop={56}>
+                        {input}
+                    </View>
+                )}
 
                 {showCover && (
                     <TouchableWithoutFeedback onPress={handleCoverPress}>
@@ -240,27 +278,14 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
                     </TouchableWithoutFeedback>
                 )}
 
-                {!canAddText && (
-                    <View style={[...inputBoxStyle, { flexGrow: !showCover ? 1 : undefined }]}>
-                        <TextInput
-                            ref={textInputRef}
-                            onChangeText={onChangeText}
-                            value={text || ''}
-                            multiline={true}
-                            style={[styles.input, inputTextStyle, { color: theme.foregroundPrimary }]}
-                            placeholder="Enter text"
-                            placeholderTextColor={theme.foregroundTertiary}
-                            keyboardAppearance={theme.keyboardAppearance}
-                            allowFontScaling={false}
-                            {...{ scrollEnabled: false }}
-                        />
-                    </View>
-                )}
+                {!canAddText && (!coverAlign || coverAlign !== SlideCoverAlign.Bottom) && input}
 
-                <FeedCreateTools style={footerStyle} align="bottom">
-                    {!showCover && <ZIconButton src={require('assets/ic-gallery-24.png')} style={headerStyle} onPress={() => handleAttachMediaPress()} />}
-                    {canAddText && <FeedCreateAddText onPress={handleAddTextPress} />}
-                </FeedCreateTools>
+                {(!showCover || canAddText) && (
+                    <FeedCreateTools style={footerStyle} align="bottom">
+                        {!showCover && <ZIconButton src={require('assets/ic-gallery-24.png')} style={headerStyle} onPress={() => handleAttachMediaPress()} />}
+                        {canAddText && <FeedCreateAddText onPress={handleAddTextPress} />}
+                    </FeedCreateTools>
+                )}
             </View>
         </View>
     );
