@@ -125,7 +125,7 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
         if (textInputRef.current) {
             textInputRef.current.focus();
         }
-    }, [textInputRef.current]);
+    }, [textInputRef]);
 
     const handleAttachMediaPress = React.useCallback(async (oldCoverAlign?: SlideCoverAlign | null) => {
         if (await checkPermissions('gallery')) {
