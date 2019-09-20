@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, TouchableWithoutFeedback, Image, Text } from 'react-native';
+import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, TouchableWithoutFeedback, Image } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { FeedItemShadow } from '../FeedItemShadow';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
