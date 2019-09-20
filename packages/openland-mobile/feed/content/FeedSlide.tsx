@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SlideProcessed } from 'openland-engines/feed/types';
-import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, TextStyle, Platform } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
@@ -114,12 +114,12 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
                         <LoaderSpinner />
                     </View>
 
-                    {downloadState && downloadState.path && (
+                    {downloadState && !!downloadState.path && downloadState.path.length > 0 && (
                         <SAnimatedView name={coverViewKey} style={[styles.cover, { backgroundColor: theme.overlayMedium, opacity: 0 }]}>
                             <FastImage
                                 resizeMode="cover"
                                 style={{ width: '100%', flexGrow: 1 }}
-                                source={{ uri: downloadState.path, priority: 'normal', ...{ disableAnimations: true } as any }}
+                                source={{ uri: (Platform.OS === 'android' ? 'file://' : '') + downloadState.path, priority: 'normal', ...{ disableAnimations: true } as any }}
                                 onLoad={handleCoverLoad}
                             />
                         </SAnimatedView>
