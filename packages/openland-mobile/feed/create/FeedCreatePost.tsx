@@ -6,7 +6,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { PageProps } from 'openland-mobile/components/PageProps';
-import { SlideInput, SlideType, SlideCoverAlign } from 'openland-api/Types';
+import { SlideInput, SlideType, SlideCoverAlign, ImageRefInput } from 'openland-api/Types';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { FeedCreateSlide } from './FeedCreateSlide';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
@@ -17,7 +17,7 @@ import Toast from 'openland-mobile/components/Toast';
 const FeedCreatePostComponent = React.memo((props: PageProps) => {
     const feedEngine = getMessenger().engine.feed;
 
-    const [slides, setSlides] = React.useState<SlideInput[]>([]);
+    const [slides, setSlides] = React.useState<SlideInput[]>([{ type: SlideType.Text }]);
     const scrollViewRef = React.useRef<ScrollView>(null);
     const prevSlidesLength = React.useRef<number>(0);
     const [global, setGlobal] = React.useState(false);
@@ -46,8 +46,8 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
         stopLoader();
     }, [slides, global]);
 
-    const addSlide = React.useCallback((text: string = '') => {
-        setSlides(prev => [...prev, { type: SlideType.Text, text }]);
+    const addSlide = React.useCallback(() => {
+        setSlides(prev => [...prev, { type: SlideType.Text }]);
     }, []);
 
     const handleChangeText = React.useCallback((index: number, text: string) => {
@@ -57,18 +57,10 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
         })));
     }, []);
 
-    const handleChangeCover = React.useCallback((index: number, uuid: string, width: number, height: number) => {
+    const handleChangeCover = React.useCallback((index: number, cover?: ImageRefInput) => {
         setSlides(prev => prev.map((slide, key) => ({
             ...slide,
-            cover: key === index ? {
-                uuid,
-                crop: {
-                    x: 0,
-                    y: 0,
-                    w: width,
-                    h: height
-                }
-            } : slide.cover
+            cover: key === index ? cover : slide.cover
         })));
     }, []);
 
@@ -81,10 +73,6 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
 
     const handleDeleteSlide = React.useCallback((index: number) => {
         setSlides(prev => prev.filter((slide, key) => key !== index));
-    }, []);
-
-    React.useEffect(() => {
-        addSlide();
     }, []);
 
     return (
@@ -103,7 +91,7 @@ const FeedCreatePostComponent = React.memo((props: PageProps) => {
                                 index={index}
                                 slide={slide}
                                 onChangeText={v => handleChangeText(index, v)}
-                                onChangeCover={(id, w, h) => handleChangeCover(index, id, w, h)}
+                                onChangeCover={c => handleChangeCover(index, c)}
                                 onChangeCoverAlign={a => handleChangeCoverAlign(index, a)}
                                 onDelete={slides.length > 1 ? () => handleDeleteSlide(index) : undefined}
                             />

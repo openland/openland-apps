@@ -6,6 +6,7 @@ import { ThemeLight, ThemeLightRed, ThemeLightOrange, ThemeLightGreen, ThemeLigh
 import { ThemeDark, ThemeDarkBlue, ThemeDarkRed, ThemeDarkOrange, ThemeDarkGreen, ThemeDarkCyan, ThemeDarkPurple, ThemeDarkPink } from 'openland-y-utils/themes/dark';
 
 export const ThemeContext = React.createContext<ThemeGlobal>(ThemeLight);
+export const useTheme = () => React.useContext(ThemeContext);
 
 function resolveTheme(theme: ThemeGlobalKind) {
     if (theme === 'LightRed') {
