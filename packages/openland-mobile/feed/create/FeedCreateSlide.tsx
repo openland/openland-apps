@@ -207,8 +207,8 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
                 {SUPPORTED_COVER_ALIGN.map((item, index) => (
                     <TouchableWithoutFeedback key={index} onPress={() => { onChangeCoverAlign(item.align); ctx.hide(); }}>
                         <View style={styles.alignContainer}>
-                            <Image source={item.icon} style={{ width: 80, height: 106, tintColor: coverAlign === item.align ? theme.accentPrimary : theme.backgroundTertiary }} />
-                            <View marginTop={17} width={22} height={22} borderRadius={11} borderWidth={coverAlign === item.align ? 7.5 : 2} borderColor={coverAlign === item.align ? theme.accentPrimary : theme.backgroundTertiary} />
+                            <Image source={item.icon} style={{ width: 80, height: 106, tintColor: coverAlign === item.align ? theme.accentPrimary : theme.backgroundInverted }} />
+                            <View marginTop={17} width={22} height={22} borderRadius={11} borderWidth={coverAlign === item.align ? 7.5 : 2} borderColor={coverAlign === item.align ? theme.accentPrimary : theme.backgroundInverted} />
                         </View>
                     </TouchableWithoutFeedback>
                 ))}

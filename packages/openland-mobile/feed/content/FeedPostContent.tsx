@@ -63,7 +63,13 @@ export const FeedPostContent = React.memo((props: FeedPostContentProps) => {
         <View style={[styles.container, { width, height, backgroundColor: theme.backgroundSecondary }]}>
             {slides.length > 0 && (
                 <View style={styles.wrapper}>
-                    <FeedSlide key={`slide-${slides[currentSlide].id}`} slide={slides[currentSlide]} wrapped={wrapped} />
+                    <View style={{ position: 'absolute', top: 0, left: -(currentSlide * width), right: 0, bottom: 0, flexDirection: 'row' }}>
+                        {slides.map(slide => (
+                            <View key={`slide-${slide.id}`} style={{ width, height }}>
+                                <FeedSlide slide={slide} wrapped={wrapped} />
+                            </View>
+                        ))}
+                    </View>
 
                     {currentSlide > 0 && (
                         <TouchableWithoutFeedback onPress={handlePrevPress} onLongPress={onLongPress}>
