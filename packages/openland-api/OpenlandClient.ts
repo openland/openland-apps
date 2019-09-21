@@ -751,6 +751,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderMyStickers(opts?: QueryWatchParameters): Types.MyStickers | null {
         return this.useQuery(Source.MyStickersQuery, undefined, opts);
     }
+    async queryStickerPack(variables: Types.StickerPackVariables, opts?: OperationParameters): Promise<Types.StickerPack> {
+        return this.client.query(Source.StickerPackQuery, variables, opts);
+    }
+    async refetchStickerPack(variables: Types.StickerPackVariables): Promise<Types.StickerPack> {
+        return this.refetch(Source.StickerPackQuery, variables);
+    }
+    useStickerPack(variables: Types.StickerPackVariables, opts?: QueryWatchParameters): Types.StickerPack {
+        return this.useQuerySuspense(Source.StickerPackQuery, variables, opts);
+    }
+    useWithoutLoaderStickerPack(variables: Types.StickerPackVariables, opts?: QueryWatchParameters): Types.StickerPack | null {
+        return this.useQuery(Source.StickerPackQuery, variables, opts);
+    }
     async queryUsers(variables: Types.UsersVariables, opts?: OperationParameters): Promise<Types.Users> {
         return this.client.query(Source.UsersQuery, variables, opts);
     }
@@ -1110,6 +1122,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     async mutateSettingsUpdate(variables: Types.SettingsUpdateVariables): Promise<Types.SettingsUpdate> {
         return this.client.mutate(Source.SettingsUpdateMutation, variables);
+    }
+    async mutateStickerPackAddToCollection(variables: Types.StickerPackAddToCollectionVariables): Promise<Types.StickerPackAddToCollection> {
+        return this.client.mutate(Source.StickerPackAddToCollectionMutation, variables);
     }
     async mutateSendSticker(variables: Types.SendStickerVariables): Promise<Types.SendSticker> {
         return this.client.mutate(Source.SendStickerMutation, variables);

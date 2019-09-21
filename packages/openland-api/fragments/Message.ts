@@ -329,6 +329,12 @@ export const FullMessage = gql`
                     sticker {
                         ... on ImageSticker {
                             id
+                            pack {
+                                ... on StickerPack {
+                                    id
+                                    title
+                                }
+                            }
                             image {
                                 ... on ImageRef {
                                     uuid
@@ -381,6 +387,12 @@ export const FullMessage = gql`
             sticker {
                 ... on ImageSticker {
                     id
+                    pack {
+                        ... on StickerPack {
+                            id
+                            title
+                        }
+                    }
                     image {
                         ... on ImageRef {
                             uuid

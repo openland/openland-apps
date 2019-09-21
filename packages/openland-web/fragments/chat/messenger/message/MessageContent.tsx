@@ -3,7 +3,8 @@ import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
     FullMessage_GeneralMessage_attachments,
-    UserShort, ChatUpdateFragment_ChatMessageReceived_message_StickerMessage_sticker,
+    MyStickers_stickers_packs_stickers,
+    UserShort,
 } from 'openland-api/Types';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
@@ -46,7 +47,7 @@ interface MessageContentProps {
     edited?: boolean;
     reply?: DataSourceWebMessageItem[];
     attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string })[];
-    sticker?: ChatUpdateFragment_ChatMessageReceived_message_StickerMessage_sticker;
+    sticker?: MyStickers_stickers_packs_stickers;
     fallback?: string;
     isOut?: boolean;
     attachTop?: boolean;

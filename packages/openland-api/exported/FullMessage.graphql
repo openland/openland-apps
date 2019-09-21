@@ -247,6 +247,13 @@ fragment FullMessage on ModernMessage {
                 uuid
               }
             }
+            pack {
+              __typename
+              ... on StickerPack {
+                id
+                title
+              }
+            }
           }
         }
       }
@@ -301,6 +308,13 @@ fragment FullMessage on ModernMessage {
           __typename
           ... on ImageRef {
             uuid
+          }
+        }
+        pack {
+          __typename
+          ... on StickerPack {
+            id
+            title
           }
         }
       }

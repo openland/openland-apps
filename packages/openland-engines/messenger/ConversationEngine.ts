@@ -10,6 +10,7 @@ import {
     FullMessage_GeneralMessage_spans,
     UserShort,
     DialogUpdateFragment_DialogPeerUpdated_peer,
+    FullMessage_StickerMessage_sticker,
     MyStickers_stickers_packs_stickers,
 } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
@@ -72,7 +73,7 @@ export interface DataSourceMessageItem {
     failed?: boolean;
     reactionsReduced: ReactionReduced[];
     reactionsLabel: string;
-    sticker?: MyStickers_stickers_packs_stickers;
+    sticker?: FullMessage_StickerMessage_sticker | MyStickers_stickers_packs_stickers;
 
     // legacy
     isSubscribedMessageComments?: boolean;
