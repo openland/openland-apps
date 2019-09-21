@@ -15642,6 +15642,117 @@
 			"operationId": "3b76d0ff9dcb09a76a1938953537d55b9ee33273f7795b705693f2bfde65fd53"
 		},
 		{
+			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/Stickers.ts",
+			"operationName": "MyStickers",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [],
+			"source": "query MyStickers {\n  stickers: myStickers {\n    __typename\n    ... on UserStickers {\n      packs {\n        __typename\n        id\n        title\n        stickers {\n          __typename\n          ... on ImageSticker {\n            id\n            image {\n              __typename\n              ... on ImageRef {\n                uuid\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "stickers",
+					"fieldName": "myStickers",
+					"type": "UserStickers!",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "packs",
+							"fieldName": "packs",
+							"type": "[StickerPack!]!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "title",
+									"fieldName": "title",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "stickers",
+									"fieldName": "stickers",
+									"type": "[Sticker!]!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "image",
+											"fieldName": "image",
+											"type": "ImageRef!",
+											"isConditional": false,
+											"isDeprecated": false,
+											"fields": [
+												{
+													"responseName": "__typename",
+													"fieldName": "__typename",
+													"type": "String!",
+													"isConditional": false
+												},
+												{
+													"responseName": "uuid",
+													"fieldName": "uuid",
+													"type": "String!",
+													"isConditional": false,
+													"isDeprecated": false
+												}
+											],
+											"fragmentSpreads": [],
+											"inlineFragments": []
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "query MyStickers {\n  stickers: myStickers {\n    __typename\n    ... on UserStickers {\n      packs {\n        __typename\n        id\n        title\n        stickers {\n          __typename\n          ... on ImageSticker {\n            id\n            image {\n              __typename\n              ... on ImageRef {\n                uuid\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}",
+			"operationId": "082ab58cae7f7d8b53e80dc7d9745c0720d8f86d93026291cb2a0cd2a08d4c97"
+		},
+		{
 			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/Track.ts",
 			"operationName": "PersistEvents",
 			"operationType": "mutation",

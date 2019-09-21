@@ -19,6 +19,7 @@ import * as Organization from './queries/Organization';
 import * as Permissions from './queries/Permissions';
 import * as Report from './queries/Report';
 import * as Settings from './queries/Settings';
+import * as Stickers from './queries/Stickers';
 import * as Track from './queries/Track';
 import * as User from './queries/User';
 import * as AppChat from './fragments/AppChat';
@@ -213,6 +214,7 @@ export const SetUserShortnameMutation = typedMutation<Types.SetUserShortname, Ty
 export const ProfileCreateMutation = typedMutation<Types.ProfileCreate, Types.ProfileCreateVariables>(Settings.ProfileCreateMutation);
 export const SettingsQuery = typedQuery<Types.Settings, {}>(Settings.SettingsQuery);
 export const SettingsUpdateMutation = typedMutation<Types.SettingsUpdate, Types.SettingsUpdateVariables>(Settings.SettingsUpdateMutation);
+export const MyStickersQuery = typedQuery<Types.MyStickers, {}>(Stickers.MyStickersQuery);
 export const PersistEventsMutation = typedMutation<Types.PersistEvents, Types.PersistEventsVariables>(Track.PersistEventsMutation);
 export const UsersQuery = typedQuery<Types.Users, Types.UsersVariables>(User.UsersQuery);
 export const UserQuery = typedQuery<Types.User, Types.UserVariables>(User.UserQuery);

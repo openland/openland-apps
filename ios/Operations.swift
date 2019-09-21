@@ -2018,6 +2018,30 @@ private let MyOrganizationsSelector = obj(
                     fragment("Organization", OrganizationShortSelector)
                 )))))
         )
+private let MyStickersSelector = obj(
+            field("myStickers","stickers", notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("UserStickers", obj(
+                        field("packs","packs", notNull(list(notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("stickers","stickers", notNull(list(notNull(obj(
+                                        field("__typename","__typename", notNull(scalar("String"))),
+                                        inline("ImageSticker", obj(
+                                            field("id","id", notNull(scalar("ID"))),
+                                            field("image","image", notNull(obj(
+                                                    field("__typename","__typename", notNull(scalar("String"))),
+                                                    inline("ImageRef", obj(
+                                                        field("uuid","uuid", notNull(scalar("String")))
+                                                    ))
+                                                )))
+                                        ))
+                                    ))))),
+                                field("title","title", notNull(scalar("String")))
+                            )))))
+                    ))
+                )))
+        )
 private let MySuccessfulInvitesCountSelector = obj(
             field("mySuccessfulInvitesCount","mySuccessfulInvitesCount", notNull(scalar("Int")))
         )
@@ -3555,6 +3579,12 @@ class Operations {
         "query MyOrganizations{myOrganizations{__typename isPrimary:betaIsPrimary ...OrganizationShort}}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}",
         MyOrganizationsSelector
     )
+    let MyStickers = OperationDefinition(
+        "MyStickers",
+        .query, 
+        "query MyStickers{stickers:myStickers{__typename ... on UserStickers{packs{__typename id stickers{__typename ... on ImageSticker{id image{__typename ... on ImageRef{uuid}}}}title}}}}",
+        MyStickersSelector
+    )
     let MySuccessfulInvitesCount = OperationDefinition(
         "MySuccessfulInvitesCount",
         .query, 
@@ -4480,6 +4510,7 @@ class Operations {
         if name == "MyNotificationCenter" { return MyNotificationCenter }
         if name == "MyNotifications" { return MyNotifications }
         if name == "MyOrganizations" { return MyOrganizations }
+        if name == "MyStickers" { return MyStickers }
         if name == "MySuccessfulInvitesCount" { return MySuccessfulInvitesCount }
         if name == "Online" { return Online }
         if name == "Organization" { return Organization }

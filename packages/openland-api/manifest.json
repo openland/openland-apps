@@ -1178,6 +1178,13 @@
       }
     },
     {
+      "signature": "6aabbae7995d26da31a928883ec76cdcc61f7a53efd952907c812de6e6e04b6f",
+      "document": "query MyStickers{stickers:myStickers{__typename...on UserStickers{packs{__typename id stickers{__typename...on ImageSticker{id image{__typename...on ImageRef{uuid}}}}title}}}}",
+      "metadata": {
+        "engineSignature": "query MyStickers{myStickers{__typename...on UserStickers{packs{__typename id stickers{__typename...on ImageSticker{id image{__typename...on ImageRef{uuid}}}}title}}}}"
+      }
+    },
+    {
       "signature": "397ebefadf214937fd0b84f08991edf18f143c7ca2ee787475ab462b8d820cc7",
       "document": "mutation PersistEvents($did:String!,$events:[Event!]!,$isProd:Boolean){track(did:$did,events:$events,isProd:$isProd)}",
       "metadata": {

@@ -739,6 +739,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderSettings(opts?: QueryWatchParameters): Types.Settings | null {
         return this.useQuery(Source.SettingsQuery, undefined, opts);
     }
+    async queryMyStickers(opts?: OperationParameters): Promise<Types.MyStickers> {
+        return this.client.query(Source.MyStickersQuery, undefined, opts);
+    }
+    async refetchMyStickers(): Promise<Types.MyStickers> {
+        return this.refetch(Source.MyStickersQuery);
+    }
+    useMyStickers(opts?: QueryWatchParameters): Types.MyStickers {
+        return this.useQuerySuspense(Source.MyStickersQuery, undefined, opts);
+    }
+    useWithoutLoaderMyStickers(opts?: QueryWatchParameters): Types.MyStickers | null {
+        return this.useQuery(Source.MyStickersQuery, undefined, opts);
+    }
     async queryUsers(variables: Types.UsersVariables, opts?: OperationParameters): Promise<Types.Users> {
         return this.client.query(Source.UsersQuery, variables, opts);
     }
