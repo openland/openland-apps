@@ -124,8 +124,9 @@ export class FeedEngine {
         }
     }
 
-    private converSlides = (slides: SlideInputLocal[]) => {
+    private converSlides = (input: SlideInputLocal[]) => {
         const res: Types.SlideInput[] = [];
+        const slides = input.map(i => ({ ...i }));
 
         for (let slide of slides) {
             slide.key = undefined;
