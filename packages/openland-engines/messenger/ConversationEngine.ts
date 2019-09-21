@@ -10,7 +10,7 @@ import {
     FullMessage_GeneralMessage_spans,
     UserShort,
     DialogUpdateFragment_DialogPeerUpdated_peer,
-    ChatUpdateFragment_ChatMessageReceived_message_StickerMessage_sticker, MyStickers_stickers_packs_stickers,
+    MyStickers_stickers_packs_stickers,
 } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
