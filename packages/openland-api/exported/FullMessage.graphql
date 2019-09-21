@@ -204,6 +204,52 @@ fragment FullMessage on ModernMessage {
         edited
         id
       }
+      ... on StickerMessage {
+        date
+        id
+        reactions {
+          __typename
+          reaction
+          user {
+            __typename
+            ...UserShort
+          }
+        }
+        sender {
+          __typename
+          ...UserShort
+        }
+        senderBadge {
+          __typename
+          ...UserBadge
+        }
+        source {
+          __typename
+          ... on MessageSourceChat {
+            chat {
+              __typename
+              ... on PrivateRoom {
+                id
+              }
+              ... on SharedRoom {
+                id
+              }
+            }
+          }
+        }
+        sticker {
+          __typename
+          ... on ImageSticker {
+            id
+            image {
+              __typename
+              ... on ImageRef {
+                uuid
+              }
+            }
+          }
+        }
+      }
     }
     reactions {
       __typename

@@ -298,6 +298,45 @@ export const FullMessage = gql`
                         }
                     }
                 }
+
+                ... on StickerMessage {
+                    id
+                    date
+                    sender {
+                        ...UserShort
+                    }
+                    senderBadge {
+                        ...UserBadge
+                    }
+                    source {
+                        ... on MessageSourceChat {
+                            chat {
+                                ... on PrivateRoom {
+                                    id
+                                }
+                                ... on SharedRoom {
+                                    id
+                                }
+                            }
+                        }
+                    }
+                    reactions {
+                        user {
+                            ...UserShort
+                        }
+                        reaction
+                    }
+                    sticker {
+                        ... on ImageSticker {
+                            id
+                            image {
+                                ... on ImageRef {
+                                    uuid
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             reactions {
