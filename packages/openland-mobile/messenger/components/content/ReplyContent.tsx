@@ -11,6 +11,8 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'op
 import { RenderSpans } from './AsyncRenderSpans';
 import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from '../AsyncBubbleView';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { StickerContent } from './StickerContent';
+import { paddedText } from '../AsyncMessageContentView';
 
 interface ReplyContentProps {
     message: DataSourceMessageItem;
@@ -44,7 +46,8 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                         let repliedMessage = !m.isService ? m : undefined;
 
                         if (repliedMessage) {
-                            let attachFile = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+                            const attachFile = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+                            const sticker = m.sticker && m.sticker.__typename === 'ImageSticker' ? m.sticker : undefined;
 
                             return (
                                 <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={theme.bubble(message.isOut).foregroundTertiary}>
@@ -83,6 +86,13 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                         </ASFlex>
                                     )}
 
+                                    {sticker && (
+                                        <ASFlex key={'reply-sticker-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10}>
+                                            <StickerContent sticker={sticker} />
+                                            {!message.text && (i + 1 === message.reply!.length) && paddedText(message.isEdited)}
+                                        </ASFlex>
+                                    )}
+
                                     {attachFile && attachFile.fileMetadata.isImage ? (
                                         <AsyncReplyMessageMediaView
                                             attach={attachFile}
@@ -105,11 +115,11 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                         } else {
                             return (
                                 <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={theme.bubble(message.isOut).foregroundTertiary}>
-                                    {message.textSpans.length > 0 && (
+                                    {m.textSpans.length > 0 && (
                                         <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10}>
                                             <RenderSpans
-                                                spans={message.textSpans}
-                                                message={message}
+                                                spans={m.textSpans}
+                                                message={m}
                                                 padded={compensateBubble ? (!message.text && (i + 1 === message.reply!!.length)) : false}
                                                 theme={theme}
                                                 maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 70}
