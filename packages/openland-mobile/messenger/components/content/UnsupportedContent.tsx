@@ -6,7 +6,7 @@ import { ASText } from 'react-native-async-view/ASText';
 import { Platform } from 'react-native';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { SpanType } from 'openland-y-utils/spans/Span';
-import { AsyncBubbleView } from '../AsyncBubbleView';
+import { AsyncBubbleView, bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from '../AsyncBubbleView';
 import { TextContent } from './TextContent';
 import { createSimpleSpan } from 'openland-y-utils/spans/processSpans';
 
@@ -31,6 +31,7 @@ export const UnsupportedContent = React.memo((props: UnsupportedContentProps) =>
                     emojiOnly={false}
                     theme={theme}
                     fontStyle="italic"
+                    maxWidth={(message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - (contentInsetsHorizontal * 2) - (Platform.OS === 'ios' ? 45 : 50)}
                     message={{
                         ...message,
                         spans: undefined,
