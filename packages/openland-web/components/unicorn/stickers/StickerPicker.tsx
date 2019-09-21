@@ -35,7 +35,7 @@ export const StickerComponent = React.memo(() => {
         return <div>no stickers</div>;
     }
 
-    const rowCount = Math.floor(total.length / 3);
+    const rowCount = Math.ceil(total.length / 3);
 
     return (
         <div className={container}>
@@ -45,14 +45,13 @@ export const StickerComponent = React.memo(() => {
                 columnWidth={106}
                 columnCount={3}
                 width={384 /* Bigger width to hide scrollbar */}
-                height={384}
+                height={432}
             >
                 {({ columnIndex, rowIndex, style }) => {
-                    const isLastRow = rowIndex === rowCount - 1;
-                    if (isLastRow) {
+                    const item = total[rowIndex * 3 + columnIndex];
+                    if (!item) {
                         return null;
                     }
-                    const item = total[rowIndex * 3 + columnIndex];
                     const url = `https://ucarecdn.com/${item.image.uuid}/-/format/auto/-/`;
                     const ops = `scale_crop/${100}x${100}/`;
                     const opsRetina = `scale_crop/${100 * 2}x${100 * 2}/center/ 2x`;
