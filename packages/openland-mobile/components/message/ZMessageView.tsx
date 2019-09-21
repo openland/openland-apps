@@ -10,6 +10,7 @@ import { layoutImage } from 'openland-mobile/messenger/components/content/MediaC
 import { MediaContent } from './content/MediaContent';
 import { RichAttachContent } from './content/RichAttachContent';
 import { DocumentContent } from './content/DocumentContent';
+import { StickerContent } from './content/StickerContent';
 import { showFileModal } from '../file/showFileModal';
 
 export interface ZMessageViewProps {
@@ -49,49 +50,55 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
         );
     }
 
-    if (message.__typename === 'StickerMessage') {
-        return null;
-    }
+    const attaches = message.__typename === 'GeneralMessage' ? message.attachments : [];
+    const mediaAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
+    const documentsAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
+    const augmenationAttaches = attaches.filter(a => a.__typename === 'MessageRichAttachment') as FullMessage_GeneralMessage_attachments_MessageRichAttachment[] || [];
 
-    let attaches = (message.attachments || []);
-    let mediaAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
-    let documentsAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
-    let augmenationAttaches = attaches.filter(a => a.__typename === 'MessageRichAttachment') as FullMessage_GeneralMessage_attachments_MessageRichAttachment[] || [];
-
-    let hasReply = !!(message.quotedMessages && message.quotedMessages.length > 0);
-    let hasText = !!(message.message);
+    const replies = message.__typename === 'GeneralMessage' ? message.quotedMessages : [];
+    const sticker = message.__typename === 'StickerMessage' && message.sticker.__typename === 'ImageSticker' ? message.sticker : undefined;
+    const hasReply = !!(replies && replies.length > 0);
+    const hasText = !!(message.message);
 
     let content: JSX.Element[] = [];
 
     if (hasReply) {
-        content.push(<ReplyContent key={'msg-' + message.id + '-reply'} quotedMessages={message.quotedMessages} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onDocumentPress={handleDocumentPress} theme={theme} />);
+        content.push(<ReplyContent key={'msg-' + message.id + '-reply'} quotedMessages={replies} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onDocumentPress={handleDocumentPress} theme={theme} />);
     }
 
-    mediaAttaches.map((file, index) => {
-        let imageLayout = layoutImage(file.fileMetadata, maxWidth);
+    if (message.__typename === 'GeneralMessage') {
+        mediaAttaches.map((file, index) => {
+            let imageLayout = layoutImage(file.fileMetadata, maxWidth);
 
-        if (imageLayout) {
-            content.push(<MediaContent key={'msg-' + message.id + '-media-' + index} imageLayout={imageLayout} message={message} attach={file} theme={theme} />);
-        }
-    });
+            if (imageLayout) {
+                content.push(<MediaContent key={'msg-' + message.id + '-media-' + index} imageLayout={imageLayout} message={message} attach={file} theme={theme} />);
+            }
+        });
+    }
 
     if (hasText) {
         content.push(<TextContent key={'msg-' + message.id + '-text'} message={message} onUserPress={handleUserPress} onGroupPress={handleGroupPress} wrapped={wrapped} theme={theme} />);
     }
 
-    documentsAttaches.map((file, index) => {
-        content.push(<DocumentContent key={'msg-' + message.id + '-document-' + index} attach={file} message={message} onDocumentPress={handleDocumentPress} theme={theme} />);
-    });
+    if (sticker) {
+        content.push(<StickerContent key={'msg-' + message.id + '-sticker'} sticker={sticker} />);
+    }
 
-    augmenationAttaches.map((attach, index) => {
-        let imageLayout;
+    if (message.__typename === 'GeneralMessage') {
+        documentsAttaches.map((file, index) => {
+            content.push(<DocumentContent key={'msg-' + message.id + '-document-' + index} attach={file} message={message} onDocumentPress={handleDocumentPress} theme={theme} />);
+        });
 
-        if (attach.image && attach.image.metadata) {
-            imageLayout = layoutImage(attach.image.metadata, maxWidth);
-        }
+        augmenationAttaches.map((attach, index) => {
+            let imageLayout;
 
-        content.push(<RichAttachContent key={'msg-' + message.id + '-rich-' + index} maxWidth={maxWidth} attach={attach} imageLayout={imageLayout} message={message} wrapped={wrapped} theme={theme} />);
-    });
+            if (attach.image && attach.image.metadata) {
+                imageLayout = layoutImage(attach.image.metadata, maxWidth);
+            }
+
+            content.push(<RichAttachContent key={'msg-' + message.id + '-rich-' + index} maxWidth={maxWidth} attach={attach} imageLayout={imageLayout} message={message} wrapped={wrapped} theme={theme} />);
+        });
+    }
 
     return (
         <View>

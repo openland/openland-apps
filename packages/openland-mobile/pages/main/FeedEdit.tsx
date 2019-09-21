@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { FeedManagePost } from 'openland-mobile/feed/create/FeedManagePost';
+import { FeedManagePost } from 'openland-mobile/feed/manage/FeedManagePost';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SlideInputLocal } from 'openland-engines/feed/types';

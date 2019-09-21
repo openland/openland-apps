@@ -18,6 +18,8 @@ import { openCalendar } from 'openland-mobile/utils/openCalendar';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { EmojiOnlyContent } from './content/EmojiOnlyContent';
+import { StickerContent } from './content/StickerContent';
+import { StickerBox } from './content/StickerBox';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { MetaInfoIndicator } from './content/MetaInfoIndicator';
 import { SenderContent } from './content/SenderContent';
@@ -99,7 +101,10 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     const hasText = !!(message.text);
     const hasUrlAug = !!augmenationAttach;
 
+    const sticker = message.sticker && message.sticker.__typename === 'ImageSticker' ? message.sticker : undefined;
+
     const isEmojiOnly = message.textSpans.length === 1 && message.textSpans[0].type === 'emoji' && (message.attachments || []).length === 0 && (message.reply || []).length === 0;
+    const isStickerOnly = sticker && (message.attachments || []).length === 0 && (message.reply || []).length === 0;
 
     let imageLayout;
     if (hasImage) {
@@ -124,6 +129,9 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     if (hasImage && imageLayout) {
         topContent.push(<MediaContent key="msg-media" theme={theme} compensateBubble={compensateBubble} layout={imageLayout} message={message} attach={fileAttach!} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} hasTopContent={hasReply} hasBottomContent={hasText || hasUrlAug} />);
     }
+    if (sticker) {
+        topContent.push(<StickerContent key="msg-sticker" sticker={sticker} />);
+    }
     if (hasText) {
         topContent.push(<TextContent key="msg-text" compensateBubble={compensateBubble} width={textSize} emojiOnly={isEmojiOnly} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onMediaPress={onMediaPress} />);
     }
@@ -141,7 +149,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         bottomContent = [];
     }
 
-    if (!isEmojiOnly && !message.isOut && !message.attachTop && !hasImage && !hasDocument && compensateBubble) {
+    if (!isEmojiOnly && !isStickerOnly && !message.isOut && !message.attachTop && !hasImage && !hasDocument && compensateBubble) {
         topContent.unshift(
             <SenderContent
                 key={'name-' + theme.accentPrimary}
@@ -164,7 +172,8 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         imageOnly,
         richAttachImageLayout,
         richAttachIsCompact,
-        isEmojiOnly
+        isEmojiOnly,
+        isStickerOnly
     };
 };
 
@@ -180,11 +189,16 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
         imageLayout,
         richAttachImageLayout,
         bottomContent,
-        isEmojiOnly
+        isEmojiOnly,
+        isStickerOnly
     } = extractContent(props, (isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming), true);
 
     if (isEmojiOnly) {
         return <EmojiOnlyContent theme={theme} content={topContent} message={message} />;
+    }
+
+    if (isStickerOnly) {
+        return <StickerBox theme={theme} content={topContent} message={message} />;
     }
 
     const fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);

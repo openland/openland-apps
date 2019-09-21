@@ -5,6 +5,9 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { showReportForm } from 'openland-mobile/components/showReportForm';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
 import { MessageReactionType } from 'openland-api/Types';
+import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
+import { trackEvent } from 'openland-mobile/analytics';
+import { Share } from 'react-native';
 
 class FeedHandlersClass {
     Open = (id: string) => {
@@ -25,7 +28,11 @@ class FeedHandlersClass {
     }
 
     Share = (id: string) => {
-        console.warn('Feed: Share post ' + id);
+        const link = 'https://openland.com/feed/' + id;
+
+        trackEvent('feed_post_share', { postId: id });
+
+        Share.share({ message: link });
     }
 
     Manage = (id: string, canEdit: boolean, fromLongPress?: boolean) => {
@@ -38,13 +45,15 @@ class FeedHandlersClass {
         }, false, require('assets/ic-share-24.png'));
 
         if (canEdit) {
-            builder.action('Edit', () => {
-                router.push('FeedEdit', { id });
-            }, false, require('assets/ic-edit-24.png'));
+            if (NON_PRODUCTION) {
+                builder.action('Edit', () => {
+                    router.push('FeedEdit', { id });
+                }, false, require('assets/ic-edit-24.png'));
 
-            builder.action('Unpublish', () => {
-                console.warn('boom unpublish post');
-            }, false, require('assets/ic-refresh-24.png'));
+                builder.action('Unpublish', () => {
+                    console.warn('boom unpublish post');
+                }, false, require('assets/ic-refresh-24.png'));
+            }
 
             builder.action('Delete', async () => {
                 Alert.builder()
