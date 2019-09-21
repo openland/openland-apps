@@ -29,7 +29,7 @@ import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import IcSticker from 'openland-icons/s/ic-sticker-24.svg';
 import { StickerComponent } from '../stickers/StickerPicker';
 import { XLoader } from 'openland-x/XLoader';
-import { MyStickers_stickers_packs_stickers } from '../../../../openland-api/Types';
+import { MyStickers_stickers_packs_stickers } from 'openland-api/Types';
 
 const sectionTitle = css`
     cursor: pointer;
