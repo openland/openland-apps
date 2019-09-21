@@ -13,7 +13,7 @@ import {
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
     RoomChat_room,
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
-    UserForMention,
+    UserForMention, MyStickers_stickers_packs_stickers,
 } from 'openland-api/Types';
 import { trackEvent } from 'openland-x-analytics';
 import { throttle, delay } from 'openland-y-utils/timer';
@@ -351,6 +351,10 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         }
     }
 
+    onStickerSend = (sticker: MyStickers_stickers_packs_stickers) => {
+        this.conversation!.sendSticker(sticker);
+    }
+
     onContentChange = (text: URickTextValue) => {
         let actionState = this.conversation!.messagesActionsStateEngine.getState();
         if (actionState.action !== 'edit') {
@@ -419,6 +423,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                 rickRef={this.rickRef}
                                 groupId={groupId}
                                 onTextSent={this.onTextSend}
+                                onStickerSend={this.onStickerSend}
                                 onTextChange={this.handleChange}
                                 onContentChange={this.onContentChange}
                             />

@@ -16,6 +16,7 @@ const container = css`
 `;
 
 const sticker = css`
+    cursor: pointer;
     width: 106px;
     height: 106px;
     display: flex;
@@ -23,9 +24,15 @@ const sticker = css`
     justify-content: center;
     flex-shrink: 0;
     padding: 8px;
+    border-radius: 8px;
+    &:hover {
+        background-color: #f2f3f5;
+    }
 `;
 
-export const StickerComponent = React.memo(() => {
+export const StickerComponent = React.memo<{
+    onStickerSend?: (sticker: MyStickers_stickers_packs_stickers) => void;
+}>(props => {
     const client = useClient();
     const stickers = client.useMyStickers().stickers;
     const total: MyStickers_stickers_packs_stickers[] = [];
@@ -36,6 +43,12 @@ export const StickerComponent = React.memo(() => {
     }
 
     const rowCount = Math.ceil(total.length / 3);
+
+    const sendSticker = (item: MyStickers_stickers_packs_stickers) => {
+        if (props.onStickerSend) {
+            props.onStickerSend(item);
+        }
+    };
 
     return (
         <div className={container}>
@@ -57,7 +70,7 @@ export const StickerComponent = React.memo(() => {
                     const opsRetina = `scale_crop/${100 * 2}x${100 * 2}/center/ 2x`;
                     return (
                         <div style={style}>
-                            <div className={sticker} key={item.id}>
+                            <div className={sticker} onClick={() => sendSticker(item)}>
                                 <img
                                     width={90}
                                     height={90}

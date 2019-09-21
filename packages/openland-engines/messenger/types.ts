@@ -1,4 +1,9 @@
-import { FullMessage, FullMessage_GeneralMessage_spans, UserBadge } from 'openland-api/Types';
+import {
+    FullMessage,
+    FullMessage_GeneralMessage_spans,
+    MyStickers_stickers_packs_stickers,
+    UserBadge,
+} from 'openland-api/Types';
 import { DataSourceMessageItem } from './ConversationEngine';
 
 export interface PendingMessage {
@@ -12,10 +17,11 @@ export interface PendingMessage {
     uri?: string;
     fileSize?: number;
     isImage: boolean;
-    imageSize?: { width: number, height: number };
+    imageSize?: { width: number; height: number };
     failed?: boolean;
     quoted?: DataSourceMessageItem[];
     senderBadge?: UserBadge;
+    sticker: MyStickers_stickers_packs_stickers | null;
 }
 
 export type ModelMessage = PendingMessage | FullMessage;
@@ -33,16 +39,18 @@ export interface FileMetadata {
     uri?: string;
     fileSize?: number;
     isImage?: boolean;
-    imageSize?: { width: number, height: number };
+    imageSize?: { width: number; height: number };
 }
 
 export enum UploadStatus {
     UPLOADING,
     FAILED,
-    COMPLETED
+    COMPLETED,
 }
 
 export interface UploadingFile {
     fetchInfo(): Promise<FileMetadata>;
-    watch(handler: (state: { status: UploadStatus, progress?: number, uuid?: string }) => void): void;
+    watch(
+        handler: (state: { status: UploadStatus; progress?: number; uuid?: string }) => void,
+    ): void;
 }

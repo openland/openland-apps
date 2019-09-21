@@ -3119,6 +3119,9 @@ private val RoomsJoinSelector = obj(
 private val SendMessageSelector = obj(
             field("sendMessage","sentMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
         )
+private val SendStickerSelector = obj(
+            field("sendSticker","sendSticker", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("stickerId", refValue("stickerId"))), notNull(scalar("Boolean")))
+        )
 private val SetOrgShortnameSelector = obj(
             field("alphaSetOrgShortName","alphaSetOrgShortName", arguments(fieldValue("id", refValue("organizationId")), fieldValue("shortname", refValue("shortname"))), scalar("String"))
         )
@@ -4278,6 +4281,12 @@ object Operations {
         override val body = "mutation SendMessage(\$chatId:ID!,\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$repeatKey:String,\$replyMessages:[ID!],\$spans:[MessageSpanInput!]){sentMessage:sendMessage(chatId:\$chatId,fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,repeatKey:\$repeatKey,replyMessages:\$replyMessages,spans:\$spans)}"
         override val selector = SendMessageSelector
     }
+    val SendSticker = object: OperationDefinition {
+        override val name = "SendSticker"
+        override val kind = OperationKind.MUTATION
+        override val body = "mutation SendSticker(\$chatId:ID!,\$repeatKey:String,\$stickerId:ID!){sendSticker:sendSticker(chatId:\$chatId,repeatKey:\$repeatKey,stickerId:\$stickerId)}"
+        override val selector = SendStickerSelector
+    }
     val SetOrgShortname = object: OperationDefinition {
         override val name = "SetOrgShortname"
         override val kind = OperationKind.MUTATION
@@ -4628,6 +4637,7 @@ object Operations {
         if (name == "RoomsInviteUser") return RoomsInviteUser
         if (name == "RoomsJoin") return RoomsJoin
         if (name == "SendMessage") return SendMessage
+        if (name == "SendSticker") return SendSticker
         if (name == "SetOrgShortname") return SetOrgShortname
         if (name == "SetTyping") return SetTyping
         if (name == "SetUserShortname") return SetUserShortname

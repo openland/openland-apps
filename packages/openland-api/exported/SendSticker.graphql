@@ -1,0 +1,3 @@
+mutation SendSticker($chatId: ID!, $repeatKey: String, $stickerId: ID!) {
+  sendSticker: sendSticker(chatId: $chatId, repeatKey: $repeatKey, stickerId: $stickerId)
+}

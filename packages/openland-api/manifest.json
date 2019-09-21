@@ -1185,6 +1185,13 @@
       }
     },
     {
+      "signature": "1351082024eb5a39a77d8bc06d8edf319e7e91449ce8d14ccfe286b1afe07012",
+      "document": "mutation SendSticker($chatId:ID!,$repeatKey:String,$stickerId:ID!){sendSticker:sendSticker(chatId:$chatId,repeatKey:$repeatKey,stickerId:$stickerId)}",
+      "metadata": {
+        "engineSignature": "mutation SendSticker($chatId:ID!,$repeatKey:String,$stickerId:ID!){sendSticker(chatId:$chatId,repeatKey:$repeatKey,stickerId:$stickerId)}"
+      }
+    },
+    {
       "signature": "397ebefadf214937fd0b84f08991edf18f143c7ca2ee787475ab462b8d820cc7",
       "document": "mutation PersistEvents($did:String!,$events:[Event!]!,$isProd:Boolean){track(did:$did,events:$events,isProd:$isProd)}",
       "metadata": {

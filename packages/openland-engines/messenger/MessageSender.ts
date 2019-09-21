@@ -1,12 +1,20 @@
 import UUID from 'uuid/v4';
 import { UploadingFile, UploadStatus } from './types';
-import { UserForMention, MentionInput, FileAttachmentInput, MessageSpanInput } from 'openland-api/Types';
+import {
+    UserForMention,
+    MentionInput,
+    FileAttachmentInput,
+    MessageSpanInput,
+    MyStickers_stickers_packs_stickers,
+} from 'openland-api/Types';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 
-export type MentionToSend = UserForMention | {
-    __typename: "AllMention";
-};
+export type MentionToSend =
+    | UserForMention
+    | {
+          __typename: 'AllMention';
+      };
 
 export interface MessageSendHandler {
     onProgress(key: string, progress: number): void;
@@ -22,6 +30,7 @@ type MessageBodyT = {
     mentions: MentionInput[] | null;
     quoted?: string[];
     spans: MessageSpanInput[] | null;
+    sticker: MyStickers_stickers_packs_stickers | null;
 };
 
 export class MessageSender {
@@ -51,9 +60,10 @@ export class MessageSender {
                     },
                     onFailed(key: string) {
                         reject();
-                    }
+                    },
                 },
-                spans: null
+                spans: null,
+                sticker: null,
             });
         });
     }
@@ -62,7 +72,7 @@ export class MessageSender {
         conversationId: string,
         file: UploadingFile,
         callback: MessageSendHandler,
-        quoted?: string[]
+        quoted?: string[],
     ) {
         console.log('MessageSender sendFile');
         let key = UUID();
@@ -73,13 +83,9 @@ export class MessageSender {
                         file.watch(state => {
                             if (state.status === UploadStatus.FAILED) {
                                 reject();
-                            } else if (
-                                state.status === UploadStatus.UPLOADING
-                            ) {
+                            } else if (state.status === UploadStatus.UPLOADING) {
                                 callback.onProgress(key, state.progress!!);
-                            } else if (
-                                state.status === UploadStatus.COMPLETED
-                            ) {
+                            } else if (state.status === UploadStatus.COMPLETED) {
                                 resolver(state.uuid!!);
                             }
                         });
@@ -97,9 +103,61 @@ export class MessageSender {
                 conversationId,
                 key,
                 callback,
-                spans: null
+                spans: null,
+                sticker: null,
             });
         })();
+        return key;
+    }
+
+    sendSticker({
+        conversationId,
+        sticker,
+        callback,
+    }: {
+        conversationId: string;
+        sticker: MyStickers_stickers_packs_stickers;
+        callback: MessageSendHandler;
+    }) {
+        let key = UUID();
+
+        const messageBody = {
+            room: conversationId,
+            message: null,
+            fileAttachments: null,
+            conversationId,
+            replyMessages: null,
+            mentions: null,
+            spans: null,
+            sticker,
+        };
+
+        this.pending.set(key, messageBody);
+
+        (async () => {
+            let start = Date.now();
+            try {
+                await this.client.mutateSendSticker({
+                    chatId: conversationId,
+                    stickerId: sticker.id,
+                    repeatKey: key,
+                });
+            } catch (e) {
+                if (e.graphQLErrors && e.graphQLErrors.find((v: any) => v.doubleInvoke === true)) {
+                    // Ignore
+                } else {
+                    // Just ignore for now
+                    console.warn(e);
+                    callback.onFailed(key);
+                    return;
+                }
+            }
+            console.log('sticker sent in ' + (Date.now() - start) + ' ms');
+
+            this.pending.delete(key);
+            callback.onCompleted(key);
+        })();
+
         return key;
     }
 
@@ -120,7 +178,7 @@ export class MessageSender {
     }) {
         message = message.trim();
         if (message.length === 0 && (!quoted || (quoted && quoted.length === 0))) {
-            throw Error('Message can\'t be empty');
+            throw Error("Message can't be empty");
         }
         let key = UUID();
 
@@ -132,7 +190,8 @@ export class MessageSender {
             key,
             callback,
             replyMessages: quoted || null,
-            spans
+            spans,
+            sticker: null,
         });
         return key;
     }
@@ -140,7 +199,7 @@ export class MessageSender {
     async sendMessageAsync({
         conversationId,
         message,
-        mentions
+        mentions,
     }: {
         conversationId: string;
         message: string;
@@ -156,14 +215,14 @@ export class MessageSender {
                 },
                 onProgress: () => {
                     // Ignore
-                }
+                },
             };
             this.sendMessage({
                 spans: null,
                 conversationId,
                 message,
                 mentions,
-                callback: handler
+                callback: handler,
             });
         });
     }
@@ -174,7 +233,7 @@ export class MessageSender {
             this.doSendMessage({
                 ...messageBody,
                 key,
-                callback
+                callback,
             });
         }
     }
@@ -188,6 +247,7 @@ export class MessageSender {
         key,
         callback,
         spans,
+        sticker,
     }: MessageBodyT & {
         key: string;
         callback: MessageSendHandler;
@@ -199,7 +259,8 @@ export class MessageSender {
             conversationId,
             replyMessages,
             mentions,
-            spans
+            spans,
+            sticker,
         };
 
         this.pending.set(key, messageBody);
@@ -214,13 +275,10 @@ export class MessageSender {
                     fileAttachments,
                     replyMessages,
                     chatId: conversationId,
-                    spans: spans
+                    spans: spans,
                 });
             } catch (e) {
-                if (
-                    e.graphQLErrors &&
-                    e.graphQLErrors.find((v: any) => v.doubleInvoke === true)
-                ) {
+                if (e.graphQLErrors && e.graphQLErrors.find((v: any) => v.doubleInvoke === true)) {
                     // Ignore
                 } else {
                     // Just ignore for now

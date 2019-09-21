@@ -12,7 +12,7 @@ import AllIcon from 'openland-icons/s/ic-channel-16.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
 import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { useClient } from 'openland-web/utils/useClient';
-import { RoomMembers_members_user } from 'openland-api/Types';
+import { MyStickers_stickers_packs_stickers, RoomMembers_members_user } from 'openland-api/Types';
 import { searchMentions } from 'openland-engines/mentions/searchMentions';
 import { emojiSuggest } from 'openland-y-utils/emojiSuggest';
 import { emojiComponent } from 'openland-y-utils/emojiComponent';
@@ -320,6 +320,7 @@ interface SendMessageComponentProps {
     onTextSent?: (text: URickTextValue) => void;
     onTextSentAsync?: (text: URickTextValue) => void;
     onContentChange?: (text: URickTextValue) => void;
+    onStickerSend?: (sticker: MyStickers_stickers_packs_stickers) => void;
     onTextChange?: (text: string) => void;
     placeholder?: string;
     initialText?: URickTextValue;
@@ -476,6 +477,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     onPressTab={onPressTab}
                     onTextChange={props.onTextChange}
                     onContentChange={props.onContentChange}
+                    onStickerSend={props.onStickerSend}
                     autofocus={true}
                     placeholder={props.placeholder || 'Write a message...'}
                     onFilesPaste={props.onAttach}

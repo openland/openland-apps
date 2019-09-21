@@ -29,6 +29,7 @@ import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import IcSticker from 'openland-icons/s/ic-sticker-24.svg';
 import { StickerComponent } from '../stickers/StickerPicker';
 import { XLoader } from 'openland-x/XLoader';
+import { MyStickers_stickers_packs_stickers } from '../../../../openland-api/Types';
 
 const sectionTitle = css`
     cursor: pointer;
@@ -329,7 +330,12 @@ const CategoryButton = React.memo(
     },
 );
 
-const EmojiPickerBody = React.memo((props: { onEmojiPicked: (arg: string) => void }) => {
+interface EmojiPickerProps {
+    onEmojiPicked: (arg: string) => void;
+    onStickerSend?: (sticker: MyStickers_stickers_packs_stickers) => void;
+}
+
+const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
     const ref = React.useRef<FixedSizeList>(null);
     const [currentSection, setCurrentSection] = React.useState(0);
     const [stickers, setStickers] = React.useState(false);
@@ -366,12 +372,14 @@ const EmojiPickerBody = React.memo((props: { onEmojiPicked: (arg: string) => voi
                     Emoji
                 </div>
                 <XWithRole role="super-admin">
-                    <div
-                        className={cx(TextTitle3, sectionTitle, stickers && sectionActiveTitle)}
-                        onClick={() => setStickers(true)}
-                    >
-                        Stickers
-                    </div>
+                    {props.onStickerSend && (
+                        <div
+                            className={cx(TextTitle3, sectionTitle, stickers && sectionActiveTitle)}
+                            onClick={() => setStickers(true)}
+                        >
+                            Stickers
+                        </div>
+                    )}
                 </XWithRole>
             </XView>
             {!stickers && (
@@ -484,16 +492,16 @@ const EmojiPickerBody = React.memo((props: { onEmojiPicked: (arg: string) => voi
             )}
             {stickers && (
                 <React.Suspense fallback={<XLoader loading={true} />}>
-                    <StickerComponent />
+                    <StickerComponent onStickerSend={props.onStickerSend} />
                 </React.Suspense>
             )}
         </XView>
     );
 });
 
-export const EmojiPicker = React.memo((props: { onEmojiPicked: (arg: string) => void }) => {
+export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
     const [visible, show] = usePopper({ placement: 'top-end', hideOnLeave: true }, () => (
-        <EmojiPickerBody onEmojiPicked={props.onEmojiPicked} />
+        <EmojiPickerBody onEmojiPicked={props.onEmojiPicked} onStickerSend={props.onStickerSend} />
     ));
 
     return (

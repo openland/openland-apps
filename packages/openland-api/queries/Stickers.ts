@@ -22,3 +22,17 @@ export const MyStickersQuery = gql`
         }
     }
 `;
+
+export const SendStickerMutation = gql`
+    mutation SendSticker(
+        $chatId: ID!
+        $stickerId: ID!
+        $repeatKey: String
+    ) {
+        sendSticker: sendSticker(
+            chatId: $chatId
+            stickerId: $stickerId
+            repeatKey: $repeatKey
+        )
+    }
+`;

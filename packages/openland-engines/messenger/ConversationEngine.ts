@@ -10,7 +10,7 @@ import {
     FullMessage_GeneralMessage_spans,
     UserShort,
     DialogUpdateFragment_DialogPeerUpdated_peer,
-    ChatUpdateFragment_ChatMessageReceived_message_StickerMessage_sticker,
+    ChatUpdateFragment_ChatMessageReceived_message_StickerMessage_sticker, MyStickers_stickers_packs_stickers,
 } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
@@ -72,7 +72,7 @@ export interface DataSourceMessageItem {
     failed?: boolean;
     reactionsReduced: ReactionReduced[];
     reactionsLabel: string;
-    sticker?: ChatUpdateFragment_ChatMessageReceived_message_StickerMessage_sticker;
+    sticker?: MyStickers_stickers_packs_stickers;
 
     // legacy
     isSubscribedMessageComments?: boolean;
@@ -542,7 +542,8 @@ export class ConversationEngine implements MessageSendHandler {
                 isImage: false,
                 failed: false,
                 spans,
-                quoted: quoted ? quoted.map(q => ({ ...q, reply: undefined })) : undefined
+                quoted: quoted ? quoted.map(q => ({ ...q, reply: undefined })) : undefined,
+                sticker: null
             };
 
             this.messages = [...this.messages, msgs];
@@ -587,6 +588,41 @@ export class ConversationEngine implements MessageSendHandler {
                 isImage: !!info.isImage,
                 imageSize: info.imageSize,
                 quoted
+            } as PendingMessage;
+            console.log(pmsg);
+            this.messages = [...this.messages, { ...pmsg } as PendingMessage];
+            this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
+
+            this.onMessagesUpdated();
+
+            // Data Source
+            this.appendMessage(pmsg);
+
+            // Notify
+            for (let l of this.listeners) {
+                l.onMessageSend();
+            }
+        })();
+        return key;
+    }
+
+    sendSticker = (sticker: MyStickers_stickers_packs_stickers) => {
+        let key = this.engine.sender.sendSticker({
+            conversationId: this.conversationId,
+            sticker: sticker,
+            callback: this
+        });
+
+        (async () => {
+            let date = (new Date().getTime()).toString();
+            let pmsg = {
+                date,
+                key,
+                file: null,
+                message: null,
+                failed: false,
+                isImage: false,
+                sticker: sticker
             } as PendingMessage;
             console.log(pmsg);
             this.messages = [...this.messages, { ...pmsg } as PendingMessage];
@@ -924,6 +960,7 @@ export class ConversationEngine implements MessageSendHandler {
                 fallback: src.message || '',
                 reactionsReduced: [],
                 reactionsLabel: '',
+                sticker: src.sticker || undefined
             };
         }
         if (this.dataSource.hasItem(conv.key)) {

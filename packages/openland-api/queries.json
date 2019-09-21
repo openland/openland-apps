@@ -15753,6 +15753,67 @@
 			"operationId": "082ab58cae7f7d8b53e80dc7d9745c0720d8f86d93026291cb2a0cd2a08d4c97"
 		},
 		{
+			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/Stickers.ts",
+			"operationName": "SendSticker",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "chatId",
+					"type": "ID!"
+				},
+				{
+					"name": "stickerId",
+					"type": "ID!"
+				},
+				{
+					"name": "repeatKey",
+					"type": "String"
+				}
+			],
+			"source": "mutation SendSticker($chatId: ID!, $stickerId: ID!, $repeatKey: String) {\n  sendSticker: sendSticker(chatId: $chatId, stickerId: $stickerId, repeatKey: $repeatKey)\n}",
+			"fields": [
+				{
+					"responseName": "sendSticker",
+					"fieldName": "sendSticker",
+					"type": "Boolean!",
+					"args": [
+						{
+							"name": "chatId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "chatId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "stickerId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "stickerId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "repeatKey",
+							"value": {
+								"kind": "Variable",
+								"variableName": "repeatKey"
+							},
+							"type": "String"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation SendSticker($chatId: ID!, $stickerId: ID!, $repeatKey: String) {\n  sendSticker: sendSticker(chatId: $chatId, stickerId: $stickerId, repeatKey: $repeatKey)\n}",
+			"operationId": "d16b3231d0ad147f4a52ec28826013a111dcd8861f8e488cdcd9df07d9abe4fa"
+		},
+		{
 			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/Track.ts",
 			"operationName": "PersistEvents",
 			"operationType": "mutation",

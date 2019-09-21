@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as QuillType from 'quill';
 import { css, cx } from 'linaria';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
-import { UserForMention } from 'openland-api/Types';
+import { MyStickers_stickers_packs_stickers, UserForMention } from 'openland-api/Types';
 import { emojiLink } from 'openland-y-utils/emojiLink';
 import { EmojiPicker } from './emoji/EmojiPicker';
 import { ShortcutButton } from './shortcuts/ShortcutsButton';
@@ -81,6 +81,7 @@ export interface URickInputProps {
     onContentChange?: (content: URickTextValue) => void;
     onAutocompleteWordChange?: (text: string | null) => void;
     withShortcutsButton?: boolean;
+    onStickerSend?: (sticker: MyStickers_stickers_packs_stickers) => void;
 
     onPressEnter?: () => Promise<boolean>;
     onPressUp?: () => boolean;
@@ -429,7 +430,7 @@ export const URickInput = React.memo(React.forwardRef((props: URickInputProps, r
         <div className={cx(quillStyle, props.withShortcutsButton && quillWithButtonStyle)}>
             <div ref={containerRef} />
             {props.withShortcutsButton && <ShortcutButton />}
-            <EmojiPicker onEmojiPicked={onEmojiPicked} />
+            <EmojiPicker onEmojiPicked={onEmojiPicked} onStickerSend={props.onStickerSend} />
         </div>
     );
 }));

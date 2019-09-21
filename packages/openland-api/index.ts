@@ -215,6 +215,7 @@ export const ProfileCreateMutation = typedMutation<Types.ProfileCreate, Types.Pr
 export const SettingsQuery = typedQuery<Types.Settings, {}>(Settings.SettingsQuery);
 export const SettingsUpdateMutation = typedMutation<Types.SettingsUpdate, Types.SettingsUpdateVariables>(Settings.SettingsUpdateMutation);
 export const MyStickersQuery = typedQuery<Types.MyStickers, {}>(Stickers.MyStickersQuery);
+export const SendStickerMutation = typedMutation<Types.SendSticker, Types.SendStickerVariables>(Stickers.SendStickerMutation);
 export const PersistEventsMutation = typedMutation<Types.PersistEvents, Types.PersistEventsVariables>(Track.PersistEventsMutation);
 export const UsersQuery = typedQuery<Types.Users, Types.UsersVariables>(User.UsersQuery);
 export const UserQuery = typedQuery<Types.User, Types.UserVariables>(User.UserQuery);
