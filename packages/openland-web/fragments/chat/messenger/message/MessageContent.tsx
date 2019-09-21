@@ -106,7 +106,7 @@ export const MessageContent = (props: MessageContentProps) => {
 
     if (sticker) {
         content.push(
-            <div key={'msg-' + id + '-rich-' + sticker.id} className={extraClassName}>
+            <div key={'msg-' + id + '-sticker-' + sticker.id} className={extraClassName}>
                 <StickerContent sticker={sticker} />
             </div>
         );

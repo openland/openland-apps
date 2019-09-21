@@ -56,7 +56,7 @@ export interface DataSourceMessageItem {
     title?: string;
     isEdited?: boolean;
     reply?: DataSourceMessageItem[];
-    source: Types.FullMessage_GeneralMessage_source_MessageSourceChat | null;
+    source?: Types.FullMessage_GeneralMessage_source_MessageSourceChat;
     reactions: FullMessage_GeneralMessage_reactions[];
     attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string })[];
     spans?: FullMessage_GeneralMessage_spans[];
@@ -98,14 +98,18 @@ export interface DataSourceNewDividerItem {
     date: undefined;
 }
 
+const getSourceChat = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
+    return src && src.source && src.source.__typename === 'MessageSourceChat' ? src.source : undefined;
+};
+
 export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId: string, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
     const generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     const serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
     const stickerMessage = src.__typename === 'StickerMessage' ? src : undefined;
 
     const reply = generalMessage && generalMessage.quotedMessages ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date).map(m => convertMessage(m as Types.FullMessage, chaId, engine)) : undefined;
-
-    const generalMessageSourceChat = generalMessage && generalMessage.source && generalMessage.source.__typename === 'MessageSourceChat' ? generalMessage.source : null;
+    const source = getSourceChat(generalMessage || stickerMessage);
+    const reactions = (generalMessage ? generalMessage.reactions : (stickerMessage ? stickerMessage.reactions : [])) || [];
 
     return {
         chatId: chaId,
@@ -123,19 +127,19 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
         isSending: false,
         attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) && (src.date - next.date < timeGroup) && ((next.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
         attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) && (prev.date - src.date < timeGroup) && ((prev.__typename === 'ServiceMessage') === (src.__typename === 'ServiceMessage')) : false,
-        reactions: generalMessage ? generalMessage.reactions : [],
+        reactions,
         serviceMetaData: serviceMessage && serviceMessage.serviceMetadata || undefined,
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,
         reply,
-        source: generalMessageSourceChat,
+        source,
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : 0,
         fallback: src.fallback || src.message || '',
         textSpans: src.message ? processSpans(src.message, src.spans) : [],
-        reactionsReduced: generalMessage ? reduceReactions(generalMessage.reactions || [], engine.user.id) : [],
-        reactionsLabel: generalMessage ? getReactionsLabel(generalMessage.reactions || [], engine.user.id) : '',
+        reactionsReduced: reactions.length ? reduceReactions(reactions, engine.user.id) : [],
+        reactionsLabel: reactions.length ? getReactionsLabel(reactions, engine.user.id) : '',
         sticker: stickerMessage ? stickerMessage.sticker : undefined
     };
 }
@@ -155,7 +159,7 @@ export function convertMessageBack(src: DataSourceMessageItem): Types.FullMessag
         edited: !!src.isEdited,
         quotedMessages: [],
         reactions: [],
-        source: src.source
+        source: src.source || null
     };
 
     return res;
@@ -913,7 +917,7 @@ export class ConversationEngine implements MessageSendHandler {
                     }
                 }] : undefined,
                 reply,
-                source: null,
+                source: undefined,
                 attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData && !prev.isService : false,
                 textSpans: src.message ? processSpans(src.message, src.spans) : [],
                 reactions: [],

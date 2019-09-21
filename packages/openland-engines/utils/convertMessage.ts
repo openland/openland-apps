@@ -9,20 +9,16 @@ export function convertMessage(
 ): DataSourceMessageItem {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
+    let stickerMessage = src.__typename === 'StickerMessage' ? src : undefined;
 
     let reply =
         generalMessage && generalMessage.quotedMessages
             ? generalMessage.quotedMessages
-                  .sort((a, b) => a.date - b.date)
-                  .map(r => convertMessage(r as FullMessage))
+                .sort((a, b) => a.date - b.date)
+                .map(r => convertMessage(r as FullMessage))
             : undefined;
 
-    const generalMessageSourceChat =
-        generalMessage &&
-        generalMessage.source &&
-        generalMessage.source.__typename === 'MessageSourceChat'
-            ? generalMessage.source
-            : null;
+    const source = generalMessage && generalMessage.source && generalMessage.source.__typename === 'MessageSourceChat' ? generalMessage.source : (stickerMessage && stickerMessage.source && stickerMessage.source.__typename === 'MessageSourceChat' ? stickerMessage.source : undefined);
 
     return {
         chatId: '',
@@ -45,7 +41,7 @@ export function convertMessage(
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,
         reply,
-        source: generalMessageSourceChat,
+        source: source,
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : 0,
