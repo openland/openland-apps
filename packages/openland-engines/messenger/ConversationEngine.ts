@@ -1,7 +1,17 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { RoomReadMutation, RoomQuery, ChatInitQuery, ChatInitFromUnreadQuery, MessagesBatchQuery } from 'openland-api';
 import { backoff, delay } from 'openland-y-utils/timer';
-import { UserBadge, FullMessage, FullMessage_GeneralMessage_reactions, FullMessage_ServiceMessage_serviceMetadata, FullMessage_GeneralMessage_attachments, FullMessage_GeneralMessage_spans, UserShort, DialogUpdateFragment_DialogPeerUpdated_peer } from 'openland-api/Types';
+import {
+    UserBadge,
+    FullMessage,
+    FullMessage_GeneralMessage_reactions,
+    FullMessage_ServiceMessage_serviceMetadata,
+    FullMessage_GeneralMessage_attachments,
+    FullMessage_GeneralMessage_spans,
+    UserShort,
+    DialogUpdateFragment_DialogPeerUpdated_peer,
+    ChatUpdateFragment_ChatMessageReceived_message_StickerMessage_sticker,
+} from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler, MentionToSend } from './MessageSender';
@@ -62,6 +72,7 @@ export interface DataSourceMessageItem {
     failed?: boolean;
     reactionsReduced: ReactionReduced[];
     reactionsLabel: string;
+    sticker?: ChatUpdateFragment_ChatMessageReceived_message_StickerMessage_sticker;
 
     // legacy
     isSubscribedMessageComments?: boolean;
@@ -90,6 +101,7 @@ export interface DataSourceNewDividerItem {
 export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId: string, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
     const generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     const serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
+    const stickerMessage = src.__typename === 'StickerMessage' ? src : undefined;
 
     const reply = generalMessage && generalMessage.quotedMessages ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date).map(m => convertMessage(m as Types.FullMessage, chaId, engine)) : undefined;
 
@@ -124,6 +136,7 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId:
         textSpans: src.message ? processSpans(src.message, src.spans) : [],
         reactionsReduced: generalMessage ? reduceReactions(generalMessage.reactions || [], engine.user.id) : [],
         reactionsLabel: generalMessage ? getReactionsLabel(generalMessage.reactions || [], engine.user.id) : '',
+        sticker: stickerMessage ? stickerMessage.sticker : undefined
     };
 }
 
@@ -765,7 +778,6 @@ export class ConversationEngine implements MessageSendHandler {
 
     private updateHandler = async (event: any) => {
         // console.log('ConversationEngine', event);
-
         if (event.__typename === 'ChatMessageReceived') {
             // Handle message
             log.log('Received new message');

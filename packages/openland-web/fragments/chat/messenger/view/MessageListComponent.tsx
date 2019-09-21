@@ -119,24 +119,6 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
         );
     });
 
-    // dataSourceWrapper = React.memo((props: any) => {
-    //     useScrollRefresh();
-    //     console.log('render!');
-    //     return (
-    //         <>
-    //             {this.isEmpty() && (
-    //                 <MessagesWrapperEmpty>
-    //                     <EmptyBlock
-    //                         conversationType={this.props.conversationType}
-    //                         onClick={this.props.inputShower}
-    //                     />
-    //                 </MessagesWrapperEmpty>
-    //             )}
-
-    //             {!this.isEmpty() && <MessagesWrapper>{props.children}</MessagesWrapper>}
-    //         </>);
-    // });
-
     onScrollRequested = (target: number) => {
         if (this.innerScrollRef.current) {
             let targetNode = this.innerScrollRef.current.childNodes[target] as any;
