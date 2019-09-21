@@ -15,17 +15,6 @@ const container = css`
     padding-right: 16px;
 `;
 
-const scrollContainer = css`
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: 0;
-    flex-wrap: wrap;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-`;
-
 const sticker = css`
     width: 106px;
     height: 106px;
