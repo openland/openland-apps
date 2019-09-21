@@ -13,8 +13,8 @@ import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import Toast from 'openland-mobile/components/Toast';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import FastImage from 'react-native-fast-image';
-import { FeedCreateAddText } from './FeedCreateAddText';
-import { FeedCreateTools } from './FeedCreateTools';
+import { FeedManageAddText } from './FeedManageAddText';
+import { FeedManageTools } from './FeedManageTools';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 
 const styles = StyleSheet.create({
@@ -94,7 +94,7 @@ const SUPPORTED_COVER_ALIGN: ({ align: SlideCoverAlign, icon: NodeRequire })[] =
     icon: require('assets/feed/ic-layout-bottom-80.png')
 }];
 
-interface FeedCreateSlideProps {
+interface FeedManageSlideProps {
     slide: SlideInput;
     onChangeText: (text: string) => void;
     onChangeCover: (cover?: ImageRefInput) => void;
@@ -102,7 +102,7 @@ interface FeedCreateSlideProps {
     onDelete?: () => void;
 }
 
-export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
+export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
     const { slide, onChangeText, onChangeCover, onChangeCoverAlign, onDelete } = props;
     const { text, cover, coverAlign } = slide;
     const theme = React.useContext(ThemeContext);
@@ -134,6 +134,10 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
             textInputRef.current.focus();
         }
     }, [textInputRef]);
+
+    const handleMentionPress = React.useCallback(() => {
+        console.warn('boom mention add');
+    }, []);
 
     const handleAttachMediaPress = React.useCallback(async (oldCoverAlign?: SlideCoverAlign | null) => {
         if (await checkPermissions('gallery')) {
@@ -284,7 +288,7 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
             <FeedItemShadow width={width} height={containerHeight + 16 + 32} />
 
             <View style={[styles.container, { width: containerWidth, height: containerHeight, backgroundColor: theme.backgroundSecondary }]}>
-                <FeedCreateTools style={headerStyle} align="top">
+                <FeedManageTools style={headerStyle} align="top">
                     <View style={styles.author}>
                         <View style={[styles.authorAvatar, authorStyles]} />
                         <View style={[styles.authorName, authorStyles]} />
@@ -292,7 +296,7 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
 
                     {showCover && !canAddText && <ZIconButton src={require('assets/ic-layout-24.png')} style={headerStyle} onPress={handleChangeLayout} />}
                     {!!onDelete && <ZIconButton src={require('assets/ic-delete-24.png')} style={headerStyle} onPress={handleDeleteSlide} />}
-                </FeedCreateTools>
+                </FeedManageTools>
 
                 {!canAddText && coverAlign && coverAlign === SlideCoverAlign.Bottom && input}
 
@@ -317,10 +321,11 @@ export const FeedCreateSlide = React.memo((props: FeedCreateSlideProps) => {
                 {!canAddText && (!coverAlign || coverAlign !== SlideCoverAlign.Bottom) && input}
 
                 {(!showCover || canAddText) && (
-                    <FeedCreateTools style={footerStyle} align="bottom">
+                    <FeedManageTools style={footerStyle} align="bottom">
                         {!showCover && <ZIconButton src={require('assets/ic-gallery-24.png')} style={headerStyle} onPress={() => handleAttachMediaPress()} />}
-                        {canAddText && <FeedCreateAddText onPress={handleAddTextPress} />}
-                    </FeedCreateTools>
+                        {!showCover && <ZIconButton src={require('assets/ic-at-24.png')} style={headerStyle} onPress={handleMentionPress} />}
+                        {canAddText && <FeedManageAddText onPress={handleAddTextPress} />}
+                    </FeedManageTools>
                 )}
             </View>
         </View>

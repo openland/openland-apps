@@ -4,7 +4,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SlideType, SlideCoverAlign, ImageRefInput } from 'openland-api/Types';
-import { FeedCreateSlide } from './FeedCreateSlide';
+import { FeedManageSlide } from './FeedManageSlide';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import UUID from 'uuid/v4';
@@ -88,7 +88,7 @@ export const FeedManagePost = React.memo((props: FeedManagePostProps) => {
 
                     {slides.map(slide => (
                         <View key={`slide-${slide.key}`}>
-                            <FeedCreateSlide
+                            <FeedManageSlide
                                 slide={slide}
                                 onChangeText={v => handleChangeText(slide.key, v)}
                                 onChangeCover={c => handleChangeCover(slide.key, c)}

@@ -25,11 +25,11 @@ const styles = StyleSheet.create({
     } as TextStyle
 });
 
-interface FeedCreateAddTextProps {
+interface FeedManageAddTextProps {
     onPress: () => void;
 }
 
-export const FeedCreateAddText = React.memo((props: FeedCreateAddTextProps) => {
+export const FeedManageAddText = React.memo((props: FeedManageAddTextProps) => {
     const { onPress } = props;
     const theme = useTheme();
 

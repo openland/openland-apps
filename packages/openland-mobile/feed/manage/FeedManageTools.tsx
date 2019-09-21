@@ -15,13 +15,13 @@ const styles = StyleSheet.create({
     } as ViewStyle,
 });
 
-interface FeedCreateToolsProps {
+interface FeedManageToolsProps {
     align: 'top' | 'bottom';
     style: 'contrast' | 'default';
     children: any;
 }
 
-export const FeedCreateTools = React.memo((props: FeedCreateToolsProps) => {
+export const FeedManageTools = React.memo((props: FeedManageToolsProps) => {
     const { align, style, children } = props;
     const styleObject = [styles.tools, {
         top: align === 'top' ? 0 : undefined,
