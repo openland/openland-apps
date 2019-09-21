@@ -316,6 +316,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             edited={message.isEdited}
             reply={message.replyWeb}
             attachments={message.attachments}
+            sticker={message.sticker}
             fallback={message.fallback}
             isOut={message.isOut}
             attachTop={message.attachTop}

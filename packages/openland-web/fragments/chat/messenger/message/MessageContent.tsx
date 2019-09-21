@@ -3,7 +3,7 @@ import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
     FullMessage_GeneralMessage_attachments,
-    UserShort,
+    UserShort, ChatUpdateFragment_ChatMessageReceived_message_StickerMessage_sticker,
 } from 'openland-api/Types';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
@@ -12,6 +12,7 @@ import { ReplyContent } from './content/ReplyContent';
 import { ImageContent } from './content/ImageContent';
 import { DocumentContent } from './content/DocumentContent';
 import { RichAttachContent } from './content/RichAttachContent';
+import { StickerContent } from './content/StickerContent';
 import { css, cx } from 'linaria';
 import { createSimpleSpan } from 'openland-y-utils/spans/processSpans';
 
@@ -45,6 +46,7 @@ interface MessageContentProps {
     edited?: boolean;
     reply?: DataSourceWebMessageItem[];
     attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string })[];
+    sticker?: ChatUpdateFragment_ChatMessageReceived_message_StickerMessage_sticker;
     fallback?: string;
     isOut?: boolean;
     attachTop?: boolean;
@@ -55,7 +57,7 @@ interface MessageContentProps {
 }
 
 export const MessageContent = (props: MessageContentProps) => {
-    const { id, text, textSpans = [], edited, reply, attachments = [], fallback, isOut = false, attachTop = false } = props;
+    const { id, text, textSpans = [], edited, reply, attachments = [], sticker, fallback, isOut = false, attachTop = false } = props;
     const imageAttaches = attachments.filter(a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
     const documentsAttaches = attachments.filter(a => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
     const augmenationAttaches = attachments.filter(a => a.__typename === 'MessageRichAttachment') as FullMessage_GeneralMessage_attachments_MessageRichAttachment[] || [];
@@ -101,6 +103,14 @@ export const MessageContent = (props: MessageContentProps) => {
             </div>
         );
     });
+
+    if (sticker) {
+        content.push(
+            <div key={'msg-' + id + '-rich-' + sticker.id} className={extraClassName}>
+                <StickerContent sticker={sticker} />
+            </div>
+        );
+    }
 
     if (reply && reply.length) {
         const replyContent = (
