@@ -16,16 +16,18 @@ const MessageComponent = XMemo<PageProps>((props) => {
     const client = getClient();
     const message = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' }).message;
 
-    if (!message || message.__typename !== 'GeneralMessage') {
+    if (!message) {
         return null;
     }
 
-    const { date, reactions, sender, source } = message;
-
+    const { date, sender, source } = message;
     const peerView = (
         <View paddingHorizontal={16} paddingTop={8}>
             <ZMessageView message={message} />
-            <ReactionsView reactions={reactions} />
+
+            {message.__typename !== 'ServiceMessage' && (
+                <ReactionsView reactions={message.reactions} />
+            )}
         </View>
     );
 
