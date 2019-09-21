@@ -140,6 +140,12 @@ export class FeedEngine {
                 slide.spans = findSpans(slide.text || '', PostSpanSymbolToType);
             }
 
+            if (hasCover) {
+                slide.coverAlign = hasText ? slide.coverAlign : Types.SlideCoverAlign.Cover;
+            } else {
+                slide.coverAlign = undefined;
+            }
+
             if (hasCover || hasText || hasAttachments) {
                 res.push(slide);
             }
