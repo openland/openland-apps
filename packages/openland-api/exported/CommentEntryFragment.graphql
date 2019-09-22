@@ -2,6 +2,7 @@ fragment CommentEntryFragment on CommentEntry {
   __typename
   comment: betaComment {
     __typename
+    id
     ...FullMessage
   }
   childComments {
@@ -12,7 +13,7 @@ fragment CommentEntryFragment on CommentEntry {
   id
   parentComment {
     __typename
-    comment {
+    comment: betaComment {
       __typename
       id
       message

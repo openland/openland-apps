@@ -7,9 +7,10 @@ export const CommentEntryFragment = gql`
         deleted
         comment: betaComment {
             ...FullMessage
+            id
         }
         parentComment {
-            comment {
+            comment: betaComment {
                 id
                 message
             }

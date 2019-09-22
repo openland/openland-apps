@@ -25,7 +25,7 @@ const MessageComponent = XMemo<PageProps>((props) => {
         <View paddingHorizontal={16} paddingTop={8}>
             <ZMessageView message={message} />
 
-            {message.__typename !== 'ServiceMessage' && (
+            {(message.__typename === 'GeneralMessage' || message.__typename === 'StickerMessage') && (
                 <ReactionsView reactions={message.reactions} />
             )}
         </View>
