@@ -86,7 +86,7 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
 
     if (message.__typename === 'GeneralMessage') {
         documentsAttaches.map((file, index) => {
-            content.push(<DocumentContent key={'msg-' + message.id + '-document-' + index} attach={file} message={message} onDocumentPress={handleDocumentPress} theme={theme} />);
+            content.push(<DocumentContent key={'msg-' + message.id + '-document-' + index} attach={file} onDocumentPress={handleDocumentPress} theme={theme} />);
         });
 
         augmenationAttaches.map((attach, index) => {

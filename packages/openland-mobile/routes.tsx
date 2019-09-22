@@ -59,6 +59,7 @@ import { Inputs } from './pages/dev/Inputs';
 import { Avatars } from './pages/dev/Avatars';
 import { SignupOrg } from './pages/auth/SignupOrg';
 import { Videos } from './pages/dev/Videos';
+import { DocumentsExt } from './pages/dev/DocumentsExt';
 import { Feed } from './pages/main/Feed';
 import { FeedCreate } from './pages/main/FeedCreate';
 import { FeedEdit } from './pages/main/FeedEdit';
@@ -124,6 +125,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevInputs', Inputs)
   .addRoute('DevAvatars', Avatars)
   .addRoute('DevVideos', Videos)
+  .addRoute('DevDocumentsExt', DocumentsExt)
 
   .addRoute('HomeDialogs', HomeDialogs)
 

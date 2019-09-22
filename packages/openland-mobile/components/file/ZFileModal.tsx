@@ -12,7 +12,7 @@ import { formatBytes } from 'openland-mobile/utils/formatBytes';
 import { ZRoundedButton } from '../ZRoundedButton';
 import { PdfPreview } from 'openland-mobile/pages/main/modals/PdfPreview';
 import { ZVideoComponent } from './ZVideoComponent';
-import { ZFileIconPreview } from './ZFileIconPreview';
+import { ZDocumentExt } from './ZDocumentExt';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SDevice } from 'react-native-s/SDevice';
 import { SCloseButton } from 'react-native-s/SCloseButton';
@@ -125,9 +125,6 @@ class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePr
         const iconColor = style === 'default' ? theme.foregroundSecondary : theme.foregroundContrast;
         const backgroundColor = style === 'default' ? theme.backgroundPrimary : '#000000';
 
-        const fileName = config.name.split('.');
-        const fileExt = fileName.length > 1 ? fileName[fileName.length - 1] : '';
-
         let header = (
             <View
                 style={{
@@ -152,7 +149,7 @@ class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePr
             <>
                 <TouchableWithoutFeedback onPress={this.handleOpen}>
                     <View style={{ alignItems: 'center', justifyContent: 'center', flexGrow: 1, marginTop: 35 }}>
-                        <ZFileIconPreview ext={fileExt} />
+                        <ZDocumentExt name={config.name} size="large" />
                         <Text style={[styles.name, { color: theme.foregroundPrimary }]}>{config.name}</Text>
                         <Text style={[styles.size, { color: theme.foregroundSecondary }]}>{formatBytes(config.size)}</Text>
                     </View>

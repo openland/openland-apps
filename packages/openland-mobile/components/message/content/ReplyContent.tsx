@@ -42,7 +42,7 @@ export const ReplyContent = (props: ReplyContentProps) => {
                                 contentAttach.push(<MediaContent key={'msg-reply-' + quote.id + '-media-' + index} imageLayout={imageLayout} message={generalMesage!} attach={file} theme={theme} />);
                             }
                         } else {
-                            contentAttach.push(<DocumentContent key={'msg-reply-' + quote.id + '-document-' + index} attach={file} message={generalMesage!} onDocumentPress={props.onDocumentPress} theme={theme} />);
+                            contentAttach.push(<DocumentContent key={'msg-reply-' + quote.id + '-document-' + index} attach={file} onDocumentPress={props.onDocumentPress} theme={theme} />);
                         }
                     });
 
@@ -59,13 +59,13 @@ export const ReplyContent = (props: ReplyContentProps) => {
                                     fontWeight: FontStyles.Weight.Medium,
                                     marginBottom: 2,
                                 }}
-                                onPress={() => props.onUserPress(generalMesage!.sender.id!)}
+                                onPress={() => props.onUserPress(generalMesage!.sender.id)}
                                 allowFontScaling={false}
                             >
-                                {generalMesage!.sender.name || ''}
+                                {generalMesage.sender.name || ''}
                             </Text>
 
-                            {!!generalMesage!.message && <TextContent message={generalMesage!} inReply={true} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} wrapped={true} theme={theme} />}
+                            {!!generalMesage.message && <TextContent message={generalMesage} inReply={true} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} wrapped={true} theme={theme} />}
                             {contentAttach}
                         </View>
                     );

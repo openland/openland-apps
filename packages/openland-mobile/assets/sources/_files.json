@@ -1,6 +1,22 @@
 {
     "icons": [
         {
+            "name": "ic-file-preview-corner-1",
+            "src": "ic-file-preview-corner-1.svg",
+            "sizes": [
+                18,
+                12
+            ]
+        },
+        {
+            "name": "ic-file-preview-corner-2",
+            "src": "ic-file-preview-corner-2.svg",
+            "sizes": [
+                18,
+                12
+            ]
+        },
+        {
             "name": "ic-layout",
             "src": "ic-layout-24.svg",
             "sizes": [
@@ -75,20 +91,6 @@
             "src": "ic-down-24.svg",
             "sizes": [
                 24
-            ]
-        },
-        {
-            "name": "ic-file-preview-corner-1",
-            "src": "ic-file-preview-corner-1.svg",
-            "sizes": [
-                18
-            ]
-        },
-        {
-            "name": "ic-file-preview-corner-2",
-            "src": "ic-file-preview-corner-2.svg",
-            "sizes": [
-                18
             ]
         },
         {
