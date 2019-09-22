@@ -45,11 +45,15 @@ export const SlideFragment = gql`
                 ... on SharedRoom {
                     id
                     kind
-                    isChannel
                     title
                     roomPhoto: photo
                     membersCount
                     membership
+                    organization {
+                        id
+                        name
+                        photo
+                    }
                 }
             }
         }

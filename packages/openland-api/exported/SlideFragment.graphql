@@ -8,10 +8,15 @@ fragment SlideFragment on Slide {
       }
       ... on SharedRoom {
         id
-        isChannel
         kind
         membersCount
         membership
+        organization {
+          __typename
+          id
+          name
+          photo
+        }
         roomPhoto: photo
         title
       }

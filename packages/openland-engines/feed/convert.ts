@@ -20,7 +20,7 @@ export const convertSlidesToInput = (src: Types.FeedItemFull_slides[]): SlideInp
                     uuid: slide.cover.url.split('https://ucarecdn.com/')[1].split('/')[0],
                 } : null,
                 coverAlign: slide.coverAlign,
-                attachments: slide.attachments.map(a => a.id)
+                attachmentLocal: slide.attachments[0]
             });
         }
     });
