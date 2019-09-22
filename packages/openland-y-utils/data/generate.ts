@@ -103,7 +103,7 @@ const animatedEmoji = [
     ['smiling_face_with_halo', '😇'],
     ['smiling_face_with_horns', '😈'],
     ['smiling_face_with_sunglasses', '😎'],
-    ['smiling_face_with_three_hearts', '😞'],
+    ['smiling_face_with_three_hearts', '🥰'],
     ['smirking_face', '😏'],
     ['sparkles', '✨'],
     ['sparkling_heart', '💖'],
