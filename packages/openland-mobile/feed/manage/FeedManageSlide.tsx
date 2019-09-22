@@ -265,6 +265,7 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
     const showCover = (cover || coverLocalPath || coverLoading);
     const inputCover = !!(coverAlign && coverAlign === SlideCoverAlign.Cover);
     const canAddText = showCover && typeof text !== 'string';
+    const canAttach = !showCover && !attachmentLocal;
 
     const headerStyle = showCover && (coverAlign === SlideCoverAlign.Cover || coverAlign === SlideCoverAlign.Top) ? 'contrast' : 'default';
     const footerStyle = showCover && (coverAlign === SlideCoverAlign.Cover || coverAlign === SlideCoverAlign.Bottom) ? 'contrast' : 'default';
@@ -358,10 +359,10 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
                 {!canAddText && (!coverAlign || coverAlign !== SlideCoverAlign.Bottom) && input}
                 {attachmentLocal && <FeedManageSlideAttachment attachment={attachmentLocal} onEditPress={handleMentionPress} onDeletePress={handleMentionDeletePress} />}
 
-                {(!showCover || canAddText) && (
+                {(canAttach || canAddText) && (
                     <FeedManageTools style={footerStyle} align="bottom">
-                        {!showCover && !attachmentLocal && <ZIconButton src={require('assets/ic-gallery-24.png')} style={headerStyle} onPress={() => handleAttachMediaPress()} />}
-                        {!showCover && !attachmentLocal && <ZIconButton src={require('assets/ic-at-24.png')} style={headerStyle} onPress={handleMentionPress} />}
+                        {canAttach && <ZIconButton src={require('assets/ic-gallery-24.png')} style={headerStyle} onPress={() => handleAttachMediaPress()} />}
+                        {canAttach && <ZIconButton src={require('assets/ic-at-24.png')} style={headerStyle} onPress={handleMentionPress} />}
                         {canAddText && <FeedManageAddText onPress={handleAddTextPress} />}
                     </FeedManageTools>
                 )}
