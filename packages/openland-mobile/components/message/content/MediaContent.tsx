@@ -74,6 +74,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 backgroundColor={theme.bubble(false).backgroundPrimary}
                 borderRadius={8}
                 marginVertical={5}
+                alignSelf="flex-start"
             >
                 <View width={imageLayout.width} height={imageLayout.height} alignSelf="center">
                     <PreviewWrapper path={imagePath} metadata={this.props.attach.fileMetadata} radius={8} senderName={message.sender.name} date={message.date}>
