@@ -35,7 +35,7 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
     const client = useClient();
     const message = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' }).message;
 
-    if (!message || message.__typename === 'ServiceMessage' || message.__typename === 'StickerMessage') {
+    if (!message || message.__typename === 'ServiceMessage') {
         return null;
     }
 

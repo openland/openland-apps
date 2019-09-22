@@ -2,7 +2,7 @@ import * as React from 'react';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { convertMessage } from 'openland-engines/messenger/ConversationEngine';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { FullMessage, Message_message_GeneralMessage } from 'openland-api/Types';
+import { FullMessage, Message_message_GeneralMessage, Message_message_StickerMessage } from 'openland-api/Types';
 import { MessageContent } from 'openland-web/fragments/chat/messenger/message/MessageContent';
 import { convertDsMessage, DataSourceWebMessageItem, emojifyReactions } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { Span } from 'openland-y-utils/spans/Span';
@@ -41,7 +41,7 @@ const buttonsClass = css`
     flex-direction: row;
 `;
 
-export const MessageView = React.memo((props: { message: Message_message_GeneralMessage }) => {
+export const MessageView = React.memo((props: { message: Message_message_GeneralMessage | Message_message_StickerMessage }) => {
     const { message } = props;
     const messenger = React.useContext(MessengerContext);
     const { sender } = message;
@@ -88,10 +88,11 @@ export const MessageView = React.memo((props: { message: Message_message_General
                     id={message.id}
                     text={message.message}
                     textSpans={textSpans}
-                    edited={message.edited}
+                    edited={message.__typename === 'GeneralMessage' ? message.edited : false}
                     reply={reply}
-                    attachments={message.attachments}
+                    attachments={message.__typename === 'GeneralMessage' ? message.attachments : undefined}
                     fallback={message.fallback}
+                    sticker={message.__typename === 'StickerMessage' ? message.sticker : undefined}
                     isOut={sender.id === messenger.user.id}
                 />
                 <div className={buttonsClass}>
