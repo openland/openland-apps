@@ -367,6 +367,7 @@ export const FullMessage = gql`
         ... on StickerMessage {
             id
             date
+            commentsCount
             sender {
                 ...UserShort
             }

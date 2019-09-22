@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
 import { FixedSizeGrid } from 'react-window';
-import { MyStickers_stickers_packs_stickers } from 'openland-api/Types';
+import { StickerFragment } from 'openland-api/Types';
 
 const container = css`
     display: flex;
@@ -31,11 +31,11 @@ const sticker = css`
 `;
 
 export const StickerComponent = React.memo<{
-    onStickerSend?: (sticker: MyStickers_stickers_packs_stickers) => void;
+    onStickerSent?: (sticker: StickerFragment) => void;
 }>(props => {
     const client = useClient();
     const stickers = client.useMyStickers({ fetchPolicy: 'cache-and-network' }).stickers;
-    const total: MyStickers_stickers_packs_stickers[] = [];
+    const total: StickerFragment[] = [];
     stickers.packs.map(i => total.push(...i.stickers));
 
     if (!total.length) {
@@ -44,9 +44,9 @@ export const StickerComponent = React.memo<{
 
     const rowCount = Math.ceil(total.length / 3);
 
-    const sendSticker = (item: MyStickers_stickers_packs_stickers) => {
-        if (props.onStickerSend) {
-            props.onStickerSend(item);
+    const sendSticker = (item: StickerFragment) => {
+        if (props.onStickerSent) {
+            props.onStickerSent(item);
         }
     };
 

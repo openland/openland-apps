@@ -13,6 +13,7 @@ import UUID from 'uuid/v4';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { showAttachConfirm } from '../chat/components/AttachConfirm';
 import { DropZone } from '../chat/components/DropZone';
+import { StickerFragment } from 'openland-api/Types';
 
 const wrapperClass = css`
     display: flex;
@@ -62,6 +63,17 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
         }
     }, [messageId, highlightId]);
 
+    const handleStickerSent = React.useCallback(async (sticker: StickerFragment) => {
+        await client.mutateAddStickerComment({
+            peerId: messageId,
+            repeatKey: UUID(),
+            stickerId: sticker.id,
+            replyComment: highlightId
+        });
+
+        setHighlightId(undefined);
+    }, [messageId, highlightId]);
+
     const handleCommentSentAttach = React.useCallback((files: File[]) => {
         if (files.length > 0) {
             showAttachConfirm(files, (res) => new Promise(resolve => {
@@ -104,6 +116,7 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
                         onReply={handleReplyClick}
                         onSent={handleCommentSent}
                         onSentAttach={handleCommentSentAttach}
+                        onStickerSent={handleStickerSent}
                         highlightId={highlightId}
                     />
                 </div>
@@ -112,6 +125,7 @@ const MessageFragmentInner = React.memo((props: { messageId: string }) => {
             <CommentInput
                 onSent={handleCommentSent}
                 onSentAttach={handleCommentSentAttach}
+                onStickerSent={handleStickerSent}
                 groupId={groupId}
             />
 

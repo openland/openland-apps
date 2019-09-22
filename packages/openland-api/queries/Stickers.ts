@@ -40,11 +40,29 @@ export const SendStickerMutation = gql`
         $replyMessages: [ID!]
         $repeatKey: String
     ) {
-        sendSticker: sendSticker(
+        sendSticker(
             chatId: $chatId
             stickerId: $stickerId
             replyMessages: $replyMessages
             repeatKey: $repeatKey
         )
+    }
+`;
+
+export const AddStickerCommentMutation = gql`
+    mutation AddStickerComment(
+        $peerId: ID!
+        $stickerId: ID!
+        $replyComment: ID
+        $repeatKey: String
+    ) {
+        addStickerComment: betaAddStickerComment(
+            peerId: $peerId
+            stickerId: $stickerId
+            replyComment: $replyComment
+            repeatKey: $repeatKey
+        ) {
+            id
+        }
     }
 `;

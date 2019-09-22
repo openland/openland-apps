@@ -51,7 +51,9 @@ export interface CommentViewProps {
 
 export const CommentView = React.memo<CommentViewProps>((props) => {
     const { comment, deleted, depth, highlighted, theme, scrollRef } = props;
-    const { sender, date, reactions, edited } = comment;
+    const { sender, date } = comment;
+    const reactions = (comment.__typename === 'GeneralMessage' || comment.__typename === 'StickerMessage') ? comment.reactions : [];
+    const edited = comment.__typename === 'GeneralMessage' ? comment.edited : false;
 
     let messenger = getMessenger();
     let engine = messenger.engine;

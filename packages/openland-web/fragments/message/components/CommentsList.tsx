@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useClient } from 'openland-web/utils/useClient';
 import { CommentView } from './CommentView';
-import { CommentWatch_event_CommentUpdateSingle_update, CommentEntryFragment, MessageReactionType, CommentEntryFragment_comment } from 'openland-api/Types';
+import { StickerFragment, CommentWatch_event_CommentUpdateSingle_update, CommentEntryFragment, MessageReactionType, CommentEntryFragment_comment } from 'openland-api/Types';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
@@ -23,12 +23,13 @@ interface CommentsListProps {
     onReply: (id: string) => void;
     onSent: (data: URickTextValue, replyId?: string) => void;
     onSentAttach: (files: File[], replyId?: string) => void;
+    onStickerSent: (sticker: StickerFragment) => void;
 }
 
 const CommentsListInner = React.memo((props: CommentsListProps & { comments: CommentEntryFragment[] }) => {
     const client = useClient();
     const messenger = React.useContext(MessengerContext);
-    const { groupId, comments, highlightId, onSent, onSentAttach, onReply } = props;
+    const { groupId, comments, highlightId, onSent, onSentAttach, onReply, onStickerSent } = props;
 
     const handleDeleteClick = React.useCallback((id: string) => {
         const builder = new AlertBlanketBuilder();
@@ -42,14 +43,16 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Com
     }, []);
 
     const handleReactionClick = React.useCallback((comment: CommentEntryFragment_comment) => {
-        const { id, reactions } = comment;
-        const r = MessageReactionType.LIKE;
-        const remove = reactions && reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === r).length > 0;
+        if (comment.__typename === 'GeneralMessage' || comment.__typename === 'StickerMessage') {
+            const { id, reactions } = comment;
+            const r = MessageReactionType.LIKE;
+            const remove = reactions && reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === r).length > 0;
 
-        if (remove) {
-            client.mutateCommentUnsetReaction({ commentId: id, reaction: r });
-        } else {
-            client.mutateCommentSetReaction({ commentId: id, reaction: r });
+            if (remove) {
+                client.mutateCommentUnsetReaction({ commentId: id, reaction: r });
+            } else {
+                client.mutateCommentSetReaction({ commentId: id, reaction: r });
+            }
         }
     }, []);
 
@@ -91,6 +94,7 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Com
                     groupId={groupId}
                     onSent={onSent}
                     onSentAttach={onSentAttach}
+                    onStickerSent={onStickerSent}
                 />
             ))}
         </div>

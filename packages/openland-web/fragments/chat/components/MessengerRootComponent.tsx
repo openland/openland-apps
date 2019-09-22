@@ -13,7 +13,8 @@ import {
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
     RoomChat_room,
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
-    UserForMention, MyStickers_stickers_packs_stickers,
+    UserForMention,
+    StickerFragment
 } from 'openland-api/Types';
 import { trackEvent } from 'openland-x-analytics';
 import { throttle, delay } from 'openland-y-utils/timer';
@@ -46,9 +47,9 @@ interface MessagesComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
 }
 
@@ -351,7 +352,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         }
     }
 
-    onStickerSend = (sticker: MyStickers_stickers_packs_stickers) => {
+    onStickerSent = (sticker: StickerFragment) => {
         this.conversation!.sendSticker(sticker);
     }
 
@@ -423,7 +424,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                 rickRef={this.rickRef}
                                 groupId={groupId}
                                 onTextSent={this.onTextSend}
-                                onStickerSend={this.onStickerSend}
+                                onStickerSent={this.onStickerSent}
                                 onTextChange={this.handleChange}
                                 onContentChange={this.onContentChange}
                             />
@@ -441,9 +442,9 @@ interface MessengerRootComponentProps {
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
 }
 

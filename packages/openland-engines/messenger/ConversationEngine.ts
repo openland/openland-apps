@@ -105,14 +105,20 @@ const getSourceChat = (src: Types.FullMessage_GeneralMessage | Types.FullMessage
     return src && src.source && src.source.__typename === 'MessageSourceChat' ? src.source : undefined;
 };
 
+const getCommentsCount = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
+    return src ? src.commentsCount : 0;
+};
+
+const getReactions = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
+    return src ? src.reactions || [] : [];
+};
+
 export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId: string, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
     const generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     const serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
     const stickerMessage = src.__typename === 'StickerMessage' ? src : undefined;
 
-    const reply = getReplies(generalMessage || stickerMessage, chatId, engine);
-    const source = getSourceChat(generalMessage || stickerMessage);
-    const reactions = (generalMessage ? generalMessage.reactions : (stickerMessage ? stickerMessage.reactions : [])) || [];
+    const reactions = getReactions(generalMessage || stickerMessage);
 
     return {
         chatId,
@@ -134,11 +140,11 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId
         serviceMetaData: serviceMessage && serviceMessage.serviceMetadata || undefined,
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,
-        reply,
-        source,
+        reply: getReplies(generalMessage || stickerMessage, chatId, engine),
+        source: getSourceChat(generalMessage || stickerMessage),
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
-        commentsCount: generalMessage ? generalMessage.commentsCount : 0,
+        commentsCount: getCommentsCount(generalMessage || stickerMessage),
         fallback: src.fallback || src.message || '',
         textSpans: src.message ? processSpans(src.message, src.spans) : [],
         reactionsReduced: reactions.length ? reduceReactions(reactions, engine.user.id) : [],

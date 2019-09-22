@@ -12,7 +12,7 @@ import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/mess
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { showAvatarModal } from 'openland-web/components/showAvatarModal';
 import { useRole } from 'openland-x-permissions/XWithRole';
-import { CommentEntryFragment_comment } from 'openland-api/Types';
+import { CommentEntryFragment_comment, StickerFragment } from 'openland-api/Types';
 import { CommentEditInput } from './CommentEditInput';
 import { useClient } from 'openland-web/utils/useClient';
 import { findSpans } from 'openland-y-utils/findSpans';
@@ -49,13 +49,14 @@ interface CommentViewProps {
     onReactionClick: (comment: CommentEntryFragment_comment) => void;
     onSent: (data: URickTextValue) => void;
     onSentAttach: (files: File[]) => void;
+    onStickerSent: (sticker: StickerFragment) => void;
 }
 
 export const CommentView = React.memo((props: CommentViewProps) => {
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
-    const { comment, deleted, depth, highlighted, groupId, onReplyClick, onDeleteClick, onReactionClick, onSent, onSentAttach } = props;
-    const { id, sender, message, attachments, spans, fallback, date, reactions } = comment;
+    const { comment, deleted, depth, highlighted, groupId, onReplyClick, onDeleteClick, onReactionClick, onSent, onSentAttach, onStickerSent } = props;
+    const { id, sender, message, spans, fallback, date } = comment;
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
     const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
     const [edit, setEdit] = React.useState(false);
@@ -85,6 +86,8 @@ export const CommentView = React.memo((props: CommentViewProps) => {
 
     const canEdit = sender.id === messenger.user.id && message && message.length;
     const canDelete = sender.id === messenger.user.id || useRole('super-admin');
+    const attachments = (comment.__typename === 'GeneralMessage') ? comment.attachments : undefined;
+    const reactions = (comment.__typename === 'GeneralMessage' || comment.__typename === 'StickerMessage') ? comment.reactions : [];
 
     return (
         <div className={wrapper} style={{ paddingLeft: depth > 0 ? 56 + ((depth - 1) * 40) : undefined }}>
@@ -118,6 +121,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                             textSpans={textSpans}
                             attachments={attachments}
                             fallback={fallback}
+                            sticker={comment.__typename === 'StickerMessage' ? comment.sticker : undefined}
                             isOut={sender.id === messenger.user.id}
                         />
                         {!deleted && (
@@ -133,6 +137,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                             <CommentInput
                                 onSent={onSent}
                                 onSentAttach={onSentAttach}
+                                onStickerSent={onStickerSent}
                                 groupId={groupId}
                                 compact={true}
                             />

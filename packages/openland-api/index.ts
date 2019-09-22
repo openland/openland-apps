@@ -219,6 +219,7 @@ export const MyStickersQuery = typedQuery<Types.MyStickers, {}>(Stickers.MyStick
 export const StickerPackQuery = typedQuery<Types.StickerPack, Types.StickerPackVariables>(Stickers.StickerPackQuery);
 export const StickerPackAddToCollectionMutation = typedMutation<Types.StickerPackAddToCollection, Types.StickerPackAddToCollectionVariables>(Stickers.StickerPackAddToCollectionMutation);
 export const SendStickerMutation = typedMutation<Types.SendSticker, Types.SendStickerVariables>(Stickers.SendStickerMutation);
+export const AddStickerCommentMutation = typedMutation<Types.AddStickerComment, Types.AddStickerCommentVariables>(Stickers.AddStickerCommentMutation);
 export const PersistEventsMutation = typedMutation<Types.PersistEvents, Types.PersistEventsVariables>(Track.PersistEventsMutation);
 export const UsersQuery = typedQuery<Types.Users, Types.UsersVariables>(User.UsersQuery);
 export const UserQuery = typedQuery<Types.User, Types.UserVariables>(User.UserQuery);

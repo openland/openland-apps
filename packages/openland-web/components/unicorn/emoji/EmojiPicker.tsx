@@ -29,7 +29,7 @@ import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import IcSticker from 'openland-icons/s/ic-sticker-24.svg';
 import { StickerComponent } from '../stickers/StickerPicker';
 import { XLoader } from 'openland-x/XLoader';
-import { MyStickers_stickers_packs_stickers } from 'openland-api/Types';
+import { StickerFragment } from 'openland-api/Types';
 
 const sectionTitle = css`
     cursor: pointer;
@@ -332,7 +332,7 @@ const CategoryButton = React.memo(
 
 interface EmojiPickerProps {
     onEmojiPicked: (arg: string) => void;
-    onStickerSend?: (sticker: MyStickers_stickers_packs_stickers) => void;
+    onStickerSent?: (sticker: StickerFragment) => void;
 }
 
 const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
@@ -372,7 +372,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
                     Emoji
                 </div>
                 <XWithRole role="super-admin">
-                    {props.onStickerSend && (
+                    {props.onStickerSent && (
                         <div
                             className={cx(TextTitle3, sectionTitle, stickers && sectionActiveTitle)}
                             onClick={() => setStickers(true)}
@@ -492,7 +492,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
             )}
             {stickers && (
                 <React.Suspense fallback={<XLoader loading={true} />}>
-                    <StickerComponent onStickerSend={props.onStickerSend} />
+                    <StickerComponent onStickerSent={props.onStickerSent} />
                 </React.Suspense>
             )}
         </XView>
@@ -501,7 +501,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
 
 export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
     const [visible, show] = usePopper({ placement: 'top-end', hideOnLeave: true }, () => (
-        <EmojiPickerBody onEmojiPicked={props.onEmojiPicked} onStickerSend={props.onStickerSend} />
+        <EmojiPickerBody onEmojiPicked={props.onEmojiPicked} onStickerSent={props.onStickerSent} />
     ));
 
     return (

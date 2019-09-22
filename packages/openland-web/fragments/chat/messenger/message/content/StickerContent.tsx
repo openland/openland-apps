@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
-import {
-    FullMessage_StickerMessage_sticker,
-    MyStickers_stickers_packs_stickers,
-} from 'openland-api/Types';
+import { StickerFragment } from 'openland-api/Types';
 import { showModalBox } from 'openland-x/showModalBox';
 import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';
@@ -94,20 +91,21 @@ const imgContainer = css`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100px;
-    height: 100px;
+    width: 128px;
+    height: 128px;
     border-radius: 8px;
     cursor: pointer;
 `;
 
 interface ImageContentProps {
-    sticker: MyStickers_stickers_packs_stickers | FullMessage_StickerMessage_sticker;
+    sticker: StickerFragment;
 }
 
 export const StickerContent = React.memo((props: ImageContentProps) => {
-    const url = `https://ucarecdn.com/${props.sticker.image.uuid}/-/format/auto/-/`;
-    const ops = `scale_crop/${100}x${100}/`;
-    const opsRetina = `scale_crop/${100 * 2}x${100 * 2}/center/ 2x`;
+    const { sticker } = props;
+    const url = `https://ucarecdn.com/${sticker.image.uuid}/-/format/auto/-/`;
+    const ops = `scale_crop/${128}x${128}/`;
+    const opsRetina = `scale_crop/${128 * 2}x${128 * 2}/center/ 2x`;
 
     return (
         <div
@@ -115,16 +113,16 @@ export const StickerContent = React.memo((props: ImageContentProps) => {
             onClick={e => {
                 if (AppConfig.isNonProduction() || AppConfig.isSuperAdmin()) {
                     e.stopPropagation();
-                    if ((props.sticker as FullMessage_StickerMessage_sticker).pack) {
+                    if (sticker.pack) {
                         showAddStickerPack(
-                            (props.sticker as FullMessage_StickerMessage_sticker).pack.id,
-                            (props.sticker as FullMessage_StickerMessage_sticker).pack.title,
+                            sticker.pack.id,
+                            sticker.pack.title,
                         );
                     }
                 }
             }}
         >
-            <img width={100} height={100} src={url + ops} srcSet={url + opsRetina} />
+            <img width={128} height={128} src={url + ops} srcSet={url + opsRetina} />
         </div>
     );
 });

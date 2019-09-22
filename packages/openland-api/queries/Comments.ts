@@ -77,8 +77,6 @@ export const AddCommentMutation = gql`
             id
         }
     }
-    ${CommentEntryFragment}
-    ${FullMessage}
 `;
 
 export const EditCommentMutation = gql`

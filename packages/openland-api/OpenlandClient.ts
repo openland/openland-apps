@@ -1129,6 +1129,9 @@ export class OpenlandClient extends BaseApiClient {
     async mutateSendSticker(variables: Types.SendStickerVariables): Promise<Types.SendSticker> {
         return this.client.mutate(Source.SendStickerMutation, variables);
     }
+    async mutateAddStickerComment(variables: Types.AddStickerCommentVariables): Promise<Types.AddStickerComment> {
+        return this.client.mutate(Source.AddStickerCommentMutation, variables);
+    }
     async mutatePersistEvents(variables: Types.PersistEventsVariables): Promise<Types.PersistEvents> {
         return this.client.mutate(Source.PersistEventsMutation, variables);
     }

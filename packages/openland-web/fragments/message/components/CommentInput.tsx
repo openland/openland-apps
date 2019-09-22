@@ -2,6 +2,7 @@ import * as React from 'react';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { SendMessageComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
 import { css } from 'linaria';
+import { StickerFragment } from 'openland-api/Types';
 
 const wrapperClass = css`
     padding: 16px;
@@ -18,12 +19,13 @@ const wrapperCompactClass = css`
 interface CommentInputProps {
     onSent: (data: URickTextValue) => void;
     onSentAttach: (files: File[]) => void;
+    onStickerSent: (sticker: StickerFragment) => void;
     groupId?: string;
     compact?: boolean;
 }
 
 export const CommentInput = React.memo((props: CommentInputProps) => {
-    const { onSent, onSentAttach, groupId, compact } = props;
+    const { onSent, onSentAttach, onStickerSent, groupId, compact } = props;
 
     return (
         <div className={compact ? wrapperCompactClass : wrapperClass}>
@@ -31,6 +33,7 @@ export const CommentInput = React.memo((props: CommentInputProps) => {
                 groupId={groupId}
                 onTextSentAsync={onSent}
                 onAttach={onSentAttach}
+                onStickerSentAsync={onStickerSent}
                 placeholder="Write a comment..."
             />
         </div>

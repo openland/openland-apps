@@ -1,13 +1,12 @@
 fragment CommentEntryFragment on CommentEntry {
   __typename
+  comment: betaComment {
+    __typename
+    ...FullMessage
+  }
   childComments {
     __typename
     id
-  }
-  comment {
-    __typename
-    id
-    ...FullMessage
   }
   deleted
   id

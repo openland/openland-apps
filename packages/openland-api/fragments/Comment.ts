@@ -5,9 +5,8 @@ export const CommentEntryFragment = gql`
     fragment CommentEntryFragment on CommentEntry {
         id
         deleted
-        comment {
+        comment: betaComment {
             ...FullMessage
-            id
         }
         parentComment {
             comment {

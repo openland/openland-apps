@@ -12,7 +12,7 @@ import AllIcon from 'openland-icons/s/ic-channel-16.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
 import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { useClient } from 'openland-web/utils/useClient';
-import { MyStickers_stickers_packs_stickers, RoomMembers_members_user } from 'openland-api/Types';
+import { StickerFragment, RoomMembers_members_user } from 'openland-api/Types';
 import { searchMentions } from 'openland-engines/mentions/searchMentions';
 import { emojiSuggest } from 'openland-y-utils/emojiSuggest';
 import { emojiComponent } from 'openland-y-utils/emojiComponent';
@@ -320,7 +320,8 @@ interface SendMessageComponentProps {
     onTextSent?: (text: URickTextValue) => void;
     onTextSentAsync?: (text: URickTextValue) => void;
     onContentChange?: (text: URickTextValue) => void;
-    onStickerSend?: (sticker: MyStickers_stickers_packs_stickers) => void;
+    onStickerSent?: (sticker: StickerFragment) => void;
+    onStickerSentAsync?: (sticker: StickerFragment) => void;
     onTextChange?: (text: string) => void;
     placeholder?: string;
     initialText?: URickTextValue;
@@ -359,6 +360,19 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     const fileInputRef = React.useRef<HTMLInputElement>(null);
     const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
     const [loading, setLoading] = React.useState<boolean>(false);
+    const onStickerSent = React.useCallback(
+        async (sticker: StickerFragment) => {
+            if (props.onStickerSentAsync) {
+                setLoading(true);
+                await props.onStickerSentAsync(sticker);
+                setLoading(false);
+            } else if (props.onStickerSent) {
+                props.onStickerSent(sticker);
+            }
+        },
+        [props.onStickerSent],
+    );
+
     const onPressEnter = React.useCallback(
         async () => {
             let s = suggestRef.current;
@@ -386,7 +400,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             }
             return true;
         },
-        [props.onTextSent],
+        [props.onTextSent, props.onTextSentAsync],
     );
 
     const onPressUp = React.useCallback(() => {
@@ -477,7 +491,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     onPressTab={onPressTab}
                     onTextChange={props.onTextChange}
                     onContentChange={props.onContentChange}
-                    onStickerSend={props.onStickerSend}
+                    onStickerSent={(props.onStickerSent || props.onStickerSentAsync) ? onStickerSent : undefined}
                     autofocus={true}
                     placeholder={props.placeholder || 'Write a message...'}
                     onFilesPaste={props.onAttach}

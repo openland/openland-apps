@@ -119,6 +119,7 @@ fragment FullMessage on ModernMessage {
     }
   }
   ... on StickerMessage {
+    commentsCount
     date
     id
     quotedMessages {
