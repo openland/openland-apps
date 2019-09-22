@@ -28,7 +28,7 @@ const AddStickerPack = (props: { packId: string; hide: () => void }) => {
     const [loading, setLoading] = React.useState(false);
     const client = useClient();
     const myStickerPaks = client.useMyStickers();
-    const stickerPack = client.useStickerPack({ packId: props.packId }).stickerPack;
+    const stickerPack = client.useStickerPack({ id: props.packId }).stickerPack;
     if (!stickerPack) {
         return null;
     }
@@ -36,7 +36,7 @@ const AddStickerPack = (props: { packId: string; hide: () => void }) => {
 
     const addPack = async () => {
         await client.mutateStickerPackAddToCollection({
-            packId: props.packId,
+            id: props.packId,
         });
         await client.refetchMyStickers();
         props.hide();

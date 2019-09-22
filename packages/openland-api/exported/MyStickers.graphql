@@ -1,24 +1,14 @@
 query MyStickers {
   stickers: myStickers {
     __typename
-    ... on UserStickers {
-      packs {
+    packs {
+      __typename
+      id
+      stickers {
         __typename
-        id
-        stickers {
-          __typename
-          ... on ImageSticker {
-            id
-            image {
-              __typename
-              ... on ImageRef {
-                uuid
-              }
-            }
-          }
-        }
-        title
+        ...StickerFragment
       }
+      title
     }
   }
 }

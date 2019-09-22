@@ -1,3 +1,3 @@
-mutation StickerPackAddToCollection($packId: ID!) {
-  stickerPackAddToCollection: stickerPackAddToCollection(id: $packId)
+mutation StickerPackAddToCollection($id: ID!) {
+  stickerPackAddToCollection: stickerPackAddToCollection(id: $id)
 }

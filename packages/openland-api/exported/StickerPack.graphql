@@ -1,19 +1,6 @@
-query StickerPack($packId: ID!) {
-  stickerPack: stickerPack(id: $packId) {
+query StickerPack($id: ID!) {
+  stickerPack(id: $id) {
     __typename
-    ... on StickerPack {
-      id
-      stickers {
-        __typename
-        ... on ImageSticker {
-          id
-          image {
-            __typename
-            uuid
-          }
-        }
-      }
-      title
-    }
+    ...StickerPackFragment
   }
 }

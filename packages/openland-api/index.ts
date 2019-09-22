@@ -40,6 +40,7 @@ import * as RoomNano from './fragments/RoomNano';
 import * as RoomShort from './fragments/RoomShort';
 import * as SessionStateFull from './fragments/SessionStateFull';
 import * as SettingsFragment from './fragments/SettingsFragment';
+import * as StickerFragment from './fragments/StickerFragment';
 import * as UserBadge from './fragments/UserBadge';
 import * as UserForMention from './fragments/UserForMention';
 import * as UserFull from './fragments/UserFull';
@@ -240,6 +241,7 @@ export const FeedItemFullFragment = typedFragment<Types.FeedItemFull>(FeedItemFu
 export const SpanFragmentFragment = typedFragment<Types.SpanFragment>(Message.SpanFragment);
 export const DaialogListMessageFragment = typedFragment<Types.DaialogListMessage>(Message.DaialogListMessage);
 export const TinyMessageFragment = typedFragment<Types.TinyMessage>(Message.TinyMessage);
+export const QuotedMessageFragment = typedFragment<Types.QuotedMessage>(Message.QuotedMessage);
 export const FullMessageFragment = typedFragment<Types.FullMessage>(Message.FullMessage);
 export const OrganizationFullFragment = typedFragment<Types.OrganizationFull>(OrganizationFull.OrganizationFull);
 export const OrganizationMediumFragment = typedFragment<Types.OrganizationMedium>(OrganizationMedium.OrganizationMedium);
@@ -254,6 +256,8 @@ export const RoomShortFragment = typedFragment<Types.RoomShort>(RoomShort.RoomSh
 export const SessionStateFullFragment = typedFragment<Types.SessionStateFull>(SessionStateFull.SessionStateFull);
 export const PlatformNotificationSettingsFullFragment = typedFragment<Types.PlatformNotificationSettingsFull>(SettingsFragment.PlatformNotificationSettingsFull);
 export const SettingsFullFragment = typedFragment<Types.SettingsFull>(SettingsFragment.SettingsFull);
+export const StickerFragmentFragment = typedFragment<Types.StickerFragment>(StickerFragment.StickerFragment);
+export const StickerPackFragmentFragment = typedFragment<Types.StickerPackFragment>(StickerFragment.StickerPackFragment);
 export const UserBadgeFragment = typedFragment<Types.UserBadge>(UserBadge.UserBadge);
 export const UserForMentionFragment = typedFragment<Types.UserForMention>(UserForMention.UserForMention);
 export const UserFullFragment = typedFragment<Types.UserFull>(UserFull.UserFull);

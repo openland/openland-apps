@@ -107,156 +107,7 @@ fragment FullMessage on ModernMessage {
     id
     quotedMessages {
       __typename
-      date
-      fallback
-      id
-      message
-      message
-      sender {
-        __typename
-        ...UserShort
-      }
-      senderBadge {
-        __typename
-        ...UserBadge
-      }
-      source {
-        __typename
-        ... on MessageSourceChat {
-          chat {
-            __typename
-            ... on PrivateRoom {
-              id
-            }
-            ... on SharedRoom {
-              id
-            }
-          }
-        }
-      }
-      spans {
-        __typename
-        ...SpanFragment
-      }
-      ... on GeneralMessage {
-        attachments {
-          __typename
-          fallback
-          ... on MessageAttachmentFile {
-            fileId
-            fileMetadata {
-              __typename
-              imageFormat
-              imageHeight
-              imageWidth
-              isImage
-              mimeType
-              name
-              size
-            }
-            filePreview
-            id
-          }
-          ... on MessageRichAttachment {
-            fallback
-            icon {
-              __typename
-              metadata {
-                __typename
-                imageFormat
-                imageHeight
-                imageWidth
-                isImage
-                mimeType
-                name
-                size
-              }
-              url
-            }
-            id
-            image {
-              __typename
-              metadata {
-                __typename
-                imageFormat
-                imageHeight
-                imageWidth
-                isImage
-                mimeType
-                name
-                size
-              }
-              url
-            }
-            imageFallback {
-              __typename
-              photo
-              text
-            }
-            subTitle
-            text
-            title
-            titleLink
-            titleLinkHostname
-          }
-        }
-        commentsCount
-        edited
-        id
-      }
-      ... on StickerMessage {
-        date
-        id
-        reactions {
-          __typename
-          reaction
-          user {
-            __typename
-            ...UserShort
-          }
-        }
-        sender {
-          __typename
-          ...UserShort
-        }
-        senderBadge {
-          __typename
-          ...UserBadge
-        }
-        source {
-          __typename
-          ... on MessageSourceChat {
-            chat {
-              __typename
-              ... on PrivateRoom {
-                id
-              }
-              ... on SharedRoom {
-                id
-              }
-            }
-          }
-        }
-        sticker {
-          __typename
-          ... on ImageSticker {
-            id
-            image {
-              __typename
-              ... on ImageRef {
-                uuid
-              }
-            }
-            pack {
-              __typename
-              ... on StickerPack {
-                id
-                title
-              }
-            }
-          }
-        }
-      }
+      ...QuotedMessage
     }
     reactions {
       __typename
@@ -270,6 +121,10 @@ fragment FullMessage on ModernMessage {
   ... on StickerMessage {
     date
     id
+    quotedMessages {
+      __typename
+      ...QuotedMessage
+    }
     reactions {
       __typename
       reaction
@@ -302,22 +157,7 @@ fragment FullMessage on ModernMessage {
     }
     sticker {
       __typename
-      ... on ImageSticker {
-        id
-        image {
-          __typename
-          ... on ImageRef {
-            uuid
-          }
-        }
-        pack {
-          __typename
-          ... on StickerPack {
-            id
-            title
-          }
-        }
-      }
+      ...StickerFragment
     }
   }
   ... on ServiceMessage {

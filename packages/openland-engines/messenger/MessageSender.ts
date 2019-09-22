@@ -6,6 +6,7 @@ import {
     FileAttachmentInput,
     MessageSpanInput,
     MyStickers_stickers_packs_stickers,
+    StickerFragment
 } from 'openland-api/Types';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
@@ -13,8 +14,8 @@ import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacyment
 export type MentionToSend =
     | UserForMention
     | {
-          __typename: 'AllMention';
-      };
+        __typename: 'AllMention';
+    };
 
 export interface MessageSendHandler {
     onProgress(key: string, progress: number): void;
@@ -113,10 +114,12 @@ export class MessageSender {
     sendSticker({
         conversationId,
         sticker,
+        quoted,
         callback,
     }: {
         conversationId: string;
-        sticker: MyStickers_stickers_packs_stickers;
+        sticker: StickerFragment;
+        quoted: string[];
         callback: MessageSendHandler;
     }) {
         let key = UUID();
@@ -140,6 +143,7 @@ export class MessageSender {
                 await this.client.mutateSendSticker({
                     chatId: conversationId,
                     stickerId: sticker.id,
+                    replyMessages: quoted || null,
                     repeatKey: key,
                 });
             } catch (e) {

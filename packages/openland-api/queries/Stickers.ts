@@ -1,50 +1,35 @@
 import gql from 'graphql-tag';
+import { StickerFragment, StickerPackFragment } from 'openland-api/fragments/StickerFragment';
 
 export const MyStickersQuery = gql`
     query MyStickers {
         stickers: myStickers {
-            ... on UserStickers {
-                packs {
-                    id
-                    title
-                    stickers {
-                        ... on ImageSticker {
-                            id
-                            image {
-                                ... on ImageRef {
-                                    uuid
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-`;
-
-export const StickerPackQuery = gql`
-    query StickerPack($packId: ID!) {
-        stickerPack: stickerPack(id: $packId) {
-            ... on StickerPack {
+            packs {
                 id
                 title
                 stickers {
-                    ... on ImageSticker {
-                        id
-                        image {
-                            uuid
-                        }
-                    }
+                    ...StickerFragment
                 }
             }
         }
     }
+
+    ${StickerFragment}
+`;
+
+export const StickerPackQuery = gql`
+    query StickerPack($id: ID!) {
+        stickerPack(id: $id) {
+            ...StickerPackFragment
+        }
+    }
+
+    ${StickerPackFragment}
 `;
 
 export const StickerPackAddToCollectionMutation = gql`
-    mutation StickerPackAddToCollection($packId: ID!) {
-        stickerPackAddToCollection: stickerPackAddToCollection(id: $packId)
+    mutation StickerPackAddToCollection($id: ID!) {
+        stickerPackAddToCollection: stickerPackAddToCollection(id: $id)
     }
 `;
 
@@ -52,11 +37,13 @@ export const SendStickerMutation = gql`
     mutation SendSticker(
         $chatId: ID!
         $stickerId: ID!
+        $replyMessages: [ID!]
         $repeatKey: String
     ) {
         sendSticker: sendSticker(
             chatId: $chatId
             stickerId: $stickerId
+            replyMessages: $replyMessages
             repeatKey: $repeatKey
         )
     }

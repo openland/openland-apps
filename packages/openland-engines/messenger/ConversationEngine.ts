@@ -10,8 +10,6 @@ import {
     FullMessage_GeneralMessage_spans,
     UserShort,
     DialogUpdateFragment_DialogPeerUpdated_peer,
-    FullMessage_StickerMessage_sticker,
-    MyStickers_stickers_packs_stickers,
 } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
@@ -73,7 +71,7 @@ export interface DataSourceMessageItem {
     failed?: boolean;
     reactionsReduced: ReactionReduced[];
     reactionsLabel: string;
-    sticker?: FullMessage_StickerMessage_sticker | MyStickers_stickers_packs_stickers;
+    sticker?: Types.StickerFragment;
 
     // legacy
     isSubscribedMessageComments?: boolean;
@@ -99,21 +97,25 @@ export interface DataSourceNewDividerItem {
     date: undefined;
 }
 
+const getReplies = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined, chaId: string, engine: MessengerEngine) => {
+    return src && src.quotedMessages ? src.quotedMessages.sort((a, b) => a.date - b.date).map(m => convertMessage(m as FullMessage, chaId, engine)) : undefined;
+};
+
 const getSourceChat = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
     return src && src.source && src.source.__typename === 'MessageSourceChat' ? src.source : undefined;
 };
 
-export function convertMessage(src: FullMessage & { repeatKey?: string }, chaId: string, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
+export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId: string, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
     const generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     const serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
     const stickerMessage = src.__typename === 'StickerMessage' ? src : undefined;
 
-    const reply = generalMessage && generalMessage.quotedMessages ? generalMessage.quotedMessages.sort((a, b) => a.date - b.date).map(m => convertMessage(m as Types.FullMessage, chaId, engine)) : undefined;
+    const reply = getReplies(generalMessage || stickerMessage, chatId, engine);
     const source = getSourceChat(generalMessage || stickerMessage);
     const reactions = (generalMessage ? generalMessage.reactions : (stickerMessage ? stickerMessage.reactions : [])) || [];
 
     return {
-        chatId: chaId,
+        chatId,
         type: 'message',
         id: src.id,
         key: src.repeatKey || src.id,
@@ -160,7 +162,8 @@ export function convertMessageBack(src: DataSourceMessageItem): Types.FullMessag
         edited: !!src.isEdited,
         quotedMessages: [],
         reactions: [],
-        source: src.source || null
+        source: src.source || null,
+        sticker: src.sticker
     };
 
     return res;
@@ -607,15 +610,24 @@ export class ConversationEngine implements MessageSendHandler {
         return key;
     }
 
-    sendSticker = (sticker: MyStickers_stickers_packs_stickers) => {
+    sendSticker = (sticker: Types.StickerFragment) => {
+        let date = (new Date().getTime()).toString();
+        let messagesActionsState = this.messagesActionsStateEngine.getState();
+        let quoted;
+
+        if (['reply', 'forward'].includes(messagesActionsState.action || '')) {
+            quoted = this.messagesActionsStateEngine.getState().messages;
+            this.messagesActionsStateEngine.clear();
+        }
+
         let key = this.engine.sender.sendSticker({
             conversationId: this.conversationId,
             sticker: sticker,
+            quoted: (quoted || []).map(q => q.id!),
             callback: this
         });
 
         (async () => {
-            let date = (new Date().getTime()).toString();
             let pmsg = {
                 date,
                 key,
@@ -623,9 +635,9 @@ export class ConversationEngine implements MessageSendHandler {
                 message: null,
                 failed: false,
                 isImage: false,
+                quoted: quoted ? quoted.map(q => ({ ...q, reply: undefined })) : undefined,
                 sticker: sticker
             } as PendingMessage;
-            console.log(pmsg);
             this.messages = [...this.messages, { ...pmsg } as PendingMessage];
             this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
 

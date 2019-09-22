@@ -3,6 +3,7 @@ import { UserTiny } from './UserTiny';
 import { UserShort } from './UserShort';
 import { UserForMention } from './UserForMention';
 import { UserBadge } from './UserBadge';
+import { StickerFragment } from './StickerFragment';
 
 export const SpanFragment = gql`
     fragment SpanFragment on MessageSpan {
@@ -119,6 +120,143 @@ export const TinyMessage = gql`
     ${UserBadge}
 `;
 
+export const QuotedMessage = gql`
+    fragment QuotedMessage on ModernMessage {
+        id
+        date
+        message
+        sender {
+            ...UserShort
+        }
+        senderBadge {
+            ...UserBadge
+        }
+        message
+        fallback
+        source {
+            ... on MessageSourceChat {
+                chat {
+                    ... on PrivateRoom {
+                        id
+                    }
+                    ... on SharedRoom {
+                        id
+                    }
+                }
+            }
+        }
+        spans {
+            ...SpanFragment
+        }
+
+        ... on GeneralMessage {
+            id
+            commentsCount
+            edited
+            attachments {
+                fallback
+                ... on MessageAttachmentFile {
+                    id
+                    fileId
+                    fileMetadata {
+                        name
+                        mimeType
+                        size
+                        isImage
+                        imageWidth
+                        imageHeight
+                        imageFormat
+                    }
+                    filePreview
+                }
+
+                ... on MessageRichAttachment {
+                    id
+                    title
+                    subTitle
+                    titleLink
+                    titleLinkHostname
+                    text
+                    icon {
+                        url
+                        metadata {
+                            name
+                            mimeType
+                            size
+                            isImage
+                            imageWidth
+                            imageHeight
+                            imageFormat
+                        }
+                    }
+                    image {
+                        url
+                        metadata {
+                            name
+                            mimeType
+                            size
+                            isImage
+                            imageWidth
+                            imageHeight
+                            imageFormat
+                        }
+                    }
+                    imageFallback {
+                        photo
+                        text
+                    }
+                    fallback
+                }
+            }
+        }
+
+        ... on StickerMessage {
+            id
+            date
+            sender {
+                ...UserShort
+            }
+            senderBadge {
+                ...UserBadge
+            }
+            source {
+                ... on MessageSourceChat {
+                    chat {
+                        ... on PrivateRoom {
+                            id
+                        }
+                        ... on SharedRoom {
+                            id
+                        }
+                    }
+                }
+            }
+            reactions {
+                user {
+                    ...UserShort
+                }
+                reaction
+            }
+            sticker {
+                ... on ImageSticker {
+                    id
+                    pack {
+                        ... on StickerPack {
+                            id
+                            title
+                        }
+                    }
+                    image {
+                        ... on ImageRef {
+                            uuid
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;
+
 export const FullMessage = gql`
     fragment FullMessage on ModernMessage {
         id
@@ -211,138 +349,7 @@ export const FullMessage = gql`
                 }
             }
             quotedMessages {
-                id
-                date
-                message
-                sender {
-                    ...UserShort
-                }
-                senderBadge {
-                    ...UserBadge
-                }
-                message
-                fallback
-                source {
-                    ... on MessageSourceChat {
-                        chat {
-                            ... on PrivateRoom {
-                                id
-                            }
-                            ... on SharedRoom {
-                                id
-                            }
-                        }
-                    }
-                }
-                spans {
-                    ...SpanFragment
-                }
-
-                ... on GeneralMessage {
-                    id
-                    commentsCount
-                    edited
-                    attachments {
-                        fallback
-                        ... on MessageAttachmentFile {
-                            id
-                            fileId
-                            fileMetadata {
-                                name
-                                mimeType
-                                size
-                                isImage
-                                imageWidth
-                                imageHeight
-                                imageFormat
-                            }
-                            filePreview
-                        }
-
-                        ... on MessageRichAttachment {
-                            id
-                            title
-                            subTitle
-                            titleLink
-                            titleLinkHostname
-                            text
-                            icon {
-                                url
-                                metadata {
-                                    name
-                                    mimeType
-                                    size
-                                    isImage
-                                    imageWidth
-                                    imageHeight
-                                    imageFormat
-                                }
-                            }
-                            image {
-                                url
-                                metadata {
-                                    name
-                                    mimeType
-                                    size
-                                    isImage
-                                    imageWidth
-                                    imageHeight
-                                    imageFormat
-                                }
-                            }
-                            imageFallback {
-                                photo
-                                text
-                            }
-                            fallback
-                        }
-                    }
-                }
-
-                ... on StickerMessage {
-                    id
-                    date
-                    sender {
-                        ...UserShort
-                    }
-                    senderBadge {
-                        ...UserBadge
-                    }
-                    source {
-                        ... on MessageSourceChat {
-                            chat {
-                                ... on PrivateRoom {
-                                    id
-                                }
-                                ... on SharedRoom {
-                                    id
-                                }
-                            }
-                        }
-                    }
-                    reactions {
-                        user {
-                            ...UserShort
-                        }
-                        reaction
-                    }
-                    sticker {
-                        ... on ImageSticker {
-                            id
-                            pack {
-                                ... on StickerPack {
-                                    id
-                                    title
-                                }
-                            }
-                            image {
-                                ... on ImageRef {
-                                    uuid
-                                }
-                            }
-                        }
-                    }
-                }
+                ...QuotedMessage
             }
 
             reactions {
@@ -378,6 +385,9 @@ export const FullMessage = gql`
                     }
                 }
             }
+            quotedMessages {
+                ...QuotedMessage
+            }
             reactions {
                 user {
                     ...UserShort
@@ -385,20 +395,7 @@ export const FullMessage = gql`
                 reaction
             }
             sticker {
-                ... on ImageSticker {
-                    id
-                    pack {
-                        ... on StickerPack {
-                            id
-                            title
-                        }
-                    }
-                    image {
-                        ... on ImageRef {
-                            uuid
-                        }
-                    }
-                }
+                ...StickerFragment
             }
         }
 
@@ -441,4 +438,6 @@ export const FullMessage = gql`
     ${UserShort}
     ${UserBadge}
     ${SpanFragment}
+    ${QuotedMessage}
+    ${StickerFragment}
 `;

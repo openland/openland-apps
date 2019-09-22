@@ -1,0 +1,15 @@
+fragment StickerFragment on Sticker {
+  __typename
+  ... on ImageSticker {
+    id
+    image {
+      __typename
+      uuid
+    }
+    pack {
+      __typename
+      id
+      title
+    }
+  }
+}

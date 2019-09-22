@@ -34,7 +34,7 @@ export const StickerComponent = React.memo<{
     onStickerSend?: (sticker: MyStickers_stickers_packs_stickers) => void;
 }>(props => {
     const client = useClient();
-    const stickers = client.useMyStickers().stickers;
+    const stickers = client.useMyStickers({ fetchPolicy: 'cache-and-network' }).stickers;
     const total: MyStickers_stickers_packs_stickers[] = [];
     stickers.packs.map(i => total.push(...i.stickers));
 

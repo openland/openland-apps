@@ -1,0 +1,9 @@
+fragment StickerPackFragment on StickerPack {
+  __typename
+  id
+  stickers {
+    __typename
+    ...StickerFragment
+  }
+  title
+}
