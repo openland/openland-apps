@@ -89,7 +89,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
 
     render() {
         let { theme, message } = this.props;
-        let out = message.isOut;
+        let isOut = message.isOut;
         // let link = this.props.attach!.titleLink || '';
         let { text, subTitle, keyboard } = this.props.attach;
 
@@ -108,18 +108,17 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         if (isInvite(this.props.attach) && !this.props.attach.image) {
             imgCompact = true;
             imgLayout = { width: 36, height: 36 };
-            imageSource = message.isOut ? require('assets/ing-thn-out.png') : require('assets/img-thn-in.png');
+            imageSource = isOut ? require('assets/ing-thn-out.png') : require('assets/img-thn-in.png');
         }
 
-        let maxWidth = this.props.maxWidth || ((imgLayout && !imgCompact) ? (imgLayout.width - contentInsetsHorizontal * 2) : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming));
+        let maxWidth = this.props.maxWidth || ((imgLayout && !imgCompact) ? (imgLayout.width - contentInsetsHorizontal * 2) : (isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming));
         return (
 
             <ASFlex flexDirection="column" alignItems="stretch" alignSelf="stretch">
                 {!!this.props.attach.titleLinkHostname && imgCompact && (
                     <ASText
                         maxWidth={maxWidth}
-                        color={out ? theme.foregroundContrast : theme.foregroundPrimary}
-                        opacity={out ? 0.7 : 0.6}
+                        color={theme.bubble(isOut).foregroundSecondary}
                         fontSize={14}
                         numberOfLines={1}
                         fontWeight={FontStyles.Weight.Regular}
@@ -160,8 +159,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                 {!!this.props.attach.titleLinkHostname && !imgCompact && <ASText
                     marginTop={5}
                     maxWidth={maxWidth}
-                    color={out ? theme.foregroundContrast : theme.foregroundPrimary}
-                    opacity={out ? 0.7 : 0.6}
+                    color={theme.bubble(isOut).foregroundSecondary}
                     fontSize={14}
                     numberOfLines={1}
                     fontWeight={FontStyles.Weight.Regular}
@@ -187,10 +185,9 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                         flexDirection="column"
                         maxWidth={maxWidth - (imgCompact ? 90 : 0)}
                     >
-
                         {!!this.props.attach.title && <ASText
                             maxWidth={maxWidth - 36}
-                            color={out ? theme.foregroundContrast : theme.foregroundPrimary}
+                            color={theme.bubble(isOut).foregroundPrimary}
                             letterSpacing={0}
                             fontSize={14}
                             marginTop={Platform.OS === 'android' ? -4 : -1}
@@ -205,8 +202,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                         {!!subTitle && <ASText
                             marginTop={(Platform.OS === 'android' ? -4 : -1)}
                             maxWidth={maxWidth - 36}
-                            color={out ? theme.foregroundContrast : theme.foregroundPrimary}
-                            opacity={out ? 0.7 : 0.6}
+                            color={theme.bubble(isOut).foregroundPrimary}
                             fontSize={14}
                             numberOfLines={1}
                             marginBottom={4}
@@ -220,7 +216,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
 
                 {!!text && <ASText
                     maxWidth={maxWidth}
-                    color={out ? theme.foregroundContrast : theme.foregroundPrimary}
+                    color={theme.bubble(isOut).foregroundPrimary}
                     fontSize={14}
                     marginTop={this.imageCompact && imgLayout ? (subTitle ? 4 : -19) : 0}
                     marginBottom={4}
