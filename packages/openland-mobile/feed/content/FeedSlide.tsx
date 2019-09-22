@@ -14,6 +14,7 @@ import { SlideCoverAlign } from 'openland-api/Types';
 import { renderPreprocessedText } from 'openland-mobile/components/message/renderPreprocessedText';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { FeedSlideAttachment } from './FeedSlideAttachment';
+import { WatchSubscription } from 'openland-y-utils/Watcher';
 
 const styles = StyleSheet.create({
     box: {
@@ -85,6 +86,8 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
     }, [coverViewKey]);
 
     React.useEffect(() => {
+        let downloadManager: WatchSubscription | undefined = undefined;
+
         if (cover) {
             const optimalSize = null;
 
@@ -92,8 +95,14 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
                 layoutMedia(cover.metadata.imageWidth, cover.metadata.imageHeight, 1024, 1024);
             }
 
-            DownloadManagerInstance.watch(cover.url, optimalSize, setDownloadState);
+            downloadManager = DownloadManagerInstance.watch(cover.url, optimalSize, setDownloadState);
         }
+
+        return () => {
+            if (downloadManager) {
+                downloadManager();
+            }
+        };
     }, [cover]);
 
     const textCover = coverAlign && coverAlign === SlideCoverAlign.Cover;

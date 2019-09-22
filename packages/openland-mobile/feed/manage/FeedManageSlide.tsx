@@ -20,8 +20,9 @@ import { Modals } from 'openland-mobile/pages/main/modals/Modals';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { SlideInputLocalAttachment, SlideInputLocal } from 'openland-engines/feed/types';
 import { FeedManageSlideAttachment } from './FeedManageSlideAttachment';
-import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
+import { DownloadManagerInstance, DownloadManager } from 'openland-mobile/files/DownloadManager';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
+import { WatchSubscription } from 'openland-y-utils/Watcher';
 
 const styles = StyleSheet.create({
     box: {
@@ -119,6 +120,8 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
     const [coverLoading, setCoverLoading] = React.useState(false);
 
     React.useEffect(() => {
+        let downloadManager: WatchSubscription | undefined = undefined;
+
         if (cover) {
             setCoverLoading(true);
 
@@ -128,13 +131,19 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
                 layoutMedia(cover.crop.w, cover.crop.h, 1024, 1024);
             }
 
-            DownloadManagerInstance.watch(cover.uuid, optimalSize, (state) => {
+            downloadManager = DownloadManagerInstance.watch(cover.uuid, optimalSize, (state) => {
                 if (state.path) {
                     setCoverLocalPath(state.path);
                     setCoverLoading(false);
                 }
             });
         }
+
+        return () => {
+            if (downloadManager) {
+                downloadManager();
+            }
+        };
     }, []);
 
     const handleDeleteSlide = React.useCallback(() => {
