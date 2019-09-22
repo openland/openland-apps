@@ -62,9 +62,8 @@ export const Modals = {
     showPostMentionPicker(
         router: SRouter,
         action: (item: SlideInputLocalAttachment) => any,
-        selected?: string,
     ) {
-        router.present('PostMentionPicker', { action, selected });
+        router.present('PostMentionPicker', { action });
     },
     showFilePreview(router: SRouter, uuid: string, name: string, size: number) {
         router.push('FilePreview', { config: { uuid, name, size } });

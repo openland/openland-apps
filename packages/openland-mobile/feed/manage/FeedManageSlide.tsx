@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, TouchableWithoutFeedback, Image, Platform, Text } from 'react-native';
+import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, TouchableWithoutFeedback, Image, Platform } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { FeedItemShadow } from '../FeedItemShadow';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
@@ -19,6 +19,7 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Modals } from 'openland-mobile/pages/main/modals/Modals';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { SlideInputLocalAttachment, SlideInputLocal } from 'openland-engines/feed/types';
+import { FeedManageSlideAttachment } from './FeedManageSlideAttachment';
 
 const styles = StyleSheet.create({
     box: {
@@ -146,9 +147,12 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
             item => {
                 onChangeAttachment(item);
             },
-            attachmentLocal ? attachmentLocal.id : undefined
         );
-    }, [attachmentLocal]);
+    }, []);
+
+    const handleMentionDeletePress = React.useCallback(() => {
+        onChangeAttachment();
+    }, []);
 
     const handleAttachMediaPress = React.useCallback(async (oldCoverAlign?: SlideCoverAlign | null) => {
         if (await checkPermissions('gallery')) {
@@ -331,12 +335,7 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
                 )}
 
                 {!canAddText && (!coverAlign || coverAlign !== SlideCoverAlign.Bottom) && input}
-
-                {attachmentLocal && (
-                    <View flexGrow={1}>
-                        <Text allowFontScaling={false}>Attachment: {attachmentLocal.id}</Text>
-                    </View>
-                )}
+                {attachmentLocal && <FeedManageSlideAttachment attachment={attachmentLocal} onEditPress={handleMentionPress} onDeletePress={handleMentionDeletePress} />}
 
                 {(!showCover || canAddText) && (
                     <FeedManageTools style={footerStyle} align="bottom">

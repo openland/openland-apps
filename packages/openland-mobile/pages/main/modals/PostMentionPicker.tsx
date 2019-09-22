@@ -11,6 +11,7 @@ import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { SlideInputLocalAttachment } from 'openland-engines/feed/types';
+import { GlobalSearchEntryKind } from 'openland-api/Types';
 
 const styles = StyleSheet.create({
     searchBox: {
@@ -39,22 +40,34 @@ const styles = StyleSheet.create({
 interface SearchListProps {
     query: string;
     onSelect: (item: SlideInputLocalAttachment) => void;
-    selected?: string;
 }
 
 const SearchList = XMemo<SearchListProps>((props) => {
-    const { query, onSelect, selected } = props;
-    const items = getClient().useGlobalSearch({ query: query }, { fetchPolicy: 'cache-and-network' }).items;
+    const { query, onSelect } = props;
+    const items = getClient().useGlobalSearch({
+        query,
+        kinds: [GlobalSearchEntryKind.USER, GlobalSearchEntryKind.SHAREDROOM]
+    }, { fetchPolicy: 'cache-and-network' }).items as SlideInputLocalAttachment[];
 
     return (
         <>
             {items.map(item => (
-                <ZListItem
-                    key={item.id}
-                    title={item.id}
-                    description={item.id === selected ? 'Selected' : undefined}
-                    onPress={() => onSelect(item)}
-                />
+                <View key={item.id}>
+                    {item.__typename === 'User' && (
+                        <ZListItem
+                            text={item.name}
+                            leftAvatar={{ photo: item.photo, key: item.id, title: item.name }}
+                            onPress={() => onSelect(item)}
+                        />
+                    )}
+                    {item.__typename === 'SharedRoom' && (
+                        <ZListItem
+                            text={item.title}
+                            leftAvatar={{ photo: item.roomPhoto, key: item.id, title: item.title }}
+                            onPress={() => onSelect(item)}
+                        />
+                    )}
+                </View>
             ))}
         </>
     );
@@ -62,7 +75,7 @@ const SearchList = XMemo<SearchListProps>((props) => {
 
 const PostMentionPickerComponent = XMemo<PageProps>((props) => {
     const { router } = props;
-    const { action, selected } = router.params;
+    const { action } = router.params;
     const theme = React.useContext(ThemeContext);
     const area = React.useContext(ASSafeAreaContext);
     const [query, setQuery] = React.useState('');
@@ -93,7 +106,7 @@ const PostMentionPickerComponent = XMemo<PageProps>((props) => {
                 </View>
                 <ScrollView flexGrow={1} keyboardShouldPersistTaps="always" keyboardDismissMode="interactive" contentContainerStyle={{ paddingBottom: area.bottom }}>
                     <React.Suspense fallback={<ZLoader />}>
-                        <SearchList query={query} onSelect={handleSelect} selected={selected} />
+                        <SearchList query={query} onSelect={handleSelect} />
                     </React.Suspense>
                 </ScrollView>
             </View>
