@@ -12,7 +12,6 @@ import { RenderSpans } from './AsyncRenderSpans';
 import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from '../AsyncBubbleView';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { StickerContent } from './StickerContent';
-import { paddedText } from '../AsyncMessageContentView';
 
 interface ReplyContentProps {
     message: DataSourceMessageItem;
