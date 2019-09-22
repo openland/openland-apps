@@ -50,15 +50,15 @@ export const TextContent = (props: TextContentProps) => {
     const codePaddingRight = wrapped ? 10 : -codeMarginRight;
 
     const fontSize = {
-        'emoji': wrapped ? 26 : 30,
-        'loud': wrapped ? 16 : 20,
+        'emoji': 30,
+        'loud': 20,
         'slice': 17,
         'code_block': 14,
     };
 
     const lineHeight = {
-        'emoji': wrapped ? 30 : 34,
-        'loud': wrapped ? 20 : 24,
+        'emoji': 34,
+        'loud': 24,
         'slice': 24,
         'code_block': undefined,
     };
