@@ -134,7 +134,7 @@ export class FeedEngine {
 
             const hasCover = slide.cover;
             const hasText = slide.text && slide.text.length > 0;
-            const hasAttachments = slide.attachments && slide.attachments.length > 0;
+            const hasAttachment = slide.attachmentLocal;
 
             if (hasText) {
                 slide.spans = findSpans(slide.text || '', PostSpanSymbolToType);
@@ -146,7 +146,12 @@ export class FeedEngine {
                 slide.coverAlign = undefined;
             }
 
-            if (hasCover || hasText || hasAttachments) {
+            if (hasAttachment) {
+                slide.attachments = [slide.attachmentLocal!.id];
+                slide.attachmentLocal = undefined;
+            }
+
+            if (hasCover || hasText || hasAttachment) {
                 res.push(slide);
             }
         }

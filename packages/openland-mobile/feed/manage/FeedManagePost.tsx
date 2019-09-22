@@ -8,7 +8,7 @@ import { FeedManageSlide } from './FeedManageSlide';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import UUID from 'uuid/v4';
-import { SlideInputLocal } from 'openland-engines/feed/types';
+import { SlideInputLocal, SlideInputLocalAttachment } from 'openland-engines/feed/types';
 
 interface FeedManagePostProps {
     initial?: SlideInputLocal[];
@@ -67,6 +67,13 @@ export const FeedManagePost = React.memo((props: FeedManagePostProps) => {
         })));
     }, []);
 
+    const handleChangeAttachment = React.useCallback((key: string | undefined, attachment?: SlideInputLocalAttachment) => {
+        setSlides(prev => prev.map(slide => ({
+            ...slide,
+            attachmentLocal: key === slide.key ? attachment : slide.attachmentLocal
+        })));
+    }, []);
+
     const handleDeleteSlide = React.useCallback((key: string | undefined) => {
         setSlides(prev => prev.filter(slide => key !== slide.key));
     }, []);
@@ -83,7 +90,7 @@ export const FeedManagePost = React.memo((props: FeedManagePostProps) => {
             <KeyboardAvoidingView flexGrow={1} behavior={'padding'}>
                 <SScrollView scrollRef={scrollViewRef as React.RefObject<ScrollView>}>
                     {!initial && SUPER_ADMIN && (
-                        <ZListItem text="Global Post [SUPER_ADMIN]" toggle={global} onToggle={v => setGlobal(v)} />
+                        <ZListItem text="For everyone" toggle={global} onToggle={v => setGlobal(v)} />
                     )}
 
                     {slides.map(slide => (
@@ -93,6 +100,7 @@ export const FeedManagePost = React.memo((props: FeedManagePostProps) => {
                                 onChangeText={v => handleChangeText(slide.key, v)}
                                 onChangeCover={c => handleChangeCover(slide.key, c)}
                                 onChangeCoverAlign={a => handleChangeCoverAlign(slide.key, a)}
+                                onChangeAttachment={a => handleChangeAttachment(slide.key, a)}
                                 onDelete={slides.length > 1 ? () => handleDeleteSlide(slide.key) : undefined}
                             />
                         </View>

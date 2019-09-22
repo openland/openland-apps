@@ -13,6 +13,7 @@ import { SAnimated } from 'react-native-s/SAnimated';
 import { SlideCoverAlign } from 'openland-api/Types';
 import { renderPreprocessedText } from 'openland-mobile/components/message/renderPreprocessedText';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { FeedSlideAttachment } from './FeedSlideAttachment';
 
 const styles = StyleSheet.create({
     box: {
@@ -67,7 +68,7 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
     const theme = React.useContext(ThemeContext);
     const messenger = getMessenger();
     const { slide, wrapped } = props;
-    const { id, text, cover, coverAlign, textSpans } = slide;
+    const { id, text, cover, coverAlign, textSpans, attachments } = slide;
     const [downloadState, setDownloadState] = React.useState<DownloadState | undefined>(undefined);
 
     const coverViewKey = React.useMemo(() => id + '-cover', [id]);
@@ -96,14 +97,15 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
     }, [cover]);
 
     const textCover = coverAlign && coverAlign === SlideCoverAlign.Cover;
-    const textStyle = (!cover || textCover) ? (text.length < 200 ? (text.length < 100 ? styles.textLarge : styles.textMedium) : styles.text) : styles.text;
+    const textCanBeDynamic = (!cover || textCover) && !attachments.length;
+    const textStyle = textCanBeDynamic ? (text.length < 200 ? (text.length < 100 ? styles.textLarge : styles.textMedium) : styles.text) : styles.text;
 
     const renderText = React.useMemo(() => renderPreprocessedText(textSpans, messenger.handleUserClick, messenger.handleGroupClick, theme), [textSpans, theme]);
 
     return (
         <View style={styles.box}>
-            {!!text && coverAlign && coverAlign === SlideCoverAlign.Bottom && (
-                <Text style={[textStyle, { color: theme.foregroundPrimary, paddingTop: wrapped ? 48 : 0 }]} allowFontScaling={false}>
+            {text.length > 0 && ((coverAlign && coverAlign === SlideCoverAlign.Bottom) || attachments.length > 0) && (
+                <Text style={[textStyle, { color: theme.foregroundPrimary, paddingTop: wrapped ? 48 : 16 }]} allowFontScaling={false}>
                     {renderText}
                 </Text>
             )}
@@ -127,7 +129,7 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
                 </View>
             )}
 
-            {!!text && textCover && (
+            {text.length > 0 && textCover && (
                 <View style={[styles.textBoxCover, { backgroundColor: theme.overlayMedium, paddingVertical: wrapped ? 56 : 16 }]}>
                     <Text style={[textStyle, { color: theme.foregroundContrast }]} allowFontScaling={false}>
                         {renderText}
@@ -135,11 +137,13 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
                 </View>
             )}
 
-            {!!text && (!coverAlign || coverAlign === SlideCoverAlign.Top) && (
+            {text.length > 0 && !attachments.length && (!coverAlign || coverAlign === SlideCoverAlign.Top) && (
                 <Text style={[textStyle, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
                     {renderText}
                 </Text>
             )}
+
+            {attachments.length > 0 && <FeedSlideAttachment attachment={attachments[0]} withText={text.length > 0} />}
         </View>
     );
 });

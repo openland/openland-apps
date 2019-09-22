@@ -48,6 +48,8 @@ export const SlideFragment = gql`
                     isChannel
                     title
                     roomPhoto: photo
+                    membersCount
+                    membership
                 }
             }
         }

@@ -10,6 +10,8 @@ fragment SlideFragment on Slide {
         id
         isChannel
         kind
+        membersCount
+        membership
         roomPhoto: photo
         title
       }

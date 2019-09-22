@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, TouchableWithoutFeedback, Image, Platform } from 'react-native';
+import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, TouchableWithoutFeedback, Image, Platform, Text } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { FeedItemShadow } from '../FeedItemShadow';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
-import { SlideInput, SlideCoverAlign, ImageRefInput } from 'openland-api/Types';
+import { SlideCoverAlign, ImageRefInput } from 'openland-api/Types';
 import { ZIconButton } from 'openland-mobile/components/ZIconButton';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
@@ -16,6 +16,9 @@ import FastImage from 'react-native-fast-image';
 import { FeedManageAddText } from './FeedManageAddText';
 import { FeedManageTools } from './FeedManageTools';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+import { Modals } from 'openland-mobile/pages/main/modals/Modals';
+import { SRouterContext } from 'react-native-s/SRouterContext';
+import { SlideInputLocalAttachment, SlideInputLocal } from 'openland-engines/feed/types';
 
 const styles = StyleSheet.create({
     box: {
@@ -95,17 +98,19 @@ const SUPPORTED_COVER_ALIGN: ({ align: SlideCoverAlign, icon: NodeRequire })[] =
 }];
 
 interface FeedManageSlideProps {
-    slide: SlideInput;
+    slide: SlideInputLocal;
     onChangeText: (text: string) => void;
     onChangeCover: (cover?: ImageRefInput) => void;
     onChangeCoverAlign: (align?: SlideCoverAlign) => void;
+    onChangeAttachment: (attachment?: SlideInputLocalAttachment) => void;
     onDelete?: () => void;
 }
 
 export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
-    const { slide, onChangeText, onChangeCover, onChangeCoverAlign, onDelete } = props;
-    const { text, cover, coverAlign } = slide;
+    const { slide, onChangeText, onChangeCover, onChangeCoverAlign, onChangeAttachment, onDelete } = props;
+    const { text, cover, coverAlign, attachmentLocal } = slide;
     const theme = React.useContext(ThemeContext);
+    const router = React.useContext(SRouterContext);
     const textInputRef = React.createRef<TextInput>();
     const [coverLocalPath, setCoverLocalPath] = React.useState<string | undefined>(undefined);
     const [coverLoading, setCoverLoading] = React.useState(false);
@@ -136,8 +141,14 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
     }, [textInputRef]);
 
     const handleMentionPress = React.useCallback(() => {
-        console.warn('boom mention add');
-    }, []);
+        Modals.showPostMentionPicker(
+            router!,
+            item => {
+                onChangeAttachment(item);
+            },
+            attachmentLocal ? attachmentLocal.id : undefined
+        );
+    }, [attachmentLocal]);
 
     const handleAttachMediaPress = React.useCallback(async (oldCoverAlign?: SlideCoverAlign | null) => {
         if (await checkPermissions('gallery')) {
@@ -237,10 +248,11 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
         opacity: theme.type === 'Dark' ? 0.56 : (headerStyle === 'contrast' ? 0.56 : 1)
     } as ViewStyle;
 
+    const inputCanBeDynamic = (!showCover || inputCover) && !attachmentLocal;
     let inputTextStyle = TextStyles.Body;
     let inputBoxStyle = [styles.inputBox];
 
-    if (!showCover || inputCover) {
+    if (inputCanBeDynamic) {
         if (!text) {
             inputTextStyle = TextStyles.Post1;
             inputBoxStyle = [styles.inputBox, styles.inputBoxLarge];
@@ -262,8 +274,8 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
     const input = (
         <View
             style={[...inputBoxStyle, {
-                flexGrow: (!showCover || inputCover) ? 1 : undefined,
-                paddingTop: !canAddText && coverAlign && coverAlign === SlideCoverAlign.Bottom ? 48 : undefined
+                flexGrow: inputCanBeDynamic ? 1 : undefined,
+                paddingTop: ((!canAddText && coverAlign && coverAlign === SlideCoverAlign.Bottom) || attachmentLocal) ? 48 : undefined
             }]}
         >
             <TextInput
@@ -320,10 +332,16 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
 
                 {!canAddText && (!coverAlign || coverAlign !== SlideCoverAlign.Bottom) && input}
 
+                {attachmentLocal && (
+                    <View flexGrow={1}>
+                        <Text allowFontScaling={false}>Attachment: {attachmentLocal.id}</Text>
+                    </View>
+                )}
+
                 {(!showCover || canAddText) && (
                     <FeedManageTools style={footerStyle} align="bottom">
-                        {!showCover && <ZIconButton src={require('assets/ic-gallery-24.png')} style={headerStyle} onPress={() => handleAttachMediaPress()} />}
-                        {!showCover && <ZIconButton src={require('assets/ic-at-24.png')} style={headerStyle} onPress={handleMentionPress} />}
+                        {!showCover && !attachmentLocal && <ZIconButton src={require('assets/ic-gallery-24.png')} style={headerStyle} onPress={() => handleAttachMediaPress()} />}
+                        {!showCover && !attachmentLocal && <ZIconButton src={require('assets/ic-at-24.png')} style={headerStyle} onPress={handleMentionPress} />}
                         {canAddText && <FeedManageAddText onPress={handleAddTextPress} />}
                     </FeedManageTools>
                 )}

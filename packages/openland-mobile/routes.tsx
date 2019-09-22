@@ -63,6 +63,7 @@ import { Feed } from './pages/main/Feed';
 import { FeedCreate } from './pages/main/FeedCreate';
 import { FeedEdit } from './pages/main/FeedEdit';
 import { FeedItem } from './pages/main/FeedItem';
+import { PostMentionPicker } from './pages/main/modals/PostMentionPicker';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -87,6 +88,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('GroupMultiplePicker', GroupMultiplePicker)
   .addRoute('UserMultiplePicker', UserMultiplePicker)
   .addRoute('UserPicker', UserPicker)
+  .addRoute('PostMentionPicker', PostMentionPicker)
   .addRoute('ProfileGroupLink', ProfileGroupLink)
   .addRoute('ProfileOrganizationGroups', ProfileOrganizationGroups)
   .addRoute('GroupList', GroupList)

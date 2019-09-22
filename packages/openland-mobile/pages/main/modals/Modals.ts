@@ -1,5 +1,6 @@
 import { SRouter } from 'react-native-s/SRouter';
 import { UserShort } from 'openland-api/Types';
+import { SlideInputLocalAttachment } from 'openland-engines/feed/types';
 
 export const Modals = {
     showGroupMuptiplePicker(
@@ -57,6 +58,13 @@ export const Modals = {
         } else {
             router.push('UserPicker', { action, title, users, selectedUser, disableUsers });
         }
+    },
+    showPostMentionPicker(
+        router: SRouter,
+        action: (item: SlideInputLocalAttachment) => any,
+        selected?: string,
+    ) {
+        router.present('PostMentionPicker', { action, selected });
     },
     showFilePreview(router: SRouter, uuid: string, name: string, size: number) {
         router.push('FilePreview', { config: { uuid, name, size } });
