@@ -14,14 +14,14 @@ export const StickerContent = React.memo<StickerContentProps>((props) => {
     const [downloadState, setDownloadState] = React.useState<DownloadState | undefined>(undefined);
 
     React.useEffect(() => {
-        DownloadManagerInstance.watch(sticker.image.uuid, { width: 256, height: 256 }, setDownloadState);
+        DownloadManagerInstance.watch(sticker.image.uuid, { width: 200, height: 200 }, setDownloadState);
     }, [sticker]);
 
     return (
-        <View width={128} height={128}>
+        <View width={100} height={100}>
             {downloadState && !!downloadState.path && downloadState.path.length > 0 && (
                 <FastImage
-                    style={{ width: 128, height: 128, }}
+                    style={{ width: 100, height: 100, }}
                     source={{ uri: (Platform.OS === 'android' ? 'file://' : '') + downloadState.path, priority: 'normal', ...{ disableAnimations: true } as any }}
                 />
             )}

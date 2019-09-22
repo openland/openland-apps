@@ -14,15 +14,15 @@ export const StickerContent = React.memo<StickerContentProps>((props) => {
     const [downloadState, setDownloadState] = React.useState<DownloadState | undefined>(undefined);
 
     React.useEffect(() => {
-        DownloadManagerInstance.watch(sticker.image.uuid, { width: 256, height: 256 }, setDownloadState);
+        DownloadManagerInstance.watch(sticker.image.uuid, { width: 200, height: 200 }, setDownloadState);
     }, [sticker]);
 
     return (
         <ASFlex>
             <ASImage
                 source={{ uri: (downloadState && downloadState.path) ? ('file://' + downloadState.path) : undefined }}
-                width={128}
-                height={128}
+                width={100}
+                height={100}
             />
         </ASFlex>
     );

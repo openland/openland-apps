@@ -91,8 +91,8 @@ const imgContainer = css`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 128px;
-    height: 128px;
+    width: 100px;
+    height: 100px;
     border-radius: 8px;
     cursor: pointer;
 `;
@@ -104,8 +104,8 @@ interface ImageContentProps {
 export const StickerContent = React.memo((props: ImageContentProps) => {
     const { sticker } = props;
     const url = `https://ucarecdn.com/${sticker.image.uuid}/-/format/auto/-/`;
-    const ops = `scale_crop/${128}x${128}/`;
-    const opsRetina = `scale_crop/${128 * 2}x${128 * 2}/center/ 2x`;
+    const ops = `scale_crop/${100}x${100}/`;
+    const opsRetina = `scale_crop/${100 * 2}x${100 * 2}/center/ 2x`;
 
     return (
         <div
@@ -122,7 +122,7 @@ export const StickerContent = React.memo((props: ImageContentProps) => {
                 }
             }}
         >
-            <img width={128} height={128} src={url + ops} srcSet={url + opsRetina} />
+            <img width={100} height={100} src={url + ops} srcSet={url + opsRetina} />
         </div>
     );
 });
