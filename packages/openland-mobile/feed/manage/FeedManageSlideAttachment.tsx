@@ -40,10 +40,14 @@ export const FeedManageSlideAttachment = React.memo((props: FeedManageSlideAttac
         subTitle = attachment.primaryOrganization.name;
     }
 
+    if (attachment.__typename === 'Organization' && attachment.about) {
+        subTitle = attachment.about;
+    }
+
     const content = (
         <>
             {attachment.__typename === 'SharedRoom' && <ZAvatar src={attachment.roomPhoto} placeholderKey={attachment.id} placeholderTitle={attachment.title} size="xx-large" />}
-            {attachment.__typename === 'User' && <ZAvatar src={attachment.photo} placeholderKey={attachment.id} placeholderTitle={attachment.name} size="xx-large" />}
+            {attachment.__typename === 'User' || attachment.__typename === 'Organization' && <ZAvatar src={attachment.photo} placeholderKey={attachment.id} placeholderTitle={attachment.name} size="xx-large" />}
 
             <Text
                 style={{ ...TextStyles.Title2, marginTop: 16, color: theme.foregroundPrimary }}

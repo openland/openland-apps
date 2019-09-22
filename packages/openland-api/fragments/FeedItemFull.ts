@@ -55,6 +55,9 @@ export const SlideFragment = gql`
                         photo
                     }
                 }
+                ... on Organization {
+                    ...OrganizationShort
+                }
             }
         }
     }

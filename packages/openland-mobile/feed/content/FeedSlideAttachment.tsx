@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { SlideFragment_attachments, SlideFragment_attachments_SharedRoom, SlideFragment_attachments_User } from 'openland-api/Types';
+import { SlideFragment_attachments, SlideFragment_attachments_SharedRoom, SlideFragment_attachments_User, SlideFragment_attachments_Organization } from 'openland-api/Types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { plural } from 'openland-y-utils/plural';
@@ -118,6 +118,22 @@ const InnerUser = React.memo((props: { item: SlideFragment_attachments_User }) =
     );
 });
 
+const InnerOrganization = React.memo((props: { item: SlideFragment_attachments_Organization }) => {
+    const router = getMessenger().history.navigationManager;
+    const { id, photo, name, about, isCommunity } = props.item;
+
+    return (
+        <Inner
+            id={id}
+            photo={photo}
+            title={name}
+            subtitle={about}
+            action={() => router.push('ProfileOrganization', { id })}
+            actionTitle={isCommunity ? 'View community' : 'View organization'}
+        />
+    );
+});
+
 interface FeedSlideAttachmentProps {
     attachment: SlideFragment_attachments;
     withText: boolean;
@@ -131,6 +147,7 @@ export const FeedSlideAttachment = React.memo((props: FeedSlideAttachmentProps) 
         <>
             {attachment.__typename === 'SharedRoom' && <InnerSharedRoom item={attachment} />}
             {attachment.__typename === 'User' && <InnerUser item={attachment} />}
+            {attachment.__typename === 'Organization' && <InnerOrganization item={attachment} />}
         </>
     );
 

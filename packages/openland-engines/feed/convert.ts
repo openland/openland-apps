@@ -6,27 +6,8 @@ import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel'
 import { isSameDate } from 'openland-engines/messenger/ConversationEngine';
 import { DataSourceFeedDateItem, DataSourceFeedPostItem, DataSourceFeedItem, SlideProcessed, SlideInputLocal } from './types';
 import UUID from 'uuid/v4';
-
-export const convertSlidesToInput = (src: Types.FeedItemFull_slides[]): SlideInputLocal[] => {
-    const res: SlideInputLocal[] = [];
-
-    src.map(slide => {
-        if (slide.__typename === 'TextSlide') {
-            res.push({
-                key: UUID(),
-                type: Types.SlideType.Text,
-                text: slide.text,
-                cover: slide.cover ? {
-                    uuid: slide.cover.url.split('https://ucarecdn.com/')[1].split('/')[0],
-                } : null,
-                coverAlign: slide.coverAlign,
-                attachmentLocal: slide.attachments[0]
-            });
-        }
-    });
-
-    return res;
-};
+import { findSpans } from 'openland-y-utils/findSpans';
+import { PostSpanSymbolToType } from 'openland-y-utils/spans/Span';
 
 export const convertSlides = (src: Types.FeedItemFull_slides[]): SlideProcessed[] => {
     return src.map(s => ({
@@ -105,6 +86,62 @@ export const convertItems = (items: Types.Feed_feed_items[], engine: MessengerEn
             prevDate = i.date;
         }
     });
+
+    return res;
+};
+
+export const convertSlidesToLocalInput = (src: Types.FeedItemFull_slides[]): SlideInputLocal[] => {
+    const res: SlideInputLocal[] = [];
+
+    src.map(slide => {
+        if (slide.__typename === 'TextSlide') {
+            res.push({
+                key: UUID(),
+                type: Types.SlideType.Text,
+                text: slide.text,
+                cover: slide.cover ? {
+                    uuid: slide.cover.url.split('https://ucarecdn.com/')[1].split('/')[0],
+                } : null,
+                coverAlign: slide.coverAlign,
+                attachmentLocal: slide.attachments[0]
+            });
+        }
+    });
+
+    return res;
+};
+
+export const convertSlidesToServerInput = (input: SlideInputLocal[]) => {
+    const res: Types.SlideInput[] = [];
+    const slides = input.map(i => ({ ...i }));
+
+    for (let slide of slides) {
+        slide.key = undefined;
+        slide.text = slide.text && slide.text.length > 0 ? slide.text.trim() : undefined;
+
+        const hasCover = slide.cover;
+        const hasText = slide.text && slide.text.length > 0;
+        const hasAttachment = slide.attachmentLocal;
+
+        if (hasText) {
+            slide.spans = findSpans(slide.text || '', PostSpanSymbolToType);
+        }
+
+        if (hasCover) {
+            slide.coverAlign = hasText ? slide.coverAlign : Types.SlideCoverAlign.Cover;
+        } else {
+            slide.coverAlign = undefined;
+        }
+
+        if (hasAttachment) {
+            slide.attachments = [slide.attachmentLocal!.id];
+            slide.attachmentLocal = undefined;
+        }
+
+        if (hasCover || hasText || hasAttachment) {
+            res.push(slide);
+        }
+    }
 
     return res;
 };
