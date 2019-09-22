@@ -20,6 +20,8 @@ import { Modals } from 'openland-mobile/pages/main/modals/Modals';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { SlideInputLocalAttachment, SlideInputLocal } from 'openland-engines/feed/types';
 import { FeedManageSlideAttachment } from './FeedManageSlideAttachment';
+import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
+import { layoutMedia } from 'openland-y-utils/MediaLayout';
 
 const styles = StyleSheet.create({
     box: {
@@ -115,6 +117,25 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
     const textInputRef = React.createRef<TextInput>();
     const [coverLocalPath, setCoverLocalPath] = React.useState<string | undefined>(undefined);
     const [coverLoading, setCoverLoading] = React.useState(false);
+
+    React.useEffect(() => {
+        if (cover) {
+            setCoverLoading(true);
+
+            const optimalSize = null;
+
+            if (cover.crop) {
+                layoutMedia(cover.crop.w, cover.crop.h, 1024, 1024);
+            }
+
+            DownloadManagerInstance.watch(cover.uuid, optimalSize, (state) => {
+                if (state.path) {
+                    setCoverLocalPath(state.path);
+                    setCoverLoading(false);
+                }
+            });
+        }
+    }, []);
 
     const handleDeleteSlide = React.useCallback(() => {
         if (onDelete) {
