@@ -43,7 +43,8 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
             <>
                 {message.reply && (
                     message.reply.map((m, i) => {
-                        let repliedMessage = !m.isService ? m : undefined;
+                        const needPaddedText = !message.text && !message.sticker && (i + 1 === message.reply!.length);
+                        const repliedMessage = !m.isService ? m : undefined;
 
                         if (repliedMessage) {
                             const attachFile = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
@@ -72,7 +73,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                             <RenderSpans
                                                 spans={repliedMessage.textSpans}
                                                 message={message}
-                                                padded={compensateBubble ? (!message.text && (i + 1 === message.reply!.length)) : false}
+                                                padded={compensateBubble ? needPaddedText : false}
                                                 theme={theme}
                                                 maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 70}
                                                 width={width}
@@ -88,8 +89,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
                                     {sticker && (
                                         <ASFlex key={'reply-sticker-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10}>
-                                            <StickerContent sticker={sticker} />
-                                            {!message.text && (i + 1 === message.reply!.length) && paddedText(message.isEdited)}
+                                            <StickerContent sticker={sticker} message={m} padded={needPaddedText} />
                                         </ASFlex>
                                     )}
 
@@ -120,7 +120,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                             <RenderSpans
                                                 spans={m.textSpans}
                                                 message={m}
-                                                padded={compensateBubble ? (!message.text && (i + 1 === message.reply!!.length)) : false}
+                                                padded={compensateBubble ? needPaddedText : false}
                                                 theme={theme}
                                                 maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 70}
                                                 width={width}
