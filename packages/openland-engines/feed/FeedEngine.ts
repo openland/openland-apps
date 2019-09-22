@@ -124,7 +124,7 @@ export class FeedEngine {
         }
     }
 
-    private converSlides = (input: SlideInputLocal[]) => {
+    private processSlideInput = (input: SlideInputLocal[]) => {
         const res: Types.SlideInput[] = [];
         const slides = input.map(i => ({ ...i }));
 
@@ -160,7 +160,7 @@ export class FeedEngine {
     }
 
     createPost: (input: SlideInputLocal[], global?: boolean) => Promise<boolean> = async (input, global) => {
-        const slides = this.converSlides(input);
+        const slides = this.processSlideInput(input);
 
         if (slides.length < 1) {
             return false;
@@ -180,7 +180,7 @@ export class FeedEngine {
     }
 
     editPost: (id: string, input: SlideInputLocal[]) => Promise<boolean> = async (id, input) => {
-        const slides = this.converSlides(input);
+        const slides = this.processSlideInput(input);
 
         if (slides.length < 1) {
             return false;
