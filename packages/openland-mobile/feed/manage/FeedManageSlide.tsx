@@ -20,7 +20,7 @@ import { Modals } from 'openland-mobile/pages/main/modals/Modals';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { SlideInputLocalAttachment, SlideInputLocal } from 'openland-engines/feed/types';
 import { FeedManageSlideAttachment } from './FeedManageSlideAttachment';
-import { DownloadManagerInstance, DownloadManager } from 'openland-mobile/files/DownloadManager';
+import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 
