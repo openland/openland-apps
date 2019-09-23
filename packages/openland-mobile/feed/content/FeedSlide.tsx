@@ -7,8 +7,6 @@ import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import FastImage from 'react-native-fast-image';
-import { SAnimatedView } from 'react-native-s/SAnimatedView';
-import { SAnimated } from 'react-native-s/SAnimated';
 import { SlideCoverAlign } from 'openland-api/Types';
 import { renderPreprocessedText } from 'openland-mobile/components/message/renderPreprocessedText';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -68,21 +66,8 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
     const theme = React.useContext(ThemeContext);
     const messenger = getMessenger();
     const { slide, wrapped } = props;
-    const { id, text, cover, coverAlign, textSpans, attachments } = slide;
+    const { text, cover, coverAlign, textSpans, attachments } = slide;
     const [coverPath, setCoverPath] = React.useState<string | undefined>(undefined);
-
-    const coverViewKey = React.useMemo(() => id + '-cover', [id]);
-
-    const handleCoverLoad = React.useCallback(() => {
-        SAnimated.beginTransaction();
-        SAnimated.timing(coverViewKey, {
-            property: 'opacity',
-            from: 0,
-            to: 1,
-            duration: 0.15
-        });
-        SAnimated.commitTransaction();
-    }, [coverViewKey]);
 
     React.useEffect(() => {
         let downloadManager: WatchSubscription | undefined = undefined;
@@ -97,7 +82,6 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
             downloadManager = DownloadManagerInstance.watch(cover.url, optimalSize, state => {
                 if (state.path) {
                     setCoverPath((Platform.OS === 'android' ? 'file://' : '') + state.path);
-                    handleCoverLoad();
                 }
             });
         }
@@ -107,7 +91,7 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
                 downloadManager();
             }
         };
-    }, [cover, coverPath, handleCoverLoad]);
+    }, [cover, coverPath]);
 
     const textCover = coverAlign && coverAlign === SlideCoverAlign.Cover;
     const textCanBeDynamic = (!cover || textCover) && !attachments.length;
@@ -130,13 +114,13 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
                     </View>
 
                     {!!coverPath && coverPath.length > 0 && (
-                        <SAnimatedView name={coverViewKey} style={[styles.cover, { backgroundColor: theme.overlayMedium, opacity: 0 }]}>
+                        <View style={[styles.cover, { backgroundColor: theme.overlayMedium }]}>
                             <FastImage
                                 resizeMode="cover"
                                 style={{ width: '100%', flexGrow: 1 }}
                                 source={{ uri: coverPath, priority: 'normal', ...{ disableAnimations: true } as any }}
                             />
-                        </SAnimatedView>
+                        </View>
                     )}
                 </View>
             )}
