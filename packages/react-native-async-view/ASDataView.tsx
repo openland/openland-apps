@@ -47,16 +47,15 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
     readonly key = UUID();
     private readonly queue = new SQueue();
 
-    constructor(dataSource: DataSource<T>, render: (src: T, ) => React.ReactElement<{}>, onReady?: () => void) {
+    constructor(dataSource: DataSource<T>, render: (src: T, ) => React.ReactElement<{}>) {
         this.render = render;
         this.dataSource = dataSource;
         this.dataSource.watch(this);
         // Register for load more events
         ASEventEmitter.registerOnLoadMore(this.key, () => { this.dataSource.needMore(); });
-        NativeDataView.dataViewInit(this.key, '[]', false, this.dataSource.isCompletedForward());
     }
 
-    onDataSourceInited = (data: T[], completed: boolean, completedForward: boolean) => {
+    onDataSourceInited = (data: T[], completed: boolean, completedForward: boolean, anchor?: string) => {
         this.queue.push(async () => {
             // Create initial items
             let start = Date.now();
@@ -67,7 +66,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
                 config: v.currentState
             })));
             console.log('DataSource inited in ' + (Date.now() - start) + ' ms');
-            NativeDataView.dataViewLoadedMore(this.key, config, completed);
+            NativeDataView.dataViewInit(this.key, config, completed, completedForward, anchor);
         });
     }
 
@@ -75,7 +74,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
         NativeDataView.dataViewScrollToKeyReqested(this.key, scrollToKey);
     }
 
-    onDataSourceItemAdded = (item: T, index: number) => {
+    onDataSourceItemAdded = (item: T, index: number, isAnchor: boolean) => {
         this.queue.push(async () => {
             let holder = new ItemRenderHolder(this, item, this.render);
 
@@ -85,7 +84,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
             this.items = itms;
 
             // Forward to native
-            NativeDataView.dataViewAddItem(this.key, item.key, JSON.stringify(holder.currentState), index);
+            NativeDataView.dataViewAddItem(this.key, item.key, JSON.stringify(holder.currentState), index, isAnchor);
         });
     }
     onDataSourceItemRemoved = (item: T, index: number) => {

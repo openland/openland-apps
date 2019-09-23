@@ -54,6 +54,12 @@ class AsyncViewEventEmitter {
       nativeInstance.sendEvent(withName: "onLoadMore", body: key)
     }
   }
+  
+  func dispatchOnLoadMoreForward(key: String) {
+    if nativeInstance != nil && nativeInstance.bridge != nil {
+      nativeInstance.sendEvent(withName: "onLoadMoreForward", body: key)
+    }
+  }
 }
 
 @objc(RNAsyncViewEventEmitter)

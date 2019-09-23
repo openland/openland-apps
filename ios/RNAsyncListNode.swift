@@ -15,7 +15,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var node: ASCollectionNode!
   private let queue: DispatchQueue
   
-  private var state: RNAsyncDataViewState = RNAsyncDataViewState(items: [], completed: false, inited: false)
+  private var state: RNAsyncDataViewState = RNAsyncDataViewState(items: [], completed: false, completedForward: false, inited: false, anchor: nil)
   private var headerPadding: Float = 0.0
   private var overflowColor: UInt64? = nil
   private var loaderColor: UInt64 = 0
