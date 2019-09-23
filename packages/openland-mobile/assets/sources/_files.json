@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-at",
+            "src": "ic-at-12.svg",
+            "sizes": [
+                12
+            ]
+        },
+        {
             "name": "ic-file-preview-corner-1",
             "src": "ic-file-preview-corner-1.svg",
             "sizes": [
@@ -824,13 +831,6 @@
             "src": "ic-reply.svg",
             "sizes": [
                 16
-            ]
-        },
-        {
-            "name": "ic-mention",
-            "src": "ic-mention.svg",
-            "sizes": [
-                18
             ]
         },
         {
