@@ -49,7 +49,7 @@ export class AsyncAvatar extends React.PureComponent<AsyncAvatarProps> {
                 alignItems="center"
                 justifyContent="center"
                 backgroundColor={placeholderStyle.placeholderColor}
-                backgroundGradient={{ start: placeholderStyle.placeholderColorStart, end: placeholderStyle.placeholderColorEnd }}
+                {...{ backgroundGradient: { start: placeholderStyle.placeholderColorStart, end: placeholderStyle.placeholderColorEnd } }}
                 borderRadius={this.props.round !== false ? size / 2 : undefined}
             >
                 <ASText fontSize={textSize} color="#fff">{placeholderText}</ASText>
