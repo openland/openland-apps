@@ -95,7 +95,8 @@ export function ASAvatar(props: ASAvatarProps) {
             alignItems="center"
             justifyContent="center"
             backgroundColor={placeholderStyle.placeholderColor}
-            backgroundGradient={{ start: placeholderStyle.placeholderColorStart, end: placeholderStyle.placeholderColorEnd }}
+            // Sorry universe
+            {...{ backgroundGradient: { start: placeholderStyle.placeholderColorStart, end: placeholderStyle.placeholderColorEnd } }}
             borderRadius={size / 2}
         >
             <ASText fontSize={textSize} color="#fff">{placeholderText}</ASText>
