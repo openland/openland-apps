@@ -3,7 +3,6 @@ import { SlideProcessed } from 'openland-engines/feed/types';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, Platform } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
@@ -70,7 +69,7 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
     const messenger = getMessenger();
     const { slide, wrapped } = props;
     const { id, text, cover, coverAlign, textSpans, attachments } = slide;
-    const [downloadState, setDownloadState] = React.useState<DownloadState | undefined>(undefined);
+    const [coverPath, setCoverPath] = React.useState<string | undefined>(undefined);
 
     const coverViewKey = React.useMemo(() => id + '-cover', [id]);
 
@@ -88,14 +87,19 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
     React.useEffect(() => {
         let downloadManager: WatchSubscription | undefined = undefined;
 
-        if (cover) {
+        if (cover && !coverPath) {
             const optimalSize = null;
 
             if (cover.metadata && cover.metadata.imageWidth && cover.metadata.imageHeight) {
                 layoutMedia(cover.metadata.imageWidth, cover.metadata.imageHeight, 1024, 1024);
             }
 
-            downloadManager = DownloadManagerInstance.watch(cover.url, optimalSize, setDownloadState);
+            downloadManager = DownloadManagerInstance.watch(cover.url, optimalSize, state => {
+                if (state.path) {
+                    setCoverPath((Platform.OS === 'android' ? 'file://' : '') + state.path);
+                    handleCoverLoad();
+                }
+            });
         }
 
         return () => {
@@ -103,7 +107,7 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
                 downloadManager();
             }
         };
-    }, [cover]);
+    }, [cover, coverPath, handleCoverLoad]);
 
     const textCover = coverAlign && coverAlign === SlideCoverAlign.Cover;
     const textCanBeDynamic = (!cover || textCover) && !attachments.length;
@@ -125,13 +129,12 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
                         <LoaderSpinner />
                     </View>
 
-                    {downloadState && !!downloadState.path && downloadState.path.length > 0 && (
+                    {!!coverPath && coverPath.length > 0 && (
                         <SAnimatedView name={coverViewKey} style={[styles.cover, { backgroundColor: theme.overlayMedium, opacity: 0 }]}>
                             <FastImage
                                 resizeMode="cover"
                                 style={{ width: '100%', flexGrow: 1 }}
-                                source={{ uri: (Platform.OS === 'android' ? 'file://' : '') + downloadState.path, priority: 'normal', ...{ disableAnimations: true } as any }}
-                                onLoad={handleCoverLoad}
+                                source={{ uri: coverPath, priority: 'normal', ...{ disableAnimations: true } as any }}
                             />
                         </SAnimatedView>
                     )}

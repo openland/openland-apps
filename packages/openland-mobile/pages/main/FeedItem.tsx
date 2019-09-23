@@ -12,6 +12,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { CommentsWrapper } from './components/comments/CommentsWrapper';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SHeaderIndicator } from 'react-native-s/SHeaderIndicator';
+import { SDeferred } from 'react-native-s/SDeferred';
 
 const FeedItemComponent = React.memo((props: PageProps) => {
     const feedItemId = props.router.params.feedItemId;
@@ -43,7 +44,7 @@ const FeedItemComponent = React.memo((props: PageProps) => {
     );
 
     return (
-        <>
+        <SDeferred>
             <SHeaderView>
                 <AuthorHeader author={author} date={date} />
             </SHeaderView>
@@ -62,7 +63,7 @@ const FeedItemComponent = React.memo((props: PageProps) => {
                 peerId={feedItemId}
                 highlightId={highlightId}
             />
-        </>
+        </SDeferred>
     );
 });
 
