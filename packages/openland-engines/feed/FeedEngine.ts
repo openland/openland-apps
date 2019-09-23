@@ -71,7 +71,7 @@ export class FeedEngine {
 
         this.loading = true;
 
-        const loaded = (await backoff(() => this.engine.client.client.query(FeedQuery, { first: this.engine.options.feedBatchSize, after: this.lastCursor }))).feed;
+        const loaded = (await backoff(() => this.engine.client.client.query(FeedQuery, { first: this.engine.options.feedBatchSize, after: this.lastCursor }, { fetchPolicy: 'network-only' }))).feed;
 
         this.lastCursor = loaded.cursor;
         this.fullyLoaded = typeof this.lastCursor !== 'string';
