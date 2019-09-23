@@ -30,11 +30,11 @@ export interface ZAvatarProps {
 export const avatarSizes: { [key in ZAvatarSize]: { size: number, placeholder: number, dotSize: number, dotPosition: number, dotBorderWidth: number } } = {
     // legacy
     'xx-small': { size: 16, placeholder: 8, dotSize: 6, dotPosition: 0, dotBorderWidth: 1 },
-    'x-small': { size: 24, placeholder: 8, dotSize: 6, dotPosition: 0, dotBorderWidth: 1 },
-    'small': { size: 32, placeholder: 16, dotSize: 10, dotPosition: 0, dotBorderWidth: 2 },
-    'medium': { size: 40, placeholder: 20, dotSize: 12, dotPosition: 0, dotBorderWidth: 2 },
+    'x-small': { size: 24, placeholder: 12, dotSize: 6, dotPosition: 0, dotBorderWidth: 1 },
+    'small': { size: 32, placeholder: 14, dotSize: 10, dotPosition: 0, dotBorderWidth: 2 },
+    'medium': { size: 40, placeholder: 17, dotSize: 12, dotPosition: 0, dotBorderWidth: 2 },
     'large': { size: 56, placeholder: 24, dotSize: 12, dotPosition: 2, dotBorderWidth: 2 },
-    'x-large': { size: 72, placeholder: 32, dotSize: 14, dotPosition: 4, dotBorderWidth: 2 },
+    'x-large': { size: 72, placeholder: 34, dotSize: 14, dotPosition: 4, dotBorderWidth: 2 },
     'xx-large': { size: 96, placeholder: 40, dotSize: 16, dotPosition: 6, dotBorderWidth: 2 },
 };
 
@@ -80,7 +80,7 @@ const ZAvatarInner = XMemo<ZAvatarProps>((props) => {
                 end={{ x: 1, y: 1 }}
             >
                 <View alignItems="center" justifyContent="center" width={size} height={size}>
-                    <Text style={[styles.placeholderText, { fontSize: textSize }]}>{placeholderText}</Text>
+                    <Text style={[styles.placeholderText, { fontSize: textSize }]} allowFontScaling={false}>{placeholderText}</Text>
                 </View>
             </ZLinearGradient>
             {props.online && (
