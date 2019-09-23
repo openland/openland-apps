@@ -57,7 +57,7 @@ interface FilePreviewInnerState {
     downloadState?: DownloadState;
 }
 
-const isVideo = (name: string) => name.toLowerCase().endsWith('.mp4');
+const isVideo = (name: string) => name.toLowerCase().endsWith('.mp4') || (Platform.OS === 'ios' && name.toLowerCase().endsWith('.mov'));
 
 class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePreviewInnerState> {
     subscription?: WatchSubscription;
@@ -175,7 +175,7 @@ class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePr
         }
 
         if (this.content === 'video') {
-            content = <ZVideoComponent uuid={config.uuid} completed={this.state.completed} />;
+            content = <ZVideoComponent uuid={config.uuid} name={config.name} completed={this.state.completed} />;
         }
 
         return (
