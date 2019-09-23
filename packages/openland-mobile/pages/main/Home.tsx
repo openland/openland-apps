@@ -12,6 +12,9 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { NON_PRODUCTION } from '../Init';
 import { Feed } from './Feed';
 import { NotificationCenter } from './NotificationCenter';
+import { isPad } from '../Root';
+
+const showFeed = NON_PRODUCTION && !isPad;
 
 export const Home = XMemo<PageProps>((props) => {
     const [tab, setTab] = React.useState(1);
@@ -25,8 +28,8 @@ export const Home = XMemo<PageProps>((props) => {
                 <View style={{ width: '100%', flexGrow: 1, flexBasis: 0 }}>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 0 ? 1 : 0 }} pointerEvents={tab === 0 ? 'box-none' : 'none'}>
                         <HeaderContextChild enabled={tab === 0}>
-                            {!NON_PRODUCTION && <Explore {...props} />}
-                            {NON_PRODUCTION && <Feed {...props} />}
+                            {!showFeed && <Explore {...props} />}
+                            {showFeed && <Feed {...props} />}
                         </HeaderContextChild>
                     </View>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 1 ? 1 : 0 }} pointerEvents={tab === 1 ? 'box-none' : 'none'}>
@@ -48,7 +51,7 @@ export const Home = XMemo<PageProps>((props) => {
             </ASSafeAreaProvider>
             <View style={{ position: Platform.OS === 'ios' ? 'absolute' : 'relative', bottom: 0, left: 0, right: 0 }}>
                 <AppBarBottom>
-                    {!NON_PRODUCTION && (
+                    {!showFeed && (
                         <AppBarBottomItem
                             dot={discoverDone !== null && !discoverDone.betaIsDiscoverDone}
                             icon={require('assets/ic-discover-24.png')}
@@ -57,7 +60,7 @@ export const Home = XMemo<PageProps>((props) => {
                             onPress={() => setTab(0)}
                         />
                     )}
-                    {NON_PRODUCTION && (
+                    {showFeed && (
                         <AppBarBottomItem
                             icon={require('assets/ic-feed-24.png')}
                             iconSelected={require('assets/ic-feed-filled-24.png')}
