@@ -13,7 +13,7 @@ import { SStatusBar } from 'react-native-s/SStatusBar';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, SecondarinessAlpha } from 'openland-mobile/styles/AppStyles';
 import Toast from '../Toast';
 
 export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose: () => void }>((props) => {
@@ -232,7 +232,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                 >
                     <View flexDirection="column" height={52} paddingHorizontal={56} justifyContent="center">
                         {!!props.config.title && <Text style={{ ...TextStyles.Label2, color: theme.foregroundContrast, textAlign: 'center' }} allowFontScaling={false} numberOfLines={1} ellipsizeMode="tail">{props.config.title}</Text>}
-                        {!!props.config.subtitle && <Text style={{ ...TextStyles.Caption, color: theme.foregroundContrast, textAlign: 'center', opacity: 0.56 }} allowFontScaling={false} numberOfLines={1} ellipsizeMode="tail">{props.config.subtitle}</Text>}
+                        {!!props.config.subtitle && <Text style={{ ...TextStyles.Caption, color: theme.foregroundContrast, textAlign: 'center', opacity: SecondarinessAlpha }} allowFontScaling={false} numberOfLines={1} ellipsizeMode="tail">{props.config.subtitle}</Text>}
                     </View>
                 </Animated.View>
             )}

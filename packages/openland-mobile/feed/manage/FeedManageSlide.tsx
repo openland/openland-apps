@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, TouchableWithoutFeedback, Image, Platform } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { FeedItemShadow } from '../FeedItemShadow';
-import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TextStyles, SecondarinessAlpha } from 'openland-mobile/styles/AppStyles';
 import { SlideCoverAlign, ImageRefInput } from 'openland-api/Types';
 import { ZIconButton } from 'openland-mobile/components/ZIconButton';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
@@ -280,7 +280,7 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
     const footerStyle = showCover && (coverAlign === SlideCoverAlign.Cover || coverAlign === SlideCoverAlign.Bottom) ? 'contrast' : 'default';
     const authorStyles = {
         backgroundColor: theme.type === 'Dark' ? theme.foregroundContrast : theme.backgroundTertiary,
-        opacity: theme.type === 'Dark' ? 0.56 : (headerStyle === 'contrast' ? 0.56 : 1)
+        opacity: theme.type === 'Dark' ? SecondarinessAlpha : (headerStyle === 'contrast' ? SecondarinessAlpha : 1)
     } as ViewStyle;
 
     const inputCanBeDynamic = (!showCover || inputCover) && !attachmentLocal;
