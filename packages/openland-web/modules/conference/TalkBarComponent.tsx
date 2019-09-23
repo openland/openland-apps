@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XAvatar } from 'openland-x/XAvatar';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { XButton } from 'openland-x/XButton';
 import { TalkWatchComponent } from './TalkWatchComponent';
 import { XView } from 'react-mental';
@@ -40,13 +40,11 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                         {data.conference.peers.map(v => (
                             <React.Fragment key={v.id}>
                                 <XView flexDirection="row">
-                                    <XAvatar
-                                        size="m-small"
-                                        style="user"
-                                        objectId={v.user.id}
-                                        objectName={v.user.name}
-                                        online={false}
-                                        cloudImageUuid={v.user.photo || undefined}
+                                    <UAvatar
+                                        size="small"
+                                        id={v.user.id}
+                                        title={v.user.name}
+                                        photo={v.user.photo}
                                     />
                                 </XView>
                                 <XView width={8} />

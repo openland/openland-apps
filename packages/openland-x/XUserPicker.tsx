@@ -3,7 +3,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XAvatar } from 'openland-x/XAvatar';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { XButton } from 'openland-x/XButton';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -170,17 +170,10 @@ class EntriesComponentInner extends React.Component<EntriesComponentProps & { is
                             }
                         >
                             <XHorizontal separator={6} alignItems="center">
-                                <XAvatar
-                                    objectId={e.value}
-                                    objectName={e.label}
-                                    style={
-                                        e.type
-                                            ? e.type === 'Organization'
-                                                ? 'organization'
-                                                : 'user'
-                                            : 'user'
-                                    }
-                                    src={e.photo || ''}
+                                <UAvatar
+                                    id={e.value}
+                                    title={e.label}
+                                    photo={e.photo}
                                     size="small"
                                 />
                                 <XVertical separator={3}>

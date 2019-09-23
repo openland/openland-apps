@@ -7,7 +7,7 @@ import {
     OrganizationWithoutMembersFragment,
 } from 'openland-api/Types';
 import { XLoader } from 'openland-x/XLoader';
-import { XAvatar } from 'openland-x/XAvatar';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import CheckIcon from 'openland-icons/check-form.svg';
 import { useClient } from 'openland-web/utils/useClient';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
@@ -47,11 +47,10 @@ const OrganizationItem = (props: OrganizationItemProps) => {
             hoverBackgroundColor="#F5F5F6"
             onClick={() => props.onSelect(organization.id)}
         >
-            <XAvatar
-                src={organization.photo || undefined}
-                objectName={organization.name}
-                objectId={organization.id}
-                style="colorus"
+            <UAvatar
+                photo={organization.photo || undefined}
+                title={organization.name}
+                id={organization.id}
             />
             <XView flexDirection="column" flexGrow={1} marginLeft={16}>
                 <XView fontSize={15} fontWeight="600">

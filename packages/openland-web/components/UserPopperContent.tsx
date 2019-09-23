@@ -5,7 +5,7 @@ import { XView, XViewRouterContext } from 'react-mental';
 import { UserForMention } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XDate } from 'openland-x/XDate';
-import { XAvatar } from 'openland-x/XAvatar';
+import { UAvatar } from './unicorn/UAvatar';
 import { emoji } from 'openland-y-utils/emoji';
 import { useClient } from 'openland-web/utils/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
@@ -109,13 +109,11 @@ export const UserPopperContent = React.memo(
                                 }
                             }}
                         >
-                            <XAvatar
-                                online={false}
-                                size="l-medium"
-                                style="user"
-                                objectName={user.name}
-                                objectId={user.id}
-                                cloudImageUuid={user.photo || undefined}
+                            <UAvatar
+                                size="large"
+                                title={user.name}
+                                id={user.id}
+                                photo={user.photo}
                             />
                         </XView>
                         <React.Suspense fallback={<div />}>
