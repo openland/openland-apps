@@ -11,7 +11,6 @@ import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { SlideInputLocalAttachment } from 'openland-engines/feed/types';
-import { GlobalSearchEntryKind } from 'openland-api/Types';
 
 const styles = StyleSheet.create({
     searchBox: {
@@ -44,16 +43,13 @@ interface SearchListProps {
 
 const SearchList = XMemo<SearchListProps>((props) => {
     const { query, onSelect } = props;
-    const items = getClient().useGlobalSearch({
-        query,
-        kinds: [GlobalSearchEntryKind.USER, GlobalSearchEntryKind.SHAREDROOM]
-    }, { fetchPolicy: 'cache-and-network' }).items as SlideInputLocalAttachment[];
+    const items = getClient().useGlobalSearch({ query }, { fetchPolicy: 'cache-and-network' }).items;
 
     return (
         <>
             {items.map(item => (
                 <View key={item.id}>
-                    {item.__typename === 'User' && (
+                    {item.__typename === 'User' || item.__typename === 'Organization' && (
                         <ZListItem
                             text={item.name}
                             leftAvatar={{ photo: item.photo, key: item.id, title: item.name }}

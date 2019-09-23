@@ -29,7 +29,7 @@ export interface DataSourceFeedDateItem extends DataSourceItem {
 
 export type DataSourceFeedItem = DataSourceFeedPostItem | DataSourceFeedDateItem;
 
-export type SlideInputLocalAttachment = Types.GlobalSearch_items_User | Types.GlobalSearch_items_SharedRoom;
+export type SlideInputLocalAttachment = Types.GlobalSearch_items_User | Types.GlobalSearch_items_SharedRoom | Types.GlobalSearch_items_Organization;
 export interface SlideInputLocal extends Types.SlideInput {
     key?: string;
     attachmentLocal?: SlideInputLocalAttachment;

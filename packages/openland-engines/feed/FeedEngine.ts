@@ -8,10 +8,8 @@ import { backoff } from 'openland-y-utils/timer';
 import { FeedQuery } from 'openland-api';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { DataSourceFeedItem, SlideInputLocal } from './types';
-import { convertItems, convertPost } from './convert';
+import { convertItems, convertPost, convertSlidesToServerInput } from './convert';
 import UUID from 'uuid/v4';
-import { findSpans } from 'openland-y-utils/findSpans';
-import { PostSpanSymbolToType } from 'openland-y-utils/spans/Span';
 
 const log = createLogger('Engine-Feed');
 
@@ -124,43 +122,8 @@ export class FeedEngine {
         }
     }
 
-    private processSlideInput = (input: SlideInputLocal[]) => {
-        const res: Types.SlideInput[] = [];
-        const slides = input.map(i => ({ ...i }));
-
-        for (let slide of slides) {
-            slide.key = undefined;
-            slide.text = slide.text && slide.text.length > 0 ? slide.text.trim() : undefined;
-
-            const hasCover = slide.cover;
-            const hasText = slide.text && slide.text.length > 0;
-            const hasAttachment = slide.attachmentLocal;
-
-            if (hasText) {
-                slide.spans = findSpans(slide.text || '', PostSpanSymbolToType);
-            }
-
-            if (hasCover) {
-                slide.coverAlign = hasText ? slide.coverAlign : Types.SlideCoverAlign.Cover;
-            } else {
-                slide.coverAlign = undefined;
-            }
-
-            if (hasAttachment) {
-                slide.attachments = [slide.attachmentLocal!.id];
-                slide.attachmentLocal = undefined;
-            }
-
-            if (hasCover || hasText || hasAttachment) {
-                res.push(slide);
-            }
-        }
-
-        return res;
-    }
-
     createPost: (input: SlideInputLocal[], global?: boolean) => Promise<boolean> = async (input, global) => {
-        const slides = this.processSlideInput(input);
+        const slides = convertSlidesToServerInput(input);
 
         if (slides.length < 1) {
             return false;
@@ -180,7 +143,7 @@ export class FeedEngine {
     }
 
     editPost: (id: string, input: SlideInputLocal[]) => Promise<boolean> = async (id, input) => {
-        const slides = this.processSlideInput(input);
+        const slides = convertSlidesToServerInput(input);
 
         if (slides.length < 1) {
             return false;
