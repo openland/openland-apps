@@ -5,6 +5,7 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { css } from 'linaria';
+import { PlaceholderOrange, PlaceholderRed, PlaceholderGreen, PlaceholderBlue, PlaceholderCyan, PlaceholderPurple } from 'openland-y-utils/themes/placeholders';
 
 type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
 
@@ -19,12 +20,12 @@ export interface UAvatarProps extends XViewProps {
 }
 
 export const PlaceholderColor = [
-    'linear-gradient(138deg, #ffb600, #ff8d00)',
-    'linear-gradient(138deg, #ff655d, #ff3d33)',
-    'linear-gradient(138deg, #59d23c, #21ac00)',
-    'linear-gradient(138deg, #11b2ff, #1970ff)',
-    'linear-gradient(138deg, #00d1d4, #00afc8)',
-    'linear-gradient(138deg, #aa22ff, #8e00e6)',
+    `linear-gradient(138deg, ${PlaceholderOrange.start}, ${PlaceholderOrange.end})`,
+    `linear-gradient(138deg, ${PlaceholderRed.start}, ${PlaceholderRed.end})`,
+    `linear-gradient(138deg, ${PlaceholderGreen.start}, ${PlaceholderGreen.end})`,
+    `linear-gradient(138deg, ${PlaceholderBlue.start}, ${PlaceholderBlue.end})`,
+    `linear-gradient(138deg, ${PlaceholderCyan.start}, ${PlaceholderCyan.end})`,
+    `linear-gradient(138deg, ${PlaceholderPurple.start}, ${PlaceholderPurple.end})`,
 ];
 
 const AvatarSizes: { [key in UAvatarSize]: { size: number, placeholder: number, dotSize: number, dotPosition: number, dotBorderWidth: number } } = {

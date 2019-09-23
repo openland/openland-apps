@@ -6,6 +6,7 @@ import { XPhotoRef } from './XCloudImage';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { XImage } from './XImage';
+import { PlaceholderColor } from 'openland-web/components/unicorn/UAvatar';
 
 export type XAvatarSize =
     | 'm-small'
@@ -336,15 +337,6 @@ const AvatarStub = Glamorous.div({
     },
 });
 
-const ColorusArr = [
-    'linear-gradient(138deg, #ffb600, #ff8d00)',
-    'linear-gradient(138deg, #ff655d, #ff3d33)',
-    'linear-gradient(138deg, #59d23c, #21ac00)',
-    'linear-gradient(138deg, #11b2ff, #1970ff)',
-    'linear-gradient(138deg, #00d1d4, #00afc8)',
-    'linear-gradient(138deg, #aa22ff, #8e00e6)',
-];
-
 const ColorusStub = Glamorous.div<{ backgroundImage: string; fontSize: number }>(props => ({
     width: '100%',
     height: '100%',
@@ -479,11 +471,11 @@ class XAvatarWrapper extends React.Component<XAvatarProps> {
                                     fontSize={fontSize}
                                     backgroundImage={
                                         (props.objectId &&
-                                            ColorusArr[
+                                            PlaceholderColor[
                                             Math.abs(doSimpleHash(props.objectId)) %
-                                            ColorusArr.length
+                                            PlaceholderColor.length
                                             ]) ||
-                                        ColorusArr[1]
+                                        PlaceholderColor[1]
                                     }
                                 >
                                     {initials}
