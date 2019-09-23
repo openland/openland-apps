@@ -20,6 +20,9 @@ fragment SlideFragment on Slide {
         roomPhoto: photo
         title
       }
+      ... on Organization {
+        ...OrganizationShort
+      }
     }
     cover {
       __typename

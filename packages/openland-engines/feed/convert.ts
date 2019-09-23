@@ -125,6 +125,8 @@ export const convertSlidesToServerInput = (input: SlideInputLocal[]) => {
 
         if (hasText) {
             slide.spans = findSpans(slide.text || '', PostSpanSymbolToType);
+        } else {
+            slide.text = undefined;
         }
 
         if (hasCover) {

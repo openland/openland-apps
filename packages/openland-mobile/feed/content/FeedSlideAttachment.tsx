@@ -127,7 +127,7 @@ const InnerOrganization = React.memo((props: { item: SlideFragment_attachments_O
             id={id}
             photo={photo}
             title={name}
-            subtitle={about}
+            subtitle={about || undefined}
             action={() => router.push('ProfileOrganization', { id })}
             actionTitle={isCommunity ? 'View community' : 'View organization'}
         />
