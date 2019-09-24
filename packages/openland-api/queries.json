@@ -11502,7 +11502,7 @@
 				{
 					"responseName": "item",
 					"fieldName": "alphaFeedItem",
-					"type": "FeedItem!",
+					"type": "FeedItem",
 					"args": [
 						{
 							"name": "id",

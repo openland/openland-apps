@@ -1876,10 +1876,10 @@ private val FeedSelector = obj(
                 )))
         )
 private val FeedItemSelector = obj(
-            field("alphaFeedItem","item", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+            field("alphaFeedItem","item", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("FeedItem", FeedItemFullSelector)
-                )))
+                ))
         )
 private val FetchPushSettingsSelector = obj(
             field("pushSettings","pushSettings", notNull(obj(

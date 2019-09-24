@@ -1870,10 +1870,10 @@ private let FeedSelector = obj(
                 )))
         )
 private let FeedItemSelector = obj(
-            field("alphaFeedItem","item", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+            field("alphaFeedItem","item", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("FeedItem", FeedItemFullSelector)
-                )))
+                ))
         )
 private let FetchPushSettingsSelector = obj(
             field("pushSettings","pushSettings", notNull(obj(

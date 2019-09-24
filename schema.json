@@ -2725,13 +2725,9 @@
               }
             ],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "UNION",
-                "name": "FeedItem",
-                "ofType": null
-              }
+              "kind": "UNION",
+              "name": "FeedItem",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
