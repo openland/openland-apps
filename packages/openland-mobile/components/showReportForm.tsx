@@ -20,11 +20,11 @@ const report = async (id: string, type: 'SPAM' | 'INAPPROPRIATE') => {
 export const showReportForm = (id: string) => {
     const builder = new ActionSheetBuilder();
 
-    builder.action('It\'s Spam', () => {
+    builder.action('It\'s spam', () => {
         report(id, 'SPAM');
     });
 
-    builder.action('It\'s Inappropriate', () => {
+    builder.action('It\'s inappropriate', () => {
         report(id, 'INAPPROPRIATE');
     });
 
