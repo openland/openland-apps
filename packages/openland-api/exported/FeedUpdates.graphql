@@ -1,6 +1,7 @@
-subscription FeedUpdates {
-  event: homeFeedUpdates {
+subscription FeedUpdates($state: String) {
+  event: homeFeedUpdates(fromState: $state) {
     __typename
+    state
     updates {
       __typename
       ...FeedUpdateFragment

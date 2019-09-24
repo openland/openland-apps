@@ -95,11 +95,12 @@ export const FeedUpdateFragment = gql`
 `;
 
 export const FeedUpdatesSubscription = gql`
-    subscription FeedUpdates {
-        event: homeFeedUpdates {
+    subscription FeedUpdates($state: String) {
+        event: homeFeedUpdates(fromState: $state) {
             updates {
                 ...FeedUpdateFragment
             }
+            state
         }
     }
 

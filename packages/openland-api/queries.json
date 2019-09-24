@@ -11890,13 +11890,28 @@
 			"operationName": "FeedUpdates",
 			"operationType": "subscription",
 			"rootType": "Subscription",
-			"variables": [],
-			"source": "subscription FeedUpdates {\n  event: homeFeedUpdates {\n    __typename\n    updates {\n      __typename\n      ...FeedUpdateFragment\n    }\n  }\n}",
+			"variables": [
+				{
+					"name": "state",
+					"type": "String"
+				}
+			],
+			"source": "subscription FeedUpdates($state: String) {\n  event: homeFeedUpdates(fromState: $state) {\n    __typename\n    updates {\n      __typename\n      ...FeedUpdateFragment\n    }\n    state\n  }\n}",
 			"fields": [
 				{
 					"responseName": "event",
 					"fieldName": "homeFeedUpdates",
-					"type": "FeedUpdateContainer",
+					"type": "FeedUpdateContainer!",
+					"args": [
+						{
+							"name": "fromState",
+							"value": {
+								"kind": "Variable",
+								"variableName": "state"
+							},
+							"type": "String"
+						}
+					],
 					"isConditional": false,
 					"isDeprecated": false,
 					"fields": [
@@ -11924,6 +11939,13 @@
 								"FeedUpdateFragment"
 							],
 							"inlineFragments": []
+						},
+						{
+							"responseName": "state",
+							"fieldName": "state",
+							"type": "String!",
+							"isConditional": false,
+							"isDeprecated": false
 						}
 					],
 					"fragmentSpreads": [],
@@ -11942,8 +11964,8 @@
 				"SpanFragment",
 				"UserForMention"
 			],
-			"sourceWithFragments": "subscription FeedUpdates {\n  event: homeFeedUpdates {\n    __typename\n    updates {\n      __typename\n      ...FeedUpdateFragment\n    }\n  }\n}\nfragment FeedUpdateFragment on FeedUpdate {\n  __typename\n  ... on FeedItemReceived {\n    item {\n      __typename\n      ...FeedItemFull\n    }\n  }\n  ... on FeedItemUpdated {\n    item {\n      __typename\n      ...FeedItemFull\n    }\n  }\n  ... on FeedItemDeleted {\n    item {\n      __typename\n      ...FeedItemFull\n    }\n  }\n}\nfragment FeedItemFull on FeedItem {\n  __typename\n  ... on FeedPost {\n    id\n    date\n    author {\n      __typename\n      ...FeedPostAuthorFragment\n    }\n    edited\n    canEdit\n    commentsCount\n    fallback\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n    slides {\n      __typename\n      ...SlideFragment\n    }\n  }\n}\nfragment FeedPostAuthorFragment on FeedPostAuthor {\n  __typename\n  ... on User {\n    ...UserShort\n  }\n  ... on Organization {\n    ...OrganizationShort\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment SlideFragment on Slide {\n  __typename\n  ... on TextSlide {\n    id\n    text\n    spans {\n      __typename\n      ...SpanFragment\n    }\n    cover {\n      __typename\n      url\n      metadata {\n        __typename\n        name\n        mimeType\n        size\n        isImage\n        imageWidth\n        imageHeight\n        imageFormat\n      }\n    }\n    coverAlign\n    attachments {\n      __typename\n      ... on User {\n        ...UserShort\n      }\n      ... on SharedRoom {\n        id\n        kind\n        title\n        roomPhoto: photo\n        membersCount\n        membership\n        organization {\n          __typename\n          id\n          name\n          photo\n        }\n      }\n      ... on Organization {\n        ...OrganizationShort\n      }\n    }\n  }\n}\nfragment SpanFragment on MessageSpan {\n  __typename\n  offset\n  length\n  ... on MessageSpanUserMention {\n    user {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanMultiUserMention {\n    users {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanRoomMention {\n    room {\n      __typename\n      ... on PrivateRoom {\n        id\n        user {\n          __typename\n          id\n          name\n        }\n      }\n      ... on SharedRoom {\n        id\n        title\n      }\n    }\n  }\n  ... on MessageSpanLink {\n    url\n  }\n  ... on MessageSpanDate {\n    date\n  }\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}",
-			"operationId": "c8192b102ff57a6fcbe31db63070a39546ba532c9d649ce624ace143d1efc784"
+			"sourceWithFragments": "subscription FeedUpdates($state: String) {\n  event: homeFeedUpdates(fromState: $state) {\n    __typename\n    updates {\n      __typename\n      ...FeedUpdateFragment\n    }\n    state\n  }\n}\nfragment FeedUpdateFragment on FeedUpdate {\n  __typename\n  ... on FeedItemReceived {\n    item {\n      __typename\n      ...FeedItemFull\n    }\n  }\n  ... on FeedItemUpdated {\n    item {\n      __typename\n      ...FeedItemFull\n    }\n  }\n  ... on FeedItemDeleted {\n    item {\n      __typename\n      ...FeedItemFull\n    }\n  }\n}\nfragment FeedItemFull on FeedItem {\n  __typename\n  ... on FeedPost {\n    id\n    date\n    author {\n      __typename\n      ...FeedPostAuthorFragment\n    }\n    edited\n    canEdit\n    commentsCount\n    fallback\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n    slides {\n      __typename\n      ...SlideFragment\n    }\n  }\n}\nfragment FeedPostAuthorFragment on FeedPostAuthor {\n  __typename\n  ... on User {\n    ...UserShort\n  }\n  ... on Organization {\n    ...OrganizationShort\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment SlideFragment on Slide {\n  __typename\n  ... on TextSlide {\n    id\n    text\n    spans {\n      __typename\n      ...SpanFragment\n    }\n    cover {\n      __typename\n      url\n      metadata {\n        __typename\n        name\n        mimeType\n        size\n        isImage\n        imageWidth\n        imageHeight\n        imageFormat\n      }\n    }\n    coverAlign\n    attachments {\n      __typename\n      ... on User {\n        ...UserShort\n      }\n      ... on SharedRoom {\n        id\n        kind\n        title\n        roomPhoto: photo\n        membersCount\n        membership\n        organization {\n          __typename\n          id\n          name\n          photo\n        }\n      }\n      ... on Organization {\n        ...OrganizationShort\n      }\n    }\n  }\n}\nfragment SpanFragment on MessageSpan {\n  __typename\n  offset\n  length\n  ... on MessageSpanUserMention {\n    user {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanMultiUserMention {\n    users {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanRoomMention {\n    room {\n      __typename\n      ... on PrivateRoom {\n        id\n        user {\n          __typename\n          id\n          name\n        }\n      }\n      ... on SharedRoom {\n        id\n        title\n      }\n    }\n  }\n  ... on MessageSpanLink {\n    url\n  }\n  ... on MessageSpanDate {\n    date\n  }\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}",
+			"operationId": "a3cfb3799c3330fa5346d6bf3cd580ae3ad5a1812863620db9a1b1a393e03a79"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/MyNotificationsCenter.ts",
