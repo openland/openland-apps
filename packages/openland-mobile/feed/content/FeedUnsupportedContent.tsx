@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
 
 const styles = StyleSheet.create({
     box: {
@@ -22,13 +23,13 @@ const styles = StyleSheet.create({
 });
 
 interface FeedUnsupportedContentProps {
-    fallback: string;
+    post: DataSourceFeedPostItem;
 }
 
 export const FeedUnsupportedContent = React.memo((props: FeedUnsupportedContentProps) => {
     const theme = React.useContext(ThemeContext);
-    const { fallback } = props;
-    const text = fallback.length > 0 ? fallback.trim() : 'Unsupported content';
+    const { message, fallback } = props.post;
+    const text = message && message.length ? message : fallback;
     const textStyle = text.length < 200 ? (text.length < 100 ? styles.textLarge : styles.textMedium) : styles.text;
 
     return (

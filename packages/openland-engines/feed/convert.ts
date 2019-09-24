@@ -27,6 +27,7 @@ export const convertPost = (src: Types.Feed_feed_items, engine: MessengerEngine)
         edited: src.edited,
         canEdit: src.canEdit,
         commentsCount: src.commentsCount,
+        message: src.message || undefined,
         fallback: src.fallback || '',
         reactionsReduced: reduceReactions(src.reactions, engine.user.id),
         reactionsLabel: getReactionsLabel(src.reactions, engine.user.id),
@@ -90,28 +91,36 @@ export const convertItems = (items: Types.Feed_feed_items[], engine: MessengerEn
     return res;
 };
 
-export const convertSlidesToLocalInput = (src: Types.FeedItemFull_slides[]): SlideInputLocal[] => {
+export const convertToSlideInputLocal = (src: Types.FeedItemFull): SlideInputLocal[] => {
     const res: SlideInputLocal[] = [];
 
-    src.map(slide => {
-        if (slide.__typename === 'TextSlide') {
-            res.push({
-                key: UUID(),
-                type: Types.SlideType.Text,
-                text: slide.text,
-                cover: slide.cover ? {
-                    uuid: slide.cover.url.split('https://ucarecdn.com/')[1].split('/')[0],
-                } : null,
-                coverAlign: slide.coverAlign,
-                attachmentLocal: slide.attachments[0]
-            });
-        }
-    });
+    if (src.slides.length) {
+        src.slides.map(slide => {
+            if (slide.__typename === 'TextSlide') {
+                res.push({
+                    key: UUID(),
+                    type: Types.SlideType.Text,
+                    text: slide.text,
+                    cover: slide.cover ? {
+                        uuid: slide.cover.url.split('https://ucarecdn.com/')[1].split('/')[0],
+                    } : null,
+                    coverAlign: slide.coverAlign,
+                    attachmentLocal: slide.attachments[0]
+                });
+            }
+        });
+    } else {
+        res.push({
+            key: UUID(),
+            type: Types.SlideType.Text,
+            text: src.message
+        });
+    }
 
     return res;
 };
 
-export const convertSlidesToServerInput = (input: SlideInputLocal[]) => {
+export const convertToSlideInput = (input: SlideInputLocal[]) => {
     const res: Types.SlideInput[] = [];
     const slides = input.map(i => ({ ...i }));
 

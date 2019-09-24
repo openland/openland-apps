@@ -11,6 +11,7 @@ fragment FeedItemFull on FeedItem {
     edited
     fallback
     id
+    message
     reactions {
       __typename
       reaction
