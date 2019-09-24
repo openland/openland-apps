@@ -359,21 +359,21 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     moveOrDeletelastReadedDivider = () => {
-        if (!this.isOpen && this.lastReadedDividerMessageId) {
-            let dividerKey = createNewMessageDividerSourceItem(this.lastReadedDividerMessageId).key;
-            if (this.dataSource.hasItem(dividerKey)) {
-                this.dataSource.removeItem(dividerKey);
-                this.lastReadedDividerMessageId = undefined;
-                if (this.lastTopMessageRead) {
-                    let divider = createNewMessageDividerSourceItem(this.lastTopMessageRead);
-                    let targetIndex = this.dataSource.findIndex(this.lastTopMessageRead);
-                    if ((targetIndex > 0 || !this.forwardFullyLoaded) && !this.dataSource.hasItem(divider.key)) {
-                        this.dataSource.addItem(divider, targetIndex, true);
-                        this.lastReadedDividerMessageId = this.lastTopMessageRead;
-                    }
-                }
-            }
-        }
+        // if (!this.isOpen && this.lastReadedDividerMessageId) {
+        //     let dividerKey = createNewMessageDividerSourceItem(this.lastReadedDividerMessageId).key;
+        //     if (this.dataSource.hasItem(dividerKey)) {
+        //         this.dataSource.removeItem(dividerKey);
+        //         this.lastReadedDividerMessageId = undefined;
+        //         if (this.lastTopMessageRead) {
+        //             let divider = createNewMessageDividerSourceItem(this.lastTopMessageRead);
+        //             let targetIndex = this.dataSource.findIndex(this.lastTopMessageRead);
+        //             if ((targetIndex > 0 || !this.forwardFullyLoaded) && !this.dataSource.hasItem(divider.key)) {
+        //                 this.dataSource.addItem(divider, targetIndex, true);
+        //                 this.lastReadedDividerMessageId = this.lastTopMessageRead;
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     onOpen = () => {
@@ -817,23 +817,23 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     private markReadIfNeeded = () => {
-        let id: string | null = null;
-        for (let i = this.messages.length - 1; i >= 0; i--) {
-            let msg = this.messages[i];
-            if (!isPendingMessage(msg)) {
-                id = msg.id;
-                break;
-            }
-        }
-        if (id !== null && id !== this.lastTopMessageRead) {
-            this.lastTopMessageRead = id;
-            this.engine.client.client.mutate(RoomReadMutation, {
-                id: this.conversationId,
-                mid: id
-            });
+        // let id: string | null = null;
+        // for (let i = this.messages.length - 1; i >= 0; i--) {
+        //     let msg = this.messages[i];
+        //     if (!isPendingMessage(msg)) {
+        //         id = msg.id;
+        //         break;
+        //     }
+        // }
+        // if (id !== null && id !== this.lastTopMessageRead) {
+        //     this.lastTopMessageRead = id;
+        //     this.engine.client.client.mutate(RoomReadMutation, {
+        //         id: this.conversationId,
+        //         mid: id
+        //     });
 
-            this.moveOrDeletelastReadedDivider();
-        }
+        //     this.moveOrDeletelastReadedDivider();
+        // }
     }
 
     private updateHandler = async (event: any) => {

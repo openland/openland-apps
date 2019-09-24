@@ -465,6 +465,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       var pendingCells: [String: RNAsyncCell] = [:]
       let lockObj = NSObject()
       for i in from..<from+count {
+        print(i, from, count, state.items.count)
         myGroup.enter()
         DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async {
           let itm = state.items[i]
@@ -528,6 +529,24 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
             }
           }
         }, completion: nil)
+      }
+    }
+  }
+  
+  func onCompletedForward(state: RNAsyncDataViewState) {
+    self.queue.async {
+      DispatchQueue.main.async {
+//        self.loadingCell.loading = false
+//        self.node.performBatch(animated: false, updates: {
+//          self.state = state
+//          self.node.reloadSections(IndexSet(integer: 2))
+//          if self.batchContext != nil {
+//            DispatchQueue.main.async {
+//              self.batchContext?.completeBatchFetching(true)
+//              self.batchContext = nil
+//            }
+//          }
+//        }, completion: nil)
       }
     }
   }

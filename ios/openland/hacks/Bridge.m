@@ -61,13 +61,14 @@ RCT_EXTERN_METHOD(requestInitialUrl)
 @end
 
 @interface RCT_EXTERN_MODULE(RNAsyncDataViewManager, NSObject)
-RCT_EXTERN_METHOD(dataViewInit:(NSString *)dataSourceKey config: (NSString *)config completed: (nonnull BOOL) completed completedForward: (nonnull BOOL) completedForward)
-RCT_EXTERN_METHOD(dataViewAddItem:(NSString *)dataSourceKey key: (NSString *)key config: (NSString *)config index: (nonnull NSNumber)key)
+RCT_EXTERN_METHOD(dataViewInit:(NSString *)dataSourceKey config: (NSString *)config completed: (nonnull BOOL)completed completedForward: (nonnull BOOL)completedForward anchor: (NSString *)anchor)
+RCT_EXTERN_METHOD(dataViewAddItem:(NSString *)dataSourceKey key: (NSString *)key config: (NSString *)config index: (nonnull NSNumber)key isAnchor: (nonnull BOOL)isAnchor)
 RCT_EXTERN_METHOD(dataViewUpdateItem:(NSString *)dataSourceKey key: (NSString *)key config: (NSString *)config index: (nonnull NSNumber)key)
 RCT_EXTERN_METHOD(dataViewRemoveItem:(NSString *)dataSourceKey key: (NSString *)key index: (nonnull NSNumber)key)
 RCT_EXTERN_METHOD(dataViewMoveItem:(NSString *)dataSourceKey key: (NSString *)key fromIndex: (nonnull NSNumber)fromIndex toIndex: (nonnull NSNumber)toIndex)
 RCT_EXTERN_METHOD(dataViewLoadedMore:(NSString *)dataSourceKey config: (NSString *)config completed: (nonnull BOOL) completed)
-RCT_EXTERN_METHOD(dataViewLoadedMoreForward:(NSString *)dataSourceKey config: (NSString *)config completed: (nonnull BOOL) completed)
+RCT_EXTERN_METHOD(dataViewLoadedMoreForward:(NSString *)dataSourceKey config: (NSString *)config completed: (nonnull BOOL)completed)
 RCT_EXTERN_METHOD(dataViewScrollToKeyReqested:(NSString *)dataSourceKey scrollToKey: (NSString *)scrollToKey)
 RCT_EXTERN_METHOD(dataViewCompleted:(NSString *)dataSourceKey)
+RCT_EXTERN_METHOD(dataViewCompletedForward:(NSString *)dataSourceKey)
 @end

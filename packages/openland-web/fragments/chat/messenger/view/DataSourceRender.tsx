@@ -3,7 +3,7 @@ import { DataSourceItem, ReadableDataSource, useDataSource } from 'openland-y-ut
 
 export interface XListViewProps<T extends DataSourceItem> {
     dataSource: ReadableDataSource<T>;
-    renderItem: React.ComponentClass<{ item: T, index: number }> | React.StatelessComponent<{ item: T, index: number }>;
+    renderItem: React.ComponentClass<{ item: T }> | React.StatelessComponent<{ item: T }>;
     renderLoading: React.ComponentClass<any> | React.StatelessComponent<any>;
     renderEmpty?: () => JSX.Element;
     reverce?: boolean;
@@ -73,7 +73,6 @@ export const DataSourceRender = React.memo(function <T extends DataSourceItem>(
         return <props.renderItem
             key={item.key}
             item={item}
-            index={items.length - i}
         />;
     });
 
