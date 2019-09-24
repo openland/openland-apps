@@ -17,7 +17,7 @@ const wrapper = css`
 `;
 
 interface CommentsListProps {
-    messageId: string;
+    peerId: string;
     groupId?: string;
     highlightId?: string;
     onReply: (id: string) => void;
@@ -102,18 +102,18 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Com
 });
 
 export const CommentsList = React.memo((props: CommentsListProps) => {
-    const { messageId } = props;
+    const { peerId } = props;
     const client = useClient();
-    const comments = client.useComments({ peerId: messageId }, { fetchPolicy: 'cache-and-network' }).comments.comments;
+    const comments = client.useComments({ peerId }, { fetchPolicy: 'cache-and-network' }).comments.comments;
 
     const updateHandler = async (event: CommentWatch_event_CommentUpdateSingle_update) => {
         if (event.__typename === 'CommentReceived') {
-            await client.refetchComments({ peerId: messageId });
+            await client.refetchComments({ peerId });
         }
     };
 
     React.useEffect(() => {
-        const watcher = new SequenceModernWatcher('comment messageId:' + messageId, client.subscribeCommentWatch({ peerId: messageId }), client.client, updateHandler, undefined, { peerId: messageId }, null);
+        const watcher = new SequenceModernWatcher('comment peerId:' + peerId, client.subscribeCommentWatch({ peerId }), client.client, updateHandler, undefined, { peerId }, null);
 
         return () => {
             watcher.destroy();

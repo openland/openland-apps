@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MessageContent } from '../../chat/messenger/message/MessageContent';
+import { MessageContent } from '../../fragments/chat/messenger/message/MessageContent';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { emoji } from 'openland-y-utils/emoji';
