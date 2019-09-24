@@ -92,7 +92,7 @@ interface NotificationViewProps {
 export const NotificationView = React.memo((props: NotificationViewProps) => {
     const client = useClient();
     const { notification } = props;
-    const { id, date, sender, text, attachments, textSpans, fallback, senderNameEmojify, peerRootId, room, replyQuoteTextEmojify, notificationType, notificationId, isSubscribedMessageComments } = notification;
+    const { id, date, sender, text, attachments, textSpans, fallback, senderNameEmojify, peerRootId, room, replyQuoteTextEmojify, notificationType, notificationId, isSubscribedMessageComments, peerRootType } = notification;
     const sharedRoom = room && room.__typename === 'SharedRoom' ? room as RoomNano_SharedRoom : undefined;
 
     // Sorry universe
@@ -155,7 +155,7 @@ export const NotificationView = React.memo((props: NotificationViewProps) => {
                 />
                 {notificationType === 'new_comment' && (
                     <div className={toolsWrapperClass}>
-                        <UIconLabeled path={`/message/${peerRootId}`} icon={<ReplyIcon />} label="Reply" />
+                        <UIconLabeled path={`/${peerRootType === 'CommentPeerRootFeedItem' ? 'feed' : 'message'}/${peerRootId}`} icon={<ReplyIcon />} label="Reply" />
                         <UIconButton size="small" icon={<MoreHIcon />} onClick={toolsShow} active={toolsVisible} />
                     </div>
                 )}

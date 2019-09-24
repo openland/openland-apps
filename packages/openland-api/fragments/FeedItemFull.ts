@@ -76,6 +76,7 @@ export const FeedItemFull = gql`
             edited
             canEdit
             commentsCount
+            message
             fallback
             reactions {
                 user {

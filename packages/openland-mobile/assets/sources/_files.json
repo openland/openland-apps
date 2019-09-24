@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-report",
+            "src": "ic-report-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-at",
             "src": "ic-at-12.svg",
             "sizes": [

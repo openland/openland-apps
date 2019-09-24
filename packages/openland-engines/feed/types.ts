@@ -15,6 +15,7 @@ export interface DataSourceFeedPostItem extends DataSourceItem {
     edited: boolean;
     canEdit: boolean;
     commentsCount: number;
+    message?: string;
     fallback: string;
     reactions: Types.FeedItemFull_reactions[];
     reactionsReduced: ReactionReduced[];

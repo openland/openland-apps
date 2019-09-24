@@ -57,6 +57,8 @@ routes.add('/authorization/:step', '/auth/root');
 
 routes.add('/feed', '/unicorn/index');
 routes.add('/feed/', '/unicorn/index');
+routes.add('/feed/:id', '/unicorn/index');
+routes.add('/feed/:id/', '/unicorn/index');
 routes.add('/discover/recommendations', '/unicorn/index');
 routes.add('/discover/groups', '/unicorn/index');
 routes.add('/discover/communities', '/unicorn/index');

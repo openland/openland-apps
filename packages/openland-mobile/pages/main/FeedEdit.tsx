@@ -8,7 +8,7 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import Toast from 'openland-mobile/components/Toast';
 import { SHeader } from 'react-native-s/SHeader';
-import { convertSlidesToLocalInput } from 'openland-engines/feed/convert';
+import { convertToSlideInputLocal } from 'openland-engines/feed/convert';
 
 const FeedEditComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -21,7 +21,7 @@ const FeedEditComponent = React.memo((props: PageProps) => {
         return null;
     }
 
-    const initial = convertSlidesToLocalInput(item.slides);
+    const initial = convertToSlideInputLocal(item);
     const handleSent = React.useCallback(async (slides: SlideInputLocal[]) => {
         startLoader();
 

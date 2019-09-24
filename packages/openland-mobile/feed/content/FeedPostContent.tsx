@@ -40,7 +40,7 @@ interface FeedPostContentProps {
 export const FeedPostContent = React.memo((props: FeedPostContentProps) => {
     const theme = React.useContext(ThemeContext);
     const { width, post, onLongPress, onSlideChange, wrapped } = props;
-    const { slides, fallback } = post;
+    const { slides } = post;
 
     const [currentSlide, setCurreentSlide] = React.useState(0);
     const handlePrevPress = React.useCallback(() => {
@@ -91,7 +91,7 @@ export const FeedPostContent = React.memo((props: FeedPostContentProps) => {
                 </View>
             )}
 
-            {slides.length <= 0 && <FeedUnsupportedContent fallback={fallback} />}
+            {slides.length <= 0 && <FeedUnsupportedContent post={post} />}
         </View>
     );
 });

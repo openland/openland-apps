@@ -61,9 +61,9 @@ export const ZDocumentExt = (props: ZDocumentExtProps) => {
     const theme = React.useContext(ThemeContext);
     const { name, loading, size = 'medium' } = props;
     const colorByExtension = {
-        'xlsx': theme.type === 'Dark' ? theme.tintInverted : theme.tintGreen,
-        'zip': theme.type === 'Dark' ? theme.tintInverted : theme.tintOrange,
-        'pdf': theme.type === 'Dark' ? theme.tintInverted : theme.tintRed
+        'xlsx': theme.tintGreen,
+        'zip': theme.tintOrange,
+        'pdf': theme.tintRed
     };
 
     const ext = getExtension(name);
@@ -71,7 +71,7 @@ export const ZDocumentExt = (props: ZDocumentExtProps) => {
     const cornerFirstImage = size === 'large' ? require('assets/ic-file-preview-corner-1-18.png') : require('assets/ic-file-preview-corner-1-12.png');
     const cornerSecondImage = size === 'large' ? require('assets/ic-file-preview-corner-2-18.png') : require('assets/ic-file-preview-corner-2-12.png');
     const containerImage = size === 'large' ? require('assets/ic-document-preview-72.png') : require('assets/ic-document-preview-48.png');
-    const tintColor = colorByExtension[ext] || (theme.type === 'Dark' ? theme.tintInverted : theme.accentPrimary);
+    const tintColor = theme.type === 'Dark' ? theme.tintInverted : (colorByExtension[ext] || theme.accentPrimary);
 
     return (
         <View style={[styles.box, { width: boxSize, height: boxSize }]}>

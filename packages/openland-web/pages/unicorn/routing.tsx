@@ -17,6 +17,7 @@ import { GroupProfileFragment } from 'openland-web/fragments/group/GroupProfileF
 import { MessageFragment } from 'openland-web/fragments/message/MessageFragment';
 import { FeedFragment } from 'openland-web/fragments/feed/FeedFragment';
 import { SettingsFinanceFragment } from 'openland-web/fragments/finance/SettingsFinanceFragment';
+import { FeedItemFragment } from 'openland-web/fragments/feed/FeedItemFragment';
 
 const routing = new URouting();
 
@@ -36,6 +37,7 @@ routing.addRoute('/notifications', () => NotificationsFragment);
 
 // Discover
 routing.addRoute('/feed', () => FeedFragment);
+routing.addRoute('/feed/:id', () => FeedItemFragment);
 routing.addRoute('/discover/recommendations', () => RecommendationsFragment);
 routing.addRoute('/discover/groups', () => DiscoverGroupsFragment);
 

@@ -71,7 +71,7 @@ class FeedHandlersClass {
         } else {
             builder.action('Report', () => {
                 showReportForm(id);
-            }, false, require('assets/ic-info-24.png'));
+            }, false, require('assets/ic-report-24.png'));
         }
 
         builder.show(fromLongPress);

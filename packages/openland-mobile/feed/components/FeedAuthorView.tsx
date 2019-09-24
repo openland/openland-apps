@@ -25,12 +25,13 @@ const styles = StyleSheet.create({
 interface FeedAuthorViewProps {
     author: FeedPostAuthorFragment;
     style: 'default' | 'media';
+    maxWidth: number;
 }
 
 export const FeedAuthorView = React.memo((props: FeedAuthorViewProps) => {
     const router = getMessenger().history.navigationManager;
     const theme = React.useContext(ThemeContext);
-    const { author, style } = props;
+    const { author, style, maxWidth } = props;
 
     const color = style === 'default' ? theme.foregroundPrimary : theme.foregroundContrast;
     const orgOpacity = style === 'default' ? 1 : 0.56;
@@ -45,16 +46,19 @@ export const FeedAuthorView = React.memo((props: FeedAuthorViewProps) => {
 
     return (
         <TouchableOpacity onPress={handlePress} activeOpacity={0.6}>
-            <View style={styles.sender}>
+            <View style={[styles.sender, { maxWidth }]}>
                 <ZAvatar size="x-small" src={author.photo} placeholderKey={author.id} placeholderTitle={author.name} />
-                <Text style={[styles.senderName, { color }]} allowFontScaling={false}>
+                <Text style={[styles.senderName, { color }]} allowFontScaling={false} numberOfLines={1} ellipsizeMode="tail">
                     {author.name}
+                    {author.__typename === 'User' && author.primaryOrganization && (
+                        <>
+                            {'   '}
+                            <Text style={[styles.senderOrg, { color, opacity: orgOpacity }]} allowFontScaling={false}>
+                                {author.primaryOrganization.name}
+                            </Text>
+                        </>
+                    )}
                 </Text>
-                {author.__typename === 'User' && author.primaryOrganization && (
-                    <Text style={[styles.senderOrg, { color, opacity: orgOpacity }]} allowFontScaling={false}>
-                        {author.primaryOrganization.name}
-                    </Text>
-                )}
             </View>
         </TouchableOpacity>
     );

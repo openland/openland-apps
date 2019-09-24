@@ -65,8 +65,20 @@ export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> 
                     this.stateHandler(event.state);
                 }
             });
+        } else if (event.state && event.updates) {
+            // handle batch updates for subscriptions without seq
+            this.currentState = event.state;
+            this.subscription.updateVariables({ ...this.variables, state: this.currentState });
+            for (let u of event.updates) {
+                this.sequenceHandler.push(u);
+            }
+            this.sequenceHandler.doAfter(() => {
+                if (this.stateHandler) {
+                    this.stateHandler(event.state);
+                }
+            });
         } else if (event.updates) {
-            // handle batch updates for subscriptions without state
+            // handle batch updates for subscriptions without seq and state
             for (let u of event.updates) {
                 this.sequenceHandler.push(u);
             }

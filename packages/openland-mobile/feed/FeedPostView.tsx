@@ -75,6 +75,7 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
                             style={metaStyle}
                             currentSlide={currentSlide + 1}
                             slidesCount={slides.length}
+                            width={containerWidth}
                         />
                         <FeedPostContent
                             post={item}

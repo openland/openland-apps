@@ -8,7 +8,7 @@ import { backoff } from 'openland-y-utils/timer';
 import { FeedQuery } from 'openland-api';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { DataSourceFeedItem, SlideInputLocal } from './types';
-import { convertItems, convertPost, convertSlidesToServerInput } from './convert';
+import { convertItems, convertPost, convertToSlideInput } from './convert';
 import UUID from 'uuid/v4';
 
 const log = createLogger('Engine-Feed');
@@ -55,7 +55,7 @@ export class FeedEngine {
 
         const dsItems = convertItems(initialFeed.items, this.engine);
 
-        this.watcher = new SequenceModernWatcher('feed', this.engine.client.subscribeFeedUpdates(), this.engine.client.client, this.handleEvent, undefined, undefined, undefined, undefined);
+        this.watcher = new SequenceModernWatcher('feed', this.engine.client.subscribeFeedUpdates({}), this.engine.client.client, this.handleEvent, undefined, {});
 
         this.dataSource.initialize(dsItems, this.fullyLoaded, true);
 
@@ -123,7 +123,7 @@ export class FeedEngine {
     }
 
     createPost: (input: SlideInputLocal[], global?: boolean) => Promise<boolean> = async (input, global) => {
-        const slides = convertSlidesToServerInput(input);
+        const slides = convertToSlideInput(input);
 
         if (slides.length < 1) {
             return false;
@@ -143,7 +143,7 @@ export class FeedEngine {
     }
 
     editPost: (id: string, input: SlideInputLocal[]) => Promise<boolean> = async (id, input) => {
-        const slides = convertSlidesToServerInput(input);
+        const slides = convertToSlideInput(input);
 
         if (slides.length < 1) {
             return false;

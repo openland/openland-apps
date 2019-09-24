@@ -168,13 +168,23 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         }
 
         //
-        // FEED Item
+        // FEED ITEM
         //
         let feedItemPattern = new UrlPattern(patternBase + 'feed/:id');
         let matchFeedItemProfile = feedItemPattern.match(link);
         if (matchFeedItemProfile && matchFeedItemProfile.id) {
             resolved = true;
             navigate('FeedItem', { feedItemId: matchFeedItemProfile.id });
+        }
+
+        //
+        // MESSAGEE
+        //
+        let messagePattern = new UrlPattern(patternBase + 'message/:id');
+        let matchMessageProfile = messagePattern.match(link);
+        if (matchMessageProfile && matchMessageProfile.id) {
+            resolved = true;
+            navigate('Message', { feedItemId: matchMessageProfile.id });
         }
 
         //

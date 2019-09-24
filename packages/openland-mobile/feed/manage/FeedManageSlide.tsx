@@ -101,6 +101,8 @@ const SUPPORTED_COVER_ALIGN: ({ align: SlideCoverAlign, icon: NodeRequire })[] =
     icon: require('assets/feed/ic-layout-bottom-80.png')
 }];
 
+const MAX_INPUT_LENGTH = 350;
+
 interface FeedManageSlideProps {
     slide: SlideInputLocal;
     onChangeText: (text: string) => void;
@@ -325,6 +327,7 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
                 placeholderTextColor={inputCover ? theme.foregroundContrast : theme.foregroundTertiary}
                 keyboardAppearance={theme.keyboardAppearance}
                 allowFontScaling={false}
+                maxLength={MAX_INPUT_LENGTH}
                 {...{ scrollEnabled: false }}
             />
         </View>

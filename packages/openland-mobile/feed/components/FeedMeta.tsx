@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle, LayoutChangeEvent } from 'react-native';
 import { FeedPostAuthorFragment } from 'openland-api/Types';
 import { FeedAuthorView } from './FeedAuthorView';
 import { FeedSlideIndicator } from './FeedSlideIndicator';
@@ -20,20 +20,27 @@ interface FeedMetaProps {
     style: 'default' | 'media';
     currentSlide?: number;
     slidesCount?: number;
+    width: number;
 }
 
 export const FeedMeta = React.memo((props: FeedMetaProps) => {
-    const { author, style, currentSlide, slidesCount } = props;
+    const { author, style, currentSlide, slidesCount, width } = props;
+    const [indicatorWidth, setIndicatorWidth] = React.useState(0);
+
+    const handleIndicatorLayour = React.useCallback((event: LayoutChangeEvent) => {
+        setIndicatorWidth(event.nativeEvent.layout.width);
+    }, []);
 
     const content = (
         <>
-            <FeedAuthorView author={author} style={style} />
+            <FeedAuthorView author={author} style={style} maxWidth={width - indicatorWidth} />
 
             {!!currentSlide && !!slidesCount && slidesCount > 1 && (
                 <FeedSlideIndicator
                     current={currentSlide}
                     items={slidesCount}
                     style={style}
+                    onLayout={handleIndicatorLayour}
                 />
             )}
         </>
