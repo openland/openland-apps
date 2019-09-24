@@ -55,7 +55,7 @@ export class FeedEngine {
 
         const dsItems = convertItems(initialFeed.items, this.engine);
 
-        this.watcher = new SequenceModernWatcher('feed', this.engine.client.subscribeFeedUpdates({}), this.engine.client.client, this.handleEvent, undefined, undefined, undefined, undefined);
+        this.watcher = new SequenceModernWatcher('feed', this.engine.client.subscribeFeedUpdates({}), this.engine.client.client, this.handleEvent, undefined, {});
 
         this.dataSource.initialize(dsItems, this.fullyLoaded, true);
 
