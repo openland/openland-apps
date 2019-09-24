@@ -31,8 +31,8 @@ export const DataSourceRender = React.memo(function <T extends DataSourceItem>(
             const scrollHeight = event.nativeEvent.contentSize.height;
             const clientHeight = event.nativeEvent.layoutMeasurement.height;
             const scrollTop = event.nativeEvent.contentOffset.y;
+            const d = scrollHeight - (clientHeight + scrollTop);
 
-            let d = scrollHeight - (clientHeight + scrollTop);
             if (d < loadingHeight) {
                 needMore();
             }

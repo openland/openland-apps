@@ -65,7 +65,12 @@ class FeedInner extends React.PureComponent<CommentsNotificationsProps, { dataSo
     )
 
     private handleScroll = (e: XScrollValues) => {
-        if (e.scrollTop < 300) {
+        const scrollHeight = e.scrollHeight;
+        const clientHeight = e.clientHeight;
+        const scrollTop = e.scrollTop;
+        const d = scrollHeight - (clientHeight + scrollTop);
+
+        if (d < 200) {
             this.dataSource.needMore();
         }
     }
