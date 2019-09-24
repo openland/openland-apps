@@ -12,13 +12,21 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 
 const stickerPackViewerContainer = css`
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     flex-grow: 1;
     flex-shrink: 0;
     flex-wrap: wrap;
     padding-left: 16px;
     padding-right: 16px;
     padding-bottom: 16px;
+
+    & img {
+        margin: 4px;
+    }
+
+    & img:last-child {
+        margin: auto;
+    }
 `;
 
 const AddStickerPack = (props: { packId: string; hide: () => void }) => {
@@ -45,8 +53,8 @@ const AddStickerPack = (props: { packId: string; hide: () => void }) => {
                 <div className={stickerPackViewerContainer}>
                     {stickerPack.stickers.map(i => {
                         const url = `https://ucarecdn.com/${i.image.uuid}/-/format/auto/-/`;
-                        const ops = `scale_crop/${100}x${100}/`;
-                        const opsRetina = `scale_crop/${100 * 2}x${100 * 2}/center/ 2x`;
+                        const ops = `preview/${100}x${100}/`;
+                        const opsRetina = `preview/${100 * 2}x${100 * 2}/ 2x`;
                         return (
                             <img
                                 key={i.id}
@@ -54,13 +62,20 @@ const AddStickerPack = (props: { packId: string; hide: () => void }) => {
                                 height={100}
                                 src={url + ops}
                                 srcSet={url + opsRetina}
+                                style={{ objectFit: 'contain' }}
                             />
                         );
                     })}
                 </div>
             </XScrollView3>
             <XModalFooter>
-                <UButton text="Close" style="secondary" size="large" square={true} />
+                <UButton
+                    text="Close"
+                    style="secondary"
+                    size="large"
+                    square={true}
+                    onClick={props.hide}
+                />
                 {!iHaveThisPack && (
                     <UButton
                         text="Add"
@@ -79,7 +94,7 @@ const AddStickerPack = (props: { packId: string; hide: () => void }) => {
 };
 
 const showAddStickerPack = (packId: string, name: string) => {
-    showModalBox({ title: name, useTopCloser: true }, ctx => (
+    showModalBox({ title: name, useTopCloser: true, width: 464 }, ctx => (
         <React.Suspense fallback={<XLoader loading={true} />}>
             <AddStickerPack packId={packId} hide={ctx.hide} />
         </React.Suspense>
@@ -104,8 +119,8 @@ interface ImageContentProps {
 export const StickerContent = React.memo((props: ImageContentProps) => {
     const { sticker } = props;
     const url = `https://ucarecdn.com/${sticker.image.uuid}/-/format/auto/-/`;
-    const ops = `scale_crop/${100}x${100}/`;
-    const opsRetina = `scale_crop/${100 * 2}x${100 * 2}/center/ 2x`;
+    const ops = `preview/${100}x${100}/`;
+    const opsRetina = `preview/${100 * 2}x${100 * 2}/ 2x`;
 
     return (
         <div
@@ -114,15 +129,18 @@ export const StickerContent = React.memo((props: ImageContentProps) => {
                 if (AppConfig.isNonProduction() || AppConfig.isSuperAdmin()) {
                     e.stopPropagation();
                     if (sticker.pack) {
-                        showAddStickerPack(
-                            sticker.pack.id,
-                            sticker.pack.title,
-                        );
+                        showAddStickerPack(sticker.pack.id, sticker.pack.title);
                     }
                 }
             }}
         >
-            <img width={100} height={100} src={url + ops} srcSet={url + opsRetina} />
+            <img
+                width={100}
+                height={100}
+                src={url + ops}
+                srcSet={url + opsRetina}
+                style={{ objectFit: 'contain' }}
+            />
         </div>
     );
 });

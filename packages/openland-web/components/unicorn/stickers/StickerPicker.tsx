@@ -66,8 +66,8 @@ export const StickerComponent = React.memo<{
                         return null;
                     }
                     const url = `https://ucarecdn.com/${item.image.uuid}/-/format/auto/-/`;
-                    const ops = `scale_crop/${100}x${100}/`;
-                    const opsRetina = `scale_crop/${100 * 2}x${100 * 2}/center/ 2x`;
+                    const ops = `preview/${100}x${100}/`;
+                    const opsRetina = `preview/${100 * 2}x${100 * 2}/ 2x`;
                     return (
                         <div style={style}>
                             <div className={sticker} onClick={() => sendSticker(item)}>
@@ -76,6 +76,7 @@ export const StickerComponent = React.memo<{
                                     height={90}
                                     src={url + ops}
                                     srcSet={url + opsRetina}
+                                    style={{ objectFit: 'contain' }}
                                 />
                             </div>
                         </div>
