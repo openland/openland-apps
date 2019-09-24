@@ -1,15 +1,109 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
+import { XLoader } from 'openland-x/XLoader';
+import { showModalBox } from 'openland-x/showModalBox';
 import { formatBytes } from 'openland-y-utils/formatBytes';
 import { TextDensed, TextLabel1 } from 'openland-web/utils/TextStyles';
-import { XLoader } from 'openland-x/XLoader';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import IcClose from 'openland-icons/s/ic-close-24.svg';
 import IcDownload from 'openland-icons/s/ic-down-24.svg';
+import IcSearch from 'openland-icons/s/ic-search-24.svg';
 import IcBlue from 'openland-icons/files/blue.svg';
 import IcGreen from 'openland-icons/files/green.svg';
 import IcRed from 'openland-icons/files/red.svg';
 import IcViolet from 'openland-icons/files/violet.svg';
 import IcYellow from 'openland-icons/files/yellow.svg';
+
+const modalContainer = css`
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+`;
+
+const modalToolbarContainer = css`
+    width: 100%;
+    height: 56px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    z-index: 1;
+    transition: 200ms opacity ease;
+    opacity: 0.56;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0) 100%);
+    :hover {
+        opacity: 1;
+    }
+`;
+
+const modalButtonsContainer = css`
+    display: flex;
+    align-items: center;
+`;
+
+const modalButtonStyle = css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    opacity: 0.72;
+    cursor: pointer;
+    &:hover {
+        opacity: 1;
+    }
+`;
+
+const modalContent = css`
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    padding-top: 40px;
+    padding-bottom: 20px;
+    max-width: 80%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    overflow: hidden;
+`;
+
+interface ModalProps {
+    fileId: string;
+    fileName: string;
+}
+
+const ModalContent = (props: ModalProps & { hide: () => void }) => {
+    return (
+        <div className={modalContainer} onClick={props.hide}>
+            <div className={modalToolbarContainer}>
+                <div className={modalButtonsContainer} onClick={e => e.stopPropagation()}>
+                    <div className={modalButtonStyle} onClick={props.hide}>
+                        <UIcon icon={<IcClose />} color="var(--backgroundPrimary)" />
+                    </div>
+                </div>
+            </div>
+            <div className={modalContent} onClick={e => e.stopPropagation()}>
+                <embed
+                    src={`https://ucarecdn.com/${props.fileId}/-/inline/yes/${props.fileName}`}
+                    width="100%"
+                    height="100%"
+                    type="application/pdf"
+                />
+            </div>
+        </div>
+    );
+};
+
+const showPdfModal = (props: ModalProps) => {
+    showModalBox({ fullScreen: true, darkOverlay: true, useTopCloser: false }, ctx => (
+        <ModalContent {...props} hide={ctx.hide} />
+    ));
+};
 
 const fileContainer = css`
     display: flex;
@@ -192,29 +286,23 @@ export const DocumentContent = React.memo(
                 props.onClick(ev);
             } else {
                 ev.stopPropagation();
+                if (fileFormat(name) === 'PDF') {
+                    showPdfModal({ fileId: file.fileId || '', fileName: file.fileMetadata.name });
+                }
             }
         }, []);
 
-        let fileSrc = `https://ucarecdn.com/${file.fileId}/`;
+        let fileSrc: undefined | string = `https://ucarecdn.com/${file.fileId}/`;
 
         if (fileFormat(name) === 'PDF') {
-            fileSrc = `https://ucarecdn.com/${file.fileId}/-/inline/yes/${file.fileMetadata.name}`;
-            // return (
-            //     <embed
-            //         src={`https://ucarecdn.com/${file.fileId}/-/inline/yes/${file.fileMetadata.name}`}
-            //         width="200px"
-            //         height="200px"
-            //         type="application/pdf"
-            //     />
-            // );
+            fileSrc = undefined;
         }
 
         return (
             <a
                 className={cx(fileContainer, 'message-document-wrapper')}
                 onClick={onClick}
-                href={!props.onClick ? file.fileId && fileSrc : undefined}
-                target={!props.onClick && fileFormat(name) === 'PDF' ? '_blank' : undefined}
+                href={!props.onClick ? fileSrc : undefined}
             >
                 <div className={infoContent}>
                     <div className={iconContainer}>
@@ -224,7 +312,9 @@ export const DocumentContent = React.memo(
                         ) : (
                             <div className={cx(iconInfo, 'icon-info')}>
                                 <UIcon
-                                    icon={<IcDownload />}
+                                    icon={
+                                        fileFormat(name) === 'PDF' ? <IcSearch /> : <IcDownload />
+                                    }
                                     color="#fff"
                                     size={16}
                                     className="download-icon"

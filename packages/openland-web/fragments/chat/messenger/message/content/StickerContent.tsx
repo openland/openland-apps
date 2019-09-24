@@ -119,7 +119,7 @@ interface ImageContentProps {
 export const StickerContent = React.memo((props: ImageContentProps) => {
     const { sticker } = props;
     const url = `https://ucarecdn.com/${sticker.image.uuid}/-/format/auto/-/`;
-    const ops = `preview/${100}x${100}/`;
+    const ops = `preview/${200}x${200}/`;
     const opsRetina = `preview/${100 * 2}x${100 * 2}/ 2x`;
 
     return (
@@ -135,8 +135,8 @@ export const StickerContent = React.memo((props: ImageContentProps) => {
             }}
         >
             <img
-                width={100}
-                height={100}
+                width={200}
+                height={200}
                 src={url + ops}
                 srcSet={url + opsRetina}
                 style={{ objectFit: 'contain' }}
