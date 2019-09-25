@@ -601,6 +601,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   func onScrollToRequested(index: Int) {
     self.queue.async {
       DispatchQueue.main.async {
+        print("boom", "onScrollToRequested", "list", index, self.state.items.count)
         self.settingScroll = true
         self.node.scrollToItem(at: IndexPath(item: index, section: 1), at: .centeredVertically, animated: false)
         self.settingScroll = false

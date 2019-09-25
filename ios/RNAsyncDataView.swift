@@ -126,7 +126,6 @@ class RNAsyncDataView {
   
   var state = RNAsyncDataViewState(items: [], completed: false, completedForward: false, inited: false, anchor: nil)
   var watchers = WeakMap<RNAsyncDataViewDelegate>()
-  var scrollTo: String?
   
   let dataSourceKey: String
   
@@ -137,11 +136,12 @@ class RNAsyncDataView {
   func handleInitial(items: [RNAsyncDataViewItem], completed: Bool, completedForward: Bool, anchor: String?) {
     let st = RNAsyncDataViewState(items: items.map {$0}, completed: completed, completedForward: completedForward, inited: true, anchor: anchor)
     self.state = st
-    if(anchor != nil){
-      self.handleScrollToRequest(key: anchor!)
-    }
+    
     for i in watchers.all() {
       i.value.onInited(state: st)
+    }
+    if(anchor != nil){
+      self.handleScrollToRequest(key: anchor!)
     }
   }
   
@@ -187,10 +187,6 @@ class RNAsyncDataView {
     for i in watchers.all() {
       i.value.onLoadedMore(from: start, count: items.count, state: st)
     }
-    if(self.scrollTo != nil){
-      self.handleScrollToRequest(key: self.scrollTo!)
-      self.scrollTo = nil
-    }
   }
 
   func handleLoadedMoreForward(items: [RNAsyncDataViewItem], completed: Bool) {
@@ -201,23 +197,15 @@ class RNAsyncDataView {
     for i in watchers.all() {
       i.value.onLoadedMore(from: 0, count: items.count, state: st)
     }
-    if(self.scrollTo != nil){
-      self.handleScrollToRequest(key: self.scrollTo!)
-      self.scrollTo = nil
-    }
   }
   
   func handleScrollToRequest(key: String) {
     let index = self.state.items.firstIndex { item -> Bool in
       return item.key == key
     }
-    if(index == nil || watchers.all().count == 0){
-      self.scrollTo = key
-    }else{
-      if(index! > -1){
-        for i in watchers.all() {
-          i.value.onScrollToRequested(index: index!)
-        }
+    if(index ?? -1 >= 0){
+      for i in watchers.all() {
+        i.value.onScrollToRequested(index: index!)
       }
     }
   }
@@ -254,10 +242,14 @@ class RNAsyncDataView {
     let st = self.state
     if st.inited {
       delegate.onInited(state: st)
-    }
-    if(self.scrollTo != nil){
-      self.handleScrollToRequest(key: self.scrollTo!)
-      self.scrollTo = nil
+      if(st.anchor != nil){
+        let index = self.state.items.firstIndex { item -> Bool in
+          return item.key == st.anchor
+        }
+        if(index ?? -1 >= 0){
+          delegate.onScrollToRequested(index: index!)
+        }
+      }
     }
     return {
       self.watchers.remove(key: key)
@@ -278,7 +270,6 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
   var isPassThrough = false
   var isPassThroughBackward = false
   var isPassThroughForward = false
-  var scrollTo: Int?
   
   init(source: RNAsyncDataView) {
     self.source = source
@@ -315,8 +306,8 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
           i.value.onInited(state: state)
         }
       } else {
-        let start = max(0,  (state.items.firstIndex(where: {$0.key == state.anchor ?? nil}) ?? 0)  - self.wSize / 2)
-        let end = min(start + self.wSize - 1, state.items.count - 1)
+        let start = max(0,  (state.items.firstIndex(where: {$0.key == state.anchor ?? nil}) ?? 0)  - self.wSize)
+        let end = min(start + self.wSize * 2 - 1, state.items.count - 1)
         self.window = [start, end]
         let completed = state.completed && end == (state.items.count - 1)
         let completedForward = state.completedForward && start == 0
@@ -568,17 +559,9 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
   }
   
   func onScrollToRequested(index: Int) {
-    if(index > self.wSize){
-      self.loadMore(batchSize: self.latestState.items.count - self.wSize)
-    }
-    queue.asyncAfter(deadline: .now() + .milliseconds(51)) {
-      if(self.watchers.all().count == 0){
-        self.scrollTo = index;
-      }else{
-        
-        for i in self.watchers.all() {
-          i.value.onScrollToRequested(index: index)
-        }
+    queue.asyncAfter(deadline: .now() + .milliseconds(1)) {
+      for i in self.watchers.all() {
+        i.value.onScrollToRequested(index: index)
       }
     }
   }
@@ -588,12 +571,20 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
     queue.async {
       if self.state.inited {
         delegate.onInited(state: self.state)
+        if(self.state.anchor != nil){
+          print("boom", "window", "watch", self.state.anchor);
+          let index = self.state.items.firstIndex { item -> Bool in
+            return item.key == self.state.anchor
+          }
+          print("boom", "window", "watch",index);
+          if(index ?? -1 >= 0){
+            delegate.onScrollToRequested(index: index!)
+          }
+        }
+       
       }
       self.watchers.set(key: key, value: delegate)
-      if(self.scrollTo != nil){
-        self.onScrollToRequested(index: self.scrollTo!);
-        self.scrollTo = nil
-      }
+     
     }
    
     return {
