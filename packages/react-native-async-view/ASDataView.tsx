@@ -144,7 +144,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
                 key: v.item.key,
                 config: v.currentState
             })));
-            NativeDataView.dataViewLoadedMore(this.key, config, completed);
+            NativeDataView.dataViewLoadedMoreForward(this.key, config, completed);
         });
     }
 

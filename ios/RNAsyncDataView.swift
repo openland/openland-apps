@@ -302,7 +302,6 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
     queue.async {
       self.latestState = state
       if self.latestState.items.count <= self.wSize {
-        print("boom", "init window", "all", self.latestState.items.count);
         self.state = self.latestState
       
         self.isPassThroughBackward = true;
@@ -316,7 +315,6 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
       } else {
         let start = max(0,  (state.items.firstIndex(where: {$0.key == state.anchor ?? nil}) ?? 0)  - self.wSize / 2)
         let end = min(start + self.wSize - 1, state.items.count - 1)
-        print("boom", "init window", start, end, state.anchor, state.items.firstIndex(where: {$0.key == state.anchor ?? nil}));
         self.window = [start, end]
         let completed = state.completed && end == (state.items.count - 1)
         let completedForward = state.completedForward && start == 0
@@ -427,11 +425,9 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
   func onLoadedMore(from: Int, count: Int, state: RNAsyncDataViewState) {
     queue.async {
       self.latestState = state
-      
-      
       if(from == 0){
         if (self.isPassThroughForward) {
-          let st = self.state.loadedMore(items: Array(state.items[from..<from + count]))
+          let st = self.state.loadedMoreForward(items: Array(state.items[from..<from + count]))
           self.state = st
           for i in self.watchers.all() {
             i.value.onLoadedMore(from: from, count: count, state: st)
@@ -442,10 +438,8 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
         self.window[1] += count
       }else{
         if (self.isPassThroughBackward) {
-          print("boom", "onLoadedMore before", self.state.items.count)
           let st = self.state.loadedMore(items: Array(state.items[from..<from + count]))
           self.state = st
-          print("boom", "onLoadedMore", "from", from, "window", self.window, "count", count, "st", st.items.count)
           
           for i in self.watchers.all() {
             i.value.onLoadedMore(from: from - self.window[0], count: count, state: st)
@@ -495,14 +489,11 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
         queue.asyncAfter(deadline: .now() + .milliseconds(50)) {
 
           let available = min(self.wSize, self.latestState.items.count - self.window[1] - 1);
-          print("boom", "loadMore", "available", self.latestState.items.count,  self.window[1], available)
           if (available > 0) {
             var itms = self.state.items.map {$0}
-            print("boom", "items before", itms);
             for i in self.window[1] + 1..<(self.window[1] + available + 1) {
               itms.append(self.latestState.items[i])
             }
-            print("boom", "items after", itms);
             self.window[1] += available;
             let availableMore = self.latestState.items.count - 1 - self.window[1] >= 0;
             
@@ -543,7 +534,6 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
         queue.asyncAfter(deadline: .now() + .milliseconds(50)) {
           
           let available = min(self.wSize, self.window[0]);
-          
           if (available > 0) {
             var itms = self.state.items.map {$0}
             for i in ((self.window[0] - available)..<self.window[0]).reversed() {
@@ -560,7 +550,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
             }
             
           } else {
-            self.isPassThroughBackward = true;
+            self.isPassThroughForward = true;
             self.isPassThrough = self.isPassThrough || self.isPassThroughBackward;
             if (self.latestState.completed) {
               self.onCompletedForward(state: self.latestState)

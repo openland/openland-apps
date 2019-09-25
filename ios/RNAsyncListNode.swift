@@ -347,6 +347,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       self.loadingCellTopVisible = false
       self.node.deleteItems(at: [IndexPath(row: 0, section: 0)])
     }
+    
   }
   
   
@@ -619,7 +620,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.batchContext = context
     if self.state.inited {
       self.dataView.loadMore()
-      self.dataView.loadMoreForward()
     }
   }
   
@@ -655,6 +655,12 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       let d = self.state.items[indexPath.row]
       let cached = self.activeCells.get(key: d.key)
       let applyModes = self.applyModes
+      let index = self.state.items.firstIndex(where: { item -> Bool in
+        item.key == d.key
+      }) ?? -1;
+      if(index >= 0 && index <= 5){
+        self.dataView.loadMoreForward();
+      }
       /* NO "self" references here!!!! Bevare retantion cycles! */
       return { () -> ASCellNode in
         if cached == nil {
