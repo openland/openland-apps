@@ -44,7 +44,16 @@ class ChatFlowLayout: UICollectionViewFlowLayout {
       }
     }
     
-    super.prepare(forCollectionViewUpdates: updateItems)
+    
+    
+    super.prepare(forCollectionViewUpdates: updateItems) 
+    
+    // awful hack
+    if(collectionView.numberOfItems(inSection: 0) == 0){
+      self.isPrepend = false
+      return
+    }
+    
     // Check: Initial Load or Load More
     let isInitialLoading: Bool = bottomVisibleItem + topVisibleItem == 0
     
