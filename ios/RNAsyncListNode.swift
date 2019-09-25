@@ -32,6 +32,9 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var activeCells = WeakMap<RNAsyncCell>()
   private var activeCellsStrong: [String:RNAsyncCell] = [:]
   private var loadingCell = RNLoadingCell()
+  private var loadingCellTop = RNLoadingCell()
+  
+  private var loadingCellTopVisible = false;
   
   private var viewLoaded = false
   private var keyboardSubscription: (() -> Void)?
@@ -294,6 +297,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     if !self.loaded {
       self.overflowColor = color
       self.loadingCell.overflowColor = color
+      self.loadingCellTop.overflowColor = color
     } else {
       if self.overflowColor != color {
         DispatchQueue.main.async {
@@ -311,12 +315,15 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     if !self.loaded {
       self.loaderColor = color
       self.loadingCell.loaderColor = color
+      self.loadingCellTop.loaderColor = color
     } else {
       if self.loaderColor != color {
         DispatchQueue.main.async {
           self.node.performBatch(animated: false, updates: {
             self.loaderColor = color
             self.loadingCell.loaderColor = color
+            self.loadingCellTop.loaderColor = color
+            self.node.reloadSections(IndexSet(integer: 0))
             self.node.reloadSections(IndexSet(integer: 2))
           }, completion: nil)
         }
@@ -329,6 +336,19 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         self.fixContentInset(interactive: false)
     }
   }
+  
+  
+  func checkTopLoader(){
+    let loaderNeeded = !self.state.completedForward && self.state.items.count > 0;
+    if(loaderNeeded && !self.loadingCellTopVisible){
+     self.loadingCellTopVisible = true
+     self.node.insertItems(at: [IndexPath(row: 0, section: 0)])
+    }else if(!loaderNeeded && self.loadingCellTopVisible){
+      self.loadingCellTopVisible = false
+      self.node.deleteItems(at: [IndexPath(row: 0, section: 0)])
+    }
+  }
+  
   
   //
   // Data View Delegate
@@ -385,14 +405,18 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         }
         self.fixContentInset(interactive: false)
         self.loadingCell.loading = !state.completed
+        self.loadingCellTop.loading = !state.completedForward
         if self.loaded {
           if indexPaths.count > 0 {
             self.node.performBatch(animated: false, updates: {
               self.node.insertItems(at: indexPaths)
             }, completion: nil)
+            self.checkTopLoader()
           }
+          
           self.node.performBatch(animated: false, updates: {
             self.node.reloadSections(IndexSet(integer: 2))
+            self.node.reloadSections(IndexSet(integer: 0))
           }, completion: nil)
           if self.batchContext != nil {
             DispatchQueue.main.async {
@@ -425,6 +449,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           self.state = state
           self.activeCells.set(key: state.items[index].key, value: cell)
           self.node.insertItems(at: [IndexPath(row: index, section: 1)])
+          self.checkTopLoader()
         }, completion: nil)
       }
     }
@@ -487,6 +512,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       
       DispatchQueue.main.async {
         self.loadingCell.loading = !state.completed
+        self.loadingCellTop.loading = !state.completedForward
         self.node.performBatch(animated: false, updates: {
           let wasCompleted = self.state.completed
           self.state = state
@@ -500,6 +526,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
               paths.append(IndexPath(item: i, section: 1))
             }
             self.node.insertItems(at: paths)
+            self.checkTopLoader()
           }
           if self.batchContext != nil {
             DispatchQueue.main.async {
@@ -536,10 +563,10 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   func onCompletedForward(state: RNAsyncDataViewState) {
     self.queue.async {
       DispatchQueue.main.async {
-//        self.loadingCell.loading = false
+//        self.loadingCellTop.loading = false
 //        self.node.performBatch(animated: false, updates: {
 //          self.state = state
-//          self.node.reloadSections(IndexSet(integer: 2))
+//          self.node.reloadSections(IndexSet(integer: 1))
 //          if self.batchContext != nil {
 //            DispatchQueue.main.async {
 //              self.batchContext?.completeBatchFetching(true)
@@ -564,6 +591,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         self.node.performBatch(animated: false, updates: {
           self.state = state
           self.node.deleteItems(at: [IndexPath(item: index, section: 1)])
+          self.checkTopLoader()
         }, completion: nil)
       }
     }
@@ -591,6 +619,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.batchContext = context
     if self.state.inited {
       self.dataView.loadMore()
+      self.dataView.loadMoreForward()
     }
   }
   
@@ -607,7 +636,9 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     }
     if section == 1 {
       return self.state.items.count
-    } else {
+    } else if section == 0 {
+      return self.loadingCellTopVisible ? 1 : 0
+    }else {
       return 1
     }
   }
@@ -642,36 +673,14 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         return n
       }
     } else if indexPath.section == 0 {
-      let padding = self.headerPadding
-      let overflowColor = self.overflowColor
-      let inverted = self.node.inverted
+      self.loadingCellTop.loaderColor = self.loaderColor
+      let n = self.loadingCellTop
+      print("boom", "render bottom loader",  self.state.completedForward, self.state.items.count)
+      /* NO "self" references here!!!! Bevare retantion cycles! */
       return { () -> ASCellNode in
-        let res = ASCellNode()
-        res.clipsToBounds = false
-        res.automaticallyManagesSubnodes = true
-        /* NO "self" references here!!!! Bevare retantion cycles! */
-        res.layoutSpecBlock = { node, constrainedSize in
-          let res = ASStackLayoutSpec()
-          res.direction = ASStackLayoutDirection.vertical
-          res.alignItems = ASStackLayoutAlignItems.center
-          res.justifyContent = ASStackLayoutJustifyContent.center
-          res.style.flexGrow = 1
-          res.style.height = ASDimension(unit: ASDimensionUnit.points, value: CGFloat(padding))
-          if overflowColor != nil {
-            let overflow = ASDisplayNode()
-            overflow.backgroundColor = resolveColorR(overflowColor!)
-            overflow.style.flexGrow = 1
-            overflow.style.height = ASDimension(unit: ASDimensionUnit.points, value: 10001)
-            overflow.clipsToBounds = false
-            
-            let insets = UIEdgeInsets(top: inverted ? 0 : CGFloat(padding - 10000), left: 0, bottom: inverted ? CGFloat(padding - 10000): 0, right: 0)
-            let container = ASInsetLayoutSpec(insets: insets, child: overflow)
-            res.setChild(container, at: 0)
-          }
-          return res
-        }
-        res.layoutThatFits(range)
-        return res
+        n.layoutThatFits(range)
+        n.automaticallyManagesSubnodes = true
+        return n
       }
     } else {
       fatalError()

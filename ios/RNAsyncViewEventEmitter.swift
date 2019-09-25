@@ -81,6 +81,6 @@ class RNAsyncViewEventEmitter: RCTEventEmitter {
   }
   
   override func supportedEvents() -> [String]! {
-    return ["onPress", "onLongPress", "onLoadMore"]
+    return ["onPress", "onLongPress", "onLoadMore", "onLoadMoreForward"]
   }
 }

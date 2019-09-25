@@ -53,6 +53,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
         this.dataSource.watch(this);
         // Register for load more events
         ASEventEmitter.registerOnLoadMore(this.key, () => { this.dataSource.needMore(); });
+        ASEventEmitter.registerOnLoadMoreForward(this.key, () => { this.dataSource.needMoreForward(); });
     }
 
     onDataSourceInited = (data: T[], completed: boolean, completedForward: boolean, anchor?: string) => {

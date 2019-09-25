@@ -7,6 +7,7 @@ export class ASEventEmitterHolder {
     private onPress = new Map<string, (event: ASPressEvent) => void>();
     private onLongPress = new Map<string, (event: ASPressEvent) => void>();
     private onLoadMore = new Map<string, () => void>();
+    private onLoadMoreForward = new Map<string, () => void>();
 
     constructor() {
         if (Platform.OS === 'ios') {
@@ -25,6 +26,12 @@ export class ASEventEmitterHolder {
             });
             ASNativeEmitter.addListener('onLoadMore', (key: string) => {
                 let p = this.onLoadMore.get(key);
+                if (p) {
+                    p();
+                }
+            });
+            ASNativeEmitter.addListener('onLoadMoreForward', (key: string) => {
+                let p = this.onLoadMoreForward.get(key);
                 if (p) {
                     p();
                 }
@@ -72,6 +79,13 @@ export class ASEventEmitterHolder {
     }
     unregisterOnLoadMore = (key: string) => {
         this.onLoadMore.delete(key);
+    }
+
+    registerOnLoadMoreForward = (key: string, handler: () => void) => {
+        this.onLoadMoreForward.set(key, handler);
+    }
+    unregisterOnLoadMoreForward = (key: string) => {
+        this.onLoadMoreForward.delete(key);
     }
 }
 

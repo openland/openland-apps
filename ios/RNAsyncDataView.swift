@@ -546,8 +546,8 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
           
           if (available > 0) {
             var itms = self.state.items.map {$0}
-            for i in (self.window[0] - 1..<(self.window[0] - available - 1)).reversed() {
-              itms.append(self.latestState.items[i])
+            for i in ((self.window[0] - available)..<self.window[0]).reversed() {
+              itms.insert(self.latestState.items[i], at: 0)
             }
             self.window[0] -= available;
             let availableMore = self.window[0] > 0;
@@ -563,9 +563,9 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
             self.isPassThroughBackward = true;
             self.isPassThrough = self.isPassThrough || self.isPassThroughBackward;
             if (self.latestState.completed) {
-              self.onCompleted(state: self.latestState)
+              self.onCompletedForward(state: self.latestState)
             } else {
-              self.source.loadMore()
+              self.source.loadMoreForward()
             }
           }
           
