@@ -22,6 +22,7 @@
 		A0153A99222426F400C026A4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0153A97222426F400C026A4 /* MainInterface.storyboard */; };
 		A0579EF42260D2BE00457B66 /* incallmanager_busytone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A0579EF32260D2BE00457B66 /* incallmanager_busytone.mp3 */; };
 		A0930DE922B271D40018ECA1 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0930DE822B271D40018ECA1 /* NotificationHandler.swift */; };
+		A099CBDC233B9CFF00A7AC8C /* ChatFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A099CBDB233B9CFF00A7AC8C /* ChatFlowLayout.swift */; };
 		A0DDD9B62226BE8B00AA3061 /* openland-share-ex.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A0153A93222426F400C026A4 /* openland-share-ex.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		AA2281BC228A1DD100810848 /* readFromStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2281BB228A1DD100810848 /* readFromStore.swift */; };
 		AA2281BE228A244800810848 /* RecordStoreReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2281BD228A244800810848 /* RecordStoreReaderTests.swift */; };
@@ -294,6 +295,7 @@
 		A0153AAA2224559800C026A4 /* openland-share-ex.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "openland-share-ex.entitlements"; sourceTree = "<group>"; };
 		A0579EF32260D2BE00457B66 /* incallmanager_busytone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = incallmanager_busytone.mp3; sourceTree = "<group>"; };
 		A0930DE822B271D40018ECA1 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
+		A099CBDB233B9CFF00A7AC8C /* ChatFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFlowLayout.swift; sourceTree = "<group>"; };
 		A0E0F59823876344F91D6134 /* Pods-openland.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openland.release.xcconfig"; path = "Pods/Target Support Files/Pods-openland/Pods-openland.release.xcconfig"; sourceTree = "<group>"; };
 		A938EF8C563947299EE77727 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
 		AA2281BB228A1DD100810848 /* readFromStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = readFromStore.swift; sourceTree = "<group>"; };
@@ -817,6 +819,7 @@
 			children = (
 				AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */,
 				AA300DC6220186A400C54930 /* RNBackgroundTask.swift */,
+				A099CBDB233B9CFF00A7AC8C /* ChatFlowLayout.swift */,
 			);
 			name = hacks;
 			sourceTree = "<group>";
@@ -1429,6 +1432,7 @@
 				AA2FBA2B22247D0E000915F7 /* RNSDevice.swift in Sources */,
 				AAC60B52215AE40C005E09BA /* RNSAuth0.swift in Sources */,
 				AA67E2582149318200AE9CAC /* RNSAnimated-Bridge.m in Sources */,
+				A099CBDC233B9CFF00A7AC8C /* ChatFlowLayout.swift in Sources */,
 				AAE501802145801600BEAA04 /* RNAsyncKeyboardContext.swift in Sources */,
 				AA67E25521492DBE00AE9CAC /* RNSUtils.swift in Sources */,
 				AAAA1DBC2289E2D70023A28F /* TransportState.swift in Sources */,

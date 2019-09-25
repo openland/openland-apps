@@ -52,7 +52,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   init(parent: RNAsyncListView) {
     self.parent = parent
     self.queue = DispatchQueue(label: "rn-async-node")
-    let layout = UICollectionViewFlowLayout()
+    let layout = ChatFlowLayout()
     layout.minimumLineSpacing = 0.0
     layout.minimumInteritemSpacing = 0.0
     layout.scrollDirection = UICollectionView.ScrollDirection.vertical
