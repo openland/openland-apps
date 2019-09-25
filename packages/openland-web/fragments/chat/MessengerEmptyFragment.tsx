@@ -1,14 +1,24 @@
 import * as React from 'react';
 import { XView, XImage } from 'react-mental';
-import { XMemo } from 'openland-y-utils/XMemo';
+import { css } from 'linaria';
 
-export const MessengerEmptyFragment = XMemo((props: { text?: string }) => {
+const textWrapper = css`
+    text-align: center;
+`;
+
+interface MessengerEmptyFragmentProps {
+    text?: string;
+}
+
+export const MessengerEmptyFragment = React.memo((props: MessengerEmptyFragmentProps) => {
+    const { text } = props;
+
     return (
         <XView
             position="relative"
             flexDirection="column"
             justifyContent="center"
-            minWidth="100%"
+            width="100%"
             height="100%"
             flexGrow={1}
             paddingTop={28}
@@ -26,12 +36,14 @@ export const MessengerEmptyFragment = XMemo((props: { text?: string }) => {
             >
                 <XImage
                     width={358}
-                    height={311}
                     src="/static/X/messenger/messenger-empty.svg"
                     marginBottom={50}
+                    maxWidth="100%"
                 />
                 <XView fontSize={16} lineHeight="24px" color="rgba(0, 0, 0, 0.4)" marginBottom={32}>
-                    {props.text ? props.text : 'Select a chat to start messaging'}
+                    <span className={textWrapper}>
+                        {text || 'Select a chat to start messaging'}
+                    </span>
                 </XView>
             </XView>
         </XView>
