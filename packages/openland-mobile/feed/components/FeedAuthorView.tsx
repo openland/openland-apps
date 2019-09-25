@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, SecondarinessAlpha } from 'openland-mobile/styles/AppStyles';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { FeedPostAuthorFragment } from 'openland-api/Types';
@@ -34,7 +34,8 @@ export const FeedAuthorView = React.memo((props: FeedAuthorViewProps) => {
     const { author, style, maxWidth } = props;
 
     const color = style === 'default' ? theme.foregroundPrimary : theme.foregroundContrast;
-    const orgOpacity = style === 'default' ? 1 : 0.56;
+    const orgColor = style === 'default' ? theme.foregroundTertiary : theme.foregroundContrast;
+    const orgOpacity = style === 'default' ? 1 : SecondarinessAlpha;
 
     const handlePress = React.useCallback(() => {
         if (author.__typename === 'User') {
@@ -53,7 +54,7 @@ export const FeedAuthorView = React.memo((props: FeedAuthorViewProps) => {
                     {author.__typename === 'User' && author.primaryOrganization && (
                         <>
                             {'   '}
-                            <Text style={[styles.senderOrg, { color, opacity: orgOpacity }]} allowFontScaling={false}>
+                            <Text style={[styles.senderOrg, { color: orgColor, opacity: orgOpacity }]} allowFontScaling={false}>
                                 {author.primaryOrganization.name}
                             </Text>
                         </>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, SecondarinessAlpha } from 'openland-mobile/styles/AppStyles';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, LayoutChangeEvent } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -25,8 +25,8 @@ export const FeedSlideIndicator = React.memo((props: FeedSlideIndicatorProps) =>
     const theme = React.useContext(ThemeContext);
     const { current, items, style, onLayout } = props;
 
-    const color = style === 'default' ? theme.foregroundPrimary : theme.foregroundContrast;
-    const opacity = style === 'default' ? 1 : 0.56;
+    const color = style === 'default' ? theme.foregroundTertiary : theme.foregroundContrast;
+    const opacity = style === 'default' ? 1 : SecondarinessAlpha;
 
     return (
         <View style={styles.box} onLayout={onLayout}>
