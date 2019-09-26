@@ -78,6 +78,10 @@ const InnerSharedRoom = React.memo((props: { item: SlideFragment_attachments_Sha
                 startLoader();
                 try {
                     await client.mutateRoomJoin({ roomId: id });
+
+                    router.push('Conversation', { flexibleId: id });
+
+                    await client.refetchRoomTiny({ id });
                 } catch (e) {
                     AlertBlanket.alert(e.message);
                 } finally {
