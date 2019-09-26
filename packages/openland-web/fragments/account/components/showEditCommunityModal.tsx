@@ -177,6 +177,7 @@ const EditCommunityEntity = (props: {
                                     placeholder="Community type"
                                     value={typeField.value}
                                     disabled={!props.isOwner}
+                                    hideSelector={!props.isOwner}
                                     clearable={false}
                                     searchable={false}
                                     onChange={(src: any) => typeField.input.onChange(src.value)}
