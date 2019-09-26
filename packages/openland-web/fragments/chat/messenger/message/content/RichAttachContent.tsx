@@ -75,7 +75,6 @@ const richContentContainer = css`
     padding-right: 16px;
     color: var(--foregroundPrimary);
     &:hover {
-        color: #248bf2;
         text-decoration: none;
         background-color: var(--backgroundTertiaryHover);
     }
@@ -109,6 +108,7 @@ const textInner = css`
 `;
 
 const titleStyle = css`
+    color: var(--foregroundPrimary);
     margin-top: 2px;
     -webkit-line-clamp: 3;
 `;
