@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import CheckIcon from 'openland-icons/ic-checkbox.svg';
+import { FormField } from 'openland-form/useField';
 
 const inputClassName = css`
     display: none;
@@ -74,7 +75,9 @@ const switcherDotCheckedStyle = css`
 `;
 
 export const CheckComponent = ({ checked, squared }: { checked?: boolean; squared?: boolean }) => (
-    <div className={cx(checkDotStyle, squared && checkSquareStyle, checked && checkDotCheckedStyle)}>
+    <div
+        className={cx(checkDotStyle, squared && checkSquareStyle, checked && checkDotCheckedStyle)}
+    >
         <CheckIcon />
     </div>
 );
@@ -131,10 +134,18 @@ export const UCheckbox = (props: UCheckboxItemProps) => {
                     hoverBackgroundColor="var(--backgroundPrimaryHover)"
                 >
                     <span>{props.label}</span>
-                    {!props.asSwitcher && <CheckComponent checked={props.checked} squared={props.squared} />}
+                    {!props.asSwitcher && (
+                        <CheckComponent checked={props.checked} squared={props.squared} />
+                    )}
                     {props.asSwitcher && <SwitcherComponent checked={props.checked} />}
                 </XView>
             </label>
         </XView>
     );
+};
+
+export const UCheckboxFiled = (props: UCheckboxItemProps & { field: FormField<boolean> }) => {
+    const { field, ...other } = props;
+
+    return <UCheckbox onChange={field.input.onChange} checked={field.input.value} {...other} />;
 };

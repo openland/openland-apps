@@ -105,5 +105,5 @@ export const UInput = (props: UInputProps) => {
 
 export const UInputField = (props: UInputProps & { field: FormField<string> }) => {
     const { field, ...other } = props;
-    return <UInput {...other} {...field.input} />;
+    return <UInput {...field.input} {...other} />;
 };

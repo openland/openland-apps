@@ -291,11 +291,11 @@ export const UAvatarUploadField = (props: UAvatarUploadFieldProps) => {
     const { field, ...other } = props;
     return (
         <UAvatarUploadBasic
-            {...other}
             value={fromValue(field.input.value)}
             onChange={(file: UploadedFile | null) => {
                 field.input.onChange(toValue(file));
             }}
+            {...other}
         />
     );
 };
