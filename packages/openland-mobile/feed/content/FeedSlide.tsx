@@ -139,13 +139,16 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
                 </Text>
             )}
 
-            {attachments.length > 0 && <FeedSlideAttachment attachment={attachments[0]} withText={text.length > 0} />}
+            {attachments.length > 0 && <FeedSlideAttachment attachment={attachments[0]} withText={text.length > 0} wrapped={wrapped} />}
         </>
     );
 
     if (!wrapped && attachments.length <= 0) {
+        const gradientStart = theme.type === 'Dark' ? 'rgba(0, 0, 0, 0)' : 'rgba(242, 243, 245, 0)';
+        const gradientEnd = theme.type === 'Dark' ? 'rgba(0, 0, 0, 0.56)' : 'rgba(242, 243, 245, 0.56)';
+
         return (
-            <LinearGradient colors={['rgba(242, 243, 245, 0)', 'rgba(242, 243, 245, 0.56)']} style={styles.box}>
+            <LinearGradient colors={[gradientStart, gradientEnd]} style={styles.box}>
                 {content}
             </LinearGradient>
         );

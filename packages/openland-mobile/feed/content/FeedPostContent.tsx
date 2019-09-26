@@ -66,7 +66,7 @@ export const FeedPostContent = React.memo((props: FeedPostContentProps) => {
     const height = width * (4 / 3);
 
     return (
-        <View style={[styles.container, { width, height, backgroundColor: theme.backgroundSecondary }]}>
+        <View style={[styles.container, { width, height }]}>
             {slides.length > 0 && (
                 <View style={styles.wrapper}>
                     <View style={[styles.carousel, { left: -(currentSlide * width) }]}>

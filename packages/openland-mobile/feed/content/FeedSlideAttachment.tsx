@@ -141,10 +141,11 @@ const InnerOrganization = React.memo((props: { item: SlideFragment_attachments_O
 interface FeedSlideAttachmentProps {
     attachment: SlideFragment_attachments;
     withText: boolean;
+    wrapped?: boolean;
 }
 
 export const FeedSlideAttachment = React.memo((props: FeedSlideAttachmentProps) => {
-    const { attachment, withText } = props;
+    const { attachment, withText, wrapped } = props;
     const theme = React.useContext(ThemeContext);
 
     const content = (
@@ -155,9 +156,14 @@ export const FeedSlideAttachment = React.memo((props: FeedSlideAttachmentProps) 
         </>
     );
 
-    if (withText && theme.type === 'Light') {
+    const useGradient = (withText && theme.type === 'Light') || (!wrapped && theme.type === 'Dark');
+
+    if (useGradient) {
+        const gradientStart = theme.type === 'Dark' ? 'rgba(0, 0, 0, 0.56)' : 'rgba(242, 243, 245, 0.56)';
+        const gradientEnd = theme.type === 'Dark' ? 'rgba(0, 0, 0, 0)' : 'rgba(242, 243, 245, 0)';
+
         return (
-            <LinearGradient colors={['rgba(242, 243, 245, 0.56)', 'rgba(242, 243, 245, 0)']} style={styles.box}>
+            <LinearGradient colors={[gradientStart, gradientEnd]} style={styles.box}>
                 {content}
             </LinearGradient>
         );
