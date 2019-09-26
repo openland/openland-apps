@@ -59,6 +59,7 @@ const getMenuContent = (opts: GroupMemberMenuProps & { client: OpenlandClient })
                     });
 
                     await client.refetchRoom({ id: group.id });
+                    await client.refetchRoomMembersShort({ roomId: id });
 
                     onRemove(user.id);
                 }, 'danger');

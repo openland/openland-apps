@@ -88,6 +88,7 @@ const getMenuContent = (opts: MenuContentOpts) => {
                     });
 
                     await client.refetchOrganization({ organizationId: id });
+                    await client.refetchOrganizationMembersShort({ organizationId: id });
 
                     onRemove(user.id);
                 }, 'danger');
