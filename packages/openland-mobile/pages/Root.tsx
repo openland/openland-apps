@@ -80,7 +80,7 @@ class RootContainer extends React.PureComponent<RootProps & { theme: ThemeGlobal
             }
 
             return (
-                <View width="100%" height="100%" flexDirection="row">
+                <View width="100%" height="100%" flexDirection="row" backgroundColor={this.props.theme.backgroundPrimary}>
                     <SNavigationView
                         width={sideWidth}
                         height={this.props.height}
