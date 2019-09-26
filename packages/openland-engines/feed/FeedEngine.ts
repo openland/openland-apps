@@ -6,7 +6,6 @@ import * as Types from 'openland-api/Types';
 import { SequenceModernWatcher } from '../core/SequenceModernWatcher';
 import { backoff } from 'openland-y-utils/timer';
 import { FeedQuery } from 'openland-api';
-import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { DataSourceFeedItem, SlideInputLocal } from './types';
 import { convertItems, convertPost, convertToSlideInput } from './convert';
 import UUID from 'uuid/v4';
