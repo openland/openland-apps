@@ -347,51 +347,54 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
   }
   
   func onUpdated(index: Int, state: RNAsyncDataViewState) {
-//    queue.async {
-//      self.latestState = state
-//      
-//      if(self.isPassThrough || self.inWindow(index: index)){
-//        print("onUpdated", self.isPassThrough, self.inWindow(index: index), index, self.window);
-//        let st = self.state.replace(index: index - self.window[0], spec: state.items[index].config)
-//        self.state = st
-//        for i in self.watchers.all() {
-//          i.value.onUpdated(index: index - self.window[0], state: st)
-//        }
-//      }
-//      
-//    }
+    queue.async {
+      self.latestState = state
+      
+      if(self.isPassThrough || self.inWindow(index: index)){
+        let st = self.state.replace(index: index - self.window[0], spec: state.items[index].config)
+        self.state = st
+        for i in self.watchers.all() {
+          i.value.onUpdated(index: index - self.window[0], state: st)
+        }
+      }
+      
+    }
   }
   
   func onMoved(from: Int, to: Int, state: RNAsyncDataViewState) {
-//    queue.async {
-//      self.latestState = state
-//
-//      if((self.inWindow(index: from) && self.inWindow(index: to)) || self.isPassThrough){
-//        self.state = state
-//        for i in self.watchers.all() {
-//          i.value.onMoved(from: from, to: to, state: state)
-//        }
-//        return
-//      }else if(!self.inWindow(index: from) && !self.inWindow(index: to)){
-//        // Ignore (out of window)
-//      }else if(self.inWindow(index: from)){
-//        let st = self.state.remove(index: from)
-//        self.window[1] -= 1
-//        self.state = st
-//        for i in self.watchers.all() {
-//          i.value.onRemoved(index: from, state: st)
-//        }
-//      }else if(self.inWindow(index: to)){
-//        let st = self.state
-//          .add(index: to, key: state.items[to].key, spec: state.items[to].config, isAnchor: false)
-//        self.window[1] += 1
-//        self.state = st
-//        for i in self.watchers.all() {
-//          i.value.onAdded(index: from, state: st)
-//        }
-//      }
-//
-//    }
+    queue.async {
+      self.latestState = state
+
+      if(self.isPassThrough){
+        self.state = state
+        for i in self.watchers.all() {
+          i.value.onMoved(from: from, to: to, state: state)
+        }
+      }else if((self.inWindow(index: from) && self.inWindow(index: to))){
+        self.state = self.state.move(from: from - self.window[0], to: to - self.window[0])
+        for i in self.watchers.all() {
+          i.value.onMoved(from: from - self.window[0], to: to - self.window[0], state: self.state)
+        }
+      }else if(!self.inWindow(index: from) && !self.inWindow(index: to)){
+        // Ignore (out of window)
+      }else if(self.inWindow(index: from)){
+        let st = self.state.remove(index: from)
+        self.window[1] -= 1
+        self.state = st
+        for i in self.watchers.all() {
+          i.value.onRemoved(index: from, state: st)
+        }
+      }else if(self.inWindow(index: to)){
+        let st = self.state
+          .add(index: to, key: state.items[to].key, spec: state.items[to].config, isAnchor: false)
+        self.window[1] += 1
+        self.state = st
+        for i in self.watchers.all() {
+          i.value.onAdded(index: from, state: st)
+        }
+      }
+
+    }
   }
   
   func onRemoved(index: Int, state: RNAsyncDataViewState) {
