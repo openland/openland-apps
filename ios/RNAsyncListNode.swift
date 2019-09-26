@@ -256,6 +256,10 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       self.prevScroll = offsetY
     }
     
+    if(scrollView.contentOffset.y < 1000){
+      self.dataView.loadMoreForward()
+    }
+    
     if self.onScrollCallback != nil {
       let contentOffset = NSMutableDictionary()
       contentOffset.setValue(offsetY, forKey: "y")
@@ -349,7 +353,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       self.loadingCellTop.loading = false
       self.node.deleteItems(at: [IndexPath(row: 0, section: 0)])
     }
-    print("boom", "checkTopLoader", self.state.completedForward, self.state.items.count)
   }
   
   //
@@ -651,9 +654,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       let index = self.state.items.firstIndex(where: { item -> Bool in
         item.key == d.key
       }) ?? -1;
-      if(index >= 0 && index <= 5){
-        self.dataView.loadMoreForward();
-      }
+      
       /* NO "self" references here!!!! Bevare retantion cycles! */
       return { () -> ASCellNode in
         if cached == nil {
