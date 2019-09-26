@@ -175,12 +175,10 @@ const EditCommunityEntity = (props: {
                                 <USelectField
                                     field={typeField as any}
                                     placeholder="Community type"
-                                    value={typeField.value}
                                     disabled={!props.isOwner}
                                     hideSelector={!props.isOwner}
                                     clearable={false}
                                     searchable={false}
-                                    onChange={(src: any) => typeField.input.onChange(src.value)}
                                     options={[
                                         {
                                             value: CommunityType.COMMUNITY_PUBLIC,
