@@ -6,7 +6,7 @@ import { StoredFileT, XAvatarFormFieldComponent } from 'openland-x/XAvatarUpload
 import { XView } from 'react-mental';
 import { SelectWithDropdown } from 'openland-web/pages/main/mail/SelectWithDropdown';
 import { sanitizeImageRef } from '../../utils/sanitizer';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XTextArea } from 'openland-x/XTextArea';
 import { InputField } from 'openland-web/components/InputField';
 import { FormSection } from './components/FormSection';
@@ -206,9 +206,8 @@ export const SettingsProfileFragment = React.memo(() => {
                             <InputField title="LinkedIn" field={linkedinField} size="large" />
                         </FormSection>
                         <FormFooter>
-                            <XButton
+                            <UButton
                                 text="Save changes"
-                                style="primary"
                                 size="large"
                                 alignSelf="flex-start"
                                 onClick={doConfirm}

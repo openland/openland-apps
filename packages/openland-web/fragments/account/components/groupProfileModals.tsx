@@ -1,19 +1,12 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XTextArea } from 'openland-x/XTextArea';
 import { Room_room_SharedRoom } from 'openland-api/Types';
-import {
-    RoomSetFeatured,
-    RoomSetHidden,
-} from 'openland-web/fragments/account/components/RoomControls';
 import { useClient } from 'openland-web/utils/useClient';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { XErrorMessage } from 'openland-x/XErrorMessage';
-import { XModalContent } from 'openland-web/components/XModalContent';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { StoredFileT, XAvatarFormFieldComponent } from 'openland-x/XAvatarUpload';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -24,32 +17,6 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-
-export const AdminTools = (props: { id: string; variables: { id: string } }) => {
-    let client = useClient();
-    const data = client.useRoomSuper(props.variables);
-
-    return (
-        <>
-            {data &&
-                data.roomSuper && (
-                    <RoomSetFeatured val={data.roomSuper!.featured} roomId={data.roomSuper.id} />
-                )}
-            {data &&
-                data.roomSuper && (
-                    <RoomSetHidden val={data.roomSuper!.listed} roomId={data.roomSuper.id} />
-                )}
-        </>
-    );
-};
-
-export type tabsT = 'featured' | 'requests' | 'members';
-
-export const tabs: { [K in tabsT]: tabsT } = {
-    featured: 'featured',
-    requests: 'requests',
-    members: 'members',
-};
 
 type RoomEditModalT = {
     title: string;
@@ -178,7 +145,7 @@ const RoomEditModal = ({ chatId, hide }: { chatId: string; hide: () => void }) =
 export const showRoomEditModal = (chatId: string) => {
     showModalBox(
         {
-            title: 'Settings',
+            title: 'Edit group',
         },
         ctx => <RoomEditModal chatId={chatId} hide={ctx.hide} />,
     );
@@ -195,54 +162,3 @@ export const showLeaveChatConfirmation = (client: OpenlandClient, chatId: string
 
     builder.show();
 };
-
-const DescriptionModalContent = (props: { chatId: string; hide: () => void }) => {
-    const { chatId } = props;
-    const client = useClient();
-    const data = client.useRoomWithoutMembers({ id: chatId });
-
-    let chat = data.room as Room_room_SharedRoom;
-
-    if (!chat) {
-        return <XLoader loading={true} />;
-    }
-
-    const form = useForm();
-    const editDescription = chat.description || '';
-    const descriptionField = useField('input.description', editDescription, form);
-
-    const createAction = () => {
-        form.doAction(async () => {
-            await client.mutateRoomUpdate({
-                roomId: chatId,
-                input: {
-                    ...(descriptionField.value !== editDescription
-                        ? { description: descriptionField.value }
-                        : {}),
-                },
-            });
-            props.hide();
-        });
-    };
-
-    return (
-        <XView borderRadius={8}>
-            {form.loading && <XLoader loading={form.loading} />}
-            {form.error && <XErrorMessage message={form.error} />}
-            <XModalContent>
-                <XTextArea placeholder="Description" resize={false} {...descriptionField.input} />
-            </XModalContent>
-            <XModalFooter>
-                <XView marginRight={12}>
-                    <XButton text="Cancel" style="ghost" size="large" onClick={props.hide} />
-                </XView>
-                <XButton text="Save" style="primary" size="large" onClick={createAction} />
-            </XModalFooter>
-        </XView>
-    );
-};
-
-export const showAddDescriptionModal = (chatId: string) =>
-    showModalBox({ title: 'Add short description' }, ctx => (
-        <DescriptionModalContent chatId={chatId} hide={ctx.hide} />
-    ));
