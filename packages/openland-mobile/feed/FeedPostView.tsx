@@ -64,6 +64,7 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
             leftColorSwiped={theme.accentNegative}
             rightColorSwiped={theme.accentPositive}
             scrollRef={scrollRef}
+            enabled={false}
         >
             <View style={styles.box}>
                 <FeedItemShadow width={width} height={containerHeight + 16 + 32} />

@@ -46,6 +46,7 @@ interface FeedSwipeHandlerProps {
     rightColor: string;
     leftColorSwiped: string;
     rightColorSwiped: string;
+    enabled?: boolean;
 }
 
 type AnimNamesV = 'container' | 'leftBox' | 'leftIconBig' | 'rightBox' | 'rightIconBig';
@@ -230,7 +231,15 @@ export class FeedSwipeHandler extends React.PureComponent<FeedSwipeHandlerProps>
     });
 
     render() {
-        const { theme, children, leftIcon, rightIcon, leftColor, rightColor, leftColorSwiped, rightColorSwiped } = this.props;
+        const { theme, children, leftIcon, rightIcon, leftColor, rightColor, leftColorSwiped, rightColorSwiped, enabled } = this.props;
+
+        if (enabled === false) {
+            return (
+                <>
+                    {children}
+                </>
+            );
+        }
 
         return (
             <View {...this.panResponder.panHandlers}>
