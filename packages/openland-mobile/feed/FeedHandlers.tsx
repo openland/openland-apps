@@ -5,12 +5,12 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { showReportForm } from 'openland-mobile/components/showReportForm';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
 import { MessageReactionType } from 'openland-api/Types';
-import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
-import { trackEvent } from 'openland-mobile/analytics';
 import { Share } from 'react-native';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 
 class FeedHandlersClass {
+    private getPostLink = (id: string) => 'https://openland.com/feed/' + id;
+
     Open = (id: string) => {
         getMessenger().history.navigationManager.push('FeedItem', { feedItemId: id });
     }
@@ -32,12 +32,27 @@ class FeedHandlersClass {
         stopLoader();
     }
 
+    Forward = (id: string) => {
+        const router = getMessenger().history.navigationManager;
+        const engine = getMessenger().engine;
+
+        router.push('HomeDialogs', {
+            title: 'Forward to',
+            pressCallback: (dialogId: string, title: string) => {
+                Alert.builder()
+                    .title(`Forward to ${title}?`)
+                    .button('Cancel', 'cancel')
+                    .button('Forward', 'default', async () => {
+                        engine.getConversation(dialogId).sendMessage(this.getPostLink(id), []);
+                        router.pushAndRemove('Conversation', { id: dialogId });
+                    })
+                    .show();
+            }
+        });
+    }
+
     Share = (id: string) => {
-        const link = 'https://openland.com/feed/' + id;
-
-        trackEvent('feed_post_share', { postId: id });
-
-        Share.share({ message: link });
+        Share.share({ message: this.getPostLink(id) });
     }
 
     Manage = (id: string, canEdit: boolean, fromLongPress?: boolean) => {
@@ -45,11 +60,9 @@ class FeedHandlersClass {
         const router = getMessenger().history.navigationManager;
         const builder = new ActionSheetBuilder();
 
-        if (NON_PRODUCTION) {
-            builder.action('Share', () => {
-                this.Share(id);
-            }, false, require('assets/ic-share-24.png'));
-        }
+        builder.action('Share', () => {
+            this.Share(id);
+        }, false, require('assets/ic-share-24.png'));
 
         if (canEdit) {
             builder.action('Edit', () => {

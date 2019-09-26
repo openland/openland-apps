@@ -8,7 +8,6 @@ import { TextStyles, HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 import { FeedHandlers } from '../FeedHandlers';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
-import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 
 const styles = StyleSheet.create({
     box: {
@@ -60,7 +59,7 @@ export const FeedPostTools = React.memo((props: FeedPostToolsProps) => {
                     </View>
                 </TouchableOpacity>
             </View>
-            {NON_PRODUCTION && <ZIconButton src={require('assets/ic-forward-24.png')} onPress={() => FeedHandlers.Share(id)} />}
+            <ZIconButton src={require('assets/ic-forward-24.png')} onPress={() => FeedHandlers.Forward(id)} />
             <ZIconButton src={require('assets/ic-more-24.png')} onPress={() => FeedHandlers.Manage(id, canEdit)} />
         </View>
     );

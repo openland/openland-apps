@@ -56,7 +56,7 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
             id={id}
             theme={theme}
             onLeftSwiped={() => FeedHandlers.Like(item)}
-            onRightSwiped={() => FeedHandlers.Share(id)}
+            onRightSwiped={() => FeedHandlers.Forward(id)}
             leftIcon={require('assets/ic-like-24.png')}
             rightIcon={require('assets/ic-forward-24.png')}
             leftColor={theme.backgroundTertiary}
