@@ -11,6 +11,7 @@ import { TextLabel1, TextDensed, TextBody } from 'openland-web/utils/TextStyles'
 import IcBack from 'openland-icons/s/ic-back-24.svg';
 import IcClear from 'openland-icons/s/ic-close-16.svg';
 import { UIcon } from './UIcon';
+import { FormField } from 'openland-form/useField';
 
 const style = css`
     &.Select {
@@ -136,7 +137,7 @@ const placeholderSingleStyle = css`
     &.Select--single.has-value + .Stranger-placeholder {
         font-size: 13px;
         line-height: 18px;
-        color: var(--accentPrimary);
+        color: var(--foregroundTertiary);
         top: 8px;
     }
 
@@ -342,7 +343,11 @@ const singleValueContainer = css`
 `;
 
 const SingleValueRender = (props: ValueRenderProps) => {
-    return <div className={singleValueContainer}>{props.value.label}</div>;
+    return (
+        <div className={singleValueContainer}>
+            {props.value.labelShort ? props.value.labelShort : props.value.label}
+        </div>
+    );
 };
 
 const ClearRender = () => (
@@ -451,5 +456,17 @@ export const USelect = (props: USelectBasicProps) => {
                 </Container>
             )}
         </>
+    );
+};
+
+export const USelectField = (props: USelectBasicProps & { field: FormField<OptionType> }) => {
+    const { field, ...other } = props;
+
+    return (
+        <USelect
+            onChange={(val: OptionType) => field.input.onChange(val)}
+            value={field.input.value}
+            {...other}
+        />
     );
 };
