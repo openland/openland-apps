@@ -12,6 +12,7 @@ import { renderPreprocessedText } from 'openland-mobile/components/message/rende
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { FeedSlideAttachment } from './FeedSlideAttachment';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
+import LinearGradient from 'react-native-linear-gradient';
 
 const styles = StyleSheet.create({
     box: {
@@ -98,9 +99,8 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
     const textStyle = textCanBeDynamic ? (text.length < 200 ? (text.length < 100 ? styles.textLarge : styles.textMedium) : styles.text) : styles.text;
 
     const renderText = React.useMemo(() => renderPreprocessedText(textSpans, messenger.handleUserClick, messenger.handleGroupClick, theme), [textSpans, theme]);
-
-    return (
-        <View style={styles.box}>
+    const content = (
+        <>
             {text.length > 0 && ((coverAlign && coverAlign === SlideCoverAlign.Bottom) || attachments.length > 0) && (
                 <Text style={[textStyle, { color: theme.foregroundPrimary, paddingTop: wrapped ? 48 : 16 }]} allowFontScaling={false}>
                     {renderText}
@@ -140,6 +140,20 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
             )}
 
             {attachments.length > 0 && <FeedSlideAttachment attachment={attachments[0]} withText={text.length > 0} />}
+        </>
+    );
+
+    if (!wrapped && attachments.length <= 0) {
+        return (
+            <LinearGradient colors={['rgba(242, 243, 245, 0)', 'rgba(242, 243, 245, 0.56)']} style={styles.box}>
+                {content}
+            </LinearGradient>
+        );
+    }
+
+    return (
+        <View style={styles.box}>
+            {content}
         </View>
     );
 });
