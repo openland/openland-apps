@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { SlideFragment_attachments, SlideFragment_attachments_SharedRoom, SlideFragment_attachments_User, SlideFragment_attachments_Organization } from 'openland-api/Types';
+import { SlideFragment_attachments, SlideFragment_attachments_SharedRoom, SlideFragment_attachments_User, SlideFragment_attachments_Organization, SharedRoomMembershipStatus } from 'openland-api/Types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { plural } from 'openland-y-utils/plural';
@@ -66,7 +66,8 @@ const Inner = React.memo((props: InnerProps) => {
 const InnerSharedRoom = React.memo((props: { item: SlideFragment_attachments_SharedRoom }) => {
     const client = useClient();
     const router = getMessenger().history.navigationManager;
-    const { id, roomPhoto, title, membersCount, membership, kind } = props.item;
+    const { id, roomPhoto, title, membersCount, kind } = props.item;
+    const [membership, setMembership] = React.useState(props.item.membership);
 
     let action = undefined;
     let actionTitle = undefined;
@@ -81,7 +82,7 @@ const InnerSharedRoom = React.memo((props: { item: SlideFragment_attachments_Sha
 
                     router.push('Conversation', { flexibleId: id });
 
-                    await client.refetchRoomTiny({ id });
+                    setMembership(SharedRoomMembershipStatus.MEMBER);
                 } catch (e) {
                     AlertBlanket.alert(e.message);
                 } finally {
