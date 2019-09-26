@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Image } from 'react-native';
 import { withRouter } from 'react-native-s/withRouter';
 import { SRouter } from 'react-native-s/SRouter';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 
 type ZIconButtonStyle = 'default' | 'danger' | 'contrast';
 
@@ -33,7 +34,7 @@ const ZIconButtonComponent = React.memo<ZIconButtonProps & { router: SRouter }>(
     };
 
     return (
-        <TouchableOpacity onPress={handlePress} activeOpacity={0.6}>
+        <TouchableOpacity onPress={handlePress} activeOpacity={HighlightAlpha}>
             <View width={48} height={48} alignItems="center" justifyContent="center">
                 <Image
                     source={src}

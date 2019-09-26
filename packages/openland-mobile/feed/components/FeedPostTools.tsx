@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { View, StyleSheet, ViewStyle, Text, TextStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle, Text, TextStyle, TouchableOpacity } from 'react-native';
 import { MessageReactionType } from 'openland-api/Types';
 import { plural } from 'openland-y-utils/plural';
 import { ZIconButton } from 'openland-mobile/components/ZIconButton';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles, HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 import { FeedHandlers } from '../FeedHandlers';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
+import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 
 const styles = StyleSheet.create({
     box: {
@@ -18,7 +19,8 @@ const styles = StyleSheet.create({
     } as ViewStyle,
     counterWrapper: {
         flexGrow: 1,
-        paddingHorizontal: 4
+        paddingHorizontal: 4,
+        alignItems: 'flex-start'
     } as ViewStyle,
     counter: {
         ...TextStyles.Label1
@@ -50,11 +52,15 @@ export const FeedPostTools = React.memo((props: FeedPostToolsProps) => {
         <View style={styles.box}>
             <ZIconButton src={myLike ? require('assets/ic-like-filled-24.png') : require('assets/ic-like-24.png')} style={myLike ? 'danger' : 'default'} onPress={() => FeedHandlers.Like(item)} />
             <View style={styles.counterWrapper}>
-                <Text style={[styles.counter, { color: myLike ? theme.accentNegative : theme.foregroundSecondary }]} allowFontScaling={false} onPress={handleLikeCountPress}>
-                    {likesCount > 0 ? plural(likesCount, ['like', 'likes']) : 'Like'}
-                </Text>
+                <TouchableOpacity onPress={handleLikeCountPress} activeOpacity={HighlightAlpha}>
+                    <View>
+                        <Text style={[styles.counter, { color: myLike ? theme.accentNegative : theme.foregroundSecondary }]} allowFontScaling={false}>
+                            {likesCount > 0 ? plural(likesCount, ['like', 'likes']) : 'Like'}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
             </View>
-            <ZIconButton src={require('assets/ic-forward-24.png')} onPress={() => FeedHandlers.Share(id)} />
+            {NON_PRODUCTION && <ZIconButton src={require('assets/ic-forward-24.png')} onPress={() => FeedHandlers.Share(id)} />}
             <ZIconButton src={require('assets/ic-more-24.png')} onPress={() => FeedHandlers.Manage(id, canEdit)} />
         </View>
     );
