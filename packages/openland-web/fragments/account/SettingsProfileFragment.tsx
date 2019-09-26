@@ -15,7 +15,6 @@ import { FormFooter } from './components/FormFooter';
 import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
-import EditPhotoIcon from 'openland-icons/ic-edit-photo.svg';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 export const SettingsProfileFragment = React.memo(() => {
@@ -121,16 +120,6 @@ export const SettingsProfileFragment = React.memo(() => {
             <XAvatarFormFieldComponent
                 {...avatarField.input}
             />
-            <XView
-                position="absolute"
-                right={2}
-                bottom={2}
-                zIndex={2}
-                alignItems="center"
-                justifyContent="center"
-            >
-                <EditPhotoIcon />
-            </XView>
         </XView>
     );
 
