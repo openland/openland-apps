@@ -12,6 +12,18 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { CommentsWrapper } from './components/comments/CommentsWrapper';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SHeaderIndicator } from 'react-native-s/SHeaderIndicator';
+import { isPad } from '../Root';
+
+const getWidth = () => {
+    const screenWidth = Dimensions.get('screen').width;
+    let deltaWidth = 0;
+
+    if (isPad && screenWidth > 375 * 2) {
+        deltaWidth = screenWidth > 1000 ? 375 : 320;
+    }
+
+    return screenWidth - deltaWidth;
+};
 
 const FeedItemComponent = React.memo((props: PageProps) => {
     const feedItemId = props.router.params.feedItemId;
@@ -28,7 +40,7 @@ const FeedItemComponent = React.memo((props: PageProps) => {
 
     const item = React.useMemo(() => convertPost(itemSrc, messenger.engine), [itemSrc]);
     const { author, date, slides } = item;
-    const width = Dimensions.get('screen').width;
+    const width = getWidth();
     const [currentSlide, setCurreentSlide] = React.useState(0);
 
     const peerView = (
