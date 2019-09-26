@@ -31,9 +31,7 @@ export class FeedEngine {
             this.load();
         }, () => []);
 
-        if (AppConfig.isNonProduction()) {
-            this.init();
-        }
+        this.init();
     }
 
     private init = async () => {

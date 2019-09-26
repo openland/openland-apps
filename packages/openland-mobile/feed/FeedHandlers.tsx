@@ -45,20 +45,16 @@ class FeedHandlersClass {
         const router = getMessenger().history.navigationManager;
         const builder = new ActionSheetBuilder();
 
-        builder.action('Share', () => {
-            this.Share(id);
-        }, false, require('assets/ic-share-24.png'));
+        if (NON_PRODUCTION) {
+            builder.action('Share', () => {
+                this.Share(id);
+            }, false, require('assets/ic-share-24.png'));
+        }
 
         if (canEdit) {
-            if (NON_PRODUCTION) {
-                builder.action('Edit', () => {
-                    router.push('FeedEdit', { id });
-                }, false, require('assets/ic-edit-24.png'));
-
-                builder.action('Unpublish', () => {
-                    console.warn('boom unpublish post');
-                }, false, require('assets/ic-refresh-24.png'));
-            }
+            builder.action('Edit', () => {
+                router.push('FeedEdit', { id });
+            }, false, require('assets/ic-edit-24.png'));
 
             builder.action('Delete', async () => {
                 Alert.builder()

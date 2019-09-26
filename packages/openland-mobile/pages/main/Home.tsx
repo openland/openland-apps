@@ -9,7 +9,6 @@ import { AppBarBottom, AppBarBottomItem } from '../../components/AppBarBottom';
 import { Explore } from './Explore';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { NON_PRODUCTION } from '../Init';
 import { Feed } from './Feed';
 import { NotificationCenter } from './NotificationCenter';
 import { isPad } from '../Root';
@@ -19,7 +18,7 @@ export const Home = XMemo<PageProps>((props) => {
     const counter = getClient().useWithoutLoaderGlobalCounter();
     const notificationsCounter = getClient().useWithoutLoaderMyNotificationCenter();
     const discoverDone = getClient().useWithoutLoaderDiscoverIsDone();
-    const showFeed = NON_PRODUCTION && !isPad;
+    const showFeed = !isPad;
 
     return (
         <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>
