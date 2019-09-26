@@ -8,7 +8,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
-import { StoredFileT, XAvatarFormFieldComponent } from 'openland-x/XAvatarUpload';
+import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
@@ -70,7 +70,7 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
             <XView paddingLeft={40} paddingRight={40} paddingTop={6} paddingBottom={24}>
                 <XVertical separator={12}>
                     <XHorizontal separator={12}>
-                        <XAvatarFormFieldComponent
+                        <UAvatarUploadField
                             {...avatarField.input}
                         />
                         <XVertical flexGrow={1} separator={10} alignSelf="flex-start">

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
-import { XAvatarFormFieldComponent, StoredFileT } from 'openland-x/XAvatarUpload';
+import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
 import { XView } from 'react-mental';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { XTextArea } from 'openland-x/XTextArea';
@@ -217,7 +217,7 @@ const ModalBody = (props: ModalBodyProps) => {
                 </XView>
                 <XView marginTop={16}>
                     <div className={SocialImageWrapperClassName}>
-                        <XAvatarFormFieldComponent
+                        <UAvatarUploadField
                             cropParams="16:9"
                             onChange={file => (file ? setSocialImageRef(file) : {})}
                             value={socialImageRef as StoredFileT}

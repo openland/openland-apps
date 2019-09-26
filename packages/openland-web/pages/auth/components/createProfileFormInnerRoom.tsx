@@ -4,7 +4,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { XAvatarFormFieldComponent, StoredFileT } from 'openland-x/XAvatarUpload';
+import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
 import {
     Title,
     ButtonsWrapper,
@@ -119,7 +119,7 @@ export const CreateProfileFormInnerRoom = (
                     <ButtonsWrapper marginTop={40} width="100%">
                         <XVertical alignItems="center">
                             <XView marginBottom={10}>
-                                <XAvatarFormFieldComponent
+                                <UAvatarUploadField
                                     {...photoRef.input}
                                     initialUrl={prefill ? prefill.picture : undefined}
                                 />

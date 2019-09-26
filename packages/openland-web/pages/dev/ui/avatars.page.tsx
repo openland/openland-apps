@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
+import { UploadedFile } from 'openland-web/components/unicorn/UFileUpload';
 import { UAvatarUploadBasic } from 'openland-web/components/unicorn/UAvatarUpload';
-import { UploadedFile } from 'openland-x/files/XFileUpload';
 
 const AvatarComponent = () => {
     const [newPhoto, setNewPhoto] = React.useState<UploadedFile | null>(null);

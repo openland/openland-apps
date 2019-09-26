@@ -9,7 +9,7 @@ import { getPercentageOfOnboarding } from '../components/utils';
 import { XButton } from 'openland-x/XButton';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { XAvatarFormFieldComponent, StoredFileT } from 'openland-x/XAvatarUpload';
+import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
@@ -149,7 +149,7 @@ const CreateProfileFormInnerWeb = (
                 maxWidth={props.isMobile ? 230 : undefined}
             />
             <XView marginBottom={20}>
-                <XAvatarFormFieldComponent
+                <UAvatarUploadField
                     {...photoRef.input}
                     initialUrl={prefill ? prefill.picture : undefined}
                 />

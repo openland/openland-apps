@@ -2,11 +2,11 @@ import * as React from 'react';
 import { useForm } from 'openland-form/useForm';
 import { useClient } from 'openland-web/utils/useClient';
 import { useField } from 'openland-form/useField';
-import { StoredFileT, XAvatarFormFieldComponent } from 'openland-x/XAvatarUpload';
 import { XView } from 'react-mental';
 import { SelectWithDropdown } from 'openland-web/pages/main/mail/SelectWithDropdown';
 import { sanitizeImageRef } from '../../utils/sanitizer';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
 import { XTextArea } from 'openland-x/XTextArea';
 import { InputField } from 'openland-web/components/InputField';
 import { FormSection } from './components/FormSection';
@@ -117,7 +117,7 @@ export const SettingsProfileFragment = React.memo(() => {
 
     const avatarUploadComponent = (
         <XView>
-            <XAvatarFormFieldComponent
+            <UAvatarUploadField
                 {...avatarField.input}
             />
         </XView>

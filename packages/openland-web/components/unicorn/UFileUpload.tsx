@@ -28,12 +28,9 @@ export interface UFileUploadProps {
     dataTestId?: string;
     component: React.ComponentType<UFileUploadRenderProps>;
     cropParams?: string;
-
     value?: UploadedFile | null;
     onChange?: (file: UploadedFile | null) => void;
-
     initialUrl?: string | null;
-
     imageOnly?: boolean;
 }
 
@@ -75,6 +72,16 @@ export const UFileUpload = (props: UFileUploadProps) => {
             }
         });
     };
+
+    React.useEffect(
+        () => {
+            if (props.initialUrl) {
+                let file = UploadCare.fileFrom('url', props.initialUrl);
+                doStartUpload(file);
+            }
+        },
+        [props.initialUrl],
+    );
 
     const doUpload = () => {
         let file = value;
