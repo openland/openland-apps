@@ -16,7 +16,7 @@ import { XButton } from 'openland-x/XButton';
 import { InputField } from 'openland-web/components/InputField';
 import { SelectWithDropdown } from '../../../pages/main/mail/SelectWithDropdown';
 import { CommunityType } from '../../create/CreateEntity';
-import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
+import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { UpdateOrganizationProfileInput } from 'openland-api/Types';
 import { formatError } from 'openland-x-forms/errorHandling';
 import { XWithRole } from 'openland-x-permissions/XWithRole';

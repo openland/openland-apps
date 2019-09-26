@@ -12,6 +12,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcPhoto from 'openland-icons/s/ic-camera-36.svg';
 import IcPhotoIndicator from 'openland-icons/s/ic-camera-16.svg';
+import { FormField } from 'openland-form/useField';
 
 export interface UAvatarUploadBasicProps {
     value?: UploadedFile | null;
@@ -282,23 +283,18 @@ export const fromValue = (value2?: StoredFileT | null): UploadedFile | null => {
     return null;
 };
 
-export const UAvatarUploadField = ({
-    onChange,
-    value,
-    ...rest
-}: {
-    value?: StoredFileT | null;
-    onChange: (file: StoredFileT | null) => void;
-    initialUrl?: string | null;
-    cropParams?: string;
-    dataTestId?: string;
-}) => {
+interface UAvatarUploadFieldProps extends UAvatarUploadBasicProps {
+    field: FormField<StoredFileT | undefined | null>;
+}
+
+export const UAvatarUploadField = (props: UAvatarUploadFieldProps) => {
+    const { field, ...other } = props;
     return (
         <UAvatarUploadBasic
-            {...rest}
-            value={fromValue(value)}
+            {...other}
+            value={fromValue(field.input.value)}
             onChange={(file: UploadedFile | null) => {
-                onChange(toValue(file));
+                field.input.onChange(toValue(file));
             }}
         />
     );

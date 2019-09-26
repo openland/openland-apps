@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
-import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
+import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
+import { UploadedFile } from 'openland-web/components/unicorn/UFileUpload';
+import { UAvatarUploadBasic } from 'openland-web/components/unicorn/UAvatarUpload';
 import { XView } from 'react-mental';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { XTextArea } from 'openland-x/XTextArea';
@@ -21,11 +22,6 @@ import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 
 interface AdvancedSettingsInnerProps {
     roomId: string;
-
-    // socialImage: string | null;
-    // welcomeMessageIsOn: boolean;
-    // welcomeMessageText: string | null;
-    // welcomeMessageSender: Room_room_SharedRoom_welcomeMessage_sender | null;
 }
 
 const UsersWrapperClassName = css`
@@ -58,8 +54,8 @@ const SocialImageWrapperClassName = css`
 interface ModalBodyProps {
     welcomeMessageIsOn: boolean;
     setWelcomeMessageIsOn: (data: boolean) => void;
-    setSocialImageRef: (file: StoredFileT) => void;
-    socialImageRef: StoredFileT | undefined;
+    setSocialImageRef: (file: UploadedFile) => void;
+    socialImageRef: UploadedFile | undefined;
     isOpenUsers: boolean;
     setIsOpenUsers: (data: boolean) => void;
     msgSender: any;
@@ -217,10 +213,10 @@ const ModalBody = (props: ModalBodyProps) => {
                 </XView>
                 <XView marginTop={16}>
                     <div className={SocialImageWrapperClassName}>
-                        <UAvatarUploadField
+                        <UAvatarUploadBasic
                             cropParams="16:9"
                             onChange={file => (file ? setSocialImageRef(file) : {})}
-                            value={socialImageRef as StoredFileT}
+                            value={socialImageRef as UploadedFile}
                         />
                     </div>
                 </XView>
@@ -252,17 +248,17 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide
         chat.welcomeMessage!.sender,
     );
 
-    const [socialImageRef, setSocialImageRef] = React.useState<StoredFileT | undefined>(
+    const [socialImageRef, setSocialImageRef] = React.useState<UploadedFile | undefined>(
         chat!.socialImage
             ? {
-                uuid: chat!.socialImage,
-                crop: {
-                    w: 190,
-                    h: 100,
-                    x: 0,
-                    y: 0,
-                },
-            }
+                  isImage: true,
+                  uuid: chat.socialImage,
+                  crop: null,
+                  width: null,
+                  height: null,
+                  name: null,
+                  size: null,
+              }
             : undefined,
     );
 
@@ -350,15 +346,23 @@ export const AdvancedSettingsModal = (props: AdvancedSettingsInnerProps & { hide
                             throw Error();
                         }
 
-                        const newSocialImage = socialImageRef;
-
                         await api.mutateRoomUpdate({
                             roomId: props.roomId,
                             input: {
-                                ...(newSocialImage && newSocialImage.uuid !== chat.socialImage
+                                ...(socialImageRef && socialImageRef.uuid !== chat.socialImage
                                     ? {
-                                        socialImageRef: sanitizeImageRef(newSocialImage),
-                                    }
+                                          socialImageRef: sanitizeImageRef({
+                                              uuid: socialImageRef.uuid,
+                                              crop: socialImageRef.crop
+                                                  ? {
+                                                        x: socialImageRef.crop.left,
+                                                        y: socialImageRef.crop.top,
+                                                        w: socialImageRef.crop.width,
+                                                        h: socialImageRef.crop.height,
+                                                    }
+                                                  : undefined,
+                                          }),
+                                      }
                                     : {}),
                             },
                         });

@@ -4,7 +4,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { useField } from 'openland-form/useField';
 import { XView } from 'react-mental';
 import { SelectWithDropdown } from 'openland-web/pages/main/mail/SelectWithDropdown';
-import { sanitizeImageRef } from '../../utils/sanitizer';
+import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
 import { XTextArea } from 'openland-x/XTextArea';
@@ -53,15 +53,18 @@ export const SettingsProfileFragment = React.memo(() => {
     const locationField = useField('input.location', profile.location || '', form);
     const usernameField = useField('input.username', user.shortname || '', form, [
         {
-            checkIsValid: value => !!value && value.length > 0 ? value.length >= shortnameMinLength : true,
+            checkIsValid: value =>
+                !!value && value.length > 0 ? value.length >= shortnameMinLength : true,
             text: 'Username must have at least ' + shortnameMinLength + ' characters.',
         },
         {
-            checkIsValid: value => !!value && value.length > 0 ? value.length < shortnameMaxLength : true,
+            checkIsValid: value =>
+                !!value && value.length > 0 ? value.length < shortnameMaxLength : true,
             text: 'Username must have no more than ' + shortnameMaxLength + ' characters.',
         },
         {
-            checkIsValid: value => !!value && value.length > 0 ? !!value.match('^[a-z0-9_]+$') : true,
+            checkIsValid: value =>
+                !!value && value.length > 0 ? !!value.match('^[a-z0-9_]+$') : true,
             text: 'A username can only contain a-z, 0-9, and underscores.',
         },
     ]);
@@ -117,9 +120,7 @@ export const SettingsProfileFragment = React.memo(() => {
 
     const avatarUploadComponent = (
         <XView>
-            <UAvatarUploadField
-                {...avatarField.input}
-            />
+            <UAvatarUploadField field={avatarField} />
         </XView>
     );
 
@@ -141,11 +142,7 @@ export const SettingsProfileFragment = React.memo(() => {
                                 />
                             </XView>
                             <XView marginBottom={16}>
-                                <InputField
-                                    title="Last name"
-                                    field={lastNameField}
-                                    size="large"
-                                />
+                                <InputField title="Last name" field={lastNameField} size="large" />
                             </XView>
                             <XView marginBottom={16}>
                                 <SelectWithDropdown

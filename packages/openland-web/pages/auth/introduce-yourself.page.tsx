@@ -150,7 +150,7 @@ const CreateProfileFormInnerWeb = (
             />
             <XView marginBottom={20}>
                 <UAvatarUploadField
-                    {...photoRef.input}
+                    field={photoRef}
                     initialUrl={prefill ? prefill.picture : undefined}
                 />
             </XView>

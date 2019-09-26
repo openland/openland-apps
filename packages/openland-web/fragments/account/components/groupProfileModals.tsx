@@ -8,7 +8,7 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
-import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
+import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
@@ -66,7 +66,7 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
         <>
             <XView paddingHorizontal={24} paddingTop={12} paddingBottom={24}>
                 <XView alignSelf="center">
-                    <UAvatarUploadField {...avatarField.input} />
+                    <UAvatarUploadField field={avatarField} />
                 </XView>
                 <UInputField
                     label={inputLable}
