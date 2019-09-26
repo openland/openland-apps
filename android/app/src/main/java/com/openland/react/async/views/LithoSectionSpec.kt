@@ -20,6 +20,7 @@ import com.facebook.yoga.YogaAlign
 import com.facebook.yoga.YogaEdge
 import com.facebook.yoga.YogaJustify
 import com.openland.react.async.*
+import java.util.*
 
 @GroupSectionSpec
 object LithoSectionSpec {
@@ -29,6 +30,7 @@ object LithoSectionSpec {
                                   @Prop dataViewKey: String,
                                   @Prop dataModel: List<AsyncDataViewItem>,
                                   @Prop loading: Boolean,
+                                  @Prop loadingForward: Boolean,
                                   @Prop headerPadding: Float,
                                   @Prop(optional = true) overflowColor: Int?,
                                   @Prop(optional = true) loaderColor: Int?
@@ -41,11 +43,6 @@ object LithoSectionSpec {
                 .justifyContent(YogaJustify.CENTER)
 
 
-        val progress = Progress.create(c)
-                .heightDip(32.0f)
-                .widthDip(32.0f)
-                .color(if (loaderColor !== null) loaderColor else 0xFF0084fe.toInt())
-                .marginDip(YogaEdge.BOTTOM, 16.0f)
 
         if (overflowColor != null) {
             footer.backgroundColor(overflowColor)
@@ -59,23 +56,44 @@ object LithoSectionSpec {
                     .clipToOutline(false)
 
             footer.child(overflow)
-            if (loading) {
-                footer.child(progress)
-            }
 
-        } else {
-            if (loading) {
-                footer.child(progress)
-            }
+
         }
 
-        var header = Row.create(c).heightDip(headerPadding)
+        if (loading) {
+            val progress = Progress.create(c)
+                    .heightDip(32.0f)
+                    .widthDip(32.0f)
+                    .color(if (loaderColor !== null) loaderColor else 0xFF0084fe.toInt())
+                    .marginDip(YogaEdge.BOTTOM, 16.0f)
+
+            footer.child(progress)
+        }
+
+        var header = Row.create(c)
+                .widthPercent(100.0f)
+                .alignItems(YogaAlign.CENTER)
+                .justifyContent(YogaJustify.CENTER)
+                .heightDip(headerPadding + if (loadingForward) 64.0f else 0f)
         if (overflowColor !== null) {
             header.backgroundColor(overflowColor)
         }
+
+        if (loadingForward) {
+            val progress = Progress.create(c)
+                    .heightDip(32.0f)
+                    .widthDip(32.0f)
+                    .color(if (loaderColor !== null) loaderColor else 0xFF0084fe.toInt())
+                    .marginDip(YogaEdge.BOTTOM, 16.0f)
+
+            header.child(progress)
+        }
+
         return Children.create()
                 .child(SingleComponentSection.create(c)
-                        .component(header))
+                        .component(header)
+                        .key( "header" + if (loadingForward) "header_" + Date().time.toString() else "")
+                )
                 .child(DataDiffSection.create<AsyncDataViewItem>(c)
                         .data(dataModel)
 // known bug: list resets position after all items updated, method below can fix it, but some how (possible litho bug, yet we cant use latest version because of androidX)
@@ -99,6 +117,10 @@ object LithoSectionSpec {
                                    @Prop reactContext: ReactContext) {
         if (lastVisibleIndex > totalCount - 20) {
             AsyncDataViewManager.getDataView(dataViewKey, reactContext).handleLoadMore()
+        }
+
+        if (firstVisibleIndex < 20) {
+            AsyncDataViewManager.getDataView(dataViewKey, reactContext).handleLoadMoreForward()
         }
     }
 

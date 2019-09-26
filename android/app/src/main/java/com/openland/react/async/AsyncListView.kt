@@ -32,7 +32,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
     private var inited = false
     private var dataView: AsyncDataView? = null
     private var dataViewKey: String? = null
-    private var state: AsyncDataViewState = AsyncDataViewState(emptyList(), true, null)
+    private var state: AsyncDataViewState = AsyncDataViewState(emptyList(), true, true, null)
     private var dataViewSubscription: (() -> Unit)? = null
     private var inverted: Boolean = false
     private var headerPadding: Float = 0.0f
@@ -87,11 +87,11 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
             this.dataView!!.applyModes(this.applyModes)
             this.dataViewKey = key
             this.state = this.dataView!!.state
+            updateData()
             this.dataViewSubscription = this.dataView!!.watch {
                 this.state = it
                 updateData()
             }
-            updateData()
         }
     }
 
@@ -122,6 +122,17 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
     }
 
     private fun updateData() {
+        Log.d("ALV", "updateData" + " | " + this.state.scrollToKey + " | " + this.state.items.size.toString())
+
+        val scrollToIndex = this.state.items.indexOf(this.state.items.find { it.key == this.state.scrollToKey })
+        if(scrollToIndex >= 0){
+            // TODO: figure out how to make it scroll without animation and delay
+//            Handler().postDelayed( {
+//            }, 1)
+            this.eventController.requestScrollToPosition(scrollToIndex + 1, false)
+
+            this.state.scrollToKey = null
+        }
 
         val recycler = RecyclerCollectionComponent.create(asyncContext)
                 .eventsController(this.eventController)
@@ -136,9 +147,13 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
                         .loaderColor(this.loaderColor)
                         .reactContext(context as ReactContext)
                         .loading(!this.state.competed)
+                        .loadingForward(!this.state.competedForward && this.state.items.isNotEmpty())
                         .dataViewKey(if (this.dataViewKey !== null) this.dataViewKey!! else "empty")
                 )
-                .recyclerConfiguration(ListRecyclerConfiguration.create().orientation(LinearLayoutManager.VERTICAL).reverseLayout(this.inverted).build())
+                .recyclerConfiguration(ListRecyclerConfiguration.create()
+                        .orientation(LinearLayoutManager.VERTICAL)
+                        .reverseLayout(this.inverted)
+                        .build())
                 .onScrollListener(this.scrollListener)
                 .itemAnimator(null)
                 .build()
@@ -157,14 +172,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
             componentTree!!.setRootAsync(recycler)
         }
 
-        val scrollToIndex = this.state.items.indexOf(this.state.items.find { it.key == this.state.scrollToKey })
-        if(scrollToIndex >= 0){
-            // TODO: figure out how to make it scroll without animation and delay
-            Handler().postDelayed( {
-                this.eventController.requestScrollToPosition(scrollToIndex + 1 , true)
-            }, 100)
-            this.state.scrollToKey = null
-        }
+
     }
 
     fun dispose() {
