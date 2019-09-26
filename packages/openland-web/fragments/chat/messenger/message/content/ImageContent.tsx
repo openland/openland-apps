@@ -30,14 +30,14 @@ const modalToolbarContainer = css`
     top: 0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     z-index: 1;
     transition: 200ms opacity ease;
     opacity: 0.56;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0) 100%);
-    :hover{
+    :hover {
         opacity: 1;
-    };
+    }
 `;
 
 const modalImgContent = css`
@@ -45,6 +45,7 @@ const modalImgContent = css`
     flex-grow: 1;
     flex-shrink: 1;
     overflow: hidden;
+    max-height: 100%;
 `;
 
 const modalInfoContainer = css`
@@ -52,6 +53,7 @@ const modalInfoContainer = css`
     display: flex;
     align-items: flex-end;
     pointer-events: none;
+    margin-right: auto;
 `;
 
 const modalSecondaryText = css`
@@ -117,10 +119,7 @@ const imgPreviewClass = css`
     max-height: 100%;
     z-index: 0;
     filter: blur(5px);
-`;
-
-const loaderStyle = css`
-    background-color: transparent;
+    background: transparent;
 `;
 
 const imgAppearClass = css`
@@ -137,6 +136,7 @@ const imgAppearClass = css`
     max-height: 100%;
     height: auto;
     will-change: opacity;
+    background: transparent;
 `;
 
 const imgAppearInstantClass = css`
@@ -213,11 +213,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     </div>
                 </div>
             </div>
-            <div
-                className={modalImgContent}
-                style={{ maxWidth: props.width }}
-                onClick={e => e.stopPropagation()}
-            >
+            <div className={modalImgContent} style={{ maxWidth: props.width }}>
                 <div
                     className={imgSpacer}
                     style={
@@ -234,8 +230,9 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     src={props.preview}
                     width={props.width}
                     height={props.height}
+                    style={{ objectFit: 'contain', cursor: 'default' }}
                 />
-                <XLoader className={loaderStyle} ref={loaderRef} />
+                <XLoader transparentBackground={true} ref={loaderRef} />
                 <img
                     ref={imgRef}
                     onLoad={onLoad}
@@ -244,6 +241,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     className={imgAppearClass}
                     width={props.width}
                     height={props.height}
+                    style={{ objectFit: 'contain', cursor: 'default' }}
                 />
             </div>
         </div>
@@ -309,7 +307,7 @@ const GifContent = React.memo(
                     src={props.file.filePreview || undefined}
                     style={{ top: imgPositionTop, left: imgPositionLeft }}
                 />
-                <XLoader className={loaderStyle} ref={loaderRef} />
+                <XLoader transparentBackground={true} ref={loaderRef} />
                 <video
                     ref={gifRef}
                     onLoadStart={onLoad}
@@ -436,7 +434,7 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                 height={layoutHeight}
                 src={props.file.filePreview || undefined}
             />
-            <XLoader className={loaderStyle} ref={loaderRef} />
+            <XLoader transparentBackground={true} ref={loaderRef} />
             <img
                 ref={imgRef}
                 onLoad={onLoad}
