@@ -35,8 +35,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                     this._isPassThroughBackward = true;
                 } else {
                     let start = Math.max(0, data.findIndex(i => i.key === anchor) - windowSize / 2);
-                    console.warn('window', 'onDataSourceInited', start, anchor);
-                    let slice = data.slice(start, start + windowSize);
+                    let slice = data.slice(start, start + windowSize + 1);
                     this.currentWindow.start = start;
                     this.currentWindow.end = start + windowSize;
                     this._proxy.initialize(slice, completed && this.currentWindow.end === (data.length - 1), completedForward && this.currentWindow.start === 0, anchor);

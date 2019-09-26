@@ -342,14 +342,15 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     let loaderNeeded = !self.state.completedForward && self.state.items.count > 0;
     if(loaderNeeded && !self.loadingCellTopVisible){
      self.loadingCellTopVisible = true
+      self.loadingCellTop.loading = true
      self.node.insertItems(at: [IndexPath(row: 0, section: 0)])
     }else if(!loaderNeeded && self.loadingCellTopVisible){
       self.loadingCellTopVisible = false
+      self.loadingCellTop.loading = false
       self.node.deleteItems(at: [IndexPath(row: 0, section: 0)])
     }
-    
+    print("boom", "checkTopLoader", self.state.completedForward, self.state.items.count)
   }
-  
   
   //
   // Data View Delegate
@@ -513,7 +514,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       
       DispatchQueue.main.async {
         self.loadingCell.loading = !state.completed
-        self.loadingCellTop.loading = !state.completedForward
+        self.checkTopLoader()
         self.node.performBatch(animated: false, updates: {
           let wasCompleted = self.state.completed
           self.state = state
@@ -564,17 +565,8 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   func onCompletedForward(state: RNAsyncDataViewState) {
     self.queue.async {
       DispatchQueue.main.async {
-//        self.loadingCellTop.loading = false
-//        self.node.performBatch(animated: false, updates: {
-//          self.state = state
-//          self.node.reloadSections(IndexSet(integer: 1))
-//          if self.batchContext != nil {
-//            DispatchQueue.main.async {
-//              self.batchContext?.completeBatchFetching(true)
-//              self.batchContext = nil
-//            }
-//          }
-//        }, completion: nil)
+        self.state = state
+        self.checkTopLoader()
       }
     }
   }

@@ -82,7 +82,7 @@ class RNAsyncDataViewState {
   
   func setCompletedForward(completed: Bool) -> RNAsyncDataViewState {
     if self.completedForward != completed {
-      return RNAsyncDataViewState(items: self.items, completed: completed, completedForward: self.completedForward, inited: self.inited, anchor: self.anchor)
+      return RNAsyncDataViewState(items: self.items, completed: self.completed, completedForward: completed, inited: self.inited, anchor: self.anchor)
     } else {
       return self
     }
@@ -420,7 +420,8 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
       self.latestState = state
       if(from == 0){
         if (self.isPassThroughForward) {
-          let st = self.state.loadedMoreForward(items: Array(state.items[from..<from + count]))
+          let st = self.state.loadedMoreForward(items: Array(state.items[from..<from + count])).setCompletedForward(completed: state.completedForward)
+          
           self.state = st
           for i in self.watchers.all() {
             i.value.onLoadedMore(from: from, count: count, state: st)
@@ -431,7 +432,7 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
         self.window[1] += count
       }else{
         if (self.isPassThroughBackward) {
-          let st = self.state.loadedMore(items: Array(state.items[from..<from + count]))
+          let st = self.state.loadedMore(items: Array(state.items[from..<from + count])).setCompleted(completed: state.completed)
           self.state = st
           for i in self.watchers.all() {
             i.value.onLoadedMore(from: from - self.window[0], count: count, state: st)
