@@ -26,6 +26,9 @@ const styles = StyleSheet.create({
         paddingTop: 16,
         paddingBottom: 32,
         paddingHorizontal: 32,
+        maxWidth: 424,
+        alignSelf: 'center',
+        width: '100%'
     } as ViewStyle,
 });
 
