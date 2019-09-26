@@ -7,6 +7,7 @@ import { TextDensed, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcClose from 'openland-icons/s/ic-close-24.svg';
 import IcDownload from 'openland-icons/s/ic-down-24.svg';
+import IcDownloadModal from 'openland-icons/s/ic-download-24.svg';
 import IcSearch from 'openland-icons/s/ic-search-24.svg';
 import IcBlue from 'openland-icons/files/blue.svg';
 import IcGreen from 'openland-icons/files/green.svg';
@@ -82,6 +83,9 @@ const ModalContent = (props: ModalProps & { hide: () => void }) => {
         <div className={modalContainer} onClick={props.hide}>
             <div className={modalToolbarContainer}>
                 <div className={modalButtonsContainer} onClick={e => e.stopPropagation()}>
+                    <a className={modalButtonStyle} href={`https://ucarecdn.com/${props.fileId}/`}>
+                        <UIcon icon={<IcDownloadModal />} color="var(--backgroundPrimary)" />
+                    </a>
                     <div className={modalButtonStyle} onClick={props.hide}>
                         <UIcon icon={<IcClose />} color="var(--backgroundPrimary)" />
                     </div>
