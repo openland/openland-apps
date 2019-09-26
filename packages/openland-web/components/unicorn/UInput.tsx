@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView, XViewProps } from 'react-mental';
+import { FormField } from 'openland-form/useField';
 
 const inputWrapper = css`
     display: flex;
@@ -100,4 +101,9 @@ export const UInput = (props: UInputProps) => {
             </div>
         </XView>
     );
+};
+
+export const UInputField = (props: UInputProps & { field: FormField<string> }) => {
+    const { field, ...other } = props;
+    return <UInput {...other} {...field.input} />;
 };

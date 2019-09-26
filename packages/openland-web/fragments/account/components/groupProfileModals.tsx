@@ -2,21 +2,18 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 import { showModalBox } from 'openland-x/showModalBox';
-import { XTextArea } from 'openland-x/XTextArea';
 import { Room_room_SharedRoom } from 'openland-api/Types';
 import { useClient } from 'openland-web/utils/useClient';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
-import { XVertical } from 'openland-x-layout/XVertical';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
-import { XInput } from 'openland-x/XInput';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { UInputField } from 'openland-web/components/unicorn/UInput';
 
 type RoomEditModalT = {
     title: string;
@@ -33,7 +30,7 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
 
     const editPhotoRef = props.photo;
 
-    const inputTitle = props.isChannel ? 'Channel name' : 'Group name';
+    const inputLable = props.isChannel ? 'Channel name' : 'Group name';
     const avatarField = useField<StoredFileT | undefined | null>(
         'input.photoRef',
         { uuid: props.photo } as any,
@@ -67,35 +64,24 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
     };
     return (
         <>
-            <XView paddingLeft={40} paddingRight={40} paddingTop={6} paddingBottom={24}>
-                <XVertical separator={12}>
-                    <XHorizontal separator={12}>
-                        <UAvatarUploadField
-                            {...avatarField.input}
-                        />
-                        <XVertical flexGrow={1} separator={10} alignSelf="flex-start">
-                            <XInput
-                                title={inputTitle}
-                                {...titleField.input}
-                                size="large"
-                                invalid={!!titleField.input.invalid}
-                            />
-                            <XWithRole role="feature-chat-embedded-attach">
-                                <XInput
-                                    {...longDescriptionField.input}
-                                    flexGrow={1}
-                                    title="Attach link"
-                                    size="large"
-                                />
-                            </XWithRole>
-                        </XVertical>
-                    </XHorizontal>
-                    <XTextArea
-                        {...descriptionField.input}
-                        placeholder="Description"
-                        resize={false}
+            <XView paddingHorizontal={24} paddingTop={12} paddingBottom={24}>
+                <XView alignSelf="center">
+                    <UAvatarUploadField {...avatarField.input} />
+                </XView>
+                <UInputField
+                    label={inputLable}
+                    field={titleField}
+                    marginTop={24}
+                    marginBottom={16}
+                />
+                <XWithRole role={['super-admin', 'editor', 'feature-chat-embedded-attach']}>
+                    <UInputField
+                        field={longDescriptionField}
+                        label="Attach link"
+                        marginBottom={16}
                     />
-                </XVertical>
+                </XWithRole>
+                <UInputField field={descriptionField} label="Description" />
             </XView>
             <XModalFooter>
                 <UButton
@@ -152,13 +138,19 @@ export const showRoomEditModal = (chatId: string) => {
 };
 
 export const showLeaveChatConfirmation = (client: OpenlandClient, chatId: string) => {
-    const builder = new AlertBlanketBuilder;
+    const builder = new AlertBlanketBuilder();
 
     builder.title('Leave chat');
-    builder.message('Are you sure you want to leave? You will need to request access to join it again in the future.');
-    builder.action('Leave', async () => {
-        await client.mutateRoomLeave({ roomId: chatId });
-    }, 'danger');
+    builder.message(
+        'Are you sure you want to leave? You will need to request access to join it again in the future.',
+    );
+    builder.action(
+        'Leave',
+        async () => {
+            await client.mutateRoomLeave({ roomId: chatId });
+        },
+        'danger',
+    );
 
     builder.show();
 };
