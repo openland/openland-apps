@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
 import { View, StyleSheet, ViewStyle, TouchableWithoutFeedback } from 'react-native';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { FeedSlide } from './FeedSlide';
 import { FeedUnsupportedContent } from './FeedUnsupportedContent';
 
@@ -38,7 +37,6 @@ interface FeedPostContentProps {
 }
 
 export const FeedPostContent = React.memo((props: FeedPostContentProps) => {
-    const theme = React.useContext(ThemeContext);
     const { width, post, onLongPress, onSlideChange, wrapped } = props;
     const { slides } = post;
 
