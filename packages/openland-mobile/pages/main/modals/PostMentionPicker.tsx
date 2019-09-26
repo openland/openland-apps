@@ -49,7 +49,7 @@ const SearchList = XMemo<SearchListProps>((props) => {
         <>
             {items.map(item => (
                 <View key={item.id}>
-                    {item.__typename === 'User' || item.__typename === 'Organization' && (
+                    {(item.__typename === 'User' || item.__typename === 'Organization') && (
                         <ZListItem
                             text={item.name}
                             leftAvatar={{ photo: item.photo, key: item.id, title: item.name }}
