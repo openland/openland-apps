@@ -232,15 +232,8 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                 <img
                     className={imgPreviewClass}
                     src={props.preview}
-                    style={{
-                        width: props.width,
-                        height: props.height,
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        margin: 'auto',
-                        cursor: 'default',
-                    }}
+                    width={props.width}
+                    height={props.height}
                 />
                 <XLoader className={loaderStyle} ref={loaderRef} />
                 <img
@@ -249,15 +242,8 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     src={props.src}
                     srcSet={props.srcSet}
                     className={imgAppearClass}
-                    style={{
-                        width: props.width,
-                        height: props.height,
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        margin: 'auto',
-                        cursor: 'default',
-                    }}
+                    width={props.width}
+                    height={props.height}
                 />
             </div>
         </div>
