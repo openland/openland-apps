@@ -68,7 +68,7 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
     }
 
     render() {
-        const { router, engine } = this.props;
+        const { engine } = this.props;
 
         return (
             <>
