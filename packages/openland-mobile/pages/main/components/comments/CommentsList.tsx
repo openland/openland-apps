@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, Text, Clipboard, ScrollView } from 'react-native';
+import { View, Text, Clipboard, ScrollView } from 'react-native';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { CommentView } from 'openland-mobile/pages/main/components/comments/CommentView';
@@ -61,12 +61,7 @@ export const CommentsList = (props: CommentsListProps) => {
     }, []);
 
     if (comments.length === 0) {
-        return (
-            <View flexGrow={1} flexShrink={1} alignItems="center" justifyContent="center" paddingVertical={40} paddingHorizontal={16}>
-                <Image source={theme.type === 'Light' ? require('assets/img-empty.png') : require('assets/img-empty-dark.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
-                <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary }} allowFontScaling={false}>Write the first comment</Text>
-            </View>
-        );
+        return <View />;
     }
 
     const commentsMap = {};
