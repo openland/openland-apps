@@ -13,7 +13,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
     private _innerInited = false;
     private _windowSize: number;
 
-    private currentWindow = { start: 0, end: 0 };
+    private currentWindow = { start: 0, end: -1 };
 
     constructor(inner: ReadableDataSource<T>, windowSize: number) {
         this._inner = inner;
@@ -24,11 +24,16 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
             return (index >= this.currentWindow.start) && (index <= this.currentWindow.end);
         };
         this._subscription = inner.watch({
-            onDataSourceInited: (data: T[], completed: boolean, completedForward: boolean, anchor?: string) => {
+            onDataSourceInited: (data: T[], completed: boolean, completedForward: boolean, anchor?: string, reset?: boolean) => {
                 this._innerInited = true;
                 this._innerCompleted = completed;
                 this._innerCompletedForward = completedForward;
+
+                this._isPassThrough = false;
+                this._isPassThroughForward = false;
+                this._isPassThroughBackward = false;
                 if (data.length < windowSize) {
+                    this.currentWindow = { start: 0, end: data.length - 1 };
                     this._proxy.initialize(data, completed, completedForward);
                     this._isPassThrough = true;
                     this._isPassThroughForward = true;
@@ -38,7 +43,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                     let slice = data.slice(start, start + windowSize + 1);
                     this.currentWindow.start = start;
                     this.currentWindow.end = start + windowSize;
-                    this._proxy.initialize(slice, completed && this.currentWindow.end === (data.length - 1), completedForward && this.currentWindow.start === 0, anchor);
+                    this._proxy.initialize(slice, completed && this.currentWindow.end === (data.length - 1), completedForward && this.currentWindow.start === 0, anchor, reset);
                 }
             },
             onDataSourceItemAdded: (item: T, index: number, isAnchor?: boolean) => {

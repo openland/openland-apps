@@ -18,11 +18,11 @@ export class DataSourceAugmentor<T extends DataSourceItem, V> {
             onDataSourceCompletedForward: () => {
                 this.dataSource.completeForward();
             },
-            onDataSourceInited: (items, completed, completeForward, anchorIndex) => {
+            onDataSourceInited: (items, completed, completeForward, anchorIndex, reset) => {
                 for (let i of items) {
                     this.source.set(i.key, i);
                 }
-                this.dataSource.initialize(items.map((v) => this.getItem(v.key)), completed, completeForward, anchorIndex);
+                this.dataSource.initialize(items.map((v) => this.getItem(v.key)), completed, completeForward, anchorIndex, reset);
             },
             onDataSourceItemAdded: (item, index, isAnchor) => {
                 this.source.set(item.key, item);

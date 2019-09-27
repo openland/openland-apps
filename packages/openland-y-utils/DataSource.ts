@@ -23,7 +23,7 @@ export interface DataSourceItem {
 }
 
 export interface DataSourceWatcher<T extends DataSourceItem> {
-    onDataSourceInited(data: T[], completed: boolean, completedForward: boolean, anchor?: string): void;
+    onDataSourceInited(data: T[], completed: boolean, completedForward: boolean, anchor?: string, reloaded?: boolean): void;
     onDataSourceScrollToKeyRequested(scrollToKey: string): void;
     onDataSourceItemAdded(item: T, index: number, isAnchor: boolean): void;
     onDataSourceItemUpdated(item: T, index: number): void;
@@ -54,7 +54,7 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
     private needMoreCallback: () => void;
     private needMoreForwardCallback: () => void;
     private completed: boolean = false;
-    private completedForward: boolean = false;
+    private completedForward: boolean = true;
     private anchor?: string;
 
     constructor(needMoreCallback: () => void, needMoreForwardCallback: () => void) {
@@ -91,7 +91,7 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         return this.data.length;
     }
 
-    initialize(data: T[], completed: boolean, completedForward: boolean, anchor?: string) {
+    initialize(data: T[], completed: boolean, completedForward: boolean, anchor?: string, reset?: boolean) {
         this.anchor = anchor;
         if (this.destroyed) {
             throw Error('Datasource already destroyed');
@@ -102,12 +102,13 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         this.completed = completed;
         this.completedForward = completedForward;
         this.data = data;
+        this.dataByKey = new Map();
         for (let d of data) {
             this.dataByKey.set(d.key, d);
         }
         this.inited = true;
         for (let w of this.watchers) {
-            w.onDataSourceInited(data, completed, completedForward, anchor);
+            w.onDataSourceInited(data, completed, completedForward, anchor, reset);
         }
     }
 
@@ -201,6 +202,14 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         } else {
             throw Error('Trying to remove non-existent item');
         }
+    }
+
+    reset(data?: T[]) {
+        if (this.destroyed) {
+            throw Error('Datasource already destroyed');
+        }
+        this.inited = false;
+        this.initialize(data || [], false, true, undefined, true);
     }
     clear() {
         if (this.destroyed) {
@@ -355,8 +364,8 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         }
 
         this.watch({
-            onDataSourceInited(data: T[], completed: boolean, completedForward: boolean, anchor?: string) {
-                res.initialize(data.map(map), completed, completedForward, anchor);
+            onDataSourceInited(data: T[], completed: boolean, completedForward: boolean, anchor?: string, reset?: boolean) {
+                res.initialize(data.map(map), completed, completedForward, anchor, reset);
             },
             onDataSourceItemAdded(item: T, index: number, isAnchor: boolean) {
                 res.addItem(map(item), index, isAnchor);
@@ -421,9 +430,9 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         }
 
         this.watch({
-            onDataSourceInited(data: T[], completed: boolean, completedForward: boolean, anchor?: string) {
+            onDataSourceInited(data: T[], completed: boolean, completedForward: boolean, anchor?: string, reset?: boolean) {
                 schedule(async () => {
-                    res.initialize(await throttledMap(data, map), completed, completedForward, anchor);
+                    res.initialize(await throttledMap(data, map), completed, completedForward, anchor, reset);
                 });
             },
             onDataSourceItemAdded(item: T, index: number, isAnchor: boolean) {
@@ -565,8 +574,8 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         }
 
         this.watch({
-            onDataSourceInited(data: T[], completed: boolean, completedForward: boolean, anchor?: string) {
-                res.initialize(data, completed, completedForward, anchor);
+            onDataSourceInited(data: T[], completed: boolean, completedForward: boolean, anchor?: string, reset?: boolean) {
+                res.initialize(data, completed, completedForward, anchor, reset);
             },
             onDataSourceItemAdded(item: T, index: number, isAnchor: boolean) {
                 batch.push({ op: 'added', item, index, isAnchor });
@@ -636,7 +645,7 @@ export function useDataSource<T extends DataSourceItem>(
         () => {
             let lastData: T[] = [];
             let w = dataSource.watch({
-                onDataSourceInited: (data: T[], isCompleted: boolean, isCompletedForward: boolean, anchor?: string) => {
+                onDataSourceInited: (data: T[], isCompleted: boolean, isCompletedForward: boolean, anchor?: string, reset?: boolean) => {
                     lastData = [...data];
                     setItems(data);
                     setCompleted(isCompleted);
@@ -644,6 +653,9 @@ export function useDataSource<T extends DataSourceItem>(
                     console.warn('useDataSource', dataSource, anchor);
                     if (anchor) {
                         setScrollTo({ scrollTo: anchor });
+                    }
+                    if (reset && !anchor && data.length) {
+                        setScrollTo({ scrollTo: data[0].key });
                     }
                 },
                 onDataSourceItemAdded: (item: T, index: number) => {

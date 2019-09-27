@@ -214,6 +214,9 @@ export class ConversationEngine implements MessageSendHandler {
     forwardFullyLoaded?: boolean;
 
     private isStarted = false;
+    private isStarting = false;
+    private gen = 0;
+    private loadFrom: 'unread' | 'end' = 'unread';
     private watcher: SequenceModernWatcher<Types.ChatWatch, Types.ChatWatchVariables> | null = null;
     private isOpen = false;
     private messages: (FullMessage | PendingMessage)[] = [];
@@ -253,16 +256,31 @@ export class ConversationEngine implements MessageSendHandler {
         this.onNewMessage = onNewMessage;
     }
 
-    start = async () => {
+    restart = async (from: 'end' | 'unread') => {
+        this.isStarted = false;
+        this.isStarting = false;
+        this.historyFullyLoaded = false;
+        this.forwardFullyLoaded = false;
+        this.lastTopMessageRead = null;
+        this.lastReadedDividerMessageId = undefined;
+        this.loadingHistory = undefined;
+        this.loadingForward = undefined;
+        this.gen++;
+        this.loadFrom = from;
+        await this.start(true);
+    }
+
+    start = async (reset?: boolean) => {
         if (this.isStarted) {
             throw Error('ConversationEngine already started!');
         }
+        this.isStarting = true;
         this.isStarted = true;
         log.log('Loading initial state for ' + this.conversationId);
         let initialChat = await backoff(async () => {
             try {
                 let history;
-                if (loadToUnread) {
+                if (loadToUnread && this.loadFrom === 'unread') {
                     history = await this.engine.client.client.query(ChatInitFromUnreadQuery, { chatId: this.conversationId, first: this.engine.options.conversationBatchSize }, { fetchPolicy: 'network-only' });
                     history = { ...history, messages: history.gammaMessages!.messages };
                     this.historyFullyLoaded = !history.gammaMessages!.haveMoreBackward;
@@ -349,13 +367,14 @@ export class ConversationEngine implements MessageSendHandler {
             dsItems.push(createDateDataSourceItem(d));
         }
 
-        this.dataSource.initialize(dsItems, !!this.historyFullyLoaded, !!this.forwardFullyLoaded, anchor);
+        this.dataSource.initialize(dsItems, !!this.historyFullyLoaded, !!this.forwardFullyLoaded, anchor, reset);
         if (loadToUnread) {
             if (newMessagesDivider) {
                 this.dataSource.requestScrollToKey(newMessagesDivider.key);
             }
         }
 
+        this.isStarting = false;
     }
 
     moveOrDeletelastReadedDivider = () => {
@@ -398,15 +417,10 @@ export class ConversationEngine implements MessageSendHandler {
         return this.state;
     }
 
-    // 
-
-    // loadBefore = async () => {
-    //     await this.load('backward');
-    // }
-    // loadAfter = async () => {
-    //     await this.load('forward');
-    // }
     load = async (direction: 'forward' | 'backward') => {
+        if (!this.isStarted || this.isStarting) {
+            return;
+        }
         if (
             (direction === 'backward' && (this.historyFullyLoaded || this.loadingHistory)) ||
             (direction === 'forward' && (this.forwardFullyLoaded || this.loadingForward))
@@ -431,8 +445,11 @@ export class ConversationEngine implements MessageSendHandler {
             loadingForward: direction === 'forward' ? true : this.state.loadingForward
         };
         this.onMessagesUpdated();
+        let gen = this.gen;
         let loaded = await backoff(() => this.engine.client.client.query(MessagesBatchQuery, { chatId: this.conversationId, first: this.engine.options.conversationBatchSize, ...direction === 'backward' ? { before: id } : { after: id } }));
-
+        if (gen !== this.gen) {
+            return;
+        }
         let batch = [...(loaded.gammaMessages!.messages as any as FullMessage[])].filter((remote: FullMessage) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
         batch.reverse();
 

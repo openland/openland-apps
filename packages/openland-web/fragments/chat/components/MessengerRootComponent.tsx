@@ -37,6 +37,7 @@ import { DropZone } from './DropZone';
 import { showAttachConfirm } from './AttachConfirm';
 import AlertBlanket from 'openland-x/AlertBlanket';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { ReloadFromEndButton } from './ReloadFromEndButton';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
@@ -417,6 +418,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                             <InputMessageActionComponent
                                 engine={this.conversation.messagesActionsStateEngine}
                             />
+                            <ReloadFromEndButton conversation={this.conversation} />
                             <SendMessageComponent
                                 onAttach={this.onAttach}
                                 initialText={this.initialContent}

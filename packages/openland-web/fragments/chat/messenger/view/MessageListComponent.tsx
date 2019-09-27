@@ -119,7 +119,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
 
     onScrollRequested = (target: number) => {
         if (this.innerScrollRef.current) {
-            let targetNode = this.innerScrollRef.current.childNodes[target] as any;
+            let targetNode = this.innerScrollRef.current.childNodes[target + 1] as any;
             if (targetNode && targetNode.scrollIntoView && this.scroller.current) {
                 this.scroller.current.scrollTo(targetNode);
             }
