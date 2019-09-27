@@ -328,6 +328,7 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
                 keyboardAppearance={theme.keyboardAppearance}
                 allowFontScaling={false}
                 maxLength={MAX_INPUT_LENGTH}
+                selectionColor={theme.accentPrimary}
                 {...{ scrollEnabled: false }}
             />
         </View>
