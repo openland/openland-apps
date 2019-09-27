@@ -11,13 +11,9 @@ import { FeedPostView } from 'openland-mobile/feed/FeedPostView';
 import { View, Text, ScrollView } from 'react-native';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { DataSourceRender } from 'openland-mobile/components/DataSourceRender';
-import { GlobalSearch } from './components/globalSearch/GlobalSearch';
-import { SSearchControler } from 'react-native-s/SSearchController';
 import { SRouter } from 'react-native-s/SRouter';
 import { FeedDateView } from 'openland-mobile/feed/FeedDateView';
 import { DataSourceFeedItem } from 'openland-engines/feed/types';
-import { SDeferred } from 'react-native-s/SDeferred';
-import { RoomsList } from './Explore';
 
 interface FeedPageProps {
     engine: FeedEngine;
@@ -80,27 +76,13 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
 
                 {NON_PRODUCTION && <SHeaderButton title="Create" icon={require('assets/ic-add-24.png')} onPress={this.handleCreate} />}
 
-                <SSearchControler
-                    searchRender={(p) => (
-                        <GlobalSearch
-                            query={p.query}
-                            router={router}
-                            emptyView={
-                                <SDeferred>
-                                    <RoomsList router={router} />
-                                </SDeferred>
-                            }
-                        />
-                    )}
-                >
-                    <DataSourceRender
-                        dataSource={engine.dataSource}
-                        renderItem={this.renderItem}
-                        renderLoading={this.renderLoading}
-                        renderEmpty={this.renderEmpty}
-                        scrollRef={this.scrollRef}
-                    />
-                </SSearchControler>
+                <DataSourceRender
+                    dataSource={engine.dataSource}
+                    renderItem={this.renderItem}
+                    renderLoading={this.renderLoading}
+                    renderEmpty={this.renderEmpty}
+                    scrollRef={this.scrollRef}
+                />
             </>
         );
     }
