@@ -12,13 +12,14 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { Feed } from './Feed';
 import { NotificationCenter } from './NotificationCenter';
 import { isPad } from '../Root';
+import { NON_PRODUCTION } from '../Init';
 
 export const Home = XMemo<PageProps>((props) => {
     const [tab, setTab] = React.useState(1);
     const counter = getClient().useWithoutLoaderGlobalCounter();
     const notificationsCounter = getClient().useWithoutLoaderMyNotificationCenter();
     const discoverDone = getClient().useWithoutLoaderDiscoverIsDone();
-    const showFeed = !isPad;
+    const showFeed = NON_PRODUCTION && !isPad;
 
     return (
         <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>

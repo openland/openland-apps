@@ -9,6 +9,7 @@ import { FeedQuery } from 'openland-api';
 import { DataSourceFeedItem, SlideInputLocal } from './types';
 import { convertItems, convertPost, convertToSlideInput } from './convert';
 import UUID from 'uuid/v4';
+import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 const log = createLogger('Engine-Feed');
 
@@ -30,7 +31,9 @@ export class FeedEngine {
             this.load();
         }, () => []);
 
-        this.init();
+        if (AppConfig.isNonProduction()) {
+            this.init();
+        }
     }
 
     private init = async () => {
