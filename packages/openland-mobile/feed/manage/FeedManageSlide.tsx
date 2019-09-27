@@ -186,14 +186,56 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
         onChangeAttachment();
     }, []);
 
-    const handleAttachMediaPress = React.useCallback(async (oldCoverAlign?: SlideCoverAlign | null) => {
-        if (await checkPermissions('gallery')) {
-            Picker.launchImageLibrary(
-                {
-                    quality: 1,
-                    mediaType: 'photo'
+    const handleMediaSend = React.useCallback((response: { uri: string, width: number, height: number, fileSize: number }, oldCoverAlign?: SlideCoverAlign | null) => {
+        setCoverLoading(true);
+        setCoverLocalPath(response.uri);
+        onChangeCoverAlign(oldCoverAlign || (text && text.length > 0 ? SlideCoverAlign.Top : SlideCoverAlign.Cover));
+
+        UploadManagerInstance.registerSimpleUpload(
+            'image.jpg',
+            response.uri,
+            {
+                onProgress: (progress: number) => {
+                    // temp ignore
                 },
-                (response) => {
+                onDone: (uuid) => {
+                    setCoverLoading(false);
+                    onChangeCover({ uuid, crop: { x: 0, y: 0, w: response.width, h: response.height } });
+                },
+                onFail: () => {
+                    setCoverLoading(false);
+                    setCoverLocalPath(undefined);
+
+                    Toast.failure({ text: 'Error while uploading photo', duration: 1000 }).show();
+                }
+            },
+            response.fileSize
+        );
+    }, [text]);
+
+    const handleAttachMediaPress = React.useCallback(async (oldCoverAlign?: SlideCoverAlign | null) => {
+        const builder = new ActionSheetBuilder();
+
+        builder.action('Take photo', async () => {
+            if (await checkPermissions('camera')) {
+                Picker.launchCamera({ title: 'Camera', mediaType: 'photo' }, (response) => {
+                    if (response.error) {
+                        handlePermissionDismiss('camera');
+                        return;
+                    }
+
+                    if (response.didCancel) {
+                        return;
+                    }
+
+                    handleMediaSend(response, oldCoverAlign);
+                });
+            }
+        }, false, require('assets/ic-camera-24.png'));
+
+        builder.action('Choose from library', async () => {
+            if (await checkPermissions('gallery')) {
+                Picker.launchImageLibrary({ quality: 1, mediaType: 'photo' }, (response) => {
                     if (response.error) {
                         handlePermissionDismiss('gallery');
                         return;
@@ -203,34 +245,13 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
                         return;
                     }
 
-                    setCoverLoading(true);
-                    setCoverLocalPath(response.uri);
-                    onChangeCoverAlign(oldCoverAlign || (text && text.length > 0 ? SlideCoverAlign.Top : SlideCoverAlign.Cover));
+                    handleMediaSend(response, oldCoverAlign);
+                });
+            }
+        }, false, require('assets/ic-gallery-24.png'));
 
-                    UploadManagerInstance.registerSimpleUpload(
-                        'image.jpg',
-                        response.uri,
-                        {
-                            onProgress: (progress: number) => {
-                                // temp ignore
-                            },
-                            onDone: (uuid) => {
-                                setCoverLoading(false);
-                                onChangeCover({ uuid, crop: { x: 0, y: 0, w: response.width, h: response.height } });
-                            },
-                            onFail: () => {
-                                setCoverLoading(false);
-                                setCoverLocalPath(undefined);
-
-                                Toast.failure({ text: 'Error while uploading photo', duration: 1000 }).show();
-                            }
-                        },
-                        response.fileSize
-                    );
-                }
-            );
-        }
-    }, [text]);
+        builder.show();
+    }, [handleMediaSend, text]);
 
     const handleCoverPress = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
