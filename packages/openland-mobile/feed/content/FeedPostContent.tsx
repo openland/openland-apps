@@ -42,22 +42,30 @@ export const FeedPostContent = React.memo((props: FeedPostContentProps) => {
 
     const [currentSlide, setCurreentSlide] = React.useState(0);
     const handlePrevPress = React.useCallback(() => {
-        setCurreentSlide(prev => {
-            if (onSlideChange) {
-                onSlideChange(prev - 1);
+        setCurreentSlide(current => {
+            if (current > 0) {
+                if (onSlideChange) {
+                    onSlideChange(current - 1);
+                }
+
+                return current - 1;
             }
 
-            return prev - 1;
+            return current;
         });
     }, []);
 
     const handleNextPress = React.useCallback(() => {
-        setCurreentSlide(prev => {
-            if (onSlideChange) {
-                onSlideChange(prev + 1);
+        setCurreentSlide(current => {
+            if (current < slides.length - 1) {
+                if (onSlideChange) {
+                    onSlideChange(current + 1);
+                }
+
+                return current + 1;
             }
 
-            return prev + 1;
+            return current;
         });
     }, []);
 
@@ -75,16 +83,16 @@ export const FeedPostContent = React.memo((props: FeedPostContentProps) => {
                         ))}
                     </View>
 
-                    {currentSlide > 0 && (
-                        <TouchableWithoutFeedback onPress={handlePrevPress} onLongPress={onLongPress}>
-                            <View style={[styles.paginator, { left: 0 }]} />
-                        </TouchableWithoutFeedback>
-                    )}
+                    {slides.length > 1 && (
+                        <>
+                            <TouchableWithoutFeedback onPress={handlePrevPress} onLongPress={onLongPress}>
+                                <View style={[styles.paginator, { left: 0 }]} />
+                            </TouchableWithoutFeedback>
 
-                    {currentSlide < slides.length - 1 && (
-                        <TouchableWithoutFeedback onPress={handleNextPress} onLongPress={onLongPress}>
-                            <View style={[styles.paginator, { right: 0 }]} />
-                        </TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={handleNextPress} onLongPress={onLongPress}>
+                                <View style={[styles.paginator, { right: 0 }]} />
+                            </TouchableWithoutFeedback>
+                        </>
                     )}
                 </View>
             )}
