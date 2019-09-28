@@ -59,13 +59,14 @@ const GlobalSearchInner = (props: GlobalSearchProps) => {
 };
 
 export const GlobalSearch = XMemo<GlobalSearchProps>((props) => {
+    const theme = React.useContext(ThemeContext);
     const query = props.query.trim();
 
     return (
         <SScrollView>
             <ASSafeAreaContext.Consumer>
                 {area => (
-                    <View minHeight={Dimensions.get('screen').height - area.top - area.bottom}>
+                    <View minHeight={Dimensions.get('screen').height - area.top - area.bottom} backgroundColor={theme.backgroundPrimary}>
                         <React.Suspense fallback={SNativeConfig.loader}>
                             {query.length > 0 && <GlobalSearchInner {...props} />}
                             {query.length <= 0 && props.emptyView}
