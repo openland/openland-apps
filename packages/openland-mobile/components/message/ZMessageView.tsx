@@ -38,10 +38,11 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
         showFileModal({ uuid: document.fileId, name: document.fileMetadata.name, size: document.fileMetadata.size });
     }, []);
 
+    const screenWidth = Dimensions.get('screen').width;
     let maxWidth = props.maxWidth || Dimensions.get('screen').width - 32;
 
-    if (isPad) {
-        maxWidth -= 320;
+    if (isPad && screenWidth > 375 * 2) {
+        maxWidth -= screenWidth > 1000 ? 375 : 320;
     }
 
     if (message.__typename === 'ServiceMessage') {

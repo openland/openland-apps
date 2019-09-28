@@ -14,7 +14,6 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { ZLabelButton } from 'openland-mobile/components/ZLabelButton';
 import { plural } from 'openland-y-utils/plural';
-import { isPad } from 'openland-mobile/pages/Root';
 
 const styles = StyleSheet.create({
     senderName: {
@@ -160,13 +159,6 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         </View>
     );
 
-    const screenWidth = Dimensions.get('screen').width;
-    let maxWidth = screenWidth - branchIndent - 40 - 16;
-
-    if (isPad && screenWidth > 375 * 2) {
-        maxWidth -= screenWidth > 1000 ? 375 : 320;
-    }
-
     return (
         <TouchableWithoutFeedback disabled={deleted} onPress={handleDoublePress} onLongPress={() => props.onLongPress(comment)}>
             <View onLayout={handleLayout} style={{ backgroundColor: highlighted ? theme.backgroundTertiary : undefined, paddingLeft: branchIndent, paddingTop: 8, paddingBottom: 6, paddingRight: 16 }}>
@@ -183,7 +175,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                         </View>
 
                         <View style={{ opacity: deleted ? 0.5 : undefined }}>
-                            <ZMessageView message={comment} wrapped={true} maxWidth={maxWidth} />
+                            <ZMessageView message={comment} wrapped={true} maxWidth={Dimensions.get('screen').width - branchIndent - 40 - 16} />
                         </View>
 
                         {tools}
