@@ -47,7 +47,7 @@ const LeftIcon = (props: { theme: ThemeGlobal, src: any, flatIcon?: boolean, app
     if (flatIcon) {
         return (
             <View style={{ width: 24, height: 24, alignContent: 'center', justifyContent: 'center', marginLeft: 16, alignSelf: 'center' }}>
-                <Image source={src} resizeMode="contain" style={{ width: 24, height: 24, alignSelf: 'center', tintColor: theme.foregroundSecondary }} />
+                <Image source={src} resizeMode="contain" fadeDuration={0} style={{ width: 24, height: 24, alignSelf: 'center', tintColor: theme.foregroundSecondary }} />
             </View>
         );
     }
@@ -56,7 +56,7 @@ const LeftIcon = (props: { theme: ThemeGlobal, src: any, flatIcon?: boolean, app
 
     return (
         <View style={{ width: 40, height: 40, borderRadius: 20, alignContent: 'center', justifyContent: 'center', backgroundColor, marginLeft: 16, alignSelf: 'center' }}>
-            <Image source={src} resizeMode="contain" style={{ width: 24, height: 24, alignSelf: 'center', tintColor: theme.foregroundContrast }} />
+            <Image source={src} resizeMode="contain" fadeDuration={0} style={{ width: 24, height: 24, alignSelf: 'center', tintColor: theme.foregroundContrast }} />
         </View>
     );
 };
