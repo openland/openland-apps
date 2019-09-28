@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     } as ViewStyle,
     senderName: {
         ...TextStyles.Label2,
-        marginLeft: 8
+        paddingLeft: 8
     } as TextStyle,
     senderOrg: {
         ...TextStyles.Caption,
@@ -47,9 +47,9 @@ export const FeedAuthorView = React.memo((props: FeedAuthorViewProps) => {
 
     return (
         <TouchableOpacity onPress={handlePress} activeOpacity={0.6}>
-            <View style={[styles.sender, { maxWidth }]}>
+            <View style={styles.sender}>
                 <ZAvatar size="x-small" src={author.photo} placeholderKey={author.id} placeholderTitle={author.name} />
-                <Text style={[styles.senderName, { color }]} allowFontScaling={false} numberOfLines={1} ellipsizeMode="tail">
+                <Text style={[styles.senderName, { color, maxWidth: maxWidth - 32 - 24 }]} allowFontScaling={false} numberOfLines={1} ellipsizeMode="tail">
                     {author.name}
                     {author.__typename === 'User' && author.primaryOrganization && (
                         <>
