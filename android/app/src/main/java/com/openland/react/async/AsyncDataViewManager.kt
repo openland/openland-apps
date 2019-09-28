@@ -178,7 +178,7 @@ class AsyncDataViewManager(reactContext: ReactApplicationContext) : ReactContext
     }
 
     @ReactMethod
-    fun dataViewAddItem(dataSourceKey: String, key: String, config: String, index: Int) {
+    fun dataViewAddItem(dataSourceKey: String, key: String, config: String, index: Int, isAnchor: Boolean) {
         getDataView(dataSourceKey, this.reactApplicationContext).handleAddItem(AsyncDataViewItem(key, parseSpec(config, reactApplicationContext)), index)
     }
 
