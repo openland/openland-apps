@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-globe-glyph",
+            "src": "ic-globe-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-notifications-filled-counter",
             "src": "ic-notifications-filled-counter-24.svg",
             "sizes": [

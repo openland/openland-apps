@@ -70,7 +70,7 @@ const ComposeComponent = XMemo<PageProps>((props) => {
                         <ZListGroup>
                             <ZListItem leftIcon={require('assets/ic-group-glyph-24.png')} text="Create group" path="CreateGroupAttrs" />
                             <ZListItem leftIcon={require('assets/ic-channel-glyph-24.png')} text="Create channel" path="CreateGroupAttrs" pathParams={{ isChannel: true }} />
-                            <ZListItem leftIcon={require('assets/ic-community-glyph-24.png')} text="Create community" path="NewOrganization" pathParams={{ isCommunity: true }} />
+                            <ZListItem leftIcon={require('assets/ic-globe-glyph-24.png')} text="Create community" path="NewOrganization" pathParams={{ isCommunity: true }} />
                         </ZListGroup>
                         <React.Suspense fallback={<LoaderSpinnerWrapped />}>
                             <UserSearchComponent query="" router={props.router} useScroll={false} />
