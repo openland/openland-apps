@@ -209,7 +209,7 @@ export class MobileMessenger {
 
         builder.action('Comment', () => {
             this.history.navigationManager.push('Message', { messageId: message.id });
-        }, false, require('assets/ic-chat-24.png'));
+        }, false, require('assets/ic-message-24.png'));
 
         if (message.text) {
             if (message.senderId === this.engine.user.id) {

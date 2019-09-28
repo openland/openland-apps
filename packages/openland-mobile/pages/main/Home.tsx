@@ -69,8 +69,10 @@ export const Home = XMemo<PageProps>((props) => {
                     )}
                     <AppBarBottomItem
                         counter={counter && counter.alphaNotificationCounter.unreadCount || undefined}
-                        icon={require('assets/ic-chat-24.png')}
-                        iconSelected={require('assets/ic-chat-filled-24.png')}
+                        icon={require('assets/ic-message-24.png')}
+                        iconSelected={require('assets/ic-message-filled-24.png')}
+                        iconCounter={require('assets/ic-message-counter-24.png')}
+                        iconSelectedCounter={require('assets/ic-message-filled-counter-24.png')}
                         selected={tab === 1}
                         onPress={() => setTab(1)}
                     />
@@ -78,6 +80,8 @@ export const Home = XMemo<PageProps>((props) => {
                         counter={notificationsCounter && notificationsCounter.myNotificationCenter.unread || undefined}
                         icon={require('assets/ic-notifications-24.png')}
                         iconSelected={require('assets/ic-notifications-filled-24.png')}
+                        iconCounter={require('assets/ic-notifications-counter-24.png')}
+                        iconSelectedCounter={require('assets/ic-notifications-filled-counter-24.png')}
                         selected={tab === 2}
                         onPress={() => setTab(2)}
                     />

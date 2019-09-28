@@ -5,11 +5,6 @@ import { FontStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({
     container: {
-        height: 20,
-        padding: 2,
-        borderRadius: 10
-    } as ViewStyle,
-    containerInner: {
         flexDirection: 'row',
         paddingHorizontal: 4,
         borderRadius: 8,
@@ -70,8 +65,8 @@ export class ZCounter extends React.PureComponent<ZCounterProps, { value: number
         const { theme } = this.props;
 
         return (
-            <Animated.View style={[{ opacity: this.opacity }, styles.container, { backgroundColor: theme.backgroundPrimary }]}>
-                <View style={[styles.containerInner, { backgroundColor: theme.accentNegative }]}>
+            <Animated.View style={{ opacity: this.opacity }}>
+                <View style={[styles.container, { backgroundColor: theme.accentNegative }]}>
                     <Text style={[styles.text, { color: theme.foregroundContrast }]} allowFontScaling={false}>{this.state.value}</Text>
                 </View>
             </Animated.View>

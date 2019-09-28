@@ -1,6 +1,34 @@
 {
     "icons": [
         {
+            "name": "ic-notifications-filled-counter",
+            "src": "ic-notifications-filled-counter-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-notifications-counter",
+            "src": "ic-notifications-counter-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-message-filled-counter",
+            "src": "ic-message-filled-counter-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-message-counter",
+            "src": "ic-message-counter-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-report",
             "src": "ic-report-24.svg",
             "sizes": [
@@ -600,13 +628,6 @@
         {
             "name": "ic-lock",
             "src": "ic-lock-24.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-chat",
-            "src": "ic-chat-24.svg",
             "sizes": [
                 24
             ]
