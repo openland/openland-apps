@@ -143,8 +143,8 @@ export const UnicornSplash = React.memo(() => (
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 160 160"
-            width="140"
-            height="140"
+            width="96"
+            height="96"
         >
             <g id="Group-48" transform="translate(31.000000, 23.000000)">
                 <linearGradient
