@@ -111,12 +111,12 @@ const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
     let [muted, setMuted] = React.useState(chat.settings.mute);
 
     let res = new UPopperMenuBuilder();
-    if (layout === 'mobile' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true)) {
-        res.item({ title: 'Call', icon: <PhoneIcon />, action: () => calls.joinCall(chat.id, chat.__typename === 'PrivateRoom') });
+    if (layout === 'mobile' && chat.__typename === 'SharedRoom') {
+        res.item({ title: 'Add people', icon: <InviteIcon />, action: () => showAddMembersModal({ id: chat.id, isGroup: true, isOrganization: false }) });
     }
 
-    if (chat.__typename === 'SharedRoom') {
-        res.item({ title: 'Add people', icon: <InviteIcon />, action: () => showAddMembersModal({ id: chat.id, isGroup: true, isOrganization: false }) });
+    if (layout === 'mobile' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true)) {
+        res.item({ title: 'Call', icon: <PhoneIcon />, action: () => calls.joinCall(chat.id, chat.__typename === 'PrivateRoom') });
     }
 
     res.item({
