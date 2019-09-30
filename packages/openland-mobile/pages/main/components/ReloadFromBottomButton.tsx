@@ -7,8 +7,6 @@ import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import UUID from 'uuid/v4';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
-import { STouchable } from 'react-native-s/STouchable';
-import { ZKeyboardAwareBar } from 'openland-mobile/components/layout/ZKeyboardAwareBar';
 
 export const ReloadFromBottomButton = (props: { conversation: ConversationEngine }) => {
     const theme = React.useContext(ThemeContext);
@@ -30,8 +28,6 @@ export const ReloadFromBottomButton = (props: { conversation: ConversationEngine
         setLoading(true);
         await props.conversation.restart('end');
         setLoading(false);
-
-        // setLoading(!loading);
     }, [loading]);
 
     React.useEffect(() => {
@@ -59,12 +55,12 @@ export const ReloadFromBottomButton = (props: { conversation: ConversationEngine
     //
 
     return <>
-        <SafeAreaView>
-            <SAnimated.View
-                name={animated.name}
-                style={{ width: 40, height: 40, bottom: Platform.OS === 'android' ? 52 : 94, right: 8, position: 'absolute' }}
-            >
-                <TouchableWithoutFeedback onPress={onClick} >
+        <SAnimated.View
+            name={animated.name}
+            style={{ width: 40, height: 40, bottom: Platform.OS === 'android' ? 52 : 92, right: 8, position: 'absolute' }}
+        >
+            <TouchableWithoutFeedback onPress={onClick} >
+                <SafeAreaView>
                     <View
                         style={{
                             alignItems: 'center',
@@ -88,8 +84,8 @@ export const ReloadFromBottomButton = (props: { conversation: ConversationEngine
                         }
 
                     </View>
-                </TouchableWithoutFeedback>
-            </SAnimated.View>
-        </SafeAreaView>
+                </SafeAreaView>
+            </TouchableWithoutFeedback>
+        </SAnimated.View>
     </>;
 };
