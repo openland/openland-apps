@@ -17,6 +17,7 @@ import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { InviteImage } from './InviteImage';
+import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 
 const RootClassName = css`
@@ -81,7 +82,7 @@ const JoinLinkButton = (props: {
             action={async () => {
                 props.onAccept(true);
                 let res = await client.mutateRoomJoinInviteLink({ invite: props.invite });
-                if (props.matchmaking) {
+                if (props.matchmaking && (AppConfig.isNonProduction() || AppConfig.isSuperAdmin())) {
                     router!.navigate(`/matchmaking/${res.join.id}/ask/1`);
                 } else {
                     router!.navigate(`/mail/${res.join.id}`);

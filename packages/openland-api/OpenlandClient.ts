@@ -223,6 +223,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderRoomSuper(variables: Types.RoomSuperVariables, opts?: QueryWatchParameters): Types.RoomSuper | null {
         return this.useQuery(Source.RoomSuperQuery, variables, opts);
     }
+    async queryMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: OperationParameters): Promise<Types.MatchmakingRoom> {
+        return this.client.query(Source.MatchmakingRoomQuery, variables, opts);
+    }
+    async refetchMatchmakingRoom(variables: Types.MatchmakingRoomVariables): Promise<Types.MatchmakingRoom> {
+        return this.refetch(Source.MatchmakingRoomQuery, variables);
+    }
+    useMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: QueryWatchParameters): Types.MatchmakingRoom {
+        return this.useQuerySuspense(Source.MatchmakingRoomQuery, variables, opts);
+    }
+    useWithoutLoaderMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: QueryWatchParameters): Types.MatchmakingRoom | null {
+        return this.useQuery(Source.MatchmakingRoomQuery, variables, opts);
+    }
     async queryGlobalCounter(opts?: OperationParameters): Promise<Types.GlobalCounter> {
         return this.client.query(Source.GlobalCounterQuery, undefined, opts);
     }

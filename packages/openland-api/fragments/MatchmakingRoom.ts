@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
-export const MatchmakingRoom = gql`
-    fragment MatchmakingRoom on MatchmakingRoom {
+export const MatchmakingRoomFragment = gql`
+    fragment MatchmakingRoomFragment on MatchmakingRoom {
         enabled
         questions {
             ... on TextMatchmakingQuestion {

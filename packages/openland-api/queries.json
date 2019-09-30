@@ -2906,6 +2906,57 @@
 		},
 		{
 			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/Chats.ts",
+			"operationName": "MatchmakingRoom",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [
+				{
+					"name": "peerId",
+					"type": "ID!"
+				}
+			],
+			"source": "query MatchmakingRoom($peerId: ID!) {\n  matchmakingRoom(peerId: $peerId) {\n    __typename\n    ...MatchmakingRoomFragment\n  }\n}",
+			"fields": [
+				{
+					"responseName": "matchmakingRoom",
+					"fieldName": "matchmakingRoom",
+					"type": "MatchmakingRoom",
+					"args": [
+						{
+							"name": "peerId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "peerId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [
+						"MatchmakingRoomFragment"
+					],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"MatchmakingRoomFragment"
+			],
+			"sourceWithFragments": "query MatchmakingRoom($peerId: ID!) {\n  matchmakingRoom(peerId: $peerId) {\n    __typename\n    ...MatchmakingRoomFragment\n  }\n}\nfragment MatchmakingRoomFragment on MatchmakingRoom {\n  __typename\n  enabled\n  questions {\n    __typename\n    ... on TextMatchmakingQuestion {\n      id\n      title\n      subtitle\n    }\n    ... on MultiselectMatchmakingQuestion {\n      id\n      title\n      subtitle\n      tags\n    }\n  }\n  profiles {\n    __typename\n    chatCreated\n    user {\n      __typename\n      id\n      name\n      photo\n      primaryOrganization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n    answers {\n      __typename\n      ... on TextMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        answer\n      }\n      ... on MultiselectMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        tags\n      }\n    }\n  }\n}",
+			"operationId": "0a6626e35b7c0f4b61a14492459bdabd45aba885abdaee87bf6052a1c4091747"
+		},
+		{
+			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/Chats.ts",
 			"operationName": "PinMessage",
 			"operationType": "mutation",
 			"rootType": "Mutation",
@@ -18167,9 +18218,9 @@
 			"possibleTypes": [
 				"MatchmakingRoom"
 			],
-			"fragmentName": "MatchmakingRoom",
+			"fragmentName": "MatchmakingRoomFragment",
 			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/fragments/MatchmakingRoom.ts",
-			"source": "fragment MatchmakingRoom on MatchmakingRoom {\n  __typename\n  enabled\n  questions {\n    __typename\n    ... on TextMatchmakingQuestion {\n      id\n      title\n      subtitle\n    }\n    ... on MultiselectMatchmakingQuestion {\n      id\n      title\n      subtitle\n      tags\n    }\n  }\n  profiles {\n    __typename\n    chatCreated\n    user {\n      __typename\n      id\n      name\n      photo\n      primaryOrganization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n    answers {\n      __typename\n      ... on TextMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        answer\n      }\n      ... on MultiselectMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        tags\n      }\n    }\n  }\n}",
+			"source": "fragment MatchmakingRoomFragment on MatchmakingRoom {\n  __typename\n  enabled\n  questions {\n    __typename\n    ... on TextMatchmakingQuestion {\n      id\n      title\n      subtitle\n    }\n    ... on MultiselectMatchmakingQuestion {\n      id\n      title\n      subtitle\n      tags\n    }\n  }\n  profiles {\n    __typename\n    chatCreated\n    user {\n      __typename\n      id\n      name\n      photo\n      primaryOrganization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n    answers {\n      __typename\n      ... on TextMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        answer\n      }\n      ... on MultiselectMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        tags\n      }\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "__typename",
