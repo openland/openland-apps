@@ -59,8 +59,8 @@ class AsyncDataView(val context: ReactContext, val key: String) {
         notifyWatchers(s)
     }
 
-    fun handleAddItem(item: AsyncDataViewItem, index: Int) {
-        val s = AsyncDataViewState(this.state.items.subList(0, index) + AsyncDataViewItem(item.key, (item.spec as AsyncFlexSpec).applyModes(this.applyModes)) + this.state.items.subList(index, this.state.items.size), this.state.competed, this.state.competedForward, this.state.scrollToKey)
+    fun handleAddItem(item: AsyncDataViewItem, index: Int, isAnchor: Boolean?) {
+        val s = AsyncDataViewState(this.state.items.subList(0, index) + AsyncDataViewItem(item.key, (item.spec as AsyncFlexSpec).applyModes(this.applyModes)) + this.state.items.subList(index, this.state.items.size), this.state.competed, this.state.competedForward, if (isAnchor !== null && isAnchor) item.key else this.state.scrollToKey)
         this.state = s
         notifyWatchers(s)
     }
@@ -179,7 +179,7 @@ class AsyncDataViewManager(reactContext: ReactApplicationContext) : ReactContext
 
     @ReactMethod
     fun dataViewAddItem(dataSourceKey: String, key: String, config: String, index: Int, isAnchor: Boolean) {
-        getDataView(dataSourceKey, this.reactApplicationContext).handleAddItem(AsyncDataViewItem(key, parseSpec(config, reactApplicationContext)), index)
+        getDataView(dataSourceKey, this.reactApplicationContext).handleAddItem(AsyncDataViewItem(key, parseSpec(config, reactApplicationContext)), index, isAnchor)
     }
 
     @ReactMethod
