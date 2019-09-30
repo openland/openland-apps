@@ -8,7 +8,7 @@ import UUID from 'uuid/v4';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 
-export const ReloadFromBottomButton = (props: { conversation: ConversationEngine }) => {
+export const ReloadFromBottomButton = (props: { conversation: ConversationEngine, paddingBottom?: number }) => {
     const theme = React.useContext(ThemeContext);
     const [animated] = React.useState(new SAnimatedShadowView(UUID(), { translateY: 68 }));
     const [show, setShow] = React.useState(!props.conversation.dataSource.isCompletedForward());
@@ -57,7 +57,7 @@ export const ReloadFromBottomButton = (props: { conversation: ConversationEngine
     return <>
         <SAnimated.View
             name={animated.name}
-            style={{ width: 40, height: 40, bottom: Platform.OS === 'android' ? 52 : 92, right: 8, position: 'absolute' }}
+            style={{ width: 40, height: 40, bottom: (props.paddingBottom || 0) + 8, right: 8, position: 'absolute' }}
         >
             <TouchableWithoutFeedback onPress={onClick} >
                 <SafeAreaView>

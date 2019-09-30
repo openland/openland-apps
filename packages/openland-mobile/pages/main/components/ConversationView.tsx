@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { View, Text, Platform, Animated, Easing } from 'react-native';
+import { View, Text, Platform, Animated, Easing, SafeAreaView } from 'react-native';
 import { ConversationMessagesView } from './ConversationMessagesView';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
@@ -98,8 +98,8 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                         </ASSafeAreaView>
                     )
                 }
-                {<ReloadFromBottomButton conversation={this.props.engine} />}
 
+                <ReloadFromBottomButton conversation={this.props.engine} paddingBottom={Platform.OS === 'android' ? androidMessageInputListOverlap : 86} />
             </View >
         );
     }
