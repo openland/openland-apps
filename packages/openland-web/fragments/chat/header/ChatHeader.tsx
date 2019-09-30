@@ -18,7 +18,6 @@ import SettingsIcon from 'openland-icons/s/ic-settings-24.svg';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
 import NotificationsOffIcon from 'openland-icons/s/ic-notifications-off-24.svg';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
-
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { showAddMembersModal } from '../showAddMembersModal';
@@ -112,12 +111,12 @@ const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
     let [muted, setMuted] = React.useState(chat.settings.mute);
 
     let res = new UPopperMenuBuilder();
-    if (layout === 'mobile' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true)) {
-        res.item({ title: 'Call', icon: <PhoneIcon />, action: () => calls.joinCall(chat.id, chat.__typename === 'PrivateRoom') });
+    if (layout === 'mobile' && chat.__typename === 'SharedRoom') {
+        res.item({ title: 'Add people', icon: <InviteIcon />, action: () => showAddMembersModal({ id: chat.id, isGroup: true, isOrganization: false }) });
     }
 
-    if (chat.__typename === 'SharedRoom') {
-        res.item({ title: 'Add people', icon: <InviteIcon />, action: () => showAddMembersModal({ id: chat.id, isGroup: true, isOrganization: false }) });
+    if (layout === 'mobile' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true)) {
+        res.item({ title: 'Call', icon: <PhoneIcon />, action: () => calls.joinCall(chat.id, chat.__typename === 'PrivateRoom') });
     }
 
     res.item({
@@ -147,6 +146,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
     const path = chat.__typename === 'PrivateRoom' ? `/${chat.user.shortname || chat.user.id}` : `/group/${chat.id}`;
     const showCallButton = layout === 'desktop' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true);
+    const showInviteButton = !!(layout === 'desktop' && chat.__typename === 'SharedRoom');
     const titleEmojify = React.useMemo(() => emoji(title), [title]);
 
     return (
@@ -218,6 +218,13 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                 </XView>
             </XView>
             <XView flexDirection="row" alignItems="center">
+                {showInviteButton && (
+                    <UIconButton
+                        icon={<InviteIcon />}
+                        onClick={() => showAddMembersModal({ id: chat.id, isGroup: true, isOrganization: false })}
+                        size="large"
+                    />
+                )}
                 {showCallButton && <CallButton chat={chat} calls={calls} />}
 
                 <UMoreButton

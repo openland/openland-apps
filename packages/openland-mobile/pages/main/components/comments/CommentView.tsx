@@ -18,7 +18,7 @@ import { plural } from 'openland-y-utils/plural';
 const styles = StyleSheet.create({
     senderName: {
         ...TextStyles.Label2,
-        paddingBottom: 2,
+        paddingBottom: 1,
     } as TextStyle,
     editedLabel: {
         fontSize: 13,
