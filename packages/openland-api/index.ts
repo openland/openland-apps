@@ -28,6 +28,7 @@ import * as Comment from './fragments/Comment';
 import * as CommunitySearch from './fragments/CommunitySearch';
 import * as ConferenceFull from './fragments/ConferenceFull';
 import * as FeedItemFull from './fragments/FeedItemFull';
+import * as MatchmakingRoom from './fragments/MatchmakingRoom';
 import * as Message from './fragments/Message';
 import * as OrganizationFull from './fragments/OrganizationFull';
 import * as OrganizationMedium from './fragments/OrganizationMedium';
@@ -239,6 +240,7 @@ export const ConferenceShortFragment = typedFragment<Types.ConferenceShort>(Conf
 export const FeedPostAuthorFragmentFragment = typedFragment<Types.FeedPostAuthorFragment>(FeedItemFull.FeedPostAuthorFragment);
 export const SlideFragmentFragment = typedFragment<Types.SlideFragment>(FeedItemFull.SlideFragment);
 export const FeedItemFullFragment = typedFragment<Types.FeedItemFull>(FeedItemFull.FeedItemFull);
+export const MatchmakingRoomFragment = typedFragment<Types.MatchmakingRoom>(MatchmakingRoom.MatchmakingRoom);
 export const SpanFragmentFragment = typedFragment<Types.SpanFragment>(Message.SpanFragment);
 export const DaialogListMessageFragment = typedFragment<Types.DaialogListMessage>(Message.DaialogListMessage);
 export const TinyMessageFragment = typedFragment<Types.TinyMessage>(Message.TinyMessage);
