@@ -26,8 +26,8 @@ const routing = new URouting();
 routing.addRoute('/mail/:conversationId', () =>
     React.memo(() => {
         let ctx = useUnicorn();
-        return (<MessengerFragment id={ctx.id!} />);
-    })
+        return <MessengerFragment id={ctx.id!} />;
+    }),
 );
 
 // Message
