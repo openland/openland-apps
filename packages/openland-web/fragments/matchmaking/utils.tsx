@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 export const objToMap = (obj: object): Map<string, string[] | string> => {
     const map = new Map<string, string[] | string>();
     Object.keys(obj).forEach(k => {
