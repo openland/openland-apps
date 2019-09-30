@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
-import { Dimensions } from 'react-native';
 
 export const AsyncNewMessageDivider = React.memo((props) => {
     const theme = useThemeGlobal();
