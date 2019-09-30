@@ -135,6 +135,7 @@ class RNAsyncDataView {
   
   func handleInitial(items: [RNAsyncDataViewItem], completed: Bool, completedForward: Bool, anchor: String?) {
     let st = RNAsyncDataViewState(items: items.map {$0}, completed: completed, completedForward: completedForward, inited: true, anchor: anchor)
+    let oldState = self.state
     self.state = st
     
     for i in watchers.all() {

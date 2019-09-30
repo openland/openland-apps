@@ -344,15 +344,17 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   func checkTopLoader(){
     let loaderNeeded = !self.state.completedForward && self.state.items.count > 0;
-    if(loaderNeeded && !self.loadingCellTopVisible){
-     self.loadingCellTopVisible = true
-      self.loadingCellTop.loading = true
-     self.node.insertItems(at: [IndexPath(row: 0, section: 0)])
-    }else if(!loaderNeeded && self.loadingCellTopVisible){
-      self.loadingCellTopVisible = false
-      self.loadingCellTop.loading = false
-      self.node.deleteItems(at: [IndexPath(row: 0, section: 0)])
-    }
+    self.node.performBatch(animated: false, updates: {
+      if(loaderNeeded && !self.loadingCellTopVisible){
+        self.loadingCellTopVisible = true
+        self.loadingCellTop.loading = true
+        self.node.insertItems(at: [IndexPath(row: 0, section: 0)])
+      }else if(!loaderNeeded && self.loadingCellTopVisible){
+        self.loadingCellTopVisible = false
+        self.loadingCellTop.loading = false
+        self.node.deleteItems(at: [IndexPath(row: 0, section: 0)])
+      }
+    }, completion: nil)
   }
   
   //
@@ -404,6 +406,14 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         var nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
         var timeInterval = nanoTime / 1_000_000
         print("Time to apply inited: \(timeInterval) ms")
+        // clean up in case of reload
+        var toDelete: [IndexPath] = []
+        if(self.state.items.count > 0){
+          toDelete = (0..<self.state.items.count).map({ (i) -> IndexPath in
+            IndexPath(row: i, section: 1)
+          })
+          self.activeCells.clear();
+        }
         self.state = state
         for itm in pendingCells {
           self.activeCells.set(key: itm.key, value: itm.value)
@@ -412,8 +422,9 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         self.loadingCell.loading = !state.completed
         self.loadingCellTop.loading = !state.completedForward
         if self.loaded {
-          if indexPaths.count > 0 {
+          if indexPaths.count + toDelete.count > 0 {
             self.node.performBatch(animated: false, updates: {
+              self.node.deleteItems(at:toDelete)
               self.node.insertItems(at: indexPaths)
             }, completion: nil)
             self.checkTopLoader()
@@ -422,7 +433,11 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           self.node.performBatch(animated: false, updates: {
             self.node.reloadSections(IndexSet(integer: 2))
             self.node.reloadSections(IndexSet(integer: 0))
-          }, completion: nil)
+          }, completion: { v in
+            if(state.anchor == nil){
+             self.node.scrollToItem(at: IndexPath(item: 0, section: 1), at: .top, animated: false)
+            }
+          })
           if self.batchContext != nil {
             DispatchQueue.main.async {
               self.batchContext?.completeBatchFetching(true)
@@ -598,7 +613,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       DispatchQueue.main.async {
         print("boom", "onScrollToRequested", "list", index, self.state.items.count)
         self.settingScroll = true
-        self.node.scrollToItem(at: IndexPath(item: index, section: 1), at: .centeredVertically, animated: false)
+        self.node.scrollToItem(at: IndexPath(item: index, section: 1), at: .bottom, animated: false)
         self.settingScroll = false
       }
     }

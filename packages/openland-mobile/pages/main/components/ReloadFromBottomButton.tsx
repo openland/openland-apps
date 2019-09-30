@@ -62,7 +62,7 @@ export const ReloadFromBottomButton = (props: { conversation: ConversationEngine
         <SafeAreaView>
             <SAnimated.View
                 name={animated.name}
-                style={{ width: 40, height: 40, bottom: Platform.OS === 'android' ? 52 : 82, right: 8, position: 'absolute' }}
+                style={{ width: 40, height: 40, bottom: Platform.OS === 'android' ? 52 : 94, right: 8, position: 'absolute' }}
             >
                 <TouchableWithoutFeedback onPress={onClick} >
                     <View
@@ -74,7 +74,9 @@ export const ReloadFromBottomButton = (props: { conversation: ConversationEngine
                             borderRadius: 40,
                             backgroundColor: theme.backgroundSecondary,
                             shadowColor: '#171a1f',
-                            shadowOpacity: 0.18,
+                            shadowOpacity: 0.08,
+                            shadowRadius: 24,
+                            shadowOffset: { width: 0, height: 8 },
                             elevation: 2,
                             bottom: 8,
                             right: 8,

@@ -557,7 +557,7 @@ export class ConversationEngine implements MessageSendHandler {
         });
 
         // temp fix, right way is to reload chat from bottom
-        if (this.forwardFullyLoaded || !loadToUnread) {
+        if (this.forwardFullyLoaded) {
             let spans = [...prepareLegacyMentions(message, mentions || []), ...prepareLegacySpans(styledSpans)];
 
             let msgs = {
@@ -585,6 +585,8 @@ export class ConversationEngine implements MessageSendHandler {
             for (let l of this.listeners) {
                 l.onMessageSend();
             }
+        } else {
+            this.restart('end');
         }
 
         this.loic(text);
