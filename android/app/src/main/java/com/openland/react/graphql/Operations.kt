@@ -977,62 +977,6 @@ private val FeedUpdateFragmentSelector = obj(
             ))
         )
 
-private val MatchmakingRoomSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("enabled","enabled", notNull(scalar("Boolean"))),
-            field("profiles","profiles", list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("answers","answers", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            inline("TextMatchmakingAnswer", obj(
-                                field("answer","answer", notNull(scalar("String"))),
-                                field("question","question", notNull(obj(
-                                        field("__typename","__typename", notNull(scalar("String"))),
-                                        field("id","id", notNull(scalar("ID"))),
-                                        field("subtitle","subtitle", notNull(scalar("String"))),
-                                        field("title","title", notNull(scalar("String")))
-                                    )))
-                            )),
-                            inline("MultiselectMatchmakingAnswer", obj(
-                                field("question","question", notNull(obj(
-                                        field("__typename","__typename", notNull(scalar("String"))),
-                                        field("id","id", notNull(scalar("ID"))),
-                                        field("subtitle","subtitle", notNull(scalar("String"))),
-                                        field("title","title", notNull(scalar("String")))
-                                    ))),
-                                field("tags","tags", notNull(list(notNull(scalar("String")))))
-                            ))
-                        ))))),
-                    field("chatCreated","chatCreated", notNull(scalar("Boolean"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("name","name", notNull(scalar("String"))),
-                            field("photo","photo", scalar("String")),
-                            field("primaryOrganization","primaryOrganization", obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("id","id", notNull(scalar("ID"))),
-                                    field("name","name", notNull(scalar("String"))),
-                                    field("photo","photo", scalar("String"))
-                                ))
-                        )))
-                )))),
-            field("questions","questions", list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    inline("TextMatchmakingQuestion", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("subtitle","subtitle", notNull(scalar("String"))),
-                        field("title","title", notNull(scalar("String")))
-                    )),
-                    inline("MultiselectMatchmakingQuestion", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("subtitle","subtitle", notNull(scalar("String"))),
-                        field("tags","tags", notNull(list(notNull(scalar("String"))))),
-                        field("title","title", notNull(scalar("String")))
-                    ))
-                ))))
-        )
-
 private val RoomNanoSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             inline("PrivateRoom", obj(
@@ -2323,7 +2267,7 @@ private val ResolvedInviteSelector = obj(
                                     field("kind","kind", notNull(scalar("String"))),
                                     field("matchmaking","matchmaking", obj(
                                             field("__typename","__typename", notNull(scalar("String"))),
-                                            fragment("MatchmakingRoom", MatchmakingRoomSelector)
+                                            field("enabled","enabled", notNull(scalar("Boolean")))
                                         )),
                                     field("membersCount","membersCount", scalar("Int")),
                                     field("membership","membership", notNull(scalar("String"))),
@@ -2424,7 +2368,7 @@ private val RoomInviteInfoSelector = obj(
                                 field("kind","kind", notNull(scalar("String"))),
                                 field("matchmaking","matchmaking", obj(
                                         field("__typename","__typename", notNull(scalar("String"))),
-                                        fragment("MatchmakingRoom", MatchmakingRoomSelector)
+                                        field("enabled","enabled", notNull(scalar("Boolean")))
                                     )),
                                 field("membersCount","membersCount", scalar("Int")),
                                 field("membership","membership", notNull(scalar("String"))),
@@ -3788,7 +3732,7 @@ object Operations {
     val ResolvedInvite = object: OperationDefinition {
         override val name = "ResolvedInvite"
         override val kind = OperationKind.QUERY
-        override val body = "query ResolvedInvite(\$key:String!){invite:alphaResolveInvite(key:\$key){__typename ... on InviteInfo{creator{__typename ...UserShort}id orgId organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo}title}... on AppInvite{inviter{__typename ...UserShort}}... on RoomInvite{id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel kind matchmaking{__typename ...MatchmakingRoom}membersCount membership photo socialImage title}}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment MatchmakingRoom on MatchmakingRoom{__typename enabled profiles{__typename answers{__typename ... on TextMatchmakingAnswer{answer question{__typename id subtitle title}}... on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id name photo primaryOrganization{__typename id name photo}}}questions{__typename ... on TextMatchmakingQuestion{id subtitle title}... on MultiselectMatchmakingQuestion{id subtitle tags title}}}"
+        override val body = "query ResolvedInvite(\$key:String!){invite:alphaResolveInvite(key:\$key){__typename ... on InviteInfo{creator{__typename ...UserShort}id orgId organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo}title}... on AppInvite{inviter{__typename ...UserShort}}... on RoomInvite{id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel kind matchmaking{__typename enabled}membersCount membership photo socialImage title}}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}"
         override val selector = ResolvedInviteSelector
     }
     val Room = object: OperationDefinition {
@@ -3812,7 +3756,7 @@ object Operations {
     val RoomInviteInfo = object: OperationDefinition {
         override val name = "RoomInviteInfo"
         override val kind = OperationKind.QUERY
-        override val body = "query RoomInviteInfo(\$invite:String!){invite:betaRoomInviteInfo(invite:\$invite){__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel kind matchmaking{__typename ...MatchmakingRoom}membersCount membership organization{__typename ...OrganizationShort}photo socialImage title}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment MatchmakingRoom on MatchmakingRoom{__typename enabled profiles{__typename answers{__typename ... on TextMatchmakingAnswer{answer question{__typename id subtitle title}}... on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id name photo primaryOrganization{__typename id name photo}}}questions{__typename ... on TextMatchmakingQuestion{id subtitle title}... on MultiselectMatchmakingQuestion{id subtitle tags title}}}"
+        override val body = "query RoomInviteInfo(\$invite:String!){invite:betaRoomInviteInfo(invite:\$invite){__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel kind matchmaking{__typename enabled}membersCount membership organization{__typename ...OrganizationShort}photo socialImage title}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}"
         override val selector = RoomInviteInfoSelector
     }
     val RoomInviteLink = object: OperationDefinition {

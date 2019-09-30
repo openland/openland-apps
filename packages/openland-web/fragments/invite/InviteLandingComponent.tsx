@@ -66,6 +66,7 @@ const JoinLinkButton = (props: {
     refetchVars: { conversationId: string };
     text: string;
     onAccept: (data: boolean) => void;
+    matchmaking?: boolean;
 }) => {
     const client = useClient();
     const router = React.useContext(XViewRouterContext);
@@ -80,7 +81,11 @@ const JoinLinkButton = (props: {
             action={async () => {
                 props.onAccept(true);
                 let res = await client.mutateRoomJoinInviteLink({ invite: props.invite });
-                router!.navigate(`/mail/${res.join.id}`);
+                if (props.matchmaking) {
+                    router!.navigate(`/matchmaking/${res.join.id}/ask/1`);
+                } else {
+                    router!.navigate(`/mail/${res.join.id}`);
+                }
             }}
         />
     );
@@ -235,8 +240,8 @@ const InviteLandingComponentLayout = ({
                 {invitedByUser ? (
                     <InviteByUser invitedByUser={invitedByUser} chatTypeStr={whereToInvite} />
                 ) : (
-                        <XView height={50} flexShrink={0} />
-                    )}
+                    <XView height={50} flexShrink={0} />
+                )}
             </XView>
             <EntityInfoColumn
                 photo={photo}
@@ -255,6 +260,7 @@ const InviteLandingComponentLayout = ({
 const resolveRoomButton = (
     room: { id: string; membership: SharedRoomMembershipStatus },
     key?: string,
+    matchmaking?: boolean,
 ) => {
     const [loading, setLoading] = React.useState(false);
     if (
@@ -284,6 +290,7 @@ const resolveRoomButton = (
                 refetchVars={{ conversationId: room.id! }}
                 onAccept={setLoading}
                 text="Accept invite"
+                matchmaking={matchmaking}
             />
         );
     } else if (room && room.membership === 'REQUESTED') {
@@ -327,6 +334,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     let room: ResolvedInvite_invite_RoomInvite_room | undefined;
     let organization: ResolvedInvite_invite_InviteInfo_organization | undefined;
     let invitedByUser;
+    let matchmaking = undefined;
 
     if (invite.invite && invite.invite.__typename === 'InviteInfo' && invite.invite.organization) {
         organization = invite.invite.organization;
@@ -336,6 +344,8 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     if (invite.invite && invite.invite.__typename === 'RoomInvite') {
         room = invite.invite.room;
         invitedByUser = invite.invite.invitedByUser;
+
+        matchmaking = !!(room.matchmaking && room.matchmaking.enabled);
     }
 
     if (invite.invite && invite.invite.__typename === 'AppInvite') {
@@ -359,7 +369,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
             />
         );
     } else if (room) {
-        button = resolveRoomButton(room, key);
+        button = resolveRoomButton(room, key, matchmaking);
     } else if (organization) {
         button = (
             <UButton

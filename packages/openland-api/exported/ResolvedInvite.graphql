@@ -40,7 +40,7 @@ query ResolvedInvite($key: String!) {
           kind
           matchmaking {
             __typename
-            ...MatchmakingRoom
+            enabled
           }
           membersCount
           membership

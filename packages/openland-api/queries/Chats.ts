@@ -9,7 +9,7 @@ import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { TinyMessage, FullMessage, DaialogListMessage } from 'openland-api/fragments/Message';
 import { RoomNano } from 'openland-api/fragments/RoomNano';
 import { UserBadge } from 'openland-api/fragments/UserBadge';
-import { MatchmakingRoom } from 'openland-api/fragments/MatchmakingRoom';
+// import { MatchmakingRoom } from 'openland-api/fragments/MatchmakingRoom';
 
 export const DialogsQuery = gql`
     query Dialogs($after: String) {
@@ -744,7 +744,7 @@ export const RoomInviteInfoQuery = gql`
                     membership
                     membersCount
                     matchmaking {
-                        ...MatchmakingRoom
+                        enabled
                     }
                 }
             }
@@ -755,7 +755,6 @@ export const RoomInviteInfoQuery = gql`
     }
     ${UserShort}
     ${OrganizationShort}
-    ${MatchmakingRoom}
 `;
 
 export const ResolvedInviteQuery = gql`
@@ -801,7 +800,7 @@ export const ResolvedInviteQuery = gql`
                         membership
                         membersCount
                         matchmaking {
-                            ...MatchmakingRoom
+                            enabled
                         }
                     }
                 }
@@ -809,7 +808,6 @@ export const ResolvedInviteQuery = gql`
         }
     }
     ${UserShort}
-    ${MatchmakingRoom}
 `;
 
 export const RoomUpdateMutation = gql`

@@ -15,7 +15,7 @@ query RoomInviteInfo($invite: String!) {
         kind
         matchmaking {
           __typename
-          ...MatchmakingRoom
+          enabled
         }
         membersCount
         membership

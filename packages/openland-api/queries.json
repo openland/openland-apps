@@ -5687,7 +5687,7 @@
 					"type": "String!"
 				}
 			],
-			"source": "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n        matchmaking {\n          __typename\n          ...MatchmakingRoom\n        }\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}",
+			"source": "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n        matchmaking {\n          __typename\n          enabled\n        }\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "invite",
@@ -5826,11 +5826,16 @@
 											"fieldName": "__typename",
 											"type": "String!",
 											"isConditional": false
+										},
+										{
+											"responseName": "enabled",
+											"fieldName": "enabled",
+											"type": "Boolean!",
+											"isConditional": false,
+											"isDeprecated": false
 										}
 									],
-									"fragmentSpreads": [
-										"MatchmakingRoom"
-									],
+									"fragmentSpreads": [],
 									"inlineFragments": []
 								}
 							],
@@ -5865,11 +5870,10 @@
 			"inlineFragments": [],
 			"fragmentsReferenced": [
 				"OrganizationShort",
-				"MatchmakingRoom",
 				"UserShort"
 			],
-			"sourceWithFragments": "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n        matchmaking {\n          __typename\n          ...MatchmakingRoom\n        }\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment MatchmakingRoom on MatchmakingRoom {\n  __typename\n  enabled\n  questions {\n    __typename\n    ... on TextMatchmakingQuestion {\n      id\n      title\n      subtitle\n    }\n    ... on MultiselectMatchmakingQuestion {\n      id\n      title\n      subtitle\n      tags\n    }\n  }\n  profiles {\n    __typename\n    chatCreated\n    user {\n      __typename\n      id\n      name\n      photo\n      primaryOrganization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n    answers {\n      __typename\n      ... on TextMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        answer\n      }\n      ... on MultiselectMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        tags\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}",
-			"operationId": "809554507e3b739e3f326add2aa03d4c2f36b4abebd82e7fc1f104eb0874df20"
+			"sourceWithFragments": "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n        matchmaking {\n          __typename\n          enabled\n        }\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}",
+			"operationId": "32da54f8b6222cf9fa930f71582459629767db221d05a1bc1e4ac8af580ac45d"
 		},
 		{
 			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/Chats.ts",
@@ -5882,7 +5886,7 @@
 					"type": "String!"
 				}
 			],
-			"source": "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      id\n      orgId\n      title\n      creator {\n        __typename\n        ...UserShort\n      }\n      organization {\n        __typename\n        id\n        photo\n        name\n        membersCount\n        about\n        isCommunity: alphaIsCommunity\n      }\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on RoomInvite {\n      id\n      invitedByUser {\n        __typename\n        ...UserShort\n      }\n      room {\n        __typename\n        ... on SharedRoom {\n          id\n          kind\n          isChannel\n          title\n          photo\n          socialImage\n          description\n          membership\n          membersCount\n          matchmaking {\n            __typename\n            ...MatchmakingRoom\n          }\n        }\n      }\n    }\n  }\n}",
+			"source": "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      id\n      orgId\n      title\n      creator {\n        __typename\n        ...UserShort\n      }\n      organization {\n        __typename\n        id\n        photo\n        name\n        membersCount\n        about\n        isCommunity: alphaIsCommunity\n      }\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on RoomInvite {\n      id\n      invitedByUser {\n        __typename\n        ...UserShort\n      }\n      room {\n        __typename\n        ... on SharedRoom {\n          id\n          kind\n          isChannel\n          title\n          photo\n          socialImage\n          description\n          membership\n          membersCount\n          matchmaking {\n            __typename\n            enabled\n          }\n        }\n      }\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "invite",
@@ -6184,11 +6188,16 @@
 													"fieldName": "__typename",
 													"type": "String!",
 													"isConditional": false
+												},
+												{
+													"responseName": "enabled",
+													"fieldName": "enabled",
+													"type": "Boolean!",
+													"isConditional": false,
+													"isDeprecated": false
 												}
 											],
-											"fragmentSpreads": [
-												"MatchmakingRoom"
-											],
+											"fragmentSpreads": [],
 											"inlineFragments": []
 										}
 									],
@@ -6205,11 +6214,10 @@
 			"inlineFragments": [],
 			"fragmentsReferenced": [
 				"UserShort",
-				"OrganizationShort",
-				"MatchmakingRoom"
+				"OrganizationShort"
 			],
-			"sourceWithFragments": "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      id\n      orgId\n      title\n      creator {\n        __typename\n        ...UserShort\n      }\n      organization {\n        __typename\n        id\n        photo\n        name\n        membersCount\n        about\n        isCommunity: alphaIsCommunity\n      }\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on RoomInvite {\n      id\n      invitedByUser {\n        __typename\n        ...UserShort\n      }\n      room {\n        __typename\n        ... on SharedRoom {\n          id\n          kind\n          isChannel\n          title\n          photo\n          socialImage\n          description\n          membership\n          membersCount\n          matchmaking {\n            __typename\n            ...MatchmakingRoom\n          }\n        }\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment MatchmakingRoom on MatchmakingRoom {\n  __typename\n  enabled\n  questions {\n    __typename\n    ... on TextMatchmakingQuestion {\n      id\n      title\n      subtitle\n    }\n    ... on MultiselectMatchmakingQuestion {\n      id\n      title\n      subtitle\n      tags\n    }\n  }\n  profiles {\n    __typename\n    chatCreated\n    user {\n      __typename\n      id\n      name\n      photo\n      primaryOrganization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n    answers {\n      __typename\n      ... on TextMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        answer\n      }\n      ... on MultiselectMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        tags\n      }\n    }\n  }\n}",
-			"operationId": "27ff725e16f85ac28f3373c66bbbbe6669b927454d298addd217fe067e69289a"
+			"sourceWithFragments": "query ResolvedInvite($key: String!) {\n  invite: alphaResolveInvite(key: $key) {\n    __typename\n    ... on InviteInfo {\n      id\n      orgId\n      title\n      creator {\n        __typename\n        ...UserShort\n      }\n      organization {\n        __typename\n        id\n        photo\n        name\n        membersCount\n        about\n        isCommunity: alphaIsCommunity\n      }\n    }\n    ... on AppInvite {\n      inviter {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on RoomInvite {\n      id\n      invitedByUser {\n        __typename\n        ...UserShort\n      }\n      room {\n        __typename\n        ... on SharedRoom {\n          id\n          kind\n          isChannel\n          title\n          photo\n          socialImage\n          description\n          membership\n          membersCount\n          matchmaking {\n            __typename\n            enabled\n          }\n        }\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}",
+			"operationId": "32cd549ab37b311f0a1989ce614987afa3a8796d534fc2f3e47ae40429ae5dbd"
 		},
 		{
 			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/Chats.ts",
