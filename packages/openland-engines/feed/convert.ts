@@ -105,7 +105,8 @@ export const convertToSlideInputLocal = (src: Types.FeedItemFull): SlideInputLoc
                         uuid: slide.cover.url.split('https://ucarecdn.com/')[1].split('/')[0],
                     } : null,
                     coverAlign: slide.coverAlign,
-                    attachmentLocal: slide.attachments[0]
+                    attachmentLocal: slide.attachments[0],
+                    coverLoading: false
                 });
             }
         });
@@ -113,7 +114,8 @@ export const convertToSlideInputLocal = (src: Types.FeedItemFull): SlideInputLoc
         res.push({
             key: UUID(),
             type: Types.SlideType.Text,
-            text: src.message
+            text: src.message,
+            coverLoading: false
         });
     }
 
@@ -122,35 +124,39 @@ export const convertToSlideInputLocal = (src: Types.FeedItemFull): SlideInputLoc
 
 export const convertToSlideInput = (input: SlideInputLocal[]) => {
     const res: Types.SlideInput[] = [];
-    const slides = input.map(i => ({ ...i }));
 
-    for (let slide of slides) {
-        slide.key = undefined;
-        slide.text = slide.text && slide.text.length > 0 ? slide.text.trim() : undefined;
+    for (let slide of input) {
+        let converted: Types.SlideInput = {
+            type: slide.type,
+            text: slide.text,
+            cover: slide.cover,
+            coverAlign: slide.coverAlign
+        };
 
-        const hasCover = slide.cover;
-        const hasText = slide.text && slide.text.length > 0;
+        converted.text = converted.text && converted.text.length > 0 ? converted.text.trim() : undefined;
+
+        const hasCover = converted.cover;
+        const hasText = converted.text && converted.text.length > 0;
         const hasAttachment = slide.attachmentLocal;
 
         if (hasText) {
-            slide.spans = findSpans(slide.text || '', PostSpanSymbolToType);
+            converted.spans = findSpans(converted.text!, PostSpanSymbolToType);
         } else {
-            slide.text = undefined;
+            converted.text = undefined;
         }
 
         if (hasCover) {
-            slide.coverAlign = hasText ? slide.coverAlign : Types.SlideCoverAlign.Cover;
+            converted.coverAlign = hasText ? converted.coverAlign : Types.SlideCoverAlign.Cover;
         } else {
-            slide.coverAlign = undefined;
+            converted.coverAlign = undefined;
         }
 
         if (hasAttachment) {
-            slide.attachments = [slide.attachmentLocal!.id];
-            slide.attachmentLocal = undefined;
+            converted.attachments = [slide.attachmentLocal!.id];
         }
 
         if (hasCover || hasText || hasAttachment) {
-            res.push(slide);
+            res.push(converted);
         }
     }
 

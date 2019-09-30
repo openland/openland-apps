@@ -25,6 +25,7 @@ const reloadButtonClass = css`
     z-index: 100;
     position: absolute;
     margin-bottom: 16px;
+    margin-right: 16px;
     bottom: 0;
     right: 0;
 

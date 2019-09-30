@@ -11,6 +11,8 @@ import android.graphics.PorterDuff
 import android.R.color
 import android.graphics.PorterDuffColorFilter
 import java.util.*
+import android.graphics.drawable.GradientDrawable
+import com.facebook.litho.drawable.ComparableGradientDrawable
 
 
 fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, style: AsyncViewStyle): Component {
@@ -55,6 +57,15 @@ fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, sty
             bg.colorFilter = PorterDuffColorFilter(style.backgroundPatchTintColor!!, PorterDuff.Mode.SRC_IN)
         }
         res.background(bg)
+    } else if (style.backgroundGradientStart != null && style.backgroundGradientEnd != null) {
+        val colors = intArrayOf(style.backgroundGradientStart!!, style.backgroundGradientEnd!!)
+        val gradient = ComparableGradientDrawable(GradientDrawable.Orientation.TL_BR, colors)
+
+        if (style.borderRadius != null) {
+            gradient.setCornerRadius(Resources.getSystem().displayMetrics.density * style.borderRadius!!)
+        }
+
+        res.background(gradient)
     } else {
         style.backgroundColor?.let {
             if (style.borderRadius != null) {

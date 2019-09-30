@@ -43,7 +43,7 @@ export const FeedManagePost = React.memo((props: FeedManagePostProps) => {
     const addSlide = React.useCallback(() => {
         const key = UUID();
 
-        setSlides(prev => [...prev, { key, type: SlideType.Text }]);
+        setSlides(prev => [...prev, { key, type: SlideType.Text, coverLoading: false }]);
     }, []);
 
     const handleChangeText = React.useCallback((key: string | undefined, text: string) => {
@@ -74,6 +74,13 @@ export const FeedManagePost = React.memo((props: FeedManagePostProps) => {
         })));
     }, []);
 
+    const handleCoverLoading = React.useCallback((key: string | undefined, loading: boolean) => {
+        setSlides(prev => prev.map(slide => ({
+            ...slide,
+            coverLoading: key === slide.key ? loading : slide.coverLoading
+        })));
+    }, []);
+
     const handleDeleteSlide = React.useCallback((key: string | undefined) => {
         setSlides(prev => prev.filter(slide => key !== slide.key));
     }, []);
@@ -84,9 +91,11 @@ export const FeedManagePost = React.memo((props: FeedManagePostProps) => {
         }
     }, []);
 
+    const canPost = slides.filter(slide => slide.coverLoading).length <= 0;
+
     return (
         <>
-            <SHeaderButton title={action} onPress={handleSent} />
+            <SHeaderButton key={'btn-' + canPost} title={action} onPress={handleSent} disabled={!canPost} />
             <KeyboardAvoidingView flexGrow={1} behavior={'padding'}>
                 <SScrollView scrollRef={scrollViewRef as React.RefObject<ScrollView>}>
                     {!initial && SUPER_ADMIN && (
@@ -101,6 +110,7 @@ export const FeedManagePost = React.memo((props: FeedManagePostProps) => {
                                 onChangeCover={c => handleChangeCover(slide.key, c)}
                                 onChangeCoverAlign={a => handleChangeCoverAlign(slide.key, a)}
                                 onChangeAttachment={a => handleChangeAttachment(slide.key, a)}
+                                onCoverLoading={l => handleCoverLoading(slide.key, l)}
                                 onDelete={slides.length > 1 ? () => handleDeleteSlide(slide.key) : undefined}
                             />
                         </View>

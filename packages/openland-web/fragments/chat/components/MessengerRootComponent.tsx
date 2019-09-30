@@ -409,6 +409,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                         room={this.props.room}
                     />
                     <TypingsView conversationId={this.props.conversationId} />
+                    <ReloadFromEndButton conversation={this.conversation} />
                     {this.props.loading && <XLoader loading={this.props.loading} />}
                 </div>
 
@@ -418,7 +419,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                             <InputMessageActionComponent
                                 engine={this.conversation.messagesActionsStateEngine}
                             />
-                            <ReloadFromEndButton conversation={this.conversation} />
                             <SendMessageComponent
                                 onAttach={this.onAttach}
                                 initialText={this.initialContent}

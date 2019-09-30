@@ -4,12 +4,15 @@ import { HeaderConfigRegistrator } from './navigation/HeaderConfigRegistrator';
 import { ActionButton, ActionButtonView } from './navigation/buttons/ActionButton';
 import { SNavigationViewStyle } from './SNavigationView';
 
-export interface FastHeaderButtonDescription {
-    id: string;
-    render: () => React.ReactElement<{}>;
+interface SHeaderButtonProps {
+    title?: string;
+    icon?: any;
+    onPress?: () => void;
+    style?: SNavigationViewStyle;
+    disabled?: boolean;
 }
 
-export class SHeaderButton extends React.PureComponent<{ title?: string, icon?: any, onPress?: () => void, style?: SNavigationViewStyle }> {
+export class SHeaderButton extends React.PureComponent<SHeaderButtonProps> {
     private buttonId = UUID();
 
     private handlePress = () => {
@@ -19,20 +22,24 @@ export class SHeaderButton extends React.PureComponent<{ title?: string, icon?: 
     }
 
     private renderButton = (style: SNavigationViewStyle) => {
-        if (this.props.title) {
+        const { title, icon, disabled, children } = this.props;
+
+        if (title) {
             return (
-                <ActionButton icon={this.props.icon} title={this.props.title} onPress={this.handlePress} iconColor={style.iconColor} accentColor={style.accentColor} />
-            );
-        } else {
-            return (
-                <ActionButtonView onPress={this.handlePress}>
-                    {this.props.children}
-                </ActionButtonView>
+                <ActionButton icon={icon} title={title} onPress={this.handlePress} iconColor={style.iconColor} accentColor={style.accentColor} disabled={disabled} />
             );
         }
+
+        return (
+            <ActionButtonView onPress={this.handlePress}>
+                {children}
+            </ActionButtonView>
+        );
     }
 
     render() {
-        return this.props.style ? this.renderButton(this.props.style) : <HeaderConfigRegistrator config={{ buttons: [{ id: this.buttonId, render: this.renderButton }] }} />;
+        const { style } = this.props;
+
+        return style ? this.renderButton(style) : <HeaderConfigRegistrator config={{ buttons: [{ id: this.buttonId, render: this.renderButton }] }} />;
     }
 }

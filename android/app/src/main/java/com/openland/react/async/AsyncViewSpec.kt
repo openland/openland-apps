@@ -77,6 +77,8 @@ class AsyncViewStyle {
     var borderRadiusBottomRight: Float? = null
     var backgroundPatch: AsyncPatch? = null
     var backgroundPatchTintColor: Int? = null
+    var backgroundGradientStart: Int? = null
+    var backgroundGradientEnd: Int? = null
 
     fun merge(with: AsyncViewStyle): AsyncViewStyle {
         val res = AsyncViewStyle()
@@ -102,6 +104,8 @@ class AsyncViewStyle {
         res.borderRadiusBottomRight = with.borderRadiusBottomRight.let { borderRadiusBottomRight -> if (borderRadiusBottomRight !== null) borderRadiusBottomRight else this.borderRadiusBottomRight }
         res.backgroundPatch = with.backgroundPatch.let { backgroundPatch -> if (backgroundPatch !== null) backgroundPatch else this.backgroundPatch }
         res.backgroundPatchTintColor = with.backgroundPatchTintColor.let { backgroundPatchTintColor -> if (backgroundPatchTintColor !== null) backgroundPatchTintColor else this.backgroundPatchTintColor }
+        res.backgroundGradientStart = with.backgroundGradientStart.let { backgroundGradientStart -> if (backgroundGradientStart !== null) backgroundGradientStart else this.backgroundGradientStart }
+        res.backgroundGradientEnd = with.backgroundGradientEnd.let { backgroundGradientEnd -> if (backgroundGradientEnd !== null) backgroundGradientEnd else this.backgroundGradientEnd }
 
         return res
     }
@@ -260,6 +264,13 @@ private fun resolveStyle(src: JSONObject, res: AsyncViewStyle, context: ReactCon
 
     props.nullableInt("backgroundColor")?.let { res.backgroundColor = it }
     props.nullableInt("backgroundPatchTintColor")?.let { res.backgroundPatchTintColor = it }
+
+    if (props.has("backgroundGradient")) {
+        props.getJSONObject("backgroundGradient").let {
+            res.backgroundGradientStart = it["start"] as Int
+            res.backgroundGradientEnd = it["end"] as Int
+        }
+    }
 
     if (props.has("backgroundPatch")) {
         props.getJSONObject("backgroundPatch").let {
