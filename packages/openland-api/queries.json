@@ -5687,7 +5687,7 @@
 					"type": "String!"
 				}
 			],
-			"source": "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}",
+			"source": "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n        matchmaking {\n          __typename\n          ...MatchmakingRoom\n        }\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "invite",
@@ -5813,6 +5813,25 @@
 									"type": "Int",
 									"isConditional": false,
 									"isDeprecated": false
+								},
+								{
+									"responseName": "matchmaking",
+									"fieldName": "matchmaking",
+									"type": "MatchmakingRoom",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										}
+									],
+									"fragmentSpreads": [
+										"MatchmakingRoom"
+									],
+									"inlineFragments": []
 								}
 							],
 							"fragmentSpreads": [],
@@ -5846,10 +5865,11 @@
 			"inlineFragments": [],
 			"fragmentsReferenced": [
 				"OrganizationShort",
+				"MatchmakingRoom",
 				"UserShort"
 			],
-			"sourceWithFragments": "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}",
-			"operationId": "ef261a32333020ed1fb86495cd1ce8ca064da282bd4514ff30b02cd58e2d5b3e"
+			"sourceWithFragments": "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n        matchmaking {\n          __typename\n          ...MatchmakingRoom\n        }\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment MatchmakingRoom on MatchmakingRoom {\n  __typename\n  enabled\n  questions {\n    __typename\n    ... on TextMatchmakingQuestion {\n      id\n      title\n      subtitle\n    }\n    ... on MultiselectMatchmakingQuestion {\n      id\n      title\n      subtitle\n      tags\n    }\n  }\n  profiles {\n    __typename\n    chatCreated\n    user {\n      __typename\n      id\n      name\n      photo\n      primaryOrganization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n    answers {\n      __typename\n      ... on TextMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        answer\n      }\n      ... on MultiselectMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        tags\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}",
+			"operationId": "809554507e3b739e3f326add2aa03d4c2f36b4abebd82e7fc1f104eb0874df20"
 		},
 		{
 			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/Chats.ts",

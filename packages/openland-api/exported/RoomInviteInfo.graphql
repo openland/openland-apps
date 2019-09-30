@@ -13,6 +13,10 @@ query RoomInviteInfo($invite: String!) {
         id
         isChannel
         kind
+        matchmaking {
+          __typename
+          ...MatchmakingRoom
+        }
         membersCount
         membership
         organization {

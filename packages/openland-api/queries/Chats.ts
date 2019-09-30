@@ -743,6 +743,9 @@ export const RoomInviteInfoQuery = gql`
                     }
                     membership
                     membersCount
+                    matchmaking {
+                        ...MatchmakingRoom
+                    }
                 }
             }
             invitedByUser {
@@ -752,6 +755,7 @@ export const RoomInviteInfoQuery = gql`
     }
     ${UserShort}
     ${OrganizationShort}
+    ${MatchmakingRoom}
 `;
 
 export const ResolvedInviteQuery = gql`
