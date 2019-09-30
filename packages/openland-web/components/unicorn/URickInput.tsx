@@ -15,9 +15,6 @@ const quillStyle = css`
     border-radius: 8px;
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
-    & * {
-        text-rendering: auto;
-    }
 
     .ql-container {
         background-color: var(--backgroundTertiary);
