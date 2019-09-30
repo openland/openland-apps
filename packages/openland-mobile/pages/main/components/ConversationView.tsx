@@ -10,6 +10,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { useChatSelectionMode } from 'openland-engines/messenger/MessagesActionsState';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ReloadFromBottomButton } from './ReloadFromBottomButton';
 
 export interface MessagesListProps {
     engine: ConversationEngine;
@@ -97,6 +98,8 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                         </ASSafeAreaView>
                     )
                 }
+                {<ReloadFromBottomButton conversation={this.props.engine} />}
+
             </View >
         );
     }
