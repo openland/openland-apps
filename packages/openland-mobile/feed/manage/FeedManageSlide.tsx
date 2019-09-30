@@ -109,23 +109,23 @@ interface FeedManageSlideProps {
     onChangeCover: (cover?: ImageRefInput) => void;
     onChangeCoverAlign: (align?: SlideCoverAlign) => void;
     onChangeAttachment: (attachment?: SlideInputLocalAttachment) => void;
+    onCoverLoading: (loading: boolean) => void;
     onDelete?: () => void;
 }
 
 export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
-    const { slide, onChangeText, onChangeCover, onChangeCoverAlign, onChangeAttachment, onDelete } = props;
-    const { text, cover, coverAlign, attachmentLocal } = slide;
+    const { slide, onChangeText, onChangeCover, onChangeCoverAlign, onChangeAttachment, onDelete, onCoverLoading } = props;
+    const { text, cover, coverAlign, attachmentLocal, coverLoading } = slide;
     const theme = React.useContext(ThemeContext);
     const router = React.useContext(SRouterContext);
     const textInputRef = React.createRef<TextInput>();
     const [coverLocalPath, setCoverLocalPath] = React.useState<string | undefined>(undefined);
-    const [coverLoading, setCoverLoading] = React.useState(false);
 
     React.useEffect(() => {
         let downloadManager: WatchSubscription | undefined = undefined;
 
         if (cover) {
-            setCoverLoading(true);
+            onCoverLoading(true);
 
             const optimalSize = null;
 
@@ -136,7 +136,7 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
             downloadManager = DownloadManagerInstance.watch(cover.uuid, optimalSize, (state) => {
                 if (state.path) {
                     setCoverLocalPath(state.path);
-                    setCoverLoading(false);
+                    onCoverLoading(false);
                 }
             });
         }
@@ -187,7 +187,7 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
     }, []);
 
     const handleMediaSend = React.useCallback((response: { uri: string, width: number, height: number, fileSize: number }, oldCoverAlign?: SlideCoverAlign | null) => {
-        setCoverLoading(true);
+        onCoverLoading(true);
         setCoverLocalPath(response.uri);
         onChangeCoverAlign(oldCoverAlign || (text && text.length > 0 ? SlideCoverAlign.Top : SlideCoverAlign.Cover));
 
@@ -199,11 +199,11 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
                     // temp ignore
                 },
                 onDone: (uuid) => {
-                    setCoverLoading(false);
+                    onCoverLoading(false);
                     onChangeCover({ uuid, crop: { x: 0, y: 0, w: response.width, h: response.height } });
                 },
                 onFail: () => {
-                    setCoverLoading(false);
+                    onCoverLoading(false);
                     setCoverLocalPath(undefined);
 
                     Toast.failure({ text: 'Error while uploading photo', duration: 1000 }).show();
@@ -261,7 +261,7 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
         }, false, require('assets/ic-edit-24.png'));
 
         builder.action('Delete photo', () => {
-            setCoverLoading(false);
+            onCoverLoading(false);
             setCoverLocalPath(undefined);
             onChangeCover();
             onChangeCoverAlign();
