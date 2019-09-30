@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { View, Platform, Text, Image, TouchableOpacity, TouchableWithoutFeedback, TouchableHighlight, SafeAreaView } from 'react-native';
+import { View, Platform, Image, TouchableWithoutFeedback, SafeAreaView } from 'react-native';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { SAnimated } from 'react-native-s/SAnimated';
-import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import UUID from 'uuid/v4';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
