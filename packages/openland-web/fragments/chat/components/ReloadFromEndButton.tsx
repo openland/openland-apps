@@ -25,13 +25,15 @@ const reloadButtonContainer = css`
 `;
 
 const hideClass = css`
-    transform: translateY(176px);
+    transform: translateY(56px);
     transition: transform 0.2s ease-out;
+    opacity: 0;
 `;
 
 const showClass = css`
     transform: translateY(0px);
     transition: transform 0.15s ease-in;
+    opacity: 1;
 `;
 
 const reloadButtonClass = css`
@@ -65,20 +67,18 @@ const iconRotation = css`
     transform: rotate(-90deg);
 `;
 export const ReloadFromEndButton = React.memo((props: { conversation: ConversationEngine, showInput: boolean }) => {
-    const [show, setShow] = React.useState<boolean | null>(null);
+    const [show, setShow] = React.useState<boolean | null>(!props.conversation.dataSource.isCompletedForward());
     const [loading, setLoading] = React.useState();
     React.useEffect(() => {
-        (async () => {
+        setShow(!props.conversation.dataSource.isCompletedForward());
+        let sub = props.conversation.dataSource.dumbWatch(async () => {
+            await null;
             setShow(!props.conversation.dataSource.isCompletedForward());
-            let sub = props.conversation.dataSource.dumbWatch(async () => {
-                await null;
-                setShow(!props.conversation.dataSource.isCompletedForward());
-            });
-            return () => {
-                sub();
-                setLoading(false);
-            };
-        })();
+        });
+        return () => {
+            sub();
+            setLoading(false);
+        };
     }, [props.conversation]);
 
     const onClick = React.useCallback(async () => {
@@ -87,13 +87,11 @@ export const ReloadFromEndButton = React.memo((props: { conversation: Conversati
         setLoading(false);
     }, []);
 
-    return <>
-        {show !== null && <div className={outerContainer}>
-            <div className={reloadButtonContainer}>
-                <div className={cx(reloadButtonClass, show ? showClass : hideClass, !props.showInput && inputPlacehodler)} onClick={onClick} >
-                    {loading ? <XLoader size="small" transparentBackground={true} /> : <UIcon icon={<ArrowIcon />} className={iconRotation} />}
-                </div>
+    return <div className={outerContainer}>
+        <div className={reloadButtonContainer}>
+            <div className={cx(reloadButtonClass, show ? showClass : hideClass, !props.showInput && inputPlacehodler)} onClick={onClick} >
+                {loading ? <XLoader size="small" transparentBackground={true} /> : <UIcon icon={<ArrowIcon />} className={iconRotation} />}
             </div>
-        </div>}
-    </>;
+        </div>
+    </div>;
 });
