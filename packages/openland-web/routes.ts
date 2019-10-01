@@ -210,7 +210,8 @@ routes.add('/message/:id/', '/unicorn/index');
 //
 // Matchmaking
 //
-
+routes.add('/matchmaking/:roomId/start', '/unicorn/index');
+routes.add('/matchmaking/:roomId/start/', '/unicorn/index');
 routes.add('/matchmaking/:roomId/ask/:res', '/unicorn/index');
 routes.add('/matchmaking/:roomId/ask/:res/', '/unicorn/index');
 

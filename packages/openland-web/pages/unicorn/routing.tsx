@@ -18,6 +18,7 @@ import { MessageFragment } from 'openland-web/fragments/message/MessageFragment'
 import { FeedFragment } from 'openland-web/fragments/feed/FeedFragment';
 import { SettingsFinanceFragment } from 'openland-web/fragments/finance/SettingsFinanceFragment';
 import { MatchmakingFragment } from 'openland-web/fragments/matchmaking/MatchmakingFragment';
+import { MatchmakingStartFragment } from 'openland-web/fragments/matchmaking/MatchmakingStartFragment';
 import { FeedItemFragment } from 'openland-web/fragments/feed/FeedItemFragment';
 
 const routing = new URouting();
@@ -71,6 +72,8 @@ routing.addRoute('/direcory/u/:id', () => ShortnameFragment);
 routing.addRoute('/direcory/o/:id', () => ShortnameFragment);
 routing.addRoute('/direcory/c/:id', () => ShortnameFragment);
 
+// Matchmaking
+routing.addRoute('/matchmaking/:roomId/start', () => MatchmakingStartFragment);
 routing.addRoute('/matchmaking/:roomId/ask/:res', () => MatchmakingFragment);
 
 export const Routing = routing;

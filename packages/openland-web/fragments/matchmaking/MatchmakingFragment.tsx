@@ -88,37 +88,40 @@ const QuestionComponent = (props: QuestionComponentProps) => {
 };
 
 const MatchmakingRootComponent = React.memo(
-    (props: { conversation: ConversationEngine; chatId: string, page: string; }) => {
+    (props: { conversation: ConversationEngine; chatId: string; page: string }) => {
         const engine = props.conversation.matchmakingEngine;
         const router = React.useContext(XViewRouterContext)!;
 
         const client = useClient();
-        const questions = client.useMatchmakingRoom({ peerId: props.chatId }).matchmakingRoom;
+        const data = client.useMatchmakingRoom({ peerId: props.chatId }).matchmakingRoom;
+        const haveQusetions = data && data.questions && data.questions.length;
 
         let current: questionT | undefined = undefined;
 
-        if (questions && questions.questions && questions.questions.length) {
-            current = questions.questions[props.page];
+        if (haveQusetions) {
+            current = data!.questions!.find(i => i.id === props.page);
         }
-
         if (!current) {
             return null;
         }
 
-        const doSubmit = (data: string[] | string) => {
+        const doSubmit = (d: string[] | string) => {
             let lastAnswers = engine.getState().answers;
             let newAnswers = new Map(lastAnswers);
-            newAnswers.set(current!.id, data);
+            newAnswers.set(current!.id, d);
             engine.setAnswer(newAnswers);
-            router.navigate(`/matchmaking/${props.chatId}/ask/${Number(props.page) + 1}`);
+            router.navigate(`/matchmaking/${props.chatId}/ask/${current!.id}`);
         };
 
         return (
-            <QuestionComponent
-                question={current}
-                onSubmit={doSubmit}
-                defaultValue={engine.getState().answers.get(current.id)}
-            />
+            <Page>
+                <UHeader title="Matchmaking" appearance="wide" />
+                <QuestionComponent
+                    question={current}
+                    onSubmit={doSubmit}
+                    defaultValue={engine.getState().answers.get(current.id)}
+                />
+            </Page>
         );
     },
 );
@@ -130,7 +133,7 @@ class MatchmakingComponent extends React.PureComponent<{
 }> {
     private conversation: ConversationEngine | null;
 
-    constructor(props: { messenger: MessengerEngine; chatId: string, page: string }) {
+    constructor(props: { messenger: MessengerEngine; chatId: string; page: string }) {
         super(props);
         this.conversation = null;
         this.conversation = props.messenger.getConversation(props.chatId);
@@ -147,7 +150,11 @@ class MatchmakingComponent extends React.PureComponent<{
             return null;
         }
         return (
-            <MatchmakingRootComponent conversation={this.conversation} chatId={this.props.chatId} page={this.props.page} />
+            <MatchmakingRootComponent
+                conversation={this.conversation}
+                chatId={this.props.chatId}
+                page={this.props.page}
+            />
         );
     }
 }
@@ -157,10 +164,5 @@ export const MatchmakingFragment = React.memo(() => {
     const unicorn = useUnicorn();
     const chatId = unicorn.query.roomId;
     const page = unicorn.query.res;
-    return (
-        <Page>
-            <UHeader title="Matchmaking" appearance="wide" />
-            <MatchmakingComponent messenger={messenger} chatId={chatId} page={page} />
-        </Page>
-    );
+    return <MatchmakingComponent messenger={messenger} chatId={chatId} page={page} />;
 });

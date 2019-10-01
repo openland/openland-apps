@@ -13,23 +13,26 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     const layout = useLayout();
     const wideHeader = router.pages.length > 1 || layout === 'mobile';
     useShortcuts({
-        keys: ['Escape'], callback: () => {
+        keys: ['Escape'],
+        callback: () => {
             return router.pages.length > 1 ? router.pop() : false;
-        }
+        },
     });
     let appearance = props.config.appearance || 'normal';
+    let backgroundColor = props.config.backgroundColor;
     return (
-        <XView height={56} flexDirection="row" alignItems="center" zIndex={2}>
-            {wideHeader ?
-                <XView
-                    height={56}
-                    width={56}
-                    alignItems="center"
-                    justifyContent="center"
-                >
+        <XView
+            height={56}
+            flexDirection="row"
+            alignItems="center"
+            zIndex={2}
+            backgroundColor={backgroundColor}
+        >
+            {wideHeader ? (
+                <XView height={56} width={56} alignItems="center" justifyContent="center">
                     <UIconButton icon={<BackIcon />} onClick={() => router.pop()} size="large" />
-                </XView> :
-                null}
+                </XView>
+            ) : null}
             <XView
                 minWidth={0}
                 flexBasis={0}
@@ -71,6 +74,6 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                     </XView>
                 )}
             </XView>
-        </XView >
+        </XView>
     );
 });

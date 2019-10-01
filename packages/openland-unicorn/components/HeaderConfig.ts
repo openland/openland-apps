@@ -2,12 +2,14 @@ export interface HeaderConfig {
     title?: string;
     titleView?: any;
     appearance?: 'normal' | 'wide';
+    backgroundColor?: string;
 }
 
 export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let title: string | undefined;
     let appearance: 'normal' | 'wide' | undefined;
     let titleView: any | undefined;
+    let backgroundColor: string | undefined;
     for (let c of configs) {
         if (c.title) {
             title = c.title;
@@ -18,8 +20,11 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
         if (c.appearance) {
             appearance = c.appearance;
         }
+        if (c.backgroundColor) {
+            backgroundColor = c.backgroundColor;
+        }
     }
-    return { title, appearance, titleView };
+    return { title, appearance, titleView, backgroundColor };
 }
 
 export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
@@ -30,6 +35,9 @@ export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
         return false;
     }
     if (a.titleView !== b.titleView) {
+        return false;
+    }
+    if (a.backgroundColor !== b.backgroundColor) {
         return false;
     }
     return true;

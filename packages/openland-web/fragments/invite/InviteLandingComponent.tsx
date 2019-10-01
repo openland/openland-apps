@@ -83,7 +83,7 @@ const JoinLinkButton = (props: {
                 props.onAccept(true);
                 let res = await client.mutateRoomJoinInviteLink({ invite: props.invite });
                 if (props.matchmaking && (AppConfig.isNonProduction() || AppConfig.isSuperAdmin())) {
-                    router!.navigate(`/matchmaking/${res.join.id}/ask/0`);
+                    router!.navigate(`/matchmaking/${res.join.id}/ask/start`);
                 } else {
                     router!.navigate(`/mail/${res.join.id}`);
                 }
