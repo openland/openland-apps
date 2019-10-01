@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export interface MatchmakingState {
-    answers: Map<string, string[] | string>;
+    answers: Map<string, string[] | string | null>;
 }
 
 export class MatchmakingEngine {
@@ -12,8 +12,8 @@ export class MatchmakingEngine {
     // Actions
     ////
 
-    setAnswer = (answers: Map<string, string[] | string>) => {
-        this.setState({ answers: answers });
+    addAnswer = (answer: Map<string, string[] | string | null>) => {
+        this.setState({ answers: answer });
     }
 
     clear = () => {
@@ -57,8 +57,9 @@ export class MatchmakingEngine {
         }
     }
 
-    private setState = (state: Partial<MatchmakingState>) => {
-        this.state = { ...this.state, ...state };
+    private setState = (state: MatchmakingState) => {
+        const newState = new Map([...this.state.answers].concat([...state.answers]));
+        this.state = { answers: newState };
         this.notifyAll();
     }
 }
