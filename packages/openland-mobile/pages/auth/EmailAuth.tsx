@@ -103,7 +103,7 @@ const EmailStartComponent = (props: PageProps) => {
             <SHeaderButton title="Next" onPress={submitForm} />
 
             <KeyboardAvoidingScrollView>
-                <Text style={styles.hint}>
+                <Text style={styles.hint} allowFontScaling={false}>
                     Enter your email address to sign in or create a{'\u00A0'}new{'\u00A0'}account
                 </Text>
                 <ZInput
@@ -113,6 +113,7 @@ const EmailStartComponent = (props: PageProps) => {
                     keyboardType="email-address"
                     autoFocus={true}
                     returnKeyType="next"
+                    allowFontScaling={false}
                     onSubmitEditing={submitForm}
                 />
             </KeyboardAvoidingScrollView>
@@ -203,7 +204,7 @@ const EmailCodeComponent = (props: PageProps) => {
             <SHeaderButton title="Next" onPress={submitForm} />
 
             <KeyboardAvoidingScrollView>
-                <Text style={styles.hint}>
+                <Text style={styles.hint} allowFontScaling={false}>
                     Enter activation code that was just sent to {email}
                 </Text>
                 <ZInput
@@ -213,6 +214,7 @@ const EmailCodeComponent = (props: PageProps) => {
                     keyboardType="number-pad"
                     autoFocus={true}
                     returnKeyType="next"
+                    allowFontScaling={false}
                     onSubmitEditing={submitForm}
                     maxLength={ACTIVATION_CODE_LENGTH}
                 />
