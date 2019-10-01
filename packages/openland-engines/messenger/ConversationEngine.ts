@@ -860,6 +860,10 @@ export class ConversationEngine implements MessageSendHandler {
             // Write message to store
             let local = false;
             if (event.repeatKey) {
+                if (this.localMessagesMap.get(event.message.id)) {
+                    console.warn("DUPLICATE EVENT:", event);
+                    return;
+                }
                 // Try to replace message inplace
                 let existing = this.messages.findIndex((v) => isPendingMessage(v) && v.key === event.repeatKey);
                 if (existing >= 0) {
@@ -875,7 +879,7 @@ export class ConversationEngine implements MessageSendHandler {
                     this.localMessagesMap.set(event.message.id, event.repeatKey);
                     event.message.local = true;
                 } else {
-                    this.messages = [...this.messages.filter((v) => isServerMessage(v) || v.key !== event.repeatKey), event.message];
+                    this.messages = [...this.messages, event.message];
                 }
             } else {
                 this.messages = [...this.messages, event.message];
