@@ -94,11 +94,11 @@ const MatchmakingRootComponent = React.memo(
 
         const client = useClient();
         const data = client.useMatchmakingRoom({ peerId: props.chatId }).matchmakingRoom;
-        const haveQusetions = data && data.questions && data.questions.length;
+        const haveQuestions = !!(data && data.questions && data.questions.length);
 
         let current: questionT | undefined = undefined;
 
-        if (haveQusetions) {
+        if (haveQuestions) {
             current = data!.questions!.find(i => i.id === props.page);
         }
         if (!current) {

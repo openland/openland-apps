@@ -8,6 +8,7 @@ interface PageProps {
     onScroll?: (values: XScrollValues) => void;
     padded?: boolean;
     children?: any;
+    flexGrow?: number;
 }
 
 export const Page = React.memo((props: PageProps) => {
@@ -48,13 +49,13 @@ export const Page = React.memo((props: PageProps) => {
                 alignSelf="stretch"
                 alignItems="stretch"
             >
-                <XScrollView3
-                    flexGrow={1}
-                    flexBasis={0}
-                    minHeight={0}
-                    onScroll={onScroll}
-                >
-                    <XView flexDirection="row" justifyContent="center" paddingBottom={32}>
+                <XScrollView3 flexGrow={1} flexBasis={0} minHeight={0} onScroll={onScroll}>
+                    <XView
+                        flexDirection="row"
+                        justifyContent="center"
+                        paddingBottom={32}
+                        flexGrow={props.flexGrow}
+                    >
                         <XView
                             maxWidth={width}
                             flexDirection="column"
