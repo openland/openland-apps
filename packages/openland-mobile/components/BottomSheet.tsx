@@ -115,7 +115,7 @@ class BottomSheetProviderComponent extends React.Component<
                 <ZRoundedButton
                     title={'Cancel'}
                     size="large"
-                    style="secondary-inverted"
+                    style="secondary"
                     onPress={() => this.hide(modal.key)}
                 />
             </View>

@@ -31,7 +31,7 @@ export const ThemeLight: ThemeGlobal = {
     backgroundSecondaryHover: '#F2F3F5',
     backgroundSecondaryActive: '#F2F3F5',
 
-    backgroundTertiary: '#F2F3F5',
+    backgroundTertiary: 'rgba(201, 204, 209, 0.24)',
     backgroundTertiaryHover: '#EDEEF0',
     backgroundTertiaryActive: '#E6E7EB',
 
@@ -74,11 +74,6 @@ export const ThemeLight: ThemeGlobal = {
     blurType: 'light',
     keyboardAppearance: 'light',
     statusBar: 'dark-content',
-
-    // legacy
-    backgroundInverted: '#F2F3F5',
-    backgroundInvertedHover: '#EBEDF0',
-    backgroundInvertedActive: '#F2F3F5',
 };
 
 const buildTintedTheme: (kind: ThemeGlobalKind, tint: TintGlobal) => ThemeGlobal = (kind, tint) => ({
