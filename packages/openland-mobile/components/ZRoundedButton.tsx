@@ -8,7 +8,7 @@ import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { LoaderSpinner } from './LoaderSpinner';
 
-type ZRoundedButtonStyle = 'primary' | 'secondary' | 'secondary-inverted' | 'danger';
+type ZRoundedButtonStyle = 'primary' | 'secondary' | 'danger';
 type ZRoundedButtonSize = 'default' | 'large';
 
 const stylesDefault = StyleSheet.create({
@@ -99,14 +99,13 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
     const size: ZRoundedButtonSize = props.size || 'default';
     const style: ZRoundedButtonStyle = props.style || 'primary';
     const styles = resolveStylesBySize[size];
-    const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : style === 'secondary-inverted' ? theme.backgroundInverted : theme.backgroundTertiary);
+    const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : theme.backgroundTertiary);
     const textColor = style === 'primary' ? theme.foregroundInverted : (style === 'danger' ? theme.foregroundContrast : theme.foregroundSecondary);
 
     const highlightedColors = {
         'primary': theme.accentPrimaryActive,
         'secondary': theme.backgroundTertiaryActive,
         'danger': theme.accentNegativeActive,
-        // 'secondary-inverted': theme.backgroundInvertedActive
     };
 
     const underlayColor = highlightedColors[style];

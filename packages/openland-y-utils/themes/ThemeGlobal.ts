@@ -73,11 +73,6 @@ export type ThemeGlobal = {
     blurType: 'dark' | 'light' | 'none';
     keyboardAppearance: 'dark' | 'light';
     statusBar: 'dark-content' | 'light-content';
-
-    // legacy
-    backgroundInverted: string;
-    backgroundInvertedHover: string;
-    backgroundInvertedActive: string;
 };
 
 export type TintGlobal = {
