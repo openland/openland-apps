@@ -65,17 +65,20 @@ const iconRotation = css`
     transform: rotate(-90deg);
 `;
 export const ReloadFromEndButton = React.memo((props: { conversation: ConversationEngine, showInput: boolean }) => {
-    const [show, setShow] = React.useState(!props.conversation.dataSource.isCompletedForward());
+    const [show, setShow] = React.useState<boolean | null>(null);
     const [loading, setLoading] = React.useState();
     React.useEffect(() => {
-        setShow(!props.conversation.dataSource.isCompletedForward());
-        let sub = props.conversation.dataSource.dumbWatch(() => {
+        (async () => {
             setShow(!props.conversation.dataSource.isCompletedForward());
-        });
-        return () => {
-            sub();
-            setLoading(false);
-        };
+            let sub = props.conversation.dataSource.dumbWatch(async () => {
+                await null;
+                setShow(!props.conversation.dataSource.isCompletedForward());
+            });
+            return () => {
+                sub();
+                setLoading(false);
+            };
+        })();
     }, [props.conversation]);
 
     const onClick = React.useCallback(async () => {
@@ -84,11 +87,13 @@ export const ReloadFromEndButton = React.memo((props: { conversation: Conversati
         setLoading(false);
     }, []);
 
-    return <div className={outerContainer}>
-        <div className={reloadButtonContainer}>
-            <div className={cx(reloadButtonClass, show ? showClass : hideClass, !props.showInput && inputPlacehodler)} onClick={onClick} >
-                {loading ? <XLoader size="small" transparentBackground={true} /> : <UIcon icon={<ArrowIcon />} className={iconRotation} />}
+    return <>
+        {show !== null && <div className={outerContainer}>
+            <div className={reloadButtonContainer}>
+                <div className={cx(reloadButtonClass, show ? showClass : hideClass, !props.showInput && inputPlacehodler)} onClick={onClick} >
+                    {loading ? <XLoader size="small" transparentBackground={true} /> : <UIcon icon={<ArrowIcon />} className={iconRotation} />}
+                </div>
             </div>
-        </div>
-    </div>;
+        </div>}
+    </>;
 });
