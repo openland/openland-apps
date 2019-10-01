@@ -409,9 +409,10 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                         room={this.props.room}
                     />
                     <TypingsView conversationId={this.props.conversationId} />
-                    <ReloadFromEndButton conversation={this.conversation} />
                     {this.props.loading && <XLoader loading={this.props.loading} />}
                 </div>
+
+                <ReloadFromEndButton conversation={this.conversation} showInput={!!showInput} />
 
                 {showInput && (
                     <div className={composeContainer}>

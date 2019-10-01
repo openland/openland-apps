@@ -5,10 +5,23 @@ import ArrowIcon from 'openland-icons/s/ic-back-24.svg';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XLoader } from 'openland-x/XLoader';
 
-const reloadButtonContainer = css`
+const outerContainer = css` 
     position: relative;
     display: flex;
-    align-self: flex-end;
+    align-self: stretch;
+    justify-content: center;
+    flex-direction: row;
+`;
+
+const inputPlacehodler = css`
+    margin-bottom: 16px;
+`;
+
+const reloadButtonContainer = css` 
+    position: relative;
+    display: flex;
+    max-width: 824px;
+    flex-grow: 1;
 `;
 
 const hideClass = css`
@@ -23,11 +36,10 @@ const showClass = css`
 
 const reloadButtonClass = css`
     z-index: 100;
-    position: absolute;
-    margin-bottom: 16px;
-    margin-right: 16px;
+    display: flex;
     bottom: 0;
-    right: 0;
+    right: 16px;
+    position: absolute;
 
     box-shadow:  0px 8px 24px rgba(23, 26, 31, 0.08), 0px 2px 8px rgba(23, 26, 31, 0.02);
     width: 40px;
@@ -52,7 +64,7 @@ const reloadButtonClass = css`
 const iconRotation = css`
     transform: rotate(-90deg);
 `;
-export const ReloadFromEndButton = React.memo((props: { conversation: ConversationEngine }) => {
+export const ReloadFromEndButton = React.memo((props: { conversation: ConversationEngine, showInput: boolean }) => {
     const [show, setShow] = React.useState(!props.conversation.dataSource.isCompletedForward());
     const [loading, setLoading] = React.useState();
     React.useEffect(() => {
@@ -72,9 +84,11 @@ export const ReloadFromEndButton = React.memo((props: { conversation: Conversati
         setLoading(false);
     }, []);
 
-    return <div className={reloadButtonContainer}>
-        <div className={cx(reloadButtonClass, show ? showClass : hideClass)} onClick={onClick} >
-            {loading ? <XLoader size="small" transparentBackground={true} /> : <UIcon icon={<ArrowIcon />} className={iconRotation} />}
+    return <div className={outerContainer}>
+        <div className={reloadButtonContainer}>
+            <div className={cx(reloadButtonClass, show ? showClass : hideClass, !props.showInput && inputPlacehodler)} onClick={onClick} >
+                {loading ? <XLoader size="small" transparentBackground={true} /> : <UIcon icon={<ArrowIcon />} className={iconRotation} />}
+            </div>
         </div>
     </div>;
 });
