@@ -91,6 +91,7 @@ const messengerContainer = css`
     flex-grow: 1;
     flex-shrink: 1;
     contain: content;
+    overflow: hidden;
 `;
 
 const messagesListContainer = css`
