@@ -290,6 +290,16 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
         builder.show();
     }, [coverAlign]);
 
+    // Sorry universe. Try to fix bug: if paste text with length > MAX_INPUT_LENGTH and current input value is empty, input will ignore font-styles
+    const [inputBumper, setInputBumper] = React.useState(0);
+    const handleInputTextChange = React.useCallback((value: string) => {
+        if ((text || '').length <= 0 && value.length === MAX_INPUT_LENGTH) {
+            setInputBumper(current => current + 1);
+        }
+
+        onChangeText(value);
+    }, [text, onChangeText]);
+
     const width = Math.min(Dimensions.get('screen').width, 414);
     const containerWidth = width - 32;
     const containerHeight = containerWidth * (4 / 3);
@@ -314,7 +324,7 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
         if (!text) {
             inputTextStyle = TextStyles.Post1;
             inputBoxStyle = [styles.inputBox, styles.inputBoxLarge];
-        } else if (!text || text.length < 200) {
+        } else if (text.length < 200) {
             if (text.length < 100) {
                 inputTextStyle = TextStyles.Post1;
                 inputBoxStyle = [styles.inputBox, styles.inputBoxLarge];
@@ -337,8 +347,9 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
             }]}
         >
             <TextInput
+                key={`input-${inputBumper}`}
                 ref={textInputRef}
-                onChangeText={onChangeText}
+                onChangeText={handleInputTextChange}
                 value={text || ''}
                 multiline={true}
                 style={[styles.input, inputTextStyle, {
