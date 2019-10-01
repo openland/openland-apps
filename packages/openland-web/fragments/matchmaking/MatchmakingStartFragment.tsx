@@ -32,9 +32,9 @@ const cardIcon = css`
     object-fit: contain;
 `;
 
-const desctiptionStyle = css`
+const descriptionStyle = css`
     font-size: 24px;
-    line-height: 29px;
+    line-height: 42px;
     color: var(--foregroundPrimary);
     margin-bottom: 50px;
     align-self: center;
@@ -70,7 +70,7 @@ export const MatchmakingStartFragment = React.memo(() => {
                         srcSet="https://cdn.openland.com/shared/web/matchmaking/cards@2x.png 2x"
                     />
                 </div>
-                <div className={desctiptionStyle}>
+                <div className={descriptionStyle}>
                     <div>
                         <span className={redText}>1</span> Introduce yourself
                     </div>
