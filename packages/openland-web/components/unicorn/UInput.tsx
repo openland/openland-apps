@@ -76,6 +76,10 @@ export const UInput = (props: UInputProps) => {
         }
     };
 
+    React.useLayoutEffect(() => {
+        setValue(value || '');
+    }, [value]);
+
     return (
         <XView {...other}>
             <div className={inputWrapper}>

@@ -71,12 +71,6 @@ routing.addRoute('/direcory/u/:id', () => ShortnameFragment);
 routing.addRoute('/direcory/o/:id', () => ShortnameFragment);
 routing.addRoute('/direcory/c/:id', () => ShortnameFragment);
 
-routing.addRoute('/matchmaking/:roomId/ask/:res', () =>
-        React.memo(() => {
-            let ctx = useUnicorn();
-            const chatId = ctx.query.roomId;
-            return <MatchmakingFragment chatId={chatId} />;
-        }),
-);
+routing.addRoute('/matchmaking/:roomId/ask/:res', () => MatchmakingFragment);
 
 export const Routing = routing;

@@ -42,8 +42,6 @@ const QuestionComponent = (props: QuestionComponentProps) => {
         setTags(newTags);
     };
 
-    console.log(props.defaultValue);
-
     React.useEffect(
         () => {
             if (typeof props.defaultValue === 'string') {
@@ -54,8 +52,6 @@ const QuestionComponent = (props: QuestionComponentProps) => {
         },
         [props.defaultValue],
     );
-
-    console.log(text);
 
     const onSubmit = () => {
         if (!!text.trim()) {
@@ -92,21 +88,17 @@ const QuestionComponent = (props: QuestionComponentProps) => {
 };
 
 const MatchmakingRootComponent = React.memo(
-    (props: { conversation: ConversationEngine; chatId: string }) => {
+    (props: { conversation: ConversationEngine; chatId: string, page: string; }) => {
         const engine = props.conversation.matchmakingEngine;
-        console.log(engine.getState().answers);
         const router = React.useContext(XViewRouterContext)!;
-        const unicorn = useUnicorn();
-        const peerId = props.chatId;
-        const page = unicorn.query.res;
 
         const client = useClient();
-        const questions = client.useMatchmakingRoom({ peerId: peerId }).matchmakingRoom;
+        const questions = client.useMatchmakingRoom({ peerId: props.chatId }).matchmakingRoom;
 
         let current: questionT | undefined = undefined;
 
         if (questions && questions.questions && questions.questions.length) {
-            current = questions.questions[page];
+            current = questions.questions[props.page];
         }
 
         if (!current) {
@@ -118,7 +110,7 @@ const MatchmakingRootComponent = React.memo(
             let newAnswers = new Map(lastAnswers);
             newAnswers.set(current!.id, data);
             engine.setAnswer(newAnswers);
-            router.navigate(`/matchmaking/${peerId}/ask/${Number(page) + 1}`);
+            router.navigate(`/matchmaking/${props.chatId}/ask/${Number(props.page) + 1}`);
         };
 
         return (
@@ -134,10 +126,11 @@ const MatchmakingRootComponent = React.memo(
 class MatchmakingComponent extends React.PureComponent<{
     messenger: MessengerEngine;
     chatId: string;
+    page: string;
 }> {
     private conversation: ConversationEngine | null;
 
-    constructor(props: { messenger: MessengerEngine; chatId: string }) {
+    constructor(props: { messenger: MessengerEngine; chatId: string, page: string }) {
         super(props);
         this.conversation = null;
         this.conversation = props.messenger.getConversation(props.chatId);
@@ -154,17 +147,20 @@ class MatchmakingComponent extends React.PureComponent<{
             return null;
         }
         return (
-            <MatchmakingRootComponent conversation={this.conversation} chatId={this.props.chatId} />
+            <MatchmakingRootComponent conversation={this.conversation} chatId={this.props.chatId} page={this.props.page} />
         );
     }
 }
 
-export const MatchmakingFragment = React.memo((props: { chatId: string }) => {
+export const MatchmakingFragment = React.memo(() => {
     let messenger = React.useContext(MessengerContext);
+    const unicorn = useUnicorn();
+    const chatId = unicorn.query.roomId;
+    const page = unicorn.query.res;
     return (
         <Page>
             <UHeader title="Matchmaking" appearance="wide" />
-            <MatchmakingComponent messenger={messenger} chatId={props.chatId} />
+            <MatchmakingComponent messenger={messenger} chatId={chatId} page={page} />
         </Page>
     );
 });
