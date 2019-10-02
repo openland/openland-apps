@@ -971,6 +971,39 @@ private let FeedUpdateFragmentSelector = obj(
             ))
         )
 
+private let MatchmakingProfileFragmentSelector = obj(
+            field("__typename","__typename", notNull(scalar("String"))),
+            field("answers","answers", notNull(list(notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("TextMatchmakingAnswer", obj(
+                        field("answer","answer", notNull(scalar("String"))),
+                        field("question","question", notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("subtitle","subtitle", notNull(scalar("String"))),
+                                field("title","title", notNull(scalar("String")))
+                            )))
+                    )),
+                    inline("MultiselectMatchmakingAnswer", obj(
+                        field("question","question", notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("subtitle","subtitle", notNull(scalar("String"))),
+                                field("title","title", notNull(scalar("String")))
+                            ))),
+                        field("tags","tags", notNull(list(notNull(scalar("String")))))
+                    ))
+                ))))),
+            field("chatCreated","chatCreated", notNull(scalar("Boolean"))),
+            field("user","user", notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("id","id", notNull(scalar("ID"))),
+                    field("isYou","isYou", notNull(scalar("Boolean"))),
+                    field("name","name", notNull(scalar("String"))),
+                    field("photo","photo", scalar("String"))
+                )))
+        )
+
 private let MatchmakingRoomFragmentSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("enabled","enabled", notNull(scalar("Boolean"))),
@@ -2924,6 +2957,12 @@ private let FeedReactionRemoveSelector = obj(
 private let MarkSequenceReadSelector = obj(
             field("alphaGlobalRead","alphaGlobalRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("String")))
         )
+private let MatchmakingProfileFillSelector = obj(
+            field("matchmakingProfileFill","matchmakingProfileFill", arguments(fieldValue("input", refValue("input")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("MatchmakingProfile", MatchmakingProfileFragmentSelector)
+                )))
+        )
 private let MediaAnswerSelector = obj(
             field("mediaStreamAnswer","mediaStreamAnswer", arguments(fieldValue("answer", refValue("answer")), fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -4183,6 +4222,12 @@ class Operations {
         "mutation MarkSequenceRead($seq:Int!){alphaGlobalRead(toSeq:$seq)}",
         MarkSequenceReadSelector
     )
+    let MatchmakingProfileFill = OperationDefinition(
+        "MatchmakingProfileFill",
+        .mutation, 
+        "mutation MatchmakingProfileFill($input:MatchmakingProfileFillInput!,$peerId:ID!){matchmakingProfileFill(input:$input,peerId:$peerId){__typename ...MatchmakingProfileFragment}}fragment MatchmakingProfileFragment on MatchmakingProfile{__typename answers{__typename ... on TextMatchmakingAnswer{answer question{__typename id subtitle title}}... on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id isYou name photo}}",
+        MatchmakingProfileFillSelector
+    )
     let MediaAnswer = OperationDefinition(
         "MediaAnswer",
         .mutation, 
@@ -4765,6 +4810,7 @@ class Operations {
         if name == "FeedReactionAdd" { return FeedReactionAdd }
         if name == "FeedReactionRemove" { return FeedReactionRemove }
         if name == "MarkSequenceRead" { return MarkSequenceRead }
+        if name == "MatchmakingProfileFill" { return MatchmakingProfileFill }
         if name == "MediaAnswer" { return MediaAnswer }
         if name == "MediaCandidate" { return MediaCandidate }
         if name == "MediaFailed" { return MediaFailed }

@@ -1,0 +1,32 @@
+fragment MatchmakingProfileFragment on MatchmakingProfile {
+  __typename
+  answers {
+    __typename
+    ... on TextMatchmakingAnswer {
+      answer
+      question {
+        __typename
+        id
+        subtitle
+        title
+      }
+    }
+    ... on MultiselectMatchmakingAnswer {
+      question {
+        __typename
+        id
+        subtitle
+        title
+      }
+      tags
+    }
+  }
+  chatCreated
+  user {
+    __typename
+    id
+    isYou
+    name
+    photo
+  }
+}

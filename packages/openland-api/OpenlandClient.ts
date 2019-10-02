@@ -1069,6 +1069,9 @@ export class OpenlandClient extends BaseApiClient {
     async mutateFeedDeletePost(variables: Types.FeedDeletePostVariables): Promise<Types.FeedDeletePost> {
         return this.client.mutate(Source.FeedDeletePostMutation, variables);
     }
+    async mutateMatchmakingProfileFill(variables: Types.MatchmakingProfileFillVariables): Promise<Types.MatchmakingProfileFill> {
+        return this.client.mutate(Source.MatchmakingProfileFillMutation, variables);
+    }
     async mutateMyNotificationCenterMarkSeqRead(variables: Types.MyNotificationCenterMarkSeqReadVariables): Promise<Types.MyNotificationCenterMarkSeqRead> {
         return this.client.mutate(Source.MyNotificationCenterMarkSeqReadMutation, variables);
     }

@@ -113,6 +113,7 @@ object Operations {
         if (name == "FeedReactionAdd") return FeedReactionAdd
         if (name == "FeedReactionRemove") return FeedReactionRemove
         if (name == "MarkSequenceRead") return MarkSequenceRead
+        if (name == "MatchmakingProfileFill") return MatchmakingProfileFill
         if (name == "MediaAnswer") return MediaAnswer
         if (name == "MediaCandidate") return MediaCandidate
         if (name == "MediaFailed") return MediaFailed
