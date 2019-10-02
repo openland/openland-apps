@@ -631,6 +631,24 @@ export const RoomMembersQuery = gql`
     ${UserShort}
 `;
 
+export const RoomMembersTinyQuery = gql`
+    query RoomMembersTiny($roomId: ID!) {
+        members: roomMembers(roomId: $roomId) {
+            user {
+                id
+                name
+                shortname
+                photo
+                primaryOrganization{
+                    id
+                    name
+                }
+            }
+        }
+    }
+    ${UserShort}
+`;
+
 export const RoomOrganizationAdminMembersQuery = gql`
     query RoomOrganizationAdminMembers($id: ID!) {
         room(id: $id) {

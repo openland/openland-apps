@@ -2479,6 +2479,23 @@ private let RoomMembersShortSelector = obj(
                         )))
                 )))))
         )
+private let RoomMembersTinySelector = obj(
+            field("roomMembers","members", arguments(fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("user","user", notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("id","id", notNull(scalar("ID"))),
+                            field("name","name", notNull(scalar("String"))),
+                            field("photo","photo", scalar("String")),
+                            field("primaryOrganization","primaryOrganization", obj(
+                                    field("__typename","__typename", notNull(scalar("String"))),
+                                    field("id","id", notNull(scalar("ID"))),
+                                    field("name","name", notNull(scalar("String")))
+                                )),
+                            field("shortname","shortname", scalar("String"))
+                        )))
+                )))))
+        )
 private let RoomOrganizationAdminMembersSelector = obj(
             field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3848,6 +3865,12 @@ class Operations {
         "query RoomMembersShort($roomId:ID!){members:roomMembers(roomId:$roomId){__typename user{__typename id}}}",
         RoomMembersShortSelector
     )
+    let RoomMembersTiny = OperationDefinition(
+        "RoomMembersTiny",
+        .query, 
+        "query RoomMembersTiny($roomId:ID!){members:roomMembers(roomId:$roomId){__typename user{__typename id name photo primaryOrganization{__typename id name}shortname}}}",
+        RoomMembersTinySelector
+    )
     let RoomOrganizationAdminMembers = OperationDefinition(
         "RoomOrganizationAdminMembers",
         .query, 
@@ -4689,6 +4712,7 @@ class Operations {
         if name == "RoomMembers" { return RoomMembers }
         if name == "RoomMembersPaginated" { return RoomMembersPaginated }
         if name == "RoomMembersShort" { return RoomMembersShort }
+        if name == "RoomMembersTiny" { return RoomMembersTiny }
         if name == "RoomOrganizationAdminMembers" { return RoomOrganizationAdminMembers }
         if name == "RoomPico" { return RoomPico }
         if name == "RoomSearch" { return RoomSearch }

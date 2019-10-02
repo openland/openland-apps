@@ -60,6 +60,7 @@ object Operations {
         if (name == "RoomMembers") return RoomMembers
         if (name == "RoomMembersPaginated") return RoomMembersPaginated
         if (name == "RoomMembersShort") return RoomMembersShort
+        if (name == "RoomMembersTiny") return RoomMembersTiny
         if (name == "RoomOrganizationAdminMembers") return RoomOrganizationAdminMembers
         if (name == "RoomPico") return RoomPico
         if (name == "RoomSearch") return RoomSearch

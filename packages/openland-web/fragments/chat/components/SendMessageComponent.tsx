@@ -13,7 +13,7 @@ import SendIcon from 'openland-icons/s/ic-send-24.svg';
 import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { useClient } from 'openland-web/utils/useClient';
 import { StickerFragment, RoomMembers_members_user } from 'openland-api/Types';
-import { searchMentions } from 'openland-engines/mentions/searchMentions';
+import { searchMentions, SearchUser } from 'openland-engines/mentions/searchMentions';
 import { emojiSuggest } from 'openland-y-utils/emojiSuggest';
 import { emojiComponent } from 'openland-y-utils/emojiComponent';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -26,6 +26,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { onEmojiSent } from 'openland-web/components/unicorn/emoji/Recent';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import { Deferred } from 'openland-unicorn/components/Deferred';
 
 interface MentionUserComponentProps {
     id: string;
@@ -226,16 +227,19 @@ const AutoCompleteComponent = React.memo(
                 [],
             );
 
-            let matched: (RoomMembers_members_user | AllMention)[] | undefined = [];
+            let matched: (SearchUser | AllMention)[] | undefined = [];
+            let loading = false;
             if (props.groupId) {
                 const client = useClient();
-                let members = client.useWithoutLoaderRoomMembers({ roomId: props.groupId });
+                let members = client.useWithoutLoaderRoomMembersTiny({ roomId: props.groupId });
 
                 if (members && members.members && word && word.startsWith('@')) {
                     matched = searchMentions(word, members.members).map(u => u.user);
                     if ('@all'.startsWith(word.toLowerCase())) {
                         matched.unshift({ __typename: 'AllMention' });
                     }
+                } else if (word && word.startsWith('@')) {
+                    loading = true;
                 }
             }
             let filtered: { name: string, value: string, shortcode: string }[] = [];
@@ -260,7 +264,7 @@ const AutoCompleteComponent = React.memo(
 
             React.useEffect(() => {
                 if (containerRef.current) {
-                    let show = (matched && matched.length) || (filtered && filtered.length);
+                    let show = (matched && matched.length) || (filtered && filtered.length) || loading;
                     containerRef.current.style.opacity = show ? '1' : '0';
                     containerRef.current.style.transform = `translateY(${show ? 0 : 10}px)`;
                     containerRef.current.style.pointerEvents = show ? 'auto' : 'none';
@@ -268,7 +272,7 @@ const AutoCompleteComponent = React.memo(
                 if (listRef.current) {
                     listRef.current.reset();
                 }
-            }, [matched, filtered]);
+            }, [matched, filtered, loading]);
 
             if (matched.length) {
                 fallbackRender.current = (
@@ -308,6 +312,16 @@ const AutoCompleteComponent = React.memo(
                         />
                     </div>
                 );
+            } else if (loading) {
+                fallbackRender.current = <div
+                    ref={containerRef}
+                    className={mentionsContainer}
+                    onMouseDown={(e) => e.preventDefault()}
+                >
+                    <XView height={36}>
+                        <XLoader transparentBackground={true} size="small" />
+                    </XView>
+                </div>;
             }
 
             return fallbackRender.current;
@@ -459,13 +473,15 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
 
     return (
         <div className={sendMessageContainer}>
-            <AutoCompleteComponent
-                onSelected={onUserPicked}
-                onEmojiSelected={onEmojiPicked}
-                groupId={props.groupId}
-                activeWord={activeWord}
-                ref={suggestRef}
-            />
+            <Deferred>
+                <AutoCompleteComponent
+                    onSelected={onUserPicked}
+                    onEmojiSelected={onEmojiPicked}
+                    groupId={props.groupId}
+                    activeWord={activeWord}
+                    ref={suggestRef}
+                />
+            </Deferred>
             <input ref={fileInputRef} type="file" multiple={true} style={{ display: 'none' }} onChange={onFileInputChange} />
             {!!props.onAttach && (
                 <div className={actionButtonContainer} >

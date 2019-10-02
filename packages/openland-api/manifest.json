@@ -394,6 +394,13 @@
       }
     },
     {
+      "signature": "dd67c43711155ae15e056da3b6b58b0c9134479636fe0587fcb2894ac9459306",
+      "document": "query RoomMembersTiny($roomId:ID!){members:roomMembers(roomId:$roomId){__typename user{__typename id name photo primaryOrganization{__typename id name}shortname}}}",
+      "metadata": {
+        "engineSignature": "query RoomMembersTiny($roomId:ID!){roomMembers(roomId:$roomId){__typename user{__typename id name photo primaryOrganization{__typename id name}shortname}}}"
+      }
+    },
+    {
       "signature": "cc2bfa1b50b3f018dc2e6e92b8dc0cb252d352f3afc146b5061ca7376e61c2b7",
       "document": "fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query RoomOrganizationAdminMembers($id:ID!){room(id:$id){__typename...on SharedRoom{id organization{__typename adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename...UserShort}}id}}}}",
       "metadata": {
