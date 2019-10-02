@@ -41,6 +41,7 @@ import { PinnedMessage } from './components/PinnedMessage';
 import { ChatAccessDenied } from './components/ChatAccessDenied';
 import { ChatJoin } from './components/ChatJoin';
 import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
+import { ReloadFromBottomButton } from './components/ReloadFromBottomButton';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -328,7 +329,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         if (!showSelectedMessagesActions && privateRoom && privateRoom.user.isBot) {
             inputPlaceholder = <ChatInputPlaceholder text="View profile" onPress={() => this.props.router.push("ProfileUser", { id: privateRoom!.user.id })} />;
         }
-
+        let reloadButton = <ReloadFromBottomButton conversation={this.engine} />;
         return (
             <>
                 <SHeaderView>
@@ -357,6 +358,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                             )}
                             {showInputBar && !showSelectedMessagesActions && (
                                 <MessageInputBar
+                                    reloadButton={reloadButton}
                                     ref={this.inputRef}
                                     onAttachPress={this.handleAttach}
                                     onSubmitPress={this.handleSubmit}
@@ -371,6 +373,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     canSubmit={canSubmit}
                                 />
                             )}
+                            {!showInputBar && reloadButton}
                             {!showInputBar && inputPlaceholder}
                             {showSelectedMessagesActions && <ChatSelectedActions conversation={this.engine} />}
                         </View>
