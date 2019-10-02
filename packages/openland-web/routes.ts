@@ -214,6 +214,8 @@ routes.add('/matchmaking/:roomId/start', '/unicorn/index');
 routes.add('/matchmaking/:roomId/start/', '/unicorn/index');
 routes.add('/matchmaking/:roomId/ask/:res', '/unicorn/index');
 routes.add('/matchmaking/:roomId/ask/:res/', '/unicorn/index');
+routes.add('/matchmaking/:roomId/created', '/unicorn/index');
+routes.add('/matchmaking/:roomId/created/', '/unicorn/index');
 
 //
 // Shortnames

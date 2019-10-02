@@ -1,5 +1,35 @@
 import gql from 'graphql-tag';
 
+export const MatchmakingProfileFragment = gql`
+    fragment MatchmakingProfileFragment on MatchmakingProfile {
+        chatCreated
+        user {
+            id
+            isYou
+            name
+            photo
+        }
+        answers {
+            ... on TextMatchmakingAnswer {
+                question {
+                    id
+                    title
+                    subtitle
+                }
+                answer
+            }
+            ... on MultiselectMatchmakingAnswer {
+                question {
+                    id
+                    title
+                    subtitle
+                }
+                tags
+            }
+        }
+    }
+`;
+
 export const MatchmakingRoomFragment = gql`
     fragment MatchmakingRoomFragment on MatchmakingRoom {
         enabled
@@ -15,6 +45,9 @@ export const MatchmakingRoomFragment = gql`
                 subtitle
                 tags
             }
+        }
+        myProfile {
+            ...MatchmakingProfileFragment
         }
         profiles {
             chatCreated
@@ -48,34 +81,5 @@ export const MatchmakingRoomFragment = gql`
             }
         }
     }
-`;
-
-export const MatchmakingProfileFragment = gql`
-    fragment MatchmakingProfileFragment on MatchmakingProfile {
-        chatCreated
-        user {
-            id
-            isYou
-            name
-            photo
-        }
-        answers {
-            ... on TextMatchmakingAnswer {
-                question {
-                    id
-                    title
-                    subtitle
-                }
-                answer
-            }
-            ... on MultiselectMatchmakingAnswer {
-                question {
-                    id
-                    title
-                    subtitle
-                }
-                tags
-            }
-        }
-    }
+    ${MatchmakingProfileFragment}
 `;

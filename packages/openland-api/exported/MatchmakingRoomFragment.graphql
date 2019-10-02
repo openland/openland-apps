@@ -1,6 +1,10 @@
 fragment MatchmakingRoomFragment on MatchmakingRoom {
   __typename
   enabled
+  myProfile {
+    __typename
+    ...MatchmakingProfileFragment
+  }
   profiles {
     __typename
     answers {

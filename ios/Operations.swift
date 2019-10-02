@@ -1007,6 +1007,10 @@ private let MatchmakingProfileFragmentSelector = obj(
 private let MatchmakingRoomFragmentSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("enabled","enabled", notNull(scalar("Boolean"))),
+            field("myProfile","myProfile", obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("MatchmakingProfile", MatchmakingProfileFragmentSelector)
+                )),
             field("profiles","profiles", list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("answers","answers", notNull(list(notNull(obj(
@@ -3721,7 +3725,7 @@ class Operations {
     let MatchmakingRoom = OperationDefinition(
         "MatchmakingRoom",
         .query, 
-        "query MatchmakingRoom($peerId:ID!){matchmakingRoom(peerId:$peerId){__typename ...MatchmakingRoomFragment}}fragment MatchmakingRoomFragment on MatchmakingRoom{__typename enabled profiles{__typename answers{__typename ... on TextMatchmakingAnswer{answer question{__typename id subtitle title}}... on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id name photo primaryOrganization{__typename id name photo}}}questions{__typename ... on TextMatchmakingQuestion{id subtitle title}... on MultiselectMatchmakingQuestion{id subtitle tags title}}}",
+        "query MatchmakingRoom($peerId:ID!){matchmakingRoom(peerId:$peerId){__typename ...MatchmakingRoomFragment}}fragment MatchmakingRoomFragment on MatchmakingRoom{__typename enabled myProfile{__typename ...MatchmakingProfileFragment}profiles{__typename answers{__typename ... on TextMatchmakingAnswer{answer question{__typename id subtitle title}}... on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id name photo primaryOrganization{__typename id name photo}}}questions{__typename ... on TextMatchmakingQuestion{id subtitle title}... on MultiselectMatchmakingQuestion{id subtitle tags title}}}fragment MatchmakingProfileFragment on MatchmakingProfile{__typename answers{__typename ... on TextMatchmakingAnswer{answer question{__typename id subtitle title}}... on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id isYou name photo}}",
         MatchmakingRoomSelector
     )
     let Message = OperationDefinition(

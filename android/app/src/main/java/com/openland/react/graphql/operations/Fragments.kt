@@ -1013,6 +1013,10 @@ internal val MatchmakingProfileFragmentSelector = obj(
 internal val MatchmakingRoomFragmentSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("enabled","enabled", notNull(scalar("Boolean"))),
+            field("myProfile","myProfile", obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("MatchmakingProfile", MatchmakingProfileFragmentSelector)
+                )),
             field("profiles","profiles", list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("answers","answers", notNull(list(notNull(obj(
