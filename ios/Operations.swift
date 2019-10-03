@@ -2986,6 +2986,9 @@ private let FeedReactionRemoveSelector = obj(
 private let MarkSequenceReadSelector = obj(
             field("alphaGlobalRead","alphaGlobalRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("String")))
         )
+private let MatchmakingConnectSelector = obj(
+            field("matchmakingConnect","matchmakingConnect", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
+        )
 private let MatchmakingProfileFillSelector = obj(
             field("matchmakingProfileFill","matchmakingProfileFill", arguments(fieldValue("input", refValue("input")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -4257,6 +4260,12 @@ class Operations {
         "mutation MarkSequenceRead($seq:Int!){alphaGlobalRead(toSeq:$seq)}",
         MarkSequenceReadSelector
     )
+    let MatchmakingConnect = OperationDefinition(
+        "MatchmakingConnect",
+        .mutation, 
+        "mutation MatchmakingConnect($peerId:ID!,$uid:ID!){matchmakingConnect(peerId:$peerId,uid:$uid)}",
+        MatchmakingConnectSelector
+    )
     let MatchmakingProfileFill = OperationDefinition(
         "MatchmakingProfileFill",
         .mutation, 
@@ -4846,6 +4855,7 @@ class Operations {
         if name == "FeedReactionAdd" { return FeedReactionAdd }
         if name == "FeedReactionRemove" { return FeedReactionRemove }
         if name == "MarkSequenceRead" { return MarkSequenceRead }
+        if name == "MatchmakingConnect" { return MatchmakingConnect }
         if name == "MatchmakingProfileFill" { return MatchmakingProfileFill }
         if name == "MediaAnswer" { return MediaAnswer }
         if name == "MediaCandidate" { return MediaCandidate }

@@ -176,6 +176,7 @@ export const FeedReactionRemoveMutation = typedMutation<Types.FeedReactionRemove
 export const FeedDeletePostMutation = typedMutation<Types.FeedDeletePost, Types.FeedDeletePostVariables>(Feed.FeedDeletePostMutation);
 export const FeedUpdatesSubscription = typedSubscription<Types.FeedUpdates, Types.FeedUpdatesVariables>(Feed.FeedUpdatesSubscription);
 export const MatchmakingProfileFillMutation = typedMutation<Types.MatchmakingProfileFill, Types.MatchmakingProfileFillVariables>(Matchmaking.MatchmakingProfileFillMutation);
+export const MatchmakingConnectMutation = typedMutation<Types.MatchmakingConnect, Types.MatchmakingConnectVariables>(Matchmaking.MatchmakingConnectMutation);
 export const MyNotificationsQuery = typedQuery<Types.MyNotifications, Types.MyNotificationsVariables>(MyNotificationsCenter.MyNotificationsQuery);
 export const MyNotificationsCenterSubscription = typedSubscription<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables>(MyNotificationsCenter.MyNotificationsCenterSubscription);
 export const MyNotificationCenterQuery = typedQuery<Types.MyNotificationCenter, {}>(MyNotificationsCenter.MyNotificationCenterQuery);

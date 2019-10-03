@@ -9,3 +9,9 @@ export const MatchmakingProfileFillMutation = gql`
     }
     ${MatchmakingProfileFragment}
 `;
+
+export const MatchmakingConnectMutation = gql`
+    mutation MatchmakingConnect($peerId: ID!, $uid: ID!) {
+        matchmakingConnect(peerId: $peerId, uid: $uid)
+    }
+`;

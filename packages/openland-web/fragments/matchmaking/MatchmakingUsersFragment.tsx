@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
-// import { XViewRouterContext } from 'react-mental';
+import { XViewRouterContext } from 'react-mental';
 import { Page } from 'openland-unicorn/Page';
+import { UHeader } from 'openland-unicorn/UHeader';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
-// import { UButton } from 'openland-web/components/unicorn/UButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import AlertBlanket from 'openland-x/AlertBlanket';
 import { useClient } from 'openland-web/utils/useClient';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { TextBody, TextTitle1, TextTitle2 } from 'openland-web/utils/TextStyles';
+import { TextBody, TextTitle1, TextTitle2, TextTitle3 } from 'openland-web/utils/TextStyles';
 import { MatchmakingRoom_matchmakingRoom_profiles } from 'openland-api/Types';
 
 const mainContainer = css`
@@ -67,10 +69,37 @@ const userOrgStyle = css`
 const userTagsStyle = css`
     color: var(--foregroundPrimary);
     text-align: center;
+    margin-bottom: 16px;
 `;
 
-const UserCard = (props: { data: MatchmakingRoom_matchmakingRoom_profiles }) => {
+const UserCard = (props: { data: MatchmakingRoom_matchmakingRoom_profiles; chatId: string }) => {
+    const client = useClient();
     const { user } = props.data;
+
+    const showModal = () => {
+        AlertBlanket.builder()
+            .cancelable(false)
+            .title('All new chats will be in your Openland inbox')
+            .action(
+                'Got it',
+                async () => {
+                    //
+                },
+                'primary',
+            )
+            .show();
+    };
+
+    const createChat = async () => {
+        await client.mutateMatchmakingConnect({
+            peerId: props.chatId,
+            uid: user.id,
+        });
+        await client.refetchMatchmakingRoom({
+            peerId: props.chatId,
+        });
+    };
+
     return (
         <div className={userCardContainer}>
             <UAvatar title={user.name} id={user.id} photo={user.photo} size="xx-large" />
@@ -80,15 +109,15 @@ const UserCard = (props: { data: MatchmakingRoom_matchmakingRoom_profiles }) => 
             )}
             <div className={cx(TextBody, userTagsStyle)}>
                 <span>Interested in: </span>
-                {props.data.answers.map(i => {
+                {props.data.answers.map((i, j) => {
                     if (i.__typename === 'MultiselectMatchmakingAnswer') {
                         return (
-                            <span>
-                                {i.tags.map((j, k) => {
-                                    if (k + 1 !== i.tags.length) {
-                                        return `${j}, `;
+                            <span key={`answers_${j}_${user.id}`}>
+                                {i.tags.map((k, n) => {
+                                    if (n + 1 !== i.tags.length) {
+                                        return <span key={`answer_${n}_${user.id}`}>{k}, </span>;
                                     }
-                                    return j;
+                                    return <span key={`answer_${n}_${user.id}`}>{k}</span>;
                                 })}
                             </span>
                         );
@@ -96,12 +125,31 @@ const UserCard = (props: { data: MatchmakingRoom_matchmakingRoom_profiles }) => 
                     return null;
                 })}
             </div>
+            {props.data.chatCreated && (
+                <UButton text="Chat created" style="success" onClick={showModal} />
+            )}
+            {!props.data.chatCreated && <UButton text="Connect" action={createChat} />}
         </div>
     );
 };
 
+const skipStyle = css`
+    cursor: pointer;
+    color: var(--foregroundSecondary);
+`;
+
+const TitleRender = (props: { onDone: () => void }) => {
+    return (
+        <XView flexGrow={1} flexDirection="row" justifyContent="flex-end" alignItems="center">
+            <div onClick={props.onDone} className={cx(TextTitle3, skipStyle)}>
+                Done
+            </div>
+        </XView>
+    );
+};
+
 export const MatchmakingUsersFragment = React.memo(() => {
-    // const router = React.useContext(XViewRouterContext)!;
+    const router = React.useContext(XViewRouterContext)!;
     const unicorn = useUnicorn();
     const chatId = unicorn.query.roomId;
     const client = useClient();
@@ -114,8 +162,13 @@ export const MatchmakingUsersFragment = React.memo(() => {
         return null;
     }
 
+    const onDone = () => {
+        router.navigate(`/matchmaking/${chatId}/install`);
+    };
+
     return (
         <Page flexGrow={1}>
+            <UHeader titleView={<TitleRender onDone={onDone} />} />
             <XView flexGrow={1}>
                 <XView flexGrow={1}>
                     <div className={mainContainer}>
@@ -126,7 +179,7 @@ export const MatchmakingUsersFragment = React.memo(() => {
                         <div className={usersCardsContainer}>
                             {data!.profiles!.map(i => {
                                 if (i.user.id !== data!.myProfile!.user.id) {
-                                    return <UserCard data={i} />;
+                                    return <UserCard data={i} chatId={chatId} key={i.user.id} />;
                                 }
                                 return null;
                             })}
