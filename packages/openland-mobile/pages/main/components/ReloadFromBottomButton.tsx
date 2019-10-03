@@ -26,10 +26,13 @@ export const ReloadFromBottomButton = (props: { conversation: ConversationEngine
     }, [props.conversation]);
 
     const onClick = React.useCallback(async () => {
+        if (!show) {
+            return;
+        }
         setLoading(true);
         await props.conversation.restart('end');
         setLoading(false);
-    }, [loading]);
+    }, [loading, show]);
 
     React.useEffect(() => {
         SAnimated.beginTransaction();
@@ -51,6 +54,7 @@ export const ReloadFromBottomButton = (props: { conversation: ConversationEngine
         });
 
         animated.translateY = show ? 0 : 68;
+        animated.opacity = show ? 1 : 0;
         SAnimated.commitTransaction();
     }, [show]);
 
