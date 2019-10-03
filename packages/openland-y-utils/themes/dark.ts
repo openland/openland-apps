@@ -31,9 +31,11 @@ export const ThemeDark: ThemeGlobal = {
     backgroundSecondaryHover: '#242629',
     backgroundSecondaryActive: '#242629',
 
-    backgroundTertiary: 'rgba(96, 101, 107, 0.24)',
+    backgroundTertiary: '#242629',
     backgroundTertiaryHover: '#242629',
     backgroundTertiaryActive: '#242629',
+
+    backgroundTertiaryTrans: 'rgba(96, 101, 107, 0.24)',
 
     accentPrimary: '#FFFFFF',
     accentPrimaryHover: '#FFFFFF',

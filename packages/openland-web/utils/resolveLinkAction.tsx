@@ -6,8 +6,27 @@ import { showWriteFirstMessageModal } from 'openland-web/fragments/onboarding/sh
 import { InviteFriendsComponent } from 'openland-web/fragments/account/SettingsInviteFriendsFragment';
 import { DownloadAppsComponent } from 'openland-web/fragments/account/SettingsDownloadAppsFragment';
 import { trackEvent } from 'openland-x-analytics';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { XViewRouter } from 'react-mental';
 
-export const resolveLinkAction = (url: string) => {
+const resolveInvite = async (url: string, client: OpenlandClient, router: XViewRouter, fallback?: () => void) => {
+    let split = url.split('/');
+    let key = split[split.length - 1];
+    let invite = await client.queryResolvedInvite({ key });
+    // must show prview on matchmaking, just join/open in other cases
+    if (invite.invite && invite.invite.__typename === 'RoomInvite' && (!invite.invite.room.matchmaking || !invite.invite.room.matchmaking.enabled)) {
+        if (invite.invite.room.membership !== 'MEMBER') {
+            await client.mutateRoomJoinInviteLink({ invite: key });
+        }
+        router.navigate(`/mail/${invite.invite.room.id}`);
+        return;
+    }
+    if (fallback) {
+        fallback();
+    }
+};
+
+export const resolveLinkAction = (url: string | null, client: OpenlandClient, router: XViewRouter, fallback?: () => void): Promise<any> | undefined => {
     if (url === '/onboarding_invite') {
         trackEvent('billy_bot_button_action', {
             action_type: 'invite_friends'
@@ -38,5 +57,10 @@ export const resolveLinkAction = (url: string) => {
             action_type: 'write_first_message'
         });
         showWriteFirstMessageModal();
+    } else if (url && url.includes('openland.com/invite/')) {
+        return resolveInvite(url, client, router, fallback);
+    } else if (fallback) {
+        fallback();
     }
+    return undefined;
 };

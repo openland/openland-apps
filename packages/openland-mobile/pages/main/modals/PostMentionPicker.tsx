@@ -86,7 +86,7 @@ const PostMentionPickerComponent = XMemo<PageProps>((props) => {
         <>
             <SHeader title="Mention" />
             <View height="100%" paddingTop={area.top}>
-                <View style={[styles.searchBox, { backgroundColor: theme.backgroundTertiary }]}>
+                <View style={[styles.searchBox, { backgroundColor: theme.backgroundTertiaryTrans }]}>
                     <Image source={require('assets/ic-search-16.png')} style={[styles.searchIcon, { tintColor: theme.foregroundTertiary }]} />
                     <TextInput
                         value={query}

@@ -9,7 +9,7 @@ import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { TinyMessage, FullMessage, DaialogListMessage } from 'openland-api/fragments/Message';
 import { RoomNano } from 'openland-api/fragments/RoomNano';
 import { UserBadge } from 'openland-api/fragments/UserBadge';
-import { MatchmakingRoomFragment } from 'openland-api/fragments/MatchmakingRoom';
+import { MatchmakingRoomFragment } from 'openland-api/fragments/MatchmakingFragments';
 
 export const DialogsQuery = gql`
     query Dialogs($after: String) {
@@ -626,6 +626,48 @@ export const RoomMembersQuery = gql`
             role
             membership
             canKick
+        }
+    }
+    ${UserShort}
+`;
+
+export const RoomMembersTinyQuery = gql`
+    query RoomMembersTiny($roomId: ID!) {
+        members: roomMembers(roomId: $roomId) {
+            user {
+                id
+                name
+                shortname
+                photo
+                primaryOrganization{
+                    id
+                    name
+                }
+            }
+        }
+    }
+    ${UserShort}
+`;
+
+export const ChatMembersSearchQuery = gql`
+    query ChatMembersSearch($cid: ID!, $query: String, $first: Int!, $after: String) {
+        members: chatMembersSearch(cid: $cid, query: $query, first: $first, after: $after) {
+            edges{
+                user: node{
+                    id
+                    name
+                    shortname
+                    photo
+                    primaryOrganization{
+                        id
+                        name
+                    }
+                }
+                cursor
+            }
+            pageInfo{
+                hasNextPage
+            }
         }
     }
     ${UserShort}

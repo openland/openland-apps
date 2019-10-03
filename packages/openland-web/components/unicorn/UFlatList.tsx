@@ -5,6 +5,7 @@ import { XView } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 
 interface UFlatListProps<T> {
+    track: string;
     loadMore: () => void;
     loading: boolean;
     loadingHeight?: number;
@@ -15,7 +16,7 @@ interface UFlatListProps<T> {
 }
 
 export const UFlatList: <T>(props: UFlatListProps<T>) => any = React.memo((props) => {
-    const { loadMore, loading, loadingHeight = 200, children, items, padded } = props;
+    const { loadMore, loading, loadingHeight = 200, children, items, padded, track } = props;
     const onScroll = (values: XScrollValues) => {
         const d = values.scrollHeight - (values.clientHeight + values.scrollTop);
 
@@ -25,7 +26,7 @@ export const UFlatList: <T>(props: UFlatListProps<T>) => any = React.memo((props
     };
 
     return (
-        <Page onScroll={onScroll} padded={padded}>
+        <Page onScroll={onScroll} padded={padded} track={track}>
             {children}
             {items.map((item, index) => (
                 <XView key={'item-' + index}>{props.renderItem(item)}</XView>

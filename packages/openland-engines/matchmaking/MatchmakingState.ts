@@ -4,6 +4,8 @@ export interface MatchmakingState {
     answers: Map<string, string[] | string | null>;
 }
 
+type Answers = {questionId: string, text: string} | {questionId: string, tags: string[]};
+
 export class MatchmakingEngine {
     private state: MatchmakingState = { answers: new Map() };
     private listeners = new Set<(state: MatchmakingState) => void>();
@@ -14,6 +16,20 @@ export class MatchmakingEngine {
 
     addAnswer = (answer: Map<string, string[] | string | null>) => {
         this.setState({ answers: answer });
+    }
+
+    getAnswers = () => {
+        let answers: Answers[] = [];
+        this.state.answers.forEach((val, key) => {
+            if (val) {
+                if (typeof(val) === 'string') {
+                    answers.push({questionId: key, text: val});
+                } else {
+                    answers.push({questionId: key, tags: val});
+                }
+            }
+        });
+        return answers;
     }
 
     clear = () => {

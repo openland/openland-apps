@@ -6,7 +6,7 @@ import { StripeCardComponent } from './components/StripeCardComponent';
 
 export const SettingsFinanceFragment = React.memo(() => {
     return (
-        <Page>
+        <Page track="settings_finance">
             <UHeader title="Finance" />
             <XView flexDirection="column">
                 <XView paddingHorizontal={16}>

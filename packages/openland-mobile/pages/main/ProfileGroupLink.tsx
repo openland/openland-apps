@@ -23,6 +23,12 @@ const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
     const link = 'https://openland.com/invite/' + invite;
     const chatType = isChannel ? 'channel' : 'group';
 
+    React.useEffect(() => {
+        trackEvent('invite_link_view', {
+            invite_type: 'group',
+        });
+    }, []);
+
     const handleCopyClick = React.useCallback(() => {
         trackEvent('invite_link_action', {
             invite_type: chatType,

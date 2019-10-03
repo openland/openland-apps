@@ -14,6 +14,7 @@ import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInputField } from 'openland-web/components/unicorn/UInput';
+import { trackEvent } from 'openland-mobile/analytics';
 
 type RoomEditModalT = {
     title: string;
@@ -129,6 +130,7 @@ const RoomEditModal = ({ chatId, hide }: { chatId: string; hide: () => void }) =
 };
 
 export const showRoomEditModal = (chatId: string) => {
+    trackEvent(`navigate_group_profile_edit`);
     showModalBox(
         {
             title: 'Edit group',

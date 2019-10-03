@@ -67,6 +67,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
 
     return (
         <UFlatList
+            track={`${organization.isCommunity ? 'community' : 'organization'}_profile`}
             loadMore={handleLoadMore}
             items={members}
             loading={loading}

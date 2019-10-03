@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { XViewRouterContext } from 'react-mental';
 import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useClient } from 'openland-web/utils/useClient';
@@ -24,6 +25,13 @@ const cardsContainer = css`
     flex-grow: 1;
     background-color: #f0caca;
     margin-bottom: 56px;
+`;
+
+const desktopCardsContainer = css`
+    border-radius: 16px;
+    width: 360px;
+    height: 308px;
+    align-self: center;
 `;
 
 const cardIcon = css`
@@ -49,6 +57,7 @@ const redText = css`
 
 export const MatchmakingStartFragment = React.memo(() => {
     const router = React.useContext(XViewRouterContext)!;
+    const isMobile = useLayout() === 'mobile';
     const unicorn = useUnicorn();
     const chatId = unicorn.query.roomId;
     const client = useClient();
@@ -60,10 +69,10 @@ export const MatchmakingStartFragment = React.memo(() => {
     };
 
     return (
-        <Page flexGrow={1}>
-            <UHeader backgroundColor="#f0caca" />
+        <Page flexGrow={1} style="wide" track="matchmaking_start">
+            <UHeader backgroundColor={isMobile ? '#f0caca' : undefined} />
             <div className={mainContainer}>
-                <div className={cardsContainer}>
+                <div className={cx(cardsContainer, !isMobile && desktopCardsContainer)}>
                     <img
                         className={cardIcon}
                         src="https://cdn.openland.com/shared/web/matchmaking/cards@1x.png"

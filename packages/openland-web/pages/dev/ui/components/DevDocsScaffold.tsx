@@ -37,7 +37,7 @@ export function DevDocsScaffold(props: {
                     </XView>
                 )}
                 <XView flexGrow={1}>
-                    <Page>
+                    <Page track={'DevDocsScaffold'}>
                         {props.title !== undefined && <UListHeader text={props.title} />}
                         <XView paddingHorizontal={16}>
                             {props.children}

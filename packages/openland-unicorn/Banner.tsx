@@ -108,16 +108,16 @@ const BannerButton = (props: {
     onClick?: () => void;
     href?: string;
 }) => (
-    <a
-        target={props.href ? '_blank' : undefined}
-        href={props.href}
-        className={bannerButtonContainer}
-        onClick={props.onClick}
-    >
-        {props.icon && <UIcon icon={props.icon} color="#DDEFFE" />}
-        <span className={TextLabel2}>{props.text}</span>
-    </a>
-);
+        <a
+            target={props.href ? '_blank' : undefined}
+            href={props.href}
+            className={bannerButtonContainer}
+            onClick={props.onClick}
+        >
+            {props.icon && <UIcon icon={props.icon} color="#DDEFFE" />}
+            <span className={TextLabel2}>{props.text}</span>
+        </a>
+    );
 
 const links = {
     Mac: 'https://oplnd.com/mac',
@@ -132,6 +132,9 @@ const icons = {
 };
 
 let useMobileAppsBanner = () => {
+    React.useEffect(() => {
+        trackEvent('banner_app_appear');
+    }, []);
     let [show, setShow] = React.useState(!window.localStorage.getItem('banner-apps-closed'));
     let onClose = React.useCallback(() => {
         window.localStorage.setItem('banner-apps-closed', 'true');
@@ -184,6 +187,9 @@ let useMobileAppsBanner = () => {
 };
 
 let useNotificationsBanner = () => {
+    React.useEffect(() => {
+        trackEvent('banner_notifications_appear');
+    }, []);
     let [ttl, setTTL] = React.useState(
         Number.parseInt(window.localStorage.getItem('banner-notifications-closed-ttl') || '0', 10),
     );

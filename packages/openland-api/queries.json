@@ -2950,10 +2950,11 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [
-				"MatchmakingRoomFragment"
+				"MatchmakingRoomFragment",
+				"MatchmakingProfileFragment"
 			],
-			"sourceWithFragments": "query MatchmakingRoom($peerId: ID!) {\n  matchmakingRoom(peerId: $peerId) {\n    __typename\n    ...MatchmakingRoomFragment\n  }\n}\nfragment MatchmakingRoomFragment on MatchmakingRoom {\n  __typename\n  enabled\n  questions {\n    __typename\n    ... on TextMatchmakingQuestion {\n      id\n      title\n      subtitle\n    }\n    ... on MultiselectMatchmakingQuestion {\n      id\n      title\n      subtitle\n      tags\n    }\n  }\n  profiles {\n    __typename\n    chatCreated\n    user {\n      __typename\n      id\n      name\n      photo\n      primaryOrganization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n    answers {\n      __typename\n      ... on TextMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        answer\n      }\n      ... on MultiselectMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        tags\n      }\n    }\n  }\n}",
-			"operationId": "0a6626e35b7c0f4b61a14492459bdabd45aba885abdaee87bf6052a1c4091747"
+			"sourceWithFragments": "query MatchmakingRoom($peerId: ID!) {\n  matchmakingRoom(peerId: $peerId) {\n    __typename\n    ...MatchmakingRoomFragment\n  }\n}\nfragment MatchmakingRoomFragment on MatchmakingRoom {\n  __typename\n  enabled\n  questions {\n    __typename\n    ... on TextMatchmakingQuestion {\n      id\n      title\n      subtitle\n    }\n    ... on MultiselectMatchmakingQuestion {\n      id\n      title\n      subtitle\n      tags\n    }\n  }\n  myProfile {\n    __typename\n    ...MatchmakingProfileFragment\n  }\n  profiles {\n    __typename\n    chatCreated\n    user {\n      __typename\n      id\n      name\n      photo\n      primaryOrganization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n    answers {\n      __typename\n      ... on TextMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        answer\n      }\n      ... on MultiselectMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        tags\n      }\n    }\n  }\n}\nfragment MatchmakingProfileFragment on MatchmakingProfile {\n  __typename\n  chatCreated\n  user {\n    __typename\n    id\n    isYou\n    name\n    photo\n  }\n  answers {\n    __typename\n    ... on TextMatchmakingAnswer {\n      question {\n        __typename\n        id\n        title\n        subtitle\n      }\n      answer\n    }\n    ... on MultiselectMatchmakingAnswer {\n      question {\n        __typename\n        id\n        title\n        subtitle\n      }\n      tags\n    }\n  }\n}",
+			"operationId": "5e404f9c37ed844ea93cab7296ab5e0c2f42d218b79525bb1750bafd42a3c45e"
 		},
 		{
 			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/Chats.ts",
@@ -5049,6 +5050,336 @@
 			],
 			"sourceWithFragments": "query RoomMembers($roomId: ID!) {\n  members: roomMembers(roomId: $roomId) {\n    __typename\n    user {\n      __typename\n      ...UserShort\n    }\n    role\n    membership\n    canKick\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}",
 			"operationId": "ddfd134540441fb5b52ffc133b9726324328a4409c9dc2743c8955788166b773"
+		},
+		{
+			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/Chats.ts",
+			"operationName": "RoomMembersTiny",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [
+				{
+					"name": "roomId",
+					"type": "ID!"
+				}
+			],
+			"source": "query RoomMembersTiny($roomId: ID!) {\n  members: roomMembers(roomId: $roomId) {\n    __typename\n    user {\n      __typename\n      id\n      name\n      shortname\n      photo\n      primaryOrganization {\n        __typename\n        id\n        name\n      }\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "members",
+					"fieldName": "roomMembers",
+					"type": "[RoomMember!]!",
+					"args": [
+						{
+							"name": "roomId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "roomId"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "user",
+							"fieldName": "user",
+							"type": "User!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "name",
+									"fieldName": "name",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "shortname",
+									"fieldName": "shortname",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "photo",
+									"fieldName": "photo",
+									"type": "String",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "primaryOrganization",
+									"fieldName": "primaryOrganization",
+									"type": "Organization",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "name",
+											"fieldName": "name",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "query RoomMembersTiny($roomId: ID!) {\n  members: roomMembers(roomId: $roomId) {\n    __typename\n    user {\n      __typename\n      id\n      name\n      shortname\n      photo\n      primaryOrganization {\n        __typename\n        id\n        name\n      }\n    }\n  }\n}",
+			"operationId": "5fcbeb31ed1167e40bf3123b027a124e89c9774da225fc4498260105e62ed787"
+		},
+		{
+			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/Chats.ts",
+			"operationName": "ChatMembersSearch",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [
+				{
+					"name": "cid",
+					"type": "ID!"
+				},
+				{
+					"name": "query",
+					"type": "String"
+				},
+				{
+					"name": "first",
+					"type": "Int!"
+				},
+				{
+					"name": "after",
+					"type": "String"
+				}
+			],
+			"source": "query ChatMembersSearch($cid: ID!, $query: String, $first: Int!, $after: String) {\n  members: chatMembersSearch(cid: $cid, query: $query, first: $first, after: $after) {\n    __typename\n    edges {\n      __typename\n      user: node {\n        __typename\n        id\n        name\n        shortname\n        photo\n        primaryOrganization {\n          __typename\n          id\n          name\n        }\n      }\n      cursor\n    }\n    pageInfo {\n      __typename\n      hasNextPage\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "members",
+					"fieldName": "chatMembersSearch",
+					"type": "UserConnection!",
+					"args": [
+						{
+							"name": "cid",
+							"value": {
+								"kind": "Variable",
+								"variableName": "cid"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "query",
+							"value": {
+								"kind": "Variable",
+								"variableName": "query"
+							},
+							"type": "String"
+						},
+						{
+							"name": "first",
+							"value": {
+								"kind": "Variable",
+								"variableName": "first"
+							},
+							"type": "Int!"
+						},
+						{
+							"name": "after",
+							"value": {
+								"kind": "Variable",
+								"variableName": "after"
+							},
+							"type": "String"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "edges",
+							"fieldName": "edges",
+							"type": "[UserEdge!]!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "user",
+									"fieldName": "node",
+									"type": "User!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "name",
+											"fieldName": "name",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "shortname",
+											"fieldName": "shortname",
+											"type": "String",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "photo",
+											"fieldName": "photo",
+											"type": "String",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "primaryOrganization",
+											"fieldName": "primaryOrganization",
+											"type": "Organization",
+											"isConditional": false,
+											"isDeprecated": false,
+											"fields": [
+												{
+													"responseName": "__typename",
+													"fieldName": "__typename",
+													"type": "String!",
+													"isConditional": false
+												},
+												{
+													"responseName": "id",
+													"fieldName": "id",
+													"type": "ID!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "name",
+													"fieldName": "name",
+													"type": "String!",
+													"isConditional": false,
+													"isDeprecated": false
+												}
+											],
+											"fragmentSpreads": [],
+											"inlineFragments": []
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								},
+								{
+									"responseName": "cursor",
+									"fieldName": "cursor",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						},
+						{
+							"responseName": "pageInfo",
+							"fieldName": "pageInfo",
+							"type": "PageInfo!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "hasNextPage",
+									"fieldName": "hasNextPage",
+									"type": "Boolean!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "query ChatMembersSearch($cid: ID!, $query: String, $first: Int!, $after: String) {\n  members: chatMembersSearch(cid: $cid, query: $query, first: $first, after: $after) {\n    __typename\n    edges {\n      __typename\n      user: node {\n        __typename\n        id\n        name\n        shortname\n        photo\n        primaryOrganization {\n          __typename\n          id\n          name\n        }\n      }\n      cursor\n    }\n    pageInfo {\n      __typename\n      hasNextPage\n    }\n  }\n}",
+			"operationId": "3337e7345d4721cb502188aacf160b7ccf3a0be41700e0d5a686553c393c349d"
 		},
 		{
 			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/Chats.ts",
@@ -12067,6 +12398,118 @@
 			"operationId": "2a20aefa86a23fdc52144a3fee9ad9a873538a3a4a59f307b4956476b30671eb"
 		},
 		{
+			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/Matchmaking.ts",
+			"operationName": "MatchmakingProfileFill",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "peerId",
+					"type": "ID!"
+				},
+				{
+					"name": "input",
+					"type": "MatchmakingProfileFillInput!"
+				}
+			],
+			"source": "mutation MatchmakingProfileFill($peerId: ID!, $input: MatchmakingProfileFillInput!) {\n  matchmakingProfileFill(peerId: $peerId, input: $input) {\n    __typename\n    ...MatchmakingProfileFragment\n  }\n}",
+			"fields": [
+				{
+					"responseName": "matchmakingProfileFill",
+					"fieldName": "matchmakingProfileFill",
+					"type": "MatchmakingProfile!",
+					"args": [
+						{
+							"name": "peerId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "peerId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "input",
+							"value": {
+								"kind": "Variable",
+								"variableName": "input"
+							},
+							"type": "MatchmakingProfileFillInput!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [
+						"MatchmakingProfileFragment"
+					],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"MatchmakingProfileFragment"
+			],
+			"sourceWithFragments": "mutation MatchmakingProfileFill($peerId: ID!, $input: MatchmakingProfileFillInput!) {\n  matchmakingProfileFill(peerId: $peerId, input: $input) {\n    __typename\n    ...MatchmakingProfileFragment\n  }\n}\nfragment MatchmakingProfileFragment on MatchmakingProfile {\n  __typename\n  chatCreated\n  user {\n    __typename\n    id\n    isYou\n    name\n    photo\n  }\n  answers {\n    __typename\n    ... on TextMatchmakingAnswer {\n      question {\n        __typename\n        id\n        title\n        subtitle\n      }\n      answer\n    }\n    ... on MultiselectMatchmakingAnswer {\n      question {\n        __typename\n        id\n        title\n        subtitle\n      }\n      tags\n    }\n  }\n}",
+			"operationId": "5e378122534194e26a849830654df2f9043232719168c5843f6c6152e90ec3b3"
+		},
+		{
+			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/Matchmaking.ts",
+			"operationName": "MatchmakingConnect",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "peerId",
+					"type": "ID!"
+				},
+				{
+					"name": "uid",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation MatchmakingConnect($peerId: ID!, $uid: ID!) {\n  matchmakingConnect(peerId: $peerId, uid: $uid)\n}",
+			"fields": [
+				{
+					"responseName": "matchmakingConnect",
+					"fieldName": "matchmakingConnect",
+					"type": "Boolean!",
+					"args": [
+						{
+							"name": "peerId",
+							"value": {
+								"kind": "Variable",
+								"variableName": "peerId"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "uid",
+							"value": {
+								"kind": "Variable",
+								"variableName": "uid"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation MatchmakingConnect($peerId: ID!, $uid: ID!) {\n  matchmakingConnect(peerId: $peerId, uid: $uid)\n}",
+			"operationId": "6e0c3ad19adb483e11e45750c17dadd26d6c9487359327f05f43fdf11b12eae9"
+		},
+		{
 			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/MyNotificationsCenter.ts",
 			"operationName": "MyNotifications",
 			"operationType": "query",
@@ -18214,13 +18657,222 @@
 			"inlineFragments": []
 		},
 		{
+			"typeCondition": "MatchmakingProfile",
+			"possibleTypes": [
+				"MatchmakingProfile"
+			],
+			"fragmentName": "MatchmakingProfileFragment",
+			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/fragments/MatchmakingFragments.ts",
+			"source": "fragment MatchmakingProfileFragment on MatchmakingProfile {\n  __typename\n  chatCreated\n  user {\n    __typename\n    id\n    isYou\n    name\n    photo\n  }\n  answers {\n    __typename\n    ... on TextMatchmakingAnswer {\n      question {\n        __typename\n        id\n        title\n        subtitle\n      }\n      answer\n    }\n    ... on MultiselectMatchmakingAnswer {\n      question {\n        __typename\n        id\n        title\n        subtitle\n      }\n      tags\n    }\n  }\n}",
+			"fields": [
+				{
+					"responseName": "__typename",
+					"fieldName": "__typename",
+					"type": "String!",
+					"isConditional": false
+				},
+				{
+					"responseName": "chatCreated",
+					"fieldName": "chatCreated",
+					"type": "Boolean!",
+					"isConditional": false,
+					"isDeprecated": false
+				},
+				{
+					"responseName": "user",
+					"fieldName": "user",
+					"type": "User!",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "id",
+							"fieldName": "id",
+							"type": "ID!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "isYou",
+							"fieldName": "isYou",
+							"type": "Boolean!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "name",
+							"fieldName": "name",
+							"type": "String!",
+							"isConditional": false,
+							"isDeprecated": false
+						},
+						{
+							"responseName": "photo",
+							"fieldName": "photo",
+							"type": "String",
+							"isConditional": false,
+							"isDeprecated": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				},
+				{
+					"responseName": "answers",
+					"fieldName": "answers",
+					"type": "[MatchmakingAnswer!]!",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": [
+						{
+							"typeCondition": "TextMatchmakingAnswer",
+							"possibleTypes": [
+								"TextMatchmakingAnswer"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "question",
+									"fieldName": "question",
+									"type": "TextMatchmakingQuestion!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "title",
+											"fieldName": "title",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "subtitle",
+											"fieldName": "subtitle",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								},
+								{
+									"responseName": "answer",
+									"fieldName": "answer",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": []
+						},
+						{
+							"typeCondition": "MultiselectMatchmakingAnswer",
+							"possibleTypes": [
+								"MultiselectMatchmakingAnswer"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "question",
+									"fieldName": "question",
+									"type": "MultiselectMatchmakingQuestion!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "title",
+											"fieldName": "title",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "subtitle",
+											"fieldName": "subtitle",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								},
+								{
+									"responseName": "tags",
+									"fieldName": "tags",
+									"type": "[String!]!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": []
+						}
+					]
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": []
+		},
+		{
 			"typeCondition": "MatchmakingRoom",
 			"possibleTypes": [
 				"MatchmakingRoom"
 			],
 			"fragmentName": "MatchmakingRoomFragment",
-			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/fragments/MatchmakingRoom.ts",
-			"source": "fragment MatchmakingRoomFragment on MatchmakingRoom {\n  __typename\n  enabled\n  questions {\n    __typename\n    ... on TextMatchmakingQuestion {\n      id\n      title\n      subtitle\n    }\n    ... on MultiselectMatchmakingQuestion {\n      id\n      title\n      subtitle\n      tags\n    }\n  }\n  profiles {\n    __typename\n    chatCreated\n    user {\n      __typename\n      id\n      name\n      photo\n      primaryOrganization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n    answers {\n      __typename\n      ... on TextMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        answer\n      }\n      ... on MultiselectMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        tags\n      }\n    }\n  }\n}",
+			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/fragments/MatchmakingFragments.ts",
+			"source": "fragment MatchmakingRoomFragment on MatchmakingRoom {\n  __typename\n  enabled\n  questions {\n    __typename\n    ... on TextMatchmakingQuestion {\n      id\n      title\n      subtitle\n    }\n    ... on MultiselectMatchmakingQuestion {\n      id\n      title\n      subtitle\n      tags\n    }\n  }\n  myProfile {\n    __typename\n    ...MatchmakingProfileFragment\n  }\n  profiles {\n    __typename\n    chatCreated\n    user {\n      __typename\n      id\n      name\n      photo\n      primaryOrganization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n    answers {\n      __typename\n      ... on TextMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        answer\n      }\n      ... on MultiselectMatchmakingAnswer {\n        question {\n          __typename\n          id\n          title\n          subtitle\n        }\n        tags\n      }\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "__typename",
@@ -18331,6 +18983,25 @@
 							"fragmentSpreads": []
 						}
 					]
+				},
+				{
+					"responseName": "myProfile",
+					"fieldName": "myProfile",
+					"type": "MatchmakingProfile",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [
+						"MatchmakingProfileFragment"
+					],
+					"inlineFragments": []
 				},
 				{
 					"responseName": "profiles",
@@ -28035,6 +28706,34 @@
 				{
 					"name": "Cover",
 					"isDeprecated": false
+				}
+			]
+		},
+		{
+			"kind": "InputObjectType",
+			"name": "MatchmakingProfileFillInput",
+			"fields": [
+				{
+					"name": "answers",
+					"type": "[MatchmakingAnswerInput!]!"
+				}
+			]
+		},
+		{
+			"kind": "InputObjectType",
+			"name": "MatchmakingAnswerInput",
+			"fields": [
+				{
+					"name": "questionId",
+					"type": "ID!"
+				},
+				{
+					"name": "text",
+					"type": "String"
+				},
+				{
+					"name": "tags",
+					"type": "[String!]"
 				}
 			]
 		},

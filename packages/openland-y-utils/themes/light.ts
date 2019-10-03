@@ -31,9 +31,11 @@ export const ThemeLight: ThemeGlobal = {
     backgroundSecondaryHover: '#F2F3F5',
     backgroundSecondaryActive: '#F2F3F5',
 
-    backgroundTertiary: 'rgba(201, 204, 209, 0.24)',
+    backgroundTertiary: '#F2F3F5',
     backgroundTertiaryHover: '#EDEEF0',
     backgroundTertiaryActive: '#E6E7EB',
+
+    backgroundTertiaryTrans: 'rgba(201, 204, 209, 0.24)',
 
     accentPrimary: TintBlue.primary,
     accentPrimaryHover: TintBlue.hover,

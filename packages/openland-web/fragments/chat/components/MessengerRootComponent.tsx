@@ -185,6 +185,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         //         this.unsubscribe();
         //     }
         // });
+        trackEvent('mail_view');
         this.unmounter = this.conversation!.engine.mountConversation(this.props.conversationId);
         this.unmounter2 = this.conversation!.subscribe(this);
         if (!this.conversation) {

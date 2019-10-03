@@ -45,7 +45,7 @@ const ZAvatarInner = XMemo<ZAvatarProps>((props) => {
     if (props.src && !props.src.startsWith('ph://')) {
         return (
             <View>
-                <View style={{ width: size, height: size, borderRadius: size / 2, backgroundColor: theme.backgroundTertiary }}>
+                <View style={{ width: size, height: size, borderRadius: size / 2, backgroundColor: theme.backgroundTertiaryTrans }}>
                     <ZImage highPriority={true} imageSize={{ width: 256, height: 256 }} width={size} height={size} source={props.src} borderRadius={size / 2} />
                     <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: size / 2, borderColor: theme.border, borderWidth: 0.5 }} />
                 </View>

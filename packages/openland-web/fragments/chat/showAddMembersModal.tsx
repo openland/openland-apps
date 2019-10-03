@@ -114,6 +114,7 @@ const AddMemberModalInner = (props: InviteModalProps) => {
         <>
             <XModalContent>
                 <XTrack event="invite_view" params={{ invite_type: objType }} />
+                <XTrack event={`navigate_${objType}_add_members`} params={{ invite_type: objType }} />
                 <XView
                     height={props.isMobile ? '100%' : '65vh'}
                     flexGrow={1}

@@ -6,13 +6,14 @@ import { SHeaderView } from 'react-native-s/SHeaderView';
 import { AuthorHeader } from 'openland-mobile/pages/main/components/AuthorHeader';
 import { FeedPostContent } from 'openland-mobile/feed/content/FeedPostContent';
 import { convertPost } from 'openland-engines/feed/convert';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, View, TouchableWithoutFeedback } from 'react-native';
 import { FeedPostTools } from 'openland-mobile/feed/components/FeedPostTools';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { CommentsWrapper } from './components/comments/CommentsWrapper';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SHeaderIndicator } from 'react-native-s/SHeaderIndicator';
 import { isPad } from '../Root';
+import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
 
 const getWidth = () => {
     const screenWidth = Dimensions.get('screen').width;
@@ -39,17 +40,27 @@ const FeedItemComponent = React.memo((props: PageProps) => {
     }
 
     const item = React.useMemo(() => convertPost(itemSrc, messenger.engine), [itemSrc]);
-    const { author, date, slides } = item;
+    const { id, canEdit, author, date, slides } = item;
     const width = getWidth();
     const [currentSlide, setCurreentSlide] = React.useState(0);
 
+    const handleLongPress = React.useCallback(() => {
+        FeedHandlers.Manage(id, canEdit, true);
+    }, [id, canEdit]);
+
     const peerView = (
         <View paddingTop={8}>
-            <FeedPostContent
-                post={item}
-                width={width}
-                onSlideChange={i => setCurreentSlide(i)}
-            />
+            <TouchableWithoutFeedback onLongPress={handleLongPress}>
+                <View>
+                    <FeedPostContent
+                        post={item}
+                        width={width}
+                        onLongPress={handleLongPress}
+                        onSlideChange={i => setCurreentSlide(i)}
+                    />
+                </View>
+            </TouchableWithoutFeedback>
+
             <FeedPostTools item={item} />
         </View>
     );

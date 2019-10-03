@@ -35,11 +35,11 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
 
     const handlePress = React.useCallback(() => {
         FeedHandlers.Open(id);
-    }, []);
+    }, [id]);
 
     const handleLongPress = React.useCallback(() => {
         FeedHandlers.Manage(id, canEdit, true);
-    }, []);
+    }, [id, canEdit]);
 
     const width = Dimensions.get('screen').width;
     const containerWidth = width - 32;

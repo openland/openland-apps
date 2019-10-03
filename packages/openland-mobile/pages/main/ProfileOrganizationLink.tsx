@@ -24,6 +24,12 @@ const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
     const link = 'https://openland.com/join/' + invite.key;
     const orgType = isCommunity ? 'community' : 'organization';
 
+    React.useEffect(() => {
+        trackEvent('invite_link_view', {
+            invite_type: orgType,
+        });
+    }, []);
+
     const handleCopyClick = React.useCallback(() => {
         trackEvent('invite_link_action', {
             invite_type: orgType,

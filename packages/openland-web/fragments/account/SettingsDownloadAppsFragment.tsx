@@ -316,7 +316,7 @@ export const DownloadAppsComponent = (props: NativaAppsModalProps) => {
 };
 
 export const DownloadAppsFragment = React.memo(() => (
-    <Page>
+    <Page track="account_apps">
         <DownloadAppsComponent onSettingPage={true} />
     </Page>
 ));

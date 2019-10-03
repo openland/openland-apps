@@ -13,6 +13,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { OwnerLinkComponent } from 'openland-web/fragments/invite/OwnerLinkComponent';
 import { TextBody } from 'openland-web/utils/TextStyles';
 import { Page } from 'openland-unicorn/Page';
+import { trackEvent } from 'openland-x-analytics';
 
 const textAlignCenterClassName = css`
     text-align: center;
@@ -76,6 +77,10 @@ const WritePostBlock = (props: { inviteKey: string; isMobile: boolean }) => {
         if (copied) {
             return;
         }
+        trackEvent('invite_link_action', {
+            invite_type: 'Openland',
+            action_type: 'post_copied'
+        });
         copy(sharingTextFull);
         setCopied(true);
         setTimeout(() => {
@@ -86,7 +91,10 @@ const WritePostBlock = (props: { inviteKey: string; isMobile: boolean }) => {
     const linkedinHref = `https://www.linkedin.com/shareArticle?mini=false&url=${sharingUrl}`;
     const twitterHref = `https://twitter.com/intent/tweet?text=${encodeURI(sharingTextFull)}`;
 
-    const redirect = (href: string) => {
+    const redirect = (href: string, targetName: string) => {
+        trackEvent('invite_social_share_action', {
+            share_action_type: 'targetName',
+        });
         window.open(href, '_blank');
     };
     return (
@@ -123,15 +131,15 @@ const WritePostBlock = (props: { inviteKey: string; isMobile: boolean }) => {
                     >
                         <SocialButton
                             icon={<FacebookIcon />}
-                            onClick={() => redirect(facebookHref)}
+                            onClick={() => redirect(facebookHref, 'facebook')}
                         />
                         <SocialButton
                             icon={<LinkedInIcon />}
-                            onClick={() => redirect(linkedinHref)}
+                            onClick={() => redirect(linkedinHref, 'linkedin')}
                         />
                         <SocialButton
                             icon={<TwitterIcon />}
-                            onClick={() => redirect(twitterHref)}
+                            onClick={() => redirect(twitterHref, 'twitter')}
                         />
                     </XView>
                 </XView>
@@ -169,6 +177,10 @@ export const InviteFriendsComponent = (props: InviteFriendsFragmentProps) => {
         inviteCount = client.useMySuccessfulInvitesCount(),
         { invite: openlandInvite } = client.useAccountAppInvite(),
         isMobile = useLayout() === 'mobile';
+
+    React.useEffect(() => {
+        trackEvent('invite_friends_view');
+    }, []);
 
     return (
         <XView
@@ -227,7 +239,7 @@ export const InviteFriendsComponent = (props: InviteFriendsFragmentProps) => {
 };
 
 export const InviteFriendsFragment = React.memo(() => (
-    <Page>
+    <Page track="account_invite">
         <InviteFriendsComponent onSettingPage={true} />
     </Page>
 ));

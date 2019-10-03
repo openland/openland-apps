@@ -258,8 +258,11 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     restart = async (from: 'end' | 'unread') => {
+        if (this.isStarting) {
+            return;
+        }
         this.isStarted = false;
-        this.isStarting = false;
+        this.isStarting = true;
         this.historyFullyLoaded = false;
         this.forwardFullyLoaded = false;
         this.lastTopMessageRead = null;

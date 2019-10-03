@@ -19,7 +19,7 @@ export const Home = XMemo<PageProps>((props) => {
     const counter = getClient().useWithoutLoaderGlobalCounter();
     const notificationsCounter = getClient().useWithoutLoaderMyNotificationCenter();
     const discoverDone = getClient().useWithoutLoaderDiscoverIsDone();
-    const showFeed = NON_PRODUCTION && !isPad;
+    const showFeed = false && NON_PRODUCTION && !isPad;
 
     return (
         <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>

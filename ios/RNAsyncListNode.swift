@@ -373,6 +373,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       let myGroup = DispatchGroup()
       var pendingCells: [String: RNAsyncCell] = [:]
       let lockObj = NSObject()
+      self.activeCells.clear();
       for itm in state.items {
         myGroup.enter()
         DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async {
@@ -412,7 +413,6 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           toDelete = (0..<self.state.items.count).map({ (i) -> IndexPath in
             IndexPath(row: i, section: 1)
           })
-          self.activeCells.clear();
         }
         self.state = state
         for itm in pendingCells {

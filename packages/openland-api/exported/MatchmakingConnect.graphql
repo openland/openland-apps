@@ -1,0 +1,3 @@
+mutation MatchmakingConnect($peerId: ID!, $uid: ID!) {
+  matchmakingConnect(peerId: $peerId, uid: $uid)
+}

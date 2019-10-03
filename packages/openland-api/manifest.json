@@ -240,10 +240,10 @@
       }
     },
     {
-      "signature": "2934ea9224dbe074633b537ce2f233646b9a894af11367a05df00cb2ed5bd81e",
-      "document": "fragment MatchmakingRoomFragment on MatchmakingRoom{__typename enabled profiles{__typename answers{__typename...on TextMatchmakingAnswer{answer question{__typename id subtitle title}}...on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id name photo primaryOrganization{__typename id name photo}}}questions{__typename...on TextMatchmakingQuestion{id subtitle title}...on MultiselectMatchmakingQuestion{id subtitle tags title}}}query MatchmakingRoom($peerId:ID!){matchmakingRoom(peerId:$peerId){__typename...MatchmakingRoomFragment}}",
+      "signature": "e017497e3a9a8fde760c436b304dfccb93f23f74e3af63045fef3cf16a6b5809",
+      "document": "fragment MatchmakingProfileFragment on MatchmakingProfile{__typename answers{__typename...on TextMatchmakingAnswer{answer question{__typename id subtitle title}}...on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id isYou name photo}}fragment MatchmakingRoomFragment on MatchmakingRoom{__typename enabled myProfile{__typename...MatchmakingProfileFragment}profiles{__typename answers{__typename...on TextMatchmakingAnswer{answer question{__typename id subtitle title}}...on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id name photo primaryOrganization{__typename id name photo}}}questions{__typename...on TextMatchmakingQuestion{id subtitle title}...on MultiselectMatchmakingQuestion{id subtitle tags title}}}query MatchmakingRoom($peerId:ID!){matchmakingRoom(peerId:$peerId){__typename...MatchmakingRoomFragment}}",
       "metadata": {
-        "engineSignature": "fragment MatchmakingRoomFragment on MatchmakingRoom{__typename enabled profiles{__typename answers{__typename...on TextMatchmakingAnswer{answer question{__typename id subtitle title}}...on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id name photo primaryOrganization{__typename id name photo}}}questions{__typename...on TextMatchmakingQuestion{id subtitle title}...on MultiselectMatchmakingQuestion{id subtitle tags title}}}query MatchmakingRoom($peerId:ID!){matchmakingRoom(peerId:$peerId){__typename...MatchmakingRoomFragment}}"
+        "engineSignature": "fragment MatchmakingProfileFragment on MatchmakingProfile{__typename answers{__typename...on TextMatchmakingAnswer{answer question{__typename id subtitle title}}...on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id isYou name photo}}fragment MatchmakingRoomFragment on MatchmakingRoom{__typename enabled myProfile{__typename...MatchmakingProfileFragment}profiles{__typename answers{__typename...on TextMatchmakingAnswer{answer question{__typename id subtitle title}}...on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id name photo primaryOrganization{__typename id name photo}}}questions{__typename...on TextMatchmakingQuestion{id subtitle title}...on MultiselectMatchmakingQuestion{id subtitle tags title}}}query MatchmakingRoom($peerId:ID!){matchmakingRoom(peerId:$peerId){__typename...MatchmakingRoomFragment}}"
       }
     },
     {
@@ -391,6 +391,20 @@
       "document": "fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query RoomMembers($roomId:ID!){members:roomMembers(roomId:$roomId){__typename canKick membership role user{__typename...UserShort}}}",
       "metadata": {
         "engineSignature": "fragment OrganizationShort on Organization{__typename about alphaIsCommunity id name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query RoomMembers($roomId:ID!){roomMembers(roomId:$roomId){__typename canKick membership role user{__typename...UserShort}}}"
+      }
+    },
+    {
+      "signature": "dd67c43711155ae15e056da3b6b58b0c9134479636fe0587fcb2894ac9459306",
+      "document": "query RoomMembersTiny($roomId:ID!){members:roomMembers(roomId:$roomId){__typename user{__typename id name photo primaryOrganization{__typename id name}shortname}}}",
+      "metadata": {
+        "engineSignature": "query RoomMembersTiny($roomId:ID!){roomMembers(roomId:$roomId){__typename user{__typename id name photo primaryOrganization{__typename id name}shortname}}}"
+      }
+    },
+    {
+      "signature": "b357125b7b4b01211e2bdd4be730bfbc356f67042b683e3697a5c9ddf1477871",
+      "document": "query ChatMembersSearch($after:String,$cid:ID!,$first:Int!,$query:String){members:chatMembersSearch(after:$after,cid:$cid,first:$first,query:$query){__typename edges{__typename cursor user:node{__typename id name photo primaryOrganization{__typename id name}shortname}}pageInfo{__typename hasNextPage}}}",
+      "metadata": {
+        "engineSignature": "query ChatMembersSearch($after:String,$cid:ID!,$first:Int!,$query:String){chatMembersSearch(after:$after,cid:$cid,first:$first,query:$query){__typename edges{__typename cursor node{__typename id name photo primaryOrganization{__typename id name}shortname}}pageInfo{__typename hasNextPage}}}"
       }
     },
     {
@@ -867,6 +881,20 @@
       "document": "fragment FeedPostAuthorFragment on FeedPostAuthor{__typename...on User{...UserShort}...on Organization{...OrganizationShort}}fragment SlideFragment on Slide{__typename...on TextSlide{attachments{__typename...on User{...UserShort}...on SharedRoom{id kind membersCount membership organization{__typename id name photo}roomPhoto:photo title}...on Organization{...OrganizationShort}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename...SpanFragment}text}}fragment FeedItemFull on FeedItem{__typename...on FeedPost{author{__typename...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id message reactions{__typename reaction user{__typename...UserShort}}slides{__typename...SlideFragment}}}fragment SpanFragment on MessageSpan{__typename length offset...on MessageSpanUserMention{user{__typename...UserForMention}}...on MessageSpanMultiUserMention{users{__typename...UserForMention}}...on MessageSpanRoomMention{room{__typename...on PrivateRoom{id user{__typename id name}}...on SharedRoom{id title}}}...on MessageSpanLink{url}...on MessageSpanDate{date}}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}fragment FeedUpdateFragment on FeedUpdate{__typename...on FeedItemReceived{item{__typename...FeedItemFull}}...on FeedItemUpdated{item{__typename...FeedItemFull}}...on FeedItemDeleted{item{__typename...FeedItemFull}}}subscription FeedUpdates($state:String){event:homeFeedUpdates(fromState:$state){__typename state updates{__typename...FeedUpdateFragment}}}",
       "metadata": {
         "engineSignature": "fragment FeedPostAuthorFragment on FeedPostAuthor{__typename...on User{...UserShort}...on Organization{...OrganizationShort}}fragment SlideFragment on Slide{__typename...on TextSlide{attachments{__typename...on User{...UserShort}...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}...on Organization{...OrganizationShort}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename...SpanFragment}text}}fragment FeedItemFull on FeedItem{__typename...on FeedPost{author{__typename...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id message reactions{__typename reaction user{__typename...UserShort}}slides{__typename...SlideFragment}}}fragment SpanFragment on MessageSpan{__typename length offset...on MessageSpanUserMention{user{__typename...UserForMention}}...on MessageSpanMultiUserMention{users{__typename...UserForMention}}...on MessageSpanRoomMention{room{__typename...on PrivateRoom{id user{__typename id name}}...on SharedRoom{id title}}}...on MessageSpanLink{url}...on MessageSpanDate{date}}fragment OrganizationShort on Organization{__typename about alphaIsCommunity id name photo shortname}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}fragment FeedUpdateFragment on FeedUpdate{__typename...on FeedItemReceived{item{__typename...FeedItemFull}}...on FeedItemUpdated{item{__typename...FeedItemFull}}...on FeedItemDeleted{item{__typename...FeedItemFull}}}subscription FeedUpdates($state:String){homeFeedUpdates(fromState:$state){__typename state updates{__typename...FeedUpdateFragment}}}"
+      }
+    },
+    {
+      "signature": "313220f13a5dbfc32e6c6c142595b4bf0d53a647b05aa533654f6a5d647232f2",
+      "document": "fragment MatchmakingProfileFragment on MatchmakingProfile{__typename answers{__typename...on TextMatchmakingAnswer{answer question{__typename id subtitle title}}...on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id isYou name photo}}mutation MatchmakingProfileFill($input:MatchmakingProfileFillInput!,$peerId:ID!){matchmakingProfileFill(input:$input,peerId:$peerId){__typename...MatchmakingProfileFragment}}",
+      "metadata": {
+        "engineSignature": "fragment MatchmakingProfileFragment on MatchmakingProfile{__typename answers{__typename...on TextMatchmakingAnswer{answer question{__typename id subtitle title}}...on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id isYou name photo}}mutation MatchmakingProfileFill($input:MatchmakingProfileFillInput!,$peerId:ID!){matchmakingProfileFill(input:$input,peerId:$peerId){__typename...MatchmakingProfileFragment}}"
+      }
+    },
+    {
+      "signature": "e65e4820dc1662d84081a3c9bed91bfa2c176b35daa26086b34fdaaa0c43809a",
+      "document": "mutation MatchmakingConnect($peerId:ID!,$uid:ID!){matchmakingConnect(peerId:$peerId,uid:$uid)}",
+      "metadata": {
+        "engineSignature": "mutation MatchmakingConnect($peerId:ID!,$uid:ID!){matchmakingConnect(peerId:$peerId,uid:$uid)}"
       }
     },
     {

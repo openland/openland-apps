@@ -138,7 +138,7 @@ export const SettingsNotificationsFragment = React.memo(() => {
     );
 
     return (
-        <Page>
+        <Page track="account_notifications">
             <UHeader title="Notifications" />
             <FormWrapper title="Notifications">
                 <FormSection title="Direct messages">

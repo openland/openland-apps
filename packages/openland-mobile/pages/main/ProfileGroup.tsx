@@ -21,6 +21,7 @@ import { SFlatList } from 'react-native-s/SFlatList';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
+import { trackEvent } from 'openland-mobile/analytics';
 
 const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -131,6 +132,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     }, [roomId]);
 
     const handleAddMember = React.useCallback(() => {
+        trackEvent('invite_view', { invite_type: 'group' });
         Modals.showUserMuptiplePicker(props.router,
             {
                 title: 'Add',

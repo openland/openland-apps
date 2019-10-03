@@ -99,7 +99,7 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
     const size: ZRoundedButtonSize = props.size || 'default';
     const style: ZRoundedButtonStyle = props.style || 'primary';
     const styles = resolveStylesBySize[size];
-    const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : theme.backgroundTertiary);
+    const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : theme.backgroundTertiaryTrans);
     const textColor = style === 'primary' ? theme.foregroundInverted : (style === 'danger' ? theme.foregroundContrast : theme.foregroundSecondary);
 
     const highlightedColors = {

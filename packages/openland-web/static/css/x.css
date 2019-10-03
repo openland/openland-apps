@@ -28,9 +28,11 @@ body {
     --backgroundSecondaryHover: #F2F3F5;
     --backgroundSecondaryActive: #F2F3F5;
 
-    --backgroundTertiary: rgba(201, 204, 209, 0.24);
+    --backgroundTertiary: #F2F3F5;
     --backgroundTertiaryHover: #EDEEF0;
     --backgroundTertiaryActive: #E6E7EB;
+
+    --backgroundTertiaryTrans: rgba(201, 204, 209, 0.24);
 
     --accentPrimary: #248BF2;
     --accentPrimaryHover: #3399FF;
@@ -65,9 +67,4 @@ body {
     --tintPink: #E539AC;
     --tintGrey: #71747A;
     --tintInverted: rgba(255, 255, 255, 0.32);
-
-    /* legacy */
-    --backgroundInverted: #F2F3F5;
-    --backgroundInvertedHover: #EBEDF0;
-    --backgroundInvertedActive: #F2F3F5;
 }

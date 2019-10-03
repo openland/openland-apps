@@ -50,7 +50,6 @@ const avatarImageClass = css`
     height: 40px;  
     border-radius: 40px;
     overflow: hidden;
-    background-color: var(--backgroundTertiary);
     cursor: pointer;
 `;
 
@@ -59,7 +58,7 @@ const imageWrapper = css`
     z-index: 0;
     width: 40px;
     height: 40px;
-    background-color: var(--backgroundTertiary);
+    background-color: var(--backgroundTertiaryTrans);
     border-radius: 100%;
 
     & > img {

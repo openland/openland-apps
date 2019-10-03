@@ -15,6 +15,7 @@ object Operations {
         if (name == "AvailableRooms") return AvailableRooms
         if (name == "ChatInit") return ChatInit
         if (name == "ChatInitFromUnread") return ChatInitFromUnread
+        if (name == "ChatMembersSearch") return ChatMembersSearch
         if (name == "Comments") return Comments
         if (name == "Conference") return Conference
         if (name == "ConferenceMedia") return ConferenceMedia
@@ -60,6 +61,7 @@ object Operations {
         if (name == "RoomMembers") return RoomMembers
         if (name == "RoomMembersPaginated") return RoomMembersPaginated
         if (name == "RoomMembersShort") return RoomMembersShort
+        if (name == "RoomMembersTiny") return RoomMembersTiny
         if (name == "RoomOrganizationAdminMembers") return RoomOrganizationAdminMembers
         if (name == "RoomPico") return RoomPico
         if (name == "RoomSearch") return RoomSearch
@@ -112,6 +114,8 @@ object Operations {
         if (name == "FeedReactionAdd") return FeedReactionAdd
         if (name == "FeedReactionRemove") return FeedReactionRemove
         if (name == "MarkSequenceRead") return MarkSequenceRead
+        if (name == "MatchmakingConnect") return MatchmakingConnect
+        if (name == "MatchmakingProfileFill") return MatchmakingProfileFill
         if (name == "MediaAnswer") return MediaAnswer
         if (name == "MediaCandidate") return MediaCandidate
         if (name == "MediaFailed") return MediaFailed

@@ -13,7 +13,7 @@ import SendIcon from 'openland-icons/s/ic-send-24.svg';
 import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { useClient } from 'openland-web/utils/useClient';
 import { StickerFragment, RoomMembers_members_user } from 'openland-api/Types';
-import { searchMentions } from 'openland-engines/mentions/searchMentions';
+import { SearchUser } from 'openland-engines/mentions/searchMentions';
 import { emojiSuggest } from 'openland-y-utils/emojiSuggest';
 import { emojiComponent } from 'openland-y-utils/emojiComponent';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -26,6 +26,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { onEmojiSent } from 'openland-web/components/unicorn/emoji/Recent';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import { Deferred } from 'openland-unicorn/components/Deferred';
 
 interface MentionUserComponentProps {
     id: string;
@@ -119,6 +120,11 @@ interface AutoCompleteComponentRef {
     isActive(): boolean;
 }
 
+interface Cursor {
+    __typename: 'cursor';
+    after: string;
+}
+
 const AutoCompleteComponent = React.memo(
     React.forwardRef(
         (
@@ -130,6 +136,7 @@ const AutoCompleteComponent = React.memo(
             },
             ref: React.Ref<AutoCompleteComponentRef>,
         ) => {
+            const client = useClient();
             const listRef = React.useRef<UNavigableListRef>(null);
             const fallbackRender = React.useRef<any>(<div className={mentionsContainer} />);
             const containerRef = React.useRef<HTMLDivElement>(null);
@@ -146,6 +153,9 @@ const AutoCompleteComponent = React.memo(
             const isActive = React.useRef<boolean>(false);
             isActive.current = false;
             lastActiveWord.current = props.activeWord;
+
+            const [users, setUsers] = React.useState<(SearchUser | AllMention | Cursor)[]>([]);
+            const lastQuery = React.useRef<string>();
 
             React.useImperativeHandle(ref, () => ({
                 onPressDown: () => {
@@ -203,20 +213,41 @@ const AutoCompleteComponent = React.memo(
             }]);
 
             const itemRender = React.useCallback(
-                (v: RoomMembers_members_user | AllMention) => v.__typename === 'AllMention' ? (
-                    <div className={mentionContainer}>
-                        <UIcon className={allMentionIcon} icon={<AllIcon />} />
-                        <span className={userName}>@All<span style={{ opacity: 0.4, marginLeft: 7 }}>Notify everyone in this group</span></span>
-                    </div>
-                ) : (
-                        <MentionUserComponent
-                            name={v.name}
-                            id={v.id}
-                            photo={v.photo}
-                            primaryOrganization={v.primaryOrganization}
-                        />
-                    ),
-                [],
+                (v: SearchUser | AllMention | Cursor) => {
+                    if (v.__typename === 'cursor') {
+                        (async () => {
+                            let lastq = lastQuery.current;
+                            let members = await client.queryChatMembersSearch({ cid: props.groupId!, query: lastQuery.current, first: 20, after: v.after });
+                            if (lastq !== lastQuery.current) {
+                                return;
+                            }
+                            let res: (SearchUser | AllMention | Cursor)[] = members.members.edges.map(e => e.user);
+                            if (members && members.members.pageInfo.hasNextPage) {
+                                res.push({ __typename: 'cursor', after: members.members.edges[members.members.edges.length - 1].cursor });
+                            }
+                            setUsers([...users.filter(u => u.__typename !== 'cursor'), ...res]);
+                        })();
+                    }
+                    return v.__typename === 'cursor' ? (
+                        <XView height={40} flexGrow={1} justifyContent="center" alignItems="center">
+                            <XLoader transparentBackground={true} size="small" />
+                        </XView>
+                    ) :
+                        v.__typename === 'AllMention' ? (
+                            <div className={mentionContainer}>
+                                <UIcon className={allMentionIcon} icon={<AllIcon />} />
+                                <span className={userName}>@All<span style={{ opacity: 0.4, marginLeft: 7 }}>Notify everyone in this group</span></span>
+                            </div>
+                        ) : (
+                                <MentionUserComponent
+                                    name={v.name}
+                                    id={v.id}
+                                    photo={v.photo}
+                                    primaryOrganization={v.primaryOrganization}
+                                />
+                            );
+                },
+                [users],
             );
 
             const emojiItemRender = React.useCallback(
@@ -226,13 +257,21 @@ const AutoCompleteComponent = React.memo(
                 [],
             );
 
-            let matched: (RoomMembers_members_user | AllMention)[] | undefined = [];
+            let matched: (SearchUser | AllMention | Cursor)[] | undefined = [];
             if (props.groupId) {
-                const client = useClient();
-                let members = client.useWithoutLoaderRoomMembers({ roomId: props.groupId });
+                let query = word && word.startsWith("@") ? word.substring(1) : undefined;
+                let members = client.useWithoutLoaderChatMembersSearch({ cid: props.groupId, first: 20, query });
 
-                if (members && members.members && word && word.startsWith('@')) {
-                    matched = searchMentions(word, members.members).map(u => u.user);
+                if (members && query !== lastQuery.current) {
+                    lastQuery.current = query;
+                    let res: (SearchUser | AllMention | Cursor)[] = members ? members.members.edges.map(e => e.user) : [];
+                    if (members && members.members.pageInfo.hasNextPage) {
+                        res.push({ __typename: 'cursor', after: members.members.edges[members.members.edges.length - 1].cursor });
+                    }
+                    setUsers(res);
+                }
+                if (users && word && word.startsWith('@')) {
+                    matched = [...users];
                     if ('@all'.startsWith(word.toLowerCase())) {
                         matched.unshift({ __typename: 'AllMention' });
                     }
@@ -459,13 +498,15 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
 
     return (
         <div className={sendMessageContainer}>
-            <AutoCompleteComponent
-                onSelected={onUserPicked}
-                onEmojiSelected={onEmojiPicked}
-                groupId={props.groupId}
-                activeWord={activeWord}
-                ref={suggestRef}
-            />
+            <Deferred>
+                <AutoCompleteComponent
+                    onSelected={onUserPicked}
+                    onEmojiSelected={onEmojiPicked}
+                    groupId={props.groupId}
+                    activeWord={activeWord}
+                    ref={suggestRef}
+                />
+            </Deferred>
             <input ref={fileInputRef} type="file" multiple={true} style={{ display: 'none' }} onChange={onFileInputChange} />
             {!!props.onAttach && (
                 <div className={actionButtonContainer} >

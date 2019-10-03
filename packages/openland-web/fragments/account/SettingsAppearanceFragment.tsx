@@ -31,7 +31,7 @@ export const SettingsAppearanceFragment = React.memo(() => {
     });
 
     return (
-        <Page>
+        <Page track="account_appearance">
             <UHeader title="Appearance" />
             <FormWrapper title="Appearance">
                 <FormSection title="Secret group display">

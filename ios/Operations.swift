@@ -971,9 +971,46 @@ private let FeedUpdateFragmentSelector = obj(
             ))
         )
 
+private let MatchmakingProfileFragmentSelector = obj(
+            field("__typename","__typename", notNull(scalar("String"))),
+            field("answers","answers", notNull(list(notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    inline("TextMatchmakingAnswer", obj(
+                        field("answer","answer", notNull(scalar("String"))),
+                        field("question","question", notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("subtitle","subtitle", notNull(scalar("String"))),
+                                field("title","title", notNull(scalar("String")))
+                            )))
+                    )),
+                    inline("MultiselectMatchmakingAnswer", obj(
+                        field("question","question", notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("id","id", notNull(scalar("ID"))),
+                                field("subtitle","subtitle", notNull(scalar("String"))),
+                                field("title","title", notNull(scalar("String")))
+                            ))),
+                        field("tags","tags", notNull(list(notNull(scalar("String")))))
+                    ))
+                ))))),
+            field("chatCreated","chatCreated", notNull(scalar("Boolean"))),
+            field("user","user", notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("id","id", notNull(scalar("ID"))),
+                    field("isYou","isYou", notNull(scalar("Boolean"))),
+                    field("name","name", notNull(scalar("String"))),
+                    field("photo","photo", scalar("String"))
+                )))
+        )
+
 private let MatchmakingRoomFragmentSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("enabled","enabled", notNull(scalar("Boolean"))),
+            field("myProfile","myProfile", obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("MatchmakingProfile", MatchmakingProfileFragmentSelector)
+                )),
             field("profiles","profiles", list(notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     field("answers","answers", notNull(list(notNull(obj(
@@ -1767,6 +1804,31 @@ private let ChatInitFromUnreadSelector = obj(
                     fragment("Room", RoomShortSelector)
                 ))
         )
+private let ChatMembersSearchSelector = obj(
+            field("chatMembersSearch","members", arguments(fieldValue("after", refValue("after")), fieldValue("cid", refValue("cid")), fieldValue("first", refValue("first")), fieldValue("query", refValue("query"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("edges","edges", notNull(list(notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("cursor","cursor", notNull(scalar("String"))),
+                            field("node","user", notNull(obj(
+                                    field("__typename","__typename", notNull(scalar("String"))),
+                                    field("id","id", notNull(scalar("ID"))),
+                                    field("name","name", notNull(scalar("String"))),
+                                    field("photo","photo", scalar("String")),
+                                    field("primaryOrganization","primaryOrganization", obj(
+                                            field("__typename","__typename", notNull(scalar("String"))),
+                                            field("id","id", notNull(scalar("ID"))),
+                                            field("name","name", notNull(scalar("String")))
+                                        )),
+                                    field("shortname","shortname", scalar("String"))
+                                )))
+                        ))))),
+                    field("pageInfo","pageInfo", notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("hasNextPage","hasNextPage", notNull(scalar("Boolean")))
+                        )))
+                )))
+        )
 private let CommentsSelector = obj(
             field("comments","comments", arguments(fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2479,6 +2541,23 @@ private let RoomMembersShortSelector = obj(
                         )))
                 )))))
         )
+private let RoomMembersTinySelector = obj(
+            field("roomMembers","members", arguments(fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("user","user", notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("id","id", notNull(scalar("ID"))),
+                            field("name","name", notNull(scalar("String"))),
+                            field("photo","photo", scalar("String")),
+                            field("primaryOrganization","primaryOrganization", obj(
+                                    field("__typename","__typename", notNull(scalar("String"))),
+                                    field("id","id", notNull(scalar("ID"))),
+                                    field("name","name", notNull(scalar("String")))
+                                )),
+                            field("shortname","shortname", scalar("String"))
+                        )))
+                )))))
+        )
 private let RoomOrganizationAdminMembersSelector = obj(
             field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2906,6 +2985,15 @@ private let FeedReactionRemoveSelector = obj(
         )
 private let MarkSequenceReadSelector = obj(
             field("alphaGlobalRead","alphaGlobalRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("String")))
+        )
+private let MatchmakingConnectSelector = obj(
+            field("matchmakingConnect","matchmakingConnect", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
+        )
+private let MatchmakingProfileFillSelector = obj(
+            field("matchmakingProfileFill","matchmakingProfileFill", arguments(fieldValue("input", refValue("input")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("MatchmakingProfile", MatchmakingProfileFragmentSelector)
+                )))
         )
 private let MediaAnswerSelector = obj(
             field("mediaStreamAnswer","mediaStreamAnswer", arguments(fieldValue("answer", refValue("answer")), fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
@@ -3578,6 +3666,12 @@ class Operations {
         "query ChatInitFromUnread($before:ID,$chatId:ID!,$first:Int!){state:conversationState(id:$chatId){__typename state}gammaMessages(before:$before,chatId:$chatId,first:$first){__typename haveMoreBackward haveMoreForward messages{__typename ...FullMessage}}lastReadedMessage(chatId:$chatId){__typename id}room(id:$chatId){__typename ...RoomShort}}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename ...SpanFragment}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id style title url}}subTitle text title titleLink titleLinkHostname}}commentsCount edited id quotedMessages{__typename ...QuotedMessage}reactions{__typename reaction user{__typename ...UserShort}}}... on StickerMessage{commentsCount date id quotedMessages{__typename ...QuotedMessage}reactions{__typename reaction user{__typename ...UserShort}}sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}sticker{__typename ...StickerFragment}}... on ServiceMessage{id serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserBadge on UserBadge{__typename id name verified}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment QuotedMessage on ModernMessage{__typename date fallback id message message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename ...SpanFragment}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}subTitle text title titleLink titleLinkHostname}}commentsCount edited id}... on StickerMessage{date id reactions{__typename reaction user{__typename ...UserShort}}sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}sticker{__typename ... on ImageSticker{id image{__typename ... on ImageRef{uuid}}pack{__typename ... on StickerPack{id title}}}}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{id image{__typename uuid}pack{__typename id title}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment RoomShort on Room{__typename ... on PrivateRoom{id myBadge{__typename ...UserBadge}pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind membersCount membership myBadge{__typename ...UserBadge}organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}",
         ChatInitFromUnreadSelector
     )
+    let ChatMembersSearch = OperationDefinition(
+        "ChatMembersSearch",
+        .query, 
+        "query ChatMembersSearch($after:String,$cid:ID!,$first:Int!,$query:String){members:chatMembersSearch(after:$after,cid:$cid,first:$first,query:$query){__typename edges{__typename cursor user:node{__typename id name photo primaryOrganization{__typename id name}shortname}}pageInfo{__typename hasNextPage}}}",
+        ChatMembersSearchSelector
+    )
     let Comments = OperationDefinition(
         "Comments",
         .query, 
@@ -3665,7 +3759,7 @@ class Operations {
     let MatchmakingRoom = OperationDefinition(
         "MatchmakingRoom",
         .query, 
-        "query MatchmakingRoom($peerId:ID!){matchmakingRoom(peerId:$peerId){__typename ...MatchmakingRoomFragment}}fragment MatchmakingRoomFragment on MatchmakingRoom{__typename enabled profiles{__typename answers{__typename ... on TextMatchmakingAnswer{answer question{__typename id subtitle title}}... on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id name photo primaryOrganization{__typename id name photo}}}questions{__typename ... on TextMatchmakingQuestion{id subtitle title}... on MultiselectMatchmakingQuestion{id subtitle tags title}}}",
+        "query MatchmakingRoom($peerId:ID!){matchmakingRoom(peerId:$peerId){__typename ...MatchmakingRoomFragment}}fragment MatchmakingRoomFragment on MatchmakingRoom{__typename enabled myProfile{__typename ...MatchmakingProfileFragment}profiles{__typename answers{__typename ... on TextMatchmakingAnswer{answer question{__typename id subtitle title}}... on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id name photo primaryOrganization{__typename id name photo}}}questions{__typename ... on TextMatchmakingQuestion{id subtitle title}... on MultiselectMatchmakingQuestion{id subtitle tags title}}}fragment MatchmakingProfileFragment on MatchmakingProfile{__typename answers{__typename ... on TextMatchmakingAnswer{answer question{__typename id subtitle title}}... on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id isYou name photo}}",
         MatchmakingRoomSelector
     )
     let Message = OperationDefinition(
@@ -3847,6 +3941,12 @@ class Operations {
         .query, 
         "query RoomMembersShort($roomId:ID!){members:roomMembers(roomId:$roomId){__typename user{__typename id}}}",
         RoomMembersShortSelector
+    )
+    let RoomMembersTiny = OperationDefinition(
+        "RoomMembersTiny",
+        .query, 
+        "query RoomMembersTiny($roomId:ID!){members:roomMembers(roomId:$roomId){__typename user{__typename id name photo primaryOrganization{__typename id name}shortname}}}",
+        RoomMembersTinySelector
     )
     let RoomOrganizationAdminMembers = OperationDefinition(
         "RoomOrganizationAdminMembers",
@@ -4159,6 +4259,18 @@ class Operations {
         .mutation, 
         "mutation MarkSequenceRead($seq:Int!){alphaGlobalRead(toSeq:$seq)}",
         MarkSequenceReadSelector
+    )
+    let MatchmakingConnect = OperationDefinition(
+        "MatchmakingConnect",
+        .mutation, 
+        "mutation MatchmakingConnect($peerId:ID!,$uid:ID!){matchmakingConnect(peerId:$peerId,uid:$uid)}",
+        MatchmakingConnectSelector
+    )
+    let MatchmakingProfileFill = OperationDefinition(
+        "MatchmakingProfileFill",
+        .mutation, 
+        "mutation MatchmakingProfileFill($input:MatchmakingProfileFillInput!,$peerId:ID!){matchmakingProfileFill(input:$input,peerId:$peerId){__typename ...MatchmakingProfileFragment}}fragment MatchmakingProfileFragment on MatchmakingProfile{__typename answers{__typename ... on TextMatchmakingAnswer{answer question{__typename id subtitle title}}... on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id isYou name photo}}",
+        MatchmakingProfileFillSelector
     )
     let MediaAnswer = OperationDefinition(
         "MediaAnswer",
@@ -4644,6 +4756,7 @@ class Operations {
         if name == "AvailableRooms" { return AvailableRooms }
         if name == "ChatInit" { return ChatInit }
         if name == "ChatInitFromUnread" { return ChatInitFromUnread }
+        if name == "ChatMembersSearch" { return ChatMembersSearch }
         if name == "Comments" { return Comments }
         if name == "Conference" { return Conference }
         if name == "ConferenceMedia" { return ConferenceMedia }
@@ -4689,6 +4802,7 @@ class Operations {
         if name == "RoomMembers" { return RoomMembers }
         if name == "RoomMembersPaginated" { return RoomMembersPaginated }
         if name == "RoomMembersShort" { return RoomMembersShort }
+        if name == "RoomMembersTiny" { return RoomMembersTiny }
         if name == "RoomOrganizationAdminMembers" { return RoomOrganizationAdminMembers }
         if name == "RoomPico" { return RoomPico }
         if name == "RoomSearch" { return RoomSearch }
@@ -4741,6 +4855,8 @@ class Operations {
         if name == "FeedReactionAdd" { return FeedReactionAdd }
         if name == "FeedReactionRemove" { return FeedReactionRemove }
         if name == "MarkSequenceRead" { return MarkSequenceRead }
+        if name == "MatchmakingConnect" { return MatchmakingConnect }
+        if name == "MatchmakingProfileFill" { return MatchmakingProfileFill }
         if name == "MediaAnswer" { return MediaAnswer }
         if name == "MediaCandidate" { return MediaCandidate }
         if name == "MediaFailed" { return MediaFailed }

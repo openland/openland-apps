@@ -32,7 +32,7 @@ export class SHeaderIndicator extends React.PureComponent<SHeaderIndicatorProps>
         const { current, items, theme } = this.props;
 
         return (
-            <View style={[styles.indicator, { backgroundColor: theme.backgroundTertiary }]}>
+            <View style={[styles.indicator, { backgroundColor: theme.backgroundTertiaryTrans }]}>
                 <Text style={[styles.indicatorText, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
                     {current} / {items}
                 </Text>

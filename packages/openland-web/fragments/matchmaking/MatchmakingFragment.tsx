@@ -37,7 +37,7 @@ const TextComponent = (props: TextComponentProps) => {
 
     return (
         <XView flexGrow={1}>
-            <XView flexGrow={1}>
+            <XView flexGrow={1} paddingHorizontal={16}>
                 <UTextArea
                     alignSelf="center"
                     height={190}
@@ -54,7 +54,7 @@ const TextComponent = (props: TextComponentProps) => {
                 size="large"
                 text="Continue"
                 square={true}
-                onClick={() => props.onSubmit(text.trim())}
+                onClick={!text.trim() ? undefined : () => props.onSubmit(text.trim())}
                 disable={!text.trim()}
             />
         </XView>
@@ -138,7 +138,7 @@ const TagsComponent = (props: TagsComponentProps) => {
                 size="large"
                 text="Continue"
                 square={true}
-                onClick={() => props.onSubmit(Array.from(tags))}
+                onClick={!tags.size ? undefined : () => props.onSubmit(Array.from(tags))}
                 disable={!tags.size}
             />
         </XView>
@@ -224,7 +224,7 @@ const QuestionComponent = (props: QuestionComponentProps) => {
     };
 
     return (
-        <Page flexGrow={1}>
+        <Page flexGrow={1} track="matchmaking_question">
             <UHeader titleView={textQuestion ? <TitleRender onSkip={onSkip} /> : null} />
             <div className={descriptionContainer}>
                 <div className={cx(TextTitle1, titleStyle)}>{props.question.title}</div>
@@ -277,10 +277,23 @@ const MatchmakingRootComponent = React.memo(
             return null;
         }
 
+        const submitAction = async () => {
+            await client.mutateMatchmakingProfileFill({
+                peerId: props.chatId,
+                input: {
+                    answers: engine.getAnswers(),
+                },
+            });
+            await client.refetchMatchmakingRoom({ peerId: props.chatId });
+            await router.navigate(`/matchmaking/${props.chatId}/created`);
+        };
+
         const doSubmit = (answer: string[] | string | null) => {
             engine.addAnswer(new Map().set(currentQuestion!.id, answer));
             if (nextQuestion) {
                 router.navigate(`/matchmaking/${props.chatId}/ask/${nextQuestion.id}`);
+            } else {
+                submitAction();
             }
         };
 

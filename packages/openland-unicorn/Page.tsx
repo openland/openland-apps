@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { XScrollView3, XScrollValues } from '../openland-x/XScrollView3';
+import { trackEvent } from 'openland-x-analytics';
 
 interface PageProps {
+    track: string;
     style?: 'wide' | 'normal';
     scroll?: 'disable' | 'enable';
     onScroll?: (values: XScrollValues) => void;
@@ -12,6 +14,9 @@ interface PageProps {
 }
 
 export const Page = React.memo((props: PageProps) => {
+    React.useEffect(() => {
+        trackEvent('navigate_' + props.track);
+    }, []);
     const { style = 'normal', scroll = 'enable', padded, onScroll, children } = props;
     const width = style === 'normal' ? 600 : 856;
     const marginHorizontal = padded ? 16 : 0;
