@@ -10,8 +10,6 @@ import com.facebook.react.modules.core.ExceptionsManagerModule
 import com.facebook.react.modules.core.Timing
 import com.facebook.react.modules.debug.SourceCodeModule
 import com.facebook.react.modules.intent.IntentModule
-import com.facebook.react.modules.location.LocationModule
-import com.facebook.react.modules.netinfo.NetInfoModule
 import com.facebook.react.modules.network.NetworkingModule
 import com.facebook.react.modules.storage.AsyncStorageModule
 import com.facebook.react.modules.systeminfo.AndroidInfoModule
@@ -38,9 +36,7 @@ class ThreadBaseReactPackage(private val reactInstanceManager: ReactInstanceMana
                 // Main list
                 AsyncStorageModule(catalystApplicationContext),
                 IntentModule(catalystApplicationContext),
-                LocationModule(catalystApplicationContext),
                 NetworkingModule(catalystApplicationContext),
-                NetInfoModule(catalystApplicationContext),
                 VibrationModule(catalystApplicationContext),
                 WebSocketModule(catalystApplicationContext),
                 ThreadSelfModule(catalystApplicationContext)

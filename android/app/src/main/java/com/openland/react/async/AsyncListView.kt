@@ -1,16 +1,14 @@
 package com.openland.react.async
 
 import android.graphics.Color
-import android.os.Handler
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.widget.FrameLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.litho.*
 import com.facebook.litho.sections.SectionContext
-import com.facebook.litho.sections.SectionLifecycle
 import com.facebook.litho.sections.widget.*
 import com.facebook.litho.widget.SolidColor
 import com.facebook.react.uimanager.PixelUtil
@@ -158,7 +156,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
                 .itemAnimator(null)
                 .build()
 
-        recycler.clearCachedLayout()
+//        recycler.clearCachedLayout()
 
 
         if (componentTree == null) {

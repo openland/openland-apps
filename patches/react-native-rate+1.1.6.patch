@@ -1,11 +1,12 @@
-patch-package
+diff --git a/node_modules/react-native-rate/index.d.ts b/node_modules/react-native-rate/index.d.ts
+index f657d66..04e8e6e 100644
 --- a/node_modules/react-native-rate/index.d.ts
 +++ b/node_modules/react-native-rate/index.d.ts
-@@ -9,7 +9,6 @@ declare module 'react-native-rate' {
- 		openAppStoreIfInAppFails?: boolean,
+@@ -6,7 +6,6 @@ declare module 'react-native-rate' {
+ 		OtherAndroidURL?: string,
+ 		preferredAndroidMarket?: AndroidMarket,
+ 		preferInApp?: boolean,
+-		openAppStoreIfInAppFails?: boolean,
  		inAppDelay?: number,
  		fallbackPlatformURL?: string,
--		openAppStoreIfInAppFails?: boolean,
- 	}
- 
- 	export enum AndroidMarket {
+ 		openAppStoreIfInAppFails?: boolean,

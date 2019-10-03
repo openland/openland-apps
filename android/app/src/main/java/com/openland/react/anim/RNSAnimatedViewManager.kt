@@ -1,9 +1,9 @@
 package com.openland.react.anim
 
 import android.graphics.PointF
-import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.util.Log
 import android.view.animation.LinearInterpolator
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.facebook.litho.utils.IncrementalMountUtils
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
@@ -11,11 +11,8 @@ import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.WritableNativeMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.facebook.react.uimanager.PixelUtil
-import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerModule
 import com.facebook.react.uimanager.UIManagerModuleListener
-import com.facebook.react.uimanager.annotations.ReactProp
-import com.facebook.react.views.view.ReactViewManager
 import com.openland.react.anim.hack.CubicBezierInterpolator
 import com.openland.react.anim.hack.MakeAnimationsFast
 import com.openland.react.runOnUIThread
