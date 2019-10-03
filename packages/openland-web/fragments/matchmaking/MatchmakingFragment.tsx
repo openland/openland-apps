@@ -37,7 +37,7 @@ const TextComponent = (props: TextComponentProps) => {
 
     return (
         <XView flexGrow={1}>
-            <XView flexGrow={1}>
+            <XView flexGrow={1} paddingHorizontal={16}>
                 <UTextArea
                     alignSelf="center"
                     height={190}
