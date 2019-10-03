@@ -28,6 +28,7 @@ const hideClass = css`
     transform: translateY(56px);
     transition: transform 0.2s ease-out;
     opacity: 0;
+    pointer-events: none;
 `;
 
 const showClass = css`
