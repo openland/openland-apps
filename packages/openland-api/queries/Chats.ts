@@ -649,6 +649,30 @@ export const RoomMembersTinyQuery = gql`
     ${UserShort}
 `;
 
+export const ChatMembersSearchQuery = gql`
+    query ChatMembersSearch($cid: ID!, $query: String, $first: Int!, $after: String) {
+        members: chatMembersSearch(cid: $cid, query: $query, first: $first, after: $after) {
+            edges{
+                user: node{
+                    id
+                    name
+                    shortname
+                    photo
+                    primaryOrganization{
+                        id
+                        name
+                    }
+                }
+                cursor
+            }
+            pageInfo{
+                hasNextPage
+            }
+        }
+    }
+    ${UserShort}
+`;
+
 export const RoomOrganizationAdminMembersQuery = gql`
     query RoomOrganizationAdminMembers($id: ID!) {
         room(id: $id) {

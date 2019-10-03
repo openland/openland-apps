@@ -401,6 +401,13 @@
       }
     },
     {
+      "signature": "b357125b7b4b01211e2bdd4be730bfbc356f67042b683e3697a5c9ddf1477871",
+      "document": "query ChatMembersSearch($after:String,$cid:ID!,$first:Int!,$query:String){members:chatMembersSearch(after:$after,cid:$cid,first:$first,query:$query){__typename edges{__typename cursor user:node{__typename id name photo primaryOrganization{__typename id name}shortname}}pageInfo{__typename hasNextPage}}}",
+      "metadata": {
+        "engineSignature": "query ChatMembersSearch($after:String,$cid:ID!,$first:Int!,$query:String){chatMembersSearch(after:$after,cid:$cid,first:$first,query:$query){__typename edges{__typename cursor node{__typename id name photo primaryOrganization{__typename id name}shortname}}pageInfo{__typename hasNextPage}}}"
+      }
+    },
+    {
       "signature": "cc2bfa1b50b3f018dc2e6e92b8dc0cb252d352f3afc146b5061ca7376e61c2b7",
       "document": "fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query RoomOrganizationAdminMembers($id:ID!){room(id:$id){__typename...on SharedRoom{id organization{__typename adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename...UserShort}}id}}}}",
       "metadata": {

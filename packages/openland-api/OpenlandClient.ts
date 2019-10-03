@@ -331,6 +331,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: QueryWatchParameters): Types.RoomMembersTiny | null {
         return this.useQuery(Source.RoomMembersTinyQuery, variables, opts);
     }
+    async queryChatMembersSearch(variables: Types.ChatMembersSearchVariables, opts?: OperationParameters): Promise<Types.ChatMembersSearch> {
+        return this.client.query(Source.ChatMembersSearchQuery, variables, opts);
+    }
+    async refetchChatMembersSearch(variables: Types.ChatMembersSearchVariables): Promise<Types.ChatMembersSearch> {
+        return this.refetch(Source.ChatMembersSearchQuery, variables);
+    }
+    useChatMembersSearch(variables: Types.ChatMembersSearchVariables, opts?: QueryWatchParameters): Types.ChatMembersSearch {
+        return this.useQuerySuspense(Source.ChatMembersSearchQuery, variables, opts);
+    }
+    useWithoutLoaderChatMembersSearch(variables: Types.ChatMembersSearchVariables, opts?: QueryWatchParameters): Types.ChatMembersSearch | null {
+        return this.useQuery(Source.ChatMembersSearchQuery, variables, opts);
+    }
     async queryRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts?: OperationParameters): Promise<Types.RoomOrganizationAdminMembers> {
         return this.client.query(Source.RoomOrganizationAdminMembersQuery, variables, opts);
     }

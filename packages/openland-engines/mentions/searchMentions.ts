@@ -1,6 +1,10 @@
 export interface SearchUser {
+    __typename: 'User';
     name: string;
     shortname?: string | null;
+    id: string;
+    photo: string | null;
+    primaryOrganization: { name: string } | null;
 
 }
 export interface SeachMember {

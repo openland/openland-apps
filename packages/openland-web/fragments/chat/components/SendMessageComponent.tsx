@@ -13,7 +13,7 @@ import SendIcon from 'openland-icons/s/ic-send-24.svg';
 import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { useClient } from 'openland-web/utils/useClient';
 import { StickerFragment, RoomMembers_members_user } from 'openland-api/Types';
-import { searchMentions, SearchUser } from 'openland-engines/mentions/searchMentions';
+import { SearchUser } from 'openland-engines/mentions/searchMentions';
 import { emojiSuggest } from 'openland-y-utils/emojiSuggest';
 import { emojiComponent } from 'openland-y-utils/emojiComponent';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -120,6 +120,11 @@ interface AutoCompleteComponentRef {
     isActive(): boolean;
 }
 
+interface Cursor {
+    __typename: 'cursor';
+    after: string;
+}
+
 const AutoCompleteComponent = React.memo(
     React.forwardRef(
         (
@@ -131,6 +136,7 @@ const AutoCompleteComponent = React.memo(
             },
             ref: React.Ref<AutoCompleteComponentRef>,
         ) => {
+            const client = useClient();
             const listRef = React.useRef<UNavigableListRef>(null);
             const fallbackRender = React.useRef<any>(<div className={mentionsContainer} />);
             const containerRef = React.useRef<HTMLDivElement>(null);
@@ -147,6 +153,9 @@ const AutoCompleteComponent = React.memo(
             const isActive = React.useRef<boolean>(false);
             isActive.current = false;
             lastActiveWord.current = props.activeWord;
+
+            const [users, setUsers] = React.useState<(SearchUser | AllMention | Cursor)[]>([]);
+            const lastQuery = React.useRef<string>();
 
             React.useImperativeHandle(ref, () => ({
                 onPressDown: () => {
@@ -204,20 +213,41 @@ const AutoCompleteComponent = React.memo(
             }]);
 
             const itemRender = React.useCallback(
-                (v: RoomMembers_members_user | AllMention) => v.__typename === 'AllMention' ? (
-                    <div className={mentionContainer}>
-                        <UIcon className={allMentionIcon} icon={<AllIcon />} />
-                        <span className={userName}>@All<span style={{ opacity: 0.4, marginLeft: 7 }}>Notify everyone in this group</span></span>
-                    </div>
-                ) : (
-                        <MentionUserComponent
-                            name={v.name}
-                            id={v.id}
-                            photo={v.photo}
-                            primaryOrganization={v.primaryOrganization}
-                        />
-                    ),
-                [],
+                (v: SearchUser | AllMention | Cursor) => {
+                    if (v.__typename === 'cursor') {
+                        (async () => {
+                            let lastq = lastQuery.current;
+                            let members = await client.queryChatMembersSearch({ cid: props.groupId!, query: lastQuery.current, first: 20, after: v.after });
+                            if (lastq !== lastQuery.current) {
+                                return;
+                            }
+                            let res: (SearchUser | AllMention | Cursor)[] = members.members.edges.map(e => e.user);
+                            if (members && members.members.pageInfo.hasNextPage) {
+                                res.push({ __typename: 'cursor', after: members.members.edges[members.members.edges.length - 1].cursor });
+                            }
+                            setUsers([...users.filter(u => u.__typename !== 'cursor'), ...res]);
+                        })();
+                    }
+                    return v.__typename === 'cursor' ? (
+                        <XView height={40} flexGrow={1} justifyContent="center" alignItems="center">
+                            <XLoader transparentBackground={true} size="small" />
+                        </XView>
+                    ) :
+                        v.__typename === 'AllMention' ? (
+                            <div className={mentionContainer}>
+                                <UIcon className={allMentionIcon} icon={<AllIcon />} />
+                                <span className={userName}>@All<span style={{ opacity: 0.4, marginLeft: 7 }}>Notify everyone in this group</span></span>
+                            </div>
+                        ) : (
+                                <MentionUserComponent
+                                    name={v.name}
+                                    id={v.id}
+                                    photo={v.photo}
+                                    primaryOrganization={v.primaryOrganization}
+                                />
+                            );
+                },
+                [users],
             );
 
             const emojiItemRender = React.useCallback(
@@ -227,19 +257,24 @@ const AutoCompleteComponent = React.memo(
                 [],
             );
 
-            let matched: (SearchUser | AllMention)[] | undefined = [];
-            let loading = false;
+            let matched: (SearchUser | AllMention | Cursor)[] | undefined = [];
             if (props.groupId) {
-                const client = useClient();
-                let members = client.useWithoutLoaderRoomMembersTiny({ roomId: props.groupId }, { fetchPolicy: 'cache-and-network' });
+                let query = word && word.startsWith("@") ? word.substring(1) : undefined;
+                let members = client.useWithoutLoaderChatMembersSearch({ cid: props.groupId, first: 20, query });
 
-                if (members && members.members && word && word.startsWith('@')) {
-                    matched = searchMentions(word, members.members).map(u => u.user);
+                if (members && query !== lastQuery.current) {
+                    lastQuery.current = query;
+                    let res: (SearchUser | AllMention | Cursor)[] = members ? members.members.edges.map(e => e.user) : [];
+                    if (members && members.members.pageInfo.hasNextPage) {
+                        res.push({ __typename: 'cursor', after: members.members.edges[members.members.edges.length - 1].cursor });
+                    }
+                    setUsers(res);
+                }
+                if (users && word && word.startsWith('@')) {
+                    matched = [...users];
                     if ('@all'.startsWith(word.toLowerCase())) {
                         matched.unshift({ __typename: 'AllMention' });
                     }
-                } else if (word && word.startsWith('@')) {
-                    loading = true;
                 }
             }
             let filtered: { name: string, value: string, shortcode: string }[] = [];
@@ -264,7 +299,7 @@ const AutoCompleteComponent = React.memo(
 
             React.useEffect(() => {
                 if (containerRef.current) {
-                    let show = (matched && matched.length) || (filtered && filtered.length) || loading;
+                    let show = (matched && matched.length) || (filtered && filtered.length);
                     containerRef.current.style.opacity = show ? '1' : '0';
                     containerRef.current.style.transform = `translateY(${show ? 0 : 10}px)`;
                     containerRef.current.style.pointerEvents = show ? 'auto' : 'none';
@@ -272,7 +307,7 @@ const AutoCompleteComponent = React.memo(
                 if (listRef.current) {
                     listRef.current.reset();
                 }
-            }, [matched, filtered, loading]);
+            }, [matched, filtered]);
 
             if (matched.length) {
                 fallbackRender.current = (
@@ -312,16 +347,6 @@ const AutoCompleteComponent = React.memo(
                         />
                     </div>
                 );
-            } else if (loading) {
-                fallbackRender.current = <div
-                    ref={containerRef}
-                    className={mentionsContainer}
-                    onMouseDown={(e) => e.preventDefault()}
-                >
-                    <XView height={36}>
-                        <XLoader transparentBackground={true} size="small" />
-                    </XView>
-                </div>;
             }
 
             return fallbackRender.current;
