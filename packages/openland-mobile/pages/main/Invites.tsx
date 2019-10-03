@@ -10,8 +10,13 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { FontStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { trackEvent } from 'openland-mobile/analytics';
 
 const InvitesComponent = XMemo<PageProps>((props) => {
+    React.useEffect(() => {
+        trackEvent('invite_friends_view');
+    }, []);
+
     const theme = React.useContext(ThemeContext);
 
     const invite = getClient().useAccountAppInvite();

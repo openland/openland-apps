@@ -25,6 +25,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
+import { trackEvent } from 'openland-mobile/analytics';
 
 const PrivateProfile = XMemo<PageProps & { organization: OrganizationWithoutMembers_organization }>((props) => {
     const { router, organization } = props;
@@ -100,6 +101,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
 
     // callbacks
     const handleAddMember = React.useCallback(() => {
+        trackEvent('invite_view', { invite_type: organization.isCommunity ? 'community' : 'organization' });
         Modals.showUserMuptiplePicker(props.router, {
             title: 'Add',
             action: async (users) => {
