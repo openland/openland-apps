@@ -17,6 +17,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { USelectField } from 'openland-web/components/unicorn/USelect';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
+import { trackEvent } from 'openland-x-analytics';
 
 interface AdminToolsProps {
     id: string;
@@ -278,6 +279,7 @@ const EditCommunityEntity = (props: {
 };
 
 export const showEditCommunityModal = (id: string, isCommunity: boolean, isOwner: boolean) => {
+    trackEvent(`navigate_${isCommunity ? 'community' : 'organization'}_profile_edit`);
     showModalBox({ title: isCommunity ? 'Edit community' : 'Edit organization' }, ctx => {
         return (
             <EditCommunityEntity

@@ -5,6 +5,7 @@ import { SRoutes } from '../SRoutes';
 import { PresentationManager } from './PresentationManager';
 import { randomKey } from '../utils/randomKey';
 import { createLogger } from 'mental-log';
+import { trackEvent } from 'openland-mobile/analytics';
 
 const log = createLogger('NavigationManager');
 
@@ -96,6 +97,7 @@ export class NavigationManager {
     }
 
     push = (route: string, params?: any) => {
+        trackEvent('navigate_' + route.toLowerCase());
         log.log('push');
         if (this.customHandler) {
             if (this.customHandler(route, params)) {

@@ -3,5 +3,5 @@ import { RoomsExploreComponent } from 'openland-web/fragments/discover/component
 import { Page } from 'openland-unicorn/Page';
 
 export const DiscoverGroupsFragment = React.memo(() => {
-    return <Page><RoomsExploreComponent /></Page>;
+    return <Page track="discover_groups"><RoomsExploreComponent /></Page>;
 });

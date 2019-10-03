@@ -37,7 +37,7 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
         primaryOrganization, isYou, chatsWithBadge, website, twitter, facebook } = user;
 
     return (
-        <Page padded={false}>
+        <Page padded={false} track="user_profile">
             <UListHero
                 title={name}
                 score={!isBot ? audienceSize : undefined}

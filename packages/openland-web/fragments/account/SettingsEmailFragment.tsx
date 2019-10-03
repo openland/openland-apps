@@ -40,7 +40,7 @@ export const SettingsEmailFragment = React.memo(() => {
         }
     }, [emailNotifications.value]);
     return (
-        <Page>
+        <Page track="account_email">
             <UHeader title="Email preferences" />
             <FormWrapper title="Email preferences">
                 <FormSection

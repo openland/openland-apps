@@ -224,7 +224,7 @@ const QuestionComponent = (props: QuestionComponentProps) => {
     };
 
     return (
-        <Page flexGrow={1}>
+        <Page flexGrow={1} track="matchmaking_question">
             <UHeader titleView={textQuestion ? <TitleRender onSkip={onSkip} /> : null} />
             <div className={descriptionContainer}>
                 <div className={cx(TextTitle1, titleStyle)}>{props.question.title}</div>

@@ -167,7 +167,7 @@ export const MatchmakingUsersFragment = React.memo(() => {
     };
 
     return (
-        <Page flexGrow={1}>
+        <Page flexGrow={1} track="matchmaking_users">
             <UHeader titleView={<TitleRender onDone={onDone} />} />
             <XView flexGrow={1}>
                 <XView flexGrow={1}>

@@ -239,7 +239,7 @@ export const InviteFriendsComponent = (props: InviteFriendsFragmentProps) => {
 };
 
 export const InviteFriendsFragment = React.memo(() => (
-    <Page>
+    <Page track="account_invite">
         <InviteFriendsComponent onSettingPage={true} />
     </Page>
 ));

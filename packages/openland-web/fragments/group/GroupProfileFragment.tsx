@@ -58,6 +58,7 @@ export const GroupProfileFragment = React.memo((props) => {
 
     return (
         <UFlatList
+            track="group_profile"
             loadMore={handleLoadMore}
             items={members}
             loading={loading}

@@ -76,7 +76,7 @@ export const MatchmakingCreatedFragment = React.memo(() => {
     };
 
     return (
-        <Page flexGrow={1}>
+        <Page flexGrow={1} track="matchmaking_profile_created">
             <XView flexGrow={1}>
                 <XView flexGrow={1}>
                     <div className={mainContainer}>

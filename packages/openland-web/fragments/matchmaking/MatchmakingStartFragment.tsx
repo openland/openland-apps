@@ -69,7 +69,7 @@ export const MatchmakingStartFragment = React.memo(() => {
     };
 
     return (
-        <Page flexGrow={1} style="wide">
+        <Page flexGrow={1} style="wide" track="matchmaking_start">
             <UHeader backgroundColor={isMobile ? '#f0caca' : undefined} />
             <div className={mainContainer}>
                 <div className={cx(cardsContainer, !isMobile && desktopCardsContainer)}>
