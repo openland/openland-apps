@@ -52,7 +52,7 @@ export function ASAvatar(props: ASAvatarProps) {
                 width={size}
                 height={size}
                 borderRadius={size / 2}
-                backgroundColor={props.theme.backgroundTertiary}
+                backgroundColor={props.theme.backgroundTertiaryTrans}
             >
                 {!!border && (
                     <ASFlex

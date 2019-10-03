@@ -139,7 +139,7 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
     let size = avatarSizes[props.size || 'x-large'].size;
     return props.render ? <props.render url={valueUrl} loading={loading} showPicker={handlePicker} /> : (
         <TouchableOpacity onPress={handlePicker}>
-            <View width={size} height={size} borderRadius={size / 2} backgroundColor={theme.backgroundTertiary}>
+            <View width={size} height={size} borderRadius={size / 2} backgroundColor={theme.backgroundTertiaryTrans}>
                 {!valueUrl && !loading && (
                     <View position="absolute" alignItems="center" justifyContent="center" style={{ width: size, height: size, borderRadius: size / 2 }}>
                         <Image source={require('assets/ic-camera-36.png')} style={{ tintColor: theme.foregroundQuaternary, width: 36, height: 36 }} />

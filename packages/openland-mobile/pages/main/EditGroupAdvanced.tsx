@@ -31,7 +31,7 @@ const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
         <TouchableOpacity onPress={props.showPicker}>
             <View width={width} height={height} borderRadius={radius}>
                 {props.url && <ZImage highPriority={true} width={width} height={height} source={props.url} borderRadius={radius} />}
-                <View position="absolute" alignItems="center" justifyContent="center" style={{ width, height, borderRadius: radius, backgroundColor: props.url ? theme.overlayLight : theme.backgroundTertiary }}>
+                <View position="absolute" alignItems="center" justifyContent="center" style={{ width, height, borderRadius: radius, backgroundColor: props.url ? theme.overlayLight : theme.backgroundTertiaryTrans }}>
                     {!props.loading && (
                         <Image style={{ tintColor: props.url ? theme.foregroundContrast : theme.foregroundQuaternary, width: 36, height: 36 }} source={require('assets/ic-camera-36.png')} />
                     )}

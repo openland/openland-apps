@@ -131,7 +131,7 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
 
     return (
         <View marginHorizontal={noWrapper ? 0 : 16} marginBottom={noWrapper ? 0 : 16}>
-            <View style={styles.container} backgroundColor={theme.backgroundTertiary}>
+            <View style={styles.container} backgroundColor={theme.backgroundTertiaryTrans}>
                 {!!placeholder && (
                     <View style={styles.placeholderContainer}>
                         <Animated.View style={placeholderAimatedStyle} onLayout={handlePlaceholderLayout}>

@@ -63,7 +63,7 @@ const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number }) =
 const imageWrapper = css`
     position: relative;
     z-index: 0;
-    background-color: var(--backgroundTertiary);
+    background-color: var(--backgroundTertiaryTrans);
 
     & > img {
         z-index: 1;

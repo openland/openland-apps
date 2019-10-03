@@ -32,6 +32,8 @@ body {
     --backgroundTertiaryHover: #EDEEF0;
     --backgroundTertiaryActive: #E6E7EB;
 
+    --backgroundTertiaryTrans: rgba(201, 204, 209, 0.24);
+
     --accentPrimary: #248BF2;
     --accentPrimaryHover: #3399FF;
     --accentPrimaryActive: #1677D9;
