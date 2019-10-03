@@ -53,21 +53,26 @@ const userCardContainer = css`
     padding: 45px 22px 22px 22px;
 `;
 
-export const MatchmakingProfileFragment = React.memo(() => {
+export const MatchmakingCreatedFragment = React.memo(() => {
     const router = React.useContext(XViewRouterContext)!;
     const unicorn = useUnicorn();
     const chatId = unicorn.query.roomId;
     const client = useClient();
     const data = client.useMatchmakingRoom({ peerId: chatId }).matchmakingRoom;
 
-    const haveData = data && data.myProfile;
+    const haveMyData = data && data.myProfile;
+    const haveOtherProfiles = data && data.profiles && data.profiles.length > 1;
 
-    if (!haveData) {
+    if (!haveMyData) {
         return null;
     }
 
     const onStart = () => {
-        router.navigate(`/matchmaking/${chatId}/profiles`);
+        if (haveOtherProfiles) {
+            router.navigate(`/matchmaking/${chatId}/users`);
+        } else {
+            router.navigate(`/mail/${chatId}`);
+        }
     };
 
     return (
@@ -75,7 +80,7 @@ export const MatchmakingProfileFragment = React.memo(() => {
             <XView flexGrow={1}>
                 <XView flexGrow={1}>
                     <div className={mainContainer}>
-                        <PicConfeti className={confetiStyle}/>
+                        <PicConfeti className={confetiStyle} />
                         <div className={cx(TextTitle1, titleStyle)}>Profile created</div>
                         <div className={cx(TextBody, subtitleStyle)}>
                             You can always update your profile later
