@@ -6,11 +6,12 @@ import {
     FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard,
 } from 'openland-api/Types';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
-import { UButton } from 'openland-web/components/unicorn/UButton';
+import { UButton, UButtonProps } from 'openland-web/components/unicorn/UButton';
 import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
 import { resolveLinkAction } from 'openland-web/utils/resolveLinkAction';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const wrapper = css`
     display: flex;
@@ -142,7 +143,8 @@ const keyboardUnicornItem = css`
 
 const UnicornBotButton = (props: { keyboard: FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard }) => {
     const { keyboard } = props;
-
+    const engine = React.useContext(MessengerContext);
+    const router = React.useContext(XViewRouterContext);
     return (
         <>
             {keyboard.buttons.map(i => {
@@ -155,7 +157,7 @@ const UnicornBotButton = (props: { keyboard: FullMessage_GeneralMessage_attachme
                                         text={j.title}
                                         onClick={(e: React.MouseEvent) => {
                                             e.stopPropagation();
-                                            resolveLinkAction(j.url || '');
+                                            resolveLinkAction(j.url || '', engine.client, router!);
                                         }}
                                     />
                                 </div>
@@ -167,6 +169,32 @@ const UnicornBotButton = (props: { keyboard: FullMessage_GeneralMessage_attachme
             })}
         </>
     );
+};
+
+const MessageButton = (props: UButtonProps & { url: string | null, fallback: (e: React.MouseEvent, path: string | null) => void }) => {
+    const { url, fallback, ...buttonProps } = props;
+    const [loading, setLoading] = React.useState(false);
+    const engine = React.useContext(MessengerContext);
+    const router = React.useContext(XViewRouterContext);
+    const onclick = React.useCallback(async (e: React.MouseEvent) => {
+        let action = resolveLinkAction(url, engine.client, router!, () => fallback(e, url));
+        if (action) {
+            setLoading(true);
+            try {
+                e.stopPropagation();
+                e.preventDefault();
+                await action;
+            } catch (e) {
+                console.warn(e);
+            }
+            setLoading(false);
+        }
+    }, []);
+    return <UButton
+        {...buttonProps}
+        loading={loading}
+        onClick={onclick}
+    />;
 };
 
 export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment }) => {
@@ -221,10 +249,11 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
                             <div className={keyboardRow} key={'keyboard_wrapper' + j}>
                                 {i.map(k => (
                                     <div key={k.id} className={keyboardItem}>
-                                        <UButton
+                                        <MessageButton
                                             text={k.title}
                                             size={layout === 'mobile' ? 'large' : 'medium'}
-                                            onClick={(e) => keyboardAction(e, k.url)}
+                                            url={k.url}
+                                            fallback={keyboardAction}
                                         />
                                     </div>
                                 ))}
