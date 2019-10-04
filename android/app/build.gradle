@@ -81,8 +81,8 @@ project.ext.react = [
         bundleAssetName: "index.android.bundle",
         inputExcludes  : ["android/**", "ios/**", "node_modules/**", "packages/openland-mac/node_modules/**"],
         bundleInRelease: false,
-        bundleInDebug: false,
-        enableHermes: false
+        bundleInDebug  : false,
+        enableHermes   : false
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -132,6 +132,11 @@ android {
         versionCode appVersionCode
         versionName "1.1." + appVersionCode
         println("##teamcity[buildNumber '1.1.$appVersionCode']")
+        multiDexEnabled false
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
     if (project.hasProperty("RELEASE_STORE_FILE")) {
         signingConfigs {
@@ -182,13 +187,13 @@ android {
     }
 
     packagingOptions {
-               pickFirst 'lib/x86/libc++_shared.so'
-               pickFirst 'lib/x86_64/libjsc.so'
-               pickFirst 'lib/arm64-v8a/libjsc.so'
-               pickFirst 'lib/arm64-v8a/libc++_shared.so'
-               pickFirst 'lib/x86_64/libc++_shared.so'
-               pickFirst 'lib/armeabi-v7a/libc++_shared.so'
-             }
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/x86_64/libjsc.so'
+        pickFirst 'lib/arm64-v8a/libjsc.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+    }
 }
 
 configurations.all {
