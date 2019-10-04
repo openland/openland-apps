@@ -61,7 +61,7 @@ class SnappyDBPersistenceProvider(val context: Context, val name: String) : Pers
 
 class LMDBPersistenceProvider(val context: Context, val name: String) : PersistenceProvider {
 
-    private val env: LMDBEnvironment = LMDB.createEnvironment(context.filesDir.absolutePath + "/" + name + "-v2.mdb")
+    private val env: LMDBEnvironment = LMDB.createEnvironment(context.filesDir.absolutePath + "/" + name + "-v3.mdb")
     private val db: LMDBDatabase
 
     init {
