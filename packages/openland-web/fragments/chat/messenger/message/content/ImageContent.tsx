@@ -4,7 +4,7 @@ import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     UserShort,
 } from 'openland-api/Types';
-import { layoutMedia } from 'openland-y-utils/MediaLayout';
+import { layoutMedia, uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcDownload from 'openland-icons/s/ic-download-24.svg';
@@ -116,7 +116,7 @@ const imgPreviewClass = css`
     bottom: 0;
     margin: auto;
     max-width: 100%;
-    max-height: 100%;
+    /* max-height: 100%; */
     z-index: 0;
     filter: blur(5px);
     background: transparent;
@@ -230,7 +230,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     src={props.preview}
                     width={props.width}
                     height={props.height}
-                    style={{ objectFit: 'contain', cursor: 'default' }}
+                    style={{ cursor: 'default' }}
                 />
                 <XLoader transparentBackground={true} ref={loaderRef} />
                 <img
@@ -390,16 +390,13 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     const layoutModal = layoutMedia(
         props.file.fileMetadata.imageWidth || 0,
         props.file.fileMetadata.imageHeight || 0,
-        (window.innerWidth / 100) * 80,
-        (window.innerHeight / 100) * 80,
+        window.innerWidth,
+        window.innerHeight,
         32,
         32,
     );
 
-    const opsModal = `scale_crop/${layoutModal.width}x${layoutModal.height}/`;
-    const opsRetinaModal = `scale_crop/${layoutModal.width * 2}x${layoutModal.height *
-        2}/center/ 2x`;
-
+    let modalOps = uploadcareOptions(layoutModal);
     return (
         <div
             className={imgContainer}
@@ -408,8 +405,8 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                 e.stopPropagation();
                 showImageModal({
                     fileId: props.file.fileId,
-                    src: url + opsModal,
-                    srcSet: url + opsRetinaModal,
+                    src: url + modalOps[0],
+                    srcSet: url + modalOps[1],
                     width: layoutModal.width,
                     height: layoutModal.height,
                     preview: props.file.filePreview || '',
