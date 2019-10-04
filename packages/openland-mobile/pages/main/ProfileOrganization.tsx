@@ -102,6 +102,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
     // callbacks
     const handleAddMember = React.useCallback(() => {
         trackEvent('invite_view', { invite_type: organization.isCommunity ? 'community' : 'organization' });
+        trackEvent(`navigate_new_${organization.isCommunity ? 'community' : 'organization'}_add_members`);
         Modals.showUserMuptiplePicker(props.router, {
             title: 'Add',
             action: async (users) => {

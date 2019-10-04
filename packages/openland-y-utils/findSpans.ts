@@ -1,8 +1,11 @@
 import { MessageSpanInput, FullMessage_GeneralMessage_spans } from 'openland-api/Types';
 import { SpanSymbolToType, SpanSymbolToTypeT } from './spans/Span';
 
-const whiteListBeforeSpec = ['', ' ', '	', '\n', ',', '.', '(', '<', '"', '«', '{', '['];
-const whiteListAfterSpec = ['', ' ', '	', '\n', ',', '.', '!', '?', '(', ')', ':', '>', '"', '»', '{', '[', '}', ']', '¿', '¡'];
+const _sc = (charCode: number) => String.fromCharCode(charCode);
+// 160 - non-breaking space
+
+const whiteListBeforeSpec = ['', ' ', '	', '\n', ',', '.', '(', '<', '"', '«', '{', '[', _sc(160)];
+const whiteListAfterSpec = ['', ' ', '	', '\n', ',', '.', '!', '?', '(', ')', ':', '>', '"', '»', '{', '[', '}', ']', '¿', '¡', _sc(160)];
 
 const spanInputMap = {
     'Bold': 'MessageSpanBold',

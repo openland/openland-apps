@@ -44,6 +44,7 @@ interface CommentViewProps {
     depth: number;
     highlighted: boolean;
     groupId?: string;
+    generation?: number;
     onReplyClick: (id: string) => void;
     onDeleteClick: (id: string) => void;
     onReactionClick: (comment: CommentEntryFragment_comment) => void;
@@ -55,11 +56,21 @@ interface CommentViewProps {
 export const CommentView = React.memo((props: CommentViewProps) => {
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
-    const { comment, deleted, depth, highlighted, groupId, onReplyClick, onDeleteClick, onReactionClick, onSent, onSentAttach, onStickerSent } = props;
+    const { comment, deleted, depth, highlighted, groupId, onReplyClick, onDeleteClick, onReactionClick, onSent, onSentAttach, onStickerSent, generation } = props;
     const { id, sender, message, spans, fallback, date } = comment;
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
     const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
     const [edit, setEdit] = React.useState(false);
+    const containerRef = React.useRef<HTMLDivElement>(null);
+
+    React.useLayoutEffect(() => {
+        console.warn(generation);
+        if (highlighted || (generation && comment.sender.id === messenger.user.id)) {
+            if (containerRef.current) {
+                containerRef.current.scrollIntoView({ behavior: 'auto', block: 'nearest' });
+            }
+        }
+    }, []);
 
     React.useEffect(() => {
         setTextSpans(processSpans(message || '', spans));
@@ -90,7 +101,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
     const reactions = (comment.__typename === 'GeneralMessage' || comment.__typename === 'StickerMessage') ? comment.reactions : [];
 
     return (
-        <div className={wrapper} style={{ paddingLeft: depth > 0 ? 56 + ((depth - 1) * 40) : undefined }}>
+        <div ref={containerRef} className={wrapper} style={{ paddingLeft: depth > 0 ? 56 + ((depth - 1) * 40) : undefined }}>
             <div className={avatarWrapper}>
                 <UAvatar
                     id={sender.id}

@@ -93,7 +93,7 @@ const WritePostBlock = (props: { inviteKey: string; isMobile: boolean }) => {
 
     const redirect = (href: string, targetName: string) => {
         trackEvent('invite_social_share_action', {
-            share_action_type: 'targetName',
+            share_action_type: targetName,
         });
         window.open(href, '_blank');
     };

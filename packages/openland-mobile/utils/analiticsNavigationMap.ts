@@ -1,7 +1,4 @@
 export const AnaliticsNavigationMap: { [path: string]: string } = {
-    "Discover": "chat_nav_start",
-    "HomeDialogs": "chats",
-    "NotificationCenter": "notifications",
     "CreateGroupAttrs": "new_group",
     "NewOrganization": "new_org",
     "SettingsProfile": "user_profile_edit",

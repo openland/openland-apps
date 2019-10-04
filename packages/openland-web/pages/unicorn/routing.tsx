@@ -36,6 +36,7 @@ routing.addRoute('/mail/:conversationId', () =>
 
 // Message
 routing.addRoute('/message/:id', () => MessageFragment);
+routing.addRoute('/message/:messageId/comment/:commentId', () => MessageFragment);
 
 // Notifications
 routing.addRoute('/notifications', () => NotificationsFragment);

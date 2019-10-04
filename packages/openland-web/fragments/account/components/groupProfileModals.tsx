@@ -14,7 +14,7 @@ import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInputField } from 'openland-web/components/unicorn/UInput';
-import { trackEvent } from 'openland-mobile/analytics';
+import { trackEvent } from 'openland-x-analytics';
 
 type RoomEditModalT = {
     title: string;
