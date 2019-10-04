@@ -155,7 +155,7 @@ export const NotificationView = React.memo((props: NotificationViewProps) => {
                 />
                 {notificationType === 'new_comment' && (
                     <div className={toolsWrapperClass}>
-                        <UIconLabeled path={`/${peerRootType === 'CommentPeerRootFeedItem' ? 'feed' : 'message'}/${peerRootId}`} icon={<ReplyIcon />} label="Reply" />
+                        <UIconLabeled path={`/${peerRootType === 'CommentPeerRootFeedItem' ? 'feed' : 'message'}/${peerRootId}/comment/${id}`} icon={<ReplyIcon />} label="Reply" />
                         <UIconButton size="small" icon={<MoreHIcon />} onClick={toolsShow} active={toolsVisible} />
                     </div>
                 )}

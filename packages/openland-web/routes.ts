@@ -206,6 +206,8 @@ routes.add('/group/:id/', '/unicorn/index');
 
 routes.add('/message/:id', '/unicorn/index');
 routes.add('/message/:id/', '/unicorn/index');
+routes.add('/message/:messageId/comment/:commentId', '/unicorn/index');
+routes.add('/message/:messageId/comment/:commentId/', '/unicorn/index');
 
 //
 // Matchmaking

@@ -30,6 +30,10 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Com
     const client = useClient();
     const messenger = React.useContext(MessengerContext);
     const { groupId, comments, highlightId, onSent, onSentAttach, onReply, onStickerSent } = props;
+    const commnetsUpdatedCounter = React.useRef(0);
+    React.useEffect(() => {
+        commnetsUpdatedCounter.current++;
+    }, [comments]);
 
     const handleDeleteClick = React.useCallback((id: string) => {
         const builder = new AlertBlanketBuilder();
@@ -83,6 +87,7 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Com
 
             {commentsSorted.map(item => (
                 <CommentView
+                    generation={commnetsUpdatedCounter.current}
                     key={'comment-' + item.id}
                     comment={item.comment}
                     deleted={item.deleted}

@@ -32,12 +32,16 @@ interface CommentsWrapperProps {
     peerId: string;
     peerView: JSX.Element;
     groupId?: string;
+    commentId?: string;
 }
 
 export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
-    const { peerId, peerView, groupId } = props;
+    const { peerId, peerView, groupId, commentId } = props;
     const client = useClient();
     const [highlightId, setHighlightId] = React.useState<string | undefined>(undefined);
+    React.useEffect(() => {
+        setHighlightId(commentId);
+    }, []);
 
     const handleReplyClick = React.useCallback((id: string) => {
         setHighlightId(current => id === current ? undefined : id);
