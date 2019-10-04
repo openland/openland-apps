@@ -18,6 +18,7 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { SRouter } from 'react-native-s/SRouter';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
+import { trackEvent } from 'openland-mobile/analytics';
 
 const showMembersModal = (router: SRouter, res: RoomCreate) => {
     Modals.showUserMuptiplePicker(router,
@@ -102,6 +103,7 @@ const CreateGroupComponent = (props: PageProps) => {
                 await getClient().refetchOrganization({ organizationId: orgId });
             }
 
+            trackEvent("navigate_new_group_add_members");
             showMembersModal(props.router, res);
         });
     };

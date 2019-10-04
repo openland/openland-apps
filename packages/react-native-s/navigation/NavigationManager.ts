@@ -6,6 +6,7 @@ import { PresentationManager } from './PresentationManager';
 import { randomKey } from '../utils/randomKey';
 import { createLogger } from 'mental-log';
 import { trackEvent } from 'openland-mobile/analytics';
+import { AnaliticsNavigationMap } from 'openland-mobile/utils/analiticsNavigationMap';
 
 const log = createLogger('NavigationManager');
 
@@ -97,7 +98,8 @@ export class NavigationManager {
     }
 
     push = (route: string, params?: any) => {
-        trackEvent('navigate_' + route.toLowerCase());
+        let mapped = AnaliticsNavigationMap[route];
+        trackEvent(mapped ? ('navigate_' + mapped) : ('raw_navigate_' + route));
         log.log('push');
         if (this.customHandler) {
             if (this.customHandler(route, params)) {

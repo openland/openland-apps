@@ -18,6 +18,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 import { ExplorePeople } from 'openland-web/fragments/create/ExplorePeople';
 import { SearchBox } from 'openland-web/fragments/create/SearchBox';
+import { trackEvent } from 'openland-x-analytics';
 
 export enum EntityKind {
     GROUP = 'GROUP',
@@ -91,12 +92,15 @@ const MainWrapper = ({ back, onBackClick, children }: MainWrapperT) => {
 type AddMembersT = {
     onSkip: (event: React.MouseEvent) => void;
     onSubmit: (users: Map<string, string> | null) => void;
+    entityKind: EntityKind;
 };
 
-const AddMembers = React.memo(({ onSkip, onSubmit }: AddMembersT) => {
+const AddMembers = React.memo(({ onSkip, onSubmit, entityKind }: AddMembersT) => {
     const [searchPeopleQuery, setSearchPeopleQuery] = React.useState<string>('');
     const [selectedUsers, setSelectedUsers] = React.useState<Map<string, string> | null>(null);
     const [options, setOptions] = React.useState<{ label: string; value: string }[]>([]);
+
+    React.useEffect(() => trackEvent(`navigate_new_${entityKind.toLowerCase()}_add_members`), []);
 
     const onSearchPeopleInputChange = (data: string) => {
         setSearchPeopleQuery(data);
@@ -206,6 +210,8 @@ export const CreateEntity = ({
     const [title, setTitle] = React.useState<string>('');
     const [coverSrc, setCoverSrc] = React.useState<string | null>('');
     const [settingsPage, setSettingsPage] = React.useState(true);
+
+    React.useEffect(() => trackEvent('navigate_new_' + entityKind.toLowerCase()), []);
 
     let chatTypeStr = entityKind.charAt(0).toUpperCase() + entityKind.slice(1).toLowerCase();
 
@@ -420,7 +426,7 @@ export const CreateEntity = ({
                     )}
                 </XView>
             )}
-            {!settingsPage && <AddMembers onSkip={onSkip} onSubmit={onSubmit} />}
+            {!settingsPage && <AddMembers onSkip={onSkip} onSubmit={onSubmit} entityKind={entityKind} />}
         </MainWrapper>
     );
 };

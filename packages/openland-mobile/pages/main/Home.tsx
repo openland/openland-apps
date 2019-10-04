@@ -13,6 +13,7 @@ import { Feed } from './Feed';
 import { NotificationCenter } from './NotificationCenter';
 import { isPad } from '../Root';
 import { NON_PRODUCTION } from '../Init';
+import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 
 export const Home = XMemo<PageProps>((props) => {
     const [tab, setTab] = React.useState(1);
@@ -27,22 +28,26 @@ export const Home = XMemo<PageProps>((props) => {
                 <View style={{ width: '100%', flexGrow: 1, flexBasis: 0 }}>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 0 ? 1 : 0 }} pointerEvents={tab === 0 ? 'box-none' : 'none'}>
                         <HeaderContextChild enabled={tab === 0}>
+                            {tab === 0 && <ZTrack event={showFeed ? 'navigate_feed' : 'navigate_discover'} />}
                             {!showFeed && <Explore {...props} />}
                             {showFeed && <Feed {...props} />}
                         </HeaderContextChild>
                     </View>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 1 ? 1 : 0 }} pointerEvents={tab === 1 ? 'box-none' : 'none'}>
                         <HeaderContextChild enabled={tab === 1}>
+                            {tab === 1 && <ZTrack event="navigate_chats" />}
                             <HomeDialogs {...props} />
                         </HeaderContextChild>
                     </View>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 2 ? 1 : 0 }} pointerEvents={tab === 2 ? 'box-none' : 'none'}>
                         <HeaderContextChild enabled={tab === 2}>
+                            {tab === 2 && <ZTrack event="navigate_notifications" />}
                             {tab === 2 && <NotificationCenter {...props} />}
                         </HeaderContextChild>
                     </View>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 3 ? 1 : 0 }} pointerEvents={tab === 3 ? 'box-none' : 'none'}>
                         <HeaderContextChild enabled={tab === 3}>
+                            {tab === 3 && <ZTrack event="navigate_account" />}
                             <Settings {...props} />
                         </HeaderContextChild>
                     </View>
