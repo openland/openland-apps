@@ -80,7 +80,7 @@ project.ext.react = [
         entryFile      : "index.js",
         bundleAssetName: "index.android.bundle",
         inputExcludes  : ["android/**", "ios/**", "node_modules/**", "packages/openland-mac/node_modules/**"],
-        bundleInRelease: false,
+        bundleInRelease: true,
         bundleInDebug  : false,
         enableHermes   : false
 ]
