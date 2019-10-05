@@ -1,5 +1,5 @@
 PODS:
-  - A0Auth0 (1.3.1):
+  - A0Auth0 (1.6.0):
     - React
   - AppCenter (1.13.2):
     - AppCenter/Analytics (= 1.13.2)
@@ -25,7 +25,6 @@ PODS:
     - React-Core (= 0.61.1)
     - React-jsi (= 0.61.1)
     - ReactCommon/turbomodule/core (= 0.61.1)
-  - FLAnimatedImage (1.0.12)
   - Folly (2018.10.22.00):
     - boost-for-react-native
     - DoubleConversion
@@ -36,6 +35,15 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - libwebp (1.0.3):
+    - libwebp/demux (= 1.0.3)
+    - libwebp/mux (= 1.0.3)
+    - libwebp/webp (= 1.0.3)
+  - libwebp/demux (1.0.3):
+    - libwebp/webp
+  - libwebp/mux (1.0.3):
+    - libwebp/demux
+  - libwebp/webp (1.0.3)
   - lottie-ios (2.5.3)
   - lottie-react-native (2.6.1):
     - lottie-ios (~> 2.5.0)
@@ -237,11 +245,6 @@ PODS:
     - React
   - react-native-document-picker (2.2.0):
     - React
-  - react-native-fast-image (5.1.2):
-    - FLAnimatedImage
-    - React
-    - SDWebImage/Core
-    - SDWebImage/GIF
   - react-native-haptic-feedback (1.7.1):
     - React
   - react-native-image-picker (0.14.3):
@@ -302,6 +305,10 @@ PODS:
     - React-Core
   - RNDeviceInfo (0.21.5):
     - React
+  - RNFastImage (7.0.2):
+    - React
+    - SDWebImage (~> 5.0)
+    - SDWebImageWebPCoder (~> 0.2.3)
   - RNGestureHandler (1.4.1):
     - React
   - RNImageCropPicker (0.25.2):
@@ -311,13 +318,15 @@ PODS:
     - RSKImageCropper
   - RNRate (1.0.1):
     - React
-  - RNShare (1.1.3):
+  - RNShare (2.0.0):
     - React
   - RSKImageCropper (2.2.3)
-  - SDWebImage/Core (4.4.7)
-  - SDWebImage/GIF (4.4.7):
-    - FLAnimatedImage (~> 1.0)
-    - SDWebImage/Core
+  - SDWebImage (5.1.1):
+    - SDWebImage/Core (= 5.1.1)
+  - SDWebImage/Core (5.1.1)
+  - SDWebImageWebPCoder (0.2.4):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.0)
   - SimpleKeychain (0.9.0)
   - Starscream (3.0.6)
   - SwiftyJSON (4.3.0)
@@ -361,7 +370,6 @@ DEPENDENCIES:
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - react-native-blur (from `../node_modules/react-native-blur`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
-  - react-native-fast-image (from `../node_modules/react-native-fast-image`)
   - react-native-haptic-feedback (from `../node_modules/react-native-haptic-feedback`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-pdf (from `../node_modules/react-native-pdf`)
@@ -384,6 +392,7 @@ DEPENDENCIES:
   - ReactNativePermissions (from `../node_modules/react-native-permissions`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
+  - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNRate (from `../node_modules/react-native-rate/ios`)
@@ -399,7 +408,7 @@ SPEC REPOS:
     - AppCenterReactNativeShared
     - Auth0
     - boost-for-react-native
-    - FLAnimatedImage
+    - libwebp
     - lottie-ios
     - ObjectiveRocks
     - PINCache
@@ -409,6 +418,7 @@ SPEC REPOS:
     - ReachabilitySwift
     - RSKImageCropper
     - SDWebImage
+    - SDWebImageWebPCoder
     - SimpleKeychain
     - Starscream
     - SwiftyJSON
@@ -457,8 +467,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-blur"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
-  react-native-fast-image:
-    :path: "../node_modules/react-native-fast-image"
   react-native-haptic-feedback:
     :path: "../node_modules/react-native-haptic-feedback"
   react-native-image-picker:
@@ -501,6 +509,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-fetch-blob"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
+  RNFastImage:
+    :path: "../node_modules/react-native-fast-image"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
@@ -513,7 +523,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  A0Auth0: b9cb0e573b246cb466fc913b01d30d63a58e3a74
+  A0Auth0: 3ef40effed761e80d2ecd7749cc271e0b12e3f75
   AppCenter: bce7fe1098e8e8aeb70aaae1898600534069f549
   AppCenterReactNativeShared: 6c0750b874f3242c47cb64083e23b835975c6aa2
   Auth0: df9ac013e7850052fea1dcd53fa09bb129121721
@@ -522,9 +532,9 @@ SPEC CHECKSUMS:
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: 0846affdb2924b01093eb696766ecb0104e409e0
   FBReactNativeSpec: c4cf958af1b97799b524f63a26a1c509c0295b04
-  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
+  libwebp: 057912d6d0abfb6357d8bb05c0ea470301f5d61e
   lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
   lottie-react-native: 3d8181d43619b1fe804c828bd5a09d20fe8bdea7
   ObjectiveRocks: b3a5c79b6757a67566413fab3486731865ff96ef
@@ -546,7 +556,6 @@ SPEC CHECKSUMS:
   react-native-background-timer: 1b6e6b4e10f1b74c367a1fdc3c72b67c619b222b
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-document-picker: da1c37bbc4ff0896986a70784808a2862d297887
-  react-native-fast-image: ec7e5a2420a9e63cf9b2925fce7babc580ea8e05
   react-native-haptic-feedback: 22c9dc85fd8059f83bf9edd9212ac4bd4ae6074d
   react-native-image-picker: 3693786b3d5958c8f71deed66ec068b323565e0d
   react-native-pdf: 8cc276fd8ab7dff6b602eb65fcf0f6c145c0f524
@@ -568,18 +577,20 @@ SPEC CHECKSUMS:
   ReactNativePermissions: b64e084dff6a5cad51587d38c306f09246246384
   rn-fetch-blob: f525a73a78df9ed5d35e67ea65e79d53c15255bc
   RNDeviceInfo: e7c5fcde13d40e161d8a27f6c5dc69c638936002
+  RNFastImage: 9b0c22643872bb7494c8d87bbbb66cc4c0d9e7a2
   RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
   RNImageCropPicker: f675353bbe18f66113a39b319c0aeb36655a6e4c
   RNRate: 29be49c24b314c4e8ec09d848c3965f61cb0be47
-  RNShare: 4f206fa36e384e95a0cbf79f2a92490647e93127
+  RNShare: 8b171d4b43c1d886917fdd303bf7a4b87167b05c
   RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a
-  SDWebImage: c10d14a8883ebd89664f02a422006f66a85c0c5d
+  SDWebImage: 96d7f03415ccb28d299d765f93557ff8a617abd8
+  SDWebImageWebPCoder: cc72085bb20368b2f8dbb21b7e355c667e1309b7
   SimpleKeychain: 3be49072fd2d82de8fa83d847ef1e548622f8fc5
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   Yoga: d8c572ddec8d05b7dba08e4e5f1924004a177078
 
-PODFILE CHECKSUM: ef775e285939d5354b4d40f38852e26d9fa12ce4
+PODFILE CHECKSUM: 91f298b03d75d95b8ade9b4337ec4409cb729c76
 
 COCOAPODS: 1.7.5
