@@ -11,6 +11,10 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 class FeedHandlersClass {
     private getPostLink = (id: string) => 'https://openland.com/feed/' + id;
 
+    Create = (channel?: FeedChannelFull) => {
+        getMessenger().history.navigationManager.push('FeedCreate', { channel });
+    }
+
     Open = (id: string) => {
         getMessenger().history.navigationManager.push('FeedItem', { feedItemId: id });
     }

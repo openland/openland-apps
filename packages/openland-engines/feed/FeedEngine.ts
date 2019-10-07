@@ -6,8 +6,8 @@ import * as Types from 'openland-api/Types';
 import { SequenceModernWatcher } from '../core/SequenceModernWatcher';
 import { backoff } from 'openland-y-utils/timer';
 import { FeedQuery } from 'openland-api';
-import { DataSourceFeedItem, SlideInputLocal } from './types';
-import { convertItems, convertPost, convertToSlideInput } from './convert';
+import { DataSourceFeedItem } from './types';
+import { convertItems, convertPost } from './convert';
 import UUID from 'uuid/v4';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 
@@ -122,31 +122,17 @@ export class FeedEngine {
         }
     }
 
-    createPost: (channel: string, input: SlideInputLocal[]) => Promise<boolean> = async (channel, input) => {
-        const slides = convertToSlideInput(input);
-
-        if (slides.length < 1) {
-            return false;
-        }
-
+    createPost = async (channel: string, slides: Types.SlideInput[]) => {
         const repeatKey = UUID();
 
         await backoff(async () => {
             await this.engine.client.mutateFeedCreatePost({ channel, slides, repeatKey });
         });
-
-        return true;
     }
 
-    editPost: (id: string, input: SlideInputLocal[]) => Promise<boolean> = async (id, input) => {
-        const slides = convertToSlideInput(input);
-
-        if (slides.length < 1) {
-            return false;
-        }
-
-        await backoff(async () => await this.engine.client.mutateFeedEditPost({ slides, feedItemId: id }));
-
-        return true;
+    editPost = async (id: string, slides: Types.SlideInput[]) => {
+        await backoff(async () => {
+            await this.engine.client.mutateFeedEditPost({ feedItemId: id, slides });
+        });
     }
 }

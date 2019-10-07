@@ -72,6 +72,7 @@ import { FeedChannelProfile } from './pages/main/FeedChannelProfile';
 import { FeedChannelEdit } from './pages/main/FeedChannelEdit';
 import { FeedChannelWriters } from './pages/main/FeedChannelWriters';
 import { SetChannelShortname } from './pages/main/SetChannelShortname';
+import { FeedPublishTo } from './pages/main/FeedPublishTo';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -157,5 +158,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('FeedChannelProfile', FeedChannelProfile)
   .addRoute('FeedChannelEdit', FeedChannelEdit)
   .addRoute('FeedChannelWriters', FeedChannelWriters)
+  .addRoute('FeedPublishTo', FeedPublishTo)
 
   .build();

@@ -11,7 +11,7 @@ const FeedChannelWritersComponent = React.memo((props: PageProps) => {
     const { id } = router.params;
     const client = useClient();
 
-    const initialWriters = client.useFeedChannelAdmins({ id, first: 3 }, { fetchPolicy: 'network-only' }).admins;
+    const initialWriters = client.useFeedChannelAdmins({ id, first: 15 }, { fetchPolicy: 'network-only' }).admins;
     const [writers, setWriters] = React.useState(initialWriters.items);
     const [loading, setLoading] = React.useState(false);
     const [cursor, setCursor] = React.useState(initialWriters.cursor);

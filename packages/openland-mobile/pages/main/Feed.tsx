@@ -14,6 +14,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { FeedDateView } from 'openland-mobile/feed/FeedDateView';
 import { DataSourceFeedItem } from 'openland-engines/feed/types';
 import { FeedEmptyView } from './components/FeedEmptyView';
+import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
 
 interface FeedPageProps {
     engine: FeedEngine;
@@ -44,7 +45,7 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
             title="Post something"
             subtitle="Create the first post"
             action="Create post"
-            onPress={this.handleCreate}
+            onPress={() => FeedHandlers.Create()}
         />
     )
 
@@ -66,10 +67,6 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
         return <View />;
     }
 
-    private handleCreate = () => {
-        this.props.router.push('FeedCreate');
-    }
-
     render() {
         const { engine } = this.props;
 
@@ -77,7 +74,7 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
             <>
                 <SHeader title="Feed" />
                 <SHeaderButton key="feed-channels" title="Channels" icon={require('assets/ic-list-24.png')} onPress={() => this.props.router.push('FeedChannels')} />
-                <SHeaderButton key="feed-create" title="Create" icon={require('assets/ic-add-24.png')} onPress={this.handleCreate} />
+                <SHeaderButton key="feed-create" title="Create" icon={require('assets/ic-add-24.png')} onPress={() => FeedHandlers.Create()} />
 
                 <DataSourceRender
                     dataSource={engine.dataSource}

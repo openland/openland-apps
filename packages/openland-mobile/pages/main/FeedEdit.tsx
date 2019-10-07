@@ -8,7 +8,7 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import Toast from 'openland-mobile/components/Toast';
 import { SHeader } from 'react-native-s/SHeader';
-import { convertToSlideInputLocal } from 'openland-engines/feed/convert';
+import { convertToSlideInputLocal, convertToSlideInput } from 'openland-engines/feed/convert';
 
 const FeedEditComponent = React.memo((props: PageProps) => {
     const client = getClient();
@@ -22,14 +22,20 @@ const FeedEditComponent = React.memo((props: PageProps) => {
     }
 
     const initial = convertToSlideInputLocal(item);
-    const handleSent = React.useCallback(async (slides: SlideInputLocal[]) => {
+    const handleSent = React.useCallback(async (input: SlideInputLocal[]) => {
+        const slides = convertToSlideInput(input);
+
+        if (slides.length <= 0) {
+            Toast.failure({ duration: 1000, text: 'Post can\'t be empty' }).show();
+
+            return;
+        }
+
         startLoader();
 
-        if (await engine.editPost(id, slides)) {
-            props.router.back();
-        } else {
-            Toast.failure({ duration: 1000, text: 'Post can\'t be empty' }).show();
-        }
+        await engine.editPost(id, slides);
+
+        props.router.back();
 
         stopLoader();
     }, []);

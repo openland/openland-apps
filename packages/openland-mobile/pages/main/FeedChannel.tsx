@@ -49,7 +49,7 @@ const FeedChannelComponent = React.memo((props: PageProps) => {
             title="Post something"
             subtitle="Create the first post in the channel"
             action="Create post"
-            onPress={() => router.push('FeedCreate')}
+            onPress={() => FeedHandlers.Create(channel)}
         />
     ), []);
 
@@ -81,7 +81,7 @@ const FeedChannelComponent = React.memo((props: PageProps) => {
             </SHeaderView>
 
             {!subscribed && <SHeaderButton key="btn-follow" title="Follow" onPress={() => FeedHandlers.ChannelSubscribe(id)} />}
-            {subscribed && canPost && <SHeaderButton key="btn-create" title="Create" icon={require('assets/ic-add-24.png')} onPress={() => router.push('FeedCreate')} />}
+            {subscribed && canPost && <SHeaderButton key="btn-create" title="Create" icon={require('assets/ic-add-24.png')} onPress={() => FeedHandlers.Create(channel)} />}
             {subscribed && !canPost && <SHeaderButton key="btn-empty" />}
 
             <SFlatList
