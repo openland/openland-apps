@@ -12,6 +12,7 @@ export interface DataSourceFeedPostItem extends DataSourceItem {
     id: string;
     date: number;
     author: Types.FeedPostAuthorFragment;
+    source?: Types.FeedPostSourceFragment;
     edited: boolean;
     canEdit: boolean;
     commentsCount: number;

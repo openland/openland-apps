@@ -23,6 +23,7 @@ export const convertPost = (src: Types.Feed_feed_items, engine: MessengerEngine)
         id: src.id,
         date: parseInt(src.date, 10),
         author: src.author,
+        source: src.source || undefined,
         reactions: src.reactions,
         edited: src.edited,
         canEdit: src.canEdit,

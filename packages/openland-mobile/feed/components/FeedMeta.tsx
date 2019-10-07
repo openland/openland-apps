@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, ViewStyle, LayoutChangeEvent } from 'react-native';
-import { FeedPostAuthorFragment } from 'openland-api/Types';
+import { FeedPostAuthorFragment, FeedPostSourceFragment } from 'openland-api/Types';
 import { FeedAuthorView } from './FeedAuthorView';
 import { FeedSlideIndicator } from './FeedSlideIndicator';
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
 
 interface FeedMetaProps {
     author: FeedPostAuthorFragment;
+    source?: FeedPostSourceFragment;
     style: 'default' | 'media';
     currentSlide?: number;
     slidesCount?: number;
@@ -24,7 +25,7 @@ interface FeedMetaProps {
 }
 
 export const FeedMeta = React.memo((props: FeedMetaProps) => {
-    const { author, style, currentSlide, slidesCount, width } = props;
+    const { author, source, style, currentSlide, slidesCount, width } = props;
     const [indicatorWidth, setIndicatorWidth] = React.useState(0);
 
     const handleIndicatorLayour = React.useCallback((event: LayoutChangeEvent) => {
@@ -33,7 +34,12 @@ export const FeedMeta = React.memo((props: FeedMetaProps) => {
 
     const content = (
         <>
-            <FeedAuthorView author={author} style={style} maxWidth={width - indicatorWidth} />
+            <FeedAuthorView
+                author={author}
+                source={source}
+                style={style}
+                maxWidth={width - indicatorWidth}
+            />
 
             {!!currentSlide && !!slidesCount && slidesCount > 1 && (
                 <FeedSlideIndicator

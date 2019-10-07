@@ -5,8 +5,6 @@ import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SlideType, SlideCoverAlign, ImageRefInput } from 'openland-api/Types';
 import { FeedManageSlide } from './FeedManageSlide';
-import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
 import UUID from 'uuid/v4';
 import { SlideInputLocal, SlideInputLocalAttachment } from 'openland-engines/feed/types';
 
@@ -22,7 +20,6 @@ export const FeedManagePost = React.memo((props: FeedManagePostProps) => {
     const [slides, setSlides] = React.useState<SlideInputLocal[]>(initial || []);
     const scrollViewRef = React.useRef<ScrollView>(null);
     const prevSlidesLength = React.useRef<number>(0);
-    const [global, setGlobal] = React.useState(false);
 
     React.useEffect(() => {
         if (slides.length > prevSlidesLength.current) {
@@ -37,7 +34,7 @@ export const FeedManagePost = React.memo((props: FeedManagePostProps) => {
     });
 
     const handleSent = React.useCallback(async () => {
-        onSent(slides, global);
+        onSent(slides);
     }, [slides, global]);
 
     const addSlide = React.useCallback(() => {
@@ -98,10 +95,6 @@ export const FeedManagePost = React.memo((props: FeedManagePostProps) => {
             <SHeaderButton key={'btn-' + canPost} title={action} onPress={handleSent} disabled={!canPost} />
             <KeyboardAvoidingView flexGrow={1} behavior={'padding'}>
                 <SScrollView scrollRef={scrollViewRef as React.RefObject<ScrollView>}>
-                    {!initial && SUPER_ADMIN && (
-                        <ZListItem text="For everyone" toggle={global} onToggle={v => setGlobal(v)} />
-                    )}
-
                     {slides.map(slide => (
                         <View key={`slide-${slide.key}`}>
                             <FeedManageSlide

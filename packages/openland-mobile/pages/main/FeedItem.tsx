@@ -41,7 +41,7 @@ const FeedItemComponent = React.memo((props: PageProps) => {
     }
 
     const item = React.useMemo(() => convertPost(itemSrc, messenger.engine), [itemSrc]);
-    const { id, canEdit, author, date, slides } = item;
+    const { id, canEdit, author, source, date, slides } = item;
     const width = getWidth();
     const [currentSlide, setCurreentSlide] = React.useState(0);
 
@@ -67,24 +67,28 @@ const FeedItemComponent = React.memo((props: PageProps) => {
     );
 
     const handleAuthorPress = React.useCallback(() => {
-        if (author.__typename === 'User') {
-            router.push('ProfileUser', { id: author.id });
+        if (source) {
+            router.push('FeedChannel', { id: source.id });
         } else {
-            router.push('ProfileOrganization', { id: author.id });
+            router.push('ProfileUser', { id: author.id });
         }
     }, [author]);
+
+    const avatarEntity = source || author;
+    const title = source ? source.title : author.name;
+    const subtitle = source ? author.name : undefined;
 
     return (
         <>
             <SHeaderView>
                 <EntityHeader
                     avatar={{
-                        photo: author.photo,
-                        id: author.id,
-                        title: author.name
+                        photo: avatarEntity.photo,
+                        id: avatarEntity.id,
+                        title
                     }}
-                    title={author.name}
-                    subtitle={formatDateAtTime(date)}
+                    title={title}
+                    subtitle={(subtitle ? subtitle + ' · ' : '') + formatDateAtTime(date)}
                     onPress={handleAuthorPress}
                 />
             </SHeaderView>
