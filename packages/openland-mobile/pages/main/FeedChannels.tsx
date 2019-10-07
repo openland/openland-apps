@@ -13,7 +13,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
 const FeedChannelsComponent = React.memo((props: PageProps) => {
     const client = useClient();
-    const followingChannels = client.useFeedMyChannels({ first: 15 }, { fetchPolicy: 'cache-and-network' }).channels.items;
+    const followingChannels = client.useFeedMyChannels({ first: 15 }, { fetchPolicy: 'network-only' }).channels.items;
 
     return (
         <>

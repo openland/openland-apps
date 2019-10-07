@@ -274,7 +274,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                 data={members}
                 renderItem={({ item }) => (
                     <UserView
-                        role={item.role}
+                        memberRole={item.role}
                         badge={item.badge}
                         user={item.user}
                         onLongPress={() => handleMemberLongPress(item, item.canKick, room.canEdit)}

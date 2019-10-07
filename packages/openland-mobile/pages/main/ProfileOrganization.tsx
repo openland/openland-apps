@@ -386,7 +386,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                 renderItem={({ item }) => (
                     <UserView
                         user={item.user}
-                        role={item.role}
+                        memberRole={item.role}
                         onPress={() => handleMemberPress(item.user)}
                         onLongPress={() => handleMemberLongPress(item)}
                     />

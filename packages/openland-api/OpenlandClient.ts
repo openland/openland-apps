@@ -595,6 +595,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderFeedChannel(variables: Types.FeedChannelVariables, opts?: QueryWatchParameters): Types.FeedChannel | null {
         return this.useQuery(Source.FeedChannelQuery, variables, opts);
     }
+    async queryFeedChannelAdmins(variables: Types.FeedChannelAdminsVariables, opts?: OperationParameters): Promise<Types.FeedChannelAdmins> {
+        return this.client.query(Source.FeedChannelAdminsQuery, variables, opts);
+    }
+    async refetchFeedChannelAdmins(variables: Types.FeedChannelAdminsVariables): Promise<Types.FeedChannelAdmins> {
+        return this.refetch(Source.FeedChannelAdminsQuery, variables);
+    }
+    useFeedChannelAdmins(variables: Types.FeedChannelAdminsVariables, opts?: QueryWatchParameters): Types.FeedChannelAdmins {
+        return this.useQuerySuspense(Source.FeedChannelAdminsQuery, variables, opts);
+    }
+    useWithoutLoaderFeedChannelAdmins(variables: Types.FeedChannelAdminsVariables, opts?: QueryWatchParameters): Types.FeedChannelAdmins | null {
+        return this.useQuery(Source.FeedChannelAdminsQuery, variables, opts);
+    }
     async queryFeedChannelContent(variables: Types.FeedChannelContentVariables, opts?: OperationParameters): Promise<Types.FeedChannelContent> {
         return this.client.query(Source.FeedChannelContentQuery, variables, opts);
     }

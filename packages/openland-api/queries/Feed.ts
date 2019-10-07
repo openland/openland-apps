@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import { FeedItemFull } from '../fragments/FeedItemFull';
 import { FeedChannelFull } from '../fragments/FeedChannelFull';
+import { UserShort } from 'openland-api/fragments/UserShort';
 
 export const FeedQuery = gql`
     query Feed($first: Int!, $after: String) {
@@ -59,6 +60,22 @@ export const FeedChannelQuery = gql`
     }
 
     ${FeedChannelFull}
+`;
+
+export const FeedChannelAdminsQuery = gql`
+    query FeedChannelAdmins($id: ID!, $first: Int!, $after: ID) {
+        admins: alphaFeedChannelAdmins(id: $id, first: $first, after: $after) {
+            items {
+                user {
+                    ...UserShort
+                }
+                role
+            }
+            cursor
+        }
+    }
+
+    ${UserShort}
 `;
 
 export const FeedChannelContentQuery = gql`

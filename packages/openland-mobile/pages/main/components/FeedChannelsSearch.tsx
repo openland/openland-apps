@@ -19,7 +19,12 @@ interface FeedChannelsSearchProps {
 const FeedChannelsSearchInner = (props: FeedChannelsSearchProps) => {
     const client = useClient();
     const theme = React.useContext(ThemeContext);
-    const items = client.useFeedChannelsSearch({ query: props.query, first: 30 }).search.edges;
+    const items = client.useFeedChannelsSearch({
+        query: JSON.stringify({
+            $and: [{ title: props.query }],
+        }),
+        first: 30
+    }).search.edges;
 
     return (
         <>

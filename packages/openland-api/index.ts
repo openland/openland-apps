@@ -171,6 +171,7 @@ export const FeedQuery = typedQuery<Types.Feed, Types.FeedVariables>(Feed.FeedQu
 export const FeedMyChannelsQuery = typedQuery<Types.FeedMyChannels, Types.FeedMyChannelsVariables>(Feed.FeedMyChannelsQuery);
 export const FeedChannelsSearchQuery = typedQuery<Types.FeedChannelsSearch, Types.FeedChannelsSearchVariables>(Feed.FeedChannelsSearchQuery);
 export const FeedChannelQuery = typedQuery<Types.FeedChannel, Types.FeedChannelVariables>(Feed.FeedChannelQuery);
+export const FeedChannelAdminsQuery = typedQuery<Types.FeedChannelAdmins, Types.FeedChannelAdminsVariables>(Feed.FeedChannelAdminsQuery);
 export const FeedChannelContentQuery = typedQuery<Types.FeedChannelContent, Types.FeedChannelContentVariables>(Feed.FeedChannelContentQuery);
 export const FeedChannelCreateMutation = typedMutation<Types.FeedChannelCreate, Types.FeedChannelCreateVariables>(Feed.FeedChannelCreateMutation);
 export const FeedChannelUpdateMutation = typedMutation<Types.FeedChannelUpdate, Types.FeedChannelUpdateVariables>(Feed.FeedChannelUpdateMutation);

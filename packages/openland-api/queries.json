@@ -12245,6 +12245,130 @@
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
+			"operationName": "FeedChannelAdmins",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [
+				{
+					"name": "id",
+					"type": "ID!"
+				},
+				{
+					"name": "first",
+					"type": "Int!"
+				},
+				{
+					"name": "after",
+					"type": "ID"
+				}
+			],
+			"source": "query FeedChannelAdmins($id: ID!, $first: Int!, $after: ID) {\n  admins: alphaFeedChannelAdmins(id: $id, first: $first, after: $after) {\n    __typename\n    items {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      role\n    }\n    cursor\n  }\n}",
+			"fields": [
+				{
+					"responseName": "admins",
+					"fieldName": "alphaFeedChannelAdmins",
+					"type": "FeedChannelAdminConnection!",
+					"args": [
+						{
+							"name": "id",
+							"value": {
+								"kind": "Variable",
+								"variableName": "id"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "first",
+							"value": {
+								"kind": "Variable",
+								"variableName": "first"
+							},
+							"type": "Int!"
+						},
+						{
+							"name": "after",
+							"value": {
+								"kind": "Variable",
+								"variableName": "after"
+							},
+							"type": "ID"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "items",
+							"fieldName": "items",
+							"type": "[FeedChannelAdmin!]!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "user",
+									"fieldName": "user",
+									"type": "User!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										}
+									],
+									"fragmentSpreads": [
+										"UserShort"
+									],
+									"inlineFragments": []
+								},
+								{
+									"responseName": "role",
+									"fieldName": "role",
+									"type": "FeedChannelAdminRole!",
+									"isConditional": false,
+									"isDeprecated": false
+								}
+							],
+							"fragmentSpreads": [],
+							"inlineFragments": []
+						},
+						{
+							"responseName": "cursor",
+							"fieldName": "cursor",
+							"type": "String",
+							"isConditional": false,
+							"isDeprecated": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"UserShort",
+				"OrganizationShort"
+			],
+			"sourceWithFragments": "query FeedChannelAdmins($id: ID!, $first: Int!, $after: ID) {\n  admins: alphaFeedChannelAdmins(id: $id, first: $first, after: $after) {\n    __typename\n    items {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      role\n    }\n    cursor\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}",
+			"operationId": "cd71ef76cf5af465a750ccdfc3f61ddf432950c15bff4bae24ddf40a55457900"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
 			"operationName": "FeedChannelContent",
 			"operationType": "query",
 			"rootType": "Query",
@@ -18946,7 +19070,7 @@
 				{
 					"responseName": "photo",
 					"fieldName": "photo",
-					"type": "String!",
+					"type": "String",
 					"isConditional": false,
 					"isDeprecated": false
 				},
@@ -29475,6 +29599,28 @@
 			]
 		},
 		{
+			"kind": "EnumType",
+			"name": "FeedChannelAdminRole",
+			"values": [
+				{
+					"name": "Creator",
+					"isDeprecated": false
+				},
+				{
+					"name": "Editor",
+					"isDeprecated": false
+				},
+				{
+					"name": "Subscriber",
+					"isDeprecated": false
+				},
+				{
+					"name": "None",
+					"isDeprecated": false
+				}
+			]
+		},
+		{
 			"kind": "InputObjectType",
 			"name": "SlideInput",
 			"fields": [
@@ -30115,28 +30261,6 @@
 				},
 				{
 					"name": "READY",
-					"isDeprecated": false
-				}
-			]
-		},
-		{
-			"kind": "EnumType",
-			"name": "FeedChannelAdminRole",
-			"values": [
-				{
-					"name": "Creator",
-					"isDeprecated": false
-				},
-				{
-					"name": "Editor",
-					"isDeprecated": false
-				},
-				{
-					"name": "Subscriber",
-					"isDeprecated": false
-				},
-				{
-					"name": "None",
 					"isDeprecated": false
 				}
 			]

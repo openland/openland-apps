@@ -11,6 +11,8 @@ import { Platform } from 'react-native';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
 import { SScrollView } from 'react-native-s/SScrollView';
+import { UserView } from './components/UserView';
+import { FeedChannelAdminRole } from 'openland-api/Types';
 
 const FeedChannelProfileComponent = React.memo((props: PageProps) => {
     const { router } = props;
@@ -18,7 +20,13 @@ const FeedChannelProfileComponent = React.memo((props: PageProps) => {
     const client = useClient();
 
     const channel = client.useFeedChannel({ id }, { fetchPolicy: 'cache-and-network' }).channel;
-    const { title, about, photo, subscribersCount, subscribed } = channel;
+    const { title, about, photo, subscribersCount, subscribed, myRole } = channel;
+
+    const writers = client.useFeedChannelAdmins({ id, first: 3 }, { fetchPolicy: 'cache-and-network' }).admins;
+
+    const handleAddWriter = React.useCallback(() => {
+        return;
+    }, [id]);
 
     return (
         <>
@@ -41,6 +49,27 @@ const FeedChannelProfileComponent = React.memo((props: PageProps) => {
                     {about && (
                         <ZListItem multiline={true} text={about} copy={true} />
                     )}
+                </ZListGroup>
+
+                <ZListGroup
+                    header="Writers"
+                    counter={writers.items.length}
+                    actionRight={writers.cursor ? { title: 'See all', onPress: () => props.router.push('FeedChannelWriters', { id }) } : undefined}
+                >
+                    {myRole === FeedChannelAdminRole.Creator && (
+                        <ZListItem
+                            leftIcon={require('assets/ic-add-glyph-24.png')}
+                            text="Add writer"
+                            onPress={handleAddWriter}
+                        />
+                    )}
+                    {writers.items.map(writer => (
+                        <UserView
+                            user={writer.user}
+                            channelRole={writer.role}
+                            onPress={() => router.push('ProfileUser', { id: writer.user.id })}
+                        />
+                    ))}
                 </ZListGroup>
             </SScrollView>
         </>

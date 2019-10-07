@@ -39,7 +39,7 @@ const FeedChannelCreateComponent = React.memo((props: PageProps) => {
     return (
         <>
             <SHeader title="New channel" />
-            <SHeaderButton title="Next" onPress={handleSave} />
+            <SHeaderButton title="Create" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <ZListGroup header={null} alignItems="center">
                     <ZAvatarPicker size="xx-large" field={photoField} />

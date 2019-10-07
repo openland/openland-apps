@@ -865,7 +865,7 @@ private let FeedChannelFullSelector = obj(
             field("about","about", scalar("String")),
             field("id","id", notNull(scalar("ID"))),
             field("myRole","myRole", notNull(scalar("String"))),
-            field("photo","photo", notNull(scalar("String"))),
+            field("photo","photo", scalar("String")),
             field("subscribed","subscribed", notNull(scalar("Boolean"))),
             field("subscribersCount","subscribersCount", notNull(scalar("Int"))),
             field("title","title", notNull(scalar("String")))
@@ -2010,6 +2010,20 @@ private let FeedChannelSelector = obj(
             field("alphaFeedChannel","channel", arguments(fieldValue("id", refValue("id"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("FeedChannel", FeedChannelFullSelector)
+                )))
+        )
+private let FeedChannelAdminsSelector = obj(
+            field("alphaFeedChannelAdmins","admins", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("cursor","cursor", scalar("String")),
+                    field("items","items", notNull(list(notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("role","role", notNull(scalar("String"))),
+                            field("user","user", notNull(obj(
+                                    field("__typename","__typename", notNull(scalar("String"))),
+                                    fragment("User", UserShortSelector)
+                                )))
+                        )))))
                 )))
         )
 private let FeedChannelContentSelector = obj(
@@ -3823,6 +3837,12 @@ class Operations {
         "query FeedChannel($id:ID!){channel:alphaFeedChannel(id:$id){__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename about id myRole photo subscribed subscribersCount title}",
         FeedChannelSelector
     )
+    let FeedChannelAdmins = OperationDefinition(
+        "FeedChannelAdmins",
+        .query, 
+        "query FeedChannelAdmins($after:ID,$first:Int!,$id:ID!){admins:alphaFeedChannelAdmins(after:$after,first:$first,id:$id){__typename cursor items{__typename role user{__typename ...UserShort}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}",
+        FeedChannelAdminsSelector
+    )
     let FeedChannelContent = OperationDefinition(
         "FeedChannelContent",
         .query, 
@@ -4907,6 +4927,7 @@ class Operations {
         if name == "FeatureFlags" { return FeatureFlags }
         if name == "Feed" { return Feed }
         if name == "FeedChannel" { return FeedChannel }
+        if name == "FeedChannelAdmins" { return FeedChannelAdmins }
         if name == "FeedChannelContent" { return FeedChannelContent }
         if name == "FeedChannelsSearch" { return FeedChannelsSearch }
         if name == "FeedItem" { return FeedItem }

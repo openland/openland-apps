@@ -27,6 +27,7 @@ object Operations {
         if (name == "FeatureFlags") return FeatureFlags
         if (name == "Feed") return Feed
         if (name == "FeedChannel") return FeedChannel
+        if (name == "FeedChannelAdmins") return FeedChannelAdmins
         if (name == "FeedChannelContent") return FeedChannelContent
         if (name == "FeedChannelsSearch") return FeedChannelsSearch
         if (name == "FeedItem") return FeedItem

@@ -871,7 +871,7 @@ internal val FeedChannelFullSelector = obj(
             field("about","about", scalar("String")),
             field("id","id", notNull(scalar("ID"))),
             field("myRole","myRole", notNull(scalar("String"))),
-            field("photo","photo", notNull(scalar("String"))),
+            field("photo","photo", scalar("String")),
             field("subscribed","subscribed", notNull(scalar("Boolean"))),
             field("subscribersCount","subscribersCount", notNull(scalar("Int"))),
             field("title","title", notNull(scalar("String")))
