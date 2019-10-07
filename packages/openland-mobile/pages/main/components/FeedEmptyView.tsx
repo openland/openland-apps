@@ -29,9 +29,9 @@ const styles = StyleSheet.create({
 
 interface FeedEmptyViewProps {
     title: string;
-    subtitle: string;
-    action: string;
-    onPress: () => void;
+    subtitle?: string;
+    action?: string;
+    onPress?: () => void;
 }
 
 export const FeedEmptyView = React.memo((props: FeedEmptyViewProps) => {
@@ -43,8 +43,8 @@ export const FeedEmptyView = React.memo((props: FeedEmptyViewProps) => {
         <View style={styles.box} minHeight={Dimensions.get('screen').height - area.top - area.bottom}>
             <Image source={require('assets/feed/ic-feed-setup-200.png')} style={styles.image} />
             <Text style={[styles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>{title}</Text>
-            <Text style={[styles.subtitle, { color: theme.foregroundPrimary }]} allowFontScaling={false}>{subtitle}</Text>
-            <ZRoundedButton title={action} size="large" onPress={onPress} />
+            {!!subtitle && <Text style={[styles.subtitle, { color: theme.foregroundPrimary }]} allowFontScaling={false}>{subtitle}</Text>}
+            {!!action && !!onPress && <ZRoundedButton title={action} size="large" onPress={onPress} />}
         </View>
     );
 });

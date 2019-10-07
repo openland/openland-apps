@@ -44,14 +44,20 @@ const FeedChannelComponent = React.memo((props: PageProps) => {
         return <View />;
     }, []);
 
-    const renderEmpty = React.useCallback(() => (
-        <FeedEmptyView
-            title="Post something"
-            subtitle="Create the first post in the channel"
-            action="Create post"
-            onPress={() => FeedHandlers.Create(channel)}
-        />
-    ), []);
+    const renderEmpty = React.useCallback(() => {
+        if (canPost) {
+            return (
+                <FeedEmptyView
+                    title="Post something"
+                    subtitle="Create the first post in the channel"
+                    action="Create post"
+                    onPress={() => FeedHandlers.Create(channel)}
+                />
+            );
+        }
+
+        return <FeedEmptyView title="Empty channel" />;
+    }, [canPost]);
 
     const handleLoadMore = React.useCallback(async () => {
         if (cursor && !loading) {
