@@ -7,12 +7,13 @@ import { FeedEngine } from 'openland-engines/feed/FeedEngine';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { FeedPostView } from 'openland-mobile/feed/FeedPostView';
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { DataSourceRender } from 'openland-mobile/components/DataSourceRender';
 import { SRouter } from 'react-native-s/SRouter';
 import { FeedDateView } from 'openland-mobile/feed/FeedDateView';
 import { DataSourceFeedItem } from 'openland-engines/feed/types';
+import { FeedEmptyView } from './components/FeedEmptyView';
 
 interface FeedPageProps {
     engine: FeedEngine;
@@ -39,9 +40,12 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
     }
 
     private renderEmpty = () => (
-        <View height={56} alignItems="center" justifyContent="center">
-            <Text>--- EMPTY ---</Text>
-        </View>
+        <FeedEmptyView
+            title="Post something"
+            subtitle="Create the first post"
+            action="Create post"
+            onPress={this.handleCreate}
+        />
     )
 
     private renderLoading = () => (
@@ -62,6 +66,10 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
         return <View />;
     }
 
+    private handleCreate = () => {
+        this.props.router.push('FeedCreate');
+    }
+
     render() {
         const { engine } = this.props;
 
@@ -69,7 +77,8 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
             <>
                 <SHeader title="Feed" />
                 <SHeaderButton key="feed-channels" title="Channels" icon={require('assets/ic-list-24.png')} onPress={() => this.props.router.push('FeedChannels')} />
-                <SHeaderButton key="feed-create" title="Create" icon={require('assets/ic-add-24.png')} onPress={() => this.props.router.push('FeedCreate')} />
+                <SHeaderButton key="feed-create" title="Create" icon={require('assets/ic-add-24.png')} onPress={this.handleCreate} />
+
                 <DataSourceRender
                     dataSource={engine.dataSource}
                     renderItem={this.renderItem}
