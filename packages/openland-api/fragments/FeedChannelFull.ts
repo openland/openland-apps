@@ -6,6 +6,8 @@ export const FeedChannelFull = gql`
         title
         about
         photo
-        type
+        subscribed
+        myRole
+        subscribersCount
     }
 `;

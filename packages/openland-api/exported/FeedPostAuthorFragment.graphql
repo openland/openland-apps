@@ -3,7 +3,4 @@ fragment FeedPostAuthorFragment on FeedPostAuthor {
   ... on User {
     ...UserShort
   }
-  ... on Organization {
-    ...OrganizationShort
-  }
 }

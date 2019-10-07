@@ -870,18 +870,17 @@ internal val FeedChannelFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("about","about", scalar("String")),
             field("id","id", notNull(scalar("ID"))),
+            field("myRole","myRole", notNull(scalar("String"))),
             field("photo","photo", notNull(scalar("String"))),
-            field("title","title", notNull(scalar("String"))),
-            field("type","type", notNull(scalar("String")))
+            field("subscribed","subscribed", notNull(scalar("Boolean"))),
+            field("subscribersCount","subscribersCount", notNull(scalar("Int"))),
+            field("title","title", notNull(scalar("String")))
         )
 
 internal val FeedPostAuthorFragmentSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             inline("User", obj(
                 fragment("User", UserShortSelector)
-            )),
-            inline("Organization", obj(
-                fragment("Organization", OrganizationShortSelector)
             ))
         )
 
@@ -935,6 +934,13 @@ internal val SlideFragmentSelector = obj(
             ))
         )
 
+internal val FeedPostSourceFragmentSelector = obj(
+            field("__typename","__typename", notNull(scalar("String"))),
+            inline("FeedChannel", obj(
+                fragment("FeedChannel", FeedChannelFullSelector)
+            ))
+        )
+
 internal val FeedItemFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             inline("FeedPost", obj(
@@ -960,7 +966,11 @@ internal val FeedItemFullSelector = obj(
                 field("slides","slides", notNull(list(notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         fragment("Slide", SlideFragmentSelector)
-                    )))))
+                    ))))),
+                field("source","source", obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        fragment("FeedPostSource", FeedPostSourceFragmentSelector)
+                    ))
             ))
         )
 

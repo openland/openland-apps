@@ -4,7 +4,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { showReportForm } from 'openland-mobile/components/showReportForm';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
-import { MessageReactionType } from 'openland-api/Types';
+import { MessageReactionType, FeedChannelFull, FeedChannelAdminRole } from 'openland-api/Types';
 import { Share } from 'react-native';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 
@@ -89,6 +89,54 @@ class FeedHandlersClass {
         }
 
         builder.show(fromLongPress);
+    }
+
+    // ----- CHANNEL
+
+    ChannelManage = async (channel: FeedChannelFull) => {
+        const { id, myRole, subscribed } = channel;
+        const router = getMessenger().history.navigationManager;
+        const builder = new ActionSheetBuilder();
+
+        if (myRole === FeedChannelAdminRole.Creator) {
+            builder.action('Edit info', () => {
+                router.push('FeedChannelEdit', { id });
+            }, false, require('assets/ic-edit-24.png'));
+        }
+
+        if (subscribed) {
+            builder.action('Unfollow', () => {
+                this.ChannelUnsubscribe(id);
+            }, false, require('assets/ic-follow-off-24.png'));
+        } else {
+            builder.action('Follow', () => {
+                this.ChannelSubscribe(id);
+            }, false, require('assets/ic-follow-24.png'));
+        }
+
+        builder.show();
+    }
+
+    ChannelSubscribe = async (channelId: string) => {
+        const client = getClient();
+
+        startLoader();
+
+        await client.mutateFeedChannelSubscribe({ id: channelId });
+        await client.refetchFeedChannel({ id: channelId });
+
+        stopLoader();
+    }
+
+    ChannelUnsubscribe = async (channelId: string) => {
+        const client = getClient();
+
+        startLoader();
+
+        await client.mutateFeedChannelUnsubscribe({ id: channelId });
+        await client.refetchFeedChannel({ id: channelId });
+
+        stopLoader();
     }
 }
 

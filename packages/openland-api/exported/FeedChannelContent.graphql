@@ -1,0 +1,10 @@
+query FeedChannelContent($after: String, $first: Int!, $id: ID!) {
+  content: alphaFeedChannelContent(after: $after, first: $first, id: $id) {
+    __typename
+    cursor
+    items {
+      __typename
+      ...FeedItemFull
+    }
+  }
+}

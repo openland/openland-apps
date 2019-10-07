@@ -122,7 +122,7 @@ export class FeedEngine {
         }
     }
 
-    createPost: (input: SlideInputLocal[], global?: boolean) => Promise<boolean> = async (input, global) => {
+    createPost: (channel: string, input: SlideInputLocal[]) => Promise<boolean> = async (channel, input) => {
         const slides = convertToSlideInput(input);
 
         if (slides.length < 1) {
@@ -132,11 +132,7 @@ export class FeedEngine {
         const repeatKey = UUID();
 
         await backoff(async () => {
-            if (global) {
-                await this.engine.client.mutateFeedCreateGlobalPost({ slides, repeatKey });
-            } else {
-                await this.engine.client.mutateFeedCreatePost({ slides, repeatKey });
-            }
+            await this.engine.client.mutateFeedCreatePost({ channel, slides, repeatKey });
         });
 
         return true;

@@ -17,6 +17,6 @@ internal val FeedMyChannelsSelector = obj(
 val FeedMyChannels = object: OperationDefinition {
     override val name = "FeedMyChannels"
     override val kind = OperationKind.QUERY
-    override val body = "query FeedMyChannels(\$after:ID,\$first:Int!){channels:alphaFeedMyChannels(after:\$after,first:\$first){__typename cursor items{__typename ...FeedChannelFull}}}fragment FeedChannelFull on FeedChannel{__typename about id photo title type}"
+    override val body = "query FeedMyChannels(\$after:ID,\$first:Int!){channels:alphaFeedMyChannels(after:\$after,first:\$first){__typename cursor items{__typename ...FeedChannelFull}}}fragment FeedChannelFull on FeedChannel{__typename about id myRole photo subscribed subscribersCount title}"
     override val selector = FeedMyChannelsSelector
 }

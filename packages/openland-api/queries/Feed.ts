@@ -28,11 +28,89 @@ export const FeedMyChannelsQuery = gql`
     ${FeedChannelFull}
 `;
 
+export const FeedChannelsSearchQuery = gql`
+    query FeedChannelsSearch($query: String, $sort: String, $first: Int!, $after: String) {
+        search: alphaFeedChannelSearch(query: $query, sort: $sort, first: $first, after: $after) {
+            edges {
+                node {
+                    ...FeedChannelFull
+                }
+                cursor
+            }
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                itemsCount
+                pagesCount
+                currentPage
+                openEnded
+            }
+        }
+    }
+
+    ${FeedChannelFull}
+`;
+
+export const FeedChannelQuery = gql`
+    query FeedChannel($id: ID!) {
+        channel: alphaFeedChannel(id: $id) {
+            ...FeedChannelFull
+        }
+    }
+
+    ${FeedChannelFull}
+`;
+
+export const FeedChannelContentQuery = gql`
+    query FeedChannelContent($id: ID!, $first: Int!, $after: String) {
+        content: alphaFeedChannelContent(id: $id, first: $first, after: $after) {
+            items {
+                ...FeedItemFull
+            }
+            cursor
+        }
+    }
+
+    ${FeedItemFull}
+`;
+
 export const FeedChannelCreateMutation = gql`
-    mutation FeedChannelCreate($title: String!, $about: String, $type: FeedChannelType!, $photoRef: ImageRefInput) {
-        channel: alphaFeedCreateChannel(title: $title, about: $about, type: $type, photoRef: $photoRef) {
+    mutation FeedChannelCreate($title: String!, $about: String, $photoRef: ImageRefInput, $global: Boolean) {
+        channel: alphaFeedCreateChannel(title: $title, about: $about, photoRef: $photoRef, global: $global) {
             id
         }
+    }
+`;
+
+export const FeedChannelUpdateMutation = gql`
+    mutation FeedChannelUpdate($id: ID!, $title: String!, $about: String, $photoRef: ImageRefInput, $global: Boolean) {
+        channel: alphaFeedUpdateChannel(id: $id, title: $title, about: $about, photoRef: $photoRef, global: $global) {
+            id
+        }
+    }
+`;
+
+export const FeedChannelSubscribeMutation = gql`
+    mutation FeedChannelSubscribe($id: ID!) {
+        alphaFeedChannelSubscribe(id: $id)
+    }
+`;
+
+export const FeedChannelUnsubscribeMutation = gql`
+    mutation FeedChannelUnsubscribe($id: ID!) {
+        alphaFeedChannelUnsubscribe(id: $id)
+    }
+`;
+
+export const FeedChannelAddEditorMutation = gql`
+    mutation FeedChannelAddEditor($id: ID!, $userId: ID!) {
+        alphaFeedChannelAddEditor(id: $id, userId: $userId)
+    }
+`;
+
+export const FeedChannelRemoveEditorMutation = gql`
+    mutation FeedChannelRemoveEditor($id: ID!, $userId: ID!) {
+        alphaFeedChannelRemoveEditor(id: $id, userId: $userId)
     }
 `;
 
@@ -57,18 +135,8 @@ export const FeedEditPostMutation = gql`
 `;
 
 export const FeedCreatePostMutation = gql`
-    mutation FeedCreatePost($slides: [SlideInput!]!, $repeatKey: String) {
-        createFeedPost: alphaCreateFeedPost(slides: $slides, repeatKey: $repeatKey) {
-            ...FeedItemFull
-        }
-    }
-
-    ${FeedItemFull}
-`;
-
-export const FeedCreateGlobalPostMutation = gql`
-    mutation FeedCreateGlobalPost($slides: [SlideInput!]!, $repeatKey: String) {
-        createFeedPost: alphaCreateGlobalFeedPost(slides: $slides, repeatKey: $repeatKey) {
+    mutation FeedCreatePost($channel: ID!, $slides: [SlideInput!]!, $repeatKey: String) {
+        post: alphaCreateFeedPost(channel: $channel, slides: $slides, repeatKey: $repeatKey) {
             ...FeedItemFull
         }
     }

@@ -8,7 +8,7 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-// import { plural } from 'openland-y-utils/plural';
+import { plural } from 'openland-y-utils/plural';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
 const FeedChannelsComponent = React.memo((props: PageProps) => {
@@ -39,8 +39,7 @@ const FeedChannelsComponent = React.memo((props: PageProps) => {
                                     key: channel.id,
                                     title: channel.title,
                                 }}
-                                // subTitle={plural(channel.membersCount, ['follower', 'followers'])}
-                                subTitle="0 followers"
+                                subTitle={plural(channel.subscribersCount, ['follower', 'followers'])}
                                 path="FeedChannel"
                                 pathParams={{ id: channel.id }}
                             />

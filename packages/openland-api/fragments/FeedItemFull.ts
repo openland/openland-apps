@@ -1,20 +1,26 @@
 import gql from 'graphql-tag';
-import { UserShort } from '../fragments/UserShort';
-import { OrganizationShort } from '../fragments/OrganizationShort';
+import { UserShort } from './UserShort';
 import { SpanFragment } from './Message';
+import { FeedChannelFull } from './FeedChannelFull';
 
 export const FeedPostAuthorFragment = gql`
     fragment FeedPostAuthorFragment on FeedPostAuthor {
         ... on User {
             ...UserShort
         }
-        ... on Organization {
-            ...OrganizationShort
-        }
     }
 
     ${UserShort}
-    ${OrganizationShort}
+`;
+
+export const FeedPostSourceFragment = gql`
+    fragment FeedPostSourceFragment on FeedPostSource {
+        ... on FeedChannel {
+            ...FeedChannelFull
+        }
+    }
+
+    ${FeedChannelFull}
 `;
 
 export const SlideFragment = gql`
@@ -73,6 +79,9 @@ export const FeedItemFull = gql`
             author {
                 ...FeedPostAuthorFragment
             }
+            source {
+                ...FeedPostSourceFragment
+            }
             edited
             canEdit
             commentsCount
@@ -91,5 +100,6 @@ export const FeedItemFull = gql`
     }
 
     ${FeedPostAuthorFragment}
+    ${FeedPostSourceFragment}
     ${SlideFragment}
 `;

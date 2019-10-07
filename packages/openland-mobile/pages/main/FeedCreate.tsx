@@ -10,10 +10,10 @@ import { SHeader } from 'react-native-s/SHeader';
 
 const FeedCreateComponent = React.memo((props: PageProps) => {
     const engine = getMessenger().engine.feed;
-    const handleSent = React.useCallback(async (slides: SlideInputLocal[], global?: boolean) => {
+    const handleSent = React.useCallback(async (slides: SlideInputLocal[]) => {
         startLoader();
 
-        if (await engine.createPost(slides, global)) {
+        if (await engine.createPost('QwnbK6nA4dsWp5p7YkRdCqeDd1', slides)) {
             props.router.back();
         } else {
             Toast.failure({ duration: 1000, text: 'Post can\'t be empty' }).show();

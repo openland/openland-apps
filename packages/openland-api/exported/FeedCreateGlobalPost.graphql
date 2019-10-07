@@ -1,6 +1,0 @@
-mutation FeedCreateGlobalPost($repeatKey: String, $slides: [SlideInput!]!) {
-  createFeedPost: alphaCreateGlobalFeedPost(repeatKey: $repeatKey, slides: $slides) {
-    __typename
-    ...FeedItemFull
-  }
-}

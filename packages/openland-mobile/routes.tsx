@@ -68,6 +68,9 @@ import { PostMentionPicker } from './pages/main/modals/PostMentionPicker';
 import { FeedChannels } from './pages/main/FeedChannels';
 import { FeedChannel } from './pages/main/FeedChannel';
 import { FeedChannelCreate } from './pages/main/FeedChannelCreate';
+import { FeedChannelProfile } from './pages/main/FeedChannelProfile';
+import { FeedChannelEdit } from './pages/main/FeedChannelEdit';
+import { SetChannelShortname } from './pages/main/SetChannelShortname';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -102,6 +105,7 @@ export const Routes = new SRoutesBuilder()
 
   .addRoute('SetUserShortname', SetUserShortname)
   .addRoute('SetOrgShortname', SetOrgShortname)
+  .addRoute('SetChannelShortname', SetChannelShortname)
   .addRoute('SelectPrimaryOrganization', SelectPrimaryOrganization)
 
   .addRoute('SignupUser', SignupUser)
@@ -149,5 +153,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('FeedChannels', FeedChannels)
   .addRoute('FeedChannel', FeedChannel)
   .addRoute('FeedChannelCreate', FeedChannelCreate)
+  .addRoute('FeedChannelProfile', FeedChannelProfile)
+  .addRoute('FeedChannelEdit', FeedChannelEdit)
 
   .build();

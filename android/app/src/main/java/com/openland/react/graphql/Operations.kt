@@ -26,6 +26,9 @@ object Operations {
         if (name == "ExplorePeople") return ExplorePeople
         if (name == "FeatureFlags") return FeatureFlags
         if (name == "Feed") return Feed
+        if (name == "FeedChannel") return FeedChannel
+        if (name == "FeedChannelContent") return FeedChannelContent
+        if (name == "FeedChannelsSearch") return FeedChannelsSearch
         if (name == "FeedItem") return FeedItem
         if (name == "FeedMyChannels") return FeedMyChannels
         if (name == "FetchPushSettings") return FetchPushSettings
@@ -108,8 +111,12 @@ object Operations {
         if (name == "FeatureFlagAdd") return FeatureFlagAdd
         if (name == "FeatureFlagDisable") return FeatureFlagDisable
         if (name == "FeatureFlagEnable") return FeatureFlagEnable
+        if (name == "FeedChannelAddEditor") return FeedChannelAddEditor
         if (name == "FeedChannelCreate") return FeedChannelCreate
-        if (name == "FeedCreateGlobalPost") return FeedCreateGlobalPost
+        if (name == "FeedChannelRemoveEditor") return FeedChannelRemoveEditor
+        if (name == "FeedChannelSubscribe") return FeedChannelSubscribe
+        if (name == "FeedChannelUnsubscribe") return FeedChannelUnsubscribe
+        if (name == "FeedChannelUpdate") return FeedChannelUpdate
         if (name == "FeedCreatePost") return FeedCreatePost
         if (name == "FeedDeletePost") return FeedDeletePost
         if (name == "FeedEditPost") return FeedEditPost

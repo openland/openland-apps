@@ -1,0 +1,3 @@
+mutation FeedChannelUnsubscribe($id: ID!) {
+  alphaFeedChannelUnsubscribe(id: $id)
+}

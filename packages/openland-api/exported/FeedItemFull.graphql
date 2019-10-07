@@ -24,5 +24,9 @@ fragment FeedItemFull on FeedItem {
       __typename
       ...SlideFragment
     }
+    source {
+      __typename
+      ...FeedPostSourceFragment
+    }
   }
 }

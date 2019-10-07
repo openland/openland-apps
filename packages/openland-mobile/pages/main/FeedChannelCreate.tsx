@@ -11,7 +11,6 @@ import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardA
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZInput } from 'openland-mobile/components/ZInput';
-import { FeedChannelType } from 'openland-api/Types';
 
 const FeedChannelCreateComponent = React.memo((props: PageProps) => {
     const client = useClient();
@@ -31,7 +30,6 @@ const FeedChannelCreateComponent = React.memo((props: PageProps) => {
                 title: titleField.value,
                 photoRef: photoField.value,
                 about: aboutField.value,
-                type: FeedChannelType.Editorial,
             })).channel;
 
             props.router.push('FeedChannel', { id: channel.id });

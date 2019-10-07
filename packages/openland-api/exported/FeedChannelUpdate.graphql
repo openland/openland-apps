@@ -1,0 +1,6 @@
+mutation FeedChannelUpdate($about: String, $global: Boolean, $id: ID!, $photoRef: ImageRefInput, $title: String!) {
+  channel: alphaFeedUpdateChannel(about: $about, global: $global, id: $id, photoRef: $photoRef, title: $title) {
+    __typename
+    id
+  }
+}

@@ -2,7 +2,9 @@ fragment FeedChannelFull on FeedChannel {
   __typename
   about
   id
+  myRole
   photo
+  subscribed
+  subscribersCount
   title
-  type
 }

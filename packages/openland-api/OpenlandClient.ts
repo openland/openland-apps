@@ -571,6 +571,42 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderFeedMyChannels(variables: Types.FeedMyChannelsVariables, opts?: QueryWatchParameters): Types.FeedMyChannels | null {
         return this.useQuery(Source.FeedMyChannelsQuery, variables, opts);
     }
+    async queryFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: OperationParameters): Promise<Types.FeedChannelsSearch> {
+        return this.client.query(Source.FeedChannelsSearchQuery, variables, opts);
+    }
+    async refetchFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables): Promise<Types.FeedChannelsSearch> {
+        return this.refetch(Source.FeedChannelsSearchQuery, variables);
+    }
+    useFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: QueryWatchParameters): Types.FeedChannelsSearch {
+        return this.useQuerySuspense(Source.FeedChannelsSearchQuery, variables, opts);
+    }
+    useWithoutLoaderFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: QueryWatchParameters): Types.FeedChannelsSearch | null {
+        return this.useQuery(Source.FeedChannelsSearchQuery, variables, opts);
+    }
+    async queryFeedChannel(variables: Types.FeedChannelVariables, opts?: OperationParameters): Promise<Types.FeedChannel> {
+        return this.client.query(Source.FeedChannelQuery, variables, opts);
+    }
+    async refetchFeedChannel(variables: Types.FeedChannelVariables): Promise<Types.FeedChannel> {
+        return this.refetch(Source.FeedChannelQuery, variables);
+    }
+    useFeedChannel(variables: Types.FeedChannelVariables, opts?: QueryWatchParameters): Types.FeedChannel {
+        return this.useQuerySuspense(Source.FeedChannelQuery, variables, opts);
+    }
+    useWithoutLoaderFeedChannel(variables: Types.FeedChannelVariables, opts?: QueryWatchParameters): Types.FeedChannel | null {
+        return this.useQuery(Source.FeedChannelQuery, variables, opts);
+    }
+    async queryFeedChannelContent(variables: Types.FeedChannelContentVariables, opts?: OperationParameters): Promise<Types.FeedChannelContent> {
+        return this.client.query(Source.FeedChannelContentQuery, variables, opts);
+    }
+    async refetchFeedChannelContent(variables: Types.FeedChannelContentVariables): Promise<Types.FeedChannelContent> {
+        return this.refetch(Source.FeedChannelContentQuery, variables);
+    }
+    useFeedChannelContent(variables: Types.FeedChannelContentVariables, opts?: QueryWatchParameters): Types.FeedChannelContent {
+        return this.useQuerySuspense(Source.FeedChannelContentQuery, variables, opts);
+    }
+    useWithoutLoaderFeedChannelContent(variables: Types.FeedChannelContentVariables, opts?: QueryWatchParameters): Types.FeedChannelContent | null {
+        return this.useQuery(Source.FeedChannelContentQuery, variables, opts);
+    }
     async queryFeedItem(variables: Types.FeedItemVariables, opts?: OperationParameters): Promise<Types.FeedItem> {
         return this.client.query(Source.FeedItemQuery, variables, opts);
     }
@@ -1078,14 +1114,26 @@ export class OpenlandClient extends BaseApiClient {
     async mutateFeedChannelCreate(variables: Types.FeedChannelCreateVariables): Promise<Types.FeedChannelCreate> {
         return this.client.mutate(Source.FeedChannelCreateMutation, variables);
     }
+    async mutateFeedChannelUpdate(variables: Types.FeedChannelUpdateVariables): Promise<Types.FeedChannelUpdate> {
+        return this.client.mutate(Source.FeedChannelUpdateMutation, variables);
+    }
+    async mutateFeedChannelSubscribe(variables: Types.FeedChannelSubscribeVariables): Promise<Types.FeedChannelSubscribe> {
+        return this.client.mutate(Source.FeedChannelSubscribeMutation, variables);
+    }
+    async mutateFeedChannelUnsubscribe(variables: Types.FeedChannelUnsubscribeVariables): Promise<Types.FeedChannelUnsubscribe> {
+        return this.client.mutate(Source.FeedChannelUnsubscribeMutation, variables);
+    }
+    async mutateFeedChannelAddEditor(variables: Types.FeedChannelAddEditorVariables): Promise<Types.FeedChannelAddEditor> {
+        return this.client.mutate(Source.FeedChannelAddEditorMutation, variables);
+    }
+    async mutateFeedChannelRemoveEditor(variables: Types.FeedChannelRemoveEditorVariables): Promise<Types.FeedChannelRemoveEditor> {
+        return this.client.mutate(Source.FeedChannelRemoveEditorMutation, variables);
+    }
     async mutateFeedEditPost(variables: Types.FeedEditPostVariables): Promise<Types.FeedEditPost> {
         return this.client.mutate(Source.FeedEditPostMutation, variables);
     }
     async mutateFeedCreatePost(variables: Types.FeedCreatePostVariables): Promise<Types.FeedCreatePost> {
         return this.client.mutate(Source.FeedCreatePostMutation, variables);
-    }
-    async mutateFeedCreateGlobalPost(variables: Types.FeedCreateGlobalPostVariables): Promise<Types.FeedCreateGlobalPost> {
-        return this.client.mutate(Source.FeedCreateGlobalPostMutation, variables);
     }
     async mutateFeedReactionAdd(variables: Types.FeedReactionAddVariables): Promise<Types.FeedReactionAdd> {
         return this.client.mutate(Source.FeedReactionAddMutation, variables);

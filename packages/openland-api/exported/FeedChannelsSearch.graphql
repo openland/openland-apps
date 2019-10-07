@@ -1,0 +1,22 @@
+query FeedChannelsSearch($after: String, $first: Int!, $query: String, $sort: String) {
+  search: alphaFeedChannelSearch(after: $after, first: $first, query: $query, sort: $sort) {
+    __typename
+    edges {
+      __typename
+      cursor
+      node {
+        __typename
+        ...FeedChannelFull
+      }
+    }
+    pageInfo {
+      __typename
+      currentPage
+      hasNextPage
+      hasPreviousPage
+      itemsCount
+      openEnded
+      pagesCount
+    }
+  }
+}
