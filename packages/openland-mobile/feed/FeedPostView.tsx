@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 
 interface FeedPostViewProps {
     item: DataSourceFeedPostItem;
-    scrollRef: React.RefObject<ScrollView>;
+    scrollRef?: React.RefObject<ScrollView>;
 }
 
 export const FeedPostView = React.memo((props: FeedPostViewProps) => {

@@ -8,15 +8,57 @@ import { plural } from 'openland-y-utils/plural';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
 import { FeedChannelAdminRole } from 'openland-api/Types';
+import { SFlatList } from 'react-native-s/SFlatList';
+import { DataSourceFeedItem } from 'openland-engines/feed/types';
+import { FeedPostView } from 'openland-mobile/feed/FeedPostView';
+import { FeedDateView } from 'openland-mobile/feed/FeedDateView';
+import { View } from 'react-native';
+import { getMessenger } from 'openland-mobile/utils/messenger';
+import { convertItems } from 'openland-engines/feed/convert';
 
 const FeedChannelComponent = React.memo((props: PageProps) => {
     const { router } = props;
     const { id } = router.params;
     const client = useClient();
+    const messenger = getMessenger();
 
     const channel = client.useFeedChannel({ id }, { fetchPolicy: 'cache-and-network' }).channel;
     const { title, photo, subscribersCount, subscribed, myRole } = channel;
     const canPost = myRole === FeedChannelAdminRole.Creator || myRole === FeedChannelAdminRole.Editor;
+
+    const initialContent = client.useFeedChannelContent({ id, first: 15 }, { fetchPolicy: 'network-only' }).content;
+
+    const [posts, setPosts] = React.useState(convertItems(initialContent.items, messenger.engine));
+    const [loading, setLoading] = React.useState(false);
+    const [cursor, setCursor] = React.useState(initialContent.cursor);
+
+    const renderItem = React.useCallback((data: { item: DataSourceFeedItem }) => {
+        if (data.item.type === 'post') {
+            return <FeedPostView item={data.item} />;
+        }
+
+        if (data.item.type === 'date') {
+            return <FeedDateView item={data.item} />;
+        }
+
+        return <View />;
+    }, []);
+
+    const handleLoadMore = React.useCallback(async () => {
+        if (cursor && !loading) {
+            setLoading(true);
+
+            const loaded = (await client.queryFeedChannelContent({
+                id,
+                first: 15,
+                after: cursor,
+            }, { fetchPolicy: 'network-only' })).content;
+
+            setPosts(current => [...current, ...convertItems(loaded.items.filter(m => !current.find(m2 => m2.key === m.id)), messenger.engine)]);
+            setLoading(false);
+            setCursor(loaded.cursor);
+        }
+    }, [id, cursor, loading]);
 
     return (
         <>
@@ -32,6 +74,14 @@ const FeedChannelComponent = React.memo((props: PageProps) => {
             {!subscribed && <SHeaderButton key="btn-follow" title="Follow" onPress={() => FeedHandlers.ChannelSubscribe(id)} />}
             {subscribed && canPost && <SHeaderButton key="btn-create" title="Create" icon={require('assets/ic-add-24.png')} onPress={() => router.push('FeedCreate')} />}
             {subscribed && !canPost && <SHeaderButton key="btn-empty" />}
+
+            <SFlatList
+                data={posts}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => `${index}-${item.key}`}
+                onEndReached={() => handleLoadMore()}
+                refreshing={loading}
+            />
         </>
     );
 });

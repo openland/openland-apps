@@ -39,7 +39,7 @@ interface FeedSwipeHandlerProps {
     theme: ThemeGlobal;
     onLeftSwiped: () => void;
     onRightSwiped: () => void;
-    scrollRef: React.RefObject<ScrollView>;
+    scrollRef?: React.RefObject<ScrollView>;
     leftIcon: NodeRequire;
     rightIcon: NodeRequire;
     leftColor: string;
@@ -74,12 +74,14 @@ export class FeedSwipeHandler extends React.PureComponent<FeedSwipeHandlerProps>
     }
 
     scroll = (scrollEnabled: boolean) => {
-        const { current } = this.props.scrollRef;
+        if (this.props.scrollRef) {
+            const { current } = this.props.scrollRef;
 
-        if (current) {
-            this.scrollEnabled = scrollEnabled;
+            if (current) {
+                this.scrollEnabled = scrollEnabled;
 
-            (current as any).setNativeProps({ scrollEnabled });
+                (current as any).setNativeProps({ scrollEnabled });
+            }
         }
     }
 
