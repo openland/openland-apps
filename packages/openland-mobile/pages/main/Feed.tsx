@@ -6,7 +6,6 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { FeedEngine } from 'openland-engines/feed/FeedEngine';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { NON_PRODUCTION } from '../Init';
 import { FeedPostView } from 'openland-mobile/feed/FeedPostView';
 import { View, Text, ScrollView } from 'react-native';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
@@ -63,19 +62,14 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
         return <View />;
     }
 
-    private handleCreate = () => {
-        this.props.router.push('FeedCreate');
-    }
-
     render() {
         const { engine } = this.props;
 
         return (
             <>
                 <SHeader title="Feed" />
-
-                {NON_PRODUCTION && <SHeaderButton title="Create" icon={require('assets/ic-add-24.png')} onPress={this.handleCreate} />}
-
+                <SHeaderButton key="feed-channels" title="Channels" icon={require('assets/ic-list-24.png')} onPress={() => this.props.router.push('FeedChannels')} />
+                <SHeaderButton key="feed-create" title="Create" icon={require('assets/ic-add-24.png')} onPress={() => this.props.router.push('FeedCreate')} />
                 <DataSourceRender
                     dataSource={engine.dataSource}
                     renderItem={this.renderItem}

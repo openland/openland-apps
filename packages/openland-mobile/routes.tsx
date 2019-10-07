@@ -65,6 +65,9 @@ import { FeedCreate } from './pages/main/FeedCreate';
 import { FeedEdit } from './pages/main/FeedEdit';
 import { FeedItem } from './pages/main/FeedItem';
 import { PostMentionPicker } from './pages/main/modals/PostMentionPicker';
+import { FeedChannels } from './pages/main/FeedChannels';
+import { FeedChannel } from './pages/main/FeedChannel';
+import { FeedChannelCreate } from './pages/main/FeedChannelCreate';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -143,5 +146,8 @@ export const Routes = new SRoutesBuilder()
   .addRoute('FeedItem', FeedItem)
   .addRoute('FeedCreate', FeedCreate)
   .addRoute('FeedEdit', FeedEdit)
+  .addRoute('FeedChannels', FeedChannels)
+  .addRoute('FeedChannel', FeedChannel)
+  .addRoute('FeedChannelCreate', FeedChannelCreate)
 
   .build();

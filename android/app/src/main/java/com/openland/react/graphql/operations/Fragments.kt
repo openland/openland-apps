@@ -866,6 +866,15 @@ internal val DialogUpdateFragmentSelector = obj(
             ))
         )
 
+internal val FeedChannelFullSelector = obj(
+            field("__typename","__typename", notNull(scalar("String"))),
+            field("about","about", scalar("String")),
+            field("id","id", notNull(scalar("ID"))),
+            field("photo","photo", notNull(scalar("String"))),
+            field("title","title", notNull(scalar("String"))),
+            field("type","type", notNull(scalar("String")))
+        )
+
 internal val FeedPostAuthorFragmentSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             inline("User", obj(

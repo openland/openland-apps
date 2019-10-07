@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-list",
+            "src": "ic-list-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-globe-glyph",
             "src": "ic-globe-glyph-24.svg",
             "sizes": [

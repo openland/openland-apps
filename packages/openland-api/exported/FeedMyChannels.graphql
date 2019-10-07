@@ -1,0 +1,10 @@
+query FeedMyChannels($after: ID, $first: Int!) {
+  channels: alphaFeedMyChannels(after: $after, first: $first) {
+    __typename
+    cursor
+    items {
+      __typename
+      ...FeedChannelFull
+    }
+  }
+}

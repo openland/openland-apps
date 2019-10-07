@@ -28,6 +28,7 @@ import * as AppFull from './fragments/AppFull';
 import * as Comment from './fragments/Comment';
 import * as CommunitySearch from './fragments/CommunitySearch';
 import * as ConferenceFull from './fragments/ConferenceFull';
+import * as FeedChannelFull from './fragments/FeedChannelFull';
 import * as FeedItemFull from './fragments/FeedItemFull';
 import * as MatchmakingFragments from './fragments/MatchmakingFragments';
 import * as Message from './fragments/Message';
@@ -167,6 +168,8 @@ export const FeatureFlagAddMutation = typedMutation<Types.FeatureFlagAdd, Types.
 export const FeatureFlagEnableMutation = typedMutation<Types.FeatureFlagEnable, Types.FeatureFlagEnableVariables>(FeatureFlag.FeatureFlagEnableMutation);
 export const FeatureFlagDisableMutation = typedMutation<Types.FeatureFlagDisable, Types.FeatureFlagDisableVariables>(FeatureFlag.FeatureFlagDisableMutation);
 export const FeedQuery = typedQuery<Types.Feed, Types.FeedVariables>(Feed.FeedQuery);
+export const FeedMyChannelsQuery = typedQuery<Types.FeedMyChannels, Types.FeedMyChannelsVariables>(Feed.FeedMyChannelsQuery);
+export const FeedChannelCreateMutation = typedMutation<Types.FeedChannelCreate, Types.FeedChannelCreateVariables>(Feed.FeedChannelCreateMutation);
 export const FeedItemQuery = typedQuery<Types.FeedItem, Types.FeedItemVariables>(Feed.FeedItemQuery);
 export const FeedEditPostMutation = typedMutation<Types.FeedEditPost, Types.FeedEditPostVariables>(Feed.FeedEditPostMutation);
 export const FeedCreatePostMutation = typedMutation<Types.FeedCreatePost, Types.FeedCreatePostVariables>(Feed.FeedCreatePostMutation);
@@ -243,6 +246,7 @@ export const CommentEntryFragmentFragment = typedFragment<Types.CommentEntryFrag
 export const CommunitySearchFragment = typedFragment<Types.CommunitySearch>(CommunitySearch.CommunitySearch);
 export const ConferenceFullFragment = typedFragment<Types.ConferenceFull>(ConferenceFull.ConferenceFull);
 export const ConferenceShortFragment = typedFragment<Types.ConferenceShort>(ConferenceFull.ConferenceShort);
+export const FeedChannelFullFragment = typedFragment<Types.FeedChannelFull>(FeedChannelFull.FeedChannelFull);
 export const FeedPostAuthorFragmentFragment = typedFragment<Types.FeedPostAuthorFragment>(FeedItemFull.FeedPostAuthorFragment);
 export const SlideFragmentFragment = typedFragment<Types.SlideFragment>(FeedItemFull.SlideFragment);
 export const FeedItemFullFragment = typedFragment<Types.FeedItemFull>(FeedItemFull.FeedItemFull);

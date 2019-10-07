@@ -828,6 +828,20 @@
       }
     },
     {
+      "signature": "0e891cbf389fb3a87b343bde7e5ebd8e57a1e00f0c91067c950c5ed4e38631d3",
+      "document": "fragment FeedChannelFull on FeedChannel{__typename about id photo title type}query FeedMyChannels($after:ID,$first:Int!){channels:alphaFeedMyChannels(after:$after,first:$first){__typename cursor items{__typename...FeedChannelFull}}}",
+      "metadata": {
+        "engineSignature": "fragment FeedChannelFull on FeedChannel{__typename about id photo title type}query FeedMyChannels($after:ID,$first:Int!){alphaFeedMyChannels(after:$after,first:$first){__typename cursor items{__typename...FeedChannelFull}}}"
+      }
+    },
+    {
+      "signature": "4a61df8164f7766f37023a7ef4e7e52fd56a2fbd8fea227910d64db619588860",
+      "document": "mutation FeedChannelCreate($about:String,$photoRef:ImageRefInput,$title:String!,$type:FeedChannelType!){channel:alphaFeedCreateChannel(about:$about,photoRef:$photoRef,title:$title,type:$type){__typename id}}",
+      "metadata": {
+        "engineSignature": "mutation FeedChannelCreate($about:String,$photoRef:ImageRefInput,$title:String!,$type:FeedChannelType!){alphaFeedCreateChannel(about:$about,photoRef:$photoRef,title:$title,type:$type){__typename id}}"
+      }
+    },
+    {
       "signature": "83fa5496954bee4a3a100a05624ddd1df7634724f653c1893dc87ccb5324cc95",
       "document": "fragment FeedPostAuthorFragment on FeedPostAuthor{__typename...on User{...UserShort}...on Organization{...OrganizationShort}}fragment SlideFragment on Slide{__typename...on TextSlide{attachments{__typename...on User{...UserShort}...on SharedRoom{id kind membersCount membership organization{__typename id name photo}roomPhoto:photo title}...on Organization{...OrganizationShort}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename...SpanFragment}text}}fragment FeedItemFull on FeedItem{__typename...on FeedPost{author{__typename...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id message reactions{__typename reaction user{__typename...UserShort}}slides{__typename...SlideFragment}}}fragment SpanFragment on MessageSpan{__typename length offset...on MessageSpanUserMention{user{__typename...UserForMention}}...on MessageSpanMultiUserMention{users{__typename...UserForMention}}...on MessageSpanRoomMention{room{__typename...on PrivateRoom{id user{__typename id name}}...on SharedRoom{id title}}}...on MessageSpanLink{url}...on MessageSpanDate{date}}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query FeedItem($id:ID!){item:alphaFeedItem(id:$id){__typename...FeedItemFull}}",
       "metadata": {

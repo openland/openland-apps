@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { FeedItemFull } from '../fragments/FeedItemFull';
+import { FeedChannelFull } from '../fragments/FeedChannelFull';
 
 export const FeedQuery = gql`
     query Feed($first: Int!, $after: String) {
@@ -12,6 +13,27 @@ export const FeedQuery = gql`
     }
 
     ${FeedItemFull}
+`;
+
+export const FeedMyChannelsQuery = gql`
+    query FeedMyChannels($first: Int!, $after: ID) {
+        channels: alphaFeedMyChannels(first: $first, after: $after) {
+            items {
+                ...FeedChannelFull
+            }
+            cursor
+        }
+    }
+
+    ${FeedChannelFull}
+`;
+
+export const FeedChannelCreateMutation = gql`
+    mutation FeedChannelCreate($title: String!, $about: String, $type: FeedChannelType!, $photoRef: ImageRefInput) {
+        channel: alphaFeedCreateChannel(title: $title, about: $about, type: $type, photoRef: $photoRef) {
+            id
+        }
+    }
 `;
 
 export const FeedItemQuery = gql`

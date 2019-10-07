@@ -27,6 +27,7 @@ object Operations {
         if (name == "FeatureFlags") return FeatureFlags
         if (name == "Feed") return Feed
         if (name == "FeedItem") return FeedItem
+        if (name == "FeedMyChannels") return FeedMyChannels
         if (name == "FetchPushSettings") return FetchPushSettings
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch
@@ -107,6 +108,7 @@ object Operations {
         if (name == "FeatureFlagAdd") return FeatureFlagAdd
         if (name == "FeatureFlagDisable") return FeatureFlagDisable
         if (name == "FeatureFlagEnable") return FeatureFlagEnable
+        if (name == "FeedChannelCreate") return FeedChannelCreate
         if (name == "FeedCreateGlobalPost") return FeedCreateGlobalPost
         if (name == "FeedCreatePost") return FeedCreatePost
         if (name == "FeedDeletePost") return FeedDeletePost

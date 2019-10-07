@@ -860,6 +860,15 @@ private let DialogUpdateFragmentSelector = obj(
             ))
         )
 
+private let FeedChannelFullSelector = obj(
+            field("__typename","__typename", notNull(scalar("String"))),
+            field("about","about", scalar("String")),
+            field("id","id", notNull(scalar("ID"))),
+            field("photo","photo", notNull(scalar("String"))),
+            field("title","title", notNull(scalar("String"))),
+            field("type","type", notNull(scalar("String")))
+        )
+
 private let FeedPostAuthorFragmentSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             inline("User", obj(
@@ -1993,6 +2002,16 @@ private let FeedItemSelector = obj(
                     fragment("FeedItem", FeedItemFullSelector)
                 ))
         )
+private let FeedMyChannelsSelector = obj(
+            field("alphaFeedMyChannels","channels", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("cursor","cursor", scalar("String")),
+                    field("items","items", notNull(list(notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            fragment("FeedChannel", FeedChannelFullSelector)
+                        )))))
+                )))
+        )
 private let FetchPushSettingsSelector = obj(
             field("pushSettings","pushSettings", notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2956,6 +2975,12 @@ private let FeatureFlagEnableSelector = obj(
                     field("id","id", notNull(scalar("ID")))
                 )))
         )
+private let FeedChannelCreateSelector = obj(
+            field("alphaFeedCreateChannel","channel", arguments(fieldValue("about", refValue("about")), fieldValue("photoRef", refValue("photoRef")), fieldValue("title", refValue("title")), fieldValue("type", refValue("type"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("id","id", notNull(scalar("ID")))
+                )))
+        )
 private let FeedCreateGlobalPostSelector = obj(
             field("alphaCreateGlobalFeedPost","createFeedPost", arguments(fieldValue("repeatKey", refValue("repeatKey")), fieldValue("slides", refValue("slides"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3738,6 +3763,12 @@ class Operations {
         "query FeedItem($id:ID!){item:alphaFeedItem(id:$id){__typename ...FeedItemFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id message reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}... on Organization{...OrganizationShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id kind membersCount membership organization{__typename id name photo}roomPhoto:photo title}... on Organization{...OrganizationShort}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}",
         FeedItemSelector
     )
+    let FeedMyChannels = OperationDefinition(
+        "FeedMyChannels",
+        .query, 
+        "query FeedMyChannels($after:ID,$first:Int!){channels:alphaFeedMyChannels(after:$after,first:$first){__typename cursor items{__typename ...FeedChannelFull}}}fragment FeedChannelFull on FeedChannel{__typename about id photo title type}",
+        FeedMyChannelsSelector
+    )
     let FetchPushSettings = OperationDefinition(
         "FetchPushSettings",
         .query, 
@@ -4217,6 +4248,12 @@ class Operations {
         .mutation, 
         "mutation FeatureFlagEnable($accountId:ID!,$featureId:ID!){superAccountFeatureAdd(featureId:$featureId,id:$accountId){__typename features{__typename id key title}id}}",
         FeatureFlagEnableSelector
+    )
+    let FeedChannelCreate = OperationDefinition(
+        "FeedChannelCreate",
+        .mutation, 
+        "mutation FeedChannelCreate($about:String,$photoRef:ImageRefInput,$title:String!,$type:FeedChannelType!){channel:alphaFeedCreateChannel(about:$about,photoRef:$photoRef,title:$title,type:$type){__typename id}}",
+        FeedChannelCreateSelector
     )
     let FeedCreateGlobalPost = OperationDefinition(
         "FeedCreateGlobalPost",
@@ -4768,6 +4805,7 @@ class Operations {
         if name == "FeatureFlags" { return FeatureFlags }
         if name == "Feed" { return Feed }
         if name == "FeedItem" { return FeedItem }
+        if name == "FeedMyChannels" { return FeedMyChannels }
         if name == "FetchPushSettings" { return FetchPushSettings }
         if name == "GlobalCounter" { return GlobalCounter }
         if name == "GlobalSearch" { return GlobalSearch }
@@ -4848,6 +4886,7 @@ class Operations {
         if name == "FeatureFlagAdd" { return FeatureFlagAdd }
         if name == "FeatureFlagDisable" { return FeatureFlagDisable }
         if name == "FeatureFlagEnable" { return FeatureFlagEnable }
+        if name == "FeedChannelCreate" { return FeedChannelCreate }
         if name == "FeedCreateGlobalPost" { return FeedCreateGlobalPost }
         if name == "FeedCreatePost" { return FeedCreatePost }
         if name == "FeedDeletePost" { return FeedDeletePost }

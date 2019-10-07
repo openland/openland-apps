@@ -559,6 +559,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderFeed(variables: Types.FeedVariables, opts?: QueryWatchParameters): Types.Feed | null {
         return this.useQuery(Source.FeedQuery, variables, opts);
     }
+    async queryFeedMyChannels(variables: Types.FeedMyChannelsVariables, opts?: OperationParameters): Promise<Types.FeedMyChannels> {
+        return this.client.query(Source.FeedMyChannelsQuery, variables, opts);
+    }
+    async refetchFeedMyChannels(variables: Types.FeedMyChannelsVariables): Promise<Types.FeedMyChannels> {
+        return this.refetch(Source.FeedMyChannelsQuery, variables);
+    }
+    useFeedMyChannels(variables: Types.FeedMyChannelsVariables, opts?: QueryWatchParameters): Types.FeedMyChannels {
+        return this.useQuerySuspense(Source.FeedMyChannelsQuery, variables, opts);
+    }
+    useWithoutLoaderFeedMyChannels(variables: Types.FeedMyChannelsVariables, opts?: QueryWatchParameters): Types.FeedMyChannels | null {
+        return this.useQuery(Source.FeedMyChannelsQuery, variables, opts);
+    }
     async queryFeedItem(variables: Types.FeedItemVariables, opts?: OperationParameters): Promise<Types.FeedItem> {
         return this.client.query(Source.FeedItemQuery, variables, opts);
     }
@@ -1062,6 +1074,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     async mutateFeatureFlagDisable(variables: Types.FeatureFlagDisableVariables): Promise<Types.FeatureFlagDisable> {
         return this.client.mutate(Source.FeatureFlagDisableMutation, variables);
+    }
+    async mutateFeedChannelCreate(variables: Types.FeedChannelCreateVariables): Promise<Types.FeedChannelCreate> {
+        return this.client.mutate(Source.FeedChannelCreateMutation, variables);
     }
     async mutateFeedEditPost(variables: Types.FeedEditPostVariables): Promise<Types.FeedEditPost> {
         return this.client.mutate(Source.FeedEditPostMutation, variables);

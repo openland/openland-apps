@@ -1,0 +1,8 @@
+fragment FeedChannelFull on FeedChannel {
+  __typename
+  about
+  id
+  photo
+  title
+  type
+}
