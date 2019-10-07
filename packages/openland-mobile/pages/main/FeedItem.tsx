@@ -3,7 +3,7 @@ import { withApp } from '../../components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SHeaderView } from 'react-native-s/SHeaderView';
-import { AuthorHeader } from 'openland-mobile/pages/main/components/AuthorHeader';
+import { EntityHeader } from 'openland-mobile/pages/main/components/EntityHeader';
 import { FeedPostContent } from 'openland-mobile/feed/content/FeedPostContent';
 import { convertPost } from 'openland-engines/feed/convert';
 import { Dimensions, View, TouchableWithoutFeedback } from 'react-native';
@@ -14,6 +14,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SHeaderIndicator } from 'react-native-s/SHeaderIndicator';
 import { isPad } from '../Root';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
+import { formatDateAtTime } from 'openland-y-utils/formatTime';
 
 const getWidth = () => {
     const screenWidth = Dimensions.get('screen').width;
@@ -27,8 +28,8 @@ const getWidth = () => {
 };
 
 const FeedItemComponent = React.memo((props: PageProps) => {
-    const feedItemId = props.router.params.feedItemId;
-    const highlightId = props.router.params.highlightCommentId;
+    const { router } = props;
+    const { feedItemId, highlightId } = router.params;
 
     const client = getClient();
     const messenger = getMessenger();
@@ -65,10 +66,27 @@ const FeedItemComponent = React.memo((props: PageProps) => {
         </View>
     );
 
+    const handleAuthorPress = React.useCallback(() => {
+        if (author.__typename === 'User') {
+            router.push('ProfileUser', { id: author.id });
+        } else {
+            router.push('ProfileOrganization', { id: author.id });
+        }
+    }, [author]);
+
     return (
         <>
             <SHeaderView>
-                <AuthorHeader author={author} date={date} />
+                <EntityHeader
+                    avatar={{
+                        photo: author.photo,
+                        id: author.id,
+                        title: author.name
+                    }}
+                    title={author.name}
+                    subtitle={formatDateAtTime(date)}
+                    onPress={handleAuthorPress}
+                />
             </SHeaderView>
 
             {slides.length > 1 && (
