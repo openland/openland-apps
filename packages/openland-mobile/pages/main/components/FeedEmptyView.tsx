@@ -1,9 +1,31 @@
 import * as React from 'react';
-import { View, Text, Image, Dimensions } from 'react-native';
+import { View, Text, Image, Dimensions, StyleSheet, ViewStyle, ImageStyle, TextStyle } from 'react-native';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+
+const styles = StyleSheet.create({
+    box: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    } as ViewStyle,
+    image: {
+        height: 200,
+        resizeMode: 'cover'
+    } as ImageStyle,
+    title: {
+        ...TextStyles.Title1,
+        marginTop: 16,
+        textAlign: 'center'
+    } as TextStyle,
+    subtitle: {
+        ...TextStyles.Body,
+        marginTop: 8,
+        marginBottom: 24,
+        textAlign: 'center'
+    } as TextStyle
+});
 
 interface FeedEmptyViewProps {
     title: string;
@@ -18,10 +40,10 @@ export const FeedEmptyView = React.memo((props: FeedEmptyViewProps) => {
     const { title, subtitle, action, onPress } = props;
 
     return (
-        <View minHeight={Dimensions.get('screen').height - area.top - area.bottom} alignItems="center" justifyContent="center">
-            <Image source={require('assets/feed/ic-feed-setup-200.png')} style={{ height: 200, resizeMode: 'cover' }} />
-            <Text style={{ ...TextStyles.Title1, color: theme.foregroundPrimary, marginTop: 16, textAlign: 'center' }} allowFontScaling={false}>{title}</Text>
-            <Text style={{ ...TextStyles.Body, color: theme.foregroundPrimary, marginTop: 8, marginBottom: 24, textAlign: 'center' }} allowFontScaling={false}>{subtitle}</Text>
+        <View style={styles.box} minHeight={Dimensions.get('screen').height - area.top - area.bottom}>
+            <Image source={require('assets/feed/ic-feed-setup-200.png')} style={styles.image} />
+            <Text style={[styles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>{title}</Text>
+            <Text style={[styles.subtitle, { color: theme.foregroundPrimary }]} allowFontScaling={false}>{subtitle}</Text>
             <ZRoundedButton title={action} size="large" onPress={onPress} />
         </View>
     );
