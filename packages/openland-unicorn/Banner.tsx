@@ -132,10 +132,12 @@ const icons = {
 };
 
 let useMobileAppsBanner = () => {
-    React.useEffect(() => {
-        trackEvent('banner_app_appear');
-    }, []);
     let [show, setShow] = React.useState(!window.localStorage.getItem('banner-apps-closed'));
+    React.useEffect(() => {
+        if (show) {
+            trackEvent('banner_app_appear');
+        }
+    }, [show]);
     let onClose = React.useCallback(() => {
         window.localStorage.setItem('banner-apps-closed', 'true');
         trackEvent('banner_app_close');
@@ -187,9 +189,6 @@ let useMobileAppsBanner = () => {
 };
 
 let useNotificationsBanner = () => {
-    React.useEffect(() => {
-        trackEvent('banner_notifications_appear');
-    }, []);
     let [ttl, setTTL] = React.useState(
         Number.parseInt(window.localStorage.getItem('banner-notifications-closed-ttl') || '0', 10),
     );
@@ -219,6 +218,11 @@ let useNotificationsBanner = () => {
     );
     let ttlOK = ttl <= new Date().getTime();
     let show = ttlOK && (permissionState === 'temporary_denied' || permissionState === 'default');
+    React.useEffect(() => {
+        if (show) {
+            trackEvent('banner_notifications_appear');
+        }
+    }, [show]);
     return { show, onClose, content };
 };
 
