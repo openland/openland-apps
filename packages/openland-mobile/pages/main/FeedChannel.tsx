@@ -28,7 +28,6 @@ const FeedChannelComponent = React.memo((props: PageProps) => {
     const canPost = myRole === FeedChannelAdminRole.Creator || myRole === FeedChannelAdminRole.Editor;
 
     const initialContent = client.useFeedChannelContent({ id, first: 15 }, { fetchPolicy: 'network-only' }).content;
-
     const [posts, setPosts] = React.useState(convertItems(initialContent.items, messenger.engine));
     const [loading, setLoading] = React.useState(false);
     const [cursor, setCursor] = React.useState(initialContent.cursor);

@@ -74,7 +74,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
                         router={props.router}
                         onGroupPress={handlePress}
                         onUserPress={handlePress}
-                        emptyView={(!props.router.params.share && !props.router.params.title) ? (
+                        initialView={(!props.router.params.share && !props.router.params.title) ? (
                             <SDeferred>
                                 <ZListItem
                                     leftIconColor={theme.tintOrange}
