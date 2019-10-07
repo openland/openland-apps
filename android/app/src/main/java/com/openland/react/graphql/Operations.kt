@@ -170,6 +170,7 @@ object Operations {
         if (name == "RoomsJoin") return RoomsJoin
         if (name == "SendMessage") return SendMessage
         if (name == "SendSticker") return SendSticker
+        if (name == "SetFeedChannelShortname") return SetFeedChannelShortname
         if (name == "SetOrgShortname") return SetOrgShortname
         if (name == "SetTyping") return SetTyping
         if (name == "SetUserShortname") return SetUserShortname

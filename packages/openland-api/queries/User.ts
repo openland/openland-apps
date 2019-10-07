@@ -1,5 +1,4 @@
 import gql from 'graphql-tag';
-import { OrganizationFull } from '../fragments/OrganizationFull';
 import { UserShort } from '../fragments/UserShort';
 import { UserFull } from '../fragments/UserFull';
 import { RoomShort } from '../fragments/RoomShort';
@@ -88,21 +87,6 @@ export const ExplorePeopleQuery = gql`
         }
     }
     ${UserShort}
-`;
-
-export const ResolveShortNameQuery = gql`
-    query ResolveShortName($shortname: String!) {
-        item: alphaResolveShortName(shortname: $shortname) {
-            ... on User {
-                id
-            }
-            ... on Organization {
-                id
-            }
-        }
-    }
-    ${UserFull}
-    ${OrganizationFull}
 `;
 
 export const DeleteUserMutation = gql`

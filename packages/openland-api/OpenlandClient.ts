@@ -835,6 +835,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderSettings(opts?: QueryWatchParameters): Types.Settings | null {
         return this.useQuery(Source.SettingsQuery, undefined, opts);
     }
+    async queryResolveShortName(variables: Types.ResolveShortNameVariables, opts?: OperationParameters): Promise<Types.ResolveShortName> {
+        return this.client.query(Source.ResolveShortNameQuery, variables, opts);
+    }
+    async refetchResolveShortName(variables: Types.ResolveShortNameVariables): Promise<Types.ResolveShortName> {
+        return this.refetch(Source.ResolveShortNameQuery, variables);
+    }
+    useResolveShortName(variables: Types.ResolveShortNameVariables, opts?: QueryWatchParameters): Types.ResolveShortName {
+        return this.useQuerySuspense(Source.ResolveShortNameQuery, variables, opts);
+    }
+    useWithoutLoaderResolveShortName(variables: Types.ResolveShortNameVariables, opts?: QueryWatchParameters): Types.ResolveShortName | null {
+        return this.useQuery(Source.ResolveShortNameQuery, variables, opts);
+    }
     async queryMyStickers(opts?: OperationParameters): Promise<Types.MyStickers> {
         return this.client.query(Source.MyStickersQuery, undefined, opts);
     }
@@ -906,18 +918,6 @@ export class OpenlandClient extends BaseApiClient {
     }
     useWithoutLoaderExplorePeople(variables: Types.ExplorePeopleVariables, opts?: QueryWatchParameters): Types.ExplorePeople | null {
         return this.useQuery(Source.ExplorePeopleQuery, variables, opts);
-    }
-    async queryResolveShortName(variables: Types.ResolveShortNameVariables, opts?: OperationParameters): Promise<Types.ResolveShortName> {
-        return this.client.query(Source.ResolveShortNameQuery, variables, opts);
-    }
-    async refetchResolveShortName(variables: Types.ResolveShortNameVariables): Promise<Types.ResolveShortName> {
-        return this.refetch(Source.ResolveShortNameQuery, variables);
-    }
-    useResolveShortName(variables: Types.ResolveShortNameVariables, opts?: QueryWatchParameters): Types.ResolveShortName {
-        return this.useQuerySuspense(Source.ResolveShortNameQuery, variables, opts);
-    }
-    useWithoutLoaderResolveShortName(variables: Types.ResolveShortNameVariables, opts?: QueryWatchParameters): Types.ResolveShortName | null {
-        return this.useQuery(Source.ResolveShortNameQuery, variables, opts);
     }
     async queryMySuccessfulInvitesCount(opts?: OperationParameters): Promise<Types.MySuccessfulInvitesCount> {
         return this.client.query(Source.MySuccessfulInvitesCountQuery, undefined, opts);
@@ -1171,9 +1171,6 @@ export class OpenlandClient extends BaseApiClient {
     async mutateUpdateOrganization(variables: Types.UpdateOrganizationVariables): Promise<Types.UpdateOrganization> {
         return this.client.mutate(Source.UpdateOrganizationMutation, variables);
     }
-    async mutateSetOrgShortname(variables: Types.SetOrgShortnameVariables): Promise<Types.SetOrgShortname> {
-        return this.client.mutate(Source.SetOrgShortnameMutation, variables);
-    }
     async mutateOrganizationChangeMemberRole(variables: Types.OrganizationChangeMemberRoleVariables): Promise<Types.OrganizationChangeMemberRole> {
         return this.client.mutate(Source.OrganizationChangeMemberRoleMutation, variables);
     }
@@ -1231,14 +1228,20 @@ export class OpenlandClient extends BaseApiClient {
     async mutateProfileUpdate(variables: Types.ProfileUpdateVariables): Promise<Types.ProfileUpdate> {
         return this.client.mutate(Source.ProfileUpdateMutation, variables);
     }
-    async mutateSetUserShortname(variables: Types.SetUserShortnameVariables): Promise<Types.SetUserShortname> {
-        return this.client.mutate(Source.SetUserShortnameMutation, variables);
-    }
     async mutateProfileCreate(variables: Types.ProfileCreateVariables): Promise<Types.ProfileCreate> {
         return this.client.mutate(Source.ProfileCreateMutation, variables);
     }
     async mutateSettingsUpdate(variables: Types.SettingsUpdateVariables): Promise<Types.SettingsUpdate> {
         return this.client.mutate(Source.SettingsUpdateMutation, variables);
+    }
+    async mutateSetOrgShortname(variables: Types.SetOrgShortnameVariables): Promise<Types.SetOrgShortname> {
+        return this.client.mutate(Source.SetOrgShortnameMutation, variables);
+    }
+    async mutateSetUserShortname(variables: Types.SetUserShortnameVariables): Promise<Types.SetUserShortname> {
+        return this.client.mutate(Source.SetUserShortnameMutation, variables);
+    }
+    async mutateSetFeedChannelShortname(variables: Types.SetFeedChannelShortnameVariables): Promise<Types.SetFeedChannelShortname> {
+        return this.client.mutate(Source.SetFeedChannelShortnameMutation, variables);
     }
     async mutateStickerPackAddToCollection(variables: Types.StickerPackAddToCollectionVariables): Promise<Types.StickerPackAddToCollection> {
         return this.client.mutate(Source.StickerPackAddToCollectionMutation, variables);

@@ -7,5 +7,8 @@ query ResolveShortName($shortname: String!) {
     ... on Organization {
       id
     }
+    ... on FeedChannel {
+      id
+    }
   }
 }

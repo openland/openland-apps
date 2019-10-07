@@ -74,8 +74,8 @@ const FeedChannelEditComponent = React.memo((props: PageProps) => {
                 <ZListGroup header="Shortname" headerMarginTop={0}>
                     <ZPickField
                         label="Shortname"
-                        // value={profile.shortname ? '@' + profile.shortname : undefined}
-                        path="SetChannelShortname"
+                        value={channel.shortname ? '@' + channel.shortname : undefined}
+                        path="SetFeedChannelShortname"
                         pathParams={{ id }}
                     />
                 </ZListGroup>

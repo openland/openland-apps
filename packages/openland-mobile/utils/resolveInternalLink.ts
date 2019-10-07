@@ -213,6 +213,8 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
                         getMessenger().history.navigationManager.pushAndReset('ProfileUser', { id: info.item.id });
                     } else if (info.item.__typename === 'Organization') {
                         getMessenger().history.navigationManager.pushAndReset('ProfileOrganization', { id: info.item.id });
+                    } else if (info.item.__typename === 'FeedChannel') {
+                        getMessenger().history.navigationManager.pushAndReset('FeedChannel', { id: info.item.id });
                     } else {
                         Alert.alert('No such user or organization');
                     }

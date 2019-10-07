@@ -79,12 +79,6 @@ export const ProfileUpdateMutation = gql`
     }
 `;
 
-export const SetUserShortnameMutation = gql`
-    mutation SetUserShortname($shortname: String!) {
-        alphaSetUserShortName(shortname: $shortname)
-    }
-`;
-
 export const ProfileCreateMutation = gql`
     mutation ProfileCreate($input: CreateProfileInput!) {
         createProfile(input: $input) {

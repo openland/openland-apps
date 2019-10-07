@@ -20,6 +20,7 @@ import * as Organization from './queries/Organization';
 import * as Permissions from './queries/Permissions';
 import * as Report from './queries/Report';
 import * as Settings from './queries/Settings';
+import * as Shortname from './queries/Shortname';
 import * as Stickers from './queries/Stickers';
 import * as Track from './queries/Track';
 import * as User from './queries/User';
@@ -195,7 +196,6 @@ export const MyNotificationCenterMarkSeqReadMutation = typedMutation<Types.MyNot
 export const ReadNotificationMutation = typedMutation<Types.ReadNotification, Types.ReadNotificationVariables>(MyNotificationsCenter.ReadNotificationMutation);
 export const MyOrganizationsQuery = typedQuery<Types.MyOrganizations, {}>(Organization.MyOrganizationsQuery);
 export const UpdateOrganizationMutation = typedMutation<Types.UpdateOrganization, Types.UpdateOrganizationVariables>(Organization.UpdateOrganizationMutation);
-export const SetOrgShortnameMutation = typedMutation<Types.SetOrgShortname, Types.SetOrgShortnameVariables>(Organization.SetOrgShortnameMutation);
 export const OrganizationQuery = typedQuery<Types.Organization, Types.OrganizationVariables>(Organization.OrganizationQuery);
 export const OrganizationWithoutMembersQuery = typedQuery<Types.OrganizationWithoutMembers, Types.OrganizationWithoutMembersVariables>(Organization.OrganizationWithoutMembersQuery);
 export const OrganizationMembersShortQuery = typedQuery<Types.OrganizationMembersShort, Types.OrganizationMembersShortVariables>(Organization.OrganizationMembersShortQuery);
@@ -229,10 +229,13 @@ export const DebugEventsWatchSubscription = typedSubscription<Types.DebugEventsW
 export const ReportContentMutation = typedMutation<Types.ReportContent, Types.ReportContentVariables>(Report.ReportContentMutation);
 export const ProfileQuery = typedQuery<Types.Profile, {}>(Settings.ProfileQuery);
 export const ProfileUpdateMutation = typedMutation<Types.ProfileUpdate, Types.ProfileUpdateVariables>(Settings.ProfileUpdateMutation);
-export const SetUserShortnameMutation = typedMutation<Types.SetUserShortname, Types.SetUserShortnameVariables>(Settings.SetUserShortnameMutation);
 export const ProfileCreateMutation = typedMutation<Types.ProfileCreate, Types.ProfileCreateVariables>(Settings.ProfileCreateMutation);
 export const SettingsQuery = typedQuery<Types.Settings, {}>(Settings.SettingsQuery);
 export const SettingsUpdateMutation = typedMutation<Types.SettingsUpdate, Types.SettingsUpdateVariables>(Settings.SettingsUpdateMutation);
+export const ResolveShortNameQuery = typedQuery<Types.ResolveShortName, Types.ResolveShortNameVariables>(Shortname.ResolveShortNameQuery);
+export const SetOrgShortnameMutation = typedMutation<Types.SetOrgShortname, Types.SetOrgShortnameVariables>(Shortname.SetOrgShortnameMutation);
+export const SetUserShortnameMutation = typedMutation<Types.SetUserShortname, Types.SetUserShortnameVariables>(Shortname.SetUserShortnameMutation);
+export const SetFeedChannelShortnameMutation = typedMutation<Types.SetFeedChannelShortname, Types.SetFeedChannelShortnameVariables>(Shortname.SetFeedChannelShortnameMutation);
 export const MyStickersQuery = typedQuery<Types.MyStickers, {}>(Stickers.MyStickersQuery);
 export const StickerPackQuery = typedQuery<Types.StickerPack, Types.StickerPackVariables>(Stickers.StickerPackQuery);
 export const StickerPackAddToCollectionMutation = typedMutation<Types.StickerPackAddToCollection, Types.StickerPackAddToCollectionVariables>(Stickers.StickerPackAddToCollectionMutation);
@@ -244,7 +247,6 @@ export const UserQuery = typedQuery<Types.User, Types.UserVariables>(User.UserQu
 export const OnlineQuery = typedQuery<Types.Online, Types.OnlineVariables>(User.OnlineQuery);
 export const OnlineWatchSubscription = typedSubscription<Types.OnlineWatch, Types.OnlineWatchVariables>(User.OnlineWatchSubscription);
 export const ExplorePeopleQuery = typedQuery<Types.ExplorePeople, Types.ExplorePeopleVariables>(User.ExplorePeopleQuery);
-export const ResolveShortNameQuery = typedQuery<Types.ResolveShortName, Types.ResolveShortNameVariables>(User.ResolveShortNameQuery);
 export const DeleteUserMutation = typedMutation<Types.DeleteUser, Types.DeleteUserVariables>(User.DeleteUserMutation);
 export const BetaNextDiscoverResetMutation = typedMutation<Types.BetaNextDiscoverReset, {}>(User.BetaNextDiscoverResetMutation);
 export const MySuccessfulInvitesCountQuery = typedQuery<Types.MySuccessfulInvitesCount, {}>(User.MySuccessfulInvitesCountQuery);

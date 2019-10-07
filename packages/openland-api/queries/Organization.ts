@@ -27,12 +27,6 @@ export const UpdateOrganizationMutation = gql`
     ${OrganizationProfileFull}
 `;
 
-export const SetOrgShortnameMutation = gql`
-    mutation SetOrgShortname($organizationId: ID!, $shortname: String!) {
-        alphaSetOrgShortName(id: $organizationId, shortname: $shortname)
-    }
-`;
-
 export const OrganizationQuery = gql`
     query Organization($organizationId: ID!) {
         organization(id: $organizationId) {
