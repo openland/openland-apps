@@ -15,7 +15,6 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
 import { UAvatarUploadField, StoredFileT } from 'openland-web/components/unicorn/UAvatarUpload';
 import { TextBody, TextLabel1, TextTitle3 } from 'openland-web/utils/TextStyles';
-import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 const sectionStyle = css`
     display: flex;
@@ -211,20 +210,18 @@ export const AdvancedSettingsFragment = () => {
                     </XView>
                 )}
             </div>
-            {(AppConfig.isNonProduction() || AppConfig.isSuperAdmin()) && (
-                <div className={sectionStyle}>
-                    <UCheckbox
-                        label="Member profiles"
-                        checked={matchmakingEnabled}
-                        onChange={setMatchmakingEnabled}
-                        asSwitcher={true}
-                        boldTitle={true}
-                    />
-                    <div className={cx(descriptionStyle, TextBody)}>
-                        Some description about this feature
-                    </div>
+            <div className={sectionStyle}>
+                <UCheckbox
+                    label="Member profiles"
+                    checked={matchmakingEnabled}
+                    onChange={setMatchmakingEnabled}
+                    asSwitcher={true}
+                    boldTitle={true}
+                />
+                <div className={cx(descriptionStyle, TextBody)}>
+                    Some description about this feature
                 </div>
-            )}
+            </div>
             <div className={sectionStyle}>
                 <div className={cx(titleStyle, TextTitle3)}>Social sharing image</div>
                 <div className={cx(descriptionStyle, TextBody)}>
