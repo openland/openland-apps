@@ -11,6 +11,8 @@ import { Footer } from 'openland-web/fragments/invite/Footer';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
+import { XDialogProviderComponent } from 'openland-x/XDialogProvider';
+import { LayoutProvider } from 'openland-unicorn/components/utils/LayoutContext';
 
 type InviteInfoInnerT = {
     variables: { invite: string };
@@ -94,11 +96,15 @@ export const SignInInvite = ({ invite }: { invite: string }) => {
                 title={InitTexts.invite.pageTitle}
                 titleSocial={InitTexts.socialPageTitle}
             />
-            <InviteInfoInner
-                variables={{ invite }}
-                redirect={`/acceptChannelInvite/${invite}`}
-                instantRedirect={instantRedirect}
-            />
+            <LayoutProvider>
+                <XDialogProviderComponent />
+                <InviteInfoInner
+                    variables={{ invite }}
+                    redirect={`/acceptChannelInvite/${invite}`}
+                    instantRedirect={instantRedirect}
+                />
+            </LayoutProvider>
+
         </>
     );
 };

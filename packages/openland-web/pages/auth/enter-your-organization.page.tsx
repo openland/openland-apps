@@ -255,15 +255,13 @@ export const EnterYourOrganizationPageInner = ({
                 <Wrapper>
                     <XDocumentHead title="Enter organization" />
                     <TopBar progressInPercents={getPercentageOfOnboarding(4)} />
-                    <XView marginTop={isMobile ? 15 : 34}>
-                        <BackSkipLogo
-                            onBack={() => {
-                                router.replace('/authorization/introduce-yourself');
-                            }}
-                            onSkip={onSkip}
-                            noLogo={isMobile}
-                        />
-                    </XView>
+                    <BackSkipLogo
+                        onBack={() => {
+                            router.replace('/authorization/introduce-yourself');
+                        }}
+                        onSkip={onSkip}
+                        noLogo={isMobile}
+                    />
                     <CreateOrganizationFormInnerWeb
                         initialOrganizationName={initialOrganizationName}
                         sending={sending}

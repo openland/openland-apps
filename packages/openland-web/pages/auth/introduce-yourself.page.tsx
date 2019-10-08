@@ -228,18 +228,16 @@ export const IntroduceYourselfPageInner = ({
                 <Wrapper>
                     <XDocumentHead title="Introduce yourself" />
                     <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
-                    <XView marginTop={isMobile ? 15 : 34}>
-                        <BackSkipLogo
-                            onBack={
-                                null
-                                // () => {
-                                //     router.replace('/authorization/ask-activation-code');
-                                // }
-                            }
-                            onSkip={null}
-                            noLogo={isMobile}
-                        />
-                    </XView>
+                    <BackSkipLogo
+                        onBack={
+                            null
+                            // () => {
+                            //     router.replace('/authorization/ask-activation-code');
+                            // }
+                        }
+                        onSkip={null}
+                        noLogo={isMobile}
+                    />
                     <CreateProfileFormInnerWeb
                         prefill={prefill}
                         initialProfileFormData={initialProfileFormData}

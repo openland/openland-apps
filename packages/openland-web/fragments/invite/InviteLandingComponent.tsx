@@ -18,6 +18,8 @@ import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { InviteImage } from './InviteImage';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import { MatchmakingStartComponent } from '../matchmaking/MatchmakingStartFragment';
+import { showModalBox } from 'openland-x/showModalBox';
 
 const RootClassName = css`
     position: relative;
@@ -151,42 +153,44 @@ const EntityInfoColumn = ({
     button,
 }: RoomInfoColumnT) => {
     return (
-        <XView marginTop={60} alignSelf="center" alignItems="center" maxWidth={428} zIndex={1}>
-            <UAvatar photo={photo} title={title} id={id} size="x-large" />
-            <XView marginTop={28} lineHeight={1} fontSize={24} fontWeight={'600'}>
-                <span className={titleClassName}>{title}</span>
-            </XView>
-            <XView
-                marginTop={12}
-                paddingBottom={6}
-                paddingTop={6}
-                paddingLeft={12}
-                paddingRight={12}
-                height={23}
-                borderRadius={16}
-                backgroundColor={'#eaf4ff'}
-                justifyContent="center"
-            >
+        <XView marginTop={60} alignSelf="center" flexGrow={1} maxWidth={428} zIndex={1} >
+            <XView flexGrow={1} justifyContent="center" alignItems="center">
+                <UAvatar photo={photo} title={title} id={id} size="x-large" />
+                <XView marginTop={16} lineHeight={1} fontSize={24} fontWeight={'600'}>
+                    <span className={titleClassName}>{title}</span>
+                </XView>
                 <XView
-                    flexDirection="row"
-                    fontSize={13}
-                    fontWeight={'600'}
-                    color={'#1790ff'}
-                    lineHeight={1.23}
+                    marginTop={14}
+                    paddingBottom={6}
+                    paddingTop={6}
+                    paddingLeft={12}
+                    paddingRight={12}
+                    height={23}
+                    borderRadius={16}
+                    backgroundColor={'#eaf4ff'}
+                    justifyContent="center"
                 >
-                    <XView marginTop={1} marginRight={4}>
-                        <ProfileIcon />
-                    </XView>
+                    <XView
+                        flexDirection="row"
+                        fontSize={13}
+                        fontWeight={'600'}
+                        color={'#1790ff'}
+                        lineHeight={1.23}
+                    >
+                        <XView marginTop={1} marginRight={4}>
+                            <ProfileIcon />
+                        </XView>
 
-                    {`${membersCount} members`}
+                        {`${membersCount} members`}
+                    </XView>
                 </XView>
+                {description && (
+                    <XView lineHeight={1.5} marginTop={18}>
+                        <div className={textAlignCenter}>{description}</div>
+                    </XView>
+                )}
             </XView>
-            {description && (
-                <XView lineHeight={1.5} marginTop={20}>
-                    <div className={textAlignCenter}>{description}</div>
-                </XView>
-            )}
-            <XView marginTop={36} marginBottom={40}>
+            <XView marginTop={36} marginBottom={60}>
                 {button}
             </XView>
         </XView>
@@ -228,29 +232,32 @@ const InviteLandingComponentLayout = ({
                 isMobile && !noLogin && RootMobileLoginClassName,
             )}
         >
-            {isMobile &&
-                !noLogin && (
-                    <XView flexDirection="row" justifyContent="center" alignItems="center">
-                        <XView fontSize={20} fontWeight="600" color="rgba(0, 0, 0, 0.9)">
-                            {`${whereToInvite} invitation`}
+            <XView maxHeight={850} flexGrow={isMobile ? 1 : undefined}>
+                {isMobile &&
+                    !noLogin && (
+                        <XView flexDirection="row" justifyContent="center" alignItems="center">
+                            <XView fontSize={20} fontWeight="600" color="rgba(0, 0, 0, 0.9)">
+                                {`${whereToInvite} invitation`}
+                            </XView>
                         </XView>
-                    </XView>
-                )}
-            <XView flexDirection="column" paddingHorizontal={20} zIndex={1}>
-                {invitedByUser ? (
-                    <InviteByUser invitedByUser={invitedByUser} chatTypeStr={whereToInvite} />
-                ) : (
-                    <XView height={50} flexShrink={0} />
-                )}
+                    )}
+                <XView flexDirection="column" paddingHorizontal={20} zIndex={1}>
+                    {invitedByUser ? (
+                        <InviteByUser invitedByUser={invitedByUser} chatTypeStr={whereToInvite} />
+                    ) : (
+                            <XView height={50} flexShrink={0} />
+                        )}
+                </XView>
+                <EntityInfoColumn
+                    photo={photo}
+                    title={title}
+                    id={id}
+                    membersCount={membersCount}
+                    description={description}
+                    button={button}
+                />
+
             </XView>
-            <EntityInfoColumn
-                photo={photo}
-                title={title}
-                id={id}
-                membersCount={membersCount}
-                description={description}
-                button={button}
-            />
 
             {!isMobile && <InviteImage onBottom={!noLogin} />}
         </div>
@@ -363,8 +370,12 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 text="Accept invitation"
                 alignSelf="center"
                 flexShrink={0}
-                margin={28}
-                path={signupRedirect}
+                path={!matchmaking ? signupRedirect : undefined}
+                onClick={matchmaking && signupRedirect ? (() => {
+                    showModalBox({ fullScreen: true, useTopCloser: false }, () =>
+                        <MatchmakingStartComponent onStart={() => router!.navigate(signupRedirect)} />
+                    );
+                }) : undefined}
                 zIndex={2}
             />
         );

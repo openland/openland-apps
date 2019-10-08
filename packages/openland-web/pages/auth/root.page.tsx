@@ -124,12 +124,8 @@ export default () => {
         }
     }
 
-    let fromRoom: any = Cookie.get('x-openland-invite');
-    let roomView = !!fromRoom;
+    let roomView = false;
     const isMobile = useIsMobile();
-    if (isMobile) {
-        roomView = false;
-    }
 
     // let title;
     // if (isSignInInvite) {

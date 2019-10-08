@@ -58,7 +58,6 @@ export const Page = React.memo((props: PageProps) => {
                     <XView
                         flexDirection="row"
                         justifyContent="center"
-                        paddingBottom={32}
                         flexGrow={props.flexGrow}
                     >
                         <XView

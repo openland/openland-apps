@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { XView, XImage } from 'react-mental';
 import { css } from 'linaria';
-import BackButton from 'openland-icons/arrow-left.svg';
+import IcBack from 'openland-icons/s/ic-back-24.svg';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 
 const skipClassName = css`
     letter-spacing: -0.078px;
@@ -36,20 +37,20 @@ export const BackSkipLogo = ({
             flexDirection="row"
             alignItems="center"
             justifyContent="space-between"
-            paddingHorizontal={isMobile ? 25 : 50}
+            marginHorizontal={isMobile ? 0 : 21}
+            marginTop={isMobile ? 0 : 21}
+            padding={4}
             position="relative"
-            height={42}
+            height={56}
             zIndex={900}
         >
             {onBack && !modalBox ? (
-                <XView cursor="pointer" zIndex={1001}>
-                    <BackButton onClick={onBack} />
-                </XView>
+                <UIconButton size="large" cursor="pointer" zIndex={1001} onClick={onBack} icon={<IcBack />} />
             ) : (
-                <div />
-            )}
+                    <div />
+                )}
 
-            {!noLogo && (
+            {!noLogo && !isMobile && (
                 <div
                     style={{
                         position: 'absolute',
@@ -65,8 +66,8 @@ export const BackSkipLogo = ({
                     <Skip onClick={onSkip} />
                 </XView>
             ) : (
-                <div />
-            )}
+                    <div />
+                )}
         </XView>
     );
 };

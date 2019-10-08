@@ -236,7 +236,7 @@ export const ChatsForYou = ({
         <Wrapper fullHeight={fullHeight}>
             <XDocumentHead title="Choose role" />
             {!noTopBar && <TopBar progressInPercents={getPercentageOfOnboarding(10)} />}
-            <XView marginBottom={12} marginTop={isMobile ? 15 : 34}>
+            <XView marginBottom={12}>
                 <BackSkipLogo noLogo={true} onBack={onBack} onSkip={onSkip} />
             </XView>
 

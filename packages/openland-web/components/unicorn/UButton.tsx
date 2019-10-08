@@ -13,6 +13,7 @@ export interface UButtonProps extends XViewProps {
     style?: UButtonStyle;
     loading?: boolean;
     disable?: boolean;
+    left?: any;
     action?: () => void;
 }
 
@@ -214,6 +215,7 @@ export const UButton = (props: UButtonProps) => {
                     !(loadingState || disable) && styleResolverActive[style],
                 )}
             >
+                {props.left}
                 <span className={cx(textStyle, loadingState && loadingStyle)}>{text}</span>
                 {loadingState && (
                     <XLoader

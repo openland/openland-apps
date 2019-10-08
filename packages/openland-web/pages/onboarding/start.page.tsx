@@ -36,9 +36,7 @@ export const DiscoverStart = ({
             <XDocumentHead title="Discover" />
             {!noTopBar && <TopBar progressInPercents={getPercentageOfOnboarding(6)} />}
             {!noBackSkipLogo && (
-                <XView marginTop={isMobile ? 15 : 34}>
-                    <BackSkipLogo onBack={null} onSkip={onSkip} noLogo={!!isMobile} />
-                </XView>
+                <BackSkipLogo onBack={null} onSkip={onSkip} noLogo={!!isMobile} />
             )}
             <XView
                 alignItems="center"

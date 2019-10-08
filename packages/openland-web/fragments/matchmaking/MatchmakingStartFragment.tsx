@@ -8,10 +8,24 @@ import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useClient } from 'openland-web/utils/useClient';
 
-const mainContainer = css`
+const outerContianer = css`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    justify-content: center;
+`;
+
+const mainContainer = css`
+    max-height: 850px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 1;
+`;
+
+const mainContainerDesctop = css`
+    display: flex;
+    flex-direction: column;
     flex-shrink: 1;
 `;
 
@@ -55,11 +69,45 @@ const redText = css`
     text-align: center;
 `;
 
+export const MatchmakingStartComponent = (props: { onStart: () => void }) => {
+    const isMobile = useLayout() === 'mobile';
+    return <div className={outerContianer}>
+        <div className={isMobile ? mainContainer : mainContainerDesctop}>
+            <div className={cx(cardsContainer, !isMobile && desktopCardsContainer)}>
+                <img
+                    className={cardIcon}
+                    src="https://cdn.openland.com/shared/web/matchmaking/cards@1x.png"
+                    srcSet="https://cdn.openland.com/shared/web/matchmaking/cards@2x.png 2x"
+                />
+            </div>
+            <div className={descriptionStyle}>
+                <div>
+                    <span className={redText}>1</span> Introduce yourself
+                    </div>
+                <div>
+                    <span className={redText}>2</span> Explore people
+                    </div>
+                <div>
+                    <span className={redText}>3</span> Chat!
+                    </div>
+            </div>
+            <UButton
+                text="Continue"
+                size="large"
+                square={true}
+                alignSelf="center"
+                onClick={props.onStart}
+                marginBottom={60}
+            />
+        </div>
+    </div>;
+};
+
 export const MatchmakingStartFragment = React.memo(() => {
     const router = React.useContext(XViewRouterContext)!;
     const isMobile = useLayout() === 'mobile';
     const unicorn = useUnicorn();
-    const chatId = unicorn.query.roomId;
+    const chatId = unicorn && unicorn.query.roomId;
     const client = useClient();
     const data = client.useMatchmakingRoom({ peerId: chatId }).matchmakingRoom;
     const haveQuestions = !!(data && data.questions && data.questions.length);
@@ -71,33 +119,7 @@ export const MatchmakingStartFragment = React.memo(() => {
     return (
         <Page flexGrow={1} style="wide" track="matchmaking_start">
             <UHeader backgroundColor={isMobile ? '#f0caca' : undefined} />
-            <div className={mainContainer}>
-                <div className={cx(cardsContainer, !isMobile && desktopCardsContainer)}>
-                    <img
-                        className={cardIcon}
-                        src="https://cdn.openland.com/shared/web/matchmaking/cards@1x.png"
-                        srcSet="https://cdn.openland.com/shared/web/matchmaking/cards@2x.png 2x"
-                    />
-                </div>
-                <div className={descriptionStyle}>
-                    <div>
-                        <span className={redText}>1</span> Introduce yourself
-                    </div>
-                    <div>
-                        <span className={redText}>2</span> Explore people
-                    </div>
-                    <div>
-                        <span className={redText}>3</span> Chat!
-                    </div>
-                </div>
-                <UButton
-                    text="Continue"
-                    size="large"
-                    square={true}
-                    alignSelf="center"
-                    onClick={onStart}
-                />
-            </div>
+            <MatchmakingStartComponent onStart={onStart} />
         </Page>
     );
 });

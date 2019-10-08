@@ -27,16 +27,16 @@ export const ContinueButtonContainer = ({
     isMobile: boolean;
     button: any;
 }) => (
-    <>
-        {!isMobile && (
-            <XView alignItems="center" marginTop={marginTop}>
-                {button}
-            </XView>
-        )}
-        {isMobile && (
-            <XView alignItems="center" position="absolute" bottom={30}>
-                {button}
-            </XView>
-        )}
-    </>
-);
+        <>
+            {!isMobile && (
+                <XView alignItems="center" marginTop={marginTop}>
+                    {button}
+                </XView>
+            )}
+            {isMobile && (
+                <XView alignItems="center" position="absolute" bottom={60}>
+                    {button}
+                </XView>
+            )}
+        </>
+    );

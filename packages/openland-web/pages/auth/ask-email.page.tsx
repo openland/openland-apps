@@ -18,6 +18,8 @@ import { Wrapper } from '../onboarding/components/wrapper';
 import { RoomCreateWithEmail } from './components/roomCreateWithEmail';
 import { Title, Subtitle, ContinueButtonContainer } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { UInput } from 'openland-web/components/unicorn/UInput';
 
 export type CreateWithEmailProps = {
     fireEmail: Function;
@@ -82,11 +84,11 @@ export const WebSignUpCreateWithEmail = ({
     const isInvalid = !!errorText;
 
     const button = (
-        <XButton
-            dataTestId="continue-button"
+        <UButton
             style="primary"
             loading={emailSending}
             size="large"
+            square={true}
             alignSelf="center"
             text={InitTexts.auth.continue}
             onClick={doConfirm}
@@ -105,14 +107,12 @@ export const WebSignUpCreateWithEmail = ({
             <Title text={title} />
             <Subtitle text={subTitle} />
             <XView width={isMobile ? '100%' : 360} maxWidth={360}>
-                <InputField
+                <UInput
+                    onChange={emailField.input.onChange}
                     autofocus={true}
                     width={isMobile ? '100%' : 360}
-                    dataTestId="email"
                     type="email"
-                    title={InitTexts.auth.emailPlaceholder}
-                    field={emailField}
-                    hideErrorText={true}
+                    label={InitTexts.auth.emailPlaceholder}
                     invalid={isInvalid}
                 />
                 {isInvalid && <XErrorMessage2 message={errorText} />}
@@ -162,19 +162,17 @@ export const AskEmailPage = (props: CreateWithEmailProps & CreateWithEmailOuterP
                 <Wrapper>
                     <XDocumentHead title="Ask email" />
                     <TopBar progressInPercents={getPercentageOfOnboarding(1)} />
-                    <XView marginTop={props.isMobile ? 15 : 34}>
-                        <BackSkipLogo
-                            onBack={() => {
-                                if (Cookie.get('x-openland-create-new-account')) {
-                                    router.replace('/authorization/create-new-account');
-                                } else {
-                                    router.replace('/');
-                                }
-                            }}
-                            onSkip={null}
-                            noLogo={props.isMobile}
-                        />
-                    </XView>
+                    <BackSkipLogo
+                        onBack={() => {
+                            if (Cookie.get('x-openland-create-new-account')) {
+                                router.replace('/authorization/create-new-account');
+                            } else {
+                                router.replace('/');
+                            }
+                        }}
+                        onSkip={null}
+                        noLogo={props.isMobile}
+                    />
                     <WebSignUpCreateWithEmail {...props} loginEmailStart={loginEmailStart} />
                 </Wrapper>
             )}

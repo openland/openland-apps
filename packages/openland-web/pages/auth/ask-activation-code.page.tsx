@@ -19,6 +19,8 @@ import { RoomContainerParams } from './root.page';
 import { Wrapper } from '../onboarding/components/wrapper';
 import { Title, Subtitle, ContinueButtonContainer } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { UInput } from 'openland-web/components/unicorn/UInput';
 
 export type ActivationCodeProps = {
     emailValue: string;
@@ -101,10 +103,11 @@ export const WebSignUpActivationCode = ({
     const isInvalid = !!errorText;
 
     const button = (
-        <XButton
+        <UButton
             loading={codeSending}
             onClick={doConfirm}
             size="large"
+            square={true}
             style="primary"
             alignSelf="center"
             text={InitTexts.auth.continue}
@@ -152,16 +155,15 @@ export const WebSignUpActivationCode = ({
                     </XView>
                 )}
             <XView width={isMobile ? '100%' : 360} maxWidth={360}>
-                <InputField
+                <UInput
                     width={isMobile ? '100%' : 360}
                     pattern="[0-9]*"
                     type="number"
                     autofocus={true}
-                    title={InitTexts.auth.codePlaceholder}
+                    label={InitTexts.auth.codePlaceholder}
                     flexGrow={1}
                     flexShrink={0}
-                    hideErrorText={true}
-                    field={codeField}
+                    onChange={codeField.input.onChange}
                     invalid={isInvalid}
                 />
                 {isInvalid && <XErrorMessage2 message={errorText} />}
@@ -244,16 +246,14 @@ export const AskActivationPage = (props: ActivationCodeProps & ActivationCodeOut
                 <Wrapper>
                     <XDocumentHead title="Activation code" />
                     <TopBar progressInPercents={getPercentageOfOnboarding(2)} />
-                    <XView marginTop={props.isMobile ? 15 : 34}>
-                        <BackSkipLogo
-                            onBack={() => {
-                                router.replace('/authorization/ask-email');
-                                props.backButtonClick();
-                            }}
-                            onSkip={null}
-                            noLogo={props.isMobile}
-                        />
-                    </XView>
+                    <BackSkipLogo
+                        onBack={() => {
+                            router.replace('/authorization/ask-email');
+                            props.backButtonClick();
+                        }}
+                        onSkip={null}
+                        noLogo={props.isMobile}
+                    />
 
                     <WebSignUpActivationCode
                         {...props}
