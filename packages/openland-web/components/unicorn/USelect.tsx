@@ -259,14 +259,14 @@ const optionSubtitleStyle = css`
     color: var(--foregroundSecondary);
 `;
 
-interface OptionType<T = string | number | boolean> {
+interface OptionType<T = string | number | boolean | undefined> {
     value: T;
     label: string;
     labelShort?: string;
     subtitle?: string;
 }
 
-const OptionRender = (option: OptionType) => {
+const OptionRender = ({ option }: { option: OptionType }) => {
     if (option.subtitle && option.labelShort) {
         return (
             <div className={optionContainer}>
@@ -407,7 +407,7 @@ export const USelect = (props: USelectBasicProps) => {
                 <Container {...other}>
                     <Creatable
                         clearRenderer={ClearRender}
-                        optionRenderer={OptionRender}
+                        optionRenderer={props.optionRenderer ? props.optionRenderer : OptionRender}
                         arrowRenderer={!hideSelector ? ArrowRender : null}
                         valueComponent={valueProps =>
                             props.multi ? (
@@ -433,7 +433,7 @@ export const USelect = (props: USelectBasicProps) => {
                 <Container {...other}>
                     <Select
                         clearRenderer={ClearRender}
-                        optionRenderer={OptionRender}
+                        optionRenderer={props.optionRenderer ? props.optionRenderer : OptionRender}
                         arrowRenderer={!hideSelector ? ArrowRender : null}
                         valueComponent={valueProps =>
                             props.multi ? (
@@ -461,10 +461,11 @@ export const USelect = (props: USelectBasicProps) => {
 
 export const USelectField = (props: USelectBasicProps & { field: FormField<OptionType> }) => {
     const { field, ...other } = props;
-
     return (
         <USelect
-            onChange={(val: OptionType | any) => field.input.onChange(val.value ? val.value : val)}
+            onChange={(val: OptionType | any) => {
+                field.input.onChange(val ? (val.value ? val.value : val) : null);
+            }}
             value={field.input.value}
             {...other}
         />

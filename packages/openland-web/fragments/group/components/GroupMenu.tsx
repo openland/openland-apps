@@ -1,8 +1,8 @@
 import * as React from 'react';
+import { XViewRouterContext } from 'react-mental';
 import { RoomFullWithoutMembers_SharedRoom } from 'openland-api/Types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { showRoomEditModal, showLeaveChatConfirmation } from 'openland-web/fragments/account/components/groupProfileModals';
-import { showAdvancedSettingsModal } from 'openland-web/fragments/chat/AdvancedSettingsModal';
 import SettingsIcon from 'openland-icons/s/ic-settings-24.svg';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
@@ -18,6 +18,7 @@ interface GroupMenu {
 }
 
 const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController }) => {
+    const router = React.useContext(XViewRouterContext)!;
     const client = useClient();
     const { ctx, group } = props;
     const { id, title, canEdit, role, organization, isChannel } = group;
@@ -36,7 +37,9 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
         builder.item({
             title: 'Advanced settings',
             icon: <StarIcon />,
-            onClick: () => showAdvancedSettingsModal(id)
+            onClick: () => {
+                router.navigate(`/advanced/${id}`);
+            }
         });
     }
 

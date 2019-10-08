@@ -9,7 +9,6 @@ import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { TinyMessage, FullMessage, DaialogListMessage } from 'openland-api/fragments/Message';
 import { RoomNano } from 'openland-api/fragments/RoomNano';
 import { UserBadge } from 'openland-api/fragments/UserBadge';
-import { MatchmakingRoomFragment } from 'openland-api/fragments/MatchmakingFragments';
 
 export const DialogsQuery = gql`
     query Dialogs($after: String) {
@@ -322,15 +321,6 @@ export const RoomSuperQuery = gql`
             listed
         }
     }
-`;
-
-export const MatchmakingRoomQuery = gql`
-    query MatchmakingRoom($peerId: ID!) {
-        matchmakingRoom(peerId: $peerId) {
-            ...MatchmakingRoomFragment
-        }
-    }
-    ${MatchmakingRoomFragment}
 `;
 
 export const PinMessageMutation = gql`

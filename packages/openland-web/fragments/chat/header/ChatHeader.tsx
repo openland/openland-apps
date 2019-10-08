@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ChatInfo } from '../types';
-import { XView } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { css, cx } from 'linaria';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useClient } from 'openland-web/utils/useClient';
@@ -22,7 +22,6 @@ import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { showAddMembersModal } from '../showAddMembersModal';
 import { showRoomEditModal, showLeaveChatConfirmation } from 'openland-web/fragments/account/components/groupProfileModals';
-import { showAdvancedSettingsModal } from '../AdvancedSettingsModal';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { TextDensed, TextStyles, HoverAlpha } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';
@@ -105,6 +104,7 @@ const CallButton = (props: { chat: ChatInfo, calls: CallsEngine }) => {
 const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
     let layout = useLayout();
     const client = useClient();
+    const router = React.useContext(XViewRouterContext)!;
     let chat = client.useRoomChat({ id: props.id }, { fetchPolicy: 'cache-first' }).room!;
     let calls = React.useContext(MessengerContext).calls;
 
@@ -131,7 +131,7 @@ const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
 
     if (chat.__typename === 'SharedRoom') {
         res.item({ title: 'Settings', icon: <SettingsIcon />, action: () => showRoomEditModal(chat.id) });
-        res.item({ title: 'Advanced settings', icon: <StarIcon />, action: () => showAdvancedSettingsModal(chat.id) });
+        res.item({ title: 'Advanced settings', icon: <StarIcon />, action: () => router.navigate(`/advanced/${chat.id}`) });
         res.item({ title: 'Leave chat', icon: <LeaveIcon />, action: () => showLeaveChatConfirmation(client, chat.id) });
     }
 

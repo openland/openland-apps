@@ -223,18 +223,6 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderRoomSuper(variables: Types.RoomSuperVariables, opts?: QueryWatchParameters): Types.RoomSuper | null {
         return this.useQuery(Source.RoomSuperQuery, variables, opts);
     }
-    async queryMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: OperationParameters): Promise<Types.MatchmakingRoom> {
-        return this.client.query(Source.MatchmakingRoomQuery, variables, opts);
-    }
-    async refetchMatchmakingRoom(variables: Types.MatchmakingRoomVariables): Promise<Types.MatchmakingRoom> {
-        return this.refetch(Source.MatchmakingRoomQuery, variables);
-    }
-    useMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: QueryWatchParameters): Types.MatchmakingRoom {
-        return this.useQuerySuspense(Source.MatchmakingRoomQuery, variables, opts);
-    }
-    useWithoutLoaderMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: QueryWatchParameters): Types.MatchmakingRoom | null {
-        return this.useQuery(Source.MatchmakingRoomQuery, variables, opts);
-    }
     async queryGlobalCounter(opts?: OperationParameters): Promise<Types.GlobalCounter> {
         return this.client.query(Source.GlobalCounterQuery, undefined, opts);
     }
@@ -630,6 +618,18 @@ export class OpenlandClient extends BaseApiClient {
     }
     useWithoutLoaderFeedItem(variables: Types.FeedItemVariables, opts?: QueryWatchParameters): Types.FeedItem | null {
         return this.useQuery(Source.FeedItemQuery, variables, opts);
+    }
+    async queryMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: OperationParameters): Promise<Types.MatchmakingRoom> {
+        return this.client.query(Source.MatchmakingRoomQuery, variables, opts);
+    }
+    async refetchMatchmakingRoom(variables: Types.MatchmakingRoomVariables): Promise<Types.MatchmakingRoom> {
+        return this.refetch(Source.MatchmakingRoomQuery, variables);
+    }
+    useMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: QueryWatchParameters): Types.MatchmakingRoom {
+        return this.useQuerySuspense(Source.MatchmakingRoomQuery, variables, opts);
+    }
+    useWithoutLoaderMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: QueryWatchParameters): Types.MatchmakingRoom | null {
+        return this.useQuery(Source.MatchmakingRoomQuery, variables, opts);
     }
     async queryMyNotifications(variables: Types.MyNotificationsVariables, opts?: OperationParameters): Promise<Types.MyNotifications> {
         return this.client.query(Source.MyNotificationsQuery, variables, opts);
@@ -1155,6 +1155,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     async mutateFeedDeletePost(variables: Types.FeedDeletePostVariables): Promise<Types.FeedDeletePost> {
         return this.client.mutate(Source.FeedDeletePostMutation, variables);
+    }
+    async mutateMatchmakingRoomSave(variables: Types.MatchmakingRoomSaveVariables): Promise<Types.MatchmakingRoomSave> {
+        return this.client.mutate(Source.MatchmakingRoomSaveMutation, variables);
     }
     async mutateMatchmakingProfileFill(variables: Types.MatchmakingProfileFillVariables): Promise<Types.MatchmakingProfileFill> {
         return this.client.mutate(Source.MatchmakingProfileFillMutation, variables);

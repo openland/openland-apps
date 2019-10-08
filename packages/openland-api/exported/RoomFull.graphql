@@ -28,6 +28,10 @@ fragment RoomFull on Room {
     id
     isChannel
     kind
+    matchmaking {
+      __typename
+      enabled
+    }
     members {
       __typename
       badge {

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
+import { TextBody, TextTitle3 } from 'openland-web/utils/TextStyles';
 import CheckIcon from 'openland-icons/ic-checkbox.svg';
 import { FormField } from 'openland-form/useField';
 
@@ -11,6 +12,22 @@ const inputClassName = css`
 const labelClassName = css`
     flex-grow: 1;
     cursor: pointer;
+`;
+
+const textClassName = css`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--foregroundPrimary);
+    flex-grow: 1;
+    border-radius: 8px;
+    padding-left: 16px;
+    padding-right: 18px;
+    height: 48px;
+    &:hover {
+        background-color: var(--backgroundPrimaryHover);
+    }
 `;
 
 const checkDotStyle = css`
@@ -95,6 +112,7 @@ interface UCheckboxItemProps {
     onChange?: (value: boolean) => void;
     asSwitcher?: boolean;
     squared?: boolean;
+    boldTitle?: boolean;
 }
 
 export const UCheckbox = (props: UCheckboxItemProps) => {
@@ -118,27 +136,13 @@ export const UCheckbox = (props: UCheckboxItemProps) => {
                 className={inputClassName}
             />
             <label htmlFor={id} className={labelClassName}>
-                <XView
-                    cursor="pointer"
-                    flexDirection="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    flexGrow={1}
-                    height={48}
-                    paddingLeft={16}
-                    paddingRight={18}
-                    borderRadius={8}
-                    fontSize={15}
-                    color="var(--foregroundPrimary)"
-                    lineHeight="24px"
-                    hoverBackgroundColor="var(--backgroundPrimaryHover)"
-                >
+                <div className={cx(textClassName, props.boldTitle ? TextTitle3 : TextBody)}>
                     <span>{props.label}</span>
                     {!props.asSwitcher && (
                         <CheckComponent checked={props.checked} squared={props.squared} />
                     )}
                     {props.asSwitcher && <SwitcherComponent checked={props.checked} />}
-                </XView>
+                </div>
             </label>
         </XView>
     );

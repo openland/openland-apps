@@ -1,5 +1,23 @@
 import gql from 'graphql-tag';
-import { MatchmakingProfileFragment } from 'openland-api/fragments/MatchmakingFragments';
+import { MatchmakingProfileFragment, MatchmakingRoomFragment } from 'openland-api/fragments/MatchmakingFragments';
+
+export const MatchmakingRoomQuery = gql`
+    query MatchmakingRoom($peerId: ID!) {
+        matchmakingRoom(peerId: $peerId) {
+            ...MatchmakingRoomFragment
+        }
+    }
+    ${MatchmakingRoomFragment}
+`;
+
+export const MatchmakingRoomSaveMutation = gql`
+    mutation MatchmakingRoomSave($peerId: ID!, $input: MatchmakingRoomInput!) {
+        matchmakingRoomSave(peerId: $peerId, input: $input) {
+            ...MatchmakingRoomFragment
+        }
+    }
+    ${MatchmakingRoomFragment}
+`;
 
 export const MatchmakingProfileFillMutation = gql`
     mutation MatchmakingProfileFill($peerId: ID!, $input: MatchmakingProfileFillInput!) {

@@ -19,18 +19,17 @@ export interface UAvatarUploadBasicProps {
     onChange?: (file: UploadedFile | null) => void;
     initialUrl?: string | null;
     cropParams?: string;
+    className?: string;
 }
 
 const contentContainer = css`
     cursor: pointer;
-    width: 96px;
-    height: 96px;
     position: relative;
     display: flex;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-
+    align-self: flex-start;
     & .ic-camera {
         z-index: 1;
     }
@@ -90,8 +89,8 @@ const hasImageIndicator = css`
 `;
 
 const avatarContainer = css`
-    width: 100%;
-    height: 100%;
+    width: 96px;
+    height: 96px;
     position: relative;
     background-color: var(--backgroundTertiary);
     border-radius: 100%;
@@ -138,6 +137,7 @@ function prepareSrc(uuid: string, crop: UUploadCareImageCrop | null) {
 
 interface AvatarRenderProps extends UFileUploadRenderProps {
     dataTestId?: string;
+    className?: string;
 }
 
 const AvatarRender = (props: AvatarRenderProps) => {
@@ -169,6 +169,7 @@ const AvatarRender = (props: AvatarRenderProps) => {
                 contentContainer,
                 hasImage && hasImageContentContainer,
                 (isLoading || props.isLoading) && isLoadingContentContainer,
+                props.className && props.className,
             )}
         >
             <div className={cx(avatarContainer, 'avatar-container')}>
@@ -219,7 +220,7 @@ export type StoredFileT = {
     isImage?: boolean;
     width?: number | null;
     height?: number | null;
-    crop: UImageCropT | null;
+    crop?: UImageCropT | null;
 };
 
 export const toValue = (file: UploadedFile | null): StoredFileT | null => {

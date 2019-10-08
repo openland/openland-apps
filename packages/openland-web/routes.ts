@@ -201,6 +201,13 @@ routes.add('/group/:id', '/unicorn/index');
 routes.add('/group/:id/', '/unicorn/index');
 
 //
+// Advanced settings
+//
+
+routes.add('/advanced/:id', '/unicorn/index');
+routes.add('/advanced/:id/', '/unicorn/index');
+
+//
 // Message
 //
 

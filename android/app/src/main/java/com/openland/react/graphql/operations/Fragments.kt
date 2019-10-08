@@ -1499,6 +1499,10 @@ internal val RoomFullSelector = obj(
                 field("id","id", notNull(scalar("ID"))),
                 field("isChannel","isChannel", notNull(scalar("Boolean"))),
                 field("kind","kind", notNull(scalar("String"))),
+                field("matchmaking","matchmaking", obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("enabled","enabled", notNull(scalar("Boolean")))
+                    )),
                 field("members","members", notNull(list(notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
                         field("badge","badge", obj(

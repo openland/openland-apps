@@ -8,6 +8,7 @@ export interface UFileUploadRenderProps {
     isLoading: boolean;
     progress: number;
     value?: UploadedFile | null;
+    className?: string;
 }
 
 export interface UImageCropT {
@@ -32,6 +33,7 @@ export interface UFileUploadProps {
     onChange?: (file: UploadedFile | null) => void;
     initialUrl?: string | null;
     imageOnly?: boolean;
+    className?: string;
 }
 
 export interface UploadedFile {
@@ -126,6 +128,7 @@ export const UFileUpload = (props: UFileUploadProps) => {
             doClear={doClear}
             doUpload={doUpload}
             progress={progress}
+            className={props.className}
         />
     );
 };

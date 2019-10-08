@@ -65,6 +65,9 @@ export const RoomFull = gql`
                 }
                 message
             }
+            matchmaking {
+                enabled
+            }
             pinnedMessage {
                 ...FullMessage
             }

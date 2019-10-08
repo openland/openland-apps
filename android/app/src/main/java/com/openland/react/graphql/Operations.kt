@@ -126,6 +126,7 @@ object Operations {
         if (name == "MarkSequenceRead") return MarkSequenceRead
         if (name == "MatchmakingConnect") return MatchmakingConnect
         if (name == "MatchmakingProfileFill") return MatchmakingProfileFill
+        if (name == "MatchmakingRoomSave") return MatchmakingRoomSave
         if (name == "MediaAnswer") return MediaAnswer
         if (name == "MediaCandidate") return MediaCandidate
         if (name == "MediaFailed") return MediaFailed
