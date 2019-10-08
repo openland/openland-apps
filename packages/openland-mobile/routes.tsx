@@ -107,7 +107,7 @@ export const Routes = new SRoutesBuilder()
 
   .addRoute('SetUserShortname', SetUserShortname)
   .addRoute('SetOrgShortname', SetOrgShortname)
-  .addRoute('SetChannelShortname', SetFeedChannelShortname)
+  .addRoute('SetFeedChannelShortname', SetFeedChannelShortname)
   .addRoute('SelectPrimaryOrganization', SelectPrimaryOrganization)
 
   .addRoute('SignupUser', SignupUser)
