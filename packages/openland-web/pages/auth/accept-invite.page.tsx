@@ -10,6 +10,7 @@ import { XButton } from 'openland-x/XButton';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import { XTrack } from 'openland-x-analytics/XTrack';
 
 const textAlignClassName = css`
     text-align: center;
@@ -31,6 +32,10 @@ const AcceptInvite = ({
         }
     }, []);
     return (<XView width="100%" backgroundColor="white" position={'relative'} justifyContent="center">
+        <XTrack
+            event="invite_landing_view"
+            params={{ invite_type: "Openland" }}
+        />
         <XView
             position="absolute"
             top={56}
