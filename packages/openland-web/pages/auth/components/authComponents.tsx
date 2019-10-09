@@ -1,42 +1,46 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
+import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 
 const textAlignClassName = css`
     text-align: center;
 `;
 
+const subtitleClassName = css`
+    color: var(--foregroundSecondary);
+    margin-top: 8px;
+    margin-bottom: 32px;
+`;
+
+const titleClassName = css`
+    margin-top: 12px;
+`;
+
 export const Title = (props: { text: string }) => (
-    <XView fontSize={24} color="#000" fontWeight="600" marginBottom={12}>
-        <span className={textAlignClassName}>{props.text}</span>
-    </XView>
+    <div className={cx(TextTitle1, textAlignClassName, titleClassName)}>
+        {props.text}
+    </div>
 );
 
-export const Subtitle = (props: { text: string; maxWidth?: number | string }) => (
-    <XView fontSize={16} color="#000" marginBottom={36} maxWidth={props.maxWidth}>
-        <span className={textAlignClassName}>{props.text}</span>
-    </XView>
+export const Subtitle = (props: { text?: string; maxWidth?: number | string, children?: any }) => (
+    <div className={cx(TextBody, textAlignClassName, subtitleClassName)}>
+        {props.text}
+        {props.children}
+    </div>
 );
 
-export const ContinueButtonContainer = ({
-    marginTop,
-    isMobile,
-    button,
-}: {
-    marginTop: number;
-    isMobile: boolean;
-    button: any;
-}) => (
-        <>
-            {!isMobile && (
-                <XView alignItems="center" marginTop={marginTop}>
-                    {button}
-                </XView>
-            )}
-            {isMobile && (
-                <XView alignItems="center" position="absolute" bottom={60}>
-                    {button}
-                </XView>
-            )}
-        </>
-    );
+export const FormLayout = (props: { top: any, bottom: any }) => {
+    const isMobile = useIsMobile();
+    return <XView justifyContent="center" alignItems="center" flexGrow={1} paddingHorizontal={20} minWidth={320}>
+        <XView flexGrow={isMobile ? 1 : undefined} alignItems={isMobile ? 'stretch' : 'center'} alignSelf={isMobile ? 'stretch' : 'center'}>
+            <XView flexGrow={1} alignItems="center" >
+                {props.top}
+            </XView>
+            <XView marginBottom={60} marginTop={32} alignItems="center">
+                {props.bottom}
+            </XView>
+        </XView>
+    </XView>;
+};

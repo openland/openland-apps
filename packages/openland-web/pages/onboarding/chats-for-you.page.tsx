@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { TopBar } from '../components/TopBar';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { css, cx } from 'linaria';
@@ -235,7 +234,6 @@ export const ChatsForYou = ({
     return (
         <Wrapper fullHeight={fullHeight}>
             <XDocumentHead title="Choose role" />
-            {!noTopBar && <TopBar progressInPercents={getPercentageOfOnboarding(10)} />}
             <XView marginBottom={12}>
                 <BackSkipLogo noLogo={true} onBack={onBack} onSkip={onSkip} />
             </XView>

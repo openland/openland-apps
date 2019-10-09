@@ -4,7 +4,6 @@ import { XView } from 'react-mental';
 import { withApp } from 'openland-web/components/withApp';
 import { InputField } from 'openland-web/components/InputField';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { TopBar } from '../components/TopBar';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { getPercentageOfOnboarding } from '../components/utils';
 import { useForm } from 'openland-form/useForm';
@@ -18,9 +17,11 @@ import * as Cookie from 'js-cookie';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { RoomContainerParams } from './root.page';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, ContinueButtonContainer } from './components/authComponents';
+import { Title, Subtitle, FormLayout } from './components/authComponents';
 import { CreateOrganizationFormInnerRoom } from './components/createOrganizationFormInnerRoom';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { UInput } from 'openland-web/components/unicorn/UInput';
 
 export type EnterYourOrganizationPageProps = { inviteKey?: string | null };
 
@@ -78,9 +79,8 @@ const CreateOrganizationFormInnerWeb = ({
     const isInvalid = !!errorText && organizationField.input.invalid;
 
     const button = (
-        <XButton
+        <UButton
             loading={sending}
-            dataTestId="continue-button"
             style="primary"
             text={InitTexts.create_organization.continue}
             size="large"
@@ -89,36 +89,21 @@ const CreateOrganizationFormInnerWeb = ({
     );
 
     return (
-        <XView
-            alignItems="center"
-            flexGrow={1}
-            paddingHorizontal={20}
-            justifyContent="center"
-            marginTop={-100}
-        >
-            <Title text={InitTexts.create_organization.title} />
-            <Subtitle text={subtitle} />
-            <XView width={isMobile ? '100%' : 360} maxWidth={360}>
-                <InputField
-                    title="Organization name"
-                    dataTestId="organization"
-                    flexGrow={1}
-                    className={organizationInputClassName}
-                    hideErrorText={true}
-                    field={organizationField}
-                />
-                {isInvalid && <XErrorMessage2 message={errorText} />}
-            </XView>
-            <ContinueButtonContainer
-                marginTop={
-                    organizationField.input.invalid && organizationField.input.errorText
-                        ? 14
-                        : 40
-                }
-                isMobile={isMobile}
-                button={button}
-            />
-        </XView>
+        <FormLayout
+            top={
+                (<>
+                    <Title text={InitTexts.create_organization.title} />
+                    <Subtitle text={subtitle} />
+                    <XView width={isMobile ? '100%' : 360} maxWidth={360}>
+                        <UInput
+                            label="Organization name"
+                            onChange={organizationField.input.onChange}
+                        />
+                        {isInvalid && <XErrorMessage2 message={errorText} />}
+                    </XView>
+                </>)}
+            bottom={button}
+        />
     );
 };
 
@@ -254,7 +239,6 @@ export const EnterYourOrganizationPageInner = ({
             {!roomView && (
                 <Wrapper>
                     <XDocumentHead title="Enter organization" />
-                    <TopBar progressInPercents={getPercentageOfOnboarding(4)} />
                     <BackSkipLogo
                         onBack={() => {
                             router.replace('/authorization/introduce-yourself');

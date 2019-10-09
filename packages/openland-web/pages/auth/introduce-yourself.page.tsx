@@ -3,10 +3,7 @@ import { XView } from 'react-mental';
 import { withApp } from 'openland-web/components/withApp';
 import { InputField } from 'openland-web/components/InputField';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { TopBar } from '../components/TopBar';
 import { BackSkipLogo } from '../components/BackSkipLogo';
-import { getPercentageOfOnboarding } from '../components/utils';
-import { XButton } from 'openland-x/XButton';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
@@ -19,8 +16,10 @@ import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { RoomContainerParams } from './root.page';
 import { Wrapper } from '../onboarding/components/wrapper';
 import { CreateProfileFormInnerRoom } from './components/createProfileFormInnerRoom';
-import { Title, Subtitle, ContinueButtonContainer } from './components/authComponents';
+import { Title, Subtitle, FormLayout } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { UInput } from 'openland-web/components/unicorn/UInput';
 
 export type ProfileFormData = {
     firstName: string | null;
@@ -124,76 +123,61 @@ const CreateProfileFormInnerWeb = (
     useShortcuts({ keys: ['Enter'], callback: doConfirm });
 
     const button = (
-        <XButton
+        <UButton
             loading={sending}
-            dataTestId="continue-button"
             style="primary"
             text={InitTexts.create_profile.continue}
             size="large"
+            square={true}
             onClick={doConfirm}
         />
     );
 
     return (
-
-        <XView
-            alignItems="center"
-            flexGrow={1}
-            paddingHorizontal={20}
-            justifyContent="center"
-            marginTop={-100}
-        >
-            <Title text={InitTexts.create_profile.title} />
-            <Subtitle
-                text={InitTexts.create_profile.subTitle}
-                maxWidth={props.isMobile ? 230 : undefined}
-            />
-            <XView marginBottom={20}>
-                <UAvatarUploadField
-                    field={photoRef}
-                    initialUrl={prefill ? prefill.picture : undefined}
+        <FormLayout
+            top={(<>
+                <Title text={InitTexts.create_profile.title} />
+                <Subtitle
+                    text={InitTexts.create_profile.subTitle}
+                    maxWidth={props.isMobile ? 230 : undefined}
                 />
-            </XView>
-
-            <XView width={props.isMobile ? '100%' : 360} maxWidth={360} marginBottom={20}>
-                <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
-                    <InputField
-                        height={56}
-                        title="First name"
-                        dataTestId="first-name"
-                        flexGrow={1}
-                        field={firstName}
-                        hideErrorText={true}
+                <XView marginBottom={20}>
+                    <UAvatarUploadField
+                        field={photoRef}
+                        initialUrl={prefill ? prefill.picture : undefined}
                     />
                 </XView>
-                {firstName.input.invalid &&
-                    firstName.input.errorText && (
-                        <XErrorMessage2 message={firstName.input.errorText} />
-                    )}
-            </XView>
 
-            <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
-                <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
-                    <InputField
-                        height={56}
-                        title="Last name"
-                        dataTestId="last-name"
-                        flexGrow={1}
-                        field={lastName}
-                        hideErrorText={true}
-                    />
+                <XView width={props.isMobile ? '100%' : 360} maxWidth={360} marginBottom={20}>
+                    <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
+                        <UInput
+                            label="First name"
+                            flexGrow={1}
+                            onChange={firstName.input.onChange}
+                        />
+                    </XView>
+                    {firstName.input.invalid &&
+                        firstName.input.errorText && (
+                            <XErrorMessage2 message={firstName.input.errorText} />
+                        )}
                 </XView>
-                {lastName.input.invalid &&
-                    lastName.input.errorText && (
-                        <XErrorMessage2 message={lastName.input.errorText} />
-                    )}
-            </XView>
-            <ContinueButtonContainer
-                marginTop={firstName.input.invalid && firstName.input.errorText ? 14 : 40}
-                isMobile={props.isMobile}
-                button={button}
-            />
-        </XView>
+
+                <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
+                    <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
+                        <UInput
+                            label="Last name"
+                            flexGrow={1}
+                            onChange={lastName.input.onChange}
+                        />
+                    </XView>
+                    {lastName.input.invalid &&
+                        lastName.input.errorText && (
+                            <XErrorMessage2 message={lastName.input.errorText} />
+                        )}
+                </XView>
+            </>)}
+            bottom={button}
+        />
     );
 };
 
@@ -227,7 +211,6 @@ export const IntroduceYourselfPageInner = ({
             {!roomView && (
                 <Wrapper>
                     <XDocumentHead title="Introduce yourself" />
-                    <TopBar progressInPercents={getPercentageOfOnboarding(3)} />
                     <BackSkipLogo
                         onBack={
                             null

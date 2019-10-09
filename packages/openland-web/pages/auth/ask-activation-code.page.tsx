@@ -4,7 +4,6 @@ import { InputField } from 'openland-web/components/InputField';
 import { useForm } from 'openland-form/useForm';
 import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { TopBar } from '../components/TopBar';
 import { XButton } from 'openland-x/XButton';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { getPercentageOfOnboarding } from '../components/utils';
@@ -17,7 +16,7 @@ import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { RoomActivationCode } from './components/roomActivationCode';
 import { RoomContainerParams } from './root.page';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, ContinueButtonContainer } from './components/authComponents';
+import { Title, Subtitle, FormLayout } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInput } from 'openland-web/components/unicorn/UInput';
@@ -127,69 +126,40 @@ export const WebSignUpActivationCode = ({
 
     return (
 
-        <XView
-            alignItems="center"
-            flexGrow={1}
-            paddingHorizontal={20}
-            justifyContent="center"
-            marginTop={-100}
-        >
-            <Title text={InitTexts.auth.enterActivationCode} />
-            {emailSending && <Subtitle text={sendingCodeText} />}
-            {!emailSending &&
-                emailSendedTo && (
-                    <XView
-                        fontSize={16}
-                        color="#000"
-                        marginBottom={34}
-                        flexDirection={emailSendedTo.length > 20 && isMobile ? 'column' : 'row'}
-                        alignItems="center"
-                    >
-                        <XView
-                            marginRight={emailSendedTo.length > 20 && isMobile ? undefined : 6}
-                            marginBottom={emailSendedTo.length > 20 && isMobile ? 6 : undefined}
-                        >
-                            We just sent it to
+        <FormLayout
+            top={(
+                <>
+                    <Title text={InitTexts.auth.enterActivationCode} />
+                    <Subtitle>
+                        {emailSending ? sendingCodeText : (
+                            <>
+                                We just sent it to
+                                    <strong>{' ' + emailSendedTo}</strong>
+                            </>
+                        )}
+
+                    </Subtitle>
+                    <XView width={isMobile ? '100%' : 360} maxWidth={360}>
+                        <UInput
+                            width={isMobile ? '100%' : 360}
+                            pattern="[0-9]*"
+                            type="number"
+                            autofocus={true}
+                            label={InitTexts.auth.codePlaceholder}
+                            flexGrow={1}
+                            flexShrink={0}
+                            onChange={codeField.input.onChange}
+                            invalid={isInvalid}
+                        />
+                        {isInvalid && <XErrorMessage2 message={errorText} />}
+                        <XView marginTop={30} flexDirection="row" justifyContent="center">
+                            {resendEmail}
                         </XView>
-                        <strong>{emailSendedTo}</strong>
                     </XView>
-                )}
-            <XView width={isMobile ? '100%' : 360} maxWidth={360}>
-                <UInput
-                    width={isMobile ? '100%' : 360}
-                    pattern="[0-9]*"
-                    type="number"
-                    autofocus={true}
-                    label={InitTexts.auth.codePlaceholder}
-                    flexGrow={1}
-                    flexShrink={0}
-                    onChange={codeField.input.onChange}
-                    invalid={isInvalid}
-                />
-                {isInvalid && <XErrorMessage2 message={errorText} />}
-                {isMobile && (
-                    <XView marginTop={30} flexDirection="row" justifyContent="center">
-                        {resendEmail}
-                    </XView>
-                )}
-            </XView>
-            <ContinueButtonContainer
-                marginTop={isInvalid ? 14 : 40}
-                isMobile={isMobile}
-                button={button}
-            />
-            {!isMobile && (
-                <XView
-                    position="absolute"
-                    bottom={20}
-                    width="100%"
-                    flexDirection="row"
-                    justifyContent="center"
-                >
-                    {resendEmail}
-                </XView>
+                </>
             )}
-        </XView>
+            bottom={button}
+        />
     );
 };
 
@@ -245,7 +215,6 @@ export const AskActivationPage = (props: ActivationCodeProps & ActivationCodeOut
             {!props.roomView && (
                 <Wrapper>
                     <XDocumentHead title="Activation code" />
-                    <TopBar progressInPercents={getPercentageOfOnboarding(2)} />
                     <BackSkipLogo
                         onBack={() => {
                             router.replace('/authorization/ask-email');

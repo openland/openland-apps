@@ -1,22 +1,18 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { InputField } from 'openland-web/components/InputField';
 import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { TopBar } from '../components/TopBar';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { BackSkipLogo } from '../components/BackSkipLogo';
-import { getPercentageOfOnboarding } from '../components/utils';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import * as Cookie from 'js-cookie';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { XButton } from 'openland-x/XButton';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { RoomContainerParams } from './root.page';
 import { Wrapper } from '../onboarding/components/wrapper';
 import { RoomCreateWithEmail } from './components/roomCreateWithEmail';
-import { Title, Subtitle, ContinueButtonContainer } from './components/authComponents';
+import { Title, Subtitle, FormLayout } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInput } from 'openland-web/components/unicorn/UInput';
@@ -96,33 +92,26 @@ export const WebSignUpCreateWithEmail = ({
     );
 
     return (
-
-        <XView
-            alignItems="center"
-            flexGrow={1}
-            paddingHorizontal={20}
-            justifyContent="center"
-            marginTop={-100}
-        >
-            <Title text={title} />
-            <Subtitle text={subTitle} />
-            <XView width={isMobile ? '100%' : 360} maxWidth={360}>
-                <UInput
-                    onChange={emailField.input.onChange}
-                    autofocus={true}
-                    width={isMobile ? '100%' : 360}
-                    type="email"
-                    label={InitTexts.auth.emailPlaceholder}
-                    invalid={isInvalid}
-                />
-                {isInvalid && <XErrorMessage2 message={errorText} />}
-            </XView>
-            <ContinueButtonContainer
-                marginTop={emailField.input.invalid && emailField.input.errorText ? 14 : 40}
-                isMobile={isMobile}
-                button={button}
-            />
-        </XView>
+        <FormLayout
+            top={(
+                <>
+                    <Title text={title} />
+                    <Subtitle text={subTitle} />
+                    <XView width={isMobile ? '100%' : 360} maxWidth={360}>
+                        <UInput
+                            onChange={emailField.input.onChange}
+                            autofocus={true}
+                            width={isMobile ? '100%' : 360}
+                            type="email"
+                            label={InitTexts.auth.emailPlaceholder}
+                            invalid={isInvalid}
+                        />
+                        {isInvalid && <XErrorMessage2 message={errorText} />}
+                    </XView>
+                </>
+            )}
+            bottom={button}
+        />
     );
 };
 
@@ -161,7 +150,6 @@ export const AskEmailPage = (props: CreateWithEmailProps & CreateWithEmailOuterP
             {!props.roomView && (
                 <Wrapper>
                     <XDocumentHead title="Ask email" />
-                    <TopBar progressInPercents={getPercentageOfOnboarding(1)} />
                     <BackSkipLogo
                         onBack={() => {
                             if (Cookie.get('x-openland-create-new-account')) {

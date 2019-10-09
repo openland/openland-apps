@@ -1,21 +1,21 @@
 import * as React from 'react';
 import { XView, XImage } from 'react-mental';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import IcBack from 'openland-icons/s/ic-back-24.svg';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
+import { TextLabel1 } from 'openland-web/utils/TextStyles';
 
 const skipClassName = css`
-    letter-spacing: -0.078px;
-    font-size: 15px;
-    color: rgba(41, 41, 41, 0.5);
+    color: var(--foregroundSecondary);
     cursor: pointer;
+    margin: 16px;
 `;
 
 const Skip = ({ onClick }: { onClick: (event: React.MouseEvent) => void }) => {
     return (
-        <div className={skipClassName} onClick={onClick}>
+        <div className={cx(TextLabel1, skipClassName)} onClick={onClick}>
             Skip
         </div>
     );

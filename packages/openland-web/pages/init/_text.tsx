@@ -60,8 +60,8 @@ export const InitTexts = {
 
     create_profile: {
         pageTitle: 'Create profile',
-        title: 'Introduce yourself',
-        subTitle: 'Add your full name so others can recognize you',
+        title: 'Your name',
+        subTitle: 'Help others recognize you',
         firstName: 'First Name',
         firstNamePlaceholder: 'First name',
         lastName: 'Last Name',
@@ -74,9 +74,9 @@ export const InitTexts = {
     },
 
     create_organization: {
-        pageTitle: 'Add your organization',
-        title: 'Add your organization',
-        subTitle: 'Enter organization that people will see in your profile',
+        pageTitle: 'Your organization',
+        title: 'Your organization',
+        subTitle: 'Provide some context about what you do',
         name: 'Organization name',
         namePlaceholder: 'Acme Corporation',
         website: 'Website',

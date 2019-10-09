@@ -3,7 +3,6 @@ import { css } from 'linaria';
 import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
-import { TopBar } from '../components/TopBar';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import ImgUnboardingStart from 'openland-icons/img_unboarding_start.svg';
@@ -19,13 +18,11 @@ const textAlignClassName = css`
 export const DiscoverStart = ({
     onSkip,
     onStartClick,
-    noTopBar,
     noBackSkipLogo,
     onLogin,
 }: {
     onSkip: ((event: React.MouseEvent<Element, MouseEvent>) => void) | null;
     onStartClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
-    noTopBar?: boolean;
     noBackSkipLogo?: boolean;
     onLogin?: boolean;
 }) => {
@@ -34,7 +31,6 @@ export const DiscoverStart = ({
     return (
         <XView flexGrow={1}>
             <XDocumentHead title="Discover" />
-            {!noTopBar && <TopBar progressInPercents={getPercentageOfOnboarding(6)} />}
             {!noBackSkipLogo && (
                 <BackSkipLogo onBack={null} onSkip={onSkip} noLogo={!!isMobile} />
             )}
