@@ -77,17 +77,23 @@ const FeedTutorial = React.memo((props: { ctx: ZModalController }) => {
     );
 });
 
+let tutorialShown = false;
+
 export const showFeedTutorialIfNeeded = async () => {
-    const tutorialShown = await AsyncStorage.getItem('openland-feed-tutorial');
-
     if (!tutorialShown) {
-        await AsyncStorage.setItem('openland-feed-tutorial', new Date().getTime().toString());
+        const tutorialAlreadyShown = await AsyncStorage.getItem('openland-feed-tutorial');
 
-        let builder = new ActionSheetBuilder();
+        if (!tutorialAlreadyShown) {
+            tutorialShown = true;
 
-        builder.view(ctx => <FeedTutorial ctx={ctx} />);
+            await AsyncStorage.setItem('openland-feed-tutorial', new Date().getTime().toString());
 
-        builder.cancelable(false);
-        builder.show();
+            let builder = new ActionSheetBuilder();
+
+            builder.view(ctx => <FeedTutorial ctx={ctx} />);
+
+            builder.cancelable(false);
+            builder.show();
+        }
     }
 };
