@@ -147,7 +147,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
         <View
             backgroundColor={this.props.theme.backgroundSecondary}
             borderRadius={RadiusStyles.Large}
-            marginHorizontal={16}
+            marginHorizontal={24}
             onLayout={this.onLayout}
         >
             {this.contents}
