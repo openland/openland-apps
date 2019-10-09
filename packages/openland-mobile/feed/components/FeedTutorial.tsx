@@ -5,6 +5,7 @@ import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SDevice } from 'react-native-s/SDevice';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const TUTORIAL: ({ icon: NodeRequire, title: string, subtitle: string })[] = [{
     icon: require('assets/feed/ic-feed-tutorial-switch-300.png'),
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
 
 const FeedTutorial = React.memo((props: { ctx: ZModalController }) => {
     const { ctx } = props;
+    const theme = React.useContext(ThemeContext);
     const [step, setStep] = React.useState(0);
 
     const handleNext = React.useCallback(() => {
@@ -60,10 +62,10 @@ const FeedTutorial = React.memo((props: { ctx: ZModalController }) => {
     return (
         <>
             <Image source={TUTORIAL[step].icon} style={styles.image} />
-            <Text style={styles.title} allowFontScaling={false}>
+            <Text style={[styles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
                 {TUTORIAL[step].title}
             </Text>
-            <Text style={styles.subtitle} allowFontScaling={false}>
+            <Text style={[styles.subtitle, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
                 {TUTORIAL[step].subtitle}
             </Text>
             <View style={styles.buttons} paddingBottom={paddingBottom}>
