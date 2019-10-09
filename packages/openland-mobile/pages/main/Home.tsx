@@ -14,6 +14,7 @@ import { NotificationCenter } from './NotificationCenter';
 import { isPad } from '../Root';
 import { NON_PRODUCTION } from '../Init';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
+import { showFeedTutorialIfNeeded } from 'openland-mobile/feed/components/FeedTutorial';
 
 export const Home = XMemo<PageProps>((props) => {
     const [tab, setTab] = React.useState(1);
@@ -21,6 +22,12 @@ export const Home = XMemo<PageProps>((props) => {
     const notificationsCounter = getClient().useWithoutLoaderMyNotificationCenter();
     const discoverDone = getClient().useWithoutLoaderDiscoverIsDone();
     const showFeed = NON_PRODUCTION && !isPad;
+
+    React.useEffect(() => {
+        if (tab === 0 && showFeed) {
+            showFeedTutorialIfNeeded();
+        }
+    }, [tab]);
 
     return (
         <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>
