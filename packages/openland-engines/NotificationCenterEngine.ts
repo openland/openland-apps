@@ -87,9 +87,8 @@ const notificationUnsupported = (id: string): NotificationsDataSourceItem => {
 export const convertNotification = (notification: Types.NotificationFragment): NotificationsDataSourceItem => {
     const content = notification.content;
 
-    // TODO go through notification.content, now take only first
-    if (content && content.length && content[0]!!.__typename === 'NewCommentNotification') {
-        const firstContent = content[0]!!;
+    if (content && content.length && content[0].__typename === 'NewCommentNotification') {
+        const firstContent = content[0] as Types.NotificationFragment_content_NewCommentNotification;
         const comment = firstContent.comment;
         const peer = firstContent.peer;
 
