@@ -25,8 +25,6 @@ const mainContainer = css`
     flex-direction: column;
     flex-grow: 1;
     flex-shrink: 1;
-    padding-left: 16px;
-    padding-right: 16px;
 `;
 
 const titleStyle = css`
@@ -97,7 +95,7 @@ export const MatchmakingAppFragment = React.memo(() => {
     };
 
     return (
-        <Page flexGrow={1} track="matchmaking_app">
+        <Page flexGrow={1} track="matchmaking_app" padded={true}>
             <UHeader titleView={<TitleRender onDone={onDone} />} />
             <XView flexGrow={1}>
                 <XView flexGrow={1}>

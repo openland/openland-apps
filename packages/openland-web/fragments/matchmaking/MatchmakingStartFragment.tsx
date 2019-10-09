@@ -8,7 +8,7 @@ import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useClient } from 'openland-web/utils/useClient';
 
-const outerContianer = css`
+const outerContainer = css`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -23,10 +23,11 @@ const mainContainer = css`
     flex-shrink: 1;
 `;
 
-const mainContainerDesctop = css`
+const mainContainerDesktop = css`
     display: flex;
     flex-direction: column;
     flex-shrink: 1;
+    flex-grow: 1;
 `;
 
 const cardsContainer = css`
@@ -71,36 +72,39 @@ const redText = css`
 
 export const MatchmakingStartComponent = (props: { onStart: () => void }) => {
     const isMobile = useLayout() === 'mobile';
-    return <div className={outerContianer}>
-        <div className={isMobile ? mainContainer : mainContainerDesctop}>
-            <div className={cx(cardsContainer, !isMobile && desktopCardsContainer)}>
-                <img
-                    className={cardIcon}
-                    src="https://cdn.openland.com/shared/web/matchmaking/cards@1x.png"
-                    srcSet="https://cdn.openland.com/shared/web/matchmaking/cards@2x.png 2x"
+    return (
+        <div className={outerContainer}>
+            <div className={isMobile ? mainContainer : mainContainerDesktop}>
+                <div className={cx(cardsContainer, !isMobile && desktopCardsContainer)}>
+                    <img
+                        className={cardIcon}
+                        src="https://cdn.openland.com/shared/web/matchmaking/cards@1x.png"
+                        srcSet="https://cdn.openland.com/shared/web/matchmaking/cards@2x.png 2x"
+                    />
+                </div>
+                <div className={descriptionStyle}>
+                    <div>
+                        <span className={redText}>1</span> Introduce yourself
+                    </div>
+                    <div>
+                        <span className={redText}>2</span> Explore people
+                    </div>
+                    <div>
+                        <span className={redText}>3</span> Chat!
+                    </div>
+                </div>
+                <UButton
+                    text="Continue"
+                    size="large"
+                    square={true}
+                    alignSelf="center"
+                    onClick={props.onStart}
+                    marginBottom={60}
+                    marginTop={20}
                 />
             </div>
-            <div className={descriptionStyle}>
-                <div>
-                    <span className={redText}>1</span> Introduce yourself
-                    </div>
-                <div>
-                    <span className={redText}>2</span> Explore people
-                    </div>
-                <div>
-                    <span className={redText}>3</span> Chat!
-                    </div>
-            </div>
-            <UButton
-                text="Continue"
-                size="large"
-                square={true}
-                alignSelf="center"
-                onClick={props.onStart}
-                marginBottom={60}
-            />
         </div>
-    </div>;
+    );
 };
 
 export const MatchmakingStartFragment = React.memo(() => {

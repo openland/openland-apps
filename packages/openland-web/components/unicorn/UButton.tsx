@@ -15,6 +15,7 @@ export interface UButtonProps extends XViewProps {
     disable?: boolean;
     left?: any;
     action?: () => void;
+    className?: string;
 }
 
 const textStyle = css`
@@ -153,21 +154,21 @@ const styleResolver = {
     primary: primaryStyle,
     secondary: secondaryStyle,
     danger: dangerStyle,
-    success: successStyle
+    success: successStyle,
 };
 
 const styleResolverHover = {
     primary: primaryHoverStyle,
     secondary: secondaryHoverStyle,
     danger: dangerHoverStyle,
-    success: successHoverStyle
+    success: successHoverStyle,
 };
 
 const styleResolverActive = {
     primary: primaryActiveStyle,
     secondary: secondaryActiveStyle,
     danger: dangerActiveStyle,
-    success: successActiveStyle
+    success: successActiveStyle,
 };
 
 const loaderColor = {
@@ -182,24 +183,43 @@ const loaderColor = {
     },
     success: {
         color: '#fff',
-    }
+    },
 };
 
 export const UButton = (props: UButtonProps) => {
-    const { text, square, size = 'medium', style = 'primary', loading, disable, action, onClick, ...other } = props;
-    const [loadingState, setLoadingState] = React.useState(loading);
-    const actionCallback = React.useCallback(async () => {
-        if (!action) {
-            return;
-        }
-        setLoadingState(true);
-        await action();
-        setLoadingState(false);
-    }, [action]);
+    const {
+        text,
+        square,
+        size = 'medium',
+        style = 'primary',
+        loading,
+        disable,
+        action,
+        onClick,
+        className,
+        ...other
+    } = props;
 
-    React.useEffect(() => {
-        setLoadingState(loading);
-    }, [loading]);
+    const [loadingState, setLoadingState] = React.useState(loading);
+
+    const actionCallback = React.useCallback(
+        async () => {
+            if (!action) {
+                return;
+            }
+            setLoadingState(true);
+            await action();
+            setLoadingState(false);
+        },
+        [action],
+    );
+
+    React.useEffect(
+        () => {
+            setLoadingState(loading);
+        },
+        [loading],
+    );
 
     return (
         <XView {...other} onClick={action ? actionCallback : onClick}>
@@ -213,6 +233,7 @@ export const UButton = (props: UButtonProps) => {
                     styleResolver[style],
                     !(loadingState || disable) && styleResolverHover[style],
                     !(loadingState || disable) && styleResolverActive[style],
+                    className && className,
                 )}
             >
                 {props.left}

@@ -37,13 +37,12 @@ const TextComponent = (props: TextComponentProps) => {
 
     return (
         <XView flexGrow={1}>
-            <XView flexGrow={1} paddingHorizontal={16}>
+            <XView flexGrow={1}>
                 <UTextArea
                     alignSelf="center"
                     height={190}
                     maxWidth={368}
                     width="100%"
-                    marginHorizontal={16}
                     value={text}
                     placeholder={props.placeholder}
                     onChange={setText}
@@ -56,6 +55,8 @@ const TextComponent = (props: TextComponentProps) => {
                 square={true}
                 onClick={!text.trim() ? undefined : () => props.onSubmit(text.trim())}
                 disable={!text.trim()}
+                marginBottom={60}
+                marginTop={20}
             />
         </XView>
     );
@@ -140,6 +141,8 @@ const TagsComponent = (props: TagsComponentProps) => {
                 square={true}
                 onClick={!tags.size ? undefined : () => props.onSubmit(Array.from(tags))}
                 disable={!tags.size}
+                marginBottom={60}
+                marginTop={20}
             />
         </XView>
     );
@@ -224,7 +227,7 @@ const QuestionComponent = (props: QuestionComponentProps) => {
     };
 
     return (
-        <Page flexGrow={1} track="matchmaking_question">
+        <Page flexGrow={1} track="matchmaking_question" padded={true}>
             <UHeader titleView={textQuestion ? <TitleRender onSkip={onSkip} /> : null} />
             <div className={descriptionContainer}>
                 <div className={cx(TextTitle1, titleStyle)}>{props.question.title}</div>

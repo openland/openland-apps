@@ -23,7 +23,7 @@ const dotClass = css`
     border-radius: 5px;
     border: 2px solid var(--backgroundPrimary);
     background-color: var(--accentNegative);
-    z-index: 3;
+    z-index: 2;
 `;
 
 const wrapperClass = css`

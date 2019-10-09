@@ -61,22 +61,17 @@ export const MatchmakingCreatedFragment = React.memo(() => {
     const data = client.useMatchmakingRoom({ peerId: chatId }).matchmakingRoom;
 
     const haveMyData = data && data.myProfile;
-    const haveOtherProfiles = data && data.profiles && data.profiles.length > 1;
 
     if (!haveMyData) {
         return null;
     }
 
     const onStart = () => {
-        if (haveOtherProfiles) {
-            router.navigate(`/matchmaking/${chatId}/users`);
-        } else {
-            router.navigate(`/mail/${chatId}`);
-        }
+        router.navigate(`/matchmaking/${chatId}/users`);
     };
 
     return (
-        <Page flexGrow={1} track="matchmaking_profile_created">
+        <Page flexGrow={1} track="matchmaking_profile_created" padded={true}>
             <XView flexGrow={1}>
                 <XView flexGrow={1}>
                     <div className={mainContainer}>
@@ -140,6 +135,8 @@ export const MatchmakingCreatedFragment = React.memo(() => {
                     square={true}
                     alignSelf="center"
                     onClick={onStart}
+                    marginBottom={60}
+                    marginTop={20}
                 />
             </XView>
         </Page>
