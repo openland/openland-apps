@@ -48,6 +48,12 @@ fragment NotificationFragment on Notification {
         }
       }
     }
+    ... on NewMatchmakingProfilesNotification {
+      room {
+        __typename
+        enabled
+      }
+    }
   }
   id
   text

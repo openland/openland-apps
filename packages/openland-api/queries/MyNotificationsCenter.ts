@@ -46,6 +46,11 @@ export const NotificationFragment = gql`
                     }
                 }
             }
+            ... on NewMatchmakingProfilesNotification {
+                room {
+                    enabled
+                }
+            }
         }
     }
 

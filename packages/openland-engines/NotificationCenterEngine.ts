@@ -15,7 +15,7 @@ const log = createLogger('Engine-NotificationCenter');
 
 export type NotificationsDataSourceItem = DataSourceMessageItem;
 
-const convertCommentNotification = (id: string, peer: Types.NotificationFragment_content_peer, comment: Types.NotificationFragment_content_comment): NotificationsDataSourceItem => {
+const convertCommentNotification = (id: string, peer: Types.NotificationFragment_content_NewCommentNotification_peer, comment: Types.NotificationFragment_content_NewCommentNotification_comment): NotificationsDataSourceItem => {
     const peerRoot = peer.peerRoot;
     const peerRootId = peerRoot.__typename === 'CommentPeerRootMessage' ? peerRoot.message.id : peerRoot.item.id;
     const room = peerRoot.__typename === 'CommentPeerRootMessage' ? peerRoot.chat : undefined;

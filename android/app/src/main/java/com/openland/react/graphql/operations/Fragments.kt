@@ -1170,6 +1170,12 @@ internal val NotificationFragmentSelector = obj(
                                         field("type","type", scalar("String"))
                                     ))
                             )))
+                    )),
+                    inline("NewMatchmakingProfilesNotification", obj(
+                        field("room","room", notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                field("enabled","enabled", notNull(scalar("Boolean")))
+                            )))
                     ))
                 ))))),
             field("id","id", notNull(scalar("ID"))),
