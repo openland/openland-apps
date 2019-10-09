@@ -1501,7 +1501,16 @@ internal val RoomFullSelector = obj(
                 field("kind","kind", notNull(scalar("String"))),
                 field("matchmaking","matchmaking", obj(
                         field("__typename","__typename", notNull(scalar("String"))),
-                        field("enabled","enabled", notNull(scalar("Boolean")))
+                        field("enabled","enabled", notNull(scalar("Boolean"))),
+                        field("questions","questions", list(notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                inline("TextMatchmakingQuestion", obj(
+                                    field("id","id", notNull(scalar("ID")))
+                                )),
+                                inline("MultiselectMatchmakingQuestion", obj(
+                                    field("id","id", notNull(scalar("ID")))
+                                ))
+                            ))))
                     )),
                 field("members","members", notNull(list(notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),

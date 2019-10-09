@@ -8,7 +8,6 @@ import { XButton } from 'openland-x/XButton';
 import ImgUnboardingStart from 'openland-icons/img_unboarding_start.svg';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { getPercentageOfOnboarding } from '../components/utils';
 import { useClient } from 'openland-web/utils/useClient';
 
 const textAlignClassName = css`

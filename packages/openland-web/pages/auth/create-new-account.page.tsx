@@ -3,10 +3,8 @@ import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { BackSkipLogo } from '../components/BackSkipLogo';
-import { InitTexts } from 'openland-web/pages/init/_text';
 import { RoomContainerParams } from './root.page';
 import { RoomAuthMechanism } from './components/roomAuthMechanism';
-import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { TextTitle1, TextBody, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
@@ -47,11 +45,8 @@ export const SignUpAuthMechanism = ({
     loginWithGoogle,
     loginWithEmail,
 }: AuthMechanism) => {
-    const auth = InitTexts.auth;
     const title = signin ? 'Sign in to Openland' : 'Create account';
     const isMobile = useIsMobile();
-    const googleButtonText = signin ? auth.signinGoogle : auth.signupGoogle;
-    const emailText = signin ? auth.signinEmail : auth.signupEmail;
 
     return (
         <>
@@ -120,7 +115,6 @@ export const SignUpAuthMechanism = ({
 };
 
 export const CreateNewAccountPage = (props: AuthMechanism & AuthMechanismOuterProps) => {
-    let router = React.useContext(XRouterContext)!;
     return (
         <XView backgroundColor="white" flexGrow={1}>
             <XDocumentHead title="Create New Account" />

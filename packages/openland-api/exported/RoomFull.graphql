@@ -31,6 +31,15 @@ fragment RoomFull on Room {
     matchmaking {
       __typename
       enabled
+      questions {
+        __typename
+        ... on TextMatchmakingQuestion {
+          id
+        }
+        ... on MultiselectMatchmakingQuestion {
+          id
+        }
+      }
     }
     members {
       __typename

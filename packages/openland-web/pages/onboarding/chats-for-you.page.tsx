@@ -4,7 +4,6 @@ import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { css, cx } from 'linaria';
 import { BackSkipLogo } from '../components/BackSkipLogo';
-import { getPercentageOfOnboarding } from '../components/utils';
 import { useClient } from 'openland-web/utils/useClient';
 import CheckIcon from 'openland-icons/checked.svg';
 import { SuggestedRooms_suggestedRooms_SharedRoom } from 'openland-api/Types';

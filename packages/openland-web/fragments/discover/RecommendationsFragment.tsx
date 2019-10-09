@@ -16,14 +16,14 @@ export const RecommendationsFragment = React.memo(() => {
 
     const onStartClick = React.useCallback(() => {
         showModalBox({ fullScreen: true }, ctx => (
-            <DiscoverOnLocalState fullHeight={true} noTopBar={true} onJoinChats={ctx.hide} />
+            <DiscoverOnLocalState fullHeight={true} onJoinChats={ctx.hide} />
         ));
     }, []);
 
     return (
         <React.Suspense fallback={null}>
             {tab === 'start' && (
-                <DiscoverStart onSkip={null} onStartClick={onStartClick} noTopBar={true} noBackSkipLogo={true} />
+                <DiscoverStart onSkip={null} onStartClick={onStartClick} noBackSkipLogo={true} />
             )}
             {tab === 'discover' && (
                 <>

@@ -67,6 +67,14 @@ export const RoomFull = gql`
             }
             matchmaking {
                 enabled
+                questions{
+                    ... on TextMatchmakingQuestion {
+                        id
+                    }
+                    ... on MultiselectMatchmakingQuestion {
+                        id
+                    }
+                }
             }
             pinnedMessage {
                 ...FullMessage

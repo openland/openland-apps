@@ -1,14 +1,10 @@
 import * as React from 'react';
-import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { withApp } from 'openland-web/components/withApp';
-import { InputField } from 'openland-web/components/InputField';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { BackSkipLogo } from '../components/BackSkipLogo';
-import { getPercentageOfOnboarding } from '../components/utils';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { XButton } from 'openland-x/XButton';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { trackEvent } from 'openland-x-analytics';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
@@ -30,13 +26,6 @@ export type EnterYourOrganizationPageOuterProps = {
     roomContainerParams: RoomContainerParams;
     isMobile: boolean;
 };
-
-const organizationInputClassName = css`
-    width: 300px;
-    @media (max-width: 450px) {
-        width: 250px;
-    }
-`;
 
 export type processCreateOrganizationT = (a: { organizationFieldValue: string | null }) => void;
 
@@ -204,7 +193,11 @@ export const EnterYourOrganizationPageInner = ({
                 // Cookie.remove('x-openland-invite');
                 Cookie.remove('x-openland-create-new-account');
                 await client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
-                window.location.href = `/mail/${room.join.id}`;
+                if (room.join.__typename === 'SharedRoom' && room.join.matchmaking && room.join.matchmaking.questions && room.join.matchmaking.questions.length) {
+                    window.location.href = `/matchmaking/${room.join.id}/ask/${room.join.matchmaking.questions[0].id}`;
+                } else {
+                    window.location.href = `/mail/${room.join.id}`;
+                }
             } else if (Cookie.get('x-openland-app-invite')) {
                 // app invite invite
                 const inviteKey = Cookie.get('x-openland-app-invite')!!;

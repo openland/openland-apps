@@ -1,12 +1,9 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { InputField } from 'openland-web/components/InputField';
 import { useForm } from 'openland-form/useForm';
 import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { XButton } from 'openland-x/XButton';
 import { BackSkipLogo } from '../components/BackSkipLogo';
-import { getPercentageOfOnboarding } from '../components/utils';
 import { useField } from 'openland-form/useField';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
