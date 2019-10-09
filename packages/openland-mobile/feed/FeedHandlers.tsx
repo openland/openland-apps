@@ -10,6 +10,7 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 
 class FeedHandlersClass {
     private getPostLink = (id: string) => 'https://openland.com/feed/' + id;
+    private getChannelLink = (id: string, shortname?: string | null) => 'https://openland.com/' + (shortname || id);
 
     Create = (channel?: FeedChannelFull) => {
         getMessenger().history.navigationManager.push('FeedCreate', { channel });
@@ -102,6 +103,10 @@ class FeedHandlersClass {
         const router = getMessenger().history.navigationManager;
         const builder = new ActionSheetBuilder();
 
+        builder.action('Share', () => {
+            this.ChannelShare(channel);
+        }, false, require('assets/ic-share-24.png'));
+
         if (myRole === FeedChannelAdminRole.Creator) {
             builder.action('Edit info', () => {
                 router.push('FeedChannelEdit', { id });
@@ -163,6 +168,12 @@ class FeedHandlersClass {
         await client.refetchFeedChannelAdmins({ id: channelId, first: 3 });
 
         stopLoader();
+    }
+
+    ChannelShare = (channel: FeedChannelFull) => {
+        const { id, shortname } = channel;
+
+        Share.share({ message: this.getChannelLink(id, shortname) });
     }
 }
 
