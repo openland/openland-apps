@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
-import { View, StyleSheet, ViewStyle, Text, TextStyle, Image, ImageStyle, AsyncStorage } from 'react-native';
+import { View, StyleSheet, ViewStyle, Text, TextStyle, Image, ImageStyle, AsyncStorage, Platform } from 'react-native';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { SDevice } from 'react-native-s/SDevice';
 
 const TUTORIAL: ({ icon: NodeRequire, title: string, subtitle: string })[] = [{
     icon: require('assets/feed/ic-feed-tutorial-switch-300.png'),
@@ -54,6 +55,7 @@ const FeedTutorial = React.memo((props: { ctx: ZModalController }) => {
     }, []);
 
     const isFinal = step === TUTORIAL.length - 1;
+    const paddingBottom = Platform.OS === 'ios' ? (SDevice.safeArea.bottom || 16) : SDevice.safeArea.bottom + 16;
 
     return (
         <>
@@ -64,7 +66,7 @@ const FeedTutorial = React.memo((props: { ctx: ZModalController }) => {
             <Text style={styles.subtitle} allowFontScaling={false}>
                 {TUTORIAL[step].subtitle}
             </Text>
-            <View style={styles.buttons}>
+            <View style={styles.buttons} paddingBottom={paddingBottom}>
                 <ZRoundedButton
                     size="large"
                     title={isFinal ? 'Got it' : 'Next'}
