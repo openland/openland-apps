@@ -8,7 +8,8 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 const styles = StyleSheet.create({
     box: {
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        paddingBottom: 48
     } as ViewStyle,
     image: {
         height: 200,
