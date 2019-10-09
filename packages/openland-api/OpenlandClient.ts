@@ -571,6 +571,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: QueryWatchParameters): Types.FeedChannelsSearch | null {
         return this.useQuery(Source.FeedChannelsSearchQuery, variables, opts);
     }
+    async queryFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts?: OperationParameters): Promise<Types.FeedRecommendedChannels> {
+        return this.client.query(Source.FeedRecommendedChannelsQuery, variables, opts);
+    }
+    async refetchFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables): Promise<Types.FeedRecommendedChannels> {
+        return this.refetch(Source.FeedRecommendedChannelsQuery, variables);
+    }
+    useFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts?: QueryWatchParameters): Types.FeedRecommendedChannels {
+        return this.useQuerySuspense(Source.FeedRecommendedChannelsQuery, variables, opts);
+    }
+    useWithoutLoaderFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts?: QueryWatchParameters): Types.FeedRecommendedChannels | null {
+        return this.useQuery(Source.FeedRecommendedChannelsQuery, variables, opts);
+    }
     async queryFeedChannel(variables: Types.FeedChannelVariables, opts?: OperationParameters): Promise<Types.FeedChannel> {
         return this.client.query(Source.FeedChannelQuery, variables, opts);
     }

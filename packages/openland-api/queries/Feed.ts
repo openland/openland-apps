@@ -52,6 +52,29 @@ export const FeedChannelsSearchQuery = gql`
     ${FeedChannelFull}
 `;
 
+export const FeedRecommendedChannelsQuery = gql`
+    query FeedRecommendedChannels($first: Int!, $after: String) {
+        search: alphaRecommendedChannels(first: $first, after: $after) {
+            edges {
+                node {
+                    ...FeedChannelFull
+                }
+                cursor
+            }
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                itemsCount
+                pagesCount
+                currentPage
+                openEnded
+            }
+        }
+    }
+
+    ${FeedChannelFull}
+`;
+
 export const FeedChannelQuery = gql`
     query FeedChannel($id: ID!) {
         channel: alphaFeedChannel(id: $id) {

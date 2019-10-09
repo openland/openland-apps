@@ -2,6 +2,7 @@ fragment FeedChannelFull on FeedChannel {
   __typename
   about
   id
+  isGlobal
   myRole
   photo
   shortname

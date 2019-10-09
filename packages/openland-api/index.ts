@@ -170,6 +170,7 @@ export const FeatureFlagDisableMutation = typedMutation<Types.FeatureFlagDisable
 export const FeedQuery = typedQuery<Types.Feed, Types.FeedVariables>(Feed.FeedQuery);
 export const FeedMyChannelsQuery = typedQuery<Types.FeedMyChannels, Types.FeedMyChannelsVariables>(Feed.FeedMyChannelsQuery);
 export const FeedChannelsSearchQuery = typedQuery<Types.FeedChannelsSearch, Types.FeedChannelsSearchVariables>(Feed.FeedChannelsSearchQuery);
+export const FeedRecommendedChannelsQuery = typedQuery<Types.FeedRecommendedChannels, Types.FeedRecommendedChannelsVariables>(Feed.FeedRecommendedChannelsQuery);
 export const FeedChannelQuery = typedQuery<Types.FeedChannel, Types.FeedChannelVariables>(Feed.FeedChannelQuery);
 export const FeedChannelAdminsQuery = typedQuery<Types.FeedChannelAdmins, Types.FeedChannelAdminsVariables>(Feed.FeedChannelAdminsQuery);
 export const FeedChannelContentQuery = typedQuery<Types.FeedChannelContent, Types.FeedChannelContentVariables>(Feed.FeedChannelContentQuery);

@@ -870,6 +870,7 @@ internal val FeedChannelFullSelector = obj(
             field("__typename","__typename", notNull(scalar("String"))),
             field("about","about", scalar("String")),
             field("id","id", notNull(scalar("ID"))),
+            field("isGlobal","isGlobal", notNull(scalar("Boolean"))),
             field("myRole","myRole", notNull(scalar("String"))),
             field("photo","photo", scalar("String")),
             field("shortname","shortname", scalar("String")),

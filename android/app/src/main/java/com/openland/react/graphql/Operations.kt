@@ -32,6 +32,7 @@ object Operations {
         if (name == "FeedChannelsSearch") return FeedChannelsSearch
         if (name == "FeedItem") return FeedItem
         if (name == "FeedMyChannels") return FeedMyChannels
+        if (name == "FeedRecommendedChannels") return FeedRecommendedChannels
         if (name == "FetchPushSettings") return FetchPushSettings
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch

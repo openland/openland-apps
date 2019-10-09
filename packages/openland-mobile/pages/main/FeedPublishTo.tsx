@@ -37,7 +37,7 @@ const FeedPublishToComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title="Publish to" />
+            <SHeader title="Publish" />
             <SHeaderButton title="Done" onPress={() => action(selected)} />
             <SFlatList
                 data={channels}

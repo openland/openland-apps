@@ -10,5 +10,6 @@ export const FeedChannelFull = gql`
         myRole
         subscribersCount
         shortname
+        isGlobal
     }
 `;

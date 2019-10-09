@@ -29,6 +29,6 @@ internal val FeedChannelsSearchSelector = obj(
 val FeedChannelsSearch = object: OperationDefinition {
     override val name = "FeedChannelsSearch"
     override val kind = OperationKind.QUERY
-    override val body = "query FeedChannelsSearch(\$after:String,\$first:Int!,\$query:String,\$sort:String){search:alphaFeedChannelSearch(after:\$after,first:\$first,query:\$query,sort:\$sort){__typename edges{__typename cursor node{__typename ...FeedChannelFull}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment FeedChannelFull on FeedChannel{__typename about id myRole photo shortname subscribed subscribersCount title}"
+    override val body = "query FeedChannelsSearch(\$after:String,\$first:Int!,\$query:String,\$sort:String){search:alphaFeedChannelSearch(after:\$after,first:\$first,query:\$query,sort:\$sort){__typename edges{__typename cursor node{__typename ...FeedChannelFull}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo shortname subscribed subscribersCount title}"
     override val selector = FeedChannelsSearchSelector
 }

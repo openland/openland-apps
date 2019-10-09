@@ -25,7 +25,7 @@ const FeedChannelEditComponent = React.memo((props: PageProps) => {
     const form = useForm();
     const titleField = useField('title', channel.title, form);
     const aboutField = useField('about', channel.about || '', form);
-    const globalField = useField('global', false, form);
+    const globalField = useField('global', channel.isGlobal, form);
 
     const currentPhoto = channel.photo === null ? undefined : channel.photo;
     const defaultPhotoValue = channel.photo === null ? null : { uuid: channel.photo };
