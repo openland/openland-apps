@@ -12,6 +12,8 @@ import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
+import { SUPER_ADMIN } from '../Init';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
 
 const FeedChannelEditComponent = React.memo((props: PageProps) => {
     const { router } = props;
@@ -23,6 +25,7 @@ const FeedChannelEditComponent = React.memo((props: PageProps) => {
     const form = useForm();
     const titleField = useField('title', channel.title, form);
     const aboutField = useField('about', channel.about || '', form);
+    const globalField = useField('global', false, form);
 
     const currentPhoto = channel.photo === null ? undefined : channel.photo;
     const defaultPhotoValue = channel.photo === null ? null : { uuid: channel.photo };
@@ -40,11 +43,12 @@ const FeedChannelEditComponent = React.memo((props: PageProps) => {
                 title: titleField.value,
                 about: aboutField.value,
 
+                ...SUPER_ADMIN && { global: globalField.value },
                 ...(
                     photoField.value &&
                     photoField.value.uuid !== currentPhoto &&
                     { photoRef: photoField.value }
-                )
+                ),
             });
 
             router.back();
@@ -66,7 +70,7 @@ const FeedChannelEditComponent = React.memo((props: PageProps) => {
                         autoFocus={true}
                     />
                     <ZInput
-                        placeholder="About"
+                        placeholder="Description"
                         field={aboutField}
                         multiline={true}
                     />
@@ -79,6 +83,15 @@ const FeedChannelEditComponent = React.memo((props: PageProps) => {
                         pathParams={{ id }}
                     />
                 </ZListGroup>
+                {SUPER_ADMIN && (
+                    <ZListGroup header="Superadmin" headerMarginTop={0}>
+                        <ZListItem
+                            text="Auto-subscribe all"
+                            onToggle={globalField.input.onChange}
+                            toggle={globalField.value}
+                        />
+                    </ZListGroup>
+                )}
             </KeyboardAvoidingScrollView>
         </>
     );

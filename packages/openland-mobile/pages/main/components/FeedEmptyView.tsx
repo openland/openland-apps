@@ -30,9 +30,9 @@ const styles = StyleSheet.create({
 
 interface FeedEmptyViewProps {
     title: string;
-    subtitle?: string;
-    action?: string;
-    onPress?: () => void;
+    subtitle: string;
+    action: string;
+    onPress: () => void;
 }
 
 export const FeedEmptyView = React.memo((props: FeedEmptyViewProps) => {
@@ -43,9 +43,34 @@ export const FeedEmptyView = React.memo((props: FeedEmptyViewProps) => {
     return (
         <View style={styles.box} minHeight={Dimensions.get('screen').height - area.top - area.bottom}>
             <Image source={require('assets/feed/ic-feed-setup-200.png')} style={styles.image} />
-            <Text style={[styles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>{title}</Text>
-            {!!subtitle && <Text style={[styles.subtitle, { color: theme.foregroundPrimary }]} allowFontScaling={false}>{subtitle}</Text>}
-            {!!action && !!onPress && <ZRoundedButton title={action} size="large" onPress={onPress} />}
+
+            <Text style={[styles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
+                {title}
+            </Text>
+
+            <Text style={[styles.subtitle, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
+                {subtitle}
+            </Text>
+
+            <ZRoundedButton title={action} size="large" onPress={onPress} />
+        </View>
+    );
+});
+
+interface FeedChannelEmptyViewProps {
+    title: string;
+}
+
+export const FeedChannelEmptyView = React.memo((props: FeedChannelEmptyViewProps) => {
+    const theme = React.useContext(ThemeContext);
+    const area = React.useContext(ASSafeAreaContext);
+    const { title } = props;
+
+    return (
+        <View style={styles.box} minHeight={Dimensions.get('screen').height - area.top - area.bottom}>
+            <Text style={[styles.subtitle, { color: theme.foregroundTertiary }]} allowFontScaling={false}>
+                {title}
+            </Text>
         </View>
     );
 });

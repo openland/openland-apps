@@ -15,7 +15,7 @@ import { FeedDateView } from 'openland-mobile/feed/FeedDateView';
 import { View } from 'react-native';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { convertItems } from 'openland-engines/feed/convert';
-import { FeedEmptyView } from './components/FeedEmptyView';
+import { FeedEmptyView, FeedChannelEmptyView } from './components/FeedEmptyView';
 
 const FeedChannelComponent = React.memo((props: PageProps) => {
     const { router } = props;
@@ -56,7 +56,7 @@ const FeedChannelComponent = React.memo((props: PageProps) => {
             );
         }
 
-        return <FeedEmptyView title="Empty channel" />;
+        return <FeedChannelEmptyView title="No posts" />;
     }, [canPost]);
 
     const handleLoadMore = React.useCallback(async () => {
