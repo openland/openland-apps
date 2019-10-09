@@ -23,7 +23,7 @@ const MessageComponent = XMemo<PageProps>((props) => {
 
     const { date, sender, source } = message;
     const peerView = (
-        <View paddingHorizontal={16} paddingTop={8}>
+        <View paddingHorizontal={16} paddingTop={8} paddingBottom={16}>
             <ZMessageView message={message} />
 
             {(message.__typename === 'GeneralMessage' || message.__typename === 'StickerMessage') && (
