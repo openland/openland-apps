@@ -142,6 +142,28 @@ class FeedHandlersClass {
 
         stopLoader();
     }
+
+    ChannelAddEditor = async (channelId: string, userId: string) => {
+        const client = getClient();
+
+        startLoader();
+
+        await client.mutateFeedChannelAddEditor({ id: channelId, userId });
+        await client.refetchFeedChannelAdmins({ id: channelId, first: 3 });
+
+        stopLoader();
+    }
+
+    ChannelRemoveEditor = async (channelId: string, userId: string) => {
+        const client = getClient();
+
+        startLoader();
+
+        await client.mutateFeedChannelRemoveEditor({ id: channelId, userId });
+        await client.refetchFeedChannelAdmins({ id: channelId, first: 3 });
+
+        stopLoader();
+    }
 }
 
 export const FeedHandlers = new FeedHandlersClass();

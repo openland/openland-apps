@@ -25,7 +25,7 @@ const FeedChannelProfileComponent = React.memo((props: PageProps) => {
     const writers = client.useFeedChannelAdmins({ id, first: 3 }, { fetchPolicy: 'cache-and-network' }).admins;
 
     const handleAddWriter = React.useCallback(() => {
-        return;
+        router.present('FeedChannelAddWriter', { id });
     }, [id]);
 
     return (
