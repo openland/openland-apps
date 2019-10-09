@@ -212,12 +212,6 @@ export class MobileMessenger {
         }, false, require('assets/ic-message-24.png'));
 
         if (message.text) {
-            if (message.senderId === this.engine.user.id) {
-                builder.action('Edit', () => {
-                    conversation.messagesActionsStateEngine.edit(message);
-                }, false, require('assets/ic-edit-24.png'));
-            }
-
             builder.action('Copy', () => {
                 Clipboard.setString(message.text!!);
             }, false, require('assets/ic-copy-24.png'));
@@ -232,6 +226,14 @@ export class MobileMessenger {
                     stopLoader();
                 }
             }, false, require('assets/ic-pin-24.png'));
+        }
+
+        if (message.text) {
+            if (message.senderId === this.engine.user.id) {
+                builder.action('Edit', () => {
+                    conversation.messagesActionsStateEngine.edit(message);
+                }, false, require('assets/ic-edit-24.png'));
+            }
         }
 
         if (message.senderId === this.engine.user.id || SUPER_ADMIN) {
