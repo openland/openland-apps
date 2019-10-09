@@ -16,6 +16,8 @@ import { XLoader } from 'openland-x/XLoader';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { CallFloating } from 'openland-web/modules/conference/CallFloating';
+import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 
 export const dialogSearchWrapperClassName = css`
     justify-content: flex-start !important;
@@ -179,6 +181,8 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                     />
                 )}
             </XView>
+            {AppConfig.isNonProduction() && <CallFloating />}
+
         </XView>
     );
 });
