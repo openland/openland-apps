@@ -27,7 +27,6 @@ import { AppRegistry } from 'react-native';
 // Enable layout animations on Android
 // disabled to fix random crash https://github.com/facebook/react-native/issues/13984#issuecomment-343826572
 // if (UIManager.setLayoutAnimationEnabledExperimental) { UIManager.setLayoutAnimationEnabledExperimental(true); }
-import 'react-native-gesture-handler';
 
 import { withGlobalLoader } from './components/ZGlobalLoader';
 import { Init } from './pages/Init';

@@ -7,6 +7,7 @@ import { randomKey } from 'react-native-s/utils/randomKey';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 
 export interface RootProps {
     width: number;
@@ -119,5 +120,10 @@ class RootContainer extends React.PureComponent<RootProps & { theme: ThemeGlobal
 
 export const Root = React.memo<RootProps>((props) => {
     let theme = React.useContext(ThemeContext);
+
+    ErrorUtils.setGlobalHandler((error, isFatal) => {
+        AlertBlanket.alert(JSON.stringify({ error, isFatal }));
+    });
+
     return <RootContainer {...props} theme={theme} />;
 });
