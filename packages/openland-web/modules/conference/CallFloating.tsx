@@ -120,13 +120,15 @@ const CallFloatingComponent = React.memo((props: { id: string, private: boolean 
         <div style={{ display: 'flex', flexDirection: 'row-reverse' }} >
 
             {callState.avatar &&
-                <UAvatar
-                    marginLeft={8}
-                    size="small"
-                    id={callState.avatar.id}
-                    title={callState.avatar.title}
-                    photo={callState.avatar.picture}
-                />}
+                <>
+                    <UAvatar
+                        size="small"
+                        id={callState.avatar.id}
+                        title={callState.avatar.title}
+                        photo={callState.avatar.picture}
+                    />
+                    <XView width={8} />
+                </>}
             <XButton
                 flexShrink={0}
                 style="success"

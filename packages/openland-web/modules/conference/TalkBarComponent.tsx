@@ -75,7 +75,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                                     callState.conversationId
                                         ? () => calls.leaveCall()
                                         : () =>
-                                            calls.joinCall(props.chat.id, props.chat.__typename === 'PrivateRoom', props.chat.__typename === 'PrivateRoom' ? { id: props.chat.user.id, title: props.chat.user.name, picture: props.chat.user.photo } : props.chat)
+                                            calls.joinCall(props.chat.id, props.chat.__typename === 'PrivateRoom', props.chat.__typename === 'PrivateRoom' ? { id: props.chat.user.id, title: props.chat.user.name, picture: props.chat.user.photo } : { id: props.chat.id, title: props.chat.title, picture: props.chat.photo })
                                 }
                             />
                         )}
