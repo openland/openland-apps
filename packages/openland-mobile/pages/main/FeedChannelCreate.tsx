@@ -11,7 +11,6 @@ import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardA
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZInput } from 'openland-mobile/components/ZInput';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 
 const FeedChannelCreateComponent = React.memo((props: PageProps) => {
     const client = useClient();
@@ -27,8 +26,6 @@ const FeedChannelCreateComponent = React.memo((props: PageProps) => {
         }
 
         form.doAction(async () => {
-            startLoader();
-
             const channel = (await client.mutateFeedChannelCreate({
                 title: titleField.value,
                 photoRef: photoField.value,
@@ -38,8 +35,6 @@ const FeedChannelCreateComponent = React.memo((props: PageProps) => {
             await client.refetchFeedMyChannels({ first: 15 });
 
             props.router.pushAndRemove('FeedChannel', { id: channel.id });
-
-            stopLoader();
         });
     };
 
