@@ -28,5 +28,10 @@ fragment MatchmakingProfileFragment on MatchmakingProfile {
     isYou
     name
     photo
+    primaryOrganization {
+      __typename
+      id
+      name
+    }
   }
 }

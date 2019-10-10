@@ -11,7 +11,7 @@ const FeedChannelWritersComponent = React.memo((props: PageProps) => {
     const { id } = router.params;
     const client = useClient();
 
-    const initialWriters = client.useFeedChannelAdmins({ id, first: 15 }, { fetchPolicy: 'network-only' }).admins;
+    const initialWriters = client.useFeedChannelWriters({ id, first: 15 }, { fetchPolicy: 'network-only' }).writers;
     const [writers, setWriters] = React.useState(initialWriters.items);
     const [loading, setLoading] = React.useState(false);
     const [cursor, setCursor] = React.useState(initialWriters.cursor);
@@ -20,11 +20,11 @@ const FeedChannelWritersComponent = React.memo((props: PageProps) => {
         if (cursor && !loading) {
             setLoading(true);
 
-            const loaded = (await client.queryFeedChannelAdmins({
+            const loaded = (await client.queryFeedChannelWriters({
                 id,
                 first: 15,
                 after: cursor,
-            }, { fetchPolicy: 'network-only' })).admins;
+            }, { fetchPolicy: 'network-only' })).writers;
 
             setWriters(current => [...current, ...loaded.items.filter(m => !current.find(m2 => m2.user.id === m.user.id))]);
             setLoading(false);

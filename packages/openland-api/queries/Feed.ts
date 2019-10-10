@@ -85,9 +85,9 @@ export const FeedChannelQuery = gql`
     ${FeedChannelFull}
 `;
 
-export const FeedChannelAdminsQuery = gql`
-    query FeedChannelAdmins($id: ID!, $first: Int!, $after: ID) {
-        admins: alphaFeedChannelAdmins(id: $id, first: $first, after: $after) {
+export const FeedChannelWritersQuery = gql`
+    query FeedChannelWriters($id: ID!, $first: Int!, $after: ID) {
+        writers: alphaFeedChannelAdmins(id: $id, first: $first, after: $after) {
             items {
                 user {
                     ...UserShort
@@ -95,6 +95,32 @@ export const FeedChannelAdminsQuery = gql`
                 role
             }
             cursor
+        }
+    }
+
+    ${UserShort}
+`;
+
+export const FeedChannelSubscribersQuery = gql`
+    query FeedChannelSubscribers($channelId: ID!, $query: String, $first: Int!, $after: String) {
+        subscribers: alphaFeedChannelSubscribers(channelId: $channelId, query: $query, first: $first, after: $after) {
+            edges {
+                node {
+                    user {
+                        ...UserShort
+                    }
+                    role
+                }
+                cursor
+            }
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                itemsCount
+                pagesCount
+                currentPage
+                openEnded
+            }
         }
     }
 
@@ -142,14 +168,14 @@ export const FeedChannelUnsubscribeMutation = gql`
     }
 `;
 
-export const FeedChannelAddEditorMutation = gql`
-    mutation FeedChannelAddEditor($id: ID!, $userId: ID!) {
+export const FeedChannelAddWriterMutation = gql`
+    mutation FeedChannelAddWriter($id: ID!, $userId: ID!) {
         alphaFeedChannelAddEditor(id: $id, userId: $userId)
     }
 `;
 
-export const FeedChannelRemoveEditorMutation = gql`
-    mutation FeedChannelRemoveEditor($id: ID!, $userId: ID!) {
+export const FeedChannelRemoveWriterMutation = gql`
+    mutation FeedChannelRemoveWriter($id: ID!, $userId: ID!) {
         alphaFeedChannelRemoveEditor(id: $id, userId: $userId)
     }
 `;

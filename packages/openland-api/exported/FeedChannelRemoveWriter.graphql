@@ -1,0 +1,3 @@
+mutation FeedChannelRemoveWriter($id: ID!, $userId: ID!) {
+  alphaFeedChannelRemoveEditor(id: $id, userId: $userId)
+}

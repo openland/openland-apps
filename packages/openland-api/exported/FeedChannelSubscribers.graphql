@@ -1,0 +1,26 @@
+query FeedChannelSubscribers($after: String, $channelId: ID!, $first: Int!, $query: String) {
+  subscribers: alphaFeedChannelSubscribers(after: $after, channelId: $channelId, first: $first, query: $query) {
+    __typename
+    edges {
+      __typename
+      cursor
+      node {
+        __typename
+        role
+        user {
+          __typename
+          ...UserShort
+        }
+      }
+    }
+    pageInfo {
+      __typename
+      currentPage
+      hasNextPage
+      hasPreviousPage
+      itemsCount
+      openEnded
+      pagesCount
+    }
+  }
+}

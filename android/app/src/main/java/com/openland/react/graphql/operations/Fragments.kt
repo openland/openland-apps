@@ -1027,7 +1027,12 @@ internal val MatchmakingProfileFragmentSelector = obj(
                     field("id","id", notNull(scalar("ID"))),
                     field("isYou","isYou", notNull(scalar("Boolean"))),
                     field("name","name", notNull(scalar("String"))),
-                    field("photo","photo", scalar("String"))
+                    field("photo","photo", scalar("String")),
+                    field("primaryOrganization","primaryOrganization", obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("id","id", notNull(scalar("ID"))),
+                            field("name","name", notNull(scalar("String")))
+                        ))
                 )))
         )
 

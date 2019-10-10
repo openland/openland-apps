@@ -27,8 +27,9 @@ object Operations {
         if (name == "FeatureFlags") return FeatureFlags
         if (name == "Feed") return Feed
         if (name == "FeedChannel") return FeedChannel
-        if (name == "FeedChannelAdmins") return FeedChannelAdmins
         if (name == "FeedChannelContent") return FeedChannelContent
+        if (name == "FeedChannelSubscribers") return FeedChannelSubscribers
+        if (name == "FeedChannelWriters") return FeedChannelWriters
         if (name == "FeedChannelsSearch") return FeedChannelsSearch
         if (name == "FeedItem") return FeedItem
         if (name == "FeedMyChannels") return FeedMyChannels
@@ -113,9 +114,9 @@ object Operations {
         if (name == "FeatureFlagAdd") return FeatureFlagAdd
         if (name == "FeatureFlagDisable") return FeatureFlagDisable
         if (name == "FeatureFlagEnable") return FeatureFlagEnable
-        if (name == "FeedChannelAddEditor") return FeedChannelAddEditor
+        if (name == "FeedChannelAddWriter") return FeedChannelAddWriter
         if (name == "FeedChannelCreate") return FeedChannelCreate
-        if (name == "FeedChannelRemoveEditor") return FeedChannelRemoveEditor
+        if (name == "FeedChannelRemoveWriter") return FeedChannelRemoveWriter
         if (name == "FeedChannelSubscribe") return FeedChannelSubscribe
         if (name == "FeedChannelUnsubscribe") return FeedChannelUnsubscribe
         if (name == "FeedChannelUpdate") return FeedChannelUpdate

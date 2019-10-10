@@ -1,3 +1,0 @@
-mutation FeedChannelAddEditor($id: ID!, $userId: ID!) {
-  alphaFeedChannelAddEditor(id: $id, userId: $userId)
-}

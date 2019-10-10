@@ -153,8 +153,8 @@ class FeedHandlersClass {
 
         startLoader();
 
-        await client.mutateFeedChannelAddEditor({ id: channelId, userId });
-        await client.refetchFeedChannelAdmins({ id: channelId, first: 3 });
+        await client.mutateFeedChannelAddWriter({ id: channelId, userId });
+        await client.refetchFeedChannelWriters({ id: channelId, first: 3 });
 
         stopLoader();
     }
@@ -164,8 +164,8 @@ class FeedHandlersClass {
 
         startLoader();
 
-        await client.mutateFeedChannelRemoveEditor({ id: channelId, userId });
-        await client.refetchFeedChannelAdmins({ id: channelId, first: 3 });
+        await client.mutateFeedChannelRemoveWriter({ id: channelId, userId });
+        await client.refetchFeedChannelWriters({ id: channelId, first: 3 });
 
         stopLoader();
     }
