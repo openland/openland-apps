@@ -183,8 +183,6 @@ const userTagsStyle = css`
 interface UserCardProps {
     data: MatchmakingRoom_matchmakingRoom_profiles;
     chatId: string;
-    acceptShowingModal: boolean;
-    setAcceptShowingModal: Function;
 }
 
 const UserCard = React.memo((props: UserCardProps) => {
@@ -203,20 +201,23 @@ const UserCard = React.memo((props: UserCardProps) => {
     );
 
     const showModal = () => {
+        if (window.localStorage.getItem('matchmakin_disclamer_shown')) {
+            return;
+        }
+        window.localStorage.setItem('matchmakin_disclamer_shown', 'true');
         AlertBlanket.builder()
             .cancelable(false)
             .title('All new chats will be in your Openland inbox')
             .action(
                 'Got it',
-                async () => {
-                    props.setAcceptShowingModal(false);
-                },
+                async () => { /**/ },
                 'primary',
             )
             .show();
     };
 
     const createChat = async () => {
+        showModal();
         await client.mutateMatchmakingConnect({
             peerId: props.chatId,
             uid: user.id,
@@ -251,36 +252,13 @@ const UserCard = React.memo((props: UserCardProps) => {
                     return null;
                 })}
             </div>
-            {props.data.chatCreated &&
-                !changeCreatedButton && (
-                    <UButton
-                        text="Connected"
-                        style="secondary"
-                        onClick={
-                            props.acceptShowingModal
-                                ? () => {
-                                      showModal();
-                                      props.setAcceptShowingModal(false);
-                                  }
-                                : undefined
-                        }
-                    />
-                )}
-            {props.data.chatCreated &&
-                changeCreatedButton && (
-                    <UButton
-                        text="Chat created"
-                        style="success"
-                        onClick={
-                            props.acceptShowingModal
-                                ? () => {
-                                      showModal();
-                                      props.setAcceptShowingModal(false);
-                                  }
-                                : undefined
-                        }
-                    />
-                )}
+
+            {props.data.chatCreated && (
+                <UButton
+                    text={changeCreatedButton ? 'Chat created' : 'Connected'}
+                    style={changeCreatedButton ? 'success' : 'secondary'}
+                />
+            )}
             {!props.data.chatCreated && <UButton text="Connect" action={createChat} />}
         </div>
     );
@@ -302,7 +280,6 @@ const TitleRender = (props: { onDone: () => void }) => {
 };
 
 export const MatchmakingUsersFragment = React.memo(() => {
-    const [acceptShowingModal, setAcceptShowingModal] = React.useState(true);
     const router = React.useContext(XViewRouterContext)!;
     const unicorn = useUnicorn();
     let chatId = unicorn.query.roomId;
@@ -357,8 +334,6 @@ export const MatchmakingUsersFragment = React.memo(() => {
                                                 data={i}
                                                 chatId={chatId}
                                                 key={i.user.id}
-                                                acceptShowingModal={acceptShowingModal}
-                                                setAcceptShowingModal={setAcceptShowingModal}
                                             />
                                             {showInviteCard && <InviteCard chatId={chatId} />}
                                             {showInstallCard && <InstallCard onInstall={onDone} />}
