@@ -43,6 +43,7 @@ const wrapper = css`
 
     @media (max-width: 750px) {
         flex-direction: column;
+        padding: 16px;
     }
 `;
 

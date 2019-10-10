@@ -37,6 +37,7 @@ object Operations {
         if (name == "FetchPushSettings") return FetchPushSettings
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch
+        if (name == "MatchmakingProfile") return MatchmakingProfile
         if (name == "MatchmakingRoom") return MatchmakingRoom
         if (name == "Message") return Message
         if (name == "MessagesBatch") return MessagesBatch

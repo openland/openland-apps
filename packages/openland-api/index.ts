@@ -189,6 +189,7 @@ export const FeedReactionRemoveMutation = typedMutation<Types.FeedReactionRemove
 export const FeedDeletePostMutation = typedMutation<Types.FeedDeletePost, Types.FeedDeletePostVariables>(Feed.FeedDeletePostMutation);
 export const FeedUpdatesSubscription = typedSubscription<Types.FeedUpdates, Types.FeedUpdatesVariables>(Feed.FeedUpdatesSubscription);
 export const MatchmakingRoomQuery = typedQuery<Types.MatchmakingRoom, Types.MatchmakingRoomVariables>(Matchmaking.MatchmakingRoomQuery);
+export const MatchmakingProfileQuery = typedQuery<Types.MatchmakingProfile, Types.MatchmakingProfileVariables>(Matchmaking.MatchmakingProfileQuery);
 export const MatchmakingRoomSaveMutation = typedMutation<Types.MatchmakingRoomSave, Types.MatchmakingRoomSaveVariables>(Matchmaking.MatchmakingRoomSaveMutation);
 export const MatchmakingProfileFillMutation = typedMutation<Types.MatchmakingProfileFill, Types.MatchmakingProfileFillVariables>(Matchmaking.MatchmakingProfileFillMutation);
 export const MatchmakingConnectMutation = typedMutation<Types.MatchmakingConnect, Types.MatchmakingConnectVariables>(Matchmaking.MatchmakingConnectMutation);

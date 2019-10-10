@@ -2181,6 +2181,12 @@ private let GlobalSearchSelector = obj(
                     ))
                 )))))
         )
+private let MatchmakingProfileSelector = obj(
+            field("matchmakingProfile","matchmakingProfile", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("uid", refValue("uid"))), obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("MatchmakingProfile", MatchmakingProfileFragmentSelector)
+                ))
+        )
 private let MatchmakingRoomSelector = obj(
             field("matchmakingRoom","matchmakingRoom", arguments(fieldValue("peerId", refValue("peerId"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3978,6 +3984,12 @@ class Operations {
         "query GlobalSearch($kinds:[GlobalSearchEntryKind!],$query:String!){items:alphaGlobalSearch(kinds:$kinds,query:$query){__typename ... on Organization{...OrganizationShort}... on User{...UserShort}... on SharedRoom{id kind membersCount membership organization{__typename id name photo}roomPhoto:photo title}}}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}",
         GlobalSearchSelector
     )
+    let MatchmakingProfile = OperationDefinition(
+        "MatchmakingProfile",
+        .query, 
+        "query MatchmakingProfile($peerId:ID!,$uid:ID!){matchmakingProfile(peerId:$peerId,uid:$uid){__typename ...MatchmakingProfileFragment}}fragment MatchmakingProfileFragment on MatchmakingProfile{__typename answers{__typename ... on TextMatchmakingAnswer{answer question{__typename id subtitle title}}... on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id isYou name photo primaryOrganization{__typename id name}}}",
+        MatchmakingProfileSelector
+    )
     let MatchmakingRoom = OperationDefinition(
         "MatchmakingRoom",
         .query, 
@@ -5042,6 +5054,7 @@ class Operations {
         if name == "FetchPushSettings" { return FetchPushSettings }
         if name == "GlobalCounter" { return GlobalCounter }
         if name == "GlobalSearch" { return GlobalSearch }
+        if name == "MatchmakingProfile" { return MatchmakingProfile }
         if name == "MatchmakingRoom" { return MatchmakingRoom }
         if name == "Message" { return Message }
         if name == "MessagesBatch" { return MessagesBatch }

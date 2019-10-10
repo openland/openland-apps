@@ -10,6 +10,15 @@ export const MatchmakingRoomQuery = gql`
     ${MatchmakingRoomFragment}
 `;
 
+export const MatchmakingProfileQuery = gql`
+    query MatchmakingProfile($peerId: ID!, $uid: ID!) {
+        matchmakingProfile(peerId: $peerId, uid: $uid){
+            ...MatchmakingProfileFragment
+        }
+    }
+    ${MatchmakingProfileFragment}
+`;
+
 export const MatchmakingRoomSaveMutation = gql`
     mutation MatchmakingRoomSave($peerId: ID!, $input: MatchmakingRoomInput!) {
         matchmakingRoomSave(peerId: $peerId, input: $input) {
