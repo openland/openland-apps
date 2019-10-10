@@ -22,7 +22,7 @@ const getRows = (value: string) => {
 };
 
 interface UListTextProps extends XViewProps {
-    value?: string | JSX.Element;
+    value?: string | JSX.Element | JSX.Element[];
 }
 
 export const UListText = (props: UListTextProps) => {

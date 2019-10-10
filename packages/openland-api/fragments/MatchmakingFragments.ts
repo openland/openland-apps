@@ -8,6 +8,10 @@ export const MatchmakingProfileFragment = gql`
             isYou
             name
             photo
+            primaryOrganization {
+                id
+                name
+            }
         }
         answers {
             ... on TextMatchmakingAnswer {

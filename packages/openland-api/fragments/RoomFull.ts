@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import { FullMessage } from './Message';
 import { UserBadge } from './UserBadge';
+import { MatchmakingRoomFragment } from '../fragments/MatchmakingFragments';
 
 export const RoomFull = gql`
     fragment RoomFull on Room {
@@ -66,15 +67,7 @@ export const RoomFull = gql`
                 message
             }
             matchmaking {
-                enabled
-                questions{
-                    ... on TextMatchmakingQuestion {
-                        id
-                    }
-                    ... on MultiselectMatchmakingQuestion {
-                        id
-                    }
-                }
+                ...MatchmakingRoomFragment
             }
             pinnedMessage {
                 ...FullMessage
@@ -86,6 +79,7 @@ export const RoomFull = gql`
     }
     ${FullMessage}
     ${UserBadge}
+    ${MatchmakingRoomFragment}
 `;
 
 export const RoomFullWithoutMembers = gql`
@@ -122,6 +116,9 @@ export const RoomFullWithoutMembers = gql`
                 id
                 mute
             }
+            matchmaking {
+                ...MatchmakingRoomFragment
+            }
             canEdit
             canSendMessage
             welcomeMessage {
@@ -142,4 +139,5 @@ export const RoomFullWithoutMembers = gql`
     }
     ${UserBadge}
     ${FullMessage}
+    ${MatchmakingRoomFragment}
 `;

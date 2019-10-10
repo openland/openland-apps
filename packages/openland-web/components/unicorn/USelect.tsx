@@ -262,11 +262,11 @@ const optionSubtitleStyle = css`
 interface OptionType<T = string | number | boolean | undefined> {
     value: T;
     label: string;
-    labelShort?: string;
-    subtitle?: string;
+    labelShort?: string | null;
+    subtitle?: string | null;
 }
 
-const OptionRender = ({ option }: { option: OptionType }) => {
+const OptionRender = (option: OptionType) => {
     if (option.subtitle && option.labelShort) {
         return (
             <div className={optionContainer}>
@@ -459,7 +459,9 @@ export const USelect = (props: USelectBasicProps) => {
     );
 };
 
-export const USelectField = (props: USelectBasicProps & { field: FormField<OptionType> }) => {
+export const USelectField = (
+    props: USelectBasicProps & { field: FormField<OptionType> },
+) => {
     const { field, ...other } = props;
     return (
         <USelect

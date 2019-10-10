@@ -30,16 +30,7 @@ fragment RoomFull on Room {
     kind
     matchmaking {
       __typename
-      enabled
-      questions {
-        __typename
-        ... on TextMatchmakingQuestion {
-          id
-        }
-        ... on MultiselectMatchmakingQuestion {
-          id
-        }
-      }
+      ...MatchmakingRoomFragment
     }
     members {
       __typename

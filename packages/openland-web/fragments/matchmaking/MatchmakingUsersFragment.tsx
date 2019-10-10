@@ -305,7 +305,11 @@ export const MatchmakingUsersFragment = React.memo(() => {
     const [acceptShowingModal, setAcceptShowingModal] = React.useState(true);
     const router = React.useContext(XViewRouterContext)!;
     const unicorn = useUnicorn();
-    const chatId = unicorn.query.roomId;
+    let chatId = unicorn.query.roomId;
+    const fromGroup = unicorn.path.startsWith('/group/');
+    if (fromGroup) {
+        chatId = unicorn.query.id;
+    }
     const client = useClient();
     const data = client.useMatchmakingRoom({ peerId: chatId }).matchmakingRoom;
 
@@ -322,7 +326,7 @@ export const MatchmakingUsersFragment = React.memo(() => {
 
     return (
         <Page flexGrow={1} track="matchmaking_users" padded={true}>
-            <UHeader titleView={<TitleRender onDone={onDone} />} />
+            <UHeader titleView={fromGroup ? undefined : <TitleRender onDone={onDone} />} />
             <XView flexGrow={1}>
                 <XView flexGrow={1}>
                     <div className={mainContainer}>

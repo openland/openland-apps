@@ -1508,16 +1508,7 @@ internal val RoomFullSelector = obj(
                 field("kind","kind", notNull(scalar("String"))),
                 field("matchmaking","matchmaking", obj(
                         field("__typename","__typename", notNull(scalar("String"))),
-                        field("enabled","enabled", notNull(scalar("Boolean"))),
-                        field("questions","questions", list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                inline("TextMatchmakingQuestion", obj(
-                                    field("id","id", notNull(scalar("ID")))
-                                )),
-                                inline("MultiselectMatchmakingQuestion", obj(
-                                    field("id","id", notNull(scalar("ID")))
-                                ))
-                            ))))
+                        fragment("MatchmakingRoom", MatchmakingRoomFragmentSelector)
                     )),
                 field("members","members", notNull(list(notNull(obj(
                         field("__typename","__typename", notNull(scalar("String"))),
@@ -1602,6 +1593,10 @@ internal val RoomFullWithoutMembersSelector = obj(
                 field("id","id", notNull(scalar("ID"))),
                 field("isChannel","isChannel", notNull(scalar("Boolean"))),
                 field("kind","kind", notNull(scalar("String"))),
+                field("matchmaking","matchmaking", obj(
+                        field("__typename","__typename", notNull(scalar("String"))),
+                        fragment("MatchmakingRoom", MatchmakingRoomFragmentSelector)
+                    )),
                 field("membersCount","membersCount", scalar("Int")),
                 field("membership","membership", notNull(scalar("String"))),
                 field("myBadge","myBadge", obj(

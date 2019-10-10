@@ -14,6 +14,8 @@ import { DownloadAppsFragment } from 'openland-web/fragments/account/SettingsDow
 import { InviteFriendsFragment } from 'openland-web/fragments/account/SettingsInviteFriendsFragment';
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 import { GroupProfileFragment } from 'openland-web/fragments/group/GroupProfileFragment';
+import { MemberProfileFragment } from 'openland-web/fragments/group/MemberProfileFragment';
+import { MemberProfileEditFragment } from 'openland-web/fragments/group/MemberProfileEditFragment';
 import { MessageFragment } from 'openland-web/fragments/message/MessageFragment';
 import { FeedFragment } from 'openland-web/fragments/feed/FeedFragment';
 import { SettingsFinanceFragment } from 'openland-web/fragments/finance/SettingsFinanceFragment';
@@ -59,6 +61,9 @@ routing.addRoute('/settings/finance', () => SettingsFinanceFragment);
 
 // Profile
 routing.addRoute('/group/:id', () => GroupProfileFragment);
+routing.addRoute('/group/:id/myprofile', () => MemberProfileFragment);
+routing.addRoute('/group/:id/myprofile/edit', () => MemberProfileEditFragment);
+routing.addRoute('/group/:id/users', () => MatchmakingUsersFragment);
 routing.addRoute('/:shortname', () => ShortnameFragment);
 
 // Advanced settings

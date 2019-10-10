@@ -83,6 +83,7 @@ export const AdvancedSettingsFragment = () => {
     const [loading, setLoading] = React.useState(false);
 
     const group = rawGroup && rawGroup.__typename === 'SharedRoom' ? rawGroup : undefined;
+
     if (!group) {
         return null;
     }
