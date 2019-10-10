@@ -9,40 +9,16 @@ import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { Modals } from './modals/Modals';
 import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
-import { ZAvatarPicker, ZAvatarPickerRenderProps } from 'openland-mobile/components/ZAvatarPicker';
-import { View, TouchableOpacity, Image, Text } from 'react-native';
-import { ZImage } from 'openland-mobile/components/ZImage';
+import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
+import { View, Text } from 'react-native';
 import Alert from 'openland-mobile/components/AlertBlanket';
-import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
-
-const SocialPicker = XMemo<ZAvatarPickerRenderProps>((props) => {
-    const theme = React.useContext(ThemeContext);
-    const width = 240;
-    const height = 126;
-    const radius = RadiusStyles.Medium;
-
-    return (
-        <TouchableOpacity onPress={props.showPicker}>
-            <View width={width} height={height} borderRadius={radius}>
-                {props.url && <ZImage highPriority={true} width={width} height={height} source={props.url} borderRadius={radius} />}
-                <View position="absolute" alignItems="center" justifyContent="center" style={{ width, height, borderRadius: radius, backgroundColor: props.url ? theme.overlayLight : theme.backgroundTertiaryTrans }}>
-                    {!props.loading && (
-                        <Image style={{ tintColor: props.url ? theme.foregroundContrast : theme.foregroundQuaternary, width: 36, height: 36 }} source={require('assets/ic-camera-36.png')} />
-                    )}
-                    {props.loading && (
-                        <LoaderSpinner color={theme.foregroundContrast} />
-                    )}
-                </View>
-            </View>
-        </TouchableOpacity>
-    );
-});
+import { ZSocialPickerRender } from 'openland-mobile/components/ZSocialPickerRender';
 
 const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -148,7 +124,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                 <View style={{ paddingHorizontal: 16, marginTop: 27 }}>
                     <Text style={{ ...TextStyles.Title2, marginBottom: 11, color: theme.foregroundPrimary }}>Social sharing image</Text>
                     <Text style={{ ...TextStyles.Body, marginBottom: 24, color: theme.foregroundPrimary }}>Choose an image to display when sharing invite to the group on social networks</Text>
-                    <ZAvatarPicker field={socialImageField} render={SocialPicker} pickSize={{ width: 1200, height: 630 }} />
+                    <ZAvatarPicker field={socialImageField} render={ZSocialPickerRender} pickSize={{ width: 1200, height: 630 }} />
                 </View>
             </KeyboardAvoidingScrollView>
         </>
