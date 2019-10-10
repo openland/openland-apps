@@ -4,12 +4,12 @@ import { View, StyleSheet, ViewStyle, ImageStyle, Image, TextInput, TextStyle, S
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
-import { GlobalSearchEntryKind, UserShort } from 'openland-api/Types';
+import { FeedChannelSubscriberRole } from 'openland-api/Types';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
 
 const styles = StyleSheet.create({
@@ -37,25 +37,31 @@ const styles = StyleSheet.create({
 });
 
 interface SearchListProps {
+    id: string;
     query: string;
     onSelect: (userId: string) => void;
 }
 
 const SearchList = React.memo((props: SearchListProps) => {
-    const { query, onSelect } = props;
-    const followers = getClient().useGlobalSearch({ query, kinds: [GlobalSearchEntryKind.USER] }, { fetchPolicy: 'cache-and-network' }).items as UserShort[];
+    const { id, query, onSelect } = props;
+    const followers = getClient().useFeedChannelSubscribers({ channelId: id, query, first: 30 }, { fetchPolicy: 'cache-and-network' }).subscribers.edges;
 
     return (
         <>
-            {followers.map(follower => (
-                <View key={follower.id}>
-                    <ZListItem
-                        text={follower.name}
-                        leftAvatar={{ photo: follower.photo, key: follower.id, title: follower.name }}
-                        onPress={() => onSelect(follower.id)}
-                    />
-                </View>
-            ))}
+            {followers.map(follower => {
+                const { user, role } = follower.node;
+                const isWriter = role === FeedChannelSubscriberRole.Creator || role === FeedChannelSubscriberRole.Editor;
+
+                return (
+                    <View key={user.id} opacity={isWriter ? HighlightAlpha : undefined}>
+                        <ZListItem
+                            text={user.name}
+                            leftAvatar={{ photo: user.photo, key: user.id, title: user.name }}
+                            onPress={!isWriter ? () => onSelect(user.id) : undefined}
+                        />
+                    </View>
+                );
+            })}
         </>
     );
 });
@@ -97,7 +103,7 @@ const FeedChannelAddWriterComponent = React.memo((props: PageProps) => {
                 </View>
                 <ScrollView flexGrow={1} keyboardShouldPersistTaps="always" keyboardDismissMode="interactive" contentContainerStyle={{ paddingBottom: area.bottom }}>
                     <React.Suspense fallback={<ZLoader />}>
-                        <SearchList query={query} onSelect={handleSelect} />
+                        <SearchList id={id} query={query} onSelect={handleSelect} />
                     </React.Suspense>
                 </ScrollView>
             </View>
