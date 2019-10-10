@@ -11,5 +11,6 @@ export const FeedChannelFull = gql`
         subscribersCount
         shortname
         isGlobal
+        socialImage
     }
 `;

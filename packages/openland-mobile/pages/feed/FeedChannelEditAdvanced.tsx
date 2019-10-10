@@ -25,8 +25,7 @@ const FeedChannelEditAdvancedComponent = React.memo((props: PageProps) => {
     const channel = client.useFeedChannel({ id }, { fetchPolicy: 'network-only' }).channel;
 
     const form = useForm();
-    // const socialImageField = useField('socialImageRef', channel.socialImage ? { uuid: channel.socialImage } : null, form);
-    const socialImageField = useField('socialImageRef', null, form);
+    const socialImageField = useField('socialImageRef', channel.socialImage ? { uuid: channel.socialImage } : null, form);
     const globalField = useField('global', channel.isGlobal, form);
 
     const handleSave = () => {
@@ -36,6 +35,11 @@ const FeedChannelEditAdvancedComponent = React.memo((props: PageProps) => {
                 title: channel.title,
 
                 ...SUPER_ADMIN && { global: globalField.value },
+                ...(
+                    socialImageField.value &&
+                    socialImageField.value.uuid !== channel.socialImage &&
+                    { socialImageRef: socialImageField.value }
+                )
             });
 
             await client.refetchFeedChannel({ id });

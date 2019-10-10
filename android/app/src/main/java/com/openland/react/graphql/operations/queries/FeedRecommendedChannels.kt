@@ -29,6 +29,6 @@ internal val FeedRecommendedChannelsSelector = obj(
 val FeedRecommendedChannels = object: OperationDefinition {
     override val name = "FeedRecommendedChannels"
     override val kind = OperationKind.QUERY
-    override val body = "query FeedRecommendedChannels(\$after:String,\$first:Int!){search:alphaRecommendedChannels(after:\$after,first:\$first){__typename edges{__typename cursor node{__typename ...FeedChannelFull}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo shortname subscribed subscribersCount title}"
+    override val body = "query FeedRecommendedChannels(\$after:String,\$first:Int!){search:alphaRecommendedChannels(after:\$after,first:\$first){__typename edges{__typename cursor node{__typename ...FeedChannelFull}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo shortname socialImage subscribed subscribersCount title}"
     override val selector = FeedRecommendedChannelsSelector
 }

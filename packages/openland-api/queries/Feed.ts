@@ -29,6 +29,29 @@ export const FeedMyChannelsQuery = gql`
     ${FeedChannelFull}
 `;
 
+export const FeedWritableChannelsQuery = gql`
+    query FeedWritableChannels($first: Int!, $after: ID) {
+        channels: alphaWritableChannels(first: $first, after: $after) {
+            items {
+                ...FeedChannelFull
+            }
+            cursor
+        }
+    }
+
+    ${FeedChannelFull}
+`;
+
+export const FeedDraftsQuery = gql`
+    query FeedDrafts {
+        drafts: alphaFeedMyDraftsChannel {
+            ...FeedChannelFull
+        }
+    }
+
+    ${FeedChannelFull}
+`;
+
 export const FeedChannelsSearchQuery = gql`
     query FeedChannelsSearch($query: String, $sort: String, $first: Int!, $after: String) {
         search: alphaFeedChannelSearch(query: $query, sort: $sort, first: $first, after: $after) {

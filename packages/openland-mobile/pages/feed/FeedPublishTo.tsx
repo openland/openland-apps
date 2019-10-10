@@ -15,7 +15,7 @@ const FeedPublishToComponent = React.memo((props: PageProps) => {
     const { channel, action } = router.params as { channel?: FeedChannelFull, action: (selectedId: string) => void };
     const client = useClient();
 
-    const initialChannels = client.useFeedMyChannels({ first: 15 }, { fetchPolicy: 'network-only' }).channels;
+    const initialChannels = client.useFeedWritableChannels({ first: 15 }, { fetchPolicy: 'network-only' }).channels;
     const [channels, setChannels] = React.useState(channel ? [channel, ...initialChannels.items.filter(i => i.id !== channel.id)] : initialChannels.items);
     const [loading, setLoading] = React.useState(false);
     const [cursor, setCursor] = React.useState(initialChannels.cursor);
@@ -25,7 +25,7 @@ const FeedPublishToComponent = React.memo((props: PageProps) => {
         if (cursor && !loading) {
             setLoading(true);
 
-            const loaded = (await client.queryFeedMyChannels({
+            const loaded = (await client.queryFeedWritableChannels({
                 first: 15,
                 after: cursor,
             }, { fetchPolicy: 'network-only' })).channels;

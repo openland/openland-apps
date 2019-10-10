@@ -1,0 +1,10 @@
+query FeedWritableChannels($after: ID, $first: Int!) {
+  channels: alphaWritableChannels(after: $after, first: $first) {
+    __typename
+    cursor
+    items {
+      __typename
+      ...FeedChannelFull
+    }
+  }
+}

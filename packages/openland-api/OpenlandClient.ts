@@ -559,6 +559,30 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderFeedMyChannels(variables: Types.FeedMyChannelsVariables, opts?: QueryWatchParameters): Types.FeedMyChannels | null {
         return this.useQuery(Source.FeedMyChannelsQuery, variables, opts);
     }
+    async queryFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: OperationParameters): Promise<Types.FeedWritableChannels> {
+        return this.client.query(Source.FeedWritableChannelsQuery, variables, opts);
+    }
+    async refetchFeedWritableChannels(variables: Types.FeedWritableChannelsVariables): Promise<Types.FeedWritableChannels> {
+        return this.refetch(Source.FeedWritableChannelsQuery, variables);
+    }
+    useFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: QueryWatchParameters): Types.FeedWritableChannels {
+        return this.useQuerySuspense(Source.FeedWritableChannelsQuery, variables, opts);
+    }
+    useWithoutLoaderFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: QueryWatchParameters): Types.FeedWritableChannels | null {
+        return this.useQuery(Source.FeedWritableChannelsQuery, variables, opts);
+    }
+    async queryFeedDrafts(opts?: OperationParameters): Promise<Types.FeedDrafts> {
+        return this.client.query(Source.FeedDraftsQuery, undefined, opts);
+    }
+    async refetchFeedDrafts(): Promise<Types.FeedDrafts> {
+        return this.refetch(Source.FeedDraftsQuery);
+    }
+    useFeedDrafts(opts?: QueryWatchParameters): Types.FeedDrafts {
+        return this.useQuerySuspense(Source.FeedDraftsQuery, undefined, opts);
+    }
+    useWithoutLoaderFeedDrafts(opts?: QueryWatchParameters): Types.FeedDrafts | null {
+        return this.useQuery(Source.FeedDraftsQuery, undefined, opts);
+    }
     async queryFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: OperationParameters): Promise<Types.FeedChannelsSearch> {
         return this.client.query(Source.FeedChannelsSearchQuery, variables, opts);
     }

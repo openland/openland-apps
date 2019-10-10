@@ -6,6 +6,7 @@ fragment FeedChannelFull on FeedChannel {
   myRole
   photo
   shortname
+  socialImage
   subscribed
   subscribersCount
   title
