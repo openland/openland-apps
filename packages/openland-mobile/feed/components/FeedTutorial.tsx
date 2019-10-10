@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
-import { View, StyleSheet, ViewStyle, Text, TextStyle, Image, ImageStyle, AsyncStorage, Platform } from 'react-native';
+import { View, StyleSheet, ViewStyle, Text, TextStyle, Image, ImageStyle, AsyncStorage } from 'react-native';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
@@ -38,8 +38,9 @@ const styles = StyleSheet.create({
         marginBottom: 24,
     } as TextStyle,
     buttons: {
-        paddingTop: 16,
-        paddingHorizontal: 16
+        padding: 16,
+        paddingBottom: SDevice.safeArea.bottom || undefined,
+        marginBottom: -SDevice.safeArea.bottom
     } as ViewStyle
 });
 
@@ -57,7 +58,6 @@ const FeedTutorial = React.memo((props: { ctx: ZModalController }) => {
     }, []);
 
     const isFinal = step === TUTORIAL.length - 1;
-    const paddingBottom = Platform.OS === 'ios' ? (SDevice.safeArea.bottom || 16) : SDevice.safeArea.bottom + 16;
 
     return (
         <>
@@ -68,7 +68,7 @@ const FeedTutorial = React.memo((props: { ctx: ZModalController }) => {
             <Text style={[styles.subtitle, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
                 {TUTORIAL[step].subtitle}
             </Text>
-            <View style={styles.buttons} paddingBottom={paddingBottom}>
+            <View style={styles.buttons}>
                 <ZRoundedButton
                     size="large"
                     title={isFinal ? 'Got it' : 'Next'}

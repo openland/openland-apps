@@ -15,9 +15,11 @@ import { isPad } from '../Root';
 import { NON_PRODUCTION } from '../Init';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { showFeedTutorialIfNeeded } from 'openland-mobile/feed/components/FeedTutorial';
+import { SRouterContext } from 'react-native-s/SRouterContext';
 
 export const Home = XMemo<PageProps>((props) => {
-    const [tab, setTab] = React.useState(1);
+    const router = React.useContext(SRouterContext);
+    const [tab, setTab] = React.useState(router && router.params && typeof router.params.initialTab === 'number' ? router.params.initialTab : 1);
     const counter = getClient().useWithoutLoaderGlobalCounter();
     const notificationsCounter = getClient().useWithoutLoaderMyNotificationCenter();
     const discoverDone = getClient().useWithoutLoaderDiscoverIsDone();

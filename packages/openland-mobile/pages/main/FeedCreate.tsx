@@ -30,7 +30,7 @@ const FeedCreateComponent = React.memo((props: PageProps) => {
 
                 await engine.createPost(selectedId, slides);
 
-                router.pushAndResetRoot('Home');
+                router.pushAndResetRoot('Home', { initialTab: 0 });
 
                 stopLoader();
             }
