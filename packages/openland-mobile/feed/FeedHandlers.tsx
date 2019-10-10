@@ -103,7 +103,7 @@ class FeedHandlersClass {
         const router = getMessenger().history.navigationManager;
         const builder = new ActionSheetBuilder();
 
-        builder.action('Share', () => {
+        builder.action('Share channel', () => {
             this.ChannelShare(channel);
         }, false, require('assets/ic-share-24.png'));
 
@@ -111,6 +111,10 @@ class FeedHandlersClass {
             builder.action('Edit info', () => {
                 router.push('FeedChannelEdit', { id });
             }, false, require('assets/ic-edit-24.png'));
+
+            builder.action('Advanced settings', () => {
+                router.push('FeedChannelEditAdvanced', { id });
+            }, false, require('assets/ic-settings-24.png'));
         }
 
         if (subscribed) {
