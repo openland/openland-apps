@@ -14,7 +14,7 @@ const MatchmakingProfileComponent = React.memo((props: PageProps) => {
     }
     const user = res.matchmakingProfile.user;
     return <>
-        <SHeader title={Platform.OS === 'android' ? 'Info' : res.matchmakingProfile.} />
+        <SHeader title={Platform.OS === 'android' ? 'Info' : user.name} />
 
     </>;
 });
