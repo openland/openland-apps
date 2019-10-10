@@ -870,10 +870,10 @@
       }
     },
     {
-      "signature": "6de35dd0f0c03df6c65dd11156e103ef4a70b354109c1619eb2830664c661e99",
-      "document": "mutation FeedChannelCreate($about:String,$global:Boolean,$photoRef:ImageRefInput,$title:String!){channel:alphaFeedCreateChannel(about:$about,global:$global,photoRef:$photoRef,title:$title){__typename id}}",
+      "signature": "522eba1eaacdc401d801b72a75010e86725032371278cecd90506f62a0b8e7ed",
+      "document": "fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo shortname subscribed subscribersCount title}mutation FeedChannelCreate($about:String,$global:Boolean,$photoRef:ImageRefInput,$title:String!){channel:alphaFeedCreateChannel(about:$about,global:$global,photoRef:$photoRef,title:$title){__typename...FeedChannelFull}}",
       "metadata": {
-        "engineSignature": "mutation FeedChannelCreate($about:String,$global:Boolean,$photoRef:ImageRefInput,$title:String!){alphaFeedCreateChannel(about:$about,global:$global,photoRef:$photoRef,title:$title){__typename id}}"
+        "engineSignature": "fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo shortname subscribed subscribersCount title}mutation FeedChannelCreate($about:String,$global:Boolean,$photoRef:ImageRefInput,$title:String!){alphaFeedCreateChannel(about:$about,global:$global,photoRef:$photoRef,title:$title){__typename...FeedChannelFull}}"
       }
     },
     {

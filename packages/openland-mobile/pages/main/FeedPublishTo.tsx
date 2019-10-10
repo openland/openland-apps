@@ -8,10 +8,11 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { CheckListBoxWraper } from './modals/UserMultiplePicker';
 import { View } from 'react-native';
+import { FeedChannelFull } from 'openland-api/Types';
 
 const FeedPublishToComponent = React.memo((props: PageProps) => {
     const { router } = props;
-    const { channel, action } = router.params;
+    const { channel, action } = router.params as { channel?: FeedChannelFull, action: (selectedId: string) => void };
     const client = useClient();
 
     const initialChannels = client.useFeedMyChannels({ first: 15 }, { fetchPolicy: 'network-only' }).channels;
@@ -35,14 +36,36 @@ const FeedPublishToComponent = React.memo((props: PageProps) => {
         }
     }, [cursor, loading]);
 
+    const handleCreateChannel = React.useCallback(async () => {
+        router.present('FeedChannelCreate', {
+            action: (created: FeedChannelFull) => {
+                setChannels(current => [created, ...current]);
+                setSelected(created.id);
+            }
+        });
+    }, []);
+
+    const content = (
+        <>
+            <View height={8} />
+            <ZListItem
+                text="Create channel"
+                leftIcon={require('assets/ic-channel-glyph-24.png')}
+                onPress={handleCreateChannel}
+            />
+        </>
+    );
+
+    const canPost = !!selected;
+
     return (
         <>
             <SHeader title="Publish" />
-            <SHeaderButton title="Done" onPress={() => action(selected)} />
+            <SHeaderButton key={'btn-' + canPost} title="Done" onPress={() => action(selected!)} disabled={!canPost} />
             <SFlatList
                 data={channels}
                 renderItem={({ item }) =>
-                    <CheckListBoxWraper checked={selected === item.id}>
+                    <CheckListBoxWraper checked={selected === item.id} isRadio={true}>
                         <ZListItem
                             text={item.title}
                             leftAvatar={{
@@ -56,7 +79,7 @@ const FeedPublishToComponent = React.memo((props: PageProps) => {
                 }
                 keyExtractor={(item, index) => `${index}-${item.id}`}
                 onEndReached={() => handleLoadMore()}
-                ListHeaderComponent={<View height={8} />}
+                ListHeaderComponent={content}
                 refreshing={loading}
             />
         </>

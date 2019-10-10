@@ -12834,7 +12834,7 @@
 					"type": "Boolean"
 				}
 			],
-			"source": "mutation FeedChannelCreate($title: String!, $about: String, $photoRef: ImageRefInput, $global: Boolean) {\n  channel: alphaFeedCreateChannel(title: $title, about: $about, photoRef: $photoRef, global: $global) {\n    __typename\n    id\n  }\n}",
+			"source": "mutation FeedChannelCreate($title: String!, $about: String, $photoRef: ImageRefInput, $global: Boolean) {\n  channel: alphaFeedCreateChannel(title: $title, about: $about, photoRef: $photoRef, global: $global) {\n    __typename\n    ...FeedChannelFull\n  }\n}",
 			"fields": [
 				{
 					"responseName": "channel",
@@ -12882,24 +12882,21 @@
 							"fieldName": "__typename",
 							"type": "String!",
 							"isConditional": false
-						},
-						{
-							"responseName": "id",
-							"fieldName": "id",
-							"type": "ID!",
-							"isConditional": false,
-							"isDeprecated": false
 						}
 					],
-					"fragmentSpreads": [],
+					"fragmentSpreads": [
+						"FeedChannelFull"
+					],
 					"inlineFragments": []
 				}
 			],
 			"fragmentSpreads": [],
 			"inlineFragments": [],
-			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation FeedChannelCreate($title: String!, $about: String, $photoRef: ImageRefInput, $global: Boolean) {\n  channel: alphaFeedCreateChannel(title: $title, about: $about, photoRef: $photoRef, global: $global) {\n    __typename\n    id\n  }\n}",
-			"operationId": "7360087b431e1b91117df3f93e99a47d06a0906346dee51dcb5c9e59b5de6467"
+			"fragmentsReferenced": [
+				"FeedChannelFull"
+			],
+			"sourceWithFragments": "mutation FeedChannelCreate($title: String!, $about: String, $photoRef: ImageRefInput, $global: Boolean) {\n  channel: alphaFeedCreateChannel(title: $title, about: $about, photoRef: $photoRef, global: $global) {\n    __typename\n    ...FeedChannelFull\n  }\n}\nfragment FeedChannelFull on FeedChannel {\n  __typename\n  id\n  title\n  about\n  photo\n  subscribed\n  myRole\n  subscribersCount\n  shortname\n  isGlobal\n}",
+			"operationId": "f52c0e7d9d26f438b78daf5fbaf23046957a9827286321d1044800a88e75c26c"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",

@@ -143,9 +143,11 @@ export const FeedChannelContentQuery = gql`
 export const FeedChannelCreateMutation = gql`
     mutation FeedChannelCreate($title: String!, $about: String, $photoRef: ImageRefInput, $global: Boolean) {
         channel: alphaFeedCreateChannel(title: $title, about: $about, photoRef: $photoRef, global: $global) {
-            id
+            ...FeedChannelFull
         }
     }
+
+    ${FeedChannelFull}
 `;
 
 export const FeedChannelUpdateMutation = gql`

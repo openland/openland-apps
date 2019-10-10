@@ -13,6 +13,7 @@ import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZInput } from 'openland-mobile/components/ZInput';
 
 const FeedChannelCreateComponent = React.memo((props: PageProps) => {
+    const { action } = props.router.params;
     const client = useClient();
     const form = useForm();
     const photoField = useField('photoRef', null, form);
@@ -34,7 +35,13 @@ const FeedChannelCreateComponent = React.memo((props: PageProps) => {
 
             await client.refetchFeedMyChannels({ first: 15 });
 
-            props.router.pushAndRemove('FeedChannel', { id: channel.id });
+            if (action) {
+                action(channel);
+
+                props.router.back();
+            } else {
+                props.router.pushAndRemove('FeedChannel', { id: channel.id });
+            }
         });
     };
 
@@ -53,7 +60,7 @@ const FeedChannelCreateComponent = React.memo((props: PageProps) => {
                         autoFocus={true}
                     />
                     <ZInput
-                        placeholder="About"
+                        placeholder="Description"
                         field={aboutField}
                         multiline={true}
                     />

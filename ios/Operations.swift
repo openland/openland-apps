@@ -3115,7 +3115,7 @@ private let FeedChannelAddWriterSelector = obj(
 private let FeedChannelCreateSelector = obj(
             field("alphaFeedCreateChannel","channel", arguments(fieldValue("about", refValue("about")), fieldValue("global", refValue("global")), fieldValue("photoRef", refValue("photoRef")), fieldValue("title", refValue("title"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
+                    fragment("FeedChannel", FeedChannelFullSelector)
                 )))
         )
 private let FeedChannelRemoveWriterSelector = obj(
@@ -4449,7 +4449,7 @@ class Operations {
     let FeedChannelCreate = OperationDefinition(
         "FeedChannelCreate",
         .mutation, 
-        "mutation FeedChannelCreate($about:String,$global:Boolean,$photoRef:ImageRefInput,$title:String!){channel:alphaFeedCreateChannel(about:$about,global:$global,photoRef:$photoRef,title:$title){__typename id}}",
+        "mutation FeedChannelCreate($about:String,$global:Boolean,$photoRef:ImageRefInput,$title:String!){channel:alphaFeedCreateChannel(about:$about,global:$global,photoRef:$photoRef,title:$title){__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo shortname subscribed subscribersCount title}",
         FeedChannelCreateSelector
     )
     let FeedChannelRemoveWriter = OperationDefinition(
