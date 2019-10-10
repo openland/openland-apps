@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UserShort, RoomMemberRole, OrganizationMemberRole, UserBadge, FeedChannelAdminRole } from 'openland-api/Types';
+import { UserShort, RoomMemberRole, OrganizationMemberRole, UserBadge, FeedChannelSubscriberRole } from 'openland-api/Types';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { View, Text, Image } from 'react-native';
 import { PresenceComponent } from './PresenceComponent';
@@ -10,7 +10,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 interface UserViewProps {
     user: UserShort;
     memberRole?: RoomMemberRole | OrganizationMemberRole;
-    channelRole?: FeedChannelAdminRole;
+    channelRole?: FeedChannelSubscriberRole;
     badge?: UserBadge | null;
     enabled?: boolean;
     onPress: () => void;
@@ -27,8 +27,8 @@ export const UserView = (props: UserViewProps) => {
     let showCrown = false;
     let isOwner = false;
     if (channelRole) {
-        showCrown = channelRole === FeedChannelAdminRole.Creator || channelRole === FeedChannelAdminRole.Editor;
-        isOwner = channelRole === FeedChannelAdminRole.Creator;
+        showCrown = channelRole === FeedChannelSubscriberRole.Creator || channelRole === FeedChannelSubscriberRole.Editor;
+        isOwner = channelRole === FeedChannelSubscriberRole.Creator;
     } else {
         showCrown = memberRole === 'OWNER' || memberRole === 'ADMIN';
         isOwner = memberRole === 'OWNER';

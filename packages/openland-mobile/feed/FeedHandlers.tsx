@@ -4,7 +4,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { showReportForm } from 'openland-mobile/components/showReportForm';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
-import { MessageReactionType, FeedChannelFull, FeedChannelAdminRole } from 'openland-api/Types';
+import { MessageReactionType, FeedChannelFull, FeedChannelSubscriberRole } from 'openland-api/Types';
 import { Share } from 'react-native';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 
@@ -107,7 +107,7 @@ class FeedHandlersClass {
             this.ChannelShare(channel);
         }, false, require('assets/ic-share-24.png'));
 
-        if (myRole === FeedChannelAdminRole.Creator) {
+        if (myRole === FeedChannelSubscriberRole.Creator) {
             builder.action('Edit info', () => {
                 router.push('FeedChannelEdit', { id });
             }, false, require('assets/ic-edit-24.png'));

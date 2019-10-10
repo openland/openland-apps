@@ -12,7 +12,7 @@ import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { UserView } from './components/UserView';
-import { FeedChannelAdminRole } from 'openland-api/Types';
+import { FeedChannelSubscriberRole } from 'openland-api/Types';
 
 const FeedChannelProfileComponent = React.memo((props: PageProps) => {
     const { router } = props;
@@ -56,7 +56,7 @@ const FeedChannelProfileComponent = React.memo((props: PageProps) => {
                     counter={writers.items.length}
                     actionRight={writers.cursor ? { title: 'See all', onPress: () => props.router.push('FeedChannelWriters', { id }) } : undefined}
                 >
-                    {myRole === FeedChannelAdminRole.Creator && (
+                    {myRole === FeedChannelSubscriberRole.Creator && (
                         <ZListItem
                             leftIcon={require('assets/ic-add-glyph-24.png')}
                             text="Add writer"

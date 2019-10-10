@@ -7,7 +7,7 @@ import { EntityHeader } from './components/EntityHeader';
 import { plural } from 'openland-y-utils/plural';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
-import { FeedChannelAdminRole } from 'openland-api/Types';
+import { FeedChannelSubscriberRole } from 'openland-api/Types';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { DataSourceFeedItem } from 'openland-engines/feed/types';
 import { FeedPostView } from 'openland-mobile/feed/FeedPostView';
@@ -25,7 +25,7 @@ const FeedChannelComponent = React.memo((props: PageProps) => {
 
     const channel = client.useFeedChannel({ id }, { fetchPolicy: 'cache-and-network' }).channel;
     const { title, photo, subscribersCount, subscribed, myRole } = channel;
-    const canPost = myRole === FeedChannelAdminRole.Creator || myRole === FeedChannelAdminRole.Editor;
+    const canPost = myRole === FeedChannelSubscriberRole.Creator || myRole === FeedChannelSubscriberRole.Editor;
 
     const initialContent = client.useFeedChannelContent({ id, first: 15 }, { fetchPolicy: 'network-only' }).content;
     const [posts, setPosts] = React.useState(convertItems(initialContent.items, messenger.engine));
