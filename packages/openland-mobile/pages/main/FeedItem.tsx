@@ -14,7 +14,9 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SHeaderIndicator } from 'react-native-s/SHeaderIndicator';
 import { isPad } from '../Root';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
-import { formatDateAtTime } from 'openland-y-utils/formatTime';
+import { formatDate } from 'openland-mobile/utils/formatDate';
+import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
 
 const getWidth = () => {
     const screenWidth = Dimensions.get('screen').width;
@@ -68,7 +70,35 @@ const FeedItemComponent = React.memo((props: PageProps) => {
 
     const handleAuthorPress = React.useCallback(() => {
         if (source) {
-            router.push('FeedChannel', { id: source.id });
+            const builder = new ActionSheetBuilder();
+
+            builder.view(ctx => (
+                <ZListItem
+                    text={source.title}
+                    subTitle="Channel"
+                    leftAvatar={{ photo: source.photo, key: source.id, title: source.title }}
+                    onPress={() => {
+                        ctx.hide();
+
+                        router.push('FeedChannel', { id: source.id });
+                    }}
+                />
+            ));
+
+            builder.view(ctx => (
+                <ZListItem
+                    text={author.name}
+                    subTitle="Author"
+                    leftAvatar={{ photo: author.photo, key: author.id, title: author.name }}
+                    onPress={() => {
+                        ctx.hide();
+
+                        router.push('ProfileUser', { id: author.id });
+                    }}
+                />
+            ));
+
+            builder.show();
         } else {
             router.push('ProfileUser', { id: author.id });
         }
@@ -88,7 +118,7 @@ const FeedItemComponent = React.memo((props: PageProps) => {
                         title
                     }}
                     title={title}
-                    subtitle={(subtitle ? subtitle + ' · ' : '') + formatDateAtTime(date)}
+                    subtitle={formatDate(date) + (subtitle ? ' · ' + subtitle : '')}
                     onPress={handleAuthorPress}
                 />
             </SHeaderView>

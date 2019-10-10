@@ -34,7 +34,7 @@ const FeedChannelComponent = React.memo((props: PageProps) => {
 
     const renderItem = React.useCallback((data: { item: DataSourceFeedItem }) => {
         if (data.item.type === 'post') {
-            return <FeedPostView item={data.item} />;
+            return <FeedPostView item={data.item} authorOnly={true} />;
         }
 
         if (data.item.type === 'date') {

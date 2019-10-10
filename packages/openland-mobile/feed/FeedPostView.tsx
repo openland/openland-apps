@@ -25,11 +25,12 @@ const styles = StyleSheet.create({
 interface FeedPostViewProps {
     item: DataSourceFeedPostItem;
     scrollRef?: React.RefObject<ScrollView>;
+    authorOnly?: boolean;
 }
 
 export const FeedPostView = React.memo((props: FeedPostViewProps) => {
     const theme = React.useContext(ThemeContext);
-    const { item, scrollRef } = props;
+    const { item, scrollRef, authorOnly } = props;
     const { id, author, source, slides, canEdit } = item;
     const [currentSlide, setCurreentSlide] = React.useState(0);
 
@@ -73,7 +74,7 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
                     <View style={[styles.container, { backgroundColor: theme.backgroundSecondary }]}>
                         <FeedMeta
                             author={author}
-                            source={source}
+                            source={authorOnly ? undefined : source}
                             style={metaStyle}
                             currentSlide={currentSlide + 1}
                             slidesCount={slides.length}
