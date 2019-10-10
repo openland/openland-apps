@@ -8,7 +8,6 @@ import { View, StyleSheet, ViewStyle, Text, TouchableHighlight, Image } from 're
 import { plural } from 'openland-y-utils/plural';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
-import { delay } from 'openland-y-utils/timer';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
 
 const styles = StyleSheet.create({
