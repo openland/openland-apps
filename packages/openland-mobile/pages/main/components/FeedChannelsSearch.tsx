@@ -39,6 +39,17 @@ const FeedChannelsSearchInner = (props: FeedChannelsSearchProps) => {
     );
 };
 
+const FeedChannelsSuggestedInner = (props: FeedChannelsSearchProps) => {
+    const client = useClient();
+    const suggested = client.useFeedRecommendedChannels({ first: 10 }, { fetchPolicy: 'cache-and-network' }).search.edges;
+
+    return (
+        <>
+            {suggested.map((item, index) => <ChannelView key={item.node.id} channel={item.node} />)}
+        </>
+    );
+};
+
 export const FeedChannelsSearch = XMemo<FeedChannelsSearchProps>((props) => {
     const theme = React.useContext(ThemeContext);
     const query = props.query.trim();
@@ -50,6 +61,7 @@ export const FeedChannelsSearch = XMemo<FeedChannelsSearchProps>((props) => {
                     <View minHeight={Dimensions.get('screen').height - area.top - area.bottom} backgroundColor={theme.backgroundPrimary}>
                         <React.Suspense fallback={SNativeConfig.loader}>
                             {query.length > 0 && <FeedChannelsSearchInner {...props} />}
+                            {query.length <= 0 && <FeedChannelsSuggestedInner {...props} />}
                         </React.Suspense>
                     </View>
                 )}
