@@ -5,6 +5,7 @@ import { MediaSessionManager } from './media/MediaSessionManager';
 
 export type CallStatus = 'initial' | 'connecting' | 'connected' | 'end' | 'waiting';
 export interface CallState {
+    avatar?: { id: string, title: string, picture?: string | null };
     conversationId?: string;
     private?: boolean;
     startTime?: number;
@@ -29,12 +30,12 @@ export class CallsEngine {
         return this._state;
     }
 
-    joinCall = (conversationId: string, isPrivate: boolean) => {
+    joinCall = (conversationId: string, isPrivate: boolean, avatar?: { id: string, title: string, picture?: string | null }) => {
         if (this.mediaSession) {
             this.mediaSession.destroy();
         }
         this.mediaSession = new MediaSessionManager(this.client, conversationId, this._state.mute, !!isPrivate, (status, startTime) => this.setState({ ...this._state, status, private: !!isPrivate, startTime }), this.leaveCall);
-        this.setState({ mute: false, status: 'connecting', conversationId, private: isPrivate });
+        this.setState({ mute: false, status: 'connecting', conversationId, private: isPrivate, avatar });
     }
 
     leaveCall = () => {

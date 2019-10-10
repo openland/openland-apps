@@ -95,7 +95,7 @@ const CallButton = (props: { chat: ChatInfo, calls: CallsEngine }) => {
     return callsState.conversationId !== props.chat.id ? (
         <UIconButton
             icon={<PhoneIcon />}
-            onClick={() => props.calls.joinCall(props.chat.id, props.chat.__typename === 'PrivateRoom')}
+            onClick={() => props.calls.joinCall(props.chat.id, props.chat.__typename === 'PrivateRoom', props.chat.__typename === 'PrivateRoom' ? { id: props.chat.user.id, title: props.chat.user.name, picture: props.chat.user.photo } : props.chat)}
             size="large"
         />
     ) : null;
@@ -116,7 +116,7 @@ const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
     }
 
     if (layout === 'mobile' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true)) {
-        res.item({ title: 'Call', icon: <PhoneIcon />, action: () => calls.joinCall(chat.id, chat.__typename === 'PrivateRoom') });
+        res.item({ title: 'Call', icon: <PhoneIcon />, action: () => calls.joinCall(chat.id, chat.__typename === 'PrivateRoom', chat.__typename === 'PrivateRoom' ? { id: chat.user.id, title: chat.user.name, picture: chat.user.photo } : chat) });
     }
 
     res.item({
