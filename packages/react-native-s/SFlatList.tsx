@@ -50,7 +50,7 @@ export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
                                 legacyImplementation={true}
                                 onEndReachedThreshold={1}
                                 refreshing={refreshing}
-                                ListFooterComponent={refreshing ? this.renderLoader : undefined}
+                                ListFooterComponent={refreshing ? this.renderLoader : ListFooterComponent}
                             />
                         );
                     }}

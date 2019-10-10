@@ -10,7 +10,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { Platform } from 'react-native';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
-import { UserView } from './components/UserView';
+import { UserView } from '../main/components/UserView';
 import { FeedChannelSubscriberRole, FeedChannelSubscribers_subscribers } from 'openland-api/Types';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';

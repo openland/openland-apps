@@ -13,7 +13,7 @@ import { DataSourceRender } from 'openland-mobile/components/DataSourceRender';
 import { SRouter } from 'react-native-s/SRouter';
 import { FeedDateView } from 'openland-mobile/feed/FeedDateView';
 import { DataSourceFeedItem } from 'openland-engines/feed/types';
-import { FeedEmptyView } from './components/FeedEmptyView';
+import { FeedEmptyView } from '../main/components/FeedEmptyView';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
 
 interface FeedPageProps {

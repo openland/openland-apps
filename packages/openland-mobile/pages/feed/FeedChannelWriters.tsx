@@ -3,7 +3,7 @@ import { withApp } from '../../components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { SFlatList } from 'react-native-s/SFlatList';
-import { UserView } from './components/UserView';
+import { UserView } from '../main/components/UserView';
 import { SHeader } from 'react-native-s/SHeader';
 
 const FeedChannelWritersComponent = React.memo((props: PageProps) => {

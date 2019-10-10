@@ -8,8 +8,7 @@ import { SNativeConfig } from 'react-native-s/SNativeConfig';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { randomEmptyPlaceholderEmoji } from 'openland-mobile/utils/tolerance';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { plural } from 'openland-y-utils/plural';
+import { ChannelView } from './ChannelView';
 
 interface FeedChannelsSearchProps {
     query: string;
@@ -35,24 +34,7 @@ const FeedChannelsSearchInner = (props: FeedChannelsSearchProps) => {
                     </Text>
                 </View>
             )}
-            {items.map((item, index) => {
-                const { id, title, photo, subscribersCount } = item.node;
-
-                return (
-                    <ZListItem
-                        key={`search-item-${index}-${id}`}
-                        text={title}
-                        leftAvatar={{
-                            photo: photo,
-                            key: id,
-                            title: title,
-                        }}
-                        subTitle={plural(subscribersCount, ['follower', 'followers'])}
-                        path="FeedChannel"
-                        pathParams={{ id: id }}
-                    />
-                );
-            })}
+            {items.map((item, index) => <ChannelView key={item.node.id} channel={item.node} />)}
         </>
     );
 };

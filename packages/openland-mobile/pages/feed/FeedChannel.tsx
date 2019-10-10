@@ -3,7 +3,7 @@ import { withApp } from '../../components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { SHeaderView } from 'react-native-s/SHeaderView';
-import { EntityHeader } from './components/EntityHeader';
+import { EntityHeader } from '../main/components/EntityHeader';
 import { plural } from 'openland-y-utils/plural';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
@@ -15,7 +15,7 @@ import { FeedDateView } from 'openland-mobile/feed/FeedDateView';
 import { View } from 'react-native';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { convertItems } from 'openland-engines/feed/convert';
-import { FeedEmptyView, FeedChannelEmptyView } from './components/FeedEmptyView';
+import { FeedEmptyView, FeedChannelEmptyView } from '../main/components/FeedEmptyView';
 
 const FeedChannelComponent = React.memo((props: PageProps) => {
     const { router } = props;

@@ -9,7 +9,7 @@ import { convertPost } from 'openland-engines/feed/convert';
 import { Dimensions, View, TouchableWithoutFeedback } from 'react-native';
 import { FeedPostTools } from 'openland-mobile/feed/components/FeedPostTools';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { CommentsWrapper } from './components/comments/CommentsWrapper';
+import { CommentsWrapper } from '../main/components/comments/CommentsWrapper';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SHeaderIndicator } from 'react-native-s/SHeaderIndicator';
 import { isPad } from '../Root';

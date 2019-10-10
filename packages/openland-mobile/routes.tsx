@@ -60,21 +60,21 @@ import { Avatars } from './pages/dev/Avatars';
 import { SignupOrg } from './pages/auth/SignupOrg';
 import { Videos } from './pages/dev/Videos';
 import { DocumentsExt } from './pages/dev/DocumentsExt';
-import { Feed } from './pages/main/Feed';
-import { FeedCreate } from './pages/main/FeedCreate';
-import { FeedEdit } from './pages/main/FeedEdit';
-import { FeedItem } from './pages/main/FeedItem';
+import { Feed } from './pages/feed/Feed';
+import { FeedCreate } from './pages/feed/FeedCreate';
+import { FeedEdit } from './pages/feed/FeedEdit';
+import { FeedItem } from './pages/feed/FeedItem';
 import { PostMentionPicker } from './pages/main/modals/PostMentionPicker';
-import { FeedChannels } from './pages/main/FeedChannels';
-import { FeedChannel } from './pages/main/FeedChannel';
-import { FeedChannelCreate } from './pages/main/FeedChannelCreate';
-import { FeedChannelProfile } from './pages/main/FeedChannelProfile';
-import { FeedChannelEdit } from './pages/main/FeedChannelEdit';
-import { FeedChannelWriters } from './pages/main/FeedChannelWriters';
+import { FeedChannels } from './pages/feed/FeedChannels';
+import { FeedChannel } from './pages/feed/FeedChannel';
+import { FeedChannelCreate } from './pages/feed/FeedChannelCreate';
+import { FeedChannelProfile } from './pages/feed/FeedChannelProfile';
+import { FeedChannelEdit } from './pages/feed/FeedChannelEdit';
+import { FeedChannelWriters } from './pages/feed/FeedChannelWriters';
 import { SetFeedChannelShortname } from './pages/main/SetFeedChannelShortname';
-import { FeedPublishTo } from './pages/main/FeedPublishTo';
-import { FeedChannelAddWriter } from './pages/main/FeedChannelAddWriter';
-import { FeedChannelEditAdvanced } from './pages/main/FeedChannelEditAdvanced';
+import { FeedPublishTo } from './pages/feed/FeedPublishTo';
+import { FeedChannelAddWriter } from './pages/feed/FeedChannelAddWriter';
+import { FeedChannelEditAdvanced } from './pages/feed/FeedChannelEditAdvanced';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)

@@ -9,7 +9,7 @@ import { AppBarBottom, AppBarBottomItem } from '../../components/AppBarBottom';
 import { Explore } from './Explore';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { Feed } from './Feed';
+import { Feed } from '../feed/Feed';
 import { NotificationCenter } from './NotificationCenter';
 import { isPad } from '../Root';
 import { NON_PRODUCTION } from '../Init';
@@ -17,9 +17,11 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { showFeedTutorialIfNeeded } from 'openland-mobile/feed/components/FeedTutorial';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 
+const DEFAULT_TAB = 1;
+
 export const Home = XMemo<PageProps>((props) => {
     const router = React.useContext(SRouterContext);
-    const [tab, setTab] = React.useState(router && router.params && typeof router.params.initialTab === 'number' ? router.params.initialTab : 1);
+    const [tab, setTab] = React.useState(router && router.params && typeof router.params.initialTab === 'number' ? router.params.initialTab : DEFAULT_TAB);
     const counter = getClient().useWithoutLoaderGlobalCounter();
     const notificationsCounter = getClient().useWithoutLoaderMyNotificationCenter();
     const discoverDone = getClient().useWithoutLoaderDiscoverIsDone();

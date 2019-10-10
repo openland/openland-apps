@@ -130,26 +130,34 @@ class FeedHandlersClass {
         builder.show();
     }
 
-    ChannelSubscribe = async (channelId: string) => {
+    ChannelSubscribe = async (channelId: string, showLoader?: boolean) => {
         const client = getClient();
 
-        startLoader();
+        if (showLoader !== false) {
+            startLoader();
+        }
 
         await client.mutateFeedChannelSubscribe({ id: channelId });
         await client.refetchFeedChannel({ id: channelId });
 
-        stopLoader();
+        if (showLoader !== false) {
+            stopLoader();
+        }
     }
 
-    ChannelUnsubscribe = async (channelId: string) => {
+    ChannelUnsubscribe = async (channelId: string, showLoader?: boolean) => {
         const client = getClient();
 
-        startLoader();
+        if (showLoader !== false) {
+            startLoader();
+        }
 
         await client.mutateFeedChannelUnsubscribe({ id: channelId });
         await client.refetchFeedChannel({ id: channelId });
 
-        stopLoader();
+        if (showLoader !== false) {
+            stopLoader();
+        }
     }
 
     ChannelAddEditor = async (channelId: string, userId: string) => {

@@ -6,7 +6,7 @@ import { SFlatList } from 'react-native-s/SFlatList';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { CheckListBoxWraper } from './modals/UserMultiplePicker';
+import { CheckListBoxWraper } from '../main/modals/UserMultiplePicker';
 import { View } from 'react-native';
 import { FeedChannelFull } from 'openland-api/Types';
 
