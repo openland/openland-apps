@@ -121,8 +121,8 @@ class RootContainer extends React.PureComponent<RootProps & { theme: ThemeGlobal
 export const Root = React.memo<RootProps>((props) => {
     let theme = React.useContext(ThemeContext);
 
-    ErrorUtils.setGlobalHandler((error, isFatal) => {
-        AlertBlanket.alert(JSON.stringify({ error, isFatal }));
+    ErrorUtils.setGlobalHandler((error: Error, isFatal) => {
+        AlertBlanket.alert([error.name, error.message, isFatal] + '\n\n' + JSON.stringify(error.stack));
     });
 
     return <RootContainer {...props} theme={theme} />;
