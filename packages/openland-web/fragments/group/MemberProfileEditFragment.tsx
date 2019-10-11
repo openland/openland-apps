@@ -7,100 +7,111 @@ import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { USelect } from 'openland-web/components/unicorn/USelect';
 import { UTextArea } from 'openland-web/components/unicorn/UTextArea';
-import {
-    MatchmakingRoom_matchmakingRoom_myProfile_answers_MultiselectMatchmakingAnswer,
-    MatchmakingRoom_matchmakingRoom_myProfile_answers_TextMatchmakingAnswer,
-    MatchmakingRoomSave_matchmakingRoomSave_questions_MultiselectMatchmakingQuestion,
-    MatchmakingRoomSave_matchmakingRoomSave_questions_TextMatchmakingQuestion,
-} from 'openland-api/Types';
 
-type textAnswerType = MatchmakingRoom_matchmakingRoom_myProfile_answers_TextMatchmakingAnswer;
-type textQuestionType = MatchmakingRoomSave_matchmakingRoomSave_questions_TextMatchmakingQuestion;
-type tagAnswerType = MatchmakingRoom_matchmakingRoom_myProfile_answers_MultiselectMatchmakingAnswer;
-type tagQuestionType = MatchmakingRoomSave_matchmakingRoomSave_questions_MultiselectMatchmakingQuestion;
+type mapType = Map<string, { title: string; question: string[] | string }>;
 
 export const MemberProfileEditFragment = React.memo(() => {
     const client = useClient();
     const unicorn = useUnicorn();
     const chatId = unicorn && unicorn.query.id;
     const data = client.useMatchmakingRoom({ peerId: chatId }).matchmakingRoom;
-    const myProfile = data && data.myProfile && data.myProfile.user;
     const myAnswers = data && data.myProfile && data.myProfile.answers;
 
-    if (!myProfile && !myAnswers) {
+    if (!data || !data.questions) {
         return null;
     }
 
-    const myTagsAnswer = myAnswers!.find(
-        i => i.__typename === 'MultiselectMatchmakingAnswer',
-    ) as tagAnswerType;
+    const [dataQuestions, setDataQuestions] = React.useState<mapType>(new Map());
+    const [dataAnswers, setDataAnswers] = React.useState<mapType>(new Map());
+    const [newAnswers, setNewAnswers] = React.useState<mapType>(dataAnswers);
 
-    const tagsQuestion = data!.questions!.find(
-        i => i.__typename === 'MultiselectMatchmakingQuestion',
-    ) as tagQuestionType;
+    React.useEffect(
+        () => {
+            const newDataQuestions: mapType = new Map();
+            const newDataAnswers: mapType = new Map();
+            if (data.questions) {
+                data.questions.forEach(i => {
+                    if (i.__typename === 'TextMatchmakingQuestion') {
+                        newDataQuestions.set(i.id, { title: i.title, question: i.title });
+                    } else {
+                        newDataQuestions.set(i.id, { title: i.title, question: i.tags });
+                    }
+                });
+            }
 
-    const myLookingForAnswer = myAnswers!.find(
-        i => i.__typename === 'TextMatchmakingAnswer' && i.question.title === 'Looking for',
-    ) as textAnswerType;
-
-    const lookingForQuestion = data!.questions!.find(
-        i => i.__typename === 'TextMatchmakingQuestion' && i.title === 'Looking for',
-    ) as textQuestionType;
-
-    const myCanHelpAnswer = myAnswers!.find(
-        i => i.__typename === 'TextMatchmakingAnswer' && i.question.title === 'Can help with',
-    ) as textAnswerType;
-
-    const canHelpQuestion = data!.questions!.find(
-        i => i.__typename === 'TextMatchmakingQuestion' && i.title === 'Can help with',
-    ) as textQuestionType;
-
-    const [tagsAnswer, setTagsAnswer] = React.useState(
-        myTagsAnswer ? myTagsAnswer!.tags! : undefined,
+            if (myAnswers) {
+                myAnswers.forEach(i => {
+                    if (i.__typename === 'TextMatchmakingAnswer') {
+                        newDataAnswers.set(i.question.id, {
+                            title: i.question.title,
+                            question: i.answer,
+                        });
+                    } else {
+                        newDataAnswers.set(i.question.id, {
+                            title: i.question.title,
+                            question: i.tags,
+                        });
+                    }
+                });
+            }
+            setDataQuestions(newDataQuestions);
+            setDataAnswers(newDataAnswers);
+            setNewAnswers(newDataAnswers);
+        },
+        [data.questions, data.myProfile],
     );
 
-    const [lookingFor, setLookingFor] = React.useState<string>(
-        myLookingForAnswer ? myLookingForAnswer.answer : '',
-    );
+    const getSelectOptions = (qid: string) => {
+        const selectOptions: { value: string; label: string }[] = [];
+        if (!!dataQuestions.get(qid) && typeof dataQuestions.get(qid)!.question !== 'string') {
+            (dataQuestions.get(qid)!.question as string[]).map(i => {
+                selectOptions.push({ value: i, label: i });
+            });
+        }
 
-    const [canHelpWith, setCanHelpWith] = React.useState<string>(
-        myCanHelpAnswer ? myCanHelpAnswer.answer : '',
-    );
+        return selectOptions;
+    };
 
-    const selectOptions: { value: string; label: string }[] = [];
-
-    if (tagsQuestion && tagsQuestion.tags) {
-        tagsQuestion.tags.map(i => {
-            selectOptions.push({ value: i, label: i });
-        });
-    }
+    const onChange = (d: { qid: string; title: string; question: string | string[] }) => {
+        const newAnswersMap: mapType = new Map(newAnswers);
+        if (typeof d.question === 'string') {
+            newAnswersMap.set(d.qid, {
+                title: d.title,
+                question: d.question,
+            });
+        } else {
+            newAnswersMap.set(d.qid, {
+                title: d.title,
+                question: d.question,
+            });
+        }
+        setNewAnswers(newAnswersMap);
+    };
 
     const submitAction = async () => {
-        type Answers =
+        type submitAnswers =
             | { questionId: string; text: string }
             | { questionId: string; tags: string[] };
 
-        const newAnswers: Answers[] = [];
+        const submitAnswers: submitAnswers[] = [];
 
-        if (tagsAnswer && tagsAnswer.length) {
-            newAnswers.push({ questionId: tagsQuestion.id, tags: tagsAnswer });
-        }
-        if (lookingFor.trim()) {
-            newAnswers.push({
-                questionId: lookingForQuestion.id,
-                text: lookingFor.trim(),
-            });
-        }
-        if (canHelpWith.trim()) {
-            newAnswers.push({
-                questionId: canHelpQuestion.id,
-                text: canHelpWith.trim(),
-            });
-        }
+        Array.from(newAnswers).forEach(i => {
+            if (typeof i[1].question === 'string' && i[1].question.trim()) {
+                submitAnswers.push({
+                    questionId: i[0],
+                    text: i[1].question.trim(),
+                });
+            } else if (typeof i[1].question !== 'string') {
+                submitAnswers.push({
+                    questionId: i[0],
+                    tags: i[1].question,
+                });
+            }
+        });
         await client.mutateMatchmakingProfileFill({
             peerId: chatId,
             input: {
-                answers: newAnswers,
+                answers: submitAnswers,
             },
         });
         await client.refetchMatchmakingRoom({ peerId: chatId });
@@ -110,35 +121,49 @@ export const MemberProfileEditFragment = React.memo(() => {
         <Page track="my_member_profile" padded={true}>
             <UHeader title="Edit member profile" />
             <XView marginTop={20} marginBottom={32}>
-                {tagsQuestion && (
-                    <USelect
-                        value={tagsAnswer ? tagsAnswer.map(i => i) : undefined}
-                        options={selectOptions}
-                        multi={true}
-                        placeholder="Interested in"
-                        onChange={(o: { value: string; label: string }[]) => {
-                            if (o) {
-                                const newTagsAnswers: string[] = [];
-                                o.map(i => newTagsAnswers.push(i.value));
-                                setTagsAnswer(newTagsAnswers);
-                            }
-                        }}
-                    />
-                )}
-                <UTextArea
-                    placeholder="Looking for"
-                    value={lookingFor || ''}
-                    onChange={setLookingFor}
-                    marginTop={16}
-                    height={100}
-                />
-                <UTextArea
-                    placeholder="Can help with"
-                    value={canHelpWith || ''}
-                    onChange={setCanHelpWith}
-                    marginTop={16}
-                    height={100}
-                />
+                {Array.from(dataQuestions).map(i => {
+                    if (typeof i[1].question === 'string') {
+                        return (
+                            <UTextArea
+                                placeholder={i[1].title}
+                                value={
+                                    newAnswers.has(i[0])
+                                        ? (newAnswers.get(i[0])!.question as string)
+                                        : ''
+                                }
+                                onChange={val =>
+                                    onChange({ qid: i[0], title: i[1].title, question: val })
+                                }
+                                marginTop={16}
+                                height={100}
+                                key={i[0]}
+                            />
+                        );
+                    } else {
+                        return (
+                            <USelect
+                                value={newAnswers.has(i[0]) ? newAnswers.get(i[0])!.question : []}
+                                options={getSelectOptions(i[0])}
+                                multi={true}
+                                placeholder={i[1].title}
+                                key={i[0]}
+                                onChange={(val: []) => {
+                                    if (val) {
+                                        const newVal: string[] = [];
+                                        val.forEach((j: { value: string; label: string }) =>
+                                            newVal.push(j.value),
+                                        );
+                                        onChange({
+                                            qid: i[0],
+                                            title: i[1].title,
+                                            question: newVal,
+                                        });
+                                    }
+                                }}
+                            />
+                        );
+                    }
+                })}
             </XView>
             <UButton
                 text="Save changes"
