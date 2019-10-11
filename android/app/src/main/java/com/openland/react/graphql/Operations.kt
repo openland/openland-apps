@@ -33,7 +33,6 @@ object Operations {
         if (name == "FeedItem") return FeedItem
         if (name == "FeedLoadMore") return FeedLoadMore
         if (name == "FeedRecommendedChannels") return FeedRecommendedChannels
-        if (name == "FeedSubscriptions") return FeedSubscriptions
         if (name == "FeedWritableChannels") return FeedWritableChannels
         if (name == "FetchPushSettings") return FetchPushSettings
         if (name == "GlobalCounter") return GlobalCounter

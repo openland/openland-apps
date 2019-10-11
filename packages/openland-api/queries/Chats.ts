@@ -4,6 +4,7 @@ import { UserForMention } from '../fragments/UserForMention';
 import { OrganizationShort } from '../fragments/OrganizationShort';
 import { OrganizationMedium } from '../fragments/OrganizationMedium';
 import { RoomFull, RoomFullWithoutMembers } from '../fragments/RoomFull';
+import { MatchmakingRoomFragment } from '../fragments/MatchmakingFragments';
 import { UserTiny } from '../fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { TinyMessage, FullMessage, DaialogListMessage } from 'openland-api/fragments/Message';
@@ -260,6 +261,9 @@ export const RoomChatQuery = gql`
                 canEdit
                 photo
                 membersCount
+                matchmaking {
+                    ...MatchmakingRoomFragment
+                }
                 pinnedMessage {
                     ...FullMessage
                 }
@@ -271,6 +275,7 @@ export const RoomChatQuery = gql`
         }
     }
     ${FullMessage}
+    ${MatchmakingRoomFragment}
 `;
 
 export const RoomWithoutMembersQuery = gql`

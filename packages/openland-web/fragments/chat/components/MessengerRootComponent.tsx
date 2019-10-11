@@ -14,12 +14,13 @@ import {
     RoomChat_room,
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
     UserForMention,
-    StickerFragment
+    StickerFragment,
 } from 'openland-api/Types';
 import { trackEvent } from 'openland-x-analytics';
 import { throttle, delay } from 'openland-y-utils/timer';
 import { SendMessageComponent } from './SendMessageComponent';
 import { PinMessageComponent } from 'openland-web/fragments/chat/messenger/message/PinMessageComponent';
+import { MemberProfilesComponent } from 'openland-web/fragments/chat/messenger/message/MemberProfilesComponent';
 import { pluralForm } from 'openland-y-utils/plural';
 import { MessageListComponent } from '../messenger/view/MessageListComponent';
 import { TypingsView } from '../messenger/typings/TypingsView';
@@ -48,9 +49,9 @@ interface MessagesComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
     pinMessage:
-    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-    | null;
+        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+        | null;
     room: RoomChat_room;
 }
 
@@ -390,12 +391,20 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             this.props.room.__typename === 'SharedRoom' &&
             this.props.room.isChannel;
 
+        const memberProfiles =
+            this.props.room.__typename === 'SharedRoom' &&
+            this.props.room.matchmaking &&
+            this.props.room.matchmaking.enabled;
+
         const pin = this.props.pinMessage;
         const showInput = !this.state.hideInput && this.conversation.canSendMessage;
         const groupId =
             this.props.conversationType !== 'PRIVATE' ? this.props.conversationId : undefined;
         return (
             <div className={messengerContainer}>
+                {memberProfiles && (
+                    <MemberProfilesComponent chatId={this.props.room.id}/>
+                )}
                 {pin &&
                     !this.state.loading && (
                         <PinMessageComponent message={pin} engine={this.conversation} />
@@ -448,9 +457,9 @@ interface MessengerRootComponentProps {
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
     pinMessage:
-    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-    | null;
+        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+        | null;
     room: RoomChat_room;
 }
 

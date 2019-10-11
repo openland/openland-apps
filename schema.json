@@ -2905,22 +2905,39 @@
           {
             "name": "alphaFeedMySubscriptions",
             "description": null,
-            "args": [],
+            "args": [
+              {
+                "name": "first",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "after",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "UNION",
-                    "name": "FeedSubscription",
-                    "ofType": null
-                  }
-                }
+                "kind": "OBJECT",
+                "name": "FeedChannelConnection",
+                "ofType": null
               }
             },
             "isDeprecated": false,
@@ -16266,22 +16283,6 @@
         "interfaces": [],
         "enumValues": null,
         "possibleTypes": null
-      },
-      {
-        "kind": "UNION",
-        "name": "FeedSubscription",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": [
-          {
-            "kind": "OBJECT",
-            "name": "FeedChannel",
-            "ofType": null
-          }
-        ]
       },
       {
         "kind": "OBJECT",
@@ -35718,6 +35719,22 @@
         ],
         "enumValues": null,
         "possibleTypes": null
+      },
+      {
+        "kind": "UNION",
+        "name": "FeedSubscription",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "FeedChannel",
+            "ofType": null
+          }
+        ]
       },
       {
         "kind": "OBJECT",

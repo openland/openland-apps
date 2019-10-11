@@ -330,15 +330,25 @@ export const MatchmakingUsersFragment = React.memo(() => {
                             </div>
                         )}
                         <div className={usersCardsContainer}>
-                            {cards.map(card => {
+                            {cards.map((card, num) => {
                                 if (card.__typename === 'MatchmakingProfile') {
                                     return (
                                         <UserCard data={card} chatId={chatId} key={card.user.id} />
                                     );
                                 } else if (card.__typename === 'InviteCard') {
-                                    return <InviteCardComponent chatId={chatId} />;
+                                    return (
+                                        <InviteCardComponent
+                                            chatId={chatId}
+                                            key={'_invite_component_' + num}
+                                        />
+                                    );
                                 } else if (card.__typename === 'InstallCard') {
-                                    return <InstallCardComponent onInstall={onDone} />;
+                                    return (
+                                        <InstallCardComponent
+                                            onInstall={onDone}
+                                            key={'_install_component_' + num}
+                                        />
+                                    );
                                 }
                                 return null;
                             })}

@@ -32,16 +32,16 @@ export const FeedLoadMoreQuery = gql`
 
     ${FeedItemFull}
 `;
-
-export const FeedSubscriptionsQuery = gql`
-    query FeedSubscriptions {
-        channels: alphaFeedMySubscriptions {
-            ...FeedChannelFull
-        }
-    }
-
-    ${FeedChannelFull}
-`;
+//
+// export const FeedSubscriptionsQuery = gql`
+//     query FeedSubscriptions($first: Int!, $after: ID) {
+//         channels: alphaFeedMySubscriptions(first: $first, after: $after) {
+//             ...FeedChannelFull
+//         }
+//     }
+//
+//     ${FeedChannelFull}
+// `;
 
 export const FeedWritableChannelsQuery = gql`
     query FeedWritableChannels($first: Int!, $after: ID) {

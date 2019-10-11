@@ -31,6 +31,10 @@ query RoomChat($id: ID!) {
       id
       isChannel
       kind
+      matchmaking {
+        __typename
+        ...MatchmakingRoomFragment
+      }
       membersCount
       membership
       photo
