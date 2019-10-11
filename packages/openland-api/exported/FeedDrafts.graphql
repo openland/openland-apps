@@ -1,6 +1,0 @@
-query FeedDrafts {
-  drafts: alphaFeedMyDraftsChannel {
-    __typename
-    ...FeedChannelFull
-  }
-}

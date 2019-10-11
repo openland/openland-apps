@@ -535,17 +535,29 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderFeatureFlags(opts?: QueryWatchParameters): Types.FeatureFlags | null {
         return this.useQuery(Source.FeatureFlagsQuery, undefined, opts);
     }
-    async queryFeed(variables: Types.FeedVariables, opts?: OperationParameters): Promise<Types.Feed> {
-        return this.client.query(Source.FeedQuery, variables, opts);
+    async queryInitFeed(variables: Types.InitFeedVariables, opts?: OperationParameters): Promise<Types.InitFeed> {
+        return this.client.query(Source.InitFeedQuery, variables, opts);
     }
-    async refetchFeed(variables: Types.FeedVariables): Promise<Types.Feed> {
-        return this.refetch(Source.FeedQuery, variables);
+    async refetchInitFeed(variables: Types.InitFeedVariables): Promise<Types.InitFeed> {
+        return this.refetch(Source.InitFeedQuery, variables);
     }
-    useFeed(variables: Types.FeedVariables, opts?: QueryWatchParameters): Types.Feed {
-        return this.useQuerySuspense(Source.FeedQuery, variables, opts);
+    useInitFeed(variables: Types.InitFeedVariables, opts?: QueryWatchParameters): Types.InitFeed {
+        return this.useQuerySuspense(Source.InitFeedQuery, variables, opts);
     }
-    useWithoutLoaderFeed(variables: Types.FeedVariables, opts?: QueryWatchParameters): Types.Feed | null {
-        return this.useQuery(Source.FeedQuery, variables, opts);
+    useWithoutLoaderInitFeed(variables: Types.InitFeedVariables, opts?: QueryWatchParameters): Types.InitFeed | null {
+        return this.useQuery(Source.InitFeedQuery, variables, opts);
+    }
+    async queryFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts?: OperationParameters): Promise<Types.FeedLoadMore> {
+        return this.client.query(Source.FeedLoadMoreQuery, variables, opts);
+    }
+    async refetchFeedLoadMore(variables: Types.FeedLoadMoreVariables): Promise<Types.FeedLoadMore> {
+        return this.refetch(Source.FeedLoadMoreQuery, variables);
+    }
+    useFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts?: QueryWatchParameters): Types.FeedLoadMore {
+        return this.useQuerySuspense(Source.FeedLoadMoreQuery, variables, opts);
+    }
+    useWithoutLoaderFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts?: QueryWatchParameters): Types.FeedLoadMore | null {
+        return this.useQuery(Source.FeedLoadMoreQuery, variables, opts);
     }
     async queryFeedMyChannels(variables: Types.FeedMyChannelsVariables, opts?: OperationParameters): Promise<Types.FeedMyChannels> {
         return this.client.query(Source.FeedMyChannelsQuery, variables, opts);
@@ -570,18 +582,6 @@ export class OpenlandClient extends BaseApiClient {
     }
     useWithoutLoaderFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: QueryWatchParameters): Types.FeedWritableChannels | null {
         return this.useQuery(Source.FeedWritableChannelsQuery, variables, opts);
-    }
-    async queryFeedDrafts(opts?: OperationParameters): Promise<Types.FeedDrafts> {
-        return this.client.query(Source.FeedDraftsQuery, undefined, opts);
-    }
-    async refetchFeedDrafts(): Promise<Types.FeedDrafts> {
-        return this.refetch(Source.FeedDraftsQuery);
-    }
-    useFeedDrafts(opts?: QueryWatchParameters): Types.FeedDrafts {
-        return this.useQuerySuspense(Source.FeedDraftsQuery, undefined, opts);
-    }
-    useWithoutLoaderFeedDrafts(opts?: QueryWatchParameters): Types.FeedDrafts | null {
-        return this.useQuery(Source.FeedDraftsQuery, undefined, opts);
     }
     async queryFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: OperationParameters): Promise<Types.FeedChannelsSearch> {
         return this.client.query(Source.FeedChannelsSearchQuery, variables, opts);

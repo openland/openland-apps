@@ -2018,16 +2018,6 @@ private let FeatureFlagsSelector = obj(
                     field("title","title", notNull(scalar("String")))
                 )))))
         )
-private let FeedSelector = obj(
-            field("alphaHomeFeed","feed", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("cursor","cursor", scalar("String")),
-                    field("items","items", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            fragment("FeedItem", FeedItemFullSelector)
-                        )))))
-                )))
-        )
 private let FeedChannelSelector = obj(
             field("alphaFeedChannel","channel", arguments(fieldValue("id", refValue("id"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -2106,17 +2096,21 @@ private let FeedChannelsSearchSelector = obj(
                         )))
                 )))
         )
-private let FeedDraftsSelector = obj(
-            field("alphaFeedMyDraftsChannel","drafts", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    fragment("FeedChannel", FeedChannelFullSelector)
-                )))
-        )
 private let FeedItemSelector = obj(
             field("alphaFeedItem","item", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename","__typename", notNull(scalar("String"))),
                     fragment("FeedItem", FeedItemFullSelector)
                 ))
+        )
+private let FeedLoadMoreSelector = obj(
+            field("alphaHomeFeed","feed", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("cursor","cursor", scalar("String")),
+                    field("items","items", notNull(list(notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            fragment("FeedItem", FeedItemFullSelector)
+                        )))))
+                )))
         )
 private let FeedMyChannelsSelector = obj(
             field("alphaFeedMyChannels","channels", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(obj(
@@ -2197,6 +2191,20 @@ private let GlobalSearchSelector = obj(
                         field("title","title", notNull(scalar("String")))
                     ))
                 )))))
+        )
+private let InitFeedSelector = obj(
+            field("alphaFeedMyDraftsChannel","drafts", notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    fragment("FeedChannel", FeedChannelFullSelector)
+                ))),
+            field("alphaHomeFeed","feed", arguments(fieldValue("first", refValue("first"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("cursor","cursor", scalar("String")),
+                    field("items","items", notNull(list(notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            fragment("FeedItem", FeedItemFullSelector)
+                        )))))
+                )))
         )
 private let MatchmakingProfileSelector = obj(
             field("matchmakingProfile","matchmakingProfile", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("uid", refValue("uid"))), obj(
@@ -3929,12 +3937,6 @@ class Operations {
         "query FeatureFlags{featureFlags{__typename id key title}}",
         FeatureFlagsSelector
     )
-    let Feed = OperationDefinition(
-        "Feed",
-        .query, 
-        "query Feed($after:String,$first:Int!){feed:alphaHomeFeed(after:$after,first:$first){__typename cursor items{__typename ...FeedItemFull}}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id message reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}source{__typename ...FeedPostSourceFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id kind membersCount membership organization{__typename id name photo}roomPhoto:photo title}... on Organization{...OrganizationShort}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment FeedPostSourceFragment on FeedPostSource{__typename ... on FeedChannel{...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo shortname socialImage subscribed subscribersCount title}",
-        FeedSelector
-    )
     let FeedChannel = OperationDefinition(
         "FeedChannel",
         .query, 
@@ -3965,17 +3967,17 @@ class Operations {
         "query FeedChannelsSearch($after:String,$first:Int!,$query:String,$sort:String){search:alphaFeedChannelSearch(after:$after,first:$first,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename ...FeedChannelFull}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo shortname socialImage subscribed subscribersCount title}",
         FeedChannelsSearchSelector
     )
-    let FeedDrafts = OperationDefinition(
-        "FeedDrafts",
-        .query, 
-        "query FeedDrafts{drafts:alphaFeedMyDraftsChannel{__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo shortname socialImage subscribed subscribersCount title}",
-        FeedDraftsSelector
-    )
     let FeedItem = OperationDefinition(
         "FeedItem",
         .query, 
         "query FeedItem($id:ID!){item:alphaFeedItem(id:$id){__typename ...FeedItemFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id message reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}source{__typename ...FeedPostSourceFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id kind membersCount membership organization{__typename id name photo}roomPhoto:photo title}... on Organization{...OrganizationShort}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment FeedPostSourceFragment on FeedPostSource{__typename ... on FeedChannel{...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo shortname socialImage subscribed subscribersCount title}",
         FeedItemSelector
+    )
+    let FeedLoadMore = OperationDefinition(
+        "FeedLoadMore",
+        .query, 
+        "query FeedLoadMore($after:String,$first:Int!){feed:alphaHomeFeed(after:$after,first:$first){__typename cursor items{__typename ...FeedItemFull}}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id message reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}source{__typename ...FeedPostSourceFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id kind membersCount membership organization{__typename id name photo}roomPhoto:photo title}... on Organization{...OrganizationShort}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment FeedPostSourceFragment on FeedPostSource{__typename ... on FeedChannel{...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo shortname socialImage subscribed subscribersCount title}",
+        FeedLoadMoreSelector
     )
     let FeedMyChannels = OperationDefinition(
         "FeedMyChannels",
@@ -4012,6 +4014,12 @@ class Operations {
         .query, 
         "query GlobalSearch($kinds:[GlobalSearchEntryKind!],$query:String!){items:alphaGlobalSearch(kinds:$kinds,query:$query){__typename ... on Organization{...OrganizationShort}... on User{...UserShort}... on SharedRoom{id kind membersCount membership organization{__typename id name photo}roomPhoto:photo title}}}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}",
         GlobalSearchSelector
+    )
+    let InitFeed = OperationDefinition(
+        "InitFeed",
+        .query, 
+        "query InitFeed($first:Int!){drafts:alphaFeedMyDraftsChannel{__typename ...FeedChannelFull}feed:alphaHomeFeed(first:$first){__typename cursor items{__typename ...FeedItemFull}}}fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo shortname socialImage subscribed subscribersCount title}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{author{__typename ...FeedPostAuthorFragment}canEdit commentsCount date edited fallback id message reactions{__typename reaction user{__typename ...UserShort}}slides{__typename ...SlideFragment}source{__typename ...FeedPostSourceFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{...UserShort}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment SlideFragment on Slide{__typename ... on TextSlide{attachments{__typename ... on User{...UserShort}... on SharedRoom{id kind membersCount membership organization{__typename id name photo}roomPhoto:photo title}... on Organization{...OrganizationShort}}cover{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}coverAlign id spans{__typename ...SpanFragment}text}}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanRoomMention{room{__typename ... on PrivateRoom{id user{__typename id name}}... on SharedRoom{id title}}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isYou name photo primaryOrganization{__typename id name}shortname}fragment FeedPostSourceFragment on FeedPostSource{__typename ... on FeedChannel{...FeedChannelFull}}",
+        InitFeedSelector
     )
     let MatchmakingProfile = OperationDefinition(
         "MatchmakingProfile",
@@ -5071,20 +5079,20 @@ class Operations {
         if name == "ExploreCommunity" { return ExploreCommunity }
         if name == "ExplorePeople" { return ExplorePeople }
         if name == "FeatureFlags" { return FeatureFlags }
-        if name == "Feed" { return Feed }
         if name == "FeedChannel" { return FeedChannel }
         if name == "FeedChannelContent" { return FeedChannelContent }
         if name == "FeedChannelSubscribers" { return FeedChannelSubscribers }
         if name == "FeedChannelWriters" { return FeedChannelWriters }
         if name == "FeedChannelsSearch" { return FeedChannelsSearch }
-        if name == "FeedDrafts" { return FeedDrafts }
         if name == "FeedItem" { return FeedItem }
+        if name == "FeedLoadMore" { return FeedLoadMore }
         if name == "FeedMyChannels" { return FeedMyChannels }
         if name == "FeedRecommendedChannels" { return FeedRecommendedChannels }
         if name == "FeedWritableChannels" { return FeedWritableChannels }
         if name == "FetchPushSettings" { return FetchPushSettings }
         if name == "GlobalCounter" { return GlobalCounter }
         if name == "GlobalSearch" { return GlobalSearch }
+        if name == "InitFeed" { return InitFeed }
         if name == "MatchmakingProfile" { return MatchmakingProfile }
         if name == "MatchmakingRoom" { return MatchmakingRoom }
         if name == "Message" { return Message }

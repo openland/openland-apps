@@ -25,20 +25,20 @@ object Operations {
         if (name == "ExploreCommunity") return ExploreCommunity
         if (name == "ExplorePeople") return ExplorePeople
         if (name == "FeatureFlags") return FeatureFlags
-        if (name == "Feed") return Feed
         if (name == "FeedChannel") return FeedChannel
         if (name == "FeedChannelContent") return FeedChannelContent
         if (name == "FeedChannelSubscribers") return FeedChannelSubscribers
         if (name == "FeedChannelWriters") return FeedChannelWriters
         if (name == "FeedChannelsSearch") return FeedChannelsSearch
-        if (name == "FeedDrafts") return FeedDrafts
         if (name == "FeedItem") return FeedItem
+        if (name == "FeedLoadMore") return FeedLoadMore
         if (name == "FeedMyChannels") return FeedMyChannels
         if (name == "FeedRecommendedChannels") return FeedRecommendedChannels
         if (name == "FeedWritableChannels") return FeedWritableChannels
         if (name == "FetchPushSettings") return FetchPushSettings
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch
+        if (name == "InitFeed") return InitFeed
         if (name == "MatchmakingProfile") return MatchmakingProfile
         if (name == "MatchmakingRoom") return MatchmakingRoom
         if (name == "Message") return Message

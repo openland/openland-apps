@@ -1,0 +1,10 @@
+query FeedLoadMore($after: String, $first: Int!) {
+  feed: alphaHomeFeed(after: $after, first: $first) {
+    __typename
+    cursor
+    items {
+      __typename
+      ...FeedItemFull
+    }
+  }
+}

@@ -1,0 +1,14 @@
+query InitFeed($first: Int!) {
+  drafts: alphaFeedMyDraftsChannel {
+    __typename
+    ...FeedChannelFull
+  }
+  feed: alphaHomeFeed(first: $first) {
+    __typename
+    cursor
+    items {
+      __typename
+      ...FeedItemFull
+    }
+  }
+}

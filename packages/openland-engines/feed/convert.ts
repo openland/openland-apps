@@ -16,7 +16,7 @@ export const convertSlides = (src: Types.FeedItemFull_slides[]): SlideProcessed[
     }));
 };
 
-export const convertPost = (src: Types.Feed_feed_items, engine: MessengerEngine): DataSourceFeedPostItem => {
+export const convertPost = (src: Types.FeedItemFull, engine: MessengerEngine): DataSourceFeedPostItem => {
     return {
         type: 'post',
         key: src.id,
@@ -65,7 +65,7 @@ export const convertDate = (src: string): DataSourceFeedDateItem => {
     };
 };
 
-export const convertItems = (items: Types.Feed_feed_items[], engine: MessengerEngine): DataSourceFeedItem[] => {
+export const convertItems = (items: Types.FeedItemFull[], engine: MessengerEngine): DataSourceFeedItem[] => {
     const res: DataSourceFeedItem[] = [];
     let prevDate: string | undefined;
 

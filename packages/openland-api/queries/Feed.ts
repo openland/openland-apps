@@ -3,8 +3,25 @@ import { FeedItemFull } from '../fragments/FeedItemFull';
 import { FeedChannelFull } from '../fragments/FeedChannelFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 
-export const FeedQuery = gql`
-    query Feed($first: Int!, $after: String) {
+export const InitFeedQuery = gql`
+    query InitFeed($first: Int!) {
+        feed: alphaHomeFeed(first: $first) {
+            items {
+                ...FeedItemFull
+            }
+            cursor
+        }
+        drafts: alphaFeedMyDraftsChannel {
+            ...FeedChannelFull
+        }
+    }
+
+    ${FeedItemFull}
+    ${FeedChannelFull}
+`;
+
+export const FeedLoadMoreQuery = gql`
+    query FeedLoadMore($first: Int!, $after: String) {
         feed: alphaHomeFeed(first: $first, after: $after) {
             items {
                 ...FeedItemFull
@@ -36,16 +53,6 @@ export const FeedWritableChannelsQuery = gql`
                 ...FeedChannelFull
             }
             cursor
-        }
-    }
-
-    ${FeedChannelFull}
-`;
-
-export const FeedDraftsQuery = gql`
-    query FeedDrafts {
-        drafts: alphaFeedMyDraftsChannel {
-            ...FeedChannelFull
         }
     }
 

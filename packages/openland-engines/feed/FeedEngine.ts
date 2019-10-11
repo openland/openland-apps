@@ -5,11 +5,11 @@ import { createLogger } from 'mental-log';
 import * as Types from 'openland-api/Types';
 import { SequenceModernWatcher } from '../core/SequenceModernWatcher';
 import { backoff } from 'openland-y-utils/timer';
-import { FeedQuery } from 'openland-api';
 import { DataSourceFeedItem } from './types';
 import { convertItems, convertPost } from './convert';
 import UUID from 'uuid/v4';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
+import { InitFeedQuery, FeedLoadMoreQuery } from 'openland-api';
 
 const log = createLogger('Engine-Feed');
 
@@ -22,6 +22,7 @@ export class FeedEngine {
     private lastCursor: string | null = null;
     private fullyLoaded: boolean = false;
     private loading: boolean = false;
+    drafts: Types.FeedChannelFull | null = null;
 
     constructor(engine: MessengerEngine) {
         this.engine = engine;
@@ -41,14 +42,17 @@ export class FeedEngine {
 
         this.loading = true;
 
-        const initialFeed = await backoff(async () => {
+        const initData = await backoff(async () => {
             try {
-                return (await this.engine.client.client.query(FeedQuery, { first: this.engine.options.feedBatchSize }, { fetchPolicy: 'network-only' })).feed;
+                return (await this.engine.client.client.query(InitFeedQuery, { first: this.engine.options.feedBatchSize }, { fetchPolicy: 'network-only' }));
             } catch (e) {
                 log.warn(e);
                 throw e;
             }
         });
+
+        const initialFeed = initData.feed;
+        this.drafts = initData.drafts;
 
         this.lastCursor = initialFeed.cursor;
         this.fullyLoaded = typeof this.lastCursor !== 'string';
@@ -71,7 +75,7 @@ export class FeedEngine {
 
         this.loading = true;
 
-        const loaded = (await backoff(() => this.engine.client.client.query(FeedQuery, { first: this.engine.options.feedBatchSize, after: this.lastCursor }, { fetchPolicy: 'network-only' }))).feed;
+        const loaded = (await backoff(() => this.engine.client.client.query(FeedLoadMoreQuery, { first: this.engine.options.feedBatchSize, after: this.lastCursor }, { fetchPolicy: 'network-only' }))).feed;
 
         this.lastCursor = loaded.cursor;
         this.fullyLoaded = typeof this.lastCursor !== 'string';

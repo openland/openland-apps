@@ -11787,7 +11787,109 @@
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
-			"operationName": "Feed",
+			"operationName": "InitFeed",
+			"operationType": "query",
+			"rootType": "Query",
+			"variables": [
+				{
+					"name": "first",
+					"type": "Int!"
+				}
+			],
+			"source": "query InitFeed($first: Int!) {\n  feed: alphaHomeFeed(first: $first) {\n    __typename\n    items {\n      __typename\n      ...FeedItemFull\n    }\n    cursor\n  }\n  drafts: alphaFeedMyDraftsChannel {\n    __typename\n    ...FeedChannelFull\n  }\n}",
+			"fields": [
+				{
+					"responseName": "feed",
+					"fieldName": "alphaHomeFeed",
+					"type": "FeedItemConnection!",
+					"args": [
+						{
+							"name": "first",
+							"value": {
+								"kind": "Variable",
+								"variableName": "first"
+							},
+							"type": "Int!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						},
+						{
+							"responseName": "items",
+							"fieldName": "items",
+							"type": "[FeedItem!]!",
+							"isConditional": false,
+							"isDeprecated": false,
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								}
+							],
+							"fragmentSpreads": [
+								"FeedItemFull"
+							],
+							"inlineFragments": []
+						},
+						{
+							"responseName": "cursor",
+							"fieldName": "cursor",
+							"type": "String",
+							"isConditional": false,
+							"isDeprecated": false
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": []
+				},
+				{
+					"responseName": "drafts",
+					"fieldName": "alphaFeedMyDraftsChannel",
+					"type": "FeedChannel!",
+					"isConditional": false,
+					"isDeprecated": false,
+					"fields": [
+						{
+							"responseName": "__typename",
+							"fieldName": "__typename",
+							"type": "String!",
+							"isConditional": false
+						}
+					],
+					"fragmentSpreads": [
+						"FeedChannelFull"
+					],
+					"inlineFragments": []
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [
+				"FeedItemFull",
+				"FeedPostAuthorFragment",
+				"UserShort",
+				"OrganizationShort",
+				"FeedPostSourceFragment",
+				"FeedChannelFull",
+				"SlideFragment",
+				"SpanFragment",
+				"UserForMention"
+			],
+			"sourceWithFragments": "query InitFeed($first: Int!) {\n  feed: alphaHomeFeed(first: $first) {\n    __typename\n    items {\n      __typename\n      ...FeedItemFull\n    }\n    cursor\n  }\n  drafts: alphaFeedMyDraftsChannel {\n    __typename\n    ...FeedChannelFull\n  }\n}\nfragment FeedItemFull on FeedItem {\n  __typename\n  ... on FeedPost {\n    id\n    date\n    author {\n      __typename\n      ...FeedPostAuthorFragment\n    }\n    source {\n      __typename\n      ...FeedPostSourceFragment\n    }\n    edited\n    canEdit\n    commentsCount\n    message\n    fallback\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n    slides {\n      __typename\n      ...SlideFragment\n    }\n  }\n}\nfragment FeedPostAuthorFragment on FeedPostAuthor {\n  __typename\n  ... on User {\n    ...UserShort\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment FeedPostSourceFragment on FeedPostSource {\n  __typename\n  ... on FeedChannel {\n    ...FeedChannelFull\n  }\n}\nfragment FeedChannelFull on FeedChannel {\n  __typename\n  id\n  title\n  about\n  photo\n  subscribed\n  myRole\n  subscribersCount\n  shortname\n  isGlobal\n  socialImage\n}\nfragment SlideFragment on Slide {\n  __typename\n  ... on TextSlide {\n    id\n    text\n    spans {\n      __typename\n      ...SpanFragment\n    }\n    cover {\n      __typename\n      url\n      metadata {\n        __typename\n        name\n        mimeType\n        size\n        isImage\n        imageWidth\n        imageHeight\n        imageFormat\n      }\n    }\n    coverAlign\n    attachments {\n      __typename\n      ... on User {\n        ...UserShort\n      }\n      ... on SharedRoom {\n        id\n        kind\n        title\n        roomPhoto: photo\n        membersCount\n        membership\n        organization {\n          __typename\n          id\n          name\n          photo\n        }\n      }\n      ... on Organization {\n        ...OrganizationShort\n      }\n    }\n  }\n}\nfragment SpanFragment on MessageSpan {\n  __typename\n  offset\n  length\n  ... on MessageSpanUserMention {\n    user {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanMultiUserMention {\n    users {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanRoomMention {\n    room {\n      __typename\n      ... on PrivateRoom {\n        id\n        user {\n          __typename\n          id\n          name\n        }\n      }\n      ... on SharedRoom {\n        id\n        title\n      }\n    }\n  }\n  ... on MessageSpanLink {\n    url\n  }\n  ... on MessageSpanDate {\n    date\n  }\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}",
+			"operationId": "cff79727e3c5868a29594ddd43e4697c2c301d77e99aaec519383572786c75fa"
+		},
+		{
+			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
+			"operationName": "FeedLoadMore",
 			"operationType": "query",
 			"rootType": "Query",
 			"variables": [
@@ -11800,7 +11902,7 @@
 					"type": "String"
 				}
 			],
-			"source": "query Feed($first: Int!, $after: String) {\n  feed: alphaHomeFeed(first: $first, after: $after) {\n    __typename\n    items {\n      __typename\n      ...FeedItemFull\n    }\n    cursor\n  }\n}",
+			"source": "query FeedLoadMore($first: Int!, $after: String) {\n  feed: alphaHomeFeed(first: $first, after: $after) {\n    __typename\n    items {\n      __typename\n      ...FeedItemFull\n    }\n    cursor\n  }\n}",
 			"fields": [
 				{
 					"responseName": "feed",
@@ -11877,8 +11979,8 @@
 				"SpanFragment",
 				"UserForMention"
 			],
-			"sourceWithFragments": "query Feed($first: Int!, $after: String) {\n  feed: alphaHomeFeed(first: $first, after: $after) {\n    __typename\n    items {\n      __typename\n      ...FeedItemFull\n    }\n    cursor\n  }\n}\nfragment FeedItemFull on FeedItem {\n  __typename\n  ... on FeedPost {\n    id\n    date\n    author {\n      __typename\n      ...FeedPostAuthorFragment\n    }\n    source {\n      __typename\n      ...FeedPostSourceFragment\n    }\n    edited\n    canEdit\n    commentsCount\n    message\n    fallback\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n    slides {\n      __typename\n      ...SlideFragment\n    }\n  }\n}\nfragment FeedPostAuthorFragment on FeedPostAuthor {\n  __typename\n  ... on User {\n    ...UserShort\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment FeedPostSourceFragment on FeedPostSource {\n  __typename\n  ... on FeedChannel {\n    ...FeedChannelFull\n  }\n}\nfragment FeedChannelFull on FeedChannel {\n  __typename\n  id\n  title\n  about\n  photo\n  subscribed\n  myRole\n  subscribersCount\n  shortname\n  isGlobal\n  socialImage\n}\nfragment SlideFragment on Slide {\n  __typename\n  ... on TextSlide {\n    id\n    text\n    spans {\n      __typename\n      ...SpanFragment\n    }\n    cover {\n      __typename\n      url\n      metadata {\n        __typename\n        name\n        mimeType\n        size\n        isImage\n        imageWidth\n        imageHeight\n        imageFormat\n      }\n    }\n    coverAlign\n    attachments {\n      __typename\n      ... on User {\n        ...UserShort\n      }\n      ... on SharedRoom {\n        id\n        kind\n        title\n        roomPhoto: photo\n        membersCount\n        membership\n        organization {\n          __typename\n          id\n          name\n          photo\n        }\n      }\n      ... on Organization {\n        ...OrganizationShort\n      }\n    }\n  }\n}\nfragment SpanFragment on MessageSpan {\n  __typename\n  offset\n  length\n  ... on MessageSpanUserMention {\n    user {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanMultiUserMention {\n    users {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanRoomMention {\n    room {\n      __typename\n      ... on PrivateRoom {\n        id\n        user {\n          __typename\n          id\n          name\n        }\n      }\n      ... on SharedRoom {\n        id\n        title\n      }\n    }\n  }\n  ... on MessageSpanLink {\n    url\n  }\n  ... on MessageSpanDate {\n    date\n  }\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}",
-			"operationId": "4912f68c7d4dd52931ef9a589085a37c9094efa5ca766c265e55291d437c6c02"
+			"sourceWithFragments": "query FeedLoadMore($first: Int!, $after: String) {\n  feed: alphaHomeFeed(first: $first, after: $after) {\n    __typename\n    items {\n      __typename\n      ...FeedItemFull\n    }\n    cursor\n  }\n}\nfragment FeedItemFull on FeedItem {\n  __typename\n  ... on FeedPost {\n    id\n    date\n    author {\n      __typename\n      ...FeedPostAuthorFragment\n    }\n    source {\n      __typename\n      ...FeedPostSourceFragment\n    }\n    edited\n    canEdit\n    commentsCount\n    message\n    fallback\n    reactions {\n      __typename\n      user {\n        __typename\n        ...UserShort\n      }\n      reaction\n    }\n    slides {\n      __typename\n      ...SlideFragment\n    }\n  }\n}\nfragment FeedPostAuthorFragment on FeedPostAuthor {\n  __typename\n  ... on User {\n    ...UserShort\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n}\nfragment FeedPostSourceFragment on FeedPostSource {\n  __typename\n  ... on FeedChannel {\n    ...FeedChannelFull\n  }\n}\nfragment FeedChannelFull on FeedChannel {\n  __typename\n  id\n  title\n  about\n  photo\n  subscribed\n  myRole\n  subscribersCount\n  shortname\n  isGlobal\n  socialImage\n}\nfragment SlideFragment on Slide {\n  __typename\n  ... on TextSlide {\n    id\n    text\n    spans {\n      __typename\n      ...SpanFragment\n    }\n    cover {\n      __typename\n      url\n      metadata {\n        __typename\n        name\n        mimeType\n        size\n        isImage\n        imageWidth\n        imageHeight\n        imageFormat\n      }\n    }\n    coverAlign\n    attachments {\n      __typename\n      ... on User {\n        ...UserShort\n      }\n      ... on SharedRoom {\n        id\n        kind\n        title\n        roomPhoto: photo\n        membersCount\n        membership\n        organization {\n          __typename\n          id\n          name\n          photo\n        }\n      }\n      ... on Organization {\n        ...OrganizationShort\n      }\n    }\n  }\n}\nfragment SpanFragment on MessageSpan {\n  __typename\n  offset\n  length\n  ... on MessageSpanUserMention {\n    user {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanMultiUserMention {\n    users {\n      __typename\n      ...UserForMention\n    }\n  }\n  ... on MessageSpanRoomMention {\n    room {\n      __typename\n      ... on PrivateRoom {\n        id\n        user {\n          __typename\n          id\n          name\n        }\n      }\n      ... on SharedRoom {\n        id\n        title\n      }\n    }\n  }\n  ... on MessageSpanLink {\n    url\n  }\n  ... on MessageSpanDate {\n    date\n  }\n}\nfragment UserForMention on User {\n  __typename\n  isYou\n  id\n  name\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    id\n    name\n  }\n}",
+			"operationId": "959156ddcaa92476087fcb9dab9fc3439239dc9342fa4c484d50ad8e72e5cba6"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
@@ -12053,42 +12155,6 @@
 			],
 			"sourceWithFragments": "query FeedWritableChannels($first: Int!, $after: ID) {\n  channels: alphaWritableChannels(first: $first, after: $after) {\n    __typename\n    items {\n      __typename\n      ...FeedChannelFull\n    }\n    cursor\n  }\n}\nfragment FeedChannelFull on FeedChannel {\n  __typename\n  id\n  title\n  about\n  photo\n  subscribed\n  myRole\n  subscribersCount\n  shortname\n  isGlobal\n  socialImage\n}",
 			"operationId": "bbd1a76c35a6fd992964795653473fa6c44c711737f07abb0b41b110c0416e27"
-		},
-		{
-			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
-			"operationName": "FeedDrafts",
-			"operationType": "query",
-			"rootType": "Query",
-			"variables": [],
-			"source": "query FeedDrafts {\n  drafts: alphaFeedMyDraftsChannel {\n    __typename\n    ...FeedChannelFull\n  }\n}",
-			"fields": [
-				{
-					"responseName": "drafts",
-					"fieldName": "alphaFeedMyDraftsChannel",
-					"type": "FeedChannel!",
-					"isConditional": false,
-					"isDeprecated": false,
-					"fields": [
-						{
-							"responseName": "__typename",
-							"fieldName": "__typename",
-							"type": "String!",
-							"isConditional": false
-						}
-					],
-					"fragmentSpreads": [
-						"FeedChannelFull"
-					],
-					"inlineFragments": []
-				}
-			],
-			"fragmentSpreads": [],
-			"inlineFragments": [],
-			"fragmentsReferenced": [
-				"FeedChannelFull"
-			],
-			"sourceWithFragments": "query FeedDrafts {\n  drafts: alphaFeedMyDraftsChannel {\n    __typename\n    ...FeedChannelFull\n  }\n}\nfragment FeedChannelFull on FeedChannel {\n  __typename\n  id\n  title\n  about\n  photo\n  subscribed\n  myRole\n  subscribersCount\n  shortname\n  isGlobal\n  socialImage\n}",
-			"operationId": "85e320695f87ac9586333b6ad1e3a15989771e4400a68df0e8b18025da081068"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
