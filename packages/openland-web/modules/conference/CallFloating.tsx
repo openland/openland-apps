@@ -52,8 +52,6 @@ const useJsDrag = (targetRef: React.RefObject<HTMLDivElement>, containerRef: Rea
         let positionShift = saved ? JSON.parse(saved) : [window.innerWidth / 2 - 48, window.innerHeight / 2];
         let prev: number[] | undefined;
 
-        let lastDrag = 0;
-
         const checkPostion = () => {
             // limit shift with screen bounds
             if (Math.abs(positionShift[0]) > window.innerWidth / 2) {
@@ -95,7 +93,6 @@ const useJsDrag = (targetRef: React.RefObject<HTMLDivElement>, containerRef: Rea
             if (!dragging) {
                 return;
             }
-            lastDrag = Date.now();
             let current: number[] = [];
             if (ev instanceof MouseEvent) {
                 current = [ev.x, ev.y];
