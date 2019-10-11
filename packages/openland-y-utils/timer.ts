@@ -15,7 +15,6 @@ export function debounce<T extends (...args: any[]) => any>(f: T, ms: number): T
             argsToUse = args;
         } else {
             f(...args);
-            console.warn(args);
             argsToUse = undefined;
         }
 
