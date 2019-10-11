@@ -11,10 +11,10 @@ import { Platform } from 'react-native';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
 import { UserView } from '../main/components/UserView';
-import { FeedChannelSubscribers_subscribers } from 'openland-api/Types';
+import { FeedChannelSubscribers_subscribers, FeedChannelSubscriberRole } from 'openland-api/Types';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
-import { FeedChannelWritersView } from './FeedChannelWritersView';
+import { FeedChannelWritersView } from './components/FeedChannelWritersView';
 
 const getCursor = (q: FeedChannelSubscribers_subscribers) => q.edges.length ? q.edges[q.edges.length - 1].cursor : undefined;
 
@@ -24,7 +24,7 @@ const FeedChannelProfileComponent = React.memo((props: PageProps) => {
     const client = useClient();
 
     const channel = client.useFeedChannel({ id }, { fetchPolicy: 'cache-and-network' }).channel;
-    const { title, about, photo, subscribersCount, subscribed } = channel;
+    const { title, about, photo, subscribersCount, subscribed, myRole } = channel;
 
     const initialFollowers = client.useFeedChannelSubscribers({ channelId: id, first: 15 }, { fetchPolicy: 'network-only' }).subscribers;
 
@@ -67,7 +67,7 @@ const FeedChannelProfileComponent = React.memo((props: PageProps) => {
                 )}
             </ZListGroup>
 
-            {subscribed && <FeedChannelWritersView channel={channel} router={router} />}
+            {(subscribed || (myRole === FeedChannelSubscriberRole.Creator || myRole === FeedChannelSubscriberRole.Editor)) && <FeedChannelWritersView channel={channel} router={router} />}
 
             <ZListHeader text="Followers" counter={subscribersCount} />
         </>

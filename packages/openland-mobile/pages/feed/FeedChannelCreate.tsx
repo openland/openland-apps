@@ -33,7 +33,7 @@ const FeedChannelCreateComponent = React.memo((props: PageProps) => {
                 about: aboutField.value,
             })).channel;
 
-            await client.refetchFeedMyChannels({ first: 15 });
+            await client.refetchFeedSubscriptions();
 
             if (action) {
                 action(channel);

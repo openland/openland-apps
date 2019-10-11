@@ -33,13 +33,10 @@ export const FeedLoadMoreQuery = gql`
     ${FeedItemFull}
 `;
 
-export const FeedMyChannelsQuery = gql`
-    query FeedMyChannels($first: Int!, $after: ID) {
-        channels: alphaFeedMyChannels(first: $first, after: $after) {
-            items {
-                ...FeedChannelFull
-            }
-            cursor
+export const FeedSubscriptionsQuery = gql`
+    query FeedSubscriptions {
+        channels: alphaFeedMySubscriptions {
+            ...FeedChannelFull
         }
     }
 

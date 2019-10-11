@@ -1,0 +1,6 @@
+query FeedSubscriptions {
+  channels: alphaFeedMySubscriptions {
+    __typename
+    ...FeedChannelFull
+  }
+}

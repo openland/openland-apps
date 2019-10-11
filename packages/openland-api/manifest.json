@@ -828,10 +828,10 @@
       }
     },
     {
-      "signature": "149eb73398d2626e7ff708d99b3057998762b3f610156c88f6008ab603f1b640",
-      "document": "fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo postsCount shortname socialImage subscribed subscribersCount title}query FeedMyChannels($after:ID,$first:Int!){channels:alphaFeedMyChannels(after:$after,first:$first){__typename cursor items{__typename...FeedChannelFull}}}",
+      "signature": "535bed885a0e871031427bc7842dbbcc7ebd5a49d931d5ef4ad630477f21f813",
+      "document": "fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo postsCount shortname socialImage subscribed subscribersCount title}query FeedSubscriptions{channels:alphaFeedMySubscriptions{__typename...FeedChannelFull}}",
       "metadata": {
-        "engineSignature": "fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo postsCount shortname socialImage subscribed subscribersCount title}query FeedMyChannels($after:ID,$first:Int!){alphaFeedMyChannels(after:$after,first:$first){__typename cursor items{__typename...FeedChannelFull}}}"
+        "engineSignature": "fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo postsCount shortname socialImage subscribed subscribersCount title}query FeedSubscriptions{alphaFeedMySubscriptions{__typename...FeedChannelFull}}"
       }
     },
     {

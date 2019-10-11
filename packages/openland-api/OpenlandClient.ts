@@ -559,17 +559,17 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts?: QueryWatchParameters): Types.FeedLoadMore | null {
         return this.useQuery(Source.FeedLoadMoreQuery, variables, opts);
     }
-    async queryFeedMyChannels(variables: Types.FeedMyChannelsVariables, opts?: OperationParameters): Promise<Types.FeedMyChannels> {
-        return this.client.query(Source.FeedMyChannelsQuery, variables, opts);
+    async queryFeedSubscriptions(opts?: OperationParameters): Promise<Types.FeedSubscriptions> {
+        return this.client.query(Source.FeedSubscriptionsQuery, undefined, opts);
     }
-    async refetchFeedMyChannels(variables: Types.FeedMyChannelsVariables): Promise<Types.FeedMyChannels> {
-        return this.refetch(Source.FeedMyChannelsQuery, variables);
+    async refetchFeedSubscriptions(): Promise<Types.FeedSubscriptions> {
+        return this.refetch(Source.FeedSubscriptionsQuery);
     }
-    useFeedMyChannels(variables: Types.FeedMyChannelsVariables, opts?: QueryWatchParameters): Types.FeedMyChannels {
-        return this.useQuerySuspense(Source.FeedMyChannelsQuery, variables, opts);
+    useFeedSubscriptions(opts?: QueryWatchParameters): Types.FeedSubscriptions {
+        return this.useQuerySuspense(Source.FeedSubscriptionsQuery, undefined, opts);
     }
-    useWithoutLoaderFeedMyChannels(variables: Types.FeedMyChannelsVariables, opts?: QueryWatchParameters): Types.FeedMyChannels | null {
-        return this.useQuery(Source.FeedMyChannelsQuery, variables, opts);
+    useWithoutLoaderFeedSubscriptions(opts?: QueryWatchParameters): Types.FeedSubscriptions | null {
+        return this.useQuery(Source.FeedSubscriptionsQuery, undefined, opts);
     }
     async queryFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: OperationParameters): Promise<Types.FeedWritableChannels> {
         return this.client.query(Source.FeedWritableChannelsQuery, variables, opts);

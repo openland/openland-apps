@@ -11984,43 +11984,16 @@
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
-			"operationName": "FeedMyChannels",
+			"operationName": "FeedSubscriptions",
 			"operationType": "query",
 			"rootType": "Query",
-			"variables": [
-				{
-					"name": "first",
-					"type": "Int!"
-				},
-				{
-					"name": "after",
-					"type": "ID"
-				}
-			],
-			"source": "query FeedMyChannels($first: Int!, $after: ID) {\n  channels: alphaFeedMyChannels(first: $first, after: $after) {\n    __typename\n    items {\n      __typename\n      ...FeedChannelFull\n    }\n    cursor\n  }\n}",
+			"variables": [],
+			"source": "query FeedSubscriptions {\n  channels: alphaFeedMySubscriptions {\n    __typename\n    ...FeedChannelFull\n  }\n}",
 			"fields": [
 				{
 					"responseName": "channels",
-					"fieldName": "alphaFeedMyChannels",
-					"type": "FeedChannelConnection!",
-					"args": [
-						{
-							"name": "first",
-							"value": {
-								"kind": "Variable",
-								"variableName": "first"
-							},
-							"type": "Int!"
-						},
-						{
-							"name": "after",
-							"value": {
-								"kind": "Variable",
-								"variableName": "after"
-							},
-							"type": "ID"
-						}
-					],
+					"fieldName": "alphaFeedMySubscriptions",
+					"type": "[FeedSubscription!]!",
 					"isConditional": false,
 					"isDeprecated": false,
 					"fields": [
@@ -12029,35 +12002,11 @@
 							"fieldName": "__typename",
 							"type": "String!",
 							"isConditional": false
-						},
-						{
-							"responseName": "items",
-							"fieldName": "items",
-							"type": "[FeedChannel!]!",
-							"isConditional": false,
-							"isDeprecated": false,
-							"fields": [
-								{
-									"responseName": "__typename",
-									"fieldName": "__typename",
-									"type": "String!",
-									"isConditional": false
-								}
-							],
-							"fragmentSpreads": [
-								"FeedChannelFull"
-							],
-							"inlineFragments": []
-						},
-						{
-							"responseName": "cursor",
-							"fieldName": "cursor",
-							"type": "String",
-							"isConditional": false,
-							"isDeprecated": false
 						}
 					],
-					"fragmentSpreads": [],
+					"fragmentSpreads": [
+						"FeedChannelFull"
+					],
 					"inlineFragments": []
 				}
 			],
@@ -12066,8 +12015,8 @@
 			"fragmentsReferenced": [
 				"FeedChannelFull"
 			],
-			"sourceWithFragments": "query FeedMyChannels($first: Int!, $after: ID) {\n  channels: alphaFeedMyChannels(first: $first, after: $after) {\n    __typename\n    items {\n      __typename\n      ...FeedChannelFull\n    }\n    cursor\n  }\n}\nfragment FeedChannelFull on FeedChannel {\n  __typename\n  id\n  title\n  about\n  photo\n  subscribed\n  myRole\n  subscribersCount\n  shortname\n  isGlobal\n  socialImage\n  postsCount\n}",
-			"operationId": "393af0d40802fb1ad9cebc5ac07548c425fc106484661a9bf52e2717baf52390"
+			"sourceWithFragments": "query FeedSubscriptions {\n  channels: alphaFeedMySubscriptions {\n    __typename\n    ...FeedChannelFull\n  }\n}\nfragment FeedChannelFull on FeedChannel {\n  __typename\n  id\n  title\n  about\n  photo\n  subscribed\n  myRole\n  subscribersCount\n  shortname\n  isGlobal\n  socialImage\n  postsCount\n}",
+			"operationId": "c0df0e70ba51bd1b0dffba4e48be9375a4a4281eb54029dc1b7e11a44e6ed970"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Feed.ts",
