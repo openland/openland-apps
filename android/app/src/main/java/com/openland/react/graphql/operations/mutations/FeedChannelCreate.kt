@@ -13,6 +13,6 @@ internal val FeedChannelCreateSelector = obj(
 val FeedChannelCreate = object: OperationDefinition {
     override val name = "FeedChannelCreate"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation FeedChannelCreate(\$about:String,\$global:Boolean,\$photoRef:ImageRefInput,\$title:String!){channel:alphaFeedCreateChannel(about:\$about,global:\$global,photoRef:\$photoRef,title:\$title){__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo shortname socialImage subscribed subscribersCount title}"
+    override val body = "mutation FeedChannelCreate(\$about:String,\$global:Boolean,\$photoRef:ImageRefInput,\$title:String!){channel:alphaFeedCreateChannel(about:\$about,global:\$global,photoRef:\$photoRef,title:\$title){__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo postsCount shortname socialImage subscribed subscribersCount title}"
     override val selector = FeedChannelCreateSelector
 }

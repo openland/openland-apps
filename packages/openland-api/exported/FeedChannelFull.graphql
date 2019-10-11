@@ -5,6 +5,7 @@ fragment FeedChannelFull on FeedChannel {
   isGlobal
   myRole
   photo
+  postsCount
   shortname
   socialImage
   subscribed

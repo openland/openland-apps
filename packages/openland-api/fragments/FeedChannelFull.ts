@@ -12,5 +12,6 @@ export const FeedChannelFull = gql`
         shortname
         isGlobal
         socialImage
+        postsCount
     }
 `;
