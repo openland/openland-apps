@@ -120,13 +120,13 @@ const useJsDrag = (targetRef: React.RefObject<HTMLDivElement>, containerRef: Rea
         if (container && target) {
             target.addEventListener("mousedown", onDragStart);
             target.addEventListener("mouseup", onDragStop);
-            window.addEventListener("mouseup", onDragStop);
-            window.addEventListener("mousemove", onDrag);
+            window.document.addEventListener("mouseup", onDragStop);
+            window.document.addEventListener("mousemove", onDrag);
 
             target.addEventListener("touchstart", onDragStart);
             target.addEventListener("touchend", onDragStop);
             target.addEventListener("touchcancel", onDragStop);
-            window.addEventListener("touchmove", onDrag);
+            window.document.addEventListener("touchmove", onDrag);
 
             container.style.display = 'flex';
             container.style.transform = `translate(${positionShift[0]}px, ${positionShift[1]}px)`;
@@ -136,13 +136,13 @@ const useJsDrag = (targetRef: React.RefObject<HTMLDivElement>, containerRef: Rea
             if (target) {
                 target.removeEventListener("mousedown", onDragStart);
                 target.removeEventListener("mouseup", onDragStop);
-                window.removeEventListener("mouseup", onDragStop);
-                window.removeEventListener("mousemove", onDrag);
+                window.document.removeEventListener("mouseup", onDragStop);
+                window.document.removeEventListener("mousemove", onDrag);
 
                 target.removeEventListener("touchstart", onDragStart);
                 target.removeEventListener("touchend", onDragStop);
                 target.removeEventListener("touchcancel", onDragStop);
-                window.removeEventListener("touchmove", onDrag);
+                window.document.removeEventListener("touchmove", onDrag);
             }
         };
     }, []);
