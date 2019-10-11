@@ -11,7 +11,10 @@ import { useClient } from 'openland-web/utils/useClient';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextBody, TextTitle1, TextTitle2, TextTitle3 } from 'openland-web/utils/TextStyles';
 import { showAddMembersModal } from 'openland-web/fragments/chat/showAddMembersModal';
-import { MatchmakingRoom_matchmakingRoom_profiles, MatchmakingProfile_matchmakingProfile } from 'openland-api/Types';
+import {
+    MatchmakingRoom_matchmakingRoom_profiles,
+    MatchmakingProfile_matchmakingProfile,
+} from 'openland-api/Types';
 
 const secondaryCardContainer = css`
     display: flex;
@@ -210,7 +213,9 @@ const UserCard = React.memo((props: UserCardProps) => {
             .title('All new chats will be in your Openland inbox')
             .action(
                 'Got it',
-                async () => { /**/ },
+                async () => {
+                    /**/
+                },
                 'primary',
             )
             .show();
@@ -303,7 +308,9 @@ export const MatchmakingUsersFragment = React.memo(() => {
     }
 
     const profiles = ((data && data.profiles) || []).filter(u => !u.user.isYou);
-    const cards: (MatchmakingProfile_matchmakingProfile | InviteCard | InstallCard)[] = [...profiles];
+    const cards: (MatchmakingProfile_matchmakingProfile | InviteCard | InstallCard)[] = [
+        ...profiles,
+    ];
     cards.splice(profiles.length ? profiles.length - 1 : 0, 0, { __typename: 'InviteCard' });
     cards.push({ __typename: 'InstallCard' });
     const onDone = () => {
@@ -317,20 +324,16 @@ export const MatchmakingUsersFragment = React.memo(() => {
                 <XView flexGrow={1}>
                     <div className={mainContainer}>
                         <div className={cx(TextTitle1, titleStyle)}>Member profiles</div>
-                        {profiles.length && (
+                        {profiles.length > 0 && (
                             <div className={cx(TextBody, subtitleStyle)}>
                                 Choose people you want to chat with
                             </div>
                         )}
                         <div className={usersCardsContainer}>
-                            {cards.map((card) => {
+                            {cards.map(card => {
                                 if (card.__typename === 'MatchmakingProfile') {
                                     return (
-                                        <UserCard
-                                            data={card}
-                                            chatId={chatId}
-                                            key={card.user.id}
-                                        />
+                                        <UserCard data={card} chatId={chatId} key={card.user.id} />
                                     );
                                 } else if (card.__typename === 'InviteCard') {
                                     return <InviteCardComponent chatId={chatId} />;

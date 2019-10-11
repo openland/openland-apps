@@ -140,17 +140,17 @@ export const GroupProfileFragment = React.memo(() => {
                         icon={<IcUser />}
                         useRadius={true}
                         path={
-                            myMemberProfile ? `/group/${id}/myprofile` : `/matchmaking/${id}/start`
+                            myMemberProfile ? `/group/${id}/user/${myMemberProfile.user.id}` : `/matchmaking/${id}/start`
                         }
                     />
-                    {otherMemberProfiles && (
-                        <UListItem
-                            title={`Member profiles ${matchmaking!.profiles!.length - 1}`}
-                            icon={<IcCopy />}
-                            useRadius={true}
-                            path={`/group/${id}/users`}
-                        />
-                    )}
+                    <UListItem
+                        title={`Member profiles ${
+                            otherMemberProfiles ? matchmaking!.profiles!.length - 1 : ''
+                        }`}
+                        icon={<IcCopy />}
+                        useRadius={true}
+                        path={`/group/${id}/users`}
+                    />
                 </UListGroup>
             )}
             {organization && (

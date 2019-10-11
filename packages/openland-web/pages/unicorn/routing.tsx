@@ -61,7 +61,7 @@ routing.addRoute('/settings/finance', () => SettingsFinanceFragment);
 
 // Profile
 routing.addRoute('/group/:id', () => GroupProfileFragment);
-routing.addRoute('/group/:id/myprofile', () => MemberProfileFragment);
+routing.addRoute('/group/:id/user/:uid', () => MemberProfileFragment);
 routing.addRoute('/group/:id/myprofile/edit', () => MemberProfileEditFragment);
 routing.addRoute('/group/:id/users', () => MatchmakingUsersFragment);
 routing.addRoute('/:shortname', () => ShortnameFragment);

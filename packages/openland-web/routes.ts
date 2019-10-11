@@ -199,8 +199,8 @@ routes.add('/settings/finance', '/unicorn/index');
 
 routes.add('/group/:id', '/unicorn/index');
 routes.add('/group/:id/', '/unicorn/index');
-routes.add('/group/:id/myprofile', '/unicorn/index');
-routes.add('/group/:id/myprofile/', '/unicorn/index');
+routes.add('/group/:id/user/:uid', '/unicorn/index');
+routes.add('/group/:id/user/:uid/', '/unicorn/index');
 routes.add('/group/:id/myprofile/edit', '/unicorn/index');
 routes.add('/group/:id/myprofile/edit/', '/unicorn/index');
 routes.add('/group/:id/users', '/unicorn/index');
