@@ -7,40 +7,7 @@ fragment MatchmakingRoomFragment on MatchmakingRoom {
   }
   profiles {
     __typename
-    answers {
-      __typename
-      ... on TextMatchmakingAnswer {
-        answer
-        question {
-          __typename
-          id
-          subtitle
-          title
-        }
-      }
-      ... on MultiselectMatchmakingAnswer {
-        question {
-          __typename
-          id
-          subtitle
-          title
-        }
-        tags
-      }
-    }
-    chatCreated
-    user {
-      __typename
-      id
-      name
-      photo
-      primaryOrganization {
-        __typename
-        id
-        name
-        photo
-      }
-    }
+    ...MatchmakingProfileFragment
   }
   questions {
     __typename

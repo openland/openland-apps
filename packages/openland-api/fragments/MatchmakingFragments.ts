@@ -54,35 +54,7 @@ export const MatchmakingRoomFragment = gql`
             ...MatchmakingProfileFragment
         }
         profiles {
-            chatCreated
-            user {
-                id
-                name
-                photo
-                primaryOrganization {
-                    id
-                    name
-                    photo
-                }
-            }
-            answers {
-                ... on TextMatchmakingAnswer {
-                    question {
-                        id
-                        title
-                        subtitle
-                    }
-                    answer
-                }
-                ... on MultiselectMatchmakingAnswer {
-                    question {
-                        id
-                        title
-                        subtitle
-                    }
-                    tags
-                }
-            }
+            ...MatchmakingProfileFragment
         }
     }
     ${MatchmakingProfileFragment}

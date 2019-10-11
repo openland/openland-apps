@@ -11,7 +11,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextBody, TextTitle1, TextTitle2, TextTitle3 } from 'openland-web/utils/TextStyles';
 import { showAddMembersModal } from 'openland-web/fragments/chat/showAddMembersModal';
-import { MatchmakingRoom_matchmakingRoom_profiles } from 'openland-api/Types';
+import { MatchmakingRoom_matchmakingRoom_profiles, MatchmakingProfile_matchmakingProfile } from 'openland-api/Types';
 
 const secondaryCardContainer = css`
     display: flex;
@@ -87,7 +87,7 @@ const installButtonStyle = css`
     }
 `;
 
-const InviteCard = (props: { chatId: string }) => (
+const InviteCardComponent = (props: { chatId: string }) => (
     <div className={cx(secondaryCardContainer, secondaryCardContainerInvite)}>
         <img
             className={invitePic}
@@ -108,7 +108,7 @@ const InviteCard = (props: { chatId: string }) => (
     </div>
 );
 
-const InstallCard = (props: { onInstall: () => void }) => (
+const InstallCardComponent = (props: { onInstall: () => void }) => (
     <div className={cx(secondaryCardContainer, secondaryCardContainerInstall)}>
         <img
             className={installPic}
@@ -279,6 +279,14 @@ const TitleRender = (props: { onDone: () => void }) => {
     );
 };
 
+interface InviteCard {
+    __typename: 'InviteCard';
+}
+
+interface InstallCard {
+    __typename: 'InstallCard';
+}
+
 export const MatchmakingUsersFragment = React.memo(() => {
     const router = React.useContext(XViewRouterContext)!;
     const unicorn = useUnicorn();
@@ -290,13 +298,14 @@ export const MatchmakingUsersFragment = React.memo(() => {
     const client = useClient();
     const data = client.useMatchmakingRoom({ peerId: chatId }).matchmakingRoom;
 
-    const haveMyData = data && data.myProfile;
-    const haveOtherProfiles = data && data.profiles && data.profiles.length > 1;
-
-    if (!haveMyData) {
+    if (!data || !data.profiles) {
         return null;
     }
 
+    const profiles = ((data && data.profiles) || []).filter(u => !u.user.isYou);
+    const cards: (MatchmakingProfile_matchmakingProfile | InviteCard | InstallCard)[] = [...profiles];
+    cards.splice(profiles.length ? profiles.length - 1 : 0, 0, { __typename: 'InviteCard' });
+    cards.push({ __typename: 'InstallCard' });
     const onDone = () => {
         router.navigate(`/matchmaking/${chatId}/install`);
     };
@@ -308,37 +317,25 @@ export const MatchmakingUsersFragment = React.memo(() => {
                 <XView flexGrow={1}>
                     <div className={mainContainer}>
                         <div className={cx(TextTitle1, titleStyle)}>Member profiles</div>
-                        {haveOtherProfiles && (
+                        {profiles.length && (
                             <div className={cx(TextBody, subtitleStyle)}>
                                 Choose people you want to chat with
                             </div>
                         )}
                         <div className={usersCardsContainer}>
-                            {data!.profiles!.map((i, j, arr) => {
-                                const arrLength = arr.length;
-                                const showInviteCard = (j === 3 || arrLength === 2) && !(j > 3);
-                                const showInstallCard = (j === 3 || arrLength === 2) && !(j > 3);
-
-                                if (arrLength === 1) {
+                            {cards.map((card) => {
+                                if (card.__typename === 'MatchmakingProfile') {
                                     return (
-                                        <>
-                                            <InviteCard chatId={chatId} />
-                                            <InstallCard onInstall={onDone} />
-                                        </>
+                                        <UserCard
+                                            data={card}
+                                            chatId={chatId}
+                                            key={card.user.id}
+                                        />
                                     );
-                                }
-                                if (i.user.id !== data!.myProfile!.user.id) {
-                                    return (
-                                        <>
-                                            <UserCard
-                                                data={i}
-                                                chatId={chatId}
-                                                key={i.user.id}
-                                            />
-                                            {showInviteCard && <InviteCard chatId={chatId} />}
-                                            {showInstallCard && <InstallCard onInstall={onDone} />}
-                                        </>
-                                    );
+                                } else if (card.__typename === 'InviteCard') {
+                                    return <InviteCardComponent chatId={chatId} />;
+                                } else if (card.__typename === 'InstallCard') {
+                                    return <InstallCardComponent onInstall={onDone} />;
                                 }
                                 return null;
                             })}
