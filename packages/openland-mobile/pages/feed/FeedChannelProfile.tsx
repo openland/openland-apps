@@ -11,9 +11,10 @@ import { Platform } from 'react-native';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
 import { UserView } from '../main/components/UserView';
-import { FeedChannelSubscriberRole, FeedChannelSubscribers_subscribers } from 'openland-api/Types';
+import { FeedChannelSubscribers_subscribers } from 'openland-api/Types';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
+import { FeedChannelWritersView } from './FeedChannelWritersView';
 
 const getCursor = (q: FeedChannelSubscribers_subscribers) => q.edges.length ? q.edges[q.edges.length - 1].cursor : undefined;
 
@@ -23,9 +24,8 @@ const FeedChannelProfileComponent = React.memo((props: PageProps) => {
     const client = useClient();
 
     const channel = client.useFeedChannel({ id }, { fetchPolicy: 'cache-and-network' }).channel;
-    const { title, about, photo, subscribersCount, subscribed, myRole } = channel;
+    const { title, about, photo, subscribersCount, subscribed } = channel;
 
-    const writers = client.useFeedChannelWriters({ id, first: 3 }, { fetchPolicy: 'network-only' }).writers;
     const initialFollowers = client.useFeedChannelSubscribers({ channelId: id, first: 15 }, { fetchPolicy: 'network-only' }).subscribers;
 
     const [followers, setFollowers] = React.useState(initialFollowers.edges);
@@ -67,26 +67,7 @@ const FeedChannelProfileComponent = React.memo((props: PageProps) => {
                 )}
             </ZListGroup>
 
-            <ZListGroup
-                header="Writers"
-                counter={writers.items.length}
-                actionRight={writers.cursor ? { title: 'See all', onPress: () => props.router.push('FeedChannelWriters', { id }) } : undefined}
-            >
-                {myRole === FeedChannelSubscriberRole.Creator && (
-                    <ZListItem
-                        leftIcon={require('assets/ic-add-glyph-24.png')}
-                        text="Add writer"
-                        onPress={() => router.present('FeedChannelAddWriter', { id })}
-                    />
-                )}
-                {writers.items.map(writer => (
-                    <UserView
-                        user={writer.user}
-                        channelRole={writer.role}
-                        onPress={() => router.push('ProfileUser', { id: writer.user.id })}
-                    />
-                ))}
-            </ZListGroup>
+            {subscribed && <FeedChannelWritersView channel={channel} router={router} />}
 
             <ZListHeader text="Followers" counter={subscribersCount} />
         </>
