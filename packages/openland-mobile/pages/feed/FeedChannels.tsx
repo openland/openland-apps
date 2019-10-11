@@ -44,7 +44,7 @@ const FeedChannelsComponent = React.memo((props: PageProps) => {
 
     const footer = (
         <>
-            <ZListGroup header="Suggested">
+            <ZListGroup header="Suggested" headerMarginTop={following.length <= 0 ? 0 : undefined}>
                 {!cursor && suggested.map(s => <ChannelView key={s.node.id} channel={s.node} />)}
             </ZListGroup>
         </>
