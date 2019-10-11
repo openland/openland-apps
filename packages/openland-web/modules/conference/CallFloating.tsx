@@ -89,10 +89,11 @@ const useJsDrag = (targetRef: React.RefObject<HTMLDivElement>, containerRef: Rea
             prev = undefined;
         };
         const onDrag = (ev: MouseEvent | TouchEvent) => {
-            ev.stopPropagation();
             if (!dragging) {
                 return;
             }
+            ev.stopPropagation();
+            ev.preventDefault();
             let current: number[] = [];
             if (ev instanceof MouseEvent) {
                 current = [ev.x, ev.y];
@@ -120,12 +121,12 @@ const useJsDrag = (targetRef: React.RefObject<HTMLDivElement>, containerRef: Rea
             target.addEventListener("mousedown", onDragStart);
             target.addEventListener("mouseup", onDragStop);
             window.addEventListener("mouseup", onDragStop);
-            window.addEventListener("mousemove", onDrag, { passive: true });
+            window.addEventListener("mousemove", onDrag);
 
             target.addEventListener("touchstart", onDragStart);
             target.addEventListener("touchend", onDragStop);
             target.addEventListener("touchcancel", onDragStop);
-            window.addEventListener("touchmove", onDrag, { passive: true });
+            window.addEventListener("touchmove", onDrag);
 
             container.style.display = 'flex';
             container.style.transform = `translate(${positionShift[0]}px, ${positionShift[1]}px)`;
