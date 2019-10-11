@@ -126,6 +126,7 @@ const useJsDrag = (targetRef: React.RefObject<HTMLDivElement>, containerRef: Rea
             target.addEventListener("touchstart", onDragStart);
             target.addEventListener("touchend", onDragStop);
             target.addEventListener("touchcancel", onDragStop);
+            target.addEventListener("touchmove", (ev) => ev.preventDefault());
             window.document.addEventListener("touchmove", onDrag);
 
             container.style.display = 'flex';
@@ -142,6 +143,7 @@ const useJsDrag = (targetRef: React.RefObject<HTMLDivElement>, containerRef: Rea
                 target.removeEventListener("touchstart", onDragStart);
                 target.removeEventListener("touchend", onDragStop);
                 target.removeEventListener("touchcancel", onDragStop);
+                target.removeEventListener("touchmove", (ev) => ev.preventDefault());
                 window.document.removeEventListener("touchmove", onDrag);
             }
         };
