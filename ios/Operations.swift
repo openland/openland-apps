@@ -2102,6 +2102,16 @@ private let FeedRecommendedChannelsSelector = obj(
                         )))
                 )))
         )
+private let FeedSubscriptionsSelector = obj(
+            field("alphaFeedMySubscriptions","channels", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(obj(
+                    field("__typename","__typename", notNull(scalar("String"))),
+                    field("cursor","cursor", scalar("String")),
+                    field("items","items", notNull(list(notNull(obj(
+                            field("__typename","__typename", notNull(scalar("String"))),
+                            fragment("FeedChannel", FeedChannelFullSelector)
+                        )))))
+                )))
+        )
 private let FeedWritableChannelsSelector = obj(
             field("alphaWritableChannels","channels", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(obj(
                     field("__typename","__typename", notNull(scalar("String"))),
@@ -3947,6 +3957,12 @@ class Operations {
         "query FeedRecommendedChannels($after:String,$first:Int!){search:alphaRecommendedChannels(after:$after,first:$first){__typename edges{__typename cursor node{__typename ...FeedChannelFull}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo postsCount shortname socialImage subscribed subscribersCount title}",
         FeedRecommendedChannelsSelector
     )
+    let FeedSubscriptions = OperationDefinition(
+        "FeedSubscriptions",
+        .query, 
+        "query FeedSubscriptions($after:ID,$first:Int!){channels:alphaFeedMySubscriptions(after:$after,first:$first){__typename cursor items{__typename ...FeedChannelFull}}}fragment FeedChannelFull on FeedChannel{__typename about id isGlobal myRole photo postsCount shortname socialImage subscribed subscribersCount title}",
+        FeedSubscriptionsSelector
+    )
     let FeedWritableChannels = OperationDefinition(
         "FeedWritableChannels",
         .query, 
@@ -5043,6 +5059,7 @@ class Operations {
         if name == "FeedItem" { return FeedItem }
         if name == "FeedLoadMore" { return FeedLoadMore }
         if name == "FeedRecommendedChannels" { return FeedRecommendedChannels }
+        if name == "FeedSubscriptions" { return FeedSubscriptions }
         if name == "FeedWritableChannels" { return FeedWritableChannels }
         if name == "FetchPushSettings" { return FetchPushSettings }
         if name == "GlobalCounter" { return GlobalCounter }

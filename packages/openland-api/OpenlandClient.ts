@@ -559,6 +559,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts?: QueryWatchParameters): Types.FeedLoadMore | null {
         return this.useQuery(Source.FeedLoadMoreQuery, variables, opts);
     }
+    async queryFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts?: OperationParameters): Promise<Types.FeedSubscriptions> {
+        return this.client.query(Source.FeedSubscriptionsQuery, variables, opts);
+    }
+    async refetchFeedSubscriptions(variables: Types.FeedSubscriptionsVariables): Promise<Types.FeedSubscriptions> {
+        return this.refetch(Source.FeedSubscriptionsQuery, variables);
+    }
+    useFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts?: QueryWatchParameters): Types.FeedSubscriptions {
+        return this.useQuerySuspense(Source.FeedSubscriptionsQuery, variables, opts);
+    }
+    useWithoutLoaderFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts?: QueryWatchParameters): Types.FeedSubscriptions | null {
+        return this.useQuery(Source.FeedSubscriptionsQuery, variables, opts);
+    }
     async queryFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: OperationParameters): Promise<Types.FeedWritableChannels> {
         return this.client.query(Source.FeedWritableChannelsQuery, variables, opts);
     }
