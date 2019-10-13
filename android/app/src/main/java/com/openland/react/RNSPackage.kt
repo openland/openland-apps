@@ -39,7 +39,8 @@ class RNSPackage : ReactPackage {
         return mutableListOf(
                 AsyncViewManager(),
                 AsyncListViewManager(),
-                RNSAnimatedViewViewManager.sharedInstance
+                RNSAnimatedViewViewManager.sharedInstance,
+                SplashViewManager()
         ) as MutableList<ViewManager<View, ReactShadowNode<*>>>
     }
 }

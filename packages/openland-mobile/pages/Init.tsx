@@ -26,6 +26,7 @@ import { Track } from 'openland-engines/Tracking';
 import { NotificationHandler } from 'react-native-notification-handler/NotificationHandler';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { BottomSheetProvider } from 'openland-mobile/components/BottomSheet';
+import { AndroidSplashView } from '../components/AndroidSplashView';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(() => new SAnimatedShadowView('app-placeholder-' + randomKey(), { opacity: 1 }), []);
@@ -52,13 +53,16 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
             }}
             pointerEvents={props.loading ? 'box-none' : 'none'}
         >
-            {/* <View alignItems="center" justifyContent="center" position="absolute" top={0} left={0} bottom={0} right={0} backgroundColor="white" pointerEvents="box-only"> */}
-            <Image
-                fadeDuration={0}
-                source={require('assets/logo-unicorn.png')}
-                style={{ width: 130, height: 155 }}
-            />
-            {/* </View> */}
+            {Platform.OS === 'android' && (
+                <AndroidSplashView />
+            )}
+            {Platform.OS !== 'android' && (
+                <Image
+                    fadeDuration={0}
+                    source={require('assets/logo-unicorn.png')}
+                    style={{ width: 130, height: 155 }}
+                />
+            )}
         </SAnimated.View>
     );
 });
