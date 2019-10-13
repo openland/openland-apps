@@ -3,7 +3,7 @@ import { NavigationManager } from '../NavigationManager';
 import { HeaderPage } from './HeaderPage';
 import { SNavigationViewStyle } from '../../SNavigationView';
 import { SDevice } from '../../SDevice';
-import { Image, StyleSheet, ViewStyle, TextStyle, View, Text, TextInput, BackHandler, TouchableOpacity, Dimensions } from 'react-native';
+import { Image, StyleSheet, ViewStyle, TextStyle, View, Text, TextInput, BackHandler, TouchableOpacity, Dimensions, Keyboard } from 'react-native';
 import { SAnimated } from '../../SAnimated';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SBackButton } from 'react-native-s/SBackButton';
@@ -89,6 +89,13 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
         return false;
     }
 
+    handleSoftBackPress = () => {
+        Keyboard.dismiss();
+        setTimeout(() => {
+            this.props.manager.pop();
+        }, 10);
+    }
+
     render() {
         let v = this.props.page;
         let title = <Text style={[styles.title, { color: this.props.style.textColor }, this.props.page.page.startIndex === 0 ? styles.rootFirst : {}]}>{this.props.page.config.title}</Text>;
@@ -116,7 +123,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                             height={SDevice.navigationBarHeight}
                         >
                             {showCloseButton && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.textColor} />}
-                            {showBackButton && <SBackButton onPress={v.config.searchActive ? v.config.searchClosed!! : this.props.manager.pop} tintColor={this.props.style.iconColor} />}
+                            {showBackButton && <SBackButton onPress={v.config.searchActive ? v.config.searchClosed!! : this.handleSoftBackPress} tintColor={this.props.style.iconColor} />}
                             {v.config.searchActive && (
                                 <>
                                     <TextInput style={{ flexGrow: 1, fontSize: 18, width: Dimensions.get('window').width - 56 - 56, color: this.props.style.textColor }} value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} placeholder="Search" selectionColor={this.props.style.selectionColor} placeholderTextColor={this.props.style.searchColor} />
