@@ -118,6 +118,7 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
                 onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined}
                 disabled={actionInProgress || props.enabled === false}
                 {...(underlayColor ? { underlayColor } : { activeOpacity: 0.6 })}
+                delayPressIn={0}
             >
                 <>
                     <Text
