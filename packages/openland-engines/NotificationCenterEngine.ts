@@ -10,6 +10,7 @@ import { ReadNotificationMutation, MyNotificationCenterMarkSeqReadMutation } fro
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { SequenceModernWatcher } from './core/SequenceModernWatcher';
 import { backoff } from 'openland-y-utils/timer';
+import { prepareLegacyMentions } from './legacy/legacymentions';
 
 const log = createLogger('Engine-NotificationCenter');
 
@@ -84,6 +85,75 @@ const notificationUnsupported = (id: string): NotificationsDataSourceItem => {
     };
 };
 
+const notificationMatchmaking = (id: string, content: Types.NotificationFragment_content_NewMatchmakingProfilesNotification): NotificationsDataSourceItem => {
+    const date = Date.now();
+
+    const users = content.profiles.map(u => u.user);
+
+    let multipleMention: Types.FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention | undefined;
+    const text = users.reduce((str, user, i, arr) => {
+        let othersText = `${arr.length - 2} other${arr.length > 3 ? 's' : ''}`;
+        if (i === 0) {
+            str += `New member profile${arr.length > 1 ? 's' : ''} from`;
+        }
+        if (i < 2) {
+            str += `${i === 1 ? ' and ' : ''} @${user.name}`;
+        }
+        if (i === arr.length - 1) {
+            if (arr.length > 2) {
+                multipleMention = { __typename: 'MessageSpanMultiUserMention', offset: str.length + 6, length: othersText.length, users: users.filter((u, index) => index >= 2).map(u => ({ ...u, shortname: null })) };
+            }
+            str += `${i >= 2 ? `, and ${othersText}` : ''}.`;
+
+        }
+        return str;
+    }, '');
+    const spans: Types.FullMessage_GeneralMessage_spans[] = prepareLegacyMentions(text, users.map(u => ({ ...u, shortname: null })));
+    if (multipleMention) {
+        spans.push(multipleMention);
+    }
+
+    return {
+        ...convertMessage({
+            __typename: 'GeneralMessage',
+            id,
+            date: date,
+            sender: {
+                __typename: 'User',
+                id: content.room.peer.id,
+                name: content.room.peer.title,
+                firstName: content.room.peer.title,
+                photo: content.room.peer.photo,
+                online: false,
+                isYou: false,
+                isBot: false,
+                lastName: null,
+                email: null,
+                lastSeen: null,
+                shortname: null,
+                primaryOrganization: null,
+            },
+            source: { __typename: 'MessageSourceChat', chat: content.room.peer },
+            senderBadge: null,
+            message: text,
+            fallback: text,
+            edited: false,
+            commentsCount: 0,
+            attachments: [],
+            quotedMessages: [],
+            reactions: [],
+            spans: spans,
+        }),
+
+        notificationId: id,
+        notificationType: 'mm',
+
+        // rewrite results from convertMessage
+        key: id,
+        isOut: false
+    };
+};
+
 export const convertNotification = (notification: Types.NotificationFragment): NotificationsDataSourceItem => {
     const content = notification.content;
 
@@ -93,6 +163,10 @@ export const convertNotification = (notification: Types.NotificationFragment): N
         const peer = firstContent.peer;
 
         return convertCommentNotification(notification.id, peer, comment);
+    } else if (content && content.length && content[0].__typename === 'NewMatchmakingProfilesNotification') {
+        const firstContent = content[0] as Types.NotificationFragment_content_NewMatchmakingProfilesNotification;
+        const res = notificationMatchmaking(notification.id, firstContent);
+        return res;
     } else {
         return notificationUnsupported(notification.id);
     }
@@ -154,7 +228,7 @@ export class NotificationCenterEngine {
         };
 
         this._dataSourceStored = new DataSourceStored(
-            'notifications-6',
+            'notifications-7',
             engine.options.store,
             20,
             provider,
@@ -231,10 +305,9 @@ export class NotificationCenterEngine {
 
             await this._dataSourceStored.addItem(converted, 0);
 
-            if (converted.notificationType === 'new_comment') {
+            if (converted.notificationType === 'new_comment' || converted.notificationType === 'mm') {
                 this.engine.notifications.handleIncomingNotification(converted);
             }
-
             this.onNotificationsUpdated();
         } else if (event.__typename === 'NotificationDeleted') {
             const id = event.notification.id;

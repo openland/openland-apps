@@ -115,6 +115,10 @@ export const MemberProfileEditFragment = React.memo(() => {
             },
         });
         await client.refetchMatchmakingRoom({ peerId: chatId });
+        await client.refetchMatchmakingProfile({
+            peerId: chatId,
+            uid: data.myProfile!.user.id,
+        });
     };
 
     return (

@@ -131,7 +131,7 @@ const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
 
     if (chat.__typename === 'SharedRoom') {
         res.item({ title: 'Settings', icon: <SettingsIcon />, action: () => showRoomEditModal(chat.id) });
-        if (chat.role === 'OWNER' || chat.role === 'ADMIN') {
+        if (chat.role === 'OWNER' || chat.role === 'ADMIN' || (chat.organization && (chat.organization.isAdmin || chat.organization.isOwner))) {
             res.item({ title: 'Advanced settings', icon: <StarIcon />, action: () => router.navigate(`/advanced/${chat.id}`) });
         }
         res.item({ title: 'Leave chat', icon: <LeaveIcon />, action: () => showLeaveChatConfirmation(client, chat.id) });

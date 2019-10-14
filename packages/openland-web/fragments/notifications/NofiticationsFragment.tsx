@@ -15,7 +15,7 @@ import { MessengerEmptyFragment } from 'openland-web/fragments/chat/MessengerEmp
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { UHeader } from 'openland-unicorn/UHeader';
-import { NotificationView } from './components/NotificationView';
+import { NotificationCommentView, NotificationMatchmakingView } from './components/NotificationView';
 import { css } from 'linaria';
 
 const wrapperClass = css`
@@ -100,9 +100,10 @@ class CommentsNotificationsInner extends React.PureComponent<
     }
 
     private renderNotification = (data: { item: (DataSourceWebMessageItem) }) => {
-        return (
-            <NotificationView notification={data.item} />
-        );
+        return data.item.notificationType ? (
+            data.item.notificationType === 'mm' ?
+                <NotificationMatchmakingView notification={data.item} /> : <NotificationCommentView notification={data.item} />
+        ) : null;
     }
 
     private renderEmpty = () => {

@@ -1,13 +1,13 @@
 export interface HeaderConfig {
     title?: string;
     titleView?: any;
-    appearance?: 'normal' | 'wide';
+    appearance?: 'normal' | 'wide' | 'fullwidth';
     backgroundColor?: string;
 }
 
 export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let title: string | undefined;
-    let appearance: 'normal' | 'wide' | undefined;
+    let appearance: 'normal' | 'wide' | 'fullwidth' | undefined;
     let titleView: any | undefined;
     let backgroundColor: string | undefined;
     for (let c of configs) {

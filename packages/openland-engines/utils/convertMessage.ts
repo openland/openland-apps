@@ -2,11 +2,11 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { FullMessage } from 'openland-api/Types';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 
-export function convertMessage(
+export const convertMessage = (
     src: FullMessage & {
         repeatKey?: string;
     },
-): DataSourceMessageItem {
+): DataSourceMessageItem => {
     let generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;
     let serviceMessage = src.__typename === 'ServiceMessage' ? src : undefined;
     let stickerMessage = src.__typename === 'StickerMessage' ? src : undefined;
@@ -50,4 +50,4 @@ export function convertMessage(
         reactionsReduced: [],
         reactionsLabel: '',
     };
-}
+};

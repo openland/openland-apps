@@ -15,7 +15,7 @@ const wrapperClass = css`
     margin-bottom: -1px;
 `;
 
-const linkClass = css`
+export const linkClass = css`
     color: var(--foregroundPrimary);
 
     &:hover {

@@ -49,9 +49,18 @@ fragment NotificationFragment on Notification {
       }
     }
     ... on NewMatchmakingProfilesNotification {
+      profiles {
+        __typename
+        ...MatchmakingProfileFragment
+      }
       room {
         __typename
-        enabled
+        peer {
+          __typename
+          ... on SharedRoom {
+            ...RoomNano
+          }
+        }
       }
     }
   }

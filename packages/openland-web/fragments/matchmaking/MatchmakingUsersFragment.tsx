@@ -165,6 +165,11 @@ const userCardContainer = css`
     border-radius: 18px;
     padding: 56px 40px 70px 40px;
     margin-bottom: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    &:hover {
+        transform: translateY(-5px);
+    }
 `;
 
 const userNameStyle = css`
@@ -189,8 +194,10 @@ interface UserCardProps {
 }
 
 const UserCard = React.memo((props: UserCardProps) => {
+    const router = React.useContext(XViewRouterContext)!;
     const [prevButtonState] = React.useState(props.data.chatCreated);
     const [changeCreatedButton, setChangeCreatedButton] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
     const client = useClient();
     const { user } = props.data;
 
@@ -221,8 +228,13 @@ const UserCard = React.memo((props: UserCardProps) => {
             .show();
     };
 
+    const onCardClick = () => {
+        router.navigate(`/group/${props.chatId}/user/${user.id}`);
+    };
+
     const createChat = async () => {
         showModal();
+        setLoading(true);
         await client.mutateMatchmakingConnect({
             peerId: props.chatId,
             uid: user.id,
@@ -230,10 +242,11 @@ const UserCard = React.memo((props: UserCardProps) => {
         await client.refetchMatchmakingRoom({
             peerId: props.chatId,
         });
+        setLoading(false);
     };
 
     return (
-        <div className={userCardContainer}>
+        <div className={userCardContainer} onClick={onCardClick}>
             <UAvatar title={user.name} id={user.id} photo={user.photo} size="xx-large" />
             <div className={cx(TextTitle2, userNameStyle)}>{user.name}</div>
             {user.primaryOrganization && (
@@ -262,12 +275,31 @@ const UserCard = React.memo((props: UserCardProps) => {
                 <UButton
                     text={changeCreatedButton ? 'Chat created' : 'Connected'}
                     style={changeCreatedButton ? 'success' : 'secondary'}
+                    loading={loading}
                 />
             )}
-            {!props.data.chatCreated && <UButton text="Connect" action={createChat} />}
+            {!props.data.chatCreated && (
+                <UButton
+                    text="Connect"
+                    loading={loading}
+                    onClick={e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        createChat();
+                    }}
+                />
+            )}
         </div>
     );
 });
+
+const titleRenderStyle = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto;
+`;
 
 const skipStyle = css`
     cursor: pointer;
@@ -276,11 +308,11 @@ const skipStyle = css`
 
 const TitleRender = (props: { onDone: () => void }) => {
     return (
-        <XView flexGrow={1} flexDirection="row" justifyContent="flex-end" alignItems="center">
+        <div className={titleRenderStyle}>
             <div onClick={props.onDone} className={cx(TextTitle3, skipStyle)}>
                 Done
             </div>
-        </XView>
+        </div>
     );
 };
 
@@ -319,7 +351,10 @@ export const MatchmakingUsersFragment = React.memo(() => {
 
     return (
         <Page flexGrow={1} track="matchmaking_users" padded={true}>
-            <UHeader titleView={fromGroup ? undefined : <TitleRender onDone={onDone} />} />
+            <UHeader
+                titleView={fromGroup ? undefined : <TitleRender onDone={onDone} />}
+                appearance="fullwidth"
+            />
             <XView flexGrow={1}>
                 <XView flexGrow={1}>
                     <div className={mainContainer}>

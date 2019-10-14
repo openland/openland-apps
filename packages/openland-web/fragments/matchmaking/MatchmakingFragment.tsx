@@ -178,6 +178,14 @@ interface QuestionComponentProps {
     defaultValue?: string[] | string | null;
 }
 
+const titleRenderStyle = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto;
+`;
+
 const skipStyle = css`
     cursor: pointer;
     color: var(--foregroundSecondary);
@@ -198,11 +206,11 @@ const TitleRender = (props: { onSkip: () => void }) => {
             .show();
     };
     return (
-        <XView flexGrow={1} flexDirection="row" justifyContent="flex-end" alignItems="center">
+        <div className={titleRenderStyle}>
             <div onClick={onSkip} className={cx(TextTitle3, skipStyle)}>
                 Skip
             </div>
-        </XView>
+        </div>
     );
 };
 
@@ -228,7 +236,10 @@ const QuestionComponent = (props: QuestionComponentProps) => {
 
     return (
         <Page flexGrow={1} track="matchmaking_question" padded={true}>
-            <UHeader titleView={textQuestion ? <TitleRender onSkip={onSkip} /> : null} />
+            <UHeader
+                titleView={textQuestion ? <TitleRender onSkip={onSkip} /> : null}
+                appearance="fullwidth"
+            />
             <div className={descriptionContainer}>
                 <div className={cx(TextTitle1, titleStyle)}>{props.question.title}</div>
                 {props.question.subtitle && (

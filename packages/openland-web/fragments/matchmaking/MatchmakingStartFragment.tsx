@@ -7,6 +7,7 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useClient } from 'openland-web/utils/useClient';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const outerContainer = css`
     display: flex;
@@ -49,6 +50,10 @@ const desktopCardsContainer = css`
     align-self: center;
 `;
 
+const desktopCardsContainerNoLogin = css`
+    margin-top: 20px;
+`;
+
 const cardIcon = css`
     width: 280px;
     height: 230px;
@@ -72,10 +77,17 @@ const redText = css`
 
 export const MatchmakingStartComponent = (props: { onStart: () => void }) => {
     const isMobile = useLayout() === 'mobile';
+    const userContext = React.useContext(UserInfoContext)!!;
     return (
         <div className={outerContainer}>
             <div className={isMobile ? mainContainer : mainContainerDesktop}>
-                <div className={cx(cardsContainer, !isMobile && desktopCardsContainer)}>
+                <div
+                    className={cx(
+                        cardsContainer,
+                        !isMobile && desktopCardsContainer,
+                        !isMobile && !userContext.user && desktopCardsContainerNoLogin,
+                    )}
+                >
                     <img
                         className={cardIcon}
                         src="https://cdn.openland.com/shared/web/matchmaking/cards@1x.png"
@@ -87,7 +99,7 @@ export const MatchmakingStartComponent = (props: { onStart: () => void }) => {
                         <span className={redText}>1</span> Introduce yourself
                     </div>
                     <div>
-                        <span className={redText}>2</span> Explore people
+                        <span className={redText}>2</span> Explore members
                     </div>
                     <div>
                         <span className={redText}>3</span> Chat!
