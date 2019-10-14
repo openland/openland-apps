@@ -131,7 +131,7 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
 
             {bottomContent}
 
-            {item.notificationType !== 'unsupported' && (
+            {item.notificationType === 'new_comment' && (
                 <ASFlex marginTop={2}>
                     <ZRelativeDateAsync
                         fontWeight={FontStyles.Weight.Medium}

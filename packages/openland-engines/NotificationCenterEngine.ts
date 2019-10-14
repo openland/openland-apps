@@ -89,9 +89,6 @@ const notificationMatchmaking = (id: string, content: Types.NotificationFragment
     const date = Date.now();
 
     const users = content.profiles.map(u => u.user);
-    users.push(content.profiles[0].user);
-    users.push(content.profiles[0].user);
-    users.push(content.profiles[0].user);
 
     let multipleMention: Types.FullMessage_GeneralMessage_spans_MessageSpanMultiUserMention | undefined;
     const text = users.reduce((str, user, i, arr) => {
@@ -115,7 +112,6 @@ const notificationMatchmaking = (id: string, content: Types.NotificationFragment
     if (multipleMention) {
         spans.push(multipleMention);
     }
-    console.warn('boom1', text, users, spans);
 
     return {
         ...convertMessage({
@@ -232,7 +228,7 @@ export class NotificationCenterEngine {
         };
 
         this._dataSourceStored = new DataSourceStored(
-            'notifications-6',
+            'notifications-7',
             engine.options.store,
             20,
             provider,
@@ -309,10 +305,9 @@ export class NotificationCenterEngine {
 
             await this._dataSourceStored.addItem(converted, 0);
 
-            if (converted.notificationType === 'new_comment') {
+            if (converted.notificationType === 'new_comment' || converted.notificationType === 'mm') {
                 this.engine.notifications.handleIncomingNotification(converted);
             }
-
             this.onNotificationsUpdated();
         } else if (event.__typename === 'NotificationDeleted') {
             const id = event.notification.id;
