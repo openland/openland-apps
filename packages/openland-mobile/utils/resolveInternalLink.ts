@@ -228,6 +228,18 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         }
 
         //
+        // MATCHMAKING PROFILE
+        //
+        let matchmakingProfilePattern = new UrlPattern(patternBase + 'group/:id/user/:uid');
+        let matchmakingProfilePatternDeep = new UrlPattern(patternBaseDeep + 'group/:id/user/:uid');
+        let matchMatchmakingProfile = matchmakingProfilePattern.match(link) || matchmakingProfilePatternDeep.match(link);
+        
+        if (matchMatchmakingProfile && matchMatchmakingProfile.id && matchMatchmakingProfile.uid) {
+            resolved = true;
+            navigate('MatchmakingProfile', { peerId: matchMatchmakingProfile.id,  userId: matchMatchmakingProfile.uid });
+        }
+
+        //
         // Sharing
         //
         let sharePattern = new UrlPattern(patternBaseDeep + 'share');
