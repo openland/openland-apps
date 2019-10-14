@@ -37,6 +37,10 @@ query RoomChat($id: ID!) {
       }
       membersCount
       membership
+      organization {
+        __typename
+        ...OrganizationMedium
+      }
       photo
       pinnedMessage {
         __typename

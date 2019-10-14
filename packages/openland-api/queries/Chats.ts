@@ -261,6 +261,9 @@ export const RoomChatQuery = gql`
                 canEdit
                 photo
                 membersCount
+                organization {
+                    ...OrganizationMedium
+                }
                 matchmaking {
                     ...MatchmakingRoomFragment
                 }
@@ -276,6 +279,7 @@ export const RoomChatQuery = gql`
     }
     ${FullMessage}
     ${MatchmakingRoomFragment}
+    ${OrganizationMedium}
 `;
 
 export const RoomWithoutMembersQuery = gql`
