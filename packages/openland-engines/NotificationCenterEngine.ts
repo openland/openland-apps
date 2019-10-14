@@ -10,7 +10,6 @@ import { ReadNotificationMutation, MyNotificationCenterMarkSeqReadMutation } fro
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { SequenceModernWatcher } from './core/SequenceModernWatcher';
 import { backoff } from 'openland-y-utils/timer';
-import { Span } from 'openland-y-utils/spans/Span';
 import { prepareLegacyMentions } from './legacy/legacymentions';
 
 const log = createLogger('Engine-NotificationCenter');

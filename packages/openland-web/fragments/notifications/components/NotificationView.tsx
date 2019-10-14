@@ -4,7 +4,7 @@ import { MAvatar } from 'openland-web/fragments/chat/messenger/message/MAvatar';
 import { css, cx } from 'linaria';
 import { DataSourceWebMessageItem } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { NotificationSender, linkClass } from './NotificationSender';
-import { RoomNano_SharedRoom, CommentSubscriptionType, RoomShort, RoomShort_SharedRoom } from 'openland-api/Types';
+import { RoomNano_SharedRoom, CommentSubscriptionType, RoomShort_SharedRoom } from 'openland-api/Types';
 import { UIconLabeled } from 'openland-web/components/unicorn/UIconLabeled';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { useClient } from 'openland-web/utils/useClient';
@@ -172,7 +172,7 @@ export const NotificationCommentView = React.memo((props: NotificationViewProps)
 export const NotificationMatchmakingView = React.memo((props: NotificationViewProps) => {
     const client = useClient();
     const { notification } = props;
-    const { id, sender, text, attachments, textSpans, fallback, senderNameEmojify, peerRootId, replyQuoteTextEmojify, notificationId, isSubscribedMessageComments, source } = notification;
+    const { id, sender, text, attachments, textSpans, fallback, senderNameEmojify, replyQuoteTextEmojify, notificationId, isSubscribedMessageComments, source } = notification;
     const sharedRoom = source && source.chat.__typename === 'SharedRoom' ? source.chat as RoomShort_SharedRoom : undefined;
 
     // Sorry universe
