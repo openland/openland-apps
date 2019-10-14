@@ -50,7 +50,7 @@ const userOptionContainer = css`
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 8px 16px;
+    padding: 8px 0;
 `;
 
 const userNameStyle = css`
@@ -79,8 +79,6 @@ export const AdvancedSettingsFragment = () => {
     const unicorn = useUnicorn();
     const chatId = unicorn.id;
     const rawGroup = client.useRoom({ id: chatId }).room;
-
-    const [loading, setLoading] = React.useState(false);
 
     const group = rawGroup && rawGroup.__typename === 'SharedRoom' ? rawGroup : undefined;
 
@@ -134,8 +132,7 @@ export const AdvancedSettingsFragment = () => {
         ).map(a => a.user),
     });
 
-    const handleSave = () => {
-        setLoading(true);
+    const handleSave = () =>
         form.doAction(async () => {
             await client.mutateUpdateWelcomeMessage({
                 roomId: chatId,
@@ -165,12 +162,10 @@ export const AdvancedSettingsFragment = () => {
                 },
             });
             await client.refetchRoom({ id: chatId });
-            setLoading(false);
         });
-    };
 
     return (
-        <Page track="advanced_settings">
+        <Page track="advanced_settings" padded={true}>
             <UHeader title="Advanced settings" />
             <div className={sectionStyle}>
                 <UCheckbox
@@ -184,7 +179,7 @@ export const AdvancedSettingsFragment = () => {
                     Send an automatic message in 1:1 chat to every new member who joins this group
                 </div>
                 {welcomeMessageEnabled && (
-                    <XView marginTop={16} paddingHorizontal={16} maxWidth={400}>
+                    <XView marginTop={16} maxWidth={400}>
                         <USelectField
                             field={welcomeMessageSenderField as any}
                             creatable={false}
@@ -235,14 +230,14 @@ export const AdvancedSettingsFragment = () => {
                 />
             </div>
             <UButton
-                onClick={handleSave}
+                action={handleSave}
                 text="Save changes"
                 size="large"
                 square={true}
                 marginLeft={16}
                 marginTop={16}
+                marginBottom={20}
                 alignSelf="flex-start"
-                loading={loading}
             />
         </Page>
     );
