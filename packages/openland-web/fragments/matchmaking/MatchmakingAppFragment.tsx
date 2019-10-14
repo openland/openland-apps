@@ -60,6 +60,14 @@ const appButtonMobileContainer = css`
     margin-top: auto;
 `;
 
+const titleRenderStyle = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto;
+`;
+
 const skipStyle = css`
     cursor: pointer;
     color: var(--foregroundSecondary);
@@ -67,11 +75,11 @@ const skipStyle = css`
 
 const TitleRender = (props: { onDone: () => void }) => {
     return (
-        <XView flexGrow={1} flexDirection="row" justifyContent="flex-end" alignItems="center">
+        <div className={titleRenderStyle}>
             <div onClick={props.onDone} className={cx(TextTitle3, skipStyle)}>
                 Skip
             </div>
-        </XView>
+        </div>
     );
 };
 
@@ -96,7 +104,7 @@ export const MatchmakingAppFragment = React.memo(() => {
 
     return (
         <Page flexGrow={1} track="matchmaking_app" padded={true}>
-            <UHeader titleView={<TitleRender onDone={onDone} />} />
+            <UHeader titleView={<TitleRender onDone={onDone} />} appearance="fullwidth" />
             <XView flexGrow={1}>
                 <XView flexGrow={1}>
                     <div className={mainContainer}>

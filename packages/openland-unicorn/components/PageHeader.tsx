@@ -49,7 +49,13 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                         minWidth={0}
                         flexBasis={0}
                         flexGrow={1}
-                        maxWidth={appearance === 'normal' ? 600 : 824}
+                        maxWidth={
+                            appearance === 'normal'
+                                ? 600
+                                : appearance === 'fullwidth'
+                                    ? '100%'
+                                    : 824
+                        }
                         flexDirection="row"
                         paddingHorizontal={16}
                         alignItems="stretch"
