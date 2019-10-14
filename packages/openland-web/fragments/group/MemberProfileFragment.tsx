@@ -113,10 +113,9 @@ export const MemberProfileFragment = React.memo(() => {
                     chatCreated={chatCreated}
                 />
             </UListHero>
-            {userAnswers.map((i, j) => (
+            {userAnswers.map(i => (
                 <UListGroup header={i.question.title} key={i.question.id}>
                     <UListText
-                        key={i.question.id + j}
                         value={
                             i.__typename === 'MultiselectMatchmakingAnswer' ? (
                                 i.tags.map((j, k) => {
