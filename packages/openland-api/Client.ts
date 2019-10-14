@@ -1,3 +1,4 @@
+// @ts-ignore
 import { list, notNull, scalar, field, obj, inline, fragment, args, fieldValue, refValue, intValue, floatValue, stringValue, boolValue, listValue, objectValue } from 'openland-graphql/spacex/types';
 
 const AppChatSelector = obj(
