@@ -79,7 +79,7 @@ export interface DataSourceMessageItem {
     peerRootId?: string;
     peerRootType?: 'CommentPeerRootMessage' | 'CommentPeerRootFeedItem';
     notificationId?: string;
-    notificationType?: 'new_comment' | 'unsupported';
+    notificationType?: 'new_comment' | 'unsupported' | 'mm';
     room?: Types.RoomNano;
 }
 

@@ -3,6 +3,7 @@ import { CommentEntryFragment } from 'openland-api/fragments/Comment';
 import { RoomNano } from 'openland-api/fragments/RoomNano';
 import { UserBadge } from 'openland-api/fragments/UserBadge';
 import { FeedItemFull } from 'openland-api/fragments/FeedItemFull';
+import { MatchmakingProfileFragment } from 'openland-api/fragments/MatchmakingFragments';
 
 export const NotificationFragment = gql`
     fragment NotificationFragment on Notification {
@@ -48,7 +49,14 @@ export const NotificationFragment = gql`
             }
             ... on NewMatchmakingProfilesNotification {
                 room {
-                    enabled
+                    peer {
+                        ... on SharedRoom{
+                            ...RoomNano
+                        }
+                    }
+                }
+                profiles{
+                    ...MatchmakingProfileFragment
                 }
             }
         }
@@ -58,6 +66,7 @@ export const NotificationFragment = gql`
     ${UserBadge}
     ${RoomNano}
     ${FeedItemFull}
+    ${MatchmakingProfileFragment}
 `;
 
 export const MyNotificationsQuery = gql`

@@ -1146,9 +1146,18 @@ internal val NotificationFragmentSelector = obj(
                             )))
                     )),
                     inline("NewMatchmakingProfilesNotification", obj(
+                        field("profiles","profiles", notNull(list(notNull(obj(
+                                field("__typename","__typename", notNull(scalar("String"))),
+                                fragment("MatchmakingProfile", MatchmakingProfileFragmentSelector)
+                            ))))),
                         field("room","room", notNull(obj(
                                 field("__typename","__typename", notNull(scalar("String"))),
-                                field("enabled","enabled", notNull(scalar("Boolean")))
+                                field("peer","peer", notNull(obj(
+                                        field("__typename","__typename", notNull(scalar("String"))),
+                                        inline("SharedRoom", obj(
+                                            fragment("Room", RoomNanoSelector)
+                                        ))
+                                    )))
                             )))
                     ))
                 ))))),
