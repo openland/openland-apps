@@ -4,6 +4,7 @@ import { XView } from 'react-mental';
 import { UAvatar } from './UAvatar';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { showAvatarModal } from '../showAvatarModal';
 import { emoji } from 'openland-y-utils/emoji';
 
@@ -54,14 +55,15 @@ interface UListHeroProps {
 export const UListHero = (props: UListHeroProps) => {
     const { title, score, description, descriptionColor, avatar, children } = props;
     const titleEmojify = React.useMemo(() => emoji(title), [title]);
+    const isMobile = useLayout() === 'mobile';
 
     return (
         <XView marginBottom={32} height={72} paddingHorizontal={16} flexDirection="row">
             {!!avatar && (
-                <XView marginRight={16} position="relative">
+                <XView marginRight={16} position="relative" justifyContent="center">
                     <UAvatar
                         {...avatar}
-                        size="x-large"
+                        size={isMobile ? 'large' : 'x-large'}
                         onClick={
                             avatar.photo && !avatar.photo.startsWith('ph://')
                                 ? () => showAvatarModal(avatar.photo!)
@@ -80,17 +82,13 @@ export const UListHero = (props: UListHeroProps) => {
                 justifyContent="center"
             >
                 <XView {...TextStyles.Title3} color="var(--foregroundPrimary)">
-                    <span className={textStyle}>
-                        {titleEmojify}
-                    </span>
+                    <span className={textStyle}>{titleEmojify}</span>
                 </XView>
 
                 {!!description && (
                     <XView
                         {...TextStyles.Densed}
-                        color={
-                            descriptionColor ? descriptionColor : 'var(--foregroundSecondary)'
-                        }
+                        color={descriptionColor ? descriptionColor : 'var(--foregroundSecondary)'}
                         marginTop={4}
                     >
                         <span className={textStyle}>{description}</span>
