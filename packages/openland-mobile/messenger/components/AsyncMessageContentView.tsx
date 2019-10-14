@@ -203,7 +203,9 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
 
     const fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);
     const isImageBottom = hasImage && !hasText && !hasDocument;
-
+    // sorry
+    const shiftMeta = !!(!bottomContent.length && (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment' && a.keyboard).length);
+    const meta = <MetaInfoIndicator type={isImageBottom ? 'media' : 'default'} message={message} theme={theme} />;
     return (
         <ASFlex flexDirection="column" alignItems="stretch">
             <AsyncBubbleView
@@ -216,8 +218,10 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
             >
                 <ASFlex flexDirection="column" alignItems="stretch">
                     {topContent}
-
-                    <MetaInfoIndicator type={isImageBottom ? 'media' : 'default'} message={message} theme={theme} />
+                    {!shiftMeta && meta}
+                    {shiftMeta && (
+                        <ASFlex marginBottom={14}>{meta}</ASFlex>
+                    )}
                 </ASFlex>
             </AsyncBubbleView>
 
