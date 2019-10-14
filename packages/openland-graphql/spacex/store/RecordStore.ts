@@ -150,7 +150,7 @@ export class RecordStore {
         for (let f in record.fields) {
             if (record.fields.hasOwnProperty(f)) {
                 let exf = ex ? ex.fields[f] : null;
-                if (!exf || isRecordValueEquals(exf, record.fields[f])) {
+                if (!exf || !isRecordValueEquals(exf, record.fields[f])) {
                     changedFields[f] = f;
                     fields[f] = record.fields[f];
                 }
