@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val OrganizationChangeMemberRoleSelector = obj(
-            field("alphaOrganizationChangeMemberRole","alphaOrganizationChangeMemberRole", arguments(fieldValue("memberId", refValue("memberId")), fieldValue("newRole", refValue("newRole")), fieldValue("organizationId", refValue("organizationId"))), notNull(scalar("String")))
+            field("alphaOrganizationChangeMemberRole", "alphaOrganizationChangeMemberRole", arguments(fieldValue("memberId", refValue("memberId")), fieldValue("newRole", refValue("newRole")), fieldValue("organizationId", refValue("organizationId"))), notNull(scalar("String")))
         )
 val OrganizationChangeMemberRole = object: OperationDefinition {
     override val name = "OrganizationChangeMemberRole"

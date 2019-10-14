@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val SetUserShortnameSelector = obj(
-            field("alphaSetUserShortName","alphaSetUserShortName", arguments(fieldValue("shortname", refValue("shortname"))), scalar("String"))
+            field("alphaSetUserShortName", "alphaSetUserShortName", arguments(fieldValue("shortname", refValue("shortname"))), scalar("String"))
         )
 val SetUserShortname = object: OperationDefinition {
     override val name = "SetUserShortname"

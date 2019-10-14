@@ -5,11 +5,11 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val SuperAccountMemberRemoveSelector = obj(
-            field("superAccountMemberRemove","superAccountMemberRemove", arguments(fieldValue("id", refValue("accountId")), fieldValue("userId", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("members","members", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("superAccountMemberRemove", "superAccountMemberRemove", arguments(fieldValue("id", refValue("accountId")), fieldValue("userId", refValue("userId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("members", "members", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )))))
                 )))

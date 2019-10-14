@@ -5,9 +5,9 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val ChatOnlinesCountWatchSelector = obj(
-            field("chatOnlinesCount","chatOnlinesCount", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("onlineMembers","onlineMembers", notNull(scalar("Int")))
+            field("chatOnlinesCount", "chatOnlinesCount", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("onlineMembers", "onlineMembers", notNull(scalar("Int")))
                 )))
         )
 val ChatOnlinesCountWatch = object: OperationDefinition {

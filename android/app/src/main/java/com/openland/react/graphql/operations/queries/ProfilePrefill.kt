@@ -5,11 +5,11 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val ProfilePrefillSelector = obj(
-            field("myProfilePrefill","prefill", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("firstName","firstName", scalar("String")),
-                    field("lastName","lastName", scalar("String")),
-                    field("picture","picture", scalar("String"))
+            field("myProfilePrefill", "prefill", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("firstName", "firstName", scalar("String")),
+                    field("lastName", "lastName", scalar("String")),
+                    field("picture", "picture", scalar("String"))
                 ))
         )
 val ProfilePrefill = object: OperationDefinition {

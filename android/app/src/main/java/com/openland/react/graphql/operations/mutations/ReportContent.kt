@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val ReportContentSelector = obj(
-            field("reportContent","reportContent", arguments(fieldValue("contentId", refValue("contentId")), fieldValue("message", refValue("message")), fieldValue("type", refValue("type"))), scalar("Boolean"))
+            field("reportContent", "reportContent", arguments(fieldValue("contentId", refValue("contentId")), fieldValue("message", refValue("message")), fieldValue("type", refValue("type"))), scalar("Boolean"))
         )
 val ReportContent = object: OperationDefinition {
     override val name = "ReportContent"

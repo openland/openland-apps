@@ -5,18 +5,18 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MessageSelector = obj(
-            field("message","message", arguments(fieldValue("messageId", refValue("messageId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("source","source", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("message", "message", arguments(fieldValue("messageId", refValue("messageId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("source", "source", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             inline("MessageSourceChat", obj(
-                                field("chat","chat", notNull(obj(
-                                        field("__typename","__typename", notNull(scalar("String"))),
+                                field("chat", "chat", notNull(obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
                                         inline("PrivateRoom", obj(
-                                            field("id","id", notNull(scalar("ID")))
+                                            field("id", "id", notNull(scalar("ID")))
                                         )),
                                         inline("SharedRoom", obj(
-                                            field("id","id", notNull(scalar("ID")))
+                                            field("id", "id", notNull(scalar("ID")))
                                         ))
                                     )))
                             ))

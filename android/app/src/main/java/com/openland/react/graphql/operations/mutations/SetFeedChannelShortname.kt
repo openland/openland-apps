@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val SetFeedChannelShortnameSelector = obj(
-            field("alphaSetFeedChannelShortName","alphaSetFeedChannelShortName", arguments(fieldValue("id", refValue("id")), fieldValue("shortname", refValue("shortname"))), scalar("String"))
+            field("alphaSetFeedChannelShortName", "alphaSetFeedChannelShortName", arguments(fieldValue("id", refValue("id")), fieldValue("shortname", refValue("shortname"))), scalar("String"))
         )
 val SetFeedChannelShortname = object: OperationDefinition {
     override val name = "SetFeedChannelShortname"

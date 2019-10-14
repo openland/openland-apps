@@ -5,13 +5,13 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val OrganizationMembersShortSelector = obj(
-            field("organization","organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("alphaOrganizationMembers","members", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("user","user", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("id","id", notNull(scalar("ID")))
+            field("organization", "organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("alphaOrganizationMembers", "members", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("user", "user", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID")))
                                 )))
                         ))))),
                     fragment("Organization", OrganizationWithoutMembersFragmentSelector)

@@ -18539,6 +18539,51 @@
             "deprecationReason": null
           },
           {
+            "name": "debugSerializeId",
+            "description": null,
+            "args": [
+              {
+                "name": "id",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "type",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "debugSendEmail",
             "description": null,
             "args": [
@@ -19589,6 +19634,22 @@
           },
           {
             "name": "debugReindexFeedChannels",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "debugReindexFeedTopics",
             "description": null,
             "args": [],
             "type": {
@@ -25725,13 +25786,9 @@
                 "name": "title",
                 "description": null,
                 "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
                 },
                 "defaultValue": null
               },
@@ -33645,6 +33702,11 @@
             "kind": "OBJECT",
             "name": "FeedItemDeleted",
             "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "FeedRebuildNeeded",
+            "ofType": null
           }
         ]
       },
@@ -33717,6 +33779,33 @@
               "ofType": {
                 "kind": "UNION",
                 "name": "FeedItem",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "FeedRebuildNeeded",
+        "description": null,
+        "fields": [
+          {
+            "name": "homeFeed",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "FeedItemConnection",
                 "ofType": null
               }
             },

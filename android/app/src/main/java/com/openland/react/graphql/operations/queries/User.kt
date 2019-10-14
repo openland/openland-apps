@@ -5,27 +5,27 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val UserSelector = obj(
-            field("room","conversation", arguments(fieldValue("id", refValue("userId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("room", "conversation", arguments(fieldValue("id", refValue("userId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("PrivateRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("settings","settings", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("mute","mute", scalar("Boolean"))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("settings", "settings", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("mute", "mute", scalar("Boolean"))
                             )))
                     ))
                 )),
-            field("user","user", arguments(fieldValue("id", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("chatsWithBadge","chatsWithBadge", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("badge","badge", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+            field("user", "user", arguments(fieldValue("id", refValue("userId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("chatsWithBadge", "chatsWithBadge", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("badge", "badge", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("UserBadge", UserBadgeSelector)
                                 ))),
-                            field("chat","chat", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+                            field("chat", "chat", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("Room", RoomShortSelector)
                                 )))
                         ))))),

@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val SubscribeToCommentsSelector = obj(
-            field("subscribeToComments","subscribeToComments", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
+            field("subscribeToComments", "subscribeToComments", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
         )
 val SubscribeToComments = object: OperationDefinition {
     override val name = "SubscribeToComments"

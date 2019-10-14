@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val CommentSetReactionSelector = obj(
-            field("commentReactionAdd","commentReactionAdd", arguments(fieldValue("commentId", refValue("commentId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+            field("commentReactionAdd", "commentReactionAdd", arguments(fieldValue("commentId", refValue("commentId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
 val CommentSetReaction = object: OperationDefinition {
     override val name = "CommentSetReaction"

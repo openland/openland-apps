@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val ConferenceKeepAliveSelector = obj(
-            field("conferenceKeepAlive","conferenceKeepAlive", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("conferenceKeepAlive", "conferenceKeepAlive", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceShortSelector)
                 )))
         )

@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val ConferenceOfferSelector = obj(
-            field("peerConnectionOffer","peerConnectionOffer", arguments(fieldValue("id", refValue("id")), fieldValue("offer", refValue("offer")), fieldValue("ownPeerId", refValue("ownPeerId")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("peerConnectionOffer", "peerConnectionOffer", arguments(fieldValue("id", refValue("id")), fieldValue("offer", refValue("offer")), fieldValue("ownPeerId", refValue("ownPeerId")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceShortSelector)
                 )))
         )

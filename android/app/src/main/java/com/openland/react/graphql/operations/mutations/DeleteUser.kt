@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val DeleteUserSelector = obj(
-            field("superDeleteUser","superDeleteUser", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+            field("superDeleteUser", "superDeleteUser", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
 val DeleteUser = object: OperationDefinition {
     override val name = "DeleteUser"

@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val FeedCreatePostSelector = obj(
-            field("alphaCreateFeedPost","post", arguments(fieldValue("channel", refValue("channel")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("slides", refValue("slides"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaCreateFeedPost", "post", arguments(fieldValue("channel", refValue("channel")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("slides", refValue("slides"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("FeedItem", FeedItemFullSelector)
                 )))
         )

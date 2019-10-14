@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MySuccessfulInvitesCountSelector = obj(
-            field("mySuccessfulInvitesCount","mySuccessfulInvitesCount", notNull(scalar("Int")))
+            field("mySuccessfulInvitesCount", "mySuccessfulInvitesCount", notNull(scalar("Int")))
         )
 val MySuccessfulInvitesCount = object: OperationDefinition {
     override val name = "MySuccessfulInvitesCount"

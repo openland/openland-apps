@@ -5,18 +5,18 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val AccountAppInviteInfoSelector = obj(
-            field("alphaInviteInfo","invite", arguments(fieldValue("key", refValue("inviteKey"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("creator","creator", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaInviteInfo", "invite", arguments(fieldValue("key", refValue("inviteKey"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("creator", "creator", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )),
-                    field("id","id", notNull(scalar("ID")))
+                    field("id", "id", notNull(scalar("ID")))
                 )),
-            field("appInviteInfo","appInvite", arguments(fieldValue("key", refValue("inviteKey"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("inviter","inviter", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("appInviteInfo", "appInvite", arguments(fieldValue("key", refValue("inviteKey"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("inviter", "inviter", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )))
                 ))

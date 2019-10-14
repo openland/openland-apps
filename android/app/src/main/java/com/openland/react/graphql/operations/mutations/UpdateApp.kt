@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val UpdateAppSelector = obj(
-            field("updateAppProfile","updateAppProfile", arguments(fieldValue("appId", refValue("appId")), fieldValue("input", refValue("input"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("updateAppProfile", "updateAppProfile", arguments(fieldValue("appId", refValue("appId")), fieldValue("input", refValue("input"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("AppProfile", AppFullSelector)
                 )))
         )

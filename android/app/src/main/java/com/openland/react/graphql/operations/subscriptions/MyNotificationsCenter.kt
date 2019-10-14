@@ -5,22 +5,22 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MyNotificationsCenterSelector = obj(
-            field("notificationCenterUpdates","event", arguments(fieldValue("fromState", refValue("state"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("notificationCenterUpdates", "event", arguments(fieldValue("fromState", refValue("state"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("NotificationCenterUpdateSingle", obj(
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("update","update", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("update", "update", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("NotificationCenterUpdate", NotificationCenterUpdateFragmentSelector)
                             )))
                     )),
                     inline("NotificationCenterUpdateBatch", obj(
-                        field("fromSeq","fromSeq", notNull(scalar("Int"))),
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("updates","updates", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("fromSeq", "fromSeq", notNull(scalar("Int"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("updates", "updates", notNull(list(notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("NotificationCenterUpdate", NotificationCenterUpdateFragmentSelector)
                             )))))
                     ))

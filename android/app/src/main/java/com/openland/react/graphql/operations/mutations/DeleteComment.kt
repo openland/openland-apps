@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val DeleteCommentSelector = obj(
-            field("deleteComment","deleteComment", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+            field("deleteComment", "deleteComment", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
 val DeleteComment = object: OperationDefinition {
     override val name = "DeleteComment"

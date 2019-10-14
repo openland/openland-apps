@@ -5,16 +5,16 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MyStickersSelector = obj(
-            field("myStickers","stickers", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("packs","packs", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("stickers","stickers", notNull(list(notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+            field("myStickers", "stickers", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("packs", "packs", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("stickers", "stickers", notNull(list(notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("Sticker", StickerFragmentSelector)
                                 ))))),
-                            field("title","title", notNull(scalar("String")))
+                            field("title", "title", notNull(scalar("String")))
                         )))))
                 )))
         )

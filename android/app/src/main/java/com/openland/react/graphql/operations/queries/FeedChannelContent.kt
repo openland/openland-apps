@@ -5,11 +5,11 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val FeedChannelContentSelector = obj(
-            field("alphaFeedChannelContent","content", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("id", refValue("id"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("cursor","cursor", scalar("String")),
-                    field("items","items", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaFeedChannelContent", "content", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cursor", "cursor", scalar("String")),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("FeedItem", FeedItemFullSelector)
                         )))))
                 )))

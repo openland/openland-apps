@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val RoomsJoinSelector = obj(
-            field("betaRoomsJoin","join", arguments(fieldValue("roomsIds", refValue("roomsIds"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaRoomsJoin", "join", arguments(fieldValue("roomsIds", refValue("roomsIds"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
                 )))))
         )

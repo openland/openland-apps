@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MatchmakingConnectSelector = obj(
-            field("matchmakingConnect","matchmakingConnect", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
+            field("matchmakingConnect", "matchmakingConnect", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
         )
 val MatchmakingConnect = object: OperationDefinition {
     override val name = "MatchmakingConnect"

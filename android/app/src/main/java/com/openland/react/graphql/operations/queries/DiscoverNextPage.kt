@@ -5,22 +5,22 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val DiscoverNextPageSelector = obj(
-            field("gammaNextDiscoverPage","betaNextDiscoverPage", arguments(fieldValue("excudedGroupsIds", refValue("excudedGroupsIds")), fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("chats","chats", list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("gammaNextDiscoverPage", "betaNextDiscoverPage", arguments(fieldValue("excudedGroupsIds", refValue("excudedGroupsIds")), fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("chats", "chats", list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("Room", RoomShortSelector)
                         )))),
-                    field("tagGroup","tagGroup", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("String"))),
-                            field("subtitle","subtitle", scalar("String")),
-                            field("tags","tags", notNull(list(notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("id","id", notNull(scalar("String"))),
-                                    field("title","title", notNull(scalar("String")))
+                    field("tagGroup", "tagGroup", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("String"))),
+                            field("subtitle", "subtitle", scalar("String")),
+                            field("tags", "tags", notNull(list(notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("String"))),
+                                    field("title", "title", notNull(scalar("String")))
                                 ))))),
-                            field("title","title", scalar("String"))
+                            field("title", "title", scalar("String"))
                         ))
                 ))
         )

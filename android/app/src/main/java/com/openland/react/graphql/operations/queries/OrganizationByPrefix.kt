@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val OrganizationByPrefixSelector = obj(
-            field("alphaOrganizationByPrefix","organizationByPrefix", arguments(fieldValue("query", refValue("query"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaOrganizationByPrefix", "organizationByPrefix", arguments(fieldValue("query", refValue("query"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationSearchSelector)
                 ))
         )

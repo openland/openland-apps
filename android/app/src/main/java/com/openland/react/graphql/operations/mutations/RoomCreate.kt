@@ -5,9 +5,9 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val RoomCreateSelector = obj(
-            field("betaRoomCreate","room", arguments(fieldValue("channel", refValue("channel")), fieldValue("description", refValue("description")), fieldValue("kind", refValue("kind")), fieldValue("members", refValue("members")), fieldValue("message", refValue("message")), fieldValue("organizationId", refValue("organizationId")), fieldValue("photoRef", refValue("photoRef")), fieldValue("title", refValue("title"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
+            field("betaRoomCreate", "room", arguments(fieldValue("channel", refValue("channel")), fieldValue("description", refValue("description")), fieldValue("kind", refValue("kind")), fieldValue("members", refValue("members")), fieldValue("message", refValue("message")), fieldValue("organizationId", refValue("organizationId")), fieldValue("photoRef", refValue("photoRef")), fieldValue("title", refValue("title"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
                 )))
         )
 val RoomCreate = object: OperationDefinition {

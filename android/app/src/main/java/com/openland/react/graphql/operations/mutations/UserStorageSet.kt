@@ -5,11 +5,11 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val UserStorageSetSelector = obj(
-            field("userStorageSet","userStorageSet", arguments(fieldValue("data", refValue("data")), fieldValue("namespace", refValue("namespace"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("key","key", notNull(scalar("String"))),
-                    field("value","value", scalar("String"))
+            field("userStorageSet", "userStorageSet", arguments(fieldValue("data", refValue("data")), fieldValue("namespace", refValue("namespace"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("key", "key", notNull(scalar("String"))),
+                    field("value", "value", scalar("String"))
                 )))))
         )
 val UserStorageSet = object: OperationDefinition {

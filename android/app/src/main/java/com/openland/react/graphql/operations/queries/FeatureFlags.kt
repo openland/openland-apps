@@ -5,11 +5,11 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val FeatureFlagsSelector = obj(
-            field("featureFlags","featureFlags", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("key","key", notNull(scalar("String"))),
-                    field("title","title", notNull(scalar("String")))
+            field("featureFlags", "featureFlags", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("key", "key", notNull(scalar("String"))),
+                    field("title", "title", notNull(scalar("String")))
                 )))))
         )
 val FeatureFlags = object: OperationDefinition {

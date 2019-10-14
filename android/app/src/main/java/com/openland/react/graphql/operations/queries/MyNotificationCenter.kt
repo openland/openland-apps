@@ -5,14 +5,14 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MyNotificationCenterSelector = obj(
-            field("myNotificationCenter","myNotificationCenter", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("state","state", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("state","state", scalar("String"))
+            field("myNotificationCenter", "myNotificationCenter", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("state", "state", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("state", "state", scalar("String"))
                         ))),
-                    field("unread","unread", notNull(scalar("Int")))
+                    field("unread", "unread", notNull(scalar("Int")))
                 )))
         )
 val MyNotificationCenter = object: OperationDefinition {

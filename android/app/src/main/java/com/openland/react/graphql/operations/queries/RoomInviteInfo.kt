@@ -5,33 +5,33 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val RoomInviteInfoSelector = obj(
-            field("betaRoomInviteInfo","invite", arguments(fieldValue("invite", refValue("invite"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("invitedByUser","invitedByUser", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("betaRoomInviteInfo", "invite", arguments(fieldValue("invite", refValue("invite"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("invitedByUser", "invitedByUser", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         ))),
-                    field("room","room", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+                    field("room", "room", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             inline("SharedRoom", obj(
-                                field("description","description", scalar("String")),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("isChannel","isChannel", notNull(scalar("Boolean"))),
-                                field("kind","kind", notNull(scalar("String"))),
-                                field("matchmaking","matchmaking", obj(
-                                        field("__typename","__typename", notNull(scalar("String"))),
-                                        field("enabled","enabled", notNull(scalar("Boolean")))
+                                field("description", "description", scalar("String")),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                                field("kind", "kind", notNull(scalar("String"))),
+                                field("matchmaking", "matchmaking", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("enabled", "enabled", notNull(scalar("Boolean")))
                                     )),
-                                field("membersCount","membersCount", scalar("Int")),
-                                field("membership","membership", notNull(scalar("String"))),
-                                field("organization","organization", obj(
-                                        field("__typename","__typename", notNull(scalar("String"))),
+                                field("membersCount", "membersCount", scalar("Int")),
+                                field("membership", "membership", notNull(scalar("String"))),
+                                field("organization", "organization", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
                                         fragment("Organization", OrganizationShortSelector)
                                     )),
-                                field("photo","photo", notNull(scalar("String"))),
-                                field("socialImage","socialImage", scalar("String")),
-                                field("title","title", notNull(scalar("String")))
+                                field("photo", "photo", notNull(scalar("String"))),
+                                field("socialImage", "socialImage", scalar("String")),
+                                field("title", "title", notNull(scalar("String")))
                             ))
                         )))
                 ))

@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val RoomJoinInviteLinkSelector = obj(
-            field("betaRoomInviteLinkJoin","join", arguments(fieldValue("invite", refValue("invite"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaRoomInviteLinkJoin", "join", arguments(fieldValue("invite", refValue("invite"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
                 )))
         )

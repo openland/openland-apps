@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val UnSubscribeFromCommentsSelector = obj(
-            field("unsubscribeFromComments","unsubscribeFromComments", arguments(fieldValue("peerId", refValue("peerId"))), notNull(scalar("Boolean")))
+            field("unsubscribeFromComments", "unsubscribeFromComments", arguments(fieldValue("peerId", refValue("peerId"))), notNull(scalar("Boolean")))
         )
 val UnSubscribeFromComments = object: OperationDefinition {
     override val name = "UnSubscribeFromComments"

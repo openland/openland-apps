@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val PinMessageSelector = obj(
-            field("gammaPinMessage","pinMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("messageId", refValue("messageId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("gammaPinMessage", "pinMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("messageId", refValue("messageId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
                 )))
         )

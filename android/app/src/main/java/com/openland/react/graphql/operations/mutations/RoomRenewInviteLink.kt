@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val RoomRenewInviteLinkSelector = obj(
-            field("betaRoomInviteLinkRenew","link", arguments(fieldValue("roomId", refValue("roomId"))), notNull(scalar("String")))
+            field("betaRoomInviteLinkRenew", "link", arguments(fieldValue("roomId", refValue("roomId"))), notNull(scalar("String")))
         )
 val RoomRenewInviteLink = object: OperationDefinition {
     override val name = "RoomRenewInviteLink"

@@ -5,10 +5,10 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val ReadNotificationSelector = obj(
-            field("readNotification","readNotification", arguments(fieldValue("notificationId", refValue("notificationId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("unread","unread", notNull(scalar("Int")))
+            field("readNotification", "readNotification", arguments(fieldValue("notificationId", refValue("notificationId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("unread", "unread", notNull(scalar("Int")))
                 )))
         )
 val ReadNotification = object: OperationDefinition {

@@ -5,11 +5,11 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val OrganizationPublicInviteSelector = obj(
-            field("alphaOrganizationInviteLink","publicInvite", arguments(fieldValue("organizationId", refValue("organizationId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("key","key", notNull(scalar("String"))),
-                    field("ttl","ttl", scalar("String"))
+            field("alphaOrganizationInviteLink", "publicInvite", arguments(fieldValue("organizationId", refValue("organizationId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("key", "key", notNull(scalar("String"))),
+                    field("ttl", "ttl", scalar("String"))
                 ))
         )
 val OrganizationPublicInvite = object: OperationDefinition {

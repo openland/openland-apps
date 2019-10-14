@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val OrganizationSelector = obj(
-            field("organization","organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("organization", "organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationFullSelector)
                 )))
         )

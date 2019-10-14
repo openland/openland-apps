@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MarkSequenceReadSelector = obj(
-            field("alphaGlobalRead","alphaGlobalRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("String")))
+            field("alphaGlobalRead", "alphaGlobalRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("String")))
         )
 val MarkSequenceRead = object: OperationDefinition {
     override val name = "MarkSequenceRead"

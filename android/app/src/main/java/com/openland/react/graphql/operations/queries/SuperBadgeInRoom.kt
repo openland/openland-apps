@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val SuperBadgeInRoomSelector = obj(
-            field("superBadgeInRoom","superBadgeInRoom", arguments(fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("superBadgeInRoom", "superBadgeInRoom", arguments(fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("UserBadge", UserBadgeSelector)
                 ))
         )

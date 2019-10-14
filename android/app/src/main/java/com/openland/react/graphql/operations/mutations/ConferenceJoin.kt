@@ -5,13 +5,13 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val ConferenceJoinSelector = obj(
-            field("conferenceJoin","conferenceJoin", arguments(fieldValue("id", refValue("id"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("conference","conference", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("conferenceJoin", "conferenceJoin", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("conference", "conference", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("Conference", ConferenceShortSelector)
                         ))),
-                    field("peerId","peerId", notNull(scalar("ID")))
+                    field("peerId", "peerId", notNull(scalar("ID")))
                 )))
         )
 val ConferenceJoin = object: OperationDefinition {

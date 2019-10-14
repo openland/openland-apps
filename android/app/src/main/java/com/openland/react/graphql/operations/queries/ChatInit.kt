@@ -5,20 +5,20 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val ChatInitSelector = obj(
-            field("conversationState","state", arguments(fieldValue("id", refValue("chatId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("state","state", scalar("String"))
+            field("conversationState", "state", arguments(fieldValue("id", refValue("chatId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("state", "state", scalar("String"))
                 ))),
-            field("lastReadedMessage","lastReadedMessage", arguments(fieldValue("chatId", refValue("chatId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
+            field("lastReadedMessage", "lastReadedMessage", arguments(fieldValue("chatId", refValue("chatId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
                 )),
-            field("messages","messages", arguments(fieldValue("before", refValue("before")), fieldValue("chatId", refValue("chatId")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("messages", "messages", arguments(fieldValue("before", refValue("before")), fieldValue("chatId", refValue("chatId")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("ModernMessage", FullMessageSelector)
                 ))))),
-            field("room","room", arguments(fieldValue("id", refValue("chatId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("room", "room", arguments(fieldValue("id", refValue("chatId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
                 ))
         )

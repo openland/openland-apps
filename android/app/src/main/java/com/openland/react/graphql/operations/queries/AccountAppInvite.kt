@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val AccountAppInviteSelector = obj(
-            field("appInvite","invite", notNull(scalar("String")))
+            field("appInvite", "invite", notNull(scalar("String")))
         )
 val AccountAppInvite = object: OperationDefinition {
     override val name = "AccountAppInvite"

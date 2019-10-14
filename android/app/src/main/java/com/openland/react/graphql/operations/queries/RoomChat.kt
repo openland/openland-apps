@@ -5,56 +5,56 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val RoomChatSelector = obj(
-            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("room", "room", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("PrivateRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("pinnedMessage","pinnedMessage", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("pinnedMessage", "pinnedMessage", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("ModernMessage", FullMessageSelector)
                             )),
-                        field("settings","settings", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("mute","mute", scalar("Boolean"))
+                        field("settings", "settings", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("mute", "mute", scalar("Boolean"))
                             ))),
-                        field("user","user", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("isBot","isBot", notNull(scalar("Boolean"))),
-                                field("name","name", notNull(scalar("String"))),
-                                field("photo","photo", scalar("String")),
-                                field("primaryOrganization","primaryOrganization", obj(
-                                        field("__typename","__typename", notNull(scalar("String"))),
-                                        field("id","id", notNull(scalar("ID"))),
-                                        field("name","name", notNull(scalar("String")))
+                        field("user", "user", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("isBot", "isBot", notNull(scalar("Boolean"))),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("photo", "photo", scalar("String")),
+                                field("primaryOrganization", "primaryOrganization", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("name", "name", notNull(scalar("String")))
                                     )),
-                                field("shortname","shortname", scalar("String"))
+                                field("shortname", "shortname", scalar("String"))
                             )))
                     )),
                     inline("SharedRoom", obj(
-                        field("canEdit","canEdit", notNull(scalar("Boolean"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("isChannel","isChannel", notNull(scalar("Boolean"))),
-                        field("kind","kind", notNull(scalar("String"))),
-                        field("matchmaking","matchmaking", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("canEdit", "canEdit", notNull(scalar("Boolean"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                        field("kind", "kind", notNull(scalar("String"))),
+                        field("matchmaking", "matchmaking", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("MatchmakingRoom", MatchmakingRoomFragmentSelector)
                             )),
-                        field("membersCount","membersCount", scalar("Int")),
-                        field("membership","membership", notNull(scalar("String"))),
-                        field("photo","photo", notNull(scalar("String"))),
-                        field("pinnedMessage","pinnedMessage", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("membersCount", "membersCount", scalar("Int")),
+                        field("membership", "membership", notNull(scalar("String"))),
+                        field("photo", "photo", notNull(scalar("String"))),
+                        field("pinnedMessage", "pinnedMessage", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("ModernMessage", FullMessageSelector)
                             )),
-                        field("role","role", notNull(scalar("String"))),
-                        field("settings","settings", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("mute","mute", scalar("Boolean"))
+                        field("role", "role", notNull(scalar("String"))),
+                        field("settings", "settings", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("mute", "mute", scalar("Boolean"))
                             ))),
-                        field("title","title", notNull(scalar("String")))
+                        field("title", "title", notNull(scalar("String")))
                     ))
                 ))
         )

@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val DiscoverIsDoneSelector = obj(
-            field("betaIsDiscoverDone","betaIsDiscoverDone", notNull(scalar("Boolean")))
+            field("betaIsDiscoverDone", "betaIsDiscoverDone", notNull(scalar("Boolean")))
         )
 val DiscoverIsDone = object: OperationDefinition {
     override val name = "DiscoverIsDone"

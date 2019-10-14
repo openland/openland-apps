@@ -5,11 +5,11 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MyNotificationsSelector = obj(
-            field("myNotifications","myNotifications", arguments(fieldValue("before", refValue("before")), fieldValue("first", refValue("first"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("cursor","cursor", scalar("String")),
-                    field("items","items", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("myNotifications", "myNotifications", arguments(fieldValue("before", refValue("before")), fieldValue("first", refValue("first"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cursor", "cursor", scalar("String")),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("Notification", NotificationFragmentSelector)
                         )))))
                 )))

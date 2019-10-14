@@ -5,17 +5,17 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val OrganizationMembersSelector = obj(
-            field("organization","organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("alphaOrganizationMembers","members", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("role","role", notNull(scalar("String"))),
-                            field("user","user", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+            field("organization", "organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("alphaOrganizationMembers", "members", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("role", "role", notNull(scalar("String"))),
+                            field("user", "user", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("User", UserShortSelector)
                                 )))
                         ))))),
-                    field("id","id", notNull(scalar("ID")))
+                    field("id", "id", notNull(scalar("ID")))
                 )))
         )
 val OrganizationMembers = object: OperationDefinition {

@@ -1,278 +1,278 @@
 private let AppChatSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("chat","chat", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("chat", "chat", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("PrivateRoom", obj(
-                        field("id","id", notNull(scalar("ID")))
+                        field("id", "id", notNull(scalar("ID")))
                     )),
                     inline("SharedRoom", obj(
-                        field("id","id", notNull(scalar("ID")))
+                        field("id", "id", notNull(scalar("ID")))
                     ))
                 ))),
-            field("webhook","webhook", notNull(scalar("String")))
+            field("webhook", "webhook", notNull(scalar("String")))
         )
 
 private let AppFullSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("about","about", scalar("String")),
-            field("id","id", notNull(scalar("ID"))),
-            field("name","name", notNull(scalar("String"))),
-            field("photoRef","photoRef", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("crop","crop", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("h","h", notNull(scalar("Int"))),
-                            field("w","w", notNull(scalar("Int"))),
-                            field("x","x", notNull(scalar("Int"))),
-                            field("y","y", notNull(scalar("Int")))
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("about", "about", scalar("String")),
+            field("id", "id", notNull(scalar("ID"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("photoRef", "photoRef", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("crop", "crop", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("h", "h", notNull(scalar("Int"))),
+                            field("w", "w", notNull(scalar("Int"))),
+                            field("x", "x", notNull(scalar("Int"))),
+                            field("y", "y", notNull(scalar("Int")))
                         )),
-                    field("uuid","uuid", notNull(scalar("String")))
+                    field("uuid", "uuid", notNull(scalar("String")))
                 )),
-            field("shortname","shortname", scalar("String")),
-            field("token","token", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("salt","salt", notNull(scalar("String")))
+            field("shortname", "shortname", scalar("String")),
+            field("token", "token", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("salt", "salt", notNull(scalar("String")))
                 )))
         )
 
 private let OrganizationShortSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("about","about", scalar("String")),
-            field("alphaIsCommunity","isCommunity", notNull(scalar("Boolean"))),
-            field("id","id", notNull(scalar("ID"))),
-            field("name","name", notNull(scalar("String"))),
-            field("photo","photo", scalar("String")),
-            field("shortname","shortname", scalar("String"))
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("about", "about", scalar("String")),
+            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
+            field("shortname", "shortname", scalar("String"))
         )
 
 private let UserShortSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("email","email", scalar("String")),
-            field("firstName","firstName", notNull(scalar("String"))),
-            field("id","id", notNull(scalar("ID"))),
-            field("isBot","isBot", notNull(scalar("Boolean"))),
-            field("isYou","isYou", notNull(scalar("Boolean"))),
-            field("lastName","lastName", scalar("String")),
-            field("lastSeen","lastSeen", scalar("String")),
-            field("name","name", notNull(scalar("String"))),
-            field("online","online", notNull(scalar("Boolean"))),
-            field("photo","photo", scalar("String")),
-            field("primaryOrganization","primaryOrganization", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("email", "email", scalar("String")),
+            field("firstName", "firstName", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("isBot", "isBot", notNull(scalar("Boolean"))),
+            field("isYou", "isYou", notNull(scalar("Boolean"))),
+            field("lastName", "lastName", scalar("String")),
+            field("lastSeen", "lastSeen", scalar("String")),
+            field("name", "name", notNull(scalar("String"))),
+            field("online", "online", notNull(scalar("Boolean"))),
+            field("photo", "photo", scalar("String")),
+            field("primaryOrganization", "primaryOrganization", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationShortSelector)
                 )),
-            field("shortname","shortname", scalar("String"))
+            field("shortname", "shortname", scalar("String"))
         )
 
 private let UserBadgeSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("id","id", notNull(scalar("ID"))),
-            field("name","name", notNull(scalar("String"))),
-            field("verified","verified", notNull(scalar("Boolean")))
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("verified", "verified", notNull(scalar("Boolean")))
         )
 
 private let UserForMentionSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("id","id", notNull(scalar("ID"))),
-            field("isYou","isYou", notNull(scalar("Boolean"))),
-            field("name","name", notNull(scalar("String"))),
-            field("photo","photo", scalar("String")),
-            field("primaryOrganization","primaryOrganization", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("name","name", notNull(scalar("String")))
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("isYou", "isYou", notNull(scalar("Boolean"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
+            field("primaryOrganization", "primaryOrganization", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String")))
                 )),
-            field("shortname","shortname", scalar("String"))
+            field("shortname", "shortname", scalar("String"))
         )
 
 private let SpanFragmentSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("length","length", notNull(scalar("Int"))),
-            field("offset","offset", notNull(scalar("Int"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("length", "length", notNull(scalar("Int"))),
+            field("offset", "offset", notNull(scalar("Int"))),
             inline("MessageSpanUserMention", obj(
-                field("user","user", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("User", UserForMentionSelector)
                     )))
             )),
             inline("MessageSpanMultiUserMention", obj(
-                field("users","users", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("users", "users", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("User", UserForMentionSelector)
                     )))))
             )),
             inline("MessageSpanRoomMention", obj(
-                field("room","room", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("room", "room", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         inline("PrivateRoom", obj(
-                            field("id","id", notNull(scalar("ID"))),
-                            field("user","user", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("id","id", notNull(scalar("ID"))),
-                                    field("name","name", notNull(scalar("String")))
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("user", "user", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("name", "name", notNull(scalar("String")))
                                 )))
                         )),
                         inline("SharedRoom", obj(
-                            field("id","id", notNull(scalar("ID"))),
-                            field("title","title", notNull(scalar("String")))
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("title", "title", notNull(scalar("String")))
                         ))
                     )))
             )),
             inline("MessageSpanLink", obj(
-                field("url","url", notNull(scalar("String")))
+                field("url", "url", notNull(scalar("String")))
             )),
             inline("MessageSpanDate", obj(
-                field("date","date", notNull(scalar("Date")))
+                field("date", "date", notNull(scalar("Date")))
             ))
         )
 
 private let QuotedMessageSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("date","date", notNull(scalar("Date"))),
-            field("fallback","fallback", notNull(scalar("String"))),
-            field("id","id", notNull(scalar("ID"))),
-            field("message","message", scalar("String")),
-            field("message","message", scalar("String")),
-            field("sender","sender", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("date", "date", notNull(scalar("Date"))),
+            field("fallback", "fallback", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("message", "message", scalar("String")),
+            field("message", "message", scalar("String")),
+            field("sender", "sender", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("User", UserShortSelector)
                 ))),
-            field("senderBadge","senderBadge", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("senderBadge", "senderBadge", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("UserBadge", UserBadgeSelector)
                 )),
-            field("source","source", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("source", "source", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("MessageSourceChat", obj(
-                        field("chat","chat", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("chat", "chat", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 inline("PrivateRoom", obj(
-                                    field("id","id", notNull(scalar("ID")))
+                                    field("id", "id", notNull(scalar("ID")))
                                 )),
                                 inline("SharedRoom", obj(
-                                    field("id","id", notNull(scalar("ID")))
+                                    field("id", "id", notNull(scalar("ID")))
                                 ))
                             )))
                     ))
                 )),
-            field("spans","spans", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("spans", "spans", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("MessageSpan", SpanFragmentSelector)
                 ))))),
             inline("GeneralMessage", obj(
-                field("attachments","attachments", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("fallback","fallback", notNull(scalar("String"))),
+                field("attachments", "attachments", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("fallback", "fallback", notNull(scalar("String"))),
                         inline("MessageAttachmentFile", obj(
-                            field("fileId","fileId", notNull(scalar("String"))),
-                            field("fileMetadata","fileMetadata", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("imageFormat","imageFormat", scalar("String")),
-                                    field("imageHeight","imageHeight", scalar("Int")),
-                                    field("imageWidth","imageWidth", scalar("Int")),
-                                    field("isImage","isImage", notNull(scalar("Boolean"))),
-                                    field("mimeType","mimeType", scalar("String")),
-                                    field("name","name", notNull(scalar("String"))),
-                                    field("size","size", notNull(scalar("Int")))
+                            field("fileId", "fileId", notNull(scalar("String"))),
+                            field("fileMetadata", "fileMetadata", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("imageFormat", "imageFormat", scalar("String")),
+                                    field("imageHeight", "imageHeight", scalar("Int")),
+                                    field("imageWidth", "imageWidth", scalar("Int")),
+                                    field("isImage", "isImage", notNull(scalar("Boolean"))),
+                                    field("mimeType", "mimeType", scalar("String")),
+                                    field("name", "name", notNull(scalar("String"))),
+                                    field("size", "size", notNull(scalar("Int")))
                                 ))),
-                            field("filePreview","filePreview", scalar("String")),
-                            field("id","id", notNull(scalar("ID")))
+                            field("filePreview", "filePreview", scalar("String")),
+                            field("id", "id", notNull(scalar("ID")))
                         )),
                         inline("MessageRichAttachment", obj(
-                            field("fallback","fallback", notNull(scalar("String"))),
-                            field("icon","icon", obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("metadata","metadata", obj(
-                                            field("__typename","__typename", notNull(scalar("String"))),
-                                            field("imageFormat","imageFormat", scalar("String")),
-                                            field("imageHeight","imageHeight", scalar("Int")),
-                                            field("imageWidth","imageWidth", scalar("Int")),
-                                            field("isImage","isImage", notNull(scalar("Boolean"))),
-                                            field("mimeType","mimeType", scalar("String")),
-                                            field("name","name", notNull(scalar("String"))),
-                                            field("size","size", notNull(scalar("Int")))
+                            field("fallback", "fallback", notNull(scalar("String"))),
+                            field("icon", "icon", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("metadata", "metadata", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("imageFormat", "imageFormat", scalar("String")),
+                                            field("imageHeight", "imageHeight", scalar("Int")),
+                                            field("imageWidth", "imageWidth", scalar("Int")),
+                                            field("isImage", "isImage", notNull(scalar("Boolean"))),
+                                            field("mimeType", "mimeType", scalar("String")),
+                                            field("name", "name", notNull(scalar("String"))),
+                                            field("size", "size", notNull(scalar("Int")))
                                         )),
-                                    field("url","url", notNull(scalar("String")))
+                                    field("url", "url", notNull(scalar("String")))
                                 )),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("image","image", obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("metadata","metadata", obj(
-                                            field("__typename","__typename", notNull(scalar("String"))),
-                                            field("imageFormat","imageFormat", scalar("String")),
-                                            field("imageHeight","imageHeight", scalar("Int")),
-                                            field("imageWidth","imageWidth", scalar("Int")),
-                                            field("isImage","isImage", notNull(scalar("Boolean"))),
-                                            field("mimeType","mimeType", scalar("String")),
-                                            field("name","name", notNull(scalar("String"))),
-                                            field("size","size", notNull(scalar("Int")))
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("image", "image", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("metadata", "metadata", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("imageFormat", "imageFormat", scalar("String")),
+                                            field("imageHeight", "imageHeight", scalar("Int")),
+                                            field("imageWidth", "imageWidth", scalar("Int")),
+                                            field("isImage", "isImage", notNull(scalar("Boolean"))),
+                                            field("mimeType", "mimeType", scalar("String")),
+                                            field("name", "name", notNull(scalar("String"))),
+                                            field("size", "size", notNull(scalar("Int")))
                                         )),
-                                    field("url","url", notNull(scalar("String")))
+                                    field("url", "url", notNull(scalar("String")))
                                 )),
-                            field("imageFallback","imageFallback", obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("photo","photo", notNull(scalar("String"))),
-                                    field("text","text", notNull(scalar("String")))
+                            field("imageFallback", "imageFallback", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("photo", "photo", notNull(scalar("String"))),
+                                    field("text", "text", notNull(scalar("String")))
                                 )),
-                            field("subTitle","subTitle", scalar("String")),
-                            field("text","text", scalar("String")),
-                            field("title","title", scalar("String")),
-                            field("titleLink","titleLink", scalar("String")),
-                            field("titleLinkHostname","titleLinkHostname", scalar("String"))
+                            field("subTitle", "subTitle", scalar("String")),
+                            field("text", "text", scalar("String")),
+                            field("title", "title", scalar("String")),
+                            field("titleLink", "titleLink", scalar("String")),
+                            field("titleLinkHostname", "titleLinkHostname", scalar("String"))
                         ))
                     ))))),
-                field("commentsCount","commentsCount", notNull(scalar("Int"))),
-                field("edited","edited", notNull(scalar("Boolean"))),
-                field("id","id", notNull(scalar("ID")))
+                field("commentsCount", "commentsCount", notNull(scalar("Int"))),
+                field("edited", "edited", notNull(scalar("Boolean"))),
+                field("id", "id", notNull(scalar("ID")))
             )),
             inline("StickerMessage", obj(
-                field("date","date", notNull(scalar("Date"))),
-                field("id","id", notNull(scalar("ID"))),
-                field("reactions","reactions", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("reaction","reaction", notNull(scalar("String"))),
-                        field("user","user", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                field("date", "date", notNull(scalar("Date"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("reactions", "reactions", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("reaction", "reaction", notNull(scalar("String"))),
+                        field("user", "user", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
                             )))
                     ))))),
-                field("sender","sender", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("sender", "sender", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("User", UserShortSelector)
                     ))),
-                field("senderBadge","senderBadge", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("senderBadge", "senderBadge", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("UserBadge", UserBadgeSelector)
                     )),
-                field("source","source", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("source", "source", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         inline("MessageSourceChat", obj(
-                            field("chat","chat", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+                            field("chat", "chat", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     inline("PrivateRoom", obj(
-                                        field("id","id", notNull(scalar("ID")))
+                                        field("id", "id", notNull(scalar("ID")))
                                     )),
                                     inline("SharedRoom", obj(
-                                        field("id","id", notNull(scalar("ID")))
+                                        field("id", "id", notNull(scalar("ID")))
                                     ))
                                 )))
                         ))
                     )),
-                field("sticker","sticker", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("sticker", "sticker", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         inline("ImageSticker", obj(
-                            field("id","id", notNull(scalar("ID"))),
-                            field("image","image", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("image", "image", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     inline("ImageRef", obj(
-                                        field("uuid","uuid", notNull(scalar("String")))
+                                        field("uuid", "uuid", notNull(scalar("String")))
                                     ))
                                 ))),
-                            field("pack","pack", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+                            field("pack", "pack", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     inline("StickerPack", obj(
-                                        field("id","id", notNull(scalar("ID"))),
-                                        field("title","title", notNull(scalar("String")))
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("title", "title", notNull(scalar("String")))
                                     ))
                                 )))
                         ))
@@ -281,963 +281,963 @@ private let QuotedMessageSelector = obj(
         )
 
 private let StickerFragmentSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
             inline("ImageSticker", obj(
-                field("id","id", notNull(scalar("ID"))),
-                field("image","image", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("uuid","uuid", notNull(scalar("String")))
+                field("id", "id", notNull(scalar("ID"))),
+                field("image", "image", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("uuid", "uuid", notNull(scalar("String")))
                     ))),
-                field("pack","pack", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("title","title", notNull(scalar("String")))
+                field("pack", "pack", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("title", "title", notNull(scalar("String")))
                     )))
             ))
         )
 
 private let UserTinySelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("firstName","firstName", notNull(scalar("String"))),
-            field("id","id", notNull(scalar("ID"))),
-            field("isYou","isYou", notNull(scalar("Boolean"))),
-            field("lastName","lastName", scalar("String")),
-            field("name","name", notNull(scalar("String"))),
-            field("photo","photo", scalar("String")),
-            field("primaryOrganization","primaryOrganization", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("firstName", "firstName", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("isYou", "isYou", notNull(scalar("Boolean"))),
+            field("lastName", "lastName", scalar("String")),
+            field("name", "name", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
+            field("primaryOrganization", "primaryOrganization", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationShortSelector)
                 )),
-            field("shortname","shortname", scalar("String"))
+            field("shortname", "shortname", scalar("String"))
         )
 
 private let FullMessageSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("date","date", notNull(scalar("Date"))),
-            field("fallback","fallback", notNull(scalar("String"))),
-            field("id","id", notNull(scalar("ID"))),
-            field("message","message", scalar("String")),
-            field("sender","sender", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("date", "date", notNull(scalar("Date"))),
+            field("fallback", "fallback", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("message", "message", scalar("String")),
+            field("sender", "sender", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("User", UserShortSelector)
                 ))),
-            field("senderBadge","senderBadge", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("senderBadge", "senderBadge", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("UserBadge", UserBadgeSelector)
                 )),
-            field("source","source", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("source", "source", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("MessageSourceChat", obj(
-                        field("chat","chat", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("chat", "chat", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 inline("PrivateRoom", obj(
-                                    field("id","id", notNull(scalar("ID")))
+                                    field("id", "id", notNull(scalar("ID")))
                                 )),
                                 inline("SharedRoom", obj(
-                                    field("id","id", notNull(scalar("ID")))
+                                    field("id", "id", notNull(scalar("ID")))
                                 ))
                             )))
                     ))
                 )),
-            field("spans","spans", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("spans", "spans", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("MessageSpan", SpanFragmentSelector)
                 ))))),
             inline("GeneralMessage", obj(
-                field("attachments","attachments", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("fallback","fallback", notNull(scalar("String"))),
+                field("attachments", "attachments", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("fallback", "fallback", notNull(scalar("String"))),
                         inline("MessageAttachmentFile", obj(
-                            field("fileId","fileId", notNull(scalar("String"))),
-                            field("fileMetadata","fileMetadata", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("imageFormat","imageFormat", scalar("String")),
-                                    field("imageHeight","imageHeight", scalar("Int")),
-                                    field("imageWidth","imageWidth", scalar("Int")),
-                                    field("isImage","isImage", notNull(scalar("Boolean"))),
-                                    field("mimeType","mimeType", scalar("String")),
-                                    field("name","name", notNull(scalar("String"))),
-                                    field("size","size", notNull(scalar("Int")))
+                            field("fileId", "fileId", notNull(scalar("String"))),
+                            field("fileMetadata", "fileMetadata", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("imageFormat", "imageFormat", scalar("String")),
+                                    field("imageHeight", "imageHeight", scalar("Int")),
+                                    field("imageWidth", "imageWidth", scalar("Int")),
+                                    field("isImage", "isImage", notNull(scalar("Boolean"))),
+                                    field("mimeType", "mimeType", scalar("String")),
+                                    field("name", "name", notNull(scalar("String"))),
+                                    field("size", "size", notNull(scalar("Int")))
                                 ))),
-                            field("filePreview","filePreview", scalar("String")),
-                            field("id","id", notNull(scalar("ID")))
+                            field("filePreview", "filePreview", scalar("String")),
+                            field("id", "id", notNull(scalar("ID")))
                         )),
                         inline("MessageRichAttachment", obj(
-                            field("fallback","fallback", notNull(scalar("String"))),
-                            field("icon","icon", obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("metadata","metadata", obj(
-                                            field("__typename","__typename", notNull(scalar("String"))),
-                                            field("imageFormat","imageFormat", scalar("String")),
-                                            field("imageHeight","imageHeight", scalar("Int")),
-                                            field("imageWidth","imageWidth", scalar("Int")),
-                                            field("isImage","isImage", notNull(scalar("Boolean"))),
-                                            field("mimeType","mimeType", scalar("String")),
-                                            field("name","name", notNull(scalar("String"))),
-                                            field("size","size", notNull(scalar("Int")))
+                            field("fallback", "fallback", notNull(scalar("String"))),
+                            field("icon", "icon", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("metadata", "metadata", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("imageFormat", "imageFormat", scalar("String")),
+                                            field("imageHeight", "imageHeight", scalar("Int")),
+                                            field("imageWidth", "imageWidth", scalar("Int")),
+                                            field("isImage", "isImage", notNull(scalar("Boolean"))),
+                                            field("mimeType", "mimeType", scalar("String")),
+                                            field("name", "name", notNull(scalar("String"))),
+                                            field("size", "size", notNull(scalar("Int")))
                                         )),
-                                    field("url","url", notNull(scalar("String")))
+                                    field("url", "url", notNull(scalar("String")))
                                 )),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("image","image", obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("metadata","metadata", obj(
-                                            field("__typename","__typename", notNull(scalar("String"))),
-                                            field("imageFormat","imageFormat", scalar("String")),
-                                            field("imageHeight","imageHeight", scalar("Int")),
-                                            field("imageWidth","imageWidth", scalar("Int")),
-                                            field("isImage","isImage", notNull(scalar("Boolean"))),
-                                            field("mimeType","mimeType", scalar("String")),
-                                            field("name","name", notNull(scalar("String"))),
-                                            field("size","size", notNull(scalar("Int")))
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("image", "image", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("metadata", "metadata", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("imageFormat", "imageFormat", scalar("String")),
+                                            field("imageHeight", "imageHeight", scalar("Int")),
+                                            field("imageWidth", "imageWidth", scalar("Int")),
+                                            field("isImage", "isImage", notNull(scalar("Boolean"))),
+                                            field("mimeType", "mimeType", scalar("String")),
+                                            field("name", "name", notNull(scalar("String"))),
+                                            field("size", "size", notNull(scalar("Int")))
                                         )),
-                                    field("url","url", notNull(scalar("String")))
+                                    field("url", "url", notNull(scalar("String")))
                                 )),
-                            field("imageFallback","imageFallback", obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("photo","photo", notNull(scalar("String"))),
-                                    field("text","text", notNull(scalar("String")))
+                            field("imageFallback", "imageFallback", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("photo", "photo", notNull(scalar("String"))),
+                                    field("text", "text", notNull(scalar("String")))
                                 )),
-                            field("keyboard","keyboard", obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("buttons","buttons", notNull(list(list(notNull(obj(
-                                            field("__typename","__typename", notNull(scalar("String"))),
-                                            field("id","id", notNull(scalar("ID"))),
-                                            field("style","style", notNull(scalar("String"))),
-                                            field("title","title", notNull(scalar("String"))),
-                                            field("url","url", scalar("String"))
+                            field("keyboard", "keyboard", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("buttons", "buttons", notNull(list(list(notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("id", "id", notNull(scalar("ID"))),
+                                            field("style", "style", notNull(scalar("String"))),
+                                            field("title", "title", notNull(scalar("String"))),
+                                            field("url", "url", scalar("String"))
                                         ))))))
                                 )),
-                            field("subTitle","subTitle", scalar("String")),
-                            field("text","text", scalar("String")),
-                            field("title","title", scalar("String")),
-                            field("titleLink","titleLink", scalar("String")),
-                            field("titleLinkHostname","titleLinkHostname", scalar("String"))
+                            field("subTitle", "subTitle", scalar("String")),
+                            field("text", "text", scalar("String")),
+                            field("title", "title", scalar("String")),
+                            field("titleLink", "titleLink", scalar("String")),
+                            field("titleLinkHostname", "titleLinkHostname", scalar("String"))
                         ))
                     ))))),
-                field("commentsCount","commentsCount", notNull(scalar("Int"))),
-                field("edited","edited", notNull(scalar("Boolean"))),
-                field("id","id", notNull(scalar("ID"))),
-                field("quotedMessages","quotedMessages", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("commentsCount", "commentsCount", notNull(scalar("Int"))),
+                field("edited", "edited", notNull(scalar("Boolean"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", QuotedMessageSelector)
                     ))))),
-                field("reactions","reactions", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("reaction","reaction", notNull(scalar("String"))),
-                        field("user","user", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                field("reactions", "reactions", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("reaction", "reaction", notNull(scalar("String"))),
+                        field("user", "user", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
                             )))
                     )))))
             )),
             inline("StickerMessage", obj(
-                field("commentsCount","commentsCount", notNull(scalar("Int"))),
-                field("date","date", notNull(scalar("Date"))),
-                field("id","id", notNull(scalar("ID"))),
-                field("quotedMessages","quotedMessages", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("commentsCount", "commentsCount", notNull(scalar("Int"))),
+                field("date", "date", notNull(scalar("Date"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", QuotedMessageSelector)
                     ))))),
-                field("reactions","reactions", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("reaction","reaction", notNull(scalar("String"))),
-                        field("user","user", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                field("reactions", "reactions", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("reaction", "reaction", notNull(scalar("String"))),
+                        field("user", "user", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
                             )))
                     ))))),
-                field("sender","sender", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("sender", "sender", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("User", UserShortSelector)
                     ))),
-                field("senderBadge","senderBadge", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("senderBadge", "senderBadge", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("UserBadge", UserBadgeSelector)
                     )),
-                field("source","source", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("source", "source", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         inline("MessageSourceChat", obj(
-                            field("chat","chat", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+                            field("chat", "chat", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     inline("PrivateRoom", obj(
-                                        field("id","id", notNull(scalar("ID")))
+                                        field("id", "id", notNull(scalar("ID")))
                                     )),
                                     inline("SharedRoom", obj(
-                                        field("id","id", notNull(scalar("ID")))
+                                        field("id", "id", notNull(scalar("ID")))
                                     ))
                                 )))
                         ))
                     )),
-                field("sticker","sticker", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("sticker", "sticker", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("Sticker", StickerFragmentSelector)
                     )))
             )),
             inline("ServiceMessage", obj(
-                field("id","id", notNull(scalar("ID"))),
-                field("serviceMetadata","serviceMetadata", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("serviceMetadata", "serviceMetadata", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         inline("InviteServiceMetadata", obj(
-                            field("invitedBy","invitedBy", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+                            field("invitedBy", "invitedBy", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("User", UserTinySelector)
                                 ))),
-                            field("users","users", list(notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+                            field("users", "users", list(notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("User", UserTinySelector)
                                 ))))
                         )),
                         inline("KickServiceMetadata", obj(
-                            field("kickedBy","kickedBy", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+                            field("kickedBy", "kickedBy", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("User", UserTinySelector)
                                 ))),
-                            field("user","user", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+                            field("user", "user", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("User", UserTinySelector)
                                 )))
                         )),
                         inline("TitleChangeServiceMetadata", obj(
-                            field("title","title", notNull(scalar("String")))
+                            field("title", "title", notNull(scalar("String")))
                         )),
                         inline("PhotoChangeServiceMetadata", obj(
-                            field("photo","photo", scalar("String"))
+                            field("photo", "photo", scalar("String"))
                         )),
                         inline("PostRespondServiceMetadata", obj(
-                            field("respondType","respondType", notNull(scalar("ID")))
+                            field("respondType", "respondType", notNull(scalar("ID")))
                         ))
                     ))
             ))
         )
 
 private let RoomShortSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
             inline("PrivateRoom", obj(
-                field("id","id", notNull(scalar("ID"))),
-                field("myBadge","myBadge", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("myBadge", "myBadge", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("UserBadge", UserBadgeSelector)
                     )),
-                field("pinnedMessage","pinnedMessage", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("pinnedMessage", "pinnedMessage", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", FullMessageSelector)
                     )),
-                field("settings","settings", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("mute","mute", scalar("Boolean"))
+                field("settings", "settings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("mute", "mute", scalar("Boolean"))
                     ))),
-                field("user","user", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("User", UserShortSelector)
                     )))
             )),
             inline("SharedRoom", obj(
-                field("canEdit","canEdit", notNull(scalar("Boolean"))),
-                field("canSendMessage","canSendMessage", notNull(scalar("Boolean"))),
-                field("id","id", notNull(scalar("ID"))),
-                field("isChannel","isChannel", notNull(scalar("Boolean"))),
-                field("kind","kind", notNull(scalar("String"))),
-                field("membersCount","membersCount", scalar("Int")),
-                field("membership","membership", notNull(scalar("String"))),
-                field("myBadge","myBadge", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("canEdit", "canEdit", notNull(scalar("Boolean"))),
+                field("canSendMessage", "canSendMessage", notNull(scalar("Boolean"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                field("kind", "kind", notNull(scalar("String"))),
+                field("membersCount", "membersCount", scalar("Int")),
+                field("membership", "membership", notNull(scalar("String"))),
+                field("myBadge", "myBadge", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("UserBadge", UserBadgeSelector)
                     )),
-                field("organization","organization", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("organization", "organization", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("Organization", OrganizationShortSelector)
                     )),
-                field("photo","photo", notNull(scalar("String"))),
-                field("pinnedMessage","pinnedMessage", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("photo", "photo", notNull(scalar("String"))),
+                field("pinnedMessage", "pinnedMessage", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", FullMessageSelector)
                     )),
-                field("role","role", notNull(scalar("String"))),
-                field("settings","settings", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("mute","mute", scalar("Boolean"))
+                field("role", "role", notNull(scalar("String"))),
+                field("settings", "settings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("mute", "mute", scalar("Boolean"))
                     ))),
-                field("title","title", notNull(scalar("String")))
+                field("title", "title", notNull(scalar("String")))
             ))
         )
 
 private let ChatUpdateFragmentSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
             inline("ChatMessageReceived", obj(
-                field("message","message", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("message", "message", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", FullMessageSelector)
                     ))),
-                field("repeatKey","repeatKey", scalar("String"))
+                field("repeatKey", "repeatKey", scalar("String"))
             )),
             inline("ChatMessageUpdated", obj(
-                field("message","message", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("message", "message", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", FullMessageSelector)
                     )))
             )),
             inline("ChatMessageDeleted", obj(
-                field("message","message", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID")))
+                field("message", "message", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
                     )))
             )),
             inline("ChatUpdated", obj(
-                field("chat","chat", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("chat", "chat", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("Room", RoomShortSelector)
                     )))
             )),
             inline("ChatLostAccess", obj(
-                field("lostAccess","lostAccess", notNull(scalar("Boolean")))
+                field("lostAccess", "lostAccess", notNull(scalar("Boolean")))
             ))
         )
 
 private let CommentEntryFragmentSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("betaComment","comment", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("betaComment", "comment", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
                     fragment("ModernMessage", FullMessageSelector)
                 ))),
-            field("childComments","childComments", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
+            field("childComments", "childComments", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
                 ))))),
-            field("deleted","deleted", notNull(scalar("Boolean"))),
-            field("id","id", notNull(scalar("ID"))),
-            field("parentComment","parentComment", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("betaComment","comment", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("message","message", scalar("String"))
+            field("deleted", "deleted", notNull(scalar("Boolean"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("parentComment", "parentComment", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("betaComment", "comment", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("message", "message", scalar("String"))
                         ))),
-                    field("id","id", notNull(scalar("ID")))
+                    field("id", "id", notNull(scalar("ID")))
                 ))
         )
 
 private let CommentUpdateFragmentSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
             inline("CommentReceived", obj(
-                field("comment","comment", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("comment", "comment", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("CommentEntry", CommentEntryFragmentSelector)
                     )))
             )),
             inline("CommentUpdated", obj(
-                field("comment","comment", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("comment", "comment", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("CommentEntry", CommentEntryFragmentSelector)
                     )))
             ))
         )
 
 private let CommunitySearchSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("about","about", scalar("String")),
-            field("alphaFeatured","featured", notNull(scalar("Boolean"))),
-            field("betaPublicRooms","betaPublicRooms", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("about", "about", scalar("String")),
+            field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
+            field("betaPublicRooms", "betaPublicRooms", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
                 ))))),
-            field("id","id", notNull(scalar("ID"))),
-            field("isMine","isMine", notNull(scalar("Boolean"))),
-            field("membersCount","membersCount", notNull(scalar("Int"))),
-            field("name","name", notNull(scalar("String"))),
-            field("photo","photo", scalar("String")),
-            field("status","status", notNull(scalar("String"))),
-            field("superAccountId","superAccountId", notNull(scalar("ID")))
+            field("id", "id", notNull(scalar("ID"))),
+            field("isMine", "isMine", notNull(scalar("Boolean"))),
+            field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
+            field("status", "status", notNull(scalar("String"))),
+            field("superAccountId", "superAccountId", notNull(scalar("ID")))
         )
 
 private let ConferenceFullSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("iceServers","iceServers", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("credential","credential", scalar("String")),
-                    field("urls","urls", notNull(list(notNull(scalar("String"))))),
-                    field("username","username", scalar("String"))
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("iceServers", "iceServers", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("credential", "credential", scalar("String")),
+                    field("urls", "urls", notNull(list(notNull(scalar("String"))))),
+                    field("username", "username", scalar("String"))
                 ))))),
-            field("id","id", notNull(scalar("ID"))),
-            field("peers","peers", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("connection","connection", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("ice","ice", notNull(list(notNull(scalar("String"))))),
-                            field("sdp","sdp", scalar("String")),
-                            field("state","state", notNull(scalar("String")))
+            field("id", "id", notNull(scalar("ID"))),
+            field("peers", "peers", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("connection", "connection", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("ice", "ice", notNull(list(notNull(scalar("String"))))),
+                            field("sdp", "sdp", scalar("String")),
+                            field("state", "state", notNull(scalar("String")))
                         )),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )))
                 ))))),
-            field("startTime","startTime", scalar("Date"))
+            field("startTime", "startTime", scalar("Date"))
         )
 
 private let ConferenceShortSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("iceServers","iceServers", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("credential","credential", scalar("String")),
-                    field("urls","urls", notNull(list(notNull(scalar("String"))))),
-                    field("username","username", scalar("String"))
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("iceServers", "iceServers", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("credential", "credential", scalar("String")),
+                    field("urls", "urls", notNull(list(notNull(scalar("String"))))),
+                    field("username", "username", scalar("String"))
                 ))))),
-            field("id","id", notNull(scalar("ID"))),
-            field("startTime","startTime", scalar("Date"))
+            field("id", "id", notNull(scalar("ID"))),
+            field("startTime", "startTime", scalar("Date"))
         )
 
 private let DaialogListMessageSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("date","date", notNull(scalar("Date"))),
-            field("fallback","fallback", notNull(scalar("String"))),
-            field("id","id", notNull(scalar("ID"))),
-            field("message","message", scalar("String")),
-            field("sender","sender", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("firstName","firstName", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("name","name", notNull(scalar("String")))
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("date", "date", notNull(scalar("Date"))),
+            field("fallback", "fallback", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("message", "message", scalar("String")),
+            field("sender", "sender", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("firstName", "firstName", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String")))
                 ))),
-            field("senderBadge","senderBadge", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("senderBadge", "senderBadge", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("UserBadge", UserBadgeSelector)
                 )),
             inline("GeneralMessage", obj(
-                field("attachments","attachments", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("fallback","fallback", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
+                field("attachments", "attachments", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("fallback", "fallback", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
                         inline("MessageAttachmentFile", obj(
-                            field("fileId","fileId", notNull(scalar("String"))),
-                            field("fileMetadata","fileMetadata", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("imageFormat","imageFormat", scalar("String")),
-                                    field("isImage","isImage", notNull(scalar("Boolean")))
+                            field("fileId", "fileId", notNull(scalar("String"))),
+                            field("fileMetadata", "fileMetadata", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("imageFormat", "imageFormat", scalar("String")),
+                                    field("isImage", "isImage", notNull(scalar("Boolean")))
                                 ))),
-                            field("id","id", notNull(scalar("ID")))
+                            field("id", "id", notNull(scalar("ID")))
                         ))
                     ))))),
-                field("id","id", notNull(scalar("ID"))),
-                field("quotedMessages","quotedMessages", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID")))
+                field("id", "id", notNull(scalar("ID"))),
+                field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
                     )))))
             ))
         )
 
 private let TinyMessageSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("date","date", notNull(scalar("Date"))),
-            field("fallback","fallback", notNull(scalar("String"))),
-            field("id","id", notNull(scalar("ID"))),
-            field("message","message", scalar("String")),
-            field("sender","sender", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("date", "date", notNull(scalar("Date"))),
+            field("fallback", "fallback", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("message", "message", scalar("String")),
+            field("sender", "sender", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("User", UserTinySelector)
                 ))),
-            field("senderBadge","senderBadge", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("senderBadge", "senderBadge", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("UserBadge", UserBadgeSelector)
                 )),
             inline("GeneralMessage", obj(
-                field("attachments","attachments", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("fallback","fallback", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
+                field("attachments", "attachments", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("fallback", "fallback", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
                         inline("MessageAttachmentFile", obj(
-                            field("fileId","fileId", notNull(scalar("String"))),
-                            field("fileMetadata","fileMetadata", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("imageFormat","imageFormat", scalar("String")),
-                                    field("isImage","isImage", notNull(scalar("Boolean")))
+                            field("fileId", "fileId", notNull(scalar("String"))),
+                            field("fileMetadata", "fileMetadata", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("imageFormat", "imageFormat", scalar("String")),
+                                    field("isImage", "isImage", notNull(scalar("Boolean")))
                                 ))),
-                            field("filePreview","filePreview", scalar("String")),
-                            field("id","id", notNull(scalar("ID")))
+                            field("filePreview", "filePreview", scalar("String")),
+                            field("id", "id", notNull(scalar("ID")))
                         ))
                     ))))),
-                field("commentsCount","commentsCount", notNull(scalar("Int"))),
-                field("id","id", notNull(scalar("ID"))),
-                field("isMentioned","isMentioned", notNull(scalar("Boolean"))),
-                field("quotedMessages","quotedMessages", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID")))
+                field("commentsCount", "commentsCount", notNull(scalar("Int"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("isMentioned", "isMentioned", notNull(scalar("Boolean"))),
+                field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
                     )))))
             ))
         )
 
 private let DialogUpdateFragmentSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
             inline("DialogMessageReceived", obj(
-                field("alphaMessage","message", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("alphaMessage", "message", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", TinyMessageSelector)
                     ))),
-                field("cid","cid", notNull(scalar("ID"))),
-                field("globalUnread","globalUnread", notNull(scalar("Int"))),
-                field("haveMention","haveMention", notNull(scalar("Boolean"))),
-                field("showNotification","showNotification", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("desktop","desktop", notNull(scalar("Boolean"))),
-                        field("mobile","mobile", notNull(scalar("Boolean")))
+                field("cid", "cid", notNull(scalar("ID"))),
+                field("globalUnread", "globalUnread", notNull(scalar("Int"))),
+                field("haveMention", "haveMention", notNull(scalar("Boolean"))),
+                field("showNotification", "showNotification", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("desktop", "desktop", notNull(scalar("Boolean"))),
+                        field("mobile", "mobile", notNull(scalar("Boolean")))
                     ))),
-                field("silent","silent", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("desktop","desktop", notNull(scalar("Boolean"))),
-                        field("mobile","mobile", notNull(scalar("Boolean")))
+                field("silent", "silent", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("desktop", "desktop", notNull(scalar("Boolean"))),
+                        field("mobile", "mobile", notNull(scalar("Boolean")))
                     ))),
-                field("unread","unread", notNull(scalar("Int")))
+                field("unread", "unread", notNull(scalar("Int")))
             )),
             inline("DialogMessageUpdated", obj(
-                field("alphaMessage","message", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("alphaMessage", "message", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", TinyMessageSelector)
                     ))),
-                field("cid","cid", notNull(scalar("ID"))),
-                field("haveMention","haveMention", notNull(scalar("Boolean")))
+                field("cid", "cid", notNull(scalar("ID"))),
+                field("haveMention", "haveMention", notNull(scalar("Boolean")))
             )),
             inline("DialogMessageDeleted", obj(
-                field("alphaMessage","message", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("alphaMessage", "message", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", TinyMessageSelector)
                     ))),
-                field("alphaPrevMessage","prevMessage", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("alphaPrevMessage", "prevMessage", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", TinyMessageSelector)
                     )),
-                field("cid","cid", notNull(scalar("ID"))),
-                field("globalUnread","globalUnread", notNull(scalar("Int"))),
-                field("haveMention","haveMention", notNull(scalar("Boolean"))),
-                field("unread","unread", notNull(scalar("Int")))
+                field("cid", "cid", notNull(scalar("ID"))),
+                field("globalUnread", "globalUnread", notNull(scalar("Int"))),
+                field("haveMention", "haveMention", notNull(scalar("Boolean"))),
+                field("unread", "unread", notNull(scalar("Int")))
             )),
             inline("DialogMessageRead", obj(
-                field("cid","cid", notNull(scalar("ID"))),
-                field("globalUnread","globalUnread", notNull(scalar("Int"))),
-                field("haveMention","haveMention", notNull(scalar("Boolean"))),
-                field("unread","unread", notNull(scalar("Int")))
+                field("cid", "cid", notNull(scalar("ID"))),
+                field("globalUnread", "globalUnread", notNull(scalar("Int"))),
+                field("haveMention", "haveMention", notNull(scalar("Boolean"))),
+                field("unread", "unread", notNull(scalar("Int")))
             )),
             inline("DialogMuteChanged", obj(
-                field("cid","cid", notNull(scalar("ID"))),
-                field("mute","mute", notNull(scalar("Boolean")))
+                field("cid", "cid", notNull(scalar("ID"))),
+                field("mute", "mute", notNull(scalar("Boolean")))
             )),
             inline("DialogPeerUpdated", obj(
-                field("cid","cid", notNull(scalar("ID"))),
-                field("peer","peer", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("cid", "cid", notNull(scalar("ID"))),
+                field("peer", "peer", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         inline("PrivateRoom", obj(
-                            field("id","id", notNull(scalar("ID"))),
-                            field("user","user", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("id","id", notNull(scalar("ID"))),
-                                    field("name","name", notNull(scalar("String"))),
-                                    field("photo","photo", scalar("String"))
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("user", "user", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("name", "name", notNull(scalar("String"))),
+                                    field("photo", "photo", scalar("String"))
                                 )))
                         )),
                         inline("SharedRoom", obj(
-                            field("id","id", notNull(scalar("ID"))),
-                            field("photo","photo", notNull(scalar("String"))),
-                            field("title","title", notNull(scalar("String")))
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("photo", "photo", notNull(scalar("String"))),
+                            field("title", "title", notNull(scalar("String")))
                         ))
                     )))
             )),
             inline("DialogDeleted", obj(
-                field("cid","cid", notNull(scalar("ID"))),
-                field("globalUnread","globalUnread", notNull(scalar("Int")))
+                field("cid", "cid", notNull(scalar("ID"))),
+                field("globalUnread", "globalUnread", notNull(scalar("Int")))
             )),
             inline("DialogBump", obj(
-                field("cid","cid", notNull(scalar("ID"))),
-                field("globalUnread","globalUnread", notNull(scalar("Int"))),
-                field("haveMention","haveMention", notNull(scalar("Boolean"))),
-                field("topMessage","topMessage", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("cid", "cid", notNull(scalar("ID"))),
+                field("globalUnread", "globalUnread", notNull(scalar("Int"))),
+                field("haveMention", "haveMention", notNull(scalar("Boolean"))),
+                field("topMessage", "topMessage", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", TinyMessageSelector)
                     )),
-                field("unread","unread", notNull(scalar("Int")))
+                field("unread", "unread", notNull(scalar("Int")))
             ))
         )
 
 private let FeedChannelFullSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("about","about", scalar("String")),
-            field("id","id", notNull(scalar("ID"))),
-            field("isGlobal","isGlobal", notNull(scalar("Boolean"))),
-            field("myRole","myRole", notNull(scalar("String"))),
-            field("photo","photo", scalar("String")),
-            field("postsCount","postsCount", notNull(scalar("Int"))),
-            field("shortname","shortname", scalar("String")),
-            field("socialImage","socialImage", scalar("String")),
-            field("subscribed","subscribed", notNull(scalar("Boolean"))),
-            field("subscribersCount","subscribersCount", notNull(scalar("Int"))),
-            field("title","title", notNull(scalar("String")))
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("about", "about", scalar("String")),
+            field("id", "id", notNull(scalar("ID"))),
+            field("isGlobal", "isGlobal", notNull(scalar("Boolean"))),
+            field("myRole", "myRole", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
+            field("postsCount", "postsCount", notNull(scalar("Int"))),
+            field("shortname", "shortname", scalar("String")),
+            field("socialImage", "socialImage", scalar("String")),
+            field("subscribed", "subscribed", notNull(scalar("Boolean"))),
+            field("subscribersCount", "subscribersCount", notNull(scalar("Int"))),
+            field("title", "title", notNull(scalar("String")))
         )
 
 private let FeedPostAuthorFragmentSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
             inline("User", obj(
                 fragment("User", UserShortSelector)
             ))
         )
 
 private let SlideFragmentSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
             inline("TextSlide", obj(
-                field("attachments","attachments", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("attachments", "attachments", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         inline("User", obj(
                             fragment("User", UserShortSelector)
                         )),
                         inline("SharedRoom", obj(
-                            field("id","id", notNull(scalar("ID"))),
-                            field("kind","kind", notNull(scalar("String"))),
-                            field("membersCount","membersCount", scalar("Int")),
-                            field("membership","membership", notNull(scalar("String"))),
-                            field("organization","organization", obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("id","id", notNull(scalar("ID"))),
-                                    field("name","name", notNull(scalar("String"))),
-                                    field("photo","photo", scalar("String"))
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("kind", "kind", notNull(scalar("String"))),
+                            field("membersCount", "membersCount", scalar("Int")),
+                            field("membership", "membership", notNull(scalar("String"))),
+                            field("organization", "organization", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("name", "name", notNull(scalar("String"))),
+                                    field("photo", "photo", scalar("String"))
                                 )),
-                            field("photo","roomPhoto", notNull(scalar("String"))),
-                            field("title","title", notNull(scalar("String")))
+                            field("photo", "roomPhoto", notNull(scalar("String"))),
+                            field("title", "title", notNull(scalar("String")))
                         )),
                         inline("Organization", obj(
                             fragment("Organization", OrganizationShortSelector)
                         ))
                     ))))),
-                field("cover","cover", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("metadata","metadata", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("imageFormat","imageFormat", scalar("String")),
-                                field("imageHeight","imageHeight", scalar("Int")),
-                                field("imageWidth","imageWidth", scalar("Int")),
-                                field("isImage","isImage", notNull(scalar("Boolean"))),
-                                field("mimeType","mimeType", scalar("String")),
-                                field("name","name", notNull(scalar("String"))),
-                                field("size","size", notNull(scalar("Int")))
+                field("cover", "cover", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("metadata", "metadata", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("imageFormat", "imageFormat", scalar("String")),
+                                field("imageHeight", "imageHeight", scalar("Int")),
+                                field("imageWidth", "imageWidth", scalar("Int")),
+                                field("isImage", "isImage", notNull(scalar("Boolean"))),
+                                field("mimeType", "mimeType", scalar("String")),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("size", "size", notNull(scalar("Int")))
                             )),
-                        field("url","url", notNull(scalar("String")))
+                        field("url", "url", notNull(scalar("String")))
                     )),
-                field("coverAlign","coverAlign", scalar("String")),
-                field("id","id", notNull(scalar("ID"))),
-                field("spans","spans", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("coverAlign", "coverAlign", scalar("String")),
+                field("id", "id", notNull(scalar("ID"))),
+                field("spans", "spans", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("MessageSpan", SpanFragmentSelector)
                     ))))),
-                field("text","text", notNull(scalar("String")))
+                field("text", "text", notNull(scalar("String")))
             ))
         )
 
 private let FeedPostSourceFragmentSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
             inline("FeedChannel", obj(
                 fragment("FeedChannel", FeedChannelFullSelector)
             ))
         )
 
 private let FeedItemFullSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
             inline("FeedPost", obj(
-                field("author","author", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("author", "author", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("FeedPostAuthor", FeedPostAuthorFragmentSelector)
                     ))),
-                field("canEdit","canEdit", notNull(scalar("Boolean"))),
-                field("commentsCount","commentsCount", notNull(scalar("Int"))),
-                field("date","date", notNull(scalar("Date"))),
-                field("edited","edited", notNull(scalar("Boolean"))),
-                field("fallback","fallback", notNull(scalar("String"))),
-                field("id","id", notNull(scalar("ID"))),
-                field("message","message", scalar("String")),
-                field("reactions","reactions", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("reaction","reaction", notNull(scalar("String"))),
-                        field("user","user", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                field("canEdit", "canEdit", notNull(scalar("Boolean"))),
+                field("commentsCount", "commentsCount", notNull(scalar("Int"))),
+                field("date", "date", notNull(scalar("Date"))),
+                field("edited", "edited", notNull(scalar("Boolean"))),
+                field("fallback", "fallback", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("message", "message", scalar("String")),
+                field("reactions", "reactions", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("reaction", "reaction", notNull(scalar("String"))),
+                        field("user", "user", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
                             )))
                     ))))),
-                field("slides","slides", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("slides", "slides", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("Slide", SlideFragmentSelector)
                     ))))),
-                field("source","source", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("source", "source", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("FeedPostSource", FeedPostSourceFragmentSelector)
                     ))
             ))
         )
 
 private let FeedUpdateFragmentSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
             inline("FeedItemReceived", obj(
-                field("item","item", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("item", "item", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("FeedItem", FeedItemFullSelector)
                     )))
             )),
             inline("FeedItemUpdated", obj(
-                field("item","item", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("item", "item", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("FeedItem", FeedItemFullSelector)
                     )))
             )),
             inline("FeedItemDeleted", obj(
-                field("item","item", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("item", "item", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("FeedItem", FeedItemFullSelector)
                     )))
             ))
         )
 
 private let MatchmakingProfileFragmentSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("answers","answers", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("answers", "answers", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("TextMatchmakingAnswer", obj(
-                        field("answer","answer", notNull(scalar("String"))),
-                        field("question","question", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("subtitle","subtitle", notNull(scalar("String"))),
-                                field("title","title", notNull(scalar("String")))
+                        field("answer", "answer", notNull(scalar("String"))),
+                        field("question", "question", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("subtitle", "subtitle", notNull(scalar("String"))),
+                                field("title", "title", notNull(scalar("String")))
                             )))
                     )),
                     inline("MultiselectMatchmakingAnswer", obj(
-                        field("question","question", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("subtitle","subtitle", notNull(scalar("String"))),
-                                field("title","title", notNull(scalar("String")))
+                        field("question", "question", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("subtitle", "subtitle", notNull(scalar("String"))),
+                                field("title", "title", notNull(scalar("String")))
                             ))),
-                        field("tags","tags", notNull(list(notNull(scalar("String")))))
+                        field("tags", "tags", notNull(list(notNull(scalar("String")))))
                     ))
                 ))))),
-            field("chatCreated","chatCreated", notNull(scalar("Boolean"))),
-            field("user","user", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("isYou","isYou", notNull(scalar("Boolean"))),
-                    field("name","name", notNull(scalar("String"))),
-                    field("photo","photo", scalar("String")),
-                    field("primaryOrganization","primaryOrganization", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("name","name", notNull(scalar("String")))
+            field("chatCreated", "chatCreated", notNull(scalar("Boolean"))),
+            field("user", "user", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("isYou", "isYou", notNull(scalar("Boolean"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("photo", "photo", scalar("String")),
+                    field("primaryOrganization", "primaryOrganization", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String")))
                         ))
                 )))
         )
 
 private let MatchmakingRoomFragmentSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("enabled","enabled", notNull(scalar("Boolean"))),
-            field("myProfile","myProfile", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("enabled", "enabled", notNull(scalar("Boolean"))),
+            field("myProfile", "myProfile", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("MatchmakingProfile", MatchmakingProfileFragmentSelector)
                 )),
-            field("profiles","profiles", list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("profiles", "profiles", list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("MatchmakingProfile", MatchmakingProfileFragmentSelector)
                 )))),
-            field("questions","questions", list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("questions", "questions", list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("TextMatchmakingQuestion", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("subtitle","subtitle", notNull(scalar("String"))),
-                        field("title","title", notNull(scalar("String")))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("subtitle", "subtitle", notNull(scalar("String"))),
+                        field("title", "title", notNull(scalar("String")))
                     )),
                     inline("MultiselectMatchmakingQuestion", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("subtitle","subtitle", notNull(scalar("String"))),
-                        field("tags","tags", notNull(list(notNull(scalar("String"))))),
-                        field("title","title", notNull(scalar("String")))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("subtitle", "subtitle", notNull(scalar("String"))),
+                        field("tags", "tags", notNull(list(notNull(scalar("String"))))),
+                        field("title", "title", notNull(scalar("String")))
                     ))
                 ))))
         )
 
 private let RoomNanoSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
             inline("PrivateRoom", obj(
-                field("id","id", notNull(scalar("ID"))),
-                field("settings","settings", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("mute","mute", scalar("Boolean"))
+                field("id", "id", notNull(scalar("ID"))),
+                field("settings", "settings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("mute", "mute", scalar("Boolean"))
                     ))),
-                field("user","user", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("name","name", notNull(scalar("String"))),
-                        field("photo","photo", scalar("String"))
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("name", "name", notNull(scalar("String"))),
+                        field("photo", "photo", scalar("String"))
                     )))
             )),
             inline("SharedRoom", obj(
-                field("id","id", notNull(scalar("ID"))),
-                field("isChannel","isChannel", notNull(scalar("Boolean"))),
-                field("kind","kind", notNull(scalar("String"))),
-                field("photo","photo", notNull(scalar("String"))),
-                field("settings","settings", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("mute","mute", scalar("Boolean"))
+                field("id", "id", notNull(scalar("ID"))),
+                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                field("kind", "kind", notNull(scalar("String"))),
+                field("photo", "photo", notNull(scalar("String"))),
+                field("settings", "settings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("mute", "mute", scalar("Boolean"))
                     ))),
-                field("title","title", notNull(scalar("String")))
+                field("title", "title", notNull(scalar("String")))
             ))
         )
 
 private let NotificationFragmentSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("content","content", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("content", "content", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("NewCommentNotification", obj(
-                        field("comment","comment", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("comment", "comment", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("CommentEntry", CommentEntryFragmentSelector)
                             ))),
-                        field("peer","peer", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("peerRoot","peerRoot", notNull(obj(
-                                        field("__typename","__typename", notNull(scalar("String"))),
+                        field("peer", "peer", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("peerRoot", "peerRoot", notNull(obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
                                         inline("CommentPeerRootMessage", obj(
-                                            field("chat","chat", notNull(obj(
-                                                    field("__typename","__typename", notNull(scalar("String"))),
+                                            field("chat", "chat", notNull(obj(
+                                                    field("__typename", "__typename", notNull(scalar("String"))),
                                                     fragment("Room", RoomNanoSelector)
                                                 ))),
-                                            field("message","message", notNull(obj(
-                                                    field("__typename","__typename", notNull(scalar("String"))),
+                                            field("message", "message", notNull(obj(
+                                                    field("__typename", "__typename", notNull(scalar("String"))),
                                                     inline("GeneralMessage", obj(
-                                                        field("fallback","fallback", notNull(scalar("String"))),
-                                                        field("id","id", notNull(scalar("ID"))),
-                                                        field("message","message", scalar("String")),
-                                                        field("sender","sender", notNull(obj(
-                                                                field("__typename","__typename", notNull(scalar("String"))),
-                                                                field("id","id", notNull(scalar("ID"))),
-                                                                field("name","name", notNull(scalar("String")))
+                                                        field("fallback", "fallback", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("message", "message", scalar("String")),
+                                                        field("sender", "sender", notNull(obj(
+                                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                                field("id", "id", notNull(scalar("ID"))),
+                                                                field("name", "name", notNull(scalar("String")))
                                                             ))),
-                                                        field("senderBadge","senderBadge", obj(
-                                                                field("__typename","__typename", notNull(scalar("String"))),
+                                                        field("senderBadge", "senderBadge", obj(
+                                                                field("__typename", "__typename", notNull(scalar("String"))),
                                                                 fragment("UserBadge", UserBadgeSelector)
                                                             ))
                                                     ))
                                                 )))
                                         )),
                                         inline("CommentPeerRootFeedItem", obj(
-                                            field("item","item", notNull(obj(
-                                                    field("__typename","__typename", notNull(scalar("String"))),
+                                            field("item", "item", notNull(obj(
+                                                    field("__typename", "__typename", notNull(scalar("String"))),
                                                     fragment("FeedItem", FeedItemFullSelector)
                                                 )))
                                         ))
                                     ))),
-                                field("subscription","subscription", obj(
-                                        field("__typename","__typename", notNull(scalar("String"))),
-                                        field("type","type", scalar("String"))
+                                field("subscription", "subscription", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("type", "type", scalar("String"))
                                     ))
                             )))
                     )),
                     inline("NewMatchmakingProfilesNotification", obj(
-                        field("room","room", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("enabled","enabled", notNull(scalar("Boolean")))
+                        field("room", "room", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("enabled", "enabled", notNull(scalar("Boolean")))
                             )))
                     ))
                 ))))),
-            field("id","id", notNull(scalar("ID"))),
-            field("text","text", scalar("String"))
+            field("id", "id", notNull(scalar("ID"))),
+            field("text", "text", scalar("String"))
         )
 
 private let NotificationCenterUpdateFragmentSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
             inline("NotificationReceived", obj(
-                field("center","center", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("unread","unread", notNull(scalar("Int")))
+                field("center", "center", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("unread", "unread", notNull(scalar("Int")))
                     ))),
-                field("notification","notification", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("notification", "notification", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("Notification", NotificationFragmentSelector)
                     )))
             )),
             inline("NotificationUpdated", obj(
-                field("center","center", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("unread","unread", notNull(scalar("Int")))
+                field("center", "center", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("unread", "unread", notNull(scalar("Int")))
                     ))),
-                field("notification","notification", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("notification", "notification", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("Notification", NotificationFragmentSelector)
                     )))
             )),
             inline("NotificationDeleted", obj(
-                field("center","center", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("unread","unread", notNull(scalar("Int")))
+                field("center", "center", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("unread", "unread", notNull(scalar("Int")))
                     ))),
-                field("notification","notification", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID")))
+                field("notification", "notification", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
                     )))
             )),
             inline("NotificationRead", obj(
-                field("center","center", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("unread","unread", notNull(scalar("Int")))
+                field("center", "center", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("unread", "unread", notNull(scalar("Int")))
                     )))
             )),
             inline("NotificationContentUpdated", obj(
-                field("content","content", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("content", "content", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         inline("UpdatedNotificationContentComment", obj(
-                            field("comment","comment", obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+                            field("comment", "comment", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("CommentEntry", CommentEntryFragmentSelector)
                                 )),
-                            field("peer","peer", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("id","id", notNull(scalar("ID"))),
-                                    field("peerRoot","peerRoot", notNull(obj(
-                                            field("__typename","__typename", notNull(scalar("String"))),
+                            field("peer", "peer", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("peerRoot", "peerRoot", notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
                                             inline("CommentPeerRootMessage", obj(
-                                                field("chat","chat", notNull(obj(
-                                                        field("__typename","__typename", notNull(scalar("String"))),
+                                                field("chat", "chat", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
                                                         fragment("Room", RoomNanoSelector)
                                                     ))),
-                                                field("message","message", notNull(obj(
-                                                        field("__typename","__typename", notNull(scalar("String"))),
+                                                field("message", "message", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
                                                         inline("GeneralMessage", obj(
-                                                            field("fallback","fallback", notNull(scalar("String"))),
-                                                            field("id","id", notNull(scalar("ID"))),
-                                                            field("message","message", scalar("String")),
-                                                            field("sender","sender", notNull(obj(
-                                                                    field("__typename","__typename", notNull(scalar("String"))),
-                                                                    field("id","id", notNull(scalar("ID"))),
-                                                                    field("name","name", notNull(scalar("String")))
+                                                            field("fallback", "fallback", notNull(scalar("String"))),
+                                                            field("id", "id", notNull(scalar("ID"))),
+                                                            field("message", "message", scalar("String")),
+                                                            field("sender", "sender", notNull(obj(
+                                                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                                                    field("id", "id", notNull(scalar("ID"))),
+                                                                    field("name", "name", notNull(scalar("String")))
                                                                 ))),
-                                                            field("senderBadge","senderBadge", obj(
-                                                                    field("__typename","__typename", notNull(scalar("String"))),
+                                                            field("senderBadge", "senderBadge", obj(
+                                                                    field("__typename", "__typename", notNull(scalar("String"))),
                                                                     fragment("UserBadge", UserBadgeSelector)
                                                                 ))
                                                         ))
                                                     )))
                                             )),
                                             inline("CommentPeerRootFeedItem", obj(
-                                                field("item","item", notNull(obj(
-                                                        field("__typename","__typename", notNull(scalar("String"))),
+                                                field("item", "item", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
                                                         fragment("FeedItem", FeedItemFullSelector)
                                                     )))
                                             ))
                                         ))),
-                                    field("subscription","subscription", obj(
-                                            field("__typename","__typename", notNull(scalar("String"))),
-                                            field("type","type", scalar("String"))
+                                    field("subscription", "subscription", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("type", "type", scalar("String"))
                                         ))
                                 )))
                         ))
@@ -1246,898 +1246,898 @@ private let NotificationCenterUpdateFragmentSelector = obj(
         )
 
 private let UserFullSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("about","about", scalar("String")),
-            field("audienceSize","audienceSize", notNull(scalar("Int"))),
-            field("email","email", scalar("String")),
-            field("facebook","facebook", scalar("String")),
-            field("firstName","firstName", notNull(scalar("String"))),
-            field("id","id", notNull(scalar("ID"))),
-            field("instagram","instagram", scalar("String")),
-            field("isBot","isBot", notNull(scalar("Boolean"))),
-            field("isYou","isYou", notNull(scalar("Boolean"))),
-            field("lastName","lastName", scalar("String")),
-            field("lastSeen","lastSeen", scalar("String")),
-            field("linkedin","linkedin", scalar("String")),
-            field("location","location", scalar("String")),
-            field("name","name", notNull(scalar("String"))),
-            field("online","online", notNull(scalar("Boolean"))),
-            field("phone","phone", scalar("String")),
-            field("photo","photo", scalar("String")),
-            field("primaryOrganization","primaryOrganization", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("about", "about", scalar("String")),
+            field("audienceSize", "audienceSize", notNull(scalar("Int"))),
+            field("email", "email", scalar("String")),
+            field("facebook", "facebook", scalar("String")),
+            field("firstName", "firstName", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("instagram", "instagram", scalar("String")),
+            field("isBot", "isBot", notNull(scalar("Boolean"))),
+            field("isYou", "isYou", notNull(scalar("Boolean"))),
+            field("lastName", "lastName", scalar("String")),
+            field("lastSeen", "lastSeen", scalar("String")),
+            field("linkedin", "linkedin", scalar("String")),
+            field("location", "location", scalar("String")),
+            field("name", "name", notNull(scalar("String"))),
+            field("online", "online", notNull(scalar("Boolean"))),
+            field("phone", "phone", scalar("String")),
+            field("photo", "photo", scalar("String")),
+            field("primaryOrganization", "primaryOrganization", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationShortSelector)
                 )),
-            field("shortname","shortname", scalar("String")),
-            field("twitter","twitter", scalar("String")),
-            field("website","website", scalar("String"))
+            field("shortname", "shortname", scalar("String")),
+            field("twitter", "twitter", scalar("String")),
+            field("website", "website", scalar("String"))
         )
 
 private let OrganizationFullSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("about","about", scalar("String")),
-            field("alphaFeatured","featured", notNull(scalar("Boolean"))),
-            field("alphaIsCommunity","isCommunity", notNull(scalar("Boolean"))),
-            field("alphaIsPrivate","isPrivate", notNull(scalar("Boolean"))),
-            field("alphaOrganizationMemberRequests","requests", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("about", "about", scalar("String")),
+            field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
+            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+            field("alphaIsPrivate", "isPrivate", notNull(scalar("Boolean"))),
+            field("alphaOrganizationMemberRequests", "requests", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("role", "role", notNull(scalar("String"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserFullSelector)
                         )))
                 ))))),
-            field("alphaOrganizationMembers","members", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaOrganizationMembers", "members", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("role", "role", notNull(scalar("String"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserFullSelector)
                         )))
                 ))))),
-            field("betaIsAdmin","isAdmin", notNull(scalar("Boolean"))),
-            field("betaIsOwner","isOwner", notNull(scalar("Boolean"))),
-            field("betaPublicRooms","rooms", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
+            field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
+            field("betaPublicRooms", "rooms", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
                 ))))),
-            field("facebook","facebook", scalar("String")),
-            field("id","id", notNull(scalar("ID"))),
-            field("instagram","instagram", scalar("String")),
-            field("isMine","isMine", notNull(scalar("Boolean"))),
-            field("linkedin","linkedin", scalar("String")),
-            field("membersCount","membersCount", notNull(scalar("Int"))),
-            field("name","name", notNull(scalar("String"))),
-            field("photo","photo", scalar("String")),
-            field("shortname","shortname", scalar("String")),
-            field("superAccountId","superAccountId", notNull(scalar("ID"))),
-            field("twitter","twitter", scalar("String")),
-            field("website","website", scalar("String"))
+            field("facebook", "facebook", scalar("String")),
+            field("id", "id", notNull(scalar("ID"))),
+            field("instagram", "instagram", scalar("String")),
+            field("isMine", "isMine", notNull(scalar("Boolean"))),
+            field("linkedin", "linkedin", scalar("String")),
+            field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
+            field("shortname", "shortname", scalar("String")),
+            field("superAccountId", "superAccountId", notNull(scalar("ID"))),
+            field("twitter", "twitter", scalar("String")),
+            field("website", "website", scalar("String"))
         )
 
 private let OrganizationMediumSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("about","about", scalar("String")),
-            field("alphaIsCommunity","isCommunity", notNull(scalar("Boolean"))),
-            field("betaIsAdmin","isAdmin", notNull(scalar("Boolean"))),
-            field("betaIsOwner","isOwner", notNull(scalar("Boolean"))),
-            field("id","id", notNull(scalar("ID"))),
-            field("isMine","isMine", notNull(scalar("Boolean"))),
-            field("membersCount","membersCount", notNull(scalar("Int"))),
-            field("name","name", notNull(scalar("String"))),
-            field("photo","photo", scalar("String")),
-            field("shortname","shortname", scalar("String"))
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("about", "about", scalar("String")),
+            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+            field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
+            field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("isMine", "isMine", notNull(scalar("Boolean"))),
+            field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
+            field("shortname", "shortname", scalar("String"))
         )
 
 private let OrganizationProfileFullSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("about","about", scalar("String")),
-            field("alphaEditorial","editorial", notNull(scalar("Boolean"))),
-            field("alphaFeatured","featured", notNull(scalar("Boolean"))),
-            field("alphaIsPrivate","private", notNull(scalar("Boolean"))),
-            field("alphaPublished","published", notNull(scalar("Boolean"))),
-            field("facebook","facebook", scalar("String")),
-            field("id","id", notNull(scalar("ID"))),
-            field("instagram","instagram", scalar("String")),
-            field("linkedin","linkedin", scalar("String")),
-            field("name","name", notNull(scalar("String"))),
-            field("photoRef","photoRef", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("crop","crop", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("h","h", notNull(scalar("Int"))),
-                            field("w","w", notNull(scalar("Int"))),
-                            field("x","x", notNull(scalar("Int"))),
-                            field("y","y", notNull(scalar("Int")))
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("about", "about", scalar("String")),
+            field("alphaEditorial", "editorial", notNull(scalar("Boolean"))),
+            field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
+            field("alphaIsPrivate", "private", notNull(scalar("Boolean"))),
+            field("alphaPublished", "published", notNull(scalar("Boolean"))),
+            field("facebook", "facebook", scalar("String")),
+            field("id", "id", notNull(scalar("ID"))),
+            field("instagram", "instagram", scalar("String")),
+            field("linkedin", "linkedin", scalar("String")),
+            field("name", "name", notNull(scalar("String"))),
+            field("photoRef", "photoRef", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("crop", "crop", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("h", "h", notNull(scalar("Int"))),
+                            field("w", "w", notNull(scalar("Int"))),
+                            field("x", "x", notNull(scalar("Int"))),
+                            field("y", "y", notNull(scalar("Int")))
                         )),
-                    field("uuid","uuid", notNull(scalar("String")))
+                    field("uuid", "uuid", notNull(scalar("String")))
                 )),
-            field("shortname","shortname", scalar("String")),
-            field("twitter","twitter", scalar("String")),
-            field("website","website", scalar("String")),
-            field("websiteTitle","websiteTitle", scalar("String"))
+            field("shortname", "shortname", scalar("String")),
+            field("twitter", "twitter", scalar("String")),
+            field("website", "website", scalar("String")),
+            field("websiteTitle", "websiteTitle", scalar("String"))
         )
 
 private let OrganizationSearchSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("about","about", scalar("String")),
-            field("alphaFeatured","featured", notNull(scalar("Boolean"))),
-            field("alphaOrganizationMembers","members", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("name","name", notNull(scalar("String"))),
-                            field("photo","photo", scalar("String"))
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("about", "about", scalar("String")),
+            field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
+            field("alphaOrganizationMembers", "members", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String"))),
+                            field("photo", "photo", scalar("String"))
                         )))
                 ))))),
-            field("id","id", notNull(scalar("ID"))),
-            field("isMine","isMine", notNull(scalar("Boolean"))),
-            field("membersCount","membersCount", notNull(scalar("Int"))),
-            field("name","name", notNull(scalar("String"))),
-            field("photo","photo", scalar("String")),
-            field("status","status", notNull(scalar("String"))),
-            field("superAccountId","superAccountId", notNull(scalar("ID")))
+            field("id", "id", notNull(scalar("ID"))),
+            field("isMine", "isMine", notNull(scalar("Boolean"))),
+            field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
+            field("status", "status", notNull(scalar("String"))),
+            field("superAccountId", "superAccountId", notNull(scalar("ID")))
         )
 
 private let OrganizationWithoutMembersFragmentSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("about","about", scalar("String")),
-            field("alphaFeatured","featured", notNull(scalar("Boolean"))),
-            field("alphaIsCommunity","isCommunity", notNull(scalar("Boolean"))),
-            field("alphaIsPrivate","isPrivate", notNull(scalar("Boolean"))),
-            field("alphaOrganizationMemberRequests","requests", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("about", "about", scalar("String")),
+            field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
+            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+            field("alphaIsPrivate", "isPrivate", notNull(scalar("Boolean"))),
+            field("alphaOrganizationMemberRequests", "requests", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("role", "role", notNull(scalar("String"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserFullSelector)
                         )))
                 ))))),
-            field("betaIsAdmin","isAdmin", notNull(scalar("Boolean"))),
-            field("betaIsOwner","isOwner", notNull(scalar("Boolean"))),
-            field("betaPublicRooms","rooms", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
+            field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
+            field("betaPublicRooms", "rooms", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
                 ))))),
-            field("facebook","facebook", scalar("String")),
-            field("id","id", notNull(scalar("ID"))),
-            field("instagram","instagram", scalar("String")),
-            field("isMine","isMine", notNull(scalar("Boolean"))),
-            field("linkedin","linkedin", scalar("String")),
-            field("membersCount","membersCount", notNull(scalar("Int"))),
-            field("name","name", notNull(scalar("String"))),
-            field("photo","photo", scalar("String")),
-            field("shortname","shortname", scalar("String")),
-            field("superAccountId","superAccountId", notNull(scalar("ID"))),
-            field("twitter","twitter", scalar("String")),
-            field("website","website", scalar("String"))
+            field("facebook", "facebook", scalar("String")),
+            field("id", "id", notNull(scalar("ID"))),
+            field("instagram", "instagram", scalar("String")),
+            field("isMine", "isMine", notNull(scalar("Boolean"))),
+            field("linkedin", "linkedin", scalar("String")),
+            field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
+            field("shortname", "shortname", scalar("String")),
+            field("superAccountId", "superAccountId", notNull(scalar("ID"))),
+            field("twitter", "twitter", scalar("String")),
+            field("website", "website", scalar("String"))
         )
 
 private let PlatformNotificationSettingsFullSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("comments","comments", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("showNotification","showNotification", notNull(scalar("Boolean"))),
-                    field("sound","sound", notNull(scalar("Boolean")))
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("comments", "comments", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("showNotification", "showNotification", notNull(scalar("Boolean"))),
+                    field("sound", "sound", notNull(scalar("Boolean")))
                 ))),
-            field("communityChat","communityChat", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("showNotification","showNotification", notNull(scalar("Boolean"))),
-                    field("sound","sound", notNull(scalar("Boolean")))
+            field("communityChat", "communityChat", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("showNotification", "showNotification", notNull(scalar("Boolean"))),
+                    field("sound", "sound", notNull(scalar("Boolean")))
                 ))),
-            field("direct","direct", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("showNotification","showNotification", notNull(scalar("Boolean"))),
-                    field("sound","sound", notNull(scalar("Boolean")))
+            field("direct", "direct", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("showNotification", "showNotification", notNull(scalar("Boolean"))),
+                    field("sound", "sound", notNull(scalar("Boolean")))
                 ))),
-            field("notificationPreview","notificationPreview", notNull(scalar("String"))),
-            field("organizationChat","organizationChat", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("showNotification","showNotification", notNull(scalar("Boolean"))),
-                    field("sound","sound", notNull(scalar("Boolean")))
+            field("notificationPreview", "notificationPreview", notNull(scalar("String"))),
+            field("organizationChat", "organizationChat", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("showNotification", "showNotification", notNull(scalar("Boolean"))),
+                    field("sound", "sound", notNull(scalar("Boolean")))
                 ))),
-            field("secretChat","secretChat", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("showNotification","showNotification", notNull(scalar("Boolean"))),
-                    field("sound","sound", notNull(scalar("Boolean")))
+            field("secretChat", "secretChat", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("showNotification", "showNotification", notNull(scalar("Boolean"))),
+                    field("sound", "sound", notNull(scalar("Boolean")))
                 )))
         )
 
 private let RoomFullSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
             inline("PrivateRoom", obj(
-                field("id","id", notNull(scalar("ID"))),
-                field("myBadge","myBadge", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("myBadge", "myBadge", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("UserBadge", UserBadgeSelector)
                     )),
-                field("pinnedMessage","pinnedMessage", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("pinnedMessage", "pinnedMessage", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", FullMessageSelector)
                     )),
-                field("settings","settings", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("mute","mute", scalar("Boolean"))
+                field("settings", "settings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("mute", "mute", scalar("Boolean"))
                     ))),
-                field("user","user", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("User", UserShortSelector)
                     )))
             )),
             inline("SharedRoom", obj(
-                field("canEdit","canEdit", notNull(scalar("Boolean"))),
-                field("canSendMessage","canSendMessage", notNull(scalar("Boolean"))),
-                field("description","description", scalar("String")),
-                field("featuredMembersCount","featuredMembersCount", notNull(scalar("Int"))),
-                field("id","id", notNull(scalar("ID"))),
-                field("isChannel","isChannel", notNull(scalar("Boolean"))),
-                field("kind","kind", notNull(scalar("String"))),
-                field("matchmaking","matchmaking", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("canEdit", "canEdit", notNull(scalar("Boolean"))),
+                field("canSendMessage", "canSendMessage", notNull(scalar("Boolean"))),
+                field("description", "description", scalar("String")),
+                field("featuredMembersCount", "featuredMembersCount", notNull(scalar("Int"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                field("kind", "kind", notNull(scalar("String"))),
+                field("matchmaking", "matchmaking", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("MatchmakingRoom", MatchmakingRoomFragmentSelector)
                     )),
-                field("members","members", notNull(list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("badge","badge", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                field("members", "members", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("badge", "badge", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("UserBadge", UserBadgeSelector)
                             )),
-                        field("canKick","canKick", notNull(scalar("Boolean"))),
-                        field("membership","membership", notNull(scalar("String"))),
-                        field("role","role", notNull(scalar("String"))),
-                        field("user","user", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("canKick", "canKick", notNull(scalar("Boolean"))),
+                        field("membership", "membership", notNull(scalar("String"))),
+                        field("role", "role", notNull(scalar("String"))),
+                        field("user", "user", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
                             )))
                     ))))),
-                field("membersCount","membersCount", scalar("Int")),
-                field("membership","membership", notNull(scalar("String"))),
-                field("myBadge","myBadge", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("membersCount", "membersCount", scalar("Int")),
+                field("membership", "membership", notNull(scalar("String"))),
+                field("myBadge", "myBadge", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("UserBadge", UserBadgeSelector)
                     )),
-                field("organization","organization", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("organization", "organization", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("Organization", OrganizationMediumSelector)
                     )),
-                field("photo","photo", notNull(scalar("String"))),
-                field("pinnedMessage","pinnedMessage", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("photo", "photo", notNull(scalar("String"))),
+                field("pinnedMessage", "pinnedMessage", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", FullMessageSelector)
                     )),
-                field("requests","requests", list(notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("user","user", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                field("requests", "requests", list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("user", "user", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
                             )))
                     )))),
-                field("role","role", notNull(scalar("String"))),
-                field("settings","settings", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("mute","mute", scalar("Boolean"))
+                field("role", "role", notNull(scalar("String"))),
+                field("settings", "settings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("mute", "mute", scalar("Boolean"))
                     ))),
-                field("socialImage","socialImage", scalar("String")),
-                field("title","title", notNull(scalar("String"))),
-                field("welcomeMessage","welcomeMessage", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("isOn","isOn", notNull(scalar("Boolean"))),
-                        field("message","message", scalar("String")),
-                        field("sender","sender", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("name","name", notNull(scalar("String")))
+                field("socialImage", "socialImage", scalar("String")),
+                field("title", "title", notNull(scalar("String"))),
+                field("welcomeMessage", "welcomeMessage", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("isOn", "isOn", notNull(scalar("Boolean"))),
+                        field("message", "message", scalar("String")),
+                        field("sender", "sender", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("name", "name", notNull(scalar("String")))
                             ))
                     ))
             ))
         )
 
 private let RoomFullWithoutMembersSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
             inline("PrivateRoom", obj(
-                field("id","id", notNull(scalar("ID"))),
-                field("myBadge","myBadge", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("myBadge", "myBadge", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("UserBadge", UserBadgeSelector)
                     )),
-                field("settings","settings", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("mute","mute", scalar("Boolean"))
+                field("settings", "settings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("mute", "mute", scalar("Boolean"))
                     ))),
-                field("user","user", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("User", UserShortSelector)
                     )))
             )),
             inline("SharedRoom", obj(
-                field("canEdit","canEdit", notNull(scalar("Boolean"))),
-                field("canSendMessage","canSendMessage", notNull(scalar("Boolean"))),
-                field("description","description", scalar("String")),
-                field("featuredMembersCount","featuredMembersCount", notNull(scalar("Int"))),
-                field("id","id", notNull(scalar("ID"))),
-                field("isChannel","isChannel", notNull(scalar("Boolean"))),
-                field("kind","kind", notNull(scalar("String"))),
-                field("matchmaking","matchmaking", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("canEdit", "canEdit", notNull(scalar("Boolean"))),
+                field("canSendMessage", "canSendMessage", notNull(scalar("Boolean"))),
+                field("description", "description", scalar("String")),
+                field("featuredMembersCount", "featuredMembersCount", notNull(scalar("Int"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                field("kind", "kind", notNull(scalar("String"))),
+                field("matchmaking", "matchmaking", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("MatchmakingRoom", MatchmakingRoomFragmentSelector)
                     )),
-                field("membersCount","membersCount", scalar("Int")),
-                field("membership","membership", notNull(scalar("String"))),
-                field("myBadge","myBadge", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("membersCount", "membersCount", scalar("Int")),
+                field("membership", "membership", notNull(scalar("String"))),
+                field("myBadge", "myBadge", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("UserBadge", UserBadgeSelector)
                     )),
-                field("organization","organization", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("organization", "organization", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("Organization", OrganizationMediumSelector)
                     )),
-                field("photo","photo", notNull(scalar("String"))),
-                field("pinnedMessage","pinnedMessage", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
+                field("photo", "photo", notNull(scalar("String"))),
+                field("pinnedMessage", "pinnedMessage", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", FullMessageSelector)
                     )),
-                field("role","role", notNull(scalar("String"))),
-                field("settings","settings", notNull(obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("mute","mute", scalar("Boolean"))
+                field("role", "role", notNull(scalar("String"))),
+                field("settings", "settings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("mute", "mute", scalar("Boolean"))
                     ))),
-                field("socialImage","socialImage", scalar("String")),
-                field("title","title", notNull(scalar("String"))),
-                field("welcomeMessage","welcomeMessage", obj(
-                        field("__typename","__typename", notNull(scalar("String"))),
-                        field("isOn","isOn", notNull(scalar("Boolean"))),
-                        field("message","message", scalar("String")),
-                        field("sender","sender", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("name","name", notNull(scalar("String")))
+                field("socialImage", "socialImage", scalar("String")),
+                field("title", "title", notNull(scalar("String"))),
+                field("welcomeMessage", "welcomeMessage", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("isOn", "isOn", notNull(scalar("Boolean"))),
+                        field("message", "message", scalar("String")),
+                        field("sender", "sender", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("name", "name", notNull(scalar("String")))
                             ))
                     ))
             ))
         )
 
 private let SessionStateFullSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("isAccountActivated","isAccountActivated", notNull(scalar("Boolean"))),
-            field("isAccountExists","isAccountExists", notNull(scalar("Boolean"))),
-            field("isAccountPicked","isAccountPicked", notNull(scalar("Boolean"))),
-            field("isBlocked","isBlocked", notNull(scalar("Boolean"))),
-            field("isCompleted","isCompleted", notNull(scalar("Boolean"))),
-            field("isLoggedIn","isLoggedIn", notNull(scalar("Boolean"))),
-            field("isProfileCreated","isProfileCreated", notNull(scalar("Boolean")))
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("isAccountActivated", "isAccountActivated", notNull(scalar("Boolean"))),
+            field("isAccountExists", "isAccountExists", notNull(scalar("Boolean"))),
+            field("isAccountPicked", "isAccountPicked", notNull(scalar("Boolean"))),
+            field("isBlocked", "isBlocked", notNull(scalar("Boolean"))),
+            field("isCompleted", "isCompleted", notNull(scalar("Boolean"))),
+            field("isLoggedIn", "isLoggedIn", notNull(scalar("Boolean"))),
+            field("isProfileCreated", "isProfileCreated", notNull(scalar("Boolean")))
         )
 
 private let SettingsFullSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("countUnreadChats","countUnreadChats", notNull(scalar("Boolean"))),
-            field("desktop","desktop", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("countUnreadChats", "countUnreadChats", notNull(scalar("Boolean"))),
+            field("desktop", "desktop", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("PlatformNotificationSettings", PlatformNotificationSettingsFullSelector)
                 ))),
-            field("emailFrequency","emailFrequency", notNull(scalar("String"))),
-            field("excludeMutedChats","excludeMutedChats", notNull(scalar("Boolean"))),
-            field("id","id", notNull(scalar("ID"))),
-            field("mobile","mobile", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("emailFrequency", "emailFrequency", notNull(scalar("String"))),
+            field("excludeMutedChats", "excludeMutedChats", notNull(scalar("Boolean"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("mobile", "mobile", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("PlatformNotificationSettings", PlatformNotificationSettingsFullSelector)
                 ))),
-            field("primaryEmail","primaryEmail", notNull(scalar("String")))
+            field("primaryEmail", "primaryEmail", notNull(scalar("String")))
         )
 
 private let StickerPackFragmentSelector = obj(
-            field("__typename","__typename", notNull(scalar("String"))),
-            field("id","id", notNull(scalar("ID"))),
-            field("stickers","stickers", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("stickers", "stickers", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Sticker", StickerFragmentSelector)
                 ))))),
-            field("title","title", notNull(scalar("String")))
+            field("title", "title", notNull(scalar("String")))
         )
 
 private let AccountSelector = obj(
-            field("me","me", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("me", "me", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("User", UserShortSelector)
                 )),
-            field("myPermissions","myPermissions", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("roles","roles", notNull(list(notNull(scalar("String")))))
+            field("myPermissions", "myPermissions", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("roles", "roles", notNull(list(notNull(scalar("String")))))
                 ))),
-            field("sessionState","sessionState", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("sessionState", "sessionState", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("SessionState", SessionStateFullSelector)
                 )))
         )
 private let AccountAppInviteSelector = obj(
-            field("appInvite","invite", notNull(scalar("String")))
+            field("appInvite", "invite", notNull(scalar("String")))
         )
 private let AccountAppInviteInfoSelector = obj(
-            field("alphaInviteInfo","invite", arguments(fieldValue("key", refValue("inviteKey"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("creator","creator", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaInviteInfo", "invite", arguments(fieldValue("key", refValue("inviteKey"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("creator", "creator", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )),
-                    field("id","id", notNull(scalar("ID")))
+                    field("id", "id", notNull(scalar("ID")))
                 )),
-            field("appInviteInfo","appInvite", arguments(fieldValue("key", refValue("inviteKey"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("inviter","inviter", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("appInviteInfo", "appInvite", arguments(fieldValue("key", refValue("inviteKey"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("inviter", "inviter", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )))
                 ))
         )
 private let AccountInviteInfoSelector = obj(
-            field("alphaInviteInfo","invite", arguments(fieldValue("key", refValue("inviteKey"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("creator","creator", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaInviteInfo", "invite", arguments(fieldValue("key", refValue("inviteKey"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("creator", "creator", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )),
-                    field("forEmail","forEmail", scalar("String")),
-                    field("forName","forName", scalar("String")),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("joined","joined", notNull(scalar("Boolean"))),
-                    field("key","key", notNull(scalar("String"))),
-                    field("membersCount","membersCount", scalar("Int")),
-                    field("orgId","orgId", notNull(scalar("ID"))),
-                    field("organization","organization", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("about","about", scalar("String")),
-                            field("alphaIsCommunity","isCommunity", notNull(scalar("Boolean"))),
-                            field("id","id", notNull(scalar("ID")))
+                    field("forEmail", "forEmail", scalar("String")),
+                    field("forName", "forName", scalar("String")),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("joined", "joined", notNull(scalar("Boolean"))),
+                    field("key", "key", notNull(scalar("String"))),
+                    field("membersCount", "membersCount", scalar("Int")),
+                    field("orgId", "orgId", notNull(scalar("ID"))),
+                    field("organization", "organization", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("about", "about", scalar("String")),
+                            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+                            field("id", "id", notNull(scalar("ID")))
                         )),
-                    field("photo","photo", scalar("String")),
-                    field("title","title", notNull(scalar("String")))
+                    field("photo", "photo", scalar("String")),
+                    field("title", "title", notNull(scalar("String")))
                 ))
         )
 private let AccountSettingsSelector = obj(
-            field("me","me", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("audienceSize","audienceSize", notNull(scalar("Int"))),
+            field("me", "me", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("audienceSize", "audienceSize", notNull(scalar("Int"))),
                     fragment("User", UserShortSelector)
                 )),
-            field("myOrganizations","organizations", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("myOrganizations", "organizations", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationShortSelector)
                 )))))
         )
 private let AvailableRoomsSelector = obj(
-            field("alphaComunityPrefixSearch","communities", arguments(fieldValue("first", intValue(3))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("node","node", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaComunityPrefixSearch", "communities", arguments(fieldValue("first", intValue(3))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("Organization", CommunitySearchSelector)
                                 )))
                         )))))
                 ))),
-            field("betaIsDiscoverDone","isDiscoverDone", notNull(scalar("Boolean"))),
-            field("betaSuggestedRooms","suggestedRooms", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaIsDiscoverDone", "isDiscoverDone", notNull(scalar("Boolean"))),
+            field("betaSuggestedRooms", "suggestedRooms", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("kind","kind", notNull(scalar("String"))),
-                        field("membersCount","membersCount", scalar("Int")),
-                        field("membership","membership", notNull(scalar("String"))),
-                        field("organization","organization", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("name","name", notNull(scalar("String"))),
-                                field("photo","photo", scalar("String"))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("kind", "kind", notNull(scalar("String"))),
+                        field("membersCount", "membersCount", scalar("Int")),
+                        field("membership", "membership", notNull(scalar("String"))),
+                        field("organization", "organization", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("photo", "photo", scalar("String"))
                             )),
-                        field("photo","photo", notNull(scalar("String"))),
-                        field("title","title", notNull(scalar("String")))
+                        field("photo", "photo", notNull(scalar("String"))),
+                        field("title", "title", notNull(scalar("String")))
                     ))
                 ))))),
-            field("betaUserAvailableRooms","availableChats", arguments(fieldValue("isChannel", boolValue(false)), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaUserAvailableRooms", "availableChats", arguments(fieldValue("isChannel", boolValue(false)), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("kind","kind", notNull(scalar("String"))),
-                        field("membersCount","membersCount", scalar("Int")),
-                        field("membership","membership", notNull(scalar("String"))),
-                        field("organization","organization", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("name","name", notNull(scalar("String"))),
-                                field("photo","photo", scalar("String"))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("kind", "kind", notNull(scalar("String"))),
+                        field("membersCount", "membersCount", scalar("Int")),
+                        field("membership", "membership", notNull(scalar("String"))),
+                        field("organization", "organization", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("photo", "photo", scalar("String"))
                             )),
-                        field("photo","photo", notNull(scalar("String"))),
-                        field("title","title", notNull(scalar("String")))
+                        field("photo", "photo", notNull(scalar("String"))),
+                        field("title", "title", notNull(scalar("String")))
                     ))
                 ))))),
-            field("betaUserAvailableRooms","availableChannels", arguments(fieldValue("isChannel", boolValue(true)), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaUserAvailableRooms", "availableChannels", arguments(fieldValue("isChannel", boolValue(true)), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("kind","kind", notNull(scalar("String"))),
-                        field("membersCount","membersCount", scalar("Int")),
-                        field("membership","membership", notNull(scalar("String"))),
-                        field("organization","organization", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("name","name", notNull(scalar("String"))),
-                                field("photo","photo", scalar("String"))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("kind", "kind", notNull(scalar("String"))),
+                        field("membersCount", "membersCount", scalar("Int")),
+                        field("membership", "membership", notNull(scalar("String"))),
+                        field("organization", "organization", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("photo", "photo", scalar("String"))
                             )),
-                        field("photo","photo", notNull(scalar("String"))),
-                        field("title","title", notNull(scalar("String")))
+                        field("photo", "photo", notNull(scalar("String"))),
+                        field("title", "title", notNull(scalar("String")))
                     ))
                 )))))
         )
 private let ChatInitSelector = obj(
-            field("conversationState","state", arguments(fieldValue("id", refValue("chatId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("state","state", scalar("String"))
+            field("conversationState", "state", arguments(fieldValue("id", refValue("chatId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("state", "state", scalar("String"))
                 ))),
-            field("lastReadedMessage","lastReadedMessage", arguments(fieldValue("chatId", refValue("chatId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
+            field("lastReadedMessage", "lastReadedMessage", arguments(fieldValue("chatId", refValue("chatId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
                 )),
-            field("messages","messages", arguments(fieldValue("before", refValue("before")), fieldValue("chatId", refValue("chatId")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("messages", "messages", arguments(fieldValue("before", refValue("before")), fieldValue("chatId", refValue("chatId")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("ModernMessage", FullMessageSelector)
                 ))))),
-            field("room","room", arguments(fieldValue("id", refValue("chatId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("room", "room", arguments(fieldValue("id", refValue("chatId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
                 ))
         )
 private let ChatInitFromUnreadSelector = obj(
-            field("conversationState","state", arguments(fieldValue("id", refValue("chatId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("state","state", scalar("String"))
+            field("conversationState", "state", arguments(fieldValue("id", refValue("chatId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("state", "state", scalar("String"))
                 ))),
-            field("gammaMessages","gammaMessages", arguments(fieldValue("before", refValue("before")), fieldValue("chatId", refValue("chatId")), fieldValue("first", refValue("first"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("haveMoreBackward","haveMoreBackward", scalar("Boolean")),
-                    field("haveMoreForward","haveMoreForward", scalar("Boolean")),
-                    field("messages","messages", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("gammaMessages", "gammaMessages", arguments(fieldValue("before", refValue("before")), fieldValue("chatId", refValue("chatId")), fieldValue("first", refValue("first"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("haveMoreBackward", "haveMoreBackward", scalar("Boolean")),
+                    field("haveMoreForward", "haveMoreForward", scalar("Boolean")),
+                    field("messages", "messages", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("ModernMessage", FullMessageSelector)
                         )))))
                 )),
-            field("lastReadedMessage","lastReadedMessage", arguments(fieldValue("chatId", refValue("chatId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
+            field("lastReadedMessage", "lastReadedMessage", arguments(fieldValue("chatId", refValue("chatId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
                 )),
-            field("room","room", arguments(fieldValue("id", refValue("chatId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("room", "room", arguments(fieldValue("id", refValue("chatId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
                 ))
         )
 private let ChatMembersSearchSelector = obj(
-            field("chatMembersSearch","members", arguments(fieldValue("after", refValue("after")), fieldValue("cid", refValue("cid")), fieldValue("first", refValue("first")), fieldValue("query", refValue("query"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("cursor","cursor", notNull(scalar("String"))),
-                            field("node","user", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("id","id", notNull(scalar("ID"))),
-                                    field("name","name", notNull(scalar("String"))),
-                                    field("photo","photo", scalar("String")),
-                                    field("primaryOrganization","primaryOrganization", obj(
-                                            field("__typename","__typename", notNull(scalar("String"))),
-                                            field("id","id", notNull(scalar("ID"))),
-                                            field("name","name", notNull(scalar("String")))
+            field("chatMembersSearch", "members", arguments(fieldValue("after", refValue("after")), fieldValue("cid", refValue("cid")), fieldValue("first", refValue("first")), fieldValue("query", refValue("query"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("cursor", "cursor", notNull(scalar("String"))),
+                            field("node", "user", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("name", "name", notNull(scalar("String"))),
+                                    field("photo", "photo", scalar("String")),
+                                    field("primaryOrganization", "primaryOrganization", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("id", "id", notNull(scalar("ID"))),
+                                            field("name", "name", notNull(scalar("String")))
                                         )),
-                                    field("shortname","shortname", scalar("String"))
+                                    field("shortname", "shortname", scalar("String"))
                                 )))
                         ))))),
-                    field("pageInfo","pageInfo", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("hasNextPage","hasNextPage", notNull(scalar("Boolean")))
+                    field("pageInfo", "pageInfo", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean")))
                         )))
                 )))
         )
 private let CommentsSelector = obj(
-            field("comments","comments", arguments(fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("comments","comments", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("comments", "comments", arguments(fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("comments", "comments", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("CommentEntry", CommentEntryFragmentSelector)
                         ))))),
-                    field("count","count", notNull(scalar("Int"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("state","state", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("state","state", scalar("String"))
+                    field("count", "count", notNull(scalar("Int"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("state", "state", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("state", "state", scalar("String"))
                         )))
                 )))
         )
 private let ConferenceSelector = obj(
-            field("conference","conference", arguments(fieldValue("id", refValue("id"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("conference", "conference", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceFullSelector)
                 )))
         )
 private let ConferenceMediaSelector = obj(
-            field("conferenceMedia","conferenceMedia", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("iceServers","iceServers", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("credential","credential", scalar("String")),
-                            field("urls","urls", notNull(list(notNull(scalar("String"))))),
-                            field("username","username", scalar("String"))
+            field("conferenceMedia", "conferenceMedia", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("iceServers", "iceServers", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("credential", "credential", scalar("String")),
+                            field("urls", "urls", notNull(list(notNull(scalar("String"))))),
+                            field("username", "username", scalar("String"))
                         ))))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("streams","streams", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("ice","ice", notNull(list(notNull(scalar("String"))))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("sdp","sdp", scalar("String")),
-                            field("state","state", notNull(scalar("String")))
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("streams", "streams", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("ice", "ice", notNull(list(notNull(scalar("String"))))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("sdp", "sdp", scalar("String")),
+                            field("state", "state", notNull(scalar("String")))
                         )))))
                 )))
         )
 private let DialogsSelector = obj(
-            field("alphaNotificationCounter","counter", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("unreadCount","unreadCount", notNull(scalar("Int")))
+            field("alphaNotificationCounter", "counter", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("unreadCount", "unreadCount", notNull(scalar("Int")))
                 ))),
-            field("dialogs","dialogs", arguments(fieldValue("after", refValue("after")), fieldValue("first", intValue(20))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("cursor","cursor", scalar("String")),
-                    field("items","items", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("alphaTopMessage","topMessage", obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+            field("dialogs", "dialogs", arguments(fieldValue("after", refValue("after")), fieldValue("first", intValue(20))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cursor", "cursor", scalar("String")),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("alphaTopMessage", "topMessage", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("ModernMessage", DaialogListMessageSelector)
                                 )),
-                            field("cid","cid", notNull(scalar("ID"))),
-                            field("fid","fid", notNull(scalar("ID"))),
-                            field("haveMention","haveMention", notNull(scalar("Boolean"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("isChannel","isChannel", notNull(scalar("Boolean"))),
-                            field("isMuted","isMuted", notNull(scalar("Boolean"))),
-                            field("kind","kind", notNull(scalar("String"))),
-                            field("photo","photo", notNull(scalar("String"))),
-                            field("title","title", notNull(scalar("String"))),
-                            field("unreadCount","unreadCount", notNull(scalar("Int")))
+                            field("cid", "cid", notNull(scalar("ID"))),
+                            field("fid", "fid", notNull(scalar("ID"))),
+                            field("haveMention", "haveMention", notNull(scalar("Boolean"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                            field("isMuted", "isMuted", notNull(scalar("Boolean"))),
+                            field("kind", "kind", notNull(scalar("String"))),
+                            field("photo", "photo", notNull(scalar("String"))),
+                            field("title", "title", notNull(scalar("String"))),
+                            field("unreadCount", "unreadCount", notNull(scalar("Int")))
                         )))))
                 ))),
-            field("dialogsState","state", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("state","state", scalar("String"))
+            field("dialogsState", "state", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("state", "state", scalar("String"))
                 )))
         )
 private let DiscoverIsDoneSelector = obj(
-            field("betaIsDiscoverDone","betaIsDiscoverDone", notNull(scalar("Boolean")))
+            field("betaIsDiscoverDone", "betaIsDiscoverDone", notNull(scalar("Boolean")))
         )
 private let DiscoverNextPageSelector = obj(
-            field("gammaNextDiscoverPage","betaNextDiscoverPage", arguments(fieldValue("excudedGroupsIds", refValue("excudedGroupsIds")), fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("chats","chats", list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("gammaNextDiscoverPage", "betaNextDiscoverPage", arguments(fieldValue("excudedGroupsIds", refValue("excudedGroupsIds")), fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("chats", "chats", list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("Room", RoomShortSelector)
                         )))),
-                    field("tagGroup","tagGroup", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("String"))),
-                            field("subtitle","subtitle", scalar("String")),
-                            field("tags","tags", notNull(list(notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("id","id", notNull(scalar("String"))),
-                                    field("title","title", notNull(scalar("String")))
+                    field("tagGroup", "tagGroup", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("String"))),
+                            field("subtitle", "subtitle", scalar("String")),
+                            field("tags", "tags", notNull(list(notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("String"))),
+                                    field("title", "title", notNull(scalar("String")))
                                 ))))),
-                            field("title","title", scalar("String"))
+                            field("title", "title", scalar("String"))
                         ))
                 ))
         )
 private let ExploreCommunitySelector = obj(
-            field("alphaComunityPrefixSearch","items", arguments(fieldValue("after", refValue("after")), fieldValue("featuredIfEmptyQuery", refValue("featuredIfEmptyQuery")), fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("cursor","cursor", notNull(scalar("String"))),
-                            field("node","node", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaComunityPrefixSearch", "items", arguments(fieldValue("after", refValue("after")), fieldValue("featuredIfEmptyQuery", refValue("featuredIfEmptyQuery")), fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("cursor", "cursor", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("Organization", CommunitySearchSelector)
                                 )))
                         ))))),
-                    field("pageInfo","pageInfo", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("currentPage","currentPage", notNull(scalar("Int"))),
-                            field("hasNextPage","hasNextPage", notNull(scalar("Boolean"))),
-                            field("hasPreviousPage","hasPreviousPage", notNull(scalar("Boolean"))),
-                            field("itemsCount","itemsCount", notNull(scalar("Int"))),
-                            field("openEnded","openEnded", notNull(scalar("Boolean"))),
-                            field("pagesCount","pagesCount", notNull(scalar("Int")))
+                    field("pageInfo", "pageInfo", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("currentPage", "currentPage", notNull(scalar("Int"))),
+                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean"))),
+                            field("hasPreviousPage", "hasPreviousPage", notNull(scalar("Boolean"))),
+                            field("itemsCount", "itemsCount", notNull(scalar("Int"))),
+                            field("openEnded", "openEnded", notNull(scalar("Boolean"))),
+                            field("pagesCount", "pagesCount", notNull(scalar("Int")))
                         )))
                 )))
         )
 private let ExplorePeopleSelector = obj(
-            field("userSearch","items", arguments(fieldValue("after", refValue("after")), fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("cursor","cursor", notNull(scalar("String"))),
-                            field("node","node", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("isYou","isYou", notNull(scalar("Boolean"))),
+            field("userSearch", "items", arguments(fieldValue("after", refValue("after")), fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("cursor", "cursor", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("isYou", "isYou", notNull(scalar("Boolean"))),
                                     fragment("User", UserShortSelector)
                                 )))
                         ))))),
-                    field("pageInfo","pageInfo", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("currentPage","currentPage", notNull(scalar("Int"))),
-                            field("hasNextPage","hasNextPage", notNull(scalar("Boolean"))),
-                            field("hasPreviousPage","hasPreviousPage", notNull(scalar("Boolean"))),
-                            field("itemsCount","itemsCount", notNull(scalar("Int"))),
-                            field("openEnded","openEnded", notNull(scalar("Boolean"))),
-                            field("pagesCount","pagesCount", notNull(scalar("Int")))
+                    field("pageInfo", "pageInfo", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("currentPage", "currentPage", notNull(scalar("Int"))),
+                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean"))),
+                            field("hasPreviousPage", "hasPreviousPage", notNull(scalar("Boolean"))),
+                            field("itemsCount", "itemsCount", notNull(scalar("Int"))),
+                            field("openEnded", "openEnded", notNull(scalar("Boolean"))),
+                            field("pagesCount", "pagesCount", notNull(scalar("Int")))
                         )))
                 )))
         )
 private let FeatureFlagsSelector = obj(
-            field("featureFlags","featureFlags", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("key","key", notNull(scalar("String"))),
-                    field("title","title", notNull(scalar("String")))
+            field("featureFlags", "featureFlags", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("key", "key", notNull(scalar("String"))),
+                    field("title", "title", notNull(scalar("String")))
                 )))))
         )
 private let FeedChannelSelector = obj(
-            field("alphaFeedChannel","channel", arguments(fieldValue("id", refValue("id"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaFeedChannel", "channel", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("FeedChannel", FeedChannelFullSelector)
                 )))
         )
 private let FeedChannelContentSelector = obj(
-            field("alphaFeedChannelContent","content", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("id", refValue("id"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("cursor","cursor", scalar("String")),
-                    field("items","items", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaFeedChannelContent", "content", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cursor", "cursor", scalar("String")),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("FeedItem", FeedItemFullSelector)
                         )))))
                 )))
         )
 private let FeedChannelSubscribersSelector = obj(
-            field("alphaFeedChannelSubscribers","subscribers", arguments(fieldValue("after", refValue("after")), fieldValue("channelId", refValue("channelId")), fieldValue("first", refValue("first")), fieldValue("query", refValue("query"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("cursor","cursor", notNull(scalar("String"))),
-                            field("node","node", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("role","role", notNull(scalar("String"))),
-                                    field("user","user", notNull(obj(
-                                            field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaFeedChannelSubscribers", "subscribers", arguments(fieldValue("after", refValue("after")), fieldValue("channelId", refValue("channelId")), fieldValue("first", refValue("first")), fieldValue("query", refValue("query"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("cursor", "cursor", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("role", "role", notNull(scalar("String"))),
+                                    field("user", "user", notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
                                             fragment("User", UserShortSelector)
                                         )))
                                 )))
                         ))))),
-                    field("pageInfo","pageInfo", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("currentPage","currentPage", notNull(scalar("Int"))),
-                            field("hasNextPage","hasNextPage", notNull(scalar("Boolean"))),
-                            field("hasPreviousPage","hasPreviousPage", notNull(scalar("Boolean"))),
-                            field("itemsCount","itemsCount", notNull(scalar("Int"))),
-                            field("openEnded","openEnded", notNull(scalar("Boolean"))),
-                            field("pagesCount","pagesCount", notNull(scalar("Int")))
+                    field("pageInfo", "pageInfo", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("currentPage", "currentPage", notNull(scalar("Int"))),
+                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean"))),
+                            field("hasPreviousPage", "hasPreviousPage", notNull(scalar("Boolean"))),
+                            field("itemsCount", "itemsCount", notNull(scalar("Int"))),
+                            field("openEnded", "openEnded", notNull(scalar("Boolean"))),
+                            field("pagesCount", "pagesCount", notNull(scalar("Int")))
                         )))
                 )))
         )
 private let FeedChannelWritersSelector = obj(
-            field("alphaFeedChannelAdmins","writers", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("id", refValue("id"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("cursor","cursor", scalar("String")),
-                    field("items","items", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("role","role", notNull(scalar("String"))),
-                            field("user","user", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaFeedChannelAdmins", "writers", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cursor", "cursor", scalar("String")),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("role", "role", notNull(scalar("String"))),
+                            field("user", "user", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("User", UserShortSelector)
                                 )))
                         )))))
                 )))
         )
 private let FeedChannelsSearchSelector = obj(
-            field("alphaFeedChannelSearch","search", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("cursor","cursor", notNull(scalar("String"))),
-                            field("node","node", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaFeedChannelSearch", "search", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("cursor", "cursor", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("FeedChannel", FeedChannelFullSelector)
                                 )))
                         ))))),
-                    field("pageInfo","pageInfo", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("currentPage","currentPage", notNull(scalar("Int"))),
-                            field("hasNextPage","hasNextPage", notNull(scalar("Boolean"))),
-                            field("hasPreviousPage","hasPreviousPage", notNull(scalar("Boolean"))),
-                            field("itemsCount","itemsCount", notNull(scalar("Int"))),
-                            field("openEnded","openEnded", notNull(scalar("Boolean"))),
-                            field("pagesCount","pagesCount", notNull(scalar("Int")))
+                    field("pageInfo", "pageInfo", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("currentPage", "currentPage", notNull(scalar("Int"))),
+                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean"))),
+                            field("hasPreviousPage", "hasPreviousPage", notNull(scalar("Boolean"))),
+                            field("itemsCount", "itemsCount", notNull(scalar("Int"))),
+                            field("openEnded", "openEnded", notNull(scalar("Boolean"))),
+                            field("pagesCount", "pagesCount", notNull(scalar("Int")))
                         )))
                 )))
         )
 private let FeedItemSelector = obj(
-            field("alphaFeedItem","item", arguments(fieldValue("id", refValue("id"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaFeedItem", "item", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("FeedItem", FeedItemFullSelector)
                 ))
         )
 private let FeedLoadMoreSelector = obj(
-            field("alphaHomeFeed","feed", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("cursor","cursor", scalar("String")),
-                    field("items","items", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaHomeFeed", "feed", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cursor", "cursor", scalar("String")),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("FeedItem", FeedItemFullSelector)
                         )))))
                 )))
         )
 private let FeedRecommendedChannelsSelector = obj(
-            field("alphaRecommendedChannels","search", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("cursor","cursor", notNull(scalar("String"))),
-                            field("node","node", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaRecommendedChannels", "search", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("cursor", "cursor", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("FeedChannel", FeedChannelFullSelector)
                                 )))
                         ))))),
-                    field("pageInfo","pageInfo", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("currentPage","currentPage", notNull(scalar("Int"))),
-                            field("hasNextPage","hasNextPage", notNull(scalar("Boolean"))),
-                            field("hasPreviousPage","hasPreviousPage", notNull(scalar("Boolean"))),
-                            field("itemsCount","itemsCount", notNull(scalar("Int"))),
-                            field("openEnded","openEnded", notNull(scalar("Boolean"))),
-                            field("pagesCount","pagesCount", notNull(scalar("Int")))
+                    field("pageInfo", "pageInfo", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("currentPage", "currentPage", notNull(scalar("Int"))),
+                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean"))),
+                            field("hasPreviousPage", "hasPreviousPage", notNull(scalar("Boolean"))),
+                            field("itemsCount", "itemsCount", notNull(scalar("Int"))),
+                            field("openEnded", "openEnded", notNull(scalar("Boolean"))),
+                            field("pagesCount", "pagesCount", notNull(scalar("Int")))
                         )))
                 )))
         )
 private let FeedSubscriptionsSelector = obj(
-            field("alphaFeedMySubscriptions","channels", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("cursor","cursor", scalar("String")),
-                    field("items","items", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaFeedMySubscriptions", "channels", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cursor", "cursor", scalar("String")),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("FeedChannel", FeedChannelFullSelector)
                         )))))
                 )))
         )
 private let FeedWritableChannelsSelector = obj(
-            field("alphaWritableChannels","channels", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("cursor","cursor", scalar("String")),
-                    field("items","items", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaWritableChannels", "channels", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cursor", "cursor", scalar("String")),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("FeedChannel", FeedChannelFullSelector)
                         )))))
                 )))
         )
 private let FetchPushSettingsSelector = obj(
-            field("pushSettings","pushSettings", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("webPushKey","webPushKey", scalar("String"))
+            field("pushSettings", "pushSettings", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("webPushKey", "webPushKey", scalar("String"))
                 )))
         )
 private let GlobalCounterSelector = obj(
-            field("alphaNotificationCounter","alphaNotificationCounter", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("unreadCount","unreadCount", notNull(scalar("Int")))
+            field("alphaNotificationCounter", "alphaNotificationCounter", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("unreadCount", "unreadCount", notNull(scalar("Int")))
                 )))
         )
 private let GlobalSearchSelector = obj(
-            field("alphaGlobalSearch","items", arguments(fieldValue("kinds", refValue("kinds")), fieldValue("query", refValue("query"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaGlobalSearch", "items", arguments(fieldValue("kinds", refValue("kinds")), fieldValue("query", refValue("query"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("Organization", obj(
                         fragment("Organization", OrganizationShortSelector)
                     )),
@@ -2145,60 +2145,60 @@ private let GlobalSearchSelector = obj(
                         fragment("User", UserShortSelector)
                     )),
                     inline("SharedRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("kind","kind", notNull(scalar("String"))),
-                        field("membersCount","membersCount", scalar("Int")),
-                        field("membership","membership", notNull(scalar("String"))),
-                        field("organization","organization", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("name","name", notNull(scalar("String"))),
-                                field("photo","photo", scalar("String"))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("kind", "kind", notNull(scalar("String"))),
+                        field("membersCount", "membersCount", scalar("Int")),
+                        field("membership", "membership", notNull(scalar("String"))),
+                        field("organization", "organization", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("photo", "photo", scalar("String"))
                             )),
-                        field("photo","roomPhoto", notNull(scalar("String"))),
-                        field("title","title", notNull(scalar("String")))
+                        field("photo", "roomPhoto", notNull(scalar("String"))),
+                        field("title", "title", notNull(scalar("String")))
                     ))
                 )))))
         )
 private let InitFeedSelector = obj(
-            field("alphaFeedMyDraftsChannel","drafts", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaFeedMyDraftsChannel", "drafts", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("FeedChannel", FeedChannelFullSelector)
                 ))),
-            field("alphaHomeFeed","feed", arguments(fieldValue("first", refValue("first"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("cursor","cursor", scalar("String")),
-                    field("items","items", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaHomeFeed", "feed", arguments(fieldValue("first", refValue("first"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cursor", "cursor", scalar("String")),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("FeedItem", FeedItemFullSelector)
                         )))))
                 )))
         )
 private let MatchmakingProfileSelector = obj(
-            field("matchmakingProfile","matchmakingProfile", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("uid", refValue("uid"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("matchmakingProfile", "matchmakingProfile", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("uid", refValue("uid"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("MatchmakingProfile", MatchmakingProfileFragmentSelector)
                 ))
         )
 private let MatchmakingRoomSelector = obj(
-            field("matchmakingRoom","matchmakingRoom", arguments(fieldValue("peerId", refValue("peerId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("matchmakingRoom", "matchmakingRoom", arguments(fieldValue("peerId", refValue("peerId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("MatchmakingRoom", MatchmakingRoomFragmentSelector)
                 ))
         )
 private let MessageSelector = obj(
-            field("message","message", arguments(fieldValue("messageId", refValue("messageId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("source","source", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("message", "message", arguments(fieldValue("messageId", refValue("messageId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("source", "source", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             inline("MessageSourceChat", obj(
-                                field("chat","chat", notNull(obj(
-                                        field("__typename","__typename", notNull(scalar("String"))),
+                                field("chat", "chat", notNull(obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
                                         inline("PrivateRoom", obj(
-                                            field("id","id", notNull(scalar("ID")))
+                                            field("id", "id", notNull(scalar("ID")))
                                         )),
                                         inline("SharedRoom", obj(
-                                            field("id","id", notNull(scalar("ID")))
+                                            field("id", "id", notNull(scalar("ID")))
                                         ))
                                     )))
                             ))
@@ -2207,702 +2207,702 @@ private let MessageSelector = obj(
                 ))
         )
 private let MessagesBatchSelector = obj(
-            field("conversationState","state", arguments(fieldValue("id", refValue("chatId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("state","state", scalar("String"))
+            field("conversationState", "state", arguments(fieldValue("id", refValue("chatId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("state", "state", scalar("String"))
                 ))),
-            field("gammaMessages","gammaMessages", arguments(fieldValue("after", refValue("after")), fieldValue("before", refValue("before")), fieldValue("chatId", refValue("chatId")), fieldValue("first", refValue("first"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("haveMoreBackward","haveMoreBackward", scalar("Boolean")),
-                    field("haveMoreForward","haveMoreForward", scalar("Boolean")),
-                    field("messages","messages", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("gammaMessages", "gammaMessages", arguments(fieldValue("after", refValue("after")), fieldValue("before", refValue("before")), fieldValue("chatId", refValue("chatId")), fieldValue("first", refValue("first"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("haveMoreBackward", "haveMoreBackward", scalar("Boolean")),
+                    field("haveMoreForward", "haveMoreForward", scalar("Boolean")),
+                    field("messages", "messages", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("ModernMessage", FullMessageSelector)
                         )))))
                 ))
         )
 private let MessagesSearchSelector = obj(
-            field("messagesSearch","messagesSearch", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("cursor","cursor", notNull(scalar("String"))),
-                            field("node","node", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("chat","chat", notNull(obj(
-                                            field("__typename","__typename", notNull(scalar("String"))),
+            field("messagesSearch", "messagesSearch", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("cursor", "cursor", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("chat", "chat", notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
                                             inline("PrivateRoom", obj(
-                                                field("id","id", notNull(scalar("ID"))),
-                                                field("user","user", notNull(obj(
-                                                        field("__typename","__typename", notNull(scalar("String"))),
-                                                        field("id","id", notNull(scalar("ID"))),
-                                                        field("name","name", notNull(scalar("String"))),
-                                                        field("photo","photo", scalar("String"))
+                                                field("id", "id", notNull(scalar("ID"))),
+                                                field("user", "user", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("name", "name", notNull(scalar("String"))),
+                                                        field("photo", "photo", scalar("String"))
                                                     )))
                                             )),
                                             inline("SharedRoom", obj(
-                                                field("canEdit","canEdit", notNull(scalar("Boolean"))),
-                                                field("id","id", notNull(scalar("ID"))),
-                                                field("isChannel","isChannel", notNull(scalar("Boolean"))),
-                                                field("kind","kind", notNull(scalar("String"))),
-                                                field("membership","membership", notNull(scalar("String"))),
-                                                field("photo","photo", notNull(scalar("String"))),
-                                                field("role","role", notNull(scalar("String"))),
-                                                field("title","title", notNull(scalar("String")))
+                                                field("canEdit", "canEdit", notNull(scalar("Boolean"))),
+                                                field("id", "id", notNull(scalar("ID"))),
+                                                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                                                field("kind", "kind", notNull(scalar("String"))),
+                                                field("membership", "membership", notNull(scalar("String"))),
+                                                field("photo", "photo", notNull(scalar("String"))),
+                                                field("role", "role", notNull(scalar("String"))),
+                                                field("title", "title", notNull(scalar("String")))
                                             ))
                                         ))),
-                                    field("message","message", notNull(obj(
-                                            field("__typename","__typename", notNull(scalar("String"))),
-                                            field("date","date", notNull(scalar("Date"))),
-                                            field("fallback","fallback", notNull(scalar("String"))),
-                                            field("id","id", notNull(scalar("ID"))),
-                                            field("message","message", scalar("String")),
-                                            field("sender","sender", notNull(obj(
-                                                    field("__typename","__typename", notNull(scalar("String"))),
-                                                    field("firstName","firstName", notNull(scalar("String"))),
-                                                    field("id","id", notNull(scalar("ID"))),
-                                                    field("name","name", notNull(scalar("String"))),
-                                                    field("photo","photo", scalar("String"))
+                                    field("message", "message", notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("date", "date", notNull(scalar("Date"))),
+                                            field("fallback", "fallback", notNull(scalar("String"))),
+                                            field("id", "id", notNull(scalar("ID"))),
+                                            field("message", "message", scalar("String")),
+                                            field("sender", "sender", notNull(obj(
+                                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                                    field("firstName", "firstName", notNull(scalar("String"))),
+                                                    field("id", "id", notNull(scalar("ID"))),
+                                                    field("name", "name", notNull(scalar("String"))),
+                                                    field("photo", "photo", scalar("String"))
                                                 ))),
-                                            field("senderBadge","senderBadge", obj(
-                                                    field("__typename","__typename", notNull(scalar("String"))),
+                                            field("senderBadge", "senderBadge", obj(
+                                                    field("__typename", "__typename", notNull(scalar("String"))),
                                                     fragment("UserBadge", UserBadgeSelector)
                                                 )),
                                             inline("GeneralMessage", obj(
-                                                field("attachments","attachments", notNull(list(notNull(obj(
-                                                        field("__typename","__typename", notNull(scalar("String"))),
-                                                        field("fallback","fallback", notNull(scalar("String"))),
-                                                        field("id","id", notNull(scalar("ID"))),
+                                                field("attachments", "attachments", notNull(list(notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("fallback", "fallback", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
                                                         inline("MessageAttachmentFile", obj(
-                                                            field("fileId","fileId", notNull(scalar("String"))),
-                                                            field("fileMetadata","fileMetadata", notNull(obj(
-                                                                    field("__typename","__typename", notNull(scalar("String"))),
-                                                                    field("imageFormat","imageFormat", scalar("String")),
-                                                                    field("isImage","isImage", notNull(scalar("Boolean")))
+                                                            field("fileId", "fileId", notNull(scalar("String"))),
+                                                            field("fileMetadata", "fileMetadata", notNull(obj(
+                                                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                                                    field("imageFormat", "imageFormat", scalar("String")),
+                                                                    field("isImage", "isImage", notNull(scalar("Boolean")))
                                                                 ))),
-                                                            field("id","id", notNull(scalar("ID")))
+                                                            field("id", "id", notNull(scalar("ID")))
                                                         ))
                                                     ))))),
-                                                field("id","id", notNull(scalar("ID"))),
-                                                field("quotedMessages","quotedMessages", notNull(list(notNull(obj(
-                                                        field("__typename","__typename", notNull(scalar("String"))),
-                                                        field("id","id", notNull(scalar("ID")))
+                                                field("id", "id", notNull(scalar("ID"))),
+                                                field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID")))
                                                     )))))
                                             ))
                                         )))
                                 )))
                         ))))),
-                    field("pageInfo","pageInfo", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("currentPage","currentPage", notNull(scalar("Int"))),
-                            field("hasNextPage","hasNextPage", notNull(scalar("Boolean"))),
-                            field("hasPreviousPage","hasPreviousPage", notNull(scalar("Boolean"))),
-                            field("itemsCount","itemsCount", notNull(scalar("Int"))),
-                            field("openEnded","openEnded", notNull(scalar("Boolean"))),
-                            field("pagesCount","pagesCount", notNull(scalar("Int")))
+                    field("pageInfo", "pageInfo", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("currentPage", "currentPage", notNull(scalar("Int"))),
+                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean"))),
+                            field("hasPreviousPage", "hasPreviousPage", notNull(scalar("Boolean"))),
+                            field("itemsCount", "itemsCount", notNull(scalar("Int"))),
+                            field("openEnded", "openEnded", notNull(scalar("Boolean"))),
+                            field("pagesCount", "pagesCount", notNull(scalar("Int")))
                         )))
                 )))
         )
 private let MyAppsSelector = obj(
-            field("myApps","apps", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("myApps", "apps", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("AppProfile", AppFullSelector)
                 )))))
         )
 private let MyNotificationCenterSelector = obj(
-            field("myNotificationCenter","myNotificationCenter", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("state","state", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("state","state", scalar("String"))
+            field("myNotificationCenter", "myNotificationCenter", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("state", "state", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("state", "state", scalar("String"))
                         ))),
-                    field("unread","unread", notNull(scalar("Int")))
+                    field("unread", "unread", notNull(scalar("Int")))
                 )))
         )
 private let MyNotificationsSelector = obj(
-            field("myNotifications","myNotifications", arguments(fieldValue("before", refValue("before")), fieldValue("first", refValue("first"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("cursor","cursor", scalar("String")),
-                    field("items","items", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("myNotifications", "myNotifications", arguments(fieldValue("before", refValue("before")), fieldValue("first", refValue("first"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cursor", "cursor", scalar("String")),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("Notification", NotificationFragmentSelector)
                         )))))
                 )))
         )
 private let MyOrganizationsSelector = obj(
-            field("myOrganizations","myOrganizations", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("betaIsPrimary","isPrimary", notNull(scalar("Boolean"))),
+            field("myOrganizations", "myOrganizations", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("betaIsPrimary", "isPrimary", notNull(scalar("Boolean"))),
                     fragment("Organization", OrganizationShortSelector)
                 )))))
         )
 private let MyStickersSelector = obj(
-            field("myStickers","stickers", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("packs","packs", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("stickers","stickers", notNull(list(notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+            field("myStickers", "stickers", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("packs", "packs", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("stickers", "stickers", notNull(list(notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("Sticker", StickerFragmentSelector)
                                 ))))),
-                            field("title","title", notNull(scalar("String")))
+                            field("title", "title", notNull(scalar("String")))
                         )))))
                 )))
         )
 private let MySuccessfulInvitesCountSelector = obj(
-            field("mySuccessfulInvitesCount","mySuccessfulInvitesCount", notNull(scalar("Int")))
+            field("mySuccessfulInvitesCount", "mySuccessfulInvitesCount", notNull(scalar("Int")))
         )
 private let OnlineSelector = obj(
-            field("user","user", arguments(fieldValue("id", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("lastSeen","lastSeen", scalar("String")),
-                    field("online","online", notNull(scalar("Boolean")))
+            field("user", "user", arguments(fieldValue("id", refValue("userId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("lastSeen", "lastSeen", scalar("String")),
+                    field("online", "online", notNull(scalar("Boolean")))
                 )))
         )
 private let OrganizationSelector = obj(
-            field("organization","organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("organization", "organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationFullSelector)
                 )))
         )
 private let OrganizationByPrefixSelector = obj(
-            field("alphaOrganizationByPrefix","organizationByPrefix", arguments(fieldValue("query", refValue("query"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaOrganizationByPrefix", "organizationByPrefix", arguments(fieldValue("query", refValue("query"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationSearchSelector)
                 ))
         )
 private let OrganizationMembersSelector = obj(
-            field("organization","organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("alphaOrganizationMembers","members", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("role","role", notNull(scalar("String"))),
-                            field("user","user", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+            field("organization", "organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("alphaOrganizationMembers", "members", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("role", "role", notNull(scalar("String"))),
+                            field("user", "user", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("User", UserShortSelector)
                                 )))
                         ))))),
-                    field("id","id", notNull(scalar("ID")))
+                    field("id", "id", notNull(scalar("ID")))
                 )))
         )
 private let OrganizationMembersShortSelector = obj(
-            field("organization","organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("alphaOrganizationMembers","members", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("user","user", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("id","id", notNull(scalar("ID")))
+            field("organization", "organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("alphaOrganizationMembers", "members", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("user", "user", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID")))
                                 )))
                         ))))),
                     fragment("Organization", OrganizationWithoutMembersFragmentSelector)
                 )))
         )
 private let OrganizationProfileSelector = obj(
-            field("organizationProfile","organizationProfile", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("organizationProfile", "organizationProfile", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("OrganizationProfile", OrganizationProfileFullSelector)
                 )))
         )
 private let OrganizationPublicInviteSelector = obj(
-            field("alphaOrganizationInviteLink","publicInvite", arguments(fieldValue("organizationId", refValue("organizationId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("key","key", notNull(scalar("String"))),
-                    field("ttl","ttl", scalar("String"))
+            field("alphaOrganizationInviteLink", "publicInvite", arguments(fieldValue("organizationId", refValue("organizationId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("key", "key", notNull(scalar("String"))),
+                    field("ttl", "ttl", scalar("String"))
                 ))
         )
 private let OrganizationWithoutMembersSelector = obj(
-            field("organization","organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("organization", "organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationWithoutMembersFragmentSelector)
                 )))
         )
 private let PermissionsSelector = obj(
-            field("myPermissions","myPermissions", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("roles","roles", notNull(list(notNull(scalar("String")))))
+            field("myPermissions", "myPermissions", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("roles", "roles", notNull(list(notNull(scalar("String")))))
                 )))
         )
 private let ProfileSelector = obj(
-            field("me","user", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("shortname","shortname", scalar("String"))
+            field("me", "user", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("shortname", "shortname", scalar("String"))
                 )),
-            field("myProfile","profile", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("about","about", scalar("String")),
-                    field("alphaInvitedBy","invitedBy", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("name","name", notNull(scalar("String")))
+            field("myProfile", "profile", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("about", "about", scalar("String")),
+                    field("alphaInvitedBy", "invitedBy", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String")))
                         )),
-                    field("alphaJoinedAt","joinedAt", scalar("String")),
-                    field("alphaRole","role", scalar("String")),
-                    field("email","email", scalar("String")),
-                    field("facebook","facebook", scalar("String")),
-                    field("firstName","firstName", scalar("String")),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("instagram","instagram", scalar("String")),
-                    field("lastName","lastName", scalar("String")),
-                    field("linkedin","linkedin", scalar("String")),
-                    field("location","location", scalar("String")),
-                    field("phone","phone", scalar("String")),
-                    field("photoRef","photoRef", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("crop","crop", obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("h","h", notNull(scalar("Int"))),
-                                    field("w","w", notNull(scalar("Int"))),
-                                    field("x","x", notNull(scalar("Int"))),
-                                    field("y","y", notNull(scalar("Int")))
+                    field("alphaJoinedAt", "joinedAt", scalar("String")),
+                    field("alphaRole", "role", scalar("String")),
+                    field("email", "email", scalar("String")),
+                    field("facebook", "facebook", scalar("String")),
+                    field("firstName", "firstName", scalar("String")),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("instagram", "instagram", scalar("String")),
+                    field("lastName", "lastName", scalar("String")),
+                    field("linkedin", "linkedin", scalar("String")),
+                    field("location", "location", scalar("String")),
+                    field("phone", "phone", scalar("String")),
+                    field("photoRef", "photoRef", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("crop", "crop", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("h", "h", notNull(scalar("Int"))),
+                                    field("w", "w", notNull(scalar("Int"))),
+                                    field("x", "x", notNull(scalar("Int"))),
+                                    field("y", "y", notNull(scalar("Int")))
                                 )),
-                            field("uuid","uuid", notNull(scalar("String")))
+                            field("uuid", "uuid", notNull(scalar("String")))
                         )),
-                    field("primaryOrganization","primaryOrganization", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("membersCount","membersCount", notNull(scalar("Int"))),
-                            field("name","name", notNull(scalar("String")))
+                    field("primaryOrganization", "primaryOrganization", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("membersCount", "membersCount", notNull(scalar("Int"))),
+                            field("name", "name", notNull(scalar("String")))
                         )),
-                    field("twitter","twitter", scalar("String")),
-                    field("website","website", scalar("String"))
+                    field("twitter", "twitter", scalar("String")),
+                    field("website", "website", scalar("String"))
                 ))
         )
 private let ProfilePrefillSelector = obj(
-            field("myProfilePrefill","prefill", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("firstName","firstName", scalar("String")),
-                    field("lastName","lastName", scalar("String")),
-                    field("picture","picture", scalar("String"))
+            field("myProfilePrefill", "prefill", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("firstName", "firstName", scalar("String")),
+                    field("lastName", "lastName", scalar("String")),
+                    field("picture", "picture", scalar("String"))
                 ))
         )
 private let ResolveShortNameSelector = obj(
-            field("alphaResolveShortName","item", arguments(fieldValue("shortname", refValue("shortname"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaResolveShortName", "item", arguments(fieldValue("shortname", refValue("shortname"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("User", obj(
-                        field("id","id", notNull(scalar("ID")))
+                        field("id", "id", notNull(scalar("ID")))
                     )),
                     inline("Organization", obj(
-                        field("id","id", notNull(scalar("ID")))
+                        field("id", "id", notNull(scalar("ID")))
                     )),
                     inline("FeedChannel", obj(
-                        field("id","id", notNull(scalar("ID")))
+                        field("id", "id", notNull(scalar("ID")))
                     ))
                 ))
         )
 private let ResolvedInviteSelector = obj(
-            field("alphaResolveInvite","invite", arguments(fieldValue("key", refValue("key"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaResolveInvite", "invite", arguments(fieldValue("key", refValue("key"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("InviteInfo", obj(
-                        field("creator","creator", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("creator", "creator", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
                             )),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("orgId","orgId", notNull(scalar("ID"))),
-                        field("organization","organization", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("about","about", scalar("String")),
-                                field("alphaIsCommunity","isCommunity", notNull(scalar("Boolean"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("membersCount","membersCount", notNull(scalar("Int"))),
-                                field("name","name", notNull(scalar("String"))),
-                                field("photo","photo", scalar("String"))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("orgId", "orgId", notNull(scalar("ID"))),
+                        field("organization", "organization", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("about", "about", scalar("String")),
+                                field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("membersCount", "membersCount", notNull(scalar("Int"))),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("photo", "photo", scalar("String"))
                             )),
-                        field("title","title", notNull(scalar("String")))
+                        field("title", "title", notNull(scalar("String")))
                     )),
                     inline("AppInvite", obj(
-                        field("inviter","inviter", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("inviter", "inviter", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
                             )))
                     )),
                     inline("RoomInvite", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("invitedByUser","invitedByUser", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("invitedByUser", "invitedByUser", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("User", UserShortSelector)
                             ))),
-                        field("room","room", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("room", "room", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 inline("SharedRoom", obj(
-                                    field("description","description", scalar("String")),
-                                    field("id","id", notNull(scalar("ID"))),
-                                    field("isChannel","isChannel", notNull(scalar("Boolean"))),
-                                    field("kind","kind", notNull(scalar("String"))),
-                                    field("matchmaking","matchmaking", obj(
-                                            field("__typename","__typename", notNull(scalar("String"))),
-                                            field("enabled","enabled", notNull(scalar("Boolean")))
+                                    field("description", "description", scalar("String")),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                                    field("kind", "kind", notNull(scalar("String"))),
+                                    field("matchmaking", "matchmaking", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("enabled", "enabled", notNull(scalar("Boolean")))
                                         )),
-                                    field("membersCount","membersCount", scalar("Int")),
-                                    field("membership","membership", notNull(scalar("String"))),
-                                    field("photo","photo", notNull(scalar("String"))),
-                                    field("socialImage","socialImage", scalar("String")),
-                                    field("title","title", notNull(scalar("String")))
+                                    field("membersCount", "membersCount", scalar("Int")),
+                                    field("membership", "membership", notNull(scalar("String"))),
+                                    field("photo", "photo", notNull(scalar("String"))),
+                                    field("socialImage", "socialImage", scalar("String")),
+                                    field("title", "title", notNull(scalar("String")))
                                 ))
                             )))
                     ))
                 ))
         )
 private let RoomSelector = obj(
-            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("room", "room", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
                 ))
         )
 private let RoomChatSelector = obj(
-            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("room", "room", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("PrivateRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("pinnedMessage","pinnedMessage", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("pinnedMessage", "pinnedMessage", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("ModernMessage", FullMessageSelector)
                             )),
-                        field("settings","settings", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("mute","mute", scalar("Boolean"))
+                        field("settings", "settings", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("mute", "mute", scalar("Boolean"))
                             ))),
-                        field("user","user", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("isBot","isBot", notNull(scalar("Boolean"))),
-                                field("name","name", notNull(scalar("String"))),
-                                field("photo","photo", scalar("String")),
-                                field("primaryOrganization","primaryOrganization", obj(
-                                        field("__typename","__typename", notNull(scalar("String"))),
-                                        field("id","id", notNull(scalar("ID"))),
-                                        field("name","name", notNull(scalar("String")))
+                        field("user", "user", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("isBot", "isBot", notNull(scalar("Boolean"))),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("photo", "photo", scalar("String")),
+                                field("primaryOrganization", "primaryOrganization", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("name", "name", notNull(scalar("String")))
                                     )),
-                                field("shortname","shortname", scalar("String"))
+                                field("shortname", "shortname", scalar("String"))
                             )))
                     )),
                     inline("SharedRoom", obj(
-                        field("canEdit","canEdit", notNull(scalar("Boolean"))),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("isChannel","isChannel", notNull(scalar("Boolean"))),
-                        field("kind","kind", notNull(scalar("String"))),
-                        field("matchmaking","matchmaking", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("canEdit", "canEdit", notNull(scalar("Boolean"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                        field("kind", "kind", notNull(scalar("String"))),
+                        field("matchmaking", "matchmaking", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("MatchmakingRoom", MatchmakingRoomFragmentSelector)
                             )),
-                        field("membersCount","membersCount", scalar("Int")),
-                        field("membership","membership", notNull(scalar("String"))),
-                        field("photo","photo", notNull(scalar("String"))),
-                        field("pinnedMessage","pinnedMessage", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("membersCount", "membersCount", scalar("Int")),
+                        field("membership", "membership", notNull(scalar("String"))),
+                        field("photo", "photo", notNull(scalar("String"))),
+                        field("pinnedMessage", "pinnedMessage", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("ModernMessage", FullMessageSelector)
                             )),
-                        field("role","role", notNull(scalar("String"))),
-                        field("settings","settings", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("mute","mute", scalar("Boolean"))
+                        field("role", "role", notNull(scalar("String"))),
+                        field("settings", "settings", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("mute", "mute", scalar("Boolean"))
                             ))),
-                        field("title","title", notNull(scalar("String")))
+                        field("title", "title", notNull(scalar("String")))
                     ))
                 ))
         )
 private let RoomFeaturedMembersSelector = obj(
-            field("roomFeaturedMembers","roomFeaturedMembers", arguments(fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("badge","badge", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("roomFeaturedMembers", "roomFeaturedMembers", arguments(fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("badge", "badge", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("UserBadge", UserBadgeSelector)
                         )),
-                    field("canKick","canKick", notNull(scalar("Boolean"))),
-                    field("membership","membership", notNull(scalar("String"))),
-                    field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+                    field("canKick", "canKick", notNull(scalar("Boolean"))),
+                    field("membership", "membership", notNull(scalar("String"))),
+                    field("role", "role", notNull(scalar("String"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )))
                 )))))
         )
 private let RoomInviteInfoSelector = obj(
-            field("betaRoomInviteInfo","invite", arguments(fieldValue("invite", refValue("invite"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("invitedByUser","invitedByUser", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("betaRoomInviteInfo", "invite", arguments(fieldValue("invite", refValue("invite"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("invitedByUser", "invitedByUser", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         ))),
-                    field("room","room", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+                    field("room", "room", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             inline("SharedRoom", obj(
-                                field("description","description", scalar("String")),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("isChannel","isChannel", notNull(scalar("Boolean"))),
-                                field("kind","kind", notNull(scalar("String"))),
-                                field("matchmaking","matchmaking", obj(
-                                        field("__typename","__typename", notNull(scalar("String"))),
-                                        field("enabled","enabled", notNull(scalar("Boolean")))
+                                field("description", "description", scalar("String")),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                                field("kind", "kind", notNull(scalar("String"))),
+                                field("matchmaking", "matchmaking", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("enabled", "enabled", notNull(scalar("Boolean")))
                                     )),
-                                field("membersCount","membersCount", scalar("Int")),
-                                field("membership","membership", notNull(scalar("String"))),
-                                field("organization","organization", obj(
-                                        field("__typename","__typename", notNull(scalar("String"))),
+                                field("membersCount", "membersCount", scalar("Int")),
+                                field("membership", "membership", notNull(scalar("String"))),
+                                field("organization", "organization", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
                                         fragment("Organization", OrganizationShortSelector)
                                     )),
-                                field("photo","photo", notNull(scalar("String"))),
-                                field("socialImage","socialImage", scalar("String")),
-                                field("title","title", notNull(scalar("String")))
+                                field("photo", "photo", notNull(scalar("String"))),
+                                field("socialImage", "socialImage", scalar("String")),
+                                field("title", "title", notNull(scalar("String")))
                             ))
                         )))
                 ))
         )
 private let RoomInviteLinkSelector = obj(
-            field("betaRoomInviteLink","link", arguments(fieldValue("roomId", refValue("roomId"))), notNull(scalar("String")))
+            field("betaRoomInviteLink", "link", arguments(fieldValue("roomId", refValue("roomId"))), notNull(scalar("String")))
         )
 private let RoomMembersSelector = obj(
-            field("roomMembers","members", arguments(fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("canKick","canKick", notNull(scalar("Boolean"))),
-                    field("membership","membership", notNull(scalar("String"))),
-                    field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("roomMembers", "members", arguments(fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("canKick", "canKick", notNull(scalar("Boolean"))),
+                    field("membership", "membership", notNull(scalar("String"))),
+                    field("role", "role", notNull(scalar("String"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )))
                 )))))
         )
 private let RoomMembersPaginatedSelector = obj(
-            field("roomMembers","members", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("badge","badge", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("roomMembers", "members", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("badge", "badge", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("UserBadge", UserBadgeSelector)
                         )),
-                    field("canKick","canKick", notNull(scalar("Boolean"))),
-                    field("membership","membership", notNull(scalar("String"))),
-                    field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+                    field("canKick", "canKick", notNull(scalar("Boolean"))),
+                    field("membership", "membership", notNull(scalar("String"))),
+                    field("role", "role", notNull(scalar("String"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )))
                 )))))
         )
 private let RoomMembersShortSelector = obj(
-            field("roomMembers","members", arguments(fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID")))
+            field("roomMembers", "members", arguments(fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID")))
                         )))
                 )))))
         )
 private let RoomMembersTinySelector = obj(
-            field("roomMembers","members", arguments(fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("name","name", notNull(scalar("String"))),
-                            field("photo","photo", scalar("String")),
-                            field("primaryOrganization","primaryOrganization", obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("id","id", notNull(scalar("ID"))),
-                                    field("name","name", notNull(scalar("String")))
+            field("roomMembers", "members", arguments(fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String"))),
+                            field("photo", "photo", scalar("String")),
+                            field("primaryOrganization", "primaryOrganization", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("name", "name", notNull(scalar("String")))
                                 )),
-                            field("shortname","shortname", scalar("String"))
+                            field("shortname", "shortname", scalar("String"))
                         )))
                 )))))
         )
 private let RoomOrganizationAdminMembersSelector = obj(
-            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("room", "room", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("organization","organization", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("alphaOrganizationAdminMembers","adminMembers", notNull(list(notNull(obj(
-                                        field("__typename","__typename", notNull(scalar("String"))),
-                                        field("role","role", notNull(scalar("String"))),
-                                        field("user","user", notNull(obj(
-                                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("organization", "organization", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("alphaOrganizationAdminMembers", "adminMembers", notNull(list(notNull(obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("role", "role", notNull(scalar("String"))),
+                                        field("user", "user", notNull(obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
                                                 fragment("User", UserShortSelector)
                                             )))
                                     ))))),
-                                field("id","id", notNull(scalar("ID")))
+                                field("id", "id", notNull(scalar("ID")))
                             ))
                     ))
                 ))
         )
 private let RoomPicoSelector = obj(
-            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("room", "room", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomNanoSelector)
                 ))
         )
 private let RoomSearchSelector = obj(
-            field("betaRoomSearch","items", arguments(fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("cursor","cursor", notNull(scalar("String"))),
-                            field("node","node", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaRoomSearch", "items", arguments(fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("cursor", "cursor", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     inline("SharedRoom", obj(
-                                        field("id","id", notNull(scalar("ID"))),
-                                        field("isChannel","isChannel", notNull(scalar("Boolean"))),
-                                        field("kind","kind", notNull(scalar("String"))),
-                                        field("membersCount","membersCount", scalar("Int")),
-                                        field("membership","membership", notNull(scalar("String"))),
-                                        field("organization","organization", obj(
-                                                field("__typename","__typename", notNull(scalar("String"))),
-                                                field("id","id", notNull(scalar("ID"))),
-                                                field("name","name", notNull(scalar("String"))),
-                                                field("photo","photo", scalar("String"))
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                                        field("kind", "kind", notNull(scalar("String"))),
+                                        field("membersCount", "membersCount", scalar("Int")),
+                                        field("membership", "membership", notNull(scalar("String"))),
+                                        field("organization", "organization", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("id", "id", notNull(scalar("ID"))),
+                                                field("name", "name", notNull(scalar("String"))),
+                                                field("photo", "photo", scalar("String"))
                                             )),
-                                        field("photo","photo", notNull(scalar("String"))),
-                                        field("title","title", notNull(scalar("String")))
+                                        field("photo", "photo", notNull(scalar("String"))),
+                                        field("title", "title", notNull(scalar("String")))
                                     ))
                                 )))
                         ))))),
-                    field("pageInfo","pageInfo", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("currentPage","currentPage", notNull(scalar("Int"))),
-                            field("hasNextPage","hasNextPage", notNull(scalar("Boolean"))),
-                            field("hasPreviousPage","hasPreviousPage", notNull(scalar("Boolean"))),
-                            field("itemsCount","itemsCount", notNull(scalar("Int"))),
-                            field("openEnded","openEnded", notNull(scalar("Boolean"))),
-                            field("pagesCount","pagesCount", notNull(scalar("Int")))
+                    field("pageInfo", "pageInfo", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("currentPage", "currentPage", notNull(scalar("Int"))),
+                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean"))),
+                            field("hasPreviousPage", "hasPreviousPage", notNull(scalar("Boolean"))),
+                            field("itemsCount", "itemsCount", notNull(scalar("Int"))),
+                            field("openEnded", "openEnded", notNull(scalar("Boolean"))),
+                            field("pagesCount", "pagesCount", notNull(scalar("Int")))
                         )))
                 )))
         )
 private let RoomSuperSelector = obj(
-            field("roomSuper","roomSuper", arguments(fieldValue("id", refValue("id"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("featured","featured", notNull(scalar("Boolean"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("listed","listed", notNull(scalar("Boolean")))
+            field("roomSuper", "roomSuper", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("featured", "featured", notNull(scalar("Boolean"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("listed", "listed", notNull(scalar("Boolean")))
                 ))
         )
 private let RoomTinySelector = obj(
-            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("room", "room", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
                 ))
         )
 private let RoomWithoutMembersSelector = obj(
-            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("room", "room", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullWithoutMembersSelector)
                 ))
         )
 private let SettingsSelector = obj(
-            field("settings","settings", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("settings", "settings", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Settings", SettingsFullSelector)
                 )))
         )
 private let StickerPackSelector = obj(
-            field("stickerPack","stickerPack", arguments(fieldValue("id", refValue("id"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("stickerPack", "stickerPack", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("StickerPack", StickerPackFragmentSelector)
                 ))
         )
 private let SuggestedRoomsSelector = obj(
-            field("betaIsDiscoverDone","isDiscoverDone", notNull(scalar("Boolean"))),
-            field("betaSuggestedRooms","suggestedRooms", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaIsDiscoverDone", "isDiscoverDone", notNull(scalar("Boolean"))),
+            field("betaSuggestedRooms", "suggestedRooms", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("kind","kind", notNull(scalar("String"))),
-                        field("membersCount","membersCount", scalar("Int")),
-                        field("membership","membership", notNull(scalar("String"))),
-                        field("organization","organization", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("name","name", notNull(scalar("String"))),
-                                field("photo","photo", scalar("String"))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("kind", "kind", notNull(scalar("String"))),
+                        field("membersCount", "membersCount", scalar("Int")),
+                        field("membership", "membership", notNull(scalar("String"))),
+                        field("organization", "organization", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("photo", "photo", scalar("String"))
                             )),
-                        field("photo","photo", notNull(scalar("String"))),
-                        field("title","title", notNull(scalar("String")))
+                        field("photo", "photo", notNull(scalar("String"))),
+                        field("title", "title", notNull(scalar("String")))
                     ))
                 )))))
         )
 private let SuperAccountSelector = obj(
-            field("superAccount","superAccount", arguments(fieldValue("id", refValue("accountId")), fieldValue("viaOrgId", refValue("viaOrgId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("alphaPublished","published", notNull(scalar("Boolean"))),
-                    field("createdAt","createdAt", scalar("String")),
-                    field("createdBy","createdBy", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("name","name", notNull(scalar("String")))
+            field("superAccount", "superAccount", arguments(fieldValue("id", refValue("accountId")), fieldValue("viaOrgId", refValue("viaOrgId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("alphaPublished", "published", notNull(scalar("Boolean"))),
+                    field("createdAt", "createdAt", scalar("String")),
+                    field("createdBy", "createdBy", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String")))
                         )),
-                    field("features","features", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("key","key", notNull(scalar("String"))),
-                            field("title","title", notNull(scalar("String")))
+                    field("features", "features", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("key", "key", notNull(scalar("String"))),
+                            field("title", "title", notNull(scalar("String")))
                         ))))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("members","members", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("members", "members", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         ))))),
-                    field("orgId","orgId", notNull(scalar("ID"))),
-                    field("state","state", notNull(scalar("String"))),
-                    field("title","title", notNull(scalar("String")))
+                    field("orgId", "orgId", notNull(scalar("ID"))),
+                    field("state", "state", notNull(scalar("String"))),
+                    field("title", "title", notNull(scalar("String")))
                 )))
         )
 private let SuperAccountsSelector = obj(
-            field("superAccounts","superAccounts", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("createdAt","createdAt", scalar("String")),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("orgId","orgId", notNull(scalar("ID"))),
-                    field("state","state", notNull(scalar("String"))),
-                    field("title","title", notNull(scalar("String")))
+            field("superAccounts", "superAccounts", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("createdAt", "createdAt", scalar("String")),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("orgId", "orgId", notNull(scalar("ID"))),
+                    field("state", "state", notNull(scalar("String"))),
+                    field("title", "title", notNull(scalar("String")))
                 )))))
         )
 private let SuperAdminsSelector = obj(
-            field("superAdmins","superAdmins", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("email","email", scalar("String")),
-                    field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("superAdmins", "superAdmins", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("email", "email", scalar("String")),
+                    field("role", "role", notNull(scalar("String"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )))
                 )))))
         )
 private let SuperBadgeInRoomSelector = obj(
-            field("superBadgeInRoom","superBadgeInRoom", arguments(fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("superBadgeInRoom", "superBadgeInRoom", arguments(fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("UserBadge", UserBadgeSelector)
                 ))
         )
 private let UserSelector = obj(
-            field("room","conversation", arguments(fieldValue("id", refValue("userId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("room", "conversation", arguments(fieldValue("id", refValue("userId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("PrivateRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("settings","settings", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("mute","mute", scalar("Boolean"))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("settings", "settings", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("mute", "mute", scalar("Boolean"))
                             )))
                     ))
                 )),
-            field("user","user", arguments(fieldValue("id", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("chatsWithBadge","chatsWithBadge", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("badge","badge", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+            field("user", "user", arguments(fieldValue("id", refValue("userId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("chatsWithBadge", "chatsWithBadge", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("badge", "badge", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("UserBadge", UserBadgeSelector)
                                 ))),
-                            field("chat","chat", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+                            field("chat", "chat", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("Room", RoomShortSelector)
                                 )))
                         ))))),
@@ -2910,889 +2910,889 @@ private let UserSelector = obj(
                 )))
         )
 private let UserAvailableRoomsSelector = obj(
-            field("betaUserAvailableRooms","betaUserAvailableRooms", arguments(fieldValue("after", refValue("after")), fieldValue("isChannel", refValue("isChannel")), fieldValue("limit", refValue("limit"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaUserAvailableRooms", "betaUserAvailableRooms", arguments(fieldValue("after", refValue("after")), fieldValue("isChannel", refValue("isChannel")), fieldValue("limit", refValue("limit"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("kind","kind", notNull(scalar("String"))),
-                        field("membersCount","membersCount", scalar("Int")),
-                        field("membership","membership", notNull(scalar("String"))),
-                        field("organization","organization", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("name","name", notNull(scalar("String"))),
-                                field("photo","photo", scalar("String"))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("kind", "kind", notNull(scalar("String"))),
+                        field("membersCount", "membersCount", scalar("Int")),
+                        field("membership", "membership", notNull(scalar("String"))),
+                        field("organization", "organization", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("photo", "photo", scalar("String"))
                             )),
-                        field("photo","photo", notNull(scalar("String"))),
-                        field("title","title", notNull(scalar("String")))
+                        field("photo", "photo", notNull(scalar("String"))),
+                        field("title", "title", notNull(scalar("String")))
                     ))
                 )))))
         )
 private let UserStorageSelector = obj(
-            field("userStorage","userStorage", arguments(fieldValue("keys", refValue("keys")), fieldValue("namespace", refValue("namespace"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("key","key", notNull(scalar("String"))),
-                    field("value","value", scalar("String"))
+            field("userStorage", "userStorage", arguments(fieldValue("keys", refValue("keys")), fieldValue("namespace", refValue("namespace"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("key", "key", notNull(scalar("String"))),
+                    field("value", "value", scalar("String"))
                 )))))
         )
 private let UsersSelector = obj(
-            field("users","items", arguments(fieldValue("query", refValue("query"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("email","subtitle", scalar("String")),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("name","title", notNull(scalar("String")))
+            field("users", "items", arguments(fieldValue("query", refValue("query"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("email", "subtitle", scalar("String")),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "title", notNull(scalar("String")))
                 )))))
         )
 private let AccountInviteJoinSelector = obj(
-            field("alphaJoinInvite","alphaJoinInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
+            field("alphaJoinInvite", "alphaJoinInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
         )
 private let AddAppToChatSelector = obj(
-            field("addAppToChat","addAppToChat", arguments(fieldValue("appId", refValue("appId")), fieldValue("chatId", refValue("chatId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("addAppToChat", "addAppToChat", arguments(fieldValue("appId", refValue("appId")), fieldValue("chatId", refValue("chatId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("AppChat", AppChatSelector)
                 )))
         )
 private let AddCommentSelector = obj(
-            field("betaAddComment","betaAddComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("peerId", refValue("peerId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
+            field("betaAddComment", "betaAddComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("peerId", refValue("peerId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("spans", refValue("spans"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
                 )))
         )
 private let AddStickerCommentSelector = obj(
-            field("betaAddStickerComment","addStickerComment", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("stickerId", refValue("stickerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
+            field("betaAddStickerComment", "addStickerComment", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("stickerId", refValue("stickerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
                 )))
         )
 private let BetaDiscoverSkipSelector = obj(
-            field("betaDiscoverSkip","betaDiscoverSkip", arguments(fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("tagGroup","tagGroup", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("String")))
+            field("betaDiscoverSkip", "betaDiscoverSkip", arguments(fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("tagGroup", "tagGroup", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("String")))
                         ))
                 ))
         )
 private let BetaNextDiscoverResetSelector = obj(
-            field("betaNextDiscoverReset","betaNextDiscoverReset", notNull(scalar("Boolean")))
+            field("betaNextDiscoverReset", "betaNextDiscoverReset", notNull(scalar("Boolean")))
         )
 private let BetaSubmitNextDiscoverSelector = obj(
-            field("betaSubmitNextDiscover","betaSubmitNextDiscover", arguments(fieldValue("excudedGroupsIds", refValue("excudedGroupsIds")), fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("tagGroup","tagGroup", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("String")))
+            field("betaSubmitNextDiscover", "betaSubmitNextDiscover", arguments(fieldValue("excudedGroupsIds", refValue("excudedGroupsIds")), fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("tagGroup", "tagGroup", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("String")))
                         ))
                 ))
         )
 private let CommentSetReactionSelector = obj(
-            field("commentReactionAdd","commentReactionAdd", arguments(fieldValue("commentId", refValue("commentId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+            field("commentReactionAdd", "commentReactionAdd", arguments(fieldValue("commentId", refValue("commentId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
 private let CommentUnsetReactionSelector = obj(
-            field("commentReactionRemove","commentReactionRemove", arguments(fieldValue("commentId", refValue("commentId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+            field("commentReactionRemove", "commentReactionRemove", arguments(fieldValue("commentId", refValue("commentId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
 private let ConferenceAnswerSelector = obj(
-            field("peerConnectionAnswer","peerConnectionAnswer", arguments(fieldValue("answer", refValue("answer")), fieldValue("id", refValue("id")), fieldValue("ownPeerId", refValue("ownPeerId")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("peerConnectionAnswer", "peerConnectionAnswer", arguments(fieldValue("answer", refValue("answer")), fieldValue("id", refValue("id")), fieldValue("ownPeerId", refValue("ownPeerId")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceShortSelector)
                 )))
         )
 private let ConferenceCandidateSelector = obj(
-            field("peerConnectionCandidate","peerConnectionCandidate", arguments(fieldValue("candidate", refValue("candidate")), fieldValue("id", refValue("id")), fieldValue("ownPeerId", refValue("ownPeerId")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("peerConnectionCandidate", "peerConnectionCandidate", arguments(fieldValue("candidate", refValue("candidate")), fieldValue("id", refValue("id")), fieldValue("ownPeerId", refValue("ownPeerId")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceShortSelector)
                 )))
         )
 private let ConferenceJoinSelector = obj(
-            field("conferenceJoin","conferenceJoin", arguments(fieldValue("id", refValue("id"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("conference","conference", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("conferenceJoin", "conferenceJoin", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("conference", "conference", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("Conference", ConferenceShortSelector)
                         ))),
-                    field("peerId","peerId", notNull(scalar("ID")))
+                    field("peerId", "peerId", notNull(scalar("ID")))
                 )))
         )
 private let ConferenceKeepAliveSelector = obj(
-            field("conferenceKeepAlive","conferenceKeepAlive", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("conferenceKeepAlive", "conferenceKeepAlive", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceShortSelector)
                 )))
         )
 private let ConferenceLeaveSelector = obj(
-            field("conferenceLeave","conferenceLeave", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("conferenceLeave", "conferenceLeave", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceShortSelector)
                 )))
         )
 private let ConferenceOfferSelector = obj(
-            field("peerConnectionOffer","peerConnectionOffer", arguments(fieldValue("id", refValue("id")), fieldValue("offer", refValue("offer")), fieldValue("ownPeerId", refValue("ownPeerId")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("peerConnectionOffer", "peerConnectionOffer", arguments(fieldValue("id", refValue("id")), fieldValue("offer", refValue("offer")), fieldValue("ownPeerId", refValue("ownPeerId")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceShortSelector)
                 )))
         )
 private let CreateAppSelector = obj(
-            field("createApp","createApp", arguments(fieldValue("about", refValue("about")), fieldValue("name", refValue("name")), fieldValue("photoRef", refValue("photoRef")), fieldValue("shortname", refValue("shortname"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("createApp", "createApp", arguments(fieldValue("about", refValue("about")), fieldValue("name", refValue("name")), fieldValue("photoRef", refValue("photoRef")), fieldValue("shortname", refValue("shortname"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("AppProfile", AppFullSelector)
                 )))
         )
 private let CreateOrganizationSelector = obj(
-            field("createOrganization","organization", arguments(fieldValue("input", refValue("input"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("name","name", notNull(scalar("String")))
+            field("createOrganization", "organization", arguments(fieldValue("input", refValue("input"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String")))
                 )))
         )
 private let CreateUserProfileAndOrganizationSelector = obj(
-            field("alphaCreateUserProfileAndOrganization","alphaCreateUserProfileAndOrganization", arguments(fieldValue("organization", refValue("organization")), fieldValue("user", refValue("user"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("organization","organization", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("name","name", notNull(scalar("String")))
+            field("alphaCreateUserProfileAndOrganization", "alphaCreateUserProfileAndOrganization", arguments(fieldValue("organization", refValue("organization")), fieldValue("user", refValue("user"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("organization", "organization", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String")))
                         )),
-                    field("user","user", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+                    field("user", "user", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserFullSelector)
                         ))
                 )))
         )
 private let DebugMailsSelector = obj(
-            field("debugSendEmail","debugSendEmail", arguments(fieldValue("type", refValue("type"))), scalar("Boolean"))
+            field("debugSendEmail", "debugSendEmail", arguments(fieldValue("type", refValue("type"))), scalar("Boolean"))
         )
 private let DeleteCommentSelector = obj(
-            field("deleteComment","deleteComment", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+            field("deleteComment", "deleteComment", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
 private let DeleteNotificationSelector = obj(
-            field("deleteNotification","deleteNotification", arguments(fieldValue("notificationId", refValue("notificationId"))), notNull(scalar("Boolean")))
+            field("deleteNotification", "deleteNotification", arguments(fieldValue("notificationId", refValue("notificationId"))), notNull(scalar("Boolean")))
         )
 private let DeleteOrganizationSelector = obj(
-            field("deleteOrganization","deleteOrganization", arguments(fieldValue("id", refValue("organizationId"))), notNull(scalar("Boolean")))
+            field("deleteOrganization", "deleteOrganization", arguments(fieldValue("id", refValue("organizationId"))), notNull(scalar("Boolean")))
         )
 private let DeleteUserSelector = obj(
-            field("superDeleteUser","superDeleteUser", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+            field("superDeleteUser", "superDeleteUser", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
 private let EditCommentSelector = obj(
-            field("editComment","editComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("id", refValue("id")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
+            field("editComment", "editComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("id", refValue("id")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
         )
 private let EditMessageSelector = obj(
-            field("editMessage","editMessage", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("messageId", refValue("messageId")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
+            field("editMessage", "editMessage", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("messageId", refValue("messageId")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
         )
 private let FeatureFlagAddSelector = obj(
-            field("featureFlagAdd","featureFlagAdd", arguments(fieldValue("key", refValue("key")), fieldValue("title", refValue("title"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("key","key", notNull(scalar("String"))),
-                    field("title","title", notNull(scalar("String")))
+            field("featureFlagAdd", "featureFlagAdd", arguments(fieldValue("key", refValue("key")), fieldValue("title", refValue("title"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("key", "key", notNull(scalar("String"))),
+                    field("title", "title", notNull(scalar("String")))
                 )))
         )
 private let FeatureFlagDisableSelector = obj(
-            field("superAccountFeatureRemove","superAccountFeatureRemove", arguments(fieldValue("featureId", refValue("featureId")), fieldValue("id", refValue("accountId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("features","features", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("key","key", notNull(scalar("String"))),
-                            field("title","title", notNull(scalar("String")))
+            field("superAccountFeatureRemove", "superAccountFeatureRemove", arguments(fieldValue("featureId", refValue("featureId")), fieldValue("id", refValue("accountId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("features", "features", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("key", "key", notNull(scalar("String"))),
+                            field("title", "title", notNull(scalar("String")))
                         ))))),
-                    field("id","id", notNull(scalar("ID")))
+                    field("id", "id", notNull(scalar("ID")))
                 )))
         )
 private let FeatureFlagEnableSelector = obj(
-            field("superAccountFeatureAdd","superAccountFeatureAdd", arguments(fieldValue("featureId", refValue("featureId")), fieldValue("id", refValue("accountId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("features","features", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("key","key", notNull(scalar("String"))),
-                            field("title","title", notNull(scalar("String")))
+            field("superAccountFeatureAdd", "superAccountFeatureAdd", arguments(fieldValue("featureId", refValue("featureId")), fieldValue("id", refValue("accountId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("features", "features", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("key", "key", notNull(scalar("String"))),
+                            field("title", "title", notNull(scalar("String")))
                         ))))),
-                    field("id","id", notNull(scalar("ID")))
+                    field("id", "id", notNull(scalar("ID")))
                 )))
         )
 private let FeedChannelAddWriterSelector = obj(
-            field("alphaFeedChannelAddEditor","alphaFeedChannelAddEditor", arguments(fieldValue("id", refValue("id")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
+            field("alphaFeedChannelAddEditor", "alphaFeedChannelAddEditor", arguments(fieldValue("id", refValue("id")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
         )
 private let FeedChannelCreateSelector = obj(
-            field("alphaFeedCreateChannel","channel", arguments(fieldValue("about", refValue("about")), fieldValue("global", refValue("global")), fieldValue("photoRef", refValue("photoRef")), fieldValue("title", refValue("title"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaFeedCreateChannel", "channel", arguments(fieldValue("about", refValue("about")), fieldValue("global", refValue("global")), fieldValue("photoRef", refValue("photoRef")), fieldValue("title", refValue("title"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("FeedChannel", FeedChannelFullSelector)
                 )))
         )
 private let FeedChannelRemoveWriterSelector = obj(
-            field("alphaFeedChannelRemoveEditor","alphaFeedChannelRemoveEditor", arguments(fieldValue("id", refValue("id")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
+            field("alphaFeedChannelRemoveEditor", "alphaFeedChannelRemoveEditor", arguments(fieldValue("id", refValue("id")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
         )
 private let FeedChannelSubscribeSelector = obj(
-            field("alphaFeedChannelSubscribe","alphaFeedChannelSubscribe", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+            field("alphaFeedChannelSubscribe", "alphaFeedChannelSubscribe", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
 private let FeedChannelUnsubscribeSelector = obj(
-            field("alphaFeedChannelUnsubscribe","alphaFeedChannelUnsubscribe", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+            field("alphaFeedChannelUnsubscribe", "alphaFeedChannelUnsubscribe", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
 private let FeedChannelUpdateSelector = obj(
-            field("alphaFeedUpdateChannel","channel", arguments(fieldValue("about", refValue("about")), fieldValue("global", refValue("global")), fieldValue("id", refValue("id")), fieldValue("photoRef", refValue("photoRef")), fieldValue("title", refValue("title"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
+            field("alphaFeedUpdateChannel", "channel", arguments(fieldValue("about", refValue("about")), fieldValue("global", refValue("global")), fieldValue("id", refValue("id")), fieldValue("photoRef", refValue("photoRef")), fieldValue("title", refValue("title"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
                 )))
         )
 private let FeedCreatePostSelector = obj(
-            field("alphaCreateFeedPost","post", arguments(fieldValue("channel", refValue("channel")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("slides", refValue("slides"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaCreateFeedPost", "post", arguments(fieldValue("channel", refValue("channel")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("slides", refValue("slides"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("FeedItem", FeedItemFullSelector)
                 )))
         )
 private let FeedDeletePostSelector = obj(
-            field("alphaDeleteFeedPost","alphaDeleteFeedPost", arguments(fieldValue("feedItemId", refValue("feedItemId"))), notNull(scalar("Boolean")))
+            field("alphaDeleteFeedPost", "alphaDeleteFeedPost", arguments(fieldValue("feedItemId", refValue("feedItemId"))), notNull(scalar("Boolean")))
         )
 private let FeedEditPostSelector = obj(
-            field("alphaEditFeedPost","editFeedPost", arguments(fieldValue("feedItemId", refValue("feedItemId")), fieldValue("slides", refValue("slides"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaEditFeedPost", "editFeedPost", arguments(fieldValue("feedItemId", refValue("feedItemId")), fieldValue("slides", refValue("slides"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("FeedItem", FeedItemFullSelector)
                 )))
         )
 private let FeedReactionAddSelector = obj(
-            field("feedReactionAdd","feedReactionAdd", arguments(fieldValue("feedItemId", refValue("feedItemId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+            field("feedReactionAdd", "feedReactionAdd", arguments(fieldValue("feedItemId", refValue("feedItemId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
 private let FeedReactionRemoveSelector = obj(
-            field("feedReactionRemove","feedReactionRemove", arguments(fieldValue("feedItemId", refValue("feedItemId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+            field("feedReactionRemove", "feedReactionRemove", arguments(fieldValue("feedItemId", refValue("feedItemId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
 private let MarkSequenceReadSelector = obj(
-            field("alphaGlobalRead","alphaGlobalRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("String")))
+            field("alphaGlobalRead", "alphaGlobalRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("String")))
         )
 private let MatchmakingConnectSelector = obj(
-            field("matchmakingConnect","matchmakingConnect", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
+            field("matchmakingConnect", "matchmakingConnect", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("uid", refValue("uid"))), notNull(scalar("Boolean")))
         )
 private let MatchmakingProfileFillSelector = obj(
-            field("matchmakingProfileFill","matchmakingProfileFill", arguments(fieldValue("input", refValue("input")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("matchmakingProfileFill", "matchmakingProfileFill", arguments(fieldValue("input", refValue("input")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("MatchmakingProfile", MatchmakingProfileFragmentSelector)
                 )))
         )
 private let MatchmakingRoomSaveSelector = obj(
-            field("matchmakingRoomSave","matchmakingRoomSave", arguments(fieldValue("input", refValue("input")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("matchmakingRoomSave", "matchmakingRoomSave", arguments(fieldValue("input", refValue("input")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("MatchmakingRoom", MatchmakingRoomFragmentSelector)
                 )))
         )
 private let MediaAnswerSelector = obj(
-            field("mediaStreamAnswer","mediaStreamAnswer", arguments(fieldValue("answer", refValue("answer")), fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("streams","streams", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("ice","ice", notNull(list(notNull(scalar("String"))))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("sdp","sdp", scalar("String")),
-                            field("state","state", notNull(scalar("String")))
+            field("mediaStreamAnswer", "mediaStreamAnswer", arguments(fieldValue("answer", refValue("answer")), fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("streams", "streams", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("ice", "ice", notNull(list(notNull(scalar("String"))))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("sdp", "sdp", scalar("String")),
+                            field("state", "state", notNull(scalar("String")))
                         )))))
                 )))
         )
 private let MediaCandidateSelector = obj(
-            field("mediaStreamCandidate","mediaStreamCandidate", arguments(fieldValue("candidate", refValue("candidate")), fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("streams","streams", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("ice","ice", notNull(list(notNull(scalar("String"))))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("sdp","sdp", scalar("String")),
-                            field("state","state", notNull(scalar("String")))
+            field("mediaStreamCandidate", "mediaStreamCandidate", arguments(fieldValue("candidate", refValue("candidate")), fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("streams", "streams", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("ice", "ice", notNull(list(notNull(scalar("String"))))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("sdp", "sdp", scalar("String")),
+                            field("state", "state", notNull(scalar("String")))
                         )))))
                 )))
         )
 private let MediaFailedSelector = obj(
-            field("mediaStreamFailed","mediaStreamFailed", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("streams","streams", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("ice","ice", notNull(list(notNull(scalar("String"))))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("sdp","sdp", scalar("String")),
-                            field("state","state", notNull(scalar("String")))
+            field("mediaStreamFailed", "mediaStreamFailed", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("streams", "streams", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("ice", "ice", notNull(list(notNull(scalar("String"))))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("sdp", "sdp", scalar("String")),
+                            field("state", "state", notNull(scalar("String")))
                         )))))
                 )))
         )
 private let MediaNegotiationNeededSelector = obj(
-            field("mediaStreamNegotiationNeeded","mediaStreamNegotiationNeeded", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("streams","streams", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("ice","ice", notNull(list(notNull(scalar("String"))))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("sdp","sdp", scalar("String")),
-                            field("state","state", notNull(scalar("String")))
+            field("mediaStreamNegotiationNeeded", "mediaStreamNegotiationNeeded", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("streams", "streams", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("ice", "ice", notNull(list(notNull(scalar("String"))))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("sdp", "sdp", scalar("String")),
+                            field("state", "state", notNull(scalar("String")))
                         )))))
                 )))
         )
 private let MediaOfferSelector = obj(
-            field("mediaStreamOffer","mediaStreamOffer", arguments(fieldValue("id", refValue("id")), fieldValue("offer", refValue("offer")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("streams","streams", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("ice","ice", notNull(list(notNull(scalar("String"))))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("sdp","sdp", scalar("String")),
-                            field("state","state", notNull(scalar("String")))
+            field("mediaStreamOffer", "mediaStreamOffer", arguments(fieldValue("id", refValue("id")), fieldValue("offer", refValue("offer")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("streams", "streams", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("ice", "ice", notNull(list(notNull(scalar("String"))))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("sdp", "sdp", scalar("String")),
+                            field("state", "state", notNull(scalar("String")))
                         )))))
                 )))
         )
 private let MessageSetReactionSelector = obj(
-            field("messageReactionAdd","messageReactionAdd", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+            field("messageReactionAdd", "messageReactionAdd", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
 private let MessageUnsetReactionSelector = obj(
-            field("messageReactionRemove","messageReactionRemove", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+            field("messageReactionRemove", "messageReactionRemove", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
 private let MyNotificationCenterMarkSeqReadSelector = obj(
-            field("notificationCenterMarkSeqRead","notificationCenterMarkSeqRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("Boolean")))
+            field("notificationCenterMarkSeqRead", "notificationCenterMarkSeqRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("Boolean")))
         )
 private let OrganizationActivateByInviteSelector = obj(
-            field("joinAppInvite","joinAppInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
+            field("joinAppInvite", "joinAppInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
         )
 private let OrganizationAddMemberSelector = obj(
-            field("alphaOrganizationMemberAdd","alphaOrganizationMemberAdd", arguments(fieldValue("organizationId", refValue("organizationId")), fieldValue("userIds", refValue("userIds"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaOrganizationMemberAdd", "alphaOrganizationMemberAdd", arguments(fieldValue("organizationId", refValue("organizationId")), fieldValue("userIds", refValue("userIds"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("role", "role", notNull(scalar("String"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )))
                 )))))
         )
 private let OrganizationAlterPublishedSelector = obj(
-            field("alphaAlterPublished","alphaAlterPublished", arguments(fieldValue("id", refValue("organizationId")), fieldValue("published", refValue("published"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaAlterPublished", "alphaAlterPublished", arguments(fieldValue("id", refValue("organizationId")), fieldValue("published", refValue("published"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationSearchSelector)
                 )))
         )
 private let OrganizationChangeMemberRoleSelector = obj(
-            field("alphaOrganizationChangeMemberRole","alphaOrganizationChangeMemberRole", arguments(fieldValue("memberId", refValue("memberId")), fieldValue("newRole", refValue("newRole")), fieldValue("organizationId", refValue("organizationId"))), notNull(scalar("String")))
+            field("alphaOrganizationChangeMemberRole", "alphaOrganizationChangeMemberRole", arguments(fieldValue("memberId", refValue("memberId")), fieldValue("newRole", refValue("newRole")), fieldValue("organizationId", refValue("organizationId"))), notNull(scalar("String")))
         )
 private let OrganizationCreatePublicInviteSelector = obj(
-            field("alphaOrganizationRefreshInviteLink","alphaOrganizationRefreshInviteLink", arguments(fieldValue("expirationDays", refValue("expirationDays")), fieldValue("organizationId", refValue("organizationId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("key","key", notNull(scalar("String"))),
-                    field("ttl","ttl", scalar("String"))
+            field("alphaOrganizationRefreshInviteLink", "alphaOrganizationRefreshInviteLink", arguments(fieldValue("expirationDays", refValue("expirationDays")), fieldValue("organizationId", refValue("organizationId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("key", "key", notNull(scalar("String"))),
+                    field("ttl", "ttl", scalar("String"))
                 )))
         )
 private let OrganizationMemberRemoveSelector = obj(
-            field("betaOrganizationMemberRemove","betaOrganizationMemberRemove", arguments(fieldValue("organizationId", refValue("organizationId")), fieldValue("userId", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
+            field("betaOrganizationMemberRemove", "betaOrganizationMemberRemove", arguments(fieldValue("organizationId", refValue("organizationId")), fieldValue("userId", refValue("userId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
                 )))
         )
 private let PersistEventsSelector = obj(
-            field("track","track", arguments(fieldValue("did", refValue("did")), fieldValue("events", refValue("events")), fieldValue("isProd", refValue("isProd"))), notNull(scalar("String")))
+            field("track", "track", arguments(fieldValue("did", refValue("did")), fieldValue("events", refValue("events")), fieldValue("isProd", refValue("isProd"))), notNull(scalar("String")))
         )
 private let PinMessageSelector = obj(
-            field("gammaPinMessage","pinMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("messageId", refValue("messageId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("gammaPinMessage", "pinMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("messageId", refValue("messageId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
                 )))
         )
 private let ProfileCreateSelector = obj(
-            field("createProfile","createProfile", arguments(fieldValue("input", refValue("input"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("about","about", scalar("String")),
-                    field("email","email", scalar("String")),
-                    field("firstName","firstName", scalar("String")),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("lastName","lastName", scalar("String")),
-                    field("location","location", scalar("String")),
-                    field("phone","phone", scalar("String")),
-                    field("photoRef","photoRef", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("crop","crop", obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("h","h", notNull(scalar("Int"))),
-                                    field("w","w", notNull(scalar("Int"))),
-                                    field("x","x", notNull(scalar("Int"))),
-                                    field("y","y", notNull(scalar("Int")))
+            field("createProfile", "createProfile", arguments(fieldValue("input", refValue("input"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("about", "about", scalar("String")),
+                    field("email", "email", scalar("String")),
+                    field("firstName", "firstName", scalar("String")),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("lastName", "lastName", scalar("String")),
+                    field("location", "location", scalar("String")),
+                    field("phone", "phone", scalar("String")),
+                    field("photoRef", "photoRef", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("crop", "crop", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("h", "h", notNull(scalar("Int"))),
+                                    field("w", "w", notNull(scalar("Int"))),
+                                    field("x", "x", notNull(scalar("Int"))),
+                                    field("y", "y", notNull(scalar("Int")))
                                 )),
-                            field("uuid","uuid", notNull(scalar("String")))
+                            field("uuid", "uuid", notNull(scalar("String")))
                         )),
-                    field("website","website", scalar("String"))
+                    field("website", "website", scalar("String"))
                 )))
         )
 private let ProfileUpdateSelector = obj(
-            field("profileUpdate","profileUpdate", arguments(fieldValue("input", refValue("input")), fieldValue("uid", refValue("uid"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("about","about", scalar("String")),
-                    field("alphaInvitedBy","invitedBy", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("name","name", notNull(scalar("String")))
+            field("profileUpdate", "profileUpdate", arguments(fieldValue("input", refValue("input")), fieldValue("uid", refValue("uid"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("about", "about", scalar("String")),
+                    field("alphaInvitedBy", "invitedBy", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String")))
                         )),
-                    field("alphaJoinedAt","joinedAt", scalar("String")),
-                    field("alphaPrimaryOrganizationId","primaryOrganizationId", scalar("ID")),
-                    field("alphaRole","role", scalar("String")),
-                    field("email","email", scalar("String")),
-                    field("facebook","facebook", scalar("String")),
-                    field("firstName","firstName", scalar("String")),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("instagram","instagram", scalar("String")),
-                    field("lastName","lastName", scalar("String")),
-                    field("linkedin","linkedin", scalar("String")),
-                    field("location","location", scalar("String")),
-                    field("phone","phone", scalar("String")),
-                    field("photoRef","photoRef", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("crop","crop", obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("h","h", notNull(scalar("Int"))),
-                                    field("w","w", notNull(scalar("Int"))),
-                                    field("x","x", notNull(scalar("Int"))),
-                                    field("y","y", notNull(scalar("Int")))
+                    field("alphaJoinedAt", "joinedAt", scalar("String")),
+                    field("alphaPrimaryOrganizationId", "primaryOrganizationId", scalar("ID")),
+                    field("alphaRole", "role", scalar("String")),
+                    field("email", "email", scalar("String")),
+                    field("facebook", "facebook", scalar("String")),
+                    field("firstName", "firstName", scalar("String")),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("instagram", "instagram", scalar("String")),
+                    field("lastName", "lastName", scalar("String")),
+                    field("linkedin", "linkedin", scalar("String")),
+                    field("location", "location", scalar("String")),
+                    field("phone", "phone", scalar("String")),
+                    field("photoRef", "photoRef", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("crop", "crop", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("h", "h", notNull(scalar("Int"))),
+                                    field("w", "w", notNull(scalar("Int"))),
+                                    field("x", "x", notNull(scalar("Int"))),
+                                    field("y", "y", notNull(scalar("Int")))
                                 )),
-                            field("uuid","uuid", notNull(scalar("String")))
+                            field("uuid", "uuid", notNull(scalar("String")))
                         )),
-                    field("twitter","twitter", scalar("String")),
-                    field("website","website", scalar("String"))
+                    field("twitter", "twitter", scalar("String")),
+                    field("website", "website", scalar("String"))
                 )))
         )
 private let ReadNotificationSelector = obj(
-            field("readNotification","readNotification", arguments(fieldValue("notificationId", refValue("notificationId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("unread","unread", notNull(scalar("Int")))
+            field("readNotification", "readNotification", arguments(fieldValue("notificationId", refValue("notificationId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("unread", "unread", notNull(scalar("Int")))
                 )))
         )
 private let RefreshAppTokenSelector = obj(
-            field("refreshAppToken","refreshAppToken", arguments(fieldValue("appId", refValue("appId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("refreshAppToken", "refreshAppToken", arguments(fieldValue("appId", refValue("appId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("AppProfile", AppFullSelector)
                 )))
         )
 private let RegisterPushSelector = obj(
-            field("registerPush","registerPush", arguments(fieldValue("endpoint", refValue("endpoint")), fieldValue("type", refValue("type"))), notNull(scalar("String")))
+            field("registerPush", "registerPush", arguments(fieldValue("endpoint", refValue("endpoint")), fieldValue("type", refValue("type"))), notNull(scalar("String")))
         )
 private let RegisterWebPushSelector = obj(
-            field("registerWebPush","registerWebPush", arguments(fieldValue("endpoint", refValue("endpoint"))), notNull(scalar("String")))
+            field("registerWebPush", "registerWebPush", arguments(fieldValue("endpoint", refValue("endpoint"))), notNull(scalar("String")))
         )
 private let ReportContentSelector = obj(
-            field("reportContent","reportContent", arguments(fieldValue("contentId", refValue("contentId")), fieldValue("message", refValue("message")), fieldValue("type", refValue("type"))), scalar("Boolean"))
+            field("reportContent", "reportContent", arguments(fieldValue("contentId", refValue("contentId")), fieldValue("message", refValue("message")), fieldValue("type", refValue("type"))), scalar("Boolean"))
         )
 private let ReportOnlineSelector = obj(
-            field("presenceReportOnline","presenceReportOnline", arguments(fieldValue("active", refValue("active")), fieldValue("platform", refValue("platform")), fieldValue("timeout", intValue(5000))), notNull(scalar("String")))
+            field("presenceReportOnline", "presenceReportOnline", arguments(fieldValue("active", refValue("active")), fieldValue("platform", refValue("platform")), fieldValue("timeout", intValue(5000))), notNull(scalar("String")))
         )
 private let RoomAddMembersSelector = obj(
-            field("alphaRoomInvite","alphaRoomInvite", arguments(fieldValue("invites", refValue("invites")), fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("badge","badge", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaRoomInvite", "alphaRoomInvite", arguments(fieldValue("invites", refValue("invites")), fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("badge", "badge", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("UserBadge", UserBadgeSelector)
                         )),
-                    field("canKick","canKick", notNull(scalar("Boolean"))),
-                    field("membership","membership", notNull(scalar("String"))),
-                    field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+                    field("canKick", "canKick", notNull(scalar("Boolean"))),
+                    field("membership", "membership", notNull(scalar("String"))),
+                    field("role", "role", notNull(scalar("String"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )))
                 )))))
         )
 private let RoomAlterFeaturedSelector = obj(
-            field("betaRoomAlterFeatured","betaRoomAlterFeatured", arguments(fieldValue("featured", refValue("featured")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("featured","featured", notNull(scalar("Boolean"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("listed","listed", notNull(scalar("Boolean")))
+            field("betaRoomAlterFeatured", "betaRoomAlterFeatured", arguments(fieldValue("featured", refValue("featured")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("featured", "featured", notNull(scalar("Boolean"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("listed", "listed", notNull(scalar("Boolean")))
                 )))
         )
 private let RoomAlterHiddenSelector = obj(
-            field("betaRoomAlterListed","betaRoomAlterListed", arguments(fieldValue("listed", refValue("listed")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("featured","featured", notNull(scalar("Boolean"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("listed","listed", notNull(scalar("Boolean")))
+            field("betaRoomAlterListed", "betaRoomAlterListed", arguments(fieldValue("listed", refValue("listed")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("featured", "featured", notNull(scalar("Boolean"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("listed", "listed", notNull(scalar("Boolean")))
                 )))
         )
 private let RoomChangeRoleSelector = obj(
-            field("betaRoomChangeRole","betaRoomChangeRole", arguments(fieldValue("newRole", refValue("newRole")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaRoomChangeRole", "betaRoomChangeRole", arguments(fieldValue("newRole", refValue("newRole")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
                 )))
         )
 private let RoomCreateSelector = obj(
-            field("betaRoomCreate","room", arguments(fieldValue("channel", refValue("channel")), fieldValue("description", refValue("description")), fieldValue("kind", refValue("kind")), fieldValue("members", refValue("members")), fieldValue("message", refValue("message")), fieldValue("organizationId", refValue("organizationId")), fieldValue("photoRef", refValue("photoRef")), fieldValue("title", refValue("title"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
+            field("betaRoomCreate", "room", arguments(fieldValue("channel", refValue("channel")), fieldValue("description", refValue("description")), fieldValue("kind", refValue("kind")), fieldValue("members", refValue("members")), fieldValue("message", refValue("message")), fieldValue("organizationId", refValue("organizationId")), fieldValue("photoRef", refValue("photoRef")), fieldValue("title", refValue("title"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
                 )))
         )
 private let RoomDeleteMessageSelector = obj(
-            field("betaMessageDelete","betaMessageDelete", arguments(fieldValue("mid", refValue("messageId"))), notNull(scalar("Boolean")))
+            field("betaMessageDelete", "betaMessageDelete", arguments(fieldValue("mid", refValue("messageId"))), notNull(scalar("Boolean")))
         )
 private let RoomDeleteMessagesSelector = obj(
-            field("betaMessageDelete","betaMessageDelete", arguments(fieldValue("mids", refValue("mids"))), notNull(scalar("Boolean")))
+            field("betaMessageDelete", "betaMessageDelete", arguments(fieldValue("mids", refValue("mids"))), notNull(scalar("Boolean")))
         )
 private let RoomDeleteUrlAugmentationSelector = obj(
-            field("betaMessageDeleteAugmentation","betaMessageDeleteAugmentation", arguments(fieldValue("mid", refValue("messageId"))), notNull(scalar("Boolean")))
+            field("betaMessageDeleteAugmentation", "betaMessageDeleteAugmentation", arguments(fieldValue("mid", refValue("messageId"))), notNull(scalar("Boolean")))
         )
 private let RoomJoinSelector = obj(
-            field("betaRoomJoin","join", arguments(fieldValue("roomId", refValue("roomId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaRoomJoin", "join", arguments(fieldValue("roomId", refValue("roomId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
                 )))
         )
 private let RoomJoinInviteLinkSelector = obj(
-            field("betaRoomInviteLinkJoin","join", arguments(fieldValue("invite", refValue("invite"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaRoomInviteLinkJoin", "join", arguments(fieldValue("invite", refValue("invite"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
                 )))
         )
 private let RoomKickSelector = obj(
-            field("betaRoomKick","betaRoomKick", arguments(fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaRoomKick", "betaRoomKick", arguments(fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
                 )))
         )
 private let RoomLeaveSelector = obj(
-            field("betaRoomLeave","betaRoomLeave", arguments(fieldValue("roomId", refValue("roomId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaRoomLeave", "betaRoomLeave", arguments(fieldValue("roomId", refValue("roomId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
                 )))
         )
 private let RoomReadSelector = obj(
-            field("roomRead","roomRead", arguments(fieldValue("id", refValue("id")), fieldValue("mid", refValue("mid"))), notNull(scalar("Boolean")))
+            field("roomRead", "roomRead", arguments(fieldValue("id", refValue("id")), fieldValue("mid", refValue("mid"))), notNull(scalar("Boolean")))
         )
 private let RoomRenewInviteLinkSelector = obj(
-            field("betaRoomInviteLinkRenew","link", arguments(fieldValue("roomId", refValue("roomId"))), notNull(scalar("String")))
+            field("betaRoomInviteLinkRenew", "link", arguments(fieldValue("roomId", refValue("roomId"))), notNull(scalar("String")))
         )
 private let RoomSettingsUpdateSelector = obj(
-            field("betaRoomUpdateUserNotificationSettings","betaRoomUpdateUserNotificationSettings", arguments(fieldValue("roomId", refValue("roomId")), fieldValue("settings", refValue("settings"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("mute","mute", scalar("Boolean"))
+            field("betaRoomUpdateUserNotificationSettings", "betaRoomUpdateUserNotificationSettings", arguments(fieldValue("roomId", refValue("roomId")), fieldValue("settings", refValue("settings"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("mute", "mute", scalar("Boolean"))
                 )))
         )
 private let RoomUpdateSelector = obj(
-            field("betaRoomUpdate","betaRoomUpdate", arguments(fieldValue("input", refValue("input")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaRoomUpdate", "betaRoomUpdate", arguments(fieldValue("input", refValue("input")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("PrivateRoom", obj(
-                        field("id","id", notNull(scalar("ID")))
+                        field("id", "id", notNull(scalar("ID")))
                     )),
                     inline("SharedRoom", obj(
-                        field("description","description", scalar("String")),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("photo","photo", notNull(scalar("String"))),
-                        field("socialImage","socialImage", scalar("String")),
-                        field("title","title", notNull(scalar("String")))
+                        field("description", "description", scalar("String")),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("photo", "photo", notNull(scalar("String"))),
+                        field("socialImage", "socialImage", scalar("String")),
+                        field("title", "title", notNull(scalar("String")))
                     ))
                 )))
         )
 private let RoomsInviteUserSelector = obj(
-            field("betaRoomsInviteUser","rooms", arguments(fieldValue("roomIds", refValue("roomIds")), fieldValue("userId", refValue("userId"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaRoomsInviteUser", "rooms", arguments(fieldValue("roomIds", refValue("roomIds")), fieldValue("userId", refValue("userId"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
                 )))))
         )
 private let RoomsJoinSelector = obj(
-            field("betaRoomsJoin","join", arguments(fieldValue("roomsIds", refValue("roomsIds"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaRoomsJoin", "join", arguments(fieldValue("roomsIds", refValue("roomsIds"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
                 )))))
         )
 private let SendMessageSelector = obj(
-            field("sendMessage","sentMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
+            field("sendMessage", "sentMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
         )
 private let SendStickerSelector = obj(
-            field("sendSticker","sendSticker", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("stickerId", refValue("stickerId"))), notNull(scalar("Boolean")))
+            field("sendSticker", "sendSticker", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("stickerId", refValue("stickerId"))), notNull(scalar("Boolean")))
         )
 private let SetFeedChannelShortnameSelector = obj(
-            field("alphaSetFeedChannelShortName","alphaSetFeedChannelShortName", arguments(fieldValue("id", refValue("id")), fieldValue("shortname", refValue("shortname"))), scalar("String"))
+            field("alphaSetFeedChannelShortName", "alphaSetFeedChannelShortName", arguments(fieldValue("id", refValue("id")), fieldValue("shortname", refValue("shortname"))), scalar("String"))
         )
 private let SetOrgShortnameSelector = obj(
-            field("alphaSetOrgShortName","alphaSetOrgShortName", arguments(fieldValue("id", refValue("organizationId")), fieldValue("shortname", refValue("shortname"))), scalar("String"))
+            field("alphaSetOrgShortName", "alphaSetOrgShortName", arguments(fieldValue("id", refValue("organizationId")), fieldValue("shortname", refValue("shortname"))), scalar("String"))
         )
 private let SetTypingSelector = obj(
-            field("typingSend","typingSend", arguments(fieldValue("conversationId", refValue("conversationId")), fieldValue("type", stringValue("TEXT"))), notNull(scalar("String")))
+            field("typingSend", "typingSend", arguments(fieldValue("conversationId", refValue("conversationId")), fieldValue("type", stringValue("TEXT"))), notNull(scalar("String")))
         )
 private let SetUserShortnameSelector = obj(
-            field("alphaSetUserShortName","alphaSetUserShortName", arguments(fieldValue("shortname", refValue("shortname"))), scalar("String"))
+            field("alphaSetUserShortName", "alphaSetUserShortName", arguments(fieldValue("shortname", refValue("shortname"))), scalar("String"))
         )
 private let SettingsUpdateSelector = obj(
-            field("updateSettings","updateSettings", arguments(fieldValue("settings", refValue("input"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("updateSettings", "updateSettings", arguments(fieldValue("settings", refValue("input"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Settings", SettingsFullSelector)
                 )))
         )
 private let StickerPackAddToCollectionSelector = obj(
-            field("stickerPackAddToCollection","stickerPackAddToCollection", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+            field("stickerPackAddToCollection", "stickerPackAddToCollection", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
 private let SubscribeToCommentsSelector = obj(
-            field("subscribeToComments","subscribeToComments", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
+            field("subscribeToComments", "subscribeToComments", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
         )
 private let SuperAccountActivateSelector = obj(
-            field("superAccountActivate","superAccountActivate", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("state","state", notNull(scalar("String")))
+            field("superAccountActivate", "superAccountActivate", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("state", "state", notNull(scalar("String")))
                 )))
         )
 private let SuperAccountAddSelector = obj(
-            field("superAccountAdd","superAccountAdd", arguments(fieldValue("title", refValue("title"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID")))
+            field("superAccountAdd", "superAccountAdd", arguments(fieldValue("title", refValue("title"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
                 )))
         )
 private let SuperAccountMemberAddSelector = obj(
-            field("superAccountMemberAdd","superAccountMemberAdd", arguments(fieldValue("id", refValue("accountId")), fieldValue("userId", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("members","members", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("superAccountMemberAdd", "superAccountMemberAdd", arguments(fieldValue("id", refValue("accountId")), fieldValue("userId", refValue("userId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("members", "members", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )))))
                 )))
         )
 private let SuperAccountMemberRemoveSelector = obj(
-            field("superAccountMemberRemove","superAccountMemberRemove", arguments(fieldValue("id", refValue("accountId")), fieldValue("userId", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("members","members", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("superAccountMemberRemove", "superAccountMemberRemove", arguments(fieldValue("id", refValue("accountId")), fieldValue("userId", refValue("userId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("members", "members", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )))))
                 )))
         )
 private let SuperAccountPendSelector = obj(
-            field("superAccountPend","superAccountPend", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("state","state", notNull(scalar("String")))
+            field("superAccountPend", "superAccountPend", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("state", "state", notNull(scalar("String")))
                 )))
         )
 private let SuperAccountRenameSelector = obj(
-            field("superAccountRename","superAccountRename", arguments(fieldValue("id", refValue("accountId")), fieldValue("title", refValue("title"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("title","title", notNull(scalar("String")))
+            field("superAccountRename", "superAccountRename", arguments(fieldValue("id", refValue("accountId")), fieldValue("title", refValue("title"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("title", "title", notNull(scalar("String")))
                 )))
         )
 private let SuperAccountSuspendSelector = obj(
-            field("superAccountSuspend","superAccountSuspend", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("state","state", notNull(scalar("String")))
+            field("superAccountSuspend", "superAccountSuspend", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("state", "state", notNull(scalar("String")))
                 )))
         )
 private let SuperAdminAddSelector = obj(
-            field("superAdminAdd","superAdminAdd", arguments(fieldValue("role", refValue("role")), fieldValue("userId", refValue("userId"))), notNull(scalar("String")))
+            field("superAdminAdd", "superAdminAdd", arguments(fieldValue("role", refValue("role")), fieldValue("userId", refValue("userId"))), notNull(scalar("String")))
         )
 private let SuperAdminRemoveSelector = obj(
-            field("superAdminRemove","superAdminRemove", arguments(fieldValue("userId", refValue("userId"))), notNull(scalar("String")))
+            field("superAdminRemove", "superAdminRemove", arguments(fieldValue("userId", refValue("userId"))), notNull(scalar("String")))
         )
 private let SuperBadgeCreateToRoomSelector = obj(
-            field("superBadgeCreateToRoom","superBadgeCreateToRoom", arguments(fieldValue("name", refValue("name")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("superBadgeCreateToRoom", "superBadgeCreateToRoom", arguments(fieldValue("name", refValue("name")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("UserBadge", UserBadgeSelector)
                 )))
         )
 private let SuperBadgeUnsetToRoomSelector = obj(
-            field("superBadgeUnsetToRoom","superBadgeUnsetToRoom", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
+            field("superBadgeUnsetToRoom", "superBadgeUnsetToRoom", arguments(fieldValue("badgeId", refValue("badgeId")), fieldValue("roomId", refValue("roomId")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
         )
 private let UnSubscribeFromCommentsSelector = obj(
-            field("unsubscribeFromComments","unsubscribeFromComments", arguments(fieldValue("peerId", refValue("peerId"))), notNull(scalar("Boolean")))
+            field("unsubscribeFromComments", "unsubscribeFromComments", arguments(fieldValue("peerId", refValue("peerId"))), notNull(scalar("Boolean")))
         )
 private let UnpinMessageSelector = obj(
-            field("gammaUnpinMessage","unpinMessage", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("gammaUnpinMessage", "unpinMessage", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
                 )))
         )
 private let UpdateAppSelector = obj(
-            field("updateAppProfile","updateAppProfile", arguments(fieldValue("appId", refValue("appId")), fieldValue("input", refValue("input"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("updateAppProfile", "updateAppProfile", arguments(fieldValue("appId", refValue("appId")), fieldValue("input", refValue("input"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("AppProfile", AppFullSelector)
                 )))
         )
 private let UpdateOrganizationSelector = obj(
-            field("updateOrganizationProfile","updateOrganizationProfile", arguments(fieldValue("id", refValue("organizationId")), fieldValue("input", refValue("input"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("updateOrganizationProfile", "updateOrganizationProfile", arguments(fieldValue("id", refValue("organizationId")), fieldValue("input", refValue("input"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("OrganizationProfile", OrganizationProfileFullSelector)
                 )))
         )
 private let UpdateWelcomeMessageSelector = obj(
-            field("updateWelcomeMessage","updateWelcomeMessage", arguments(fieldValue("roomId", refValue("roomId")), fieldValue("welcomeMessageIsOn", refValue("welcomeMessageIsOn")), fieldValue("welcomeMessageSender", refValue("welcomeMessageSender")), fieldValue("welcomeMessageText", refValue("welcomeMessageText"))), notNull(scalar("Boolean")))
+            field("updateWelcomeMessage", "updateWelcomeMessage", arguments(fieldValue("roomId", refValue("roomId")), fieldValue("welcomeMessageIsOn", refValue("welcomeMessageIsOn")), fieldValue("welcomeMessageSender", refValue("welcomeMessageSender")), fieldValue("welcomeMessageText", refValue("welcomeMessageText"))), notNull(scalar("Boolean")))
         )
 private let UserStorageSetSelector = obj(
-            field("userStorageSet","userStorageSet", arguments(fieldValue("data", refValue("data")), fieldValue("namespace", refValue("namespace"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("key","key", notNull(scalar("String"))),
-                    field("value","value", scalar("String"))
+            field("userStorageSet", "userStorageSet", arguments(fieldValue("data", refValue("data")), fieldValue("namespace", refValue("namespace"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("key", "key", notNull(scalar("String"))),
+                    field("value", "value", scalar("String"))
                 )))))
         )
 private let ChatOnlinesCountWatchSelector = obj(
-            field("chatOnlinesCount","chatOnlinesCount", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("onlineMembers","onlineMembers", notNull(scalar("Int")))
+            field("chatOnlinesCount", "chatOnlinesCount", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("onlineMembers", "onlineMembers", notNull(scalar("Int")))
                 )))
         )
 private let ChatWatchSelector = obj(
-            field("chatUpdates","event", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("fromState", refValue("state"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("chatUpdates", "event", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("fromState", refValue("state"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("ChatUpdateSingle", obj(
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("update","update", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("update", "update", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("ChatUpdate", ChatUpdateFragmentSelector)
                             )))
                     )),
                     inline("ChatUpdateBatch", obj(
-                        field("fromSeq","fromSeq", notNull(scalar("Int"))),
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("updates","updates", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("fromSeq", "fromSeq", notNull(scalar("Int"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("updates", "updates", notNull(list(notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("ChatUpdate", ChatUpdateFragmentSelector)
                             )))))
                     ))
                 )))
         )
 private let CommentWatchSelector = obj(
-            field("commentUpdates","event", arguments(fieldValue("fromState", refValue("fromState")), fieldValue("peerId", refValue("peerId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("commentUpdates", "event", arguments(fieldValue("fromState", refValue("fromState")), fieldValue("peerId", refValue("peerId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("CommentUpdateSingle", obj(
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("update","update", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("update", "update", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("CommentUpdate", CommentUpdateFragmentSelector)
                             )))
                     )),
                     inline("CommentUpdateBatch", obj(
-                        field("fromSeq","fromSeq", notNull(scalar("Int"))),
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("updates","updates", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("fromSeq", "fromSeq", notNull(scalar("Int"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("updates", "updates", notNull(list(notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("CommentUpdate", CommentUpdateFragmentSelector)
                             )))))
                     ))
                 ))
         )
 private let ConferenceMediaWatchSelector = obj(
-            field("alphaConferenceMediaWatch","media", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("streams","streams", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("ice","ice", notNull(list(notNull(scalar("String"))))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("sdp","sdp", scalar("String")),
-                            field("state","state", notNull(scalar("String")))
+            field("alphaConferenceMediaWatch", "media", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("streams", "streams", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("ice", "ice", notNull(list(notNull(scalar("String"))))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("sdp", "sdp", scalar("String")),
+                            field("state", "state", notNull(scalar("String")))
                         )))))
                 )))
         )
 private let ConferenceWatchSelector = obj(
-            field("alphaConferenceWatch","alphaConferenceWatch", arguments(fieldValue("id", refValue("id"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaConferenceWatch", "alphaConferenceWatch", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceFullSelector)
                 )))
         )
 private let DebugEventsWatchSelector = obj(
-            field("debugEvents","debugEvents", arguments(fieldValue("eventsCount", refValue("eventsCount")), fieldValue("fromState", refValue("fromState")), fieldValue("randomDelays", refValue("randomDelays")), fieldValue("seed", refValue("seed"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("key","key", notNull(scalar("String"))),
-                    field("seq","seq", notNull(scalar("Int")))
+            field("debugEvents", "debugEvents", arguments(fieldValue("eventsCount", refValue("eventsCount")), fieldValue("fromState", refValue("fromState")), fieldValue("randomDelays", refValue("randomDelays")), fieldValue("seed", refValue("seed"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("key", "key", notNull(scalar("String"))),
+                    field("seq", "seq", notNull(scalar("Int")))
                 )))
         )
 private let DialogsWatchSelector = obj(
-            field("dialogsUpdates","event", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("dialogsUpdates", "event", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("DialogUpdateSingle", obj(
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("update","update", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("update", "update", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("DialogUpdate", DialogUpdateFragmentSelector)
                             )))
                     )),
                     inline("DialogUpdateBatch", obj(
-                        field("fromSeq","fromSeq", notNull(scalar("Int"))),
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("updates","updates", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("fromSeq", "fromSeq", notNull(scalar("Int"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("updates", "updates", notNull(list(notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("DialogUpdate", DialogUpdateFragmentSelector)
                             )))))
                     ))
                 )))
         )
 private let FeedUpdatesSelector = obj(
-            field("homeFeedUpdates","event", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("state","state", notNull(scalar("String"))),
-                    field("updates","updates", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("homeFeedUpdates", "event", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("state", "state", notNull(scalar("String"))),
+                    field("updates", "updates", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("FeedUpdate", FeedUpdateFragmentSelector)
                         )))))
                 )))
         )
 private let MyNotificationsCenterSelector = obj(
-            field("notificationCenterUpdates","event", arguments(fieldValue("fromState", refValue("state"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("notificationCenterUpdates", "event", arguments(fieldValue("fromState", refValue("state"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("NotificationCenterUpdateSingle", obj(
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("update","update", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("update", "update", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("NotificationCenterUpdate", NotificationCenterUpdateFragmentSelector)
                             )))
                     )),
                     inline("NotificationCenterUpdateBatch", obj(
-                        field("fromSeq","fromSeq", notNull(scalar("Int"))),
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("updates","updates", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("fromSeq", "fromSeq", notNull(scalar("Int"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("updates", "updates", notNull(list(notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("NotificationCenterUpdate", NotificationCenterUpdateFragmentSelector)
                             )))))
                     ))
                 ))
         )
 private let OnlineWatchSelector = obj(
-            field("alphaSubscribeOnline","alphaSubscribeOnline", arguments(fieldValue("users", refValue("users"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("timeout","timeout", notNull(scalar("Int"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("lastSeen","lastSeen", scalar("String")),
-                            field("online","online", notNull(scalar("Boolean")))
+            field("alphaSubscribeOnline", "alphaSubscribeOnline", arguments(fieldValue("users", refValue("users"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("timeout", "timeout", notNull(scalar("Int"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("lastSeen", "lastSeen", scalar("String")),
+                            field("online", "online", notNull(scalar("Boolean")))
                         )))
                 )))
         )
 private let SettingsWatchSelector = obj(
-            field("watchSettings","watchSettings", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("watchSettings", "watchSettings", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Settings", SettingsFullSelector)
                 )))
         )
 private let TypingsWatchSelector = obj(
-            field("typings","typings", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("cancel","cancel", notNull(scalar("Boolean"))),
-                    field("chat","conversation", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("typings", "typings", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cancel", "cancel", notNull(scalar("Boolean"))),
+                    field("chat", "conversation", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             inline("PrivateRoom", obj(
-                                field("id","id", notNull(scalar("ID")))
+                                field("id", "id", notNull(scalar("ID")))
                             )),
                             inline("SharedRoom", obj(
-                                field("id","id", notNull(scalar("ID")))
+                                field("id", "id", notNull(scalar("ID")))
                             ))
                         ))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("name","name", notNull(scalar("String"))),
-                            field("photo","photo", scalar("String"))
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String"))),
+                            field("photo", "photo", scalar("String"))
                         )))
                 )))
         )

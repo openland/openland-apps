@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val StickerPackAddToCollectionSelector = obj(
-            field("stickerPackAddToCollection","stickerPackAddToCollection", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+            field("stickerPackAddToCollection", "stickerPackAddToCollection", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
 val StickerPackAddToCollection = object: OperationDefinition {
     override val name = "StickerPackAddToCollection"

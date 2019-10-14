@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MatchmakingProfileSelector = obj(
-            field("matchmakingProfile","matchmakingProfile", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("uid", refValue("uid"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("matchmakingProfile", "matchmakingProfile", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("uid", refValue("uid"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("MatchmakingProfile", MatchmakingProfileFragmentSelector)
                 ))
         )

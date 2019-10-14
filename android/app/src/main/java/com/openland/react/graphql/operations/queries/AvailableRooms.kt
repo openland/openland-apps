@@ -5,66 +5,66 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val AvailableRoomsSelector = obj(
-            field("alphaComunityPrefixSearch","communities", arguments(fieldValue("first", intValue(3))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("node","node", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaComunityPrefixSearch", "communities", arguments(fieldValue("first", intValue(3))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("Organization", CommunitySearchSelector)
                                 )))
                         )))))
                 ))),
-            field("betaIsDiscoverDone","isDiscoverDone", notNull(scalar("Boolean"))),
-            field("betaSuggestedRooms","suggestedRooms", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaIsDiscoverDone", "isDiscoverDone", notNull(scalar("Boolean"))),
+            field("betaSuggestedRooms", "suggestedRooms", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("kind","kind", notNull(scalar("String"))),
-                        field("membersCount","membersCount", scalar("Int")),
-                        field("membership","membership", notNull(scalar("String"))),
-                        field("organization","organization", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("name","name", notNull(scalar("String"))),
-                                field("photo","photo", scalar("String"))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("kind", "kind", notNull(scalar("String"))),
+                        field("membersCount", "membersCount", scalar("Int")),
+                        field("membership", "membership", notNull(scalar("String"))),
+                        field("organization", "organization", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("photo", "photo", scalar("String"))
                             )),
-                        field("photo","photo", notNull(scalar("String"))),
-                        field("title","title", notNull(scalar("String")))
+                        field("photo", "photo", notNull(scalar("String"))),
+                        field("title", "title", notNull(scalar("String")))
                     ))
                 ))))),
-            field("betaUserAvailableRooms","availableChats", arguments(fieldValue("isChannel", boolValue(false)), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaUserAvailableRooms", "availableChats", arguments(fieldValue("isChannel", boolValue(false)), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("kind","kind", notNull(scalar("String"))),
-                        field("membersCount","membersCount", scalar("Int")),
-                        field("membership","membership", notNull(scalar("String"))),
-                        field("organization","organization", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("name","name", notNull(scalar("String"))),
-                                field("photo","photo", scalar("String"))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("kind", "kind", notNull(scalar("String"))),
+                        field("membersCount", "membersCount", scalar("Int")),
+                        field("membership", "membership", notNull(scalar("String"))),
+                        field("organization", "organization", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("photo", "photo", scalar("String"))
                             )),
-                        field("photo","photo", notNull(scalar("String"))),
-                        field("title","title", notNull(scalar("String")))
+                        field("photo", "photo", notNull(scalar("String"))),
+                        field("title", "title", notNull(scalar("String")))
                     ))
                 ))))),
-            field("betaUserAvailableRooms","availableChannels", arguments(fieldValue("isChannel", boolValue(true)), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaUserAvailableRooms", "availableChannels", arguments(fieldValue("isChannel", boolValue(true)), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("kind","kind", notNull(scalar("String"))),
-                        field("membersCount","membersCount", scalar("Int")),
-                        field("membership","membership", notNull(scalar("String"))),
-                        field("organization","organization", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("id","id", notNull(scalar("ID"))),
-                                field("name","name", notNull(scalar("String"))),
-                                field("photo","photo", scalar("String"))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("kind", "kind", notNull(scalar("String"))),
+                        field("membersCount", "membersCount", scalar("Int")),
+                        field("membership", "membership", notNull(scalar("String"))),
+                        field("organization", "organization", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("photo", "photo", scalar("String"))
                             )),
-                        field("photo","photo", notNull(scalar("String"))),
-                        field("title","title", notNull(scalar("String")))
+                        field("photo", "photo", notNull(scalar("String"))),
+                        field("title", "title", notNull(scalar("String")))
                     ))
                 )))))
         )

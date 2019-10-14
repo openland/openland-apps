@@ -5,24 +5,24 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val ExploreCommunitySelector = obj(
-            field("alphaComunityPrefixSearch","items", arguments(fieldValue("after", refValue("after")), fieldValue("featuredIfEmptyQuery", refValue("featuredIfEmptyQuery")), fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("cursor","cursor", notNull(scalar("String"))),
-                            field("node","node", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaComunityPrefixSearch", "items", arguments(fieldValue("after", refValue("after")), fieldValue("featuredIfEmptyQuery", refValue("featuredIfEmptyQuery")), fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("cursor", "cursor", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("Organization", CommunitySearchSelector)
                                 )))
                         ))))),
-                    field("pageInfo","pageInfo", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("currentPage","currentPage", notNull(scalar("Int"))),
-                            field("hasNextPage","hasNextPage", notNull(scalar("Boolean"))),
-                            field("hasPreviousPage","hasPreviousPage", notNull(scalar("Boolean"))),
-                            field("itemsCount","itemsCount", notNull(scalar("Int"))),
-                            field("openEnded","openEnded", notNull(scalar("Boolean"))),
-                            field("pagesCount","pagesCount", notNull(scalar("Int")))
+                    field("pageInfo", "pageInfo", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("currentPage", "currentPage", notNull(scalar("Int"))),
+                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean"))),
+                            field("hasPreviousPage", "hasPreviousPage", notNull(scalar("Boolean"))),
+                            field("itemsCount", "itemsCount", notNull(scalar("Int"))),
+                            field("openEnded", "openEnded", notNull(scalar("Boolean"))),
+                            field("pagesCount", "pagesCount", notNull(scalar("Int")))
                         )))
                 )))
         )

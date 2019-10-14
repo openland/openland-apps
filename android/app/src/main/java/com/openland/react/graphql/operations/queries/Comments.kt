@@ -5,17 +5,17 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val CommentsSelector = obj(
-            field("comments","comments", arguments(fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("comments","comments", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("comments", "comments", arguments(fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("comments", "comments", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("CommentEntry", CommentEntryFragmentSelector)
                         ))))),
-                    field("count","count", notNull(scalar("Int"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("state","state", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("state","state", scalar("String"))
+                    field("count", "count", notNull(scalar("Int"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("state", "state", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("state", "state", scalar("String"))
                         )))
                 )))
         )

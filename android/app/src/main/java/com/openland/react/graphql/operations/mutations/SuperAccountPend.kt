@@ -5,10 +5,10 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val SuperAccountPendSelector = obj(
-            field("superAccountPend","superAccountPend", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("state","state", notNull(scalar("String")))
+            field("superAccountPend", "superAccountPend", arguments(fieldValue("id", refValue("accountId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("state", "state", notNull(scalar("String")))
                 )))
         )
 val SuperAccountPend = object: OperationDefinition {

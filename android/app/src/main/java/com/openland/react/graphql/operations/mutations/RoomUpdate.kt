@@ -5,17 +5,17 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val RoomUpdateSelector = obj(
-            field("betaRoomUpdate","betaRoomUpdate", arguments(fieldValue("input", refValue("input")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaRoomUpdate", "betaRoomUpdate", arguments(fieldValue("input", refValue("input")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("PrivateRoom", obj(
-                        field("id","id", notNull(scalar("ID")))
+                        field("id", "id", notNull(scalar("ID")))
                     )),
                     inline("SharedRoom", obj(
-                        field("description","description", scalar("String")),
-                        field("id","id", notNull(scalar("ID"))),
-                        field("photo","photo", notNull(scalar("String"))),
-                        field("socialImage","socialImage", scalar("String")),
-                        field("title","title", notNull(scalar("String")))
+                        field("description", "description", scalar("String")),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("photo", "photo", notNull(scalar("String"))),
+                        field("socialImage", "socialImage", scalar("String")),
+                        field("title", "title", notNull(scalar("String")))
                     ))
                 )))
         )

@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MyAppsSelector = obj(
-            field("myApps","apps", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("myApps", "apps", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("AppProfile", AppFullSelector)
                 )))))
         )

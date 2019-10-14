@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val RoomLeaveSelector = obj(
-            field("betaRoomLeave","betaRoomLeave", arguments(fieldValue("roomId", refValue("roomId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaRoomLeave", "betaRoomLeave", arguments(fieldValue("roomId", refValue("roomId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullSelector)
                 )))
         )

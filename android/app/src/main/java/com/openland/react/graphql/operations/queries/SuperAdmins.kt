@@ -5,12 +5,12 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val SuperAdminsSelector = obj(
-            field("superAdmins","superAdmins", notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("email","email", scalar("String")),
-                    field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("superAdmins", "superAdmins", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("email", "email", scalar("String")),
+                    field("role", "role", notNull(scalar("String"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )))
                 )))))

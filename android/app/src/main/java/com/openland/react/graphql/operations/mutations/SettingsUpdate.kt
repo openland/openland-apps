@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val SettingsUpdateSelector = obj(
-            field("updateSettings","updateSettings", arguments(fieldValue("settings", refValue("input"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("updateSettings", "updateSettings", arguments(fieldValue("settings", refValue("input"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Settings", SettingsFullSelector)
                 )))
         )

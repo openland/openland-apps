@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MessageSetReactionSelector = obj(
-            field("messageReactionAdd","messageReactionAdd", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
+            field("messageReactionAdd", "messageReactionAdd", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
 val MessageSetReaction = object: OperationDefinition {
     override val name = "MessageSetReaction"

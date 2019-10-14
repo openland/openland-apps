@@ -5,16 +5,16 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val AccountSelector = obj(
-            field("me","me", obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("me", "me", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("User", UserShortSelector)
                 )),
-            field("myPermissions","myPermissions", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("roles","roles", notNull(list(notNull(scalar("String")))))
+            field("myPermissions", "myPermissions", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("roles", "roles", notNull(list(notNull(scalar("String")))))
                 ))),
-            field("sessionState","sessionState", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("sessionState", "sessionState", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("SessionState", SessionStateFullSelector)
                 )))
         )

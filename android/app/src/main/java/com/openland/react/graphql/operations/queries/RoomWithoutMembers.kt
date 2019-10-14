@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val RoomWithoutMembersSelector = obj(
-            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("room", "room", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomFullWithoutMembersSelector)
                 ))
         )

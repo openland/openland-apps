@@ -5,28 +5,28 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val FeedChannelSubscribersSelector = obj(
-            field("alphaFeedChannelSubscribers","subscribers", arguments(fieldValue("after", refValue("after")), fieldValue("channelId", refValue("channelId")), fieldValue("first", refValue("first")), fieldValue("query", refValue("query"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("edges","edges", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("cursor","cursor", notNull(scalar("String"))),
-                            field("node","node", notNull(obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
-                                    field("role","role", notNull(scalar("String"))),
-                                    field("user","user", notNull(obj(
-                                            field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaFeedChannelSubscribers", "subscribers", arguments(fieldValue("after", refValue("after")), fieldValue("channelId", refValue("channelId")), fieldValue("first", refValue("first")), fieldValue("query", refValue("query"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("cursor", "cursor", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("role", "role", notNull(scalar("String"))),
+                                    field("user", "user", notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
                                             fragment("User", UserShortSelector)
                                         )))
                                 )))
                         ))))),
-                    field("pageInfo","pageInfo", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("currentPage","currentPage", notNull(scalar("Int"))),
-                            field("hasNextPage","hasNextPage", notNull(scalar("Boolean"))),
-                            field("hasPreviousPage","hasPreviousPage", notNull(scalar("Boolean"))),
-                            field("itemsCount","itemsCount", notNull(scalar("Int"))),
-                            field("openEnded","openEnded", notNull(scalar("Boolean"))),
-                            field("pagesCount","pagesCount", notNull(scalar("Int")))
+                    field("pageInfo", "pageInfo", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("currentPage", "currentPage", notNull(scalar("Int"))),
+                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean"))),
+                            field("hasPreviousPage", "hasPreviousPage", notNull(scalar("Boolean"))),
+                            field("itemsCount", "itemsCount", notNull(scalar("Int"))),
+                            field("openEnded", "openEnded", notNull(scalar("Boolean"))),
+                            field("pagesCount", "pagesCount", notNull(scalar("Int")))
                         )))
                 )))
         )

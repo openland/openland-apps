@@ -5,11 +5,11 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val OnlineSelector = obj(
-            field("user","user", arguments(fieldValue("id", refValue("userId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("lastSeen","lastSeen", scalar("String")),
-                    field("online","online", notNull(scalar("Boolean")))
+            field("user", "user", arguments(fieldValue("id", refValue("userId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("lastSeen", "lastSeen", scalar("String")),
+                    field("online", "online", notNull(scalar("Boolean")))
                 )))
         )
 val Online = object: OperationDefinition {

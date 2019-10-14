@@ -5,35 +5,35 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val DialogsSelector = obj(
-            field("alphaNotificationCounter","counter", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("unreadCount","unreadCount", notNull(scalar("Int")))
+            field("alphaNotificationCounter", "counter", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("unreadCount", "unreadCount", notNull(scalar("Int")))
                 ))),
-            field("dialogs","dialogs", arguments(fieldValue("after", refValue("after")), fieldValue("first", intValue(20))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("cursor","cursor", scalar("String")),
-                    field("items","items", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("alphaTopMessage","topMessage", obj(
-                                    field("__typename","__typename", notNull(scalar("String"))),
+            field("dialogs", "dialogs", arguments(fieldValue("after", refValue("after")), fieldValue("first", intValue(20))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cursor", "cursor", scalar("String")),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("alphaTopMessage", "topMessage", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("ModernMessage", DaialogListMessageSelector)
                                 )),
-                            field("cid","cid", notNull(scalar("ID"))),
-                            field("fid","fid", notNull(scalar("ID"))),
-                            field("haveMention","haveMention", notNull(scalar("Boolean"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("isChannel","isChannel", notNull(scalar("Boolean"))),
-                            field("isMuted","isMuted", notNull(scalar("Boolean"))),
-                            field("kind","kind", notNull(scalar("String"))),
-                            field("photo","photo", notNull(scalar("String"))),
-                            field("title","title", notNull(scalar("String"))),
-                            field("unreadCount","unreadCount", notNull(scalar("Int")))
+                            field("cid", "cid", notNull(scalar("ID"))),
+                            field("fid", "fid", notNull(scalar("ID"))),
+                            field("haveMention", "haveMention", notNull(scalar("Boolean"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                            field("isMuted", "isMuted", notNull(scalar("Boolean"))),
+                            field("kind", "kind", notNull(scalar("String"))),
+                            field("photo", "photo", notNull(scalar("String"))),
+                            field("title", "title", notNull(scalar("String"))),
+                            field("unreadCount", "unreadCount", notNull(scalar("Int")))
                         )))))
                 ))),
-            field("dialogsState","state", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("state","state", scalar("String"))
+            field("dialogsState", "state", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("state", "state", scalar("String"))
                 )))
         )
 val Dialogs = object: OperationDefinition {

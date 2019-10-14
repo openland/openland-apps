@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MatchmakingRoomSelector = obj(
-            field("matchmakingRoom","matchmakingRoom", arguments(fieldValue("peerId", refValue("peerId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("matchmakingRoom", "matchmakingRoom", arguments(fieldValue("peerId", refValue("peerId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("MatchmakingRoom", MatchmakingRoomFragmentSelector)
                 ))
         )

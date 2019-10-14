@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val FeedDeletePostSelector = obj(
-            field("alphaDeleteFeedPost","alphaDeleteFeedPost", arguments(fieldValue("feedItemId", refValue("feedItemId"))), notNull(scalar("Boolean")))
+            field("alphaDeleteFeedPost", "alphaDeleteFeedPost", arguments(fieldValue("feedItemId", refValue("feedItemId"))), notNull(scalar("Boolean")))
         )
 val FeedDeletePost = object: OperationDefinition {
     override val name = "FeedDeletePost"

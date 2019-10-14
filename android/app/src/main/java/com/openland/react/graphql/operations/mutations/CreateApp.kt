@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val CreateAppSelector = obj(
-            field("createApp","createApp", arguments(fieldValue("about", refValue("about")), fieldValue("name", refValue("name")), fieldValue("photoRef", refValue("photoRef")), fieldValue("shortname", refValue("shortname"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("createApp", "createApp", arguments(fieldValue("about", refValue("about")), fieldValue("name", refValue("name")), fieldValue("photoRef", refValue("photoRef")), fieldValue("shortname", refValue("shortname"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("AppProfile", AppFullSelector)
                 )))
         )

@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val SendStickerSelector = obj(
-            field("sendSticker","sendSticker", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("stickerId", refValue("stickerId"))), notNull(scalar("Boolean")))
+            field("sendSticker", "sendSticker", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("stickerId", refValue("stickerId"))), notNull(scalar("Boolean")))
         )
 val SendSticker = object: OperationDefinition {
     override val name = "SendSticker"

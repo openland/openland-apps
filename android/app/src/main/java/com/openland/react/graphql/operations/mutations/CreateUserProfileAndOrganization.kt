@@ -5,15 +5,15 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val CreateUserProfileAndOrganizationSelector = obj(
-            field("alphaCreateUserProfileAndOrganization","alphaCreateUserProfileAndOrganization", arguments(fieldValue("organization", refValue("organization")), fieldValue("user", refValue("user"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("organization","organization", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("name","name", notNull(scalar("String")))
+            field("alphaCreateUserProfileAndOrganization", "alphaCreateUserProfileAndOrganization", arguments(fieldValue("organization", refValue("organization")), fieldValue("user", refValue("user"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("organization", "organization", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String")))
                         )),
-                    field("user","user", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+                    field("user", "user", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserFullSelector)
                         ))
                 )))

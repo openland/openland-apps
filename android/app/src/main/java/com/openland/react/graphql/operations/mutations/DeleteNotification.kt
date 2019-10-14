@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val DeleteNotificationSelector = obj(
-            field("deleteNotification","deleteNotification", arguments(fieldValue("notificationId", refValue("notificationId"))), notNull(scalar("Boolean")))
+            field("deleteNotification", "deleteNotification", arguments(fieldValue("notificationId", refValue("notificationId"))), notNull(scalar("Boolean")))
         )
 val DeleteNotification = object: OperationDefinition {
     override val name = "DeleteNotification"

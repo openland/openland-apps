@@ -5,23 +5,23 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val TypingsWatchSelector = obj(
-            field("typings","typings", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("cancel","cancel", notNull(scalar("Boolean"))),
-                    field("chat","conversation", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("typings", "typings", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cancel", "cancel", notNull(scalar("Boolean"))),
+                    field("chat", "conversation", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             inline("PrivateRoom", obj(
-                                field("id","id", notNull(scalar("ID")))
+                                field("id", "id", notNull(scalar("ID")))
                             )),
                             inline("SharedRoom", obj(
-                                field("id","id", notNull(scalar("ID")))
+                                field("id", "id", notNull(scalar("ID")))
                             ))
                         ))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("name","name", notNull(scalar("String"))),
-                            field("photo","photo", scalar("String"))
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String"))),
+                            field("photo", "photo", scalar("String"))
                         )))
                 )))
         )

@@ -5,16 +5,16 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MessagesBatchSelector = obj(
-            field("conversationState","state", arguments(fieldValue("id", refValue("chatId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("state","state", scalar("String"))
+            field("conversationState", "state", arguments(fieldValue("id", refValue("chatId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("state", "state", scalar("String"))
                 ))),
-            field("gammaMessages","gammaMessages", arguments(fieldValue("after", refValue("after")), fieldValue("before", refValue("before")), fieldValue("chatId", refValue("chatId")), fieldValue("first", refValue("first"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("haveMoreBackward","haveMoreBackward", scalar("Boolean")),
-                    field("haveMoreForward","haveMoreForward", scalar("Boolean")),
-                    field("messages","messages", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("gammaMessages", "gammaMessages", arguments(fieldValue("after", refValue("after")), fieldValue("before", refValue("before")), fieldValue("chatId", refValue("chatId")), fieldValue("first", refValue("first"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("haveMoreBackward", "haveMoreBackward", scalar("Boolean")),
+                    field("haveMoreForward", "haveMoreForward", scalar("Boolean")),
+                    field("messages", "messages", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("ModernMessage", FullMessageSelector)
                         )))))
                 ))

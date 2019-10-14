@@ -5,10 +5,10 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val DebugEventsWatchSelector = obj(
-            field("debugEvents","debugEvents", arguments(fieldValue("eventsCount", refValue("eventsCount")), fieldValue("fromState", refValue("fromState")), fieldValue("randomDelays", refValue("randomDelays")), fieldValue("seed", refValue("seed"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("key","key", notNull(scalar("String"))),
-                    field("seq","seq", notNull(scalar("Int")))
+            field("debugEvents", "debugEvents", arguments(fieldValue("eventsCount", refValue("eventsCount")), fieldValue("fromState", refValue("fromState")), fieldValue("randomDelays", refValue("randomDelays")), fieldValue("seed", refValue("seed"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("key", "key", notNull(scalar("String"))),
+                    field("seq", "seq", notNull(scalar("Int")))
                 )))
         )
 val DebugEventsWatch = object: OperationDefinition {

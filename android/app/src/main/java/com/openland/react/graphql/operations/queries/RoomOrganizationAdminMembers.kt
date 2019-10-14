@@ -5,21 +5,21 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val RoomOrganizationAdminMembersSelector = obj(
-            field("room","room", arguments(fieldValue("id", refValue("id"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("room", "room", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
-                        field("id","id", notNull(scalar("ID"))),
-                        field("organization","organization", obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
-                                field("alphaOrganizationAdminMembers","adminMembers", notNull(list(notNull(obj(
-                                        field("__typename","__typename", notNull(scalar("String"))),
-                                        field("role","role", notNull(scalar("String"))),
-                                        field("user","user", notNull(obj(
-                                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("organization", "organization", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("alphaOrganizationAdminMembers", "adminMembers", notNull(list(notNull(obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("role", "role", notNull(scalar("String"))),
+                                        field("user", "user", notNull(obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
                                                 fragment("User", UserShortSelector)
                                             )))
                                     ))))),
-                                field("id","id", notNull(scalar("ID")))
+                                field("id", "id", notNull(scalar("ID")))
                             ))
                     ))
                 ))

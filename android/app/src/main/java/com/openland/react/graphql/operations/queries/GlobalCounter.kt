@@ -5,10 +5,10 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val GlobalCounterSelector = obj(
-            field("alphaNotificationCounter","alphaNotificationCounter", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("unreadCount","unreadCount", notNull(scalar("Int")))
+            field("alphaNotificationCounter", "alphaNotificationCounter", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("unreadCount", "unreadCount", notNull(scalar("Int")))
                 )))
         )
 val GlobalCounter = object: OperationDefinition {

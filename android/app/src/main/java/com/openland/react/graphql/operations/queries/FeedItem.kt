@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val FeedItemSelector = obj(
-            field("alphaFeedItem","item", arguments(fieldValue("id", refValue("id"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaFeedItem", "item", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("FeedItem", FeedItemFullSelector)
                 ))
         )

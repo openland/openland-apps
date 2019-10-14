@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val FeedChannelSubscribeSelector = obj(
-            field("alphaFeedChannelSubscribe","alphaFeedChannelSubscribe", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+            field("alphaFeedChannelSubscribe", "alphaFeedChannelSubscribe", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
 val FeedChannelSubscribe = object: OperationDefinition {
     override val name = "FeedChannelSubscribe"

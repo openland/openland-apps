@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val FeedChannelRemoveWriterSelector = obj(
-            field("alphaFeedChannelRemoveEditor","alphaFeedChannelRemoveEditor", arguments(fieldValue("id", refValue("id")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
+            field("alphaFeedChannelRemoveEditor", "alphaFeedChannelRemoveEditor", arguments(fieldValue("id", refValue("id")), fieldValue("userId", refValue("userId"))), notNull(scalar("Boolean")))
         )
 val FeedChannelRemoveWriter = object: OperationDefinition {
     override val name = "FeedChannelRemoveWriter"

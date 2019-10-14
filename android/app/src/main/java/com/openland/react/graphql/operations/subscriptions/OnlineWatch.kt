@@ -5,14 +5,14 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val OnlineWatchSelector = obj(
-            field("alphaSubscribeOnline","alphaSubscribeOnline", arguments(fieldValue("users", refValue("users"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("timeout","timeout", notNull(scalar("Int"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("lastSeen","lastSeen", scalar("String")),
-                            field("online","online", notNull(scalar("Boolean")))
+            field("alphaSubscribeOnline", "alphaSubscribeOnline", arguments(fieldValue("users", refValue("users"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("timeout", "timeout", notNull(scalar("Int"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("lastSeen", "lastSeen", scalar("String")),
+                            field("online", "online", notNull(scalar("Boolean")))
                         )))
                 )))
         )

@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val DebugMailsSelector = obj(
-            field("debugSendEmail","debugSendEmail", arguments(fieldValue("type", refValue("type"))), scalar("Boolean"))
+            field("debugSendEmail", "debugSendEmail", arguments(fieldValue("type", refValue("type"))), scalar("Boolean"))
         )
 val DebugMails = object: OperationDefinition {
     override val name = "DebugMails"

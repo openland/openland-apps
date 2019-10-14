@@ -5,17 +5,17 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val RoomAddMembersSelector = obj(
-            field("alphaRoomInvite","alphaRoomInvite", arguments(fieldValue("invites", refValue("invites")), fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("badge","badge", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("alphaRoomInvite", "alphaRoomInvite", arguments(fieldValue("invites", refValue("invites")), fieldValue("roomId", refValue("roomId"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("badge", "badge", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("UserBadge", UserBadgeSelector)
                         )),
-                    field("canKick","canKick", notNull(scalar("Boolean"))),
-                    field("membership","membership", notNull(scalar("String"))),
-                    field("role","role", notNull(scalar("String"))),
-                    field("user","user", notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+                    field("canKick", "canKick", notNull(scalar("Boolean"))),
+                    field("membership", "membership", notNull(scalar("String"))),
+                    field("role", "role", notNull(scalar("String"))),
+                    field("user", "user", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         )))
                 )))))

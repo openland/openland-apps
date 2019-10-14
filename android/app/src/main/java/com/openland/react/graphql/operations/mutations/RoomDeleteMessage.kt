@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val RoomDeleteMessageSelector = obj(
-            field("betaMessageDelete","betaMessageDelete", arguments(fieldValue("mid", refValue("messageId"))), notNull(scalar("Boolean")))
+            field("betaMessageDelete", "betaMessageDelete", arguments(fieldValue("mid", refValue("messageId"))), notNull(scalar("Boolean")))
         )
 val RoomDeleteMessage = object: OperationDefinition {
     override val name = "RoomDeleteMessage"

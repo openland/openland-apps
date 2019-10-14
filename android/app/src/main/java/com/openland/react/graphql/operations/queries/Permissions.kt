@@ -5,9 +5,9 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val PermissionsSelector = obj(
-            field("myPermissions","myPermissions", notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("roles","roles", notNull(list(notNull(scalar("String")))))
+            field("myPermissions", "myPermissions", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("roles", "roles", notNull(list(notNull(scalar("String")))))
                 )))
         )
 val Permissions = object: OperationDefinition {

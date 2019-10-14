@@ -5,29 +5,29 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val SuperAccountSelector = obj(
-            field("superAccount","superAccount", arguments(fieldValue("id", refValue("accountId")), fieldValue("viaOrgId", refValue("viaOrgId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("alphaPublished","published", notNull(scalar("Boolean"))),
-                    field("createdAt","createdAt", scalar("String")),
-                    field("createdBy","createdBy", obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("name","name", notNull(scalar("String")))
+            field("superAccount", "superAccount", arguments(fieldValue("id", refValue("accountId")), fieldValue("viaOrgId", refValue("viaOrgId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("alphaPublished", "published", notNull(scalar("Boolean"))),
+                    field("createdAt", "createdAt", scalar("String")),
+                    field("createdBy", "createdBy", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String")))
                         )),
-                    field("features","features", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
-                            field("id","id", notNull(scalar("ID"))),
-                            field("key","key", notNull(scalar("String"))),
-                            field("title","title", notNull(scalar("String")))
+                    field("features", "features", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("key", "key", notNull(scalar("String"))),
+                            field("title", "title", notNull(scalar("String")))
                         ))))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("members","members", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("members", "members", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
                         ))))),
-                    field("orgId","orgId", notNull(scalar("ID"))),
-                    field("state","state", notNull(scalar("String"))),
-                    field("title","title", notNull(scalar("String")))
+                    field("orgId", "orgId", notNull(scalar("ID"))),
+                    field("state", "state", notNull(scalar("String"))),
+                    field("title", "title", notNull(scalar("String")))
                 )))
         )
 val SuperAccount = object: OperationDefinition {

@@ -5,11 +5,11 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val FeedUpdatesSelector = obj(
-            field("homeFeedUpdates","event", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("state","state", notNull(scalar("String"))),
-                    field("updates","updates", notNull(list(notNull(obj(
-                            field("__typename","__typename", notNull(scalar("String"))),
+            field("homeFeedUpdates", "event", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("state", "state", notNull(scalar("String"))),
+                    field("updates", "updates", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("FeedUpdate", FeedUpdateFragmentSelector)
                         )))))
                 )))

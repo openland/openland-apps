@@ -5,11 +5,11 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val RoomAlterHiddenSelector = obj(
-            field("betaRoomAlterListed","betaRoomAlterListed", arguments(fieldValue("listed", refValue("listed")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("featured","featured", notNull(scalar("Boolean"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("listed","listed", notNull(scalar("Boolean")))
+            field("betaRoomAlterListed", "betaRoomAlterListed", arguments(fieldValue("listed", refValue("listed")), fieldValue("roomId", refValue("roomId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("featured", "featured", notNull(scalar("Boolean"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("listed", "listed", notNull(scalar("Boolean")))
                 )))
         )
 val RoomAlterHidden = object: OperationDefinition {

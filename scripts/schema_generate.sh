@@ -32,3 +32,4 @@ yarn apollo codegen:generate --target=typescript --outputFlat=./packages/openlan
 # SpaceX support data
  ./scripts/spacex-cli generate --queries ./packages/openland-api/exported/ --schema ./schema.json --target kotlin --package com.openland.react.graphql -output ./android/app/src/main/java/com/openland/react/graphql
  ./scripts/spacex-cli generate --queries ./packages/openland-api/exported/ --schema ./schema.json --target swift -output ./ios/Operations.swift
+ ./scripts/spacex-cli generate --queries ./packages/openland-api/exported/ --schema ./schema.json --target typescript -output ./packages/openland-api/Client.ts

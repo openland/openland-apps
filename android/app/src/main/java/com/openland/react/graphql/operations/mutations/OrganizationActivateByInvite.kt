@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val OrganizationActivateByInviteSelector = obj(
-            field("joinAppInvite","joinAppInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
+            field("joinAppInvite", "joinAppInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
         )
 val OrganizationActivateByInvite = object: OperationDefinition {
     override val name = "OrganizationActivateByInvite"

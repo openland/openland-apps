@@ -5,11 +5,11 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val RoomSuperSelector = obj(
-            field("roomSuper","roomSuper", arguments(fieldValue("id", refValue("id"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
-                    field("featured","featured", notNull(scalar("Boolean"))),
-                    field("id","id", notNull(scalar("ID"))),
-                    field("listed","listed", notNull(scalar("Boolean")))
+            field("roomSuper", "roomSuper", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("featured", "featured", notNull(scalar("Boolean"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("listed", "listed", notNull(scalar("Boolean")))
                 ))
         )
 val RoomSuper = object: OperationDefinition {

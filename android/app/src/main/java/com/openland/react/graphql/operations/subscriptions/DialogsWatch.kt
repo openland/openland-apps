@@ -5,22 +5,22 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val DialogsWatchSelector = obj(
-            field("dialogsUpdates","event", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("dialogsUpdates", "event", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("DialogUpdateSingle", obj(
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("update","update", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("update", "update", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("DialogUpdate", DialogUpdateFragmentSelector)
                             )))
                     )),
                     inline("DialogUpdateBatch", obj(
-                        field("fromSeq","fromSeq", notNull(scalar("Int"))),
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("updates","updates", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("fromSeq", "fromSeq", notNull(scalar("Int"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("updates", "updates", notNull(list(notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("DialogUpdate", DialogUpdateFragmentSelector)
                             )))))
                     ))

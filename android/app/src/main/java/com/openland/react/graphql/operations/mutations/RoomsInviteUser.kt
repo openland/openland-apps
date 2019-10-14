@@ -5,8 +5,8 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val RoomsInviteUserSelector = obj(
-            field("betaRoomsInviteUser","rooms", arguments(fieldValue("roomIds", refValue("roomIds")), fieldValue("userId", refValue("userId"))), notNull(list(notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("betaRoomsInviteUser", "rooms", arguments(fieldValue("roomIds", refValue("roomIds")), fieldValue("userId", refValue("userId"))), notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Room", RoomShortSelector)
                 )))))
         )

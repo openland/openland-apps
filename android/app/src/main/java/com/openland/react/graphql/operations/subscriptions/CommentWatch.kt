@@ -5,22 +5,22 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val CommentWatchSelector = obj(
-            field("commentUpdates","event", arguments(fieldValue("fromState", refValue("fromState")), fieldValue("peerId", refValue("peerId"))), obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("commentUpdates", "event", arguments(fieldValue("fromState", refValue("fromState")), fieldValue("peerId", refValue("peerId"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("CommentUpdateSingle", obj(
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("update","update", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("update", "update", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("CommentUpdate", CommentUpdateFragmentSelector)
                             )))
                     )),
                     inline("CommentUpdateBatch", obj(
-                        field("fromSeq","fromSeq", notNull(scalar("Int"))),
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("updates","updates", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("fromSeq", "fromSeq", notNull(scalar("Int"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("updates", "updates", notNull(list(notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("CommentUpdate", CommentUpdateFragmentSelector)
                             )))))
                     ))

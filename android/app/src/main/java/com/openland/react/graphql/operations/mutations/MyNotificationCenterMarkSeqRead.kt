@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MyNotificationCenterMarkSeqReadSelector = obj(
-            field("notificationCenterMarkSeqRead","notificationCenterMarkSeqRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("Boolean")))
+            field("notificationCenterMarkSeqRead", "notificationCenterMarkSeqRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("Boolean")))
         )
 val MyNotificationCenterMarkSeqRead = object: OperationDefinition {
     override val name = "MyNotificationCenterMarkSeqRead"

@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val SuperAdminRemoveSelector = obj(
-            field("superAdminRemove","superAdminRemove", arguments(fieldValue("userId", refValue("userId"))), notNull(scalar("String")))
+            field("superAdminRemove", "superAdminRemove", arguments(fieldValue("userId", refValue("userId"))), notNull(scalar("String")))
         )
 val SuperAdminRemove = object: OperationDefinition {
     override val name = "SuperAdminRemove"

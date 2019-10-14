@@ -5,22 +5,22 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val ChatWatchSelector = obj(
-            field("chatUpdates","event", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("fromState", refValue("state"))), notNull(obj(
-                    field("__typename","__typename", notNull(scalar("String"))),
+            field("chatUpdates", "event", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("fromState", refValue("state"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
                     inline("ChatUpdateSingle", obj(
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("update","update", notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("update", "update", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("ChatUpdate", ChatUpdateFragmentSelector)
                             )))
                     )),
                     inline("ChatUpdateBatch", obj(
-                        field("fromSeq","fromSeq", notNull(scalar("Int"))),
-                        field("seq","seq", notNull(scalar("Int"))),
-                        field("state","state", notNull(scalar("String"))),
-                        field("updates","updates", notNull(list(notNull(obj(
-                                field("__typename","__typename", notNull(scalar("String"))),
+                        field("fromSeq", "fromSeq", notNull(scalar("Int"))),
+                        field("seq", "seq", notNull(scalar("Int"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("updates", "updates", notNull(list(notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("ChatUpdate", ChatUpdateFragmentSelector)
                             )))))
                     ))
