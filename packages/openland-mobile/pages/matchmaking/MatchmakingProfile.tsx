@@ -29,7 +29,7 @@ const MatchmakingProfileComponent = React.memo((props: PageProps) => {
                     title: 'Send message',
                     onPress: () => {
                         props.router.pushAndReset('Conversation', {
-                            flexibleId: props.router.params.id,
+                            flexibleId: props.router.params.userId,
                         });
                     }
                 }}

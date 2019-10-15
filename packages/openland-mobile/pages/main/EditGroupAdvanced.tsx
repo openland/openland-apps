@@ -40,6 +40,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
     const roomAdmins = client.useRoomOrganizationAdminMembers({ id: roomId });
 
     const [welcomeMessageEnabled, setWelcomeMessageEnabled] = React.useState((group && group.welcomeMessage) ? group.welcomeMessage.isOn : false);
+    const [matchmakingEnabled, setMatchmakingEnabled] = React.useState(group.matchmaking ? group.matchmaking.enabled : false);
     const [welcomeMessageSender, setWelcomeMessageSender] = React.useState((group && group.welcomeMessage) ? group.welcomeMessage.sender : undefined);
 
     const handleSave = () => {
@@ -72,6 +73,12 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                         { socialImageRef: socialImageField.value }
                     )
                 }
+            });
+            await client.mutateMatchmakingRoomSave({
+                peerId: roomId,
+                input: {
+                    enabled: matchmakingEnabled,
+                },
             });
 
             await client.refetchRoom({ id: roomId });
@@ -120,7 +127,9 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                         </View>
                     </View>
                 )}
-
+                <View style={{ marginTop: 16 }}>
+                    <ZListItem text="Member profiles" textStyle={{ ...TextStyles.Title2 }} toggle={matchmakingEnabled} onToggle={(value) => setMatchmakingEnabled(value)} />
+                </View>
                 <View style={{ paddingHorizontal: 16, marginTop: 27 }}>
                     <Text style={{ ...TextStyles.Title2, marginBottom: 11, color: theme.foregroundPrimary }}>Social sharing image</Text>
                     <Text style={{ ...TextStyles.Body, marginBottom: 24, color: theme.foregroundPrimary }}>Choose an image to display when sharing invite to the group on social networks</Text>
