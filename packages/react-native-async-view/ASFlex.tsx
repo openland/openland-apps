@@ -71,7 +71,7 @@ export class ASFlex extends React.Component<ASFlexProps> {
     }
 
     processProps = (props: ASFlexProps & { children?: any }) => {
-        let { children, highlightColor, onPress, backgroundPatchTintColor, renderModes: renderModes, ...other } = props;
+        let { children, highlightColor, onPress, backgroundPatchTintColor, ...other } = props;
         let realProps = other;
         realProps = {
             ...baseStyleProcessor(other),
