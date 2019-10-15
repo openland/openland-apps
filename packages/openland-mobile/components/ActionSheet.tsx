@@ -4,8 +4,9 @@ import { showSheetModal } from './showSheetModal';
 import { ZModalController } from './ZModal';
 import { ZListItem } from './ZListItem';
 import { ZRoundedButton } from './ZRoundedButton';
-import { BottomSheetActions } from './BottomSheet';
+import { BottomSheetActions, showBottomSheet } from './BottomSheet';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import { isPad } from 'openland-mobile/pages/Root';
 
 interface ActionSheetBuilderActionItem {
     __typename: "ActionItem";
@@ -88,27 +89,27 @@ export class ActionSheetBuilder {
             ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false });
         }
 
-        // if (isPad) {
-        showSheetModal((ctx) => {
-            return (
-                <View flexDirection="column" alignItems="stretch">
-                    {this.renderItems(ctx)}
-                    {this._cancelable && (
-                        <View margin={16}>
-                            <ZRoundedButton
-                                size="large"
-                                title="Cancel"
-                                style="secondary"
-                                onPress={() => { ctx.hide(); }}
-                            />
-                        </View>
-                    )}
-                </View>
-            );
-        }, this._title);
-        // } else {
-        // showBottomSheet({ view: this.renderItems, cancelable: this._cancelable, title: this._title });
-        // }
+        if (isPad) {
+            showSheetModal((ctx) => {
+                return (
+                    <View flexDirection="column" alignItems="stretch">
+                        {this.renderItems(ctx)}
+                        {this._cancelable && (
+                            <View margin={16}>
+                                <ZRoundedButton
+                                    size="large"
+                                    title="Cancel"
+                                    style="secondary"
+                                    onPress={() => { ctx.hide(); }}
+                                />
+                            </View>
+                        )}
+                    </View>
+                );
+            }, this._title);
+        } else {
+            showBottomSheet({ view: this.renderItems, cancelable: this._cancelable, title: this._title });
+        }
     }
 }
 
