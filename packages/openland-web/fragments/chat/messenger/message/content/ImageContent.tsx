@@ -88,7 +88,7 @@ const imgContainer = css`
     min-height: 72px;
     min-width: 72px;
     max-width: 100%;
-    max-height: 600px;
+    // max-height: 600px;
     overflow: hidden;
     border-radius: 8px;
     background-color: #f0f2f5;
@@ -137,6 +137,7 @@ const imgAppearClass = css`
     height: auto;
     will-change: opacity;
     background: transparent;
+    object-fit: contain;
 `;
 
 const imgAppearInstantClass = css`
