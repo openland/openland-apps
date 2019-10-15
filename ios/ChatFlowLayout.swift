@@ -7,6 +7,7 @@ class ChatFlowLayout: UICollectionViewFlowLayout {
   private var offset: CGFloat = 0.0
   private var visibleAttributes: [UICollectionViewLayoutAttributes]?
   private var isPrepend: Bool = false
+  private var isInitial: Int = 2
   
   override open func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
     // Reset offset and prepend scope
@@ -46,17 +47,24 @@ class ChatFlowLayout: UICollectionViewFlowLayout {
     
     
     
-    super.prepare(forCollectionViewUpdates: updateItems) 
+    super.prepare(forCollectionViewUpdates: updateItems)
     
-    // awful hack
-    if(collectionView.numberOfItems(inSection: 0) == 0){
+    // another hack, better this time, but still a bit messy
+    if(collectionView.numberOfItems(inSection: 1) != 0){
+      self.isInitial-=1;
+    }
+    
+    if(isInitial > 0){
       self.isPrepend = false
       return
     }
-    
+
+  
     // Check: Initial Load or Load More
-    let isInitialLoading: Bool = bottomVisibleItem + topVisibleItem == 0
-    
+    var isInitialLoading: Bool = bottomVisibleItem + topVisibleItem == 0
+    if(collectionView.numberOfItems(inSection: 1) == 0){
+      isInitialLoading = true;
+    }
     // Chack: Pre-Append or Append
     if updateItems.first?.indexPathAfterUpdate?.item ?? -1 == 0,
       updateItems.first?.updateAction == .insert,
