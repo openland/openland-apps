@@ -7,7 +7,6 @@ import { randomKey } from 'react-native-s/utils/randomKey';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 
 export interface RootProps {
     width: number;
