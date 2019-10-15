@@ -117,16 +117,11 @@ export const MemberProfileFragment = React.memo(() => {
                 <UListGroup header={i.question.title} key={i.question.id}>
                     <UListText
                         value={
-                            i.__typename === 'MultiselectMatchmakingAnswer' ? (
-                                i.tags.map((j, k) => {
-                                    if (k + 1 !== i.tags.length) {
-                                        return <span key={`answer_${k}_${id}`}>{j}, </span>;
-                                    }
-                                    return <span key={`answer_${k}_${id}`}>{j}</span>;
-                                })
-                            ) : (
-                                <span>{i.answer}</span>
-                            )
+                            i.__typename === 'TextMatchmakingAnswer'
+                                ? i.answer
+                                : i.__typename === 'MultiselectMatchmakingAnswer'
+                                    ? i.tags.join(', ')
+                                    : ''
                         }
                     />
                 </UListGroup>
