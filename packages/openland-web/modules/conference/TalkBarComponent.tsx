@@ -10,6 +10,7 @@ import { Conference_conference_peers } from 'openland-api/Types';
 import { useStream, MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { css } from 'linaria';
+import { AppPeerConnectionWeb } from 'openland-y-runtime-web/AppPeerConnection';
 
 const animatedAvatarStyle = css`
     transition: transform 250ms cubic-bezier(.29, .09, .24, .99);
@@ -19,12 +20,40 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
     const avatarRef = React.useRef<HTMLDivElement>(null);
     const mediaStream = useStream(props.mediaSessionManager, props.peer.id);
     var dataArray: Uint8Array;
-    console.warn('boom', mediaStream);
     React.useEffect(() => {
+        if (!mediaStream) {
+            return;
+        }
         let running = true;
         let remoteAnalyser: AnalyserNode;
-        const render = () => {
+        let inited = false;
+        const init = () => {
+            if (inited) {
+                return;
+            }
+            let stream;
+            if (props.peer.id === (props.mediaSessionManager && props.mediaSessionManager.getPeerId())) {
+                stream = (mediaStream.getStream() as any as AppUserMediaStreamWeb).getStream();
+            } else {
+                stream = ((mediaStream.getConnection() as any as AppPeerConnectionWeb).getConnection() as any).getRemoteStreams()[0];
+            }
+            if (!stream) {
+                return;
+            }
+            inited = true;
+            let remoteAudioContext = new AudioContext();
+            let remoteAudioSource = remoteAudioContext.createMediaStreamSource(stream);
+            // Used to retrieve frequency data
+            remoteAnalyser = remoteAudioContext.createAnalyser();
+            // remoteAnalyser.fftSize = 256;
+            const bufferLength = remoteAnalyser.frequencyBinCount;
+            dataArray = new Uint8Array(bufferLength);
+            remoteAudioSource.connect(remoteAnalyser);
+            remoteAudioSource.connect(remoteAudioContext.destination);
+        };
 
+        const render = () => {
+            init();
             if (remoteAnalyser && dataArray) {
                 remoteAnalyser.getByteFrequencyData(dataArray);
 
@@ -44,21 +73,8 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
             }
         };
 
-        if (mediaStream) {
-            let stream = (mediaStream.getStream() as any as AppUserMediaStreamWeb).getStream();
-            console.warn('boom 3', stream);
-            let remoteAudioContext = new AudioContext();
-            let remoteAudioSource = remoteAudioContext.createMediaStreamSource(stream);
-            // Used to retrieve frequency data
-            remoteAnalyser = remoteAudioContext.createAnalyser();
-            // remoteAnalyser.fftSize = 256;
-            const bufferLength = remoteAnalyser.frequencyBinCount;
-            dataArray = new Uint8Array(bufferLength);
-            remoteAudioSource.connect(remoteAnalyser);
-            remoteAudioSource.connect(remoteAudioContext.destination);
+        requestAnimationFrame(render);
 
-            render();
-        }
         return () => {
             if (remoteAnalyser) {
                 remoteAnalyser.disconnect();

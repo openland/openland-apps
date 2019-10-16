@@ -220,6 +220,10 @@ export class MediaStreamManager {
         return this.stream;
     }
 
+    getConnection = () => {
+        return this.peerConnection;
+    }
+
     getTargetPeerId = () => {
         return this.targetPeerId;
     }

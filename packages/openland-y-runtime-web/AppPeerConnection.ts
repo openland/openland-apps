@@ -3,7 +3,7 @@ import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { AppUserMediaStreamWeb } from './AppUserMedia';
 import { randomKey } from 'openland-graphql/utils/randomKey';
 
-class AppPeerConnectionWeb implements AppPeerConnection {
+export class AppPeerConnectionWeb implements AppPeerConnection {
     private id = randomKey();
     private connection: RTCPeerConnection;
     private audio?: any;
@@ -94,6 +94,10 @@ class AppPeerConnectionWeb implements AppPeerConnection {
             this.audio = undefined;
         }
         this.connection.close();
+    }
+
+    getConnection = () => {
+        return this.connection;
     }
 }
 

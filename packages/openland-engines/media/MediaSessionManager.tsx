@@ -228,6 +228,10 @@ export class MediaSessionManager {
         }, 1000);
     }
 
+    getPeerId = () => {
+        return this.peerId;
+    }
+
     ////
     // IO
     ////
@@ -251,12 +255,16 @@ export const useStream = (manager: MediaSessionManager | undefined, peerId: stri
             return;
         }
         return manager.listenStreams(streams => {
-            console.warn('boom 2', peerId, streams);
-            streams.forEach(s => {
-                if (s.getTargetPeerId() === peerId) {
-                    setStream(s);
-                }
-            });
+            if (manager.getPeerId() === peerId && streams.size) {
+                setStream(streams.values().next().value);
+            } else {
+                streams.forEach(s => {
+                    if (s.getTargetPeerId() === peerId) {
+                        setStream(s);
+                    }
+                });
+            }
+
         });
     }, [manager]);
     return stream;
