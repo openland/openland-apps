@@ -73,4 +73,8 @@ export class CallsEngine {
             f(value);
         }
     }
+
+    getMediaSession = () => {
+        return this.mediaSession;
+    }
 }

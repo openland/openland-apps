@@ -9,6 +9,7 @@ export class MediaStreamManager {
     private readonly id: string;
     private readonly client: OpenlandClient;
     private readonly peerId: string;
+    private readonly targetPeerId: string | null;
     private readonly stream: AppMediaStream;
     private readonly iceServers: ConferenceMedia_conferenceMedia_iceServers[];
     private readonly peerConnection: AppPeerConnection;
@@ -30,11 +31,13 @@ export class MediaStreamManager {
         iceServers: ConferenceMedia_conferenceMedia_iceServers[],
         stream: AppMediaStream,
         streamConfig: ConferenceMedia_conferenceMedia_streams,
-        onReady?: () => void
+        onReady: (() => void) | undefined,
+        targetPeerId: string | null
     ) {
         this.id = id;
         this.client = client;
         this.peerId = peerId;
+        this.targetPeerId = targetPeerId;
         this.iceServers = iceServers;
         this.streamConfig = streamConfig;
         this.stream = stream;
@@ -211,5 +214,13 @@ export class MediaStreamManager {
                 }
             }
         }
+    }
+
+    getStream = () => {
+        return this.stream;
+    }
+
+    getTargetPeerId = () => {
+        return this.targetPeerId;
     }
 }

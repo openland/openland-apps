@@ -6,6 +6,7 @@ subscription ConferenceMediaWatch($id: ID!, $peerId: ID!) {
       __typename
       ice
       id
+      peerId
       sdp
       state
     }

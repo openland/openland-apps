@@ -18,6 +18,7 @@ internal val ConferenceMediaSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("ice", "ice", notNull(list(notNull(scalar("String"))))),
                             field("id", "id", notNull(scalar("ID"))),
+                            field("peerId", "peerId", scalar("ID")),
                             field("sdp", "sdp", scalar("String")),
                             field("state", "state", notNull(scalar("String")))
                         )))))
@@ -26,6 +27,6 @@ internal val ConferenceMediaSelector = obj(
 val ConferenceMedia = object: OperationDefinition {
     override val name = "ConferenceMedia"
     override val kind = OperationKind.QUERY
-    override val body = "query ConferenceMedia(\$id:ID!,\$peerId:ID!){conferenceMedia(id:\$id,peerId:\$peerId){__typename iceServers{__typename credential urls username}id streams{__typename ice id sdp state}}}"
+    override val body = "query ConferenceMedia(\$id:ID!,\$peerId:ID!){conferenceMedia(id:\$id,peerId:\$peerId){__typename iceServers{__typename credential urls username}id streams{__typename ice id peerId sdp state}}}"
     override val selector = ConferenceMediaSelector
 }

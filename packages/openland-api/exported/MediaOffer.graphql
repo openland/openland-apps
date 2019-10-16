@@ -6,6 +6,7 @@ mutation MediaOffer($id: ID!, $offer: String!, $peerId: ID!) {
       __typename
       ice
       id
+      peerId
       sdp
       state
     }

@@ -632,10 +632,10 @@
       }
     },
     {
-      "signature": "76b2afc26761e915b033a0278191afed57e625e65ca3ad3732385cc8a6bda232",
-      "document": "query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename iceServers{__typename credential urls username}id streams{__typename ice id sdp state}}}",
+      "signature": "76532e1ad79280c032f3eae78859c7802a26ccb06c06b1d3401494fa48ef7fde",
+      "document": "query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename iceServers{__typename credential urls username}id streams{__typename ice id peerId sdp state}}}",
       "metadata": {
-        "engineSignature": "query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename iceServers{__typename credential urls username}id streams{__typename ice id sdp state}}}"
+        "engineSignature": "query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename iceServers{__typename credential urls username}id streams{__typename ice id peerId sdp state}}}"
       }
     },
     {
@@ -681,45 +681,45 @@
       }
     },
     {
-      "signature": "13b2db370349b5551f9fd161cd2258305542521f28633d38b354e2484f259391",
-      "document": "mutation MediaOffer($id:ID!,$offer:String!,$peerId:ID!){mediaStreamOffer(id:$id,offer:$offer,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
+      "signature": "cf847fb467480fbf212e8421eb41101bf42bb146967e9d14f0ac012ea89c6e3b",
+      "document": "mutation MediaOffer($id:ID!,$offer:String!,$peerId:ID!){mediaStreamOffer(id:$id,offer:$offer,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}",
       "metadata": {
-        "engineSignature": "mutation MediaOffer($id:ID!,$offer:String!,$peerId:ID!){mediaStreamOffer(id:$id,offer:$offer,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}"
+        "engineSignature": "mutation MediaOffer($id:ID!,$offer:String!,$peerId:ID!){mediaStreamOffer(id:$id,offer:$offer,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}"
       }
     },
     {
-      "signature": "601b4ceaa3d2364d4c415a830a14dfae27c33c13ea9371ce1ff5d4f4ebb5814b",
-      "document": "mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
+      "signature": "4f97d72bca4cffd81e432005ff47f2105cf23d95a835eb4afa815fa6e4097a13",
+      "document": "mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}",
       "metadata": {
-        "engineSignature": "mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}"
+        "engineSignature": "mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}"
       }
     },
     {
-      "signature": "0ed402628bcca1b5f90cb65b94a5ec4d9e557f4dddb1bf16824d47931594a4ba",
-      "document": "mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
+      "signature": "60282abc1e057c548adda5d86a0733f86d51ee162f9b68848f6ae072045f65a6",
+      "document": "mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}",
       "metadata": {
-        "engineSignature": "mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}"
+        "engineSignature": "mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}"
       }
     },
     {
-      "signature": "eed7253d738d870fc8b1014a4893fd67a1cfbfc22929fc3d766bb20541e065bd",
-      "document": "mutation MediaAnswer($answer:String!,$id:ID!,$peerId:ID!){mediaStreamAnswer(answer:$answer,id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
+      "signature": "51703ddaad16cafc834c12e65171e6f01c79c06b95ed56da07b9473547bdaa0a",
+      "document": "mutation MediaAnswer($answer:String!,$id:ID!,$peerId:ID!){mediaStreamAnswer(answer:$answer,id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}",
       "metadata": {
-        "engineSignature": "mutation MediaAnswer($answer:String!,$id:ID!,$peerId:ID!){mediaStreamAnswer(answer:$answer,id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}"
+        "engineSignature": "mutation MediaAnswer($answer:String!,$id:ID!,$peerId:ID!){mediaStreamAnswer(answer:$answer,id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}"
       }
     },
     {
-      "signature": "e64492aa837c0ae8bcdcfd5d61aff56a9e4e2c5133f5f3994ddb0fb66dc23cc4",
-      "document": "mutation MediaCandidate($candidate:String!,$id:ID!,$peerId:ID!){mediaStreamCandidate(candidate:$candidate,id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
+      "signature": "77a40bfe743eb7c7d66a55a55d2a5ad0e0ee0db899788c4fa440d382b82e2b1d",
+      "document": "mutation MediaCandidate($candidate:String!,$id:ID!,$peerId:ID!){mediaStreamCandidate(candidate:$candidate,id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}",
       "metadata": {
-        "engineSignature": "mutation MediaCandidate($candidate:String!,$id:ID!,$peerId:ID!){mediaStreamCandidate(candidate:$candidate,id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}"
+        "engineSignature": "mutation MediaCandidate($candidate:String!,$id:ID!,$peerId:ID!){mediaStreamCandidate(candidate:$candidate,id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}"
       }
     },
     {
-      "signature": "a0626ebb50e90fb147011ddc2443fb30adbd46ba838a4a7da75491a5c576f80b",
-      "document": "subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
+      "signature": "35000a6cf723ddf4f699d2321ba3196195dc611e77affdf1483137188befdb02",
+      "document": "subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}",
       "metadata": {
-        "engineSignature": "subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}"
+        "engineSignature": "subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}"
       }
     },
     {

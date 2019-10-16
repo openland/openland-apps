@@ -12,6 +12,7 @@ internal val ConferenceMediaWatchSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("ice", "ice", notNull(list(notNull(scalar("String"))))),
                             field("id", "id", notNull(scalar("ID"))),
+                            field("peerId", "peerId", scalar("ID")),
                             field("sdp", "sdp", scalar("String")),
                             field("state", "state", notNull(scalar("String")))
                         )))))
@@ -20,6 +21,6 @@ internal val ConferenceMediaWatchSelector = obj(
 val ConferenceMediaWatch = object: OperationDefinition {
     override val name = "ConferenceMediaWatch"
     override val kind = OperationKind.SUBSCRIPTION
-    override val body = "subscription ConferenceMediaWatch(\$id:ID!,\$peerId:ID!){media:alphaConferenceMediaWatch(id:\$id,peerId:\$peerId){__typename id streams{__typename ice id sdp state}}}"
+    override val body = "subscription ConferenceMediaWatch(\$id:ID!,\$peerId:ID!){media:alphaConferenceMediaWatch(id:\$id,peerId:\$peerId){__typename id streams{__typename ice id peerId sdp state}}}"
     override val selector = ConferenceMediaWatchSelector
 }

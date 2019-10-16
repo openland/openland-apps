@@ -6,6 +6,7 @@ mutation MediaAnswer($answer: String!, $id: ID!, $peerId: ID!) {
       __typename
       ice
       id
+      peerId
       sdp
       state
     }

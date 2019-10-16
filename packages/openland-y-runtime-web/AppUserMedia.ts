@@ -27,6 +27,10 @@ export class AppUserMediaStreamWeb implements AppMediaStream {
         }
         // this._stream.stop();
     }
+
+    getStream = () => {
+        return this._stream;
+    }
 }
 
 export const AppUserMedia: AppUserMediaApi = {

@@ -18,6 +18,7 @@ export const ConferenceMediaQuery = gql`
             id
             streams {
                 id
+                peerId
                 state
                 sdp
                 ice
@@ -100,6 +101,7 @@ export const MediaOfferMutation = gql`
             id
             streams {
                 id
+                peerId
                 state
                 sdp
                 ice
@@ -114,6 +116,7 @@ export const MediaNegotiationNeededMutation = gql`
             id
             streams {
                 id
+                peerId
                 state
                 sdp
                 ice
@@ -128,6 +131,7 @@ export const MediaFailedMutation = gql`
             id
             streams {
                 id
+                peerId
                 state
                 sdp
                 ice
@@ -142,6 +146,7 @@ export const MediaAnswerMutation = gql`
             id
             streams {
                 id
+                peerId
                 state
                 sdp
                 ice
@@ -156,6 +161,7 @@ export const MediaCandidateMutation = gql`
             id
             streams {
                 id
+                peerId
                 state
                 sdp
                 ice
@@ -170,6 +176,7 @@ export const ConferenceMediaWatchSubscription = gql`
             id
             streams {
                 id
+                peerId
                 state
                 sdp
                 ice

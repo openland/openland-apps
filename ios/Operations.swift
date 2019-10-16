@@ -1882,6 +1882,7 @@ private let ConferenceMediaSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("ice", "ice", notNull(list(notNull(scalar("String"))))),
                             field("id", "id", notNull(scalar("ID"))),
+                            field("peerId", "peerId", scalar("ID")),
                             field("sdp", "sdp", scalar("String")),
                             field("state", "state", notNull(scalar("String")))
                         )))))
@@ -3196,6 +3197,7 @@ private let MediaAnswerSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("ice", "ice", notNull(list(notNull(scalar("String"))))),
                             field("id", "id", notNull(scalar("ID"))),
+                            field("peerId", "peerId", scalar("ID")),
                             field("sdp", "sdp", scalar("String")),
                             field("state", "state", notNull(scalar("String")))
                         )))))
@@ -3209,6 +3211,7 @@ private let MediaCandidateSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("ice", "ice", notNull(list(notNull(scalar("String"))))),
                             field("id", "id", notNull(scalar("ID"))),
+                            field("peerId", "peerId", scalar("ID")),
                             field("sdp", "sdp", scalar("String")),
                             field("state", "state", notNull(scalar("String")))
                         )))))
@@ -3222,6 +3225,7 @@ private let MediaFailedSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("ice", "ice", notNull(list(notNull(scalar("String"))))),
                             field("id", "id", notNull(scalar("ID"))),
+                            field("peerId", "peerId", scalar("ID")),
                             field("sdp", "sdp", scalar("String")),
                             field("state", "state", notNull(scalar("String")))
                         )))))
@@ -3235,6 +3239,7 @@ private let MediaNegotiationNeededSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("ice", "ice", notNull(list(notNull(scalar("String"))))),
                             field("id", "id", notNull(scalar("ID"))),
+                            field("peerId", "peerId", scalar("ID")),
                             field("sdp", "sdp", scalar("String")),
                             field("state", "state", notNull(scalar("String")))
                         )))))
@@ -3248,6 +3253,7 @@ private let MediaOfferSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("ice", "ice", notNull(list(notNull(scalar("String"))))),
                             field("id", "id", notNull(scalar("ID"))),
+                            field("peerId", "peerId", scalar("ID")),
                             field("sdp", "sdp", scalar("String")),
                             field("state", "state", notNull(scalar("String")))
                         )))))
@@ -3698,6 +3704,7 @@ private let ConferenceMediaWatchSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("ice", "ice", notNull(list(notNull(scalar("String"))))),
                             field("id", "id", notNull(scalar("ID"))),
+                            field("peerId", "peerId", scalar("ID")),
                             field("sdp", "sdp", scalar("String")),
                             field("state", "state", notNull(scalar("String")))
                         )))))
@@ -3883,7 +3890,7 @@ class Operations {
     let ConferenceMedia = OperationDefinition(
         "ConferenceMedia",
         .query, 
-        "query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename iceServers{__typename credential urls username}id streams{__typename ice id sdp state}}}",
+        "query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename iceServers{__typename credential urls username}id streams{__typename ice id peerId sdp state}}}",
         ConferenceMediaSelector
     )
     let Dialogs = OperationDefinition(
@@ -4567,31 +4574,31 @@ class Operations {
     let MediaAnswer = OperationDefinition(
         "MediaAnswer",
         .mutation, 
-        "mutation MediaAnswer($answer:String!,$id:ID!,$peerId:ID!){mediaStreamAnswer(answer:$answer,id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
+        "mutation MediaAnswer($answer:String!,$id:ID!,$peerId:ID!){mediaStreamAnswer(answer:$answer,id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}",
         MediaAnswerSelector
     )
     let MediaCandidate = OperationDefinition(
         "MediaCandidate",
         .mutation, 
-        "mutation MediaCandidate($candidate:String!,$id:ID!,$peerId:ID!){mediaStreamCandidate(candidate:$candidate,id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
+        "mutation MediaCandidate($candidate:String!,$id:ID!,$peerId:ID!){mediaStreamCandidate(candidate:$candidate,id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}",
         MediaCandidateSelector
     )
     let MediaFailed = OperationDefinition(
         "MediaFailed",
         .mutation, 
-        "mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
+        "mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}",
         MediaFailedSelector
     )
     let MediaNegotiationNeeded = OperationDefinition(
         "MediaNegotiationNeeded",
         .mutation, 
-        "mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
+        "mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}",
         MediaNegotiationNeededSelector
     )
     let MediaOffer = OperationDefinition(
         "MediaOffer",
         .mutation, 
-        "mutation MediaOffer($id:ID!,$offer:String!,$peerId:ID!){mediaStreamOffer(id:$id,offer:$offer,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
+        "mutation MediaOffer($id:ID!,$offer:String!,$peerId:ID!){mediaStreamOffer(id:$id,offer:$offer,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}",
         MediaOfferSelector
     )
     let MessageSetReaction = OperationDefinition(
@@ -4993,7 +5000,7 @@ class Operations {
     let ConferenceMediaWatch = OperationDefinition(
         "ConferenceMediaWatch",
         .subscription, 
-        "subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}",
+        "subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}",
         ConferenceMediaWatchSelector
     )
     let ConferenceWatch = OperationDefinition(

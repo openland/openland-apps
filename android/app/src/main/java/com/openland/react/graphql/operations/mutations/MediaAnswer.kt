@@ -12,6 +12,7 @@ internal val MediaAnswerSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("ice", "ice", notNull(list(notNull(scalar("String"))))),
                             field("id", "id", notNull(scalar("ID"))),
+                            field("peerId", "peerId", scalar("ID")),
                             field("sdp", "sdp", scalar("String")),
                             field("state", "state", notNull(scalar("String")))
                         )))))
@@ -20,6 +21,6 @@ internal val MediaAnswerSelector = obj(
 val MediaAnswer = object: OperationDefinition {
     override val name = "MediaAnswer"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation MediaAnswer(\$answer:String!,\$id:ID!,\$peerId:ID!){mediaStreamAnswer(answer:\$answer,id:\$id,peerId:\$peerId){__typename id streams{__typename ice id sdp state}}}"
+    override val body = "mutation MediaAnswer(\$answer:String!,\$id:ID!,\$peerId:ID!){mediaStreamAnswer(answer:\$answer,id:\$id,peerId:\$peerId){__typename id streams{__typename ice id peerId sdp state}}}"
     override val selector = MediaAnswerSelector
 }

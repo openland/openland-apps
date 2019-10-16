@@ -12,6 +12,7 @@ query ConferenceMedia($id: ID!, $peerId: ID!) {
       __typename
       ice
       id
+      peerId
       sdp
       state
     }

@@ -1885,6 +1885,7 @@ const ConferenceMediaSelector = obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             field('ice', 'ice', args(), notNull(list(notNull(scalar('String'))))),
                             field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('peerId', 'peerId', args(), scalar('ID')),
                             field('sdp', 'sdp', args(), scalar('String')),
                             field('state', 'state', args(), notNull(scalar('String')))
                         )))))
@@ -3199,6 +3200,7 @@ const MediaAnswerSelector = obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             field('ice', 'ice', args(), notNull(list(notNull(scalar('String'))))),
                             field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('peerId', 'peerId', args(), scalar('ID')),
                             field('sdp', 'sdp', args(), scalar('String')),
                             field('state', 'state', args(), notNull(scalar('String')))
                         )))))
@@ -3212,6 +3214,7 @@ const MediaCandidateSelector = obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             field('ice', 'ice', args(), notNull(list(notNull(scalar('String'))))),
                             field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('peerId', 'peerId', args(), scalar('ID')),
                             field('sdp', 'sdp', args(), scalar('String')),
                             field('state', 'state', args(), notNull(scalar('String')))
                         )))))
@@ -3225,6 +3228,7 @@ const MediaFailedSelector = obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             field('ice', 'ice', args(), notNull(list(notNull(scalar('String'))))),
                             field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('peerId', 'peerId', args(), scalar('ID')),
                             field('sdp', 'sdp', args(), scalar('String')),
                             field('state', 'state', args(), notNull(scalar('String')))
                         )))))
@@ -3238,6 +3242,7 @@ const MediaNegotiationNeededSelector = obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             field('ice', 'ice', args(), notNull(list(notNull(scalar('String'))))),
                             field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('peerId', 'peerId', args(), scalar('ID')),
                             field('sdp', 'sdp', args(), scalar('String')),
                             field('state', 'state', args(), notNull(scalar('String')))
                         )))))
@@ -3251,6 +3256,7 @@ const MediaOfferSelector = obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             field('ice', 'ice', args(), notNull(list(notNull(scalar('String'))))),
                             field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('peerId', 'peerId', args(), scalar('ID')),
                             field('sdp', 'sdp', args(), scalar('String')),
                             field('state', 'state', args(), notNull(scalar('String')))
                         )))))
@@ -3701,6 +3707,7 @@ const ConferenceMediaWatchSelector = obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             field('ice', 'ice', args(), notNull(list(notNull(scalar('String'))))),
                             field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('peerId', 'peerId', args(), scalar('ID')),
                             field('sdp', 'sdp', args(), scalar('String')),
                             field('state', 'state', args(), notNull(scalar('String')))
                         )))))
@@ -3882,7 +3889,7 @@ export const Operations = {
     ConferenceMedia: {
         type: 'query',
         name: 'ConferenceMedia',
-        body: 'query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename iceServers{__typename credential urls username}id streams{__typename ice id sdp state}}}',
+        body: 'query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename iceServers{__typename credential urls username}id streams{__typename ice id peerId sdp state}}}',
         selector: ConferenceMediaSelector
     },
     Dialogs: {
@@ -4566,31 +4573,31 @@ export const Operations = {
     MediaAnswer: {
         type: 'mutation',
         name: 'MediaAnswer',
-        body: 'mutation MediaAnswer($answer:String!,$id:ID!,$peerId:ID!){mediaStreamAnswer(answer:$answer,id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}',
+        body: 'mutation MediaAnswer($answer:String!,$id:ID!,$peerId:ID!){mediaStreamAnswer(answer:$answer,id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}',
         selector: MediaAnswerSelector
     },
     MediaCandidate: {
         type: 'mutation',
         name: 'MediaCandidate',
-        body: 'mutation MediaCandidate($candidate:String!,$id:ID!,$peerId:ID!){mediaStreamCandidate(candidate:$candidate,id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}',
+        body: 'mutation MediaCandidate($candidate:String!,$id:ID!,$peerId:ID!){mediaStreamCandidate(candidate:$candidate,id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}',
         selector: MediaCandidateSelector
     },
     MediaFailed: {
         type: 'mutation',
         name: 'MediaFailed',
-        body: 'mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}',
+        body: 'mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}',
         selector: MediaFailedSelector
     },
     MediaNegotiationNeeded: {
         type: 'mutation',
         name: 'MediaNegotiationNeeded',
-        body: 'mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}',
+        body: 'mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}',
         selector: MediaNegotiationNeededSelector
     },
     MediaOffer: {
         type: 'mutation',
         name: 'MediaOffer',
-        body: 'mutation MediaOffer($id:ID!,$offer:String!,$peerId:ID!){mediaStreamOffer(id:$id,offer:$offer,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}',
+        body: 'mutation MediaOffer($id:ID!,$offer:String!,$peerId:ID!){mediaStreamOffer(id:$id,offer:$offer,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}',
         selector: MediaOfferSelector
     },
     MessageSetReaction: {
@@ -4992,7 +4999,7 @@ export const Operations = {
     ConferenceMediaWatch: {
         type: 'subscription',
         name: 'ConferenceMediaWatch',
-        body: 'subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ice id sdp state}}}',
+        body: 'subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ice id peerId sdp state}}}',
         selector: ConferenceMediaWatchSelector
     },
     ConferenceWatch: {

@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { backoff } from 'openland-y-utils/timer';
 import { MediaStreamManager } from './MediaStreamManager';
@@ -17,10 +18,12 @@ export class MediaSessionManager {
     private conferenceId!: string;
     private peerId!: string;
     private destroyed = false;
-    private streams = new Map<string, MediaStreamManager>();
     private mute: boolean;
     private isPrivate: boolean;
     private ownPeerDetected = false;
+
+    private streams = new Map<string, MediaStreamManager>();
+    private streamsListeners = new Set<(streams: Map<string, MediaStreamManager>) => void>();
 
     constructor(client: OpenlandClient, conversationId: string, mute: boolean, isPrivate: boolean, onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void, onDestroyRequested: () => void) {
         this.client = client;
@@ -195,10 +198,12 @@ export class MediaSessionManager {
             } else {
                 console.log('[WEBRTC] Create stream ' + s.id);
 
-                let ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, this.mediaStream, s, this.isPrivate ? () => this.onStatusChange('connected') : undefined);
+                let ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, this.mediaStream, s, this.isPrivate ? () => this.onStatusChange('connected') : undefined, s.peerId);
                 this.streams.set(s.id, ms);
             }
         }
+
+        this.notifyStreamsChanged();
     }
 
     private doKeepAlive = () => {
@@ -222,4 +227,37 @@ export class MediaSessionManager {
             }
         }, 1000);
     }
+
+    ////
+    // IO
+    ////
+    listenStreams = (listener: (streams: Map<string, MediaStreamManager>) => void) => {
+        this.streamsListeners.add(listener);
+        listener(this.streams);
+        return () => {
+            this.streamsListeners.delete(listener);
+        };
+    }
+
+    notifyStreamsChanged = () => {
+        this.streamsListeners.forEach(l => l(this.streams));
+    }
 }
+
+export const useStream = (manager: MediaSessionManager | undefined, peerId: string) => {
+    const [stream, setStream] = React.useState<MediaStreamManager>();
+    React.useEffect(() => {
+        if (!manager) {
+            return;
+        }
+        return manager.listenStreams(streams => {
+            console.warn('boom 2', peerId, streams);
+            streams.forEach(s => {
+                if (s.getTargetPeerId() === peerId) {
+                    setStream(s);
+                }
+            });
+        });
+    }, [manager]);
+    return stream;
+};

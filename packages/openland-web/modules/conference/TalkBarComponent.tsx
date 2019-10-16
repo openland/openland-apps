@@ -6,6 +6,85 @@ import { XView } from 'react-mental';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-web/utils/useClient';
 import { ChatInfo } from 'openland-web/fragments/chat/types';
+import { Conference_conference_peers } from 'openland-api/Types';
+import { useStream, MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
+import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
+import { css } from 'linaria';
+
+const animatedAvatarStyle = css`
+    transition: transform 250ms cubic-bezier(.29, .09, .24, .99);
+`;
+
+export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessionManager?: MediaSessionManager }) => {
+    const avatarRef = React.useRef<HTMLDivElement>(null);
+    const mediaStream = useStream(props.mediaSessionManager, props.peer.id);
+    var dataArray: Uint8Array;
+    console.warn('boom', mediaStream);
+    React.useEffect(() => {
+        let running = true;
+        let remoteAnalyser: AnalyserNode;
+        const render = () => {
+
+            if (remoteAnalyser && dataArray) {
+                remoteAnalyser.getByteFrequencyData(dataArray);
+
+                let speaking = Math.min(1, dataArray.reduce((res, x) => {
+                    return res + x;
+                }, 0) / dataArray.length / 10);
+                if (speaking < 0.2) {
+                    speaking = 0;
+                }
+                let scale = 1 + speaking;
+                if (avatarRef.current) {
+                    avatarRef.current.style.transform = `scale(${scale})`;
+                }
+            }
+            if (running) {
+                requestAnimationFrame(render);
+            }
+        };
+
+        if (mediaStream) {
+            let stream = (mediaStream.getStream() as any as AppUserMediaStreamWeb).getStream();
+            console.warn('boom 3', stream);
+            let remoteAudioContext = new AudioContext();
+            let remoteAudioSource = remoteAudioContext.createMediaStreamSource(stream);
+            // Used to retrieve frequency data
+            remoteAnalyser = remoteAudioContext.createAnalyser();
+            // remoteAnalyser.fftSize = 256;
+            const bufferLength = remoteAnalyser.frequencyBinCount;
+            dataArray = new Uint8Array(bufferLength);
+            remoteAudioSource.connect(remoteAnalyser);
+            remoteAudioSource.connect(remoteAudioContext.destination);
+
+            render();
+        }
+        return () => {
+            if (remoteAnalyser) {
+                remoteAnalyser.disconnect();
+            }
+            if (avatarRef.current) {
+                avatarRef.current.style.transform = '';
+            }
+            running = false;
+        };
+    }, [mediaStream]);
+    return (
+        <>
+            <XView flexDirection="row">
+                <div className={animatedAvatarStyle} ref={avatarRef}>
+                    <UAvatar
+                        size="small"
+                        id={props.peer.user.id}
+                        title={props.peer.user.name}
+                        photo={props.peer.user.photo}
+                    />
+                </div>
+            </XView>
+            <XView width={8} />
+        </>
+    );
+};
 
 export const TalkBarComponent = (props: { chat: ChatInfo }) => {
     let calls = React.useContext(MessengerContext).calls;
@@ -37,19 +116,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                         backgroundColor="#32bb78"
                         flexDirection="row"
                     >
-                        {data.conference.peers.map(v => (
-                            <React.Fragment key={v.id}>
-                                <XView flexDirection="row">
-                                    <UAvatar
-                                        size="small"
-                                        id={v.user.id}
-                                        title={v.user.name}
-                                        photo={v.user.photo}
-                                    />
-                                </XView>
-                                <XView width={8} />
-                            </React.Fragment>
-                        ))}
+                        {data.conference.peers.map(v => <CallPeer key={v.id} peer={v} mediaSessionManager={calls.getMediaSession()} />)}
                         {callState.conversationId === props.chat.id && (
                             <>
                                 <XButton
