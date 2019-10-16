@@ -30,7 +30,7 @@ class ApolloNetworking {
   let params: [String: String?]
   weak var delegate: NetworkingDelegate? = nil
   var callbackQueue: DispatchQueue
-
+  private let pingQueue = DispatchQueue(label: "ping")
   private let reachability: Reachability
   private var client: WebSocket? = nil
   private var pending: [String: JSON] = [:]
@@ -38,6 +38,8 @@ class ApolloNetworking {
   private var failuresCount = 0
   private var reachable = false
   private var started = false
+  private var lastPing: Int64 = 0
+  private var lastPong: Int64 = 0
   
   init(url: String, params: [String: String?]) {
     self.callbackQueue = self.queue
@@ -152,10 +154,26 @@ class ApolloNetworking {
     }
     self.state = .starting
     self.writeToSocket(msg: JSON([
-      "type": "connection_init", "payload": self.params
+      "protocol_v": 2,"type": "connection_init", "payload": self.params
     ]))
     for p in self.pending {
       self.writeToSocket(msg: JSON(["type": "start", "id": p.key, "payload": p.value]))
+    }
+    schedulePing()
+  }
+  
+  private func schedulePing(){
+    self.pingQueue.asyncAfter(deadline: .now() + .seconds(30)) {
+      self.pingQueue.asyncAfter(deadline: .now() + .seconds(10)) {
+        if(self.state == .started && self.lastPing > self.lastPong){
+          self.onDisconnected()
+        }
+      }
+      self.writeToSocket(msg: JSON(["type": "ping"]))
+      self.lastPing = Int64((Date().timeIntervalSince1970 * 1000))
+      if(self.state == .started){
+        self.schedulePing()
+      }
     }
   }
   
@@ -164,9 +182,9 @@ class ApolloNetworking {
     
     let parsed = JSON(parseJSON: message)
     let type = parsed["type"].stringValue
+    NSLog("[SpaceX-Apollo]: <<" + type)
     if type == "ka" {
       // TODO: Handle
-      NSLog("[SpaceX-Apollo]: Ping")
     } else if type == "connection_ack" {
       if self.state == .starting {
         NSLog("[SpaceX-Apollo]: Started")
@@ -220,6 +238,12 @@ class ApolloNetworking {
       self.callbackQueue.async {
         self.delegate?.onTryAgain(id: id, delay: 5)
       }
+    } else if type == "ping" {
+      self.callbackQueue.async {
+        self.writeToSocket(msg: JSON(["type": "pong"])) 
+      }
+    }else if type == "pong" {
+      self.lastPong = Int64((Date().timeIntervalSince1970 * 1000))
     } else if type == "complete" {
       let id = parsed["id"].stringValue
       NSLog("[SpaceX-Apollo]: Complete (" + id + ")")
@@ -295,6 +319,7 @@ class ApolloNetworking {
   
   private func writeToSocket(msg: JSON) {
     let txt = serializeJson(json: msg)
+    NSLog("[SpaceX-Apollo]: >>" + msg["type"].stringValue)
     // print("[SpaceX-Apollo]: >> \(txt)")
     self.client!.write(string: txt)
   }

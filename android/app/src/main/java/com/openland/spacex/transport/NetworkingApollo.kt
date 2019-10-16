@@ -12,6 +12,8 @@ import com.openland.spacex.utils.backoffDelay
 import com.openland.spacex.utils.fatalError
 import com.openland.spacex.utils.xLog
 import org.json.JSONObject
+import java.util.*
+import kotlin.concurrent.timerTask
 
 enum class NetworkingApolloState {
     WAITING, CONNECTING, STARTING, STARTED, COMPLETED
@@ -32,6 +34,10 @@ class NetworkingApollo(
     private var reachable = false
     private var started = false
     private var pending = mutableMapOf<String, JSONObject>()
+    private var pingTimer: Timer? = null
+    private var lastPong = 0L
+    private var lastPing = 0L
+
     private val connectivityCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network?) {
             queue.async {
@@ -190,6 +196,7 @@ class NetworkingApollo(
         this.state = NetworkingApolloState.STARTING
 
         this.writeToSocket(JSONObject(mapOf(
+                "protocol_v" to 2,
                 "type" to "connection_init",
                 "payload" to this.params
         )))
@@ -200,6 +207,25 @@ class NetworkingApollo(
                     "payload" to p.value
             )))
         }
+        startPing()
+    }
+
+    private fun startPing(){
+        if(this.pingTimer != null){
+            this.pingTimer!!.cancel()
+        }
+        this.pingTimer = Timer()
+        this.pingTimer!!.schedule(timerTask {
+            Timer().schedule(timerTask {
+                if(state === NetworkingApolloState.STARTED && lastPing > lastPong){
+                    onDisconnected()
+                }
+            }, 10000)
+            writeToSocket(JSONObject(mapOf(
+                "type" to "ping"
+            )))
+            lastPing = System.currentTimeMillis()
+        }, 0, 30000)
     }
 
     private fun onReceived(message: String) {
@@ -207,9 +233,9 @@ class NetworkingApollo(
 
         val parsed = JSONObject(message)
         val type = parsed.getString("type")
+//        xLog("SpaceX-Apollo", "<< $type")
         if (type == "ka") {
             // TODO: Handle
-            xLog("SpaceX-Apollo", "Ping")
         } else if (type == "connection_ack") {
             if (this.state == NetworkingApolloState.STARTING) {
                 xLog("SpaceX-Apollo", "Started")
@@ -263,6 +289,14 @@ class NetworkingApollo(
                 xLog("SpaceX-Apollo", "Critical Error ($id): Retrying")
                 this.handler.onCompleted(id)
             }
+        }  else if (type == "ping") {
+            this.handlerQueue.async {
+                this.writeToSocket(JSONObject(mapOf(
+                        "type" to "pong"
+                )))
+            }
+        } else if (type == "pong") {
+            this.lastPong = System.currentTimeMillis()
         } else if (type == "complete") {
             val id = parsed.getString("id")
             this.handlerQueue.async {
@@ -296,6 +330,9 @@ class NetworkingApollo(
                 this.handler.onDisconnected()
                 this.handler.onSessionRestart()
             }
+        }
+        if(this.pingTimer !== null){
+            this.pingTimer!!.cancel()
         }
         this.stopClient()
         this.state = NetworkingApolloState.WAITING
