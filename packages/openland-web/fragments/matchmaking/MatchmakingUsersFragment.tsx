@@ -255,19 +255,9 @@ const UserCard = React.memo((props: UserCardProps) => {
             <div className={cx(TextBody, userTagsStyle)}>
                 <span>Interested in: </span>
                 {props.data.answers.map((i, j) => {
-                    if (i.__typename === 'MultiselectMatchmakingAnswer') {
-                        return (
-                            <span key={`answers_${j}_${user.id}`}>
-                                {i.tags.map((k, n) => {
-                                    if (n + 1 !== i.tags.length) {
-                                        return <span key={`answer_${n}_${user.id}`}>{k}, </span>;
-                                    }
-                                    return <span key={`answer_${n}_${user.id}`}>{k}</span>;
-                                })}
-                            </span>
-                        );
-                    }
-                    return null;
+                    return i.__typename === 'MultiselectMatchmakingAnswer' ? (
+                        <span key={`answers_${j}_${user.id}`}>{i.tags.join(', ')}</span>
+                    ) : null;
                 })}
             </div>
 

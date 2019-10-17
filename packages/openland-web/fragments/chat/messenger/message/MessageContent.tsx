@@ -58,10 +58,34 @@ interface MessageContentProps {
 }
 
 export const MessageContent = (props: MessageContentProps) => {
-    const { id, text, textSpans = [], edited, reply, attachments = [], sticker, fallback, isOut = false, attachTop = false } = props;
-    const imageAttaches = attachments.filter(a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
-    const documentsAttaches = attachments.filter(a => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
-    const augmenationAttaches = attachments.filter(a => a.__typename === 'MessageRichAttachment') as FullMessage_GeneralMessage_attachments_MessageRichAttachment[] || [];
+    const {
+        id,
+        text,
+        textSpans = [],
+        edited,
+        reply,
+        attachments = [],
+        sticker,
+        fallback,
+        isOut = false,
+        attachTop = false,
+    } = props;
+
+    const imageAttaches =
+        (attachments.filter(
+            a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage,
+        ) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[]) || [];
+
+    const documentsAttaches =
+        (attachments.filter(
+            a => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage,
+        ) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[]) || [];
+
+    const augmenationAttaches =
+        (attachments.filter(
+            a => a.__typename === 'MessageRichAttachment',
+        ) as FullMessage_GeneralMessage_attachments_MessageRichAttachment[]) || [];
+
     const hasText = !!text;
     const content: JSX.Element[] = [];
 
@@ -77,7 +101,7 @@ export const MessageContent = (props: MessageContentProps) => {
                     senderNameEmojify={props.senderNameEmojify}
                     date={props.date}
                 />
-            </div>
+            </div>,
         );
     });
 
@@ -85,15 +109,20 @@ export const MessageContent = (props: MessageContentProps) => {
         content.push(
             <div key="msg-text" className={textClassName}>
                 <MessageTextComponent spans={textSpans} edited={!!edited} />
-            </div>
+            </div>,
         );
     }
 
     documentsAttaches.map(file => {
         content.push(
             <div key={'msg-' + id + '-document-' + file.fileId} className={extraClassName}>
-                <DocumentContent file={file} />
-            </div>
+                <DocumentContent
+                    file={file}
+                    sender={props.sender}
+                    senderNameEmojify={props.senderNameEmojify}
+                    date={props.date}
+                />
+            </div>,
         );
     });
 
@@ -101,7 +130,7 @@ export const MessageContent = (props: MessageContentProps) => {
         content.push(
             <div key={'msg-' + id + '-rich-' + attach.id} className={extraClassName}>
                 <RichAttachContent attach={attach} canDelete={isOut} messageId={id} />
-            </div>
+            </div>,
         );
     });
 
@@ -109,7 +138,7 @@ export const MessageContent = (props: MessageContentProps) => {
         content.push(
             <div key={'msg-' + id + '-sticker-' + sticker.id} className={extraClassName}>
                 <StickerContent sticker={sticker} />
-            </div>
+            </div>,
         );
     }
 
@@ -120,7 +149,8 @@ export const MessageContent = (props: MessageContentProps) => {
             </div>
         );
 
-        const isForward = props.chatId && reply[0].source && reply[0].source.chat.id !== props.chatId;
+        const isForward =
+            props.chatId && reply[0].source && reply[0].source.chat.id !== props.chatId;
 
         if (isForward) {
             content.push(replyContent);
@@ -135,13 +165,9 @@ export const MessageContent = (props: MessageContentProps) => {
         content.push(
             <div key="msg-text-unsupported" className={textClassName}>
                 <MessageTextComponent spans={createSimpleSpan(unsupportedText, SpanType.italic)} />
-            </div>
+            </div>,
         );
     }
 
-    return (
-        <div className="x">
-            {content}
-        </div>
-    );
+    return <div className="x">{content}</div>;
 };

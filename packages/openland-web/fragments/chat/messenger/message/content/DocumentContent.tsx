@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XLoader } from 'openland-x/XLoader';
+import { UserShort } from 'openland-api/Types';
 import { showModalBox } from 'openland-x/showModalBox';
 import { formatBytes } from 'openland-y-utils/formatBytes';
-import { TextDensed, TextLabel1 } from 'openland-web/utils/TextStyles';
+import { formatDateTime } from 'openland-y-utils/formatTime';
+import { TextCaption, TextDensed, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcClose from 'openland-icons/s/ic-close-24.svg';
 import IcDownload from 'openland-icons/s/ic-down-24.svg';
@@ -42,6 +44,19 @@ const modalToolbarContainer = css`
     }
 `;
 
+const modalInfoContainer = css`
+    padding: 16px;
+    display: flex;
+    align-items: flex-end;
+    pointer-events: none;
+    margin-right: auto;
+`;
+
+const modalSecondaryText = css`
+    color: var(--backgroundPrimary);
+    margin-right: 12px;
+`;
+
 const modalButtonsContainer = css`
     display: flex;
     align-items: center;
@@ -76,12 +91,26 @@ const modalContent = css`
 interface ModalProps {
     fileId: string;
     fileName: string;
+    sender?: UserShort;
+    senderNameEmojify?: string | JSX.Element;
+    date?: number;
 }
 
 const ModalContent = (props: ModalProps & { hide: () => void }) => {
     return (
         <div className={modalContainer} onClick={props.hide}>
             <div className={modalToolbarContainer}>
+                {(props.sender || props.senderNameEmojify) &&
+                    props.date && (
+                        <div className={modalInfoContainer}>
+                            <div className={cx(TextCaption, modalSecondaryText)}>
+                                {props.senderNameEmojify || props.sender ? props.sender!!.name : ''}
+                            </div>
+                            <div className={cx(TextCaption, modalSecondaryText)}>
+                                {formatDateTime(props.date)}
+                            </div>
+                        </div>
+                    )}
                 <div className={modalButtonsContainer} onClick={e => e.stopPropagation()}>
                     <a className={modalButtonStyle} href={`https://ucarecdn.com/${props.fileId}/`}>
                         <UIcon icon={<IcDownloadModal />} color="var(--backgroundPrimary)" />
@@ -268,71 +297,78 @@ const fileFormat = (name: string) => {
     return format;
 };
 
-export const DocumentContent = React.memo(
-    (props: {
-        file: {
-            fileId?: string;
-            fileMetadata: { name: string; size: number; mimeType: string | null };
-            uri?: string;
-        };
-        onClick?: (ev: React.MouseEvent) => void;
-    }) => {
-        const { file } = props;
-        const { name, size } = file.fileMetadata;
-        if (
-            file.fileMetadata.mimeType &&
-            (!!file.fileMetadata.mimeType.match('video') || fileFormat(name) === 'VIDEO')
-        ) {
-            return <VideoContent file={props.file} />;
-        }
-        const onClick = React.useCallback((ev: React.MouseEvent) => {
-            if (props.onClick) {
-                props.onClick(ev);
-            } else {
-                ev.stopPropagation();
-                if (fileFormat(name) === 'PDF') {
-                    showPdfModal({ fileId: file.fileId || '', fileName: file.fileMetadata.name });
-                }
+interface DocumentContentProps {
+    file: {
+        fileId?: string;
+        fileMetadata: { name: string; size: number; mimeType: string | null };
+        uri?: string;
+    };
+    sender?: UserShort;
+    senderNameEmojify?: string | JSX.Element;
+    date?: number;
+    onClick?: (ev: React.MouseEvent) => void;
+}
+
+export const DocumentContent = React.memo((props: DocumentContentProps) => {
+    const { file } = props;
+    const { name, size } = file.fileMetadata;
+    if (
+        file.fileMetadata.mimeType &&
+        (!!file.fileMetadata.mimeType.match('video') || fileFormat(name) === 'VIDEO')
+    ) {
+        return <VideoContent file={props.file} />;
+    }
+    const onClick = React.useCallback((ev: React.MouseEvent) => {
+        if (props.onClick) {
+            props.onClick(ev);
+        } else {
+            ev.stopPropagation();
+            if (fileFormat(name) === 'PDF') {
+                showPdfModal({
+                    fileId: file.fileId || '',
+                    fileName: file.fileMetadata.name,
+                    sender: props.sender,
+                    senderNameEmojify: props.senderNameEmojify,
+                    date: props.date,
+                });
             }
-        }, []);
-
-        let fileSrc: undefined | string = `https://ucarecdn.com/${file.fileId}/`;
-
-        if (fileFormat(name) === 'PDF') {
-            fileSrc = undefined;
         }
+    }, []);
 
-        return (
-            <a
-                className={cx(fileContainer, 'message-document-wrapper')}
-                onClick={onClick}
-                href={!props.onClick ? fileSrc : undefined}
-            >
-                <div className={infoContent}>
-                    <div className={iconContainer}>
-                        {fileIcon[fileFormat(name)]}
-                        {file.uri ? (
-                            <XLoader size="small" color="#fff" transparentBackground={true} />
-                        ) : (
-                            <div className={cx(iconInfo, 'icon-info')}>
-                                <UIcon
-                                    icon={
-                                        fileFormat(name) === 'PDF' ? <IcSearch /> : <IcDownload />
-                                    }
-                                    color="#fff"
-                                    size={16}
-                                    className="download-icon"
-                                />
-                                <div className="format-text">{fileFormat(name)}</div>
-                            </div>
-                        )}
-                    </div>
-                    <div className={metadataContainer}>
-                        <div className={cx(title + ' title', TextLabel1)}>{name}</div>
-                        <div className={cx(subtitle, TextDensed)}>{formatBytes(size)}</div>
-                    </div>
+    let fileSrc: undefined | string = `https://ucarecdn.com/${file.fileId}/`;
+
+    if (fileFormat(name) === 'PDF') {
+        fileSrc = undefined;
+    }
+
+    return (
+        <a
+            className={cx(fileContainer, 'message-document-wrapper')}
+            onClick={onClick}
+            href={!props.onClick ? fileSrc : undefined}
+        >
+            <div className={infoContent}>
+                <div className={iconContainer}>
+                    {fileIcon[fileFormat(name)]}
+                    {file.uri ? (
+                        <XLoader size="small" color="#fff" transparentBackground={true} />
+                    ) : (
+                        <div className={cx(iconInfo, 'icon-info')}>
+                            <UIcon
+                                icon={fileFormat(name) === 'PDF' ? <IcSearch /> : <IcDownload />}
+                                color="#fff"
+                                size={16}
+                                className="download-icon"
+                            />
+                            <div className="format-text">{fileFormat(name)}</div>
+                        </div>
+                    )}
                 </div>
-            </a>
-        );
-    },
-);
+                <div className={metadataContainer}>
+                    <div className={cx(title + ' title', TextLabel1)}>{name}</div>
+                    <div className={cx(subtitle, TextDensed)}>{formatBytes(size)}</div>
+                </div>
+            </div>
+        </a>
+    );
+});
