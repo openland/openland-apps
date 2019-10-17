@@ -195,7 +195,7 @@ const TitleRender = (props: { onSkip: () => void }) => {
     const onSkip = () => {
         AlertBlanket.builder()
             .title('Are you sure you want to skip?')
-            .message('Eto ne po-pacanski, bro')
+            .message('Completing member profile will help you connect with other members in this group')
             .action(
                 'Skip',
                 async () => {

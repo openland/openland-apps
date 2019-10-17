@@ -153,11 +153,11 @@ export const AdvancedSettingsFragment = () => {
                 input: {
                     ...(socialImageField.value && socialImageField.value !== socialImageChat
                         ? {
-                              socialImageRef: {
-                                  uuid: socialImageField.value.uuid,
-                                  crop: socialImageField.value.crop || null,
-                              },
-                          }
+                            socialImageRef: {
+                                uuid: socialImageField.value.uuid,
+                                crop: socialImageField.value.crop || null,
+                            },
+                        }
                         : {}),
                 },
             });
@@ -215,7 +215,7 @@ export const AdvancedSettingsFragment = () => {
                     boldTitle={true}
                 />
                 <div className={cx(descriptionStyle, TextBody)}>
-                    Some description about this feature
+                    Create custom profile form for group members and connect them to each other based on their interests
                 </div>
             </div>
             <div className={sectionStyle}>
