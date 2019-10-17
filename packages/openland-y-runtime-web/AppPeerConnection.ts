@@ -40,7 +40,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         };
 
         this.connection.onnegotiationneeded = () => this.onnegotiationneeded && this.onnegotiationneeded();
-        this.connection.onconnectionstatechange = (ev) => this.oniceconnectionstatechange && ev && ev.target && this.oniceconnectionstatechange(ev as any);
+        this.connection.oniceconnectionstatechange = (ev) => this.oniceconnectionstatechange && ev && ev.target && this.oniceconnectionstatechange(ev as any);
 
         // let audio = new Audio();
         // audio.autoplay = true;

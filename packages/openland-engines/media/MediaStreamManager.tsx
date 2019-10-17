@@ -1,7 +1,7 @@
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { ConferenceMedia_conferenceMedia_streams, ConferenceMedia_conferenceMedia_iceServers } from 'openland-api/Types';
 import { AppPeerConnectionFactory } from 'openland-y-runtime/AppPeerConnection';
-import { AppPeerConnection } from 'openland-y-runtime-api/AppPeerConnectionApi';
+import { AppPeerConnection, IceState } from 'openland-y-runtime-api/AppPeerConnectionApi';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { backoff } from 'openland-y-utils/timer';
 
@@ -22,7 +22,8 @@ export class MediaStreamManager {
     private appliedCandidates = new Set<string>();
     private destroyed = false;
     private onReady?: () => void;
-    private iceConnectionState?: string;
+    private iceConnectionState: IceState = 'new';
+    private iceStateListeners = new Set<(iceState: IceState) => void>();
 
     constructor(
         client: OpenlandClient,
@@ -81,8 +82,9 @@ export class MediaStreamManager {
         };
 
         this.peerConnection.oniceconnectionstatechange = (ev) => {
-            console.warn('[WEBRTC]: oniceconnectionstatechange ');
+            console.warn('[WEBRTC]: oniceconnectionstatechange ' + ev.target.iceConnectionState);
             this.iceConnectionState = ev.target.iceConnectionState;
+            this.notifyIceState(this.iceConnectionState);
             if (ev.target.iceConnectionState === 'failed') {
                 this.destroy();
                 backoff(async () => {
@@ -230,5 +232,21 @@ export class MediaStreamManager {
 
     getPeerId = () => {
         return this.peerId;
+    }
+
+    listenIceState = (listener: (iceState: IceState) => void) => {
+        this.iceStateListeners.add(listener);
+        listener(this.iceConnectionState);
+        return () => {
+            this.iceStateListeners.forEach(l => this.iceStateListeners.delete(l));
+        };
+    }
+
+    getIceState = () => {
+        return this.iceConnectionState;
+    }
+
+    private notifyIceState = (iceState: IceState) => {
+        this.iceStateListeners.forEach(l => l(iceState));
     }
 }

@@ -13,13 +13,15 @@ import { css } from 'linaria';
 import { AppPeerConnectionWeb } from 'openland-y-runtime-web/AppPeerConnection';
 
 const animatedAvatarStyle = css`
-    transition: transform 250ms cubic-bezier(.29, .09, .24, .99);
+    transition: transform 250ms cubic-bezier(.29, .09, .24, .99), filter 350ms cubic-bezier(.29, .09, .24, .99);
 `;
 
 export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessionManager?: MediaSessionManager }) => {
     const avatarRef = React.useRef<HTMLDivElement>(null);
     const mediaStream = useStream(props.mediaSessionManager, props.peer.id);
     var dataArray: Uint8Array;
+    const isMe = props.peer.id === (props.mediaSessionManager && props.mediaSessionManager.getPeerId());
+    // animate while speaking
     React.useEffect(() => {
         if (!mediaStream) {
             return;
@@ -27,7 +29,6 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
         let running = true;
         let remoteAnalyser: AnalyserNode;
         let inited = false;
-        let isMe = props.peer.id === (props.mediaSessionManager && props.mediaSessionManager.getPeerId());
         const init = () => {
             if (inited) {
                 return;
@@ -70,7 +71,7 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
                 if (isMe && mediaStream.getStream().muted) {
                     scale = 1;
                 }
-                if (avatarRef.current) {
+                if (avatarRef.current && mediaStream.getIceState() === 'connected') {
                     avatarRef.current.style.transform = `scale(${scale})`;
                 }
             }
@@ -89,6 +90,24 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
             running = false;
         };
     }, [mediaStream]);
+
+    // mark non connected
+    React.useEffect(() => {
+        if (!mediaStream || isMe) {
+            return;
+        }
+        mediaStream.listenIceState(s => {
+            if (avatarRef.current) {
+                avatarRef.current.style.filter = `blur(${s !== 'connected' ? 2 : 0}px)`;
+            }
+        });
+        return () => {
+            if (avatarRef.current) {
+                avatarRef.current.style.filter = '';
+            }
+        };
+    }, [mediaStream]);
+
     return (
         <>
             <XView flexDirection="row">
