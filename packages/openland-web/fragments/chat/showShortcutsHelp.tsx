@@ -135,25 +135,25 @@ export const ShortcutsBody = () => {
                         shortcuts={['↑']}
                         description="Edit last message (works when the message box is in focus)"
                     />
-                </ShortcutsGroup>
-                <ShortcutsGroup>
-                    <Shortcut shortcuts={['Ctrl + S']} description="Search chats" />
-                    <Shortcut shortcuts={['Esc']} description="Close chat" />
-                    {/* <Shortcut
-                        shortcuts={['Ctrl + Option + N', 'Ctrl + Alt + N (Windows)']}
-                        description="New chat"
-                    /> */}
-                </ShortcutsGroup>
-                <ShortcutsGroup>
                     {os === 'Mac' && <Shortcut
                         shortcuts={['Ctrl + Cmd + Space']}
                         description="Emojis (standard Mac shortcut)"
                     />}
-                    <Shortcut
-                        shortcuts={[os === 'Mac' ? 'Cmd + Enter' : 'Ctrl + Enter']}
-                        description="Submit form"
-                    />
                 </ShortcutsGroup>
+                {/*<ShortcutsGroup>*/}
+                {/*    <Shortcut shortcuts={['Ctrl + S']} description="Search chats" />*/}
+                {/*    <Shortcut shortcuts={['Esc']} description="Close chat" />*/}
+                {/*    <Shortcut*/}
+                {/*        shortcuts={['Ctrl + Option + N', 'Ctrl + Alt + N (Windows)']}*/}
+                {/*        description="New chat"*/}
+                {/*    />*/}
+                {/*</ShortcutsGroup>*/}
+                {/*<ShortcutsGroup>*/}
+                {/*    <Shortcut*/}
+                {/*        shortcuts={[os === 'Mac' ? 'Cmd + Enter' : 'Ctrl + Enter']}*/}
+                {/*        description="Submit form"*/}
+                {/*    />*/}
+                {/*</ShortcutsGroup>*/}
                 <div className={cx(shortcutTitle, TextTitle3)}>Text formatting</div>
                 <ShortcutsGroup>
                     <Formatting formatting={{ type: SpanType.loud, text: '# Heading 1' }} />
