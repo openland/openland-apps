@@ -2,15 +2,22 @@ package com.openland.app;
 
 import android.app.Application;
 
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.BuildCompat;
+
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
 import com.brentvatne.react.ReactVideoPackage;
+
 import org.wonday.pdf.RCTPdfView;
+
 import com.ocetnik.timer.BackgroundTimerPackage;
 import com.mkuczera.RNReactNativeHapticFeedbackPackage;
 import com.openland.lmdb.LMDB;
 import com.zxcpoiu.incallmanager.InCallManagerPackage;
+
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
+
 import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
 import com.oney.WebRTCModule.WebRTCModulePackage;
 import com.levelasquez.androidopensettings.AndroidOpenSettingsPackage;
@@ -20,6 +27,7 @@ import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.distribute.Distribute;
 import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
 import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
+
 import org.pgsqlite.SQLitePluginPackage;
 
 import cl.json.RNSharePackage;
@@ -68,13 +76,13 @@ public class MainApplication extends Application implements ShareApplication, Re
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-            new ReactVideoPackage(),
-            new RCTPdfView(),
-            new BackgroundTimerPackage(),
-            new RNReactNativeHapticFeedbackPackage(),
-            new InCallManagerPackage(),
-            new ExtraDimensionsPackage(),
-            new ReactNativeDocumentPicker(),
+                    new ReactVideoPackage(),
+                    new RCTPdfView(),
+                    new BackgroundTimerPackage(),
+                    new RNReactNativeHapticFeedbackPackage(),
+                    new InCallManagerPackage(),
+                    new ExtraDimensionsPackage(),
+                    new ReactNativeDocumentPicker(),
                     new WebRTCModulePackage(),
                     new AndroidOpenSettingsPackage(),
                     new A0Auth0Package(),
@@ -115,6 +123,7 @@ public class MainApplication extends Application implements ShareApplication, Re
         SoLoader.init(this, /* native exopackage */ false);
         Fresco.initialize(this);
         LMDB.INSTANCE.loadLibrary(this);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
 
         // App Center
         AppCenterReactNativeShared.configureAppCenter(this);

@@ -31,10 +31,12 @@ import { AndroidSplashView } from '../components/AndroidSplashView';
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(() => new SAnimatedShadowView('app-placeholder-' + randomKey(), { opacity: 1 }), []);
     React.useEffect(() => {
-        SAnimated.beginTransaction();
-        SAnimated.setDefaultPropertyAnimator();
-        animatedValue.opacity = props.loading ? 1 : 0;
-        SAnimated.commitTransaction();
+        if (!props.loading) {
+            SAnimated.beginTransaction();
+            SAnimated.setDefaultPropertyAnimator();
+            animatedValue.opacity = props.loading ? 1 : 0;
+            SAnimated.commitTransaction();
+        }
     }, [props.loading]);
 
     return (
@@ -48,13 +50,15 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
                 right: 0,
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: 'white',
+                backgroundColor: Platform.OS !== 'android' ? '#fff' : undefined,
                 opacity: 1
             }}
             pointerEvents={props.loading ? 'box-none' : 'none'}
         >
             {Platform.OS === 'android' && (
-                <AndroidSplashView />
+                <View width="100%" height="100%">
+                    <AndroidSplashView style={{ alignSelf: 'stretch', flexGrow: 1, flexShrink: 1 }} />
+                </View>
             )}
             {Platform.OS !== 'android' && (
                 <Image
@@ -70,7 +74,7 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
 const AppContainer = React.memo<{ children?: any, loading: boolean, onLayout?: (e: LayoutChangeEvent) => void }>((props) => {
     return (
         <ThemeProvider>
-            <View style={{ width: '100%', height: '100%', backgroundColor: 'white' }} onLayout={props.onLayout}>
+            <View style={{ width: '100%', height: '100%' }} onLayout={props.onLayout}>
                 {props.children}
                 <ZModalProvider />
                 <BottomSheetProvider />

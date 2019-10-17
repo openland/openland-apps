@@ -14,4 +14,6 @@
     <color name="navigation_bar">#F1F3F4</color>
 
     <color name="white">#fff</color>
+    <color name="black">#000</color>
+    <color name="dark">#111214</color>
 </resources>
