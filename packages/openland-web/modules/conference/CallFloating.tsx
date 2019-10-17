@@ -14,6 +14,7 @@ import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager'
 import { MediaStreamManager } from 'openland-engines/media/MediaStreamManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { AppPeerConnectionWeb } from 'openland-y-runtime-web/AppPeerConnection';
+import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 
 const FloatContainerClass = css`
     display: none;
@@ -167,17 +168,17 @@ const Avatar = React.memo((props: { peers: Conference_conference_peers[], mediaS
         let running = true;
         let disposeStreamsListener: (() => void) | undefined;
         let streamsManagers: Map<string, MediaStreamManager> = new Map();
-        const peerStreamAnalyzers = new Map<string, { analyzer: AnalyserNode, stream: MediaStream }>();
+        const peerStreamAnalyzers = new Map<string, { analyzer: AnalyserNode, stream: MediaStream, appSrteam: AppMediaStream, isMe?: boolean }>();
         if (props.mediaSessionManager) {
             disposeStreamsListener = props.mediaSessionManager.listenStreams(s => streamsManagers = s);
         } else {
             return;
         }
 
-        const initStreamsAnalizer = (manager: MediaStreamManager, self?: boolean) => {
-            const peerId = self ? manager.getPeerId() : manager.getTargetPeerId() || 'none';
+        const initStreamsAnalizer = (manager: MediaStreamManager, isMe?: boolean) => {
+            const peerId = isMe ? manager.getPeerId() : manager.getTargetPeerId() || 'none';
             let ex = peerStreamAnalyzers.get(peerId);
-            let stream = self ?
+            let stream = isMe ?
                 (manager.getStream() as any as AppUserMediaStreamWeb).getStream() :
                 ((manager.getConnection() as any as AppPeerConnectionWeb).getConnection() as any).getRemoteStreams()[0];
             // clean up
@@ -194,8 +195,7 @@ const Avatar = React.memo((props: { peers: Conference_conference_peers[], mediaS
                     buffer = new Uint8Array(bufferLength);
                 }
                 source.connect(analyser);
-                source.connect(context.destination);
-                peerStreamAnalyzers.set(peerId, { stream, analyzer: analyser });
+                peerStreamAnalyzers.set(peerId, { stream, appSrteam: manager.getStream(), analyzer: analyser, isMe });
             }
         };
         const initStreamsAnalizers = () => {
@@ -221,13 +221,16 @@ const Avatar = React.memo((props: { peers: Conference_conference_peers[], mediaS
                 if (val < 0.2) {
                     val = 0;
                 }
+                if (entry.isMe && entry.appSrteam.muted) {
+                    val = 0;
+                }
                 if (val > lastVal) {
                     lastVal = val;
                     activePeerId = key;
                 }
 
                 // animate
-                let scale = 1 + val * 0.4;
+                let scale = 1 + lastVal * 0.4;
                 if (avatarRef.current) {
                     avatarRef.current.style.transform = `scale(${scale})`;
                 }
@@ -252,7 +255,7 @@ const Avatar = React.memo((props: { peers: Conference_conference_peers[], mediaS
     }, [props.mediaSessionManager]);
     let peer = props.peers.find(p => p.id === speakingPeerId);
     return (
-        <div className={animatedAvatarStyle} ref={avatarRef}>
+        <div key={'animtateing_wrapper'} className={animatedAvatarStyle} ref={avatarRef}>
             <UAvatar
                 size="small"
                 id={peer ? peer.user.id : props.fallback.id}

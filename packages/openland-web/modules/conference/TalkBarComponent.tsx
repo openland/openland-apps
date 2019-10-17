@@ -27,12 +27,13 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
         let running = true;
         let remoteAnalyser: AnalyserNode;
         let inited = false;
+        let isMe = props.peer.id === (props.mediaSessionManager && props.mediaSessionManager.getPeerId());
         const init = () => {
             if (inited) {
                 return;
             }
-            let stream;
-            if (props.peer.id === (props.mediaSessionManager && props.mediaSessionManager.getPeerId())) {
+            let stream: MediaStream;
+            if (isMe) {
                 stream = (mediaStream.getStream() as any as AppUserMediaStreamWeb).getStream();
             } else {
                 stream = ((mediaStream.getConnection() as any as AppPeerConnectionWeb).getConnection() as any).getRemoteStreams()[0];
@@ -49,7 +50,6 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
             const bufferLength = remoteAnalyser.frequencyBinCount;
             dataArray = new Uint8Array(bufferLength);
             remoteAudioSource.connect(remoteAnalyser);
-            remoteAudioSource.connect(remoteAudioContext.destination);
         };
 
         const render = () => {
@@ -67,6 +67,9 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
                     speaking = 0;
                 }
                 let scale = 1 + speaking * 0.4;
+                if (isMe && mediaStream.getStream().muted) {
+                    scale = 1;
+                }
                 if (avatarRef.current) {
                     avatarRef.current.style.transform = `scale(${scale})`;
                 }
