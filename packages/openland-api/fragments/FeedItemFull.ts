@@ -55,6 +55,7 @@ export const SlideFragment = gql`
                     roomPhoto: photo
                     membersCount
                     membership
+                    canSendMessage
                     organization {
                         id
                         name

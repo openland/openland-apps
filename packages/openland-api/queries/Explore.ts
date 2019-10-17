@@ -118,6 +118,7 @@ export const GlobalSearchQuery = gql`
                 id
                 kind
                 title
+                canSendMessage
                 roomPhoto: photo
                 membersCount
                 membership

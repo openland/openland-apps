@@ -32,6 +32,7 @@ const ChatPickerComponent = (props: { onSelect: (selecedChatId: string) => void,
                         }}
                         onPick={onDialogClick}
                         paddingHorizontal={24}
+                        isForwarding={true}
                     />
                 </XScrollView2>
             </XView>

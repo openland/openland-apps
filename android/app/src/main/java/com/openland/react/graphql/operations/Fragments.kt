@@ -897,6 +897,7 @@ internal val SlideFragmentSelector = obj(
                             fragment("User", UserShortSelector)
                         )),
                         inline("SharedRoom", obj(
+                            field("canSendMessage", "canSendMessage", notNull(scalar("Boolean"))),
                             field("id", "id", notNull(scalar("ID"))),
                             field("kind", "kind", notNull(scalar("String"))),
                             field("membersCount", "membersCount", scalar("Int")),

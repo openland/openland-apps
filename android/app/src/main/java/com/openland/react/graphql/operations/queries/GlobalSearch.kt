@@ -14,6 +14,7 @@ internal val GlobalSearchSelector = obj(
                         fragment("User", UserShortSelector)
                     )),
                     inline("SharedRoom", obj(
+                        field("canSendMessage", "canSendMessage", notNull(scalar("Boolean"))),
                         field("id", "id", notNull(scalar("ID"))),
                         field("kind", "kind", notNull(scalar("String"))),
                         field("membersCount", "membersCount", scalar("Int")),
@@ -32,6 +33,6 @@ internal val GlobalSearchSelector = obj(
 val GlobalSearch = object: OperationDefinition {
     override val name = "GlobalSearch"
     override val kind = OperationKind.QUERY
-    override val body = "query GlobalSearch(\$kinds:[GlobalSearchEntryKind!],\$query:String!){items:alphaGlobalSearch(kinds:\$kinds,query:\$query){__typename ... on Organization{...OrganizationShort}... on User{...UserShort}... on SharedRoom{id kind membersCount membership organization{__typename id name photo}roomPhoto:photo title}}}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}"
+    override val body = "query GlobalSearch(\$kinds:[GlobalSearchEntryKind!],\$query:String!){items:alphaGlobalSearch(kinds:\$kinds,query:\$query){__typename ... on Organization{...OrganizationShort}... on User{...UserShort}... on SharedRoom{canSendMessage id kind membersCount membership organization{__typename id name photo}roomPhoto:photo title}}}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}"
     override val selector = GlobalSearchSelector
 }

@@ -30,6 +30,7 @@ type DialogSearchResultsT = {
     onPick: (item: GlobalSearch_items) => void;
     onMessagePick?: (chatId: string) => void;
     paddingHorizontal?: number;
+    isForwarding?: boolean;
 };
 
 const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
@@ -92,11 +93,17 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
             {items.map((i, index) => {
                 let selected = index === selectedIndex;
                 if (i.__typename === 'SharedRoom') {
-                    return <UListItem key={i.id} onClick={() => props.onPick(i)} hovered={selected} title={i.title} description={plural(i.membersCount || 0, ['member', 'members'])} avatar={({ id: i.id, photo: i.roomPhoto, title: i.title })} useRadius={false} paddingHorizontal={props.paddingHorizontal} />;
+                    if (!props.isForwarding || i.canSendMessage) {
+                        return <UListItem key={i.id} onClick={() => props.onPick(i)} hovered={selected} title={i.title} description={plural(i.membersCount || 0, ['member', 'members'])} avatar={({ id: i.id, photo: i.roomPhoto, title: i.title })} useRadius={false} paddingHorizontal={props.paddingHorizontal} />;
+                    }
+                    return null;
                 } else if (i.__typename === 'Organization') {
                     return <UListItem key={i.id} onClick={() => props.onPick(i)} hovered={selected} title={i.name} description={i.about} avatar={({ id: i.id, photo: i.photo, title: i.name })} useRadius={false} paddingHorizontal={props.paddingHorizontal} />;
                 } else if (i.__typename === 'User') {
-                    return <UUserView key={i.id} onClick={() => props.onPick(i)} hovered={selected} user={i} useRadius={false} paddingHorizontal={props.paddingHorizontal} />;
+                    if (!props.isForwarding || !i.isBot) {
+                        return <UUserView key={i.id} onClick={() => props.onPick(i)} hovered={selected} user={i} useRadius={false} paddingHorizontal={props.paddingHorizontal} />;
+                    }
+                    return null;
                 } else {
                     return null;
                 }
