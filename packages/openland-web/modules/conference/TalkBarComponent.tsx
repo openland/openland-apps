@@ -53,6 +53,9 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
         };
 
         const render = () => {
+            if (!running) {
+                return;
+            }
             init();
             if (remoteAnalyser && dataArray) {
                 remoteAnalyser.getByteFrequencyData(dataArray);
@@ -63,14 +66,12 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
                 if (speaking < 0.2) {
                     speaking = 0;
                 }
-                let scale = 1 + speaking;
+                let scale = 1 + speaking * 0.4;
                 if (avatarRef.current) {
                     avatarRef.current.style.transform = `scale(${scale})`;
                 }
             }
-            if (running) {
-                requestAnimationFrame(render);
-            }
+            requestAnimationFrame(render);
         };
 
         requestAnimationFrame(render);

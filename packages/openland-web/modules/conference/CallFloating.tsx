@@ -9,6 +9,11 @@ import { useClient } from 'openland-web/utils/useClient';
 import { css } from 'linaria';
 import { debounce } from 'openland-y-utils/timer';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
+import { Conference_conference_peers } from 'openland-api/Types';
+import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
+import { MediaStreamManager } from 'openland-engines/media/MediaStreamManager';
+import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
+import { AppPeerConnectionWeb } from 'openland-y-runtime-web/AppPeerConnection';
 
 const FloatContainerClass = css`
     display: none;
@@ -36,6 +41,10 @@ const TargetClass = css`
     display: flex;
     flex-shrink: 0;
     cursor: move;
+`;
+
+const animatedAvatarStyle = css`
+    transition: transform 250ms cubic-bezier(.29, .09, .24, .99);
 `;
 
 const useJsDrag = (targetRef: React.RefObject<HTMLDivElement>, containerRef: React.RefObject<HTMLDivElement>, contentRef: React.RefObject<HTMLDivElement>) => {
@@ -150,6 +159,110 @@ const useJsDrag = (targetRef: React.RefObject<HTMLDivElement>, containerRef: Rea
     }, []);
 };
 
+const Avatar = React.memo((props: { peers: Conference_conference_peers[], mediaSessionManager?: MediaSessionManager, fallback: { id: string, title: string, picture?: string | null } }) => {
+    const avatarRef = React.useRef<HTMLDivElement>(null);
+    const [speakingPeerId, setSpeakingPeerId] = React.useState<string>();
+    React.useEffect(() => {
+        let buffer: Uint8Array;
+        let running = true;
+        let disposeStreamsListener: (() => void) | undefined;
+        let streamsManagers: Map<string, MediaStreamManager> = new Map();
+        const peerStreamAnalyzers = new Map<string, { analyzer: AnalyserNode, stream: MediaStream }>();
+        if (props.mediaSessionManager) {
+            disposeStreamsListener = props.mediaSessionManager.listenStreams(s => streamsManagers = s);
+        } else {
+            return;
+        }
+
+        const initStreamsAnalizer = (manager: MediaStreamManager, self?: boolean) => {
+            const peerId = self ? manager.getPeerId() : manager.getTargetPeerId() || 'none';
+            let ex = peerStreamAnalyzers.get(peerId);
+            let stream = self ?
+                (manager.getStream() as any as AppUserMediaStreamWeb).getStream() :
+                ((manager.getConnection() as any as AppPeerConnectionWeb).getConnection() as any).getRemoteStreams()[0];
+            // clean up
+            if (ex && ex.stream !== stream) {
+                ex.analyzer.disconnect();
+            }
+            // create new analyzer
+            if (stream && (!ex || ex.stream !== stream)) {
+                let context = new AudioContext();
+                let source = context.createMediaStreamSource(stream);
+                let analyser = context.createAnalyser();
+                const bufferLength = analyser.frequencyBinCount;
+                if (!buffer) {
+                    buffer = new Uint8Array(bufferLength);
+                }
+                source.connect(analyser);
+                source.connect(context.destination);
+                peerStreamAnalyzers.set(peerId, { stream, analyzer: analyser });
+            }
+        };
+        const initStreamsAnalizers = () => {
+            streamsManagers.forEach(sm => {
+                initStreamsAnalizer(sm);
+            });
+            if (streamsManagers.size) {
+                initStreamsAnalizer(streamsManagers.values().next().value, true);
+            }
+        };
+        const render = () => {
+            if (!running) {
+                return;
+            }
+            initStreamsAnalizers();
+            let lastVal = 0;
+            let activePeerId: string | undefined;
+            for (let [key, entry] of peerStreamAnalyzers) {
+                entry.analyzer.getByteFrequencyData(buffer);
+                let val = Math.min(1, buffer.reduce((res, x) => {
+                    return res + x;
+                }, 0) / buffer.length / 10);
+                if (val < 0.2) {
+                    val = 0;
+                }
+                if (val > lastVal) {
+                    lastVal = val;
+                    activePeerId = key;
+                }
+
+                // animate
+                let scale = 1 + val * 0.4;
+                if (avatarRef.current) {
+                    avatarRef.current.style.transform = `scale(${scale})`;
+                }
+
+            }
+            setSpeakingPeerId(activePeerId);
+            requestAnimationFrame(render);
+        };
+
+        requestAnimationFrame(render);
+        return () => {
+            running = false;
+            if (disposeStreamsListener) {
+                disposeStreamsListener();
+            }
+            peerStreamAnalyzers.forEach(v => v.analyzer.disconnect());
+
+            if (avatarRef.current) {
+                avatarRef.current.style.transform = '';
+            }
+        };
+    }, [props.mediaSessionManager]);
+    let peer = props.peers.find(p => p.id === speakingPeerId);
+    return (
+        <div className={animatedAvatarStyle} ref={avatarRef}>
+            <UAvatar
+                size="small"
+                id={peer ? peer.user.id : props.fallback.id}
+                title={peer ? peer.user.name : props.fallback.title}
+                photo={peer ? peer.user.photo : props.fallback.picture}
+            />
+        </div>
+    );
+});
+
 const CallFloatingComponent = React.memo((props: { id: string, private: boolean }) => {
     const isMobile = useIsMobile();
     const [forceOpen, setForceOpen] = React.useState(false);
@@ -180,11 +293,10 @@ const CallFloatingComponent = React.memo((props: { id: string, private: boolean 
 
             {callState.avatar &&
                 <div className={TargetClass} ref={targetRef}>
-                    <UAvatar
-                        size="small"
-                        id={callState.avatar.id}
-                        title={callState.avatar.title}
-                        photo={callState.avatar.picture}
+                    <Avatar
+                        peers={data.conference.peers}
+                        mediaSessionManager={calls.getMediaSession()}
+                        fallback={{ id: callState.avatar.id, title: callState.avatar.title, picture: callState.avatar.picture }}
                     />
                 </div>}
             <XView width={8} />

@@ -227,4 +227,8 @@ export class MediaStreamManager {
     getTargetPeerId = () => {
         return this.targetPeerId;
     }
+
+    getPeerId = () => {
+        return this.peerId;
+    }
 }
