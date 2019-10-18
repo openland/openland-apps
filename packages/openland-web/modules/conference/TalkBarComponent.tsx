@@ -10,7 +10,9 @@ import { Conference_conference_peers } from 'openland-api/Types';
 import { useStream, MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { css } from 'linaria';
-import { AppPeerConnectionWeb } from 'openland-y-runtime-web/AppPeerConnection';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { showVideoModal } from './ScreenShareModal';
+import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 const animatedAvatarStyle = css`
     transition: transform 250ms cubic-bezier(.29, .09, .24, .99), filter 350ms cubic-bezier(.29, .09, .24, .99);
@@ -30,14 +32,17 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
         let remoteAnalyser: AnalyserNode;
         let inited = false;
         const init = () => {
+            if (!(window as any).AudioContext) {
+                return;
+            }
             if (inited) {
                 return;
             }
-            let stream: MediaStream;
+            let stream: MediaStream | undefined;
             if (isMe) {
                 stream = (mediaStream.getStream() as any as AppUserMediaStreamWeb).getStream();
-            } else {
-                stream = ((mediaStream.getConnection() as any as AppPeerConnectionWeb).getConnection() as any).getRemoteStreams()[0];
+            } else if (mediaStream.getInStream()) {
+                stream = (mediaStream.getInStream() as any as AppUserMediaStreamWeb).getStream();
             }
             if (!stream) {
                 return;
@@ -98,7 +103,7 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
         }
         mediaStream.listenIceState(s => {
             if (avatarRef.current) {
-                avatarRef.current.style.filter = `blur(${s !== 'connected' ? 2 : 0}px)`;
+                avatarRef.current.style.filter = `grayscale(${s !== 'connected' ? 100 : 0}%)`;
             }
         });
         return () => {
@@ -107,6 +112,26 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
             }
         };
     }, [mediaStream]);
+
+    const [contentStream, setContentStream] = React.useState<MediaStream>();
+    React.useEffect(() => {
+        if (!mediaStream) {
+            return;
+        }
+        mediaStream.listenContentStream(s => {
+            console.warn(s);
+            let stream: MediaStream | undefined;
+            if (s) {
+                stream = (s as AppUserMediaStreamWeb)._stream;
+            }
+            setContentStream(stream);
+        });
+    }, [mediaStream]);
+    const joinScreen = React.useCallback(() => {
+        if (contentStream) {
+            showVideoModal(contentStream);
+        }
+    }, [contentStream]);
 
     return (
         <>
@@ -119,6 +144,7 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
                         photo={props.peer.user.photo}
                     />
                 </div>
+                {!isMe && contentStream && <UButton marginLeft={8} text="view screen" onClick={joinScreen} />}
             </XView>
             <XView width={8} />
         </>
@@ -158,6 +184,16 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                         {data.conference.peers.map(v => <CallPeer key={v.id} peer={v} mediaSessionManager={calls.getMediaSession()} />)}
                         {callState.conversationId === props.chat.id && (
                             <>
+                                {AppConfig.isNonProduction() &&
+                                    <>
+                                        <XButton
+                                            style="success"
+                                            text={callState.screenSharing ? 'Stop' : 'Share screen'}
+                                            onClick={() => calls.setScreenShare(!callState.screenSharing)}
+                                        />
+                                        <XView width={8} />
+                                    </>
+                                }
                                 <XButton
                                     style="success"
                                     text={callState.mute ? 'Unmute' : 'Mute'}

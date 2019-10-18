@@ -5,6 +5,7 @@ export interface AppPeerConnection {
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined;
     onnegotiationneeded: (() => void) | undefined;
     oniceconnectionstatechange: ((ev: { target: { iceConnectionState: IceState } }) => void) | undefined;
+    onStreamAdded: ((stream: AppMediaStream) => void) | undefined;
 
     addIceCandidate(candidate: string): Promise<void>;
 

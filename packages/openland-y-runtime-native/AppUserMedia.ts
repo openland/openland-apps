@@ -4,8 +4,11 @@ import { mediaDevices } from 'react-native-webrtc';
 export class AppUserMediaStreamNative implements AppMediaStream {
     private _muted = false;
     readonly _stream: any;
+    readonly id: string;
+    onClosed: (() => void) | undefined;
 
     constructor(stream: any) {
+        this.id = stream.id;
         this._stream = stream;
     }
 
@@ -33,5 +36,9 @@ export const AppUserMedia: AppUserMediaApi = {
     async getUserAudio() {
         let media = await mediaDevices.getUserMedia({ audio: true, video: false });
         return new AppUserMediaStreamNative(media);
+    },
+
+    async getUserScreen() {
+        throw Error('not implemented yet');
     }
 };

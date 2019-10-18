@@ -13,7 +13,6 @@ import { Conference_conference_peers } from 'openland-api/Types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { MediaStreamManager } from 'openland-engines/media/MediaStreamManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
-import { AppPeerConnectionWeb } from 'openland-y-runtime-web/AppPeerConnection';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 
 const FloatContainerClass = css`
@@ -176,11 +175,14 @@ const Avatar = React.memo((props: { peers: Conference_conference_peers[], mediaS
         }
 
         const initStreamsAnalizer = (manager: MediaStreamManager, isMe?: boolean) => {
+            if (!(window as any).AudioContext) {
+                return;
+            }
             const peerId = isMe ? manager.getPeerId() : manager.getTargetPeerId() || 'none';
             let ex = peerStreamAnalyzers.get(peerId);
             let stream = isMe ?
                 (manager.getStream() as any as AppUserMediaStreamWeb).getStream() :
-                ((manager.getConnection() as any as AppPeerConnectionWeb).getConnection() as any).getRemoteStreams()[0];
+                manager.getInStream() ? (manager.getInStream() as any as AppUserMediaStreamWeb).getStream() : undefined;
             // clean up
             if (ex && ex.stream !== stream) {
                 ex.analyzer.disconnect();
@@ -291,6 +293,7 @@ const CallFloatingComponent = React.memo((props: { id: string, private: boolean 
             setForceOpen(!forceOpen);
         }
     }, [forceOpen]);
+
     return data && <div className={FloatContainerClass} ref={containerRef} onClick={onClick}>
         <div style={{ display: 'flex', flexDirection: 'row' }} ref={contentRef}>
 

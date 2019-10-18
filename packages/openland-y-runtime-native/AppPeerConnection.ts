@@ -7,9 +7,10 @@ class AppPeerConnectionNative implements AppPeerConnection {
     private connection: any;
     private started = true;
 
-    onicecandidate: ((ev: { candidate?: string }) => void) | undefined = undefined;
-    onnegotiationneeded: (() => void) | undefined = undefined;
+    onicecandidate: ((ev: { candidate?: string }) => void) | undefined;
+    onnegotiationneeded: (() => void) | undefined;
     oniceconnectionstatechange: ((ev: { target?: { iceConnectionState?: string | 'failed' } }) => void) | undefined = undefined;
+    onStreamAdded: ((stream: AppMediaStream) => void) | undefined;
 
     constructor(connection: RTCPeerConnection) {
         this.connection = connection;
