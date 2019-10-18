@@ -71,7 +71,14 @@ export const FeedPostView = React.memo((props: FeedPostViewProps) => {
                 <FeedItemShadow width={width} height={containerHeight + 16 + 32} />
 
                 <TouchableWithoutFeedback onPress={handlePress} onLongPress={handleLongPress}>
-                    <View style={[styles.container, { backgroundColor: theme.backgroundSecondary }]}>
+                    <View style={styles.container}>
+                        <View
+                            backgroundColor={theme.backgroundSecondary}
+                            style={{
+                                position: 'absolute',
+                                left: 0, right: 0, bottom: 0, top: 0
+                            }}
+                        />
                         <FeedMeta
                             author={author}
                             source={authorOnly ? undefined : source}
