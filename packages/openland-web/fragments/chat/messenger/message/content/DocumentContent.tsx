@@ -312,18 +312,25 @@ interface DocumentContentProps {
 export const DocumentContent = React.memo((props: DocumentContentProps) => {
     const { file } = props;
     const { name, size } = file.fileMetadata;
+    const isSafari = (window as any).safari !== undefined;
+
+    const applyShowPdfModal =
+        fileFormat(name) === 'PDF' &&
+        (file.fileMetadata.mimeType === 'application/pdf' || isSafari);
+
     if (
         file.fileMetadata.mimeType &&
         (!!file.fileMetadata.mimeType.match('video') || fileFormat(name) === 'VIDEO')
     ) {
         return <VideoContent file={props.file} />;
     }
+
     const onClick = React.useCallback((ev: React.MouseEvent) => {
         if (props.onClick) {
             props.onClick(ev);
         } else {
             ev.stopPropagation();
-            if (fileFormat(name) === 'PDF') {
+            if (applyShowPdfModal) {
                 showPdfModal({
                     fileId: file.fileId || '',
                     fileName: file.fileMetadata.name,
@@ -337,7 +344,7 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
 
     let fileSrc: undefined | string = `https://ucarecdn.com/${file.fileId}/`;
 
-    if (fileFormat(name) === 'PDF') {
+    if (applyShowPdfModal) {
         fileSrc = undefined;
     }
 
@@ -355,7 +362,7 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
                     ) : (
                         <div className={cx(iconInfo, 'icon-info')}>
                             <UIcon
-                                icon={fileFormat(name) === 'PDF' ? <IcSearch /> : <IcDownload />}
+                                icon={applyShowPdfModal ? <IcSearch /> : <IcDownload />}
                                 color="#fff"
                                 size={16}
                                 className="download-icon"
