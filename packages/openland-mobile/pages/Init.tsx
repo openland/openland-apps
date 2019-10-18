@@ -98,6 +98,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         this.state = {
             state: 'start'
         };
+
+        console.log('BOOTSTRAP: mounting');
     }
 
     componentWillUnmount() {
@@ -173,16 +175,21 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         Linking.getInitialURL().then(async url => await this.handleOpenURL({ url: url }));
 
         (async () => {
+            console.log('BOOTSTRAP: loading');
             await ThemePersister.prepare();
+            console.log('BOOTSTRAP: theme prepared');
             await AppStorage.prepare();
+            console.log('BOOTSTRAP: storage prepared');
             try {
                 if (hasClient()) {
                     let res = (await backoff(async () => await getClient().queryAccount()));
+                    console.log('OPENLAND: query queries');
                     if (res && res.me) {
                         NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0 || __DEV__;
                         SUPER_ADMIN = res.myPermissions.roles.indexOf('super-admin') >= 0;
                         AppConfig.setNonProduction(NON_PRODUCTION);
                         AppConfig.setSuperAdmin(SUPER_ADMIN);
+                        console.log('OPENLAND: loaded');
                         this.setState({ state: 'app' });
                     } else {
                         this.setState({ state: 'signup' });

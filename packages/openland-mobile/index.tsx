@@ -1,3 +1,5 @@
+console.log('BOOTSTRAP: starting');
+
 import './logs';
 // import Reactotron from 'reactotron-react-native'
 

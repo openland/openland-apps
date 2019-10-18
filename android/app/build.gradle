@@ -82,7 +82,7 @@ project.ext.react = [
         inputExcludes  : ["android/**", "ios/**", "node_modules/**", "packages/openland-mac/node_modules/**"],
         bundleInRelease: true,
         bundleInDebug  : false,
-        enableHermes   : false
+        enableHermes   : true
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"

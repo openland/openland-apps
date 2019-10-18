@@ -1,6 +1,7 @@
 package com.openland.app;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.BuildCompat;
@@ -120,14 +121,23 @@ public class MainApplication extends Application implements ShareApplication, Re
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d("Native", "BOOTSTRAP: Starting app");
+
         SoLoader.init(this, /* native exopackage */ false);
+        Log.d("Native", "BOOTSTRAP: soloader done");
         Fresco.initialize(this);
+        Log.d("Native", "BOOTSTRAP: fresco done");
         LMDB.INSTANCE.loadLibrary(this);
+        Log.d("Native", "BOOTSTRAP: lmdb done");
+
+
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
 
         // App Center
         AppCenterReactNativeShared.configureAppCenter(this);
         AppCenter.start(Distribute.class);
+
+        Log.d("Native", "BOOTSTRAP: app start done");
 
 //        // Start keep alive service
 //        Intent service = new Intent(getApplicationContext(), MainService.class);
