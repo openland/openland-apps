@@ -169,9 +169,9 @@ class ApolloNetworking {
           self.onDisconnected()
         }
       }
-      self.writeToSocket(msg: JSON(["type": "ping"]))
-      self.lastPing = Int64((Date().timeIntervalSince1970 * 1000))
       if(self.state == .started){
+        self.writeToSocket(msg: JSON(["type": "ping"]))
+        self.lastPing = Int64((Date().timeIntervalSince1970 * 1000))
         self.schedulePing()
       }
     }
