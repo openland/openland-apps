@@ -81,6 +81,7 @@ const FeedChannelProfileComponent = React.memo((props: PageProps) => {
                 )}
                 {writers.items.map(writer => (
                     <UserView
+                        key={writer.user.id}
                         user={writer.user}
                         channelRole={writer.role}
                         onPress={() => router.push('ProfileUser', { id: writer.user.id })}

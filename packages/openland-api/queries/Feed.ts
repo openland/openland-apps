@@ -277,6 +277,14 @@ export const FeedUpdateFragment = gql`
                 ...FeedItemFull
             }
         }
+        ... on FeedRebuildNeeded {
+            feed: homeFeed {
+                items {
+                    ...FeedItemFull
+                }
+                cursor
+            }
+        }
     }
 
     ${FeedItemFull}

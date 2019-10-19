@@ -121,6 +121,21 @@ export class FeedEngine {
             }
 
             return;
+        } else if (event.__typename === 'FeedRebuildNeeded') {
+            const resetedFeed = event.feed;
+
+            this.loading = true;
+
+            this.lastCursor = resetedFeed.cursor;
+            this.fullyLoaded = typeof this.lastCursor !== 'string';
+
+            const dsItems = convertItems(resetedFeed.items, this.engine);
+
+            this.dataSource.initialize(dsItems, this.fullyLoaded, true, undefined, true);
+
+            this.loading = false;
+
+            return;
         } else {
             log.log('Unhandled update');
         }

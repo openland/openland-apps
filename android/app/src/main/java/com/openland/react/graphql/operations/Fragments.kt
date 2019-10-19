@@ -998,6 +998,16 @@ internal val FeedUpdateFragmentSelector = obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("FeedItem", FeedItemFullSelector)
                     )))
+            )),
+            inline("FeedRebuildNeeded", obj(
+                field("homeFeed", "feed", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("cursor", "cursor", scalar("String")),
+                        field("items", "items", notNull(list(notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("FeedItem", FeedItemFullSelector)
+                            )))))
+                    )))
             ))
         )
 

@@ -18,4 +18,14 @@ fragment FeedUpdateFragment on FeedUpdate {
       ...FeedItemFull
     }
   }
+  ... on FeedRebuildNeeded {
+    feed: homeFeed {
+      __typename
+      cursor
+      items {
+        __typename
+        ...FeedItemFull
+      }
+    }
+  }
 }
