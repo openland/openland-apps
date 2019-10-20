@@ -4,7 +4,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { showReportForm } from 'openland-mobile/components/showReportForm';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
-import { MessageReactionType, FeedChannelFull, FeedChannelSubscriberRole } from 'openland-api/Types';
+import { MessageReactionType, FeedChannelFull, FeedChannelSubscriberRole, FeedChannelWriters_writers_items, FeedChannelSubscribers_subscribers_edges_node } from 'openland-api/Types';
 import { Share } from 'react-native';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 
@@ -98,7 +98,7 @@ class FeedHandlersClass {
 
     // ----- CHANNEL
 
-    ChannelManage = async (channel: FeedChannelFull) => {
+    ChannelManage = (channel: FeedChannelFull) => {
         const { id, myRole, subscribed } = channel;
         const router = getMessenger().history.navigationManager;
         const builder = new ActionSheetBuilder();
@@ -128,6 +128,41 @@ class FeedHandlersClass {
         }
 
         builder.show();
+    }
+
+    ChannelFollowerManage = (channel: FeedChannelFull, follower: FeedChannelWriters_writers_items | FeedChannelSubscribers_subscribers_edges_node) => {
+        const { id, myRole } = channel;
+        const { user, role } = follower;
+        const messenger = getMessenger();
+        const router = messenger.history.navigationManager;
+        const myUserID = messenger.engine.user.id;
+
+        const canSendMessage = user.id !== myUserID;
+        const canChangeRole = myRole === FeedChannelSubscriberRole.Creator && (role === FeedChannelSubscriberRole.Subscriber || role === FeedChannelSubscriberRole.Editor);
+
+        if (canSendMessage || canChangeRole) {
+            const builder = new ActionSheetBuilder();
+
+            if (canSendMessage) {
+                builder.action('Send message', () => router.push('Conversation', { id: user.id }), false, require('assets/ic-message-24.png'));
+            }
+
+            if (canChangeRole) {
+                if (role === FeedChannelSubscriberRole.Subscriber) {
+                    builder.action('Make writer', () => {
+                        this.ChannelAddEditor(id, user.id);
+                    }, false, require('assets/ic-star-24.png'));
+                }
+
+                if (role === FeedChannelSubscriberRole.Editor) {
+                    builder.action('Revoke writer', () => {
+                        this.ChannelRemoveEditor(id, user.id);
+                    }, false, require('assets/ic-star-24.png'));
+                }
+            }
+
+            builder.show(true);
+        }
     }
 
     ChannelSubscribe = async (channelId: string, showLoader?: boolean) => {

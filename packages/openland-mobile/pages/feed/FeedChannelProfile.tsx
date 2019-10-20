@@ -85,6 +85,7 @@ const FeedChannelProfileComponent = React.memo((props: PageProps) => {
                         user={writer.user}
                         channelRole={writer.role}
                         onPress={() => router.push('ProfileUser', { id: writer.user.id })}
+                        onLongPress={() => FeedHandlers.ChannelFollowerManage(channel, writer)}
                     />
                 ))}
             </ZListGroup>
@@ -105,6 +106,7 @@ const FeedChannelProfileComponent = React.memo((props: PageProps) => {
                         user={item.node.user}
                         channelRole={item.node.role}
                         onPress={() => router.push('ProfileUser', { id: item.node.user.id })}
+                        onLongPress={() => FeedHandlers.ChannelFollowerManage(channel, item.node)}
                     />
                 )}
                 keyExtractor={(item, index) => `${index}-${item.node.user.id}`}

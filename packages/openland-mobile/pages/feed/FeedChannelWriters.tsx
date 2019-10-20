@@ -5,12 +5,14 @@ import { useClient } from 'openland-mobile/utils/useClient';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { UserView } from '../main/components/UserView';
 import { SHeader } from 'react-native-s/SHeader';
+import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
 
 const FeedChannelWritersComponent = React.memo((props: PageProps) => {
     const { router } = props;
     const { id } = router.params;
     const client = useClient();
 
+    const channel = client.useFeedChannel({ id }, { fetchPolicy: 'cache-and-network' }).channel;
     const initialWriters = client.useFeedChannelWriters({ id, first: 15 }, { fetchPolicy: 'network-only' }).writers;
     const [writers, setWriters] = React.useState(initialWriters.items);
     const [loading, setLoading] = React.useState(false);
@@ -42,6 +44,7 @@ const FeedChannelWritersComponent = React.memo((props: PageProps) => {
                         user={item.user}
                         channelRole={item.role}
                         onPress={() => router.push('ProfileUser', { id: item.user.id })}
+                        onLongPress={() => FeedHandlers.ChannelFollowerManage(channel, item)}
                     />
                 }
                 keyExtractor={(item, index) => `${index}-${item.user.id}`}
