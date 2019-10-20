@@ -650,7 +650,7 @@ export function useDataSource<T extends DataSourceItem>(
                     setItems(data);
                     setCompleted(isCompleted);
                     setCompletedForward(isCompletedForward);
-                    console.warn('useDataSource', dataSource, anchor);
+                    // console.warn('useDataSource', dataSource, anchor);
                     if (anchor) {
                         setScrollTo({ scrollTo: anchor });
                     }

@@ -1,6 +1,5 @@
 package com.openland.app
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,17 +14,8 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.openland.react.keyboard.KeyboardHeightProvider
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView
 import android.net.Uri
-import android.os.Parcelable
 import android.view.WindowManager
-import android.util.DisplayMetrics
 import org.json.JSONObject
-import android.provider.MediaStore
-import com.beust.klaxon.JsonArray
-import org.json.JSONArray
-import java.net.URLEncoder
-import java.util.*
-import kotlin.concurrent.schedule
-
 
 class MainActivity : ReactActivity() {
 
@@ -64,7 +54,6 @@ class MainActivity : ReactActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("Native", "BOOTSTRAP: Starting activity")
-        this.setContentView(R.layout.splash)
         super.onCreate(savedInstanceState)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
 
@@ -87,33 +76,6 @@ class MainActivity : ReactActivity() {
             }
         })
 
-    }
-
-    private fun getStatusBarHeight(metrics: DisplayMetrics): Float {
-        val heightResId = getResources().getIdentifier("status_bar_height", "dimen", "android")
-        return if (heightResId > 0)
-            getResources().getDimensionPixelSize(heightResId) / metrics.density
-        else
-            0.0f
-    }
-
-    private fun getRealHeight(metrics: DisplayMetrics): Float {
-        return metrics.heightPixels / metrics.density
-    }
-
-    private fun getSoftMenuBarHeight(metrics: DisplayMetrics): Float {
-        val realHeight = getRealHeight(metrics)
-        val ctx = (applicationContext as MainApplication)
-                .reactNativeHost
-                .reactInstanceManager
-                .currentReactContext!!
-        val usableMetrics = ctx.resources.getDisplayMetrics()
-
-        (getSystemService(Context.WINDOW_SERVICE) as WindowManager)
-                .defaultDisplay.getMetrics(metrics)
-        val usableHeight = usableMetrics.heightPixels
-
-        return Math.max(0f, realHeight - usableHeight / metrics.density)
     }
 
     override fun onResume() {

@@ -26,7 +26,7 @@ const NativeGraphQL = NativeModules.RNGraphQL as {
 };
 
 const RNGraphQLEmitter = new NativeEventEmitter(NativeModules.RNGraphQL);
-const log = createLogger('GraphQL-Native');
+// const log = createLogger('GraphQL-Native');
 
 export class NativeSpaceXClient extends BridgedClient {
     private key: string = randomKey();
@@ -37,8 +37,8 @@ export class NativeSpaceXClient extends BridgedClient {
             RNGraphQLEmitter.addListener('graphql_client', (src) => {
                 if (src.key === this.key) {
                     if (src.type === 'failure') {
-                        log.warn('Received failure');
-                        log.warn(src.data);
+                        // log.warn('Received failure');
+                        // log.warn(src.data);
                         if (src.kind === 'graphql') {
                             this.operationFailed(src.id, convertError(src.data));
                         } else {
@@ -55,16 +55,16 @@ export class NativeSpaceXClient extends BridgedClient {
             DeviceEventEmitter.addListener('graphql_client', (src) => {
                 if (src.key === this.key) {
                     if (src.type === 'failure') {
-                        log.warn('Received failure');
-                        log.log(JSON.stringify(src.data));
+                        // log.warn('Received failure');
+                        // log.log(JSON.stringify(src.data));
                         if (src.kind === 'graphql') {
                             this.operationFailed(src.id, convertError(src.data));
                         } else {
                             this.operationFailed(src.id, Error('Unknown error'));
                         }
                     } else if (src.type === 'response') {
-                        log.log('Received response');
-                        log.log(JSON.stringify(src.data));
+                        // log.log('Received response');
+                        // log.log(JSON.stringify(src.data));
                         this.operationUpdated(src.id, src.data);
                     } else if (src.type === 'status') {
                         this.statusWatcher.setState({ status: src.status });
@@ -80,28 +80,28 @@ export class NativeSpaceXClient extends BridgedClient {
     }
 
     protected postQuery(id: string, query: any, vars: any, params?: OperationParameters) {
-        log.log('postQuery');
+        // log.log('postQuery');
         let name = query.document.definitions[0].name.value;
         NativeGraphQL.query(this.key, id, name, vars ? vars : {}, params ? params : {});
     }
     protected postQueryWatch(id: string, query: any, vars: any, params?: OperationParameters) {
-        log.log('postQueryWatch');
+        // log.log('postQueryWatch');
         let name = query.document.definitions[0].name.value;
         NativeGraphQL.watch(this.key, id, name, vars ? vars : {}, params ? params : {});
     }
     protected postQueryWatchEnd(id: string) {
-        log.log('postQueryWatchEnd');
+        // log.log('postQueryWatchEnd');
         NativeGraphQL.watchEnd(this.key, id);
     }
 
     protected postMutation(id: string, query: any, vars: any) {
-        log.log('postMutation');
+        // log.log('postMutation');
         let name = query.document.definitions[0].name.value;
         NativeGraphQL.mutate(this.key, id, name, vars ? vars : {});
     }
 
     protected postSubscribe(id: string, query: any, vars: any) {
-        log.log('postSubscribe');
+        // log.log('postSubscribe');
         let name = query.document.definitions[0].name.value;
         NativeGraphQL.subscribe(this.key, id, name, vars ? vars : {});
     }
@@ -109,23 +109,23 @@ export class NativeSpaceXClient extends BridgedClient {
         // Not supported
     }
     protected postUnsubscribe(id: string) {
-        log.log('postUnsubscribe');
+        // log.log('postUnsubscribe');
         NativeGraphQL.unsubscribe(this.key, id);
     }
 
     protected postReadQuery(id: string, query: any, vars: any) {
-        log.log('postReadQuery');
+        // log.log('postReadQuery');
         let name = query.document.definitions[0].name.value;
         NativeGraphQL.read(this.key, id, name, vars ? vars : {});
     }
     protected postWriteQuery(id: string, data: any, query: any, vars: any) {
-        log.log('postWriteQuery');
+        // log.log('postWriteQuery');
         let name = query.document.definitions[0].name.value;
         NativeGraphQL.write(this.key, id, data, name, vars ? vars : {});
     }
 
     protected postWriteFragment(id: string, data: any, fragment: any) {
-        log.log('postWriteFragment');
+        // log.log('postWriteFragment');
         let name = fragment.document.definitions[0].name.value;
         NativeGraphQL.writeFragment(this.key, id, data, name);
     }
