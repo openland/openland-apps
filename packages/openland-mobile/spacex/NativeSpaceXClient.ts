@@ -2,7 +2,7 @@ import { BridgedClient } from 'openland-graphql/bridge/BridgedClient';
 import { OperationParameters } from 'openland-graphql/GraphqlClient';
 import { NativeModules, DeviceEventEmitter, NativeEventEmitter, Platform } from 'react-native';
 import { randomKey } from 'openland-graphql/utils/randomKey';
-import { createLogger } from 'mental-log';
+// import { createLogger } from 'mental-log';
 import { convertError } from 'openland-graphql/direct/convertError';
 
 const NativeGraphQL = NativeModules.RNGraphQL as {
