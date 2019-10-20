@@ -34,14 +34,16 @@ class RNSWindowManager(reactContext: ReactApplicationContext) : ReactContextBase
         reactApplicationContext.getNativeModule(UIManagerModule::class.java).addUIManagerListener(this)
     }
 
+
+
     override fun willDispatchViewUpdates(uiManager: UIManagerModule?) {
         if (!this.isActive && this.resumed) {
             isActive = true
-            runOnUIThreadDelayed(100) {
-                reactApplicationContext.getNativeModule(UIManagerModule::class.java).addUIBlock {
-                    currentActivity?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                }
-            }
+//            runOnUIThreadDelayed(1000) {
+//                reactApplicationContext.getNativeModule(UIManagerModule::class.java).addUIBlock {
+//                    currentActivity?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//                }
+//            }
         }
     }
 
@@ -102,12 +104,12 @@ class RNSWindowManager(reactContext: ReactApplicationContext) : ReactContextBase
     override fun onHostPause() {
         this.isActive = false
         this.resumed = false
-        currentActivity?.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+//        currentActivity?.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
     }
 
     override fun onHostDestroy() {
         this.isActive = false
         this.resumed = false
-        currentActivity?.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+//        currentActivity?.window?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
     }
 }
