@@ -210,21 +210,23 @@ class NetworkingApollo(
         startPing()
     }
 
-    private fun startPing(){
-        if(this.pingTimer != null){
+    private fun startPing() {
+        if (this.pingTimer != null) {
             this.pingTimer!!.cancel()
         }
         this.pingTimer = Timer()
         this.pingTimer!!.schedule(timerTask {
             Timer().schedule(timerTask {
-                if(state === NetworkingApolloState.STARTED && lastPing > lastPong){
-                    onDisconnected()
+                queue.async {
+                    if (state === NetworkingApolloState.STARTED && lastPing > lastPong) {
+                        onDisconnected()
+                    }
+                    writeToSocket(JSONObject(mapOf(
+                            "type" to "ping"
+                    )))
+                    lastPing = System.currentTimeMillis()
                 }
             }, 10000)
-            writeToSocket(JSONObject(mapOf(
-                "type" to "ping"
-            )))
-            lastPing = System.currentTimeMillis()
         }, 0, 30000)
     }
 
@@ -289,7 +291,7 @@ class NetworkingApollo(
                 xLog("SpaceX-Apollo", "Critical Error ($id): Retrying")
                 this.handler.onCompleted(id)
             }
-        }  else if (type == "ping") {
+        } else if (type == "ping") {
             this.handlerQueue.async {
                 this.writeToSocket(JSONObject(mapOf(
                         "type" to "pong"
@@ -331,7 +333,7 @@ class NetworkingApollo(
                 this.handler.onSessionRestart()
             }
         }
-        if(this.pingTimer !== null){
+        if (this.pingTimer !== null) {
             this.pingTimer!!.cancel()
         }
         this.stopClient()
