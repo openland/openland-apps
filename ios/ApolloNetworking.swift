@@ -321,9 +321,6 @@ class ApolloNetworking {
     let txt = serializeJson(json: msg)
     NSLog("[SpaceX-Apollo]: >>" + msg["type"].stringValue)
     // print("[SpaceX-Apollo]: >> \(txt)")
-    
-    if (self.client != nil) {
-      self.client!.write(string: txt)
-    }
+    self.client!.write(string: txt)
   }
 }
