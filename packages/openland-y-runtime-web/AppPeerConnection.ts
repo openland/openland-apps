@@ -93,7 +93,6 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
 
     addStream = (stream: AppMediaStream) => {
         let str = (stream as AppUserMediaStreamWeb)._stream;
-        console.warn(str, str.getTracks());
         for (let t of str.getTracks()) {
             let sender = this.trackSenders.get(t);
             if (sender) {
@@ -101,7 +100,6 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
             }
             this.connection.addTrack(t, str);
         }
-        // (this.connection as any).addStream(str);
     }
 
     addIceCandidate = (candidate: string) => {
