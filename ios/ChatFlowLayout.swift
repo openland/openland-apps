@@ -7,7 +7,7 @@ class ChatFlowLayout: UICollectionViewFlowLayout {
   private var offset: CGFloat = 0.0
   private var visibleAttributes: [UICollectionViewLayoutAttributes]?
   private var isPrepend: Bool = false
-  private var isInitial: Int = 2
+  private var isInitial: Bool = true
   
   override open func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
     // Reset offset and prepend scope
@@ -34,7 +34,7 @@ class ChatFlowLayout: UICollectionViewFlowLayout {
     for attributes in visibleAttributes {
       if attributes.frame.intersects(container) {
         let item = attributes.indexPath.item
-        
+
         if item < topVisibleItem {
           topVisibleItem = item
         }
@@ -49,17 +49,16 @@ class ChatFlowLayout: UICollectionViewFlowLayout {
     
     super.prepare(forCollectionViewUpdates: updateItems)
     
-    // another hack, better this time, but still a bit messy
-    if(collectionView.numberOfItems(inSection: 1) != 0){
-      self.isInitial-=1;
-    }
-    
-    if(isInitial > 0){
+    // TODO: fix scroll jumps _sometimes_ on last forward batch
+    if(isInitial || ((collectionView.contentOffset.y + collectionView.contentInset.top) < 20 && (collectionView.numberOfItems(inSection: 0) == 0))){
+      if(collectionView.numberOfItems(inSection: 1) != 0){
+        isInitial = false
+      }
       self.isPrepend = false
       return
     }
+    
 
-  
     // Check: Initial Load or Load More
     var isInitialLoading: Bool = bottomVisibleItem + topVisibleItem == 0
     if(collectionView.numberOfItems(inSection: 1) == 0){
