@@ -46,6 +46,7 @@ fragment DialogUpdateFragment on DialogUpdate {
     cid
     globalUnread
     haveMention
+    mid
     unread
   }
   ... on DialogMuteChanged {
