@@ -32,6 +32,7 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
         let remoteAnalyser: AnalyserNode;
         let inited = false;
         const init = () => {
+            // damn you safari
             if (!(window as any).AudioContext) {
                 return;
             }

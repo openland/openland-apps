@@ -228,6 +228,8 @@ export class MediaStreamManager {
         }
     }
 
+    // TODO: move screen share to separate peer connection
+    // WebRTC still can't detect stream/track removal, so we cant display ui prpperly :/
     onStreamAdded = (stream: AppMediaStream) => {
         console.warn('onStreamAdded', stream);
         if (!this.mainInStream) {

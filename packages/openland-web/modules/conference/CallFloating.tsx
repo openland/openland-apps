@@ -175,6 +175,7 @@ const Avatar = React.memo((props: { peers: Conference_conference_peers[], mediaS
         }
 
         const initStreamsAnalizer = (manager: MediaStreamManager, isMe?: boolean) => {
+            // damn you safari
             if (!(window as any).AudioContext) {
                 return;
             }
