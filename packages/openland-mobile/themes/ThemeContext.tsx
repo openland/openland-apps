@@ -7,7 +7,7 @@ import { ThemeLight } from 'openland-y-utils/themes/light';
 export const ThemeContext = React.createContext<ThemeGlobal>(ThemeLight);
 export const useTheme = () => React.useContext(ThemeContext);
 
-function resolveTheme(theme: ThemeGlobalKind): ThemeGlobal {
+export function resolveTheme(theme: ThemeGlobalKind): ThemeGlobal {
     let resolvedThemeType: ThemeGlobalType = 'Light';
     let resolvedAccentType: AccentGlobalType = 'Default';
 

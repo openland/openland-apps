@@ -6,16 +6,14 @@ import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ThemeController } from 'openland-mobile/themes/ThemeControler';
 import { ThemeGlobalKind, ThemeGlobalType, getAccentByType, AccentGlobalType } from 'openland-y-utils/themes/ThemeGlobal';
-import { ThemeLight } from 'openland-y-utils/themes/light';
 import { View, TouchableOpacity, Image } from 'react-native';
-import { ThemeDark } from 'openland-y-utils/themes/dark';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ThemeContext, resolveTheme } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
 const ThemeItem = React.memo((props: { type: ThemeGlobalType, checked: boolean, onPress: () => void }) => {
     const theme = React.useContext(ThemeContext);
     const { type, checked, onPress } = props;
-    const themeObject = type === 'Light' ? ThemeLight : ThemeDark;
+    const themeObject = resolveTheme([type, theme.accentType]);
 
     const primaryColor = checked ? theme.outgoingBackgroundPrimary : themeObject.outgoingBackgroundPrimary;
     const secondaryColor = checked ? theme.incomingBackgroundPrimary : themeObject.incomingBackgroundPrimary;
