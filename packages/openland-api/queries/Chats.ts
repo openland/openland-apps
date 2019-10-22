@@ -139,6 +139,7 @@ export const DialogUpdateFragment = gql`
         }
         ... on DialogMessageRead {
             cid
+            mid
             unread
             globalUnread
             haveMention

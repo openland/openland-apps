@@ -24,6 +24,10 @@ export class MediaStreamManager {
     private onReady?: () => void;
     private iceConnectionState: IceState = 'new';
     private iceStateListeners = new Set<(iceState: IceState) => void>();
+    private contentStreamListeners = new Set<(stream?: AppMediaStream) => void>();
+    private mainInStream?: AppMediaStream;
+    private contentInStream?: AppMediaStream;
+    private outContentStream?: AppMediaStream;
 
     constructor(
         client: OpenlandClient,
@@ -33,7 +37,8 @@ export class MediaStreamManager {
         stream: AppMediaStream,
         streamConfig: ConferenceMedia_conferenceMedia_streams,
         onReady: (() => void) | undefined,
-        targetPeerId: string | null
+        targetPeerId: string | null,
+        outContentStream?: AppMediaStream
     ) {
         this.id = id;
         this.client = client;
@@ -42,6 +47,7 @@ export class MediaStreamManager {
         this.iceServers = iceServers;
         this.streamConfig = streamConfig;
         this.stream = stream;
+        this.outContentStream = outContentStream;
         this.onReady = onReady;
         this.peerConnection = AppPeerConnectionFactory.createConnection({
             iceServers: this.iceServers.map(v => ({
@@ -92,7 +98,11 @@ export class MediaStreamManager {
                 });
             }
         };
+        this.peerConnection.onStreamAdded = this.onStreamAdded;
         this.peerConnection.addStream(this.stream);
+        if (this.outContentStream) {
+            this.peerConnection.addStream(this.outContentStream);
+        }
         this.handleState();
     }
 
@@ -218,8 +228,47 @@ export class MediaStreamManager {
         }
     }
 
+    // TODO: move screen share to separate peer connection
+    // WebRTC still can't detect stream/track removal, so we cant display ui prpperly :/
+    onStreamAdded = (stream: AppMediaStream) => {
+        console.warn('onStreamAdded', stream);
+        if (!this.mainInStream) {
+            this.mainInStream = stream;
+        } else {
+            if (this.contentInStream !== undefined) {
+                this.contentInStream.close();
+            }
+            this.contentInStream = stream;
+            this.notifyContentStream();
+            stream.onClosed = () => {
+                if (this.contentInStream === stream) {
+                    this.contentInStream = undefined;
+                }
+                this.notifyContentStream();
+            };
+        }
+    }
+
+    addStream = (stream: AppMediaStream) => {
+        if (this.outContentStream !== stream) {
+            if (this.outContentStream) {
+                this.outContentStream.close();
+            }
+            this.outContentStream = stream;
+            console.warn('boom', this.id, 'adding stream', stream);
+            this.peerConnection.addStream(stream);
+        }
+    }
+
+    ////
+    // IO
+    ////
     getStream = () => {
         return this.stream;
+    }
+
+    getInStream = () => {
+        return this.mainInStream;
     }
 
     getConnection = () => {
@@ -242,11 +291,24 @@ export class MediaStreamManager {
         };
     }
 
+    private notifyIceState = (iceState: IceState) => {
+        this.iceStateListeners.forEach(l => l(iceState));
+    }
+
     getIceState = () => {
         return this.iceConnectionState;
     }
 
-    private notifyIceState = (iceState: IceState) => {
-        this.iceStateListeners.forEach(l => l(iceState));
+    listenContentStream = (listener: (stream?: AppMediaStream) => void) => {
+        this.contentStreamListeners.add(listener);
+        listener(this.contentInStream);
+        return () => {
+            this.contentStreamListeners.forEach(l => this.contentStreamListeners.delete(l));
+        };
     }
+
+    private notifyContentStream = () => {
+        this.contentStreamListeners.forEach(l => l(this.contentInStream));
+    }
+
 }

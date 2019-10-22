@@ -149,6 +149,9 @@ export class GlobalStateEngine {
 
             // Dialogs List
             await this.engine.dialogList.handleUserRead(event.cid, event.unread, visible, event.haveMention);
+            if (event.mid) {
+                await this.engine.getConversation(event.cid).onMessageReadEvent(event.mid);
+            }
         } else if (event.__typename === 'DialogMessageDeleted') {
             let visible = this.visibleConversations.has(event.cid);
 

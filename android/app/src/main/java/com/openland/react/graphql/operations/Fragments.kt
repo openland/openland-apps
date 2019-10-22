@@ -824,6 +824,7 @@ internal val DialogUpdateFragmentSelector = obj(
                 field("cid", "cid", notNull(scalar("ID"))),
                 field("globalUnread", "globalUnread", notNull(scalar("Int"))),
                 field("haveMention", "haveMention", notNull(scalar("Boolean"))),
+                field("mid", "mid", scalar("ID")),
                 field("unread", "unread", notNull(scalar("Int")))
             )),
             inline("DialogMuteChanged", obj(

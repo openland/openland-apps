@@ -2,6 +2,7 @@ import * as React from 'react';
 import { MessengerEngine } from './MessengerEngine';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { MediaSessionManager } from './media/MediaSessionManager';
+import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 
 export type CallStatus = 'initial' | 'connecting' | 'connected' | 'end' | 'waiting';
 export interface CallState {
@@ -11,6 +12,7 @@ export interface CallState {
     startTime?: number;
     status: CallStatus;
     mute: boolean;
+    screenSharing?: boolean;
 }
 
 export class CallsEngine {
@@ -51,6 +53,19 @@ export class CallsEngine {
         if (this.mediaSession) {
             this.mediaSession.setMute(mute);
         }
+    }
+
+    setScreenShare = async (screenSharing: boolean) => {
+        let ms: AppMediaStream | undefined;
+        if (this.mediaSession) {
+            if (this._state.screenSharing) {
+                await this.mediaSession.stopScreenShare();
+            } else {
+                ms = await this.mediaSession.startScreenShare();
+            }
+        }
+        this.setState({ ...this._state, screenSharing: !!ms });
+        return ms;
     }
 
     useState = () => {

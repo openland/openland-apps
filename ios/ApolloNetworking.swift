@@ -30,7 +30,6 @@ class ApolloNetworking {
   let params: [String: String?]
   weak var delegate: NetworkingDelegate? = nil
   var callbackQueue: DispatchQueue
-  private let pingQueue = DispatchQueue(label: "ping")
   private let reachability: Reachability
   private var client: WebSocket? = nil
   private var pending: [String: JSON] = [:]
@@ -163,8 +162,8 @@ class ApolloNetworking {
   }
   
   private func schedulePing(){
-    self.pingQueue.asyncAfter(deadline: .now() + .seconds(30)) {
-      self.pingQueue.asyncAfter(deadline: .now() + .seconds(10)) {
+    self.queue.asyncAfter(deadline: .now() + .seconds(30)) {
+      self.queue.asyncAfter(deadline: .now() + .seconds(10)) {
         if(self.state == .started && self.lastPing > self.lastPong){
           self.onDisconnected()
         }

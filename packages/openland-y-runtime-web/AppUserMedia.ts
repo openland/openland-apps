@@ -1,10 +1,13 @@
 import { AppUserMediaApi, AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 
 export class AppUserMediaStreamWeb implements AppMediaStream {
+    readonly id: string;
     private _muted = false;
     readonly _stream: MediaStream;
+    onClosed: (() => void) | undefined;
 
     constructor(stream: MediaStream) {
+        this.id = stream.id;
         this._stream = stream;
     }
 
@@ -42,6 +45,11 @@ export const AppUserMedia: AppUserMediaApi = {
             } as any,
         });
 
+        return new AppUserMediaStreamWeb(media);
+    },
+
+    async getUserScreen() {
+        let media = await (navigator.mediaDevices as any).getDisplayMedia();
         return new AppUserMediaStreamWeb(media);
     }
 };

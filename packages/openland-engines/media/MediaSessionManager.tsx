@@ -13,6 +13,7 @@ export class MediaSessionManager {
     private readonly onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void;
     private readonly onDestroyRequested: () => void;
     private mediaStream!: AppMediaStream;
+    private screenStream?: AppMediaStream;
     private streamConfigs!: ConferenceMediaWatch_media_streams[];
     private iceServers!: any[];
     private conferenceId!: string;
@@ -39,6 +40,18 @@ export class MediaSessionManager {
         this.mute = mute;
         if (this.mediaStream) {
             this.mediaStream.muted = mute;
+        }
+    }
+
+    startScreenShare = async () => {
+        this.screenStream = await AppUserMedia.getUserScreen();
+        this.handleState();
+        return this.screenStream;
+    }
+
+    stopScreenShare = async () => {
+        if (this.screenStream) {
+            this.screenStream.close();
         }
     }
 
@@ -192,13 +205,16 @@ export class MediaSessionManager {
         }
 
         for (let s of this.streamConfigs) {
-            let ex = this.streams.get(s.id);
-            if (ex) {
-                ex.onStateChanged(s);
+            let ms = this.streams.get(s.id);
+            if (ms) {
+                if (this.screenStream) {
+                    ms.addStream(this.screenStream);
+                }
+                ms.onStateChanged(s);
             } else {
                 console.log('[WEBRTC] Create stream ' + s.id);
 
-                let ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, this.mediaStream, s, this.isPrivate ? () => this.onStatusChange('connected') : undefined, s.peerId);
+                ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, this.mediaStream, s, this.isPrivate ? () => this.onStatusChange('connected') : undefined, s.peerId, this.screenStream);
                 this.streams.set(s.id, ms);
             }
         }

@@ -833,6 +833,12 @@ export class ConversationEngine implements MessageSendHandler {
         }
     }
 
+    onMessageReadEvent = async (messageId: string) => {
+        if (!this.isOpen && this.lastTopMessageRead !== messageId) {
+            this.restart("unread");
+        }
+    }
+
     private markReadIfNeeded = () => {
         let id: string | null = null;
         for (let i = this.messages.length - 1; i >= 0; i--) {
