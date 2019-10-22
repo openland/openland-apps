@@ -18,7 +18,9 @@ export class SequenceHandler {
             (async () => {
                 try {
                     // backoff in case of io error
-                    await backoff(async () => await this.handler(item), 3);
+                    await backoff(async () => {
+                        await this.handler(item);
+                    });
                 } finally {
                     this.isHandling = false;
                     this.afterHandled();
@@ -34,7 +36,9 @@ export class SequenceHandler {
             (async () => {
                 try {
                     // backoff in case of io error
-                    await backoff(async () => await this.handler(item), 3);
+                    await backoff(async () => {
+                        await this.handler(item);
+                    });
                 } finally {
                     this.isHandling = false;
                     this.afterHandled();
