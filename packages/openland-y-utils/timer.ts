@@ -53,14 +53,11 @@ export function throttle<T extends (...args: any[]) => any>(f: T, wait: number):
     return wrapper;
 }
 
-export async function backoff<T>(callback: () => Promise<T>, repeat?: number): Promise<T> {
+export async function backoff<T>(callback: () => Promise<T>): Promise<T> {
     while (true) {
         try {
             return await callback();
         } catch (e) {
-            if (repeat !== undefined && !repeat--) {
-                throw (e);
-            }
             console.warn(e);
             await delay(1000);
         }
