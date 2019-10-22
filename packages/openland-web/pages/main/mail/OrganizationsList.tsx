@@ -6,7 +6,6 @@ import {
     Organization_organization,
     OrganizationWithoutMembersFragment,
 } from 'openland-api/Types';
-import { XLoader } from 'openland-x/XLoader';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import CheckIcon from 'openland-icons/check-form.svg';
 import { useClient } from 'openland-web/utils/useClient';
@@ -14,9 +13,9 @@ import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 interface OrganizationItemProps {
     organization:
-    | MyOrganizations_myOrganizations
-    | Organization_organization
-    | OrganizationWithoutMembersFragment;
+        | MyOrganizations_myOrganizations
+        | Organization_organization
+        | OrganizationWithoutMembersFragment;
     onSelect: (v: string) => void;
     isSelected: boolean;
 }
@@ -82,23 +81,9 @@ const SelectOrganizationWrapperClassName = css`
 const InOtherOrganization = (props: { inOrgId: string }) => {
     const client = useClient();
     const data = client.useOrganizationWithoutMembers({ organizationId: props.inOrgId });
-    if (!data.organization) {
-        return (
-            <XView
-                flexShrink={0}
-                flexGrow={1}
-                flexDirection="column"
-                justifyContent="center"
-                marginTop={40}
-            >
-                <XLoader size="small" />
-            </XView>
-        );
-    }
-
     return (
         <XView flexShrink={1} flexGrow={1} flexDirection="column">
-            <XView fontSize={18} fontWeight="600" marginBottom={20} marginTop={40} paddingLeft={16}>
+            <XView fontSize={18} fontWeight="600" marginBottom={20} marginTop={20} paddingLeft={16}>
                 Share with
             </XView>
             <div className={SelectOrganizationWrapperClassName}>
@@ -112,31 +97,17 @@ const InOtherOrganization = (props: { inOrgId: string }) => {
     );
 };
 
-export const OrganizationsList = ({
-    onChange,
-    value,
-    inOrgId = null,
-}: {
+interface OrganizationsListProps {
     onChange: (v: string) => void;
     value: string | null;
     inOrgId?: string | null;
-}) => {
+}
+
+export const OrganizationsList = ({ onChange, value, inOrgId = null }: OrganizationsListProps) => {
     const client = useClient();
-    const orgs = client.useWithoutLoaderMyOrganizations();
+    const orgs = client.useMyOrganizations();
     const userContext = React.useContext(UserInfoContext);
-    if (!orgs) {
-        return (
-            <XView
-                flexShrink={0}
-                flexGrow={1}
-                flexDirection="column"
-                justifyContent="center"
-                marginTop={40}
-            >
-                <XLoader />
-            </XView>
-        );
-    }
+
     let primaryOrganizationId = '';
     if (userContext && userContext.organization) {
         primaryOrganizationId = userContext.organization.id;
@@ -156,42 +127,44 @@ export const OrganizationsList = ({
 
     return (
         <XView flexShrink={1} flexGrow={1} flexDirection="column">
-            <XView fontSize={18} fontWeight="600" marginBottom={20} marginTop={40} paddingLeft={16}>
+            <XView fontSize={18} fontWeight="600" marginBottom={20} marginTop={20} paddingLeft={16}>
                 Share with
             </XView>
             <div className={SelectOrganizationWrapperClassName}>
-                {inOrgId && selectedOrg && (
-                    <OrganizationItem
-                        organization={selectedOrg}
-                        onSelect={onChange}
-                        isSelected={value ? value === inOrgId : primaryOrganizationId === inOrgId}
-                    />
-                )}
-                {!inOrgId && primaryOrg && (
-                    <OrganizationItem
-                        organization={primaryOrg}
-                        onSelect={onChange}
-                        isSelected={value ? value === primaryOrganizationId : true}
-                    />
-                )}
-                {orgs.myOrganizations
-                    .sort((a, b) => a.name.localeCompare(b.name))
-                    .map(i => {
-                        if (inOrgId && i.id === inOrgId) {
-                            return;
-                        }
-                        if (primaryOrganizationId === i.id && !inOrgId) {
-                            return;
-                        }
-                        return (
-                            <OrganizationItem
-                                organization={i}
-                                key={'org_' + i.id}
-                                onSelect={onChange}
-                                isSelected={value ? value === i.id : primaryOrganizationId === i.id}
-                            />
-                        );
-                    })}
+                {inOrgId &&
+                    selectedOrg && (
+                        <OrganizationItem
+                            organization={selectedOrg}
+                            onSelect={onChange}
+                            isSelected={
+                                value ? value === inOrgId : primaryOrganizationId === inOrgId
+                            }
+                        />
+                    )}
+                {!inOrgId &&
+                    primaryOrg && (
+                        <OrganizationItem
+                            organization={primaryOrg}
+                            onSelect={onChange}
+                            isSelected={value ? value === primaryOrganizationId : true}
+                        />
+                    )}
+                {orgs.myOrganizations.sort((a, b) => a.name.localeCompare(b.name)).map(i => {
+                    if (inOrgId && i.id === inOrgId) {
+                        return;
+                    }
+                    if (primaryOrganizationId === i.id && !inOrgId) {
+                        return;
+                    }
+                    return (
+                        <OrganizationItem
+                            organization={i}
+                            key={'org_' + i.id}
+                            onSelect={onChange}
+                            isSelected={value ? value === i.id : primaryOrganizationId === i.id}
+                        />
+                    );
+                })}
             </div>
         </XView>
     );

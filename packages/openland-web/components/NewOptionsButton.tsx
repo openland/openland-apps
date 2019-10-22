@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -12,14 +12,14 @@ import PlusIcon from 'openland-icons/ic-add.svg';
 import NotificationIcon from 'openland-icons/s/ic-notifications-24.svg';
 import { useWithWidth } from '../hooks/useWithWidth';
 import XPopper from 'openland-x/XPopper';
-import { showCreateGroupModal } from 'openland-web/fragments/chat/showCreateGroupModal';
-import { showCreateOrganization } from 'openland-web/fragments/org/showCreateOrganization';
 import { UIconButton } from './unicorn/UIconButton';
 
 const dotClass = css`
     position: absolute;
-    top: 11px; right: 14px;
-    width: 10px; height: 10px;
+    top: 11px;
+    right: 14px;
+    width: 10px;
+    height: 10px;
     border-radius: 5px;
     border: 2px solid var(--backgroundPrimary);
     background-color: var(--accentNegative);
@@ -36,18 +36,15 @@ const wrapperClass = css`
 
 export const NotificationsButton = React.memo(() => {
     const client = useClient();
-    const notificationsCenter = client.useWithoutLoaderMyNotificationCenter({ fetchPolicy: 'network-only' });
+    const notificationsCenter = client.useWithoutLoaderMyNotificationCenter({
+        fetchPolicy: 'network-only',
+    });
 
     return (
         <div className={wrapperClass}>
-            <UIconButton
-                path="/notifications"
-                icon={<NotificationIcon />}
-                size="large"
-            />
-            {notificationsCenter && !!notificationsCenter.myNotificationCenter.unread && (
-                <div className={dotClass} />
-            )}
+            <UIconButton path="/notifications" icon={<NotificationIcon />} size="large" />
+            {notificationsCenter &&
+                !!notificationsCenter.myNotificationCenter.unread && <div className={dotClass} />}
         </div>
     );
 });
@@ -63,7 +60,7 @@ const textClassName = css`
     letter-spacing: 0.02px;
 `;
 
-export const IconWithBackground = (props: { children: any }) => (
+const IconWithBackground = (props: { children: any }) => (
     <XView
         flexDirection="row"
         alignItems="center"
@@ -73,13 +70,11 @@ export const IconWithBackground = (props: { children: any }) => (
         backgroundColor="rgba(23, 144, 255, 0.1)"
         borderRadius={70}
     >
-        <div className={iconWrapperClass}>
-            {props.children}
-        </div>
+        <div className={iconWrapperClass}>{props.children}</div>
     </XView>
 );
 
-export const Item = ({
+const Item = ({
     title,
     description,
     href,
@@ -97,11 +92,7 @@ export const Item = ({
             onClick={onClick}
             path={href}
             customContent={true}
-            icon={
-                <XView alignSelf="flex-start">
-                    {icon}
-                </XView>
-            }
+            icon={<XView alignSelf="flex-start">{icon}</XView>}
         >
             <XView
                 paddingTop={10}
@@ -123,50 +114,65 @@ export const Item = ({
     );
 };
 
-export const NewOptionsMenu = React.memo(() => (
-    <>
-        <Item
-            onClick={() => showCreateGroupModal('group')}
-            icon={
-                <IconWithBackground>
-                    <CellRoomIcon />
-                </IconWithBackground>
-            }
-            title="New group"
-            description="Chat where everyone can write"
-        />
-        <Item
-            onClick={() => showCreateGroupModal('channel')}
-            icon={
-                <IconWithBackground>
-                    <CreateChannelIcon />
-                </IconWithBackground>
-            }
-            title="New channel"
-            description="Chat where you write, others comment"
-        />
-        <Item
-            onClick={() => showCreateOrganization('community')}
-            icon={
-                <IconWithBackground>
-                    <CreateCommunityIcon />
-                </IconWithBackground>
-            }
-            title="New community"
-            description="A hub for chats for the same audience"
-        />
-        <Item
-            onClick={() => showCreateOrganization('organization')}
-            icon={
-                <IconWithBackground>
-                    <OrganizationIcon />
-                </IconWithBackground>
-            }
-            title="New organization"
-            description="A hub for chats with your teammates"
-        />
-    </>
-));
+const NewOptionsMenu = React.memo((props: { toggle: () => void }) => {
+    const router = React.useContext(XViewRouterContext)!;
+    return (
+        <>
+            <Item
+                onClick={() => {
+                    router.navigate('/new/group');
+                    props.toggle();
+                }}
+                icon={
+                    <IconWithBackground>
+                        <CellRoomIcon />
+                    </IconWithBackground>
+                }
+                title="New group"
+                description="Chat where everyone can write"
+            />
+            <Item
+                onClick={() => {
+                    router.navigate('/new/channel');
+                    props.toggle();
+                }}
+                icon={
+                    <IconWithBackground>
+                        <CreateChannelIcon />
+                    </IconWithBackground>
+                }
+                title="New channel"
+                description="Chat where you write, others comment"
+            />
+            <Item
+                onClick={() => {
+                    router.navigate('/new/community');
+                    props.toggle();
+                }}
+                icon={
+                    <IconWithBackground>
+                        <CreateCommunityIcon />
+                    </IconWithBackground>
+                }
+                title="New community"
+                description="A hub for chats for the same audience"
+            />
+            <Item
+                onClick={() => {
+                    router.navigate('/new/organization');
+                    props.toggle();
+                }}
+                icon={
+                    <IconWithBackground>
+                        <OrganizationIcon />
+                    </IconWithBackground>
+                }
+                title="New organization"
+                description="A hub for chats with your teammates"
+            />
+        </>
+    );
+});
 
 export const NewOptionsButton = XMemo(() => {
     const [show, setShow] = React.useState(false);
@@ -200,7 +206,7 @@ export const NewOptionsButton = XMemo(() => {
             marginRight={marginRight}
             arrow={null}
             onClickOutside={closer}
-            content={<NewOptionsMenu />}
+            content={<NewOptionsMenu toggle={toggle} />}
         >
             <div onClick={toggle}>
                 <UIconButton icon={<PlusIcon />} size="large" />
