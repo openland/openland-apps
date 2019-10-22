@@ -49,8 +49,8 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
         />
     )
 
-    private renderLoading = () => (
-        <View height={56} alignItems="center" justifyContent="center">
+    private renderLoading = (completed: boolean) => (
+        <View height={56} alignItems="center" justifyContent="center" opacity={completed ? 0 : 1}>
             <LoaderSpinner />
         </View>
     )

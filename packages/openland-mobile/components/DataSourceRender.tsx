@@ -7,7 +7,8 @@ import { NativeSyntheticEvent, NativeScrollEvent, ScrollView } from 'react-nativ
 export interface DataSourceRenderProps<T extends DataSourceItem> {
     dataSource: ReadableDataSource<T>;
     renderItem: React.ComponentClass<{ item: T }> | React.StatelessComponent<{ item: T }>;
-    renderLoading: React.ComponentClass<any> | React.StatelessComponent<any>;
+    renderLoading: (completed: boolean) => JSX.Element | null;
+    renderLoadingForward?: (completed: boolean) => JSX.Element | null;
     renderEmpty: () => JSX.Element;
     loadingHeight?: number;
     scrollRef?: React.RefObject<ScrollView>;
@@ -16,7 +17,7 @@ export interface DataSourceRenderProps<T extends DataSourceItem> {
 export const DataSourceRender = React.memo(function <T extends DataSourceItem>(
     props: DataSourceRenderProps<T>,
 ) {
-    const { dataSource, renderEmpty, loadingHeight = 200, scrollRef } = props;
+    const { dataSource, renderEmpty, loadingHeight = 200, scrollRef, renderLoading, renderLoadingForward } = props;
     let [items, completed, completedForward] = useDataSource(dataSource);
 
     const needMore = React.useMemo(
@@ -51,9 +52,9 @@ export const DataSourceRender = React.memo(function <T extends DataSourceItem>(
 
     return (
         <SScrollView onScrollListener={onScroll} scrollRef={scrollRef}>
-            {!completedForward && <props.renderLoading />}
+            {(typeof renderLoadingForward !== 'undefined') && renderLoadingForward(completedForward)}
             {renderedItems}
-            {!completed && <props.renderLoading />}
+            {renderLoading(completed)}
         </SScrollView>
     );
 });
