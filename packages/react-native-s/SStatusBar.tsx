@@ -9,6 +9,12 @@ class SStatusBarImpl {
             } else {
                 Native.setStatusBarColor('dark');
             }
+        } else if (Platform.OS === 'ios') {
+            if (style === 'default' || style === 'dark-content') {
+                Native.setStatusBarDarkContent();
+            } else {
+                Native.setStatusBarLightContent();
+            }
         } else {
             StatusBar.setBarStyle(style);
         }

@@ -73,14 +73,12 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
 
 const AppContainer = React.memo<{ children?: any, loading: boolean, onLayout?: (e: LayoutChangeEvent) => void }>((props) => {
     return (
-        <ThemeProvider>
-            <View style={{ width: '100%', height: '100%' }} onLayout={props.onLayout}>
-                {props.children}
-                <ZModalProvider />
-                <BottomSheetProvider />
-                <AppPlaceholder loading={props.loading} />
-            </View>
-        </ThemeProvider>
+        <View style={{ width: '100%', height: '100%' }} onLayout={props.onLayout}>
+            {props.children}
+            <ZModalProvider />
+            <BottomSheetProvider />
+            <AppPlaceholder loading={props.loading} />
+        </View>
     );
 });
 
@@ -282,9 +280,11 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         }
 
         return (
-            <AppContainer loading={loading} onLayout={this.handleLayoutChange}>
-                {content}
-            </AppContainer>
+            <ThemeProvider>
+                <AppContainer loading={loading} onLayout={this.handleLayoutChange}>
+                    {content}
+                </AppContainer>
+            </ThemeProvider>
         );
     }
 }
