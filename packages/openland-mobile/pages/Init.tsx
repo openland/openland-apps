@@ -15,7 +15,7 @@ import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
 import { resolveInternalLink, saveLinkIfInvite, joinInviteIfHave } from '../utils/resolveInternalLink';
 import { ZModalProvider } from 'openland-mobile/components/ZModal';
 import Alert from 'openland-mobile/components/AlertBlanket';
-import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
+import { ThemeProvider, useTheme } from 'openland-mobile/themes/ThemeContext';
 import { ThemePersister } from 'openland-mobile/themes/ThemePersister';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { NativeKeyValue } from 'openland-mobile/spacex/NativeKeyValue';
@@ -38,6 +38,7 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
             SAnimated.commitTransaction();
         }
     }, [props.loading]);
+    const theme = useTheme();
 
     return (
         <SAnimated.View
@@ -50,7 +51,7 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
                 right: 0,
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: Platform.OS !== 'android' ? '#fff' : undefined,
+                backgroundColor: Platform.OS !== 'android' ? theme.backgroundPrimary : undefined,
                 opacity: 1
             }}
             pointerEvents={props.loading ? 'box-none' : 'none'}
