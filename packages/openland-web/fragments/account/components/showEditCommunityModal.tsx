@@ -6,7 +6,6 @@ import { useClient } from 'openland-web/utils/useClient';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalController } from 'openland-x/showModal';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { CommunityType } from '../../create/CreateEntity';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
@@ -18,6 +17,11 @@ import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { USelectField } from 'openland-web/components/unicorn/USelect';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import { trackEvent } from 'openland-x-analytics';
+
+enum CommunityType {
+    COMMUNITY_PUBLIC = 'COMMUNITY_PUBLIC',
+    COMMUNITY_PRIVATE = 'COMMUNITY_PRIVATE',
+}
 
 interface AdminToolsProps {
     id: string;

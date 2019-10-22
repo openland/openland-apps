@@ -26,6 +26,8 @@ import { MatchmakingCreatedFragment } from 'openland-web/fragments/matchmaking/M
 import { MatchmakingUsersFragment } from 'openland-web/fragments/matchmaking/MatchmakingUsersFragment';
 import { MatchmakingAppFragment } from 'openland-web/fragments/matchmaking/MatchmakingAppFragment';
 import { FeedItemFragment } from 'openland-web/fragments/feed/FeedItemFragment';
+import { CreateEntityFragment } from 'openland-web/fragments/create/CreateEntityFragment';
+import { ExplorePeopleFragment } from 'openland-web/fragments/create/ExploreFragment';
 
 const routing = new URouting();
 
@@ -43,6 +45,13 @@ routing.addRoute('/message/:messageId/comment/:commentId', () => MessageFragment
 
 // Notifications
 routing.addRoute('/notifications', () => NotificationsFragment);
+
+// Creating
+
+routing.addRoute('/new/:type', () => CreateEntityFragment);
+routing.addRoute('/new/:type/in/:id', () => CreateEntityFragment);
+routing.addRoute('/new/:type/explore', () => ExplorePeopleFragment);
+routing.addRoute('/new/:type/in/:id/explore', () => ExplorePeopleFragment);
 
 // Discover
 routing.addRoute('/feed', () => FeedFragment);

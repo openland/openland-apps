@@ -4,6 +4,7 @@ import { ConversationEngine, DataSourceMessageItem } from './messenger/Conversat
 import { GlobalStateEngine } from './messenger/GlobalStateEngine';
 import { UserShort, ChatUpdateFragment_ChatMessageReceived } from 'openland-api/Types';
 import { NotificationsEngine } from './NotificationsEngine';
+import { CreateEntityEngine } from './createEntity/CreateEntityState';
 import { NotificationCenterEngine } from './NotificationCenterEngine';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { TypingEngine, TypingsWatcher } from './messenger/Typings';
@@ -35,6 +36,7 @@ export class MessengerEngine {
     readonly userStorage: UserStorageEngine;
     readonly options: EngineOptions;
     readonly forwardBuffer = new Map<string, DataSourceMessageItem[]>();
+    private readonly createEntityState: CreateEntityEngine;
     private readonly activeConversations = new Map<string, ConversationEngine>();
     private readonly activeUserConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number; unread: number }>();
@@ -67,6 +69,9 @@ export class MessengerEngine {
 
         this.global = new GlobalStateEngine(this);
         this.sender = new MessageSender(client);
+
+        // Create entity
+        this.createEntityState = new CreateEntityEngine();
 
         // Visibility
         AppVisibility.watch(this.handleVisibleChanged);
@@ -125,6 +130,10 @@ export class MessengerEngine {
     handleNewMessage = (message: ChatUpdateFragment_ChatMessageReceived, cid: string) => {
         this.typingsWatcher.clearTyping(cid, message.message.sender.id);
         this.dialogList.handleChatNewMessage(message, cid);
+    }
+
+    getEntityState() {
+        return this.createEntityState;
     }
 
     getConversation(conversationId: string) {
