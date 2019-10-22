@@ -5,7 +5,7 @@ import { PageProps } from 'openland-mobile/components/PageProps';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ThemeController } from 'openland-mobile/themes/ThemeControler';
-import { ThemeGlobalKind, ThemeGlobalType, getAccentByType, AccentGlobalType } from 'openland-y-utils/themes/ThemeGlobal';
+import { ThemeGlobalKind, ThemeGlobalType, AccentGlobalType } from 'openland-y-utils/themes/ThemeGlobal';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { ThemeContext, resolveTheme } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
@@ -13,7 +13,7 @@ import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 const ThemeItem = React.memo((props: { type: ThemeGlobalType, checked: boolean, onPress: () => void }) => {
     const theme = React.useContext(ThemeContext);
     const { type, checked, onPress } = props;
-    const themeObject = resolveTheme([type, theme.accentType]);
+    const themeObject = resolveTheme({ theme: type, accent: theme.accentType });
 
     const primaryColor = checked ? theme.outgoingBackgroundPrimary : themeObject.outgoingBackgroundPrimary;
     const secondaryColor = checked ? theme.incomingBackgroundPrimary : themeObject.incomingBackgroundPrimary;
@@ -64,6 +64,8 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
         }, 10);
     }, []);
 
+    const accents: AccentGlobalType[] = ['Default', ...theme.supportedAccents];
+
     return (
         <>
             <SHeader title="Appearance" />
@@ -73,34 +75,26 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                         <ThemeItem
                             type="Light"
                             checked={theme.type === 'Light'}
-                            onPress={() => handleChange(['Light', theme.accentType])}
+                            onPress={() => handleChange({ theme: 'Light' })}
                         />
                         <ThemeItem
                             type="Dark"
                             checked={theme.type === 'Dark'}
-                            onPress={() => handleChange(['Dark', theme.accentType])}
+                            onPress={() => handleChange({ theme: 'Dark' })}
                         />
                     </View>
                 </ZListGroup>
 
                 <ZListGroup header="Accent">
                     <View flexDirection="row" justifyContent="flex-start" flexWrap="wrap">
-                        {['Default' as AccentGlobalType, ...theme.supportedAccents].map(accent => {
-                            const resolvedAccent = getAccentByType(accent, theme.type);
-
-                            if (resolvedAccent) {
-                                return (
-                                    <AccentCircle
-                                        key={`${theme.type}-${accent}`}
-                                        onPress={() => handleChange([theme.type, accent])}
-                                        color={resolvedAccent.accentPrimary}
-                                        checked={theme.accentType === accent}
-                                    />
-                                );
-                            }
-
-                            return null;
-                        })}
+                        {accents.map(accent => (
+                            <AccentCircle
+                                key={`${theme.type}-${accent}`}
+                                onPress={() => handleChange({ theme: theme.type, accent })}
+                                color={resolveTheme({ theme: theme.type, accent }).accentPrimary}
+                                checked={theme.accentType === accent}
+                            />
+                        ))}
                     </View>
                 </ZListGroup>
             </SScrollView>

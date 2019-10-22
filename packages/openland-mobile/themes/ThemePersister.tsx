@@ -19,10 +19,10 @@ class ThemePersisterImpl {
             resolvedAccentType = storageAccentType;
         }
 
-        ThemeController.theme = [resolvedThemeType, resolvedAccentType];
+        ThemeController.theme = { theme: resolvedThemeType, accent: resolvedAccentType };
         ThemeController.watch((theme) => {
-            AsyncStorage.setItem('app.theme.2', theme[0]);
-            AsyncStorage.setItem('app.accent.2', theme[1]);
+            AsyncStorage.setItem('app.theme.2', theme.theme);
+            AsyncStorage.setItem('app.accent.2', theme.accent || 'Default');
         });
     }
 }

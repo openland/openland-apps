@@ -4,7 +4,10 @@ import { AccentRed, AccentOrange, AccentGrey, AccentGreen, AccentBlue, AccentPur
 
 export type ThemeGlobalType = 'Light' | 'Dark';
 export type AccentGlobalType = 'Default' | 'Red' | 'Orange' | 'Green' | 'Cyan' | 'Blue' | 'Purple' | 'Pink' | 'Grey';
-export type ThemeGlobalKind = [ThemeGlobalType, AccentGlobalType];
+export type ThemeGlobalKind = {
+    theme: ThemeGlobalType,
+    accent?: AccentGlobalType
+};
 
 export type ThemeGlobal = {
     type: ThemeGlobalType;
@@ -125,7 +128,7 @@ export const getThemeByType = (type: ThemeGlobalType) => {
     }
 };
 
-export const getAccentByType = (type: AccentGlobalType, theme?: ThemeGlobalType) => {
+export const getAccentByType = (type: AccentGlobalType) => {
     if (type === 'Red') {
         return AccentRed;
     } else if (type === 'Orange') {
@@ -143,12 +146,6 @@ export const getAccentByType = (type: AccentGlobalType, theme?: ThemeGlobalType)
     } else if (type === 'Grey') {
         return AccentGrey;
     } else {
-        if (theme === 'Light') {
-            return ThemeLight as AccentGlobal;
-        } else if (theme === 'Dark') {
-            return ThemeDark as AccentGlobal;
-        }
-
         return undefined;
     }
 };

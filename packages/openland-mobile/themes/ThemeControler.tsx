@@ -1,7 +1,7 @@
-import { ThemeGlobalKind } from 'openland-y-utils/themes/ThemeGlobal';
+import { ThemeGlobalKind, getThemeByType } from 'openland-y-utils/themes/ThemeGlobal';
 
 class ThemeControllerImpl {
-    private _theme: ThemeGlobalKind = ['Light', 'Default'];
+    private _theme: ThemeGlobalKind = { theme: 'Light', accent: 'Default' };
     private _watchers: ((theme: ThemeGlobalKind) => void)[] = [];
 
     get theme(): ThemeGlobalKind {
@@ -9,9 +9,19 @@ class ThemeControllerImpl {
     }
 
     set theme(theme: ThemeGlobalKind) {
-        this._theme = theme;
+        if (!theme.accent) {
+            const resolvedThemeObject = getThemeByType(theme.theme);
+            const resolvedAccentType = this._theme.accent || 'Default';
+
+            this._theme = {
+                theme: theme.theme,
+                accent: resolvedThemeObject.supportedAccents.includes(resolvedAccentType) ? resolvedAccentType : 'Default'
+            };
+        } else {
+            this._theme = theme;
+        }
         for (let w of this._watchers) {
-            w(theme);
+            w(this._theme);
         }
     }
 

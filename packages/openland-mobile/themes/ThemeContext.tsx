@@ -11,13 +11,13 @@ export function resolveTheme(theme: ThemeGlobalKind): ThemeGlobal {
     let resolvedThemeType: ThemeGlobalType = 'Light';
     let resolvedAccentType: AccentGlobalType = 'Default';
 
-    if (theme[0] === 'Light' || theme[0] === 'Dark') {
-        resolvedThemeType = theme[0];
+    if (theme.theme === 'Light' || theme.theme === 'Dark') {
+        resolvedThemeType = theme.theme;
     }
 
     const resolvedThemeObject = getThemeByType(resolvedThemeType);
-    if (resolvedThemeObject.supportedAccents.includes(theme[1])) {
-        resolvedAccentType = theme[1];
+    if (theme.accent && resolvedThemeObject.supportedAccents.includes(theme.accent)) {
+        resolvedAccentType = theme.accent;
     }
 
     const resolvedAccentObject = getAccentByType(resolvedAccentType);
