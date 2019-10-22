@@ -39,7 +39,7 @@ export function ASAvatar(props: ASAvatarProps) {
 
     if (props.src && !props.src.startsWith('ph://')) {
         let url = props.src;
-        url += '-/scale_crop/' + 256 + 'x' + 256 + '/center/';
+        url += '-/scale_crop/' + 256 + 'x' + 256 + '/center/-/format/jpeg/';
 
         const border = getBorder(props.size);
 

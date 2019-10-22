@@ -12,7 +12,7 @@ const ModalPic = Glamorous(XCloudImage)({
 export const showAvatarModal = (photo: string) => {
     showModalBox({ width: 512 }, ctx => (
         <ModalPic
-            srcCloud={photo.includes('ucarecdn') ? photo : `https://ucarecdn.com/${photo}/`}
+            srcCloud={photo.includes('ucarecdn') ? photo : `https://ucarecdn.com/${photo}/-/format/jpeg/`}
             resize={'fill'}
             width={512}
             height={512}

@@ -10,7 +10,7 @@ function buildBaseImageUrl(source?: { uuid: string, crop?: { x: number, y: numbe
     if (source.crop) {
         res += `-/crop/${source.crop.w}x${source.crop.h}/${source.crop.x},${source.crop.y}/`;
     }
-    return res;
+    return res + `-/format/jpeg/`;
 }
 
 export interface ZImageProps {
@@ -44,7 +44,7 @@ export class ZImage extends React.Component<ZImageProps> {
         if (baseUrl && baseUrl.startsWith('https://ucarecdn.com/') && this.props.resize !== 'none') {
             let w = this.props.imageSize ? this.props.imageSize.width : PixelRatio.getPixelSizeForLayoutSize(this.props.width);
             let h = this.props.imageSize ? this.props.imageSize.height : PixelRatio.getPixelSizeForLayoutSize(this.props.height);
-            url += '-/scale_crop/' + w + 'x' + h + '/center/';
+            url += '-/scale_crop/' + w + 'x' + h + '/center/-/format/jpeg/';
             if (PixelRatio.get() > 2 && !this.props.imageSize) {
                 url += '-/quality/lighter/-/progressive/yes/';
             }

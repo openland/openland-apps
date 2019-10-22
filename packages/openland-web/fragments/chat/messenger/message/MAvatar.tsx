@@ -79,9 +79,9 @@ const imageWrapper = css`
 `;
 
 const AvatarImage = React.memo((props: { photo: string }) => {
-    let ops = '-/format/auto/-/scale_crop/40x40/center/-/quality/best/-/progressive/yes/';
+    let ops = '-/format/auto/-/scale_crop/40x40/center/-/quality/best/-/format/jpeg/-/progressive/yes/';
     let opsRetina =
-        '-/format/auto/-/scale_crop/80x80/center/-/quality/best/-/progressive/yes/ 2x';
+        '-/format/auto/-/scale_crop/80x80/center/-/quality/best/-/format/jpeg/-/progressive/yes/ 2x';
 
     return (
         <div className={imageWrapper}>
