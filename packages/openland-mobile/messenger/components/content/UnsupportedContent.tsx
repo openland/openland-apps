@@ -21,8 +21,10 @@ export const UnsupportedContent = React.memo((props: UnsupportedContentProps) =>
     const { message, theme } = props;
     const { isOut, attachTop, attachBottom, } = message;
 
+    const bubbleBackgroundPrimary = message.isOut ? theme.outgoingBackgroundPrimary : theme.incomingBackgroundPrimary;
+
     return (
-        <AsyncBubbleView key="message-unsupported" isOut={isOut} attachTop={attachTop} attachBottom={attachBottom} color={theme.bubble(isOut).backgroundPrimary}>
+        <AsyncBubbleView key="message-unsupported" isOut={isOut} attachTop={attachTop} attachBottom={attachBottom} color={bubbleBackgroundPrimary}>
             <ASFlex overlay={true} flexGrow={1} alignItems="center">
                 <ASText marginLeft={Platform.OS === 'ios' ? 15 : 2} fontSize={30}>{randomEmptyPlaceholderEmoji()}</ASText>
             </ASFlex>

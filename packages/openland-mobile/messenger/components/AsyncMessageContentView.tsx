@@ -39,8 +39,11 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
     const SpanView = (props: { span: Span, children?: any }) => {
         const { span, children } = props;
 
+        const bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
+        const bubbleBackgroundSecondary = message.isOut ? theme.outgoingBackgroundSecondary : theme.incomingBackgroundSecondary;
+
         let linkColor: string | undefined = message.isOut ? theme.foregroundContrast : theme.accentPrimary;
-        let linkTextDecoration: 'underline' | 'none' = linkColor === theme.bubble(message.isOut).foregroundPrimary ? 'underline' : 'none';
+        let linkTextDecoration: 'underline' | 'none' = linkColor === bubbleForegroundPrimary ? 'underline' : 'none';
 
         if (!!message.isService) {
             linkColor = undefined;
@@ -64,11 +67,11 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'code_block') {
             return <ASText key={'code-block'} fontType="monospace">{children}</ASText>;
         } else if (span.type === 'code_inline') {
-            return <ASText key={'code-inline'} fontType="monospace" fontSize={14} backgroundColor={theme.bubble(message.isOut).backgroundSecondary}>{'\u2005'}{children}{'\u2005'}</ASText>;
+            return <ASText key={'code-inline'} fontType="monospace" fontSize={14} backgroundColor={bubbleBackgroundSecondary}>{'\u2005'}{children}{'\u2005'}</ASText>;
         } else if (span.type === 'insane') {
             return <ASText key={'insane'}>{children}</ASText>;
         } else if (span.type === 'irony') {
-            return <ASText key={'irony'} fontStyle="italic" backgroundColor={theme.bubble(message.isOut).backgroundSecondary}>{'\u2009'}{children}{'\u2009'}</ASText>;
+            return <ASText key={'irony'} fontStyle="italic" backgroundColor={bubbleBackgroundSecondary}>{'\u2009'}{children}{'\u2009'}</ASText>;
         } else if (span.type === 'italic') {
             return <ASText key={'italic'} fontStyle="italic">{children}</ASText>;
         } else if (span.type === 'loud') {
@@ -206,6 +209,10 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
     // sorry
     const shiftMeta = !!(!bottomContent.length && (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment' && a.keyboard).length);
     const meta = <MetaInfoIndicator type={isImageBottom ? 'media' : 'default'} message={message} theme={theme} />;
+
+    const bubbleBackgroundPrimary = message.isOut ? theme.outgoingBackgroundPrimary : theme.incomingBackgroundPrimary;
+    const bubbleBackgroundSecondary = message.isOut ? theme.outgoingBackgroundSecondary : theme.incomingBackgroundSecondary;
+
     return (
         <ASFlex flexDirection="column" alignItems="stretch">
             <AsyncBubbleView
@@ -213,7 +220,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                 isOut={isOut}
                 attachTop={attachTop}
                 attachBottom={attachBottom}
-                color={theme.bubble(isOut).backgroundPrimary}
+                color={bubbleBackgroundPrimary}
                 hasAfter={!!(bottomContent && bottomContent.length)}
             >
                 <ASFlex flexDirection="column" alignItems="stretch">
@@ -231,7 +238,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                     isOut={isOut}
                     attachTop={attachTop}
                     attachBottom={attachBottom}
-                    color={theme.bubble(isOut).backgroundSecondary}
+                    color={bubbleBackgroundSecondary}
                     hasBefore={!!(topContent && topContent.length)}
                 >
                     {bottomContent}

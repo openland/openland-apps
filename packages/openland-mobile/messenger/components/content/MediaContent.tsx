@@ -135,6 +135,8 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
         const viewWidth = isSingle ? Math.max(layout.width, IMAGE_MIN_SIZE) : undefined;
         const viewHeight = Math.max(layout.height, IMAGE_MIN_SIZE);
 
+        const bubbleBackgroundSecondary = message.isOut ? theme.outgoingBackgroundSecondary : theme.incomingBackgroundSecondary;
+
         return (
             <ASFlex
                 flexDirection="column"
@@ -144,7 +146,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 marginLeft={compensateBubble ? -contentInsetsHorizontal : undefined}
                 marginRight={compensateBubble ? -contentInsetsHorizontal : undefined}
                 marginBottom={compensateBubble ? (isSingle || !hasBottomContent ? -contentInsetsBottom : 8) : undefined}
-                backgroundColor={isSingle ? theme.backgroundTertiary : theme.bubble(message.isOut).backgroundSecondary}
+                backgroundColor={isSingle ? theme.backgroundTertiary : bubbleBackgroundSecondary}
                 alignItems="center"
                 justifyContent="center"
                 onPress={Platform.OS === 'android' ? this.handlePress : undefined}

@@ -38,6 +38,9 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
             lineBackgroundPatch = Image.resolveAssetSource(image);
         }
 
+        const bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
+        const bubbleForegroundTertiary = message.isOut ? theme.outgoingForegroundTertiary : theme.incomingForegroundTertiary;
+
         return (
             <>
                 {message.reply && (
@@ -50,14 +53,14 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                             const sticker = m.sticker && m.sticker.__typename === 'ImageSticker' ? m.sticker : undefined;
 
                             return (
-                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={theme.bubble(message.isOut).foregroundTertiary}>
+                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={bubbleForegroundTertiary}>
                                     <ASText
                                         key={'reply-author-' + m.id}
                                         marginTop={-2}
                                         height={15}
                                         lineHeight={15}
                                         marginLeft={10}
-                                        color={theme.bubble(message.isOut).foregroundPrimary}
+                                        color={bubbleForegroundPrimary}
                                         letterSpacing={0}
                                         fontSize={13}
                                         onPress={() => this.props.onUserPress(repliedMessage!.sender.id)}
@@ -113,7 +116,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                             );
                         } else {
                             return (
-                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={theme.bubble(message.isOut).foregroundTertiary}>
+                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={bubbleForegroundTertiary}>
                                     {m.textSpans.length > 0 && (
                                         <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10}>
                                             <RenderSpans

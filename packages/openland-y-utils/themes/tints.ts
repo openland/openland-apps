@@ -62,3 +62,10 @@ export const TintInverted: TintGlobal = {
     active: 'rgba(255, 255, 255, 0.32)',
     secondary: 'rgba(255, 255, 255, 0.32)',
 };
+
+export const TintMono: TintGlobal = {
+    primary: '#242629',
+    hover: '#242629',
+    active: '#242629',
+    secondary: '#242629',
+};

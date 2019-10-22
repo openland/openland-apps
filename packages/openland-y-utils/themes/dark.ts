@@ -1,18 +1,10 @@
-import { ThemeGlobal, TintGlobal, ThemeGlobalKind } from './ThemeGlobal';
-import { TintBlue, TintGreen, TintRed, TintOrange, TintCyan, TintPurple, TintInverted, TintPink } from './tints';
-
-const buildBubbleColor = (tint: TintGlobal, isOut: boolean) => ({
-    backgroundPrimary: isOut ? tint.primary : '#242629',
-    backgroundSecondary: isOut ? tint.secondary : '#2E3033',
-
-    foregroundPrimary: isOut ? '#FFFFFF' : '#FFFFFF',
-    foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#55575C',
-    foregroundTertiary: isOut ? 'rgba(255, 255, 255, 0.36)' : '#55575C',
-});
+import { ThemeGlobal } from './ThemeGlobal';
+import { TintGreen, TintRed, TintInverted, TintMono } from './tints';
 
 export const ThemeDark: ThemeGlobal = {
     type: 'Dark',
-    kind: 'Dark',
+    accentType: 'Default',
+    supportedAccents: ['Blue', 'Red', 'Orange', 'Green', 'Cyan', 'Pink', 'Purple'],
 
     transparent: 'rgba(0, 0, 0, 0)',
 
@@ -61,48 +53,29 @@ export const ThemeDark: ThemeGlobal = {
     overlayMedium: 'rgba(0, 0, 0, 0.48)',
     overlayLight: 'rgba(0, 0, 0, 0.24)',
 
-    tintRed: '#242629',
-    tintOrange: '#242629',
-    tintGreen: '#242629',
-    tintCyan: '#242629',
-    tintBlue: '#242629',
-    tintPurple: '#242629',
-    tintPink: '#242629',
-    tintGrey: '#242629',
+    tintRed: TintMono.primary,
+    tintOrange: TintMono.primary,
+    tintGreen: TintMono.primary,
+    tintCyan: TintMono.primary,
+    tintBlue: TintMono.primary,
+    tintPurple: TintMono.primary,
+    tintPink: TintMono.primary,
+    tintGrey: TintMono.primary,
     tintInverted: TintInverted.primary,
 
-    bubble: (isOut) => ({
-        backgroundPrimary: isOut ? '#4B4E52' : '#242629',
-        backgroundSecondary: isOut ? '#424447' : '#2E3033',
+    incomingBackgroundPrimary: '#242629',
+    incomingBackgroundSecondary: '#2E3033',
+    incomingForegroundPrimary: '#FFFFFF',
+    incomingForegroundSecondary: '#55575C',
+    incomingForegroundTertiary: '#55575C',
 
-        foregroundPrimary: isOut ? '#FFFFFF' : '#FFFFFF',
-        foregroundSecondary: isOut ? '#808185' : '#55575C',
-        foregroundTertiary: isOut ? '#808185' : '#55575C',
-    }),
+    outgoingBackgroundPrimary: '#4B4E52',
+    outgoingBackgroundSecondary: '#424447',
+    outgoingForegroundPrimary: '#FFFFFF',
+    outgoingForegroundSecondary: '#808185',
+    outgoingForegroundTertiary: '#808185',
 
     blurType: 'none',
     keyboardAppearance: 'dark',
     statusBar: 'light-content',
 };
-
-const buildTintedTheme: (kind: ThemeGlobalKind, tint: TintGlobal) => ThemeGlobal = (kind, tint) => ({
-    ...ThemeDark,
-
-    kind,
-
-    accentPrimary: tint.primary,
-    accentPrimaryHover: tint.hover,
-    accentPrimaryActive: tint.active,
-
-    foregroundInverted: '#FFFFFF',
-
-    bubble: (isOut) => buildBubbleColor(tint, isOut),
-});
-
-export const ThemeDarkBlue = buildTintedTheme('DarkBlue', TintBlue);
-export const ThemeDarkRed = buildTintedTheme('DarkRed', TintRed);
-export const ThemeDarkOrange = buildTintedTheme('DarkOrange', TintOrange);
-export const ThemeDarkGreen = buildTintedTheme('DarkGreen', TintGreen);
-export const ThemeDarkCyan = buildTintedTheme('DarkCyan', TintCyan);
-export const ThemeDarkPink = buildTintedTheme('DarkPink', TintPink);
-export const ThemeDarkPurple = buildTintedTheme('DarkPurple', TintPurple);

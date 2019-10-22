@@ -112,13 +112,16 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         }
 
         let maxWidth = this.props.maxWidth || ((imgLayout && !imgCompact) ? (imgLayout.width - contentInsetsHorizontal * 2) : (isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming));
-        return (
 
+        const bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
+        const bubbleForegroundSecondary = message.isOut ? theme.outgoingForegroundSecondary : theme.incomingForegroundSecondary;
+
+        return (
             <ASFlex flexDirection="column" alignItems="stretch" alignSelf="stretch">
                 {!!this.props.attach.titleLinkHostname && imgCompact && (
                     <ASText
                         maxWidth={maxWidth}
-                        color={theme.bubble(isOut).foregroundSecondary}
+                        color={bubbleForegroundSecondary}
                         fontSize={14}
                         numberOfLines={1}
                         fontWeight={FontStyles.Weight.Regular}
@@ -159,7 +162,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                 {!!this.props.attach.titleLinkHostname && !imgCompact && <ASText
                     marginTop={5}
                     maxWidth={maxWidth}
-                    color={theme.bubble(isOut).foregroundSecondary}
+                    color={bubbleForegroundSecondary}
                     fontSize={14}
                     numberOfLines={1}
                     fontWeight={FontStyles.Weight.Regular}
@@ -187,7 +190,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                     >
                         {!!this.props.attach.title && <ASText
                             maxWidth={maxWidth - 36}
-                            color={theme.bubble(isOut).foregroundPrimary}
+                            color={bubbleForegroundPrimary}
                             letterSpacing={0}
                             fontSize={14}
                             marginTop={Platform.OS === 'android' ? -4 : -1}
@@ -202,7 +205,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                         {!!subTitle && <ASText
                             marginTop={(Platform.OS === 'android' ? -4 : -1)}
                             maxWidth={maxWidth - 36}
-                            color={theme.bubble(isOut).foregroundPrimary}
+                            color={bubbleForegroundPrimary}
                             fontSize={14}
                             numberOfLines={1}
                             marginBottom={4}
@@ -216,7 +219,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
 
                 {!!text && <ASText
                     maxWidth={maxWidth}
-                    color={theme.bubble(isOut).foregroundPrimary}
+                    color={bubbleForegroundPrimary}
                     fontSize={14}
                     marginTop={this.imageCompact && imgLayout ? (subTitle ? 4 : -19) : 0}
                     marginBottom={4}

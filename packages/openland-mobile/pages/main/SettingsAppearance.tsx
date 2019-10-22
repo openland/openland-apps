@@ -5,43 +5,20 @@ import { PageProps } from 'openland-mobile/components/PageProps';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ThemeController } from 'openland-mobile/themes/ThemeControler';
-import { ThemeGlobalKind, ThemeGlobalType } from 'openland-y-utils/themes/ThemeGlobal';
-import { ThemeLight, ThemeLightPink, ThemeLightCyan, ThemeLightGrey, ThemeLightRed, ThemeLightOrange, ThemeLightGreen, ThemeLightPurple } from 'openland-y-utils/themes/light';
+import { ThemeGlobalKind, ThemeGlobalType, getAccentByType, AccentGlobalType } from 'openland-y-utils/themes/ThemeGlobal';
+import { ThemeLight } from 'openland-y-utils/themes/light';
 import { View, TouchableOpacity, Image } from 'react-native';
-import { ThemeDark, ThemeDarkBlue, ThemeDarkRed, ThemeDarkOrange, ThemeDarkGreen, ThemeDarkCyan, ThemeDarkPink, ThemeDarkPurple } from 'openland-y-utils/themes/dark';
+import { ThemeDark } from 'openland-y-utils/themes/dark';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
-
-const SortedThemes: { [key in ThemeGlobalType]: { [key: string]: string } } = {
-    Light: {
-        Light: ThemeLight.accentPrimary,
-        LightGrey: ThemeLightGrey.accentPrimary,
-        LightRed: ThemeLightRed.accentPrimary,
-        LightOrange: ThemeLightOrange.accentPrimary,
-        LightGreen: ThemeLightGreen.accentPrimary,
-        LightCyan: ThemeLightCyan.accentPrimary,
-        LightPink: ThemeLightPink.accentPrimary,
-        LightPurple: ThemeLightPurple.accentPrimary,
-    },
-    Dark: {
-        Dark: ThemeDark.accentPrimary,
-        DarkBlue: ThemeDarkBlue.accentPrimary,
-        DarkRed: ThemeDarkRed.accentPrimary,
-        DarkOrange: ThemeDarkOrange.accentPrimary,
-        DarkGreen: ThemeDarkGreen.accentPrimary,
-        DarkCyan: ThemeDarkCyan.accentPrimary,
-        DarkPink: ThemeDarkPink.accentPrimary,
-        DarkPurple: ThemeDarkPurple.accentPrimary,
-    }
-};
 
 const ThemeItem = React.memo((props: { type: ThemeGlobalType, checked: boolean, onPress: () => void }) => {
     const theme = React.useContext(ThemeContext);
     const { type, checked, onPress } = props;
     const themeObject = type === 'Light' ? ThemeLight : ThemeDark;
 
-    const primaryColor = checked ? theme.bubble(true).backgroundPrimary : themeObject.bubble(true).backgroundPrimary;
-    const secondaryColor = checked ? theme.bubble(false).backgroundPrimary : themeObject.bubble(false).backgroundPrimary;
+    const primaryColor = checked ? theme.outgoingBackgroundPrimary : themeObject.outgoingBackgroundPrimary;
+    const secondaryColor = checked ? theme.incomingBackgroundPrimary : themeObject.incomingBackgroundPrimary;
 
     return (
         <TouchableOpacity onPress={onPress} activeOpacity={0.64}>
@@ -83,9 +60,9 @@ const AccentCircle = React.memo((props: { color: string, checked: boolean, onPre
 
 const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
-    const handleChange = React.useCallback((type: ThemeGlobalKind) => {
+    const handleChange = React.useCallback((kind: ThemeGlobalKind) => {
         setTimeout(() => {
-            ThemeController.theme = type;
+            ThemeController.theme = kind;
         }, 10);
     }, []);
 
@@ -98,26 +75,34 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                         <ThemeItem
                             type="Light"
                             checked={theme.type === 'Light'}
-                            onPress={() => handleChange('Light')}
+                            onPress={() => handleChange(['Light', theme.accentType])}
                         />
                         <ThemeItem
                             type="Dark"
                             checked={theme.type === 'Dark'}
-                            onPress={() => handleChange('Dark')}
+                            onPress={() => handleChange(['Dark', theme.accentType])}
                         />
                     </View>
                 </ZListGroup>
 
                 <ZListGroup header="Accent">
                     <View flexDirection="row" justifyContent="flex-start" flexWrap="wrap">
-                        {Object.keys(SortedThemes[theme.type]).map(k => (
-                            <AccentCircle
-                                key={k}
-                                onPress={() => handleChange(k as ThemeGlobalKind)}
-                                color={SortedThemes[theme.type][k]}
-                                checked={theme.kind === k}
-                            />
-                        ))}
+                        {['Default' as AccentGlobalType, ...theme.supportedAccents].map(accent => {
+                            const resolvedAccent = getAccentByType(accent, theme.type);
+
+                            if (resolvedAccent) {
+                                return (
+                                    <AccentCircle
+                                        key={`${theme.type}-${accent}`}
+                                        onPress={() => handleChange([theme.type, accent])}
+                                        color={resolvedAccent.accentPrimary}
+                                        checked={theme.accentType === accent}
+                                    />
+                                );
+                            }
+
+                            return null;
+                        })}
                     </View>
                 </ZListGroup>
             </SScrollView>

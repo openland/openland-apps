@@ -71,7 +71,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
 
         return (
             <View
-                backgroundColor={theme.bubble(false).backgroundPrimary}
+                backgroundColor={theme.incomingBackgroundPrimary}
                 borderRadius={8}
                 marginVertical={5}
                 alignSelf="flex-start"

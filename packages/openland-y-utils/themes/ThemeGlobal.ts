@@ -1,9 +1,15 @@
-export type ThemeGlobalKind = 'Light' | 'LightRed' | 'LightOrange' | 'LightGreen' | 'LightCyan' | 'LightPink' | 'LightPurple' | 'LightGrey' | 'Dark' | 'DarkBlue' | 'DarkRed' | 'DarkOrange' | 'DarkGreen' | 'DarkCyan' | 'DarkPink' | 'DarkPurple';
+import { ThemeLight } from './light';
+import { ThemeDark } from './dark';
+import { AccentRed, AccentOrange, AccentGrey, AccentGreen, AccentBlue, AccentPurple, AccentPink, AccentCyan } from './accents';
+
 export type ThemeGlobalType = 'Light' | 'Dark';
+export type AccentGlobalType = 'Default' | 'Red' | 'Orange' | 'Green' | 'Cyan' | 'Blue' | 'Purple' | 'Pink' | 'Grey';
+export type ThemeGlobalKind = [ThemeGlobalType, AccentGlobalType];
 
 export type ThemeGlobal = {
     type: ThemeGlobalType;
-    kind: ThemeGlobalKind;
+    accentType: AccentGlobalType;
+    supportedAccents: AccentGlobalType[];
 
     transparent: string;
 
@@ -62,19 +68,39 @@ export type ThemeGlobal = {
     tintGrey: string;
     tintInverted: string;
 
-    bubble: (isOut: boolean) => {
-        backgroundPrimary: string;
-        backgroundSecondary: string;
+    // bubbles
+    incomingBackgroundPrimary: string;
+    incomingBackgroundSecondary: string;
+    incomingForegroundPrimary: string;
+    incomingForegroundSecondary: string;
+    incomingForegroundTertiary: string;
 
-        foregroundPrimary: string;
-        foregroundSecondary: string;
-        foregroundTertiary: string;
-    };
+    outgoingBackgroundPrimary: string;
+    outgoingBackgroundSecondary: string;
+    outgoingForegroundPrimary: string;
+    outgoingForegroundSecondary: string;
+    outgoingForegroundTertiary: string;
 
     // mobile-only
     blurType: 'dark' | 'light' | 'none';
     keyboardAppearance: 'dark' | 'light';
     statusBar: 'dark-content' | 'light-content';
+};
+
+export type AccentGlobal = {
+    accentType: AccentGlobalType;
+
+    foregroundInverted: string;
+
+    accentPrimary: string;
+    accentPrimaryHover: string;
+    accentPrimaryActive: string;
+
+    outgoingBackgroundPrimary: string;
+    outgoingBackgroundSecondary: string;
+    outgoingForegroundPrimary: string;
+    outgoingForegroundSecondary: string;
+    outgoingForegroundTertiary: string;
 };
 
 export type TintGlobal = {
@@ -87,4 +113,42 @@ export type TintGlobal = {
 export type PlaceholderGlobal = {
     start: string;
     end: string;
+};
+
+export const getThemeByType = (type: ThemeGlobalType) => {
+    if (type === 'Light') {
+        return ThemeLight;
+    } else if (type === 'Dark') {
+        return ThemeDark;
+    } else {
+        return ThemeLight;
+    }
+};
+
+export const getAccentByType = (type: AccentGlobalType, theme?: ThemeGlobalType) => {
+    if (type === 'Red') {
+        return AccentRed;
+    } else if (type === 'Orange') {
+        return AccentOrange;
+    } else if (type === 'Green') {
+        return AccentGreen;
+    } else if (type === 'Cyan') {
+        return AccentCyan;
+    } else if (type === 'Blue') {
+        return AccentBlue;
+    } else if (type === 'Purple') {
+        return AccentPurple;
+    } else if (type === 'Pink') {
+        return AccentPink;
+    } else if (type === 'Grey') {
+        return AccentGrey;
+    } else {
+        if (theme === 'Light') {
+            return ThemeLight as AccentGlobal;
+        } else if (theme === 'Dark') {
+            return ThemeDark as AccentGlobal;
+        }
+
+        return undefined;
+    }
 };

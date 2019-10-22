@@ -70,7 +70,11 @@ const letterSpacing = {
 export class RenderSpans extends React.PureComponent<RenderSpansProps> {
     render() {
         const { emojiOnly, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetVertical, onUserPress, onGroupPress } = this.props;
-        const color = emojiOnly ? theme.foregroundPrimary : theme.bubble(message.isOut).foregroundPrimary;
+
+        const bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
+        const bubbleBackgroundSecondary = message.isOut ? theme.outgoingBackgroundSecondary : theme.incomingBackgroundSecondary;
+
+        const color = emojiOnly ? theme.foregroundPrimary : bubbleForegroundPrimary;
         const content = getSpansSlices(spans, padded);
 
         return (
@@ -106,7 +110,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                             marginRight={-insetRight}
                             marginTop={i === 0 ? insetVertical + ((message.isOut || message.attachTop) ? 2 : 0) : undefined}
                             marginBottom={(!(content[i + 1] && content[i + 1].type === 'padded')) ? insetVertical : undefined}
-                            backgroundColor={theme.bubble(message.isOut).backgroundSecondary}
+                            backgroundColor={bubbleBackgroundSecondary}
                         >
                             <ASFlex marginLeft={insetLeft} marginRight={insetRight} marginTop={5} marginBottom={5}>
                                 <TextWrapper

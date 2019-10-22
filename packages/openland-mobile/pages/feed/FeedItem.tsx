@@ -125,7 +125,7 @@ const FeedItemComponent = React.memo((props: PageProps) => {
 
             {slides.length > 1 && (
                 <SHeaderIndicator
-                    key={`indicator-${currentSlide}-${theme.kind}`}
+                    key={`indicator-${currentSlide}-${theme.accentType}`}
                     current={currentSlide + 1}
                     items={slides.length}
                     theme={theme}

@@ -1,47 +1,28 @@
 import { AsyncStorage } from 'react-native';
 import { ThemeController } from './ThemeControler';
-import { ThemeGlobalKind } from 'openland-y-utils/themes/ThemeGlobal';
+import { ThemeGlobalType, AccentGlobalType, getThemeByType } from 'openland-y-utils/themes/ThemeGlobal';
 
 class ThemePersisterImpl {
     prepare = async () => {
-        let res = await AsyncStorage.getItem('app.theme') as ThemeGlobalKind;
+        const storageThemeType = await AsyncStorage.getItem('app.theme.2') as ThemeGlobalType;
+        const storageAccentType = await AsyncStorage.getItem('app.accent.2') as AccentGlobalType;
 
-        if (res === 'LightRed') {
-            ThemeController.theme = 'LightRed';
-        } else if (res === 'LightOrange') {
-            ThemeController.theme = 'LightOrange';
-        } else if (res === 'LightGreen') {
-            ThemeController.theme = 'LightGreen';
-        } else if (res === 'LightCyan') {
-            ThemeController.theme = 'LightCyan';
-        } else if (res === 'LightPink') {
-            ThemeController.theme = 'LightPink';
-        } else if (res === 'LightPurple') {
-            ThemeController.theme = 'LightPurple';
-        } else if (res === 'LightGrey') {
-            ThemeController.theme = 'LightGrey';
-        } else if (res === 'Dark') {
-            ThemeController.theme = 'Dark';
-        } else if (res === 'DarkBlue') {
-            ThemeController.theme = 'DarkBlue';
-        } else if (res === 'DarkRed') {
-            ThemeController.theme = 'DarkRed';
-        } else if (res === 'DarkOrange') {
-            ThemeController.theme = 'DarkOrange';
-        } else if (res === 'DarkGreen') {
-            ThemeController.theme = 'DarkGreen';
-        } else if (res === 'DarkCyan') {
-            ThemeController.theme = 'DarkCyan';
-        } else if (res === 'DarkPink') {
-            ThemeController.theme = 'DarkPink';
-        } else if (res === 'DarkPurple') {
-            ThemeController.theme = 'DarkPurple';
-        } else {
-            ThemeController.theme = 'Light';
+        let resolvedThemeType: ThemeGlobalType = 'Light';
+        let resolvedAccentType: AccentGlobalType = 'Default';
+
+        if (storageThemeType === 'Light' || storageThemeType === 'Dark') {
+            resolvedThemeType = storageThemeType;
         }
 
+        const resolvedThemeObject = getThemeByType(resolvedThemeType);
+        if (resolvedThemeObject.supportedAccents.includes(storageAccentType)) {
+            resolvedAccentType = storageAccentType;
+        }
+
+        ThemeController.theme = [resolvedThemeType, resolvedAccentType];
         ThemeController.watch((theme) => {
-            AsyncStorage.setItem('app.theme', theme);
+            AsyncStorage.setItem('app.theme.2', theme[0]);
+            AsyncStorage.setItem('app.accent.2', theme[1]);
         });
     }
 }

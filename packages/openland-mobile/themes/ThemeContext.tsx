@@ -1,47 +1,31 @@
 import * as React from 'react';
 import { ThemeController } from './ThemeControler';
 import { SStatusBar } from 'react-native-s/SStatusBar';
-import { ThemeGlobal, ThemeGlobalKind } from 'openland-y-utils/themes/ThemeGlobal';
-import { ThemeLight, ThemeLightRed, ThemeLightOrange, ThemeLightGreen, ThemeLightCyan, ThemeLightPurple, ThemeLightGrey, ThemeLightPink } from 'openland-y-utils/themes/light';
-import { ThemeDark, ThemeDarkBlue, ThemeDarkRed, ThemeDarkOrange, ThemeDarkGreen, ThemeDarkCyan, ThemeDarkPurple, ThemeDarkPink } from 'openland-y-utils/themes/dark';
+import { ThemeGlobal, ThemeGlobalKind, ThemeGlobalType, AccentGlobalType, getThemeByType, getAccentByType } from 'openland-y-utils/themes/ThemeGlobal';
+import { ThemeLight } from 'openland-y-utils/themes/light';
 
 export const ThemeContext = React.createContext<ThemeGlobal>(ThemeLight);
 export const useTheme = () => React.useContext(ThemeContext);
 
-function resolveTheme(theme: ThemeGlobalKind) {
-    if (theme === 'LightRed') {
-        return ThemeLightRed;
-    } else if (theme === 'LightOrange') {
-        return ThemeLightOrange;
-    } else if (theme === 'LightGreen') {
-        return ThemeLightGreen;
-    } else if (theme === 'LightCyan') {
-        return ThemeLightCyan;
-    } else if (theme === 'LightPink') {
-        return ThemeLightPink;
-    } else if (theme === 'LightPurple') {
-        return ThemeLightPurple;
-    } else if (theme === 'LightGrey') {
-        return ThemeLightGrey;
-    } else if (theme === 'Dark') {
-        return ThemeDark;
-    } else if (theme === 'DarkBlue') {
-        return ThemeDarkBlue;
-    } else if (theme === 'DarkRed') {
-        return ThemeDarkRed;
-    } else if (theme === 'DarkOrange') {
-        return ThemeDarkOrange;
-    } else if (theme === 'DarkGreen') {
-        return ThemeDarkGreen;
-    } else if (theme === 'DarkCyan') {
-        return ThemeDarkCyan;
-    } else if (theme === 'DarkPink') {
-        return ThemeDarkPink;
-    } else if (theme === 'DarkPurple') {
-        return ThemeDarkPurple;
-    } else {
-        return ThemeLight;
+function resolveTheme(theme: ThemeGlobalKind): ThemeGlobal {
+    let resolvedThemeType: ThemeGlobalType = 'Light';
+    let resolvedAccentType: AccentGlobalType = 'Default';
+
+    if (theme[0] === 'Light' || theme[0] === 'Dark') {
+        resolvedThemeType = theme[0];
     }
+
+    const resolvedThemeObject = getThemeByType(resolvedThemeType);
+    if (resolvedThemeObject.supportedAccents.includes(theme[1])) {
+        resolvedAccentType = theme[1];
+    }
+
+    const resolvedAccentObject = getAccentByType(resolvedAccentType);
+
+    return {
+        ...resolvedThemeObject,
+        ...resolvedAccentObject
+    };
 }
 
 export const ThemeProvider = (props: { children?: any }) => {

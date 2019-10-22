@@ -1,18 +1,10 @@
-import { ThemeGlobal, TintGlobal, ThemeGlobalKind } from './ThemeGlobal';
+import { ThemeGlobal } from './ThemeGlobal';
 import { TintBlue, TintGreen, TintRed, TintOrange, TintCyan, TintPurple, TintInverted, TintPink, TintGrey } from './tints';
-
-const buildBubbleColor = (tint: TintGlobal, isOut: boolean) => ({
-    backgroundPrimary: isOut ? tint.primary : '#F2F3F5',
-    backgroundSecondary: isOut ? tint.secondary : '#E8EAED',
-
-    foregroundPrimary: isOut ? '#FFFFFF' : '#171A1F',
-    foregroundSecondary: isOut ? 'rgba(255, 255, 255, 0.56)' : '#969AA3',
-    foregroundTertiary: isOut ? 'rgba(255, 255, 255, 0.36)' : '#C4C7CC',
-});
 
 export const ThemeLight: ThemeGlobal = {
     type: 'Light',
-    kind: 'Light',
+    accentType: 'Default',
+    supportedAccents: ['Grey', 'Red', 'Orange', 'Green', 'Cyan', 'Pink', 'Purple'],
 
     transparent: 'rgba(255, 255, 255, 0)',
 
@@ -71,29 +63,19 @@ export const ThemeLight: ThemeGlobal = {
     tintGrey: TintGrey.primary,
     tintInverted: TintInverted.primary,
 
-    bubble: (isOut) => buildBubbleColor(TintBlue, isOut),
+    incomingBackgroundPrimary: '#F2F3F5',
+    incomingBackgroundSecondary: '#E8EAED',
+    incomingForegroundPrimary: '#171A1F',
+    incomingForegroundSecondary: '#969AA3',
+    incomingForegroundTertiary: '#C4C7CC',
+
+    outgoingBackgroundPrimary: TintBlue.primary,
+    outgoingBackgroundSecondary: TintBlue.secondary,
+    outgoingForegroundPrimary: '#FFFFFF',
+    outgoingForegroundSecondary: 'rgba(255, 255, 255, 0.56)',
+    outgoingForegroundTertiary: 'rgba(255, 255, 255, 0.36)',
 
     blurType: 'light',
     keyboardAppearance: 'light',
     statusBar: 'dark-content',
 };
-
-const buildTintedTheme: (kind: ThemeGlobalKind, tint: TintGlobal) => ThemeGlobal = (kind, tint) => ({
-    ...ThemeLight,
-
-    kind,
-
-    accentPrimary: tint.primary,
-    accentPrimaryHover: tint.hover,
-    accentPrimaryActive: tint.active,
-
-    bubble: (isOut) => buildBubbleColor(tint, isOut),
-});
-
-export const ThemeLightRed = buildTintedTheme('LightRed', TintRed);
-export const ThemeLightOrange = buildTintedTheme('LightOrange', TintOrange);
-export const ThemeLightGreen = buildTintedTheme('LightGreen', TintGreen);
-export const ThemeLightCyan = buildTintedTheme('LightCyan', TintCyan);
-export const ThemeLightPink = buildTintedTheme('LightPink', TintPink);
-export const ThemeLightPurple = buildTintedTheme('LightPurple', TintPurple);
-export const ThemeLightGrey = buildTintedTheme('LightGrey', TintGrey);

@@ -89,6 +89,8 @@ export const MetaInfoIndicator = React.memo((props: MetaInfoIndicatorProps) => {
         );
     }
 
+    const bubbleForegroundSecondary = message.isOut ? theme.outgoingForegroundSecondary : theme.incomingForegroundSecondary;
+
     return (
         <ASFlex
             overlay={true}
@@ -99,7 +101,7 @@ export const MetaInfoIndicator = React.memo((props: MetaInfoIndicatorProps) => {
             <Label
                 date={date}
                 edited={isEdited}
-                color={theme.bubble(isOut).foregroundSecondary}
+                color={bubbleForegroundSecondary}
             />
         </ASFlex>
     );
