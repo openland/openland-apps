@@ -105,6 +105,11 @@ export const TabBarDesktop = React.memo((props: TabBarDesktopProps) => {
                 height={64}
                 alignItems="center"
                 justifyContent="center"
+                cursor="pointer"
+                onClick={() => {
+                    props.router.stacks[1].reset();
+                    props.setSelected(1);
+                }}
             >
                 <img
                     src="/static/img/logo.png"
