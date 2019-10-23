@@ -238,8 +238,10 @@ class ApolloNetworking {
         self.delegate?.onTryAgain(id: id, delay: 5)
       }
     } else if type == "ping" {
-      self.callbackQueue.async {
-        self.writeToSocket(msg: JSON(["type": "pong"])) 
+      self.queue.async {
+        if(self.state == .started){
+          self.writeToSocket(msg: JSON(["type": "pong"]))
+        }
       }
     }else if type == "pong" {
       self.lastPong = Int64((Date().timeIntervalSince1970 * 1000))
