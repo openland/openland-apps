@@ -4,8 +4,8 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.os.BuildCompat;
 
+import com.codemotionapps.reactnativedarkmode.DarkModePackage;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
 import com.brentvatne.react.ReactVideoPackage;
@@ -103,7 +103,8 @@ public class MainApplication extends Application implements ShareApplication, Re
                     new RNDeviceInfo(),
                     new ReactNativePushNotificationPackage(),
                     new RNSPackage(),
-                    new SQLitePluginPackage()
+                    new SQLitePluginPackage(),
+                    new DarkModePackage()
             );
         }
 

@@ -233,6 +233,7 @@ dependencies {
     implementation project(':react-native-device-info')
     implementation project(':react-native-push-notification')
     implementation project(':react-native-sqlite-storage')
+    implementation project(':react-native-dark-mode')
 
     // AppCenter
     def appCenterSdkVersion = '1.11.0'
