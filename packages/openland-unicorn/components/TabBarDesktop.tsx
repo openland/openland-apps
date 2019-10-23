@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
+import { XView, XViewRouter } from 'react-mental';
 import { css, cx } from 'linaria';
 import { TabRouter } from './TabRouter';
 import AppearanceIcon from 'openland-icons/s/ic-appearance-24.svg';
@@ -85,6 +85,7 @@ interface TabBarDesktopProps {
     selected: number;
     setSelected: (index: number) => void;
     router: TabRouter;
+    xRouter: XViewRouter;
 }
 
 export const TabBarDesktop = React.memo((props: TabBarDesktopProps) => {
@@ -107,8 +108,8 @@ export const TabBarDesktop = React.memo((props: TabBarDesktopProps) => {
                 justifyContent="center"
                 cursor="pointer"
                 onClick={() => {
-                    props.router.stacks[1].reset();
                     props.setSelected(1);
+                    props.xRouter.navigate('/mail');
                 }}
             >
                 <img

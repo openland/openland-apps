@@ -45,6 +45,7 @@ const TemporaryStub = React.memo(() => {
 const routing = new URouting();
 
 // Mail
+routing.addRoute('/mail', () => TemporaryStub);
 routing.addRoute('/mail/', () => TemporaryStub);
 routing.addRoute('/mail/:conversationId', () =>
     React.memo(() => {

@@ -153,7 +153,12 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
                                     </div>
                                 ))}
                                 <XView position="absolute" top={0} left={0} bottom={0} width={64}>
-                                    <TabBarDesktop selected={selected} setSelected={setSelectedClb} router={props.router} />
+                                    <TabBarDesktop
+                                        selected={selected}
+                                        setSelected={setSelectedClb}
+                                        router={props.router}
+                                        xRouter={xRouting}
+                                    />
                                 </XView>
                             </InnerContainer>
                         </>
