@@ -28,11 +28,6 @@ PODS:
   - Folly (2018.10.22.00):
     - boost-for-react-native
     - DoubleConversion
-    - Folly/Default (= 2018.10.22.00)
-    - glog
-  - Folly/Default (2018.10.22.00):
-    - boost-for-react-native
-    - DoubleConversion
     - glog
   - glog (0.3.5)
   - libwebp (1.0.3):
@@ -243,7 +238,7 @@ PODS:
     - React
   - react-native-haptic-feedback (1.7.1):
     - React
-  - react-native-image-picker (0.14.3):
+  - react-native-image-picker (1.1.0):
     - React
   - react-native-pdf (5.1.0):
     - React
@@ -398,7 +393,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - AppCenter
     - AppCenterReactNativeShared
     - Auth0
@@ -521,11 +516,11 @@ SPEC CHECKSUMS:
   Auth0: df9ac013e7850052fea1dcd53fa09bb129121721
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: 8913bd8fdc47b85abc801ae8bae007bbfb6b4ce5
-  DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
+  DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   FBLazyVector: 68b6a76960fbd8ecd9fb7ce0aadd3329c3340a99
   FBReactNativeSpec: 5a764c60abdc3336a213e5310c40b74741f32839
-  Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
-  glog: 1f3da668190260b06b429bb211bfbee5cd790c28
+  Folly: de497beb10f102453a1afa9edbf8cf8a251890de
+  glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   libwebp: 057912d6d0abfb6357d8bb05c0ea470301f5d61e
   ObjectiveRocks: b3a5c79b6757a67566413fab3486731865ff96ef
   PINCache: d195fdba255283f7e9900a55e3cced377f431f9b
@@ -547,7 +542,7 @@ SPEC CHECKSUMS:
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-document-picker: da1c37bbc4ff0896986a70784808a2862d297887
   react-native-haptic-feedback: 22c9dc85fd8059f83bf9edd9212ac4bd4ae6074d
-  react-native-image-picker: 3693786b3d5958c8f71deed66ec068b323565e0d
+  react-native-image-picker: 7a85cf7b0a53845f03ae52fb4592a2748ded069b
   react-native-pdf: 8cc276fd8ab7dff6b602eb65fcf0f6c145c0f524
   react-native-sqlite-storage: dba8e864e9a76f1aae6ddb5e7d0dc330d59f4bb3
   react-native-video: 8c49eca5a6087de968a05b340933b10e3b58169a
@@ -583,4 +578,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 3fc1f2fcaf4c15e631ba8aab762bb9f75e3d87fc
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.4
