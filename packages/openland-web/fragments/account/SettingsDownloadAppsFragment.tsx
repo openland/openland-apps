@@ -208,7 +208,7 @@ export const DownloadAppsComponent = (props: NativaAppsModalProps) => {
 
     return (
         <XView flexDirection="row" position={'relative'} flexGrow={1} justifyContent={'center'}>
-            {modalContext && (
+            {modalContext && !isMobile && (
                 <XView position="fixed" top={19} left={32}>
                     <XImage src="/static/landing/logotype.svg" width={145} height={42} />
                 </XView>
@@ -220,6 +220,11 @@ export const DownloadAppsComponent = (props: NativaAppsModalProps) => {
                 width="100%"
                 flexDirection="column"
             >
+                {modalContext && isMobile && (
+                    <XView alignItems="center" marginBottom={40} marginTop={40}>
+                        <XImage src="/static/landing/logotype.svg" width={145} height={42} />
+                    </XView>
+                )}
                 <XView
                     fontSize={22}
                     fontWeight="600"
