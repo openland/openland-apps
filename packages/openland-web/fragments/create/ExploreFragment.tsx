@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { XView, XViewRouterContext } from 'react-mental';
+import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
+import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextTitle1 } from 'openland-web/utils/TextStyles';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
@@ -65,8 +66,18 @@ const ExplorePeopleComponent = React.memo((props: CreateEntityInterface) => {
 
     const engine = props.entityState;
     const engineState = engine.getState();
-    const router = React.useContext(XViewRouterContext)!;
+    const stackRouter = useStackRouter();
     const client = useClient();
+
+    React.useEffect(() => {
+        if (!engineState.title) {
+            stackRouter.reset();
+        }
+    }, [engineState]);
+
+    if (!engineState.title) {
+        return null;
+    }
 
     const onInputChange = (data: { label: string; value: string }[]) => {
         const newSelected = new Map();
@@ -112,9 +123,7 @@ const ExplorePeopleComponent = React.memo((props: CreateEntityInterface) => {
             })).room;
 
             engine.clear();
-            if (router) {
-                router.navigate('/mail/' + group.id);
-            }
+            stackRouter.reset('/mail/' + group.id);
         } else {
             const organization = (await client.mutateCreateOrganization({
                 input: {
@@ -136,9 +145,7 @@ const ExplorePeopleComponent = React.memo((props: CreateEntityInterface) => {
 
             await client.refetchAccount();
             engine.clear();
-            if (router) {
-                router.navigate('/' + organization.id);
-            }
+            stackRouter.reset('/' + organization.id);
         }
     };
 
