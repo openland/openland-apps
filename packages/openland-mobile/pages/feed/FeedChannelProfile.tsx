@@ -69,7 +69,6 @@ const FeedChannelProfileComponent = React.memo((props: PageProps) => {
 
             <ZListGroup
                 header="Writers"
-                counter={writers.items.length}
                 actionRight={writers.cursor ? { title: 'See all', onPress: () => router.push('FeedChannelWriters', { id }) } : undefined}
             >
                 {myRole === FeedChannelSubscriberRole.Creator && (
