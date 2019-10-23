@@ -29,9 +29,23 @@ import { FeedItemFragment } from 'openland-web/fragments/feed/FeedItemFragment';
 import { CreateEntityFragment } from 'openland-web/fragments/create/CreateEntityFragment';
 import { ExplorePeopleFragment } from 'openland-web/fragments/create/ExploreFragment';
 
+import { useStackRouter } from 'openland-unicorn/components/StackRouter';
+
+// temporary stub for /mail/ -> not found bug
+const TemporaryStub = React.memo(() => {
+    const stackRouter = useStackRouter();
+
+    React.useEffect(() => {
+        stackRouter.reset();
+    }, []);
+
+    return null;
+});
+
 const routing = new URouting();
 
 // Mail
+routing.addRoute('/mail/', () => TemporaryStub);
 routing.addRoute('/mail/:conversationId', () =>
     React.memo(() => {
         let ctx = useUnicorn();
