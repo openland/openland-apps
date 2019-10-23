@@ -19,7 +19,7 @@ const DefaultWrapChildrenComponent = ({ children }: { children: any }) => {
     return <XView flexDirection="column">{children}</XView>;
 };
 
-export const XListView = React.memo(function <T extends DataSourceItem>(props: XListViewProps<T>) {
+export const XListView = React.memo(function<T extends DataSourceItem>(props: XListViewProps<T>) {
     let [items, completed] = useDataSource(props.dataSource);
 
     const needMore = React.useMemo(
@@ -45,7 +45,7 @@ export const XListView = React.memo(function <T extends DataSourceItem>(props: X
         : DefaultWrapChildrenComponent;
 
     return (
-        <XScrollView3 onScroll={onScroll} flexGrow={1} flexShrink={1}>
+        <XScrollView3 onScroll={onScroll} flexGrow={1} flexShrink={1} useDefaultScroll={true}>
             <WrapChildrenComponent>
                 {props.beforeChildren}
                 {items.map(v => (
