@@ -464,7 +464,6 @@ export const USelectField = (props: USelectBasicProps & { field: FormField<Optio
     return (
         <USelect
             onChange={(val: OptionType | any) => {
-                console.log(val);
                 field.input.onChange(val ? val.value : null);
             }}
             value={field.input.value}

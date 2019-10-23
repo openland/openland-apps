@@ -29,11 +29,20 @@ const titleButtonsContainer = css`
     margin-right: -56px;
 `;
 
-const TitleView = (props: { title: string; canMakeSubmit: boolean; onSubmit: () => void }) => (
+const TitleView = (props: {
+    title: string;
+    canMakeSubmit: boolean;
+    onSubmit: (skip?: boolean) => void;
+}) => (
     <div className={titleViewContainer}>
         <div className={TextTitle1}>{props.title}</div>
         <div className={titleButtonsContainer}>
-            <UButton text="Skip" style="secondary" marginRight={16} action={props.onSubmit} />
+            <UButton
+                text="Skip"
+                style="secondary"
+                marginRight={16}
+                action={() => props.onSubmit(true)}
+            />
             <UButton
                 text="Next"
                 action={props.canMakeSubmit ? props.onSubmit : undefined}
@@ -91,13 +100,13 @@ const ExplorePeopleComponent = React.memo((props: CreateEntityInterface) => {
         setOptions(newOpts);
     };
 
-    const doSubmit = async () => {
+    const doSubmit = async (skip?: boolean) => {
         if (props.entityType === 'group' || props.entityType === 'channel') {
             const group = (await client.mutateRoomCreate({
                 title: engineState.title,
                 kind: engineState.secret ? SharedRoomKind.GROUP : SharedRoomKind.PUBLIC,
                 photoRef: engineState.photo,
-                members: !!selectedUsers ? [...selectedUsers.keys()] : [],
+                members: skip ? [] : !!selectedUsers ? [...selectedUsers.keys()] : [],
                 organizationId: engineState.shareWith || '',
                 channel: props.entityType === 'channel',
             })).room;
@@ -118,7 +127,7 @@ const ExplorePeopleComponent = React.memo((props: CreateEntityInterface) => {
                 },
             })).organization;
 
-            if (!!selectedUsers) {
+            if (!!selectedUsers && !skip) {
                 await client.mutateOrganizationAddMember({
                     organizationId: organization.id,
                     userIds: [...selectedUsers.keys()],
