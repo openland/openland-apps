@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { XView } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
@@ -66,12 +66,13 @@ const ExplorePeopleComponent = React.memo((props: CreateEntityInterface) => {
 
     const engine = props.entityState;
     const engineState = engine.getState();
+    const router = React.useContext(XViewRouterContext)!;
     const stackRouter = useStackRouter();
     const client = useClient();
 
     React.useEffect(() => {
         if (!engineState.title) {
-            stackRouter.reset();
+            router.navigate('/mail');
         }
     }, [engineState]);
 
