@@ -1,5 +1,6 @@
-use_frameworks!
 platform :ios, '11.0'
+# require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+use_frameworks!
 
 target 'openland' do
 
@@ -39,16 +40,14 @@ target 'openland' do
   pod 'Starscream', '~> 3.0.2'
   pod 'ReachabilitySwift'
 
-  pod 'AppCenter', '~> 1.13.0'
-  pod 'AppCenter/Crashes', '~> 1.13.0'
-  pod 'AppCenter/Analytics', '~> 1.13.0'
-  pod 'AppCenterReactNativeShared', '~> 1.12.0'
+  pod 'AppCenter', '~> 1.14.0'
+  pod 'AppCenter/Crashes', '~> 1.14.0'
+  pod 'AppCenter/Analytics', '~> 1.14.0'
+  pod 'AppCenterReactNativeShared', '~> 1.13.0'
 
   pod 'react-native-webrtc', :path => '../node_modules/react-native-webrtc'
 
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
-
-  pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 
   pod 'A0Auth0', :path => '../node_modules/react-native-auth0'
 
@@ -88,6 +87,8 @@ target 'openland' do
   pod 'react-native-pdf', :path => '../node_modules/react-native-pdf'
   pod 'ObjectiveRocks', '~> 0.9'
   pod 'react-native-video', :path => '../node_modules/react-native-video/react-native-video.podspec'
+  
+  # use_native_modules!
 end
 
 target 'openlandTests' do

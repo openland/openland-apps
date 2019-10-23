@@ -1,16 +1,16 @@
 PODS:
   - A0Auth0 (1.6.0):
     - React
-  - AppCenter (1.13.2):
-    - AppCenter/Analytics (= 1.13.2)
-    - AppCenter/Crashes (= 1.13.2)
-  - AppCenter/Analytics (1.13.2):
+  - AppCenter (1.14.0):
+    - AppCenter/Analytics (= 1.14.0)
+    - AppCenter/Crashes (= 1.14.0)
+  - AppCenter/Analytics (1.14.0):
     - AppCenter/Core
-  - AppCenter/Core (1.13.2)
-  - AppCenter/Crashes (1.13.2):
+  - AppCenter/Core (1.14.0)
+  - AppCenter/Crashes (1.14.0):
     - AppCenter/Core
-  - AppCenterReactNativeShared (1.12.2):
-    - AppCenter/Core (= 1.13.2)
+  - AppCenterReactNativeShared (1.13.0):
+    - AppCenter/Core (= 1.14.0)
   - Auth0 (1.14.2):
     - SimpleKeychain
   - boost-for-react-native (1.63.0)
@@ -44,10 +44,6 @@ PODS:
   - libwebp/mux (1.0.3):
     - libwebp/demux
   - libwebp/webp (1.0.3)
-  - lottie-ios (2.5.3)
-  - lottie-react-native (2.6.1):
-    - lottie-ios (~> 2.5.0)
-    - React
   - ObjectiveRocks (0.9.0)
   - PINCache (3.0.1-beta.6):
     - PINCache/Arc-exception-safe (= 3.0.1-beta.6)
@@ -341,10 +337,10 @@ PODS:
 
 DEPENDENCIES:
   - A0Auth0 (from `../node_modules/react-native-auth0`)
-  - AppCenter (~> 1.13.0)
-  - AppCenter/Analytics (~> 1.13.0)
-  - AppCenter/Crashes (~> 1.13.0)
-  - AppCenterReactNativeShared (~> 1.12.0)
+  - AppCenter (~> 1.14.0)
+  - AppCenter/Analytics (~> 1.14.0)
+  - AppCenter/Crashes (~> 1.14.0)
+  - AppCenterReactNativeShared (~> 1.13.0)
   - Auth0 (~> 1.14.2)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -352,7 +348,6 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - lottie-react-native (from `../node_modules/lottie-react-native`)
   - ObjectiveRocks (~> 0.9)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTRestart (from `../node_modules/react-native-restart/ios`)
@@ -409,7 +404,6 @@ SPEC REPOS:
     - Auth0
     - boost-for-react-native
     - libwebp
-    - lottie-ios
     - ObjectiveRocks
     - PINCache
     - PINOperation
@@ -439,8 +433,6 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
-  lottie-react-native:
-    :path: "../node_modules/lottie-react-native"
   RCTRequired:
     :path: "../node_modules/react-native/Libraries/RCTRequired"
   RCTRestart:
@@ -524,8 +516,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   A0Auth0: 3ef40effed761e80d2ecd7749cc271e0b12e3f75
-  AppCenter: bce7fe1098e8e8aeb70aaae1898600534069f549
-  AppCenterReactNativeShared: 6c0750b874f3242c47cb64083e23b835975c6aa2
+  AppCenter: 02c5efe08d3bbab5421ae41d5f7aa7238906b817
+  AppCenterReactNativeShared: 00f470c3c17b47718db8733cbe811ccdcfd86282
   Auth0: df9ac013e7850052fea1dcd53fa09bb129121721
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: 8913bd8fdc47b85abc801ae8bae007bbfb6b4ce5
@@ -535,8 +527,6 @@ SPEC CHECKSUMS:
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   libwebp: 057912d6d0abfb6357d8bb05c0ea470301f5d61e
-  lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
-  lottie-react-native: 3d8181d43619b1fe804c828bd5a09d20fe8bdea7
   ObjectiveRocks: b3a5c79b6757a67566413fab3486731865ff96ef
   PINCache: d195fdba255283f7e9900a55e3cced377f431f9b
   PINOperation: 24b774353ca248fcf87d67b2d61eef42087c125a
@@ -591,6 +581,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: d08d9ded8423a949444a31ac89df894d3c3c6f9c
+PODFILE CHECKSUM: 3fc1f2fcaf4c15e631ba8aab762bb9f75e3d87fc
 
 COCOAPODS: 1.7.5
