@@ -28,6 +28,11 @@ PODS:
   - Folly (2018.10.22.00):
     - boost-for-react-native
     - DoubleConversion
+    - Folly/Default (= 2018.10.22.00)
+    - glog
+  - Folly/Default (2018.10.22.00):
+    - boost-for-react-native
+    - DoubleConversion
     - glog
   - glog (0.3.5)
   - libwebp (1.0.3):
@@ -288,6 +293,8 @@ PODS:
     - React-cxxreact (= 0.61.2)
     - React-jsi (= 0.61.2)
     - ReactCommon/jscallinvoker (= 0.61.2)
+  - ReactNativeDarkMode (0.2.0):
+    - React
   - ReactNativeIncallManager (3.2.2):
     - React
   - ReactNativePermissions (1.1.1):
@@ -378,6 +385,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - ReactNativeDarkMode (from `../node_modules/react-native-dark-mode`)
   - ReactNativeIncallManager (from `../node_modules/react-native-incall-manager`)
   - ReactNativePermissions (from `../node_modules/react-native-permissions`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
@@ -393,7 +401,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - AppCenter
     - AppCenterReactNativeShared
     - Auth0
@@ -488,6 +496,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  ReactNativeDarkMode:
+    :path: "../node_modules/react-native-dark-mode"
   ReactNativeIncallManager:
     :path: "../node_modules/react-native-incall-manager"
   ReactNativePermissions:
@@ -516,11 +526,11 @@ SPEC CHECKSUMS:
   Auth0: df9ac013e7850052fea1dcd53fa09bb129121721
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: 8913bd8fdc47b85abc801ae8bae007bbfb6b4ce5
-  DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
+  DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: 68b6a76960fbd8ecd9fb7ce0aadd3329c3340a99
   FBReactNativeSpec: 5a764c60abdc3336a213e5310c40b74741f32839
-  Folly: de497beb10f102453a1afa9edbf8cf8a251890de
-  glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
+  Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
+  glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   libwebp: 057912d6d0abfb6357d8bb05c0ea470301f5d61e
   ObjectiveRocks: b3a5c79b6757a67566413fab3486731865ff96ef
   PINCache: d195fdba255283f7e9900a55e3cced377f431f9b
@@ -558,6 +568,7 @@ SPEC CHECKSUMS:
   React-RCTText: e3ef6191cdb627855ff7fe8fa0c1e14094967fb8
   React-RCTVibration: fb54c732fd20405a76598e431aa2f8c2bf527de9
   ReactCommon: 5848032ed2f274fcb40f6b9ec24067787c42d479
+  ReactNativeDarkMode: a2415064a7f9eb1efea18befaca8bb1fa22b19ca
   ReactNativeIncallManager: 7c6cbee9e809b0bea6d7d087c8bfb6e20e86f1c2
   ReactNativePermissions: b64e084dff6a5cad51587d38c306f09246246384
   rn-fetch-blob: f525a73a78df9ed5d35e67ea65e79d53c15255bc
@@ -576,6 +587,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: 3fc1f2fcaf4c15e631ba8aab762bb9f75e3d87fc
+PODFILE CHECKSUM: 0b930723d0f28201a93b37dc7b64afcf9c6894cc
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.7.5

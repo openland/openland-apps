@@ -27,6 +27,7 @@ import { NotificationHandler } from 'react-native-notification-handler/Notificat
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { BottomSheetProvider } from 'openland-mobile/components/BottomSheet';
 import { AndroidSplashView } from '../components/AndroidSplashView';
+import { initialMode } from 'react-native-dark-mode';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(() => new SAnimatedShadowView('app-placeholder-' + randomKey(), { opacity: 1 }), []);
@@ -98,7 +99,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             state: 'start'
         };
 
-        console.log('BOOTSTRAP: mounting');
+        console.log('BOOTSTRAP: mounting: ' + initialMode);
     }
 
     componentWillUnmount() {
