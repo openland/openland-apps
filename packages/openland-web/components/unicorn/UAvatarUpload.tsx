@@ -30,19 +30,15 @@ const contentContainer = css`
     align-items: center;
     justify-content: center;
     align-self: flex-start;
+
     & .ic-camera {
         z-index: 1;
     }
     & .loader {
         z-index: 1;
     }
-    &:hover {
-        & .ic-camera {
-            --icon-color: #fff !important;
-        }
-        & .avatar-container::after {
-            background-color: var(--overlayLight);
-        }
+    & .avatar-container:hover {
+        background-color: var(--backgroundTertiaryHover);
     }
 `;
 
@@ -50,9 +46,12 @@ const hasImageContentContainer = css`
     & .ic-camera {
         display: none;
     }
+    & .avatar-container:hover {
+        background-color: var(--backgroundTertiary);
+    }
     &:hover {
-        & .ic-camera {
-            display: flex;
+        & .avatar-container::after {
+            background-color: var(--overlayLight);
         }
     }
 `;
@@ -62,13 +61,16 @@ const isLoadingContentContainer = css`
     & .ic-camera {
         display: none;
     }
+    & .avatar-container:hover {
+        background-color: var(--backgroundTertiary);
+    }
+    & .avatar-container::after {
+        background-color: var(--overlayLight);
+    }
     &:hover {
         & .ic-camera {
             display: none;
         }
-    }
-    & .avatar-container::after {
-        background-color: var(--overlayLight);
     }
 `;
 
@@ -92,13 +94,13 @@ const avatarContainer = css`
     width: 96px;
     height: 96px;
     position: relative;
-    background-color: var(--backgroundTertiary);
     border-radius: 100%;
     overflow: hidden;
     display: flex;
     align-items: stretch;
     justify-content: center;
     flex-direction: column;
+    background-color: var(--backgroundTertiary);
 
     &::after {
         display: block;
@@ -183,7 +185,7 @@ const AvatarRender = (props: AvatarRenderProps) => {
                         className={avatarImage}
                     />
                 )}
-                <UIcon icon={<IcPhoto />} color="#C8C9CC" className="ic-camera" />
+                {!hasImage && <UIcon icon={<IcPhoto />} color="#C8C9CC" className="ic-camera" />}
                 {(props.isLoading || isLoading) && (
                     <XLoader
                         transparentBackground={true}

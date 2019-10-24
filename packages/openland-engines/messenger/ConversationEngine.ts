@@ -617,7 +617,6 @@ export class ConversationEngine implements MessageSendHandler {
                 imageSize: info.imageSize,
                 quoted
             } as PendingMessage;
-            console.log(pmsg);
             this.messages = [...this.messages, { ...pmsg } as PendingMessage];
             this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
 
