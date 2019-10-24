@@ -4,6 +4,7 @@ import { NativeModules, DeviceEventEmitter, NativeEventEmitter, Platform } from 
 import { randomKey } from 'openland-graphql/utils/randomKey';
 // import { createLogger } from 'mental-log';
 import { convertError } from 'openland-graphql/direct/convertError';
+import { API_HOST } from 'openland-y-utils/api';
 
 const NativeGraphQL = NativeModules.RNGraphQL as {
     createClient: (key: string, endpoint: string, token?: string, storage?: string) => void
@@ -73,9 +74,9 @@ export class NativeSpaceXClient extends BridgedClient {
             });
         }
         if (storageKey) {
-            NativeGraphQL.createClient(this.key, '//api.openland.com/api', token, 'gql-' + storageKey);
+            NativeGraphQL.createClient(this.key, '//' + API_HOST + '/api', token, 'gql-' + storageKey);
         } else {
-            NativeGraphQL.createClient(this.key, '//api.openland.com/api', token, undefined);
+            NativeGraphQL.createClient(this.key, '//' + API_HOST + '/api', token, undefined);
         }
     }
 

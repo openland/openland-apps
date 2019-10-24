@@ -17,6 +17,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
+import { API_HOST } from 'openland-y-utils/api';
 
 export const ACTIVATION_CODE_LENGTH = 6;
 
@@ -55,7 +56,7 @@ const http = async (params: { url: string; body?: any; method: 'POST' | 'GET' })
 
 const requestActivationCode = async () => {
     let res = await http({
-        url: 'https://api.openland.com/auth/sendCode',
+        url: 'https://' + API_HOST + '/auth/sendCode',
         body: {
             email: email,
         },
@@ -155,7 +156,7 @@ const EmailCodeComponent = (props: PageProps) => {
                 validateCode(codeField.value);
 
                 let res = await http({
-                    url: 'https://api.openland.com/auth/checkCode',
+                    url: 'https://' + API_HOST + '/auth/checkCode',
                     body: {
                         session: session,
                         code: codeField.value,
@@ -163,7 +164,7 @@ const EmailCodeComponent = (props: PageProps) => {
                     method: 'POST',
                 });
                 let res2 = await http({
-                    url: 'https://api.openland.com/auth/getAccessToken',
+                    url: 'https://' + API_HOST + '/auth/getAccessToken',
                     body: {
                         session: session,
                         authToken: res.authToken,

@@ -11,6 +11,7 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { trackEvent } from 'openland-mobile/analytics';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { API_HOST } from 'openland-y-utils/api';
 
 const styles = StyleSheet.create({
     container: {
@@ -51,7 +52,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
             let idToken = res.idToken;
             let accessToken = res.accessToken;
 
-            var uploaded = await fetch('https://api.openland.com/v2/auth', {
+            var uploaded = await fetch('https://' + API_HOST + '/v2/auth', {
                 method: 'POST',
                 headers: {
                     'authorization': 'Bearer ' + idToken,
