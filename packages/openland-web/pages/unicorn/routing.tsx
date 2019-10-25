@@ -55,7 +55,7 @@ routing.addRoute('/mail/:conversationId', () =>
 );
 
 // Message
-routing.addRoute('/message/:id', () => MessageFragment);
+routing.addRoute('/message/:messageId', () => MessageFragment);
 routing.addRoute('/message/:messageId/comment/:commentId', () => MessageFragment);
 
 // Notifications
@@ -70,7 +70,8 @@ routing.addRoute('/new/:type/in/:id/explore', () => ExplorePeopleFragment);
 
 // Discover
 routing.addRoute('/feed', () => FeedFragment);
-routing.addRoute('/feed/:id', () => FeedItemFragment);
+routing.addRoute('/feed/:postId', () => FeedItemFragment);
+routing.addRoute('/feed/:postId/comment/:commentId', () => FeedItemFragment);
 routing.addRoute('/discover/recommendations', () => RecommendationsFragment);
 routing.addRoute('/discover/groups', () => DiscoverGroupsFragment);
 

@@ -26,14 +26,7 @@ const MessageFragmentInner = React.memo((props: { messageId: string, commentId?:
 
 export const MessageFragment = React.memo(() => {
     const unicorn = useUnicorn();
-
-    let messageId, commentId;
-    if (unicorn.query.commentId) {
-        messageId = unicorn.query.messageId;
-        commentId = unicorn.query.commentId;
-    } else {
-        messageId = unicorn.id;
-    }
+    const { messageId, commentId } = unicorn.query;
 
     return (
         <>

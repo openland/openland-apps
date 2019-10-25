@@ -6,11 +6,11 @@ import { convertPost } from 'openland-engines/feed/convert';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { CommentsWrapper } from 'openland-web/components/comments/CommentsWrapper';
 
-const FeedItemFragmentInner = React.memo((props: { feedItemId: string }) => {
-    const { feedItemId } = props;
+const FeedItemFragmentInner = React.memo((props: { postId: string; commentId?: string }) => {
+    const { postId, commentId } = props;
     const client = useClient();
     const messenger = React.useContext(MessengerContext);
-    const itemSrc = client.useFeedItem({ id: feedItemId }, { fetchPolicy: 'cache-and-network' }).item;
+    const itemSrc = client.useFeedItem({ id: postId }, { fetchPolicy: 'cache-and-network' }).item;
 
     if (!itemSrc || itemSrc.__typename !== 'FeedPost') {
         return null;
@@ -20,7 +20,8 @@ const FeedItemFragmentInner = React.memo((props: { feedItemId: string }) => {
 
     return (
         <CommentsWrapper
-            peerId={feedItemId}
+            peerId={postId}
+            commentId={commentId}
             peerView={<div>{item.id}</div>}
         />
     );
@@ -28,11 +29,12 @@ const FeedItemFragmentInner = React.memo((props: { feedItemId: string }) => {
 
 export const FeedItemFragment = React.memo(() => {
     const unicorn = useUnicorn();
+    const { postId, commentId } = unicorn.query;
 
     return (
         <>
             <UHeader title="Post" appearance="wide" />
-            <FeedItemFragmentInner feedItemId={unicorn.id} />
+            <FeedItemFragmentInner postId={postId} commentId={commentId} />
         </>
     );
 });

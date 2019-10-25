@@ -57,8 +57,10 @@ routes.add('/authorization/:step', '/auth/root');
 
 routes.add('/feed', '/unicorn/index');
 routes.add('/feed/', '/unicorn/index');
-routes.add('/feed/:id', '/unicorn/index');
-routes.add('/feed/:id/', '/unicorn/index');
+routes.add('/feed/:postId', '/unicorn/index');
+routes.add('/feed/:postId/', '/unicorn/index');
+routes.add('/feed/:postId/comment/:commentId', '/unicorn/index');
+routes.add('/feed/:postId/comment/:commentId/', '/unicorn/index');
 routes.add('/discover/recommendations', '/unicorn/index');
 routes.add('/discover/groups', '/unicorn/index');
 routes.add('/discover/communities', '/unicorn/index');
@@ -230,8 +232,8 @@ routes.add('/advanced/:id/', '/unicorn/index');
 // Message
 //
 
-routes.add('/message/:id', '/unicorn/index');
-routes.add('/message/:id/', '/unicorn/index');
+routes.add('/message/:messageId', '/unicorn/index');
+routes.add('/message/:messageId/', '/unicorn/index');
 routes.add('/message/:messageId/comment/:commentId', '/unicorn/index');
 routes.add('/message/:messageId/comment/:commentId/', '/unicorn/index');
 
