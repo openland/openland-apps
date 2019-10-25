@@ -133,8 +133,12 @@ export function buildClient(config: { endpoint: string, wsEndpoint?: string, tok
             reconnect: true,
             connectionParams: () => ({
                 'x-openland-token': config.token
-            })
+            }),
+            lazy: true
         });
+        // Hack to avoid closing socket before connecting
+        (subscriptionClient as any).maxConnectTimeGenerator.duration = () => 5000;
+
         subscriptionClient.onConnecting(() => {
             status.markDisconected();
         });
