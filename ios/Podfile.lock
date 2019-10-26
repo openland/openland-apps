@@ -28,6 +28,11 @@ PODS:
   - Folly (2018.10.22.00):
     - boost-for-react-native
     - DoubleConversion
+    - Folly/Default (= 2018.10.22.00)
+    - glog
+  - Folly/Default (2018.10.22.00):
+    - boost-for-react-native
+    - DoubleConversion
     - glog
   - glog (0.3.5)
   - libwebp (1.0.3):
@@ -40,20 +45,20 @@ PODS:
     - libwebp/demux
   - libwebp/webp (1.0.3)
   - ObjectiveRocks (0.9.0)
-  - PINCache (3.0.1-beta.6):
-    - PINCache/Arc-exception-safe (= 3.0.1-beta.6)
-    - PINCache/Core (= 3.0.1-beta.6)
-  - PINCache/Arc-exception-safe (3.0.1-beta.6):
+  - PINCache (3.0.1-beta.7):
+    - PINCache/Arc-exception-safe (= 3.0.1-beta.7)
+    - PINCache/Core (= 3.0.1-beta.7)
+  - PINCache/Arc-exception-safe (3.0.1-beta.7):
     - PINCache/Core
-  - PINCache/Core (3.0.1-beta.6):
-    - PINOperation (~> 1.1.0)
+  - PINCache/Core (3.0.1-beta.7):
+    - PINOperation (~> 1.1.1)
   - PINOperation (1.1.2)
-  - PINRemoteImage/Core (3.0.0-beta.13):
+  - PINRemoteImage/Core (3.0.0-beta.14):
     - PINOperation
-  - PINRemoteImage/iOS (3.0.0-beta.13):
+  - PINRemoteImage/iOS (3.0.0-beta.14):
     - PINRemoteImage/Core
-  - PINRemoteImage/PINCache (3.0.0-beta.13):
-    - PINCache (= 3.0.1-beta.6)
+  - PINRemoteImage/PINCache (3.0.0-beta.14):
+    - PINCache (= 3.0.1-beta.7)
     - PINRemoteImage/Core
   - QBImagePickerController (3.4.0)
   - RCTRequired (0.61.2)
@@ -338,7 +343,7 @@ PODS:
   - Texture/Photos (2.8.1):
     - Texture/Core
   - Texture/PINRemoteImage (2.8.1):
-    - PINRemoteImage/iOS (= 3.0.0-beta.13)
+    - PINRemoteImage/iOS (= 3.0.0-beta.14)
     - PINRemoteImage/PINCache
     - Texture/Core
   - Texture/Video (2.8.1):
@@ -405,17 +410,20 @@ DEPENDENCIES:
   - RNShare (from `../node_modules/react-native-share`)
   - Starscream (~> 3.0.2)
   - SwiftyJSON (~> 4.0)
-  - Texture (= 2.8.1)
+  - Texture (from `https://github.com/TextureGroup/Texture.git`, commit `a890f75019942db92834d76c6aba113fc2bd49a6`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - AppCenter
     - AppCenterReactNativeShared
     - Auth0
     - boost-for-react-native
     - libwebp
     - ObjectiveRocks
+    - PINCache
+    - PINOperation
+    - PINRemoteImage
     - QBImagePickerController
     - ReachabilitySwift
     - RSKImageCropper
@@ -424,11 +432,6 @@ SPEC REPOS:
     - SimpleKeychain
     - Starscream
     - SwiftyJSON
-  trunk:
-    - PINCache
-    - PINOperation
-    - PINRemoteImage
-    - Texture
 
 EXTERNAL SOURCES:
   A0Auth0:
@@ -525,8 +528,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-rate/ios"
   RNShare:
     :path: "../node_modules/react-native-share"
+  Texture:
+    :commit: a890f75019942db92834d76c6aba113fc2bd49a6
+    :git: https://github.com/TextureGroup/Texture.git
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
+
+CHECKOUT OPTIONS:
+  Texture:
+    :commit: a890f75019942db92834d76c6aba113fc2bd49a6
+    :git: https://github.com/TextureGroup/Texture.git
 
 SPEC CHECKSUMS:
   A0Auth0: 3ef40effed761e80d2ecd7749cc271e0b12e3f75
@@ -535,16 +546,16 @@ SPEC CHECKSUMS:
   Auth0: df9ac013e7850052fea1dcd53fa09bb129121721
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: 8913bd8fdc47b85abc801ae8bae007bbfb6b4ce5
-  DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
+  DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: 68b6a76960fbd8ecd9fb7ce0aadd3329c3340a99
   FBReactNativeSpec: 5a764c60abdc3336a213e5310c40b74741f32839
-  Folly: de497beb10f102453a1afa9edbf8cf8a251890de
-  glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
+  Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
+  glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   libwebp: 057912d6d0abfb6357d8bb05c0ea470301f5d61e
   ObjectiveRocks: b3a5c79b6757a67566413fab3486731865ff96ef
-  PINCache: d195fdba255283f7e9900a55e3cced377f431f9b
+  PINCache: 7cb9ae068c8f655717f7c644ef1dff9fd573e979
   PINOperation: 24b774353ca248fcf87d67b2d61eef42087c125a
-  PINRemoteImage: d6d51c5d2adda55f1ce30c96e850b6c4ebd2856a
+  PINRemoteImage: 81bbff853acc71c6de9e106e9e489a791b8bbb08
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   RCTRequired: c639d59ed389cfb1f1203f65c2ea946d8ec586e2
   RCTRestart: 550203a210a1df35f587856a79d35f5813c6909d
@@ -593,9 +604,9 @@ SPEC CHECKSUMS:
   SimpleKeychain: 3be49072fd2d82de8fa83d847ef1e548622f8fc5
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
-  Texture: 8ecf6984065a1e54f06bf97b349ecca28582acd7
+  Texture: 6811322192a44ed35bcd53772aa8df8965d9796b
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: e3fe11cc70401211518339e9be7b0cc09d9e9d97
+PODFILE CHECKSUM: 337b5118c8f83db776a5d412c60110603d4fb6f8
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.7.5
