@@ -64,7 +64,7 @@ private func createAttributedText(spec: AsyncTextSpec, attributes: [NSAttributed
 //  }
 //}
 
-class RNAsyncTextNode: ASTextNode2, ASTextNodeDelegate {
+class RNAsyncTextNode: ASTextNode, ASTextNodeDelegate {
 
   override init() {
     super.init()
@@ -102,11 +102,11 @@ class RNAsyncTextNode: ASTextNode2, ASTextNodeDelegate {
     self.truncationMode = .byTruncatingTail
   }
 
-  func textNode(_ textNode: ASTextNode2!, shouldHighlightLinkAttribute attribute: String!, value: Any!, at point: CGPoint) -> Bool {
+  func textNode(_ textNode: ASTextNode!, shouldHighlightLinkAttribute attribute: String!, value: Any!, at point: CGPoint) -> Bool {
     return true
   }
 
-  func textNode(_ textNode: ASTextNode2!, tappedLinkAttribute attribute: String!, value: Any!, at point: CGPoint, textRange: NSRange) {
+  func textNode(_ textNode: ASTextNode!, tappedLinkAttribute attribute: String!, value: Any!, at point: CGPoint, textRange: NSRange) {
     AsyncViewEventEmitter.sharedInstance.dispatchOnPress(key: value as! String, frame: CGRect.zero, instanceKey: nil)
   }
 }
