@@ -26,6 +26,10 @@ fragment RoomShort on Room {
     id
     isChannel
     kind
+    matchmaking {
+      __typename
+      ...MatchmakingRoomFragment
+    }
     membersCount
     membership
     myBadge {

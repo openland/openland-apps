@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import { FullMessage } from './Message';
 import { UserBadge } from './UserBadge';
+import { MatchmakingRoomFragment } from './MatchmakingFragments';
 
 export const RoomShort = gql`
     fragment RoomShort on Room {
@@ -34,6 +35,9 @@ export const RoomShort = gql`
             pinnedMessage {
                 ...FullMessage
             }
+            matchmaking {
+                ...MatchmakingRoomFragment
+            }
             organization {
                 ...OrganizationShort
             }
@@ -48,4 +52,5 @@ export const RoomShort = gql`
     }
     ${UserBadge}
     ${FullMessage}
+    ${MatchmakingRoomFragment}
 `;

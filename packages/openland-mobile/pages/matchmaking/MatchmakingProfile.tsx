@@ -7,6 +7,7 @@ import { useClient } from 'openland-mobile/utils/useClient';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZListHero } from 'openland-mobile/components/ZListHero';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 const MatchmakingProfileComponent = React.memo((props: PageProps) => {
     const client = useClient();
@@ -21,6 +22,7 @@ const MatchmakingProfileComponent = React.memo((props: PageProps) => {
         return null;
     }
     const { user, answers } = profile;
+    const myID = getMessenger().engine.user.id;
     return (
         <>
             <SHeader title={Platform.OS === 'android' ? 'Info' : user.name} />
@@ -31,7 +33,7 @@ const MatchmakingProfileComponent = React.memo((props: PageProps) => {
                     title={user.name}
                     subtitle={user.primaryOrganization && user.primaryOrganization.name}
                     action={{
-                        title: 'Send message',
+                        title: props.router.params.userId === myID ? 'Edit' :  'Send message',
                         onPress: () => {
                             props.router.pushAndReset('Conversation', {
                                 flexibleId: props.router.params.userId,
