@@ -38,10 +38,7 @@ interface CommentsWrapperProps {
 export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
     const { peerId, peerView, groupId, commentId } = props;
     const client = useClient();
-    const [highlightId, setHighlightId] = React.useState<string | undefined>(undefined);
-    React.useEffect(() => {
-        setHighlightId(commentId);
-    }, []);
+    const [highlightId, setHighlightId] = React.useState<string | undefined>(commentId);
 
     const handleReplyClick = React.useCallback((id: string) => {
         setHighlightId(current => id === current ? undefined : id);
@@ -121,14 +118,13 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                     />
                 </div>
             </XScrollView3>
-
             <CommentInput
                 onSent={handleCommentSent}
                 onSentAttach={handleCommentSentAttach}
                 onStickerSent={handleStickerSent}
                 groupId={groupId}
+                forceAutofocus={!highlightId}
             />
-
             <DropZone
                 onDrop={handleCommentSentAttach}
                 text={highlightId ? 'Drop here to send to the branch' : undefined}

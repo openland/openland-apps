@@ -56,15 +56,29 @@ interface CommentViewProps {
 export const CommentView = React.memo((props: CommentViewProps) => {
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
-    const { comment, deleted, depth, highlighted, groupId, onReplyClick, onDeleteClick, onReactionClick, onSent, onSentAttach, onStickerSent, generation } = props;
+    const {
+        comment,
+        deleted,
+        depth,
+        highlighted,
+        groupId,
+        onReplyClick,
+        onDeleteClick,
+        onReactionClick,
+        onSent,
+        onSentAttach,
+        onStickerSent,
+        generation,
+    } = props;
     const { id, sender, message, spans, fallback, date } = comment;
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
-    const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
+    const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(
+        sender.name,
+    );
     const [edit, setEdit] = React.useState(false);
     const containerRef = React.useRef<HTMLDivElement>(null);
 
     React.useLayoutEffect(() => {
-        console.warn(generation);
         if (highlighted || (generation && comment.sender.id === messenger.user.id)) {
             if (containerRef.current) {
                 containerRef.current.scrollIntoView({ behavior: 'auto', block: 'nearest' });
@@ -72,13 +86,19 @@ export const CommentView = React.memo((props: CommentViewProps) => {
         }
     }, []);
 
-    React.useEffect(() => {
-        setTextSpans(processSpans(message || '', spans));
-    }, [message, spans]);
+    React.useEffect(
+        () => {
+            setTextSpans(processSpans(message || '', spans));
+        },
+        [message, spans],
+    );
 
-    React.useEffect(() => {
-        setSenderNameEmojify(emoji(sender.name));
-    }, [sender.name]);
+    React.useEffect(
+        () => {
+            setSenderNameEmojify(emoji(sender.name));
+        },
+        [sender.name],
+    );
 
     const handleEditSave = React.useCallback(async (data: URickTextValue) => {
         const { text, mentions } = convertFromInputValue(data);
@@ -97,18 +117,29 @@ export const CommentView = React.memo((props: CommentViewProps) => {
 
     const canEdit = sender.id === messenger.user.id && message && message.length;
     const canDelete = sender.id === messenger.user.id || useRole('super-admin');
-    const attachments = (comment.__typename === 'GeneralMessage') ? comment.attachments : undefined;
-    const reactions = (comment.__typename === 'GeneralMessage' || comment.__typename === 'StickerMessage') ? comment.reactions : [];
+    const attachments = comment.__typename === 'GeneralMessage' ? comment.attachments : undefined;
+    const reactions =
+        comment.__typename === 'GeneralMessage' || comment.__typename === 'StickerMessage'
+            ? comment.reactions
+            : [];
 
     return (
-        <div ref={containerRef} className={wrapper} style={{ paddingLeft: depth > 0 ? 56 + ((depth - 1) * 40) : undefined }}>
+        <div
+            ref={containerRef}
+            className={wrapper}
+            style={{ paddingLeft: depth > 0 ? 56 + (depth - 1) * 40 : undefined }}
+        >
             <div className={avatarWrapper}>
                 <UAvatar
                     id={sender.id}
                     title={sender.name}
                     photo={sender.photo}
                     size={depth > 0 ? 'x-small' : 'medium'}
-                    onClick={sender.photo && !sender.photo.startsWith('ph://') ? () => showAvatarModal(sender.photo!) : undefined}
+                    onClick={
+                        sender.photo && !sender.photo.startsWith('ph://')
+                            ? () => showAvatarModal(sender.photo!)
+                            : undefined
+                    }
                 />
             </div>
             <div className={content}>
@@ -132,8 +163,12 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                             textSpans={textSpans}
                             attachments={attachments}
                             fallback={fallback}
-                            sticker={comment.__typename === 'StickerMessage' ? comment.sticker : undefined}
                             isOut={sender.id === messenger.user.id}
+                            sticker={
+                                comment.__typename === 'StickerMessage'
+                                    ? comment.sticker
+                                    : undefined
+                            }
                         />
                         {!deleted && (
                             <CommentTools

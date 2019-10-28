@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
-import { SendMessageComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
 import { css } from 'linaria';
+import { URickInputInstance, URickTextValue } from 'openland-web/components/unicorn/URickInput';
+import { SendMessageComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
 import { StickerFragment } from 'openland-api/Types';
 
 const wrapperClass = css`
@@ -22,11 +22,22 @@ interface CommentInputProps {
     onStickerSent: (sticker: StickerFragment) => void;
     groupId?: string;
     compact?: boolean;
+    forceAutofocus?: boolean;
 }
 
 export const CommentInput = React.memo((props: CommentInputProps) => {
     const { onSent, onSentAttach, onStickerSent, groupId, compact } = props;
+    const ref = React.useRef<URickInputInstance>(null);
 
+    React.useLayoutEffect(() => {
+        let timer: any;
+        if (props.forceAutofocus && ref.current) {
+            timer = setTimeout(() => {
+                ref.current!.focus();
+            }, 300);
+        }
+        return () => clearTimeout(timer);
+    }, []);
     return (
         <div className={compact ? wrapperCompactClass : wrapperClass}>
             <SendMessageComponent
@@ -34,6 +45,7 @@ export const CommentInput = React.memo((props: CommentInputProps) => {
                 onTextSentAsync={onSent}
                 onAttach={onSentAttach}
                 onStickerSentAsync={onStickerSent}
+                rickRef={ref}
                 placeholder="Write a comment..."
             />
         </div>

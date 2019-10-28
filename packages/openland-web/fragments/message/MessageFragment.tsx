@@ -5,7 +5,7 @@ import { MessageView } from './components/MessageView';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { CommentsWrapper } from 'openland-web/components/comments/CommentsWrapper';
 
-const MessageFragmentInner = React.memo((props: { messageId: string, commentId?: string }) => {
+const MessageFragmentInner = React.memo((props: { messageId: string; commentId?: string }) => {
     const { messageId, commentId } = props;
     const client = useClient();
     const message = client.useMessage({ messageId }, { fetchPolicy: 'cache-and-network' }).message;
@@ -19,7 +19,13 @@ const MessageFragmentInner = React.memo((props: { messageId: string, commentId?:
             peerId={messageId}
             commentId={commentId}
             peerView={<MessageView message={message} />}
-            groupId={message.source && message.source.__typename === 'MessageSourceChat' && message.source.chat.__typename === 'SharedRoom' ? message.source.chat.id : undefined}
+            groupId={
+                message.source &&
+                message.source.__typename === 'MessageSourceChat' &&
+                message.source.chat.__typename === 'SharedRoom'
+                    ? message.source.chat.id
+                    : undefined
+            }
         />
     );
 });
