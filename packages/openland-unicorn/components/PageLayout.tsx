@@ -99,17 +99,17 @@ export const PageLayout = (props: {
     React.useLayoutEffect(
         () => {
             if (props.state === 'mounting') {
-                ref.current!.style.opacity = 0;
+                ref.current!.style.opacity = '0';
             } else if (props.state === 'entering') {
                 ref.current!.animate(
                     [
                         {
                             transform: `translateX(${props.container.current!.clientWidth}px)`,
-                            opacity: 0,
+                            opacity: '0',
                         },
                         {
                             transform: `translateX(0px)`,
-                            opacity: 1,
+                            opacity: '1',
                         },
                     ],
                     {
