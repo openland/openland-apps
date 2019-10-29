@@ -77,44 +77,23 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
     render() {
         let v = this.props.page;
 
-        let content;
-        if (!v.config.titleView) {
-            content = (
-                <SEquisiteCentered style={{ width: '100%' }}>
-                    <SAnimated.View name={'header-left--' + v.page.key} pointerEvents={'box-none'} style={{ paddingLeft: 4 }}>
-                        {(!!this.props.manager.parent && this.props.page.page.startIndex === 0) && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.iconColor} />}
-                        {(!this.props.manager.parent || this.props.page.page.startIndex !== 0) && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.page.config.iconColor || this.props.style.iconColor} hideText={this.props.page.config.hideBackText} />}
+        let content = (
+            <SEquisiteCentered style={{ width: '100%' }} enable={!v.config.titleView}>
+                <SAnimated.View name={'header-left--' + v.page.key} pointerEvents={'box-none'} style={{ paddingLeft: 4 }}>
+                    {(!!this.props.manager.parent && this.props.page.page.startIndex === 0) && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.iconColor} />}
+                    {(!this.props.manager.parent || this.props.page.page.startIndex !== 0) && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.page.config.iconColor || this.props.style.iconColor} hideText={this.props.page.config.hideBackText} />}
+                </SAnimated.View>
+                <SAnimated.View name={'header-title--' + v.page.key} style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column' }}>
+                    {!v.config.titleView && v.config.title && <Text numberOfLines={1} style={[styles.title, { color: this.props.style.textColor }]} allowFontScaling={false}>{v.config.title}</Text>}
+                    {v.config.titleView && v.config.titleView()}
+                </SAnimated.View>
+                <View style={{ flexGrow: 0, flexDirection: 'row', paddingRight: 4, alignItems: 'center' }} pointerEvents="box-none">
+                    <SAnimated.View name={'header-right--' + v.page.key} pointerEvents="box-none" style={{ flexDirection: 'row' }}>
+                        {v.config.buttons && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
                     </SAnimated.View>
-                    <SAnimated.View name={'header-title--' + v.page.key} style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column' }}>
-                        {!v.config.titleView && v.config.title && <Text numberOfLines={1} style={[styles.title, { color: this.props.style.textColor }]} allowFontScaling={false}>{v.config.title}</Text>}
-                        {v.config.titleView && v.config.titleView()}
-                    </SAnimated.View>
-                    <View style={{ flexGrow: 0, flexDirection: 'row', paddingRight: 4, alignItems: 'center' }} pointerEvents="box-none">
-                        <SAnimated.View name={'header-right--' + v.page.key} pointerEvents="box-none" style={{ flexDirection: 'row' }}>
-                            {v.config.buttons && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
-                        </SAnimated.View>
-                    </View>
-                </SEquisiteCentered>
-            );
-        } else {
-            content = (
-                <View style={{ width: '100%', flexDirection: 'row' }}>
-                    <SAnimated.View name={'header-left--' + v.page.key} pointerEvents={'box-none'} style={{ paddingLeft: 4 }}>
-                        {(!!this.props.manager.parent && this.props.page.page.startIndex === 0) && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.iconColor} />}
-                        {(!this.props.manager.parent || this.props.page.page.startIndex !== 0) && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.page.config.iconColor || this.props.style.iconColor} hideText={this.props.page.config.hideBackText} />}
-                    </SAnimated.View>
-                    <SAnimated.View name={'header-title--' + v.page.key} style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column' }}>
-                        {!v.config.titleView && v.config.title && <Text numberOfLines={1} style={[styles.title, { color: this.props.style.textColor }]} allowFontScaling={false}>{v.config.title}</Text>}
-                        {v.config.titleView && v.config.titleView()}
-                    </SAnimated.View>
-                    <View style={{ flexGrow: 0, flexDirection: 'row', paddingRight: 4, alignItems: 'center' }} pointerEvents="box-none">
-                        <SAnimated.View name={'header-right--' + v.page.key} pointerEvents="box-none" style={{ flexDirection: 'row' }}>
-                            {v.config.buttons && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
-                        </SAnimated.View>
-                    </View>
                 </View>
-            );
-        }
+            </SEquisiteCentered>
+        );
 
         return (
             <>
