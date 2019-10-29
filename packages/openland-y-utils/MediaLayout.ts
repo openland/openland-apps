@@ -23,14 +23,7 @@ export function layoutMedia(
         h = Math.round(maxHeight);
     }
 
-    let previewWidth = w;
-    let previewHeight = h;
-    if (w < minWidth || h < minHeight) {
-        previewWidth = minWidth;
-        previewHeight = minWidth;
-    }
-
-    return { width: w, height: h, previewWidth, previewHeight };
+    return { width: w, height: h };
 }
 
 export function layoutMediaReverse(
@@ -59,7 +52,7 @@ export function layoutMediaReverse(
 
 const maxUploadcareDimention = 3000;
 
-const downScale = (params: { width: number, height: number }, max: number) => {
+const downScale = (params: { width: number; height: number }, max: number) => {
     let scale = 1;
     let biggerDimention = Math.max(params.width, params.height);
     if (biggerDimention > max) {
@@ -68,12 +61,17 @@ const downScale = (params: { width: number, height: number }, max: number) => {
     return { width: Math.round(params.width * scale), height: Math.round(params.height * scale) };
 };
 
-export const uploadcareOptions = (params: { width: number, height: number }, scales: number[] = [1, 2]) => {
+export const uploadcareOptions = (
+    params: { width: number; height: number },
+    scales: number[] = [1, 2],
+) => {
     let res: string[] = [];
     for (let scale of scales) {
         let scaled = { width: params.width * scale, height: params.height * scale };
         let downScaled = downScale(scaled, maxUploadcareDimention);
-        res.push(`scale_crop/${downScaled.width}x${downScaled.height}/${scale > 1 ? ` ${scale}x` : ''}`);
+        res.push(
+            `scale_crop/${downScaled.width}x${downScaled.height}/${scale > 1 ? ` ${scale}x` : ''}`,
+        );
     }
     return res;
 };
