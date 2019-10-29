@@ -7,6 +7,7 @@ import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { OthersPopper } from './OthersPopper';
 import { TextTitle2 } from 'openland-web/utils/TextStyles';
+import { defaultHover } from 'openland-web/utils/Styles';
 
 const boldTextClassName = css`
     font-weight: bold;
@@ -129,6 +130,7 @@ const MentionedUser = React.memo(
                         mentionClassName,
                         isYou && !isService && mentionBgClassName,
                         isService && mentionServiceClassName,
+                        isService && defaultHover,
                     )}
                 >
                     {text}
