@@ -138,7 +138,6 @@ const deleteButton = css`
     transition: 150ms opacity ease, 150ms transform ease;
     width: 40px;
     height: 40px;
-    background: var(--backgroundTertiary);
     position: absolute;
     top: 0;
     right: 0;
