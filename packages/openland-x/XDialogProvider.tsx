@@ -2,27 +2,69 @@ import * as React from 'react';
 import { XModalProvider, XModal, registerModalProvider, XModalController } from './showModal';
 import { randomKey } from 'openland-graphql/utils/randomKey';
 import * as ReactModal from 'react-modal';
-import { UPopperProvider, UPopper, registerPopupProvider, UPopperController } from 'openland-web/components/unicorn/UPopper';
+import {
+    UPopperProvider,
+    UPopper,
+    registerPopupProvider,
+    UPopperController,
+} from 'openland-web/components/unicorn/UPopper';
 import * as ReactDOM from 'react-dom';
 import Popper from 'popper.js';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 
 const style = css`
     z-index: 2;
     pointer-events: none;
+    &[x-placement^='top'] {
+        & .popper-arrow {
+            bottom: 4px;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+    }
+    &[x-placement^='bottom'] {
+        & .popper-arrow {
+            top: 4px;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+    }
+    &[x-placement^='left'] {
+        & .popper-arrow {
+            right: 4px;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+    }
+    &[x-placement^='right'] {
+        & .popper-arrow {
+            left: 4px;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+    }
 `;
 
-export class XDialogProviderComponent extends React.Component<{}, { modals: { component: React.ReactElement<{}>; key: string; }[] }>
-    implements XModalProvider, UPopperProvider {
+interface XDialogProviderComponentState {
+    modals: { component: React.ReactElement<{}>; key: string }[];
+    context: Popper.Data | null;
+}
 
+export class XDialogProviderComponent extends React.Component<{}, XDialogProviderComponentState>
+    implements XModalProvider, UPopperProvider {
     constructor(props: {}) {
         super(props);
-        this.state = { modals: [] };
+        this.state = { modals: [], context: null };
     }
 
     showPopper = (popper: UPopper) => {
         setTimeout(() => {
             let key = randomKey();
+
             let cont: UPopperController = {
                 hide: () => {
                     this.setState(state => ({ modals: state.modals.filter(v => v.key !== key) }));
@@ -36,7 +78,6 @@ export class XDialogProviderComponent extends React.Component<{}, { modals: { co
             let res = popper(cont);
 
             const Body = () => {
-
                 const target = res.target;
                 const ref = React.useRef<HTMLDivElement>(null);
 
@@ -52,8 +93,7 @@ export class XDialogProviderComponent extends React.Component<{}, { modals: { co
                                 padding: 12,
                             },
                         },
-                        eventsEnabled: true,
-                        placement: res.placement || 'auto'
+                        placement: res.placement || 'auto',
                     });
                     return () => {
                         pjs.destroy();
@@ -61,10 +101,7 @@ export class XDialogProviderComponent extends React.Component<{}, { modals: { co
                 }, []);
 
                 return (
-                    <div
-                        className={style}
-                        ref={ref}
-                    >
+                    <div className={cx(style, 'popper-body')} ref={ref}>
                         {res.content}
                     </div>
                 );
@@ -141,15 +178,13 @@ export class XDialogProviderComponent extends React.Component<{}, { modals: { co
             }));
         }, 1);
     }
+
     componentWillMount() {
         registerModalProvider(this);
         registerPopupProvider(this);
     }
+
     render() {
-        return (
-            <>
-                {this.state.modals.map((v) => v.component)}
-            </>
-        );
+        return <>{this.state.modals.map(v => v.component)}</>;
     }
 }

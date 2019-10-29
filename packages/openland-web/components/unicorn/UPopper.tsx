@@ -1,9 +1,13 @@
 import { Placement } from 'popper.js';
 
-export type UPopper = (controller: UPopperController) => {
-    target: HTMLElement,
+export type UPopper = (
+    controller: UPopperController,
+) => {
+    target: HTMLElement;
     placement?: Placement;
-    content: React.ReactElement<{}>
+    useArrow?: boolean;
+    darkStyle?: boolean;
+    content: React.ReactElement<{}>;
 };
 
 export interface UPopperController {
@@ -20,13 +24,15 @@ export function registerPopupProvider(provider: UPopperProvider) {
     currentProvider = provider;
 }
 
-export function showPopper(config: {
-    target: HTMLElement, 
-    placement: Placement
-}, popper: (ctx: UPopperController) => React.ReactElement<{}>) {
-    currentProvider!!.showPopper((ctx) => ({
+export function showPopper(
+    config: { target: HTMLElement; placement: Placement; useArrow?: boolean, darkStyle?: boolean },
+    popper: (ctx: UPopperController) => React.ReactElement<{}>,
+) {
+    currentProvider!!.showPopper(ctx => ({
         target: config.target,
         placement: config.placement,
-        content: popper(ctx)
+        useArrow: config.useArrow,
+        darkStyle: config.darkStyle,
+        content: popper(ctx),
     }));
 }

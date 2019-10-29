@@ -22,60 +22,13 @@ const captionContent = css`
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--overlayTotal);
     text-align: center;
-    border-radius: 8px;
     color: var(--foregroundContrast);
     max-width: 280px;
     padding: 6px 12px;
+    background-color: var(--overlayTotal);
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
-
-    &::after {
-        position: absolute;
-        content: '';
-        width: 10px;
-        height: 10px;
-        background-color: #000;
-        transform: rotate(45deg);
-        border-radius: 2px;
-        z-index: -1;
-    }
-`;
-
-const topPlacementArrow = css`
-    &::after {
-        bottom: -2px;
-        left: 0;
-        right: 0;
-        margin: auto;
-    }
-`;
-
-const bottomPlacementArrow = css`
-    &::after {
-        top: -2px;
-        left: 0;
-        right: 0;
-        margin: auto;
-    }
-`;
-
-const leftPlacementArrow = css`
-    &::after {
-        right: -2px;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-    }
-`;
-
-const rightPlacementArrow = css`
-    &::after {
-        left: -2px;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-    }
+    border-radius: 8px;
 `;
 
 interface CaptionPopperConfig {
@@ -89,7 +42,15 @@ interface CaptionPopperConfig {
 export const useCaptionPopper = (opts: CaptionPopperConfig) => {
     const { text, getText, placement = 'top', scope, width } = opts;
     const [, show] = usePopper(
-        { placement, hideOnLeave: true, borderRadius: 8, scope, useWrapper: false },
+        {
+            placement,
+            hideOnLeave: true,
+            borderRadius: 8,
+            scope,
+            useWrapper: false,
+            useArrow: true,
+            darkStyle: true,
+        },
         ctx => (
             <div
                 className={cx(
@@ -101,16 +62,7 @@ export const useCaptionPopper = (opts: CaptionPopperConfig) => {
                     width: width,
                 }}
             >
-                <div
-                    className={cx(
-                        captionContent,
-                        TextCaption,
-                        placement === 'top' && topPlacementArrow,
-                        placement === 'bottom' && bottomPlacementArrow,
-                        placement === 'left' && leftPlacementArrow,
-                        placement === 'right' && rightPlacementArrow,
-                    )}
-                >
+                <div className={cx(captionContent, TextCaption)}>
                     {getText ? getText(ctx) : text}
                 </div>
             </div>
