@@ -70,7 +70,7 @@ const richContentContainer = css`
     justify-content: center;
     flex-grow: 1;
     flex-shrink: 1;
-    padding-top: 16px;
+    padding-top: 12px;
     padding-bottom: 16px;
     padding-left: 16px;
     padding-right: 24px;
