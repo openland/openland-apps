@@ -39,6 +39,7 @@ const contentStyle = css`
 
 const contentStyleCss = css`
     transition: transform 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
+    overflow: hidden;
 `;
 
 const contentWrapperStyle = css`
@@ -96,52 +97,66 @@ export const PageLayout = (props: {
 
     const ref = React.useRef<HTMLDivElement>(null);
     let offset: number = 0;
-    React.useLayoutEffect(
-        () => {
-            if (props.state === 'mounting') {
-                ref.current!.style.opacity = '0';
-            } else if (props.state === 'entering') {
-                ref.current!.animate(
-                    [
+    let width: string = '100%';
+
+    if (isChrome) {
+        React.useLayoutEffect(
+            () => {
+                if (props.state === 'mounting') {
+                    ref.current!.animate(
+                        [
+                            {
+                                transform: `translateX(${props.container.current!.clientWidth}px)`,
+                            },
+                            {
+                                transform: `translateX(0px)`,
+                            },
+                        ],
                         {
-                            transform: `translateX(${props.container.current!.clientWidth}px)`,
-                            opacity: '0',
+                            duration: 240,
+                            fill: 'forwards',
+                            composite: 'add',
+                            easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
                         },
+                    );
+                } else if (props.state === 'entering') {
+                    // nothing to do
+                } else if (props.state === 'visible') {
+                    // nothing to do
+                } else if (props.state === 'exiting') {
+                    ref.current!.animate(
+                        [
+                            {
+                                transform: `translateX(0px)`,
+                            },
+                            {
+                                transform: `translateX(${props.container.current!.clientWidth}px)`,
+                            },
+                        ],
                         {
-                            transform: `translateX(0px)`,
-                            opacity: '1',
+                            duration: 240,
+                            fill: 'forwards',
+                            composite: 'add',
+                            easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
                         },
-                    ],
-                    {
-                        duration: 240,
-                        fill: 'forwards',
-                        composite: 'add',
-                        easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
-                    },
-                );
-            } else if (props.state === 'visible') {
-                // nothing to do
-            } else if (props.state === 'exiting') {
-                ref.current!.animate(
-                    [
-                        {
-                            transform: `translateX(0px)`,
-                        },
-                        {
-                            transform: `translateX(${props.container.current!.clientWidth}px)`,
-                        },
-                    ],
-                    {
-                        duration: 240,
-                        fill: 'forwards',
-                        composite: 'add',
-                        easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
-                    },
-                );
-            }
-        },
-        [props.state],
-    );
+                    );
+                }
+            },
+            [props.state],
+        );
+    } else {
+        if (props.state === 'mounting') {
+            offset = props.container.current!.clientWidth;
+            width = '0';
+        } else if (props.state === 'entering') {
+            offset = 0;
+            width = '100%';
+        } else if (props.state === 'visible') {
+            offset = 0;
+        } else if (props.state === 'exiting') {
+            offset = props.container.current!.clientWidth;
+        }
+    }
 
     return (
         <div className={containerStyle}>
@@ -149,7 +164,7 @@ export const PageLayout = (props: {
             <div
                 ref={ref}
                 className={contentStyle + (!isChrome ? ' ' + contentStyleCss : '')}
-                style={isChrome ? {} : { transform: `translateX(${offset}px)` }}
+                style={isChrome ? {} : { transform: `translateX(${offset}px)`, width }}
             >
                 <HeaderComponent>
                     <Deferred>
