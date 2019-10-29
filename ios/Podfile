@@ -49,7 +49,7 @@ target 'openland' do
 
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
-  pod 'A0Auth0', :path => '../node_modules/react-native-auth0'
+  pod 'A0Auth0', :path => '../node_modules/react-native-auth0/ios'
 
   pod 'react-native-blur', :path => '../node_modules/react-native-blur'
 

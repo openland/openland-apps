@@ -1,5 +1,5 @@
 PODS:
-  - A0Auth0 (1.6.0):
+  - A0Auth0 (2.1.0):
     - React
   - AppCenter (1.14.0):
     - AppCenter/Analytics (= 1.14.0)
@@ -351,7 +351,7 @@ PODS:
   - Yoga (1.14.0)
 
 DEPENDENCIES:
-  - A0Auth0 (from `../node_modules/react-native-auth0`)
+  - A0Auth0 (from `../node_modules/react-native-auth0/ios`)
   - AppCenter (~> 1.14.0)
   - AppCenter/Analytics (~> 1.14.0)
   - AppCenter/Crashes (~> 1.14.0)
@@ -414,7 +414,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - AppCenter
     - AppCenterReactNativeShared
     - Auth0
@@ -435,7 +435,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   A0Auth0:
-    :path: "../node_modules/react-native-auth0"
+    :path: "../node_modules/react-native-auth0/ios"
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
@@ -540,7 +540,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/openland/Texture.git
 
 SPEC CHECKSUMS:
-  A0Auth0: 3ef40effed761e80d2ecd7749cc271e0b12e3f75
+  A0Auth0: 351b3b07e58db39b3bb33f58acf35a878fbba74d
   AppCenter: 02c5efe08d3bbab5421ae41d5f7aa7238906b817
   AppCenterReactNativeShared: 00f470c3c17b47718db8733cbe811ccdcfd86282
   Auth0: df9ac013e7850052fea1dcd53fa09bb129121721
@@ -607,6 +607,6 @@ SPEC CHECKSUMS:
   Texture: 8ecf6984065a1e54f06bf97b349ecca28582acd7
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: 202319e87a25f7898d98af8ea3694b86b7413c4f
+PODFILE CHECKSUM: cb873bccc194e76192eb03c6914b45751e289d5a
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.4
