@@ -4,7 +4,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
-import { TextCaption, TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
+import { TextTitle3, TextBody, TextLabel2 } from 'openland-web/utils/TextStyles';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { useClient } from 'openland-web/utils/useClient';
 import DeleteIcon from 'openland-icons/s/ic-close-16.svg';
@@ -297,7 +297,7 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
                 className={richContentContainer}
             >
                 {(siteIcon || attach.titleLinkHostname) && (
-                    <div className={cx(linkHostnameContainer, TextCaption)}>
+                    <div className={cx(linkHostnameContainer, TextLabel2)}>
                         {siteIcon}
                         <span>{attach.titleLinkHostname}</span>
                     </div>
