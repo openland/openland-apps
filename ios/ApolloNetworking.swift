@@ -22,6 +22,8 @@ enum ApolloNetworkingState {
 class ApolloNetworking {
   
   private static var nextId: AtomicInteger = AtomicInteger(value: 1)
+  private static let PING_INTERVAL = 30
+  private static let PING_TIMEOUT = 10
   
   private let queue = DispatchQueue(label: "spacex-networking-apollo")
   
@@ -37,8 +39,8 @@ class ApolloNetworking {
   private var failuresCount = 0
   private var reachable = false
   private var started = false
-  private var lastPing: Int64 = 0
-  private var lastPong: Int64 = 0
+  
+  private var lastPingId = 0
   
   init(url: String, params: [String: String?]) {
     self.callbackQueue = self.queue
@@ -161,17 +163,20 @@ class ApolloNetworking {
     schedulePing()
   }
   
-  private func schedulePing(){
-    self.queue.asyncAfter(deadline: .now() + .seconds(30)) {
-      self.queue.asyncAfter(deadline: .now() + .seconds(10)) {
-        if(self.state == .started && self.lastPing > self.lastPong){
-          self.onDisconnected()
-        }
-      }
-      if(self.state == .started){
+  private func schedulePing() {
+    NSLog("[SpaceX-Apollo]: schedule ping")
+    self.lastPingId += 1
+    let pingId = self.lastPingId
+    self.queue.asyncAfter(deadline: .now() + .seconds(ApolloNetworking.PING_INTERVAL)) {
+      if (self.state == .started) {
+        NSLog("[SpaceX-Apollo]: sending ping")
         self.writeToSocket(msg: JSON(["type": "ping"]))
-        self.lastPing = Int64((Date().timeIntervalSince1970 * 1000))
-        self.schedulePing()
+        self.queue.asyncAfter(deadline: .now() + .seconds(ApolloNetworking.PING_TIMEOUT)) {
+          if(self.state == .started && self.lastPingId == pingId) {
+            NSLog("[SpaceX-Apollo]: ping timeout")
+            self.onDisconnected()
+          }
+        }
       }
     }
   }
@@ -239,12 +244,12 @@ class ApolloNetworking {
       }
     } else if type == "ping" {
       self.queue.async {
-        if(self.state == .started){
+        if (self.state == .started) {
           self.writeToSocket(msg: JSON(["type": "pong"]))
         }
       }
     }else if type == "pong" {
-      self.lastPong = Int64((Date().timeIntervalSince1970 * 1000))
+      self.schedulePing()
     } else if type == "complete" {
       let id = parsed["id"].stringValue
       NSLog("[SpaceX-Apollo]: Complete (" + id + ")")
