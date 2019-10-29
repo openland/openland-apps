@@ -73,7 +73,7 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>This lets you take photos and record videos within the app</string>
+	<string>Enable access to your camera to take new photos and videos with Openland and share them in chats without leaving the app</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This lets you share your geolocation</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -83,7 +83,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>This lets you save photos to your camera roll</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This lets you send photos and videos from your camera roll</string>
+	<string>This will make it possible to attach your existing photos to chat messages</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>WorkSans-Black.ttf</string>
