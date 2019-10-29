@@ -42,7 +42,7 @@ const cropTextStyle = css`
 
 const EditLabelStyle = css`
     vertical-align: baseline;
-    color: var(--foregroundSecondary);
+    color: var(--foregroundTertiary);
     display: inline-flex;
     align-items: center;
     user-select: none;
@@ -60,7 +60,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
                         <span className={cx(EditLabelStyle, TextCaption)}>
                             {'\u00A0'}
                             (edited)
-                            </span>
+                        </span>
                     )}
                 </span>
             </div>
