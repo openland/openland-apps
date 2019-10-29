@@ -73,7 +73,7 @@ const richContentContainer = css`
     padding-top: 16px;
     padding-bottom: 16px;
     padding-left: 16px;
-    padding-right: 16px;
+    padding-right: 24px;
     color: var(--foregroundPrimary);
     &:hover {
         text-decoration: none;
