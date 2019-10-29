@@ -15,6 +15,7 @@ import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyl
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { useUserPopper } from 'openland-web/components/UserPopper';
+import { defaultHover } from 'openland-web/utils/Styles';
 
 const senderContainer = css`
     display: flex;
@@ -51,6 +52,10 @@ const dateStyle = css`
 const senderOrgAndDateStyle = css`
     margin-left: 8px;
     color: var(--foregroundSecondary);
+
+    &:hover {
+        color: var(--foregroundSecondary);
+    }
 `;
 
 const senderBadgeStyle = css`
@@ -93,7 +98,7 @@ const MessageSenderFeatured = (props: { senderBadgeNameEmojify: string | JSX.Ele
 const MessageSenderOrg = (props: { organization: UserShort_primaryOrganization }) => (
     <ULink
         path={`/${props.organization.shortname || props.organization.id}`}
-        className={cx(TextDensed, senderOrgAndDateStyle)}
+        className={cx(TextDensed, senderOrgAndDateStyle, defaultHover)}
     >
         {props.organization.name}
     </ULink>
