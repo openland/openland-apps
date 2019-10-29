@@ -2295,9 +2295,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-native-auth0@^1.2.3":
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/@types/react-native-auth0/-/react-native-auth0-1.2.5.tgz#5dec8c5a600918ff9bd68e7c30e134cb251660f1"
+"@types/react-native-auth0@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@types/react-native-auth0/-/react-native-auth0-1.3.0.tgz#85efabfb024b93c14889b9ae6d6290c8d7d0bd53"
+  integrity sha512-j5V4VoPL08sTVJJNw3/IPG+GS8LwSkeOOglJWiBzi7myg5rvf4B+Yvff5fWsVpoCFHsGxV4v3bFbvGotroQrPA==
 
 "@types/react-native-background-timer@^2.0.0":
   version "2.0.0"
@@ -10058,6 +10059,11 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
+jsrsasign@8.0.12:
+  version "8.0.12"
+  resolved "https://registry.yarnpkg.com/jsrsasign/-/jsrsasign-8.0.12.tgz#22abb9656d34a30b9530436720835e89c2e5c316"
+  integrity sha1-Iqu5ZW00owuVMENnIINeicLlwxY=
+
 jszip@^3.1.5:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/jszip/-/jszip-3.1.5.tgz#e3c2a6c6d706ac6e603314036d43cd40beefdf37"
@@ -10087,6 +10093,11 @@ jws@^3.1.5:
   dependencies:
     jwa "^1.1.5"
     safe-buffer "^5.0.1"
+
+jwt-decode@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-2.2.0.tgz#7d86bd56679f58ce6a84704a657dd392bba81a79"
+  integrity sha1-fYa9VmefWM5qhHBKZX3TkruoGnk=
 
 kdbush@^1.0.1:
   version "1.0.1"
@@ -13351,12 +13362,14 @@ react-native-animatable@^1.2.4:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-auth0@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-auth0/-/react-native-auth0-1.6.0.tgz#1a1bac6057b5bf6a804c28e1c773e4a03d40638c"
-  integrity sha512-LvW9Cn7+coh8snXwFYLPrCE7ZXfXxX3//vlxRn2WviahakFEY0sj0gdg2jG2gCkwh/1YJ9eoqos1ZJV2O/2mxg==
+react-native-auth0@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-auth0/-/react-native-auth0-2.1.0.tgz#2ffb2011ec88b130f9cdcc762fbee451bc99697e"
+  integrity sha512-ooNdMl5cVz4ue+ta/y4nAGqBwkjtPVq9JPUDKMB7ON/C8F8nguqJ6RnsmNhrDwvpFo+Bz3TIsyKsCztQiCE9fA==
   dependencies:
     base-64 "^0.1.0"
+    jsrsasign "8.0.12"
+    jwt-decode "^2.2.0"
     url "^0.11.0"
 
 react-native-background-timer@^2.1.1:
