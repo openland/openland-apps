@@ -82,8 +82,8 @@ const richContentContainer = css`
 `;
 
 const siteIconContainer = css`
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
