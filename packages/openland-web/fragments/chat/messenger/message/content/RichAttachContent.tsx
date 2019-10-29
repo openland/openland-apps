@@ -134,8 +134,7 @@ const text4line = css`
 
 const deleteButton = css`
     opacity: 0;
-    transform: translateX(100%);
-    transition: 150ms opacity ease, 150ms transform ease;
+    transition: 150ms opacity ease;
     width: 40px;
     height: 40px;
     position: absolute;
