@@ -5,7 +5,7 @@ import {
     URickInput,
     URickInputInstance,
     URickTextValue,
-    AllMention
+    AllMention,
 } from 'openland-web/components/unicorn/URickInput';
 import AttachIcon from 'openland-icons/s/ic-attach-24.svg';
 import AllIcon from 'openland-icons/s/ic-channel-16.svg';
@@ -85,7 +85,7 @@ export const MentionUserComponent = (props: MentionUserComponentProps) => (
 
 const EmojiSuggestionComponent = (props: { name: string; value: string; display: string }) => (
     <div className={mentionContainer}>
-        <XView fontSize={24} width={24} height={28} alignItems="center" justifyContent="center" >
+        <XView fontSize={24} width={24} height={28} alignItems="center" justifyContent="center">
             {emojiComponent(props.name)}
         </XView>
         <div className={mentionUserDataWrap}>
@@ -102,14 +102,12 @@ const mentionsContainer = css`
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
     background-color: white;
     border-radius: 8px;
-    padding-top: 8px;
-    padding-bottom: 8px;
     opacity: 0;
     transform: translateY(10px);
     will-change: opacity;
-    transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    /* overflow-y: scroll; */
-    overflow-x: none;
+    transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1),
+        transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
     z-index: 2;
 `;
 
@@ -199,31 +197,47 @@ const AutoCompleteComponent = React.memo(
                 },
                 isActive: () => {
                     return isActive.current;
-                }
+                },
             }));
-            useShortcuts([{
-                keys: ['Escape'], callback: () => {
-                    if (isActive.current) {
-                        forceClose.current = true;
-                        setWord(null);
-                        return true;
-                    }
-                    return false;
-                }
-            }]);
+            useShortcuts([
+                {
+                    keys: ['Escape'],
+                    callback: () => {
+                        if (isActive.current) {
+                            forceClose.current = true;
+                            setWord(null);
+                            return true;
+                        }
+                        return false;
+                    },
+                },
+            ]);
 
             const itemRender = React.useCallback(
                 (v: SearchUser | AllMention | Cursor) => {
                     if (v.__typename === 'cursor') {
                         (async () => {
                             let lastq = lastQuery.current;
-                            let members = await client.queryChatMembersSearch({ cid: props.groupId!, query: lastQuery.current, first: 20, after: v.after });
+                            let members = await client.queryChatMembersSearch({
+                                cid: props.groupId!,
+                                query: lastQuery.current,
+                                first: 20,
+                                after: v.after,
+                            });
                             if (lastq !== lastQuery.current) {
                                 return;
                             }
-                            let res: (SearchUser | AllMention | Cursor)[] = members.members.edges.map(e => e.user);
+                            let res: (
+                                | SearchUser
+                                | AllMention
+                                | Cursor)[] = members.members.edges.map(e => e.user);
                             if (members && members.members.pageInfo.hasNextPage) {
-                                res.push({ __typename: 'cursor', after: members.members.edges[members.members.edges.length - 1].cursor });
+                                res.push({
+                                    __typename: 'cursor',
+                                    after:
+                                        members.members.edges[members.members.edges.length - 1]
+                                            .cursor,
+                                });
                             }
                             setUsers([...users.filter(u => u.__typename !== 'cursor'), ...res]);
                         })();
@@ -232,20 +246,24 @@ const AutoCompleteComponent = React.memo(
                         <XView height={40} flexGrow={1} justifyContent="center" alignItems="center">
                             <XLoader transparentBackground={true} size="small" />
                         </XView>
-                    ) :
-                        v.__typename === 'AllMention' ? (
-                            <div className={mentionContainer}>
-                                <UIcon className={allMentionIcon} icon={<AllIcon />} />
-                                <span className={userName}>@All<span style={{ opacity: 0.4, marginLeft: 7 }}>Notify everyone in this group</span></span>
-                            </div>
-                        ) : (
-                                <MentionUserComponent
-                                    name={v.name}
-                                    id={v.id}
-                                    photo={v.photo}
-                                    primaryOrganization={v.primaryOrganization}
-                                />
-                            );
+                    ) : v.__typename === 'AllMention' ? (
+                        <div className={mentionContainer}>
+                            <UIcon className={allMentionIcon} icon={<AllIcon />} />
+                            <span className={userName}>
+                                @All
+                                <span style={{ opacity: 0.4, marginLeft: 7 }}>
+                                    Notify everyone in this group
+                                </span>
+                            </span>
+                        </div>
+                    ) : (
+                        <MentionUserComponent
+                            name={v.name}
+                            id={v.id}
+                            photo={v.photo}
+                            primaryOrganization={v.primaryOrganization}
+                        />
+                    );
                 },
                 [users],
             );
@@ -259,14 +277,23 @@ const AutoCompleteComponent = React.memo(
 
             let matched: (SearchUser | AllMention | Cursor)[] | undefined = [];
             if (props.groupId) {
-                let query = word && word.startsWith("@") ? word.substring(1) : undefined;
-                let members = client.useWithoutLoaderChatMembersSearch({ cid: props.groupId, first: 20, query });
+                let query = word && word.startsWith('@') ? word.substring(1) : undefined;
+                let members = client.useWithoutLoaderChatMembersSearch({
+                    cid: props.groupId,
+                    first: 20,
+                    query,
+                });
 
                 if (members && query !== lastQuery.current) {
                     lastQuery.current = query;
-                    let res: (SearchUser | AllMention | Cursor)[] = members ? members.members.edges.map(e => e.user) : [];
+                    let res: (SearchUser | AllMention | Cursor)[] = members
+                        ? members.members.edges.map(e => e.user)
+                        : [];
                     if (members && members.members.pageInfo.hasNextPage) {
-                        res.push({ __typename: 'cursor', after: members.members.edges[members.members.edges.length - 1].cursor });
+                        res.push({
+                            __typename: 'cursor',
+                            after: members.members.edges[members.members.edges.length - 1].cursor,
+                        });
                     }
                     setUsers(res);
                 }
@@ -277,7 +304,7 @@ const AutoCompleteComponent = React.memo(
                     }
                 }
             }
-            let filtered: { name: string, value: string, shortcode: string }[] = [];
+            let filtered: { name: string; value: string; shortcode: string }[] = [];
             if (word) {
                 filtered.push(...emojiSuggest(word));
             }
@@ -297,24 +324,27 @@ const AutoCompleteComponent = React.memo(
                 }
             }, []);
 
-            React.useEffect(() => {
-                if (containerRef.current) {
-                    let show = (matched && matched.length) || (filtered && filtered.length);
-                    containerRef.current.style.opacity = show ? '1' : '0';
-                    containerRef.current.style.transform = `translateY(${show ? 0 : 10}px)`;
-                    containerRef.current.style.pointerEvents = show ? 'auto' : 'none';
-                }
-                if (listRef.current) {
-                    listRef.current.reset();
-                }
-            }, [matched, filtered]);
+            React.useEffect(
+                () => {
+                    if (containerRef.current) {
+                        let show = (matched && matched.length) || (filtered && filtered.length);
+                        containerRef.current.style.opacity = show ? '1' : '0';
+                        containerRef.current.style.transform = `translateY(${show ? 0 : 10}px)`;
+                        containerRef.current.style.pointerEvents = show ? 'auto' : 'none';
+                    }
+                    if (listRef.current) {
+                        listRef.current.reset();
+                    }
+                },
+                [matched, filtered],
+            );
 
             if (matched.length) {
                 fallbackRender.current = (
                     <div
                         ref={containerRef}
                         className={mentionsContainer}
-                        onMouseDown={(e) => e.preventDefault()}
+                        onMouseDown={e => e.preventDefault()}
                     >
                         <UNavigableReactWindow
                             width={'100%'}
@@ -332,7 +362,7 @@ const AutoCompleteComponent = React.memo(
                     <div
                         ref={containerRef}
                         className={mentionsContainer}
-                        onMouseDown={(e) => e.preventDefault()}
+                        onMouseDown={e => e.preventDefault()}
                     >
                         {/* <UButton text={'filtered-' + filtered.length} onClick={() => props.onEmojiSelected({ name: '1f923', value: '🤣' })} /> */}
                         <UNavigableReactWindow
@@ -476,7 +506,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
         }
     }, []);
 
-    const onFileInputChange = React.useCallback((e) => {
+    const onFileInputChange = React.useCallback(e => {
         if (props.onAttach) {
             props.onAttach(fileListToArray(e.target.files));
         }
@@ -507,9 +537,15 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     ref={suggestRef}
                 />
             </Deferred>
-            <input ref={fileInputRef} type="file" multiple={true} style={{ display: 'none' }} onChange={onFileInputChange} />
+            <input
+                ref={fileInputRef}
+                type="file"
+                multiple={true}
+                style={{ display: 'none' }}
+                onChange={onFileInputChange}
+            />
             {!!props.onAttach && (
-                <div className={actionButtonContainer} >
+                <div className={actionButtonContainer}>
                     <UIconButton icon={<AttachIcon />} onClick={onAttachPress} />
                 </div>
             )}
@@ -532,7 +568,9 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     onPressTab={onPressTab}
                     onTextChange={props.onTextChange}
                     onContentChange={props.onContentChange}
-                    onStickerSent={(props.onStickerSent || props.onStickerSentAsync) ? onStickerSent : undefined}
+                    onStickerSent={
+                        props.onStickerSent || props.onStickerSentAsync ? onStickerSent : undefined
+                    }
                     autofocus={true}
                     placeholder={props.placeholder || 'Write a message...'}
                     onFilesPaste={props.onAttach}
