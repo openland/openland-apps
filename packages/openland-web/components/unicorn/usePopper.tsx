@@ -219,7 +219,6 @@ export const usePopper = (
     const ctxRef = React.useRef<UPopperController | undefined>(undefined);
     const popperBodyRef = React.useRef<PopperBodyRef>(null);
     let currentScope: Set<React.RefObject<PopperBodyRef>> | undefined;
-
     if (config.scope) {
         currentScope = popperScopes.get(config.scope);
 
@@ -231,74 +230,88 @@ export const usePopper = (
         currentScope.add(popperBodyRef);
     }
 
-    const show = React.useMemo(() => {
-        let lastVisible = false;
-        return (arg: HTMLElement | React.MouseEvent<unknown>) => {
-            if ((arg as any).stopPropagation) {
-                (arg as any).stopPropagation();
+    React.useLayoutEffect(
+        () => {
+            if (isVisible && popperBodyRef.current) {
+                setVisible(false);
+                popperBodyRef.current.hide();
             }
+        },
+        [config.placement],
+    );
 
-            if (currentScope) {
-                currentScope.forEach(r => {
-                    if (r.current && r !== ctxRef) {
-                        r.current.instantHide();
-                    }
-                });
-            }
-
-            if (lastVisible) {
-                if (popperBodyRef.current) {
-                    popperBodyRef.current.hide();
+    const show = React.useMemo(
+        () => {
+            let lastVisible = false;
+            return (arg: HTMLElement | React.MouseEvent<unknown>) => {
+                if ((arg as any).stopPropagation) {
+                    (arg as any).stopPropagation();
                 }
-                return;
-            }
-            lastVisible = true;
-            setVisible(true);
-            const target = (arg as any).currentTarget || arg;
-            showPopper(
-                {
-                    target,
-                    placement: config.placement,
-                },
-                ctx => {
-                    ctxRef.current = ctx;
-                    let fakeCtx = {
-                        hide: () => {
-                            if (popperBodyRef.current) {
-                                popperBodyRef.current.hide();
-                            }
-                        },
-                    };
-                    return (
-                        <PopperBody
-                            ref={popperBodyRef}
-                            target={target}
-                            ctx={ctx}
-                            onHide={() => {
-                                lastVisible = false;
-                                setVisible(false);
-                            }}
-                            hideOnClick={
-                                config.hideOnClick !== undefined ? config.hideOnClick : true
-                            }
-                            hideOnLeave={
-                                config.hideOnLeave !== undefined ? config.hideOnLeave : false
-                            }
-                            hideOnEsc={config.hideOnEsc}
-                            borderRadius={config.borderRadius}
-                            useWrapper={config.useWrapper}
-                            wrapperClassName={config.wrapperClassName}
-                            showTimeout={config.showTimeout}
-                            useArrow={config.useArrow}
-                            darkStyle={config.darkStyle}
-                        >
-                            {popper(fakeCtx)}
-                        </PopperBody>
-                    );
-                },
-            );
-        };
-    }, []);
+
+                if (currentScope) {
+                    currentScope.forEach(r => {
+                        if (r.current && r !== ctxRef) {
+                            r.current.instantHide();
+                        }
+                    });
+                }
+
+                if (lastVisible) {
+                    if (popperBodyRef.current) {
+                        popperBodyRef.current.hide();
+                    }
+                    return;
+                }
+                lastVisible = true;
+                setVisible(true);
+                const target = (arg as any).currentTarget || arg;
+                showPopper(
+                    {
+                        target,
+                        placement: config.placement,
+                    },
+                    ctx => {
+                        ctxRef.current = ctx;
+                        let fakeCtx = {
+                            hide: () => {
+                                if (popperBodyRef.current) {
+                                    popperBodyRef.current.hide();
+                                }
+                            },
+                        };
+                        return (
+                            <PopperBody
+                                ref={popperBodyRef}
+                                target={target}
+                                ctx={ctx}
+                                onHide={() => {
+                                    lastVisible = false;
+                                    setVisible(false);
+                                }}
+                                hideOnClick={
+                                    config.hideOnClick !== undefined ? config.hideOnClick : true
+                                }
+                                hideOnLeave={
+                                    config.hideOnLeave !== undefined ? config.hideOnLeave : false
+                                }
+                                hideOnEsc={config.hideOnEsc}
+                                borderRadius={config.borderRadius}
+                                useWrapper={config.useWrapper}
+                                wrapperClassName={config.wrapperClassName}
+                                showTimeout={config.showTimeout}
+                                useArrow={config.useArrow}
+                                darkStyle={config.darkStyle}
+                            >
+                                {popper(fakeCtx)}
+                            </PopperBody>
+                        );
+                    },
+                );
+            };
+        },
+        [config.placement],
+    );
+
     React.useEffect(() => {
         return () => {
             let r = ctxRef.current;
