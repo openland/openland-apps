@@ -62,19 +62,6 @@ const senderBadgeStyle = css`
     margin-left: 4px;
 `;
 
-const botBadgeStyle = css`
-    align-self: center;
-    font-size: 11px;
-    line-height: 13px;
-    font-weight: 600;
-    color: #248bf2;
-    text-align: center;
-    padding: 2px 5px;
-    border-radius: 4px;
-    background-color: #e7f3ff;
-    margin-left: 8px;
-`;
-
 const MessageSenderName = (props: {
     sender: UserShort;
     senderNameEmojify?: string | JSX.Element;
@@ -94,7 +81,7 @@ const MessageSenderName = (props: {
     );
 };
 
-const MessageSenderBadge = (props: { senderBadgeNameEmojify: string | JSX.Element }) => {
+const MessageSenderFeatured = (props: { senderBadgeNameEmojify: string | JSX.Element }) => {
     const [show] = useCaptionPopper({ text: props.senderBadgeNameEmojify });
     return (
         <div className={senderBadgeStyle} onMouseEnter={show}>
@@ -126,9 +113,9 @@ interface MessageSenderContentProps {
 export const MessageSenderContent = (props: MessageSenderContentProps) => (
     <div className={senderContainer}>
         <MessageSenderName sender={props.sender} senderNameEmojify={props.senderNameEmojify} />
-        {props.sender.isBot && <div className={botBadgeStyle}>Bot</div>}
+        {props.sender.isBot && <span className={cx(TextDensed, senderOrgAndDateStyle)}>Bot</span>}
         {props.senderBadgeNameEmojify && (
-            <MessageSenderBadge senderBadgeNameEmojify={props.senderBadgeNameEmojify} />
+            <MessageSenderFeatured senderBadgeNameEmojify={props.senderBadgeNameEmojify} />
         )}
         {props.sender.primaryOrganization && (
             <MessageSenderOrg organization={props.sender.primaryOrganization} />
@@ -151,8 +138,8 @@ const messageContainerClass = css`
     align-self: center;
     width: calc(100% - 32px);
     margin: 4px 0;
-    
-    @media(max-width: 1282px) {
+
+    @media (max-width: 1282px) {
         padding: 4px 16px;
         width: 100%;
         border-radius: 0;
@@ -185,16 +172,17 @@ const messageContainerClass = css`
             background-color: var(--backgroundTertiary);
         }
 
-        @media(min-width: 751px) {
+        @media (min-width: 751px) {
             & + .message-selected.message-attached-top {
                 position: relative;
 
                 &:before,
                 &:after {
-                    content: "";
+                    content: '';
                     position: absolute;
                     top: -5px;
-                    width: 10px; height: 10px;
+                    width: 10px;
+                    height: 10px;
                     background: var(--backgroundTertiary);
                 }
 
@@ -374,9 +362,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                     {!message.attachTop && avatar}
                     {message.attachTop && (
                         <div className={cx(dateStyle, 'message-date')}>
-                            <span className={TextCaption}>
-                                {formatTime(message.date)}
-                            </span>
+                            <span className={TextCaption}>{formatTime(message.date)}</span>
                         </div>
                     )}
                     <div
