@@ -44,6 +44,7 @@ const richImageContainer = css`
     max-width: 50%;
     cursor: pointer;
     width: var(--image-width);
+    border: 1px solid var(--borderLight);
 
     @media (max-width: 1100px) {
         flex-direction: column;
@@ -315,15 +316,14 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
                 )}
             </a>
 
-            {canDelete &&
-                !!messageId && (
-                    <div
-                        className={cx(deleteButton, 'message-rich-delete')}
-                        onClick={handleDeleteClick}
-                    >
-                        <UIcon icon={<DeleteIcon />} />
-                    </div>
-                )}
+            {canDelete && !!messageId && (
+                <div
+                    className={cx(deleteButton, 'message-rich-delete')}
+                    onClick={handleDeleteClick}
+                >
+                    <UIcon icon={<DeleteIcon />} />
+                </div>
+            )}
         </div>
     );
 };
