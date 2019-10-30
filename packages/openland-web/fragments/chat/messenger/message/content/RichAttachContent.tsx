@@ -64,21 +64,25 @@ const richImageStyle = css`
     min-height: 100%;
 `;
 
-const richContentContainer = css`
+const imgContentContainer = css`
     display: flex;
     flex-direction: column;
     justify-content: center;
     flex-grow: 1;
     flex-shrink: 1;
-    padding-top: 12px;
-    padding-bottom: 16px;
-    padding-left: 16px;
-    padding-right: 24px;
+
     color: var(--foregroundPrimary);
     &:hover {
         text-decoration: none;
         background-color: var(--backgroundTertiaryHover);
     }
+`;
+
+const textContentContainer = css`
+    padding-top: 12px;
+    padding-bottom: 16px;
+    padding-left: 16px;
+    padding-right: 24px;
 `;
 
 const siteIconContainer = css`
@@ -261,10 +265,10 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
                         '--image-height': `${layout.width}px`,
                     } as React.CSSProperties
                 }
-                onClick={(e: React.MouseEvent) => {
-                    e.stopPropagation();
-                    showImageModal(attach.image!!.url, layout.width * 2, layout.height * 2);
-                }}
+                // onClick={(e: React.MouseEvent) => {
+                //     e.stopPropagation();
+                //     showImageModal(attach.image!!.url, layout.width * 2, layout.height * 2);
+                // }}
             >
                 <img
                     className={richImageStyle}
@@ -289,29 +293,32 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
     }
     return (
         <div className={cx(richWrapper, 'message-rich-wrapper')}>
-            {img}
             <a
                 target="_blank"
                 href={attach.titleLink || ''}
                 onClick={e => e.stopPropagation()}
-                className={richContentContainer}
+                className={imgContentContainer}
             >
-                {(siteIcon || attach.titleLinkHostname) && (
-                    <div className={cx(linkHostnameContainer, TextLabel2)}>
-                        {siteIcon}
-                        <span>{attach.titleLinkHostname}</span>
-                    </div>
-                )}
-                {attach.title && (
-                    <div className={cx(textInner, titleStyle, TextTitle3)} ref={titleRef}>
-                        <span>{attach.title}</span>
-                    </div>
-                )}
-                {attach.text && (
-                    <div className={cx(textInner, textStyle, TextBody)} ref={textRef}>
-                        <span>{attach.text}</span>
-                    </div>
-                )}
+                {img}
+
+                <div className={textContentContainer}>
+                    {(siteIcon || attach.titleLinkHostname) && (
+                        <div className={cx(linkHostnameContainer, TextLabel2)}>
+                            {siteIcon}
+                            <span>{attach.titleLinkHostname}</span>
+                        </div>
+                    )}
+                    {attach.title && (
+                        <div className={cx(textInner, titleStyle, TextTitle3)} ref={titleRef}>
+                            <span>{attach.title}</span>
+                        </div>
+                    )}
+                    {attach.text && (
+                        <div className={cx(textInner, textStyle, TextBody)} ref={textRef}>
+                            <span>{attach.text}</span>
+                        </div>
+                    )}
+                </div>
             </a>
 
             {canDelete && !!messageId && (
