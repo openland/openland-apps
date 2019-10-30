@@ -4,10 +4,7 @@ import { useForm } from 'openland-form/useForm';
 import { useClient } from 'openland-web/utils/useClient';
 import { useField } from 'openland-form/useField';
 import { RadioButtonsSelect } from './components/RadioButtonsSelect';
-import {
-    EmailFrequency,
-    UpdateSettingsInput,
-} from 'openland-api/Types';
+import { EmailFrequency, UpdateSettingsInput } from 'openland-api/Types';
 import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
 import { UHeader } from 'openland-unicorn/UHeader';
@@ -19,11 +16,7 @@ export const SettingsEmailFragment = React.memo(() => {
     const client = useClient();
     const settings = client.useSettings().settings;
 
-    const emailNotifications = useField(
-        'input.emailNotifications',
-        settings.emailFrequency,
-        form,
-    );
+    const emailNotifications = useField('input.emailNotifications', settings.emailFrequency, form);
     const doConfirm = (input: UpdateSettingsInput) => {
         client.mutateSettingsUpdate({ input });
     };
@@ -32,24 +25,29 @@ export const SettingsEmailFragment = React.memo(() => {
     React.useEffect(() => {
         doConfirmDebounced.current = debounce(doConfirm, 1000);
     }, []);
-    React.useEffect(() => {
-        if (doConfirmDebounced.current) {
-            doConfirmDebounced.current({
-                emailFrequency: emailNotifications.value,
-            });
-        }
-    }, [emailNotifications.value]);
+    React.useEffect(
+        () => {
+            if (doConfirmDebounced.current) {
+                doConfirmDebounced.current({
+                    emailFrequency: emailNotifications.value,
+                });
+            }
+        },
+        [emailNotifications.value],
+    );
     return (
         <Page track="account_email">
             <UHeader title="Email preferences" />
-            <FormWrapper title="Email preferences">
+            <FormWrapper>
                 <FormSection
                     title="Messages notifications"
-                    footer={(
+                    footer={
                         <>
-                            When you’re busy or not online, Openland can send you email notifications about new messages. We will use <strong>{settings.primaryEmail}</strong> for notifications
+                            When you’re busy or not online, Openland can send you email
+                            notifications about new messages. We will use{' '}
+                            <strong>{settings.primaryEmail}</strong> for notifications
                         </>
-                    )}
+                    }
                 >
                     <XView marginHorizontal={-16}>
                         <RadioButtonsSelect

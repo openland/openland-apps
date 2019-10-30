@@ -22,11 +22,7 @@ export const SettingsNotificationsFragment = React.memo(() => {
         settings.desktop.direct.showNotification,
         form,
     );
-    const directSound = useField(
-        'input.desktop.direct.sound',
-        settings.desktop.direct.sound,
-        form
-    );
+    const directSound = useField('input.desktop.direct.sound', settings.desktop.direct.sound, form);
     const secretChatShowNotification = useField(
         'input.desktop.secretChat.showNotification',
         settings.desktop.secretChat.showNotification,
@@ -72,11 +68,7 @@ export const SettingsNotificationsFragment = React.memo(() => {
         settings.desktop.notificationPreview,
         form,
     );
-    const excludeMutedChats = useField(
-        'input.excludeMutedChats',
-        settings.excludeMutedChats,
-        form,
-    );
+    const excludeMutedChats = useField('input.excludeMutedChats', settings.excludeMutedChats, form);
     const countUnreadChats = useField('input.countUnreadChats', settings.countUnreadChats, form);
 
     const doConfirm = (input: UpdateSettingsInput) => {
@@ -140,7 +132,7 @@ export const SettingsNotificationsFragment = React.memo(() => {
     return (
         <Page track="account_notifications">
             <UHeader title="Notifications" />
-            <FormWrapper title="Notifications">
+            <FormWrapper>
                 <FormSection title="Direct messages">
                     <XView marginHorizontal={-16}>
                         <UCheckboxFiled
@@ -225,7 +217,7 @@ export const SettingsNotificationsFragment = React.memo(() => {
                     <XView marginHorizontal={-16}>
                         <UCheckbox
                             label="Include muted chats"
-                            onChange={(v) => excludeMutedChats.input.onChange(!v)}
+                            onChange={v => excludeMutedChats.input.onChange(!v)}
                             checked={!excludeMutedChats.value}
                             asSwitcher={true}
                         />
