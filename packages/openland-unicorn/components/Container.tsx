@@ -13,7 +13,6 @@ const inner = css`
     position: relative;
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
     display: flex;
     width: 100%;
     height: 100%;
