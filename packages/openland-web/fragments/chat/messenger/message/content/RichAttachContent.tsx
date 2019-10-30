@@ -8,6 +8,7 @@ import { TextTitle3, TextBody, TextLabel2 } from 'openland-web/utils/TextStyles'
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { useClient } from 'openland-web/utils/useClient';
 import DeleteIcon from 'openland-icons/s/ic-close-16.svg';
+import ZoomIcon from 'openland-icons/s/ic-zoom-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { InternalAttachContent } from './InternalAttachContent';
 
@@ -33,6 +34,8 @@ const richWrapper = css`
     }
 `;
 
+// border: 1px solid var(--borderLight);
+
 const richImageContainer = css`
     position: relative;
     overflow: hidden;
@@ -44,7 +47,6 @@ const richImageContainer = css`
     max-width: 50%;
     cursor: pointer;
     width: var(--image-width);
-    border: 1px solid var(--borderLight);
 
     @media (max-width: 1100px) {
         flex-direction: column;
@@ -66,7 +68,7 @@ const richImageStyle = css`
 
 const imgContentContainer = css`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     flex-grow: 1;
     flex-shrink: 1;
@@ -75,6 +77,10 @@ const imgContentContainer = css`
     &:hover {
         text-decoration: none;
         background-color: var(--backgroundTertiaryHover);
+    }
+
+    @media (max-width: 1100px) {
+        flex-direction: column;
     }
 `;
 
@@ -149,6 +155,26 @@ const deleteButton = css`
     align-items: center;
     justify-content: center;
     border-radius: 8px;
+
+    &:hover svg {
+        opacity: 0.64;
+    }
+`;
+
+const zoomButton = css`
+    transition: 150ms opacity ease;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+
+    background-color: var(--overlayMedium);
 
     &:hover svg {
         opacity: 0.64;
@@ -247,8 +273,9 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
 
     let img = null;
     let siteIcon = null;
+    let layout = null;
     if (attach.image && attach.image.metadata) {
-        let layout = layoutMedia(
+        layout = layoutMedia(
             attach.image.metadata.imageWidth || 0,
             attach.image.metadata.imageHeight || 0,
             300,
@@ -265,10 +292,6 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
                         '--image-height': `${layout.width}px`,
                     } as React.CSSProperties
                 }
-                // onClick={(e: React.MouseEvent) => {
-                //     e.stopPropagation();
-                //     showImageModal(attach.image!!.url, layout.width * 2, layout.height * 2);
-                // }}
             >
                 <img
                     className={richImageStyle}
@@ -320,6 +343,18 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
                     )}
                 </div>
             </a>
+
+            {img && (
+                <button
+                    className={zoomButton}
+                    onClick={(e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        showImageModal(attach.image!!.url, layout!.width * 2, layout!.height * 2);
+                    }}
+                >
+                    <UIcon icon={<ZoomIcon />} color={'var(--foregroundContrast)'} />
+                </button>
+            )}
 
             {canDelete && !!messageId && (
                 <div
