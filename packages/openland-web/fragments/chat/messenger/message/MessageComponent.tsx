@@ -168,8 +168,7 @@ const messageContainerClass = css`
 
         .message-buttons-wrapper,
         .message-rich-wrapper,
-        .message-document-wrapper,
-        .message-rich-delete {
+        .message-document-wrapper {
             background-color: var(--backgroundPrimary);
         }
 
