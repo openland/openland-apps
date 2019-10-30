@@ -22,6 +22,10 @@ const TermsText = css`
 
 const LinkText = css`
     color: var(--accentPrimary);
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
 `;
 
 export type AuthMechanism = {
