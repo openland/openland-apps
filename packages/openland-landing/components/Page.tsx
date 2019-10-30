@@ -23,7 +23,7 @@ export const Page = (props: PageProps) => (
     <XView
         overflow="hidden"
         flexDirection="column"
-        width="100vw"
+        width="100%"
         minHeight="100vh"
         backgroundColor="#ffffff"
         color="#1f3449"
