@@ -22,16 +22,8 @@ const LogoutDialog = React.memo<{ ctx: XModalController }>(props => {
                 Are you sure you want to logout?
             </XModalContent>
             <XModalFooter>
-                <XModalFooterButton
-                    text="Cancel"
-                    style="ghost"
-                    onClick={() => props.ctx.hide()}
-                />
-                <XModalFooterButton
-                    text="Yes, I am sure"
-                    style="danger"
-                    onClick={doConfirm}
-                />
+                <XModalFooterButton text="Cancel" style="ghost" onClick={() => props.ctx.hide()} />
+                <XModalFooterButton text="Yes, I am sure" style="danger" onClick={doConfirm} />
             </XModalFooter>
         </XView>
     );
