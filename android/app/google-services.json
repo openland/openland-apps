@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1095846783035-h33f7tqspm8p1qo9heopuipho4k4brt7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.openland.app",
+            "certificate_hash": "d64e26b575ffda8de140fd7b46eac0bc951b3dea"
+          }
+        },
+        {
           "client_id": "1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -25,15 +33,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1095846783035-kkb62quqa2ge3bqs1lihlae6tqbri501.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     },
@@ -46,6 +52,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1095846783035-4l3qjcbt1573mu3gg302vgl2tf8urhpr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.openland.app.debug",
+            "certificate_hash": "af0b10d27dded50acc07b283b2377b94c00bcbdb"
+          }
+        },
+        {
           "client_id": "1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -56,15 +70,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1095846783035-kkb62quqa2ge3bqs1lihlae6tqbri501.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

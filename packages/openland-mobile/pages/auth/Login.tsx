@@ -6,12 +6,12 @@ import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
-import { Auth0Client } from 'openland-mobile/utils/auth0Client';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { trackEvent } from 'openland-mobile/analytics';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { API_HOST } from 'openland-y-utils/api';
+import { GoogleSignin } from '@react-native-community/google-signin';
 
 const styles = StyleSheet.create({
     container: {
@@ -44,26 +44,23 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
 
         try {
             this.setState({ loading: true });
-            let res = await Auth0Client.webAuth.authorize({
-                scope: 'openid profile email',
-                audience: 'https://statecraft.auth0.com/userinfo',
-                connection: 'google-oauth2',
+            GoogleSignin.configure({
+                webClientId: '1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com'
             });
-            let idToken = res.idToken;
-            let accessToken = res.accessToken;
+            await GoogleSignin.hasPlayServices();
+            const userInfo = await GoogleSignin.signIn();
 
-            var uploaded = await fetch('https://' + API_HOST + '/v2/auth', {
+            var uploaded = await fetch('https://' + API_HOST + '/auth/google/getAccessToken', {
                 method: 'POST',
-                headers: {
-                    'authorization': 'Bearer ' + idToken,
-                    'x-openland-access-token': accessToken
-                }
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ idToken: userInfo.idToken })
             });
 
             if (uploaded.ok) {
                 let body = await uploaded.json();
+
                 if (body.ok) {
-                    await AppStorage.setToken(body.token);
+                    await AppStorage.setToken(body.accessToken);
                     RNRestart.Restart();
                     return;
                 }

@@ -236,6 +236,10 @@ dependencies {
     implementation project(':react-native-push-notification')
     implementation project(':react-native-sqlite-storage')
     implementation project(':react-native-dark-mode')
+    implementation(project(":react-native-google-signin"))
+
+    // Google auth
+    implementation "com.android.support:appcompat-v7:23.0.1"
 
     // AppCenter
     def appCenterSdkVersion = '1.11.0'
@@ -294,3 +298,6 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+
+// Google auth
+apply plugin: 'com.google.gms.google-services'
