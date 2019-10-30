@@ -94,6 +94,7 @@ export interface URickInputProps {
     onPressEsc?: () => boolean;
 
     onFilesPaste?: (files: File[]) => void;
+    className?: string;
 }
 
 let Quill: typeof QuillType.Quill;
@@ -463,6 +464,7 @@ export const URickInput = React.memo(
                 className={cx(
                     quillStyle,
                     'scroll-container',
+                    props.className && props.className,
                     props.withShortcutsButton && quillWithButtonStyle,
                 )}
             >
