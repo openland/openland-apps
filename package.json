@@ -19,6 +19,7 @@
         "@mapbox/geo-viewport": "^0.2.2",
         "@mapbox/mapbox-gl-geocoder": "^2.2.0",
         "@openland/react-video-renderer": "1.2.1",
+        "@react-native-community/google-signin": "^3.0.3",
         "@sentry/browser": "^4.0.5",
         "@turf/bbox": "^5.1.5",
         "@turf/center": "^5.1.5",
@@ -220,7 +221,7 @@
         "web-animations-js": "^2.3.2",
         "webrtc-adapter": "^6.4.6",
         "worker-loader": "1.1.1",
-        "yarn": "^1.9.4"
+        "yarn": "^1.19.1"
     },
     "devDependencies": {
         "@babel/cli": "7.0.0",

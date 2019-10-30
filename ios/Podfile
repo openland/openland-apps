@@ -51,6 +51,8 @@ target 'openland' do
 
   pod 'A0Auth0', :path => '../node_modules/react-native-auth0/ios'
 
+  pod 'RNGoogleSignin', :path => '../node_modules/@react-native-community/google-signin'
+
   pod 'react-native-blur', :path => '../node_modules/react-native-blur'
 
   pod 'RNFastImage', :path => '../node_modules/react-native-fast-image'
@@ -88,8 +90,7 @@ target 'openland' do
   pod 'ObjectiveRocks', '~> 0.9'
   pod 'react-native-video', :path => '../node_modules/react-native-video/react-native-video.podspec'
   pod 'ReactNativeDarkMode', :path => '../node_modules/react-native-dark-mode'
-  
-  # use_native_modules!
+
 end
 
 target 'openlandTests' do
