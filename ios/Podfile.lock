@@ -1,6 +1,4 @@
 PODS:
-  - A0Auth0 (2.1.0):
-    - React
   - AppAuth (1.2.0):
     - AppAuth/Core (= 1.2.0)
     - AppAuth/ExternalUserAgent (= 1.2.0)
@@ -358,7 +356,6 @@ PODS:
   - Yoga (1.14.0)
 
 DEPENDENCIES:
-  - A0Auth0 (from `../node_modules/react-native-auth0/ios`)
   - AppCenter (~> 1.14.0)
   - AppCenter/Analytics (~> 1.14.0)
   - AppCenter/Crashes (~> 1.14.0)
@@ -448,8 +445,6 @@ SPEC REPOS:
     - PINRemoteImage
 
 EXTERNAL SOURCES:
-  A0Auth0:
-    :path: "../node_modules/react-native-auth0/ios"
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
@@ -556,7 +551,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/openland/Texture.git
 
 SPEC CHECKSUMS:
-  A0Auth0: 351b3b07e58db39b3bb33f58acf35a878fbba74d
   AppAuth: bce82c76043657c99d91e7882e8a9e1a93650cd4
   AppCenter: 02c5efe08d3bbab5421ae41d5f7aa7238906b817
   AppCenterReactNativeShared: 00f470c3c17b47718db8733cbe811ccdcfd86282
@@ -628,6 +622,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: 85692d67b0c6e0158d1338f68e6a650f5cf8c07f
+PODFILE CHECKSUM: 338e52bf322ac5b707d52d17ed101016b43b402d
 
 COCOAPODS: 1.8.4
