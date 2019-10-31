@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { Deferred } from './Deferred';
 import { XLoader } from 'openland-x/XLoader';
 import { HeaderComponent } from './HeaderComponent';
@@ -157,10 +157,10 @@ export const PageLayout = (props: {
 
     return (
         <div className={containerStyle}>
-            <div className={shadowStyle + ' ' + shadowStateStyles[props.state]} />
+            <div className={cx(shadowStyle, shadowStateStyles[props.state])} />
             <div
                 ref={ref}
-                className={contentStyle + (!isChrome ? ' ' + contentStyleCss : '')}
+                className={cx(contentStyle, !isChrome && contentStyleCss)}
                 style={isChrome ? {} : { left: `${offset}px` }}
             >
                 <HeaderComponent>
