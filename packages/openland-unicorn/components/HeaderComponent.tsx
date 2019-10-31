@@ -28,7 +28,7 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps, H
         this.configs.set(key, config);
         this.supplyConfig(animated);
         return key;
-    };
+    }
     updateConfig = (key: string, config: HeaderConfig, animated?: boolean) => {
         if (this.configs.has(key)) {
             this.configs.set(key, config);
@@ -36,7 +36,7 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps, H
             console.warn('Trying to update unknown config: ignoring');
         }
         this.supplyConfig(animated);
-    };
+    }
     removeConfig = (key: string, animated?: boolean) => {
         if (this.configs.has(key)) {
             this.configs.delete(key);
@@ -44,7 +44,7 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps, H
             console.warn('Trying to unregister unknown config: ignoring');
         }
         this.supplyConfig(animated);
-    };
+    }
 
     supplyConfig = (animated?: boolean) => {
         if (this.unmounting) {
@@ -66,7 +66,7 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps, H
         // Update config
         this.lastConfig = merged;
         this.setState({ config: merged });
-    };
+    }
 
     componentWillUnmount() {
         this.unmounting = true;
