@@ -97,7 +97,6 @@ export const PageLayout = (props: {
 
     const ref = React.useRef<HTMLDivElement>(null);
     let offset: number = 0;
-    let width: string = '100%';
 
     if (isChrome) {
         React.useLayoutEffect(
@@ -147,10 +146,8 @@ export const PageLayout = (props: {
     } else {
         if (props.state === 'mounting') {
             offset = props.container.current!.clientWidth;
-            width = '0';
         } else if (props.state === 'entering') {
             offset = 0;
-            width = '100%';
         } else if (props.state === 'visible') {
             offset = 0;
         } else if (props.state === 'exiting') {
@@ -164,7 +161,7 @@ export const PageLayout = (props: {
             <div
                 ref={ref}
                 className={contentStyle + (!isChrome ? ' ' + contentStyleCss : '')}
-                style={isChrome ? {} : { transform: `translateX(${offset}px)`, width }}
+                style={isChrome ? {} : { transform: `translateX(${offset}px)` }}
             >
                 <HeaderComponent>
                     <Deferred>
