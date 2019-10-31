@@ -20,24 +20,27 @@ export function layoutMedia(
 ) {
     let w = width;
     let h = height;
-    if (width > height) {
-        if (width > maxWidth) {
-            w = Math.round(maxWidth);
-            h = Math.round(height * (maxWidth / width));
-        }
-    } else if (height > maxHeight) {
-        w = Math.round(width * (maxHeight / height));
-        h = Math.round(maxHeight);
+
+    // if image width is less than minWidth, upscale image width
+    if (w <= minWidth) {
+        w = minWidth;
+        h = Math.round(height * (w / width));
     }
 
-    let previewWidth = w;
-    let previewHeight = h;
-    if (w < minWidth || h < minHeight) {
-        previewWidth = minWidth;
-        previewHeight = minWidth;
+    // if image width is greater than maxWidth, downscale image width
+    if (w >= maxWidth) {
+        w = maxWidth;
+        h = Math.round(height * (w / width));
     }
 
-    return { width: w, height: h, previewWidth, previewHeight };
+    // if previous scale changes made image height greater than maxHeight,
+    // downscale image to fit it into maxHeight
+    if (h >= maxHeight) {
+        h = maxHeight;
+        w = Math.round(width * (h / height));
+    }
+
+    return { width: w, height: h };
 }
 
 export function layoutMediaReverse(
