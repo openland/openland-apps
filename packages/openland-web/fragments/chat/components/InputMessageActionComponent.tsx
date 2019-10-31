@@ -15,7 +15,6 @@ const messageActonContainerClass = css`
     display: flex;
     flex-direction: row;
     align-self: stretch;
-    justify-content: center;
     align-items: center;
     flex-shrink: 0;
     margin-bottom: 12px;
@@ -27,6 +26,11 @@ const messageActonInnerContainerClass = css`
     align-self: stretch;
     flex-grow: 1;
     max-width: 868px;
+`;
+
+const messageActionInnerContainerEdit = css`
+    flex-grow: 0;
+    margin-left: 55px;
 `;
 
 const messageActionIconWrap = css`
@@ -60,6 +64,27 @@ const messageActionCloseWrap = css`
     }
 `;
 
+const messageActionCloseWrapEdit = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    cursor: pointer;
+    margin: 0 6px;
+
+    /* optical compensation */
+    position: relative;
+    top: 1px;
+
+    & svg * {
+        fill: var(--foregroundTertiary);
+        stroke: var(--foregroundTertiary);
+    }
+`;
+
 const contentWrapper = css`
     text-overflow: ellipsis;
     overflow: hidden;
@@ -68,14 +93,15 @@ const contentWrapper = css`
 
 export const InputMessageActionComponent = (props: { engine: MessagesActionsStateEngine }) => {
     useShortcuts({
-        keys: ['Escape'], callback: () => {
+        keys: ['Escape'],
+        callback: () => {
             if (props.engine.getState().action) {
                 props.engine.clear();
                 return true;
             } else {
                 return false;
             }
-        }
+        },
     });
     let state = props.engine.useState();
     let names = '';
@@ -95,10 +121,10 @@ export const InputMessageActionComponent = (props: { engine: MessagesActionsStat
             .join(', ');
     }
 
-    let icon = <UIcon icon={<ReplyIcon />} color={'#676d7a'} />;
-    if (state.action === 'edit') {
-        icon = <UIcon icon={<EditIcon />} color={'#676d7a'} />;
-    }
+    // if (state.action === 'reply') {
+    // let icon = <UIcon icon={<ReplyIcon />} color={'#676d7a'} />;
+    //     // icon = <UIcon icon={<EditIcon />} color={'#676d7a'} />;
+    // }
 
     let content;
     if (state.action === 'forward' || state.action === 'reply') {
@@ -116,27 +142,32 @@ export const InputMessageActionComponent = (props: { engine: MessagesActionsStat
             );
         }
     } else if (state.action === 'edit' && state.messages.length === 1) {
-        content = (
-            <>
-                <span className={TextLabel1}>Edit message</span>
-                <span className={cx(contentWrapper, TextBody)}>
-                    {emoji(state.messages[0].text!)}
-                </span>
-            </>
-        );
+        content = <span className={TextLabel1}>Edit message</span>;
     } else {
         return null;
     }
 
     return (
         <div className={messageActonContainerClass}>
-            <div className={messageActionIconWrap}>
-                {icon}
-            </div>
-            <div className={messageActonInnerContainerClass}>
+            {state.action === 'reply' && (
+                <div className={messageActionIconWrap}>
+                    <UIcon icon={<ReplyIcon />} color={'#676d7a'} />
+                </div>
+            )}
+            <div
+                className={cx(
+                    messageActonInnerContainerClass,
+                    state.action !== 'reply' && messageActionInnerContainerEdit,
+                )}
+            >
                 {content}
             </div>
-            <div className={messageActionCloseWrap} onClick={props.engine.clear}>
+            <div
+                className={
+                    state.action === 'edit' ? messageActionCloseWrapEdit : messageActionCloseWrap
+                }
+                onClick={props.engine.clear}
+            >
                 <CloseIcon />
             </div>
         </div>

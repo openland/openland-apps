@@ -4,10 +4,11 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
-import { TextCaption, TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
+import { TextTitle3, TextBody, TextLabel2 } from 'openland-web/utils/TextStyles';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { useClient } from 'openland-web/utils/useClient';
 import DeleteIcon from 'openland-icons/s/ic-close-16.svg';
+import ZoomIcon from 'openland-icons/s/ic-zoom-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { InternalAttachContent } from './InternalAttachContent';
 
@@ -32,6 +33,8 @@ const richWrapper = css`
         flex-direction: column;
     }
 `;
+
+// border: 1px solid var(--borderLight);
 
 const richImageContainer = css`
     position: relative;
@@ -63,26 +66,34 @@ const richImageStyle = css`
     min-height: 100%;
 `;
 
-const richContentContainer = css`
+const imgContentContainer = css`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     flex-grow: 1;
     flex-shrink: 1;
-    padding-top: 16px;
-    padding-bottom: 16px;
-    padding-left: 16px;
-    padding-right: 16px;
+
     color: var(--foregroundPrimary);
     &:hover {
         text-decoration: none;
         background-color: var(--backgroundTertiaryHover);
     }
+
+    @media (max-width: 1100px) {
+        flex-direction: column;
+    }
+`;
+
+const textContentContainer = css`
+    padding-top: 12px;
+    padding-bottom: 16px;
+    padding-left: 16px;
+    padding-right: 24px;
 `;
 
 const siteIconContainer = css`
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -133,11 +144,9 @@ const text4line = css`
 
 const deleteButton = css`
     opacity: 0;
-    transform: translateX(100%);
-    transition: 150ms opacity ease, 150ms transform ease;
+    transition: 150ms opacity ease;
     width: 40px;
     height: 40px;
-    background: var(--backgroundTertiary);
     position: absolute;
     top: 0;
     right: 0;
@@ -146,6 +155,26 @@ const deleteButton = css`
     align-items: center;
     justify-content: center;
     border-radius: 8px;
+
+    &:hover svg {
+        opacity: 0.64;
+    }
+`;
+
+const zoomButton = css`
+    transition: 150ms opacity ease;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+
+    background-color: var(--overlayMedium);
 
     &:hover svg {
         opacity: 0.64;
@@ -244,8 +273,9 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
 
     let img = null;
     let siteIcon = null;
+    let layout = null;
     if (attach.image && attach.image.metadata) {
-        let layout = layoutMedia(
+        layout = layoutMedia(
             attach.image.metadata.imageWidth || 0,
             attach.image.metadata.imageHeight || 0,
             300,
@@ -262,10 +292,6 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
                         '--image-height': `${layout.width}px`,
                     } as React.CSSProperties
                 }
-                onClick={(e: React.MouseEvent) => {
-                    e.stopPropagation();
-                    showImageModal(attach.image!!.url, layout.width * 2, layout.height * 2);
-                }}
             >
                 <img
                     className={richImageStyle}
@@ -290,40 +316,54 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
     }
     return (
         <div className={cx(richWrapper, 'message-rich-wrapper')}>
-            {img}
             <a
                 target="_blank"
                 href={attach.titleLink || ''}
                 onClick={e => e.stopPropagation()}
-                className={richContentContainer}
+                className={imgContentContainer}
             >
-                {(siteIcon || attach.titleLinkHostname) && (
-                    <div className={cx(linkHostnameContainer, TextCaption)}>
-                        {siteIcon}
-                        <span>{attach.titleLinkHostname}</span>
-                    </div>
-                )}
-                {attach.title && (
-                    <div className={cx(textInner, titleStyle, TextTitle3)} ref={titleRef}>
-                        <span>{attach.title}</span>
-                    </div>
-                )}
-                {attach.text && (
-                    <div className={cx(textInner, textStyle, TextBody)} ref={textRef}>
-                        <span>{attach.text}</span>
-                    </div>
-                )}
+                {img}
+
+                <div className={textContentContainer}>
+                    {(siteIcon || attach.titleLinkHostname) && (
+                        <div className={cx(linkHostnameContainer, TextLabel2)}>
+                            {siteIcon}
+                            <span>{attach.titleLinkHostname}</span>
+                        </div>
+                    )}
+                    {attach.title && (
+                        <div className={cx(textInner, titleStyle, TextTitle3)} ref={titleRef}>
+                            <span>{attach.title}</span>
+                        </div>
+                    )}
+                    {attach.text && (
+                        <div className={cx(textInner, textStyle, TextBody)} ref={textRef}>
+                            <span>{attach.text}</span>
+                        </div>
+                    )}
+                </div>
             </a>
 
-            {canDelete &&
-                !!messageId && (
-                    <div
-                        className={cx(deleteButton, 'message-rich-delete')}
-                        onClick={handleDeleteClick}
-                    >
-                        <UIcon icon={<DeleteIcon />} />
-                    </div>
-                )}
+            {img && (
+                <button
+                    className={zoomButton}
+                    onClick={(e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        showImageModal(attach.image!!.url, layout!.width * 2, layout!.height * 2);
+                    }}
+                >
+                    <UIcon icon={<ZoomIcon />} color={'var(--foregroundContrast)'} />
+                </button>
+            )}
+
+            {canDelete && !!messageId && (
+                <div
+                    className={cx(deleteButton, 'message-rich-delete')}
+                    onClick={handleDeleteClick}
+                >
+                    <UIcon icon={<DeleteIcon />} />
+                </div>
+            )}
         </div>
     );
 };

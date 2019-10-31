@@ -15,6 +15,7 @@ import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyl
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { useUserPopper } from 'openland-web/components/UserPopper';
+import { defaultHover } from 'openland-web/utils/Styles';
 
 const senderContainer = css`
     display: flex;
@@ -51,6 +52,10 @@ const dateStyle = css`
 const senderOrgAndDateStyle = css`
     margin-left: 8px;
     color: var(--foregroundSecondary);
+
+    &:hover {
+        color: var(--foregroundSecondary);
+    }
 `;
 
 const senderBadgeStyle = css`
@@ -60,19 +65,6 @@ const senderBadgeStyle = css`
     align-self: center;
     cursor: pointer;
     margin-left: 4px;
-`;
-
-const botBadgeStyle = css`
-    align-self: center;
-    font-size: 11px;
-    line-height: 13px;
-    font-weight: 600;
-    color: #248bf2;
-    text-align: center;
-    padding: 2px 5px;
-    border-radius: 4px;
-    background-color: #e7f3ff;
-    margin-left: 8px;
 `;
 
 const MessageSenderName = (props: {
@@ -94,7 +86,7 @@ const MessageSenderName = (props: {
     );
 };
 
-const MessageSenderBadge = (props: { senderBadgeNameEmojify: string | JSX.Element }) => {
+const MessageSenderFeatured = (props: { senderBadgeNameEmojify: string | JSX.Element }) => {
     const [show] = useCaptionPopper({ text: props.senderBadgeNameEmojify });
     return (
         <div className={senderBadgeStyle} onMouseEnter={show}>
@@ -106,7 +98,7 @@ const MessageSenderBadge = (props: { senderBadgeNameEmojify: string | JSX.Elemen
 const MessageSenderOrg = (props: { organization: UserShort_primaryOrganization }) => (
     <ULink
         path={`/${props.organization.shortname || props.organization.id}`}
-        className={cx(TextDensed, senderOrgAndDateStyle)}
+        className={cx(TextDensed, senderOrgAndDateStyle, defaultHover)}
     >
         {props.organization.name}
     </ULink>
@@ -126,9 +118,9 @@ interface MessageSenderContentProps {
 export const MessageSenderContent = (props: MessageSenderContentProps) => (
     <div className={senderContainer}>
         <MessageSenderName sender={props.sender} senderNameEmojify={props.senderNameEmojify} />
-        {props.sender.isBot && <div className={botBadgeStyle}>Bot</div>}
+        {props.sender.isBot && <span className={cx(TextDensed, senderOrgAndDateStyle)}>Bot</span>}
         {props.senderBadgeNameEmojify && (
-            <MessageSenderBadge senderBadgeNameEmojify={props.senderBadgeNameEmojify} />
+            <MessageSenderFeatured senderBadgeNameEmojify={props.senderBadgeNameEmojify} />
         )}
         {props.sender.primaryOrganization && (
             <MessageSenderOrg organization={props.sender.primaryOrganization} />
@@ -151,8 +143,8 @@ const messageContainerClass = css`
     align-self: center;
     width: calc(100% - 32px);
     margin: 4px 0;
-    
-    @media(max-width: 1282px) {
+
+    @media (max-width: 1282px) {
         padding: 4px 16px;
         width: 100%;
         border-radius: 0;
@@ -176,8 +168,7 @@ const messageContainerClass = css`
 
         .message-buttons-wrapper,
         .message-rich-wrapper,
-        .message-document-wrapper,
-        .message-rich-delete {
+        .message-document-wrapper {
             background-color: var(--backgroundPrimary);
         }
 
@@ -185,16 +176,17 @@ const messageContainerClass = css`
             background-color: var(--backgroundTertiary);
         }
 
-        @media(min-width: 751px) {
+        @media (min-width: 751px) {
             & + .message-selected.message-attached-top {
                 position: relative;
 
                 &:before,
                 &:after {
-                    content: "";
+                    content: '';
                     position: absolute;
                     top: -5px;
-                    width: 10px; height: 10px;
+                    width: 10px;
+                    height: 10px;
                     background: var(--backgroundTertiary);
                 }
 
@@ -374,9 +366,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                     {!message.attachTop && avatar}
                     {message.attachTop && (
                         <div className={cx(dateStyle, 'message-date')}>
-                            <span className={TextCaption}>
-                                {formatTime(message.date)}
-                            </span>
+                            <span className={TextCaption}>{formatTime(message.date)}</span>
                         </div>
                     )}
                     <div

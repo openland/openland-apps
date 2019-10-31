@@ -21,7 +21,10 @@ import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { showAddMembersModal } from '../showAddMembersModal';
-import { showRoomEditModal, showLeaveChatConfirmation } from 'openland-web/fragments/account/components/groupProfileModals';
+import {
+    showRoomEditModal,
+    showLeaveChatConfirmation,
+} from 'openland-web/fragments/account/components/groupProfileModals';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { TextDensed, TextStyles, HoverAlpha } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';
@@ -41,16 +44,19 @@ const titleStyle = css`
 `;
 
 const oneLiner = css`
-   overflow: hidden;
-   text-overflow: ellipsis;
-   white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `;
 
 const HeaderLastSeen = (props: { id: string }) => {
     const client = useClient();
-    const data = client.useWithoutLoaderOnline({ userId: props.id }, {
-        fetchPolicy: 'network-only',
-    });
+    const data = client.useWithoutLoaderOnline(
+        { userId: props.id },
+        {
+            fetchPolicy: 'network-only',
+        },
+    );
 
     if (!data) {
         return null;
@@ -64,8 +70,8 @@ const HeaderLastSeen = (props: { id: string }) => {
                 {user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (
-                        <XDate value={user.lastSeen} format="humanize_cute" />
-                    )}
+                    <XDate value={user.lastSeen} format="humanize_cute" />
+                )}
             </span>
         );
     } else if (user && user.online) {
@@ -85,23 +91,33 @@ const ChatOnlinesTitle = (props: { id: string }) => {
         return null;
     }
 
-    return (
-        <span className={secondaryAccent}>&nbsp;&nbsp;{`${onlineCount} online`}</span>
-    );
+    return <span className={secondaryAccent}>&nbsp;&nbsp;{`${onlineCount} online`}</span>;
 };
 
-const CallButton = (props: { chat: ChatInfo, calls: CallsEngine }) => {
+const CallButton = (props: { chat: ChatInfo; calls: CallsEngine }) => {
     let callsState = props.calls.useState();
     return callsState.conversationId !== props.chat.id ? (
         <UIconButton
             icon={<PhoneIcon />}
-            onClick={() => props.calls.joinCall(props.chat.id, props.chat.__typename === 'PrivateRoom', props.chat.__typename === 'PrivateRoom' ? { id: props.chat.user.id, title: props.chat.user.name, picture: props.chat.user.photo } : { id: props.chat.id, title: props.chat.title, picture: props.chat.photo })}
+            onClick={() =>
+                props.calls.joinCall(
+                    props.chat.id,
+                    props.chat.__typename === 'PrivateRoom',
+                    props.chat.__typename === 'PrivateRoom'
+                        ? {
+                              id: props.chat.user.id,
+                              title: props.chat.user.name,
+                              picture: props.chat.user.photo,
+                          }
+                        : { id: props.chat.id, title: props.chat.title, picture: props.chat.photo },
+                )
+            }
             size="large"
         />
     ) : null;
 };
 
-const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
+const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     let layout = useLayout();
     const client = useClient();
     const router = React.useContext(XViewRouterContext)!;
@@ -112,29 +128,62 @@ const MenuComponent = (props: { ctx: UPopperController, id: string }) => {
 
     let res = new UPopperMenuBuilder();
     if (layout === 'mobile' && chat.__typename === 'SharedRoom') {
-        res.item({ title: 'Add people', icon: <InviteIcon />, action: () => showAddMembersModal({ id: chat.id, isGroup: true, isOrganization: false }) });
+        res.item({
+            title: 'Add people',
+            icon: <InviteIcon />,
+            action: () =>
+                showAddMembersModal({ id: chat.id, isGroup: true, isOrganization: false }),
+        });
     }
 
     if (layout === 'mobile' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true)) {
-        res.item({ title: 'Call', icon: <PhoneIcon />, action: () => calls.joinCall(chat.id, chat.__typename === 'PrivateRoom', chat.__typename === 'PrivateRoom' ? { id: chat.user.id, title: chat.user.name, picture: chat.user.photo } : { id: chat.id, title: chat.title, picture: chat.photo }) });
+        res.item({
+            title: 'Call',
+            icon: <PhoneIcon />,
+            action: () =>
+                calls.joinCall(
+                    chat.id,
+                    chat.__typename === 'PrivateRoom',
+                    chat.__typename === 'PrivateRoom'
+                        ? { id: chat.user.id, title: chat.user.name, picture: chat.user.photo }
+                        : { id: chat.id, title: chat.title, picture: chat.photo },
+                ),
+        });
     }
 
     res.item({
-        title: `${muted ? 'Unmute' : 'Mute'} notifications`, icon: muted ? <NotificationsOffIcon /> : <NotificationsIcon />,
+        title: `${muted ? 'Unmute' : 'Mute'} notifications`,
+        icon: muted ? <NotificationsOffIcon /> : <NotificationsIcon />,
         action: async () => {
             let newMuted = !chat.settings.mute;
             client.mutateRoomSettingsUpdate({ roomId: chat.id, settings: { mute: newMuted } });
             setMuted(newMuted);
         },
-        closeDelay: 400
+        closeDelay: 400,
     });
 
     if (chat.__typename === 'SharedRoom') {
-        res.item({ title: 'Settings', icon: <SettingsIcon />, action: () => showRoomEditModal(chat.id) });
-        if (chat.role === 'OWNER' || chat.role === 'ADMIN' || (chat.organization && (chat.organization.isAdmin || chat.organization.isOwner))) {
-            res.item({ title: 'Advanced settings', icon: <StarIcon />, action: () => router.navigate(`/advanced/${chat.id}`) });
+        res.item({
+            title: 'Settings',
+            icon: <SettingsIcon />,
+            action: () => showRoomEditModal(chat.id),
+        });
+        if (
+            chat.role === 'OWNER' ||
+            chat.role === 'ADMIN' ||
+            (chat.organization && (chat.organization.isAdmin || chat.organization.isOwner))
+        ) {
+            res.item({
+                title: 'Advanced settings',
+                icon: <StarIcon />,
+                action: () => router.navigate(`/advanced/${chat.id}`),
+            });
         }
-        res.item({ title: 'Leave chat', icon: <LeaveIcon />, action: () => showLeaveChatConfirmation(client, chat.id) });
+        res.item({
+            title: 'Leave chat',
+            icon: <LeaveIcon />,
+            action: () => showLeaveChatConfirmation(client, chat.id),
+        });
     }
 
     return res.build(props.ctx, 240);
@@ -146,18 +195,28 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const calls = React.useContext(MessengerContext).calls;
     const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
-    const path = chat.__typename === 'PrivateRoom' ? `/${chat.user.shortname || chat.user.id}` : `/group/${chat.id}`;
-    const showCallButton = layout === 'desktop' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true);
+    const path =
+        chat.__typename === 'PrivateRoom'
+            ? `/${chat.user.shortname || chat.user.id}`
+            : `/group/${chat.id}`;
+    const showCallButton =
+        layout === 'desktop' && (chat.__typename === 'PrivateRoom' ? !chat.user.isBot : true);
     const showInviteButton = !!(layout === 'desktop' && chat.__typename === 'SharedRoom');
     const titleEmojify = React.useMemo(() => emoji(title), [title]);
 
     return (
-        <XView flexDirection="row" flexGrow={1} flexBasis={0} minWidth={0} position="relative">
+        <XView
+            flexDirection="row"
+            flexGrow={1}
+            flexBasis={0}
+            minWidth={0}
+            position="relative"
+            justifyContent="space-between"
+        >
             <XView
                 hoverOpacity={HoverAlpha}
                 flexDirection="row"
-                flexGrow={1}
-                flexBasis={0}
+                flexGrow={0}
                 minWidth={0}
                 path={path}
                 cursor="pointer"
@@ -175,6 +234,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     flexGrow={1}
                     flexBasis={0}
                     minWidth={0}
+                    paddingRight={16}
                 >
                     <XView
                         flexDirection="column"
@@ -195,25 +255,29 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         >
                             <span className={titleStyle}>
                                 {titleEmojify}
-                                {chat.__typename === 'PrivateRoom' && chat.user.primaryOrganization && (
-                                    <span className={cx(secondary, TextDensed)}>{chat.user.primaryOrganization.name}</span>
-                                )}
+                                {chat.__typename === 'PrivateRoom' &&
+                                    chat.user.primaryOrganization && (
+                                        <span className={cx(secondary, TextDensed)}>
+                                            {chat.user.primaryOrganization.name}
+                                        </span>
+                                    )}
                             </span>
                         </XView>
-                        <XView
-                            {...TextStyles.Densed}
-                            color="var(--foregroundSecondary)"
-                        >
+                        <XView {...TextStyles.Densed} color="var(--foregroundSecondary)">
                             <span className={oneLiner}>
                                 {chat.__typename === 'PrivateRoom' && (
                                     <HeaderLastSeen id={chat.user.id} />
                                 )}
-                                {chat.__typename === 'SharedRoom' && chat.membersCount !== null && chat.membersCount !== 0 && (
-                                    <>
-                                        {chat.membersCount >= 1 ? `${chat.membersCount} members` : `1 member`}
-                                        <ChatOnlinesTitle id={chat.id} />
-                                    </>
-                                )}
+                                {chat.__typename === 'SharedRoom' &&
+                                    chat.membersCount !== null &&
+                                    chat.membersCount !== 0 && (
+                                        <>
+                                            {chat.membersCount >= 1
+                                                ? `${chat.membersCount} members`
+                                                : `1 member`}
+                                            <ChatOnlinesTitle id={chat.id} />
+                                        </>
+                                    )}
                             </span>
                         </XView>
                     </XView>
@@ -223,18 +287,24 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                 {showInviteButton && (
                     <UIconButton
                         icon={<InviteIcon />}
-                        onClick={() => showAddMembersModal({ id: chat.id, isGroup: true, isOrganization: false })}
+                        onClick={() =>
+                            showAddMembersModal({
+                                id: chat.id,
+                                isGroup: true,
+                                isOrganization: false,
+                            })
+                        }
                         size="large"
                     />
                 )}
                 {showCallButton && <CallButton chat={chat} calls={calls} />}
 
                 <UMoreButton
-                    menu={(ctx) =>
+                    menu={ctx => (
                         <React.Suspense fallback={<div style={{ width: 240, height: 100 }} />}>
                             <MenuComponent ctx={ctx} id={chat.id} />
                         </React.Suspense>
-                    }
+                    )}
                     useWrapper={false}
                     size="large-densed"
                 />
