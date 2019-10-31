@@ -4,14 +4,21 @@ import { HeaderContextProvider, HeaderContext } from './HeaderContext';
 import { HeaderConfig, isConfigEquals, mergeConfigs } from './HeaderConfig';
 import { PageHeader } from './PageHeader';
 
-export class HeaderComponent
-    extends React.PureComponent<{ visible: boolean }, { config: HeaderConfig }>
+interface HeaderComponentProps {
+    visible: boolean;
+}
+
+interface HeaderComponentState {
+    config: HeaderConfig;
+}
+
+export class HeaderComponent extends React.PureComponent<HeaderComponentProps, HeaderComponentState>
     implements HeaderContextProvider {
     private configs = new Map<string, HeaderConfig>();
     private lastConfig: HeaderConfig = {};
     private unmounting = false;
 
-    constructor(props: { visible: boolean }) {
+    constructor(props: HeaderComponentProps) {
         super(props);
         this.state = { config: {} };
     }
@@ -21,7 +28,7 @@ export class HeaderComponent
         this.configs.set(key, config);
         this.supplyConfig(animated);
         return key;
-    }
+    };
     updateConfig = (key: string, config: HeaderConfig, animated?: boolean) => {
         if (this.configs.has(key)) {
             this.configs.set(key, config);
@@ -29,7 +36,7 @@ export class HeaderComponent
             console.warn('Trying to update unknown config: ignoring');
         }
         this.supplyConfig(animated);
-    }
+    };
     removeConfig = (key: string, animated?: boolean) => {
         if (this.configs.has(key)) {
             this.configs.delete(key);
@@ -37,7 +44,7 @@ export class HeaderComponent
             console.warn('Trying to unregister unknown config: ignoring');
         }
         this.supplyConfig(animated);
-    }
+    };
 
     supplyConfig = (animated?: boolean) => {
         if (this.unmounting) {
@@ -59,7 +66,7 @@ export class HeaderComponent
         // Update config
         this.lastConfig = merged;
         this.setState({ config: merged });
-    }
+    };
 
     componentWillUnmount() {
         this.unmounting = true;
@@ -68,10 +75,10 @@ export class HeaderComponent
     componentDidUpdate() {
         if (this.props.visible) {
             if (this.state.config.title) {
-                window.document.title = this.state.config.title;
+                window.document.title = `Openland · ${this.state.config.title}`;
             }
             if (this.state.config.documentTitle) {
-                window.document.title = this.state.config.documentTitle;
+                window.document.title = `Openland · ${this.state.config.documentTitle}`;
             }
         }
     }
