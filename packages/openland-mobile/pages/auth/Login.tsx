@@ -11,7 +11,7 @@ import { trackEvent } from 'openland-mobile/analytics';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { API_HOST } from 'openland-y-utils/api';
-import { GoogleSignin } from '@react-native-community/google-signin';
+import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 
 const styles = StyleSheet.create({
     container: {
@@ -45,7 +45,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
         try {
             this.setState({ loading: true });
             GoogleSignin.configure({
-                webClientId: '1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com'
+                webClientId: '1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com',
             });
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
@@ -68,14 +68,12 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
 
             // TODO: Better error
             Alert.alert('Unable to authenticate');
-        } catch (e) {
-            if (e.error) {
-                if (e.error === 'a0.session.user_cancelled') {
-                    return;
-                }
+        } catch (error) {
+            if (error.code === statusCodes.SIGN_IN_CANCELLED || error.code === statusCodes.IN_PROGRESS) {
+                // user cancelled the login flow or operation (e.g. sign in) is in progress already
+            } else {
+                Alert.alert(error.message);
             }
-
-            Alert.alert(e.message + '\n' + JSON.stringify(e));
         } finally {
             this.setState({ loading: false });
         }
