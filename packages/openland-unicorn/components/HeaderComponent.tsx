@@ -70,6 +70,7 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps, H
 
     componentWillUnmount() {
         this.unmounting = true;
+        window.document.title = 'Openland';
     }
 
     componentDidUpdate() {
