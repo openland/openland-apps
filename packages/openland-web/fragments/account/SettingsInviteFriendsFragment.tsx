@@ -13,6 +13,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { OwnerLinkComponent } from 'openland-web/fragments/invite/OwnerLinkComponent';
 import { TextBody } from 'openland-web/utils/TextStyles';
 import { Page } from 'openland-unicorn/Page';
+import { UHeader } from 'openland-unicorn/UHeader';
 import { trackEvent } from 'openland-x-analytics';
 
 const textAlignCenterClassName = css`
@@ -240,6 +241,7 @@ export const InviteFriendsComponent = (props: InviteFriendsFragmentProps) => {
 
 export const InviteFriendsFragment = React.memo(() => (
     <Page track="account_invite">
+        <UHeader documentTitle="Invite"/>
         <InviteFriendsComponent onSettingPage={true} />
     </Page>
 ));

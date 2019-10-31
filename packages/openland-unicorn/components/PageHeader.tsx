@@ -20,6 +20,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     });
     let appearance = props.config.appearance || 'normal';
     let backgroundColor = props.config.backgroundColor;
+
     return (
         <XView
             height={56}

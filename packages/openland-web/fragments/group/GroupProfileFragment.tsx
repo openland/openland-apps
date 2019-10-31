@@ -104,6 +104,7 @@ export const GroupProfileFragment = React.memo(() => {
             loadMore={handleLoadMore}
             items={members}
             loading={loading}
+            title={title}
             renderItem={member => (
                 <UUserView
                     key={'member-' + member.user.id}

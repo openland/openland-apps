@@ -9,26 +9,35 @@ import { ChatHeader } from './header/ChatHeader';
 import { Deferred } from 'openland-unicorn/components/Deferred';
 
 export const MessengerFragment = React.memo<{ id: string }>(props => {
-
     // Load chat info
     const client = useClient();
     let chat = client.useRoomChat({ id: props.id }).room!;
-    const onChatLostAccess = React.useCallback(() => {
-        client.refetchRoom({ id: props.id });
-    }, [client]);
+    const onChatLostAccess = React.useCallback(
+        () => {
+            client.refetchRoom({ id: props.id });
+        },
+        [client],
+    );
 
     // Pin message
-    let pinMessage = chat.pinnedMessage &&
-        chat.pinnedMessage.__typename === 'GeneralMessage'
-        ? chat.pinnedMessage
-        : null;
+    let pinMessage =
+        chat.pinnedMessage && chat.pinnedMessage.__typename === 'GeneralMessage'
+            ? chat.pinnedMessage
+            : null;
 
     // Check group state
-    const header = React.useMemo(() => {
-        return <ChatHeader chat={chat} />;
-    }, [chat]);
+    const header = React.useMemo(
+        () => {
+            return <ChatHeader chat={chat} />;
+        },
+        [chat],
+    );
 
-    if (chat.__typename === 'SharedRoom' && chat.kind !== 'INTERNAL' && chat.membership !== 'MEMBER') {
+    if (
+        chat.__typename === 'SharedRoom' &&
+        chat.kind !== 'INTERNAL' &&
+        chat.membership !== 'MEMBER'
+    ) {
         if (chat.kind === 'PUBLIC') {
             return <SharedRoomPlaceholder room={chat} />;
         } else {
@@ -38,7 +47,11 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
 
     return (
         <>
-            <UHeader titleView={header} appearance="wide" />
+            <UHeader
+                titleView={header}
+                documentTitle={chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title}
+                appearance="wide"
+            />
             <Deferred>
                 <XView
                     flexGrow={1}
@@ -50,17 +63,14 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
                     alignItems="stretch"
                 >
                     <TalkBarComponent chat={chat} />
-                    <XView
-                        flexGrow={1}
-                        flexBasis={0}
-                        minHeight={0}
-                        flexShrink={1}
-                    >
+                    <XView flexGrow={1} flexBasis={0} minHeight={0} flexShrink={1}>
                         <MessengerRootComponent
                             onChatLostAccess={onChatLostAccess}
                             pinMessage={pinMessage}
                             conversationId={chat.id}
-                            conversationType={chat.__typename === 'SharedRoom' ? chat.kind : 'PRIVATE'}
+                            conversationType={
+                                chat.__typename === 'SharedRoom' ? chat.kind : 'PRIVATE'
+                            }
                             room={chat}
                         />
                     </XView>

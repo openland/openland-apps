@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { Deferred } from './Deferred';
 import { XLoader } from 'openland-x/XLoader';
 import { HeaderComponent } from './HeaderComponent';
@@ -89,6 +89,7 @@ export const PageLayout = (props: {
     children?: any;
     state: 'mounting' | 'entering' | 'visible' | 'exiting';
     container: React.RefObject<HTMLDivElement>;
+    visible: boolean;
 }) => {
     const isChrome =
         !!(window as any).chrome &&
@@ -142,16 +143,15 @@ export const PageLayout = (props: {
         },
         [props.state],
     );
-
     return (
         <div className={containerStyle}>
-            <div className={shadowStyle + ' ' + shadowStateStyles[props.state]} />
+            <div className={cx(shadowStyle, shadowStateStyles[props.state])} />
             <div
                 ref={ref}
-                className={contentStyle + (!isChrome ? ' ' + contentStyleCss : '')}
-                style={isChrome ? {} : { transform: `translateX(${offset}px)` }}
+                className={cx(contentStyle, !isChrome && contentStyleCss)}
+                style={isChrome ? undefined : { transform: `translateX(${offset}px)` }}
             >
-                <HeaderComponent>
+                <HeaderComponent visible={props.visible}>
                     <Deferred>
                         <div className={contentWrapperStyle}>
                             <React.Suspense fallback={<XLoader />}>{props.children}</React.Suspense>

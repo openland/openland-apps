@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { withApp } from 'openland-web/components/withApp';
-import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
@@ -9,6 +8,7 @@ import ImgUnboardingStart from 'openland-icons/img_unboarding_start.svg';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
+import { UHeader } from 'openland-unicorn/UHeader';
 
 const textAlignClassName = css`
     text-align: center;
@@ -29,7 +29,7 @@ export const DiscoverStart = ({
     const button = <XButton text="Start" style="primary" size="large" onClick={onStartClick} />;
     return (
         <XView flexGrow={1}>
-            <XDocumentHead title="Discover" />
+            <UHeader documentTitle="Recommendations"/>
             {!noBackSkipLogo && (
                 <BackSkipLogo onBack={null} onSkip={onSkip} noLogo={!!isMobile} />
             )}

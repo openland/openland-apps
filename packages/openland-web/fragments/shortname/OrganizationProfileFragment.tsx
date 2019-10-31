@@ -71,6 +71,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
             loadMore={handleLoadMore}
             items={members}
             loading={loading}
+            title={name}
             renderItem={member => (
                 <UUserView
                     key={'member-' + member.user.id}

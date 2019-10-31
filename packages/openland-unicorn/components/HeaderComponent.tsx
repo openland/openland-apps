@@ -4,13 +4,14 @@ import { HeaderContextProvider, HeaderContext } from './HeaderContext';
 import { HeaderConfig, isConfigEquals, mergeConfigs } from './HeaderConfig';
 import { PageHeader } from './PageHeader';
 
-export class HeaderComponent extends React.PureComponent<{}, { config: HeaderConfig }> implements HeaderContextProvider {
-
+export class HeaderComponent
+    extends React.PureComponent<{ visible: boolean }, { config: HeaderConfig }>
+    implements HeaderContextProvider {
     private configs = new Map<string, HeaderConfig>();
     private lastConfig: HeaderConfig = {};
     private unmounting = false;
 
-    constructor(props: {}) {
+    constructor(props: { visible: boolean }) {
         super(props);
         this.state = { config: {} };
     }
@@ -64,13 +65,22 @@ export class HeaderComponent extends React.PureComponent<{}, { config: HeaderCon
         this.unmounting = true;
     }
 
+    componentDidUpdate() {
+        if (this.props.visible) {
+            if (this.state.config.title) {
+                window.document.title = this.state.config.title;
+            }
+            if (this.state.config.documentTitle) {
+                window.document.title = this.state.config.documentTitle;
+            }
+        }
+    }
+
     render() {
         return (
             <>
                 <PageHeader config={this.state.config} />
-                <HeaderContext.Provider value={this}>
-                    {this.props.children}
-                </HeaderContext.Provider>
+                <HeaderContext.Provider value={this}>{this.props.children}</HeaderContext.Provider>
             </>
         );
     }

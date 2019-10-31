@@ -10,6 +10,7 @@ import { detectOS, OS } from 'openland-x-utils/detectOS';
 import { trackEvent } from 'openland-x-analytics';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { Page } from 'openland-unicorn/Page';
+import { UHeader } from 'openland-unicorn/UHeader';
 
 const textAlignClassName = css`
     text-align: center;
@@ -324,6 +325,7 @@ export const DownloadAppsComponent = (props: NativaAppsModalProps) => {
 
 export const DownloadAppsFragment = React.memo(() => (
     <Page track="account_apps">
+        <UHeader documentTitle="Download apps"/>
         <DownloadAppsComponent onSettingPage={true} />
     </Page>
 ));
