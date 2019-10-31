@@ -38,7 +38,7 @@ const contentStyle = css`
 `;
 
 const contentStyleCss = css`
-    transition: transform 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
+    transition: left 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
     overflow: hidden;
 `;
 
@@ -161,7 +161,7 @@ export const PageLayout = (props: {
             <div
                 ref={ref}
                 className={contentStyle + (!isChrome ? ' ' + contentStyleCss : '')}
-                style={isChrome ? {} : { transform: `translateX(${offset}px)` }}
+                style={isChrome ? {} : { left: `${offset}px` }}
             >
                 <HeaderComponent>
                     <Deferred>
