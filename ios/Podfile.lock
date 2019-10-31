@@ -348,25 +348,12 @@ PODS:
   - SimpleKeychain (0.9.0)
   - Starscream (3.0.6)
   - SwiftyJSON (4.3.0)
-  - Texture (2.8.1):
-    - Texture/AssetsLibrary (= 2.8.1)
-    - Texture/Core (= 2.8.1)
-    - Texture/MapKit (= 2.8.1)
-    - Texture/Photos (= 2.8.1)
-    - Texture/PINRemoteImage (= 2.8.1)
-    - Texture/Video (= 2.8.1)
-  - Texture/AssetsLibrary (2.8.1):
-    - Texture/Core
-  - Texture/Core (2.8.1)
-  - Texture/MapKit (2.8.1):
-    - Texture/Core
-  - Texture/Photos (2.8.1):
-    - Texture/Core
-  - Texture/PINRemoteImage (2.8.1):
+  - Texture (2.7):
+    - Texture/PINRemoteImage (= 2.7)
+  - Texture/Core (2.7)
+  - Texture/PINRemoteImage (2.7):
     - PINRemoteImage/iOS (= 3.0.0-beta.13)
     - PINRemoteImage/PINCache
-    - Texture/Core
-  - Texture/Video (2.8.1):
     - Texture/Core
   - Yoga (1.14.0)
 
@@ -432,7 +419,7 @@ DEPENDENCIES:
   - RNShare (from `../node_modules/react-native-share`)
   - Starscream (~> 3.0.2)
   - SwiftyJSON (~> 4.0)
-  - Texture (from `https://github.com/openland/Texture.git`, branch `2.8.1-fontfix`)
+  - Texture (from `https://github.com/openland/Texture.git`, branch `2.7-fontfix`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -443,9 +430,6 @@ SPEC REPOS:
     - boost-for-react-native
     - libwebp
     - ObjectiveRocks
-    - PINCache
-    - PINOperation
-    - PINRemoteImage
     - QBImagePickerController
     - ReachabilitySwift
     - RSKImageCropper
@@ -459,6 +443,9 @@ SPEC REPOS:
     - GoogleSignIn
     - GTMAppAuth
     - GTMSessionFetcher
+    - PINCache
+    - PINOperation
+    - PINRemoteImage
 
 EXTERNAL SOURCES:
   A0Auth0:
@@ -558,14 +545,14 @@ EXTERNAL SOURCES:
   RNShare:
     :path: "../node_modules/react-native-share"
   Texture:
-    :branch: 2.8.1-fontfix
+    :branch: 2.7-fontfix
     :git: https://github.com/openland/Texture.git
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
   Texture:
-    :commit: 624bb5cf2b1ccd6dddc301b59a6b5ad35875f1f3
+    :commit: 14b89d863b977f9083ab45adcc37d53c874abd15
     :git: https://github.com/openland/Texture.git
 
 SPEC CHECKSUMS:
@@ -638,9 +625,9 @@ SPEC CHECKSUMS:
   SimpleKeychain: 3be49072fd2d82de8fa83d847ef1e548622f8fc5
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
-  Texture: 8ecf6984065a1e54f06bf97b349ecca28582acd7
+  Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: 408516c96a246428411dcf69719c12b474d72c6c
+PODFILE CHECKSUM: 85692d67b0c6e0158d1338f68e6a650f5cf8c07f
 
 COCOAPODS: 1.8.4
