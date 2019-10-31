@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1095846783035-mp5t7jtqvocp6rfr696rot34r4qfobum.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1095846783035-mp5t7jtqvocp6rfr696rot34r4qfobum</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1095846783035-h33f7tqspm8p1qo9heopuipho4k4brt7.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCykIOCyZ-yn-pCNlC9uQPk70WSxRz8Dxw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1095846783035</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.openland.app</string>
+	<key>PROJECT_ID</key>
+	<string>statecraft-188615</string>
+	<key>STORAGE_BUCKET</key>
+	<string>statecraft-188615.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1095846783035:ios:0a82cb4dfd67824ce8541e</string>
+	<key>DATABASE_URL</key>
+	<string>https://statecraft-188615.firebaseio.com</string>
+</dict>
+</plist>

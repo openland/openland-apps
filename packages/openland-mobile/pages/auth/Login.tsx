@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, ViewStyle } from 'react-native';
+import { View, StyleSheet, Image, ViewStyle, Platform } from 'react-native';
 import RNRestart from 'react-native-restart';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
@@ -46,6 +46,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
             this.setState({ loading: true });
             GoogleSignin.configure({
                 webClientId: '1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com',
+                iosClientId: '1095846783035-mp5t7jtqvocp6rfr696rot34r4qfobum.apps.googleusercontent.com',
             });
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
@@ -71,7 +72,11 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
         } catch (error) {
             if (error.code === statusCodes.SIGN_IN_CANCELLED || error.code === statusCodes.IN_PROGRESS) {
                 // user cancelled the login flow or operation (e.g. sign in) is in progress already
+            } else if (Platform.OS === 'ios') {
+                // can't handle cancel with latest GoogleSignIn lib - just ignore all error for now
+                // https://github.com/googlesamples/google-services/issues/426
             } else {
+                console.warn(JSON.stringify(error));
                 Alert.alert(error.message);
             }
         } finally {
