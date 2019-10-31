@@ -6,8 +6,6 @@ import { MessageCompactComponent } from '../messenger/message/MessageCompactCont
 import ReplyIcon from 'openland-icons/s/ic-reply-24.svg';
 import CloseIcon from 'openland-icons/s/ic-close-8.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import EditIcon from 'openland-icons/s/ic-edit-24.svg';
-import { emoji } from 'openland-y-utils/emoji';
 import { css, cx } from 'linaria';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
@@ -85,12 +83,6 @@ const messageActionCloseWrapEdit = css`
     }
 `;
 
-const contentWrapper = css`
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-`;
-
 export const InputMessageActionComponent = (props: { engine: MessagesActionsStateEngine }) => {
     useShortcuts({
         keys: ['Escape'],
@@ -120,11 +112,6 @@ export const InputMessageActionComponent = (props: { engine: MessagesActionsStat
             .map(s => s.name)
             .join(', ');
     }
-
-    // if (state.action === 'reply') {
-    // let icon = <UIcon icon={<ReplyIcon />} color={'#676d7a'} />;
-    //     // icon = <UIcon icon={<EditIcon />} color={'#676d7a'} />;
-    // }
 
     let content;
     if (state.action === 'forward' || state.action === 'reply') {

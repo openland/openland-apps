@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { showModalBox } from 'openland-x/showModalBox';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
-import { layoutMedia } from 'openland-y-utils/MediaLayout';
+import { layoutMedia, MediaLayout } from 'openland-y-utils/MediaLayout';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { TextTitle3, TextBody, TextLabel2 } from 'openland-web/utils/TextStyles';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
@@ -273,7 +273,7 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
 
     let img = null;
     let siteIcon = null;
-    let layout = null;
+    let layout: MediaLayout | undefined;
     if (attach.image && attach.image.metadata) {
         layout = layoutMedia(
             attach.image.metadata.imageWidth || 0,

@@ -3,6 +3,13 @@ const MAX_H = 400;
 const MIN_W = 100;
 const MIN_H = 100;
 
+export interface MediaLayout {
+    width: number;
+    height: number;
+    previewWidth: number;
+    previewHeight: number;
+}
+
 export function layoutMedia(
     width: number,
     height: number,
