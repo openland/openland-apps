@@ -11,9 +11,9 @@ import { HeaderComponent } from './HeaderComponent';
 const containerStyle = css`
     position: absolute;
     top: 0px;
-    left: 0px;
-    right: 0px;
     bottom: 0px;
+    width: 100%;
+    z-index: 2;
     pointer-events: auto;
 `;
 
