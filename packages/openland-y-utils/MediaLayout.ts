@@ -6,8 +6,6 @@ const MIN_H = 100;
 export interface MediaLayout {
     width: number;
     height: number;
-    previewWidth: number;
-    previewHeight: number;
 }
 
 export function layoutMedia(
