@@ -20,6 +20,11 @@
 		7A78E95582A54B76A967E43B /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE573BB4274A4A7687D530D8 /* libRNDeviceInfo-tvOS.a */; };
 		A0153A96222426F400C026A4 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0153A95222426F400C026A4 /* ShareViewController.swift */; };
 		A0153A99222426F400C026A4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0153A97222426F400C026A4 /* MainInterface.storyboard */; };
+		A030D384236B074B005917D1 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A030D383236B074A005917D1 /* AddressBook.framework */; };
+		A030D386236B076A005917D1 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A030D385236B076A005917D1 /* SafariServices.framework */; };
+		A030D388236B0778005917D1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A030D387236B0778005917D1 /* SystemConfiguration.framework */; };
+		A030D38A236B0785005917D1 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A030D389236B0785005917D1 /* libz.tbd */; };
+		A030D38E236B0CE0005917D1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A030D38D236B0CDF005917D1 /* GoogleService-Info.plist */; };
 		A0579EF42260D2BE00457B66 /* incallmanager_busytone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A0579EF32260D2BE00457B66 /* incallmanager_busytone.mp3 */; };
 		A0930DE922B271D40018ECA1 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0930DE822B271D40018ECA1 /* NotificationHandler.swift */; };
 		A099CBDC233B9CFF00A7AC8C /* ChatFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A099CBDB233B9CFF00A7AC8C /* ChatFlowLayout.swift */; };
@@ -295,6 +300,13 @@
 		A0153A98222426F400C026A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		A0153A9A222426F400C026A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0153AAA2224559800C026A4 /* openland-share-ex.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "openland-share-ex.entitlements"; sourceTree = "<group>"; };
+		A030D377236B073D005917D1 /* RNGoogleSignin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RNGoogleSignin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A030D383236B074A005917D1 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		A030D385236B076A005917D1 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		A030D387236B0778005917D1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		A030D389236B0785005917D1 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		A030D38B236B0807005917D1 /* RNGoogleSignin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RNGoogleSignin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A030D38D236B0CDF005917D1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "openland/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A0579EF32260D2BE00457B66 /* incallmanager_busytone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = incallmanager_busytone.mp3; sourceTree = "<group>"; };
 		A0930DE822B271D40018ECA1 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
 		A099CBDB233B9CFF00A7AC8C /* ChatFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFlowLayout.swift; sourceTree = "<group>"; };
@@ -428,6 +440,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A030D38A236B0785005917D1 /* libz.tbd in Frameworks */,
+				A030D388236B0778005917D1 /* SystemConfiguration.framework in Frameworks */,
+				A030D386236B076A005917D1 /* SafariServices.framework in Frameworks */,
+				A030D384236B074B005917D1 /* AddressBook.framework in Frameworks */,
 				AA2281DC228B5E3300810848 /* CoreTelephony.framework in Frameworks */,
 				AAD8F15C2208A619007C4FE3 /* libsqlite3.tbd in Frameworks */,
 				AAD8F15A2208A60E007C4FE3 /* libc++.tbd in Frameworks */,
@@ -508,6 +524,7 @@
 				AAA4DA5722145C6200BB1781 /* RNThreads */,
 				AAE56DBF2129F997003706B3 /* hacks */,
 				AAE56DC32129FA25003706B3 /* Bridge.h */,
+				A030D38D236B0CDF005917D1 /* GoogleService-Info.plist */,
 				AAE56DC42129FA3C003706B3 /* Bridge.m */,
 				AACFC575210778FE00225C86 /* openland.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -529,6 +546,12 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A030D38B236B0807005917D1 /* RNGoogleSignin.framework */,
+				A030D389236B0785005917D1 /* libz.tbd */,
+				A030D387236B0778005917D1 /* SystemConfiguration.framework */,
+				A030D385236B076A005917D1 /* SafariServices.framework */,
+				A030D383236B074A005917D1 /* AddressBook.framework */,
+				A030D377236B073D005917D1 /* RNGoogleSignin.framework */,
 				AA2281D1228B5E3300810848 /* CoreTelephony.framework */,
 				AA94929922126B9300E46917 /* AppCenter.framework */,
 				AA94929A22126B9300E46917 /* AppCenterAnalytics.framework */,
@@ -1159,6 +1182,7 @@
 				AAC60B57215AF2D3005E09BA /* Auth0.plist in Resources */,
 				A0579EF42260D2BE00457B66 /* incallmanager_busytone.mp3 in Resources */,
 				440BD442C9014A379447F506 /* AppCenter-Config.plist in Resources */,
+				A030D38E236B0CE0005917D1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
