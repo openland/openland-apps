@@ -8,6 +8,7 @@ import CloseIcon from 'openland-icons/s/ic-close-8.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { css, cx } from 'linaria';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { defaultHover } from 'openland-web/utils/Styles';
 
 const messageActonContainerClass = css`
     display: flex;
@@ -155,7 +156,11 @@ export const InputMessageActionComponent = (props: { engine: MessagesActionsStat
                 }
                 onClick={props.engine.clear}
             >
-                <CloseIcon />
+                <UIcon
+                    className={defaultHover}
+                    icon={<CloseIcon />}
+                    color={'var(--foregroundTertiary)'}
+                />
             </div>
         </div>
     );
