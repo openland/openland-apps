@@ -11,6 +11,7 @@ import DeleteIcon from 'openland-icons/s/ic-close-16.svg';
 import ZoomIcon from 'openland-icons/s/ic-zoom-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { InternalAttachContent } from './InternalAttachContent';
+import { defaultHover } from 'openland-web/utils/Styles';
 
 type messageRichAttach = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
 
@@ -24,7 +25,8 @@ const richWrapper = css`
     overflow: hidden;
     position: relative;
 
-    &:hover .message-rich-delete {
+    &:hover .message-rich-delete,
+    &:hover .message-rich-zoom {
         opacity: 1;
         transform: translateX(0);
     }
@@ -162,6 +164,7 @@ const deleteButton = css`
 `;
 
 const zoomButton = css`
+    opacity: 0;
     transition: 150ms opacity ease;
     width: 32px;
     height: 32px;
@@ -346,7 +349,7 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
 
             {img && (
                 <button
-                    className={zoomButton}
+                    className={cx(zoomButton, 'message-rich-zoom')}
                     onClick={(e: React.MouseEvent) => {
                         e.stopPropagation();
                         showImageModal(attach.image!!.url, layout!.width * 2, layout!.height * 2);
