@@ -59,9 +59,6 @@ const HeaderLastSeen = (props: { id: string }) => {
         },
     );
 
-    if (!data) {
-        return null;
-    }
     React.useLayoutEffect(
         () => {
             if (!data) {
@@ -79,6 +76,10 @@ const HeaderLastSeen = (props: { id: string }) => {
         [data, update],
     );
 
+    if (!data) {
+        return null;
+    }
+
     const { user } = data;
     if (user && (user.lastSeen && user.lastSeen !== 'online' && !user.online)) {
         return (
@@ -87,8 +88,8 @@ const HeaderLastSeen = (props: { id: string }) => {
                 {user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (
-                    <XDate value={user.lastSeen} format="humanize_cute" />
-                )}
+                        <XDate value={user.lastSeen} format="humanize_cute" />
+                    )}
             </span>
         );
     } else if (user && user.online) {
@@ -127,10 +128,10 @@ const CallButton = (props: { chat: ChatInfo; calls: CallsEngine }) => {
                     props.chat.__typename === 'PrivateRoom',
                     props.chat.__typename === 'PrivateRoom'
                         ? {
-                              id: props.chat.user.id,
-                              title: props.chat.user.name,
-                              picture: props.chat.user.photo,
-                          }
+                            id: props.chat.user.id,
+                            title: props.chat.user.name,
+                            picture: props.chat.user.photo,
+                        }
                         : { id: props.chat.id, title: props.chat.title, picture: props.chat.photo },
                 )
             }
