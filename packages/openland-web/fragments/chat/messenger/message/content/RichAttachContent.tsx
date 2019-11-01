@@ -91,6 +91,7 @@ const textContentContainer = css`
     padding-bottom: 16px;
     padding-left: 16px;
     padding-right: 24px;
+    width: 100%;
 `;
 
 const siteIconContainer = css`
