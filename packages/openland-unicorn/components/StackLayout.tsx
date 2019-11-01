@@ -4,157 +4,166 @@ import { PageLayout } from './PageLayout';
 import { UnicornContext } from './UnicornContext';
 import { XViewRoute, XViewRouteContext } from 'react-mental';
 
-const PageAnimator = React.memo((props: {
-    children?: any,
-    k: string,
-    state: 'mounting' | 'entering' | 'visible' | 'hidden' | 'exiting',
-    dispatch: React.Dispatch<AnimationAction>,
-    router: StackRouter
-}) => {
+const PageAnimator = React.memo(
+    (props: {
+        children?: any;
+        k: string;
+        state: 'mounting' | 'entering' | 'visible' | 'hidden' | 'exiting';
+        dispatch: React.Dispatch<AnimationAction>;
+        router: StackRouter;
+    }) => {
+        console.log('render[' + props.k + ']: ' + props.state);
 
-    console.log('render[' + props.k + ']: ' + props.state);
-
-    React.useLayoutEffect(() => {
-        let active = true;
-        if (props.state === 'entering') {
-            setTimeout(() => {
-                if (active) {
-                    props.dispatch({ type: 'entered', key: props.k });
+        React.useLayoutEffect(
+            () => {
+                let active = true;
+                if (props.state === 'entering') {
+                    setTimeout(() => {
+                        if (active) {
+                            props.dispatch({ type: 'entered', key: props.k });
+                        }
+                    }, 400);
                 }
-            }, 400);
-        }
-        if (props.state === 'exiting') {
-            setTimeout(() => {
-                if (active) {
-                    props.dispatch({ type: 'exited', key: props.k });
+                if (props.state === 'exiting') {
+                    setTimeout(() => {
+                        if (active) {
+                            props.dispatch({ type: 'exited', key: props.k });
+                        }
+                    }, 400);
                 }
-            }, 400);
+                return () => {
+                    active = false;
+                };
+            },
+            [props.state],
+        );
+
+        let state = props.state;
+        if (state === 'hidden') {
+            return null;
         }
-        return () => {
-            active = false;
-        };
-    }, [props.state]);
 
-    let state = props.state;
-    if (state === 'hidden') {
-        return null;
-    }
+        return (
+            <PageLayout state={state} container={props.router.ref}>
+                {props.children}
+            </PageLayout>
+        );
+    },
+);
 
-    return (
-        <PageLayout state={state} container={props.router.ref}>
-            {props.children}
-        </PageLayout>
-    );
-});
+type AnimationAction =
+    | {
+          type: 'push';
+          key: string;
+          query: any;
+          id?: string;
+          path: string;
+          component: any;
+      }
+    | {
+          type: 'pop';
+          key: string;
+      }
+    | {
+          type: 'entered';
+          key: string;
+      }
+    | {
+          type: 'exited';
+          key: string;
+      }
+    | {
+          type: 'mounted';
+      }
+    | {
+          type: 'reset';
+          pages: StackItems[];
+      };
 
-type AnimationAction = {
-    type: 'push';
+type PageState = 'mounting' | 'entering' | 'visible' | 'hidden' | 'exiting';
+
+type Page = {
     key: string;
+    component: any;
+    path: string;
     query: any;
     id?: string;
-    path: string;
-    component: any;
-} | {
-    type: 'pop';
-    key: string;
-} | {
-    type: 'entered';
-    key: string;
-} | {
-    type: 'exited';
-    key: string;
-} | {
-    type: 'mounted'
-} | {
-    type: 'reset', pages: StackItems[]
+    state: PageState;
 };
 
 type AnimationState = {
-    pages: {
-        key: string;
-        component: any;
-        path: string;
-        query: any;
-        id?: string;
-        state: 'mounting' | 'entering' | 'visible' | 'hidden' | 'exiting'
-    }[];
+    pages: Page[];
 };
 
+const createPage = (action: AnimationAction, state: PageState): Page => ({
+    key: action.key,
+    path: action.path,
+    query: action.query,
+    id: action.id,
+    component: action.component,
+    state,
+});
+
 function initialState(pages: StackItems[]): AnimationState {
-    if (pages.length === 0) {
-        return { pages: [] };
-    } else {
-        return {
-            pages: pages.map((p, i) => ({
-                key: p.key,
-                id: p.id,
-                query: p.query,
-                path: p.path,
-                component: p.component,
-                state: (i === pages.length - 1 ? 'visible' : 'hidden') as 'visible' | 'hidden'
-            }))
-        };
-    }
+    return {
+        pages: pages.map((p, i) => ({
+            key: p.key,
+            id: p.id,
+            query: p.query,
+            path: p.path,
+            component: p.component,
+            state: (i === pages.length - 1 ? 'visible' : 'hidden') as PageState,
+        })),
+    };
 }
 
-function animationReducer(
-    state: AnimationState,
-    action: AnimationAction
-): AnimationState {
+function animationReducer(state: AnimationState, action: AnimationAction): AnimationState {
     if (action.type === 'push') {
-        return { pages: [...state.pages, { key: action.key, path: action.path, query: action.query, id: action.id, component: action.component, state: 'mounting' }] };
+        return {
+            pages: [...state.pages, createPage(action, 'mounting')],
+        };
     } else if (action.type === 'pop') {
         return {
-            pages: state.pages.map((v, i) => {
-                if (v.key === action.key) {
-                    return { ...v, state: 'exiting' as any };
-                } else {
-                    if (state.pages[i + 1] && state.pages[i + 1].key === action.key) {
-                        if (v.state !== 'visible') {
-                            return { ...v, state: 'visible' as any };
-                        }
-                    }
-                    return v;
+            pages: state.pages.map((p, i) => {
+                if (p.key === action.key) {
+                    return { ...p, state: 'exiting' as PageState };
+                } else if (state.pages[i + 1] && state.pages[i + 1].key === action.key) {
+                    return { ...p, state: 'visible' as PageState };
                 }
-            })
+                return p;
+            }),
         };
     } else if (action.type === 'entered') {
         return {
-            pages: state.pages.map((v, i) => {
-                if (v.key === action.key) {
-                    if (v.state === 'entering') {
-                        return { ...v, state: 'visible' as any };
-                    } else {
-                        return v;
-                    }
-                } else {
-                    if (state.pages[i + 1] && state.pages[i + 1].key === action.key) {
-                        if (v.state === 'visible') {
-                            return { ...v, state: 'hidden' as any };
-                        }
-                    }
-                    return v;
+            pages: state.pages.map((p, i) => {
+                if (p.key === action.key && p.state === 'entering') {
+                    return { ...p, state: 'visible' as PageState };
+                } else if (
+                    state.pages[i + 1] &&
+                    state.pages[i + 1].key === action.key &&
+                    p.state === 'visible'
+                ) {
+                    return { ...p, state: 'hidden' as PageState };
                 }
-            })
+                return p;
+            }),
         };
     } else if (action.type === 'exited') {
         return {
-            pages: state.pages.filter((v) => v.key !== action.key)
+            pages: state.pages.filter(p => p.key !== action.key),
         };
     } else if (action.type === 'mounted') {
-        if (state.pages.find((v) => v.state === 'mounting')) {
+        if (state.pages.find(p => p.state === 'mounting')) {
             return {
-                pages: state.pages.map((v) => {
-                    if (v.state === 'mounting') {
-                        return { ...v, state: 'entering' as any };
-                    } else {
-                        return v;
+                pages: state.pages.map(p => {
+                    if (p.state === 'mounting') {
+                        return { ...p, state: 'entering' as PageState };
                     }
-                })
+                    return p;
+                }),
             };
-        } else {
-            return state;
         }
+        return state;
     } else if (action.type === 'reset') {
         return initialState(action.pages);
     } else {
@@ -162,45 +171,61 @@ function animationReducer(
     }
 }
 
-const PageComponent = React.memo((props: {
-    component: any,
-    path: string,
-    query: any,
-    id?: string,
-    protocol: string,
-    hostName: string
-}) => {
-    let ctx = React.useMemo(() => ({
-        path: props.path,
-        query: props.query,
-        id: props.id!
-    }), []);
-    const xRoute: XViewRoute = React.useMemo(() => ({
-        href: props.protocol + '://' + props.hostName + props.path,
-        protocol: props.protocol,
-        hostName: props.hostName,
-        path: props.path,
-        query: props.query,
-    }), []);
-    return (
-        <XViewRouteContext.Provider value={xRoute}>
-            <UnicornContext.Provider value={ctx}>
-                {props.component}
-            </UnicornContext.Provider>
-        </XViewRouteContext.Provider>
-    );
-});
+const PageComponent = React.memo(
+    (props: {
+        component: any;
+        path: string;
+        query: any;
+        id?: string;
+        protocol: string;
+        hostName: string;
+    }) => {
+        let ctx = React.useMemo(
+            () => ({
+                path: props.path,
+                query: props.query,
+                id: props.id!,
+            }),
+            [],
+        );
+        const xRoute: XViewRoute = React.useMemo(
+            () => ({
+                href: props.protocol + '://' + props.hostName + props.path,
+                protocol: props.protocol,
+                hostName: props.hostName,
+                path: props.path,
+                query: props.query,
+            }),
+            [],
+        );
+        return (
+            <XViewRouteContext.Provider value={xRoute}>
+                <UnicornContext.Provider value={ctx}>{props.component}</UnicornContext.Provider>
+            </XViewRouteContext.Provider>
+        );
+    },
+);
 
-export const StackLayout = React.memo((props: { router: StackRouter, className?: string }) => {
+export const StackLayout = React.memo((props: { router: StackRouter; className?: string }) => {
     let [state, dispatch] = React.useReducer(animationReducer, props.router.pages, initialState);
     const baseRoute = React.useContext(XViewRouteContext)!;
-    React.useEffect(() => { return props.router.addListener(dispatch); }, []);
-    React.useLayoutEffect(() => { requestAnimationFrame(() => requestAnimationFrame(() => dispatch({ type: 'mounted' }))); });
+    React.useEffect(() => {
+        return props.router.addListener(dispatch);
+    }, []);
+    React.useLayoutEffect(() => {
+        requestAnimationFrame(() => requestAnimationFrame(() => dispatch({ type: 'mounted' })));
+    });
     return (
         <StackRouterContext.Provider value={props.router}>
             <div key="content" className={props.className} ref={props.router.ref}>
-                {state.pages.map((v) => (
-                    <PageAnimator state={v.state} key={v.key} k={v.key} dispatch={dispatch} router={props.router}>
+                {state.pages.map(v => (
+                    <PageAnimator
+                        state={v.state}
+                        key={v.key}
+                        k={v.key}
+                        dispatch={dispatch}
+                        router={props.router}
+                    >
                         <PageComponent
                             component={v.component}
                             query={v.query}
