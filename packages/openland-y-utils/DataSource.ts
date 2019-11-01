@@ -241,6 +241,8 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
                 w.onDataSourceItemMoved(ex, i, index);
             }
         } else {
+            console.warn(key, index);
+            console.warn(this.data);
             throw Error('Trying to move non-existent item');
         }
     }

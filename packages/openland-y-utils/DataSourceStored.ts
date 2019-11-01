@@ -214,6 +214,7 @@ export class DataSourceStored<T extends DataSourceItem> {
 
     moveItem = async (key: string, index: number) => {
         await this._queue.sync(async () => {
+            log.log('Moving');
             let i = this._index.findIndex(v => v === key);
             if (i >= 0) {
                 if (i === index) {
@@ -232,17 +233,21 @@ export class DataSourceStored<T extends DataSourceItem> {
                 await this.updateIndex(res, true);
 
                 if (this._loadCompleted) {
+                    log.log('Load Completed');
                     this.dataSource.moveItem(key, index);
                 } else {
                     if (i < this.dataSource.getSize() && index < this.dataSource.getSize()) {
+                        log.log('Simple Move: ' + (i) + ' to ' + index + '(' + this.dataSource.getSize() + ')');
                         this.dataSource.moveItem(key, index);
                     } else if (i < this.dataSource.getSize()) {
                         this._loaded--;
                         this.dataSource.removeItem(key);
+                        log.log('Remove: ' + (i) + ' to ' + index + '(' + this.dataSource.getSize() + ')');
                     } else if (index < this.dataSource.getSize()) {
                         this._loaded++;
                         let v = JSON.parse((await this._storage.readKey('ds.' + this.name + '.item.' + key))!) as T;
                         this.dataSource.addItem(v, index);
+                        log.log('Add: ' + (i) + ' to ' + index + '(' + this.dataSource.getSize() + ')');
                     }
                 }
             } else {

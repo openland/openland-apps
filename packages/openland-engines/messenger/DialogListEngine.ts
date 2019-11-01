@@ -12,12 +12,12 @@ import {
     DialogUpdateFragment_DialogPeerUpdated_peer,
 } from 'openland-api/Types';
 import { DataSource } from 'openland-y-utils/DataSource';
-// import { createLogger } from 'mental-log';
+import { createLogger } from 'mental-log';
 import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';
 import { DataSourceAugmentor } from 'openland-y-utils/DataSourceAugmentor';
 import { RoomPicoQuery } from 'openland-api';
 
-// const log = createLogger('Engine-Dialogs');
+const log = createLogger('Engine-Dialogs');
 
 export interface DialogDataSourceItemStored {
     key: string;
@@ -220,10 +220,12 @@ export class DialogListEngine {
     }
 
     handleStateProcessed = async (state: string) => {
+        log.log('State Processed');
         await this._dataSourceStored.updateState(state);
     }
 
     handleUserRead = async (conversationId: string, unread: number, visible: boolean, haveMention: boolean) => {
+        log.log('User Read');
         // Write counter to datasource
         let res = await this._dataSourceStored.getItem(conversationId);
         if (res) {
@@ -236,6 +238,7 @@ export class DialogListEngine {
     }
 
     handleIsMuted = async (conversationId: string, isMuted: boolean) => {
+        log.log('Is Muted: ' + isMuted);
         let res = await this._dataSourceStored.getItem(conversationId);
         if (res) {
             await this._dataSourceStored.updateItem({
@@ -246,6 +249,7 @@ export class DialogListEngine {
     }
 
     handleDialogDeleted = async (event: any) => {
+        log.log('Dialog Deleted');
         const cid = event.cid as string;
         if (await this._dataSourceStored.hasItem(cid)) {
             await this._dataSourceStored.removeItem(cid);
@@ -253,6 +257,7 @@ export class DialogListEngine {
     }
 
     handleMessageUpdated = async (event: any) => {
+        log.log('Message Updated');
         const conversationId = event.cid as string;
         let existing = await this._dataSourceStored.getItem(conversationId);
 
@@ -272,6 +277,7 @@ export class DialogListEngine {
     }
 
     handleMessageDeleted = async (cid: string, mid: string, prevMessage: TinyMessage | null, unread: number, haveMention: boolean, uid: string) => {
+        log.log('Message Deleted');
         let existing = await this._dataSourceStored.getItem(cid);
 
         if (existing && existing.messageId === mid) {
@@ -283,6 +289,7 @@ export class DialogListEngine {
     }
 
     handlePeerUpdated = async (cid: string, peer: DialogUpdateFragment_DialogPeerUpdated_peer) => {
+        log.log('Peer Updated');
         let existing = await this._dataSourceStored.getItem(cid);
         if (existing) {
             await this._dataSourceStored.updateItem({
@@ -294,6 +301,7 @@ export class DialogListEngine {
     }
 
     handleMuteUpdated = async (cid: string, mute: boolean) => {
+        log.log('Mute Updated');
         let existing = await this._dataSourceStored.getItem(cid);
         if (existing) {
             await this._dataSourceStored.updateItem({
@@ -308,6 +316,7 @@ export class DialogListEngine {
     }
 
     handleNewMessage = async (event: any, visible: boolean) => {
+        log.log('New Message');
         const conversationId = event.cid as string;
         const unreadCount = event.unread as number;
 
@@ -317,6 +326,8 @@ export class DialogListEngine {
         let isService = event.message.__typename === 'ServiceMessage';
         if (res) {
             let msg = formatMessage(event.message);
+
+            log.log('Update Item: ' + res.key);
             await this._dataSourceStored.updateItem({
                 ...res,
                 isService,
@@ -334,6 +345,8 @@ export class DialogListEngine {
                     !!(msg && (isOut || res.kind !== 'PRIVATE') && sender) &&
                     !isService,
             });
+
+            log.log('Move Item: ' + res.key);
             await this._dataSourceStored.moveItem(res.key, 0);
         } else {
             if (
@@ -361,6 +374,7 @@ export class DialogListEngine {
                 this.userConversationMap.set(privateRoom!.user.id, privateRoom.id);
             }
 
+            log.log('Add Item: ' + conversationId);
             await this._dataSourceStored.addItem(
                 {
                     key: conversationId,
