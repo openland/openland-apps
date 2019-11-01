@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1095846783035-seo7q9qsctj656le35vid01tecmte1o1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.openland.app",
+            "certificate_hash": "992bf0b11a9d2d401a83f84a63e1a9cdc3b403ee"
+          }
+        },
+        {
           "client_id": "1095846783035-h33f7tqspm8p1qo9heopuipho4k4brt7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -38,6 +46,13 @@
             {
               "client_id": "1095846783035-kkb62quqa2ge3bqs1lihlae6tqbri501.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1095846783035-kj9nihchnro5a7u86k2pf8qmlis9fp9i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.openland.app.debug"
+              }
             }
           ]
         }
@@ -75,6 +90,13 @@
             {
               "client_id": "1095846783035-kkb62quqa2ge3bqs1lihlae6tqbri501.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1095846783035-kj9nihchnro5a7u86k2pf8qmlis9fp9i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.openland.app.debug"
+              }
             }
           ]
         }
