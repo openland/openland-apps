@@ -86,8 +86,6 @@ class MainActivity : ReactActivity() {
     }
 
     override fun onPause() {
-        super.onPause()
-
         try {
             // Start keep alive service
             val service = Intent(applicationContext, MainService::class.java)
@@ -97,6 +95,7 @@ class MainActivity : ReactActivity() {
         } catch (e: Throwable) {
             e.printStackTrace()
         }
+        super.onPause()
     }
 
     override fun onDestroy() {
