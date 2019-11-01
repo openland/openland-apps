@@ -1,0 +1,93 @@
+diff --git a/node_modules/react-native/React/Modules/RCTTiming.m b/node_modules/react-native/React/Modules/RCTTiming.m
+index bfc31c6..8a09022 100644
+--- a/node_modules/react-native/React/Modules/RCTTiming.m
++++ b/node_modules/react-native/React/Modules/RCTTiming.m
+@@ -97,7 +97,6 @@ @implementation RCTTiming
+   NSTimer *_sleepTimer;
+   BOOL _sendIdleEvents;
+   BOOL _inBackground;
+-  UIBackgroundTaskIdentifier _backgroundTaskIdentifier;
+ }
+ 
+ @synthesize bridge = _bridge;
+@@ -113,7 +112,6 @@ - (void)setBridge:(RCTBridge *)bridge
+   _paused = YES;
+   _timers = [NSMutableDictionary new];
+   _inBackground = NO;
+-  _backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+ 
+   for (NSString *name in @[UIApplicationWillResignActiveNotification,
+                            UIApplicationDidEnterBackgroundNotification,
+@@ -137,35 +135,10 @@ - (void)setBridge:(RCTBridge *)bridge
+ 
+ - (void)dealloc
+ {
+-  [self markEndOfBackgroundTaskIfNeeded];
+   [_sleepTimer invalidate];
+   [[NSNotificationCenter defaultCenter] removeObserver:self];
+ }
+ 
+-- (void)markStartOfBackgroundTaskIfNeeded
+-{
+-  if (_backgroundTaskIdentifier == UIBackgroundTaskInvalid) {
+-    __weak typeof(self) weakSelf = self;
+-    // Marks the beginning of a new long-running background task. We can run the timer in the background.
+-    _backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithName:@"rct.timing.gb.task" expirationHandler:^{
+-      typeof(self) strongSelf = weakSelf;
+-      if (!strongSelf) {
+-        return;
+-      }
+-      // Mark the end of background task
+-      [strongSelf markEndOfBackgroundTaskIfNeeded];
+-    }];
+-  }
+-}
+-
+-- (void)markEndOfBackgroundTaskIfNeeded
+-{
+-  if (_backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+-    [[UIApplication sharedApplication] endBackgroundTask:_backgroundTaskIdentifier];
+-    _backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+-  }
+-}
+-
+ - (dispatch_queue_t)methodQueue
+ {
+   return RCTJSThread;
+@@ -190,7 +163,6 @@ - (void)appDidMoveToBackground
+ 
+ - (void)appDidMoveToForeground
+ {
+-  [self markEndOfBackgroundTaskIfNeeded];
+   _inBackground = NO;
+   [self startTimers];
+ }
+@@ -288,7 +260,6 @@ - (void)didUpdateFrame:(RCTFrameUpdate *)update
+   }
+   if (_inBackground) {
+     if (timerCount) {
+-      [self markStartOfBackgroundTaskIfNeeded];
+       [self scheduleSleepTimer:nextScheduledTarget];
+     }
+   } else if (!_sendIdleEvents && timersToCall.count == 0) {
+@@ -367,7 +338,6 @@ - (void)timerDidFire
+   }
+ 
+   if (_inBackground) {
+-    [self markStartOfBackgroundTaskIfNeeded];
+     [self scheduleSleepTimer:timer.target];
+   } else if (_paused) {
+     if ([timer.target timeIntervalSinceNow] > kMinimumSleepInterval) {
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
+index ef2ae93..2795802 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
+@@ -92,7 +92,7 @@ public class AndroidInfoModule extends ReactContextBaseJavaModule implements Tur
+ 
+   private Boolean isRunningScreenshotTest() {
+     try {
+-      Class.forName("android.support.test.rule.ActivityTestRule");
++      Class.forName("androidx.test.rule.ActivityTestRule");
+       return true;
+     } catch (ClassNotFoundException ignored) {
+       return false;
