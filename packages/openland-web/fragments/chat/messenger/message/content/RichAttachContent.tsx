@@ -11,7 +11,6 @@ import DeleteIcon from 'openland-icons/s/ic-close-16.svg';
 import ZoomIcon from 'openland-icons/s/ic-zoom-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { InternalAttachContent } from './InternalAttachContent';
-import { defaultHover } from 'openland-web/utils/Styles';
 
 type messageRichAttach = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
 
