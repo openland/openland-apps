@@ -11,8 +11,9 @@ import { HeaderComponent } from './HeaderComponent';
 const containerStyle = css`
     position: absolute;
     top: 0px;
+    left: 0px;
+    right: 0px;
     bottom: 0px;
-    width: 100%;
     z-index: 2;
     pointer-events: auto;
 `;
@@ -38,7 +39,7 @@ const contentStyle = css`
 `;
 
 const contentStyleCss = css`
-    transition: left 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
+    transition: transform 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
     overflow: hidden;
 `;
 
@@ -161,7 +162,7 @@ export const PageLayout = (props: {
             <div
                 ref={ref}
                 className={cx(contentStyle, !isChrome && contentStyleCss)}
-                style={isChrome ? {} : { left: `${offset}px` }}
+                style={isChrome ? {} : { transform: `translateX(${offset}px)` }}
             >
                 <HeaderComponent>
                     <Deferred>
