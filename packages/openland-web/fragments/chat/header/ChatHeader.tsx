@@ -50,6 +50,7 @@ const oneLiner = css`
 `;
 
 const HeaderLastSeen = (props: { id: string }) => {
+    const [update, setUpdate] = React.useState<Date>(new Date());
     const client = useClient();
     const data = client.useWithoutLoaderOnline(
         { userId: props.id },
@@ -61,6 +62,22 @@ const HeaderLastSeen = (props: { id: string }) => {
     if (!data) {
         return null;
     }
+    React.useLayoutEffect(
+        () => {
+            if (!data) {
+                return;
+            } else {
+                let timer: any = null;
+                if (data.user.lastSeen !== 'online') {
+                    timer = setInterval(() => {
+                        setUpdate(new Date());
+                    }, 1000);
+                }
+                return () => clearInterval(timer);
+            }
+        },
+        [data, update],
+    );
 
     const { user } = data;
     if (user && (user.lastSeen && user.lastSeen !== 'online' && !user.online)) {
@@ -91,7 +108,12 @@ const ChatOnlinesTitle = (props: { id: string }) => {
         return null;
     }
 
-    return <span className={secondaryAccent}>&nbsp;&nbsp;{`${onlineCount} online`}</span>;
+    return (
+        <span className={secondaryAccent}>
+            &nbsp;&nbsp;
+            {`${onlineCount} online`}
+        </span>
+    );
 };
 
 const CallButton = (props: { chat: ChatInfo; calls: CallsEngine }) => {
