@@ -16,6 +16,7 @@ const containerStyle = css`
     bottom: 0px;
     z-index: 2;
     pointer-events: auto;
+    overflow: hidden;
 `;
 
 //
