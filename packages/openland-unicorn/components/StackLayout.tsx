@@ -209,12 +209,15 @@ const PageComponent = React.memo(
 export const StackLayout = React.memo((props: { router: StackRouter; className?: string }) => {
     let [state, dispatch] = React.useReducer(animationReducer, props.router.pages, initialState);
     const baseRoute = React.useContext(XViewRouteContext)!;
+
     React.useEffect(() => {
         return props.router.addListener(dispatch);
     }, []);
+
     React.useLayoutEffect(() => {
-        requestAnimationFrame(() => requestAnimationFrame(() => dispatch({ type: 'mounted' })));
+        dispatch({ type: 'mounted' });
     });
+
     return (
         <StackRouterContext.Provider value={props.router}>
             <div key="content" className={props.className} ref={props.router.ref}>
