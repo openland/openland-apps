@@ -236,7 +236,7 @@ dependencies {
     implementation project(':react-native-push-notification')
     implementation project(':react-native-sqlite-storage')
     implementation project(':react-native-dark-mode')
-    implementation(project(":react-native-google-signin"))
+    implementation(project(":android-@react-native-community_google-signin"))
 
     // Google auth
     implementation "com.android.support:appcompat-v7:23.0.1"

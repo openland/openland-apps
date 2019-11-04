@@ -1,6 +1,9 @@
 package com.openland.app
 
+import android.app.Service
+import android.content.ComponentName
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,6 +17,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.openland.react.keyboard.KeyboardHeightProvider
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView
 import android.net.Uri
+import android.os.IBinder
 import android.view.WindowManager
 import org.json.JSONObject
 import android.app.NotificationManager
@@ -78,9 +82,18 @@ class MainActivity : ReactActivity() {
         })
 
         (getSystemService(NOTIFICATION_SERVICE) as? NotificationManager)?.cancelAll()
+        
+        try {
+            // Start keep alive service
+            val service = Intent(applicationContext, MainService::class.java)
+            startService(service)
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+
     }
 
-    override fun onResume() {
+      override fun onResume() {
         super.onResume()
         window.decorView.post {
             provider!!.start()
@@ -90,16 +103,10 @@ class MainActivity : ReactActivity() {
     }
 
     override fun onPause() {
-        try {
-            // Start keep alive service
-            val service = Intent(applicationContext, MainService::class.java)
-            val bundle = Bundle()
-            service.putExtras(bundle)
-            startService(service)
-        } catch (e: Throwable) {
-            e.printStackTrace()
-        }
         super.onPause()
+        val service = Intent(applicationContext, MainService::class.java)
+        service.putExtras(Bundle())
+        bindService(service, DumbServiceConnection(), Service.BIND_AUTO_CREATE)
     }
 
     override fun onDestroy() {
@@ -125,6 +132,17 @@ class MainActivity : ReactActivity() {
             res.data = Uri.parse("openland://deep/mail/" + intent.getStringExtra("conversationId"))
             startActivity(res)
         }
+    }
+
+     class DumbServiceConnection: ServiceConnection{
+        override fun onServiceDisconnected(name: ComponentName?) {
+            Log.d("DumbServiceConnection", name?.className + " disconnected")
+        }
+
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            Log.d("DumbServiceConnection", name?.className + " connected")
+        }
+
     }
 
 }
