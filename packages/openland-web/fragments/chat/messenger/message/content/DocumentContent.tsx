@@ -255,7 +255,7 @@ const VideoContent = React.memo(
         file: { fileId?: string; fileMetadata: { name: string; size: number }; uri?: string };
     }) => {
         return (
-            <div className={videoContainer}>
+            <div className={videoContainer} onClick={e => e.stopPropagation()}>
                 <video controls={true} className={videoStyle}>
                     <source src={`https://ucarecdn.com/${props.file.fileId}/`} type="video/mp4" />
                 </video>
