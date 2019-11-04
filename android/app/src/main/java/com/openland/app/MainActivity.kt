@@ -16,6 +16,7 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView
 import android.net.Uri
 import android.view.WindowManager
 import org.json.JSONObject
+import android.app.NotificationManager
 
 class MainActivity : ReactActivity() {
 
@@ -76,6 +77,7 @@ class MainActivity : ReactActivity() {
             }
         })
 
+        (getSystemService(NOTIFICATION_SERVICE) as? NotificationManager)?.cancelAll()
     }
 
     override fun onResume() {
@@ -83,6 +85,8 @@ class MainActivity : ReactActivity() {
         window.decorView.post {
             provider!!.start()
         }
+
+        (getSystemService(NOTIFICATION_SERVICE) as? NotificationManager)?.cancelAll()
     }
 
     override fun onPause() {
