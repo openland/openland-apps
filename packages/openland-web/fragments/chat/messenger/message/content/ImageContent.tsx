@@ -5,13 +5,16 @@ import {
     UserShort,
 } from 'openland-api/Types';
 import { layoutMedia, uploadcareOptions } from 'openland-y-utils/MediaLayout';
+import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcDownload from 'openland-icons/s/ic-download-24.svg';
+import IcForward from 'openland-icons/s/ic-forward-24.svg';
 import IcClose from 'openland-icons/s/ic-close-24.svg';
 import { formatDateTime } from 'openland-y-utils/formatTime';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 import { XLoader } from 'openland-x/XLoader';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const modalImgContainer = css`
     position: relative;
@@ -177,13 +180,12 @@ interface ModalProps {
     date?: number;
 }
 
-// 'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'
-
 const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
+    const messenger = React.useContext(MessengerContext);
     const imgRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
     const renderTime = new Date().getTime();
-    const {imageKey, handleImageError} = useImageError();
+    const { imageKey, handleImageError } = useImageError();
 
     const onLoad = React.useCallback(() => {
         let delta = new Date().getTime() - renderTime;
@@ -198,6 +200,12 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                 loaderRef.current.style.opacity = '0';
             }
         }
+    }, []);
+
+    const forwardCallback = React.useCallback(() => {
+        showChatPicker((id: string) => {
+            messenger.sender.shareFile(id, props.fileId);
+        });
     }, []);
 
     return (
@@ -217,10 +225,21 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                 <div className={modalButtonsContainer} onClick={e => e.stopPropagation()}>
                     <a
                         className={modalButtonStyle}
-                        href={'https://ucarecdn.com/' + props.fileId + '/-/preview/-/inline/no/'}
+                        href={
+                            'https://ucarecdn.com/' + props.fileId + '/-/preview/-/inline/no/'
+                        }
                     >
                         <UIcon icon={<IcDownload />} color="var(--backgroundPrimary)" />
                     </a>
+                    <div
+                        className={modalButtonStyle}
+                        onClick={e => {
+                            e.stopPropagation();
+                            forwardCallback();
+                        }}
+                    >
+                        <UIcon icon={<IcForward />} color="var(--backgroundPrimary)" />
+                    </div>
                     <div className={modalButtonStyle} onClick={props.hide}>
                         <UIcon icon={<IcClose />} color="var(--backgroundPrimary)" />
                     </div>
@@ -370,7 +389,7 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
     const renderTime = new Date().getTime();
-    const {imageKey, handleImageError} = useImageError();
+    const { imageKey, handleImageError } = useImageError();
 
     const onLoad = React.useCallback(() => {
         let delta = new Date().getTime() - renderTime;

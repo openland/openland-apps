@@ -111,6 +111,30 @@ export class MessageSender {
         return key;
     }
 
+    shareFile(conversationId: string, fileId: string) {
+        console.log('MessageSender shareFile');
+        (async () => {
+            await this.client.queryRoomPico({
+                id: conversationId
+            }).then((data) => {
+                if (data.room) {
+                    this.client.mutateSendMessage({
+                        chatId: data.room.id,
+                        fileAttachments: [{ fileId: fileId }],
+                    });
+                }
+            }).catch(e => {
+                if (e.graphQLErrors && e.graphQLErrors.find((v: any) => v.doubleInvoke === true)) {
+                    // Ignore
+                } else {
+                    // Just ignore for now
+                    console.warn(e);
+                    return;
+                }
+            });
+        })();
+    }
+
     sendSticker({
         conversationId,
         sticker,
