@@ -3,7 +3,6 @@ import Head from 'next/head';
 import { XRouterContext } from './XRouterContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { isElectron } from 'openland-y-utils/isElectron';
-import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const DEFAULT_OG = {
     title: 'Openland',
@@ -22,14 +21,8 @@ export type XDocumentHeadT = {
 };
 
 export const XDocumentHead = XMemo<XDocumentHeadT>(props => {
-    let userInfo = React.useContext(UserInfoContext);
-    let loggedIn = userInfo && userInfo.isLoggedIn;
-
     let router = React.useContext(XRouterContext)!;
     let parts = ['Openland'];
-    if (isElectron) {
-        parts = [];
-    }
     if (typeof props.title === 'string') {
         if (props.title !== 'Openland') {
             parts = [...parts, props.title];
@@ -50,9 +43,13 @@ export const XDocumentHead = XMemo<XDocumentHeadT>(props => {
 
     let description = props.description || DEFAULT_OG.description;
 
+    if (isElectron) {
+        title = 'Openland';
+    }
+
     return (
         <Head>
-            {!loggedIn && <title key="page_title">{title}</title>}
+            <title key="page_title">{title}</title>
             <meta
                 key="og_title"
                 property="og:title"

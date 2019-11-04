@@ -3,6 +3,7 @@ import UUID from 'uuid/v4';
 import { HeaderContextProvider, HeaderContext } from './HeaderContext';
 import { HeaderConfig, isConfigEquals, mergeConfigs } from './HeaderConfig';
 import { PageHeader } from './PageHeader';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 interface HeaderComponentProps {
     visible: boolean;
@@ -70,23 +71,13 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps, H
 
     componentWillUnmount() {
         this.unmounting = true;
-        window.document.title = 'Openland';
-    }
-
-    componentDidUpdate() {
-        if (this.props.visible) {
-            if (this.state.config.title) {
-                window.document.title = `Openland · ${this.state.config.title}`;
-            }
-            if (this.state.config.documentTitle) {
-                window.document.title = `Openland · ${this.state.config.documentTitle}`;
-            }
-        }
     }
 
     render() {
+        const { title, documentTitle } = this.state.config;
         return (
             <>
+                {this.props.visible && <XDocumentHead title={documentTitle ? documentTitle : title} />}
                 <PageHeader config={this.state.config} />
                 <HeaderContext.Provider value={this}>{this.props.children}</HeaderContext.Provider>
             </>
