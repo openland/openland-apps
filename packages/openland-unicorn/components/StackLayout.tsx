@@ -40,7 +40,7 @@ const PageAnimator = React.memo(
     },
 );
 
-type PushAnumationAction = {
+type PushAnimationAction = {
     type: 'push';
     key: string;
     query: any;
@@ -50,7 +50,7 @@ type PushAnumationAction = {
 };
 
 type AnimationAction =
-    | PushAnumationAction
+    | PushAnimationAction
     | {
           type: 'pop';
           key: string;
@@ -86,7 +86,7 @@ type AnimationState = {
     pages: Page[];
 };
 
-const createPage = (action: PushAnumationAction, state: PageState): Page => ({
+const createPage = (action: PushAnimationAction, state: PageState): Page => ({
     key: action.key,
     path: action.path,
     query: action.query,
