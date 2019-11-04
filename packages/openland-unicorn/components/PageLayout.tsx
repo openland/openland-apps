@@ -147,13 +147,13 @@ export const PageLayout = (props: {
         );
     } else {
         if (props.state === 'mounting') {
-            offset = props.container.current!.clientWidth;
+            offset = 100;
         } else if (props.state === 'entering') {
             offset = 0;
         } else if (props.state === 'visible') {
             offset = 0;
         } else if (props.state === 'exiting') {
-            offset = props.container.current!.clientWidth;
+            offset = 100;
         }
     }
 
@@ -163,7 +163,7 @@ export const PageLayout = (props: {
             <div
                 ref={ref}
                 className={cx(contentStyle, !isChrome && contentStyleCss)}
-                style={isChrome ? {} : { transform: `translateX(${offset}px)` }}
+                style={isChrome ? {} : { transform: `translateX(${offset}%)` }}
             >
                 <HeaderComponent>
                     <Deferred>
