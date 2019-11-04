@@ -110,7 +110,7 @@ const TagsGroupPage = (props: { group: TagGroup, selected: Set<string>, exclude:
         <>
             {title && <SHeader title={title} />}
             <SScrollView justifyContent="flex-start" alignContent="center">
-                {subtitle && <Text style={{ fontSize: 20, paddingBottom: 16, paddingHorizontal: 18, backgroundColor: theme.backgroundSecondary, color: theme.foregroundPrimary }}>{subtitle}</Text>}
+                {subtitle && <Text style={{ fontSize: 20, paddingBottom: 16, paddingHorizontal: 18, color: theme.foregroundPrimary }}>{subtitle}</Text>}
                 <View paddingHorizontal={18}>
                     <TagsCloud tagsGroup={props.group} selected={selected} onSelectedChange={onSelectedChange} />
                 </View>
