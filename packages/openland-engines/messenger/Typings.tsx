@@ -95,12 +95,12 @@ export class TypingsWatcher {
         let usersTyping: TypingsUser[] = Object.keys(t).map(userId => (t![userId])).filter(u => !!(u)).map(u => ({ userName: isPrivate ? u!.userName.split(' ')[0] : u!.userName, userPic: u!.userPic, userId: u!.userId }));
 
         if (usersTyping.length === 0) {
-            return undefined
+            return undefined;
         }
 
         let userNames = usersTyping.map(u => u!.userName);
 
-        let userNamesTyping = ''    
+        let userNamesTyping = '';
 
         switch (userNames.length) {
             case 1:
