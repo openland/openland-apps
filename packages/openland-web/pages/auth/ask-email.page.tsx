@@ -48,7 +48,7 @@ export const WebSignUpCreateWithEmail = ({
     loginEmailStart,
     emailSending,
     isMobile,
-    signin
+    signin,
 }: CreateWithEmailProps & CreateWithEmailInnerProps) => {
     const form = useForm();
     const title = signin ? 'Enter your email' : 'Create new account';
@@ -93,10 +93,12 @@ export const WebSignUpCreateWithEmail = ({
 
     return (
         <FormLayout
-            top={(
+            top={
                 <>
                     <Title text={title} />
-                    <Subtitle text={subTitle} />
+                    <XView color="var(--foregroundSecondary)" marginBottom={32} marginTop={8}>
+                        <Subtitle text={subTitle} />
+                    </XView>
                     <XView width={isMobile ? '100%' : 360} maxWidth={360}>
                         <UInput
                             onChange={emailField.input.onChange}
@@ -109,7 +111,7 @@ export const WebSignUpCreateWithEmail = ({
                         {isInvalid && <XErrorMessage2 message={errorText} />}
                     </XView>
                 </>
-            )}
+            }
             bottom={button}
         />
     );
