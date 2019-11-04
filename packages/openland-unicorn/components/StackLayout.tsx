@@ -16,50 +16,41 @@ const PageAnimator = React.memo(
 
         React.useLayoutEffect(
             () => {
-                let active = true;
                 if (props.state === 'entering') {
                     setTimeout(() => {
-                        if (active) {
-                            props.dispatch({ type: 'entered', key: props.k });
-                        }
-                    }, 400);
+                        props.dispatch({ type: 'entered', key: props.k });
+                    }, 250);
                 }
                 if (props.state === 'exiting') {
                     setTimeout(() => {
-                        if (active) {
-                            props.dispatch({ type: 'exited', key: props.k });
-                        }
-                    }, 400);
+                        props.dispatch({ type: 'exited', key: props.k });
+                    }, 250);
                 }
-                return () => {
-                    active = false;
-                };
             },
             [props.state],
         );
 
-        let state = props.state;
-        if (state === 'hidden') {
-            return null;
-        }
+        if (props.state === 'hidden') return null;
 
         return (
-            <PageLayout state={state} container={props.router.ref}>
+            <PageLayout state={props.state} container={props.router.ref}>
                 {props.children}
             </PageLayout>
         );
     },
 );
 
+type PushAnumationAction = {
+    type: 'push';
+    key: string;
+    query: any;
+    id?: string;
+    path: string;
+    component: any;
+};
+
 type AnimationAction =
-    | {
-          type: 'push';
-          key: string;
-          query: any;
-          id?: string;
-          path: string;
-          component: any;
-      }
+    | PushAnumationAction
     | {
           type: 'pop';
           key: string;
@@ -95,7 +86,7 @@ type AnimationState = {
     pages: Page[];
 };
 
-const createPage = (action: AnimationAction, state: PageState): Page => ({
+const createPage = (action: PushAnumationAction, state: PageState): Page => ({
     key: action.key,
     path: action.path,
     query: action.query,
@@ -214,7 +205,7 @@ export const StackLayout = React.memo((props: { router: StackRouter; className?:
 
     React.useEffect(() => {
         return props.router.addListener(dispatch);
-    }, []);
+    });
 
     React.useLayoutEffect(() => {
         dispatch({ type: 'mounted' });
