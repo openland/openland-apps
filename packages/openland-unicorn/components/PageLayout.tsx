@@ -35,7 +35,7 @@ const contentStyle = css`
 
     backface-visibility: hidden;
     background-color: white;
-    will-change: left;
+    will-change: transform;
     contain: content;
 `;
 
