@@ -128,7 +128,7 @@ function animationReducer(state: AnimationState, action: AnimationAction): Anima
                 if (p.key === action.key) {
                     return { ...p, state: 'exiting' as PageState };
                 } else if (state.pages[i + 1] && state.pages[i + 1].key === action.key) {
-                    return { ...p, state: 'visible' as PageState };
+                    return { ...p, state: 'entering' as PageState };
                 }
                 return p;
             }),
@@ -138,12 +138,14 @@ function animationReducer(state: AnimationState, action: AnimationAction): Anima
             pages: state.pages.map((p, i) => {
                 if (p.key === action.key && p.state === 'entering') {
                     return { ...p, state: 'visible' as PageState };
-                } else if (
-                    state.pages[i + 1] &&
-                    state.pages[i + 1].key === action.key &&
-                    p.state === 'visible'
-                ) {
-                    return { ...p, state: 'hidden' as PageState };
+
+                    // unmount page when other page is visible
+                    // } else if (
+                    //     state.pages[i + 1] &&
+                    //     state.pages[i + 1].key === action.key &&
+                    //     p.state === 'visible'
+                    // ) {
+                    //     return { ...p, state: 'hidden' as PageState };
                 }
                 return p;
             }),
