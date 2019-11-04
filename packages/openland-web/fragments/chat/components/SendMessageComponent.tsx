@@ -425,12 +425,14 @@ const loaderContainer = css`
     position: relative;
 `;
 
-const urickWindowsStyle = css`
+const hideScrollStyle = css`
     margin-right: -17px;
 `;
 
 export const SendMessageComponent = React.memo((props: SendMessageComponentProps) => {
-    const isWindows = detectOS() === 'Windows';
+    const os = detectOS();
+    const isWindows = os === 'Windows';
+    const isLinux = os === 'Linux';
     const ref = props.rickRef || React.useRef<URickInputInstance>(null);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
     const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
@@ -562,7 +564,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 marginLeft={!!props.onAttach ? 16 : 0}
                 maxHeight={250}
                 flexDirection="column"
-                overflow={isWindows ? 'hidden' : undefined}
+                overflow={(isWindows || isLinux) ? 'hidden' : undefined}
             >
                 <URickInput
                     ref={ref}
@@ -582,7 +584,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     placeholder={props.placeholder || 'Write a message...'}
                     onFilesPaste={props.onAttach}
                     withShortcutsButton={true}
-                    className={isWindows ? urickWindowsStyle : undefined}
+                    className={(isWindows || isLinux) ? hideScrollStyle : undefined}
                 />
             </XView>
             {!loading && (
