@@ -122,20 +122,22 @@ export const WebSignUpActivationCode = ({
     );
 
     return (
-
         <FormLayout
-            top={(
+            top={
                 <>
                     <Title text={InitTexts.auth.enterActivationCode} />
-                    <Subtitle>
-                        {emailSending ? sendingCodeText : (
-                            <>
-                                We just sent it to
+                    <XView color="var(--foregroundSecondary)" marginBottom={32} marginTop={8}>
+                        <Subtitle>
+                            {emailSending ? (
+                                sendingCodeText
+                            ) : (
+                                <>
+                                    We just sent it to
                                     <strong>{' ' + emailSendedTo}</strong>
-                            </>
-                        )}
-
-                    </Subtitle>
+                                </>
+                            )}
+                        </Subtitle>
+                    </XView>
                     <XView width={isMobile ? '100%' : 360} maxWidth={360}>
                         <UInput
                             width={isMobile ? '100%' : 360}
@@ -154,7 +156,7 @@ export const WebSignUpActivationCode = ({
                         </XView>
                     </XView>
                 </>
-            )}
+            }
             bottom={button}
         />
     );
