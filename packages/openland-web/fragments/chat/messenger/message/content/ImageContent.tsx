@@ -154,6 +154,17 @@ const imgSpacer = css`
     }
 `;
 
+const useImageError = () => {
+    const [hasError, setError] = React.useState(false);
+
+    return {
+        imageKey: hasError ? 'loading-error' : 'no-loading-error',
+        handleImageError: () => {
+            setError(true);
+        },
+    };
+};
+
 interface ModalProps {
     fileId: string;
     src: string;
@@ -172,6 +183,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
     const renderTime = new Date().getTime();
+    const {imageKey, handleImageError} = useImageError();
 
     const onLoad = React.useCallback(() => {
         let delta = new Date().getTime() - renderTime;
@@ -235,6 +247,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                 />
                 <XLoader transparentBackground={true} ref={loaderRef} />
                 <img
+                    key={imageKey}
                     ref={imgRef}
                     onLoad={onLoad}
                     src={props.src}
@@ -243,6 +256,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     width={props.width}
                     height={props.height}
                     style={{ objectFit: 'contain', cursor: 'default' }}
+                    onError={handleImageError}
                 />
             </div>
         </div>
@@ -356,6 +370,7 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
     const renderTime = new Date().getTime();
+    const {imageKey, handleImageError} = useImageError();
 
     const onLoad = React.useCallback(() => {
         let delta = new Date().getTime() - renderTime;
@@ -435,7 +450,9 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
             <XLoader transparentBackground={true} ref={loaderRef} />
             <img
                 ref={imgRef}
+                key={imageKey}
                 onLoad={onLoad}
+                onError={handleImageError}
                 className={imgAppearClass}
                 width={layoutWidth}
                 height={layoutHeight}
