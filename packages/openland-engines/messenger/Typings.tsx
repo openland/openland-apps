@@ -94,16 +94,36 @@ export class TypingsWatcher {
 
         let usersTyping: TypingsUser[] = Object.keys(t).map(userId => (t![userId])).filter(u => !!(u)).map(u => ({ userName: isPrivate ? u!.userName.split(' ')[0] : u!.userName, userPic: u!.userPic, userId: u!.userId }));
 
+        if (usersTyping.length === 0) {
+            return undefined
+        }
+
         let userNames = usersTyping.map(u => u!.userName);
 
-        let str = userNames.filter((u, i) => i < 2).join(', ') + (usersTyping.length > 2 ? ' and ' + (usersTyping.length - 2) + ' more' : '') + (usersTyping.length === 1 ? ' is ' : ' are ') + 'typing...';
+        let userNamesTyping = ''    
 
-        let data = {
-            typing: str,
+        switch (userNames.length) {
+            case 1:
+                userNamesTyping = userNames[0];
+                break;
+            case 2:
+                userNamesTyping = `${userNames[0]} and ${userNames[1]}`;
+                break;
+            case 3:
+                userNamesTyping = `${userNames[0]}, ${userNames[1]} and ${userNames[2]}`;
+                break;
+            default:
+                userNamesTyping = `${userNames[0]}, ${userNames[1]} and ${userNames.length - 2} more`;
+        }
+
+        let verb = userNames.length === 1 ? 'is' : 'are';
+
+        let typing = `${userNamesTyping} ${verb} typing...`;
+
+        return {
+            typing,
             users: usersTyping,
         };
-
-        return usersTyping.length > 0 ? data : undefined;
     }
 
     destroy = () => {
