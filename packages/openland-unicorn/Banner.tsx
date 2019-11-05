@@ -72,10 +72,10 @@ const bannerNotification = css`
     justify-content: center;
 `;
 
-const BannerContainer = (props: { onClosePress?: () => void; children?: any }) => {
+const BannerContainer = (props: { onClosePress?: () => void; banner?: any }) => {
     return (
         <div className={bannerContainetClass}>
-            <div className={bannerContentWrapper}>{props.children}</div>
+            <div className={bannerContentWrapper}>{props.banner}</div>
             <div onClick={props.onClosePress} className={cx(iconContainetClass, defaultHover)}>
                 <UIcon color="#fff" icon={<IcClose />} />
             </div>
@@ -131,18 +131,12 @@ const icons = {
     Linux: <IcLinux />,
 };
 
-let useMobileAppsBanner = () => {
-    let [show, setShow] = React.useState(!window.localStorage.getItem('banner-apps-closed'));
+const MobileAppsBanner = () => {
     React.useEffect(() => {
-        if (show) {
-            trackEvent('banner_app_appear');
-        }
-    }, [show]);
-    let onClose = React.useCallback(() => {
-        window.localStorage.setItem('banner-apps-closed', 'true');
-        trackEvent('banner_app_close');
-        setShow(false);
+        trackEvent('banner_app_appear');
     }, []);
+    let os = detectOS();
+
     let onAppClick = React.useCallback((selectedOS: OS) => {
         const platform = ['iOS', 'Android'].includes(selectedOS) ? 'mobile' : 'desktop';
 
@@ -151,9 +145,8 @@ let useMobileAppsBanner = () => {
             app_platform: platform,
         });
     }, []);
-    let os = detectOS();
 
-    let content = (
+    return (
         <div className={bannerMobileApps}>
             <span className={cx(TextLabel1, bannerTextClass)}>Install Openland apps</span>
             <div className={buttonsContainer}>
@@ -185,7 +178,35 @@ let useMobileAppsBanner = () => {
             </div>
         </div>
     );
-    return { show, onClose, content };
+};
+
+let useMobileAppsBanner = () => {
+    let [show, setShow] = React.useState(!window.localStorage.getItem('banner-apps-closed'));
+
+    let onClose = React.useCallback(() => {
+        window.localStorage.setItem('banner-apps-closed', 'true');
+        trackEvent('banner_app_close');
+        setShow(false);
+    }, []);
+
+    return { show, onClose, BannerComponent: MobileAppsBanner };
+};
+
+const NotificationsBanner = () => {
+    React.useEffect(() => {
+        trackEvent('banner_notifications_appear');
+    }, []);
+    let onPress = React.useCallback(() => {
+        AppNotifications.requestPermission();
+        trackEvent('banner_notifications_allow');
+    }, []);
+
+    return (
+        <div className={bannerNotification}>
+            <div className={cx(TextLabel1, bannerTextClass)}>Get Openland notifications</div>
+            <BannerButton text="Turn on" onClick={onPress} />
+        </div>
+    );
 };
 
 let useNotificationsBanner = () => {
@@ -198,10 +219,6 @@ let useNotificationsBanner = () => {
             setPermissionNeeded(s);
         });
     }, []);
-    let onPress = React.useCallback(() => {
-        AppNotifications.requestPermission();
-        trackEvent('banner_notifications_allow');
-    }, []);
 
     let onClose = React.useCallback(() => {
         let newttl = new Date().getTime() + 1000 * 60 * 60 * 24 * 30; // ask again after 30d
@@ -210,37 +227,27 @@ let useNotificationsBanner = () => {
         trackEvent('banner_notifications_close');
     }, []);
 
-    let content = (
-        <div className={bannerNotification}>
-            <div className={cx(TextLabel1, bannerTextClass)}>Get Openland notifications</div>
-            <BannerButton text="Turn on" onClick={onPress} />
-        </div>
-    );
     let ttlOK = ttl <= new Date().getTime();
     let show = ttlOK && (permissionState === 'temporary_denied' || permissionState === 'default');
-    React.useEffect(() => {
-        if (show) {
-            trackEvent('banner_notifications_appear');
-        }
-    }, [show]);
-    return { show, onClose, content };
+
+    return { show, onClose, BannerComponent: NotificationsBanner };
 };
 
 export const Banners = () => {
     let layout = useLayout();
     let banners = [useNotificationsBanner(), useMobileAppsBanner()];
 
-    let content, onClose;
+    let BannerComponent, onClose;
     for (let b of banners) {
         if (b.show) {
-            content = b.content;
+            BannerComponent = b.BannerComponent;
             onClose = b.onClose;
             break;
         }
     }
 
-    if (content && layout === 'desktop' && !isElectron) {
-        return <BannerContainer onClosePress={onClose}>{content}</BannerContainer>;
+    if (BannerComponent && layout === 'desktop' && !isElectron) {
+        return <BannerContainer onClosePress={onClose} banner={<BannerComponent />} />;
     }
     return null;
 };
