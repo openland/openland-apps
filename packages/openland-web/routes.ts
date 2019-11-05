@@ -196,19 +196,6 @@ routes.add('/settings/apps/', '/unicorn/index');
 routes.add('/settings/finance', '/unicorn/index');
 
 //
-// Creating
-//
-
-routes.add('/new/:type', '/unicorn/index');
-routes.add('/new/:type/', '/unicorn/index');
-routes.add('/new/:type/in/:id', '/unicorn/index');
-routes.add('/new/:type/in/:id/', '/unicorn/index');
-routes.add('/new/:type/explore', '/unicorn/index');
-routes.add('/new/:type/explore/', '/unicorn/index');
-routes.add('/new/:type/in/:id/explore', '/unicorn/index');
-routes.add('/new/:type/in/:id/explore/', '/unicorn/index');
-
-//
 // Group
 //
 

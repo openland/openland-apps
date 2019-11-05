@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView, XViewRouterContext } from 'react-mental';
+import { XView } from 'react-mental';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { UListItem, SelectableText } from 'openland-web/components/unicorn/UListItem';
 
@@ -21,6 +21,7 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { showCreatingFragment } from 'openland-web/fragments/create/CreateEntityFragment';
 
 const UserProfileCard = withUserInfo(({ user }) => {
     if (user) {
@@ -87,67 +88,63 @@ export const Organizations = React.memo(() => {
     );
 });
 
-export const AccountFragment = React.memo(() => {
-    const router = React.useContext(XViewRouterContext)!;
-    return (
-        <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
-            <USideHeader title="Account">
-                <UIconButton icon={<LeaveIcon />} size="large" onClick={showLogoutConfirmation} />
-            </USideHeader>
-            <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">
-                <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
-                    <UserProfileCard />
+export const AccountFragment = React.memo(() => (
+    <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
+        <USideHeader title="Account">
+            <UIconButton icon={<LeaveIcon />} size="large" onClick={showLogoutConfirmation} />
+        </USideHeader>
+        <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">
+            <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
+                <UserProfileCard />
+                <UListItem
+                    title="Edit profile"
+                    icon={<EditProfileIcon />}
+                    path="/settings/profile"
+                />
+                <UListItem
+                    title="Invite friends"
+                    icon={<InviteFriendsIcon />}
+                    path="/settings/invites"
+                />
+                <XWithRole role="super-admin">
                     <UListItem
-                        title="Edit profile"
-                        icon={<EditProfileIcon />}
-                        path="/settings/profile"
-                    />
-                    <UListItem
-                        title="Invite friends"
-                        icon={<InviteFriendsIcon />}
-                        path="/settings/invites"
-                    />
-                    <XWithRole role="super-admin">
-                        <UListItem
-                            title="Finance"
-                            icon={<NotificationsIcon />}
-                            path="/settings/finance"
-                        />
-                    </XWithRole>
-                    <UListItem
-                        title="Notifications"
+                        title="Finance"
                         icon={<NotificationsIcon />}
-                        path="/settings/notifications"
+                        path="/settings/finance"
                     />
-                    <UListItem
-                        title="Email preferences"
-                        icon={<EmailIcon />}
-                        path="/settings/email"
-                    />
-                    <UListItem
-                        title="Appearance"
-                        icon={<AppearanceIcon />}
-                        path="/settings/appearance"
-                    />
-                    <UListItem
-                        title="Download apps"
-                        icon={<DownloadIcon />}
-                        path="/settings/download"
-                    />
+                </XWithRole>
+                <UListItem
+                    title="Notifications"
+                    icon={<NotificationsIcon />}
+                    path="/settings/notifications"
+                />
+                <UListItem title="Email preferences" icon={<EmailIcon />} path="/settings/email" />
+                <UListItem
+                    title="Appearance"
+                    icon={<AppearanceIcon />}
+                    path="/settings/appearance"
+                />
+                <UListItem
+                    title="Download apps"
+                    icon={<DownloadIcon />}
+                    path="/settings/download"
+                />
 
-                    <UListGroup
-                        header="Organizations"
-                        action={{
-                            title: 'New',
-                            onClick: () => router.navigate('/new/organization'),
-                        }}
-                    >
-                        <React.Suspense fallback={<XLoader loading={true} />}>
-                            <Organizations />
-                        </React.Suspense>
-                    </UListGroup>
-                </XScrollView3>
-            </XView>
+                <UListGroup
+                    header="Organizations"
+                    action={{
+                        title: 'New',
+                        onClick: () => {
+                            showCreatingFragment({ entityType: 'organization' });
+                            // router.navigate('/new/organization')
+                        },
+                    }}
+                >
+                    <React.Suspense fallback={<XLoader loading={true} />}>
+                        <Organizations />
+                    </React.Suspense>
+                </UListGroup>
+            </XScrollView3>
         </XView>
-    );
-});
+    </XView>
+));

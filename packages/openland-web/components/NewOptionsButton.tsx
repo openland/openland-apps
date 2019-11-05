@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView, XViewRouterContext } from 'react-mental';
+import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -13,6 +13,7 @@ import NotificationIcon from 'openland-icons/s/ic-notifications-24.svg';
 import { useWithWidth } from '../hooks/useWithWidth';
 import XPopper from 'openland-x/XPopper';
 import { UIconButton } from './unicorn/UIconButton';
+import { showCreatingFragment } from 'openland-web/fragments/create/CreateEntityFragment';
 
 const dotClass = css`
     position: absolute;
@@ -114,65 +115,66 @@ const Item = ({
     );
 };
 
-const NewOptionsMenu = React.memo((props: { toggle: () => void }) => {
-    const router = React.useContext(XViewRouterContext)!;
-    return (
-        <>
-            <Item
-                onClick={() => {
-                    router.navigate('/new/group');
-                    props.toggle();
-                }}
-                icon={
-                    <IconWithBackground>
-                        <CellRoomIcon />
-                    </IconWithBackground>
-                }
-                title="New group"
-                description="Chat where everyone can write"
-            />
-            <Item
-                onClick={() => {
-                    router.navigate('/new/channel');
-                    props.toggle();
-                }}
-                icon={
-                    <IconWithBackground>
-                        <CreateChannelIcon />
-                    </IconWithBackground>
-                }
-                title="New channel"
-                description="Chat where you write, others comment"
-            />
-            <Item
-                onClick={() => {
-                    router.navigate('/new/community');
-                    props.toggle();
-                }}
-                icon={
-                    <IconWithBackground>
-                        <CreateCommunityIcon />
-                    </IconWithBackground>
-                }
-                title="New community"
-                description="A hub for chats for the same audience"
-            />
-            <Item
-                onClick={() => {
-                    router.navigate('/new/organization');
-                    props.toggle();
-                }}
-                icon={
-                    <IconWithBackground>
-                        <OrganizationIcon />
-                    </IconWithBackground>
-                }
-                title="New organization"
-                description="A hub for chats with your teammates"
-            />
-        </>
-    );
-});
+const NewOptionsMenu = React.memo((props: { toggle: () => void }) => (
+    <>
+        <Item
+            onClick={() => {
+                showCreatingFragment({ entityType: 'group' });
+                // router.navigate('/new/group');
+                props.toggle();
+            }}
+            icon={
+                <IconWithBackground>
+                    <CellRoomIcon />
+                </IconWithBackground>
+            }
+            title="New group"
+            description="Chat where everyone can write"
+        />
+        <Item
+            onClick={() => {
+                showCreatingFragment({ entityType: 'channel' });
+                // router.navigate('/new/channel');
+                props.toggle();
+            }}
+            icon={
+                <IconWithBackground>
+                    <CreateChannelIcon />
+                </IconWithBackground>
+            }
+            title="New channel"
+            description="Chat where you write, others comment"
+        />
+        <Item
+            onClick={() => {
+                showCreatingFragment({ entityType: 'community' });
+                // router.navigate('/new/community');
+                props.toggle();
+            }}
+            icon={
+                <IconWithBackground>
+                    <CreateCommunityIcon />
+                </IconWithBackground>
+            }
+            title="New community"
+            description="A hub for chats for the same audience"
+        />
+        <Item
+            onClick={() => {
+                showCreatingFragment({ entityType: 'organization' });
+                // router.navigate('/new/organization');
+                props.toggle();
+            }}
+            icon={
+                <IconWithBackground>
+                    <OrganizationIcon />
+                </IconWithBackground>
+            }
+            title="New organization"
+            description="A hub for chats with your teammates"
+        />
+    </>
+));
 
 export const NewOptionsButton = XMemo(() => {
     const [show, setShow] = React.useState(false);
