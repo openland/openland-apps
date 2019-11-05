@@ -7,7 +7,7 @@ import IcSearch from 'openland-icons/s/ic-search-16.svg';
 let searchStyle = css`
     border: none !important;
     border-color: transparent !important;
-    margin: 0 15px 12px;
+    margin: 0 16px 16px;
     height: 40px !important;
     & a {
         top: calc(50% - 10px) !important;
@@ -34,7 +34,7 @@ let searchStyle = css`
     }
     & input {
         background-color: var(--backgroundSecondaryActive);
-        border-radius: 10px;
+        border-radius: 8px;
         padding-bottom: 3px;
         color: var(--foregroundPrimary);
     }
@@ -56,7 +56,7 @@ export const DialogSearchInput = React.forwardRef<XInput, XInputProps & { modal?
                 className={cx(searchStyle, props.modal && marginInModalClass)}
                 size="large"
                 placeholder="Search"
-                icon={<UIcon icon={<IcSearch />} />}
+                icon={<UIcon icon={<IcSearch />} color="var(--foregroundTertiary)" />}
                 cleanable={true}
                 {...props}
             />

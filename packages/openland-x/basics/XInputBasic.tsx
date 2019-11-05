@@ -413,6 +413,14 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                 isFocused: false,
             };
         }
+
+        this.handleRef = this.handleRef.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleClear = this.handleClear.bind(this);
+        this.handleKey = this.handleKey.bind(this);
+        this.focus = this.focus.bind(this);
+        this.handleFocus = this.handleFocus.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
     }
 
     componentWillReceiveProps(props: XInputBasicProps) {
@@ -429,7 +437,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         }
     }
 
-    handleRef = (e: any) => {
+    handleRef(e: any) {
         if (e && this.props.autofocus) {
             e.focus();
         }
@@ -441,7 +449,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         }
     }
 
-    handleChange = (e: any) => {
+    handleChange(e: any) {
         if (this.props.onChange) {
             this.props.onChange(e.target.value);
         }
@@ -451,7 +459,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         });
     }
 
-    handleClear = () => {
+    handleClear() {
         if (this.props.onChange) {
             this.props.onChange('');
         }
@@ -461,7 +469,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         });
     }
 
-    handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    handleKey(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === 'Enter') {
             if (this.props.onEnter) {
                 this.props.onEnter();
@@ -473,7 +481,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         this.inputRef.focus();
     }
 
-    handleFocus = () => {
+    handleFocus() {
         this.setState({
             titleInside: false,
             isFocused: true,
@@ -484,7 +492,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         }
     }
 
-    handleBlur = () => {
+    handleBlur() {
         this.setState({
             titleInside: this.state.value.length <= 0,
             isFocused: false,
@@ -572,7 +580,6 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                     ))}
                 <Input
                     disabled={disabled}
-                    icon={icon}
                     format={size}
                     required={required}
                     type={type}
@@ -592,25 +599,21 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                     fontWeight={this.props.fontWeight}
                     maxLength={this.props.maxLength}
                 />
-                {placeholder &&
-                    (!v || v === '') && (
-                        <InputPlaceholder
-                            className="input-placeholder"
-                            icon={icon}
-                            format={size}
-                            color={color}
-                            invalid={invalid}
-                            fontSize={this.props.fontSize}
-                            padding={this.props.padding}
-                            lineHeight={this.props.lineHeight}
-                            fontWeight={this.props.fontWeight}
-                        >
-                            <span>{placeholder}</span>
-                            {required && (
-                                <RequireElement className="required-star">*</RequireElement>
-                            )}
-                        </InputPlaceholder>
-                    )}
+                {placeholder && (!v || v === '') && (
+                    <InputPlaceholder
+                        className="input-placeholder"
+                        format={size}
+                        color={color}
+                        invalid={invalid}
+                        fontSize={this.props.fontSize}
+                        padding={this.props.padding}
+                        lineHeight={this.props.lineHeight}
+                        fontWeight={this.props.fontWeight}
+                    >
+                        <span>{placeholder}</span>
+                        {required && <RequireElement className="required-star">*</RequireElement>}
+                    </InputPlaceholder>
+                )}
                 {tooltipContent && (
                     <XPopper placement="bottom" content={tooltipContent} showOnHover={true}>
                         <PopperPlaceholder>
@@ -618,16 +621,15 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                         </PopperPlaceholder>
                     </XPopper>
                 )}
-                {cleanable &&
-                    v !== '' && (
-                        <ClearButton
-                            onClick={() => {
-                                this.handleClear();
-                            }}
-                        >
-                            <UIcon icon={<IcClose />} />
-                        </ClearButton>
-                    )}
+                {cleanable && v !== '' && (
+                    <ClearButton
+                        onClick={() => {
+                            this.handleClear();
+                        }}
+                    >
+                        <UIcon icon={<IcClose />} color="var(--foregroundTertiary)" />
+                    </ClearButton>
+                )}
             </RootContainer>
         );
     }

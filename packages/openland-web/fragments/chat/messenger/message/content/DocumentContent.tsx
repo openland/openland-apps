@@ -6,10 +6,13 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { formatBytes } from 'openland-y-utils/formatBytes';
 import { formatDateTime } from 'openland-y-utils/formatTime';
 import { TextCaption, TextDensed, TextLabel1 } from 'openland-web/utils/TextStyles';
+import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcClose from 'openland-icons/s/ic-close-24.svg';
 import IcDownload from 'openland-icons/s/ic-down-24.svg';
 import IcDownloadModal from 'openland-icons/s/ic-download-24.svg';
+import IcForward from 'openland-icons/s/ic-forward-24.svg';
 import IcSearch from 'openland-icons/s/ic-search-24.svg';
 import IcBlue from 'openland-icons/files/blue.svg';
 import IcGreen from 'openland-icons/files/green.svg';
@@ -97,6 +100,14 @@ interface ModalProps {
 }
 
 const ModalContent = (props: ModalProps & { hide: () => void }) => {
+    const messenger = React.useContext(MessengerContext);
+
+    const forwardCallback = React.useCallback(() => {
+        showChatPicker((id: string) => {
+            messenger.sender.shareFile(id, props.fileId);
+        });
+    }, []);
+
     return (
         <div className={modalContainer} onClick={props.hide}>
             <div className={modalToolbarContainer}>
@@ -115,6 +126,15 @@ const ModalContent = (props: ModalProps & { hide: () => void }) => {
                     <a className={modalButtonStyle} href={`https://ucarecdn.com/${props.fileId}/`}>
                         <UIcon icon={<IcDownloadModal />} color="var(--backgroundPrimary)" />
                     </a>
+                    <div
+                        className={modalButtonStyle}
+                        onClick={e => {
+                            e.stopPropagation();
+                            forwardCallback();
+                        }}
+                    >
+                        <UIcon icon={<IcForward />} color="var(--backgroundPrimary)" />
+                    </div>
                     <div className={modalButtonStyle} onClick={props.hide}>
                         <UIcon icon={<IcClose />} color="var(--backgroundPrimary)" />
                     </div>
