@@ -413,6 +413,14 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                 isFocused: false,
             };
         }
+
+        this.handleRef = this.handleRef.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleClear = this.handleClear.bind(this);
+        this.handleKey = this.handleKey.bind(this);
+        this.focus = this.focus.bind(this);
+        this.handleFocus = this.handleFocus.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
     }
 
     componentWillReceiveProps(props: XInputBasicProps) {
@@ -429,7 +437,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         }
     }
 
-    handleRef = (e: any) => {
+    handleRef(e: any) {
         if (e && this.props.autofocus) {
             e.focus();
         }
@@ -439,9 +447,9 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         if (e) {
             this.inputRef = e;
         }
-    };
+    }
 
-    handleChange = (e: any) => {
+    handleChange(e: any) {
         if (this.props.onChange) {
             this.props.onChange(e.target.value);
         }
@@ -449,9 +457,9 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         this.setState({
             value: e.target.value,
         });
-    };
+    }
 
-    handleClear = () => {
+    handleClear() {
         if (this.props.onChange) {
             this.props.onChange('');
         }
@@ -459,21 +467,21 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         this.setState({
             value: '',
         });
-    };
+    }
 
-    handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    handleKey(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === 'Enter') {
             if (this.props.onEnter) {
                 this.props.onEnter();
             }
         }
-    };
+    }
 
     focus() {
         this.inputRef.focus();
     }
 
-    handleFocus = () => {
+    handleFocus() {
         this.setState({
             titleInside: false,
             isFocused: true,
@@ -482,9 +490,9 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         if (this.props.onFocus) {
             this.props.onFocus();
         }
-    };
+    }
 
-    handleBlur = () => {
+    handleBlur() {
         this.setState({
             titleInside: this.state.value.length <= 0,
             isFocused: false,
@@ -493,7 +501,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         if (this.props.onBlur) {
             this.props.onBlur();
         }
-    };
+    }
 
     render() {
         const {
