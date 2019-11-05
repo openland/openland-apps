@@ -439,7 +439,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         if (e) {
             this.inputRef = e;
         }
-    }
+    };
 
     handleChange = (e: any) => {
         if (this.props.onChange) {
@@ -449,7 +449,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         this.setState({
             value: e.target.value,
         });
-    }
+    };
 
     handleClear = () => {
         if (this.props.onChange) {
@@ -459,7 +459,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         this.setState({
             value: '',
         });
-    }
+    };
 
     handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
@@ -467,7 +467,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                 this.props.onEnter();
             }
         }
-    }
+    };
 
     focus() {
         this.inputRef.focus();
@@ -482,7 +482,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         if (this.props.onFocus) {
             this.props.onFocus();
         }
-    }
+    };
 
     handleBlur = () => {
         this.setState({
@@ -493,7 +493,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         if (this.props.onBlur) {
             this.props.onBlur();
         }
-    }
+    };
 
     render() {
         const {
@@ -572,7 +572,6 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                     ))}
                 <Input
                     disabled={disabled}
-                    icon={icon}
                     format={size}
                     required={required}
                     type={type}
@@ -592,25 +591,21 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                     fontWeight={this.props.fontWeight}
                     maxLength={this.props.maxLength}
                 />
-                {placeholder &&
-                    (!v || v === '') && (
-                        <InputPlaceholder
-                            className="input-placeholder"
-                            icon={icon}
-                            format={size}
-                            color={color}
-                            invalid={invalid}
-                            fontSize={this.props.fontSize}
-                            padding={this.props.padding}
-                            lineHeight={this.props.lineHeight}
-                            fontWeight={this.props.fontWeight}
-                        >
-                            <span>{placeholder}</span>
-                            {required && (
-                                <RequireElement className="required-star">*</RequireElement>
-                            )}
-                        </InputPlaceholder>
-                    )}
+                {placeholder && (!v || v === '') && (
+                    <InputPlaceholder
+                        className="input-placeholder"
+                        format={size}
+                        color={color}
+                        invalid={invalid}
+                        fontSize={this.props.fontSize}
+                        padding={this.props.padding}
+                        lineHeight={this.props.lineHeight}
+                        fontWeight={this.props.fontWeight}
+                    >
+                        <span>{placeholder}</span>
+                        {required && <RequireElement className="required-star">*</RequireElement>}
+                    </InputPlaceholder>
+                )}
                 {tooltipContent && (
                     <XPopper placement="bottom" content={tooltipContent} showOnHover={true}>
                         <PopperPlaceholder>
@@ -618,16 +613,15 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                         </PopperPlaceholder>
                     </XPopper>
                 )}
-                {cleanable &&
-                    v !== '' && (
-                        <ClearButton
-                            onClick={() => {
-                                this.handleClear();
-                            }}
-                        >
-                            <UIcon icon={<IcClose />} />
-                        </ClearButton>
-                    )}
+                {cleanable && v !== '' && (
+                    <ClearButton
+                        onClick={() => {
+                            this.handleClear();
+                        }}
+                    >
+                        <UIcon icon={<IcClose />} />
+                    </ClearButton>
+                )}
             </RootContainer>
         );
     }
