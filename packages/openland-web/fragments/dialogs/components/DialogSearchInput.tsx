@@ -34,7 +34,7 @@ let searchStyle = css`
     }
     & input {
         background-color: var(--backgroundSecondaryActive);
-        border-radius: 10px;
+        border-radius: 8px;
         padding-bottom: 3px;
         color: var(--foregroundPrimary);
     }
