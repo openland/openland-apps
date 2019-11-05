@@ -103,10 +103,10 @@ class MainActivity : ReactActivity() {
     }
 
     override fun onPause() {
+        super.onPause()
         val service = Intent(applicationContext, MainService::class.java)
         service.putExtras(Bundle())
         bindService(service, DumbServiceConnection(), Service.BIND_AUTO_CREATE)
-        super.onPause()
     }
 
     override fun onDestroy() {
