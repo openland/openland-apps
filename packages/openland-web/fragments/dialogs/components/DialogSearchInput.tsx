@@ -7,7 +7,7 @@ import IcSearch from 'openland-icons/s/ic-search-16.svg';
 let searchStyle = css`
     border: none !important;
     border-color: transparent !important;
-    margin: 0 15px 12px;
+    margin: 0 16px 16px;
     height: 40px !important;
     & a {
         top: calc(50% - 10px) !important;
