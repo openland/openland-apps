@@ -619,7 +619,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                             this.handleClear();
                         }}
                     >
-                        <UIcon icon={<IcClose />} />
+                        <UIcon icon={<IcClose />} color="var(--foregroundTertiary)" />
                     </ClearButton>
                 )}
             </RootContainer>

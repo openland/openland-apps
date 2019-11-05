@@ -56,7 +56,7 @@ export const DialogSearchInput = React.forwardRef<XInput, XInputProps & { modal?
                 className={cx(searchStyle, props.modal && marginInModalClass)}
                 size="large"
                 placeholder="Search"
-                icon={<UIcon icon={<IcSearch />} />}
+                icon={<UIcon icon={<IcSearch />} color="var(--foregroundTertiary)" />}
                 cleanable={true}
                 {...props}
             />
