@@ -1,5 +1,9 @@
 import * as humanize from 'humanize';
-import { formatDate, formatAbsoluteDate, formatDateFull } from '../openland-mobile/utils/formatDate';
+import {
+    formatDate,
+    formatAbsoluteDate,
+    formatDateFull,
+} from '../openland-mobile/utils/formatDate';
 
 const addLeadingZero = (time: number) => {
     return ('0' + time).substr(-2);
@@ -10,7 +14,7 @@ export function formatTime(date: number) {
     let hours = dt.getHours();
     let ampm = dt.getHours() < 12 ? 'AM' : 'PM';
     hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
-    return hours + ':' + addLeadingZero(dt.getMinutes()) + ' ' + ampm;
+    return hours + ':' + addLeadingZero(dt.getMinutes()) + ' ' + ampm;
 }
 
 export function formatDateTime(date: number) {
@@ -18,7 +22,9 @@ export function formatDateTime(date: number) {
     let hours = dt.getHours();
     let ampm = dt.getHours() < 12 ? 'AM' : 'PM';
     hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
-    return formatAbsoluteDate(date) + ', ' + hours + ':' + addLeadingZero(dt.getMinutes()) + ' ' + ampm;
+    return (
+        formatAbsoluteDate(date) + ', ' + hours + ':' + addLeadingZero(dt.getMinutes()) + ' ' + ampm
+    );
 }
 
 export function formatDateAtTime(date: number) {
@@ -26,7 +32,9 @@ export function formatDateAtTime(date: number) {
     let hours = dt.getHours();
     let ampm = dt.getHours() < 12 ? 'AM' : 'PM';
     hours = hours > 12 ? hours - 12 : hours === 0 ? 12 : hours;
-    return formatDateFull(date) + ' at ' + hours + ':' + addLeadingZero(dt.getMinutes()) + ' ' + ampm;
+    return (
+        formatDateFull(date) + ' at ' + hours + ':' + addLeadingZero(dt.getMinutes()) + ' ' + ampm
+    );
 }
 
 export function formatTimerTime(date: number) {
@@ -55,7 +63,7 @@ export function formatLastSeen(lastSeen: string) {
 }
 
 export function formatRelativeTime(date: string | number) {
-    let time = new Date((typeof date === 'string') ? parseInt(date, 10) : date).getTime();
+    let time = new Date(typeof date === 'string' ? parseInt(date, 10) : date).getTime();
     if (new Date().getTime() - time < 1000 * 60 * 60 * 24) {
         return humanize.relativeTime(time / 1000);
     } else if (new Date().getTime() - time < 1000 * 60) {
@@ -66,7 +74,7 @@ export function formatRelativeTime(date: string | number) {
 }
 
 export function formatRelativeTimeShort(date: string | number) {
-    const src = new Date((typeof date === 'string') ? parseInt(date, 10) : date);
+    const src = new Date(typeof date === 'string' ? parseInt(date, 10) : date);
     const now = new Date();
 
     const delta = now.getTime() - src.getTime();
