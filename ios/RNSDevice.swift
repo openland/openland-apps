@@ -13,11 +13,16 @@ class RNSDevice: NSObject {
   
   @objc(proximityEnable)
   func proximityEnable() {
-    UIDevice.current.isProximityMonitoringEnabled = true
+    DispatchQueue.main.async {
+      UIDevice.current.isProximityMonitoringEnabled = true
+    }
+    
   }
   
   @objc(proximityDisable)
   func proximityDisable() {
-    UIDevice.current.isProximityMonitoringEnabled = false
+    DispatchQueue.main.async {
+      UIDevice.current.isProximityMonitoringEnabled = false
+    }
   }
 }
