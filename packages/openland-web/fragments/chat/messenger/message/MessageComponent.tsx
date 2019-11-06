@@ -139,12 +139,11 @@ const messageContainerClass = css`
     justify-content: space-between;
     align-items: center;
     padding: 4px 0;
-    border-radius: 8px;
+    border-radius: 12px;
     align-self: center;
     width: calc(100% - 32px);
 
-    border-bottom: 4px solid white;
-    border-top: 4px solid white;
+    border: 4px solid var(--backgroundPrimary);
 
     @media (max-width: 1282px) {
         padding: 4px 16px;
@@ -155,15 +154,6 @@ const messageContainerClass = css`
     &:hover .hover-menu-container,
     &:hover .message-date {
         opacity: 1;
-    }
-
-    &.message-attached-top {
-        border-top: none;
-    }
-
-    &.message-attached-bottom {
-        border-bottom: none;
-
     }
 
     &.message-selected {
@@ -183,22 +173,14 @@ const messageContainerClass = css`
             & + .message-selected.message-attached-top {
                 position: relative;
 
-                &:before,
-                &:after {
+                &:before {
                     content: '';
                     position: absolute;
-                    top: -5px;
-                    width: 10px;
-                    height: 10px;
-                    background: var(--backgroundTertiary);
-                }
-
-                &:before {
+                    top: -16px;
                     left: 0;
-                }
-
-                &:after {
-                    right: 0;
+                    width: 100%;
+                    height: 23px;
+                    background: var(--backgroundTertiary);
                 }
             }
         }
