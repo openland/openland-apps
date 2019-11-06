@@ -142,7 +142,9 @@ const messageContainerClass = css`
     border-radius: 8px;
     align-self: center;
     width: calc(100% - 32px);
-    margin: 4px 0;
+
+    border-bottom: 4px solid white;
+    border-top: 4px solid white;
 
     @media (max-width: 1282px) {
         padding: 4px 16px;
@@ -156,11 +158,12 @@ const messageContainerClass = css`
     }
 
     &.message-attached-top {
-        margin-top: 0;
+        border-top: none;
     }
 
     &.message-attached-bottom {
-        margin-bottom: 0;
+        border-bottom: none;
+
     }
 
     &.message-selected {
