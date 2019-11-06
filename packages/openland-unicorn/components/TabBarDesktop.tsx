@@ -4,6 +4,7 @@ import { css, cx } from 'linaria';
 import { TabRouter } from './TabRouter';
 import AppearanceIcon from 'openland-icons/s/ic-appearance-24.svg';
 import SuperIcon from 'openland-icons/s/ic-settings-24.svg';
+import Logo from './Logo';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
@@ -112,12 +113,7 @@ export const TabBarDesktop = React.memo((props: TabBarDesktopProps) => {
                     props.xRouter.navigate('/mail');
                 }}
             >
-                <img
-                    src="/static/img/logo.png"
-                    srcSet="/static/img/logo@2x.png"
-                    width={36}
-                    height={36}
-                />
+                <Logo />
             </XView>
             {props.router.tabs.map((v, i) => (
                 <TabBarButton
