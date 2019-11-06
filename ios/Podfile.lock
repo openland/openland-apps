@@ -420,20 +420,13 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  trunk:
-    - AppAuth
+  https://github.com/CocoaPods/Specs.git:
     - AppCenter
     - AppCenterReactNativeShared
     - Auth0
     - boost-for-react-native
-    - GoogleSignIn
-    - GTMAppAuth
-    - GTMSessionFetcher
     - libwebp
     - ObjectiveRocks
-    - PINCache
-    - PINOperation
-    - PINRemoteImage
     - QBImagePickerController
     - ReachabilitySwift
     - RSKImageCropper
@@ -442,6 +435,14 @@ SPEC REPOS:
     - SimpleKeychain
     - Starscream
     - SwiftyJSON
+  trunk:
+    - AppAuth
+    - GoogleSignIn
+    - GTMAppAuth
+    - GTMSessionFetcher
+    - PINCache
+    - PINOperation
+    - PINRemoteImage
 
 EXTERNAL SOURCES:
   BVLinearGradient:
