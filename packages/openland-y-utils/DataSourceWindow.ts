@@ -146,7 +146,7 @@ export class DataSourceWindow<T extends DataSourceItem> implements ReadableDataS
                     toAdd.push(this._inner.getAt(i + this.currentWindow.end));
                 }
                 this.currentWindow.end += available;
-                if ((this._inner.getSize() - 1 - this.currentWindow.end) >= 0) {
+                if ((this._inner.getSize() - 1 - this.currentWindow.end) > 0) {
                     this._proxy.loadedMore(toAdd, false);
                 } else {
                     this._proxy.loadedMore(toAdd, this._innerCompleted);
