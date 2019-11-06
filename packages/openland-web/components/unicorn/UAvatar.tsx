@@ -84,7 +84,7 @@ const imageWrapperRound = css`
         z-index: 2;
         pointer-events: none;
     }
-`
+`;
 
 const AvatarImage = React.memo((props: UAvatarProps) => {
     const { photo, size = 'medium', squared } = props;
