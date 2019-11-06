@@ -5,7 +5,7 @@ import { XView, XViewRouterContext } from 'react-mental';
 import { UserForMention } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XDate } from 'openland-x/XDate';
-import { UAvatar, AvatarSquare } from './unicorn/UAvatar';
+import { AvatarSquare } from './unicorn/UAvatar';
 import { emoji } from 'openland-y-utils/emoji';
 import { useClient } from 'openland-web/utils/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
