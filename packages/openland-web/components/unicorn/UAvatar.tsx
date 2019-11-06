@@ -106,6 +106,29 @@ const AvatarImage = React.memo((props: UAvatarProps) => {
     );
 });
 
+export const AvatarSquare = React.memo((props: UAvatarProps) => {
+    const { photo } = props;
+    const boxSize = 144;
+
+    let ops = '-/format/auto/-/scale_crop/' + (boxSize + 'x' + boxSize) + '/center/-/quality/best/-/progressive/yes/';
+    let opsRetina =
+        '-/format/auto/-/scale_crop/' +
+        (boxSize * 2 + 'x' + boxSize * 2) +
+        '/center/-/quality/best/-/progressive/yes/ 2x';
+
+    return (
+        <div style={{ width: boxSize, height: boxSize }}>
+            <XImage
+                width="100%"
+                height="100%"
+                src={photo + ops}
+                srcSet={photo + opsRetina}
+                overflow="hidden"
+            />
+        </div>
+    );
+});
+
 const OnlineDotXXLarge = () => (
     <XView
         position="absolute"
