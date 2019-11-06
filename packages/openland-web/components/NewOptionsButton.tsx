@@ -14,6 +14,7 @@ import { useWithWidth } from '../hooks/useWithWidth';
 import XPopper from 'openland-x/XPopper';
 import { UIconButton } from './unicorn/UIconButton';
 import { showCreatingFragment } from 'openland-web/fragments/create/CreateEntityFragment';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const dotClass = css`
     position: absolute;
@@ -179,6 +180,11 @@ const NewOptionsMenu = React.memo((props: { toggle: () => void }) => (
 export const NewOptionsButton = XMemo(() => {
     const [show, setShow] = React.useState(false);
     const [width] = useWithWidth();
+
+    useShortcuts({
+        keys: ['Escape'],
+        callback: () => setShow(false),
+    });
 
     const closer = React.useCallback(() => {
         setShow(false);

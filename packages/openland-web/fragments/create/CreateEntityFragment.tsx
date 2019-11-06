@@ -11,7 +11,6 @@ import { OrganizationsList } from './OrganizationsList';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { showModalBox } from 'openland-x/showModalBox';
 import { ExploreFragment } from './ExploreFragment';
-import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import BackIcon from 'openland-icons/s/ic-back-24.svg';
 
 const containerStyle = css`
@@ -91,13 +90,6 @@ interface CreateEntityInterface {
 const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide: () => void }) => {
     const [settingsPage, setSettingsPage] = React.useState(true);
     const form = useForm();
-
-    useShortcuts({
-        keys: ['Escape'],
-        callback: () => {
-            props.hide();
-        },
-    });
 
     const titleField = useField('input.title', '', form, [
         {
