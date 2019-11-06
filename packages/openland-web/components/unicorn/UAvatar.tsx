@@ -4,10 +4,10 @@ import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { PlaceholderOrange, PlaceholderRed, PlaceholderGreen, PlaceholderBlue, PlaceholderCyan, PlaceholderPurple } from 'openland-y-utils/themes/placeholders';
 
-type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
+type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'xxx-large';
 
 export interface UAvatarProps extends XViewProps {
     title: string;
@@ -17,6 +17,7 @@ export interface UAvatarProps extends XViewProps {
     online?: boolean;
     size?: UAvatarSize;
     selected?: boolean;
+    squared?: boolean;
 }
 
 export const PlaceholderColor = [
@@ -35,10 +36,11 @@ const AvatarSizes: { [key in UAvatarSize]: { size: number, placeholder: number, 
     'large': { size: 56, placeholder: 24, dotSize: 12, dotPosition: 2, dotBorderWidth: 2 },
     'x-large': { size: 72, placeholder: 32, dotSize: 14, dotPosition: 4, dotBorderWidth: 2 },
     'xx-large': { size: 96, placeholder: 40, dotSize: 16, dotPosition: 6, dotBorderWidth: 2 },
+    'xxx-large': { size: 144, placeholder: 40, dotSize: 16, dotPosition: 6, dotBorderWidth: 2 },
 };
 
 const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number }) => {
-    const { title, titleEmoji, index, size = 'medium' } = props;
+    const { title, titleEmoji, index, size = 'medium', squared } = props;
     const ph = extractPlaceholder(title);
 
     return (
@@ -47,7 +49,7 @@ const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number }) =
             height="100%"
             alignItems="center"
             justifyContent="center"
-            borderRadius={50}
+            borderRadius={squared ? 0 : 50}
             backgroundImage={PlaceholderColor[index]}
             color="white"
             fontSize={AvatarSizes[size].placeholder}
@@ -70,7 +72,9 @@ const imageWrapper = css`
         position: relative;
         display: block;
     }
+`;
 
+const imageWrapperRound = css`
     &:before {
         content: "";
         position: absolute;
@@ -80,10 +84,10 @@ const imageWrapper = css`
         z-index: 2;
         pointer-events: none;
     }
-`;
+`
 
 const AvatarImage = React.memo((props: UAvatarProps) => {
-    const { photo, size = 'medium' } = props;
+    const { photo, size = 'medium', squared } = props;
     const boxSize = AvatarSizes[size].size;
 
     let ops = '-/format/auto/-/scale_crop/' + (boxSize + 'x' + boxSize) + '/center/-/quality/best/-/progressive/yes/';
@@ -93,36 +97,13 @@ const AvatarImage = React.memo((props: UAvatarProps) => {
         '/center/-/quality/best/-/progressive/yes/ 2x';
 
     return (
-        <div className={imageWrapper} style={{ width: boxSize, height: boxSize }}>
+        <div className={cx(imageWrapper, !squared && imageWrapperRound)} style={{ width: boxSize, height: boxSize }}>
             <XImage
                 width="100%"
                 height="100%"
                 src={photo + ops}
                 srcSet={photo + opsRetina}
-                borderRadius="100%"
-                overflow="hidden"
-            />
-        </div>
-    );
-});
-
-export const AvatarSquare = React.memo((props: UAvatarProps) => {
-    const { photo } = props;
-    const boxSize = 144;
-
-    let ops = '-/format/auto/-/scale_crop/' + (boxSize + 'x' + boxSize) + '/center/-/quality/best/-/progressive/yes/';
-    let opsRetina =
-        '-/format/auto/-/scale_crop/' +
-        (boxSize * 2 + 'x' + boxSize * 2) +
-        '/center/-/quality/best/-/progressive/yes/ 2x';
-
-    return (
-        <div style={{ width: boxSize, height: boxSize }}>
-            <XImage
-                width="100%"
-                height="100%"
-                src={photo + ops}
-                srcSet={photo + opsRetina}
+                borderRadius={squared ? "0" : "100%"}
                 overflow="hidden"
             />
         </div>
@@ -225,7 +206,7 @@ const colorProvider = css`
 `;
 
 export const UAvatar = XMemo<UAvatarProps>(props => {
-    const { title, titleEmoji, id, photo, online, size = 'medium', selected, ...other } = props;
+    const { title, titleEmoji, id, photo, online, size = 'medium', selected, squared, ...other } = props;
     let content: any = undefined;
 
     if (photo) {
@@ -254,7 +235,7 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
                 className={colorProvider}
                 style={{ width: boxSize, height: boxSize, '--dotBorder': dotBorder, '--dotBackground': dotBackground } as React.CSSProperties}
             >
-                <XView width="100%" height="100%" borderRadius={boxSize / 2} overflow="hidden">
+                <XView width="100%" height="100%" borderRadius={squared ? 0 : boxSize / 2} overflow="hidden">
                     {content}
                 </XView>
 
