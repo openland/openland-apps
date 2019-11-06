@@ -1,6 +1,12 @@
 package com.openland.app;
 
 import android.app.Application;
+import android.app.Service;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -142,6 +148,14 @@ public class MainApplication extends Application implements ShareApplication, Re
 
         Log.d("Native", "BOOTSTRAP: app start done");
 
+        try {
+            // Start keep alive service
+            Intent service = new Intent(this.getApplicationContext(), MainService.class);
+            startService(service);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
 //        // Start keep alive service
 //        Intent service = new Intent(getApplicationContext(), MainService.class);
 //        Bundle bundle = new Bundle();
@@ -149,8 +163,33 @@ public class MainApplication extends Application implements ShareApplication, Re
 //        startService(service);
     }
 
+    private boolean once = true;
+    public void bindKeepAliveOnce(){
+        if(once){
+            once = false;
+            Intent service = new Intent(this.getApplicationContext(), MainService.class);
+            service.putExtras(new Bundle());
+            bindService(service, new DumbServiceConnection(), Service.BIND_AUTO_CREATE);
+        }
+
+    }
+
     @Override
     public String getFileProviderAuthority() {
         return BuildConfig.APPLICATION_ID + ".provider";
+    }
+
+
+    class DumbServiceConnection implements ServiceConnection{
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
     }
 }

@@ -19,12 +19,12 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView
 import android.net.Uri
 import android.os.IBinder
 import android.view.WindowManager
-import org.json.JSONObject
 import android.app.NotificationManager
 
 class MainActivity : ReactActivity() {
 
     private var provider: KeyboardHeightProvider? = null
+    private var pendingIntent: Intent? = null
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -34,27 +34,50 @@ class MainActivity : ReactActivity() {
         return "openland"
     }
 
+    private var delegate: ReactActivityDelegate? = null;
+
     override fun createReactActivityDelegate(): ReactActivityDelegate {
-        return object : ReactActivityDelegate(this, mainComponentName) {
+        delegate = object : ReactActivityDelegate(this, mainComponentName) {
             override fun createRootView(): ReactRootView {
                 return RNGestureHandlerEnabledRootView(this@MainActivity)
             }
 
+            override fun onCreate(savedInstanceState: Bundle?) {
+                super.onCreate(savedInstanceState)
+                Log.d("MainActivity", "onCreate")
+            }
+
             override fun onPause() {
                 super.onPause()
-                Log.d("MainActivity", "onPause")
+                (applicationContext as MainApplication).bindKeepAliveOnce()
             }
 
             override fun onResume() {
                 super.onResume()
+                // TODO: process pending after started
                 Log.d("MainActivity", "onResume")
+                if(pendingIntent != null){
+                    onNewIntent(pendingIntent)
+                    pendingIntent = null
+                }
             }
 
             override fun onDestroy() {
                 super.onDestroy()
                 Log.d("MainActivity", "onDestroy")
             }
+
+            override fun onNewIntent(intent: Intent?): Boolean {
+                if (intent != null && intent.getStringExtra("conversationId") !== null) {
+                    val res = Intent(Intent.ACTION_VIEW)
+                    res.data = Uri.parse("openland://deep/mail/" + intent.getStringExtra("conversationId"))
+                    super.onNewIntent(res)
+                    return true
+                }
+                return false
+            }
         }
+        return delegate as ReactActivityDelegate
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,18 +105,11 @@ class MainActivity : ReactActivity() {
         })
 
         (getSystemService(NOTIFICATION_SERVICE) as? NotificationManager)?.cancelAll()
-        
-        try {
-            // Start keep alive service
-            val service = Intent(applicationContext, MainService::class.java)
-            startService(service)
-        } catch (e: Throwable) {
-            e.printStackTrace()
-        }
+        pendingIntent = intent
 
     }
 
-      override fun onResume() {
+    override fun onResume() {
         super.onResume()
         window.decorView.post {
             provider!!.start()
@@ -102,36 +118,14 @@ class MainActivity : ReactActivity() {
         (getSystemService(NOTIFICATION_SERVICE) as? NotificationManager)?.cancelAll()
     }
 
-    override fun onPause() {
-        super.onPause()
-        val service = Intent(applicationContext, MainService::class.java)
-        service.putExtras(Bundle())
-        bindService(service, DumbServiceConnection(), Service.BIND_AUTO_CREATE)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         provider!!.close()
     }
 
-    override fun onStart() {
-        super.onStart()
-        onIntent(intent)
-    }
-
-
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        onIntent(intent)
-    }
-
-    private fun onIntent(intent: Intent?) {
-        if (intent != null && intent.getStringExtra("conversationId") !== null) {
-            val res = Intent(Intent.ACTION_VIEW)
-            val data = JSONObject()
-            res.data = Uri.parse("openland://deep/mail/" + intent.getStringExtra("conversationId"))
-            startActivity(res)
-        }
+        delegate?.onNewIntent(intent)
     }
 
      class DumbServiceConnection: ServiceConnection{
