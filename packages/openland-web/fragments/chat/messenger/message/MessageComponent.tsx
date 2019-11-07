@@ -173,16 +173,22 @@ const messageContainerClass = css`
 
         @media (min-width: 751px) {
             & + .message-selected.message-attached-top {
+
                 position: relative;
 
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+
                 &:before {
+                    display: block;
                     content: '';
-                    position: absolute;
-                    top: -15px;
-                    left: 0;
                     width: 100%;
-                    height: 22px;
-                    background: var(--backgroundTertiary);
+                    height: 15px;
+                    background-color: var(--backgroundTertiary);
+
+                    position: absolute;
+                    left: 0;
+                    top: -15px;
                 }
             }
         }
