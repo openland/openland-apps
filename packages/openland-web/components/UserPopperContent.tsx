@@ -65,6 +65,10 @@ const userAbout = css`
     padding-bottom: 16px;
     padding-left: 0;
     padding-right: 16px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 `;
 
 export const UserPopperContent = React.memo(
@@ -154,7 +158,6 @@ export const UserPopperContent = React.memo(
                                     text="Direct chat"
                                     size="small"
                                     marginTop={16}
-                                    alignSelf="flex-start"
                                     onClick={(e: React.MouseEvent) => {
                                         e.preventDefault();
                                         if (router) {
