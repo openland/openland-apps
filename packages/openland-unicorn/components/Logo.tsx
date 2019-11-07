@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+// svg gradient workaround. Gradient only works if inlined
+
 export default () => (
     <svg
         width="40"
