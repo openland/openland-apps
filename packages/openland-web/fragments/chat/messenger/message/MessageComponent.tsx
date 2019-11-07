@@ -133,6 +133,7 @@ export const MessageSenderContent = (props: MessageSenderContentProps) => (
 // Message container
 ////
 const messageContainerClass = css`
+    position: relative;
     display: flex;
     flex-direction: row;
     flex-grow: 1;
@@ -142,8 +143,6 @@ const messageContainerClass = css`
     border-radius: 12px;
     align-self: center;
     width: calc(100% - 32px);
-
-    border: 4px solid var(--backgroundPrimary);
 
     @media (max-width: 1282px) {
         padding: 4px 16px;
@@ -157,6 +156,27 @@ const messageContainerClass = css`
     &:hover .message-date {
         opacity: 1;
     }
+
+    &:not(.message-attached-top) {
+        margin-top: 4px;
+
+        /* clickable area for margin */
+        &:before {
+            display: block;
+            content: '';
+            width: 100%;
+            height: 8px;
+
+            position: absolute;
+            left: 0;
+            top: -8px;
+        }
+    }
+
+    &:not(.message-attached-bottom) {
+        margin-bottom: 4px;
+    }
+
 
     &.message-selected {
         background-color: var(--backgroundTertiary);
@@ -182,12 +202,24 @@ const messageContainerClass = css`
                 &:before {
                     display: block;
                     content: '';
-                    width: 100%;
+                    width: 15px;
                     height: 15px;
-                    background-color: var(--backgroundTertiary);
 
+                    background-color: var(--backgroundTertiary);
                     position: absolute;
                     left: 0;
+                    top: -15px;
+                }
+
+                &:after {
+                    display: block;
+                    content: '';
+                    width: 15px;
+                    height: 15px;
+
+                    background-color: var(--backgroundTertiary);
+                    position: absolute;
+                    right: 0;
                     top: -15px;
                 }
             }
