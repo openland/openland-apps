@@ -11,11 +11,10 @@ const InputStyledClassName = css`
     background-color: #f0f2f5 !important;
     border-color: transparent !important;
     &:focus-within {
+        
         border-color: transparent !important;
-        border-bottom: 1px solid #1790ff !important;
         box-shadow: none !important;
-        border-bottom-left-radius: 0 !important;
-        border-bottom-right-radius: 0 !important;
+
         & .input-placeholder {
             font-size: 12px !important;
             top: -11px !important;
