@@ -35,8 +35,6 @@ const richWrapper = css`
     }
 `;
 
-// border: 1px solid var(--borderLight);
-
 const richImageContainer = css`
     position: relative;
     overflow: hidden;
@@ -49,11 +47,17 @@ const richImageContainer = css`
     cursor: pointer;
     width: var(--image-width);
 
+    border: 1px solid var(--borderLight);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+
     @media (max-width: 1100px) {
         flex-direction: column;
         min-width: 100%;
         max-height: 162px;
         height: var(--image-height);
+        border-top-right-radius: 8px;
+        border-bottom-left-radius: 0;
     }
 `;
 
