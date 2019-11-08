@@ -87,7 +87,11 @@ export const UFileUpload = (props: UFileUploadProps) => {
 
     const doUpload = () => {
         let file = value;
-        let uploaded = file
+
+        // placeholders have their UUIDs as "ph://3" or something like that
+        // uploadcare doesn't work with placeholders
+        // so we only need real images and their URLs start with ucarecdn address
+        let uploaded = file && file.uuid.includes('https://ucarecdn.com/')
             ? UploadCare.fileFrom(
                   'uploaded',
                   file.crop
@@ -99,12 +103,14 @@ export const UFileUpload = (props: UFileUploadProps) => {
                       : file.uuid,
               )
             : null;
+
         let dialog = UploadCare.openDialog(uploaded, {
             publicKey: 'b70227616b5eac21ba88',
-            imagesOnly: props.imageOnly !== false,
+            imagesOnly: !!props.imageOnly,
             crop: props.cropParams,
             imageShrink: '1024x1024',
         });
+
         dialog.done(r => {
             doStartUpload(r);
         });
