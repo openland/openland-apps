@@ -54,7 +54,7 @@ const container = css`
     display: flex;
     flex-direction: column;
     max-width: 400px;
-    min-width: 200px;
+    min-width: 360px;
     position: relative;
     border-radius: 8px;
     overflow: hidden;
