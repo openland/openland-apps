@@ -51,5 +51,5 @@ export function convertDsMessage(src: DataSourceMessageItem): DataSourceWebMessa
 export function buildMessagesDataSource(
     ds: DataSource<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>,
 ): DataSource<DataSourceWebMessageItem | DataSourceDateItem> {
-    return ds.batched().throttledMap(convertDsMessage);
+    return ds.throttledMap(convertDsMessage);
 }
