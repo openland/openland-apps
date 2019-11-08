@@ -155,7 +155,7 @@ export const UserPopperContent = React.memo(
                             </div>
                             {!isMe && (
                                 <UButton
-                                    text="Direct chat"
+                                    text="Message"
                                     size="small"
                                     marginTop={16}
                                     onClick={(e: React.MouseEvent) => {
