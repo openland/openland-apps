@@ -106,10 +106,11 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
     }, []);
 
     const [currentTheme, setCurrentTheme] = React.useState(ThemeController.appearance.theme);
-
-    ThemeController.watch((appearance) => {
-        setCurrentTheme(appearance.theme);
-    });
+    React.useEffect(() => {
+        ThemeController.watch((appearance) => {
+            setCurrentTheme(appearance.theme);
+        });
+    }, []);
 
     return (
         <>
