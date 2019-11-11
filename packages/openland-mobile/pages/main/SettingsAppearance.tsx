@@ -105,7 +105,11 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
         // }, 10);
     }, []);
 
-    const currentTheme = ThemeController.appearance.theme;
+    const [currentTheme, setCurrentTheme] = React.useState(ThemeController.appearance.theme);
+
+    ThemeController.watch((appearance) => {
+        setCurrentTheme(appearance.theme);
+    });
 
     return (
         <>
@@ -115,9 +119,9 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
 
                 <ZListGroup header="Theme">
                     <View flexDirection="row" paddingHorizontal={16} paddingVertical={8}>
-                        <ThemeSwitcher selected={ThemeController.appearance.theme === 'System'} label="System" onPress={() => handleChange({ theme: 'System' })} />
-                        <ThemeSwitcher selected={ThemeController.appearance.theme === 'Light'} label="Light" onPress={() => handleChange({ theme: 'Light' })} />
-                        <ThemeSwitcher selected={ThemeController.appearance.theme === 'Dark'} label="Dark" onPress={() => handleChange({ theme: 'Dark' })} />
+                        <ThemeSwitcher selected={currentTheme === 'System'} label="System" onPress={() => handleChange({ theme: 'System' })} />
+                        <ThemeSwitcher selected={currentTheme === 'Light'} label="Light" onPress={() => handleChange({ theme: 'Light' })} />
+                        <ThemeSwitcher selected={currentTheme === 'Dark'} label="Dark" onPress={() => handleChange({ theme: 'Dark' })} />
                     </View>
                 </ZListGroup>
 
