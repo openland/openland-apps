@@ -42,6 +42,7 @@ import { ChatAccessDenied } from './components/ChatAccessDenied';
 import { ChatJoin } from './components/ChatJoin';
 import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 import { ReloadFromBottomButton } from './components/ReloadFromBottomButton';
+import { ConversationManageButton } from './components/ConversationManageButton';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -58,6 +59,7 @@ interface ConversationRootState {
         end: number
     };
     messagesActionsState: MessagesActionsState;
+    muted: boolean;
 }
 
 class ConversationRoot extends React.Component<ConversationRootProps, ConversationRootState> {
@@ -80,7 +82,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             },
             mentions: [],
             inputFocused: false,
-            messagesActionsState: { messages: [] }
+            messagesActionsState: { messages: [] },
+            muted: !!this.props.chat.settings.mute
         };
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
@@ -257,6 +260,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         this.removeDraft();
     }
 
+    onMutedChange = () => {
+        this.setState(prevState => ({ muted: !prevState.muted }));
+    }
+
     render() {
         let { messagesActionsState } = this.state;
 
@@ -324,7 +331,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         let inputPlaceholder = null;
         if (!showSelectedMessagesActions && sharedRoom && sharedRoom.isChannel) {
-            inputPlaceholder = <ChannelMuteButton id={sharedRoom.id} mute={!!sharedRoom.settings.mute} />;
+            inputPlaceholder = <ChannelMuteButton id={sharedRoom.id} muted={this.state.muted} onMutedChange={this.onMutedChange} />;
         }
         if (!showSelectedMessagesActions && privateRoom && privateRoom.user.isBot) {
             inputPlaceholder = <ChatInputPlaceholder text="View profile" onPress={() => this.props.router.push("ProfileUser", { id: privateRoom!.user.id })} />;
@@ -342,6 +349,12 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                         onPress={async () => { showCallModal(this.props.chat.id); }}
                     />
                 )}
+                <ConversationManageButton
+                    muted={this.state.muted}
+                    onMutedChange={this.onMutedChange}
+                    router={this.props.router}
+                    room={this.props.chat}
+                />
                 <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>

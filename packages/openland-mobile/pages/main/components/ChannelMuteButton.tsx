@@ -8,20 +8,21 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 interface ChannelMuteButtonProps {
     id: string;
-    mute: boolean;
+    muted: boolean;
+    onMutedChange: () => void;
 }
 
 export const ChannelMuteButton = (props: ChannelMuteButtonProps) => {
+    const { muted, onMutedChange } = props;
+    const notifications = !muted;
     const client = getClient();
 
     const theme = React.useContext(ThemeContext);
 
-    const [notifications, setNotifications] = React.useState(!props.mute);
-
     const handleNotifications = React.useCallback(() => {
         let value = !notifications;
 
-        setNotifications(value);
+        onMutedChange();
 
         client.mutateRoomSettingsUpdate({ roomId: props.id, settings: { mute: !value } });
         client.refetchRoomTiny({ id: props.id });
