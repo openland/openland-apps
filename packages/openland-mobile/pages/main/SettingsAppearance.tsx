@@ -5,7 +5,7 @@ import { PageProps } from 'openland-mobile/components/PageProps';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ThemeController } from 'openland-mobile/themes/ThemeControler';
-import { ThemeGlobalKind, AccentGlobalType } from 'openland-y-utils/themes/ThemeGlobal';
+import { ThemeGlobalKind } from 'openland-y-utils/themes/ThemeGlobal';
 import { View, TouchableOpacity, Image, Text } from 'react-native';
 import { ThemeContext, resolveTheme } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
