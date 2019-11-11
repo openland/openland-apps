@@ -1,33 +1,33 @@
 import { ThemeGlobalKind, getThemeByType } from 'openland-y-utils/themes/ThemeGlobal';
 
 class ThemeControllerImpl {
-    private _theme: ThemeGlobalKind = { theme: 'Light', accent: 'Default' };
+    private _appearance: ThemeGlobalKind = { theme: 'Light', accent: 'Default' };
     private _watchers: ((theme: ThemeGlobalKind) => void)[] = [];
 
-    get theme(): ThemeGlobalKind {
-        return this._theme;
+    get appearance(): ThemeGlobalKind {
+        return this._appearance;
     }
 
-    set theme(theme: ThemeGlobalKind) {
-        if (!theme.accent) {
-            const resolvedThemeObject = getThemeByType(theme.theme);
-            const resolvedAccentType = this._theme.accent || 'Default';
+    set appearance(appearance: ThemeGlobalKind) {
+        if (!appearance.accent) {
+            const resolvedThemeObject = getThemeByType(appearance.theme);
+            const resolvedAccentType = this._appearance.accent || 'Default';
 
-            this._theme = {
-                theme: theme.theme,
+            this._appearance = {
+                theme: appearance.theme,
                 accent: resolvedThemeObject.supportedAccents.includes(resolvedAccentType) ? resolvedAccentType : 'Default'
             };
         } else {
-            this._theme = theme;
+            this._appearance = appearance;
         }
         for (let w of this._watchers) {
-            w(this._theme);
+            w(this._appearance);
         }
     }
 
-    watch(handler: (theme: ThemeGlobalKind) => void) {
+    watch(handler: (appearance: ThemeGlobalKind) => void) {
         this._watchers.push(handler);
-        handler(this._theme);
+        handler(this._appearance);
         return () => {
             let index = this._watchers.indexOf(handler);
             if (index < 0) {

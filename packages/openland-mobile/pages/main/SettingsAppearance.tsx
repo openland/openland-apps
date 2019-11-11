@@ -5,32 +5,63 @@ import { PageProps } from 'openland-mobile/components/PageProps';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ThemeController } from 'openland-mobile/themes/ThemeControler';
-import { ThemeGlobalKind, ThemeGlobalType, AccentGlobalType } from 'openland-y-utils/themes/ThemeGlobal';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { ThemeGlobalKind, AccentGlobalType } from 'openland-y-utils/themes/ThemeGlobal';
+import { View, TouchableOpacity, Image, Text } from 'react-native';
 import { ThemeContext, resolveTheme } from 'openland-mobile/themes/ThemeContext';
-import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
+import LinearGradient from 'react-native-linear-gradient';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
-const ThemeItem = React.memo((props: { type: ThemeGlobalType, checked: boolean, onPress: () => void }) => {
+const ThemePreview = React.memo(() => {
     const theme = React.useContext(ThemeContext);
-    const { type, checked, onPress } = props;
-    const themeObject = resolveTheme({ theme: type, accent: theme.accentType });
 
-    const primaryColor = checked ? theme.outgoingBackgroundPrimary : themeObject.outgoingBackgroundPrimary;
-    const secondaryColor = checked ? theme.incomingBackgroundPrimary : themeObject.incomingBackgroundPrimary;
+    const gradientStart = theme.type === 'Dark' ? 'rgba(36, 38, 41, 0)' : 'rgba(242, 243, 245, 0)';
+    const gradientEnd = theme.type === 'Dark' ? 'rgba(36, 38, 41, 0.56)' : 'rgba(242, 243, 245, 0.56)';
 
     return (
-        <TouchableOpacity onPress={onPress} activeOpacity={0.64}>
-            <View padding={12} width={104} height={148} borderWidth={1} borderColor={themeObject.border} backgroundColor={themeObject.backgroundPrimary} marginLeft={16} borderRadius={RadiusStyles.Medium}>
-                <View backgroundColor={primaryColor} alignSelf="flex-end" marginBottom={4} width={64} height={16} borderTopLeftRadius={8} borderTopRightRadius={8} borderBottomLeftRadius={8} borderBottomRightRadius={4} />
-                <View backgroundColor={primaryColor} alignSelf="flex-end" marginBottom={8} width={48} height={16} borderTopLeftRadius={8} borderTopRightRadius={4} borderBottomLeftRadius={8} borderBottomRightRadius={8} />
-                <View backgroundColor={secondaryColor} marginBottom={4} width={64} height={16} borderTopLeftRadius={8} borderTopRightRadius={8} borderBottomLeftRadius={4} borderBottomRightRadius={8} />
-                <View backgroundColor={secondaryColor} width={64} height={16} borderTopLeftRadius={4} borderTopRightRadius={8} borderBottomLeftRadius={8} borderBottomRightRadius={8} />
-
-                <View position="absolute" alignSelf="center" bottom={16} backgroundColor={checked ? theme.accentPrimary : themeObject.backgroundPrimary} borderColor={checked ? theme.accentPrimary : themeObject.foregroundSecondary} borderWidth={2} borderRadius={RadiusStyles.Medium} width={24} height={24}>
-                    {checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} style={{ tintColor: theme.foregroundInverted }} />}
+        <LinearGradient colors={[gradientStart, gradientEnd]} paddingTop={8} paddingBottom={24} paddingHorizontal={16}>
+            <View marginBottom={8} alignItems="flex-start">
+                <View backgroundColor={theme.incomingBackgroundPrimary} paddingVertical={7} paddingLeft={12} paddingRight={70} borderRadius={RadiusStyles.Large}>
+                    <Text style={[TextStyles.Densed, { color: theme.incomingForegroundPrimary }]}>
+                        Hello! How are you?
+                    </Text>
+                    <Text style={[TextStyles.Caption, { color: theme.incomingForegroundSecondary, position: 'absolute', bottom: 4, right: 12 }]}>
+                        9:41 AM
+                    </Text>
                 </View>
             </View>
-        </TouchableOpacity>
+            <View alignItems="flex-end">
+                <View backgroundColor={theme.outgoingBackgroundPrimary} paddingVertical={7} paddingLeft={12} paddingRight={70} borderRadius={RadiusStyles.Large}>
+                    <Text style={[TextStyles.Densed, { color: theme.outgoingForegroundPrimary }]}>
+                        I’m fine. Thanks!
+                    </Text>
+                    <Text style={[TextStyles.Caption, { color: theme.outgoingForegroundSecondary, position: 'absolute', bottom: 4, right: 12 }]}>
+                        9:41 AM
+                    </Text>
+                </View>
+            </View>
+        </LinearGradient>
+    );
+});
+
+const ThemeSwitcher = React.memo((props: { label: string, onPress: () => void, selected: boolean }) => {
+    const { label, onPress, selected } = props;
+    const theme = React.useContext(ThemeContext);
+
+    return (
+        <View flexGrow={1}>
+            <TouchableWithoutFeedback onPress={onPress}>
+                <View
+                    backgroundColor={selected ? theme.backgroundTertiary : undefined}
+                    alignItems="center"
+                    justifyContent="center"
+                    height={36}
+                    borderRadius={RadiusStyles.Large}
+                >
+                    <Text style={[TextStyles.Label1, { color: theme.foregroundPrimary }]}>{label}</Text>
+                </View>
+            </TouchableWithoutFeedback>
+        </View>
     );
 });
 
@@ -58,10 +89,10 @@ const AccentCircle = React.memo((props: { color: string, checked: boolean, onPre
 
 const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
-    const handleChange = React.useCallback((kind: ThemeGlobalKind) => {
-        setTimeout(() => {
-            ThemeController.theme = kind;
-        }, 10);
+    const handleChange = React.useCallback((appearance: ThemeGlobalKind) => {
+        // setTimeout(() => {
+        ThemeController.appearance = appearance;
+        // }, 10);
     }, []);
 
     const accents: AccentGlobalType[] = ['Default', ...theme.supportedAccents];
@@ -70,18 +101,13 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
         <>
             <SHeader title="Appearance" />
             <SScrollView>
+                <ThemePreview />
+
                 <ZListGroup header="Theme">
-                    <View flexDirection="row" paddingRight={16}>
-                        <ThemeItem
-                            type="Light"
-                            checked={theme.type === 'Light'}
-                            onPress={() => handleChange({ theme: 'Light' })}
-                        />
-                        <ThemeItem
-                            type="Dark"
-                            checked={theme.type === 'Dark'}
-                            onPress={() => handleChange({ theme: 'Dark' })}
-                        />
+                    <View flexDirection="row" paddingHorizontal={16} paddingVertical={8}>
+                        <ThemeSwitcher selected={ThemeController.appearance.theme === 'System'} label="System" onPress={() => handleChange({ theme: 'System' })} />
+                        <ThemeSwitcher selected={ThemeController.appearance.theme === 'Light'} label="Light" onPress={() => handleChange({ theme: 'Light' })} />
+                        <ThemeSwitcher selected={ThemeController.appearance.theme === 'Dark'} label="Dark" onPress={() => handleChange({ theme: 'Dark' })} />
                     </View>
                 </ZListGroup>
 

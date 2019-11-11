@@ -1,23 +1,34 @@
 import * as React from 'react';
 import { ThemeController } from './ThemeControler';
 import { SStatusBar } from 'react-native-s/SStatusBar';
-import { ThemeGlobal, ThemeGlobalKind, ThemeGlobalType, AccentGlobalType, getThemeByType, getAccentByType } from 'openland-y-utils/themes/ThemeGlobal';
+import { ThemeGlobal, ThemeGlobalKind, AccentGlobalType, getThemeByType, getAccentByType, ThemeVariants } from 'openland-y-utils/themes/ThemeGlobal';
 import { ThemeLight } from 'openland-y-utils/themes/light';
+import { initialMode, eventEmitter } from 'react-native-dark-mode';
 
 export const ThemeContext = React.createContext<ThemeGlobal>(ThemeLight);
 export const useTheme = () => React.useContext(ThemeContext);
 
-export function resolveTheme(theme: ThemeGlobalKind): ThemeGlobal {
-    let resolvedThemeType: ThemeGlobalType = 'Light';
+export let SystemTheme = initialMode;
+
+eventEmitter.on('currentModeChanged', newMode => {
+    SystemTheme = newMode;
+
+    if (ThemeController.appearance.theme === 'System') {
+        ThemeController.appearance = { theme: 'System' };
+    }
+});
+
+export function resolveTheme(appearance: ThemeGlobalKind): ThemeGlobal {
+    let resolvedThemeType: ThemeVariants = 'System';
     let resolvedAccentType: AccentGlobalType = 'Default';
 
-    if (theme.theme === 'Light' || theme.theme === 'Dark') {
-        resolvedThemeType = theme.theme;
+    if (appearance.theme === 'Light' || appearance.theme === 'Dark' || appearance.theme === 'System') {
+        resolvedThemeType = appearance.theme;
     }
 
     const resolvedThemeObject = getThemeByType(resolvedThemeType);
-    if (theme.accent && resolvedThemeObject.supportedAccents.includes(theme.accent)) {
-        resolvedAccentType = theme.accent;
+    if (appearance.accent && resolvedThemeObject.supportedAccents.includes(appearance.accent)) {
+        resolvedAccentType = appearance.accent;
     }
 
     const resolvedAccentObject = getAccentByType(resolvedAccentType);
@@ -29,7 +40,7 @@ export function resolveTheme(theme: ThemeGlobalKind): ThemeGlobal {
 }
 
 export const ThemeProvider = (props: { children?: any }) => {
-    let [theme, setTheme] = React.useState(resolveTheme(ThemeController.theme));
+    let [theme, setTheme] = React.useState(resolveTheme(ThemeController.appearance));
 
     React.useEffect(() => {
         return ThemeController.watch((t) => {
@@ -47,12 +58,12 @@ export const ThemeProvider = (props: { children?: any }) => {
 };
 
 export const useThemeGlobal = () => {
-    let [theme, setTheme] = React.useState(resolveTheme(ThemeController.theme));
+    let [theme, setTheme] = React.useState(resolveTheme(ThemeController.appearance));
 
     React.useEffect(() => {
         return ThemeController.watch((t) => {
             let r = resolveTheme(t);
-            SStatusBar.setBarStyle(r.statusBar);
+            // SStatusBar.setBarStyle(r.statusBar);
             setTheme(r);
         });
     }, []);

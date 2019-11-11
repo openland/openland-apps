@@ -1,16 +1,16 @@
 import { AsyncStorage } from 'react-native';
 import { ThemeController } from './ThemeControler';
-import { ThemeGlobalType, AccentGlobalType, getThemeByType } from 'openland-y-utils/themes/ThemeGlobal';
+import { AccentGlobalType, getThemeByType, ThemeVariants } from 'openland-y-utils/themes/ThemeGlobal';
 
 class ThemePersisterImpl {
     prepare = async () => {
-        const storageThemeType = await AsyncStorage.getItem('app.theme.2') as ThemeGlobalType;
-        const storageAccentType = await AsyncStorage.getItem('app.accent.2') as AccentGlobalType;
+        const storageThemeType = await AsyncStorage.getItem('app.theme.3') as ThemeVariants;
+        const storageAccentType = await AsyncStorage.getItem('app.accent.3') as AccentGlobalType;
 
-        let resolvedThemeType: ThemeGlobalType = 'Light';
+        let resolvedThemeType: ThemeVariants = 'System';
         let resolvedAccentType: AccentGlobalType = 'Default';
 
-        if (storageThemeType === 'Light' || storageThemeType === 'Dark') {
+        if (storageThemeType === 'Light' || storageThemeType === 'Dark' || storageThemeType === 'System') {
             resolvedThemeType = storageThemeType;
         }
 
@@ -19,10 +19,10 @@ class ThemePersisterImpl {
             resolvedAccentType = storageAccentType;
         }
 
-        ThemeController.theme = { theme: resolvedThemeType, accent: resolvedAccentType };
-        ThemeController.watch((theme) => {
-            AsyncStorage.setItem('app.theme.2', theme.theme);
-            AsyncStorage.setItem('app.accent.2', theme.accent || 'Default');
+        ThemeController.appearance = { theme: resolvedThemeType, accent: resolvedAccentType };
+        ThemeController.watch((appearance) => {
+            AsyncStorage.setItem('app.theme.3', appearance.theme);
+            AsyncStorage.setItem('app.accent.3', appearance.accent || 'Default');
         });
     }
 }

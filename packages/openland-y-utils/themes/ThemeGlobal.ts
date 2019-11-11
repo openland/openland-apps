@@ -1,11 +1,13 @@
 import { ThemeLight } from './light';
 import { ThemeDark } from './dark';
 import { AccentRed, AccentOrange, AccentGrey, AccentGreen, AccentBlue, AccentPurple, AccentPink, AccentCyan } from './accents';
+import { SystemTheme } from 'openland-mobile/themes/ThemeContext';
 
 export type ThemeGlobalType = 'Light' | 'Dark';
 export type AccentGlobalType = 'Default' | 'Red' | 'Orange' | 'Green' | 'Cyan' | 'Blue' | 'Purple' | 'Pink' | 'Grey';
+export type ThemeVariants = ThemeGlobalType | 'System';
 export type ThemeGlobalKind = {
-    theme: ThemeGlobalType,
+    theme: ThemeVariants,
     accent?: AccentGlobalType
 };
 
@@ -118,14 +120,16 @@ export type PlaceholderGlobal = {
     end: string;
 };
 
-export const getThemeByType = (type: ThemeGlobalType) => {
+export const getThemeByType = (type: ThemeGlobalType | 'System') => {
     if (type === 'Light') {
         return ThemeLight;
     } else if (type === 'Dark') {
         return ThemeDark;
-    } else {
-        return ThemeLight;
+    } else if (type === 'System' && SystemTheme === 'dark') {
+        return ThemeDark;
     }
+
+    return ThemeLight;
 };
 
 export const getAccentByType = (type: AccentGlobalType) => {
