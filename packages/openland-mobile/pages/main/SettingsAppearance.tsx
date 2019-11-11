@@ -6,11 +6,12 @@ import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ThemeController } from 'openland-mobile/themes/ThemeControler';
 import { ThemeGlobalKind } from 'openland-y-utils/themes/ThemeGlobal';
-import { View, TouchableOpacity, Image, Text } from 'react-native';
+import { View, TouchableOpacity, Image, Text, LayoutChangeEvent } from 'react-native';
 import { ThemeContext, resolveTheme } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { isPad } from '../Root';
 
 const ThemePreview = React.memo(() => {
     const theme = React.useContext(ThemeContext);
@@ -58,7 +59,9 @@ const ThemeSwitcher = React.memo((props: { label: string, onPress: () => void, s
                     height={36}
                     borderRadius={RadiusStyles.Large}
                 >
-                    <Text style={[TextStyles.Label1, { color: theme.foregroundPrimary }]} allowFontScaling={false}>{label}</Text>
+                    <Text style={[TextStyles.Label1, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
+                        {label}
+                    </Text>
                 </View>
             </TouchableWithoutFeedback>
         </View>
@@ -69,21 +72,28 @@ const AccentCircle = React.memo((props: { color: string, checked: boolean, onPre
     const { color, checked, onPress } = props;
     const theme = React.useContext(ThemeContext);
 
+    const [height, setHeight] = React.useState(0);
+    const onLayout = React.useCallback((e: LayoutChangeEvent) => {
+        setHeight(e.nativeEvent.layout.width - 16);
+    }, []);
+
     return (
-        <TouchableOpacity onPress={onPress} activeOpacity={0.64}>
-            <View width={74} height={74} borderRadius={37} backgroundColor={color} alignItems="center" justifyContent="center" marginBottom={16} marginLeft={16}>
-                {checked && (
-                    <Image
-                        source={require('assets/ic-done-24.png')}
-                        style={{
-                            width: 24,
-                            height: 24,
-                            tintColor: color === theme.foregroundContrast ? theme.backgroundPrimary : theme.foregroundContrast
-                        }}
-                    />
-                )}
-            </View>
-        </TouchableOpacity>
+        <View width={isPad ? '12.5%' : '25%'} padding={8} onLayout={onLayout}>
+            <TouchableOpacity onPress={onPress} activeOpacity={0.64}>
+                <View height={height} borderRadius={height / 2} backgroundColor={color} alignItems="center" justifyContent="center">
+                    {checked && (
+                        <Image
+                            source={require('assets/ic-done-24.png')}
+                            style={{
+                                width: 24,
+                                height: 24,
+                                tintColor: color === theme.foregroundContrast ? theme.backgroundPrimary : theme.foregroundContrast
+                            }}
+                        />
+                    )}
+                </View>
+            </TouchableOpacity>
+        </View>
     );
 });
 
@@ -112,7 +122,7 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                 </ZListGroup>
 
                 <ZListGroup header="Accent">
-                    <View flexDirection="row" justifyContent="flex-start" flexWrap="wrap">
+                    <View flexDirection="row" justifyContent="flex-start" flexWrap="wrap" paddingHorizontal={8}>
                         {theme.supportedAccents.map(accent => (
                             <AccentCircle
                                 key={`${theme.type}-${accent}`}
