@@ -120,7 +120,7 @@ export type PlaceholderGlobal = {
     end: string;
 };
 
-export const getThemeByType = (type: ThemeGlobalType | 'System') => {
+export const getThemeByType = (type: ThemeVariants) => {
     if (type === 'Light') {
         return ThemeLight;
     } else if (type === 'Dark') {

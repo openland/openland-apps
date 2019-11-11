@@ -1,7 +1,7 @@
 import { ThemeGlobalKind, getThemeByType } from 'openland-y-utils/themes/ThemeGlobal';
 
 class ThemeControllerImpl {
-    private _appearance: ThemeGlobalKind = { theme: 'Light', accent: 'Default' };
+    private _appearance: ThemeGlobalKind = { theme: 'System', accent: 'Default' };
     private _watchers: ((theme: ThemeGlobalKind) => void)[] = [];
 
     get appearance(): ThemeGlobalKind {
