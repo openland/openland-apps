@@ -4,7 +4,7 @@ import { TintBlue, TintGreen, TintRed, TintOrange, TintCyan, TintPurple, TintInv
 export const ThemeLight: ThemeGlobal = {
     type: 'Light',
     accentType: 'Default',
-    supportedAccents: ['Grey', 'Red', 'Orange', 'Green', 'Cyan', 'Pink', 'Purple'],
+    supportedAccents: ['Red', 'Orange', 'Green', 'Cyan', 'Default', 'Purple', 'Pink', 'Grey'],
 
     transparent: 'rgba(255, 255, 255, 0)',
 

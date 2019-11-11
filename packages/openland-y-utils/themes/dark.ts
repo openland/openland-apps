@@ -4,7 +4,7 @@ import { TintGreen, TintRed, TintInverted, TintMono } from './tints';
 export const ThemeDark: ThemeGlobal = {
     type: 'Dark',
     accentType: 'Default',
-    supportedAccents: ['Blue', 'Red', 'Orange', 'Green', 'Cyan', 'Pink', 'Purple'],
+    supportedAccents: ['Red', 'Orange', 'Green', 'Cyan', 'Blue', 'Purple', 'Pink', 'Default'],
 
     transparent: 'rgba(0, 0, 0, 0)',
 

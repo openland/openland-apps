@@ -58,7 +58,7 @@ const ThemeSwitcher = React.memo((props: { label: string, onPress: () => void, s
                     height={36}
                     borderRadius={RadiusStyles.Large}
                 >
-                    <Text style={[TextStyles.Label1, { color: theme.foregroundPrimary }]}>{label}</Text>
+                    <Text style={[TextStyles.Label1, { color: theme.foregroundPrimary }]} allowFontScaling={false}>{label}</Text>
                 </View>
             </TouchableWithoutFeedback>
         </View>
@@ -95,7 +95,6 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
         // }, 10);
     }, []);
 
-    const accents: AccentGlobalType[] = ['Default', ...theme.supportedAccents];
     const currentTheme = ThemeController.appearance.theme;
 
     return (
@@ -114,7 +113,7 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
 
                 <ZListGroup header="Accent">
                     <View flexDirection="row" justifyContent="flex-start" flexWrap="wrap">
-                        {accents.map(accent => (
+                        {theme.supportedAccents.map(accent => (
                             <AccentCircle
                                 key={`${theme.type}-${accent}`}
                                 onPress={() => handleChange({ theme: currentTheme, accent })}
