@@ -72,6 +72,7 @@ export class MediaSessionManager {
         if (this.mediaStream) {
             this.mediaStream.close();
         }
+        this.stopScreenShare();
 
         // Notify about leave
         if (this.conferenceId && this.peerId) {
