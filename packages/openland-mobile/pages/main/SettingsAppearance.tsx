@@ -96,6 +96,7 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
     }, []);
 
     const accents: AccentGlobalType[] = ['Default', ...theme.supportedAccents];
+    const currentTheme = ThemeController.appearance.theme;
 
     return (
         <>
@@ -116,8 +117,8 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                         {accents.map(accent => (
                             <AccentCircle
                                 key={`${theme.type}-${accent}`}
-                                onPress={() => handleChange({ theme: theme.type, accent })}
-                                color={resolveTheme({ theme: theme.type, accent }).accentPrimary}
+                                onPress={() => handleChange({ theme: currentTheme, accent })}
+                                color={resolveTheme({ theme: currentTheme, accent }).accentPrimary}
                                 checked={theme.accentType === accent}
                             />
                         ))}
