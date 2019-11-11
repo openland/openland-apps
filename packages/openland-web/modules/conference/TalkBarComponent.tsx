@@ -19,6 +19,7 @@ const animatedAvatarStyle = css`
 `;
 
 export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessionManager?: MediaSessionManager }) => {
+    let callState = React.useContext(MessengerContext).calls.useState();
     const avatarRef = React.useRef<HTMLDivElement>(null);
     const mediaStream = useStream(props.mediaSessionManager, props.peer.id);
     var dataArray: Uint8Array;
@@ -104,7 +105,7 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
         }
         mediaStream.listenIceState(s => {
             if (avatarRef.current) {
-                avatarRef.current.style.filter = `grayscale(${s !== 'connected' ? 100 : 0}%)`;
+                avatarRef.current.style.filter = `grayscale(${callState.conversationId && (s !== 'connected') ? 100 : 0}%)`;
             }
         });
         return () => {
@@ -112,7 +113,7 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
                 avatarRef.current.style.filter = '';
             }
         };
-    }, [mediaStream]);
+    }, [mediaStream, callState.conversationId]);
 
     const [contentStream, setContentStream] = React.useState<MediaStream>();
     React.useEffect(() => {
