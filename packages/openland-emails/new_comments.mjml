@@ -1,0 +1,24 @@
+<mjml>
+    <mj-head>
+        <mj-include path="./includes/attributes.mjml" />
+        <mj-breakpoint width="680px" />
+        <mj-title>You’ve got a new comments</mj-title>
+        <mj-preview>{{text}} Visit Openland to see them now.</mj-preview>
+    </mj-head>
+    <mj-body>
+        <mj-include path="./includes/header.mjml" />
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container">
+                <mj-text mj-class="title">
+                    You’ve got {{messageCount}} new comments
+                </mj-text>
+                <mj-text mj-class="text">
+                    {{text}} Visit Openland to&nbsp;see them now.
+                </mj-text>
+
+                <mj-button mj-class="button" href="https://openland.com/mail">View comments</mj-button>
+            </mj-column>
+        </mj-section>
+        <mj-include path="./includes/install-app.mjml" />
+    </mj-body>
+</mjml>

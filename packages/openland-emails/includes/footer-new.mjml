@@ -3,7 +3,7 @@
 <mj-section mj-class="footer">
     <mj-column mj-class="footer-col-left" width="40%">
         <mj-text mj-class="text-small" align="left">
-            <a href="https://openland.com/settings/notifications" style="display: inline-block; vertical-align: top; text-decoration: none; font-size: 13px; line-height: 18px; color: #676D7A;">
+            <a href="https://openland.com/settings/email" style="display: inline-block; vertical-align: top; text-decoration: none; font-size: 13px; line-height: 18px; color: #676D7A;">
                 Email settings
             </a>
             <span style="display: inline-block; vertical-align: top;  padding-right: 24px;"></span>
