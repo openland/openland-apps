@@ -28,7 +28,7 @@ const messageActonInnerContainerClass = css`
 `;
 
 const messageActionInnerContainerEdit = css`
-    flex-grow: 0;
+    flex-grow: 1;
     margin-left: 55px;
 `;
 
