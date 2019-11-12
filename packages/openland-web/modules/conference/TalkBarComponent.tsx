@@ -64,6 +64,10 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
             if (!running) {
                 return;
             }
+            if (avatarRef.current && !callState.conversationId) {
+                avatarRef.current.style.transform = ``;
+                return;
+            }
             init();
             if (remoteAnalyser && dataArray) {
                 remoteAnalyser.getByteFrequencyData(dataArray);
@@ -78,7 +82,7 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
                 if (isMe && mediaStream.getStream().muted) {
                     scale = 1;
                 }
-                if (avatarRef.current && mediaStream.getIceState() === 'connected') {
+                if (avatarRef.current && ['connected', 'completed'].indexOf(mediaStream.getIceState()) >= 0) {
                     avatarRef.current.style.transform = `scale(${scale})`;
                 }
             }
@@ -96,7 +100,7 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
             }
             running = false;
         };
-    }, [mediaStream]);
+    }, [mediaStream, callState.conversationId]);
 
     // mark non connected
     React.useEffect(() => {
@@ -105,7 +109,7 @@ export const CallPeer = (props: { peer: Conference_conference_peers, mediaSessio
         }
         mediaStream.listenIceState(s => {
             if (avatarRef.current) {
-                avatarRef.current.style.filter = `grayscale(${callState.conversationId && (s !== 'connected') ? 100 : 0}%)`;
+                avatarRef.current.style.filter = `grayscale(${callState.conversationId && (['connected', 'completed'].indexOf(s) === -1) ? 100 : 0}%)`;
             }
         });
         return () => {
