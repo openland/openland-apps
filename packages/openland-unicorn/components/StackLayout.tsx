@@ -12,6 +12,7 @@ const PageAnimator = React.memo(
         dispatch: React.Dispatch<AnimationAction>;
         router: StackRouter;
         visible: boolean;
+        depth: number;
     }) => {
         console.log('render[' + props.k + ']: ' + props.state);
 
@@ -40,9 +41,9 @@ const PageAnimator = React.memo(
         );
 
         let state = props.state;
-        // if (state === 'hidden') {
-        //     return null;
-        // }
+        if (state === 'hidden' && props.depth >= 2) {
+            return null;
+        }
 
         return (
             <PageLayout state={state} container={props.router.ref} visible={props.visible}>
@@ -235,7 +236,7 @@ export const StackLayout = React.memo(
         return (
             <StackRouterContext.Provider value={props.router}>
                 <div key="content" className={props.className} ref={props.router.ref}>
-                    {state.pages.map(v => (
+                    {state.pages.map((v, i) => (
                         <PageAnimator
                             state={v.state}
                             key={v.key}
@@ -243,6 +244,7 @@ export const StackLayout = React.memo(
                             dispatch={dispatch}
                             router={props.router}
                             visible={props.visible}
+                            depth={i}
                         >
                             <PageComponent
                                 component={v.component}
