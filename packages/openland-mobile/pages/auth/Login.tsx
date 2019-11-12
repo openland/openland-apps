@@ -12,6 +12,7 @@ import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { API_HOST } from 'openland-y-utils/api';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const styles = StyleSheet.create({
     container: {
@@ -31,6 +32,17 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: '100%'
     } as ViewStyle,
+});
+
+const Logo = React.memo(() => {
+    const theme = React.useContext(ThemeContext);
+
+    return (
+        <View style={styles.logoWrapper}>
+            <Image source={require('assets/logo-unicorn.png')} style={{ width: 130, height: 155 }} />
+            <Image source={require('assets/logotype.png')} style={{ width: 186, height: 38, marginTop: 28, tintColor: theme.foregroundPrimary }} />
+        </View>
+    );
 });
 
 class LoginComponent extends React.Component<PageProps, { initing: boolean, loading: boolean }> {
@@ -94,10 +106,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                 <SHeader hidden={true} />
                 <ASSafeAreaView style={{ flexGrow: 1 }}>
                     <View style={styles.container}>
-                        <View style={styles.logoWrapper}>
-                            <Image source={require('assets/logo-unicorn.png')} style={{ width: 130, height: 155 }} />
-                            <Image source={require('assets/logotype.png')} style={{ width: 186, height: 38, marginTop: 28 }} />
-                        </View>
+                        <Logo />
 
                         <View style={styles.buttons}>
                             <ZRoundedButton
