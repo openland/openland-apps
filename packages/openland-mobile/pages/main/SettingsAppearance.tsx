@@ -53,7 +53,7 @@ const ThemeSwitcher = React.memo((props: { label: string, onPress: () => void, s
         <View flexGrow={1}>
             <TouchableWithoutFeedback onPress={onPress}>
                 <View
-                    backgroundColor={selected ? theme.backgroundTertiary : undefined}
+                    backgroundColor={selected ? theme.backgroundTertiary : theme.backgroundPrimary}
                     alignItems="center"
                     justifyContent="center"
                     height={36}
