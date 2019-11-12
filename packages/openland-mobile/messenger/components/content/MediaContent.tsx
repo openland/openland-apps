@@ -66,13 +66,11 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 { imageHeight: h, imageWidth: w },
                 {
                     ...event, path,
-                    ...Platform.OS === 'ios' ? {
-                        // Sorry universe. Try to fix bug with distorted images in animation of ZPictureModal
-                        w: layout.width,
-                        h: layout.height,
-                        x: event.w !== layout.width ? event.x + ((event.w - layout.width) / 2) : event.x,
-                        y: event.h !== layout.height ? event.y + ((event.h - layout.height) / 2) : event.y,
-                    } : {}
+                    // Sorry universe. Try to fix bug with distorted images in animation of ZPictureModal
+                    w: layout.width,
+                    h: layout.height,
+                    x: event.w !== layout.width ? event.x + ((event.w - layout.width) / 2) : event.x,
+                    y: event.h !== layout.height ? event.y + ((event.h - layout.height) / 2) : event.y,
                 },
                 18,
                 message.senderName,
