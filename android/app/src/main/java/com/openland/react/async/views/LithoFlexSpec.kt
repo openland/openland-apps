@@ -17,6 +17,7 @@ import android.content.res.ColorStateList
 import com.facebook.litho.*
 import com.facebook.yoga.YogaEdge
 import com.facebook.yoga.YogaPositionType
+import android.content.res.Resources
 
 
 @LayoutSpec
@@ -78,10 +79,12 @@ object LithoFlexSpec {
         map.putString("key", spec.touchableKey)
         val loc = IntArray(2)
         view.getLocationInWindow(loc)
-        map.putInt("x", loc[0])
-        map.putInt("y", loc[1])
-        map.putInt("w", view.width)
-        map.putInt("h", view.height)
+        val displayMetrics = Resources.getSystem().displayMetrics
+        map.putInt("x", Math.round(loc[0] / displayMetrics.density))
+        map.putInt("y", Math.round(loc[1] / displayMetrics.density))
+        map.putInt("w", Math.round(view.width / displayMetrics.density))
+        map.putInt("h", Math.round(view.height / displayMetrics.density))
+
         reactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                 .emit("async_on_press", map)
@@ -94,10 +97,12 @@ object LithoFlexSpec {
         map.putString("key", spec.touchableKey)
         val loc = IntArray(2)
         view.getLocationInWindow(loc)
-        map.putInt("x", loc[0])
-        map.putInt("y", loc[1])
-        map.putInt("w", view.width)
-        map.putInt("h", view.height)
+        val displayMetrics = Resources.getSystem().displayMetrics
+        map.putInt("x", Math.round(loc[0] / displayMetrics.density))
+        map.putInt("y", Math.round(loc[1] / displayMetrics.density))
+        map.putInt("w", Math.round(view.width / displayMetrics.density))
+        map.putInt("h", Math.round(view.height / displayMetrics.density))
+
         reactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                 .emit("async_on_long_press", map)
