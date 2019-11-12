@@ -40,9 +40,9 @@ const PageAnimator = React.memo(
         );
 
         let state = props.state;
-        if (state === 'hidden') {
-            return null;
-        }
+        // if (state === 'hidden') {
+        //     return null;
+        // }
 
         return (
             <PageLayout state={state} container={props.router.ref} visible={props.visible}>

@@ -86,7 +86,7 @@ const shadowStateStyles = {
 
 export const PageLayout = (props: {
     children?: any;
-    state: 'mounting' | 'entering' | 'visible' | 'exiting';
+    state: 'mounting' | 'entering' | 'visible' | 'exiting' | 'hidden';
     container: React.RefObject<HTMLDivElement>;
     visible: boolean;
 }) => {
