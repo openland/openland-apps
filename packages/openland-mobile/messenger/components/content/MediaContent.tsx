@@ -153,7 +153,6 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
             >
                 <ASFlex>
                     <ASImage
-                        key={'media-' + attach.id}
                         maxWidth={layout.width}
                         source={{ uri: (attach && attach.uri) ? attach.uri : (downloadState && downloadState.path) ? ('file://' + downloadState.path) : undefined }}
                         isGif={attach!!.fileMetadata.imageFormat === 'GIF'}
