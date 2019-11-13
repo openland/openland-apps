@@ -4,6 +4,7 @@ import { plural } from 'openland-y-utils/plural';
 import { TextBody, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { MessageCompactComponent } from '../messenger/message/MessageCompactContent';
 import ReplyIcon from 'openland-icons/s/ic-reply-24.svg';
+import ForwardIcon from 'openland-icons/s/ic-forward-24.svg';
 import CloseIcon from 'openland-icons/s/ic-close-8.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { css, cx } from 'linaria';
@@ -135,17 +136,27 @@ export const InputMessageActionComponent = (props: { engine: MessagesActionsStat
         return null;
     }
 
+    let ActionIcon;
+
+    if (state.action === 'forward') {
+        ActionIcon = ForwardIcon;
+    }
+
+    if (state.action === 'reply') {
+        ActionIcon = ReplyIcon;
+    }
+
     return (
         <div className={messageActonContainerClass}>
-            {state.action === 'reply' && (
+            {!!ActionIcon && (
                 <div className={messageActionIconWrap}>
-                    <UIcon icon={<ReplyIcon />} color={'#676d7a'} />
+                    <UIcon icon={<ActionIcon />} color={'#676d7a'} />
                 </div>
             )}
             <div
                 className={cx(
                     messageActonInnerContainerClass,
-                    state.action !== 'reply' && messageActionInnerContainerEdit,
+                    !ActionIcon && messageActionInnerContainerEdit,
                 )}
             >
                 {content}
