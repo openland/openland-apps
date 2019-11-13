@@ -1,8 +1,9 @@
 import { UImageCropT } from 'openland-web/components/unicorn/UFileUpload';
+import { ImageRefInput } from 'openland-api/Types';
 
 export function sanitizeImageRef(
     src: { uuid: string; crop?: UImageCropT | null } | null | undefined,
-) {
+): ImageRefInput | null {
     if (src !== null && src !== undefined) {
         return {
             uuid: src.uuid,

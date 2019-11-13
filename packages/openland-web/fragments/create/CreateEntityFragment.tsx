@@ -12,6 +12,7 @@ import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { showModalBox } from 'openland-x/showModalBox';
 import { ExploreFragment } from './ExploreFragment';
 import BackIcon from 'openland-icons/s/ic-back-24.svg';
+import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 
 const containerStyle = css`
     display: flex;
@@ -149,8 +150,8 @@ const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide:
                                                 subtitle: isCommunity
                                                     ? 'Anyone can find and join this community'
                                                     : `${
-                                                          props.entityType
-                                                      } where your organization or community members communicate`,
+                                                    props.entityType
+                                                    } where your organization or community members communicate`,
                                             },
                                             {
                                                 value: true,
@@ -161,8 +162,8 @@ const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide:
                                                 subtitle: isCommunity
                                                     ? 'Only invited people can join community and view chats'
                                                     : `People can view and join only by invite from a ${
-                                                          props.entityType
-                                                      } member`,
+                                                    props.entityType
+                                                    } member`,
                                             },
                                         ]}
                                     />
@@ -204,7 +205,7 @@ const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide:
                             hide={props.hide}
                             title={titleField.value}
                             description={descriptionField.value}
-                            photo={avatarField.value}
+                            photo={sanitizeImageRef(avatarField.value)}
                             secret={secretTypeField.value}
                             inOrgId={props.inOrgId}
                             entityType={props.entityType}

@@ -5,8 +5,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { SearchBox } from './SearchBox';
 import { XLoader } from 'openland-x/XLoader';
 import { ExplorePeople } from './ExplorePeople';
-import { SharedRoomKind } from 'openland-api/Types';
-import { StoredFileT } from 'openland-web/components/unicorn/UAvatarUpload';
+import { SharedRoomKind, ImageRefInput } from 'openland-api/Types';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 
 const headerContainer = css`
@@ -37,7 +36,7 @@ interface CreateEntityInterface {
 
     title: string;
     description?: string;
-    photo?: StoredFileT | null;
+    photo?: ImageRefInput | null;
     secret: boolean;
     hide: () => void;
 }
@@ -163,4 +162,4 @@ const ExplorePeopleComponent = React.memo((props: CreateEntityInterface) => {
     );
 });
 
-export const ExploreFragment = (props: CreateEntityInterface) => <ExplorePeopleComponent {...props}/>;
+export const ExploreFragment = (props: CreateEntityInterface) => <ExplorePeopleComponent {...props} />;
