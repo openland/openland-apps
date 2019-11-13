@@ -6,7 +6,7 @@ import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { View, Platform } from 'react-native';
+import { View, Platform, Clipboard } from 'react-native';
 import { User_conversation_PrivateRoom } from 'openland-api/Types';
 import { formatLastSeen } from 'openland-y-utils/formatTime';
 import { NotificationSettings } from './components/NotificationSetting';
@@ -20,6 +20,9 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { showReachInfo } from 'openland-mobile/components/ZReach';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ZManageButton } from 'openland-mobile/components/ZManageButton';
+import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+import Toast from 'openland-mobile/components/Toast';
 
 const ProfileUserComponent = XMemo<PageProps>((props) => {
     const { user, conversation } = getClient().useUser({ userId: props.router.params.id }, { fetchPolicy: 'cache-and-network' });
@@ -64,9 +67,21 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
         }
     }
 
+    const handleManagePress = React.useCallback(() => {
+        let builder = new ActionSheetBuilder();
+
+        builder.action('Copy link', () => {
+            Clipboard.setString(`https://openland.com/${user.shortname || user.id}`);
+            Toast.showCopiedLink();
+        }, false, require('assets/ic-copy-24.png'));
+
+        builder.show();
+    }, [user.shortname, user.id]);
+
     return (
         <>
             <SHeader title={Platform.OS === 'android' ? 'Info' : user.name} />
+            <ZManageButton onPress={handleManagePress} />
             <SScrollView>
                 <ZListHero
                     photo={user.photo}
