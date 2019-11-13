@@ -15,4 +15,4 @@ export const useLastSeen = (online: boolean) => {
         },
         [update, online],
     );
-}
+};
