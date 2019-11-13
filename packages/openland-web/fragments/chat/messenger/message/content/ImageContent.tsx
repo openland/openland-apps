@@ -120,10 +120,14 @@ const imgPreviewClass = css`
     bottom: 0;
     margin: auto;
     max-width: 100%;
-    /* max-height: 100%; */
     z-index: 0;
     filter: blur(5px);
     background: transparent;
+    transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+`;
+
+const imgPreviewHiddenClass = css`
+    opacity: 0;
 `;
 
 const imgAppearClass = css`
@@ -374,19 +378,22 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     }
 
     const imgRef = React.useRef<HTMLImageElement>(null);
+    const imgPrevRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
     const renderTime = new Date().getTime();
 
     const onLoad = React.useCallback(() => {
         let delta = new Date().getTime() - renderTime;
-        if (imgRef.current && loaderRef.current) {
+        if (imgRef.current && imgPrevRef.current && loaderRef.current) {
             if (delta < 50) {
                 // show image instantly if loaded fast enough
                 imgRef.current.classList.add(imgAppearInstantClass);
+                imgPrevRef.current.classList.add(imgPreviewHiddenClass);
                 loaderRef.current.style.opacity = '0';
             } else {
                 // animate loaded via transition
                 imgRef.current.style.opacity = '1';
+                imgPrevRef.current.style.opacity = '0';
                 loaderRef.current.style.opacity = '0';
             }
         }
@@ -446,7 +453,8 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                     } as React.CSSProperties
                 }
             />
-            <img
+            <ImgWithRetry
+                ref={imgPrevRef}
                 className={imgPreviewClass}
                 width={layoutWidth}
                 height={layoutHeight}
