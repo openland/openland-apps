@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { BackSkipLogo } from '../components/BackSkipLogo';
@@ -54,21 +53,38 @@ export const SignUpAuthMechanism = ({
 
     return (
         <>
-            <XView alignItems="center" flexGrow={1} justifyContent="center" >
-                <XView maxHeight={850} alignItems="center" flexGrow={isMobile ? 1 : undefined} justifyContent="center">
-                    <span className={TextTitle1} >{title}</span>
+            <XView alignItems="center" flexGrow={1} justifyContent="center">
+                <XView
+                    maxHeight={850}
+                    alignItems="center"
+                    flexGrow={isMobile ? 1 : undefined}
+                    justifyContent="center"
+                >
+                    <span className={TextTitle1}>{title}</span>
 
                     <div className={cx(TextBody, TermsText)} style={{ marginTop: 8 }}>
-                        By creating Openland account you are <br /> accepting
-                        <ULink href="https://openland.com/terms" className={cx(TextLabel1, TermsText)}>  Terms </ULink>{' '}
+                        By creating Openland account you are <br /> accepting{' '}
+                        <ULink
+                            href="https://openland.com/terms"
+                            className={cx(TextLabel1, TermsText)}
+                        >
+                            Terms
+                        </ULink>{' '}
                         and{' '}
-                        <ULink href="https://openland.com/privacy" className={cx(TextLabel1, TermsText)}>
+                        <ULink
+                            href="https://openland.com/privacy"
+                            className={cx(TextLabel1, TermsText)}
+                        >
                             Privacy Policy
                         </ULink>
                         .
                     </div>
 
-                    <XView flexGrow={isMobile ? 1 : undefined} justifyContent="center" margin={isMobile ? undefined : 60}>
+                    <XView
+                        flexGrow={isMobile ? 1 : undefined}
+                        justifyContent="center"
+                        margin={isMobile ? undefined : 60}
+                    >
                         <Unicorn width="160" height="160" />
                     </XView>
 
@@ -105,15 +121,9 @@ export const SignUpAuthMechanism = ({
                                 </XView>
                             }
                         />
-                        {/* <GoogleButton rounded={true} onClick={loginWithGoogle} text={googleButtonText} />
-                        <XView marginTop={15}>
-                            <EmailButton rounded={true} onClick={loginWithEmail} text={emailText} />
-                        </XView> */}
                     </XView>
-
                 </XView>
             </XView>
-
         </>
     );
 };
@@ -125,7 +135,11 @@ export const CreateNewAccountPage = (props: AuthMechanism & AuthMechanismOuterPr
 
             {!props.roomView && (
                 <>
-                    <BackSkipLogo onBack={() => window.history.back()} onSkip={null} noLogo={true} />
+                    <BackSkipLogo
+                        onBack={() => window.history.back()}
+                        onSkip={null}
+                        noLogo={true}
+                    />
                     <SignUpAuthMechanism {...props} />
                 </>
             )}
@@ -134,25 +148,3 @@ export const CreateNewAccountPage = (props: AuthMechanism & AuthMechanismOuterPr
         </XView>
     );
 };
-
-export default withApp(
-    'Home',
-    'viewer',
-    () => null,
-    // <CreateNewAccountPage
-    //     roomView={false}
-    //     signin={true}
-    //     loginWithGoogle={() => {
-    //         //
-    //     }}
-    //     loginWithEmail={() => {
-    //         //
-    //     }}
-    //     onLoginClick={() => {
-    //         //
-    //     }}
-    //     onSignUpClick={() => {
-    //         //
-    //     }}
-    // />
-);

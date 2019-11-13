@@ -25,6 +25,9 @@ const inputWrapper = css`
         appearance: none;
         margin: 0; 
     }
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
 `;
 
 const inputStyle = css`
