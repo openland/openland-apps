@@ -215,7 +215,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     <a
                         className={modalButtonStyle}
                         href={
-                            'https://ucarecdn.com/' + props.fileId + '/-/preview/-/inline/no/'
+                            'https://ucarecdn.com/' + props.fileId + '/-/inline/no/'
                         }
                     >
                         <UIcon icon={<IcDownload />} color="var(--backgroundPrimary)" />
