@@ -9,8 +9,22 @@ interface UPresenceProps {
 }
 
 export const UPresence = ((props: UPresenceProps) => {
+    const [update, setUpdate] = React.useState<Date>(new Date());
     const { isBot, lastSeen, online } = props.user;
     const selected = React.useContext(XViewSelectedContext);
+
+    React.useLayoutEffect(
+        () => {
+            let timer: any = null;
+            if (!online) {
+                timer = setInterval(() => {
+                    setUpdate(new Date());
+                }, 1000);
+            }
+            return () => clearInterval(timer);
+        },
+        [update, online],
+    );
 
     let sub = undefined;
     let isOnline = false;
