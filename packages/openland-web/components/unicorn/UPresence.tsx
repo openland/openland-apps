@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { formatLastSeen } from 'openland-y-utils/formatTime';
+import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { UserShort } from 'openland-api/Types';
 import { XViewSelectedContext } from 'react-mental';
 
@@ -9,22 +10,10 @@ interface UPresenceProps {
 }
 
 export const UPresence = ((props: UPresenceProps) => {
-    const [update, setUpdate] = React.useState<Date>(new Date());
     const { isBot, lastSeen, online } = props.user;
     const selected = React.useContext(XViewSelectedContext);
 
-    React.useLayoutEffect(
-        () => {
-            let timer: any = null;
-            if (!online) {
-                timer = setInterval(() => {
-                    setUpdate(new Date());
-                }, 1000);
-            }
-            return () => clearInterval(timer);
-        },
-        [update, online],
-    );
+    useLastSeen(online);
 
     let sub = undefined;
     let isOnline = false;

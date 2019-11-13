@@ -28,6 +28,7 @@ import {
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { TextDensed, TextStyles, HoverAlpha } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';
+import { useLastSeen } from 'openland-y-utils/LastSeen';
 
 const secondary = css`
     color: var(--foregroundSecondary);
@@ -50,7 +51,6 @@ const oneLiner = css`
 `;
 
 const HeaderLastSeen = (props: { id: string }) => {
-    const [update, setUpdate] = React.useState<Date>(new Date());
     const client = useClient();
     const data = client.useWithoutLoaderOnline(
         { userId: props.id },
@@ -59,22 +59,7 @@ const HeaderLastSeen = (props: { id: string }) => {
         },
     );
 
-    React.useLayoutEffect(
-        () => {
-            if (!data) {
-                return;
-            } else {
-                let timer: any = null;
-                if (data.user.lastSeen !== 'online') {
-                    timer = setInterval(() => {
-                        setUpdate(new Date());
-                    }, 1000);
-                }
-                return () => clearInterval(timer);
-            }
-        },
-        [data, update],
-    );
+    useLastSeen(data ? data.user.online : false);
 
     if (!data) {
         return null;

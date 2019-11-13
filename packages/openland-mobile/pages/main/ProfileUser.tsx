@@ -9,6 +9,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { View, Platform, Clipboard } from 'react-native';
 import { User_conversation_PrivateRoom } from 'openland-api/Types';
 import { formatLastSeen } from 'openland-y-utils/formatTime';
+import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { NotificationSettings } from './components/NotificationSetting';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -27,6 +28,8 @@ import Toast from 'openland-mobile/components/Toast';
 const ProfileUserComponent = XMemo<PageProps>((props) => {
     const { user, conversation } = getClient().useUser({ userId: props.router.params.id }, { fetchPolicy: 'cache-and-network' });
     const theme = React.useContext(ThemeContext);
+
+    useLastSeen(user.online);
 
     const handleAddMember = React.useCallback(() => {
         Modals.showGroupMuptiplePicker(props.router, {
