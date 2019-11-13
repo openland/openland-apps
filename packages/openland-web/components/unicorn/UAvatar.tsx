@@ -6,6 +6,7 @@ import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { css, cx } from 'linaria';
 import { PlaceholderOrange, PlaceholderRed, PlaceholderGreen, PlaceholderBlue, PlaceholderCyan, PlaceholderPurple } from 'openland-y-utils/themes/placeholders';
+import { useReloadImage } from 'openland-web/components/ImgWithRetry';
 
 type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'xxx-large';
 
@@ -89,6 +90,7 @@ const imageWrapperRound = css`
 const AvatarImage = React.memo((props: UAvatarProps) => {
     const { photo, size = 'medium', squared } = props;
     const boxSize = AvatarSizes[size].size;
+    const [imageKey, handleImageError] = useReloadImage();
 
     let ops = '-/format/auto/-/scale_crop/' + (boxSize + 'x' + boxSize) + '/center/-/quality/best/-/progressive/yes/';
     let opsRetina =
@@ -99,12 +101,14 @@ const AvatarImage = React.memo((props: UAvatarProps) => {
     return (
         <div className={cx(imageWrapper, !squared && imageWrapperRound)} style={{ width: boxSize, height: boxSize }}>
             <XImage
+                key={imageKey}
                 width="100%"
                 height="100%"
                 src={photo + ops}
                 srcSet={photo + opsRetina}
                 borderRadius={squared ? "0" : "100%"}
                 overflow="hidden"
+                onError={handleImageError}
             />
         </div>
     );

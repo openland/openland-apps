@@ -9,6 +9,7 @@ import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 
 const stickerPackViewerContainer = css`
     display: flex;
@@ -56,7 +57,7 @@ const AddStickerPack = (props: { packId: string; hide: () => void }) => {
                         const ops = `preview/${100}x${100}/`;
                         const opsRetina = `preview/${100 * 2}x${100 * 2}/ 2x`;
                         return (
-                            <img
+                            <ImgWithRetry
                                 key={i.id}
                                 width={100}
                                 height={100}
@@ -134,7 +135,7 @@ export const StickerContent = React.memo((props: ImageContentProps) => {
                 }
             }}
         >
-            <img
+            <ImgWithRetry
                 width={200}
                 height={200}
                 src={url + ops}

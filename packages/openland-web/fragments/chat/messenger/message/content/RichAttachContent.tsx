@@ -11,6 +11,7 @@ import DeleteIcon from 'openland-icons/s/ic-close-16.svg';
 import ZoomIcon from 'openland-icons/s/ic-zoom-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { InternalAttachContent } from './InternalAttachContent';
+import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 
 type messageRichAttach = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
 
@@ -207,7 +208,7 @@ const modalImgStyle = css`
 const showImageModal = (src: string, width: number, height: number) => {
     showModalBox({ width: 600 }, () => (
         <div className={modalImgContainer}>
-            <img src={src} className={modalImgStyle} width={width} height={height} />
+            <ImgWithRetry src={src} className={modalImgStyle} width={width} height={height} />
         </div>
     ));
 };
@@ -300,7 +301,7 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
                     } as React.CSSProperties
                 }
             >
-                <img
+                <ImgWithRetry
                     className={richImageStyle}
                     width={layout.width}
                     height={layout.height}
@@ -317,7 +318,7 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
     if (attach.icon && attach.icon.url) {
         siteIcon = (
             <div className={siteIconContainer}>
-                <img className={siteIconImageStyle} src={attach.icon.url} />
+                <ImgWithRetry className={siteIconImageStyle} src={attach.icon.url} />
             </div>
         );
     }

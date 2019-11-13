@@ -15,6 +15,7 @@ import { formatDateTime } from 'openland-y-utils/formatTime';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 import { XLoader } from 'openland-x/XLoader';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 
 const modalImgContainer = css`
     position: relative;
@@ -157,17 +158,6 @@ const imgSpacer = css`
     }
 `;
 
-const useImageError = () => {
-    const [hasError, setError] = React.useState(false);
-
-    return {
-        imageKey: hasError ? 'loading-error' : 'no-loading-error',
-        handleImageError: () => {
-            setError(true);
-        },
-    };
-};
-
 interface ModalProps {
     fileId: string;
     src: string;
@@ -185,7 +175,6 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
     const renderTime = new Date().getTime();
-    const { imageKey, handleImageError } = useImageError();
 
     const onLoad = React.useCallback(() => {
         let delta = new Date().getTime() - renderTime;
@@ -265,8 +254,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     style={{ cursor: 'default' }}
                 />
                 <XLoader transparentBackground={true} ref={loaderRef} />
-                <img
-                    key={imageKey}
+                <ImgWithRetry
                     ref={imgRef}
                     onLoad={onLoad}
                     src={props.src}
@@ -275,7 +263,6 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     width={props.width}
                     height={props.height}
                     style={{ objectFit: 'contain', cursor: 'default' }}
-                    onError={handleImageError}
                 />
             </div>
         </div>
@@ -389,7 +376,6 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
     const renderTime = new Date().getTime();
-    const { imageKey, handleImageError } = useImageError();
 
     const onLoad = React.useCallback(() => {
         let delta = new Date().getTime() - renderTime;
@@ -467,11 +453,9 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                 src={props.file.filePreview || undefined}
             />
             <XLoader transparentBackground={true} ref={loaderRef} />
-            <img
+            <ImgWithRetry
                 ref={imgRef}
-                key={imageKey}
                 onLoad={onLoad}
-                onError={handleImageError}
                 className={imgAppearClass}
                 width={layoutWidth}
                 height={layoutHeight}

@@ -4,6 +4,7 @@ import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { PlaceholderColor } from 'openland-web/components/unicorn/UAvatar';
 import { showAvatarModal } from 'openland-web/components/showAvatarModal';
+import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 
 const phBackgrounds = [
     css`background-image: linear-gradient(138deg, #ffb600, #ff8d00);`,
@@ -85,7 +86,7 @@ const AvatarImage = React.memo((props: { photo: string }) => {
 
     return (
         <div className={imageWrapper}>
-            <img
+            <ImgWithRetry
                 className={avatarImageClass}
                 src={props.photo + ops}
                 srcSet={props.photo + opsRetina}

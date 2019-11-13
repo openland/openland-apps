@@ -3,6 +3,7 @@ import { css } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
 import { FixedSizeGrid } from 'react-window';
 import { StickerFragment } from 'openland-api/Types';
+import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 
 const container = css`
     display: flex;
@@ -71,7 +72,7 @@ export const StickerComponent = React.memo<{
                     return (
                         <div style={style}>
                             <div className={sticker} onClick={() => sendSticker(item)}>
-                                <img
+                                <ImgWithRetry
                                     width={90}
                                     height={90}
                                     src={url + ops}

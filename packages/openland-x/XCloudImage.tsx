@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 
 export interface XImageCrop {
     x: number;
@@ -69,7 +70,7 @@ export class XCloudImage extends React.PureComponent<XCloudImageProps> {
                 let url = srcCloud + ops + '-/format/jpeg/-/progressive/yes/';
                 let urlRetina = srcCloud + opsRetina + '-/format/jpeg/-/progressive/yes/';
                 return (
-                    <img
+                    <ImgWithRetry
                         src={url}
                         srcSet={urlRetina}
                         className={this.props.className}
@@ -84,7 +85,7 @@ export class XCloudImage extends React.PureComponent<XCloudImageProps> {
                 );
             } else {
                 return (
-                    <img
+                    <ImgWithRetry
                         src={srcCloud}
                         className={this.props.className}
                         style={{
@@ -99,7 +100,7 @@ export class XCloudImage extends React.PureComponent<XCloudImageProps> {
             }
         } else {
             return (
-                <img
+                <ImgWithRetry
                     src={this.props.src ? this.props.src : undefined}
                     className={this.props.className}
                     style={{
