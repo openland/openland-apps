@@ -14,3 +14,19 @@ a:hover {
 }
 
 *{ min-height: 0;min-width: 0; }
+
+/*only for safari fullscreen player*/
+
+:-webkit-full-screen-ancestor *:not(video),
+:-webkit-full-screen-ancestor *:not(audio) {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+:-webkit-full-screen-ancestor * video,
+:-webkit-full-screen-ancestor * audio,
+:-webkit-full-screen-ancestor * video *,
+:-webkit-full-screen-ancestor * audio * {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
