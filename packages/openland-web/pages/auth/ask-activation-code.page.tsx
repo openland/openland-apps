@@ -115,7 +115,7 @@ export const WebSignUpActivationCode = ({
             <XView color="rgba(0, 0, 0, 0.5)" fontSize={14} marginRight={6}>
                 {emailWasResend ? 'Code successfully sent.' : InitTexts.auth.haveNotReceiveCode}
             </XView>
-            <XView onClick={resendCodeClick} color="#1790ff" cursor="pointer">
+            <XView onClick={resendCodeClick} color="#1790ff" cursor="pointer" as="a">
                 <strong>{InitTexts.auth.resend}</strong>
             </XView>
         </>
