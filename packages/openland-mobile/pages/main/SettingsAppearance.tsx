@@ -130,7 +130,7 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                     <View flexDirection="row" justifyContent="flex-start" flexWrap="wrap" paddingHorizontal={8}>
                         {theme.supportedAccents.map(accent => (
                             <AccentCircle
-                                key={`${theme.type}-${accent}`}
+                                key={accent}
                                 onPress={() => handleChange({ theme: currentTheme, accent })}
                                 color={resolveTheme({ theme: currentTheme, accent }).accentPrimary}
                                 checked={theme.accentType === accent}
