@@ -34,7 +34,7 @@ export const useLastSeen = (user: User | null, nonRenewable?: boolean) => {
                             setLastSeen(newLastSeen);
                         }
                     }
-                }, 1000);
+                }, 5000);
             }
         }
         return () => clearInterval(timer);
