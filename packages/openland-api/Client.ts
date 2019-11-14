@@ -2388,6 +2388,7 @@ const OnlineSelector = obj(
             field('user', 'user', args(fieldValue("id", refValue('userId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('isBot', 'isBot', args(), notNull(scalar('Boolean'))),
                     field('lastSeen', 'lastSeen', args(), scalar('String')),
                     field('online', 'online', args(), notNull(scalar('Boolean')))
                 )))
@@ -4098,7 +4099,7 @@ export const Operations = {
     Online: {
         type: 'query',
         name: 'Online',
-        body: 'query Online($userId:ID!){user:user(id:$userId){__typename id lastSeen online}}',
+        body: 'query Online($userId:ID!){user:user(id:$userId){__typename id isBot lastSeen online}}',
         selector: OnlineSelector
     },
     Organization: {

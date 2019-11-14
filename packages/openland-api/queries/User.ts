@@ -49,6 +49,7 @@ export const OnlineQuery = gql`
             id
             online
             lastSeen
+            isBot
         }
     }
 `;

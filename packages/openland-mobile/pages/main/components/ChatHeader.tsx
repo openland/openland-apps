@@ -61,25 +61,9 @@ const SharedChatHeaderContent = XMemo<{ room: Room_room_SharedRoom, typing?: str
 const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: string, theme: ThemeGlobal }>((props) => {
     const { room, typing, theme } = props;
 
-    useLastSeen(room.user.online);
+    let [subtitle, accent] = useLastSeen(room.user);
 
     let title = room.user.name;
-    let accent = false;
-    let subtitle = '';
-
-    if (room.user.isBot) {
-        subtitle = 'bot';
-        accent = true;
-    } else {
-        // use data about user online from room query
-        if (!room.user.online && room.user.lastSeen) {
-            subtitle = formatLastSeen(room.user.lastSeen);
-            accent = false;
-        } else if (room.user.online) {
-            subtitle = 'online';
-            accent = true;
-        }
-    }
 
     if (typing) {
         accent = true;

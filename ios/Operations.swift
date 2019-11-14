@@ -2385,6 +2385,7 @@ private let OnlineSelector = obj(
             field("user", "user", arguments(fieldValue("id", refValue("userId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
+                    field("isBot", "isBot", notNull(scalar("Boolean"))),
                     field("lastSeen", "lastSeen", scalar("String")),
                     field("online", "online", notNull(scalar("Boolean")))
                 )))
@@ -4099,7 +4100,7 @@ class Operations {
     let Online = OperationDefinition(
         "Online",
         .query, 
-        "query Online($userId:ID!){user:user(id:$userId){__typename id lastSeen online}}",
+        "query Online($userId:ID!){user:user(id:$userId){__typename id isBot lastSeen online}}",
         OnlineSelector
     )
     let Organization = OperationDefinition(

@@ -59,29 +59,13 @@ const HeaderLastSeen = (props: { id: string }) => {
         },
     );
 
-    useLastSeen(data ? data.user.online : false);
+    const [sub, accent] = useLastSeen(data ? data.user : null);
 
     if (!data) {
         return null;
     }
 
-    const { user } = data;
-    if (user && (user.lastSeen && user.lastSeen !== 'online' && !user.online)) {
-        return (
-            <span>
-                last seen{' '}
-                {user.lastSeen === 'never_online' ? (
-                    'moments ago'
-                ) : (
-                        <XDate value={user.lastSeen} format="humanize_cute" />
-                    )}
-            </span>
-        );
-    } else if (user && user.online) {
-        return <span className={secondaryAccent}>online</span>;
-    } else {
-        return null;
-    }
+    return <span className={accent ? secondaryAccent : undefined}>{sub}</span>;
 };
 
 const ChatOnlinesTitle = (props: { id: string }) => {
@@ -113,10 +97,10 @@ const CallButton = (props: { chat: ChatInfo; calls: CallsEngine }) => {
                     props.chat.__typename === 'PrivateRoom',
                     props.chat.__typename === 'PrivateRoom'
                         ? {
-                            id: props.chat.user.id,
-                            title: props.chat.user.name,
-                            picture: props.chat.user.photo,
-                        }
+                              id: props.chat.user.id,
+                              title: props.chat.user.name,
+                              picture: props.chat.user.photo,
+                          }
                         : { id: props.chat.id, title: props.chat.title, picture: props.chat.photo },
                 )
             }

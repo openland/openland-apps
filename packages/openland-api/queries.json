@@ -18798,7 +18798,7 @@
 					"type": "ID!"
 				}
 			],
-			"source": "query Online($userId: ID!) {\n  user: user(id: $userId) {\n    __typename\n    id\n    online\n    lastSeen\n  }\n}",
+			"source": "query Online($userId: ID!) {\n  user: user(id: $userId) {\n    __typename\n    id\n    online\n    lastSeen\n    isBot\n  }\n}",
 			"fields": [
 				{
 					"responseName": "user",
@@ -18843,6 +18843,13 @@
 							"type": "String",
 							"isConditional": false,
 							"isDeprecated": false
+						},
+						{
+							"responseName": "isBot",
+							"fieldName": "isBot",
+							"type": "Boolean!",
+							"isConditional": false,
+							"isDeprecated": false
 						}
 					],
 					"fragmentSpreads": [],
@@ -18852,8 +18859,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "query Online($userId: ID!) {\n  user: user(id: $userId) {\n    __typename\n    id\n    online\n    lastSeen\n  }\n}",
-			"operationId": "7686bc2494ba8abdf780a6454cc0bc2a92ff4c863d304d34f14af248518c9398"
+			"sourceWithFragments": "query Online($userId: ID!) {\n  user: user(id: $userId) {\n    __typename\n    id\n    online\n    lastSeen\n    isBot\n  }\n}",
+			"operationId": "720fd170052281e58437cad48d25fd92da6b0c8142e07473358861a4a6eb2069"
 		},
 		{
 			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/User.ts",
@@ -20955,6 +20962,7 @@
 				"MessageSpanLink",
 				"MessageSpanLoud",
 				"MessageSpanMultiUserMention",
+				"MessageSpanOrganizationMention",
 				"MessageSpanRoomMention",
 				"MessageSpanRotating",
 				"MessageSpanUserMention"
@@ -30342,6 +30350,10 @@
 					"type": "[ID!]"
 				},
 				{
+					"name": "orgId",
+					"type": "ID"
+				},
+				{
 					"name": "all",
 					"type": "Boolean"
 				},
@@ -30380,6 +30392,10 @@
 				{
 					"name": "type",
 					"type": "MessageSpanType!"
+				},
+				{
+					"name": "url",
+					"type": "String"
 				}
 			]
 		},
@@ -30417,6 +30433,10 @@
 				},
 				{
 					"name": "Rotating",
+					"isDeprecated": false
+				},
+				{
+					"name": "Link",
 					"isDeprecated": false
 				}
 			]

@@ -1395,10 +1395,10 @@
       }
     },
     {
-      "signature": "684747e7e08c12cc3cd7b8d4d31ba51b4221c657763dd090c83de537be5d4b66",
-      "document": "query Online($userId:ID!){user:user(id:$userId){__typename id lastSeen online}}",
+      "signature": "91ad2f6af2f17a5ccc8ae344434341963a5be19d1f73db5557af35e97faaf3e6",
+      "document": "query Online($userId:ID!){user:user(id:$userId){__typename id isBot lastSeen online}}",
       "metadata": {
-        "engineSignature": "query Online($userId:ID!){user(id:$userId){__typename id lastSeen online}}"
+        "engineSignature": "query Online($userId:ID!){user(id:$userId){__typename id isBot lastSeen online}}"
       }
     },
     {

@@ -43,7 +43,7 @@ export const UserProfileFragment = React.memo((props: { id: string }) => {
             <UListHero
                 title={name}
                 score={!isBot ? audienceSize : undefined}
-                description={<UPresence user={user} />}
+                description={<UPresence user={user} onUserProfilePage={true} />}
                 avatar={{ photo, id, title: name }}
             >
                 {!isYou && <MessageButton isBot={isBot} id={id} />}

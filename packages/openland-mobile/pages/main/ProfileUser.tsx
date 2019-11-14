@@ -29,8 +29,6 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
     const { user, conversation } = getClient().useUser({ userId: props.router.params.id }, { fetchPolicy: 'cache-and-network' });
     const theme = React.useContext(ThemeContext);
 
-    useLastSeen(user.online);
-
     const handleAddMember = React.useCallback(() => {
         Modals.showGroupMuptiplePicker(props.router, {
             title: 'Add',
@@ -56,19 +54,10 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
 
     const myID = getMessenger().engine.user.id;
 
-    let sub = undefined;
-    let subColor = undefined;
-    if (user.isBot) {
-        sub = 'bot';
-        subColor = theme.accentPrimary;
-    } else {
-        if (!user.online && user.lastSeen) {
-            sub = formatLastSeen(user.lastSeen);
-        } else {
-            sub = 'online';
-            subColor = theme.accentPrimary;
-        }
-    }
+    const [sub, accent] = useLastSeen(user);
+
+    const subtitle = sub as string | null;
+    const subColor = accent ? theme.accentPrimary : undefined;
 
     const handleManagePress = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
@@ -90,7 +79,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     photo={user.photo}
                     id={user.id}
                     title={user.name}
-                    subtitle={sub}
+                    subtitle={subtitle}
                     subtitleColor={subColor}
                     action={{
                         title: !user.isBot ? ((myID === user.id) ? 'Edit profile' : 'Send message') : 'Open messages',
