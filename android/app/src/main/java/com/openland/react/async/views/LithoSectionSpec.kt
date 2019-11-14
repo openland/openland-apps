@@ -96,8 +96,8 @@ object LithoSectionSpec {
                 )
                 .child(DataDiffSection.create<AsyncDataViewItem>(c)
                         .data(dataModel)
-// known bug: list resets position after all items updated, method below can fix it, but some how (possible litho bug, yet we cant use latest version because of androidX)
-// if this methods are enabled item height is not updating (requestLayout not called?)
+// known bug: list resets position after all items updated, method below can fix it, but some how (possible litho bug)
+// if this methods are enabled item renders prev spec (wtf litho fuck you fucking fuck) if height changes
 //                        .onCheckIsSameItemEventHandler(LithoSection.isSameItem(c))
 //                        .onCheckIsSameContentEventHandler(LithoSection.isSameContent(c))
                         .renderEventHandler(LithoSection.onRenderEdge(c)))
