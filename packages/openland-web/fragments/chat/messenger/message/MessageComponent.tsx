@@ -140,7 +140,7 @@ const messageContainerClass = css`
     justify-content: space-between;
     align-items: center;
     padding: 4px 0;
-    border-radius: 12px;
+    border-radius: 8px;
     align-self: center;
     width: calc(100% - 32px);
 
