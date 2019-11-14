@@ -290,8 +290,11 @@ const fileIcon = {
     ZIP: <IcViolet />,
     VIDEO: <IcViolet />,
     DOCX: <IcBlue />,
+    PAGES: <IcBlue />,
     XLSX: <IcGreen />,
+    NUMB: <IcGreen />,
     PPTX: <IcYellow />,
+    KEY: <IcYellow />,
 };
 
 const fileFormat = (name: string) => {
@@ -305,14 +308,23 @@ const fileFormat = (name: string) => {
     if (name.endsWith('.mp4') || name.endsWith('.mov')) {
         format = 'VIDEO';
     }
-    if (name.endsWith('.doc') || name.endsWith('.docx') || name.endsWith('.pages')) {
+    if (name.endsWith('.doc') || name.endsWith('.docx')) {
         format = 'DOCX';
     }
-    if (name.endsWith('.xls') || name.endsWith('.xlsx') || name.endsWith('.numbers')) {
+    if (name.endsWith('.pages')) {
+        format = 'PAGES';
+    }
+    if (name.endsWith('.xls') || name.endsWith('.xlsx')) {
         format = 'XLSX';
     }
-    if (name.endsWith('.ppt') || name.endsWith('.pptx') || name.endsWith('.key')) {
+    if (name.endsWith('.numbers')) {
+        format = 'NUMB';
+    }
+    if (name.endsWith('.ppt') || name.endsWith('.pptx')) {
         format = 'PPTX';
+    }
+    if (name.endsWith('.key')) {
+        format = 'KEY';
     }
     return format;
 };
