@@ -8,7 +8,6 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { View, Platform, Clipboard } from 'react-native';
 import { User_conversation_PrivateRoom } from 'openland-api/Types';
-import { formatLastSeen } from 'openland-y-utils/formatTime';
 import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { NotificationSettings } from './components/NotificationSetting';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
