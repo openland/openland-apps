@@ -6,10 +6,12 @@ import UUID from 'uuid/v4';
 import { ASEventEmitter } from './platform/ASEventEmitter';
 import { SQueue } from 'react-native-s/SQueue';
 import { throttledMap } from 'react-native-s/SThrottler';
+import { doSimpleHash } from 'openland-y-utils/hash';
 
 class ItemRenderHolder<T extends DataSourceItem> {
     item: T;
     currentState: any;
+    currentStateHash = 0;
     readonly dataView: ASDataView<T>;
 
     private container: AsyncRenderer;
@@ -21,14 +23,17 @@ class ItemRenderHolder<T extends DataSourceItem> {
         this.render = render;
         this.container = new AsyncRenderer(
             () => {
-                let st = JSON.parse(JSON.stringify(this.container.getState()));
-                if (this.currentState !== st) {
+                let st = this.container.getState();
+                let hs = doSimpleHash(JSON.stringify(st));
+                if (this.currentStateHash !== hs) {
                     this.currentState = st;
+                    this.currentStateHash = hs;
                     dataView.onDataSourceItemRenderUpdated(this.item.key);
                 }
             },
             render(initial));
-        this.currentState = JSON.parse(JSON.stringify(this.container.getState()));
+        this.currentState = this.container.getState();
+        this.currentStateHash = doSimpleHash(JSON.stringify(this.currentState));
     }
 
     updateItem(item: T) {
