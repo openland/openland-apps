@@ -19,6 +19,7 @@ a:hover {
 
 :-webkit-full-screen-ancestor *:not(video),
 :-webkit-full-screen-ancestor *:not(audio) {
+    visibility: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
 }
@@ -27,6 +28,7 @@ a:hover {
 :-webkit-full-screen-ancestor * audio,
 :-webkit-full-screen-ancestor * video *,
 :-webkit-full-screen-ancestor * audio * {
+    visibility: visible !important;
     opacity: 1 !important;
     pointer-events: auto !important;
 }
