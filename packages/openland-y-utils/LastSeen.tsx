@@ -12,7 +12,19 @@ class LastSeenManagerImpl {
     private subscriptions: { currentValue: string, lastSeen: string, cb: (str: string) => void }[] = [];
     private loop: any;
 
-    tryStart() {
+    subscribe(lastSeen: string, cb: (str: string) => void) {
+        this.subscriptions.push({lastSeen, cb, currentValue: formatLastSeen(lastSeen)});
+        this.tryStart();
+        return () => {
+            let index = this.subscriptions.findIndex(s => s.cb === cb);
+            if (index === -1) {
+                throw new Error('Double unsubscribe');
+            }
+            this.subscriptions.splice(index, 1);
+        };
+    }
+
+    private tryStart() {
         if (this.loop) {
             return;
         }
@@ -31,18 +43,6 @@ class LastSeenManagerImpl {
                 }
             }
         }, 5000);
-    }
-
-    subscribe(lastSeen: string, cb: (str: string) => void) {
-        this.subscriptions.push({lastSeen, cb, currentValue: formatLastSeen(lastSeen)});
-        this.tryStart();
-        return () => {
-            let index = this.subscriptions.findIndex(s => s.cb === cb);
-            if (index === -1) {
-                throw new Error('Double unsubscribe');
-            }
-            this.subscriptions.splice(index, 1);
-        };
     }
 }
 
