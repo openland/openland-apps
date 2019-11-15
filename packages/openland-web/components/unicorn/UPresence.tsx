@@ -6,12 +6,11 @@ import { XViewSelectedContext } from 'react-mental';
 interface UPresenceProps {
     user: UserShort;
     suffix?: string | JSX.Element;
-    onUserProfilePage?: boolean;
 }
 
 export const UPresence = ((props: UPresenceProps) => {
     const selected = React.useContext(XViewSelectedContext);
-    const [sub, accent] = useLastSeen(props.user, !props.onUserProfilePage);
+    const [sub, accent] = useLastSeen(props.user);
 
     return (
         <span>
