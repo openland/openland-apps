@@ -19,6 +19,7 @@ import IcGreen from 'openland-icons/files/green.svg';
 import IcRed from 'openland-icons/files/red.svg';
 import IcViolet from 'openland-icons/files/violet.svg';
 import IcYellow from 'openland-icons/files/yellow.svg';
+import { isElectron } from 'openland-y-utils/isElectron';
 
 const modalContainer = css`
     position: relative;
@@ -99,6 +100,49 @@ interface ModalProps {
     date?: number;
 }
 
+let PdfDocument: any;
+let PdfPage: any;
+const ReactPdf = (props: { path: string }) => {
+    
+    const [ready, setReaady] = React.useState(false);
+    React.useEffect(() => {
+        (async () => {
+            const { Document, Page } = await import(/* webpackMode: "lazy" */'react-pdf');
+            PdfDocument = Document;
+            PdfPage = Page;
+            setReaady(true);
+        })();
+    }, []);
+    const [numPages, setNumPages] = React.useState<number>();
+
+    const onDocumentLoadSuccess = React.useCallback((document: any) => {
+        setNumPages(document.numPages);
+    }, []);
+    return (
+        <div style={{ overflow: 'scroll' }}>
+            {ready ?
+                <PdfDocument
+                    file={props.path}
+                    onLoadSuccess={onDocumentLoadSuccess}
+                    loading={<XLoader transparentBackground={true} size="medium" />}
+                >
+                    {Array.from(
+                        new Array(numPages),
+                        (el, index) => (
+                            <PdfPage
+                                key={`page_${index + 1}`}
+                                pageNumber={index + 1}
+                            />
+                        ),
+                    )}
+                </PdfDocument> :
+                <XLoader transparentBackground={true} size="medium" />
+            }
+
+        </div>
+    );
+};
+
 const ModalContent = (props: ModalProps & { hide: () => void }) => {
     const messenger = React.useContext(MessengerContext);
 
@@ -141,12 +185,15 @@ const ModalContent = (props: ModalProps & { hide: () => void }) => {
                 </div>
             </div>
             <div className={modalContent} onClick={e => e.stopPropagation()}>
-                <embed
-                    src={`https://ucarecdn.com/${props.fileId}/-/inline/yes/${props.fileName}`}
-                    width="100%"
-                    height="100%"
-                    type="application/pdf"
-                />
+
+                {isElectron ?
+                    <ReactPdf path={`https://ucarecdn.com/${props.fileId}/-/inline/yes/${props.fileName}`} /> :
+                    <embed
+                        src={`https://ucarecdn.com/${props.fileId}/-/inline/yes/${props.fileName}`}
+                        width="100%"
+                        height="100%"
+                        type="application/pdf"
+                    />}
             </div>
         </div>
     );
@@ -392,16 +439,16 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
                     {file.uri ? (
                         <XLoader size="small" color="#fff" transparentBackground={true} />
                     ) : (
-                        <div className={cx(iconInfo, 'icon-info')}>
-                            <UIcon
-                                icon={applyShowPdfModal ? <IcSearch /> : <IcDownload />}
-                                color="#fff"
-                                size={16}
-                                className="download-icon"
-                            />
-                            <div className="format-text">{fileFormat(name)}</div>
-                        </div>
-                    )}
+                            <div className={cx(iconInfo, 'icon-info')}>
+                                <UIcon
+                                    icon={applyShowPdfModal ? <IcSearch /> : <IcDownload />}
+                                    color="#fff"
+                                    size={16}
+                                    className="download-icon"
+                                />
+                                <div className="format-text">{fileFormat(name)}</div>
+                            </div>
+                        )}
                 </div>
                 <div className={metadataContainer}>
                     <div className={cx(title + ' title', TextLabel1)}>{name}</div>
