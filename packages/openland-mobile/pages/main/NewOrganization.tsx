@@ -52,7 +52,7 @@ const NewOrganizationComponent = (props: PageProps) => {
     };
 
     return (
-        <ZTrack event="new_org_view">
+        <ZTrack event={isCommunity ? 'navigate_new_community' : 'navigate_new_org'}>
             <SHeader title={isCommunity ? 'New community' : 'New organization'} />
             <SHeaderButton title="Create" onPress={handleSave} />
             <KeyboardAvoidingScrollView>

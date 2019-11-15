@@ -13,6 +13,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { ExploreFragment } from './ExploreFragment';
 import BackIcon from 'openland-icons/s/ic-back-24.svg';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
+import { trackEvent } from 'openland-x-analytics';
 
 const containerStyle = css`
     display: flex;
@@ -113,6 +114,31 @@ const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide:
     const showSharingList = !secretTypeField.value && !isCommunity && !isOrg;
 
     const canNextClick = !!titleField.value.trim();
+    const handleNextClick = React.useCallback(() => {
+        if (!canNextClick) {
+            return;
+        }
+        setSettingsPage(false);
+
+        if (isOrg) {
+            trackEvent('navigate_new_org_add_members');
+        }
+
+        if (isCommunity) {
+            trackEvent('navigate_new_community_add_members');
+        }
+    }, [canNextClick]);
+
+    const handleBackIcon = React.useCallback(() => {
+        setSettingsPage(true);
+        if (isOrg) {
+            trackEvent('navigate_new_org');
+        }
+
+        if (isCommunity) {
+            trackEvent('navigate_new_community');
+        }
+    }, []);
 
     return (
         <div className={containerStyle}>
@@ -124,7 +150,7 @@ const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide:
                             <UButton
                                 text="Next"
                                 disable={!canNextClick}
-                                onClick={canNextClick ? () => setSettingsPage(false) : undefined}
+                                onClick={handleNextClick}
                             />
                         </div>
                         <div className={bodyContainer}>
@@ -197,7 +223,7 @@ const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide:
                         <div className={backButtonContainer}>
                             <UIconButton
                                 icon={<BackIcon />}
-                                onClick={() => setSettingsPage(true)}
+                                onClick={handleBackIcon}
                                 size="large"
                             />
                         </div>
@@ -218,5 +244,13 @@ const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide:
 });
 
 export const showCreatingFragment = (props: CreateEntityInterface) => {
+    if (props.entityType === 'organization') {
+        trackEvent('navigate_new_org');
+    }
+
+    if (props.entityType === 'community') {
+        trackEvent('navigate_new_community');
+    }
+
     showModalBox({ fullScreen: true }, ctx => <CreateEntityComponent {...props} hide={ctx.hide} />);
 };

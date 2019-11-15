@@ -49,9 +49,9 @@ interface MessagesComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
 }
 
@@ -187,7 +187,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         //     }
         // });
         trackEvent('mail_view');
-        trackEvent('navigate_chats');
         this.unmounter = this.conversation!.engine.mountConversation(this.props.conversationId);
         this.unmounter2 = this.conversation!.subscribe(this);
         if (!this.conversation) {
@@ -403,7 +402,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         return (
             <div className={messengerContainer}>
                 {memberProfiles && (
-                    <MemberProfilesComponent chatId={this.props.room.id}/>
+                    <MemberProfilesComponent chatId={this.props.room.id} />
                 )}
                 {pin &&
                     !this.state.loading && (
@@ -457,9 +456,9 @@ interface MessengerRootComponentProps {
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
     pinMessage:
-        | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
-        | null;
+    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
+    | null;
     room: RoomChat_room;
 }
 

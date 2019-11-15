@@ -1,6 +1,6 @@
 import NRouter from 'next/router';
 import * as NProgress from 'nprogress';
-import { trackError } from 'openland-x-analytics';
+import { trackError, trackEvent } from 'openland-x-analytics';
 
 NProgress.configure({ showSpinner: false, parent: '#progress_container' });
 
@@ -93,7 +93,7 @@ NRouter.events.on('routeChangeComplete', (url: string) => {
     // trackPage();
 });
 
-NRouter.events.on('routeChangeError', (error: any) => {
+NRouter.events.on('routeChangeError', (error, url) => {
     // tslint:disable
     console.log(`onRouteChangeError`);
     // tslint:enable
@@ -108,6 +108,7 @@ NRouter.events.on('routeChangeError', (error: any) => {
     // tslint:enable
 
     trackError(error);
+    trackEvent('navigate_error', { error_type: error });
     stopProgress(0);
 });
 

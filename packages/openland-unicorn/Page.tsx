@@ -2,6 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { XScrollView3, XScrollValues } from '../openland-x/XScrollView3';
 import { trackEvent } from 'openland-x-analytics';
+import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 
 interface PageProps {
     track: string;
@@ -14,9 +15,12 @@ interface PageProps {
 }
 
 export const Page = React.memo((props: PageProps) => {
+    const isTabVisible = useVisibleTab();
     React.useEffect(() => {
-        trackEvent('navigate_' + props.track);
-    }, []);
+        if (isTabVisible) {
+            trackEvent('navigate_' + props.track);
+        }
+    }, [isTabVisible]);
     const { style = 'normal', scroll = 'enable', padded, onScroll, children } = props;
     const width = style === 'normal' ? 600 : 856;
     const marginHorizontal = padded ? 16 : 0;

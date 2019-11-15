@@ -3,6 +3,7 @@ import { StackRouter, StackRouterContext, StackItems } from './StackRouter';
 import { PageLayout } from './PageLayout';
 import { UnicornContext } from './UnicornContext';
 import { XViewRoute, XViewRouteContext } from 'react-mental';
+import { VisibleTabContext } from 'openland-unicorn/components/utils/VisibleTabContext';
 
 const PageAnimator = React.memo(
     (props: {
@@ -55,32 +56,32 @@ const PageAnimator = React.memo(
 
 type AnimationAction =
     | {
-          type: 'push';
-          key: string;
-          query: any;
-          id?: string;
-          path: string;
-          component: any;
-      }
+        type: 'push';
+        key: string;
+        query: any;
+        id?: string;
+        path: string;
+        component: any;
+    }
     | {
-          type: 'pop';
-          key: string;
-      }
+        type: 'pop';
+        key: string;
+    }
     | {
-          type: 'entered';
-          key: string;
-      }
+        type: 'entered';
+        key: string;
+    }
     | {
-          type: 'exited';
-          key: string;
-      }
+        type: 'exited';
+        key: string;
+    }
     | {
-          type: 'mounted';
-      }
+        type: 'mounted';
+    }
     | {
-          type: 'reset';
-          pages: StackItems[];
-      };
+        type: 'reset';
+        pages: StackItems[];
+    };
 
 type AnimationState = {
     pages: {
@@ -235,28 +236,30 @@ export const StackLayout = React.memo(
         });
         return (
             <StackRouterContext.Provider value={props.router}>
-                <div key="content" className={props.className} ref={props.router.ref}>
-                    {state.pages.map((v, i) => (
-                        <PageAnimator
-                            state={v.state}
-                            key={v.key}
-                            k={v.key}
-                            dispatch={dispatch}
-                            router={props.router}
-                            visible={props.visible}
-                            depth={i}
-                        >
-                            <PageComponent
-                                component={v.component}
-                                query={v.query}
-                                id={v.id}
-                                path={v.path}
-                                protocol={baseRoute.protocol}
-                                hostName={baseRoute.hostName}
-                            />
-                        </PageAnimator>
-                    ))}
-                </div>
+                <VisibleTabContext.Provider value={props.visible}>
+                    <div key="content" className={props.className} ref={props.router.ref}>
+                        {state.pages.map((v, i) => (
+                            <PageAnimator
+                                state={v.state}
+                                key={v.key}
+                                k={v.key}
+                                dispatch={dispatch}
+                                router={props.router}
+                                visible={props.visible}
+                                depth={i}
+                            >
+                                <PageComponent
+                                    component={v.component}
+                                    query={v.query}
+                                    id={v.id}
+                                    path={v.path}
+                                    protocol={baseRoute.protocol}
+                                    hostName={baseRoute.hostName}
+                                />
+                            </PageAnimator>
+                        ))}
+                    </div>
+                </VisibleTabContext.Provider>
             </StackRouterContext.Provider>
         );
     },

@@ -26,6 +26,7 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 import { trackEvent } from 'openland-mobile/analytics';
+import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 
 const PrivateProfile = XMemo<PageProps & { organization: OrganizationWithoutMembers_organization }>((props) => {
     const { router, organization } = props;
@@ -304,6 +305,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
 
     const content = (
         <>
+            <ZTrack event={organization.isCommunity ? 'navigate_community_profile' : 'navigate_org_profile'} />
             <ZListHero
                 photo={organization.photo}
                 id={organization.id}

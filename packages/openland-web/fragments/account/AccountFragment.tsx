@@ -22,6 +22,8 @@ import { TextStyles } from 'openland-web/utils/TextStyles';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { showCreatingFragment } from 'openland-web/fragments/create/CreateEntityFragment';
+import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
+import { trackEvent } from 'openland-x-analytics';
 
 const UserProfileCard = withUserInfo(({ user }) => {
     if (user) {
@@ -88,63 +90,72 @@ export const Organizations = React.memo(() => {
     );
 });
 
-export const AccountFragment = React.memo(() => (
-    <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
-        <USideHeader title="Account">
-            <UIconButton icon={<LeaveIcon />} size="large" onClick={showLogoutConfirmation} />
-        </USideHeader>
-        <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">
-            <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
-                <UserProfileCard />
-                <UListItem
-                    title="Edit profile"
-                    icon={<EditProfileIcon />}
-                    path="/settings/profile"
-                />
-                <UListItem
-                    title="Invite friends"
-                    icon={<InviteFriendsIcon />}
-                    path="/settings/invites"
-                />
-                <XWithRole role="super-admin">
-                    <UListItem
-                        title="Finance"
-                        icon={<NotificationsIcon />}
-                        path="/settings/finance"
-                    />
-                </XWithRole>
-                <UListItem
-                    title="Notifications"
-                    icon={<NotificationsIcon />}
-                    path="/settings/notifications"
-                />
-                <UListItem title="Email preferences" icon={<EmailIcon />} path="/settings/email" />
-                <UListItem
-                    title="Appearance"
-                    icon={<AppearanceIcon />}
-                    path="/settings/appearance"
-                />
-                <UListItem
-                    title="Download apps"
-                    icon={<DownloadIcon />}
-                    path="/settings/download"
-                />
+export const AccountFragment = React.memo(() => {
+    const isVisible = useVisibleTab();
+    React.useEffect(() => {
+        if (isVisible) {
+            trackEvent('navigate_account');
+        }
+    }, [isVisible]);
 
-                <UListGroup
-                    header="Organizations"
-                    action={{
-                        title: 'New',
-                        onClick: () => {
-                            showCreatingFragment({ entityType: 'organization' });
-                            // router.navigate('/new/organization')
-                        },
-                    }}
-                >
-                    <React.Suspense fallback={<XLoader loading={true} />}>
-                        <Organizations />
-                    </React.Suspense>
-                </UListGroup>
-            </XScrollView3>
+    return (
+        <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
+            <USideHeader title="Account">
+                <UIconButton icon={<LeaveIcon />} size="large" onClick={showLogoutConfirmation} />
+            </USideHeader>
+            <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">
+                <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
+                    <UserProfileCard />
+                    <UListItem
+                        title="Edit profile"
+                        icon={<EditProfileIcon />}
+                        path="/settings/profile"
+                    />
+                    <UListItem
+                        title="Invite friends"
+                        icon={<InviteFriendsIcon />}
+                        path="/settings/invites"
+                    />
+                    <XWithRole role="super-admin">
+                        <UListItem
+                            title="Finance"
+                            icon={<NotificationsIcon />}
+                            path="/settings/finance"
+                        />
+                    </XWithRole>
+                    <UListItem
+                        title="Notifications"
+                        icon={<NotificationsIcon />}
+                        path="/settings/notifications"
+                    />
+                    <UListItem title="Email preferences" icon={<EmailIcon />} path="/settings/email" />
+                    <UListItem
+                        title="Appearance"
+                        icon={<AppearanceIcon />}
+                        path="/settings/appearance"
+                    />
+                    <UListItem
+                        title="Download apps"
+                        icon={<DownloadIcon />}
+                        path="/settings/download"
+                    />
+
+                    <UListGroup
+                        header="Organizations"
+                        action={{
+                            title: 'New',
+                            onClick: () => {
+                                showCreatingFragment({ entityType: 'organization' });
+                                // router.navigate('/new/organization')
+                            },
+                        }}
+                    >
+                        <React.Suspense fallback={<XLoader loading={true} />}>
+                            <Organizations />
+                        </React.Suspense>
+                    </UListGroup>
+                </XScrollView3>
+            </XView>
         </XView>
-    </XView>
-));
+    );
+});

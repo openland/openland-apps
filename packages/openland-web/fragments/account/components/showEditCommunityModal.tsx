@@ -283,7 +283,7 @@ const EditCommunityEntity = (props: {
 };
 
 export const showEditCommunityModal = (id: string, isCommunity: boolean, isOwner: boolean) => {
-    trackEvent(`navigate_${isCommunity ? 'community' : 'organization'}_profile_edit`);
+    trackEvent(`navigate_${isCommunity ? 'community' : 'org'}_profile_edit`);
     showModalBox({ title: isCommunity ? 'Edit community' : 'Edit organization' }, ctx => {
         return (
             <EditCommunityEntity

@@ -14,7 +14,7 @@ import { trackEvent } from 'openland-mobile/analytics';
 
 const InvitesComponent = XMemo<PageProps>((props) => {
     React.useEffect(() => {
-        trackEvent('invite_friends_view');
+        trackEvent('navigate_account_invite');
     }, []);
 
     const theme = React.useContext(ThemeContext);

@@ -5,6 +5,8 @@ import { DialogListFragment } from './DialogListFragment';
 import { UCounter } from 'openland-unicorn/UCounter';
 import { useClient } from 'openland-web/utils/useClient';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
+import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
+import { trackEvent } from 'openland-x-analytics';
 
 const DialogsCounter = React.memo(() => {
     const client = useClient();
@@ -17,6 +19,13 @@ const DialogsCounter = React.memo(() => {
 
 export const DialogsFragment = React.memo(() => {
     let router = React.useContext(XViewRouterContext)!;
+    const isVisible = useVisibleTab();
+    React.useEffect(() => {
+        if (isVisible) {
+            trackEvent('navigate_chats');
+        }
+    }, [isVisible]);
+
     return (
         <>
             <DialogsCounter />

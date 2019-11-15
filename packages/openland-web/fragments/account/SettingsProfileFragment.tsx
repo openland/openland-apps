@@ -125,7 +125,7 @@ export const SettingsProfileFragment = React.memo(() => {
     );
 
     return (
-        <Page track="account">
+        <Page track="user_profile_edit">
             <UHeader title="Profile" />
             <FormWrapper>
                 <XView flexDirection="row" flexGrow={1}>

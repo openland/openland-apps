@@ -179,10 +179,6 @@ export const InviteFriendsComponent = (props: InviteFriendsFragmentProps) => {
         { invite: openlandInvite } = client.useAccountAppInvite(),
         isMobile = useLayout() === 'mobile';
 
-    React.useEffect(() => {
-        trackEvent('invite_friends_view');
-    }, []);
-
     return (
         <XView
             flexDirection="row"
@@ -241,7 +237,7 @@ export const InviteFriendsComponent = (props: InviteFriendsFragmentProps) => {
 
 export const InviteFriendsFragment = React.memo(() => (
     <Page track="account_invite">
-        <UHeader documentTitle="Invite"/>
+        <UHeader documentTitle="Invite" />
         <InviteFriendsComponent onSettingPage={true} />
     </Page>
 ));
