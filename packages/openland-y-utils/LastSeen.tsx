@@ -57,7 +57,6 @@ export const useLastSeen = (user: User | null) => {
 
     React.useEffect(() => {
         let unsub: (() => void) | null = null;
-        let timer: any = null;
         if (isBot && lastSeen !== 'bot') {
             return setLastSeen('bot');
         } else if (!isBot) {
@@ -73,7 +72,6 @@ export const useLastSeen = (user: User | null) => {
             }
         }
         return () => {
-            clearInterval(timer);
             if (unsub) {
                 unsub();
             }
