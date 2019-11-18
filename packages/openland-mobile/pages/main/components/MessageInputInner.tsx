@@ -103,10 +103,10 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
                 />
             )}
             {!props.showLoader && (
-                <View width={52} height={52} alignItems="center" justifyContent="center">
+                <View width={56} height={52} alignItems="center" justifyContent="center">
                     <TouchableOpacity disabled={!props.canSubmit} onPress={props.onSubmitPress}>
                         <View width={44} height={44} alignItems="center" justifyContent="center">
-                            <Image source={props.canSubmit ? iconFilled : icon} style={{ width: 26, height: 26, tintColor: props.canSubmit && props.enabled !== false ? theme.accentPrimary : theme.foregroundSecondary }} />
+                            <Image source={props.canSubmit ? iconFilled : icon} style={{ width: 24, height: 24, tintColor: props.canSubmit && props.enabled !== false ? theme.accentPrimary : theme.foregroundSecondary }} />
                         </View>
                     </TouchableOpacity>
                 </View>
