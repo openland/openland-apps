@@ -137,7 +137,7 @@ const placeholderSingleStyle = css`
     &.Select--single.has-value + .Stranger-placeholder {
         font-size: 13px;
         line-height: 18px;
-        color: var(--foregroundTertiary);
+        color: var(--foregroundSecondary);
         top: 8px;
     }
 
@@ -277,7 +277,7 @@ const OptionRender = (option: OptionType) => {
     }
     return (
         <div className={cx(optionContainer, optionShortContainer)}>
-            <div className={cx(TextLabel1, optionLabelStyle)}>{option.label}</div>
+            <div className={cx(TextBody, optionLabelStyle)}>{option.label}</div>
         </div>
     );
 };
