@@ -20,6 +20,7 @@ import IcRed from 'openland-icons/files/red.svg';
 import IcViolet from 'openland-icons/files/violet.svg';
 import IcYellow from 'openland-icons/files/yellow.svg';
 import { isElectron } from 'openland-y-utils/isElectron';
+import { electronBus } from 'openland-web/utils/electronBus';
 
 const modalContainer = css`
     position: relative;
@@ -100,50 +101,7 @@ interface ModalProps {
     date?: number;
 }
 
-let PdfDocument: any;
-let PdfPage: any;
-const ReactPdf = (props: { path: string }) => {
-    
-    const [ready, setReaady] = React.useState(false);
-    React.useEffect(() => {
-        (async () => {
-            const { Document, Page } = await import(/* webpackMode: "lazy" */'react-pdf');
-            PdfDocument = Document;
-            PdfPage = Page;
-            setReaady(true);
-        })();
-    }, []);
-    const [numPages, setNumPages] = React.useState<number>();
-
-    const onDocumentLoadSuccess = React.useCallback((document: any) => {
-        setNumPages(document.numPages);
-    }, []);
-    return (
-        <div style={{ overflow: 'scroll' }}>
-            {ready ?
-                <PdfDocument
-                    file={props.path}
-                    onLoadSuccess={onDocumentLoadSuccess}
-                    loading={<XLoader transparentBackground={true} size="medium" />}
-                >
-                    {Array.from(
-                        new Array(numPages),
-                        (el, index) => (
-                            <PdfPage
-                                key={`page_${index + 1}`}
-                                pageNumber={index + 1}
-                            />
-                        ),
-                    )}
-                </PdfDocument> :
-                <XLoader transparentBackground={true} size="medium" />
-            }
-
-        </div>
-    );
-};
-
-const ModalContent = (props: ModalProps & { hide: () => void }) => {
+const ModalContent = (props: ModalProps & { hide: () => void, url?: string }) => {
     const messenger = React.useContext(MessengerContext);
 
     const forwardCallback = React.useCallback(() => {
@@ -151,6 +109,16 @@ const ModalContent = (props: ModalProps & { hide: () => void }) => {
             messenger.sender.shareFile(id, props.fileId);
         });
     }, []);
+
+    React.useEffect(() => {
+        return electronBus('download-complete', (e, arg) => {
+            if (arg === props.url) {
+                setTimeout(() => {
+                    props.hide();
+                }, 1000);
+            }
+        });
+    });
 
     return (
         <div className={modalContainer} onClick={props.hide}>
@@ -185,9 +153,8 @@ const ModalContent = (props: ModalProps & { hide: () => void }) => {
                 </div>
             </div>
             <div className={modalContent} onClick={e => e.stopPropagation()}>
-
                 {isElectron ?
-                    <ReactPdf path={`https://ucarecdn.com/${props.fileId}/-/inline/yes/${props.fileName}`} /> :
+                    <XLoader transparentBackground={true} /> :
                     <embed
                         src={`https://ucarecdn.com/${props.fileId}/-/inline/yes/${props.fileName}`}
                         width="100%"
@@ -199,10 +166,12 @@ const ModalContent = (props: ModalProps & { hide: () => void }) => {
     );
 };
 
-const showPdfModal = (props: ModalProps) => {
-    showModalBox({ fullScreen: true, darkOverlay: true, useTopCloser: false }, ctx => (
-        <ModalContent {...props} hide={ctx.hide} />
-    ));
+const showPdfModal = (props: ModalProps, url?: string) => {
+    showModalBox({ fullScreen: true, darkOverlay: true, useTopCloser: false }, ctx => {
+        return (
+            <ModalContent {...props} hide={ctx.hide} url={url} />
+        );
+    });
 };
 
 const fileContainer = css`
@@ -404,6 +373,8 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
         return <VideoContent file={props.file} />;
     }
 
+    let fileSrc: undefined | string = `https://ucarecdn.com/${file.fileId}/`;
+
     const onClick = React.useCallback((ev: React.MouseEvent) => {
         if (props.onClick) {
             props.onClick(ev);
@@ -416,14 +387,12 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
                     sender: props.sender,
                     senderNameEmojify: props.senderNameEmojify,
                     date: props.date,
-                });
+                }, fileSrc);
             }
         }
     }, []);
 
-    let fileSrc: undefined | string = `https://ucarecdn.com/${file.fileId}/`;
-
-    if (applyShowPdfModal) {
+    if (applyShowPdfModal && !isElectron) {
         fileSrc = undefined;
     }
 

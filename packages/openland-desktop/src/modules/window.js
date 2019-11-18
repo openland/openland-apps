@@ -1,12 +1,27 @@
 const {
-    BrowserWindow
+    BrowserWindow,
+    session,
+    shell,
+    app
 } = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const handleLinkOpen = require('./links').handleLinkOpen;
 
+function onDownload(event, item, webContents) {
+    if (item.getMimeType() == 'application/pdf') {
+        item.setSavePath(`${app.getPath('downloads')}/${item.getFilename()}`);
+        item.once('done', (e, s) => {
+            if (s === 'completed') {
+                webContents.send('download-complete', item.getURL());
+                shell.openItem(item.getSavePath());
+            }
+        });
+    }
+}
+
 module.exports = {
     createMainWindow: (devMode) => {
-
+        session.defaultSession.on('will-download', onDownload);
         // Create window
         const mainWindowState = windowStateKeeper({
             defaultWidth: 1280,
