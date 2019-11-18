@@ -2,7 +2,7 @@ import * as React from 'react';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { convertMessage } from 'openland-engines/messenger/ConversationEngine';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { FullMessage, Message_message_GeneralMessage, Message_message_StickerMessage } from 'openland-api/Types';
+import { FullMessage, Message_message_GeneralMessage, Message_message_StickerMessage, Message_message_GeneralMessage_reactions } from 'openland-api/Types';
 import { MessageContent } from 'openland-web/fragments/chat/messenger/message/MessageContent';
 import { convertDsMessage, DataSourceWebMessageItem, emojifyReactions } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { Span } from 'openland-y-utils/spans/Span';
@@ -48,6 +48,8 @@ export const MessageView = React.memo((props: { message: Message_message_General
     const [reply, setReply] = React.useState<DataSourceWebMessageItem[]>([]);
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
     const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
+
+    const [reactions, setReactions] = React.useState<Message_message_GeneralMessage_reactions[]>([]);
     const [reactionsReduced, setReactionsReduced] = React.useState<ReactionReducedEmojify[]>([]);
     const [reactionsLabel, setReactionsLabel] = React.useState<string | JSX.Element>('');
 
@@ -64,8 +66,9 @@ export const MessageView = React.memo((props: { message: Message_message_General
     }, [sender.name]);
 
     React.useEffect(() => {
-        setReactionsReduced(emojifyReactions(reduceReactions(message.reactions, messenger.user.id)));
-        setReactionsLabel(emoji(getReactionsLabel(message.reactions, messenger.user.id)));
+        setReactions(message.reactions);
+        setReactionsReduced(emojifyReactions(reduceReactions(reactions, messenger.user.id)));
+        setReactionsLabel(emoji(getReactionsLabel(reactions, messenger.user.id)));
     }, [message.reactions]);
 
     return (
@@ -98,7 +101,8 @@ export const MessageView = React.memo((props: { message: Message_message_General
                 <div className={buttonsClass}>
                     <MessageReactions
                         messageId={message.id}
-                        reactions={message.reactions}
+                        reactions={reactions}
+                        setReactions={setReactions}
                         reactionsReduced={reactionsReduced}
                         reactionsLabel={reactionsLabel}
                     />

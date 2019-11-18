@@ -88,6 +88,7 @@ const ReactionItem = React.memo((props: ReactionItemProps) => {
 
 interface MessageReactionsProps {
     messageId?: string;
+    setReactions: (reactions: FullMessage_GeneralMessage_reactions[]) => void;
     reactions: FullMessage_GeneralMessage_reactions[];
     reactionsReduced: ReactionReducedEmojify[];
     reactionsLabel: string | JSX.Element;
@@ -99,6 +100,9 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
     const client = useClient();
     const handleReactionClick = React.useCallback(
         (reaction: MessageReactionType) => {
+
+            console.log({reaction, reactions});
+
             if (messageId) {
                 let remove =
                     reactions &&
