@@ -60,7 +60,7 @@ const DialogItemViewAsyncRender = React.memo<{ theme: ThemeGlobal, item: DialogD
             </ASFlex>
             <ASFlex marginLeft={paddingHorizontal} marginRight={paddingHorizontal} marginTop={6} marginBottom={6} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
                 <ASFlex height={24} alignItems="center">
-                    {isGroup && <ASFlex alignItems="center" marginRight={2} marginTop={4}><ASImage opacity={CompensationAlpha} tintColor={theme.accentPositive} width={16} height={16} source={require('assets/ic-lock-16.png')} marginBottom={Platform.OS === 'android' ? 4 : 0} /></ASFlex>}
+                    {isGroup && <ASFlex alignItems="center" marginRight={4} marginTop={4}><ASImage opacity={CompensationAlpha} tintColor={theme.accentPositive} width={16} height={16} source={require('assets/ic-lock-16.png')} marginBottom={Platform.OS === 'android' ? 4 : 0} /></ASFlex>}
                     <ASText {...TextStylesAsync.Label1} color={isGroup ? theme.accentPositive : theme.foregroundPrimary} flexGrow={1} flexBasis={0}>{item.title}</ASText>
                     {item.date !== undefined && <ASText {...TextStylesAsync.Caption} marginLeft={10} color={theme.foregroundTertiary} marginTop={2}>{formatDate(item.date)}</ASText>}
                 </ASFlex>

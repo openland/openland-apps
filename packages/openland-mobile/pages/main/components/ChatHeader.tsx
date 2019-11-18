@@ -46,7 +46,7 @@ const SharedChatHeaderContent = XMemo<{ room: Room_room_SharedRoom, typing?: str
     return (
         <View flexDirection="column" alignItems="flex-start" alignSelf="center" justifyContent="center" pointerEvents="box-none" height={44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
             <View flexDirection="row">
-                {room.kind === 'GROUP' && (<View height={18} alignItems="center" justifyContent="center" marginRight={2}><Image opacity={CompensationAlpha} source={require('assets/ic-lock-16.png')} style={{ tintColor: theme.accentPositive, marginTop: 3 }} /></View>)}
+                {room.kind === 'GROUP' && (<View height={18} alignItems="center" justifyContent="center" marginRight={4}><Image opacity={CompensationAlpha} source={require('assets/ic-lock-16.png')} style={{ tintColor: theme.accentPositive, marginTop: 3 }} /></View>)}
                 <Text style={[styles.title, { color: theme.foregroundPrimary }, room.kind === 'GROUP' && { color: theme.accentPositive }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
             </View>
             <Text style={[styles.subTitle, { color: accent ? theme.accentPrimary : theme.foregroundSecondary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
