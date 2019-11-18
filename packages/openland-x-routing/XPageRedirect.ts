@@ -4,7 +4,7 @@ import { withRouter, XWithRouter } from './withRouter';
 class Redirector extends React.Component<{ path: string } & XWithRouter> {
     componentDidMount() {
         console.warn('Redirect to ' + this.props.path);
-        this.props.router.push(this.props.path);
+        this.props.router.replace(this.props.path);
     }
     render() {
         return null;
