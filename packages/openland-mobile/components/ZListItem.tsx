@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ZListItemBase } from './ZListItemBase';
-import { View, Text, Switch, Image, Clipboard, TextStyle, Platform } from 'react-native';
+import { View, Text, Switch, Image, Clipboard, TextStyle, Platform, Linking } from 'react-native';
 import { ZText } from './ZText';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
@@ -9,6 +9,7 @@ import { ZAvatar } from './ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { preprocessText } from 'openland-y-utils/TextProcessor';
 
 export interface ZListItemProps {
     leftAvatar?: { photo?: string | null, key: string, title: string };
@@ -39,6 +40,7 @@ export interface ZListItemProps {
     linkify?: boolean;
     copy?: boolean;
     small?: boolean;
+    tall?: boolean;
 }
 
 const LeftIcon = (props: { theme: ThemeGlobal, src: any, flatIcon?: boolean, appearance?: 'default' | 'action' | 'danger', leftIconColor?: string }) => {
@@ -74,6 +76,10 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
             let current = this.props.store!!.readValue('fields.' + this.props.toggleField.key);
             this.props.store!!.writeValue('fields.' + this.props.toggleField.key, !current);
         }
+
+        if (this.props.linkify && this.props.text) {
+            this.openLink(this.props.text);
+        }
     }
 
     handleOnLongPress = () => {
@@ -84,6 +90,13 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
             ActionSheet.builder()
                 .action('Copy', () => Clipboard.setString(this.props.text!), undefined, require('assets/ic-copy-24.png'))
                 .show();
+        }
+    }
+
+    openLink = async (text: string) => {
+        const { link } = preprocessText(text)[0];
+        if (link && await Linking.canOpenURL(link)) {
+            await Linking.openURL(link);
         }
     }
 
@@ -105,7 +118,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
         const linkify = (this.props.linkify === true || (this.props.linkify === undefined && !this.props.onPress && !this.props.path));
         const descriptionColor = this.props.descriptionColor ? this.props.descriptionColor : theme.foregroundTertiary;
         const isBig = this.props.subTitle || this.props.leftAvatar || this.props.leftIconColor || (this.props.leftIcon && !this.props.small);
-        const height = this.props.multiline ? null : ((isBig) ? 56 : 48);
+        const height = this.props.multiline ? null : ((isBig || this.props.tall) ? 56 : 48);
 
         const switchTintColor = theme.accentPrimary.toLowerCase() === '#ffffff' ? theme.foregroundSecondary : theme.accentPrimary;
 
