@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
+import { useTheme } from 'openland-mobile/themes/ThemeContext';
 
 var watchers: ((isLoading: boolean) => void)[] = [];
 var loading = false;
@@ -38,20 +39,21 @@ const styles = StyleSheet.create({
         height: 96,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F0F2F5',
         borderRadius: 18
     } as ViewStyle
 });
 
 function GlobalLoader() {
+    const theme = useTheme();
+
     return (
         <View style={styles.overlay}>
-            <View style={styles.loader}>
-                <LoaderSpinner size="large" />
+            <View style={styles.loader} backgroundColor={theme.backgroundTertiaryTrans}>
+                <LoaderSpinner size="large" color={theme.foregroundQuaternary} />
             </View>
         </View>
     );
-} 
+}
 
 export const withGlobalLoader = (Wrapped: React.ComponentType) => {
     class GlobalLoaderproviderComponent extends React.PureComponent<{}, { loading: boolean }> {
