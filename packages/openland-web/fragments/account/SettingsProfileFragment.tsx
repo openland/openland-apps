@@ -85,7 +85,7 @@ export const SettingsProfileFragment = React.memo(() => {
                 input: {
                     firstName: firstNameField.value,
                     lastName: lastNameField.value,
-                    primaryOrganization: primaryOrganizationField.value.value,
+                    primaryOrganization: primaryOrganizationField.value!.value,
                     about: aboutField.value,
                     photoRef: sanitizeImageRef(avatarField.value),
                     email: emailField.value,
@@ -150,6 +150,7 @@ export const SettingsProfileFragment = React.memo(() => {
                             <XView marginBottom={16}>
                                 <USelect
                                     {...primaryOrganizationField.input}
+                                    value={primaryOrganizationField.input.value || undefined}
                                     placeholder="Primary organization"
                                     options={organizationsWithoutCommunity.map(
                                         (org: any) => ({
