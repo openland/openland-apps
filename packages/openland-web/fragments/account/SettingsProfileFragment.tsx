@@ -3,7 +3,7 @@ import { useForm } from 'openland-form/useForm';
 import { useClient } from 'openland-web/utils/useClient';
 import { useField } from 'openland-form/useField';
 import { XView } from 'react-mental';
-import { SelectWithDropdown } from 'openland-web/pages/main/mail/SelectWithDropdown';
+import { USelect } from 'openland-web/components/unicorn/USelect';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
@@ -45,7 +45,10 @@ export const SettingsProfileFragment = React.memo(() => {
     );
     const primaryOrganizationField = useField(
         'input.primaryOrganization',
-        profile.primaryOrganization && profile.primaryOrganization!!.id,
+        profile.primaryOrganization && {
+            label: profile.primaryOrganization.name,
+            value: profile.primaryOrganization.id
+        },
         form,
     );
 
@@ -82,7 +85,7 @@ export const SettingsProfileFragment = React.memo(() => {
                 input: {
                     firstName: firstNameField.value,
                     lastName: lastNameField.value,
-                    primaryOrganization: primaryOrganizationField.value,
+                    primaryOrganization: primaryOrganizationField.value.value,
                     about: aboutField.value,
                     photoRef: sanitizeImageRef(avatarField.value),
                     email: emailField.value,
@@ -145,11 +148,10 @@ export const SettingsProfileFragment = React.memo(() => {
                                 <InputField title="Last name" field={lastNameField} size="large" />
                             </XView>
                             <XView marginBottom={16}>
-                                <SelectWithDropdown
+                                <USelect
                                     {...primaryOrganizationField.input}
-                                    size="large"
-                                    title="Primary organization"
-                                    selectOptions={organizationsWithoutCommunity.map(
+                                    placeholder="Primary organization"
+                                    options={organizationsWithoutCommunity.map(
                                         (org: any) => ({
                                             value: org.id,
                                             label: org.name,
