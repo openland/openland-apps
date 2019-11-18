@@ -26,7 +26,6 @@ export class DialogListComponent extends React.PureComponent<{ dialogs: ASDataVi
                                     opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset)),
                                 } as any]}
                                 onScroll={this.contentOffset.event}
-                                headerPadding={4}
                             />
                         </>
                     );
