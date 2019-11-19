@@ -25,7 +25,7 @@ const AlertOpenSettings = (labels: AlertOpenSettingsLabels) => {
             builder.message(labels.ios.message);
         }
         builder.button('Cancel', 'cancel');
-        builder.button('Open settings', 'default', () => (Linking.openURL('app-settings:')));
+        builder.button('Settings', 'default', () => (Linking.openURL('app-settings:')));
         builder.show();
     }
 
@@ -48,7 +48,7 @@ export const handlePermissionDismiss = (permission: permissionsType) => {
         AlertOpenSettings({
             ios: {
                 title: 'Allow Openland access to your photos',
-                message: 'In iPhone settings, tap Openland and turn on Photos.'
+                message: 'Go to your device’s settings, tap Openland and turn on Photos'
             },
             android: {
                 title: 'Allow Openland to access your phone\'s storage?',
@@ -59,7 +59,7 @@ export const handlePermissionDismiss = (permission: permissionsType) => {
         AlertOpenSettings({
             ios: {
                 title: 'Allow Openland access to your photos',
-                message: 'In iPhone settings, tap Openland and turn on Photos.'
+                message: 'Go to your device’s settings, tap Openland and turn on Photos'
             },
             android: {
                 title: 'Allow Openland to access your phone\'s storage?',
@@ -70,7 +70,7 @@ export const handlePermissionDismiss = (permission: permissionsType) => {
         AlertOpenSettings({
             ios: {
                 title: 'Allow Openland access to your microphone',
-                message: 'In iPhone settings, tap Openland and turn on Microphone.'
+                message: 'Go to your device’s settings, tap Openland and turn on Microphone'
             },
             android: {
                 title: 'Allow Openland to access your microphone?',
@@ -81,7 +81,7 @@ export const handlePermissionDismiss = (permission: permissionsType) => {
         AlertOpenSettings({
             ios: {
                 title: 'Allow Openland access to your camera',
-                message: 'In iPhone settings, tap Openland and turn on Camera.'
+                message: 'Go to your device’s settings, tap Openland and turn on Camera'
             },
             android: {
                 title: 'Allow Openland to take pictures and record video?',
