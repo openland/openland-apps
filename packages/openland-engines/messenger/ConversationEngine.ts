@@ -910,6 +910,7 @@ export class ConversationEngine implements MessageSendHandler {
             if (this.dataSource.hasItem(id)) {
                 this.dataSource.removeItem(id);
             }
+            this.messagesActionsStateEngine.sync(this.dataSource);
 
         } else if (event.__typename === 'ChatMessageUpdated') {
             // Handle message

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { DataSourceMessageItem } from "./ConversationEngine";
+import { DataSource } from 'openland-y-utils/DataSource';
 
 export interface MessagesActionsState {
     action?: 'forward' | 'reply' | 'edit';
@@ -38,6 +39,10 @@ export class MessagesActionsStateEngine {
         } else {
             this.setState({ messages: this.state.messages.filter(m => m.key !== message.key) });
         }
+    }
+
+    sync = (ds: DataSource<{ key: string }>) => {
+        this.setState({ messages: this.state.messages.filter(m => !!ds.getItem(m.key)) });
     }
 
     clear = () => {
