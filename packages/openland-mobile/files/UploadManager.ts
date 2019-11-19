@@ -116,7 +116,7 @@ export class UploadManager {
 
     private startUpload() {
         let q = this._queue[0];
-        let contentType = q.name === 'video.mp4' ? 'video/mp4' : undefined;
+        let contentType = q.name === 'video.mp4' ? 'video/mp4' : q.name.endsWith('.pdf') ? 'application/pdf' : undefined;
         let upload = new UploadCareDirectUploading(q.name, q.uri, contentType);
 
         upload.watch((s) => {
