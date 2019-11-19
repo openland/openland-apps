@@ -85,17 +85,17 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         //
         try {
             let genericInvitePattern = new UrlPattern(patternBase + 'invite/:invite');
-            let match = genericInvitePattern.match(link);
+            let genericInviteMatch = genericInvitePattern.match(link);
 
-            if (match && match.invite) {
+            if (genericInviteMatch && genericInviteMatch.invite) {
                 startLoader();
                 try {
-                    let info = await getMessenger().engine.client.queryResolvedInvite({ key: match.invite });
+                    let info = await getMessenger().engine.client.queryResolvedInvite({ key: genericInviteMatch.invite });
                     if (info.invite) {
                         if (info.invite.__typename === 'RoomInvite') {
-                            await joinRoom(info.invite, match.invite);
+                            await joinRoom(info.invite, genericInviteMatch.invite);
                         } else if (info.invite.__typename === 'InviteInfo') {
-                            await joinOraganizaion(info.invite, match.invite);
+                            await joinOraganizaion(info.invite, genericInviteMatch.invite);
                         }
                     } else {
                         Alert.alert('Invite not found');
