@@ -11,7 +11,6 @@ import { ResolvedInvite_invite_RoomInvite, AccountInviteInfo_invite } from 'open
 
 export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?: boolean) => {
     return async () => {
-        let resolved = false;
         let link = srcLink;
         if (link.includes('?')) {
             link = link.split('?')[0];
@@ -23,6 +22,28 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         if (reset) {
             navigate = getMessenger().history.navigationManager.pushAndReset;
         }
+        ////
+        //// PAGES
+        ////
+        const pages: { [key: string]: { route: string, callback?: Function } | undefined } = {
+            'mail': { route: 'Home', callback: () => getMessenger().history.navigationManager.pushAndResetRoot("Home") },
+            'settings/email': { route: 'SettingsEmail' }
+        };
+
+        let pagePattern = /(http(s)?\:\/\/)?(.*)?.openland.com\/(.*)/g;
+        let matchPage = pagePattern.exec(link);
+        if (matchPage && matchPage[4]) {
+            const page = pages[matchPage[4]];
+            if (page) {
+                if (page.callback) {
+                    page.callback();
+                } else {
+                    navigate(page.route);
+                }
+                return;
+            }
+        }
+
         ////
         ////  >>>>> INVITES
         ////
@@ -67,7 +88,6 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             let match = genericInvitePattern.match(link);
 
             if (match && match.invite) {
-                resolved = true;
                 startLoader();
                 try {
                     let info = await getMessenger().engine.client.queryResolvedInvite({ key: match.invite });
@@ -84,6 +104,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
                     Alert.alert(e.message);
                 }
                 stopLoader();
+                return;
             }
         } catch (e) {
             Alert.alert(e.message);
@@ -92,20 +113,20 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         // DEPRICATED, delete after adoption, web + mobile link generation migration
         // JOIN ROOMS 
         //
-        try {
-            let roomInvitePattern = new UrlPattern(patternBase + 'joinChannel/:invite');
-            let roomInvitePatternDeep = new UrlPattern(patternBaseDeep + 'joinroom/:invite');
-            let match = roomInvitePattern.match(link) || roomInvitePatternDeep.match(srcLink);
+        let roomInvitePattern = new UrlPattern(patternBase + 'joinChannel/:invite');
+        let roomInvitePatternDeep = new UrlPattern(patternBaseDeep + 'joinroom/:invite');
+        let match = roomInvitePattern.match(link) || roomInvitePatternDeep.match(srcLink);
 
-            if (match && match.invite) {
-                resolved = true;
-                startLoader();
+        if (match && match.invite) {
+            startLoader();
+            try {
                 let info = await getMessenger().engine.client.queryRoomInviteInfo({ invite: match.invite });
                 await joinRoom(info.invite, match.invite);
-                stopLoader();
+            } catch (e) {
+                Alert.alert(e.message);
             }
-        } catch (e) {
-            Alert.alert(e.message);
+            stopLoader();
+            return;
         }
 
         // DEPRICATED, delete after adoption, web + mobile link generation migration
@@ -116,7 +137,6 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let matchOrg = orgInvitePattern.match(link) || orgInvitePatternDeep.match(srcLink);
 
         if (matchOrg && matchOrg.invite) {
-            resolved = true;
             startLoader();
             try {
                 let info = await getMessenger().engine.client.queryAccountInviteInfo({ inviteKey: matchOrg.invite });
@@ -125,6 +145,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
                 Alert.alert(e.message);
             }
             stopLoader();
+            return;
         }
 
         ////
@@ -137,8 +158,8 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let profileOrgPattern = new UrlPattern(patternBase + '(mail)(directory)(discover)/(o)(c)/:id');
         let matchOrgProfile = profileOrgPattern.match(link);
         if (matchOrgProfile && matchOrgProfile.id) {
-            resolved = true;
             navigate('ProfileOrganization', { id: matchOrgProfile.id });
+            return;
         }
 
         //
@@ -147,8 +168,8 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let profileUserPattern = new UrlPattern(patternBase + '(mail)(directory)(discover)/u/:id');
         let matchUserProfile = profileUserPattern.match(link);
         if (matchUserProfile && matchUserProfile.id) {
-            resolved = true;
             navigate('ProfileUser', { id: matchUserProfile.id });
+            return;
         }
 
         //
@@ -157,14 +178,14 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let profileGroupPattern = new UrlPattern(patternBase + '(mail)(directory)(discover)/p/:id');
         let matchGroupProfile = profileGroupPattern.match(link);
         if (matchGroupProfile && matchGroupProfile.id) {
-            resolved = true;
             navigate('ProfileGroup', { id: matchGroupProfile.id });
+            return;
         }
         let profileGroupUnicornPattern = new UrlPattern(patternBase + 'group/:id');
         let matchGroupUnicornProfile = profileGroupUnicornPattern.match(link);
         if (matchGroupUnicornProfile && matchGroupUnicornProfile.id) {
-            resolved = true;
             navigate('ProfileGroup', { id: matchGroupUnicornProfile.id });
+            return;
         }
 
         //
@@ -173,8 +194,8 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let feedItemPattern = new UrlPattern(patternBase + 'feed/:id');
         let matchFeedItemProfile = feedItemPattern.match(link);
         if (matchFeedItemProfile && matchFeedItemProfile.id) {
-            resolved = true;
             navigate('FeedItem', { feedItemId: matchFeedItemProfile.id });
+            return;
         }
 
         //
@@ -183,8 +204,8 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let messagePattern = new UrlPattern(patternBase + 'message/:id');
         let matchMessageProfile = messagePattern.match(link);
         if (matchMessageProfile && matchMessageProfile.id) {
-            resolved = true;
             navigate('Message', { feedItemId: matchMessageProfile.id });
+            return;
         }
 
         //
@@ -194,8 +215,8 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let conversationPatternDeep = new UrlPattern(patternBaseDeep + 'mail/:id');
         let matchConversation = conversationPattern.match(link) || conversationPatternDeep.match(link);
         if (matchConversation && matchConversation.id) {
-            resolved = true;
             navigate('Conversation', { id: matchConversation.id });
+            return;
         }
 
         //
@@ -204,7 +225,6 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let shortNamePattern = new UrlPattern(patternBase + ':shortname');
         let matchShortName = shortNamePattern.match(link);
         if (matchShortName && matchShortName.shortname) {
-            resolved = true;
             startLoader();
             try {
                 let info = await getMessenger().engine.client.queryResolveShortName({ shortname: matchShortName.shortname });
@@ -225,6 +245,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
                 Alert.alert(e.message);
             }
             stopLoader();
+            return;
         }
 
         //
@@ -233,10 +254,10 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let matchmakingProfilePattern = new UrlPattern(patternBase + 'group/:id/user/:uid');
         let matchmakingProfilePatternDeep = new UrlPattern(patternBaseDeep + 'group/:id/user/:uid');
         let matchMatchmakingProfile = matchmakingProfilePattern.match(link) || matchmakingProfilePatternDeep.match(link);
-        
+
         if (matchMatchmakingProfile && matchMatchmakingProfile.id && matchMatchmakingProfile.uid) {
-            resolved = true;
-            navigate('MatchmakingProfile', { peerId: matchMatchmakingProfile.id,  userId: matchMatchmakingProfile.uid });
+            navigate('MatchmakingProfile', { peerId: matchMatchmakingProfile.id, userId: matchMatchmakingProfile.uid });
+            return;
         }
 
         //
@@ -245,7 +266,6 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let sharePattern = new UrlPattern(patternBaseDeep + 'share');
         let matchShare = sharePattern.match(link);
         if (matchShare) {
-            resolved = true;
             try {
                 let url = new UrlParse(srcLink, true);
                 let dataStr = url.query.data;
@@ -260,28 +280,28 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             } catch (e) {
                 Alert.alert(e.message);
             }
-
+            return;
         }
 
         if (link === '/onboarding_discover') {
-            resolved = true;
             navigate('Discover');
+            return;
         }
 
         if (link === '/onboarding_apps') {
-            resolved = true;
             navigate('InstallApps');
+            return;
         }
         if (link === '/onboarding_send_first_message') {
-            resolved = true;
             navigate('StartConversation');
+            return;
         }
         if (link === '/onboarding_invite') {
-            resolved = true;
             navigate('Invites');
+            return;
         }
 
-        if (!resolved && fallback) {
+        if (fallback) {
             await fallback();
         }
 
