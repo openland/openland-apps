@@ -21,6 +21,7 @@ interface MediaContentProps {
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
+    onMediaLongPress: (e: ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     layout: { width: number, height: number };
     compensateBubble?: boolean;
@@ -126,7 +127,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     }
 
     render() {
-        const { hasTopContent, hasBottomContent, message, attach, layout, compensateBubble, theme } = this.props;
+        const { hasTopContent, hasBottomContent, message, attach, layout, compensateBubble, theme, onMediaLongPress } = this.props;
         const { downloadState } = this.state;
         const isSingle = !hasTopContent && !hasBottomContent;
         const useBorder = isSingle && !!compensateBubble && layout.height >= IMAGE_MIN_SIZE && layout.width >= IMAGE_MIN_SIZE;
@@ -201,6 +202,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                             maskColor={theme.backgroundPrimary}
                             borderColor={theme.border}
                             onPress={Platform.OS === 'ios' ? this.handlePress : undefined}
+                            onLongPress={onMediaLongPress}
                             useBorder={useBorder}
                         />
                     </ASFlex>

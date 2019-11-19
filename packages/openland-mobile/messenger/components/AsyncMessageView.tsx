@@ -60,11 +60,12 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
             }
         }
     };
+    const handleLongPress = React.useCallback(() => onMessageLongPress(message), [message]);
 
     let res;
 
     if (message.text || message.reply || (message.attachments && message.attachments.length) || message.sticker) {
-        res = <AsyncMessageContentView theme={theme} key={'message-content'} message={message} onMediaPress={onMediaPress} onDocumentPress={onDocumentPress} onUserPress={onUserPress} onGroupPress={onGroupPress} />;
+        res = <AsyncMessageContentView theme={theme} key={'message-content'} message={message} onMediaPress={onMediaPress} onMediaLongPress={handleLongPress} onDocumentPress={onDocumentPress} onUserPress={onUserPress} onGroupPress={onGroupPress} />;
     }
 
     if (!res) {
@@ -76,7 +77,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const marginBottom = attachBottom && showReactions ? 6 : 0;
 
     return (
-        <ASFlex flexDirection="column" alignItems="stretch" onPress={handleDoublePress} onLongPress={() => onMessageLongPress(message)}>
+        <ASFlex flexDirection="column" alignItems="stretch" onPress={handleDoublePress} onLongPress={handleLongPress}>
             <ASFlex key="margin-top" height={marginTop} />
 
             <ASFlex flexDirection="column" flexGrow={1} alignItems="stretch">

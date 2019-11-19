@@ -32,6 +32,7 @@ interface AsyncMessageTextViewProps {
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
+    onMediaLongPress: (e: ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
 }
 
@@ -93,7 +94,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
 };
 
 export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number, compensateBubble?: boolean) => {
-    const { theme, message, onUserPress, onGroupPress, onMediaPress, onDocumentPress } = props;
+    const { theme, message, onUserPress, onGroupPress, onMediaPress, onDocumentPress, onMediaLongPress } = props;
 
     // todo: handle multiple attaches
     const attaches = (message.attachments || []);
@@ -130,7 +131,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         topContent.push(<ReplyContent key="msg-reply" compensateBubble={compensateBubble} width={textSize} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onMediaPress={onMediaPress} />);
     }
     if (hasImage && imageLayout) {
-        topContent.push(<MediaContent key="msg-media" theme={theme} compensateBubble={compensateBubble} layout={imageLayout} message={message} attach={fileAttach!} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} hasTopContent={hasReply} hasBottomContent={hasText || hasUrlAug} />);
+        topContent.push(<MediaContent key="msg-media" theme={theme} compensateBubble={compensateBubble} layout={imageLayout} message={message} attach={fileAttach!} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onMediaLongPress={onMediaLongPress} hasTopContent={hasReply} hasBottomContent={hasText || hasUrlAug} />);
     }
     if (sticker) {
         topContent.push(<StickerContent key="msg-sticker" sticker={sticker} message={message} padded={hasReply} />);
