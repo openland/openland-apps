@@ -1012,6 +1012,12 @@ export class ConversationEngine implements MessageSendHandler {
         }
         if (this.dataSource.hasItem(conv.key)) {
             let ex = this.dataSource.getItem(conv.key) as DataSourceMessageItem;
+
+            // Do not remove local url for attachments
+            if (conv.attachments && conv.attachments.length && ex.attachments && ex.attachments.length && ex.attachments[0].uri) {
+                conv.attachments[0].uri = ex.attachments[0].uri;
+            }
+
             let converted = {
                 ...conv,
                 attachBottom: ex!!.attachBottom, // Do not update compact value
