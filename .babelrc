@@ -142,8 +142,7 @@
                     }
                 ],
                 // "@babel/plugin-transform-react-constant-elements",
-                "./packages/react-native-async-view-babel/lib",
-                ["babel-plugin-react-wrapped-display-name", {}]
+                "./packages/react-native-async-view-babel/lib"
                 // "@babel/plugin-transform-react-inline-elements"
             ]
         }
