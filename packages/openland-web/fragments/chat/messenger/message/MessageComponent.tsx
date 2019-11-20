@@ -348,7 +348,6 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
         <div className={buttonsClass}>
             <MessageReactions
                 messageId={message.id}
-                reactions={message.reactions}
                 reactionsReduced={message.reactionsReducedEmojify}
                 reactionsLabel={message.reactionsLabelEmojify}
             />

@@ -88,23 +88,22 @@ const ReactionItem = React.memo((props: ReactionItemProps) => {
 
 interface MessageReactionsProps {
     messageId?: string;
-    reactions: FullMessage_GeneralMessage_reactions[];
     reactionsReduced: ReactionReducedEmojify[];
     reactionsLabel: string | JSX.Element;
 }
 
 export const MessageReactions = React.memo<MessageReactionsProps>(props => {
-    const { messageId, reactions, reactionsReduced, reactionsLabel } = props;
+    const { messageId, reactionsReduced, reactionsLabel } = props;
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
     const handleReactionClick = React.useCallback(
         (reaction: MessageReactionType) => {
             if (messageId) {
                 let remove =
-                    reactions &&
-                    reactions.filter(
+                    reactionsReduced &&
+                    reactionsReduced.filter(
                         userReaction =>
-                            userReaction.user.id === messenger.user.id &&
+                            userReaction.my &&
                             userReaction.reaction === reaction,
                     ).length > 0;
                 if (remove) {
@@ -119,10 +118,10 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
                 }
             }
         },
-        [messageId, reactions],
+        [messageId, reactionsReduced],
     );
 
-    if (reactions.length <= 0) {
+    if (reactionsReduced.length <= 0) {
         return null;
     }
 

@@ -98,7 +98,6 @@ export const MessageView = React.memo((props: { message: Message_message_General
                 <div className={buttonsClass}>
                     <MessageReactions
                         messageId={message.id}
-                        reactions={message.reactions}
                         reactionsReduced={reactionsReduced}
                         reactionsLabel={reactionsLabel}
                     />
