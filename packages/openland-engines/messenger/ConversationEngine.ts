@@ -907,9 +907,7 @@ export class ConversationEngine implements MessageSendHandler {
 
             // Remove from datasource
             let id = this.localMessagesMap.get(event.message.id) || event.message.id;
-            if (this.dataSource.hasItem(id)) {
-                this.dataSource.removeItem(id);
-            }
+            this.removeMessage(id);
             this.messagesActionsStateEngine.sync(this.dataSource);
 
         } else if (event.__typename === 'ChatMessageUpdated') {
@@ -1054,6 +1052,33 @@ export class ConversationEngine implements MessageSendHandler {
         }
         if (scrollTo) {
             this.dataSource.requestScrollToKey(scrollTo);
+        }
+    }
+
+    private removeMessage = (id: string) => {
+        if (this.dataSource.hasItem(id)) {
+            const index = this.dataSource.findIndex(id);
+            const prev = index === 0 ? null : this.dataSource.getAt(index - 1);
+            const next = index === this.dataSource.getSize() - 1 ? null : this.dataSource.getAt(index + 1);
+            const isPrevMessage = prev && prev.type === 'message';
+
+            if (next && next.type !== 'message' && !isPrevMessage) {
+                this.dataSource.removeItem(next.key);
+            }
+
+            const current = this.dataSource.getAt(index) as DataSourceMessageItem;
+
+            if (prev && prev.type === 'message' && current.senderId === prev.senderId) {
+                const newPrev = { ...prev, attachTop: current.attachTop };
+                this.dataSource.updateItem(newPrev);
+            }
+
+            if (next && next.type === 'message' && current.senderId === next.senderId) {
+                const newNext = { ...next, attachBottom: current.attachBottom };
+                this.dataSource.updateItem(newNext);
+            }
+
+            this.dataSource.removeItem(id);
         }
     }
 

@@ -4110,6 +4110,11 @@ babel-plugin-react-require@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-react-require/-/babel-plugin-react-require-3.0.0.tgz#2e4e7b4496b93a654a1c80042276de4e4eeb20e3"
 
+babel-plugin-react-wrapped-display-name@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-react-wrapped-display-name/-/babel-plugin-react-wrapped-display-name-1.0.0.tgz#f2fb70b9d26080333d14371480ee71139cf6f50d"
+  integrity sha512-/P6d0oSh7YTiqplJ1SuwpvOvmJVYezf3SAz0xdLy6/KD2AemLFqDHW6zZooNpNomGmFaFFvHIu/w9z/lSPGD5Q==
+
 babel-plugin-syntax-async-functions@^6.8.0:
   version "6.13.0"
   resolved "http://registry.npmjs.org/babel-plugin-syntax-async-functions/-/babel-plugin-syntax-async-functions-6.13.0.tgz#cad9cad1191b5ad634bf30ae0872391e0647be95"
