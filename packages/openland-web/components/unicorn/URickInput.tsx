@@ -33,6 +33,17 @@ const quillStyle = css`
         font-style: normal;
         left: 16px;
     }
+
+    /* copy of quill.snow.css, line 21 */
+    /* it seems like quill styles doesn't apply every time */
+    /* so we should patch them */
+    .ql-clipboard {
+        left: -100000px;
+        height: 1px;
+        overflow-y: hidden;
+        position: absolute;
+        top: 50%;
+    }
 `;
 
 const quillWithButtonStyle = css`
