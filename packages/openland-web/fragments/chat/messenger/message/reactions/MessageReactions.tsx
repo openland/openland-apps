@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { MessageReactionType, FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { MessageReactionType } from 'openland-api/Types';
 import { css, cx } from 'linaria';
 import { TextDensed } from 'openland-web/utils/TextStyles';
 import { useClient } from 'openland-web/utils/useClient';
@@ -96,7 +95,6 @@ export interface MessageReactionsProps {
 
 export const MessageReactions = React.memo<MessageReactionsProps>(props => {
     const { id, reactionsReducedEmojify, reactionsLabelEmojify } = props.message;
-    const messenger = React.useContext(MessengerContext);
     const client = useClient();
     const handleReactionClick = React.useCallback(
         (reaction: MessageReactionType) => {
