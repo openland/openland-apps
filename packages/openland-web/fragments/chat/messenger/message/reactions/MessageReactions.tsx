@@ -86,42 +86,44 @@ const ReactionItem = React.memo((props: ReactionItemProps) => {
     );
 });
 
-interface MessageReactionsProps {
-    messageId?: string;
-    reactionsReduced: ReactionReducedEmojify[];
-    reactionsLabel: string | JSX.Element;
+export interface MessageReactionsProps {
+    message: {
+        id?: string;
+        reactionsReducedEmojify: ReactionReducedEmojify[];
+        reactionsLabelEmojify: string | JSX.Element;
+    };
 }
 
 export const MessageReactions = React.memo<MessageReactionsProps>(props => {
-    const { messageId, reactionsReduced, reactionsLabel } = props;
+    const { id, reactionsReducedEmojify, reactionsLabelEmojify } = props.message;
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
     const handleReactionClick = React.useCallback(
         (reaction: MessageReactionType) => {
-            if (messageId) {
+            if (id) {
                 let remove =
-                    reactionsReduced &&
-                    reactionsReduced.filter(
+                    reactionsReducedEmojify &&
+                    reactionsReducedEmojify.filter(
                         userReaction =>
                             userReaction.my &&
                             userReaction.reaction === reaction,
                     ).length > 0;
                 if (remove) {
-                    client.mutateMessageUnsetReaction({ messageId, reaction });
+                    client.mutateMessageUnsetReaction({ messageId: id, reaction });
                 } else {
                     trackEvent('reaction_sent', {
                         reaction_type: reaction.toLowerCase(),
                         double_tap: 'not',
                     });
 
-                    client.mutateMessageSetReaction({ messageId, reaction });
+                    client.mutateMessageSetReaction({ messageId: id, reaction });
                 }
             }
         },
-        [messageId, reactionsReduced],
+        [id, reactionsReducedEmojify],
     );
 
-    if (reactionsReduced.length <= 0) {
+    if (reactionsReducedEmojify.length <= 0) {
         return null;
     }
 
@@ -134,7 +136,7 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
             }}
         >
             <div className={reactionsItems}>
-                {reactionsReduced.map((r, i) => (
+                {reactionsReducedEmojify.map((r, i) => (
                     <ReactionItem
                         key={'reaction-' + r.reaction + '-' + i}
                         value={r}
@@ -143,7 +145,7 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
                 ))}
             </div>
 
-            <div className={cx(TextDensed, reactionsText)}>{reactionsLabel}</div>
+            <div className={cx(TextDensed, reactionsText)}>{reactionsLabelEmojify}</div>
         </div>
     );
 });

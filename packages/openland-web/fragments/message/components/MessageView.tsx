@@ -48,8 +48,8 @@ export const MessageView = React.memo((props: { message: Message_message_General
     const [reply, setReply] = React.useState<DataSourceWebMessageItem[]>([]);
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
     const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
-    const [reactionsReduced, setReactionsReduced] = React.useState<ReactionReducedEmojify[]>([]);
-    const [reactionsLabel, setReactionsLabel] = React.useState<string | JSX.Element>('');
+    const [reactionsReducedEmojify, setReactionsReduced] = React.useState<ReactionReducedEmojify[]>([]);
+    const [reactionsLabelEmojify, setReactionsLabel] = React.useState<string | JSX.Element>('');
 
     React.useEffect(() => {
         setReply(message.quotedMessages.map((r) => convertDsMessage(convertMessage(r as FullMessage, '', messenger))));
@@ -97,9 +97,11 @@ export const MessageView = React.memo((props: { message: Message_message_General
                 />
                 <div className={buttonsClass}>
                     <MessageReactions
-                        messageId={message.id}
-                        reactionsReduced={reactionsReduced}
-                        reactionsLabel={reactionsLabel}
+                        message={{
+                            ...message,
+                            reactionsReducedEmojify,
+                            reactionsLabelEmojify
+                        }}
                     />
                 </div>
             </div>
