@@ -1,0 +1,10 @@
+diff --git a/node_modules/@react-native-community/cameraroll/react-native-cameraroll.podspec b/node_modules/@react-native-community/cameraroll/react-native-cameraroll.podspec
+index 7f771e0..19c87cc 100644
+--- a/node_modules/@react-native-community/cameraroll/react-native-cameraroll.podspec
++++ b/node_modules/@react-native-community/cameraroll/react-native-cameraroll.podspec
+@@ -16,4 +16,5 @@ Pod::Spec.new do |s|
+   s.source_files  = "ios/**/*.{h,m}"
+ 
+   s.dependency 'React'
++  s.static_framework = true
+ end

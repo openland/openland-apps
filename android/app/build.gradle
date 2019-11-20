@@ -209,6 +209,7 @@ configurations.all {
 }
 
 dependencies {
+    implementation project(':@react-native-community_cameraroll')
     implementation 'com.facebook.react:react-native:+'
 
     implementation project(':react-native-video')

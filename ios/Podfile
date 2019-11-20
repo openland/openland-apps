@@ -90,6 +90,8 @@ target 'openland' do
   pod 'react-native-video', :path => '../node_modules/react-native-video/react-native-video.podspec'
   pod 'ReactNativeDarkMode', :path => '../node_modules/react-native-dark-mode'
 
+  pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
+
 end
 
 target 'openlandTests' do

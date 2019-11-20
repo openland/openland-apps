@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View, Animated, Dimensions, Platform, CameraRoll, BackHandler, Text } from 'react-native';
+import { View, Animated, Dimensions, Platform, BackHandler, Text } from 'react-native';
+import CameraRoll from "@react-native-community/cameraroll";
 import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { SDevice } from 'react-native-s/SDevice';
 import { SCloseButton } from 'react-native-s/SCloseButton';
@@ -111,6 +112,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
 
             builder.action(Platform.select({ ios: 'Save to camera roll', android: 'Save to gallery' }), async () => {
                 await CameraRoll.saveToCameraRoll('file://' + file!);
+                Toast.success({duration: 1000}).show();
             }, false, require('assets/ic-download-24.png'));
 
             builder.show();

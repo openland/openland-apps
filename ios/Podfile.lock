@@ -254,6 +254,8 @@ PODS:
     - React
   - react-native-blur (0.8.0):
     - React
+  - react-native-cameraroll (1.3.0):
+    - React
   - react-native-document-picker (2.2.0):
     - React
   - react-native-haptic-feedback (1.7.1):
@@ -384,6 +386,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - react-native-blur (from `../node_modules/react-native-blur`)
+  - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-haptic-feedback (from `../node_modules/react-native-haptic-feedback`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
@@ -480,6 +483,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-background-timer"
   react-native-blur:
     :path: "../node_modules/react-native-blur"
+  react-native-cameraroll:
+    :path: "../node_modules/@react-native-community/cameraroll"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
   react-native-haptic-feedback:
@@ -583,6 +588,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 111d7d342b07a904c400592e02a2b958f1098b60
   react-native-background-timer: 1b6e6b4e10f1b74c367a1fdc3c72b67c619b222b
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
+  react-native-cameraroll: d0193ddec45380cc3bd770c7011ddf702eed68e8
   react-native-document-picker: da1c37bbc4ff0896986a70784808a2862d297887
   react-native-haptic-feedback: 22c9dc85fd8059f83bf9edd9212ac4bd4ae6074d
   react-native-image-picker: 7a85cf7b0a53845f03ae52fb4592a2748ded069b
@@ -621,6 +627,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: 338e52bf322ac5b707d52d17ed101016b43b402d
+PODFILE CHECKSUM: 32bb1d4729c1ced87ed8f1fca9dfa1c9e77f2800
 
 COCOAPODS: 1.8.4
