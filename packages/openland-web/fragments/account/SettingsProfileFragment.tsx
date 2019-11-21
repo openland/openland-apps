@@ -132,7 +132,7 @@ export const SettingsProfileFragment = React.memo(() => {
             <UHeader title="Profile" />
             <FormWrapper>
                 <XView flexDirection="row" flexGrow={1}>
-                    <XView flexGrow={1}>
+                    <XView flexGrow={1} flexShrink={1}>
                         {layout === 'mobile' && (
                             <XView alignItems="center">{avatarUploadComponent}</XView>
                         )}
