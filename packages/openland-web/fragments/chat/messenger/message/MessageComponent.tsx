@@ -341,6 +341,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             sender={message.sender}
             senderNameEmojify={message.senderNameEmojify}
             date={message.date}
+            fileProgress={message.progress}
         />
     );
 

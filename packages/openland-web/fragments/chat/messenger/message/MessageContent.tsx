@@ -55,6 +55,7 @@ interface MessageContentProps {
     sender?: UserShort;
     senderNameEmojify?: string | JSX.Element;
     date?: number;
+    fileProgress?: number;
 }
 
 export const MessageContent = (props: MessageContentProps) => {
@@ -69,6 +70,7 @@ export const MessageContent = (props: MessageContentProps) => {
         fallback,
         isOut = false,
         attachTop = false,
+        fileProgress
     } = props;
 
     const imageAttaches =
@@ -121,6 +123,7 @@ export const MessageContent = (props: MessageContentProps) => {
                     sender={props.sender}
                     senderNameEmojify={props.senderNameEmojify}
                     date={props.date}
+                    progress={fileProgress}
                 />
             </div>,
         );

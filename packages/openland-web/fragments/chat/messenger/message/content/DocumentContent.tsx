@@ -355,10 +355,11 @@ interface DocumentContentProps {
     senderNameEmojify?: string | JSX.Element;
     date?: number;
     onClick?: (ev: React.MouseEvent) => void;
+    progress?: number;
 }
 
 export const DocumentContent = React.memo((props: DocumentContentProps) => {
-    const { file } = props;
+    const { file, progress } = props;
     const { name, size } = file.fileMetadata;
     const isSafari = (window as any).safari !== undefined;
 
@@ -405,7 +406,7 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
             <div className={infoContent}>
                 <div className={iconContainer}>
                     {fileIcon[fileFormat(name)]}
-                    {file.uri ? (
+                    {typeof progress === 'number' && progress >= 0 && progress < 1 ? (
                         <XLoader size="small" color="#fff" transparentBackground={true} />
                     ) : (
                             <div className={cx(iconInfo, 'icon-info')}>
