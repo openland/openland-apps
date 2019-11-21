@@ -16,6 +16,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles, SecondarinessAlpha } from 'openland-mobile/styles/AppStyles';
 import Toast from '../Toast';
+import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 
 export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose: () => void }>((props) => {
     let theme = React.useContext(ThemeContext);
@@ -111,8 +112,11 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
             }), false, require('assets/ic-share-24.png'));
 
             builder.action(Platform.select({ ios: 'Save to camera roll', android: 'Save to gallery' }), async () => {
-                await CameraRoll.saveToCameraRoll('file://' + file!);
-                Toast.success({duration: 1000}).show();
+                if (await checkPermissions('gallery')) {
+                    await CameraRoll.saveToCameraRoll('file://' + file!);
+                    Toast.success({ duration: 1000 }).show();
+                }
+
             }, false, require('assets/ic-download-24.png'));
 
             builder.show();
