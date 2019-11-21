@@ -190,19 +190,22 @@ const onlineDotXSmall = css`
     border-width: 1px;
 `;
 
-const OnlineDotXXLarge = () => (
-    <div className={cx(onlineDotStyle, onlineDotXXLarge, 'online-dot')} />
-);
+const OnlineDot = (props: { size: UAvatarSize }) => {
+    const { size = 'medium' } = props;
 
-const OnlineDotXLarge = () => <div className={cx(onlineDotStyle, onlineDotXLarge, 'online-dot')} />;
+    const className = cx(
+        'online-dot',
+        onlineDotStyle,
+        size === 'x-small' && onlineDotXSmall,
+        size === 'small' && onlineDotSmall,
+        size === 'medium' && onlineDotMedium,
+        size === 'large' && onlineDotLarge,
+        size === 'x-large' && onlineDotXLarge,
+        size === 'xx-large' && onlineDotXXLarge,
+    );
 
-const OnlineDotLarge = () => <div className={cx(onlineDotStyle, onlineDotLarge, 'online-dot')} />;
-
-const OnlineDotMedium = () => <div className={cx(onlineDotStyle, onlineDotMedium, 'online-dot')} />;
-
-const OnlineDotSmall = () => <div className={cx(onlineDotStyle, onlineDotSmall, 'online-dot')} />;
-
-const OnlineDotXSmall = () => <div className={cx(onlineDotStyle, onlineDotXSmall, 'online-dot')} />;
+    return <div className={className} />;
+};
 
 const colorProvider = css`
     display: flex;
@@ -261,13 +264,7 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
                 >
                     {content}
                 </XView>
-
-                {online && size === 'x-small' && <OnlineDotXSmall />}
-                {online && size === 'small' && <OnlineDotSmall />}
-                {online && size === 'medium' && <OnlineDotMedium />}
-                {online && size === 'large' && <OnlineDotLarge />}
-                {online && size === 'x-large' && <OnlineDotXLarge />}
-                {online && size === 'xx-large' && <OnlineDotXXLarge />}
+                {online && <OnlineDot size={size} />}
             </div>
         </XView>
     );

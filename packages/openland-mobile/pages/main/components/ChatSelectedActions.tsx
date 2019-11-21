@@ -18,6 +18,7 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
     const del = React.useCallback(() => {
         Alert.builder()
             .title(`Delete ${props.conversation.messagesActionsStateEngine.getState().messages.length} messages?`)
+            .message('Messages will be deleted for everyone. This cannot be undone')
             .button('Cancel', 'cancel')
             .action('Delete', 'destructive',
                 async () => {
