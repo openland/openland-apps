@@ -24,6 +24,10 @@ const dialogContainer = css`
     &:hover {
         background-color: #f0f2f5;
     }
+    
+    &:hover .online-dot {
+        border-color: #f0f2f5;
+    }
 `;
 
 const dialogActiveContainer = css`
@@ -31,6 +35,10 @@ const dialogActiveContainer = css`
 
     &:hover {
         background-color: var(--accentMutedHover);
+    }
+    
+    &:hover .online-dot {
+        border-color: var(--accentMutedHover);
     }
 `;
 

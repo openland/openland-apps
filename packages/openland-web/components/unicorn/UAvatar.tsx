@@ -5,7 +5,14 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { css, cx } from 'linaria';
-import { PlaceholderOrange, PlaceholderRed, PlaceholderGreen, PlaceholderBlue, PlaceholderCyan, PlaceholderPurple } from 'openland-y-utils/themes/placeholders';
+import {
+    PlaceholderOrange,
+    PlaceholderRed,
+    PlaceholderGreen,
+    PlaceholderBlue,
+    PlaceholderCyan,
+    PlaceholderPurple,
+} from 'openland-y-utils/themes/placeholders';
 import { useReloadImage } from 'openland-web/components/ImgWithRetry';
 
 type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'xxx-large';
@@ -30,11 +37,19 @@ export const PlaceholderColor = [
     `linear-gradient(138deg, ${PlaceholderPurple.start}, ${PlaceholderPurple.end})`,
 ];
 
-const AvatarSizes: { [key in UAvatarSize]: { size: number, placeholder: number, dotSize: number, dotPosition: number, dotBorderWidth: number } } = {
+const AvatarSizes: {
+    [key in UAvatarSize]: {
+        size: number;
+        placeholder: number;
+        dotSize: number;
+        dotPosition: number;
+        dotBorderWidth: number;
+    }
+} = {
     'x-small': { size: 24, placeholder: 8, dotSize: 6, dotPosition: 0, dotBorderWidth: 1 },
-    'small': { size: 32, placeholder: 16, dotSize: 10, dotPosition: 0, dotBorderWidth: 2 },
-    'medium': { size: 40, placeholder: 20, dotSize: 12, dotPosition: 0, dotBorderWidth: 2 },
-    'large': { size: 56, placeholder: 24, dotSize: 12, dotPosition: 2, dotBorderWidth: 2 },
+    small: { size: 32, placeholder: 16, dotSize: 10, dotPosition: 0, dotBorderWidth: 2 },
+    medium: { size: 40, placeholder: 20, dotSize: 12, dotPosition: 0, dotBorderWidth: 2 },
+    large: { size: 56, placeholder: 24, dotSize: 12, dotPosition: 2, dotBorderWidth: 2 },
     'x-large': { size: 72, placeholder: 32, dotSize: 14, dotPosition: 4, dotBorderWidth: 2 },
     'xx-large': { size: 96, placeholder: 40, dotSize: 16, dotPosition: 6, dotBorderWidth: 2 },
     'xxx-large': { size: 144, placeholder: 40, dotSize: 16, dotPosition: 6, dotBorderWidth: 2 },
@@ -57,8 +72,7 @@ const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number }) =
             overflow="hidden"
             hoverTextDecoration="none"
         >
-            {titleEmoji ||
-                emoji(ph)}
+            {titleEmoji || emoji(ph)}
         </XView>
     );
 });
@@ -77,9 +91,12 @@ const imageWrapper = css`
 
 const imageWrapperRound = css`
     &:before {
-        content: "";
+        content: '';
         position: absolute;
-        top: 0; right: 0; bottom: 0; left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
         border-radius: 100%;
         border: 1px solid var(--borderLight);
         z-index: 2;
@@ -92,21 +109,27 @@ const AvatarImage = React.memo((props: UAvatarProps) => {
     const boxSize = AvatarSizes[size].size;
     const [imageKey, handleImageError] = useReloadImage();
 
-    let ops = '-/format/auto/-/scale_crop/' + (boxSize + 'x' + boxSize) + '/center/-/quality/best/-/progressive/yes/';
+    let ops =
+        '-/format/auto/-/scale_crop/' +
+        (boxSize + 'x' + boxSize) +
+        '/center/-/quality/best/-/progressive/yes/';
     let opsRetina =
         '-/format/auto/-/scale_crop/' +
         (boxSize * 2 + 'x' + boxSize * 2) +
         '/center/-/quality/best/-/progressive/yes/ 2x';
 
     return (
-        <div className={cx(imageWrapper, !squared && imageWrapperRound)} style={{ width: boxSize, height: boxSize }}>
+        <div
+            className={cx(imageWrapper, !squared && imageWrapperRound)}
+            style={{ width: boxSize, height: boxSize }}
+        >
             <XImage
                 key={imageKey}
                 width="100%"
                 height="100%"
                 src={photo + ops}
                 srcSet={photo + opsRetina}
-                borderRadius={squared ? "0" : "100%"}
+                borderRadius={squared ? '0' : '100%'}
                 overflow="hidden"
                 onError={handleImageError}
             />
@@ -114,95 +137,72 @@ const AvatarImage = React.memo((props: UAvatarProps) => {
     );
 });
 
+const onlineDotStyle = css`
+    position: absolute;
+    border-radius: 100%;
+    background-color: var(--dotBackground);
+    border-color: var(--dotBorder);
+    border-width: 2px;
+    border-style: solid;
+    z-index: 2;
+`;
+
+const onlineDotXXLarge = css`
+    bottom: 6px;
+    right: 6px;
+    width: 16px;
+    height: 16px;
+`;
+
+const onlineDotXLarge = css`
+    bottom: 4px;
+    right: 4px;
+    width: 14px;
+    height: 14px;
+`;
+
+const onlineDotLarge = css`
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+`;
+
+const onlineDotMedium = css`
+    bottom: 0px;
+    right: 0px;
+    width: 12px;
+    height: 12px;
+`;
+
+const onlineDotSmall = css`
+    bottom: 0px;
+    right: 0px;
+    width: 10px;
+    height: 10px;
+`;
+
+const onlineDotXSmall = css`
+    bottom: 0px;
+    right: 0px;
+    width: 6px;
+    height: 6px;
+    border-width: 1px;
+`;
+
 const OnlineDotXXLarge = () => (
-    <XView
-        position="absolute"
-        bottom={6}
-        right={6}
-        width={16}
-        height={16}
-        borderRadius={8}
-        borderWidth={2}
-        borderColor="var(--dotBorder)"
-        backgroundColor="var(--dotBackground)"
-        zIndex={2}
-    />
+    <div className={cx(onlineDotStyle, onlineDotXXLarge, 'online-dot')} />
 );
 
-const OnlineDotXLarge = () => (
-    <XView
-        position="absolute"
-        bottom={4}
-        right={4}
-        width={14}
-        height={14}
-        borderRadius={7}
-        borderWidth={2}
-        borderColor="var(--dotBorder)"
-        backgroundColor="var(--dotBackground)"
-        zIndex={2}
-    />
-);
+const OnlineDotXLarge = () => <div className={cx(onlineDotStyle, onlineDotXLarge, 'online-dot')} />;
 
-const OnlineDotLarge = () => (
-    <XView
-        position="absolute"
-        bottom={2}
-        right={2}
-        width={12}
-        height={12}
-        borderRadius={6}
-        borderWidth={2}
-        borderColor="var(--dotBorder)"
-        backgroundColor="var(--dotBackground)"
-        zIndex={2}
-    />
-);
+const OnlineDotLarge = () => <div className={cx(onlineDotStyle, onlineDotLarge, 'online-dot')} />;
 
-const OnlineDotMedium = () => (
-    <XView
-        position="absolute"
-        bottom={0}
-        right={0}
-        width={12}
-        height={12}
-        borderRadius={6}
-        borderWidth={2}
-        borderColor="var(--dotBorder)"
-        backgroundColor="var(--dotBackground)"
-        zIndex={2}
-    />
-);
+const OnlineDotMedium = () => <div className={cx(onlineDotStyle, onlineDotMedium, 'online-dot')} />;
 
-const OnlineDotSmall = () => (
-    <XView
-        position="absolute"
-        bottom={0}
-        right={0}
-        width={10}
-        height={10}
-        borderRadius={5}
-        borderWidth={2}
-        borderColor="var(--dotBorder)"
-        backgroundColor="var(--dotBackground)"
-        zIndex={2}
-    />
-);
+const OnlineDotSmall = () => <div className={cx(onlineDotStyle, onlineDotSmall, 'online-dot')} />;
 
-const OnlineDotXSmall = () => (
-    <XView
-        position="absolute"
-        bottom={0}
-        right={0}
-        width={6}
-        height={6}
-        borderRadius={3}
-        borderWidth={1}
-        borderColor="var(--dotBorder)"
-        backgroundColor="var(--dotBackground)"
-        zIndex={2}
-    />
-);
+const OnlineDotXSmall = () => <div className={cx(onlineDotStyle, onlineDotXSmall, 'online-dot')} />;
 
 const colorProvider = css`
     display: flex;
@@ -210,7 +210,17 @@ const colorProvider = css`
 `;
 
 export const UAvatar = XMemo<UAvatarProps>(props => {
-    const { title, titleEmoji, id, photo, online, size = 'medium', selected, squared, ...other } = props;
+    const {
+        title,
+        titleEmoji,
+        id,
+        photo,
+        online,
+        size = 'medium',
+        selected,
+        squared,
+        ...other
+    } = props;
     let content: any = undefined;
 
     if (photo) {
@@ -231,15 +241,24 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
     const dotBackground = selected ? 'var(--foregroundContrast)' : 'var(--accentPrimary)';
 
     return (
-        <XView
-            {...other}
-            cursor={props.onClick || props.path ? 'pointer' : undefined}
-        >
+        <XView {...other} cursor={props.onClick || props.path ? 'pointer' : undefined}>
             <div
                 className={colorProvider}
-                style={{ width: boxSize, height: boxSize, '--dotBorder': dotBorder, '--dotBackground': dotBackground } as React.CSSProperties}
+                style={
+                    {
+                        width: boxSize,
+                        height: boxSize,
+                        '--dotBorder': dotBorder,
+                        '--dotBackground': dotBackground,
+                    } as React.CSSProperties
+                }
             >
-                <XView width="100%" height="100%" borderRadius={squared ? 0 : boxSize / 2} overflow="hidden">
+                <XView
+                    width="100%"
+                    height="100%"
+                    borderRadius={squared ? 0 : boxSize / 2}
+                    overflow="hidden"
+                >
                     {content}
                 </XView>
 
@@ -250,6 +269,6 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
                 {online && size === 'x-large' && <OnlineDotXLarge />}
                 {online && size === 'xx-large' && <OnlineDotXXLarge />}
             </div>
-        </XView >
+        </XView>
     );
 });
