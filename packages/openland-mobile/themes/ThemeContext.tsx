@@ -11,6 +11,9 @@ export const useTheme = () => React.useContext(ThemeContext);
 export let SystemTheme = initialMode;
 
 eventEmitter.on('currentModeChanged', newMode => {
+    if (SystemTheme === newMode) {
+        return;
+    }
     SystemTheme = newMode;
 
     if (ThemeController.appearance.theme === 'System') {
@@ -49,7 +52,6 @@ export const ThemeProvider = (props: { children?: any }) => {
             setTheme(r);
         });
     }, []);
-
     return (
         <ThemeContext.Provider value={theme}>
             {props.children}
