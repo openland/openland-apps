@@ -168,7 +168,7 @@ interface ModalProps {
     srcSet: string;
     width: number;
     height: number;
-    preview: string;
+    preview?: string | null;
     sender?: UserShort;
     senderNameEmojify?: string | JSX.Element;
     date?: number;
@@ -219,7 +219,9 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     <a
                         className={modalButtonStyle}
                         href={
-                            'https://ucarecdn.com/' + props.fileId + '/-/inline/no/'
+                            'https://ucarecdn.com/' +
+                            props.fileId +
+                            '/-/format/jpg/-/inline/no/pic.jpg'
                         }
                     >
                         <UIcon icon={<IcDownload />} color="var(--backgroundPrimary)" />
@@ -250,13 +252,15 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                         } as React.CSSProperties
                     }
                 />
-                <img
-                    className={imgPreviewClass}
-                    src={props.preview}
-                    width={props.width}
-                    height={props.height}
-                    style={{ cursor: 'default' }}
-                />
+                {props.preview && (
+                    <img
+                        className={imgPreviewClass}
+                        src={props.preview}
+                        width={props.width}
+                        height={props.height}
+                        style={{ cursor: 'default' }}
+                    />
+                )}
                 <XLoader transparentBackground={true} ref={loaderRef} />
                 <ImgWithRetry
                     ref={imgRef}
@@ -273,7 +277,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     );
 });
 
-const showImageModal = (props: ModalProps) => {
+export const showImageModal = (props: ModalProps) => {
     showModalBox({ fullScreen: true, darkOverlay: true, useTopCloser: false }, ctx => (
         <ModalContent {...props} hide={ctx.hide} />
     ));
@@ -437,7 +441,7 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                     srcSet: url + modalOps[1],
                     width: layoutModal.width,
                     height: layoutModal.height,
-                    preview: props.file.filePreview || '',
+                    preview: props.file.filePreview,
                     sender: props.sender,
                     senderNameEmojify: props.senderNameEmojify,
                     date: props.date,

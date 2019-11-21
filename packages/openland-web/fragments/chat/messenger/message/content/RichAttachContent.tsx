@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { showModalBox } from 'openland-x/showModalBox';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import { layoutMedia, MediaLayout } from 'openland-y-utils/MediaLayout';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
@@ -12,6 +11,7 @@ import ZoomIcon from 'openland-icons/s/ic-zoom-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { InternalAttachContent } from './InternalAttachContent';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
+import { showImageModal } from './ImageContent';
 
 type messageRichAttach = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
 
@@ -189,30 +189,6 @@ const zoomButton = css`
     }
 `;
 
-const modalImgContainer = css`
-    background-color: #000;
-    flex-shrink: 0;
-    flex-grow: 1;
-    display: flex;
-    width: 100%;
-    height: 100%;
-`;
-
-const modalImgStyle = css`
-    flex-shrink: 0;
-    object-fit: contain;
-    width: 100%;
-    max-height: 80vh;
-`;
-
-const showImageModal = (src: string, width: number, height: number) => {
-    showModalBox({ width: 600 }, () => (
-        <div className={modalImgContainer}>
-            <ImgWithRetry src={src} className={modalImgStyle} width={width} height={height} />
-        </div>
-    ));
-};
-
 interface RichAttachContentProps {
     attach: messageRichAttach;
     canDelete: boolean;
@@ -282,7 +258,7 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
     let img = null;
     let siteIcon = null;
     let layout: MediaLayout | undefined;
-    if (attach.image && attach.image.metadata) {
+    if (attach.image && attach.image.metadata && attach.image.url) {
         layout = layoutMedia(
             attach.image.metadata.imageWidth || 0,
             attach.image.metadata.imageHeight || 0,
@@ -357,21 +333,31 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
                     className={cx(zoomButton, 'message-rich-zoom')}
                     onClick={(e: React.MouseEvent) => {
                         e.stopPropagation();
-                        showImageModal(attach.image!!.url, layout!.width * 2, layout!.height * 2);
+                        showImageModal({
+                            fileId: attach
+                                .image!!.url.split('https://ucarecdn.com/')
+                                .pop()!
+                                .slice(0, -1),
+                            src: attach.image!!.url,
+                            srcSet: attach.image!!.url,
+                            width: layout!.width * 2,
+                            height: layout!.height * 2,
+                        });
                     }}
                 >
                     <UIcon icon={<ZoomIcon />} color={'var(--foregroundContrast)'} />
                 </button>
             )}
 
-            {canDelete && !!messageId && (
-                <div
-                    className={cx(deleteButton, 'message-rich-delete')}
-                    onClick={handleDeleteClick}
-                >
-                    <UIcon icon={<DeleteIcon />} />
-                </div>
-            )}
+            {canDelete &&
+                !!messageId && (
+                    <div
+                        className={cx(deleteButton, 'message-rich-delete')}
+                        onClick={handleDeleteClick}
+                    >
+                        <UIcon icon={<DeleteIcon />} />
+                    </div>
+                )}
         </div>
     );
 };
