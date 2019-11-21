@@ -9,7 +9,6 @@ import { useField } from 'openland-form/useField';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { UButton } from 'openland-web/components/unicorn/UButton';
@@ -43,7 +42,6 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
             text: 'Please enter chat name',
         },
     ]);
-    const longDescriptionField = useField('input.longDescription', '', form);
     const descriptionField = useField('input.description', props.description || '', form);
     const onSubmit = async () => {
         await form.doAction(async () => {
@@ -75,13 +73,6 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
                     marginTop={24}
                     marginBottom={16}
                 />
-                <XWithRole role={['super-admin', 'editor', 'feature-chat-embedded-attach']}>
-                    <UInputField
-                        field={longDescriptionField}
-                        label="Attach link"
-                        marginBottom={16}
-                    />
-                </XWithRole>
                 <UInputField field={descriptionField} label="Description" />
             </XView>
             <XModalFooter>
