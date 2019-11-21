@@ -455,7 +455,14 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                             message.reactions.length > 0) &&
                             buttons}
                     </div>
-                    {layout !== 'mobile' && <HoverMenu message={message} engine={engine} />}
+                    {layout !== 'mobile' && (
+                        <HoverMenu
+                            message={message}
+                            engine={engine}
+                            setReaction={setReaction}
+                            unsetReaction={unsetReaction}
+                        />
+                    )}
                 </div>
             </div>
         </div>

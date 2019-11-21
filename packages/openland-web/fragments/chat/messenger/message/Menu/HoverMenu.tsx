@@ -41,134 +41,136 @@ const forceInvisible = css`
 interface Props {
     message: DataSourceWebMessageItem;
     engine: ConversationEngine;
+    setReaction: (reaction: MessageReactionType) => void;
+    unsetReaction: (reaction: MessageReactionType) => void;
 }
 
-export const HoverMenu = React.memo(
-    (props: Props) => {
-        const { message } = props;
-        const [width] = useWithWidth();
-        const client = useClient();
-        const messenger = React.useContext(MessengerContext);
-        const router = React.useContext(XViewRouterContext);
-        const messageRef = React.useRef(message);
-        const [menuPlacement, setMenuPlacement] = React.useState<Placement>('bottom-end');
+export const HoverMenu = React.memo<Props>(props => {
+    const { message, setReaction, unsetReaction } = props;
+    const [width] = useWithWidth();
+    const client = useClient();
+    const messenger = React.useContext(MessengerContext);
+    const router = React.useContext(XViewRouterContext);
+    const messageRef = React.useRef(message);
+    const [menuPlacement, setMenuPlacement] = React.useState<Placement>('bottom-end');
 
-        React.useLayoutEffect(
-            () => {
-                if (width && width > 1600) {
-                    setMenuPlacement('right-start');
-                } else if (width && width < 1600) {
-                    setMenuPlacement('bottom-end');
-                }
-            },
-            [width],
-        );
-
-        messageRef.current = message;
-        const [menuVisible, menuShow] = usePopper(
-            { placement: menuPlacement, hideOnClick: true },
-            ctx => buildMessageMenu(ctx, messageRef.current, props.engine, router!),
-        );
-        const handleCommentClick = React.useCallback(
-            e => {
-                e.stopPropagation();
-
-                if (router && message.id) {
-                    router.navigate(`/message/${message.id}`);
-                }
-            },
-            [message.id],
-        );
-
-        // Sorry universe
-        const pickerRef = React.useRef<ReactionPickerInstance>(null);
-        const messageIdRef = React.useRef(message.id);
-        messageIdRef.current = message.id;
-        const reactionsRef = React.useRef(message.reactions);
-        reactionsRef.current = message.reactions;
-
-        React.useEffect(
-            () => {
-                if (pickerRef && pickerRef.current) {
-                    pickerRef.current.update(reactionsRef.current);
-                }
-            },
-            [pickerRef, reactionsRef.current],
-        );
-
-        const handleReactionClick = (reaction: MessageReactionType) => {
-            const messageId = messageIdRef.current;
-            const reactions = reactionsRef.current;
-
-            if (messageId) {
-                const remove =
-                    reactions &&
-                    reactions.filter(
-                        userReaction =>
-                            userReaction.user.id === messenger.user.id &&
-                            userReaction.reaction === reaction,
-                    ).length > 0;
-                if (remove) {
-                    client.mutateMessageUnsetReaction({ messageId, reaction });
-                } else {
-                    trackEvent('reaction_sent', {
-                        reaction_type: reaction.toLowerCase(),
-                        double_tap: 'not',
-                    });
-
-                    client.mutateMessageSetReaction({ messageId, reaction });
-                }
+    React.useLayoutEffect(
+        () => {
+            if (width && width > 1600) {
+                setMenuPlacement('right-start');
+            } else if (width && width < 1600) {
+                setMenuPlacement('bottom-end');
             }
-        };
+        },
+        [width],
+    );
 
-        const [reactionsVisible, reactionsShow] = usePopper(
-            { placement: 'top', hideOnLeave: true, borderRadius: 20, scope: 'reaction-picker' },
-            () => (
-                <ReactionPicker
-                    ref={pickerRef}
-                    reactions={reactionsRef.current}
-                    onPick={handleReactionClick}
-                />
-            ),
-        );
-        const visible = menuVisible || reactionsVisible;
+    messageRef.current = message;
+    const [menuVisible, menuShow] = usePopper(
+        { placement: menuPlacement, hideOnClick: true },
+        ctx => buildMessageMenu(ctx, messageRef.current, props.engine, router!),
+    );
+    const handleCommentClick = React.useCallback(
+        e => {
+            e.stopPropagation();
 
-        return (
-            <div
-                className={cx(
-                    menuContainerClass,
-                    message.attachTop && attachTop,
-                    'hover-menu-container',
-                    visible && forceVisible,
-                    message.isSending && forceInvisible,
-                )}
-            >
-                <UIconButton
-                    icon={<LikeIcon />}
-                    color="var(--foregroundTertiary)"
-                    size="small"
-                    active={reactionsVisible}
-                    onMouseEnter={reactionsShow}
-                    onClick={e => {
-                        e.stopPropagation();
+            if (router && message.id) {
+                router.navigate(`/message/${message.id}`);
+            }
+        },
+        [message.id],
+    );
 
-                        handleReactionClick(MessageReactionType.LIKE);
-                    }}
-                />
-                <UIconButton
-                    icon={<CommentIcon />}
-                    color="var(--foregroundTertiary)"
-                    size="small"
-                    onClick={handleCommentClick}
-                />
-                <UIconButton
-                    icon={<MoreIcon />}
-                    color="var(--foregroundTertiary)"
-                    size="small-densed"
-                    onClick={menuShow}
-                    active={menuVisible}
-                />
-            </div>
-        );
-    },
-);
+    // Sorry universe
+    const pickerRef = React.useRef<ReactionPickerInstance>(null);
+    const messageIdRef = React.useRef(message.id);
+    messageIdRef.current = message.id;
+    const reactionsRef = React.useRef(message.reactions);
+    reactionsRef.current = message.reactions;
+
+    React.useEffect(
+        () => {
+            if (pickerRef && pickerRef.current) {
+                pickerRef.current.update(reactionsRef.current);
+            }
+        },
+        [pickerRef, reactionsRef.current],
+    );
+
+    const handleReactionClick = (reaction: MessageReactionType) => {
+        const messageId = messageIdRef.current;
+        const reactions = reactionsRef.current;
+
+        if (messageId) {
+            const remove =
+                reactions &&
+                reactions.filter(
+                    userReaction =>
+                        userReaction.user.id === messenger.user.id &&
+                        userReaction.reaction === reaction,
+                ).length > 0;
+            if (remove) {
+                unsetReaction(reaction);
+                // client.mutateMessageUnsetReaction({ messageId, reaction });
+            } else {
+                setReaction(reaction);
+
+                // trackEvent('reaction_sent', {
+                //     reaction_type: reaction.toLowerCase(),
+                //     double_tap: 'not',
+                // });
+
+                // client.mutateMessageSetReaction({ messageId, reaction });
+            }
+        }
+    };
+
+    const [reactionsVisible, reactionsShow] = usePopper(
+        { placement: 'top', hideOnLeave: true, borderRadius: 20, scope: 'reaction-picker' },
+        () => (
+            <ReactionPicker
+                ref={pickerRef}
+                reactions={reactionsRef.current}
+                onPick={handleReactionClick}
+            />
+        ),
+    );
+    const visible = menuVisible || reactionsVisible;
+
+    return (
+        <div
+            className={cx(
+                menuContainerClass,
+                message.attachTop && attachTop,
+                'hover-menu-container',
+                visible && forceVisible,
+                message.isSending && forceInvisible,
+            )}
+        >
+            <UIconButton
+                icon={<LikeIcon />}
+                color="var(--foregroundTertiary)"
+                size="small"
+                active={reactionsVisible}
+                onMouseEnter={reactionsShow}
+                onClick={e => {
+                    e.stopPropagation();
+                    handleReactionClick(MessageReactionType.LIKE);
+                }}
+            />
+            <UIconButton
+                icon={<CommentIcon />}
+                color="var(--foregroundTertiary)"
+                size="small"
+                onClick={handleCommentClick}
+            />
+            <UIconButton
+                icon={<MoreIcon />}
+                color="var(--foregroundTertiary)"
+                size="small-densed"
+                onClick={menuShow}
+                active={menuVisible}
+            />
+        </div>
+    );
+});
