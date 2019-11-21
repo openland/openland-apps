@@ -38,8 +38,13 @@ const forceInvisible = css`
     display: none;
 `;
 
+interface Props {
+    message: DataSourceWebMessageItem;
+    engine: ConversationEngine;
+}
+
 export const HoverMenu = React.memo(
-    (props: { message: DataSourceWebMessageItem; engine: ConversationEngine }) => {
+    (props: Props) => {
         const { message } = props;
         const [width] = useWithWidth();
         const client = useClient();
