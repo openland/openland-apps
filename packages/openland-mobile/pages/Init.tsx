@@ -65,8 +65,8 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
             {Platform.OS !== 'android' && (
                 <Image
                     fadeDuration={0}
-                    source={require('assets/logo-unicorn.png')}
-                    style={{ width: 130, height: 155 }}
+                    source={initialMode === 'light' ? require('assets/logo-splash.png') : require('assets/logo-splash-dark.png')}
+                    style={{ width: 128, height: 128 }}
                 />
             )}
         </SAnimated.View>

@@ -18,6 +18,7 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 import { API_HOST } from 'openland-y-utils/api';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export const ACTIVATION_CODE_LENGTH = 6;
 
@@ -67,6 +68,7 @@ const requestActivationCode = async () => {
 };
 
 const EmailStartComponent = (props: PageProps) => {
+    const theme = React.useContext(ThemeContext);
     const form = useForm();
     const emailField = useField('email', '', form);
 
@@ -104,7 +106,7 @@ const EmailStartComponent = (props: PageProps) => {
             <SHeaderButton title="Next" onPress={submitForm} />
 
             <KeyboardAvoidingScrollView>
-                <Text style={styles.hint} allowFontScaling={false}>
+                <Text style={[styles.hint, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
                     Enter your email address to sign in or create a{'\u00A0'}new{'\u00A0'}account
                 </Text>
                 <ZInput
@@ -125,6 +127,7 @@ const EmailStartComponent = (props: PageProps) => {
 export const EmailStart = withApp(EmailStartComponent);
 
 const EmailCodeComponent = (props: PageProps) => {
+    const theme = React.useContext(ThemeContext);
     const form = useForm();
     const codeField = useField('code', '', form);
 
@@ -205,7 +208,7 @@ const EmailCodeComponent = (props: PageProps) => {
             <SHeaderButton title="Next" onPress={submitForm} />
 
             <KeyboardAvoidingScrollView>
-                <Text style={styles.hint} allowFontScaling={false}>
+                <Text style={[styles.hint, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
                     Enter activation code that was just sent to {email}
                 </Text>
                 <ZInput

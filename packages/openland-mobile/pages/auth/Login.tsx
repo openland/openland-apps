@@ -3,7 +3,6 @@ import { View, StyleSheet, Image, ViewStyle, Platform } from 'react-native';
 import RNRestart from 'react-native-restart';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
-import { SHeader } from 'react-native-s/SHeader';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
@@ -39,8 +38,10 @@ const Logo = React.memo(() => {
 
     return (
         <View style={styles.logoWrapper}>
-            <Image source={require('assets/logo-unicorn.png')} style={{ width: 130, height: 155 }} />
-            <Image source={require('assets/logotype.png')} style={{ width: 186, height: 38, marginTop: 28, tintColor: theme.foregroundPrimary }} />
+            <Image
+                source={theme.type === 'Light' ? require('assets/ic-logo-240.png') : require('assets/ic-logo-dark-240.png')}
+                style={{ width: 240, height: 240 }}
+            />
         </View>
     );
 });
@@ -103,7 +104,6 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
     render() {
         return (
             <ZTrack event="root_view">
-                <SHeader hidden={true} />
                 <ASSafeAreaView style={{ flexGrow: 1 }}>
                     <View style={styles.container}>
                         <Logo />
