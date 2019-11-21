@@ -65,7 +65,7 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
             {Platform.OS !== 'android' && (
                 <Image
                     fadeDuration={0}
-                    source={initialMode === 'light' ? require('assets/logo-splash.png') : require('assets/logo-splash-dark.png')}
+                    source={theme.type === 'Light' ? require('assets/logo-splash.png') : require('assets/logo-splash-dark.png')}
                     style={{ width: 128, height: 128 }}
                 />
             )}
