@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
+import { DataSourceWebMessageItem, emojifyReactions } from '../data/WebMessageItemDataSource';
+import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
 import { MessageReactions } from './reactions/MessageReactions';
 import { MessageContent } from './MessageContent';
 import { MAvatar } from './MAvatar';
@@ -8,7 +9,12 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
 import StarIcon from 'openland-icons/s/ic-star-16.svg';
 import { formatTime } from 'openland-y-utils/formatTime';
-import { UserShort_primaryOrganization, UserShort } from 'openland-api/Types';
+import {
+    UserShort_primaryOrganization,
+    UserShort,
+    MessageReactionType,
+    FullMessage_GeneralMessage_reactions,
+} from 'openland-api/Types';
 import { HoverMenu } from './Menu/HoverMenu';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
@@ -16,6 +22,8 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { useUserPopper } from 'openland-web/components/UserPopper';
 import { defaultHover } from 'openland-web/utils/Styles';
+import { emoji } from 'openland-y-utils/emoji';
+import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
 
 const senderContainer = css`
     display: flex;
@@ -283,10 +291,54 @@ interface MessageComponentProps {
     engine: ConversationEngine;
 }
 
+const computeAdditionalReactionsData = (reactions: FullMessage_GeneralMessage_reactions[], engine: ConversationEngine) => {
+    const reactionsReduced = reduceReactions(reactions, engine.engine.user.id);
+    const reactionsReducedEmojify = emojifyReactions(reactionsReduced);
+    const reactionsLabelEmojify = emoji(getReactionsLabel(reactions, engine.engine.user.id));
+
+    return {
+        reactionsReduced,
+        reactionsReducedEmojify,
+        reactionsLabelEmojify,
+    };
+};
+
 export const MessageComponent = React.memo((props: MessageComponentProps) => {
-    const { message, engine } = props;
+    const { engine } = props;
     const containerRef = React.useRef<HTMLDivElement>(null);
     const layout = useLayout();
+
+    const [message, setMessage] = React.useState<DataSourceWebMessageItem>(props.message);
+
+    React.useEffect(() => {
+        setMessage(props.message);
+    }, [props.message]);
+
+    const setReaction = (reaction: MessageReactionType) => {
+        const reactions = message.reactions.concat([{
+            reaction,
+            user: engine.engine.user as UserShort,
+            __typename: "ModernMessageReaction"
+        }]);
+
+        setMessage({
+            ...message,
+            reactions,
+            ...computeAdditionalReactionsData(reactions, engine)
+        });
+    };
+
+    const unsetReaction = (reaction: MessageReactionType) => {
+        const reactions = message.reactions.filter(
+            r => !(r.user.id === engine.engine.user.id && r.reaction === reaction)
+        );
+
+        setMessage({
+            ...message,
+            reactions,
+            ...computeAdditionalReactionsData(reactions, engine)
+        });
+    };
 
     const attachesClassNames = cx(
         message.attachTop && 'message-attached-top',
@@ -347,7 +399,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
 
     const buttons = (
         <div className={buttonsClass}>
-            <MessageReactions message={message} />
+            <MessageReactions message={message} setReaction={setReaction} unsetReaction={unsetReaction} />
             <MessageCommentsButton message={message} isChannel={engine.isChannel || false} />
         </div>
     );

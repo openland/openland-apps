@@ -91,9 +91,12 @@ export interface MessageReactionsProps {
         reactionsReducedEmojify: ReactionReducedEmojify[];
         reactionsLabelEmojify: string | JSX.Element;
     };
+    setReaction: (reaction: MessageReactionType) => void;
+    unsetReaction: (reaction: MessageReactionType) => void;
 }
 
 export const MessageReactions = React.memo<MessageReactionsProps>(props => {
+    const { setReaction, unsetReaction } = props;
     const { id, reactionsReducedEmojify, reactionsLabelEmojify } = props.message;
     const client = useClient();
     const handleReactionClick = React.useCallback(
@@ -107,8 +110,10 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
                             userReaction.reaction === reaction,
                     ).length > 0;
                 if (remove) {
+                    unsetReaction(reaction);
                     client.mutateMessageUnsetReaction({ messageId: id, reaction });
                 } else {
+                    setReaction(reaction);
                     trackEvent('reaction_sent', {
                         reaction_type: reaction.toLowerCase(),
                         double_tap: 'not',
