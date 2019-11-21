@@ -149,6 +149,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 alignItems="center"
                 justifyContent="center"
                 onPress={Platform.OS === 'android' ? this.handlePress : undefined}
+                onLongPress={Platform.OS === 'android' ? onMediaLongPress : undefined}
             >
                 <ASFlex>
                     <ASImage
@@ -202,7 +203,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                             maskColor={theme.backgroundPrimary}
                             borderColor={theme.border}
                             onPress={Platform.OS === 'ios' ? this.handlePress : undefined}
-                            onLongPress={onMediaLongPress}
+                            onLongPress={Platform.OS === 'ios' ? onMediaLongPress : undefined}
                             useBorder={useBorder}
                         />
                     </ASFlex>
