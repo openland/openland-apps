@@ -299,7 +299,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const selectedRef = React.useRef(false);
 
     React.useEffect(() => {
-        props.engine.messagesActionsStateEngine.listenSelect(props.message, selected => {
+        return props.engine.messagesActionsStateEngine.listenSelect(props.message, selected => {
             selectedRef.current = selected;
 
             if (containerRef.current) {

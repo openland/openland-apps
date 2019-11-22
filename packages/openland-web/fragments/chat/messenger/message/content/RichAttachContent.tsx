@@ -134,18 +134,6 @@ const titleStyle = css`
 const textStyle = css`
     color: var(--foregroundPrimary);
     margin-top: 2px;
-    -webkit-line-clamp: 5;
-`;
-
-const text2line = css`
-    -webkit-line-clamp: 2;
-`;
-
-const text3line = css`
-    -webkit-line-clamp: 3;
-`;
-
-const text4line = css`
     -webkit-line-clamp: 4;
 `;
 
@@ -233,27 +221,6 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
         [messageId],
     );
 
-    React.useLayoutEffect(() => {
-        let titleHeight;
-        let textHeight;
-        if (titleRef.current) {
-            titleHeight = titleRef.current.clientHeight;
-        }
-        if (textRef.current) {
-            textHeight = textRef.current.clientHeight;
-        }
-        if (titleHeight && textHeight) {
-            if (titleHeight === 24) {
-                textRef.current!!.classList.add(text4line);
-            }
-            if (titleHeight === 48) {
-                textRef.current!!.classList.add(text3line);
-            }
-            if (titleHeight === 72) {
-                textRef.current!!.classList.add(text2line);
-            }
-        }
-    });
 
     let img = null;
     let siteIcon = null;
