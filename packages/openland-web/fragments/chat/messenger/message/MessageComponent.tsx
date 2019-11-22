@@ -294,50 +294,50 @@ interface MessageComponentProps {
 const computeAdditionalReactionsData = (reactions: FullMessage_GeneralMessage_reactions[], engine: ConversationEngine) => {
     const reactionsReduced = reduceReactions(reactions, engine.engine.user.id);
     const reactionsReducedEmojify = emojifyReactions(reactionsReduced);
-    const reactionsLabelEmojify = emoji(getReactionsLabel(reactions, engine.engine.user.id));
+    const reactionsLabel = getReactionsLabel(reactions, engine.engine.user.id);
+    const reactionsLabelEmojify = emoji(reactionsLabel);
 
     return {
         reactionsReduced,
         reactionsReducedEmojify,
+        reactionsLabel,
         reactionsLabelEmojify,
     };
 };
 
 export const MessageComponent = React.memo((props: MessageComponentProps) => {
-    const { engine } = props;
+    const { engine, message } = props;
     const containerRef = React.useRef<HTMLDivElement>(null);
     const layout = useLayout();
 
-    const [message, setMessage] = React.useState<DataSourceWebMessageItem>(props.message);
-
-    React.useEffect(() => {
-        setMessage(props.message);
-    }, [props.message]);
-
-    const setReaction = (reaction: MessageReactionType) => {
-        const reactions = message.reactions.concat([{
+    const setReaction = (reaction: MessageReactionType, dataSourceMessage: DataSourceWebMessageItem) => {
+        const reactions = dataSourceMessage.reactions.concat([{
             reaction,
-            user: engine.engine.user as UserShort,
+            user: engine.engine.user,
             __typename: "ModernMessageReaction"
         }]);
 
-        setMessage({
-            ...message,
+        const newMessage = {
+            ...dataSourceMessage,
             reactions,
             ...computeAdditionalReactionsData(reactions, engine)
-        });
+        };
+
+        engine.dataSource.updateItem(newMessage);
     };
 
-    const unsetReaction = (reaction: MessageReactionType) => {
-        const reactions = message.reactions.filter(
+    const unsetReaction = (reaction: MessageReactionType, dataSourceMessage: DataSourceWebMessageItem) => {
+        const reactions = dataSourceMessage.reactions.filter(
             r => !(r.user.id === engine.engine.user.id && r.reaction === reaction)
         );
 
-        setMessage({
-            ...message,
+        const newMessage = {
+            ...dataSourceMessage,
             reactions,
             ...computeAdditionalReactionsData(reactions, engine)
-        });
+        };
+
+        engine.dataSource.updateItem(newMessage);
     };
 
     const attachesClassNames = cx(
@@ -399,7 +399,12 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
 
     const buttons = (
         <div className={buttonsClass}>
-            <MessageReactions message={message} setReaction={setReaction} unsetReaction={unsetReaction} />
+            <MessageReactions
+                message={message}
+                engine={engine}
+                setReaction={setReaction}
+                unsetReaction={unsetReaction}
+            />
             <MessageCommentsButton message={message} isChannel={engine.isChannel || false} />
         </div>
     );
