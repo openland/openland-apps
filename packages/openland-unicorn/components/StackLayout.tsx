@@ -14,6 +14,7 @@ const PageAnimator = React.memo(
         router: StackRouter;
         visible: boolean;
         depth: number;
+        removing?: boolean
     }) => {
         console.log('render[' + props.k + ']: ' + props.state);
 
@@ -27,7 +28,7 @@ const PageAnimator = React.memo(
                         }
                     }, 400);
                 }
-                if (props.state === 'exiting') {
+                if (props.state === 'exiting' || props.removing) {
                     setTimeout(() => {
                         if (active) {
                             props.dispatch({ type: 'exited', key: props.k });
@@ -38,7 +39,7 @@ const PageAnimator = React.memo(
                     active = false;
                 };
             },
-            [props.state],
+            [props.state, props.removing],
         );
 
         let state = props.state;
@@ -91,6 +92,7 @@ type AnimationState = {
         query: any;
         id?: string;
         state: 'mounting' | 'entering' | 'visible' | 'hidden' | 'exiting';
+        removing?: boolean
     }[];
 };
 
@@ -179,7 +181,13 @@ function animationReducer(state: AnimationState, action: AnimationAction): Anima
             return state;
         }
     } else if (action.type === 'reset') {
-        return initialState(action.pages);
+        let res = initialState(action.pages);
+        // do unmount work after new page render, hide old stack till then
+        let currentPages = state.pages.filter(p => !p.removing);
+        if (currentPages.length) {
+            res.pages.unshift(...currentPages.map(p => ({ ...p, removing: true })));
+        }
+        return res;
     } else {
         throw Error();
     }
@@ -241,6 +249,7 @@ export const StackLayout = React.memo(
                         {state.pages.map((v, i) => (
                             <PageAnimator
                                 state={v.state}
+                                removing={v.removing}
                                 key={v.key}
                                 k={v.key}
                                 dispatch={dispatch}

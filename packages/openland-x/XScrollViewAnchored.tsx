@@ -4,7 +4,6 @@ import { XView, XStyles } from 'react-mental';
 import { XScrollValues } from './XScrollView3';
 import { throttle } from 'openland-y-utils/timer';
 import { VisibleTabContext } from 'openland-unicorn/components/utils/VisibleTabContext';
-import { scaleDown } from 'react-burger-menu';
 
 const NativeScrollStyle = css`
     overflow-y: overlay;
@@ -126,6 +125,7 @@ export const XScrollViewAnchored = React.memo(
                     scrollTop.current = outerDiv.scrollTop;
                     trottledOnScrollReport();
                     // hide bottom off screen elements for faster scroll / unmount
+                    // may affect scroll perf :c
                     if (innerRef.current && scrollDumb.current) {
                         if (d > 0) {
                             for (let i = innerRef.current.children.length - 1; i > 0; i--) {
@@ -158,7 +158,6 @@ export const XScrollViewAnchored = React.memo(
                             }
 
                         }
-                        console.warn(scrollDumbSize, heights);
                         scrollDumb.current.style.height = `${scrollDumbSize}px`;
                     }
                 };
