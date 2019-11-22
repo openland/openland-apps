@@ -18,6 +18,7 @@ import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
 import NotificationsOffIcon from 'openland-icons/s/ic-notifications-off-24.svg';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
+import MutedIcon from 'openland-icons/s/ic-muted-16.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { showAddMembersModal } from '../showAddMembersModal';
 import {
@@ -28,6 +29,7 @@ import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButt
 import { TextDensed, TextStyles, HoverAlpha } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';
 import { useLastSeen } from 'openland-y-utils/LastSeen';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
 const secondary = css`
     color: var(--foregroundSecondary);
@@ -47,6 +49,11 @@ const oneLiner = css`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+`;
+
+const mutedIcon = css`
+    margin: 2px 0 0 4px;
+    flex-shrink: 0;
 `;
 
 const HeaderLastSeen = (props: { id: string }) => {
@@ -96,10 +103,10 @@ const CallButton = (props: { chat: ChatInfo; calls: CallsEngine }) => {
                     props.chat.__typename === 'PrivateRoom',
                     props.chat.__typename === 'PrivateRoom'
                         ? {
-                              id: props.chat.user.id,
-                              title: props.chat.user.name,
-                              picture: props.chat.user.photo,
-                          }
+                            id: props.chat.user.id,
+                            title: props.chat.user.name,
+                            picture: props.chat.user.photo,
+                        }
                         : { id: props.chat.id, title: props.chat.title, picture: props.chat.photo },
                 )
             }
@@ -243,6 +250,8 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                             lineHeight="24px"
                             fontWeight="600"
                             overflow="hidden"
+                            flexDirection="row"
+                            alignItems="center"
                         >
                             <span className={titleStyle}>
                                 {titleEmojify}
@@ -253,6 +262,14 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                                         </span>
                                     )}
                             </span>
+                            {chat.settings.mute && (
+                                <UIcon
+                                    className={mutedIcon}
+                                    icon={<MutedIcon />}
+                                    color="var(--foregroundQuaternary)"
+                                    size={16}
+                                />
+                            )}
                         </XView>
                         <XView {...TextStyles.Densed} color="var(--foregroundSecondary)">
                             <span className={oneLiner}>

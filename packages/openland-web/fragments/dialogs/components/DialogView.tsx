@@ -6,6 +6,7 @@ import IcLock from 'openland-icons/s/ic-lock-16.svg';
 import IcReply from 'openland-icons/s/ic-reply-16.svg';
 import IcChannel from 'openland-icons/s/ic-channel-16.svg';
 import IcMention from 'openland-icons/s/ic-mention-16.svg';
+import IcMuted from 'openland-icons/s/ic-muted-16.svg';
 import { XCounter } from 'openland-x/XCounter';
 import { DialogListWebItem } from './DialogListWebDataSource';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
@@ -82,6 +83,10 @@ const dialogTitleContent = css`
 const dialogTitle = css`
     text-overflow: ellipsis;
     overflow: hidden;
+`;
+
+const mutedIcon = css`
+    margin-left: 4px;
 `;
 
 const highlightSecretChatColor = css`
@@ -256,6 +261,15 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                         </div>
                                     )}
                                     <span className={dialogTitle}>{dialog.titleEmojify}</span>
+                                    {dialog.isMuted && (
+                                        <div className={cx(dialogIconContainer, mutedIcon)}>
+                                            <UIcon
+                                                size={16}
+                                                icon={<IcMuted />}
+                                                color={active ? 'var(--foregroundInverted)' : 'var(--foregroundQuaternary)'}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                                 {dialog.date && (
                                     <div

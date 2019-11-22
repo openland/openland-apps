@@ -1002,6 +1002,10 @@ export const MessagesSearchQuery = gql`
                                 name
                                 photo
                             }
+                            settings {
+                                id
+                                mute
+                            }
                         }
                         ... on SharedRoom {
                             id
@@ -1012,6 +1016,10 @@ export const MessagesSearchQuery = gql`
                             role
                             canEdit
                             photo
+                            settings {
+                                id
+                                mute
+                            }
                         } 
                     },
                     message {

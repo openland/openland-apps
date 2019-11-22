@@ -16,6 +16,11 @@ internal val MessagesSearchSelector = obj(
                                             field("__typename", "__typename", notNull(scalar("String"))),
                                             inline("PrivateRoom", obj(
                                                 field("id", "id", notNull(scalar("ID"))),
+                                                field("settings", "settings", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("mute", "mute", scalar("Boolean"))
+                                                    ))),
                                                 field("user", "user", notNull(obj(
                                                         field("__typename", "__typename", notNull(scalar("String"))),
                                                         field("id", "id", notNull(scalar("ID"))),
@@ -31,6 +36,11 @@ internal val MessagesSearchSelector = obj(
                                                 field("membership", "membership", notNull(scalar("String"))),
                                                 field("photo", "photo", notNull(scalar("String"))),
                                                 field("role", "role", notNull(scalar("String"))),
+                                                field("settings", "settings", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("mute", "mute", scalar("Boolean"))
+                                                    ))),
                                                 field("title", "title", notNull(scalar("String")))
                                             ))
                                         ))),
@@ -89,6 +99,6 @@ internal val MessagesSearchSelector = obj(
 val MessagesSearch = object: OperationDefinition {
     override val name = "MessagesSearch"
     override val kind = OperationKind.QUERY
-    override val body = "query MessagesSearch(\$after:String,\$first:Int!,\$query:String!,\$sort:String){messagesSearch(after:\$after,first:\$first,query:\$query,sort:\$sort){__typename edges{__typename cursor node{__typename chat{__typename ... on PrivateRoom{id user{__typename id name photo}}... on SharedRoom{canEdit id isChannel kind membership photo role title}}message{__typename date fallback id message sender{__typename firstName id name photo}senderBadge{__typename ...UserBadge}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment UserBadge on UserBadge{__typename id name verified}"
+    override val body = "query MessagesSearch(\$after:String,\$first:Int!,\$query:String!,\$sort:String){messagesSearch(after:\$after,first:\$first,query:\$query,sort:\$sort){__typename edges{__typename cursor node{__typename chat{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename id name photo}}... on SharedRoom{canEdit id isChannel kind membership photo role settings{__typename id mute}title}}message{__typename date fallback id message sender{__typename firstName id name photo}senderBadge{__typename ...UserBadge}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment UserBadge on UserBadge{__typename id name verified}"
     override val selector = MessagesSearchSelector
 }

@@ -2263,6 +2263,11 @@ const MessagesSearchSelector = obj(
                                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                                             inline('PrivateRoom', obj(
                                                 field('id', 'id', args(), notNull(scalar('ID'))),
+                                                field('settings', 'settings', args(), notNull(obj(
+                                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                        field('id', 'id', args(), notNull(scalar('ID'))),
+                                                        field('mute', 'mute', args(), scalar('Boolean'))
+                                                    ))),
                                                 field('user', 'user', args(), notNull(obj(
                                                         field('__typename', '__typename', args(), notNull(scalar('String'))),
                                                         field('id', 'id', args(), notNull(scalar('ID'))),
@@ -2278,6 +2283,11 @@ const MessagesSearchSelector = obj(
                                                 field('membership', 'membership', args(), notNull(scalar('String'))),
                                                 field('photo', 'photo', args(), notNull(scalar('String'))),
                                                 field('role', 'role', args(), notNull(scalar('String'))),
+                                                field('settings', 'settings', args(), notNull(obj(
+                                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                        field('id', 'id', args(), notNull(scalar('ID'))),
+                                                        field('mute', 'mute', args(), scalar('Boolean'))
+                                                    ))),
                                                 field('title', 'title', args(), notNull(scalar('String')))
                                             ))
                                         ))),
@@ -4057,7 +4067,7 @@ export const Operations = {
     MessagesSearch: {
         type: 'query',
         name: 'MessagesSearch',
-        body: 'query MessagesSearch($after:String,$first:Int!,$query:String!,$sort:String){messagesSearch(after:$after,first:$first,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename chat{__typename ... on PrivateRoom{id user{__typename id name photo}}... on SharedRoom{canEdit id isChannel kind membership photo role title}}message{__typename date fallback id message sender{__typename firstName id name photo}senderBadge{__typename ...UserBadge}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment UserBadge on UserBadge{__typename id name verified}',
+        body: 'query MessagesSearch($after:String,$first:Int!,$query:String!,$sort:String){messagesSearch(after:$after,first:$first,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename chat{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename id name photo}}... on SharedRoom{canEdit id isChannel kind membership photo role settings{__typename id mute}title}}message{__typename date fallback id message sender{__typename firstName id name photo}senderBadge{__typename ...UserBadge}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment UserBadge on UserBadge{__typename id name verified}',
         selector: MessagesSearchSelector
     },
     MyApps: {

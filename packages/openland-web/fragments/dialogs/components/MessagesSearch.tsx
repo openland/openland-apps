@@ -61,6 +61,7 @@ const MessagesSearchInner = (props: MessagesSearchProps) => {
                                     : undefined,
                             isService: false,
                             isOut: message.sender.id === messenger.user.id,
+                            isMuted: !!chat.settings.mute,
                             sender: message.sender.name,
                         }}
                         key={message.id}
