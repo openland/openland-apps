@@ -4,6 +4,7 @@ import { XView, XStyles } from 'react-mental';
 import { XScrollValues } from './XScrollView3';
 import { throttle } from 'openland-y-utils/timer';
 import { VisibleTabContext } from 'openland-unicorn/components/utils/VisibleTabContext';
+import { scaleDown } from 'react-burger-menu';
 
 const NativeScrollStyle = css`
     overflow-y: overlay;
@@ -43,6 +44,7 @@ export const XScrollViewAnchored = React.memo(
     React.forwardRef<XScrollViewReverse2RefProps, XScrollViewReverse2Props>(
         (props: XScrollViewReverse2Props, ref) => {
             const outerRef = React.useRef<HTMLDivElement>(null);
+            const scrollDumb = React.useRef<HTMLDivElement>(null);
             const innerRef = props.innerRef || React.useRef<HTMLDivElement>(null);
             const outerHeight = React.useRef<number>(0);
             const innerHeight = React.useRef<number>(0);
@@ -115,10 +117,50 @@ export const XScrollViewAnchored = React.memo(
 
             React.useEffect(() => {
                 const outerDiv = outerRef.current!!;
+                let heights: number[] = [];
+                let scrollDumbSize = 0;
                 let trottledOnScrollReport = throttle(reportOnScroll, 150);
                 const onScrollHandler = () => {
+                    const topOffset = 1000;
+                    let d = scrollTop.current - outerDiv.scrollTop;
                     scrollTop.current = outerDiv.scrollTop;
                     trottledOnScrollReport();
+                    // hide bottom off screen elements for faster scroll / unmount
+                    if (innerRef.current && scrollDumb.current) {
+                        if (d > 0) {
+                            for (let i = innerRef.current.children.length - 1; i > 0; i--) {
+                                let el = innerRef.current.children.item(i) as any;
+                                if (el.id === 'scrollDumb') {
+                                    continue;
+                                }
+                                if (el.offsetTop > scrollTop.current + topOffset) {
+                                    scrollDumbSize += el.clientHeight;
+                                    heights.push(el.clientHeight);
+                                    el.style.display = 'none';
+                                }
+                            }
+                        } else {
+                            if (scrollDumb.current.offsetTop < scrollTop.current + topOffset) {
+                                let toRecover = Math.max(topOffset, Math.abs(d * 20));
+                                for (let i = 0; i < innerRef.current.children.length; i++) {
+                                    let el = innerRef.current.children.item(i) as any;
+                                    if (el.style.display !== 'none' || el.id === 'scrollDumb') {
+                                        continue;
+                                    }
+                                    el.style.display = '';
+                                    let height = heights.pop() || 0;
+                                    toRecover -= height;
+                                    scrollDumbSize -= height;
+                                    if (toRecover < 0) {
+                                        break;
+                                    }
+                                }
+                            }
+
+                        }
+                        console.warn(scrollDumbSize, heights);
+                        scrollDumb.current.style.height = `${scrollDumbSize}px`;
+                    }
                 };
                 outerDiv.addEventListener('scroll', onScrollHandler, { passive: true });
                 return () => {
@@ -156,6 +198,7 @@ export const XScrollViewAnchored = React.memo(
                     <div className={NativeScrollStyle} ref={outerRef}>
                         <div className={cx(NativeScrollContentStyle, props.contentClassName)} ref={innerRef}>
                             {props.children}
+                            <div id="scrollDumb" ref={scrollDumb} />
                         </div>
                     </div>
                 </XView>
