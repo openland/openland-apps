@@ -221,7 +221,6 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
         [messageId],
     );
 
-
     let img = null;
     let siteIcon = null;
     let layout: MediaLayout | undefined;
