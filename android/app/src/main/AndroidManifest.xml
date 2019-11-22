@@ -125,7 +125,7 @@
                 <data
                     android:scheme="https"
                     android:host="openland.com"
-                    android:pathPrefix="/mail/"
+                    android:pathPrefix="/mail"
                     />
 
 
