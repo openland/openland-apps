@@ -38,15 +38,13 @@ const forceInvisible = css`
     display: none;
 `;
 
-interface Props {
+interface HoverMenuProps {
     message: DataSourceWebMessageItem;
     engine: ConversationEngine;
-    setReaction: (reaction: MessageReactionType, message: DataSourceWebMessageItem) => void;
-    unsetReaction: (reaction: MessageReactionType, message: DataSourceWebMessageItem) => void;
 }
 
-export const HoverMenu = React.memo<Props>(props => {
-    const { message, setReaction, unsetReaction } = props;
+export const HoverMenu = React.memo<HoverMenuProps>(props => {
+    const { message } = props;
     const [width] = useWithWidth();
     const client = useClient();
     const messenger = React.useContext(MessengerContext);
@@ -110,13 +108,10 @@ export const HoverMenu = React.memo<Props>(props => {
                         userReaction.reaction === reaction,
                 ).length > 0;
             if (remove) {
-                const dataSourceMessage = props.engine.dataSource.getItem(messageId) as DataSourceWebMessageItem;
-                unsetReaction(reaction, dataSourceMessage);
+                props.engine.unsetReaction(messageId, reaction);
                 client.mutateMessageUnsetReaction({ messageId, reaction });
             } else {
-                const dataSourceMessage = props.engine.dataSource.getItem(messageId) as DataSourceWebMessageItem;
-                setReaction(reaction, dataSourceMessage);
-
+                props.engine.setReaction(messageId, reaction);
                 trackEvent('reaction_sent', {
                     reaction_type: reaction.toLowerCase(),
                     double_tap: 'not',
