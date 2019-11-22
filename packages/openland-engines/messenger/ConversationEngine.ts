@@ -29,7 +29,6 @@ import { ReactionReduced } from 'openland-engines/reactions/types';
 import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
 import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
-import { emoji } from 'openland-y-utils/emoji';
 
 const log = createLogger('Engine-Messages');
 
@@ -1154,17 +1153,9 @@ export class ConversationEngine implements MessageSendHandler {
 
     private computeAdditionalReactionsData = (reactions: FullMessage_GeneralMessage_reactions[]) => {
         const reactionsReduced = reduceReactions(reactions, this.engine.user.id);
-        // const reactionsReducedEmojify = emojifyReactions(reactionsReduced);
-        const reactionsReducedEmojify = reactionsReduced;
         const reactionsLabel = getReactionsLabel(reactions, this.engine.user.id);
-        const reactionsLabelEmojify = emoji(reactionsLabel);
 
-        return {
-            reactionsReduced,
-            reactionsReducedEmojify,
-            reactionsLabel,
-            reactionsLabelEmojify,
-        };
+        return { reactionsReduced, reactionsLabel };
     }
 
     setReaction = (messageKey: string, reaction: MessageReactionType) => {
