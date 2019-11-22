@@ -1,5 +1,6 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { RoomReadMutation, RoomQuery, ChatInitQuery, ChatInitFromUnreadQuery, MessagesBatchQuery } from 'openland-api';
+import { MessageReactionType } from 'openland-api/Types';
 import { backoff, delay } from 'openland-y-utils/timer';
 import {
     UserBadge,
@@ -28,6 +29,7 @@ import { ReactionReduced } from 'openland-engines/reactions/types';
 import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
 import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
+import { emoji } from 'openland-y-utils/emoji';
 
 const log = createLogger('Engine-Messages');
 
@@ -1148,5 +1150,54 @@ export class ConversationEngine implements MessageSendHandler {
         }
 
         return res;
+    }
+
+    private computeAdditionalReactionsData = (reactions: FullMessage_GeneralMessage_reactions[]) => {
+        const reactionsReduced = reduceReactions(reactions, this.engine.user.id);
+        // const reactionsReducedEmojify = emojifyReactions(reactionsReduced);
+        const reactionsReducedEmojify = reactionsReduced;
+        const reactionsLabel = getReactionsLabel(reactions, this.engine.user.id);
+        const reactionsLabelEmojify = emoji(reactionsLabel);
+
+        return {
+            reactionsReduced,
+            reactionsReducedEmojify,
+            reactionsLabel,
+            reactionsLabelEmojify,
+        };
+    }
+
+    setReaction = (messageKey: string, reaction: MessageReactionType) => {
+        const oldMessage = this.dataSource.getItem(messageKey) as DataSourceMessageItem;
+
+        const reactions = oldMessage.reactions.concat([{
+            reaction,
+            user: this.engine.user,
+            __typename: "ModernMessageReaction"
+        }]);
+
+        const newMessage = {
+            ...oldMessage,
+            reactions,
+            ...this.computeAdditionalReactionsData(reactions)
+        };
+
+        this.dataSource.updateItem(newMessage);
+    }
+
+    unsetReaction = (messageKey: string, reaction: MessageReactionType) => {
+        const oldMessage = this.dataSource.getItem(messageKey) as DataSourceMessageItem;
+
+        const reactions = oldMessage.reactions.filter(
+            r => !(r.user.id === this.engine.user.id && r.reaction === reaction)
+        );
+
+        const newMessage = {
+            ...oldMessage,
+            reactions,
+            ...this.computeAdditionalReactionsData(reactions)
+        };
+
+        this.dataSource.updateItem(newMessage);
     }
 }
