@@ -77,6 +77,9 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
     }
 
     handlerScroll = (e: XScrollValues) => {
+        if (e.clientHeight === 0) {
+            return;
+        }
         if (e.scrollTop < 800 || ((e.scrollHeight === e.clientHeight) && !this.dataSource.isCompleted())) {
             this.dataSource.needMore();
         }

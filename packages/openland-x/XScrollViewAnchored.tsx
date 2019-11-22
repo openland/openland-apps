@@ -3,6 +3,7 @@ import { css, cx } from 'linaria';
 import { XView, XStyles } from 'react-mental';
 import { XScrollValues } from './XScrollView3';
 import { throttle } from 'openland-y-utils/timer';
+import { VisibleTabContext } from 'openland-unicorn/components/utils/VisibleTabContext';
 
 const NativeScrollStyle = css`
     overflow-y: overlay;
@@ -73,6 +74,8 @@ export const XScrollViewAnchored = React.memo(
 
                 }
             }, []);
+
+            React.useContext(VisibleTabContext);
 
             React.useImperativeHandle<XScrollViewReverse2RefProps, any>(ref, () => ({
                 scrollToBottom: () => {
