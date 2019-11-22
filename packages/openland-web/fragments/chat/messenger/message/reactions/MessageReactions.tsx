@@ -7,6 +7,8 @@ import { trackEvent } from 'openland-x-analytics';
 import { ReactionReducedEmojify } from 'openland-engines/reactions/types';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { ReactionsUsersInstance, ReactionsUsers } from 'openland-web/components/ReactionsUsers';
+import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 
 export const reactionImage = (r: MessageReactionType) =>
     `https://cdn.openland.com/shared/reactions/${r}.png`;
@@ -91,9 +93,13 @@ export interface MessageReactionsProps {
         reactionsReducedEmojify: ReactionReducedEmojify[];
         reactionsLabelEmojify: string | JSX.Element;
     };
+    engine?: ConversationEngine;
+    setReaction?: (reaction: MessageReactionType, message: DataSourceWebMessageItem) => void;
+    unsetReaction?: (reaction: MessageReactionType, message: DataSourceWebMessageItem) => void;
 }
 
 export const MessageReactions = React.memo<MessageReactionsProps>(props => {
+    const { engine, setReaction, unsetReaction } = props;
     const { id, reactionsReducedEmojify, reactionsLabelEmojify } = props.message;
     const client = useClient();
     const handleReactionClick = React.useCallback(
@@ -107,8 +113,16 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
                             userReaction.reaction === reaction,
                     ).length > 0;
                 if (remove) {
+                    if (engine && unsetReaction) {
+                        const message = engine.dataSource.getItem(id) as DataSourceWebMessageItem;
+                        unsetReaction(reaction, message);
+                    }
                     client.mutateMessageUnsetReaction({ messageId: id, reaction });
                 } else {
+                    if (engine && setReaction) {
+                        const message = engine.dataSource.getItem(id) as DataSourceWebMessageItem;
+                        setReaction(reaction, message);
+                    }
                     trackEvent('reaction_sent', {
                         reaction_type: reaction.toLowerCase(),
                         double_tap: 'not',

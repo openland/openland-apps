@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
+import { DataSourceWebMessageItem, emojifyReactions } from '../data/WebMessageItemDataSource';
+import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
 import { MessageReactions } from './reactions/MessageReactions';
 import { MessageContent } from './MessageContent';
 import { MAvatar } from './MAvatar';
@@ -8,7 +9,12 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
 import StarIcon from 'openland-icons/s/ic-star-16.svg';
 import { formatTime } from 'openland-y-utils/formatTime';
-import { UserShort_primaryOrganization, UserShort } from 'openland-api/Types';
+import {
+    UserShort_primaryOrganization,
+    UserShort,
+    MessageReactionType,
+    FullMessage_GeneralMessage_reactions,
+} from 'openland-api/Types';
 import { HoverMenu } from './Menu/HoverMenu';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
@@ -16,6 +22,8 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { useUserPopper } from 'openland-web/components/UserPopper';
 import { defaultHover } from 'openland-web/utils/Styles';
+import { emoji } from 'openland-y-utils/emoji';
+import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
 
 const senderContainer = css`
     display: flex;
@@ -283,10 +291,54 @@ interface MessageComponentProps {
     engine: ConversationEngine;
 }
 
+const computeAdditionalReactionsData = (reactions: FullMessage_GeneralMessage_reactions[], engine: ConversationEngine) => {
+    const reactionsReduced = reduceReactions(reactions, engine.engine.user.id);
+    const reactionsReducedEmojify = emojifyReactions(reactionsReduced);
+    const reactionsLabel = getReactionsLabel(reactions, engine.engine.user.id);
+    const reactionsLabelEmojify = emoji(reactionsLabel);
+
+    return {
+        reactionsReduced,
+        reactionsReducedEmojify,
+        reactionsLabel,
+        reactionsLabelEmojify,
+    };
+};
+
 export const MessageComponent = React.memo((props: MessageComponentProps) => {
-    const { message, engine } = props;
+    const { engine, message } = props;
     const containerRef = React.useRef<HTMLDivElement>(null);
     const layout = useLayout();
+
+    const setReaction = (reaction: MessageReactionType, dataSourceMessage: DataSourceWebMessageItem) => {
+        const reactions = dataSourceMessage.reactions.concat([{
+            reaction,
+            user: engine.engine.user,
+            __typename: "ModernMessageReaction"
+        }]);
+
+        const newMessage = {
+            ...dataSourceMessage,
+            reactions,
+            ...computeAdditionalReactionsData(reactions, engine)
+        };
+
+        engine.dataSource.updateItem(newMessage);
+    };
+
+    const unsetReaction = (reaction: MessageReactionType, dataSourceMessage: DataSourceWebMessageItem) => {
+        const reactions = dataSourceMessage.reactions.filter(
+            r => !(r.user.id === engine.engine.user.id && r.reaction === reaction)
+        );
+
+        const newMessage = {
+            ...dataSourceMessage,
+            reactions,
+            ...computeAdditionalReactionsData(reactions, engine)
+        };
+
+        engine.dataSource.updateItem(newMessage);
+    };
 
     const attachesClassNames = cx(
         message.attachTop && 'message-attached-top',
@@ -347,7 +399,12 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
 
     const buttons = (
         <div className={buttonsClass}>
-            <MessageReactions message={message} />
+            <MessageReactions
+                message={message}
+                engine={engine}
+                setReaction={setReaction}
+                unsetReaction={unsetReaction}
+            />
             <MessageCommentsButton message={message} isChannel={engine.isChannel || false} />
         </div>
     );
@@ -403,7 +460,14 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                             message.reactions.length > 0) &&
                             buttons}
                     </div>
-                    {layout !== 'mobile' && <HoverMenu message={message} engine={engine} />}
+                    {layout !== 'mobile' && (
+                        <HoverMenu
+                            message={message}
+                            engine={engine}
+                            setReaction={setReaction}
+                            unsetReaction={unsetReaction}
+                        />
+                    )}
                 </div>
             </div>
         </div>
