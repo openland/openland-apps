@@ -53,6 +53,7 @@ const oneLiner = css`
 
 const mutedIcon = css`
     margin: 2px 0 0 4px;
+    flex-grow: 0;
     flex-shrink: 0;
 `;
 
@@ -214,6 +215,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
             <XView
                 hoverOpacity={HoverAlpha}
                 flexDirection="row"
+                flexShrink={1}
                 flexGrow={0}
                 minWidth={0}
                 path={path}
