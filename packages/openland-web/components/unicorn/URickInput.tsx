@@ -13,7 +13,7 @@ import { Span, SpanType, SpanUser } from 'openland-y-utils/spans/Span';
 const quillStyle = css`
     flex-grow: 1;
     border-radius: 8px;
-    overflow-y: scroll;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 
     .ql-container {
