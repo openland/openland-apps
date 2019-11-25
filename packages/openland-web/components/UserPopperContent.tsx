@@ -32,7 +32,7 @@ const Status = (({ variables }) => {
 
     const { user } = data;
 
-    if (user && (user.lastSeen && user.lastSeen !== 'online' && !user.online)) {
+    if (user && user.lastSeen && user.lastSeen !== 'online' && !user.online) {
         return (
             <div className={cx(userStatus, TextCaption)}>
                 last seen{' '}
@@ -69,6 +69,13 @@ const userAbout = css`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+`;
+
+const userName = css`
+    width: 184px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 export const UserPopperContent = React.memo(
@@ -125,7 +132,6 @@ export const UserPopperContent = React.memo(
                                 squared={true}
                             />
                         </XView>
-
                         <div className={userAbout}>
                             <XView
                                 marginBottom={4}
@@ -145,7 +151,7 @@ export const UserPopperContent = React.memo(
                                     }
                                 }}
                             >
-                                {emoji(user.name)}
+                                <div className={userName}>{emoji(user.name)}</div>
                             </XView>
                             <React.Suspense fallback={<div />}>
                                 <Status variables={{ userId: user.id }} />
