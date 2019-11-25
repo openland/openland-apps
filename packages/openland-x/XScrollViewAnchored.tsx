@@ -167,8 +167,6 @@ export const XScrollViewAnchored = React.memo(
                 };
             }, []);
 
-            pickAnchor();
-
             React.useLayoutEffect(() => {
                 const outerDiv = outerRef.current!!;
                 const innerDiv = innerRef.current!!;
