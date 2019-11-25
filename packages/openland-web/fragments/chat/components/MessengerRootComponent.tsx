@@ -399,6 +399,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         const showInput = !this.state.hideInput && this.conversation.canSendMessage;
         const groupId =
             this.props.conversationType !== 'PRIVATE' ? this.props.conversationId : undefined;
+        const membersCount =
+            this.props.room.__typename === 'SharedRoom' ? this.props.room.membersCount : undefined;
         return (
             <div className={messengerContainer}>
                 {memberProfiles && (
@@ -437,6 +439,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                 onPressUp={this.onInputPressUp}
                                 rickRef={this.rickRef}
                                 groupId={groupId}
+                                membersCount={membersCount}
                                 onTextSent={this.onTextSend}
                                 onStickerSent={this.onStickerSent}
                                 onTextChange={this.handleChange}

@@ -28,6 +28,7 @@ import { onEmojiSent } from 'openland-web/components/unicorn/emoji/Recent';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { Deferred } from 'openland-unicorn/components/Deferred';
 import { detectOS } from 'openland-x-utils/detectOS';
+import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 
 interface MentionUserComponentProps {
     id: string;
@@ -112,6 +113,13 @@ const mentionsContainer = css`
     z-index: 2;
 `;
 
+const warningContainer = css`
+    background: url(/static/art/art-noise.png) center center no-repeat;
+    background-image: -webkit-image-set(url(/static/art/art-noise.png) 1x, url(/static/art/art-noise@2x.png) 2x, url(/static/art/art-noise@3x.png) 3x);
+    height: 200px;
+    margin: -8px 0 20px;
+`;
+
 interface AutoCompleteComponentRef {
     onPressUp(): boolean;
     onPressDown(): boolean;
@@ -129,8 +137,9 @@ const AutoCompleteComponent = React.memo(
         (
             props: {
                 groupId?: string;
+                membersCount?: number | null;
                 activeWord: string | null;
-                onSelected: (user: RoomMembers_members_user) => void;
+                onSelected: (user: RoomMembers_members_user | { __typename: 'AllMention' }) => void;
                 onEmojiSelected: (emoji: { name: string; value: string }) => void;
             },
             ref: React.Ref<AutoCompleteComponentRef>,
@@ -312,11 +321,34 @@ const AutoCompleteComponent = React.memo(
 
             isActive.current = !!filtered.length || !!matched.length;
 
-            let onSelected = React.useCallback((user: RoomMembers_members_user) => {
+            let onSelected = React.useCallback((user: RoomMembers_members_user | { __typename: 'AllMention' }) => {
                 if (isActive.current) {
-                    props.onSelected(user);
+                    if (user.__typename === 'AllMention') {
+                        const builder = new AlertBlanketBuilder();
+
+                        if (!!props.membersCount) {
+                            builder.title(`Notify all ${props.membersCount} members?`);
+                        } else {
+                            builder.title(`Notify all members?`);
+                        }
+
+                        builder.message('By using @All, you’re about to notify all group members even when they muted this chat. Please use it only for important messages');
+
+                        builder.body(ctx => (
+                            <div className={warningContainer} />
+                        ));
+
+                        builder.action('Continue', async () => {
+                            props.onSelected(user);
+                        }, 'danger');
+
+                        builder.width(480);
+                        builder.show();
+                    } else {
+                        props.onSelected(user);
+                    }
                 }
-            }, []);
+            }, [props.membersCount]);
 
             let onEmojiSelected = React.useCallback((emoji: { name: string; value: string }) => {
                 if (isActive.current) {
@@ -387,6 +419,7 @@ const AutoCompleteComponent = React.memo(
 
 interface SendMessageComponentProps {
     groupId?: string;
+    membersCount?: number | null;
     onTextSent?: (text: URickTextValue) => void;
     onTextSentAsync?: (text: URickTextValue) => void;
     onContentChange?: (text: URickTextValue) => void;
@@ -543,6 +576,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     onSelected={onUserPicked}
                     onEmojiSelected={onEmojiPicked}
                     groupId={props.groupId}
+                    membersCount={props.membersCount}
                     activeWord={activeWord}
                     ref={suggestRef}
                 />

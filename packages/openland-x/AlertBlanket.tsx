@@ -10,6 +10,7 @@ export class AlertBlanketBuilder {
     _body?: (ctx: XModalController) => JSX.Element;
     _cancelable?: boolean;
     _action?: { name: string, action: () => Promise<void>, style: UButtonStyle } = undefined;
+    _width?: number;
 
     constructor() {
         this._cancelable = true;
@@ -46,8 +47,13 @@ export class AlertBlanketBuilder {
         return this;
     }
 
+    width(width: number): AlertBlanketBuilder {
+        this._width = width;
+        return this;
+    }
+
     show() {
-        showModalBox({ title: this._title }, ctx => {
+        showModalBox({ title: this._title, width: this._width }, ctx => {
             return (
                 <AlertBlanketComponent builder={this} controller={ctx} />
             );
