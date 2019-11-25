@@ -285,6 +285,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     activeWord={activeWord}
                     onMentionPress={this.handleMentionPress}
                     groupId={this.props.chat.id}
+                    membersCount={this.props.chat.membersCount}
                 />
             );
         }
