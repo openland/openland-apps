@@ -83,57 +83,6 @@ export class XMenuItem extends React.Component<XMenuItemProps> {
     }
 }
 
-export const XMenuItemWrapper = Glamorous.div({
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    paddingLeft: '16px',
-    paddingRight: '16px',
-    minHeight: 40,
-    display: 'flex',
-    alignItems: 'center',
-
-    '& > *': {
-        width: '100%',
-        minHeight: '100%',
-    },
-
-    '& label': {
-        minHeight: 40,
-    },
-
-    '& span': {
-        color: '#171B1F !important',
-    },
-
-    '&:hover': {
-        backgroundColor: '#F0F2F5',
-        '& span': {
-            color: '#171B1F !important',
-        },
-    },
-});
-
-export const XMenuTitle = Glamorous.div({
-    height: 40,
-    color: '#99a2b0',
-    padding: '10px 16px',
-    fontSize: 14,
-    lineHeight: '20px',
-    letterSpacing: 0,
-    fontWeight: 700,
-});
-
-export const XMenuItemSeparator = Glamorous.div<{ marginTop?: number; marginBottom?: number }>(
-    props => ({
-        height: 1,
-        background: '#ececec',
-        marginTop: props.marginTop || 4,
-        marginBottom: props.marginBottom || 4,
-        marginLeft: 0,
-        marginRight: 0,
-    }),
-);
-
 export const XMenuVertical = Glamorous<{ paddingTop?: number; paddingBottom?: number }>(
     XPopperContentDEPRECATED,
 )(props => ({

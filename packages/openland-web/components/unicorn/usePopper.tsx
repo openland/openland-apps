@@ -51,6 +51,28 @@ const Arrow = (props: { darkStyle?: boolean }) => (
     <div className={cx(arrowStyle, props.darkStyle && arrowDarkStyle, 'popper-arrow')} />
 );
 
+interface PopperBodyProps {
+    target: HTMLElement;
+    ctx: UPopperController;
+    onHide: () => void;
+    children?: any;
+    hideOnClick: boolean;
+    hideOnLeave: boolean;
+    hideOnEsc?: boolean;
+    hideOnChildClick?: boolean;
+    borderRadius?: number;
+    useWrapper?: boolean;
+    wrapperClassName?: string;
+    showTimeout?: number;
+    useArrow?: boolean;
+    darkStyle?: boolean;
+
+    marginRight?: number;
+    marginLeft?: number;
+    marginTop?: number;
+    marginBottom?: number;
+}
+
 interface PopperBodyRef {
     hide: () => void;
     instantHide: () => void;
@@ -62,137 +84,125 @@ const eventBorder = (e: React.MouseEvent) => {
 };
 
 const PopperBody = React.memo(
-    React.forwardRef(
-        (
-            props: {
-                target: HTMLElement;
-                ctx: UPopperController;
-                onHide: () => void;
-                children?: any;
-                hideOnClick: boolean;
-                hideOnLeave: boolean;
-                hideOnEsc?: boolean;
-                borderRadius?: number;
-                useWrapper?: boolean;
-                wrapperClassName?: string;
-                showTimeout?: number;
-                useArrow?: boolean;
-                darkStyle?: boolean;
-            },
-            ref: React.Ref<PopperBodyRef>,
-        ) => {
-            const [visible, setVisible] = React.useState(!props.showTimeout);
-            const containerRef = React.useRef<HTMLDivElement>(null);
-            const showTimeoutRef = React.useRef<any>(null);
-            const hide = React.useCallback(() => {
-                setVisible(false);
-                clearTimeout(showTimeoutRef.current);
-                props.onHide();
-                setTimeout(() => {
-                    props.ctx.hide();
-                }, 300);
-            }, []);
-
-            const instantHide = React.useCallback(() => {
-                clearTimeout(showTimeoutRef.current);
-                setVisible(false);
-                props.onHide();
+    React.forwardRef((props: PopperBodyProps, ref: React.Ref<PopperBodyRef>) => {
+        const [visible, setVisible] = React.useState(!props.showTimeout);
+        const containerRef = React.useRef<HTMLDivElement>(null);
+        const showTimeoutRef = React.useRef<any>(null);
+        const hide = React.useCallback(() => {
+            setVisible(false);
+            clearTimeout(showTimeoutRef.current);
+            props.onHide();
+            setTimeout(() => {
                 props.ctx.hide();
-            }, []);
+            }, 300);
+        }, []);
 
-            useShortcuts({
-                keys: ['Escape'],
-                callback: props.hideOnEsc !== false ? hide : undefined,
-            });
+        const instantHide = React.useCallback(() => {
+            clearTimeout(showTimeoutRef.current);
+            setVisible(false);
+            props.onHide();
+            props.ctx.hide();
+        }, []);
 
-            React.useImperativeHandle(ref, () => ({
-                hide: hide,
-                instantHide: instantHide,
-            }));
+        useShortcuts({
+            keys: ['Escape'],
+            callback: props.hideOnEsc !== false ? hide : undefined,
+        });
 
-            React.useEffect(() => {
-                if (props.showTimeout) {
-                    showTimeoutRef.current = setTimeout(() => {
-                        setVisible(true);
-                    }, props.showTimeout);
+        React.useImperativeHandle(ref, () => ({
+            hide: hide,
+            instantHide: instantHide,
+        }));
+
+        React.useEffect(() => {
+            if (props.showTimeout) {
+                showTimeoutRef.current = setTimeout(() => {
+                    setVisible(true);
+                }, props.showTimeout);
+            }
+            return () => clearTimeout(showTimeoutRef.current);
+        }, []);
+
+        React.useEffect(() => {
+            let isOver = true;
+            let hideTimeout: any = undefined;
+            const mouseClickHandler = (e: MouseEvent) => {
+                let overTarget = props.target.contains(e.target as HTMLElement);
+                let overMenu = containerRef.current
+                    ? containerRef.current!.contains(e.target as HTMLElement)
+                    : false;
+                let isNewOver = overTarget || overMenu;
+                if (isOver !== isNewOver && !isNewOver) {
+                    hide();
+                } else if (props.hideOnChildClick) {
+                    hide();
                 }
-                return () => clearTimeout(showTimeoutRef.current);
-            }, []);
-
-            React.useEffect(() => {
-                let isOver = true;
-                let hideTimeout: any = undefined;
-                const mouseClickHandler = (e: MouseEvent) => {
-                    let overTarget = props.target.contains(e.target as HTMLElement);
-                    let overMenu = containerRef.current
-                        ? containerRef.current!.contains(e.target as HTMLElement)
-                        : false;
-                    let isNewOver = overTarget || overMenu;
-                    if (isOver !== isNewOver && !isNewOver) {
-                        hide();
-                    }
-                };
-                const mouseOverHandler = (e: MouseEvent) => {
-                    let overTarget = props.target.contains(e.target as HTMLElement);
-                    let overMenu = containerRef.current
-                        ? containerRef.current!.contains(e.target as HTMLElement)
-                        : false;
-                    if (props.showTimeout && !overTarget && overMenu && !visible) {
-                        clearTimeout(showTimeoutRef.current);
-                        return;
-                    }
-                    let isNewOver = overTarget || overMenu;
-                    if (isOver !== isNewOver) {
-                        isOver = isNewOver;
-                        if (!isOver) {
-                            hideTimeout = setTimeout(() => {
-                                hide();
-                            }, 300);
-                        } else if (isOver) {
-                            clearTimeout(hideTimeout);
-                        }
-                    }
-                };
-                if (props.hideOnClick) {
-                    document.addEventListener('click', mouseClickHandler, { passive: true });
+            };
+            const mouseOverHandler = (e: MouseEvent) => {
+                let overTarget = props.target.contains(e.target as HTMLElement);
+                let overMenu = containerRef.current
+                    ? containerRef.current!.contains(e.target as HTMLElement)
+                    : false;
+                if (props.showTimeout && !overTarget && overMenu && !visible) {
+                    clearTimeout(showTimeoutRef.current);
+                    return;
                 }
-                if (props.hideOnLeave) {
-                    document.addEventListener('mouseover', mouseOverHandler, { passive: true });
+                let isNewOver = overTarget || overMenu;
+                if (isOver !== isNewOver) {
+                    isOver = isNewOver;
+                    if (!isOver) {
+                        hideTimeout = setTimeout(() => {
+                            hide();
+                        }, 300);
+                    } else if (isOver) {
+                        clearTimeout(hideTimeout);
+                    }
                 }
-                return () => {
-                    document.removeEventListener('click', mouseClickHandler);
-                    document.removeEventListener('mouseover', mouseOverHandler);
-                };
-            }, []);
+            };
+            if (props.hideOnClick) {
+                document.addEventListener('click', mouseClickHandler, { passive: true });
+            }
+            if (props.hideOnLeave) {
+                document.addEventListener('mouseover', mouseOverHandler, { passive: true });
+            }
+            if (props.hideOnChildClick) {
+                document.addEventListener('click', mouseClickHandler, { passive: true });
+            }
+            return () => {
+                document.removeEventListener('click', mouseClickHandler);
+                document.removeEventListener('mouseover', mouseOverHandler);
+            };
+        }, []);
 
-            return (
+        return (
+            <div
+                className={cx(pickerBody, !visible && pickerBodyInvisible, props.wrapperClassName)}
+                ref={containerRef}
+                onMouseDown={eventBorder}
+                onClick={eventBorder}
+                style={{
+                    marginLeft: props.marginLeft,
+                    marginRight: props.marginRight,
+                    marginTop: props.marginTop,
+                    marginBottom: props.marginBottom,
+                }}
+            >
                 <div
                     className={cx(
-                        pickerBody,
-                        !visible && pickerBodyInvisible,
-                        props.wrapperClassName,
+                        props.useWrapper === false
+                            ? pickerInnerBodyNoWrap
+                            : props.darkStyle
+                                ? darkPickerInnerBody
+                                : pickerInnerBody,
                     )}
-                    ref={containerRef}
-                    onMouseDown={eventBorder}
-                    onClick={eventBorder}
+                    style={{ borderRadius: props.borderRadius }}
                 >
-                    <div
-                        className={cx(
-                            props.useWrapper === false
-                                ? pickerInnerBodyNoWrap
-                                : props.darkStyle
-                                    ? darkPickerInnerBody
-                                    : pickerInnerBody,
-                        )}
-                        style={{ borderRadius: props.borderRadius }}
-                    >
-                        {props.children}
-                        {props.useArrow && <Arrow darkStyle={props.darkStyle} />}
-                    </div>
+                    {props.children}
+                    {props.useArrow && <Arrow darkStyle={props.darkStyle} />}
                 </div>
-            );
-        },
-    ),
+            </div>
+        );
+    }),
 );
 
 const popperScopes: Map<string, Set<React.RefObject<PopperBodyRef>>> = new Map();
@@ -202,6 +212,7 @@ interface PopperConfig {
     hideOnLeave?: boolean;
     hideOnClick?: boolean;
     hideOnEsc?: boolean;
+    hideOnChildClick?: boolean;
     borderRadius?: number;
     scope?: string;
     useWrapper?: boolean;
@@ -209,6 +220,11 @@ interface PopperConfig {
     showTimeout?: number;
     useArrow?: boolean;
     darkStyle?: boolean;
+
+    marginRight?: number;
+    marginLeft?: number;
+    marginTop?: number;
+    marginBottom?: number;
 }
 
 export const usePopper = (
@@ -294,6 +310,11 @@ export const usePopper = (
                                 hideOnLeave={
                                     config.hideOnLeave !== undefined ? config.hideOnLeave : false
                                 }
+                                hideOnChildClick={
+                                    config.hideOnChildClick !== undefined
+                                        ? config.hideOnChildClick
+                                        : false
+                                }
                                 hideOnEsc={config.hideOnEsc}
                                 borderRadius={config.borderRadius}
                                 useWrapper={config.useWrapper}
@@ -301,6 +322,10 @@ export const usePopper = (
                                 showTimeout={config.showTimeout}
                                 useArrow={config.useArrow}
                                 darkStyle={config.darkStyle}
+                                marginLeft={config.marginLeft}
+                                marginRight={config.marginRight}
+                                marginTop={config.marginTop}
+                                marginBottom={config.marginBottom}
                             >
                                 {popper(fakeCtx)}
                             </PopperBody>
@@ -309,7 +334,7 @@ export const usePopper = (
                 );
             };
         },
-        [config.placement],
+        [config.placement, config.wrapperClassName],
     );
 
     React.useEffect(() => {

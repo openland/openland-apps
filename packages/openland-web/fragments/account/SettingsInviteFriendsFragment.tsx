@@ -121,7 +121,7 @@ const WritePostBlock = (props: { inviteKey: string; isMobile: boolean }) => {
                 />
                 <XView flexDirection="row" alignItems="center">
                     <XView fontSize={14} color="#000" marginRight={16}>
-                        Share on
+                        {props.isMobile ? 'Share' : 'Share on'}
                     </XView>
                     <XView
                         flexDirection="row"

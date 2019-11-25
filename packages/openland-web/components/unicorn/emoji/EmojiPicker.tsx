@@ -26,10 +26,18 @@ import { onEmojiSent, getRecent } from './Recent';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
+import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import IcSticker from 'openland-icons/s/ic-sticker-24.svg';
 import { StickerComponent } from '../stickers/StickerPicker';
 import { XLoader } from 'openland-x/XLoader';
 import { StickerFragment } from 'openland-api/Types';
+
+const emojiContainerClass = css`
+    display: flex;
+    flex-direction: column;
+    width: 352px;
+    height: 480px;
+`;
 
 const sectionTitle = css`
     cursor: pointer;
@@ -363,7 +371,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
         }
     }, []);
     return (
-        <XView flexDirection="column" width={352} height={480}>
+        <div className={emojiContainerClass}>
             <XView flexDirection="row">
                 <div
                     className={cx(TextTitle3, sectionTitle, !stickers && sectionActiveTitle)}
@@ -495,14 +503,41 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
                     <StickerComponent onStickerSent={props.onStickerSent} />
                 </React.Suspense>
             )}
-        </XView>
+        </div>
     );
 });
 
+const emojiMobileClassName = css`
+    transform: scale(0.8);
+    margin-bottom: -40px;
+    margin-right: -80px;
+`;
+
 export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
-    const [visible, show] = usePopper({ placement: 'top-end', hideOnLeave: true }, () => (
-        <EmojiPickerBody onEmojiPicked={props.onEmojiPicked} onStickerSent={props.onStickerSent} />
-    ));
+    const [width] = useWithWidth();
+    const [wrapperClassName, setWrapperClassName] = React.useState<string | undefined>(undefined);
+
+    React.useEffect(
+        () => {
+            if (width && width <= 450 && !wrapperClassName) {
+                setWrapperClassName(emojiMobileClassName);
+            }
+            if (width && width > 450) {
+                setWrapperClassName(undefined);
+            }
+        },
+        [width, wrapperClassName],
+    );
+
+    const [visible, show] = usePopper(
+        { placement: 'top-end', hideOnLeave: true, wrapperClassName: wrapperClassName },
+        () => (
+            <EmojiPickerBody
+                onEmojiPicked={props.onEmojiPicked}
+                onStickerSent={props.onStickerSent}
+            />
+        ),
+    );
 
     return (
         <div className={cx(emojiPickerIcon, visible && emojiPickerIconOpen)} onMouseEnter={show}>

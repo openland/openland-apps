@@ -17,7 +17,10 @@ const wrapperClass = css`
 
 export const linkClass = css`
     color: var(--foregroundPrimary);
-
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
     &:hover {
         text-decoration: none;
         color: var(--accentPrimary);
@@ -27,6 +30,7 @@ export const linkClass = css`
 const dateWrapper = css`
     margin-left: 8px;
     color: var(--foregroundSecondary);
+    flex-shrink: 0;
 `;
 
 const iconWrapper = css`

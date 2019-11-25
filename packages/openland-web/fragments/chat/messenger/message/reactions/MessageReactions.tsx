@@ -42,7 +42,8 @@ const reactionsItem = css`
     width: 16px;
     height: 16px;
     margin-right: 4px;
-
+    flex-shrink: 0;
+    
     img {
         display: block;
         width: 16px;

@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
-import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { css } from 'linaria';
 import CreateCommunityIcon from 'openland-icons/ic-community (1).svg';
 import OrganizationIcon from 'openland-icons/ic-cell-organization.svg';
@@ -10,11 +8,9 @@ import CellRoomIcon from 'openland-icons/ic-cell-room.svg';
 import CreateChannelIcon from 'openland-icons/ic-cell-channel.svg';
 import PlusIcon from 'openland-icons/ic-add.svg';
 import NotificationIcon from 'openland-icons/s/ic-notifications-24.svg';
-import { useWithWidth } from '../hooks/useWithWidth';
-import XPopper from 'openland-x/XPopper';
 import { UIconButton } from './unicorn/UIconButton';
 import { showCreatingFragment } from 'openland-web/fragments/create/CreateEntityFragment';
-import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { usePopper } from 'openland-web/components/unicorn/usePopper';
 
 const dotClass = css`
     position: absolute;
@@ -51,83 +47,87 @@ export const NotificationsButton = React.memo(() => {
     );
 });
 
-const iconWrapperClass = css`
+const iconContainerClass = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 100%;
+    background-color: rgba(23, 144, 255, 0.1);
+
     & > svg path {
         fill: #1a90ff;
         opacity: 1;
     }
 `;
 
-const textClassName = css`
-    letter-spacing: 0.02px;
-`;
-
-const IconWithBackground = (props: { children: any }) => (
-    <XView
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="center"
-        width={36}
-        height={36}
-        backgroundColor="rgba(23, 144, 255, 0.1)"
-        borderRadius={70}
-    >
-        <div className={iconWrapperClass}>{props.children}</div>
-    </XView>
+const Icon = (props: { children: JSX.Element }) => (
+    <div className={iconContainerClass}>{props.children}</div>
 );
 
-const Item = ({
-    title,
-    description,
-    href,
-    onClick,
-    icon,
-}: {
+const itemContainerClass = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    &:hover {
+        background-color: var(--backgroundPrimaryHover);
+    }
+`;
+
+const itemTextContainer = css`
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-direction: column;
+    margin-left: 18px;
+`;
+
+const itemTitleClass = css`
+    font-size: 14px;
+    font-weight: 600;
+`;
+
+const itemDescriptionClass = css`
+    font-size: 13px;
+    opacity: 0.5;
+`;
+
+interface ItemProps {
     title: string;
     description: string;
-    href?: string;
     onClick?: ((event: React.MouseEvent) => void) | undefined;
-    icon: any;
-}) => {
-    return (
-        <XMenuItem
-            onClick={onClick}
-            path={href}
-            customContent={true}
-            icon={<XView alignSelf="flex-start">{icon}</XView>}
-        >
-            <XView
-                paddingTop={10}
-                paddingBottom={10}
-                width={240}
-                flexGrow={1}
-                flexDirection="column"
-                justifyContent="space-between"
-                height="100%"
-            >
-                <XView fontSize={14} fontWeight={'600'} color={'#000000'}>
-                    <span className={textClassName}>{title}</span>
-                </XView>
-                <XView marginTop={4} fontSize={13} opacity={0.5} color={'#000000'}>
-                    <span className={textClassName}>{description}</span>
-                </XView>
-            </XView>
-        </XMenuItem>
-    );
-};
+    icon: JSX.Element;
+}
 
-const NewOptionsMenu = React.memo((props: { toggle: () => void }) => (
+const Item = ({ title, description, onClick, icon }: ItemProps) => (
+    <div className={itemContainerClass} onClick={onClick}>
+        {icon}
+        <div className={itemTextContainer}>
+            <div className={itemTitleClass}>{title}</div>
+            <div className={itemDescriptionClass}>{description}</div>
+        </div>
+    </div>
+);
+
+const NewOptionsMenu = React.memo(() => (
     <>
         <Item
             onClick={() => {
                 showCreatingFragment({ entityType: 'group' });
-                // router.navigate('/new/group');
-                props.toggle();
             }}
             icon={
-                <IconWithBackground>
+                <Icon>
                     <CellRoomIcon />
-                </IconWithBackground>
+                </Icon>
             }
             title="New group"
             description="Chat where everyone can write"
@@ -135,13 +135,11 @@ const NewOptionsMenu = React.memo((props: { toggle: () => void }) => (
         <Item
             onClick={() => {
                 showCreatingFragment({ entityType: 'channel' });
-                // router.navigate('/new/channel');
-                props.toggle();
             }}
             icon={
-                <IconWithBackground>
+                <Icon>
                     <CreateChannelIcon />
-                </IconWithBackground>
+                </Icon>
             }
             title="New channel"
             description="Chat where you write, others comment"
@@ -149,13 +147,11 @@ const NewOptionsMenu = React.memo((props: { toggle: () => void }) => (
         <Item
             onClick={() => {
                 showCreatingFragment({ entityType: 'community' });
-                // router.navigate('/new/community');
-                props.toggle();
             }}
             icon={
-                <IconWithBackground>
+                <Icon>
                     <CreateCommunityIcon />
-                </IconWithBackground>
+                </Icon>
             }
             title="New community"
             description="A hub for chats for the same audience"
@@ -163,13 +159,11 @@ const NewOptionsMenu = React.memo((props: { toggle: () => void }) => (
         <Item
             onClick={() => {
                 showCreatingFragment({ entityType: 'organization' });
-                // router.navigate('/new/organization');
-                props.toggle();
             }}
             icon={
-                <IconWithBackground>
+                <Icon>
                     <OrganizationIcon />
-                </IconWithBackground>
+                </Icon>
             }
             title="New organization"
             description="A hub for chats with your teammates"
@@ -177,48 +171,24 @@ const NewOptionsMenu = React.memo((props: { toggle: () => void }) => (
     </>
 ));
 
-export const NewOptionsButton = XMemo(() => {
-    const [show, setShow] = React.useState(false);
-    const [width] = useWithWidth();
-
-    useShortcuts({
-        keys: ['Escape'],
-        callback: () => setShow(false),
-    });
-
-    const closer = React.useCallback(() => {
-        setShow(false);
-    }, []);
-
-    const toggle = React.useCallback(
-        () => {
-            setShow(!show);
+export const NewOptionsButton = React.memo(() => {
+    const [, show] = usePopper(
+        {
+            placement: 'bottom-end',
+            hideOnEsc: true,
+            hideOnChildClick: true,
+            showTimeout: 100,
         },
-        [show],
+        () => (
+            <XView paddingVertical={8}>
+                <NewOptionsMenu />
+            </XView>
+        ),
     );
 
-    let marginRight = 13;
-    if (width && width < 951) {
-        marginRight = -137;
-    }
-    if (width && width < 750) {
-        marginRight = 13;
-    }
-
     return (
-        <XPopper
-            contentContainer={<XMenuVertical paddingTop={10} paddingBottom={10} />}
-            placement="bottom-end"
-            show={show}
-            marginTop={2}
-            marginRight={marginRight}
-            arrow={null}
-            onClickOutside={closer}
-            content={<NewOptionsMenu toggle={toggle} />}
-        >
-            <div onClick={toggle}>
-                <UIconButton icon={<PlusIcon />} size="large" />
-            </div>
-        </XPopper>
+        <div onClick={show}>
+            <UIconButton icon={<PlusIcon />} size="large" />
+        </div>
     );
 });

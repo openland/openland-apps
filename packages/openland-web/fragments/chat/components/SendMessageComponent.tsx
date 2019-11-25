@@ -433,6 +433,8 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     const os = detectOS();
     const isWindows = os === 'Windows';
     const isLinux = os === 'Linux';
+    const isMobile = os === 'Android' || os === 'iOS';
+
     const ref = props.rickRef || React.useRef<URickInputInstance>(null);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
     const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
@@ -583,7 +585,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     autofocus={true}
                     placeholder={props.placeholder || 'Write a message...'}
                     onFilesPaste={props.onAttach}
-                    withShortcutsButton={true}
+                    withShortcutsButton={!isMobile}
                     className={(isWindows || isLinux) ? hideScrollStyle : undefined}
                 />
             </XView>
