@@ -32,7 +32,7 @@ import { initialMode } from 'react-native-dark-mode';
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(() => new SAnimatedShadowView('app-placeholder-' + randomKey(), { opacity: 1 }), []);
     React.useEffect(() => {
-        if (!props.loading) {
+        if (!props.loading && Platform.OS !== 'android') {
             SAnimated.beginTransaction();
             SAnimated.setDefaultPropertyAnimator();
             animatedValue.opacity = props.loading ? 1 : 0;
@@ -59,7 +59,7 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
         >
             {Platform.OS === 'android' && (
                 <View width="100%" height="100%">
-                    <AndroidSplashView style={{ alignSelf: 'stretch', flexGrow: 1, flexShrink: 1 }} />
+                    <AndroidSplashView style={{ alignSelf: 'stretch', flexGrow: 1, flexShrink: 1 }} visible={props.loading}/>
                 </View>
             )}
             {Platform.OS !== 'android' && (
