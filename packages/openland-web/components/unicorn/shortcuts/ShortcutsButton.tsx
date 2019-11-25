@@ -15,7 +15,7 @@ const shortcutsIcon = css`
     display: flex;
     align-items: center;
     transition: opacity 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
-
+    background-color: var(--backgroundTertiary);
     &:hover {
         opacity: 0.5;
     }
