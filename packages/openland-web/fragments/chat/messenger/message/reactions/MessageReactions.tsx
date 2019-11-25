@@ -89,6 +89,7 @@ const ReactionItem = React.memo((props: ReactionItemProps) => {
 export interface MessageReactionsProps {
     message: {
         id?: string;
+        key?: string;
         reactionsReducedEmojify: ReactionReducedEmojify[];
         reactionsLabelEmojify: string | JSX.Element;
     };
@@ -97,7 +98,7 @@ export interface MessageReactionsProps {
 
 export const MessageReactions = React.memo<MessageReactionsProps>(props => {
     const { engine } = props;
-    const { id, reactionsReducedEmojify, reactionsLabelEmojify } = props.message;
+    const { id, key, reactionsReducedEmojify, reactionsLabelEmojify } = props.message;
     const client = useClient();
     const handleReactionClick = React.useCallback(
         (reaction: MessageReactionType) => {
@@ -110,13 +111,13 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
                             userReaction.reaction === reaction,
                     ).length > 0;
                 if (remove) {
-                    if (engine) {
-                        engine.unsetReaction(id, reaction);
+                    if (engine && key) {
+                        engine.unsetReaction(key, reaction);
                     }
                     client.mutateMessageUnsetReaction({ messageId: id, reaction });
                 } else {
-                    if (engine) {
-                        engine.setReaction(id, reaction);
+                    if (engine && key) {
+                        engine.setReaction(key, reaction);
                     }
                     trackEvent('reaction_sent', {
                         reaction_type: reaction.toLowerCase(),

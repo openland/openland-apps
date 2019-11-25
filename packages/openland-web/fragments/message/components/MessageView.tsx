@@ -41,7 +41,11 @@ const buttonsClass = css`
     flex-direction: row;
 `;
 
-export const MessageView = React.memo((props: { message: Message_message_GeneralMessage | Message_message_StickerMessage }) => {
+interface MessageViewProps {
+    message: Message_message_GeneralMessage | Message_message_StickerMessage;
+}
+
+export const MessageView = React.memo((props: MessageViewProps) => {
     const { message } = props;
     const messenger = React.useContext(MessengerContext);
     const { sender } = message;

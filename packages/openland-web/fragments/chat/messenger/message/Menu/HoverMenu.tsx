@@ -83,6 +83,8 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
     const pickerRef = React.useRef<ReactionPickerInstance>(null);
     const messageIdRef = React.useRef(message.id);
     messageIdRef.current = message.id;
+    const messageKeyRef = React.useRef(message.key);
+    messageKeyRef.current = message.key;
     const reactionsRef = React.useRef(message.reactions);
     reactionsRef.current = message.reactions;
 
@@ -97,6 +99,7 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
 
     const handleReactionClick = (reaction: MessageReactionType) => {
         const messageId = messageIdRef.current;
+        const messageKey = messageKeyRef.current;
         const reactions = reactionsRef.current;
 
         if (messageId) {
@@ -108,10 +111,10 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
                         userReaction.reaction === reaction,
                 ).length > 0;
             if (remove) {
-                props.engine.unsetReaction(messageId, reaction);
+                props.engine.unsetReaction(messageKey, reaction);
                 client.mutateMessageUnsetReaction({ messageId, reaction });
             } else {
-                props.engine.setReaction(messageId, reaction);
+                props.engine.setReaction(messageKey, reaction);
                 trackEvent('reaction_sent', {
                     reaction_type: reaction.toLowerCase(),
                     double_tap: 'not',
