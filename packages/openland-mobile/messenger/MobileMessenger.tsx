@@ -147,12 +147,19 @@ export class MobileMessenger {
 
     handleReactionSetUnset = (message: DataSourceMessageItem, r: MessageReactionType, doubleTap?: boolean) => {
         try {
+            const conversation: ConversationEngine = this.engine.getConversation(message.chatId);
+
             let remove = message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;
             if (remove) {
+                // optimistic unset reaction
+                conversation.unsetReaction(message.key, r);
+                
                 this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: r });
             } else {
-                trackEvent('reaction_sent', { reaction_type: r.toLowerCase(), double_tap: doubleTap ? 'yes' : 'not' });
+                // optimistic set reaction
+                conversation.setReaction(message.key, r);
 
+                trackEvent('reaction_sent', { reaction_type: r.toLowerCase(), double_tap: doubleTap ? 'yes' : 'not' });
                 this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: r });
             }
         } catch (e) {
