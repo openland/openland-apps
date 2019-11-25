@@ -75,13 +75,13 @@ export const ConversationManageButton = XMemo((props: ConversationManageButtonPr
         const builder = new ActionSheetBuilder();
 
         const notificationsTitle = `${muted ? 'Unmute' : 'Mute'} notifications`;
-        const notificationsIcon = muted ? require('assets/ic-notifications-off-24.png') : require('assets/ic-notifications-24.png');
+        const notificationsIcon = muted ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-off-24.png');
         builder.action(notificationsTitle, onNotificationsPress, false, notificationsIcon);
 
         const isPrivate = room.__typename === 'PrivateRoom';
         if (!isPrivate) {
             builder.action('Invite friends', onInvitePress, false, require('assets/ic-invite-24.png'));
-            builder.action('Leave and delete', onLeavePress, false, require('assets/ic-leave-24.png'));
+            builder.action('Leave group', onLeavePress, false, require('assets/ic-leave-24.png'));
         }
 
         builder.show();

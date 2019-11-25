@@ -152,7 +152,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
 
     res.item({
         title: `${muted ? 'Unmute' : 'Mute'} notifications`,
-        icon: muted ? <NotificationsOffIcon /> : <NotificationsIcon />,
+        icon: muted ? <NotificationsIcon /> : <NotificationsOffIcon />,
         action: async () => {
             let newMuted = !chat.settings.mute;
             client.mutateRoomSettingsUpdate({ roomId: chat.id, settings: { mute: newMuted } });
