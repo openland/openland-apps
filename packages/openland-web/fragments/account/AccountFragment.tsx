@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { UListItem, SelectableText } from 'openland-web/components/unicorn/UListItem';
-
+import { emoji } from 'openland-y-utils/emoji';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
 import EmailIcon from 'openland-icons/s/ic-mail-24.svg';
@@ -51,7 +51,7 @@ const UserProfileCard = withUserInfo(({ user }) => {
                     marginRight={16}
                 />
                 <XView flexGrow={1}>
-                    <XView {...TextStyles.Title3}>{user.name}</XView>
+                    <XView {...TextStyles.Title3}>{emoji(user.name)}</XView>
                     <SelectableText
                         {...TextStyles.Body}
                         color="var(--foregroundSecondary)"
@@ -92,11 +92,14 @@ export const Organizations = React.memo(() => {
 
 export const AccountFragment = React.memo(() => {
     const isVisible = useVisibleTab();
-    React.useEffect(() => {
-        if (isVisible) {
-            trackEvent('navigate_account');
-        }
-    }, [isVisible]);
+    React.useEffect(
+        () => {
+            if (isVisible) {
+                trackEvent('navigate_account');
+            }
+        },
+        [isVisible],
+    );
 
     return (
         <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
@@ -128,7 +131,11 @@ export const AccountFragment = React.memo(() => {
                         icon={<NotificationsIcon />}
                         path="/settings/notifications"
                     />
-                    <UListItem title="Email preferences" icon={<EmailIcon />} path="/settings/email" />
+                    <UListItem
+                        title="Email preferences"
+                        icon={<EmailIcon />}
+                        path="/settings/email"
+                    />
                     <UListItem
                         title="Appearance"
                         icon={<AppearanceIcon />}
