@@ -14,7 +14,8 @@ routes.add('/privacy', '/landing/privacy');
 routes.add('/privacy/', '/landing/privacy');
 routes.add('/download', '/landing/download');
 routes.add('/download/', '/landing/download');
-
+routes.add('/next', '/landing/next');
+routes.add('/next/', '/landing/next');
 //
 // Authentication
 //
