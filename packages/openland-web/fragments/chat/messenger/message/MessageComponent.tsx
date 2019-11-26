@@ -8,10 +8,7 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
 import StarIcon from 'openland-icons/s/ic-star-16.svg';
 import { formatTime } from 'openland-y-utils/formatTime';
-import {
-    UserShort_primaryOrganization,
-    UserShort,
-} from 'openland-api/Types';
+import { UserShort_primaryOrganization, UserShort } from 'openland-api/Types';
 import { HoverMenu } from './Menu/HoverMenu';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
@@ -31,6 +28,9 @@ const senderContainer = css`
 
 const senderNameStyle = css`
     color: var(--foregroundPrimary);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 `;
 
 const dateStyle = css`
@@ -53,6 +53,7 @@ const dateStyle = css`
 `;
 
 const senderOrgAndDateStyle = css`
+    flex-shrink: 0;
     margin-left: 8px;
     color: var(--foregroundSecondary);
 
@@ -180,7 +181,6 @@ const messageContainerClass = css`
         margin-bottom: 4px;
     }
 
-
     &.message-selected {
         background-color: var(--backgroundTertiary);
 
@@ -196,7 +196,6 @@ const messageContainerClass = css`
 
         @media (min-width: 751px) {
             & + .message-selected.message-attached-top {
-
                 position: relative;
 
                 border-top-left-radius: 0;

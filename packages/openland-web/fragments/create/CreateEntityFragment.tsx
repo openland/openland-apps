@@ -34,6 +34,8 @@ const contentStyle = css`
     flex-shrink: 0;
 
     padding-top: 70px;
+    padding-left: 16px;
+    padding-right: 16px;
     max-width: 480px;
     max-height: 100%;
     width: 100%;
@@ -114,20 +116,23 @@ const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide:
     const showSharingList = !secretTypeField.value && !isCommunity && !isOrg;
 
     const canNextClick = !!titleField.value.trim();
-    const handleNextClick = React.useCallback(() => {
-        if (!canNextClick) {
-            return;
-        }
-        setSettingsPage(false);
+    const handleNextClick = React.useCallback(
+        () => {
+            if (!canNextClick) {
+                return;
+            }
+            setSettingsPage(false);
 
-        if (isOrg) {
-            trackEvent('navigate_new_org_add_members');
-        }
+            if (isOrg) {
+                trackEvent('navigate_new_org_add_members');
+            }
 
-        if (isCommunity) {
-            trackEvent('navigate_new_community_add_members');
-        }
-    }, [canNextClick]);
+            if (isCommunity) {
+                trackEvent('navigate_new_community_add_members');
+            }
+        },
+        [canNextClick],
+    );
 
     const handleBackIcon = React.useCallback(() => {
         setSettingsPage(true);
@@ -176,8 +181,8 @@ const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide:
                                                 subtitle: isCommunity
                                                     ? 'Anyone can find and join this community'
                                                     : `${
-                                                    props.entityType
-                                                    } where your organization or community members communicate`,
+                                                          props.entityType
+                                                      } where your organization or community members communicate`,
                                             },
                                             {
                                                 value: true,
@@ -188,8 +193,8 @@ const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide:
                                                 subtitle: isCommunity
                                                     ? 'Only invited people can join community and view chats'
                                                     : `People can view and join only by invite from a ${
-                                                    props.entityType
-                                                    } member`,
+                                                          props.entityType
+                                                      } member`,
                                             },
                                         ]}
                                     />

@@ -16,6 +16,8 @@ import { CommentEntryFragment_comment, StickerFragment } from 'openland-api/Type
 import { CommentEditInput } from './CommentEditInput';
 import { useClient } from 'openland-web/utils/useClient';
 import { findSpans } from 'openland-y-utils/findSpans';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
+import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 
 const avatarWrapper = css`
@@ -56,6 +58,8 @@ interface CommentViewProps {
 export const CommentView = React.memo((props: CommentViewProps) => {
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
+    const isMobile = useLayout() === 'mobile';
+    const [width] = useWithWidth();
     const {
         comment,
         deleted,
@@ -71,6 +75,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
         generation,
     } = props;
     const { id, sender, message, spans, fallback, date } = comment;
+    const [maxCommentDepth, setMaxCommentDepth] = React.useState(4);
     const [textSpans, setTextSpans] = React.useState<Span[]>([]);
     const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(
         sender.name,
@@ -100,6 +105,18 @@ export const CommentView = React.memo((props: CommentViewProps) => {
         [sender.name],
     );
 
+    React.useLayoutEffect(
+        () => {
+            if (width && width <= 500) {
+                return setMaxCommentDepth(1);
+            }
+            if (width && width > 500) {
+                return setMaxCommentDepth(4);
+            }
+        },
+        [width, maxCommentDepth],
+    );
+
     const handleEditSave = React.useCallback(async (data: URickTextValue) => {
         const { text, mentions } = convertFromInputValue(data);
 
@@ -127,7 +144,12 @@ export const CommentView = React.memo((props: CommentViewProps) => {
         <div
             ref={containerRef}
             className={wrapper}
-            style={{ paddingLeft: depth > 0 ? 56 + (depth - 1) * 40 : undefined }}
+            style={{
+                paddingLeft:
+                    depth > 0
+                        ? (isMobile ? 16 : 56) + Math.min(depth, maxCommentDepth) * 40
+                        : undefined,
+            }}
         >
             <div className={avatarWrapper}>
                 <UAvatar

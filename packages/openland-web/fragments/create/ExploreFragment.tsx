@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from "linaria";
+import { css } from 'linaria';
 import { XView, XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { SearchBox } from './SearchBox';
@@ -21,6 +21,7 @@ const headerButtonsContainer = css`
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-shrink: 0;
 `;
 
 const textTitle = css`
@@ -28,6 +29,10 @@ const textTitle = css`
     line-height: 32px;
     font-weight: 600;
     flex-shrink: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    flex-shrink: 1;
 `;
 
 interface CreateEntityInterface {
@@ -126,7 +131,12 @@ const ExplorePeopleComponent = React.memo((props: CreateEntityInterface) => {
             <div className={headerContainer}>
                 <div className={textTitle}>Add people</div>
                 <div className={headerButtonsContainer}>
-                    <UButton text="Skip" style="secondary" marginRight={16} action={() => doSubmit(true)} />
+                    <UButton
+                        text="Skip"
+                        style="secondary"
+                        marginRight={16}
+                        action={() => doSubmit(true)}
+                    />
                     <UButton
                         text="Next"
                         action={canMakeSubmit ? () => doSubmit() : undefined}
@@ -162,4 +172,6 @@ const ExplorePeopleComponent = React.memo((props: CreateEntityInterface) => {
     );
 });
 
-export const ExploreFragment = (props: CreateEntityInterface) => <ExplorePeopleComponent {...props} />;
+export const ExploreFragment = (props: CreateEntityInterface) => (
+    <ExplorePeopleComponent {...props} />
+);
