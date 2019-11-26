@@ -2,6 +2,9 @@ import * as React from 'react';
 import { css } from 'linaria';
 import Block from './block';
 
+// @ts-ignore
+import Tilt from 'react-tilt';
+
 const root = css`
     margin-top: 110px;
     padding: 120px 0;
@@ -54,12 +57,14 @@ export default () => (
                             Explore activities
                         </a>
                     </p>
-                    <img
-                        src="/static/landing/feature-1.svg"
-                        className={featureImage}
-                        width="509"
-                        height="289"
-                    />
+                    <Tilt options={{ max: 25, scale: 1 }}>
+                        <img
+                            src="/static/landing/feature-1.svg"
+                            className={featureImage}
+                            width="509"
+                            height="289"
+                        />
+                    </Tilt>
                 </div>
                 <div className={feature}>
                     <h2 className={heading}>Easy to grow</h2>
@@ -69,12 +74,14 @@ export default () => (
                             See growth tools
                         </a>
                     </p>
-                    <img
-                        src="/static/landing/feature-2.svg"
-                        className={featureImage}
-                        width="509"
-                        height="289"
-                    />
+                    <Tilt options={{ max: 25, scale: 1 }}>
+                        <img
+                            src="/static/landing/feature-2.svg"
+                            className={featureImage}
+                            width="509"
+                            height="289"
+                        />
+                    </Tilt>
                 </div>
             </div>
         </Block>

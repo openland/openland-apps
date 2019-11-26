@@ -201,6 +201,7 @@
         "react-shortcuts": "^1.6.2",
         "react-ssr-prepass": "^1.0.2",
         "react-test-renderer": "16.5.0",
+        "react-tilt": "^0.1.4",
         "react-tree-walker": "^4.3.0",
         "react-virtualized": "^9.21.0",
         "react-window": "^1.8.5",
