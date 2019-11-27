@@ -8,6 +8,7 @@ import Features from './next/features';
 import Screenshots from './next/screenshots';
 import Testimonials from './next/testimonials';
 import Steps from './next/steps';
+import Footer from './next/footer';
 
 const root = css`
     @import url('https://fonts.googleapis.com/css?family=Lato:400,700&display=swap');
@@ -27,6 +28,6 @@ export const NextPage = React.memo(() => (
         <Testimonials />
         <Steps />
         <Cta small={true} />
-        {/* footer */}
+        <Footer />
     </div>
 ));
