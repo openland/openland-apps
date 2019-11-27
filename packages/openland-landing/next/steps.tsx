@@ -39,6 +39,7 @@ const list = css`
 const item = css`
     width: 350px;
     margin-top: 30px;
+    margin-right: 40px;
 
     display: flex;
 
