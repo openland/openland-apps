@@ -8,16 +8,34 @@ const root = css``;
 const summary = css`
     display: flex;
     align-items: center;
+
+    @media (max-width: 960px) {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+    }
 `;
 
 const listWrapper = css``;
 
 const list = css`
-    font-size: 28px;
-    line-height: 2.2;
     margin-top: 33px;
     list-style-position: inside;
     list-style-type: none;
+
+    @media (min-width: 1140px) {
+        font-size: 28px;
+        line-height: 2.2;
+    }
+
+    @media (min-width: 768px) and (max-width: 1140px) {
+        font-size: 22px;
+        line-height: 2.3;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 16px;
+        line-height: 2.5;
+    }
 `;
 
 const item = css`
@@ -28,13 +46,39 @@ const item = css`
         display: inline-block;
         content: '';
         background: url('/static/landing/icons/bullet.svg') no-repeat;
+        background-size: contain;
         width: 16px;
         height: 16px;
         margin-right: 16px;
+
+        @media (max-width: 768px) {
+            width: 12px;
+            height: 12px;
+            margin-right: 12px;
+        }
     }
 `;
 
-const summaryImage = css``;
+const summaryImage = css`
+    height: auto;
+    max-width: 100%;
+
+    @media (min-width: 1140px) {
+        width: 560px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+        width: 514px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        width: 728px;
+    }
+
+    @media (max-width: 768px) {
+        min-width: 280px;
+    }
+`;
 
 export default () => (
     <div className={root}>

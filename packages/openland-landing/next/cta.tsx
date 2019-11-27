@@ -12,7 +12,21 @@ const cta = css`
 `;
 
 const headline = css`
-    font-size: 80px;
+    @media (min-width: 1140px) {
+        font-size: 80px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+        font-size: 70px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        font-size: 56px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 36px;
+    }
 `;
 
 const headlineGradient = css`
@@ -22,7 +36,18 @@ const headlineGradient = css`
 `;
 
 const text = css`
-    font-size: 24px;
+    @media (min-width: 1140px) {
+        font-size: 24px;
+    }
+
+    @media (min-width: 768px) and (max-width: 1140px) {
+        font-size: 20px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+    }
+
     margin-top: 20px;
     margin-bottom: 46px;
 `;
@@ -32,14 +57,28 @@ const button = css`
     background-color: var(--accentPrimary);
     border-radius: 16px;
     box-shadow: 0px 6px 17px rgba(36, 139, 242, 0.32);
-    font-size: 20px;
-    padding: 13px 36px;
+
     color: var(--foregroundContrast);
 
     &:hover,
     &:focus {
         color: var(--foregroundContrast);
         text-decoration: none;
+    }
+
+    @media (min-width: 1140px) {
+        font-size: 20px;
+        padding: 13px 36px;
+    }
+
+    @media (min-width: 768px) and (max-width: 1140px) {
+        font-size: 18px;
+        padding: 11px 32px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+        padding: 11px 32px;
     }
 `;
 
