@@ -3,7 +3,9 @@ import { css, cx } from 'linaria';
 import Block from './block';
 import Heading from './heading';
 
-const root = css``;
+const root = css`
+    margin-top: 80px;
+`;
 
 const header = css`
     display: flex;

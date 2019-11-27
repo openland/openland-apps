@@ -7,8 +7,8 @@ const root = css``;
 
 const cta = css`
     text-align: center;
-    margin-top: 170px;
-    margin-bottom: 170px;
+    margin-top: 180px;
+    margin-bottom: 180px;
 `;
 
 const headline = css`

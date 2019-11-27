@@ -11,7 +11,6 @@ const summary = css`
 
     @media (max-width: 960px) {
         flex-direction: column-reverse;
-        align-items: flex-start;
     }
 `;
 

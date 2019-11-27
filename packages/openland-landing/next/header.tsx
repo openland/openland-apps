@@ -12,10 +12,41 @@ const header = css`
     margin-bottom: 22px;
 `;
 
-const logo = css``;
+const logo = css`
+    position: relative;
+
+    @media (min-width: 1140px) {
+        top: 14px;
+        right: 14px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+    }
+
+    @media (max-width: 768px) {
+    }
+`;
 
 const menu = css`
+    position: relative;
     margin: -23px;
+
+    @media (min-width: 1140px) {
+        top: 20px;
+        right: -20px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+    }
+
+    @media (max-width: 768px) {
+    }
 `;
 
 const menuItem = css`
