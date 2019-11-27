@@ -8,21 +8,44 @@ const root = css`
 `;
 
 const card = css`
-    background: #f7fafc;
+    background-color: #f7fafc;
     border-radius: 20px;
     overflow: hidden;
 
     display: flex;
 
     margin-top: 24px;
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        flex-direction: column;
+    }
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        border-radius: 0;
+
+        margin: 0 -20px;
+        margin-top: 20px;
+
+        background-color: initial;
+    }
 `;
 
 const img = css`
     width: 393px;
-    flex-basis: 393px;
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        width: 100%;
+        height: 358px;
+    }
+
+    @media (max-width: 768px) {
+        width: 100%;
+        height: 240px;
+    }
+
     flex-shrink: 0;
     background: url('/static/landing/testimonials.jpg');
-    background-placement: center center;
     background-size: cover;
 `;
 
@@ -30,12 +53,35 @@ const content = css`
     padding: 38px;
 `;
 
-const quotes = css``;
+const quotes = css`
+    @media (max-width: 768px) {
+        width: 34px
+        height: 34px;
+    }
+`;
 
 const text = css`
-    font-size: 26px;
-    line-height: 1.6;
     margin-top: 15px;
+
+    @media (min-width: 1140px) {
+        font-size: 26px;
+        line-height: 44px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+        font-size: 22px;
+        line-height: 38px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        font-size: 26px;
+        line-height: 44px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 16px;
+        line-height: 26px;
+    }
 `;
 
 const author = css`
@@ -46,17 +92,58 @@ const author = css`
 
 const avatar = css`
     margin-right: 18px;
+    @media (max-width: 768px) {
+        width: 50px;
+        height: 50px;
+    }
 `;
 
 const signature = css``;
 
 const title = css`
-    font-size: 24px;
+    @media (min-width: 1140px) {
+        font-size: 24px;
+        line-height: 29px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        font-size: 24px;
+        line-height: 29px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+        line-height: 22px;
+    }
 `;
 
 const by = css`
-    font-size: 20px;
     color: #9393a7;
+
+    @media (min-width: 1140px) {
+        font-size: 20px;
+        line-height: 24px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+        font-size: 16px;
+        line-height: 19px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        font-size: 20px;
+        line-height: 24px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 15px;
+        line-height: 18px;
+    }
 `;
 
 export default () => (
