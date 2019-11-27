@@ -23,10 +23,10 @@ const headlineGradient = css`
 const text = css`
     font-size: 24px;
     margin-top: 20px;
+    margin-bottom: 46px;
 `;
 
 const button = css`
-    margin-top: 46px;
     display: inline-block;
     background-color: var(--accentPrimary);
     border-radius: 16px;
@@ -42,18 +42,72 @@ const button = css`
     }
 `;
 
-export default () => (
+const ctaSmall = css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 180px;
+    margin-bottom: 180px;
+`;
+
+const content = css`
+    margin-right: 70px;
+`;
+
+const heading = css`
+    font-size: 36px;
+    line-height: 1.2;
+    margin-bottom: 16px;
+`;
+
+const list = css`
+    font-size: 24px;
+    list-style-type: none;
+    display: inline;
+    color: #525273;
+`;
+
+const item = css`
+    display: inline;
+
+    & + &:before {
+        display: inline-block;
+        content: '·';
+        color: #9393a7;
+        margin: 0 5px;
+    }
+`;
+
+export default ({ small }: { small?: boolean }) => (
     <div className={root}>
         <Block>
-            <div className={cta}>
-                <h1 className={headline}>
-                    Build a great <span className={headlineGradient}>community</span>
-                </h1>
-                <p className={text}>
-                    Openland is the best place to start and grow inspiring communities
-                </p>
-                <a className={button}>Start community</a>
-            </div>
+            {small ? (
+                <div className={ctaSmall}>
+                    <div className={content}>
+                        <h2 className={heading}>Start a great community today</h2>
+                        <ul className={list}>
+                            <li className={item}>Seconds to launch</li>
+                            <li className={item}>Real-time support</li>
+                            <li className={item}>Free</li>
+                        </ul>
+                    </div>
+                    <a className={button} href="#">
+                        Start community
+                    </a>
+                </div>
+            ) : (
+                <div className={cta}>
+                    <h1 className={headline}>
+                        Build a great <span className={headlineGradient}>community</span>
+                    </h1>
+                    <p className={text}>
+                        Openland is the best place to start and grow inspiring communities
+                    </p>
+                    <a className={button} href="#">
+                        Start community
+                    </a>
+                </div>
+            )}
         </Block>
     </div>
 );

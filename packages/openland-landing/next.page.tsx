@@ -26,7 +26,7 @@ export const NextPage = React.memo(() => (
         <Screenshots />
         <Testimonials />
         <Steps />
-        {/* cta-small */}
+        <Cta small={true} />
         {/* footer */}
     </div>
 ));
