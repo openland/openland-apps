@@ -31,7 +31,10 @@ const item = css`
 
     display: flex;
 
-    margin-right: 40px;
+    @media (min-width: 768px) and (max-width: 1140px) {
+        margin-right: 20px;
+        width: 300px;
+    }
 `;
 
 const bullet = css`
@@ -39,19 +42,49 @@ const bullet = css`
     width: 32px;
     height: 32px;
     flex-shrink: 0;
+
+    @media (max-width: 768px) {
+        width: 28px;
+        height: 28px;
+    }
 `;
 
 const itemContent = css``;
 
 const subheading = css`
-    font-size: 26px;
-    line-height: 1.2;
+    @media (min-width: 1140px) {
+        font-size: 26px;
+        line-height: 32px;
+    }
+
+    @media (min-width: 768px) and (max-width: 1140px) {
+        font-size: 22px;
+        line-height: 30px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 20px;
+        line-height: 24px;
+    }
 `;
 
 const text = css`
-    font-size: 22px;
-    line-height: 1.5;
     margin-top: 7px;
+
+    @media (min-width: 1140px) {
+        font-size: 22px;
+        line-height: 34px;
+    }
+
+    @media (min-width: 768px) and (max-width: 1140px) {
+        font-size: 18px;
+        line-height: 28px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 16px;
+        line-height: 26px;
+    }
 `;
 
 const link = css`
@@ -69,9 +102,20 @@ const wrapper = css`
 `;
 
 const img = css`
-    width: 402px;
-    height: auto;
     flex-grow: 2;
+    height: auto;
+
+    @media (min-width: 1140px) {
+        width: 402px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+        width: 351px;
+    }
+
+    @media (max-width: 960px) {
+        display: none;
+    }
 `;
 
 export default () => (
