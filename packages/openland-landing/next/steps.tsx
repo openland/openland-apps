@@ -4,7 +4,18 @@ import Block from './block';
 import Heading from './heading';
 
 const root = css`
-    margin-top: 197px;
+    @media (min-width: 1140px) {
+        margin-top: 197px;
+    }
+
+    @media (min-width: 768px) and (max-width: 1140px) {
+        margin-top: 128px;
+    }
+
+    @media (max-width: 768px) {
+        margin-top: 0;
+    }
+
     padding: 80px 0;
 
     background-color: #f7fafc;

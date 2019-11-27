@@ -16,6 +16,10 @@ const root = css`
     line-height: 1.2;
     font-family: 'Lato', sans-serif;
     color: #272750;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 `;
 
 export const NextPage = React.memo(() => (
