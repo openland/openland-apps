@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 
 export interface UNavigableListProps {
-    data: { key: string, data: any }[];
+    data: { key: string; data: any }[];
     render: (item: any) => any;
     onSelected: (item: any) => void;
 }
@@ -15,19 +15,17 @@ export interface UNavigableListRef {
 
 interface ListState {
     focus: number;
-    items: { key: string, data: any }[];
+    items: { key: string; data: any }[];
 }
 
 type ListStateAction =
-    { type: 'update', items: { key: string, data: any }[] } |
-    { type: 'up' } |
-    { type: 'down' };
+    | { type: 'update'; items: { key: string; data: any }[] }
+    | { type: 'up' }
+    | { type: 'down' };
 
 function listStateReducer(state: ListState, action: ListStateAction): ListState {
     if (action.type === 'update') {
-
         if (state.items.length > 0 && action.items.length > 0) {
-
             // Adjust focus
             let focus = state.focus;
             if (focus >= action.items.length) {
@@ -36,7 +34,7 @@ function listStateReducer(state: ListState, action: ListStateAction): ListState 
 
             // Try to keep current selected item if possible
             let focusedId = state.items[focus].key;
-            let newIndex = action.items.findIndex((v) => v.key === focusedId);
+            let newIndex = action.items.findIndex(v => v.key === focusedId);
             if (newIndex >= 0) {
                 focus = newIndex;
             }
@@ -61,65 +59,95 @@ const itemStyle = css`
     background-color: #fff;
     cursor: pointer;
     &:hover {
-        background-color: #F0F2F5;
+        background-color: #f0f2f5;
     }
     &:active {
-        background-color: #EBEDF0;
+        background-color: #ebedf0;
     }
 `;
 
 const focusedStyle = css`
-    background-color: #F0F2F5;
+    background-color: #f0f2f5;
 `;
 
-export const Item = React.memo((props: { style?: any, focused: boolean, children?: any, item: any, onSelected: (item: any) => void }) => {
-    let ref = React.useRef<HTMLDivElement>(null);
-    React.useLayoutEffect(() => {
-        if (props.focused) {
-            ref.current!.scrollIntoView({ behavior: 'auto', block: 'nearest' });
-        }
-    }, [props.focused]);
-    const callback = React.useCallback((e: React.MouseEvent) => {
-        props.onSelected(props.item);
-    }, []);
-    return (
-        <div className={cx(itemStyle, props.focused && focusedStyle)} style={props.style} ref={ref} onClick={callback}>
-            {props.children}
-        </div>
-    );
-});
+export const Item = React.memo(
+    (props: {
+        style?: any;
+        focused: boolean;
+        children?: any;
+        item: any;
+        onSelected: (item: any) => void;
+        startScrolling?: boolean;
+    }) => {
+        let ref = React.useRef<HTMLDivElement>(null);
+        React.useLayoutEffect(
+            () => {
+                if (props.focused && !props.startScrolling) {
+                    ref.current!.scrollIntoView({
+                        behavior: 'auto',
+                        block: 'nearest',
+                    });
+                }
+            },
+            [props.focused],
+        );
+        const callback = React.useCallback((e: React.MouseEvent) => {
+            props.onSelected(props.item);
+        }, []);
+        return (
+            <div
+                className={cx(itemStyle, props.focused && focusedStyle)}
+                style={props.style}
+                ref={ref}
+                onClick={callback}
+            >
+                {props.children}
+            </div>
+        );
+    },
+);
 
-export const UNavigableList = React.memo(React.forwardRef((props: UNavigableListProps, ref: React.Ref<UNavigableListRef>) => {
-    const [state, dispatch] = React.useReducer(listStateReducer, { items: props.data, focus: 0 });
-    if (state.items !== props.data) {
-        dispatch({ 'type': 'update', items: props.data });
-    }
-    const lastState = React.useRef(state);
-    lastState.current = state;
-
-    React.useImperativeHandle(ref, () => ({
-        onPressUp: () => {
-            dispatch({ 'type': 'up' });
-        },
-        onPressDown: () => {
-            dispatch({ 'type': 'down' });
-        },
-        onPressEnter: () => {
-            if (lastState.current.items.length > 0) {
-                let selected = lastState.current.items[lastState.current.focus].data;
-                props.onSelected(selected);
-                return true;
-            }
-            return false;
+export const UNavigableList = React.memo(
+    React.forwardRef((props: UNavigableListProps, ref: React.Ref<UNavigableListRef>) => {
+        const [state, dispatch] = React.useReducer(listStateReducer, {
+            items: props.data,
+            focus: 0,
+        });
+        if (state.items !== props.data) {
+            dispatch({ type: 'update', items: props.data });
         }
-    }));
-    return (
-        <>
-            {state.items.map((v, i) => (
-                <Item key={'item-' + v.key} focused={state.focus === i} item={v.data} onSelected={props.onSelected}>
-                    {props.render(v.data)}
-                </Item>
-            ))}
-        </>
-    );
-}));
+        const lastState = React.useRef(state);
+        lastState.current = state;
+
+        React.useImperativeHandle(ref, () => ({
+            onPressUp: () => {
+                dispatch({ type: 'up' });
+            },
+            onPressDown: () => {
+                dispatch({ type: 'down' });
+            },
+            onPressEnter: () => {
+                if (lastState.current.items.length > 0) {
+                    let selected = lastState.current.items[lastState.current.focus].data;
+                    props.onSelected(selected);
+                    return true;
+                }
+                return false;
+            },
+        }));
+        return (
+            <>
+                {state.items.map((v, i) => (
+                    <Item
+                        key={'item-' + v.key}
+                        focused={state.focus === i}
+                        item={v.data}
+                        onSelected={props.onSelected}
+                    >
+                        {props.render(v.data)}
+                    </Item>
+                ))}
+            </>
+        );
+    }),
+);
