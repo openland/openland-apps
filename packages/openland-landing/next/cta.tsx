@@ -88,10 +88,20 @@ const ctaSmall = css`
     justify-content: center;
     margin-top: 180px;
     margin-bottom: 180px;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        text-align: center;
+    }
 `;
 
 const content = css`
     margin-right: 70px;
+
+    @media (max-width: 768px) {
+        margin-right: 0;
+        margin-bottom: 36px;
+    }
 `;
 
 const list = css`
