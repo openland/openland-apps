@@ -19,6 +19,7 @@ import { SDeferred } from 'react-native-s/SDeferred';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { handleGlobalInvitePress } from './Settings';
+import { GlobalSearchEntryKind } from 'openland-api/Types';
 
 const DialogsComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -45,7 +46,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
         } else {
             getMessenger().history.navigationManager.push('Conversation', { id });
         }
-    }, [props.router.params.share, props.router.params.callback]);
+    }, [props.router.params.share, props.router.params.pressCallback]);
 
     const dialogs = (props.router.params.share || props.router.params.pressCallback) ? new ASDataView(getMessenger().engine.dialogList.dataSource, (item) => {
         return (
@@ -74,6 +75,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
                         router={props.router}
                         onGroupPress={handlePress}
                         onUserPress={handlePress}
+                        kinds={(props.router.params.title || props.router.params.share) ? [GlobalSearchEntryKind.USER, GlobalSearchEntryKind.SHAREDROOM] : undefined}
                         initialView={(!props.router.params.share && !props.router.params.title) ? (
                             <SDeferred>
                                 <ZListItem

@@ -10,11 +10,13 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SNativeConfig } from 'react-native-s/SNativeConfig';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { GlobalSearchEntryKind } from 'openland-api/Types';
 
 interface GlobalSearchProps {
     query: string;
     router: SRouter;
     initialView?: JSX.Element;
+    kinds?: GlobalSearchEntryKind[];
 
     onOrganizationPress?: (id: string, title: string) => void;
     onUserPress?: (id: string, title: string) => void;
@@ -23,7 +25,7 @@ interface GlobalSearchProps {
 
 const GlobalSearchInner = (props: GlobalSearchProps) => {
     let theme = React.useContext(ThemeContext);
-    let items = getClient().useGlobalSearch({ query: props.query }).items;
+    let items = getClient().useGlobalSearch({ query: props.query, kinds: props.kinds }).items;
 
     return (
         <>
