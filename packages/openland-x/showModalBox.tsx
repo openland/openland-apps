@@ -91,6 +91,10 @@ const ModalBoxComponent = React.memo<{
 
     const tryHide = React.useCallback(() => {
         if (state !== 'hiding') {
+            if (props.config.onCancel) {
+                props.config.onCancel();
+            }
+
             setState('hiding');
             setTimeout(() => {
                 props.ctx.hide();
@@ -274,6 +278,7 @@ export interface XModalBoxConfig {
     flowing?: boolean;
     useTopCloser?: boolean;
     darkOverlay?: boolean;
+    onCancel?: () => void;
 }
 
 export function showModalBox(config: XModalBoxConfig, modal: XModal) {

@@ -10,7 +10,7 @@ const wrapperClass = css`
 `;
 
 interface CommentEditInputProps {
-    onSave: (data: URickTextValue) => void;
+    onSave: (data: URickTextValue) => Promise<boolean>;
     text: string;
     textSpans: Span[];
     groupId?: string;

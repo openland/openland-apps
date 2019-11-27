@@ -17,7 +17,7 @@ const wrapperCompactClass = css`
 `;
 
 interface CommentInputProps {
-    onSent: (data: URickTextValue) => void;
+    onSent: (data: URickTextValue) => Promise<boolean>;
     onSentAttach: (files: File[]) => void;
     onStickerSent: (sticker: StickerFragment) => void;
     groupId?: string;

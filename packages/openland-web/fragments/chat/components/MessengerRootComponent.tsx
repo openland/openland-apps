@@ -39,6 +39,7 @@ import { showAttachConfirm } from './AttachConfirm';
 import AlertBlanket from 'openland-x/AlertBlanket';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { ReloadFromEndButton } from './ReloadFromEndButton';
+import { showNoiseWarning } from './NoiseWarning';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
@@ -310,7 +311,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         return false;
     }
 
-    onTextSend = (text: URickTextValue) => {
+    onTextSend = async (text: URickTextValue) => {
         let actionState = this.conversation!.messagesActionsStateEngine.getState();
         let actionMessage = actionState.messages[0];
 
@@ -329,6 +330,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         }
         textValue = textValue.trim();
 
+        let mentionsPrepared = prepareLegacyMentionsForSend(textValue, mentions);
+
         if (
             actionState.action === 'edit' &&
             actionMessage &&
@@ -340,7 +343,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 this.conversation!.engine.client.mutateEditMessage({
                     messageId: actionMessage.id!,
                     message: textValue,
-                    mentions: prepareLegacyMentionsForSend(textValue, mentions),
+                    mentions: mentionsPrepared,
                     spans: findSpans(textValue),
                 });
             }
@@ -350,10 +353,23 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 actionState.action === 'reply' ||
                 actionState.action === 'forward'
             ) {
+                if (this.props.room.__typename === 'SharedRoom' && mentionsPrepared.filter(m => m.all === true).length) {
+                    try {
+                        await showNoiseWarning(
+                            `Notify all ${!!this.props.room.membersCount ? this.props.room.membersCount : ''} members?`,
+                            'By using @All, you’re about to notify all group members even when they muted this chat. Please use it only for important messages'
+                        );
+                    } catch {
+                        return false;
+                    }
+                }
+
                 localStorage.removeItem('drafts-' + this.props.conversationId);
                 this.conversation!.sendMessage(textValue, mentions);
             }
         }
+
+        return true;
     }
 
     onStickerSent = (sticker: StickerFragment) => {
@@ -440,7 +456,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                 rickRef={this.rickRef}
                                 groupId={groupId}
                                 membersCount={membersCount}
-                                onTextSent={this.onTextSend}
+                                onTextSentAsync={this.onTextSend}
                                 onStickerSent={this.onStickerSent}
                                 onTextChange={this.handleChange}
                                 onContentChange={this.onContentChange}

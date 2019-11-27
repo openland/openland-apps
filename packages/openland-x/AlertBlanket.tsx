@@ -11,6 +11,7 @@ export class AlertBlanketBuilder {
     _cancelable?: boolean;
     _action?: { name: string, action: () => Promise<void>, style: UButtonStyle } = undefined;
     _width?: number;
+    _onCancel?: () => void;
 
     constructor() {
         this._cancelable = true;
@@ -52,8 +53,13 @@ export class AlertBlanketBuilder {
         return this;
     }
 
+    onCancel(onCancel: () => void): AlertBlanketBuilder {
+        this._onCancel = onCancel;
+        return this;
+    }
+
     show() {
-        showModalBox({ title: this._title, width: this._width }, ctx => {
+        showModalBox({ title: this._title, width: this._width, onCancel: this._onCancel }, ctx => {
             return (
                 <AlertBlanketComponent builder={this} controller={ctx} />
             );

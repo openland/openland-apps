@@ -40,7 +40,13 @@ export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, 
                             text="Cancel"
                             style="secondary"
                             size="large"
-                            onClick={() => controller.hide()}
+                            onClick={() => {
+                                if (builder._onCancel) {
+                                    builder._onCancel();
+                                }
+
+                                controller.hide();
+                            }}
                         />
                     )}
 

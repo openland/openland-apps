@@ -50,7 +50,7 @@ interface CommentViewProps {
     onReplyClick: (id: string) => void;
     onDeleteClick: (id: string) => void;
     onReactionClick: (comment: CommentEntryFragment_comment) => void;
-    onSent: (data: URickTextValue) => void;
+    onSent: (data: URickTextValue) => Promise<boolean>;
     onSentAttach: (files: File[]) => void;
     onStickerSent: (sticker: StickerFragment) => void;
 }
@@ -130,6 +130,8 @@ export const CommentView = React.memo((props: CommentViewProps) => {
         }
 
         setEdit(false);
+
+        return true;
     }, []);
 
     const canEdit = sender.id === messenger.user.id && message && message.length;

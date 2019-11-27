@@ -11,6 +11,7 @@ import UUID from 'uuid/v4';
 import { StickerFragment } from 'openland-api/Types';
 import { showAttachConfirm } from 'openland-web/fragments/chat/components/AttachConfirm';
 import { DropZone } from 'openland-web/fragments/chat/components/DropZone';
+import { showNoiseWarning } from 'openland-web/fragments/chat/components/NoiseWarning';
 
 const wrapperClass = css`
     display: flex;
@@ -47,11 +48,24 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
     const handleCommentSent = React.useCallback(async (data: URickTextValue) => {
         const { text, mentions } = convertFromInputValue(data);
 
+        const mentionsPrepared = prepareLegacyMentionsForSend(text, mentions);
+
         if (text.length > 0) {
+            if (groupId && mentionsPrepared.filter(m => m.all === true).length) {
+                try {
+                    await showNoiseWarning(
+                        `Notify all members?`,
+                        'By using @All, you’re about to notify all group members even when they muted this chat. Please use it only for important messages'
+                    );
+                } catch {
+                    return false;
+                }
+            }
+
             await client.mutateAddComment({
                 peerId,
                 repeatKey: UUID(),
-                mentions: prepareLegacyMentionsForSend(text, mentions),
+                mentions: mentionsPrepared,
                 message: text,
                 spans: findSpans(text),
                 replyComment: highlightId
@@ -59,6 +73,8 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
 
             setHighlightId(undefined);
         }
+
+        return true;
     }, [peerId, highlightId]);
 
     const handleStickerSent = React.useCallback(async (sticker: StickerFragment) => {
