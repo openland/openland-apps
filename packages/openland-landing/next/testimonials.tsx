@@ -1,14 +1,10 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import Block from './block';
+import Heading from './heading';
 
 const root = css`
     margin-top: 175px;
-`;
-
-const heading = css`
-    font-size: 36px;
-    line-height: 1.2;
 `;
 
 const card = css`
@@ -66,7 +62,7 @@ const by = css`
 export default () => (
     <div className={root}>
         <Block>
-            <h2 className={heading}>See your community thrive</h2>
+            <Heading>See your community thrive</Heading>
             <div className={card}>
                 <div className={img} />
                 <div className={content}>

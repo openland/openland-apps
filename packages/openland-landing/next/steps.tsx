@@ -1,18 +1,13 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import Block from './block';
+import Heading from './heading';
 
 const root = css`
     margin-top: 197px;
     padding: 80px 0;
 
     background-color: #f7fafc;
-`;
-
-const heading = css`
-    font-size: 36px;
-    line-height: 1.2;
-    margin-bottom: 10px;
 `;
 
 const content = css`
@@ -26,6 +21,8 @@ const list = css`
     display: flex;
     flex-wrap: wrap;
     flex-shrink: 2;
+
+    margin-top: 10px;
 `;
 
 const item = css`
@@ -82,7 +79,7 @@ export default () => (
         <Block>
             <div className={content}>
                 <div className={wrapper}>
-                    <h2 className={heading}>Help for every step</h2>
+                    <Heading>Help for every step</Heading>
 
                     <ul className={list}>
                         <li className={item}>

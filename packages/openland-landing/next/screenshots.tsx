@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import Block from './block';
+import Heading from './heading';
 
 const root = css``;
 
@@ -11,10 +12,6 @@ const header = css`
 
 const content = css`
     margin-left: 32px;
-`;
-
-const heading = css`
-    font-size: 36px;
 `;
 
 const listWrapper = css`
@@ -61,7 +58,7 @@ export default () => (
             <div className={header}>
                 <img src="/static/landing/logo-screenshots.svg" width="100" height="100" />
                 <div className={content}>
-                    <h2 className={heading}>All-in-one platform you'll love</h2>
+                    <Heading>All-in-one platform you'll love</Heading>
                     <div className={listWrapper}>
                         <li className={list}>
                             <ul className={item}>Member profiles</ul>

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import Block from './block';
+import Heading from './heading';
 
 const root = css``;
 
@@ -54,17 +55,12 @@ const content = css`
     margin-right: 70px;
 `;
 
-const heading = css`
-    font-size: 36px;
-    line-height: 1.2;
-    margin-bottom: 16px;
-`;
-
 const list = css`
     font-size: 24px;
     list-style-type: none;
-    display: inline;
+    display: inline-block;
     color: #525273;
+    margin-top: 16px;
 `;
 
 const item = css`
@@ -84,7 +80,7 @@ export default ({ small }: { small?: boolean }) => (
             {small ? (
                 <div className={ctaSmall}>
                     <div className={content}>
-                        <h2 className={heading}>Start a great community today</h2>
+                        <Heading>Start a great community today</Heading>
                         <ul className={list}>
                             <li className={item}>Seconds to launch</li>
                             <li className={item}>Real-time support</li>

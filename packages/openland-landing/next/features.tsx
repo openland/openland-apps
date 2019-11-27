@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import Block from './block';
+import Heading from './heading';
 
 // @ts-ignore
 import Tilt from 'react-tilt';
@@ -18,10 +19,6 @@ const wrapper = css`
 
 const feature = css`
     margin: 60px;
-`;
-
-const heading = css`
-    font-size: 36px;
 `;
 
 const text = css`
@@ -50,7 +47,7 @@ export default () => (
         <Block>
             <div className={wrapper}>
                 <div className={feature}>
-                    <h2 className={heading}>Start in seconds</h2>
+                    <Heading>Start in seconds</Heading>
                     <p className={text}>
                         Start with a chat and add more activities as you grow.{' '}
                         <a href="#" className={link}>
@@ -67,7 +64,7 @@ export default () => (
                     </Tilt>
                 </div>
                 <div className={feature}>
-                    <h2 className={heading}>Easy to grow</h2>
+                    <Heading>Easy to grow</Heading>
                     <p className={text}>
                         Make it easy for members to bring their friends.{' '}
                         <a href="#" className={link}>

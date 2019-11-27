@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import Block from './block';
+import Heading from './heading';
 
 const root = css``;
 
@@ -10,10 +11,6 @@ const summary = css`
 `;
 
 const listWrapper = css``;
-
-const heading = css`
-    font-size: 36px;
-`;
 
 const list = css`
     font-size: 28px;
@@ -44,7 +41,7 @@ export default () => (
         <Block>
             <div className={summary}>
                 <div className={listWrapper}>
-                    <h2 className={heading}>Built for mission-driven organizers</h2>
+                    <Heading>Built for mission-driven organizers</Heading>
                     <ul className={list}>
                         <li className={item}>Find people who share your values</li>
                         <li className={item}>Share and organize knowledge</li>
