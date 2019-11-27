@@ -20,15 +20,23 @@
             "region": "sfo2"
         },
         "mac": {
-            "identity": "DATA MAKES PERFECT INC. (ATWUYU6747)"
+            "identity": "DATA MAKES PERFECT INC. (ATWUYU6747)",
+            "target": "dmg"
+        },
+        "linux": {
+            "target": "appimage"
+        },
+        "win": {
+            "target": "nsis",
+            "sign": "./signing/win-sign.js"
         }
     },
     "devDependencies": {
-        "electron": "5.0.0",
-        "electron-builder": "^20.39.0"
+        "electron": "7.1.2",
+        "electron-builder": "21.2.0"
     },
     "dependencies": {
-        "electron-updater": "^4.0.6",
-        "electron-window-state": "^5.0.3"
+        "electron-updater": "4.2.0",
+        "electron-window-state": "5.0.3"
     }
 }
