@@ -8,23 +8,88 @@ import Tilt from 'react-tilt';
 
 const root = css`
     margin-top: 110px;
-    padding: 120px 0;
+
+    @media (min-width: 1140px) {
+        padding: 120px 0;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+        padding: 102px 0;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        padding: 90px 0;
+    }
+
+    @media (max-width: 768px) {
+        padding: 50px 0;
+    }
+
     background: linear-gradient(180deg, #f6f9fb 0%, rgba(255, 255, 255, 0) 100%);
 `;
 
 const wrapper = css`
     display: flex;
-    margin: -60px;
+    align-items: flex-start;
+
+    @media (min-width: 1140px) {
+        margin: -60px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+        margin: -50px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin: -10px;
+    }
+
+    @media (max-width: 768px) {
+        margin: -20px;
+        flex-direction: column;
+        align-items: center;
+    }
 `;
 
 const feature = css`
-    margin: 60px;
+    display: inline-block;
+    width: 50%;
+
+    @media (min-width: 1140px) {
+        padding: 60px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+        padding: 50px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        padding: 10px;
+    }
+
+    @media (max-width: 768px) {
+        padding: 20px;
+        width: initial;
+    }
 `;
 
 const text = css`
-    font-size: 26px;
-    line-height: 1.4;
     margin-top: 15px;
+
+    @media (min-width: 1140px) {
+        font-size: 26px;
+        line-height: 1.4;
+    }
+
+    @media (min-width: 768px) and (max-width: 1140px) {
+        font-size: 20px;
+        line-height: 1.7;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+        line-height: 1.6;
+    }
 `;
 
 const link = css`
@@ -36,10 +101,18 @@ const link = css`
         text-decoration: none;
         color: inherit;
     }
+
+    @media (max-width: 768px) {
+        display: block;
+    }
 `;
 
 const featureImage = css`
     margin-top: 46px;
+
+    width: 100%;
+    max-width: 509px;
+    height: auto;
 `;
 
 export default () => (

@@ -4,6 +4,7 @@ import { css } from 'linaria';
 const root = css`
     margin: 0 auto;
     padding: 0 20px;
+    box-sizing: border-box;
 
     @media (min-width: 1140px) {
         width: 1140px;
