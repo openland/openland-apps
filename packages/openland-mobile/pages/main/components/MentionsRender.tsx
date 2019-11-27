@@ -46,22 +46,22 @@ const MentionsRenderInner = (props: MentionsRenderProps) => {
                         key={'mention-' + index}
                         onPress={() => onMentionPress(activeWord, mention)}
                         separator={false}
-                        height={48}
-                        underlayColor="rgba(0, 0, 0, 0.03)"
+                        height={40}
+                        underlayColor={theme.backgroundTertiaryTrans}
                     >
                         <View style={{ flexGrow: 1, flexDirection: 'row' }} alignItems="center">
-                            <View paddingLeft={16} paddingRight={12} height={40} alignItems="center" justifyContent="center">
+                            <View paddingHorizontal={16} height={40} alignItems="center" justifyContent="center">
                                 {mention.__typename === 'User' && (
                                     <ZAvatar
                                         src={mention.photo}
-                                        size="small"
+                                        size="x-small"
                                         placeholderKey={mention.id}
                                         placeholderTitle={mention.name}
                                     />
                                 )}
                                 {mention.__typename === 'AllMention' && (
-                                    <View alignItems="center" justifyContent="center" width={28} height={28}>
-                                        <Image source={require('assets/ic-channel-13.png')} style={{ tintColor: theme.foregroundPrimary, opacity: 0.3, width: 18, height: 18 }} />
+                                    <View alignItems="center" justifyContent="center" width={24} height={24}>
+                                        <Image source={require('assets/ic-channel-24.png')} style={{ tintColor: theme.foregroundSecondary, width: 24, height: 24 }} />
                                     </View>
                                 )}
                             </View>

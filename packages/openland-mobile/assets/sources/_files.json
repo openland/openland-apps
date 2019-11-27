@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-channel",
+            "src": "ic-channel-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-muted",
             "src": "ic-muted-16.svg",
             "sizes": [
@@ -823,14 +830,6 @@
             "src": "ic-members.svg",
             "sizes": [
                 16
-            ]
-        },
-        {
-            "name": "ic-channel",
-            "src": "ic-channel.svg",
-            "sizes": [
-                13,
-                18
             ]
         },
         {

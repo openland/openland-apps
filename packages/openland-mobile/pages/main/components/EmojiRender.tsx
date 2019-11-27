@@ -70,11 +70,11 @@ export const EmojiRender = (props: EmojiRenderProps) => {
                         onPress={() => onEmojiPress(activeWord, item.unicode)}
                         separator={false}
                         height={40}
-                        underlayColor="rgba(0, 0, 0, 0.03)"
+                        underlayColor={theme.backgroundTertiaryTrans}
                     >
                         <View style={{ flexGrow: 1, flexDirection: 'row' }} alignItems="center">
-                            <View paddingLeft={16} paddingRight={12} height={40} alignItems="center" justifyContent="center">
-                                <SuggestionsItemName theme={theme} name={item.unicode + '   ' + item.shortname} />
+                            <View paddingHorizontal={16} height={40} alignItems="center" justifyContent="center">
+                                <SuggestionsItemName theme={theme} name={item.unicode + '    ' + item.shortname} />
                             </View>
                         </View>
                     </ZListItemBase>
