@@ -74,10 +74,10 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
         let downloadManager: WatchSubscription | undefined = undefined;
 
         if (cover && !coverPath) {
-            const optimalSize = null;
+            let optimalSize = null;
 
             if (cover.metadata && cover.metadata.imageWidth && cover.metadata.imageHeight) {
-                layoutMedia(cover.metadata.imageWidth, cover.metadata.imageHeight, 1024, 1024);
+                optimalSize = layoutMedia(cover.metadata.imageWidth, cover.metadata.imageHeight, 1024, 1024);
             }
 
             downloadManager = DownloadManagerInstance.watch(cover.url, optimalSize, state => {
