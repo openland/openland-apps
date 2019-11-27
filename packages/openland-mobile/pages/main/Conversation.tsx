@@ -43,6 +43,7 @@ import { ChatJoin } from './components/ChatJoin';
 import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 import { ReloadFromBottomButton } from './components/ReloadFromBottomButton';
 import { ConversationManageButton } from './components/ConversationManageButton';
+import { showNoiseWarning } from 'openland-mobile/messenger/components/showNoiseWarning';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -167,6 +168,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let { messagesActionsState } = this.state;
         let tx = this.state.text.trim();
 
+        let mentions = prepareLegacyMentionsForSend(tx, this.state.mentions || []);
+
         if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && messagesActionsState.action === 'edit') {
             let messageToEdit = messagesActionsState.messages.map(convertMessageBack)[0];
 
@@ -175,7 +178,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 await getClient().mutateEditMessage({
                     messageId: messageToEdit.id,
                     message: tx,
-                    mentions: prepareLegacyMentionsForSend(tx, this.state.mentions || []),
+                    mentions,
                     spans: findSpans(tx)
                 });
             } catch (e) {
@@ -184,6 +187,17 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 stopLoader();
             }
         } else {
+            if (this.props.chat.__typename === 'SharedRoom' && mentions.filter(m => m.all === true).length) {
+                try {
+                    await showNoiseWarning(
+                        `Notify all ${!!this.props.chat.membersCount ? this.props.chat.membersCount : ''} members?`,
+                        'By using @All, you’re about to notify all group members even when they muted this chat. Please use it only for important messages'
+                    );
+                } catch {
+                    return;
+                }
+            }
+
             this.engine.sendMessage(tx, this.state.mentions);
         }
 
@@ -285,7 +299,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     activeWord={activeWord}
                     onMentionPress={this.handleMentionPress}
                     groupId={this.props.chat.id}
-                    membersCount={this.props.chat.membersCount}
                 />
             );
         }

@@ -9,6 +9,7 @@ export class AlertBlanketBuilder {
     _view?: any;
     _cancelable?: boolean;
     _actions: { name: string, callback?: () => void, style?: BlanketButtonsStyle, action?: () => void, onActionSuccess?: () => void, onActionError?: (e: Error) => void }[] = [];
+    _onCancel?: () => void;
 
     alert(message: string) {
         this._title = message;
@@ -46,12 +47,20 @@ export class AlertBlanketBuilder {
         return this;
     }
 
+    onCancel(onCancel: () => void): AlertBlanketBuilder {
+        this._onCancel = onCancel;
+        return this;
+    }
+
     show() {
         showBlanketModal((ctx) => {
             return (
                 <AlertBlanketComponent builder={this} modalController={ctx} />
             );
-        }, { cancelable: this._cancelable });
+        }, {
+            cancelable: this._cancelable,
+            onCancel: this._onCancel,
+        });
     }
 }
 

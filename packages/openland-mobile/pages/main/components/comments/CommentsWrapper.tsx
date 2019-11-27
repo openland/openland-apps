@@ -23,6 +23,7 @@ import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
+import { showNoiseWarning } from 'openland-mobile/messenger/components/showNoiseWarning';
 
 interface CommentsWrapperProps {
     peerView: JSX.Element;
@@ -53,14 +54,29 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
         if (text.length > 0 || attachment) {
             setSending(true);
 
+            let mentionsPrepared = prepareLegacyMentionsForSend(text, mentions);
+
             if (edited) {
                 await getClient().mutateEditComment({
                     id: edited.id,
                     message: text,
                     spans: findSpans(text),
-                    mentions: prepareLegacyMentionsForSend(text, mentions),
+                    mentions: mentionsPrepared,
                 });
             } else {
+                if (chat && chat.__typename === 'SharedRoom' && mentionsPrepared.filter(m => m.all === true).length) {
+                    try {
+                        await showNoiseWarning(
+                            `Notify all members?`,
+                            'By using @All, you’re about to notify all group members even when they muted this chat. Please use it only for important messages'
+                        );
+                    } catch {
+                        setSending(false);
+
+                        return;
+                    }
+                }
+
                 let newCommentDepth = 0;
 
                 if (replied) {
@@ -76,7 +92,7 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
                     repeatKey,
                     message: text,
                     replyComment: replied ? replied.id : null,
-                    mentions: prepareLegacyMentionsForSend(text, mentions),
+                    mentions: mentionsPrepared,
                     fileAttachments: attachment ? [attachment] : null,
                     spans: findSpans(text)
                 });

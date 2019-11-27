@@ -25,6 +25,7 @@ interface BlanketModalProps {
     cancelable?: boolean;
     withoutWrapper?: boolean;
     overlayStyle?: ViewStyle;
+    onCancel?: () => void;
 }
 
 class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: ThemeGlobal }>
@@ -51,7 +52,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
         if (this.ended || this.props.cancelable === false) {
             return false;
         }
-        this.hide();
+        this.hideCancel();
         return true;
     }
 
@@ -131,6 +132,14 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
         });
     }
 
+    hideCancel = () => {
+        if (this.props.onCancel) {
+            this.props.onCancel();
+        }
+
+        this.hide();
+    }
+
     renderWrapper = () => {
         if (!isPad) {
             return this.renderContents();
@@ -160,7 +169,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
         return (
             <View width="100%" height="100%" flexDirection="column" alignItems="stretch">
                 <TouchableWithoutFeedback
-                    onPress={this.props.cancelable !== false ? this.hide : undefined}
+                    onPress={this.props.cancelable !== false ? this.hideCancel : undefined}
                 >
                     <View
                         style={{
@@ -198,6 +207,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
                         minHeight: 0,
                         alignItems: 'stretch',
                     }}
+                    pointerEvents="box-none"
                 >
                     <View
                         flexGrow={1}
@@ -210,6 +220,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
                         justifyContent="center"
                         marginBottom={this.props.safe.bottom}
                         marginTop={this.props.safe.top + 48}
+                        pointerEvents="box-none"
                     >
                         {!withoutWrapper ? (
                             this.renderWrapper()
@@ -234,6 +245,7 @@ export function showBlanketModal(
         cancelable?: boolean;
         withoutWrapper?: boolean;
         overlayStyle?: ViewStyle;
+        onCancel?: () => void;
     },
 ) {
     showModal(modal => {
