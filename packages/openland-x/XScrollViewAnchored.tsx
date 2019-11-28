@@ -126,40 +126,40 @@ export const XScrollViewAnchored = React.memo(
                     trottledOnScrollReport();
                     // hide bottom off screen elements for faster scroll / unmount
                     // may affect scroll perf :c
-                    if (innerRef.current && scrollDumb.current) {
-                        if (d > 0) {
-                            for (let i = innerRef.current.children.length - 1; i > 0; i--) {
-                                let el = innerRef.current.children.item(i) as any;
-                                if (el.id === 'scrollDumb') {
-                                    continue;
-                                }
-                                if (el.offsetTop > scrollTop.current + topOffset) {
-                                    scrollDumbSize += el.clientHeight;
-                                    heights.push(el.clientHeight);
-                                    el.style.display = 'none';
-                                }
-                            }
-                        } else {
-                            if (scrollDumb.current.offsetTop < scrollTop.current + topOffset) {
-                                let toRecover = Math.max(topOffset, Math.abs(d * 20));
-                                for (let i = 0; i < innerRef.current.children.length; i++) {
-                                    let el = innerRef.current.children.item(i) as any;
-                                    if (el.style.display !== 'none' || el.id === 'scrollDumb') {
-                                        continue;
-                                    }
-                                    el.style.display = '';
-                                    let height = heights.pop() || 0;
-                                    toRecover -= height;
-                                    scrollDumbSize -= height;
-                                    if (toRecover < 0) {
-                                        break;
-                                    }
-                                }
-                            }
+                    // if (innerRef.current && scrollDumb.current) {
+                    //     if (d > 0) {
+                    //         for (let i = innerRef.current.children.length - 1; i > 0; i--) {
+                    //             let el = innerRef.current.children.item(i) as any;
+                    //             if (el.id === 'scrollDumb') {
+                    //                 continue;
+                    //             }
+                    //             if (el.offsetTop > scrollTop.current + topOffset) {
+                    //                 scrollDumbSize += el.clientHeight;
+                    //                 heights.push(el.clientHeight);
+                    //                 el.style.display = 'none';
+                    //             }
+                    //         }
+                    //     } else {
+                    //         if (scrollDumb.current.offsetTop < scrollTop.current + topOffset) {
+                    //             let toRecover = Math.max(topOffset, Math.abs(d * 20));
+                    //             for (let i = 0; i < innerRef.current.children.length; i++) {
+                    //                 let el = innerRef.current.children.item(i) as any;
+                    //                 if (el.style.display !== 'none' || el.id === 'scrollDumb') {
+                    //                     continue;
+                    //                 }
+                    //                 el.style.display = '';
+                    //                 let height = heights.pop() || 0;
+                    //                 toRecover -= height;
+                    //                 scrollDumbSize -= height;
+                    //                 if (toRecover < 0) {
+                    //                     break;
+                    //                 }
+                    //             }
+                    //         }
 
-                        }
-                        scrollDumb.current.style.height = `${scrollDumbSize}px`;
-                    }
+                    //     }
+                    //     scrollDumb.current.style.height = `${scrollDumbSize}px`;
+                    // }
                 };
                 outerDiv.addEventListener('scroll', onScrollHandler, { passive: true });
                 return () => {
@@ -167,6 +167,8 @@ export const XScrollViewAnchored = React.memo(
                 };
             }, []);
 
+            pickAnchor();
+            
             React.useLayoutEffect(() => {
                 const outerDiv = outerRef.current!!;
                 const innerDiv = innerRef.current!!;
