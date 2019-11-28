@@ -3,6 +3,9 @@ import { css } from 'linaria';
 
 import Header from './next/header';
 import AboutHeader from './next/aboutHeader';
+import Founders from './next/founders';
+import AboutFeatures from './next/aboutFeatures';
+import Email from './next/email';
 import Footer from './next/footer';
 
 const root = css`
@@ -21,6 +24,9 @@ export const AboutPage = React.memo(() => (
     <div className={root}>
         <Header isGrey={true} />
         <AboutHeader />
+        <Founders />
+        <AboutFeatures />
+        <Email />
         <Footer />
     </div>
 ));
