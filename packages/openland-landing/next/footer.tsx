@@ -29,7 +29,7 @@ const menu = css`
     display: inline-block;
     margin: -18px;
     @media (max-width: 768px) {
-        margin: -5px;
+        margin-bottom: 10px;
     }
 `;
 
@@ -38,8 +38,6 @@ const menuItem = css`
     margin: 18px;
 
     @media (max-width: 768px) {
-        margin: 5px;
-        width: 40%;
     }
 `;
 
@@ -54,26 +52,30 @@ const menuLink = css`
 `;
 
 const social = css`
-    list-stype-type: none;
+    list-style-type: none;
     display: inline-block;
-    margin: -12px;
+    position: relative;
 
     @media (max-width: 768px) {
-        margin-top: 28px;
+        margin-top: 22px;
         &:before {
-            margin-left: 13px;
-            color: #9393a7;
-            display: block;
+            display: inline-block;
+            content: 'Follow us';
             font-size: 14px;
             line-height: 17px;
-            content: 'Follow us';
+            color: #9393a7;
+
+            position: absolute;
+
+            top: -17px;
+            left: 10px;
         }
     }
 `;
 
 const socialItem = css`
     display: inline-block;
-    margin: 12px;
+    margin: 10px;
 
     @media (max-width: 768px) {
         width: 36px;
@@ -89,6 +91,7 @@ const socialItem = css`
 const socialLink = css``;
 
 const socialLogo = css`
+    display: inline-block;
     @media (max-width: 768px) {
         position: relative;
         top: 1.5px;
@@ -109,19 +112,23 @@ const hideMobile = css`
 
 const apps = css`
     display: none;
+    position: relative;
 
     @media (max-width: 768px) {
-        display: block;
-        margin: -7px;
+        display: inline-block;
+        margin-top: 22px;
 
         &:before {
-            margin-left: 7px;
-            margin-top: 24px;
-            color: #9393a7;
-            display: block;
+            display: inline-block;
+            content: 'Install the app';
             font-size: 14px;
             line-height: 17px;
-            content: 'Install the app';
+            color: #9393a7;
+
+            position: absolute;
+
+            top: -17px;
+            left: 7px;
         }
     }
 `;
@@ -129,6 +136,18 @@ const apps = css`
 const appsLink = css`
     display: inline-block;
     margin: 7px;
+`;
+
+const links = css`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: -10px;
+`;
+
+const menuItemWrapper = css`
+    display: inline-block;
+    margin-top: -10px;
 `;
 
 export default () => (
@@ -152,71 +171,75 @@ export default () => (
                             Careers
                         </a>
                     </li>
-                    <li className={menuItem}>
-                        <a className={menuLink} href="#">
-                            Legal
-                        </a>
-                    </li>
-                    <li className={cx(menuItem, hide)}>
-                        <a className={menuLink} href="#">
-                            Chat with us
-                        </a>
-                    </li>
+                    <div className={menuItemWrapper}>
+                        <li className={menuItem}>
+                            <a className={menuLink} href="#">
+                                Legal
+                            </a>
+                        </li>
+                        <li className={cx(menuItem, hide)}>
+                            <a className={menuLink} href="#">
+                                Chat with us
+                            </a>
+                        </li>
+                    </div>
                 </ul>
-                <ul className={social}>
-                    <li className={socialItem}>
-                        <a className={socialLink} href="#">
-                            <img
-                                className={socialLogo}
-                                src="/static/landing/icons/instagram.svg"
-                                alt="Instagram"
-                                width="24"
-                                height="24"
-                            />
-                        </a>
-                    </li>
-                    <li className={socialItem}>
-                        <a className={socialLink} href="#">
-                            <img
-                                className={socialLogo}
-                                src="/static/landing/icons/twitter.svg"
-                                alt="Twitter"
-                                width="24"
-                                height="24"
-                            />
-                        </a>
-                    </li>
-                    <li className={socialItem}>
-                        <a className={socialLink} href="#">
-                            <img
-                                className={socialLogo}
-                                src="/static/landing/icons/facebook.svg"
-                                alt="Facebook"
-                                width="24"
-                                height="24"
-                            />
-                        </a>
-                    </li>
-                    <li className={socialItem}>
-                        <a className={socialLink} href="#">
-                            <img
-                                className={socialLogo}
-                                src="/static/landing/icons/angelist.svg"
-                                alt="Angelist"
-                                width="24"
-                                height="24"
-                            />
-                        </a>
-                    </li>
-                </ul>
+                <div className={links}>
+                    <ul className={social}>
+                        <li className={socialItem}>
+                            <a className={socialLink} href="#">
+                                <img
+                                    className={socialLogo}
+                                    src="/static/landing/icons/instagram.svg"
+                                    alt="Instagram"
+                                    width="24"
+                                    height="24"
+                                />
+                            </a>
+                        </li>
+                        <li className={socialItem}>
+                            <a className={socialLink} href="#">
+                                <img
+                                    className={socialLogo}
+                                    src="/static/landing/icons/twitter.svg"
+                                    alt="Twitter"
+                                    width="24"
+                                    height="24"
+                                />
+                            </a>
+                        </li>
+                        <li className={socialItem}>
+                            <a className={socialLink} href="#">
+                                <img
+                                    className={socialLogo}
+                                    src="/static/landing/icons/facebook.svg"
+                                    alt="Facebook"
+                                    width="24"
+                                    height="24"
+                                />
+                            </a>
+                        </li>
+                        <li className={socialItem}>
+                            <a className={socialLink} href="#">
+                                <img
+                                    className={socialLogo}
+                                    src="/static/landing/icons/angelist.svg"
+                                    alt="Angelist"
+                                    width="24"
+                                    height="24"
+                                />
+                            </a>
+                        </li>
+                    </ul>
 
-                <div className={apps}>
-                    <a href="#" className={appsLink}>
-                        <img src="/static/landing/apps-ios.svg" width="120" height="40" />
-                    </a>
-                    <a href="#" className={appsLink}>
-                        <img src="/static/landing/apps-android.svg" width="130" height="40" />
-                    </a>
+                    <div className={apps}>
+                        <a href="#" className={appsLink}>
+                            <img src="/static/landing/apps-ios.svg" width="120" height="40" />
+                        </a>
+                        <a href="#" className={appsLink}>
+                            <img src="/static/landing/apps-android.svg" width="130" height="40" />
+                        </a>
+                    </div>
                 </div>
             </div>
         </Block>
