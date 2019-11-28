@@ -56,8 +56,21 @@ const menuItem = css`
     margin: 23px;
     opacity: 0.8;
 
+    color: #525273;
+    will-change: color;
+    transition: color 0.2s;
+
     &:hover,
     &:focus {
+        color: #272750;
+        transition: color 0.01s;
+        text-decoration: none;
+        opacity: 1;
+    }
+
+    &:active {
+        color: #248bf2;
+        transition: color 0.01s;
         text-decoration: none;
         opacity: 1;
     }
@@ -70,9 +83,20 @@ const menuItemActive = css`
     border-radius: 12px;
     opacity: 1;
 
+    will-change: color, background-color;
+    transition: color 0.2s, background-color 0.2s;
+
     &:hover,
     &:focus {
-        color: var(--accentPrimary);
+        transition: color 0.01s, background-color 0.01s;
+        color: white;
+        background-color: #47a3ff;
+    }
+
+    &:active {
+        transition: color 0.01s, background-color 0.01s;
+        color: white;
+        background-color: #1d84ec;
     }
 `;
 
