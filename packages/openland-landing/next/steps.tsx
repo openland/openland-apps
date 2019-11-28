@@ -82,6 +82,7 @@ const subheading = css`
 
 const text = css`
     margin-top: 7px;
+    color: #525273;
 
     @media (min-width: 1140px) {
         font-size: 22px;
@@ -100,12 +101,25 @@ const text = css`
 `;
 
 const link = css`
-    &,
+    font-weight: bold;
+    color: inherit;
+    will-change: color;
+    transition: color 0.2s;
+
     &:hover,
     &:focus {
-        color: inherit;
         text-decoration: none;
-        font-weight: bold;
+        color: #272750;
+        transition: color 0.01s;
+    }
+
+    &:active {
+        color: #248bf2;
+        transition: color 0.01s;
+    }
+
+    @media (max-width: 768px) {
+        display: block;
     }
 `;
 
