@@ -75,7 +75,7 @@ const feature = css`
 
 const text = css`
     margin-top: 15px;
-
+    color: #525273;
     @media (min-width: 1140px) {
         font-size: 26px;
         line-height: 1.4;
@@ -96,10 +96,19 @@ const link = css`
     color: inherit;
     font-weight: bold;
 
+    will-change: color;
+    transition: color 0.2s;
+
     &:hover,
     &:focus {
         text-decoration: none;
-        color: inherit;
+        color: #272750;
+        transition: color 0.01s;
+    }
+
+    &:active {
+        color: #248bf2;
+        transition: color 0.01s;
     }
 
     @media (max-width: 768px) {
