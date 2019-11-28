@@ -42,12 +42,26 @@ const menuItem = css`
 `;
 
 const menuLink = css`
-    &,
+    font-size: 18px;
+    color: #9393a7;
+
+    will-change: color;
+    transition: color 0.2s;
+
     &:hover,
     &:focus {
-        font-size: 18px;
-        color: #9393a7;
         text-decoration: none;
+        color: #272750;
+        transition: color 0.01s;
+    }
+
+    &:active {
+        color: #248bf2;
+        transition: color 0.01s;
+    }
+
+    @media (max-width: 768px) {
+        display: block;
     }
 `;
 
@@ -76,15 +90,28 @@ const social = css`
 const socialItem = css`
     display: inline-block;
     margin: 10px;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    background-color: transparent;
+
+    will-change: background-color;
+    transition: background-color 0.2s;
+
+    cursor: pointer;
 
     @media (max-width: 768px) {
-        width: 36px;
-        height: 36px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 100%;
         background-color: #eaecf0;
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+        background-color: #eaecf0;
+        transition: background-color 0.01s;
     }
 `;
 
@@ -186,7 +213,7 @@ export default () => (
                 </ul>
                 <div className={links}>
                     <ul className={social}>
-                        <li className={socialItem}>
+                        <li className={socialItem} title="Instagram">
                             <a className={socialLink} href="#">
                                 <img
                                     className={socialLogo}
@@ -197,7 +224,7 @@ export default () => (
                                 />
                             </a>
                         </li>
-                        <li className={socialItem}>
+                        <li className={socialItem} title="Twitter">
                             <a className={socialLink} href="#">
                                 <img
                                     className={socialLogo}
@@ -208,7 +235,7 @@ export default () => (
                                 />
                             </a>
                         </li>
-                        <li className={socialItem}>
+                        <li className={socialItem} title="Facebook">
                             <a className={socialLink} href="#">
                                 <img
                                     className={socialLogo}
@@ -219,7 +246,7 @@ export default () => (
                                 />
                             </a>
                         </li>
-                        <li className={socialItem}>
+                        <li className={socialItem} title="Angelist">
                             <a className={socialLink} href="#">
                                 <img
                                     className={socialLogo}
