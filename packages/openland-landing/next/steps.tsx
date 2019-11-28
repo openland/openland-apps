@@ -225,14 +225,14 @@ export default () => (
                             />
                             <div className={itemContent}>
                                 <h3 className={subheading}>Experts</h3>
-                                <p className={text}>
+                                <div className={text}>
                                     Be a part of our community of community builders.{' '}
                                     <div className={linkWrapper}>
                                         <a href="#" className={link}>
                                             Join now
                                         </a>
                                     </div>
-                                </p>
+                                </div>
                             </div>
                         </li>
                         <li className={item}>
@@ -244,14 +244,14 @@ export default () => (
                             />
                             <div className={itemContent}>
                                 <h3 className={subheading}>Onboarding</h3>
-                                <p className={text}>
+                                <div className={text}>
                                     Have questions about getting started?{' '}
                                     <div className={linkWrapper}>
                                         <a href="#" className={link}>
                                             Let's chat
                                         </a>
                                     </div>
-                                </p>
+                                </div>
                             </div>
                         </li>
                     </ul>

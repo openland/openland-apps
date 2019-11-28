@@ -166,14 +166,14 @@ export default () => (
             <div className={wrapper}>
                 <div className={feature}>
                     <Heading>Start in seconds</Heading>
-                    <p className={text}>
+                    <div className={text}>
                         Start with a chat and add more activities as you grow.{' '}
                         <div className={linkWrapper}>
                             <a href="#" className={link}>
                                 Explore activities
                             </a>
                         </div>
-                    </p>
+                    </div>
                     <Tilt options={{ max: 25, scale: 1 }}>
                         <img
                             src="/static/landing/feature-1.svg"
@@ -185,14 +185,14 @@ export default () => (
                 </div>
                 <div className={feature}>
                     <Heading>Easy to grow</Heading>
-                    <p className={text}>
+                    <div className={text}>
                         Make it easy for members to bring their friends.{' '}
                         <div className={linkWrapper}>
                             <a href="#" className={link}>
                                 See growth tools
                             </a>
                         </div>
-                    </p>
+                    </div>
                     <Tilt options={{ max: 25, scale: 1 }}>
                         <img
                             src="/static/landing/feature-2.svg"
