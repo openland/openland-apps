@@ -45,6 +45,7 @@ const list = css`
 
 const item = css`
     display: inline;
+    color: #525273;
 
     & + &:before {
         display: inline-block;
@@ -58,11 +59,21 @@ const link = css`
     font-size: inherit;
     color: inherit;
     font-weight: bold;
+    color: #525273;
+
+    will-change: color;
+    transition: color 0.2s;
 
     &:hover,
     &:focus {
         text-decoration: none;
-        color: inherit;
+        color: #272750;
+        transition: color 0.01s;
+    }
+
+    &:active {
+        color: #248bf2;
+        transition: color 0.01s;
     }
 
     @media (max-width: 768px) {
