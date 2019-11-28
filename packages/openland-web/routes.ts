@@ -16,6 +16,12 @@ routes.add('/download', '/landing/download');
 routes.add('/download/', '/landing/download');
 routes.add('/next', '/landing/next');
 routes.add('/next/', '/landing/next');
+routes.add('/next/about', '/landing/next-about');
+routes.add('/next/about/', '/landing/next-about');
+routes.add('/next/terms', '/landing/next-terms');
+routes.add('/next/terms/', '/landing/next-terms');
+routes.add('/next/privacy', '/landing/next-privacy');
+routes.add('/next/privacy/', '/landing/next-privacy');
 //
 // Authentication
 //
