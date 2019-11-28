@@ -60,6 +60,7 @@ const link = css`
     color: inherit;
     font-weight: bold;
     color: #525273;
+    position: relative;
 
     will-change: color;
     transition: color 0.2s;
@@ -76,8 +77,35 @@ const link = css`
         transition: color 0.01s;
     }
 
-    @media (max-width: 768px) {
-        display: block;
+    &:after {
+        display: inline-block;
+        content: '';
+
+        background: url('/static/landing/link-arrow.svg') no-repeat;
+        background-size: contain;
+
+        transform: translateY(-50%);
+
+        position: absolute;
+        top: 55%;
+
+        @media (min-width: 1140px) {
+            width: 20px;
+            height: 20px;
+            right: -27px;
+        }
+
+        @media (min-width: 768px) and (max-width: 1140px) {
+            width: 16px;
+            height: 16px;
+            right: -23px;
+        }
+
+        @media (max-width: 768px) {
+            width: 14px;
+            height: 14px;
+            right: -21px;
+        }
     }
 `;
 
@@ -119,6 +147,14 @@ const screenshotMobile = css`
     }
 `;
 
+const linkWrapper = css`
+    display: inline-block;
+
+    @media (max-width: 768px) {
+        display: block;
+    }
+`;
+
 export default () => (
     <div className={root}>
         <Block>
@@ -139,9 +175,11 @@ export default () => (
                             <ul className={cx(item, hide)}>Ultra-fast apps</ul>
                         </li>
                         {'. '}
-                        <a href="#" className={link}>
-                            All features
-                        </a>
+                        <div className={linkWrapper}>
+                            <a href="#" className={link}>
+                                All features
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

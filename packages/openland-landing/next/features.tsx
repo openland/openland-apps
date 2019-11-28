@@ -93,6 +93,7 @@ const text = css`
 `;
 
 const link = css`
+    position: relative;
     color: inherit;
     font-weight: bold;
 
@@ -110,6 +111,41 @@ const link = css`
         color: #248bf2;
         transition: color 0.01s;
     }
+
+    &:after {
+        display: inline-block;
+        content: '';
+
+        background: url('/static/landing/link-arrow.svg') no-repeat;
+        background-size: contain;
+
+        transform: translateY(-50%);
+
+        position: absolute;
+        top: 55%;
+
+        @media (min-width: 1140px) {
+            width: 20px;
+            height: 20px;
+            right: -27px;
+        }
+
+        @media (min-width: 768px) and (max-width: 1140px) {
+            width: 16px;
+            height: 16px;
+            right: -23px;
+        }
+
+        @media (max-width: 768px) {
+            width: 14px;
+            height: 14px;
+            right: -21px;
+        }
+    }
+`;
+
+const linkWrapper = css`
+    display: inline-block;
 
     @media (max-width: 768px) {
         display: block;
@@ -132,9 +168,11 @@ export default () => (
                     <Heading>Start in seconds</Heading>
                     <p className={text}>
                         Start with a chat and add more activities as you grow.{' '}
-                        <a href="#" className={link}>
-                            Explore activities
-                        </a>
+                        <div className={linkWrapper}>
+                            <a href="#" className={link}>
+                                Explore activities
+                            </a>
+                        </div>
                     </p>
                     <Tilt options={{ max: 25, scale: 1 }}>
                         <img
@@ -149,9 +187,11 @@ export default () => (
                     <Heading>Easy to grow</Heading>
                     <p className={text}>
                         Make it easy for members to bring their friends.{' '}
-                        <a href="#" className={link}>
-                            See growth tools
-                        </a>
+                        <div className={linkWrapper}>
+                            <a href="#" className={link}>
+                                See growth tools
+                            </a>
+                        </div>
                     </p>
                     <Tilt options={{ max: 25, scale: 1 }}>
                         <img
