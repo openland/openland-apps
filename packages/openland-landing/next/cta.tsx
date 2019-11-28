@@ -8,11 +8,13 @@ const root = css``;
 const cta = css`
     position: relative;
     text-align: center;
-    margin-top: 180px;
-    margin-bottom: 180px;
+    padding-top: 180px;
+    padding-bottom: 100px;
+    margin-bottom: 80px;
 `;
 
 const headline = css`
+    z-index: -1;
     @media (min-width: 1140px) {
         font-size: 80px;
     }
@@ -34,6 +36,7 @@ const headlineGradient = css`
     background: linear-gradient(166.76deg, #24bff2 0%, #2458f2 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    z-index: -1;
 `;
 
 const text = css`
@@ -143,7 +146,8 @@ const dotsLeft = css`
     background: url('/static/landing/dot-left.svg');
 
     position: absolute;
-    top: 20px;
+    top: 50%;
+    transform: translateY(-50%);
 
     @media (min-width: 1140px) {
         left: -10050px;
@@ -169,7 +173,8 @@ const dotsRight = css`
     background: url('/static/landing/dot-right.svg');
 
     position: absolute;
-    top: 20px;
+    top: 50%;
+    transform: translateY(-50%);
 
     @media (min-width: 1140px) {
         right: -10050px;

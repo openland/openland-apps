@@ -10,6 +10,8 @@ const header = css`
     justify-content: space-between;
     margin-top: 22px;
     margin-bottom: 22px;
+
+    z-index: 10;
 `;
 
 const logo = css`
@@ -47,6 +49,7 @@ const menu = css`
 
     @media (max-width: 768px) {
     }
+    z-index: 10;
 `;
 
 const menuItem = css`
@@ -55,6 +58,8 @@ const menuItem = css`
     font-size: 18px;
     margin: 23px;
     opacity: 0.8;
+
+    position: relative;
 
     color: #525273;
     will-change: color;
@@ -74,6 +79,13 @@ const menuItem = css`
         text-decoration: none;
         opacity: 1;
     }
+    z-index: 10;
+
+    &:hover .landingHeaderPopup {
+        display: flex;
+    }
+
+    cursor: pointer;
 `;
 
 const menuItemActive = css`
@@ -100,6 +112,68 @@ const menuItemActive = css`
     }
 `;
 
+const trigger = css`
+    &:hover ~ .landingHeaderPopup {
+        display: flex;
+    }
+`;
+const popup = css`
+    display: none;
+
+    position: absolute;
+    flex-direction: column;
+    width: 160px;
+
+    top: 50px;
+
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    padding: 8px 0;
+    z-index: 5;
+    background: white;
+
+    &:before {
+        position: absolute;
+        top: -50px;
+        display: block;
+        content: '';
+        width: 100%;
+        height: 50px;
+    }
+`;
+const popupItem = css`
+    line-height: 40px;
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
+
+    color: #272750;
+    font-weight: normal;
+
+    &,
+    &:hover,
+    &:focus,
+    &:active {
+        text-decoration: none;
+        color: #272750;
+    }
+
+    &:hover {
+        background-color: #f7fafc;
+    }
+`;
+const popupIcon = css`
+    margin-right: 20px;
+`;
+const popupText = css``;
+const popupSeparator = css`
+    border-bottom: 1px solid #8e90a6;
+    opacity: 0.2;
+    margin-top: 16px;
+    margin-bottom: 8px;
+`;
+
 export default () => (
     <div className={root}>
         <Block>
@@ -110,9 +184,63 @@ export default () => (
                     <a className={menuItem} href="#">
                         Discover
                     </a>
-                    <a className={menuItem} href="#">
-                        Apps
-                    </a>
+                    <span className={menuItem}>
+                        <span className={trigger}>Apps</span>
+
+                        <div className={cx(popup, 'landingHeaderPopup')}>
+                            <a className={popupItem} href="#">
+                                <img
+                                    className={popupIcon}
+                                    src="/static/landing/icons/ios.svg"
+                                    width="24"
+                                    height="24"
+                                    alt="ios"
+                                />
+                                <span className={popupText}>iOS</span>
+                            </a>
+                            <a className={popupItem} href="#">
+                                <img
+                                    className={popupIcon}
+                                    src="/static/landing/icons/android.svg"
+                                    width="24"
+                                    height="24"
+                                    alt="ios"
+                                />
+                                <span className={popupText}>Android</span>
+                            </a>
+                            <div className={popupSeparator} />
+                            <a className={popupItem} href="#">
+                                <img
+                                    className={popupIcon}
+                                    src="/static/landing/icons/mac.svg"
+                                    width="24"
+                                    height="24"
+                                    alt="ios"
+                                />
+                                <span className={popupText}>Mac</span>
+                            </a>
+                            <a className={popupItem} href="#">
+                                <img
+                                    className={popupIcon}
+                                    src="/static/landing/icons/win.svg"
+                                    width="24"
+                                    height="24"
+                                    alt="ios"
+                                />
+                                <span className={popupText}>Windows</span>
+                            </a>
+                            <a className={popupItem} href="#">
+                                <img
+                                    className={popupIcon}
+                                    src="/static/landing/icons/linux.svg"
+                                    width="24"
+                                    height="24"
+                                    alt="ios"
+                                />
+                                <span className={popupText}>Linux</span>
+                            </a>
+                        </div>
+                    </span>
                     <a className={menuItem} href="#">
                         About
                     </a>
