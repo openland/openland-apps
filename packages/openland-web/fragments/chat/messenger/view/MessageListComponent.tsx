@@ -115,7 +115,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
     renderLoading = React.memo(() => {
         return (
             <div className={loaderClass}>
-                <XLoader loading={true} transparentBackground={true} size="small" />
+                <XLoader loading={true} transparentBackground={true} size="medium" />
             </div>
         );
     });

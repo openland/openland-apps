@@ -117,7 +117,7 @@ export const UIconButton = React.memo((props: UIconButtonProps) => {
                 {loading && (
                     <XLoader
                         loading={true}
-                        size="small"
+                        size="medium"
                         transparentBackground={true}
                         color={'var(--foregroundSecondary)'}
                         className={loaderStyle}

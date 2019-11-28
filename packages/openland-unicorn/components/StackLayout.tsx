@@ -2,8 +2,13 @@ import * as React from 'react';
 import { StackRouter, StackRouterContext, StackItems } from './StackRouter';
 import { PageLayout } from './PageLayout';
 import { UnicornContext } from './UnicornContext';
-import { XViewRoute, XViewRouteContext } from 'react-mental';
+import { XViewRoute, XViewRouteContext, XView } from 'react-mental';
 import { VisibleTabContext } from 'openland-unicorn/components/utils/VisibleTabContext';
+import { XLoader } from 'openland-x/XLoader';
+import { useClient } from 'openland-web/utils/useClient';
+import { debounce } from 'openland-y-utils/timer';
+import { css } from 'linaria';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 
 const PageAnimator = React.memo(
     (props: {
@@ -228,6 +233,55 @@ const PageComponent = React.memo(
     },
 );
 
+const connectingContainerClass = css`
+    display: flex;
+    flex-direction: row;
+    border-radius: 8px;
+    background-color: var(--tintOrange);
+    align-items: center;
+    padding: 7px 16px 9px;
+    transform-origin: top;
+    transform: scale(0);
+    transition: transform 250ms cubic-bezier(.29, .09, .24, .99);
+    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+
+`;
+
+const connectingContainerWrapperClass = css`
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 72px;
+
+    justify-content: center;
+    display: flex;
+`;
+
+const ConnectingStatus = () => {
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    const client = useClient().client;
+    React.useEffect(() => {
+        const setConnecting = (connecting: boolean) => {
+            if (containerRef.current) {
+                containerRef.current.style.transform = `scale(${connecting ? 1 : 0})`;
+            }
+        };
+        const setStatusDebaunced = debounce(setConnecting, 500);
+        return client.watchStatus(s => {
+            console.warn(s);
+            setStatusDebaunced(s.status === 'connecting');
+        });
+    }, []);
+    return (
+        <div className={connectingContainerWrapperClass}>
+            <div className={connectingContainerClass} ref={containerRef}>
+                <XView width={16} height={16} marginRight={8} marginTop={1}><XLoader color="var(--foregroundContrast)" transparentBackground={true} size="small" /></XView>
+                <XView {...TextStyles.Label1} color="var(--foregroundContrast)">Connecting</XView>
+            </div>
+        </div>
+    );
+};
+
 export const StackLayout = React.memo(
     (props: { router: StackRouter; className?: string; visible: boolean }) => {
         let [state, dispatch] = React.useReducer(
@@ -267,6 +321,8 @@ export const StackLayout = React.memo(
                                 />
                             </PageAnimator>
                         ))}
+                        <ConnectingStatus />
+
                     </div>
                 </VisibleTabContext.Provider>
             </StackRouterContext.Provider>

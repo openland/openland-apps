@@ -678,7 +678,7 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
 ]);
 
 export const Loader = ({ style }: { style?: XButtonStyle }) =>
-    <XLoader transparentBackground={true} size="small" color={loaderStyles(style).color!! as string} />;
+    <XLoader transparentBackground={true} size="medium" color={loaderStyles(style).color!! as string} />;
 
 export const XButton = makeActionable(makeNavigable<XButtonProps>((props) => {
     return (

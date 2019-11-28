@@ -20,6 +20,7 @@ export class DirectApollolClient implements GraphqlClient {
     constructor(client: OpenApolloClient) {
         this.client = client;
         this.statusWatcher.setState(this.client.status.isConnected ? { status: 'connected' } : { status: 'connecting' });
+        client.status.subscribe(s => this.statusWatcher.setState({ status: s ? 'connected' : 'connecting'}));
     }
 
     watchStatus(handler: (status: GraphqlClientStatus) => void) {

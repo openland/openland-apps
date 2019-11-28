@@ -241,7 +241,7 @@ export const UButton = (props: UButtonProps) => {
                 {loadingState && (
                     <XLoader
                         loading={true}
-                        size="small"
+                        size="medium"
                         transparentBackground={true}
                         {...loaderColor[style]}
                     />

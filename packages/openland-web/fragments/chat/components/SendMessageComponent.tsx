@@ -246,7 +246,7 @@ const AutoCompleteComponent = React.memo(
                     }
                     return v.__typename === 'cursor' ? (
                         <XView height={40} flexGrow={1} justifyContent="center" alignItems="center">
-                            <XLoader transparentBackground={true} size="small" />
+                            <XLoader transparentBackground={true} size="medium" />
                         </XView>
                     ) : v.__typename === 'AllMention' ? (
                         <div className={mentionContainer}>
@@ -604,7 +604,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             )}
             {loading && (
                 <div className={loaderContainer}>
-                    <XLoader size="small" />
+                    <XLoader size="medium" />
                 </div>
             )}
         </div>

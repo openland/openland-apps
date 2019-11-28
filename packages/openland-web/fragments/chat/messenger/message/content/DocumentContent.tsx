@@ -407,7 +407,7 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
                 <div className={iconContainer}>
                     {fileIcon[fileFormat(name)]}
                     {typeof progress === 'number' && progress >= 0 && progress < 1 ? (
-                        <XLoader size="small" color="#fff" transparentBackground={true} />
+                        <XLoader size="medium" color="#fff" transparentBackground={true} />
                     ) : (
                             <div className={cx(iconInfo, 'icon-info')}>
                                 <UIcon
