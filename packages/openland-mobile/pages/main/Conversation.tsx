@@ -44,6 +44,7 @@ import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 import { ReloadFromBottomButton } from './components/ReloadFromBottomButton';
 import { ConversationManageButton } from './components/ConversationManageButton';
 import { showNoiseWarning } from 'openland-mobile/messenger/components/showNoiseWarning';
+import { plural } from 'openland-y-utils/plural';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -190,7 +191,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             if (this.props.chat.__typename === 'SharedRoom' && mentions.filter(m => m.all === true).length) {
                 try {
                     await showNoiseWarning(
-                        `Notify all ${!!this.props.chat.membersCount ? this.props.chat.membersCount : ''} members?`,
+                        `Notify all ${!!this.props.chat.membersCount ? plural(this.props.chat.membersCount, ['member', 'members']) : 'members'}?`,
                         'By using @All, you’re about to notify all group members even when they muted this chat. Please use it only for important messages'
                     );
                 } catch {
