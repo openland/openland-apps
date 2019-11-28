@@ -37,6 +37,8 @@ const menuItem = css`
     display: inline-block;
     margin: 18px;
 
+    position: relative;
+
     @media (max-width: 768px) {
     }
 `;
@@ -44,6 +46,7 @@ const menuItem = css`
 const menuLink = css`
     font-size: 18px;
     color: #9393a7;
+    position: relative;
 
     will-change: color;
     transition: color 0.2s;
@@ -63,6 +66,8 @@ const menuLink = css`
     @media (max-width: 768px) {
         display: block;
     }
+
+    cursor: pointer;
 `;
 
 const social = css`
@@ -177,98 +182,251 @@ const menuItemWrapper = css`
     margin-top: -10px;
 `;
 
-export default () => (
-    <div className={root}>
-        <Block>
-            <div className={footer}>
-                <img className={logo} src="/static/landing/logo.svg" width="120" height="37" />
-                <ul className={menu}>
-                    <li className={menuItem}>
-                        <a className={menuLink} href="#">
-                            About
-                        </a>
-                    </li>
-                    <li className={cx(menuItem, hideMobile)}>
-                        <a className={menuLink} href="#">
-                            Apps
-                        </a>
-                    </li>
-                    <li className={menuItem}>
-                        <a className={menuLink} href="#">
-                            Careers
-                        </a>
-                    </li>
-                    <div className={menuItemWrapper}>
+const popup = css`
+    display: flex;
+
+    position: absolute;
+    flex-direction: column;
+    width: 160px;
+
+    bottom: 50px;
+
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    padding: 8px 0;
+    z-index: 5;
+    background: white;
+
+    // &:before {
+    //     position: absolute;
+    //     top: -50px;
+    //     display: block;
+    //     content: '';
+    //     width: 100%;
+    //     height: 50px;
+    // }
+`;
+const popupItem = css`
+    line-height: 40px;
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
+
+    color: #272750;
+    font-weight: normal;
+
+    &,
+    &:hover,
+    &:focus,
+    &:active {
+        text-decoration: none;
+        color: #272750;
+    }
+
+    &:hover {
+        background-color: #f7fafc;
+    }
+`;
+const popupIcon = css`
+    margin-right: 20px;
+`;
+const popupText = css``;
+const popupSeparator = css`
+    border-bottom: 1px solid #8e90a6;
+    opacity: 0.2;
+    margin-top: 16px;
+    margin-bottom: 8px;
+`;
+
+const popupCloser = css`
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    top: 0;
+    left: 0;
+`;
+
+export default () => {
+    const [appsIsOpen, appsSetOpen] = React.useState<boolean>(false);
+    const [legalIsOpen, legalSetOpen] = React.useState<boolean>(false);
+
+    return (
+        <div className={root}>
+            <Block>
+                <div className={footer}>
+                    <img className={logo} src="/static/landing/logo.svg" width="120" height="37" />
+                    <ul className={menu}>
                         <li className={menuItem}>
                             <a className={menuLink} href="#">
-                                Legal
+                                About
                             </a>
                         </li>
-                        <li className={cx(menuItem, hide)}>
-                            <a className={menuLink} href="#">
-                                Chat with us
-                            </a>
-                        </li>
-                    </div>
-                </ul>
-                <div className={links}>
-                    <ul className={social}>
-                        <li className={socialItem} title="Instagram">
-                            <a className={socialLink} href="#">
-                                <img
-                                    className={socialLogo}
-                                    src="/static/landing/icons/instagram.svg"
-                                    alt="Instagram"
-                                    width="24"
-                                    height="24"
-                                />
-                            </a>
-                        </li>
-                        <li className={socialItem} title="Twitter">
-                            <a className={socialLink} href="#">
-                                <img
-                                    className={socialLogo}
-                                    src="/static/landing/icons/twitter.svg"
-                                    alt="Twitter"
-                                    width="24"
-                                    height="24"
-                                />
-                            </a>
-                        </li>
-                        <li className={socialItem} title="Facebook">
-                            <a className={socialLink} href="#">
-                                <img
-                                    className={socialLogo}
-                                    src="/static/landing/icons/facebook.svg"
-                                    alt="Facebook"
-                                    width="24"
-                                    height="24"
-                                />
-                            </a>
-                        </li>
-                        <li className={socialItem} title="Angelist">
-                            <a className={socialLink} href="#">
-                                <img
-                                    className={socialLogo}
-                                    src="/static/landing/icons/angelist.svg"
-                                    alt="Angelist"
-                                    width="24"
-                                    height="24"
-                                />
-                            </a>
-                        </li>
-                    </ul>
+                        <li className={cx(menuItem, hideMobile)}>
+                            <span className={menuLink} onClick={() => appsSetOpen(!appsIsOpen)}>
+                                Apps
+                            </span>
 
-                    <div className={apps}>
-                        <a href="#" className={appsLink}>
-                            <img src="/static/landing/apps-ios.svg" width="120" height="40" />
-                        </a>
-                        <a href="#" className={appsLink}>
-                            <img src="/static/landing/apps-android.svg" width="130" height="40" />
-                        </a>
+                            {appsIsOpen && (
+                                <div className={cx(popup, 'landingHeaderPopup')}>
+                                    <div
+                                        className={popupCloser}
+                                        onClick={() => appsSetOpen(false)}
+                                    />
+                                    <a className={popupItem} href="#">
+                                        <img
+                                            className={popupIcon}
+                                            src="/static/landing/icons/ios.svg"
+                                            width="24"
+                                            height="24"
+                                            alt="ios"
+                                        />
+                                        <span className={popupText}>iOS</span>
+                                    </a>
+                                    <a className={popupItem} href="#">
+                                        <img
+                                            className={popupIcon}
+                                            src="/static/landing/icons/android.svg"
+                                            width="24"
+                                            height="24"
+                                            alt="ios"
+                                        />
+                                        <span className={popupText}>Android</span>
+                                    </a>
+                                    <div className={popupSeparator} />
+                                    <a className={popupItem} href="#">
+                                        <img
+                                            className={popupIcon}
+                                            src="/static/landing/icons/mac.svg"
+                                            width="24"
+                                            height="24"
+                                            alt="ios"
+                                        />
+                                        <span className={popupText}>Mac</span>
+                                    </a>
+                                    <a className={popupItem} href="#">
+                                        <img
+                                            className={popupIcon}
+                                            src="/static/landing/icons/win.svg"
+                                            width="24"
+                                            height="24"
+                                            alt="ios"
+                                        />
+                                        <span className={popupText}>Windows</span>
+                                    </a>
+                                    <a className={popupItem} href="#">
+                                        <img
+                                            className={popupIcon}
+                                            src="/static/landing/icons/linux.svg"
+                                            width="24"
+                                            height="24"
+                                            alt="ios"
+                                        />
+                                        <span className={popupText}>Linux</span>
+                                    </a>
+                                </div>
+                            )}
+                        </li>
+                        <li className={menuItem}>
+                            <a className={menuLink} href="#">
+                                Careers
+                            </a>
+                        </li>
+                        <div className={menuItemWrapper}>
+                            <li className={menuItem}>
+                                <span
+                                    className={menuLink}
+                                    onClick={() => legalSetOpen(!appsIsOpen)}
+                                >
+                                    Legal
+                                </span>
+
+                                {legalIsOpen && (
+                                    <div className={cx(popup, 'landingHeaderPopup')}>
+                                        <div
+                                            className={popupCloser}
+                                            onClick={() => legalSetOpen(false)}
+                                        />
+                                        <a className={popupItem} href="#">
+                                            <span className={popupText}>Privacy Policy</span>
+                                        </a>
+                                        <a className={popupItem} href="#">
+                                            <span className={popupText}>Terms of Service</span>
+                                        </a>
+                                    </div>
+                                )}
+                            </li>
+                            <li className={cx(menuItem, hide)}>
+                                <a className={menuLink} href="#">
+                                    Chat with us
+                                </a>
+                            </li>
+                        </div>
+                    </ul>
+                    <div className={links}>
+                        <ul className={social}>
+                            <li className={socialItem} title="Instagram">
+                                <a className={socialLink} href="#">
+                                    <img
+                                        className={socialLogo}
+                                        src="/static/landing/icons/instagram.svg"
+                                        alt="Instagram"
+                                        width="24"
+                                        height="24"
+                                    />
+                                </a>
+                            </li>
+                            <li className={socialItem} title="Twitter">
+                                <a className={socialLink} href="#">
+                                    <img
+                                        className={socialLogo}
+                                        src="/static/landing/icons/twitter.svg"
+                                        alt="Twitter"
+                                        width="24"
+                                        height="24"
+                                    />
+                                </a>
+                            </li>
+                            <li className={socialItem} title="Facebook">
+                                <a className={socialLink} href="#">
+                                    <img
+                                        className={socialLogo}
+                                        src="/static/landing/icons/facebook.svg"
+                                        alt="Facebook"
+                                        width="24"
+                                        height="24"
+                                    />
+                                </a>
+                            </li>
+                            <li className={socialItem} title="Angelist">
+                                <a className={socialLink} href="#">
+                                    <img
+                                        className={socialLogo}
+                                        src="/static/landing/icons/angelist.svg"
+                                        alt="Angelist"
+                                        width="24"
+                                        height="24"
+                                    />
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div className={apps}>
+                            <a href="#" className={appsLink}>
+                                <img src="/static/landing/apps-ios.svg" width="120" height="40" />
+                            </a>
+                            <a href="#" className={appsLink}>
+                                <img
+                                    src="/static/landing/apps-android.svg"
+                                    width="130"
+                                    height="40"
+                                />
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </Block>
-    </div>
-);
+            </Block>
+        </div>
+    );
+};
