@@ -105,6 +105,7 @@ const link = css`
     color: inherit;
     will-change: color;
     transition: color 0.2s;
+    position: relative;
 
     &:hover,
     &:focus {
@@ -118,8 +119,35 @@ const link = css`
         transition: color 0.01s;
     }
 
-    @media (max-width: 768px) {
-        display: block;
+    &:after {
+        display: inline-block;
+        content: '';
+
+        background: url('/static/landing/link-arrow.svg') no-repeat;
+        background-size: contain;
+
+        transform: translateY(-50%);
+
+        position: absolute;
+        top: 55%;
+
+        @media (min-width: 1140px) {
+            width: 20px;
+            height: 20px;
+            right: -27px;
+        }
+
+        @media (min-width: 768px) and (max-width: 1140px) {
+            width: 16px;
+            height: 16px;
+            right: -23px;
+        }
+
+        @media (max-width: 768px) {
+            width: 14px;
+            height: 14px;
+            right: -21px;
+        }
     }
 `;
 
@@ -141,6 +169,14 @@ const img = css`
 
     @media (max-width: 960px) {
         display: none;
+    }
+`;
+
+const linkWrapper = css`
+    display: inline-block;
+
+    @media (max-width: 768px) {
+        display: block;
     }
 `;
 
@@ -191,9 +227,11 @@ export default () => (
                                 <h3 className={subheading}>Experts</h3>
                                 <p className={text}>
                                     Be a part of our community of community builders.{' '}
-                                    <a href="#" className={link}>
-                                        Join now
-                                    </a>
+                                    <div className={linkWrapper}>
+                                        <a href="#" className={link}>
+                                            Join now
+                                        </a>
+                                    </div>
                                 </p>
                             </div>
                         </li>
@@ -208,9 +246,11 @@ export default () => (
                                 <h3 className={subheading}>Onboarding</h3>
                                 <p className={text}>
                                     Have questions about getting started?{' '}
-                                    <a href="#" className={link}>
-                                        Let's chat
-                                    </a>
+                                    <div className={linkWrapper}>
+                                        <a href="#" className={link}>
+                                            Let's chat
+                                        </a>
+                                    </div>
                                 </p>
                             </div>
                         </li>
