@@ -4,6 +4,10 @@ import Block from './block';
 
 const root = css``;
 
+const grey = css`
+    background-color: #f7fafc;
+`;
+
 const header = css`
     display: flex;
     align-items: center;
@@ -174,11 +178,11 @@ const popupCloser = css`
     left: 0;
 `;
 
-export default () => {
+export default ({ isGrey }: { isGrey?: boolean }) => {
     const [isOpen, setOpen] = React.useState<boolean>(false);
 
     return (
-        <div className={root}>
+        <div className={isGrey ? grey : root}>
             <Block>
                 <div className={header}>
                     <img className={logo} src="/static/landing/logo.svg" width="155" height="48" />

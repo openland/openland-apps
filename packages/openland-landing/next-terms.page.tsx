@@ -18,7 +18,7 @@ const root = css`
 
 export const TermsPage = React.memo(() => (
     <div className={root}>
-        <Header />
+        <Header isGrey={true} />
         <Footer />
     </div>
 ));

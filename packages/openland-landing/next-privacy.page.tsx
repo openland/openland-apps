@@ -18,7 +18,7 @@ const root = css`
 
 export const PrivacyPage = React.memo(() => (
     <div className={root}>
-        <Header />
+        <Header isGrey={true} />
         <Footer />
     </div>
 ));

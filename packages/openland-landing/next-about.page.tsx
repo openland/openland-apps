@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 
 import Header from './next/header';
+import AboutHeader from './next/aboutHeader';
 import Footer from './next/footer';
 
 const root = css`
@@ -18,7 +19,8 @@ const root = css`
 
 export const AboutPage = React.memo(() => (
     <div className={root}>
-        <Header />
+        <Header isGrey={true} />
+        <AboutHeader />
         <Footer />
     </div>
 ));
