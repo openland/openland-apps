@@ -34,14 +34,8 @@ class SplashViewManager : SimpleViewManager<View>() {
     fun setSplashVisible(view: View, visible: Boolean) {
         if (!visible && view.getTag(R.id.visible) != true) {
             view.setTag(R.id.visible, true)
-            for(i in 1..10){
-                view.postDelayed({
-                    Thread.sleep(500)
-                }, 500)
-            }
-            view.animate().alpha(0f).setDuration(250L).start()
-//            (view.findViewById<ImageView>(R.id.image).background as AnimatedVectorDrawable).start()
-//            (view.findViewById<ImageView>(R.id.back).background as AnimatedVectorDrawable).start()
+            (view.findViewById<ImageView>(R.id.image).background as AnimatedVectorDrawable).start()
+            (view.findViewById<ImageView>(R.id.back).background as AnimatedVectorDrawable).start()
         }
     }
 
