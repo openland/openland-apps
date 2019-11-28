@@ -116,12 +116,12 @@ export const XScrollViewAnchored = React.memo(
 
             React.useEffect(() => {
                 const outerDiv = outerRef.current!!;
-                let heights: number[] = [];
-                let scrollDumbSize = 0;
+                // let heights: number[] = [];
+                // let scrollDumbSize = 0;
                 let trottledOnScrollReport = throttle(reportOnScroll, 150);
                 const onScrollHandler = () => {
-                    const topOffset = 1000;
-                    let d = scrollTop.current - outerDiv.scrollTop;
+                    // const topOffset = 1000;
+                    // let d = scrollTop.current - outerDiv.scrollTop;
                     scrollTop.current = outerDiv.scrollTop;
                     trottledOnScrollReport();
                     // hide bottom off screen elements for faster scroll / unmount
@@ -168,7 +168,7 @@ export const XScrollViewAnchored = React.memo(
             }, []);
 
             pickAnchor();
-            
+
             React.useLayoutEffect(() => {
                 const outerDiv = outerRef.current!!;
                 const innerDiv = innerRef.current!!;
