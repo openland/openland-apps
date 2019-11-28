@@ -6,6 +6,7 @@ import Heading from './heading';
 const root = css``;
 
 const cta = css`
+    position: relative;
     text-align: center;
     margin-top: 180px;
     margin-bottom: 180px;
@@ -94,13 +95,14 @@ const button = css`
 `;
 
 const ctaSmall = css`
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 180px;
     margin-bottom: 180px;
 
-    @media (max-width: 768px) {
+    @media (max-width: 1140px) {
         flex-direction: column;
         text-align: center;
     }
@@ -109,7 +111,7 @@ const ctaSmall = css`
 const content = css`
     margin-right: 70px;
 
-    @media (max-width: 768px) {
+    @media (max-width: 1140px) {
         margin-right: 0;
         margin-bottom: 36px;
     }
@@ -134,11 +136,64 @@ const item = css`
     }
 `;
 
+const dotsLeft = css`
+    width: 10000px;
+    height: 122px;
+
+    background: url('/static/landing/dot-left.svg');
+
+    position: absolute;
+    top: 20px;
+
+    @media (min-width: 1140px) {
+        left: -10050px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+        left: -9985px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        left: -10000px;
+    }
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
+const dotsRight = css`
+    width: 9999px;
+    height: 122px;
+
+    background: url('/static/landing/dot-right.svg');
+
+    position: absolute;
+    top: 20px;
+
+    @media (min-width: 1140px) {
+        right: -10050px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+        right: -9985px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        right: -10000px;
+    }
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
 export default ({ small }: { small?: boolean }) => (
     <div className={root}>
         <Block>
             {small ? (
                 <div className={ctaSmall}>
+                    <div className={dotsLeft} />
                     <div className={content}>
                         <Heading>Start a great community today</Heading>
                         <ul className={list}>
@@ -150,9 +205,11 @@ export default ({ small }: { small?: boolean }) => (
                     <a className={button} href="#">
                         Start community
                     </a>
+                    <div className={dotsRight} />
                 </div>
             ) : (
                 <div className={cta}>
+                    <div className={dotsLeft} />
                     <h1 className={headline}>
                         Build a great <span className={headlineGradient}>community</span>
                     </h1>
@@ -162,6 +219,7 @@ export default ({ small }: { small?: boolean }) => (
                     <a className={button} href="#">
                         Start community
                     </a>
+                    <div className={dotsRight} />
                 </div>
             )}
         </Block>
