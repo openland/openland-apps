@@ -1,0 +1,28 @@
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:aapt="http://schemas.android.com/aapt"
+            android:name="all"
+            android:width="3000dp"
+            android:height="3000dp"
+            android:viewportWidth="3000"
+            android:viewportHeight="3000" >
+            <path
+                android:fillColor="#111214"
+                android:pathData="M0,0 0,3000 3000,3000 3000,0Z" />
+        </vector>
+    </aapt:attr>
+
+    <target android:name="all">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:startDelay="250"
+                android:duration="250"
+                android:propertyName="alpha"
+                android:valueFrom="1"
+                android:valueTo="0" />
+        </aapt:attr>
+    </target>
+</animated-vector>
+

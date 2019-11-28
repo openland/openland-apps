@@ -39,6 +39,7 @@ const Logo = React.memo(() => {
     return (
         <View style={styles.logoWrapper}>
             <Image
+                fadeDuration={0}
                 source={theme.type === 'Light' ? require('assets/ic-logo-240.png') : require('assets/ic-logo-dark-240.png')}
                 style={{ width: 240, height: 240 }}
             />

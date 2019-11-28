@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" android:background="@drawable/splash_dark">
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_gravity="center"
+        android:layout_width="3000dp"
+        android:layout_height="3000dp"
+        android:background="@drawable/ic_logo_dark_back"
+        />
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_gravity="center"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:background="@drawable/ic_logo_dark"
+        />
 
 </FrameLayout>

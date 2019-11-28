@@ -41,6 +41,28 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     }, [props.loading]);
     const theme = useTheme();
 
+    if (Platform.OS === 'android') {
+        return (
+            <View
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    right: 0,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+                pointerEvents={props.loading ? 'box-none' : 'none'}
+            >
+                <View width="100%" height="100%">
+                    <AndroidSplashView style={{ alignSelf: 'stretch', flexGrow: 1, flexShrink: 1 }} splashVisible={props.loading} />
+                </View>
+
+            </View>
+        );
+    }
+
     return (
         <SAnimated.View
             name={animatedValue.name}
@@ -52,23 +74,17 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
                 right: 0,
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: Platform.OS !== 'android' ? theme.backgroundPrimary : undefined,
+                backgroundColor: theme.backgroundPrimary,
                 opacity: 1
             }}
             pointerEvents={props.loading ? 'box-none' : 'none'}
         >
-            {Platform.OS === 'android' && (
-                <View width="100%" height="100%">
-                    <AndroidSplashView style={{ alignSelf: 'stretch', flexGrow: 1, flexShrink: 1 }} visible={props.loading}/>
-                </View>
-            )}
-            {Platform.OS !== 'android' && (
-                <Image
-                    fadeDuration={0}
-                    source={theme.type === 'Light' ? require('assets/logo-splash.png') : require('assets/logo-splash-dark.png')}
-                    style={{ width: 128, height: 128 }}
-                />
-            )}
+            <Image
+                fadeDuration={0}
+                source={theme.type === 'Light' ? require('assets/logo-splash.png') : require('assets/logo-splash-dark.png')}
+                style={{ width: 128, height: 128 }}
+            />
+
         </SAnimated.View>
     );
 });

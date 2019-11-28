@@ -1,3 +1,3 @@
 import { requireNativeComponent, StyleProp, ViewStyle } from 'react-native';
 
-export const AndroidSplashView = requireNativeComponent<{ style?: StyleProp<ViewStyle>,  visible: boolean}>('AndroidSplashView');
+export const AndroidSplashView = requireNativeComponent<{ style?: StyleProp<ViewStyle>,  splashVisible: boolean}>('AndroidSplashView');
