@@ -3,7 +3,7 @@ import { css, cx } from 'linaria';
 import Block from './block';
 
 const root = css`
-    padding: 32px 0;
+    padding: 20px 0;
     background: #f7fafc;
 `;
 
@@ -25,9 +25,10 @@ const logo = css`
 `;
 
 const menu = css`
-    list-stype-type: none;
+    list-style-type: none;
+    position: relative;
+    left: 10px;
     display: inline-block;
-    margin: -18px;
     @media (max-width: 768px) {
         margin-bottom: 10px;
     }
@@ -95,7 +96,7 @@ const social = css`
 
 const socialItem = css`
     display: inline-block;
-    margin: 10px;
+    margin: 5px;
     width: 36px;
     height: 36px;
     display: inline-flex;

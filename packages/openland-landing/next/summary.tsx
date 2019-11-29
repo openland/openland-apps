@@ -62,8 +62,12 @@ const summaryImage = css`
     height: auto;
     max-width: 100%;
 
-    @media (min-width: 1140px) {
-        width: 560px;
+    position: relative;
+    left: 15px;
+    top: 20px;
+
+    @media (min-width: 1160px) {
+        width: 550px;
     }
 
     @media (min-width: 960px) and (max-width: 1140px) {

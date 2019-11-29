@@ -12,44 +12,17 @@ const header = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 22px;
-    margin-bottom: 22px;
+    margin-top: 16px;
+    margin-bottom: 16px;
 
     z-index: 10;
 `;
 
-const logo = css`
-    position: relative;
-
-    @media (min-width: 1140px) {
-        top: 14px;
-        right: 14px;
-    }
-
-    @media (min-width: 960px) and (max-width: 1140px) {
-    }
-
-    @media (min-width: 768px) and (max-width: 960px) {
-    }
-
-    @media (max-width: 768px) {
-    }
-`;
+const logo = css``;
 
 const menu = css`
     position: relative;
     margin: -23px;
-
-    @media (min-width: 1140px) {
-        top: 20px;
-        right: -20px;
-    }
-
-    @media (min-width: 960px) and (max-width: 1140px) {
-    }
-
-    @media (min-width: 768px) and (max-width: 960px) {
-    }
 
     @media (max-width: 767px) {
         display: none;

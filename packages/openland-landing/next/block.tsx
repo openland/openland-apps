@@ -6,8 +6,8 @@ const root = css`
     padding: 0 20px;
     box-sizing: border-box;
 
-    @media (min-width: 1140px) {
-        width: 1140px;
+    @media (min-width: 1180px) {
+        width: 1180px;
     }
 
     @media (min-width: 960px) and (max-width: 1140px) {

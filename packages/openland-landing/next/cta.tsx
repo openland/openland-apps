@@ -8,9 +8,9 @@ const root = css``;
 const cta = css`
     position: relative;
     text-align: center;
-    padding-top: 180px;
+    padding-top: 160px;
     padding-bottom: 100px;
-    margin-bottom: 80px;
+    margin-bottom: 70px;
 `;
 
 const headline = css`
@@ -52,8 +52,8 @@ const text = css`
         font-size: 18px;
     }
 
-    margin-top: 20px;
-    margin-bottom: 46px;
+    margin-top: 25px;
+    margin-bottom: 50px;
 `;
 
 const button = css`
@@ -103,7 +103,8 @@ const ctaSmall = css`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 180px;
+    margin-top: 200px;
+    margin-left: -30px;
     margin-bottom: 180px;
 
     @media (max-width: 1140px) {
@@ -113,7 +114,7 @@ const ctaSmall = css`
 `;
 
 const content = css`
-    margin-right: 70px;
+    margin-right: 120px;
 
     @media (max-width: 1140px) {
         margin-right: 0;
@@ -159,11 +160,11 @@ const dotsLeft = css`
     background: url('https://cdn.openland.com/shared/landing/dot-left.svg');
 
     position: absolute;
-    top: 50%;
+    top: 49%;
     transform: translateY(-50%);
 
-    @media (min-width: 1140px) {
-        left: -10050px;
+    @media (min-width: 1160px) {
+        left: -10018px;
     }
 
     @media (min-width: 960px) and (max-width: 1140px) {
@@ -186,11 +187,11 @@ const dotsRight = css`
     background: url('https://cdn.openland.com/shared/landing/dot-right.svg');
 
     position: absolute;
-    top: 50%;
+    top: 49%;
     transform: translateY(-50%);
 
     @media (min-width: 1140px) {
-        right: -10050px;
+        right: -10018px;
     }
 
     @media (min-width: 960px) and (max-width: 1140px) {

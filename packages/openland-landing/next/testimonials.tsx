@@ -4,7 +4,7 @@ import Block from './block';
 import Heading from './heading';
 
 const root = css`
-    margin-top: 175px;
+    margin-top: 173px;
 
     @media (min-width: 768px) and (max-width: 960px) {
         margin-top: 75px;
@@ -56,10 +56,12 @@ const img = css`
     flex-shrink: 0;
     background: url('https://cdn.openland.com/shared/landing/testimonials.jpg');
     background-size: cover;
+
+    background-position: 20% 30%;
 `;
 
 const content = css`
-    padding: 38px;
+    padding: 23px 38px;
 
     @media (max-width: 768px) {
         padding: 38px 0;
@@ -68,16 +70,16 @@ const content = css`
 
 const quotes = css`
     @media (max-width: 768px) {
-        width: 34px
-        height: 34px;
+        width: 25px
+        height: 25px;
     }
 `;
 
 const text = css`
-    margin-top: 15px;
+    margin-top: 10px;
 
-    @media (min-width: 1140px) {
-        font-size: 26px;
+    @media (min-width: 1160px) {
+        font-size: 24px;
         line-height: 44px;
     }
 
@@ -98,7 +100,7 @@ const text = css`
 `;
 
 const author = css`
-    margin-top: 27px;
+    margin-top: 30px;
     display: flex;
     align-items: center;
 `;
@@ -172,7 +174,7 @@ export default () => (
                 <Heading>See your community thrive</Heading>
             </div>
             <div className={card}>
-                <div className={img} />
+                <img src="/static/landing/testimonials.jpg" className={img} />
                 <div className={content}>
                     <img
                         src="/static/landing/testimonials-quotes.svg"

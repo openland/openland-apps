@@ -4,7 +4,7 @@ import Block from './block';
 import Heading from './heading';
 
 const root = css`
-    margin-top: 80px;
+    margin-top: 58px;
 `;
 
 const header = css`
@@ -280,7 +280,7 @@ export default () => {
                             {'. '}
                             <div className={linkWrapper}>
                                 <span className={link} onClick={() => setOpen(true)}>
-                                    Explore activities
+                                    All features
                                 </span>
                             </div>
                             {isOpen && (

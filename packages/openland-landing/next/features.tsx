@@ -7,7 +7,7 @@ import Heading from './heading';
 import Tilt from 'react-tilt';
 
 const root = css`
-    margin-top: 110px;
+    margin-top: 132px;
 
     @media (min-width: 1140px) {
         padding: 120px 0;
