@@ -156,7 +156,7 @@ const dotsLeft = css`
     width: 10000px;
     height: 122px;
 
-    background: url('https://cdn.openland.com/landing/dot-left.svg');
+    background: url('https://cdn.openland.com/shared/landing/dot-left.svg');
 
     position: absolute;
     top: 50%;
@@ -183,7 +183,7 @@ const dotsRight = css`
     width: 9999px;
     height: 122px;
 
-    background: url('https://cdn.openland.com/landing/dot-right.svg');
+    background: url('https://cdn.openland.com/shared/landing/dot-right.svg');
 
     position: absolute;
     top: 50%;

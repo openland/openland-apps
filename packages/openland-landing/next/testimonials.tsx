@@ -54,7 +54,7 @@ const img = css`
     }
 
     flex-shrink: 0;
-    background: url('https://cdn.openland.com/landing/testimonials.jpg');
+    background: url('https://cdn.openland.com/shared/landing/testimonials.jpg');
     background-size: cover;
 `;
 
