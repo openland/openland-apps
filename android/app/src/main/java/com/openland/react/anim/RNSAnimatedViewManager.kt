@@ -129,6 +129,10 @@ class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactConte
                     s.property == "opacity" -> {
                         view.alpha = s.value
                     }
+                    s.property == "scale" -> {
+                        view.scaleX = s.value
+                        view.scaleY = s.value
+                    }
                     s.property == "translateX" -> {
                         view.translationX = PixelUtil.toPixelFromDIP(s.value)
                     }
@@ -166,6 +170,12 @@ class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactConte
                     a.property == "opacity" -> {
                         view.alpha = a.from
                         anim.alpha(a.to)
+                    }
+                    a.property == "opacity" -> {
+                        view.scaleX = a.from
+                        view.scaleY = a.from
+                        anim.scaleX(a.to)
+                        anim.scaleY(a.to)
                     }
                     a.property == "translateX" -> {
                         view.translationX = PixelUtil.toPixelFromDIP(a.from)

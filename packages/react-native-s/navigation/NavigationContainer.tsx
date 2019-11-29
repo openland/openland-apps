@@ -12,6 +12,7 @@ import { SDevice } from '../SDevice';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderCoordinator } from './header/HeaderCoordinator';
 import { HeaderComponentLoader } from './header/HeaderComponentLoader';
+import { ConnectionStatusComponent } from './header/ConnectionStatusComponent';
 
 const styles = StyleSheet.create({
     fill: {
@@ -564,6 +565,8 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                 >
                     {pages}
                     {header}
+                    <ConnectionStatusComponent k={this.props.manager.key}/>
+
                 </ASSafeAreaProvider>
             </View>
         );

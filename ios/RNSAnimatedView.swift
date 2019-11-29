@@ -15,6 +15,7 @@ class RNSAnimatedView: RCTView {
   private var isRegistered = false
   var sourceSize = CGSize.zero
   var sourceCenter = CGPoint.zero
+  var currentScale: CGFloat = 1.0
   var currentTranslateX: CGFloat = 0.0
   var currentTranslateY: CGFloat = 0.0
   var currentWidthDelta: CGFloat = 0.0

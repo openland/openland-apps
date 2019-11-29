@@ -107,6 +107,9 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
       if let view = views[s.viewKey] {
         if s.property == "opacity" {
           view.layer.opacity = Float(s.value)
+        } else if s.property == "scale" {
+          view.currentScale = s.value
+          view.layer.transform = CATransform3DMakeScale(s.value, s.value, 1);
         } else if s.property == "translateX" {
           view.currentTranslateX = s.value
           view.layer.position.x = view.sourceCenter.x + s.value
@@ -148,6 +151,12 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
           if s.property == "opacity" {
             keyPath = "opacity"
             view.layer.opacity = Float(s.to)
+            from = s.from
+            to = s.to
+            additive = false
+          } else if s.property == "scale" {
+            keyPath = "transform.scale"
+            view.layer.transform = CATransform3DMakeScale(s.to, s.to, 1);
             from = s.from
             to = s.to
             additive = false

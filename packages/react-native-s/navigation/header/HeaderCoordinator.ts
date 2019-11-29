@@ -14,6 +14,7 @@ export class HeaderCoordinator {
 
     private background: SAnimatedShadowView;
     private hairline: SAnimatedShadowView;
+    private connectionStatus: SAnimatedShadowView;
     private container: SAnimatedShadowView;
     private pages = new Map<string, HeaderTitleViewCoordinator>();
     private getSize: () => { width: number, height: number };
@@ -29,6 +30,7 @@ export class HeaderCoordinator {
         this.background = new SAnimatedShadowView('header-background-' + key, { translateX: -MAX_SIZE });
         this.hairline = new SAnimatedShadowView('header-hairline-' + key, { translateY: 0, opacity: 1 });
         this.container = new SAnimatedShadowView('header-container-' + key);
+        this.connectionStatus = new SAnimatedShadowView('header-connecting-status-' + key);
     }
 
     get size() {
@@ -224,6 +226,13 @@ export class HeaderCoordinator {
                 this.hairline.translateY = v;
                 this.hairline.translateX = 0;
                 this.hairline.opacity = op;
+
+                v += Math.abs(1 - progress) * this.resolveConnectionMargin(last.config);
+                if (prev) {
+                    v += Math.abs(progress) * this.resolveConnectionMargin(prev.config);
+                }
+                this.connectionStatus.translateY = v;
+                this.connectionStatus.translateX = 0;
             }
         } else {
             let handled = false;
@@ -250,6 +259,8 @@ export class HeaderCoordinator {
                 this.hairline.opacity = op;
             }
             this.hairline.translateY = SDevice.safeArea.top + SDevice.navigationBarHeight + SDevice.statusBarHeight;
+            this.connectionStatus.translateY = SDevice.safeArea.top + SDevice.navigationBarHeight + SDevice.statusBarHeight + 8;
+
         }
 
         // Pages
@@ -304,6 +315,25 @@ export class HeaderCoordinator {
                 res = config.contentOffset.offsetValue <= 44 ? 0 : 1;
             } else {
                 res = 0;
+            }
+        }
+
+        return res;
+    }
+
+    private resolveConnectionMargin(config: HeaderConfig) {
+        let res = 8;
+        if (config.appearance === 'large' || config.appearance === undefined) {
+            if (config.search && config.searchActive) {
+                res = 0;
+            } else if (!config.search) {
+                res = 8;
+            } else {
+                if (config.contentOffset) {
+                    res = Math.max(Math.min(52, config.contentOffset.offsetValue), 0) / 52 * 8;
+                } else {
+                    res = 0;
+                }
             }
         }
 
