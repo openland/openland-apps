@@ -240,9 +240,9 @@ const connectingContainerClass = css`
     background-color: var(--tintOrange);
     align-items: center;
     padding: 7px 16px 9px;
-    transform-origin: top;
-    transform: scale(0);
-    transition: transform 250ms cubic-bezier(.29, .09, .24, .99);
+    opacity: 0;
+    transform: scale(0.84), translateY(-8px);
+    transition: transform 150ms cubic-bezier(.29, .09, .24, .99), opacity 150ms cubic-bezier(.29, .09, .24, .99);
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
 
 `;
@@ -263,7 +263,8 @@ const ConnectingStatus = () => {
     React.useEffect(() => {
         const setConnecting = (connecting: boolean) => {
             if (containerRef.current) {
-                containerRef.current.style.transform = `scale(${connecting ? 1 : 0})`;
+                containerRef.current.style.opacity = connecting ? '1' : '0';
+                containerRef.current.style.transform = `scale(${connecting ? 1 : 0.84}) translateY(${connecting ? 0 : -8}px)`;
             }
         };
         const setStatusDebaunced = debounce(setConnecting, 500);
