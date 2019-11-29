@@ -14,7 +14,7 @@ const footer = css`
 
     @media (max-width: 768px) {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
     }
 `;
 
@@ -77,6 +77,7 @@ const social = css`
 
     @media (max-width: 768px) {
         margin-top: 22px;
+        margin-right: 20px;
         &:before {
             display: inline-block;
             content: 'Follow us';
@@ -149,6 +150,8 @@ const apps = css`
     @media (max-width: 768px) {
         display: inline-block;
         margin-top: 22px;
+        margin-left: 3px;
+        margin-right: 20px;
 
         &:before {
             display: inline-block;
@@ -163,6 +166,10 @@ const apps = css`
             left: 7px;
         }
     }
+
+    @media (max-width: 336px) {
+        margin-right: 0;
+    }
 `;
 
 const appsLink = css`
@@ -175,6 +182,14 @@ const links = css`
     flex-wrap: wrap;
     align-items: center;
     margin: -10px;
+
+    @media (max-width: 768px) {
+        flex-direction: row-reverse;
+    }
+
+    @media (max-width: 579px) {
+        flex-direction: row;
+    }
 `;
 
 const menuItemWrapper = css`
@@ -259,7 +274,7 @@ export default () => {
                     <img className={logo} src="/static/landing/logo.svg" width="120" height="37" />
                     <ul className={menu}>
                         <li className={menuItem}>
-                            <a className={menuLink} href="#">
+                            <a className={menuLink} href="/next/about">
                                 About
                             </a>
                         </li>
@@ -329,7 +344,7 @@ export default () => {
                             )}
                         </li>
                         <li className={menuItem}>
-                            <a className={menuLink} href="#">
+                            <a className={menuLink} href="/invite/EGVDClq">
                                 Careers
                             </a>
                         </li>
@@ -348,17 +363,17 @@ export default () => {
                                             className={popupCloser}
                                             onClick={() => legalSetOpen(false)}
                                         />
-                                        <a className={popupItem} href="#">
+                                        <a className={popupItem} href="/next/privacy">
                                             <span className={popupText}>Privacy Policy</span>
                                         </a>
-                                        <a className={popupItem} href="#">
+                                        <a className={popupItem} href="/next/terms">
                                             <span className={popupText}>Terms of Service</span>
                                         </a>
                                     </div>
                                 )}
                             </li>
                             <li className={cx(menuItem, hide)}>
-                                <a className={menuLink} href="#">
+                                <a className={menuLink} href="/invite/Ryq9hof">
                                     Chat with us
                                 </a>
                             </li>
@@ -367,7 +382,10 @@ export default () => {
                     <div className={links}>
                         <ul className={social}>
                             <li className={socialItem} title="Instagram">
-                                <a className={socialLink} href="#">
+                                <a
+                                    className={socialLink}
+                                    href="https://www.instagram.com/openlandhq/"
+                                >
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/instagram.svg"
@@ -378,7 +396,7 @@ export default () => {
                                 </a>
                             </li>
                             <li className={socialItem} title="Twitter">
-                                <a className={socialLink} href="#">
+                                <a className={socialLink} href="https://twitter.com/OpenlandHQ">
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/twitter.svg"
@@ -389,7 +407,10 @@ export default () => {
                                 </a>
                             </li>
                             <li className={socialItem} title="Facebook">
-                                <a className={socialLink} href="#">
+                                <a
+                                    className={socialLink}
+                                    href="https://www.facebook.com/openlandhq/"
+                                >
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/facebook.svg"
@@ -400,7 +421,7 @@ export default () => {
                                 </a>
                             </li>
                             <li className={socialItem} title="Angelist">
-                                <a className={socialLink} href="#">
+                                <a className={socialLink} href="https://angel.co/company/openland">
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/angelist.svg"

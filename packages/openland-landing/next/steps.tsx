@@ -51,6 +51,11 @@ const item = css`
         margin-right: 20px;
         width: 300px;
     }
+
+    @media (max-width: 768px) {
+        width: 70%;
+        margin-right: 0;
+    }
 `;
 
 const bullet = css`
@@ -238,7 +243,7 @@ export default () => (
                                 <div className={text}>
                                     Be a part of our community of community builders.{' '}
                                     <div className={linkWrapper}>
-                                        <a href="#" className={link}>
+                                        <a href="/invite/uj4m8bo" className={link}>
                                             Join now
                                         </a>
                                     </div>
@@ -257,7 +262,7 @@ export default () => (
                                 <div className={text}>
                                     Have questions about getting started?{' '}
                                     <div className={linkWrapper}>
-                                        <a href="#" className={link}>
+                                        <a href="/invite/Ryq9hof" className={link}>
                                             Let's chat
                                         </a>
                                     </div>

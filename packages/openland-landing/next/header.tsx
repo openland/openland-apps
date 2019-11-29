@@ -315,22 +315,22 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                         </a>
                                     </li>
                                     <li className={mobileMenuItem}>
-                                        <a href="#" className={mobileMenuLink}>
+                                        <a href="/next" className={mobileMenuLink}>
                                             Start community
                                         </a>
                                     </li>
                                     <li className={mobileMenuItem}>
-                                        <a href="#" className={mobileMenuLink}>
+                                        <a href="/next/about" className={mobileMenuLink}>
                                             About
                                         </a>
                                     </li>
                                     <li className={mobileMenuItem}>
-                                        <a href="#" className={mobileMenuLink}>
+                                        <a href="/invite/EGVDClq" className={mobileMenuLink}>
                                             Careers
                                         </a>
                                     </li>
                                     <li className={mobileMenuItem}>
-                                        <a href="#" className={mobileMenuLink}>
+                                        <a href="/invite/Ryq9hof" className={mobileMenuLink}>
                                             Chat with us
                                         </a>
                                     </li>
@@ -343,7 +343,7 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                         </a>
                                     </li>
                                     <li className={mobileMenuItem}>
-                                        <a href="#" className={mobileMenuLink}>
+                                        <a href="/signin" className={mobileMenuLink}>
                                             Login
                                         </a>
                                     </li>
@@ -439,10 +439,10 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                 </div>
                             )}
                         </span>
-                        <a className={menuItem} href="#">
+                        <a className={menuItem} href="/next/about">
                             About
                         </a>
-                        <a className={cx(menuItem, menuItemActive)} href="#">
+                        <a className={cx(menuItem, menuItemActive)} href="/signin">
                             Login
                         </a>
                     </div>
