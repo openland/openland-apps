@@ -479,6 +479,13 @@
             ]
         },
         {
+            "name": "ic-appearance-glyph",
+            "src": "ic-appearance-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-animal-filled",
             "src": "ic-animal-filled-24.svg",
             "sizes": [
