@@ -234,16 +234,12 @@ const popupSectionHeading = css`
     font-weight: bold;
     font-size: 18px;
     line-height: 26px;
-    letter-spacing: 0.2px;
-
     color: #272750;
 `;
 
 const popupSectionText = css`
     font-size: 16px;
     line-height: 2;
-    letter-spacing: 0.2px;
-
     color: #525273;
     @media (max-width: 768px) {
         font-size: 14px;
