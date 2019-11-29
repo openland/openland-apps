@@ -5,6 +5,14 @@ import Heading from './heading';
 
 const root = css`
     margin-top: 175px;
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: 75px;
+    }
+
+    @media (max-width: 768px) {
+        margin-top: 45px;
+    }
 `;
 
 const card = css`
@@ -23,11 +31,11 @@ const card = css`
     @media (max-width: 768px) {
         flex-direction: column;
         border-radius: 0;
-
-        margin: 0 -20px;
+        margin: 0 auto;
         margin-top: 20px;
-
         background-color: initial;
+
+        max-width: 400px;
     }
 `;
 
@@ -41,7 +49,8 @@ const img = css`
 
     @media (max-width: 768px) {
         width: 100%;
-        height: 240px;
+        height: 200px;
+        border-radius: 16px;
     }
 
     flex-shrink: 0;
@@ -51,6 +60,10 @@ const img = css`
 
 const content = css`
     padding: 38px;
+
+    @media (max-width: 768px) {
+        padding: 38px 0;
+    }
 `;
 
 const quotes = css`
@@ -146,10 +159,18 @@ const by = css`
     }
 `;
 
+const headingWrapper = css`
+    @media (max-width: 768px) {
+        text-align: center;
+    }
+`;
+
 export default () => (
     <div className={root}>
         <Block>
-            <Heading>See your community thrive</Heading>
+            <div className={headingWrapper}>
+                <Heading>See your community thrive</Heading>
+            </div>
             <div className={card}>
                 <div className={img} />
                 <div className={content}>

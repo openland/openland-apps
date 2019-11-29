@@ -34,6 +34,10 @@ const list = css`
     flex-shrink: 2;
 
     margin-top: 10px;
+
+    @media (max-width: 768px) {
+        justify-content: center;
+    }
 `;
 
 const item = css`
@@ -153,6 +157,12 @@ const link = css`
 
 const wrapper = css`
     flex-shrink: 2;
+
+    @media (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 `;
 
 const img = css`

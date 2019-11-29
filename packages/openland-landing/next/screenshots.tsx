@@ -10,9 +10,16 @@ const root = css`
 const header = css`
     display: flex;
     align-items: center;
+    @media (max-width: 768px) {
+        justify-content: center;
+    }
 `;
 
-const content = css``;
+const content = css`
+    @media (max-width: 768px) {
+        text-align: center;
+    }
+`;
 
 const listWrapper = css`
     margin-top: 11px;

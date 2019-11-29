@@ -126,6 +126,18 @@ const list = css`
     display: inline-block;
     color: #525273;
     margin-top: 16px;
+
+    @media (min-width: 768px) and (max-width: 1140px) {
+        font-size: 20px;
+    }
+
+    @media (min-width: 400px) and (max-width: 768px) {
+        font-size: 18px;
+    }
+
+    @media (max-width: 400px) {
+        font-size: 16px;
+    }
 `;
 
 const item = css`
