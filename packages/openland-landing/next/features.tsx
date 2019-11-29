@@ -74,6 +74,7 @@ const feature = css`
 `;
 
 const text = css`
+    position: relative;
     margin-top: 15px;
     color: #525273;
     @media (min-width: 1140px) {
@@ -99,6 +100,7 @@ const link = css`
 
     will-change: color;
     transition: color 0.2s;
+    cursor: pointer;
 
     &:hover,
     &:focus {
@@ -160,49 +162,125 @@ const featureImage = css`
     height: auto;
 `;
 
-export default () => (
-    <div className={root}>
-        <Block>
-            <div className={wrapper}>
-                <div className={feature}>
-                    <Heading>Start in seconds</Heading>
-                    <div className={text}>
-                        Start with a chat and add more activities as you grow.{' '}
-                        <div className={linkWrapper}>
-                            <a href="#" className={link}>
-                                Explore activities
-                            </a>
+const popup = css`
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background-color: white;
+    padding: 32px;
+    box-shadow: 0px 9px 42px rgba(0, 0, 0, 0.07);
+    border-radius: 32px;
+    z-index: 20;
+
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 768px) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 0;
+    }
+`;
+
+const popupClose = css`
+    align-self: flex-end;
+
+    width: 40px;
+    height: 40px;
+    transition: background-color 0.2s;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #eaecf0;
+    }
+`;
+
+const popupCloseIcon = css``;
+
+export default () => {
+    const [isLeftOpen, setLeftOpen] = React.useState<boolean>(false);
+    const [isRightOpen, setRightOpen] = React.useState<boolean>(false);
+
+    return (
+        <div className={root}>
+            <Block>
+                <div className={wrapper}>
+                    <div className={feature}>
+                        <Heading>Start in seconds</Heading>
+                        <div className={text}>
+                            Start with a chat and add more activities as you grow.{' '}
+                            <div className={linkWrapper}>
+                                <span className={link} onClick={() => setLeftOpen(true)}>
+                                    Explore activities
+                                </span>
+                            </div>
+                            {isLeftOpen && (
+                                <div className={popup}>
+                                    <div className={popupClose} onClick={() => setLeftOpen(false)}>
+                                        <img
+                                            className={popupCloseIcon}
+                                            src="/static/landing/icons/close.svg"
+                                            width="21"
+                                            height="21"
+                                            alt="Close modal"
+                                        />
+                                    </div>
+                                    Content
+                                </div>
+                            )}
                         </div>
+                        <Tilt options={{ max: 25, scale: 1 }}>
+                            <img
+                                src="/static/landing/feature-1.svg"
+                                className={featureImage}
+                                width="509"
+                                height="289"
+                            />
+                        </Tilt>
                     </div>
-                    <Tilt options={{ max: 25, scale: 1 }}>
-                        <img
-                            src="/static/landing/feature-1.svg"
-                            className={featureImage}
-                            width="509"
-                            height="289"
-                        />
-                    </Tilt>
-                </div>
-                <div className={feature}>
-                    <Heading>Easy to grow</Heading>
-                    <div className={text}>
-                        Make it easy for members to bring their friends.{' '}
-                        <div className={linkWrapper}>
-                            <a href="#" className={link}>
-                                See growth tools
-                            </a>
+                    <div className={feature}>
+                        <Heading>Easy to grow</Heading>
+                        <div className={text}>
+                            Make it easy for members to bring their friends.{' '}
+                            <div className={linkWrapper}>
+                                <span className={link} onClick={() => setRightOpen(true)}>
+                                    See growth tools
+                                </span>
+                            </div>
+                            {isRightOpen && (
+                                <div className={popup}>
+                                    <div className={popupClose} onClick={() => setRightOpen(false)}>
+                                        <img
+                                            className={popupCloseIcon}
+                                            src="/static/landing/icons/close.svg"
+                                            width="21"
+                                            height="21"
+                                            alt="Close modal"
+                                        />
+                                    </div>
+                                    Content
+                                </div>
+                            )}
                         </div>
+                        <Tilt options={{ max: 25, scale: 1 }}>
+                            <img
+                                src="/static/landing/feature-2.svg"
+                                className={featureImage}
+                                width="509"
+                                height="289"
+                            />
+                        </Tilt>
                     </div>
-                    <Tilt options={{ max: 25, scale: 1 }}>
-                        <img
-                            src="/static/landing/feature-2.svg"
-                            className={featureImage}
-                            width="509"
-                            height="289"
-                        />
-                    </Tilt>
                 </div>
-            </div>
-        </Block>
-    </div>
-);
+            </Block>
+        </div>
+    );
+};

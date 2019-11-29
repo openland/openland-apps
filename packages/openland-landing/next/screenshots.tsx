@@ -24,6 +24,7 @@ const content = css`
 const listWrapper = css`
     margin-top: 11px;
 
+    position: relative;
     @media (min-width: 1140px) {
         font-size: 26px;
         line-height: 38px;
@@ -68,6 +69,7 @@ const link = css`
     font-weight: bold;
     color: #525273;
     position: relative;
+    cursor: pointer;
 
     will-change: color;
     transition: color 0.2s;
@@ -162,46 +164,107 @@ const linkWrapper = css`
     }
 `;
 
-export default () => (
-    <div className={root}>
-        <Block>
-            <div className={header}>
-                <img
-                    src="/static/landing/logo-screenshots.svg"
-                    width="100"
-                    height="100"
-                    className={logo}
-                />
-                <div className={content}>
-                    <Heading>All-in-one platform you'll love</Heading>
-                    <div className={listWrapper}>
-                        <li className={list}>
-                            <ul className={item}>Member profiles</ul>
-                            <ul className={item}>Live sessions</ul>
-                            <ul className={item}>Chats</ul>
-                            <ul className={cx(item, hide)}>Ultra-fast apps</ul>
-                        </li>
-                        {'. '}
-                        <div className={linkWrapper}>
-                            <a href="#" className={link}>
-                                All features
-                            </a>
+const popup = css`
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background-color: white;
+    padding: 32px;
+    box-shadow: 0px 9px 42px rgba(0, 0, 0, 0.07);
+    border-radius: 32px;
+    z-index: 20;
+
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 768px) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 0;
+    }
+`;
+
+const popupClose = css`
+    align-self: flex-end;
+
+    width: 40px;
+    height: 40px;
+    transition: background-color 0.2s;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #eaecf0;
+    }
+`;
+
+const popupCloseIcon = css``;
+
+export default () => {
+    const [isOpen, setOpen] = React.useState<boolean>(false);
+
+    return (
+        <div className={root}>
+            <Block>
+                <div className={header}>
+                    <img
+                        src="/static/landing/logo-screenshots.svg"
+                        width="100"
+                        height="100"
+                        className={logo}
+                    />
+                    <div className={content}>
+                        <Heading>All-in-one platform you'll love</Heading>
+                        <div className={listWrapper}>
+                            <li className={list}>
+                                <ul className={item}>Member profiles</ul>
+                                <ul className={item}>Live sessions</ul>
+                                <ul className={item}>Chats</ul>
+                                <ul className={cx(item, hide)}>Ultra-fast apps</ul>
+                            </li>
+                            {'. '}
+                            <div className={linkWrapper}>
+                                <span className={link} onClick={() => setOpen(true)}>
+                                    Explore activities
+                                </span>
+                            </div>
+                            {isOpen && (
+                                <div className={popup}>
+                                    <div className={popupClose} onClick={() => setOpen(false)}>
+                                        <img
+                                            className={popupCloseIcon}
+                                            src="/static/landing/icons/close.svg"
+                                            width="21"
+                                            height="21"
+                                            alt="Close modal"
+                                        />
+                                    </div>
+                                    Content
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
-            </div>
-            <img
-                src="/static/landing/screenshots-desktop.png"
-                className={screenshot}
-                width="1140"
-                height="667"
-            />
-            <img
-                src="/static/landing/screenshots-mobile.png"
-                className={screenshotMobile}
-                width="560"
-                height="1188"
-            />
-        </Block>
-    </div>
-);
+                <img
+                    src="/static/landing/screenshots-desktop.png"
+                    className={screenshot}
+                    width="1140"
+                    height="667"
+                />
+                <img
+                    src="/static/landing/screenshots-mobile.png"
+                    className={screenshotMobile}
+                    width="560"
+                    height="1188"
+                />
+            </Block>
+        </div>
+    );
+};
