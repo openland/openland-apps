@@ -149,7 +149,7 @@ const link = css`
 const linkWrapper = css`
     display: inline-block;
 
-    @media (max-width: 768px) {
+    @media (max-width: 960px) {
         display: block;
     }
 `;

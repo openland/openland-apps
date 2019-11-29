@@ -163,7 +163,7 @@ const dotsLeft = css`
     top: 49%;
     transform: translateY(-50%);
 
-    @media (min-width: 1160px) {
+    @media (min-width: 1140px) {
         left: -10018px;
     }
 

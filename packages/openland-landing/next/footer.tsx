@@ -40,12 +40,17 @@ const menuItem = css`
 
     position: relative;
 
-    @media (max-width: 768px) {
+    @media (max-width: 960px) {
+        margin: 10px;
     }
 `;
 
 const menuLink = css`
     font-size: 18px;
+
+    @media (max-width: 960px) {
+        font-size: 16px;
+    }
     color: #9393a7;
     position: relative;
 
@@ -182,7 +187,7 @@ const links = css`
         flex-direction: row-reverse;
     }
 
-    @media (max-width: 579px) {
+    @media (max-width: 524px) {
         flex-direction: row;
     }
 `;

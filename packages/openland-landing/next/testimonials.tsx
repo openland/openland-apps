@@ -40,24 +40,26 @@ const card = css`
 `;
 
 const img = css`
+    flex-shrink: 0;
     width: 393px;
+    height: 339px;
+    @media (max-width: 960px) {
+        display: none;
+    }
+`;
 
-    @media (min-width: 768px) and (max-width: 960px) {
-        width: 100%;
-        height: 358px;
+const imgNarrow = css`
+    display: none;
+    height: 339px;
+    @media (max-width: 960px) {
+        display: block;
     }
 
     @media (max-width: 768px) {
-        width: 100%;
-        height: 200px;
+        max-width: 100%;
+        height: auto;
         border-radius: 16px;
     }
-
-    flex-shrink: 0;
-    background: url('https://cdn.openland.com/shared/landing/testimonials.jpg');
-    background-size: cover;
-
-    background-position: 20% 30%;
 `;
 
 const content = css`
@@ -175,6 +177,7 @@ export default () => (
             </div>
             <div className={card}>
                 <img src="/static/landing/testimonials.jpg" className={img} />
+                <img src="/static/landing/testimonials-narrow.jpg" className={imgNarrow} />
                 <div className={content}>
                     <img
                         src="/static/landing/testimonials-quotes.svg"
