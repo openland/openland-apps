@@ -246,6 +246,12 @@ routes.add('/matchmaking/:roomId/install', '/unicorn/index');
 routes.add('/matchmaking/:roomId/install/', '/unicorn/index');
 
 //
+// Oauth
+//
+routes.add('/oauth/:code', '/oauth/oauth');
+routes.add('/oauth/:code/', '/oauth/oauth');
+
+//
 // Shortnames
 //
 

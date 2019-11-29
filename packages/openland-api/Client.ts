@@ -2394,6 +2394,25 @@ const MyStickersSelector = obj(
 const MySuccessfulInvitesCountSelector = obj(
             field('mySuccessfulInvitesCount', 'mySuccessfulInvitesCount', args(), notNull(scalar('Int')))
         );
+const OauthContextSelector = obj(
+            field('oauthContext', 'context', args(fieldValue("code", refValue('code'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('app', 'app', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('clientId', 'clientId', args(), notNull(scalar('String'))),
+                            field('clientSecret', 'clientSecret', args(), notNull(scalar('String'))),
+                            field('owner', 'owner', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    fragment('User', UserTinySelector)
+                                ))),
+                            field('scopes', 'scopes', args(), notNull(list(notNull(scalar('String'))))),
+                            field('title', 'title', args(), notNull(scalar('String')))
+                        ))),
+                    field('code', 'code', args(), notNull(scalar('String'))),
+                    field('redirectUrl', 'redirectUrl', args(), notNull(scalar('String'))),
+                    field('state', 'state', args(), notNull(scalar('String')))
+                ))
+        );
 const OnlineSelector = obj(
             field('user', 'user', args(fieldValue("id", refValue('userId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4105,6 +4124,12 @@ export const Operations = {
         name: 'MySuccessfulInvitesCount',
         body: 'query MySuccessfulInvitesCount{mySuccessfulInvitesCount}',
         selector: MySuccessfulInvitesCountSelector
+    },
+    OauthContext: {
+        type: 'query',
+        name: 'OauthContext',
+        body: 'query OauthContext($code:String!){context:oauthContext(code:$code){__typename app{__typename clientId clientSecret owner{__typename ...UserTiny}scopes title}code redirectUrl state}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}',
+        selector: OauthContextSelector
     },
     Online: {
         type: 'query',

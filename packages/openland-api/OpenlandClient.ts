@@ -715,6 +715,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderMyNotificationCenter(opts?: QueryWatchParameters): Types.MyNotificationCenter | null {
         return this.useQuery(Source.MyNotificationCenterQuery, undefined, opts);
     }
+    async queryOauthContext(variables: Types.OauthContextVariables, opts?: OperationParameters): Promise<Types.OauthContext> {
+        return this.client.query(Source.OauthContextQuery, variables, opts);
+    }
+    async refetchOauthContext(variables: Types.OauthContextVariables): Promise<Types.OauthContext> {
+        return this.refetch(Source.OauthContextQuery, variables);
+    }
+    useOauthContext(variables: Types.OauthContextVariables, opts?: QueryWatchParameters): Types.OauthContext {
+        return this.useQuerySuspense(Source.OauthContextQuery, variables, opts);
+    }
+    useWithoutLoaderOauthContext(variables: Types.OauthContextVariables, opts?: QueryWatchParameters): Types.OauthContext | null {
+        return this.useQuery(Source.OauthContextQuery, variables, opts);
+    }
     async queryMyOrganizations(opts?: OperationParameters): Promise<Types.MyOrganizations> {
         return this.client.query(Source.MyOrganizationsQuery, undefined, opts);
     }

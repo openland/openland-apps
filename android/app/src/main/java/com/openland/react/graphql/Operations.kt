@@ -50,6 +50,7 @@ object Operations {
         if (name == "MyOrganizations") return MyOrganizations
         if (name == "MyStickers") return MyStickers
         if (name == "MySuccessfulInvitesCount") return MySuccessfulInvitesCount
+        if (name == "OauthContext") return OauthContext
         if (name == "Online") return Online
         if (name == "Organization") return Organization
         if (name == "OrganizationByPrefix") return OrganizationByPrefix
