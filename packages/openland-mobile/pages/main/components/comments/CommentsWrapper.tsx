@@ -6,7 +6,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { EmojiRender, EmojiRenderRow } from '../EmojiRender';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { MentionsRender } from '../MentionsRender';
+import { MentionsSuggestions } from '../MentionsSuggestions';
 import { CommentsList } from '../comments/CommentsList';
 import { SDevice } from 'react-native-s/SDevice';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
@@ -225,7 +225,7 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
     let quoted: JSX.Element | null = null;
 
     if (chat && chat.__typename === 'SharedRoom' && inputFocused && activeWord && activeWord.startsWith('@')) {
-        suggestions = <MentionsRender activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={chat.id} />;
+        suggestions = <MentionsSuggestions activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={chat.id} />;
     }
 
     if (inputFocused && activeWord && activeWord.startsWith(':')) {

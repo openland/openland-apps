@@ -18,7 +18,7 @@ import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { MentionsRender } from './components/MentionsRender';
+import { MentionsSuggestions } from './components/MentionsSuggestions';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -296,7 +296,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let activeWord = findActiveWord(this.state.text, this.state.selection);
         if (this.props.chat.__typename === 'SharedRoom' && this.state.inputFocused && activeWord && activeWord.startsWith('@')) {
             suggestions = (
-                <MentionsRender
+                <MentionsSuggestions
                     activeWord={activeWord}
                     onMentionPress={this.handleMentionPress}
                     groupId={this.props.chat.id}
