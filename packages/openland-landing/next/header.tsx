@@ -338,7 +338,10 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
 
                                 <ul className={mobileMenuList}>
                                     <li className={mobileMenuItem}>
-                                        <a href="#" className={cx(mobileMenuLink, blue)}>
+                                        <a
+                                            href="https://next.openland.com/invite/h2BGtL"
+                                            className={cx(mobileMenuLink, blue)}
+                                        >
                                             Sign up
                                         </a>
                                     </li>
@@ -353,14 +356,14 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                     <h2 className={appsHeading}>Install the app</h2>
 
                                     <div className={apps}>
-                                        <a href="#" className={appsLink}>
+                                        <a href="https://oplnd.com/ios" className={appsLink}>
                                             <img
                                                 src="/static/landing/apps-ios.svg"
                                                 width="120"
                                                 height="40"
                                             />
                                         </a>
-                                        <a href="#" className={appsLink}>
+                                        <a href="https://oplnd.com/android" className={appsLink}>
                                             <img
                                                 src="/static/landing/apps-android.svg"
                                                 width="130"
@@ -385,7 +388,7 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                             {isOpen && (
                                 <div className={cx(popup, 'landingHeaderPopup')}>
                                     <div className={popupCloser} onClick={() => setOpen(false)} />
-                                    <a className={popupItem} href="#">
+                                    <a className={popupItem} href="https://oplnd.com/ios">
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/ios.svg"
@@ -395,7 +398,7 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                         />
                                         <span className={popupText}>iOS</span>
                                     </a>
-                                    <a className={popupItem} href="#">
+                                    <a className={popupItem} href="https://oplnd.com/android">
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/android.svg"
@@ -406,7 +409,7 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                         <span className={popupText}>Android</span>
                                     </a>
                                     <div className={popupSeparator} />
-                                    <a className={popupItem} href="#">
+                                    <a className={popupItem} href="https://oplnd.com/mac">
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/mac.svg"
@@ -416,7 +419,7 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                         />
                                         <span className={popupText}>Mac</span>
                                     </a>
-                                    <a className={popupItem} href="#">
+                                    <a className={popupItem} href="https://oplnd.com/windows">
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/win.svg"
@@ -426,7 +429,7 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                         />
                                         <span className={popupText}>Windows</span>
                                     </a>
-                                    <a className={popupItem} href="#">
+                                    <a className={popupItem} href="https://oplnd.com/linux">
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/linux.svg"

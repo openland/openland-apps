@@ -220,7 +220,7 @@ export default ({ small }: { small?: boolean }) => (
                             <li className={item}>Free</li>
                         </ul>
                     </div>
-                    <a className={button} href="#">
+                    <a className={button} href="https://next.openland.com/invite/h2BGtL">
                         Start community
                     </a>
                     <div className={dotsRight} />
@@ -234,7 +234,7 @@ export default ({ small }: { small?: boolean }) => (
                     <p className={text}>
                         Openland is the best place to start and grow inspiring communities
                     </p>
-                    <a className={button} href="#">
+                    <a className={button} href="https://next.openland.com/invite/h2BGtL">
                         Start community
                     </a>
                     <div className={dotsRight} />
