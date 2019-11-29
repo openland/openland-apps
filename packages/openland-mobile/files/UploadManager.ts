@@ -18,6 +18,7 @@ interface Task {
     messageId: string;
     name: string;
     uri: string;
+    retryCount: number;
 }
 
 interface Callbacks {
@@ -29,7 +30,6 @@ interface Callbacks {
 export class UploadManager {
 
     private _watchers = new Map<string, Watcher<UploadState>>();
-    private _started = false;
     private _queue: Task[] = [];
     private uploadedFiles = new Map<string, string>();
 
@@ -46,7 +46,8 @@ export class UploadManager {
         w.setState({ progress: 0, status: UploadStatus.UPLOADING });
         let messageId = getMessenger().engine.getConversation(conversationId).sendFile({
             fetchInfo: () => new Promise(async (resolver, onError) => {
-                let isImage = uri.endsWith('.png') || uri.endsWith('.jpg') || uri.endsWith('.jpeg');
+                let uriLower = uri.toLowerCase();
+                let isImage = uriLower.endsWith('.png') || uriLower.endsWith('.jpg') || uriLower.endsWith('.jpeg');
                 let imageSize: { width: number, height: number } | undefined = undefined;
                 if (isImage) {
                     imageSize = await new Promise<{ width: number, height: number }>((res) => {
@@ -64,12 +65,9 @@ export class UploadManager {
             watch: (handler) => w.watch(handler)
         });
         this._watchers.set(messageId, w);
-        this._queue.push({ messageId, name, uri });
+        this._queue.push({ messageId, name, uri, retryCount: 0 });
 
-        if (!this._started) {
-            this._started = true;
-            this.startUpload();
-        }
+        this.checkQueue();
     }
 
     registerSimpleUpload = async (name: string, uri: string, callbacks: Callbacks, fileSize?: number) => {
@@ -106,42 +104,38 @@ export class UploadManager {
         })();
 
         this._watchers.set(key, w);
-        this._queue.push({ messageId: key, name, uri });
+        this._queue.push({ messageId: key, name, uri, retryCount: 0 });
 
-        if (!this._started) {
-            this._started = true;
-            this.startUpload();
-        }
+        this.checkQueue();
+
     }
 
-    private startUpload() {
-        let q = this._queue[0];
-        let contentType = q.name === 'video.mp4' ? 'video/mp4' : q.name.endsWith('.pdf') ? 'application/pdf' : undefined;
-        let upload = new UploadCareDirectUploading(q.name, q.uri, contentType);
-
-        upload.watch((s) => {
-            if (s.status === UploadStatus.UPLOADING) {
-                this.getWatcher(q.messageId).setState({ progress: s.progress || 0, status: s.status });
-            } else if (s.status === UploadStatus.FAILED) {
-                // TODO: Handle
-            } else if (s.status === UploadStatus.COMPLETED) {
-                this._queue.splice(0, 1);
-                RNFetchBlob.fs.cp(q.uri.replace('file://', ''), DownloadManagerInstance.resolvePath(s.uuid!, null, true));
-                this.getWatcher(q.messageId).setState({ progress: 1, status: s.status, uuid: s.uuid });
-
-                (async () => {
-                    try {
-                        if (this._queue.length > 0) {
-                            this.startUpload();
-                        } else {
-                            this._started = false;
+    slots = 4;
+    private checkQueue() {
+        console.warn('checkQueue', this.slots);
+        for (let q of this._queue.splice(0, this.slots)) {
+            this.slots--;
+            let contentType = q.name === 'video.mp4' ? 'video/mp4' : q.name.endsWith('.pdf') ? 'application/pdf' : undefined;
+            (async () => {
+                let upload = new UploadCareDirectUploading(q.name, q.uri, contentType);
+                upload.watch((s) => {
+                    if (s.status === UploadStatus.UPLOADING) {
+                        this.getWatcher(q.messageId).setState({ progress: s.progress || 0, status: s.status });
+                    } else if (s.status === UploadStatus.FAILED) {
+                        this.slots++;
+                        if (q.retryCount++ < 3) {
+                            this._queue.push(q);
                         }
-                    } catch (e) {
-                        // TODO: Handle
+                        this.checkQueue();
+                    } else if (s.status === UploadStatus.COMPLETED) {
+                        this.slots++;
+                        RNFetchBlob.fs.cp(q.uri.replace('file://', ''), DownloadManagerInstance.resolvePath(s.uuid!, null, true));
+                        this.getWatcher(q.messageId).setState({ progress: 1, status: s.status, uuid: s.uuid });
+                        this.checkQueue();
                     }
-                })();
-            }
-        });
+                });
+            })();
+        }
     }
 
     private getWatcher(messageId: string) {
