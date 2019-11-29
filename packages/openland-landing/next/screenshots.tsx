@@ -177,14 +177,14 @@ const popup = css`
     display: flex;
     flex-direction: column;
 
-    @media (max-width: 768px) {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        border-radius: 0;
-    }
+    // @media (max-width: 768px) {
+    //     position: fixed;
+    //     top: 0;
+    //     left: 0;
+    //     right: 0;
+    //     bottom: 0;
+    //     border-radius: 0;
+    // }
 `;
 
 const popupClose = css`
@@ -200,12 +200,64 @@ const popupClose = css`
     border-radius: 100%;
     cursor: pointer;
 
+    // @media (max-width: 768px) {
+    //     position: relative;
+    //     right: 20px;
+    //     top: 10px;
+    // }
+
     &:hover {
         background-color: #eaecf0;
     }
 `;
 
 const popupCloseIcon = css``;
+
+const popupContent = css`
+    margin-top: -30px;
+    pointer-events: none;
+`;
+
+const popupHeading = css`
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 46px;
+    color: #272750;
+`;
+
+const popupSection = css`
+    margin-top: 20px;
+    display: inline-block;
+`;
+
+const popupSectionHeading = css`
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 26px;
+    letter-spacing: 0.2px;
+
+    color: #272750;
+`;
+
+const popupSectionText = css`
+    font-size: 16px;
+    line-height: 2;
+    letter-spacing: 0.2px;
+
+    color: #525273;
+    @media (max-width: 768px) {
+        font-size: 14px;
+        margin-right: 15px;
+    }
+`;
+
+const popupSections = css`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 220px);
+    grid-gap: 40px;
+    justify-content: center;
+    text-align: left;
+`;
 
 export default () => {
     const [isOpen, setOpen] = React.useState<boolean>(false);
@@ -246,7 +298,53 @@ export default () => {
                                             alt="Close modal"
                                         />
                                     </div>
-                                    Content
+                                    <div className={popupContent}>
+                                        <h2 className={popupHeading}>Features</h2>
+                                        <div className={popupSections}>
+                                            <div className={popupSection}>
+                                                <h2 className={popupSectionHeading}>Chats</h2>
+                                                <p className={popupSectionText}>
+                                                    Public and invite-only
+                                                    <br />
+                                                    Emojis, stickers, formatting
+                                                    <br />
+                                                    Mentions, replies, forwards
+                                                    <br />
+                                                    Threaded comments
+                                                    <br />
+                                                    Link and file previews
+                                                </p>
+                                            </div>
+                                            <div className={popupSection}>
+                                                <h2 className={popupSectionHeading}>Growth</h2>
+                                                <p className={popupSectionText}>
+                                                    Invite pages and links
+                                                    <br />
+                                                    Social sharing tools
+                                                    <br />
+                                                    Featuring on Openland
+                                                    <br />
+                                                    Website widgests and buttons
+                                                    <br />
+                                                    New member onboarding
+                                                </p>
+                                            </div>
+                                            <div className={popupSection}>
+                                                <h2 className={popupSectionHeading}>Activities</h2>
+                                                <p className={popupSectionText}>
+                                                    Questions and answers
+                                                    <br />
+                                                    Member directory
+                                                    <br />
+                                                    Matchmaking and intros
+                                                    <br />
+                                                    Live sessions
+                                                    <br />
+                                                    Community library
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             )}
                         </div>
