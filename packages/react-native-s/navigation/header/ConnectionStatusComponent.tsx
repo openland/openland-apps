@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { debounce } from 'openland-y-utils/timer';
 import { SAnimated } from 'react-native-s/SAnimated';
-import { View, Text, Platform } from 'react-native';
+import { Text, Platform } from 'react-native';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
@@ -16,7 +16,7 @@ export const ConnectionStatusComponent = (props: { k: string }) => {
     React.useEffect(() => {
         const showStatus = (show: boolean) => {
             SAnimated.beginTransaction();
-            SAnimated.setDuration(150);
+            SAnimated.setDuration(0.15);
             if (Platform.OS === 'ios') {
                 SAnimated.setPropertyAnimator((name, prop, from, to) => {
                     SAnimated.spring(name, {
@@ -72,4 +72,4 @@ export const ConnectionStatusComponent = (props: { k: string }) => {
             </SAnimated.View>
         </SAnimated.View >
     );
-}
+};
