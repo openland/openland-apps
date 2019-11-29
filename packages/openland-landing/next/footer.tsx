@@ -131,12 +131,6 @@ const socialLogo = css`
     }
 `;
 
-const hide = css`
-    @media (min-width: 768px) and (max-width: 960px) {
-        display: none;
-    }
-`;
-
 const hideMobile = css`
     @media (max-width: 768px) {
         display: none;
@@ -372,7 +366,7 @@ export default () => {
                                     </div>
                                 )}
                             </li>
-                            <li className={cx(menuItem, hide)}>
+                            <li className={menuItem}>
                                 <a className={menuLink} href="/invite/Ryq9hof">
                                     Chat with us
                                 </a>
