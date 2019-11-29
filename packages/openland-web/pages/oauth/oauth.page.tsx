@@ -78,7 +78,7 @@ const OauthFragment = React.memo(() => {
                         marginBottom={16}
                         as="a"
                         hoverTextDecoration="none"
-                        href={`${oauthContext.redirectUrl}/?code=${oauthContext.code}&state=${oauthContext.state}`}
+                        href={`${oauthContext.redirectUrl}?code=${oauthContext.code}&state=${oauthContext.state}`}
                     />
                     <UButton
                         text="Decline"
@@ -87,7 +87,7 @@ const OauthFragment = React.memo(() => {
                         size="large"
                         as="a"
                         hoverTextDecoration="none"
-                        href={`${oauthContext.redirectUrl}/?error=access_denied`}
+                        href={`${oauthContext.redirectUrl}?error=access_denied`}
                     />
                 </div>
             </div>
