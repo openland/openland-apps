@@ -41,7 +41,7 @@ module.exports = {
         win.webContents.on('new-window', handleLinkOpen);
 
         // Load app URL
-        win.loadURL(devMode ? 'http://localhost:3000' : 'https://app.openland.com');
+        win.loadURL(devMode ? 'http://localhost:3000' : 'https://openland.com');
 
         return win;
     }

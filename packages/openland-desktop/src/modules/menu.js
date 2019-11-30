@@ -6,6 +6,7 @@ const {
 module.exports = {
     createAppMenu: (win, devMode) => {
         if (process.platform !== 'darwin') {
+            Menu.setApplicationMenu(null);
             return;
         }
         if (Menu.getApplicationMenu()) {
