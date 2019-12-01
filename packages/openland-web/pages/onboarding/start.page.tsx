@@ -8,7 +8,7 @@ import ImgUnboardingStart from 'openland-icons/img_unboarding_start.svg';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
-import { UHeader } from 'openland-unicorn/UHeader';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 const textAlignClassName = css`
     text-align: center;
@@ -29,7 +29,6 @@ export const DiscoverStart = ({
     const button = <XButton text="Start" style="primary" size="large" onClick={onStartClick} />;
     return (
         <XView flexGrow={1}>
-            <UHeader documentTitle="Recommendations"/>
             {!noBackSkipLogo && (
                 <BackSkipLogo onBack={null} onSkip={onSkip} noLogo={!!isMobile} />
             )}
@@ -89,6 +88,7 @@ export default withApp('Home', 'viewer', () => {
 
     return (
         <React.Suspense fallback={null}>
+            <XDocumentHead title="Recommendations" />
             <DiscoverStart onSkip={onSkip} onStartClick={onStartClick} onLogin={true} />
         </React.Suspense>
     );
