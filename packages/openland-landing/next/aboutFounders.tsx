@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { XView, XImage } from 'react-mental';
 import { css } from 'linaria';
-import MailIcon from 'openland-icons/landing/mail.svg';
-import LinkedInIcon from 'openland-icons/landing/linkedin.svg';
 
 let founderRootClass = css`
     padding: 7px 0 0 132px;
