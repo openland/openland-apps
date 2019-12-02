@@ -206,12 +206,66 @@ const dotsRight = css`
     }
 `;
 
+const dotsLeftSmall = css`
+    width: 10000px;
+    height: 85px;
+
+    background: url('https://cdn.openland.com/shared/landing/dot-left.svg');
+
+    position: absolute;
+    top: 49%;
+    transform: translateY(-50%);
+
+    @media (min-width: 1140px) {
+        left: -10018px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+        left: -9985px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        left: -10000px;
+    }
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
+const dotsRightSmall = css`
+    width: 9999px;
+    height: 85px;
+
+    background: url('https://cdn.openland.com/shared/landing/dot-right.svg');
+
+    position: absolute;
+    top: 49%;
+    transform: translateY(-50%);
+
+    @media (min-width: 1140px) {
+        right: -10018px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+        right: -9985px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        right: -10000px;
+    }
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
 export default ({ small }: { small?: boolean }) => (
     <div className={root}>
         <Block>
             {small ? (
                 <div className={ctaSmall}>
-                    <div className={dotsLeft} />
+                    <div className={dotsLeftSmall} />
                     <div className={content}>
                         <Heading>Start a great community today</Heading>
                         <ul className={list}>
@@ -223,7 +277,7 @@ export default ({ small }: { small?: boolean }) => (
                     <a className={button} href="https://next.openland.com/invite/h2BGtL">
                         Start community
                     </a>
-                    <div className={dotsRight} />
+                    <div className={dotsRightSmall} />
                 </div>
             ) : (
                 <div className={cta}>
