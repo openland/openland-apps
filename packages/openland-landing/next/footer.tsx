@@ -4,6 +4,10 @@ import Block from './block';
 
 const root = css`
     padding: 5px 0;
+    @media (max-width: 768px) {
+        padding-bottom: 40px;
+        padding-top: 20px;
+    }
     background: #f7fafc;
 `;
 
@@ -81,7 +85,7 @@ const social = css`
     position: relative;
 
     @media (max-width: 768px) {
-        margin-top: 25px;
+        margin-top: 35px;
         &:before {
             position: absolute;
             display: inline-block;
@@ -152,6 +156,7 @@ const apps = css`
 
     @media (max-width: 768px) {
         display: inline-block;
+        margin-top: 40px;
     }
 
     &:before {
