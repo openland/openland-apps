@@ -18,9 +18,8 @@ const header = css`
 const content = css`
     @media (max-width: 768px) {
         margin-bottom: -30px;
+        width: 509px;
     }
-
-    width: 509px;
 `;
 
 const listWrapper = css`
