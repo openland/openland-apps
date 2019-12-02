@@ -110,7 +110,6 @@
 		AAE50182214602D700BEAA04 /* RNSAnimatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE50181214602D700BEAA04 /* RNSAnimatedView.swift */; };
 		AAE501842146079E00BEAA04 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
 		AAE50186214607B600BEAA04 /* RNSAnimationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE50185214607B600BEAA04 /* RNSAnimationSpec.swift */; };
-		AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */; };
 		AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
 		AAE56DE4212A0CDC003706B3 /* Nuke.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; };
 		AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -408,7 +407,6 @@
 		AAE50181214602D700BEAA04 /* RNSAnimatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAnimatedView.swift; sourceTree = "<group>"; };
 		AAE50185214607B600BEAA04 /* RNSAnimationSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAnimationSpec.swift; sourceTree = "<group>"; };
 		AAE56DC02129F9B8003706B3 /* openland-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "openland-Bridging-Header.h"; sourceTree = "<group>"; };
-		AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AggressiveImage.swift; path = openland/hacks/AggressiveImage.swift; sourceTree = "<group>"; };
 		AAE56DC32129FA25003706B3 /* Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Bridge.h; path = openland/hacks/Bridge.h; sourceTree = "<group>"; };
 		AAE56DC42129FA3C003706B3 /* Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Bridge.m; path = openland/hacks/Bridge.m; sourceTree = "<group>"; };
 		AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nuke.xcodeproj; path = Vendor/Nuke/Nuke.xcodeproj; sourceTree = "<group>"; };
@@ -838,7 +836,6 @@
 		AAE56DBF2129F997003706B3 /* hacks */ = {
 			isa = PBXGroup;
 			children = (
-				AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */,
 				AA300DC6220186A400C54930 /* RNBackgroundTask.swift */,
 				A099CBDB233B9CFF00A7AC8C /* ChatFlowLayout.swift */,
 			);
@@ -1488,7 +1485,6 @@
 				AAB0EE57213438C500FBCB75 /* RNAsyncDataView.swift in Sources */,
 				AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */,
 				AAA4DA55221458CB00BB1781 /* AppCenterReactNativeAnalytics.m in Sources */,
-				AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */,
 				AA2281CC228B3C9200810848 /* SpaceXUtils.swift in Sources */,
 				AA2281CE228B3EF600810848 /* NetworkingDelegate.swift in Sources */,
 				AAE50186214607B600BEAA04 /* RNSAnimationSpec.swift in Sources */,
