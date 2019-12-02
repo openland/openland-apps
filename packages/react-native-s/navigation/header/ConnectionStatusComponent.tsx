@@ -53,7 +53,7 @@ export const ConnectionStatusComponent = (props: { k: string }) => {
         }, 1000);
     }, []);
     return (
-        <SAnimated.View name={`header-connecting-status-${props.k}`} style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 36, alignItems: 'center' }}>
+        <SAnimated.View name={`header-connecting-status-${props.k}`} style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 36, alignItems: 'center' }} pointerEvents="none">
             <SAnimated.View
                 name={`header-connecting-status-content-${props.k}`}
                 style={{
@@ -67,6 +67,7 @@ export const ConnectionStatusComponent = (props: { k: string }) => {
                     paddingHorizontal: 16,
                     opacity: 0,
                 }}
+                pointerEvents="none"
             >
                 <LoaderSpinner color={theme.foregroundContrast} size="small" /><Text style={{ ...TextStyles.Label2, marginLeft: 8, color: theme.foregroundContrast }} >Connecting</Text>
             </SAnimated.View>
