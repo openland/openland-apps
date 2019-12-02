@@ -1045,6 +1045,13 @@
       }
     },
     {
+      "signature": "587b8ce64ed5146687e94c7f0ac6ec9538792f0ea0e8c6a8cdf8cb697e0845c8",
+      "document": "fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename...OrganizationShort}shortname}query OauthContext($code:String!){context:oauthContext(code:$code){__typename app{__typename clientId clientSecret owner{__typename...UserTiny}scopes title}code redirectUrl state}}",
+      "metadata": {
+        "engineSignature": "fragment OrganizationShort on Organization{__typename about alphaIsCommunity id name photo shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename...OrganizationShort}shortname}query OauthContext($code:String!){oauthContext(code:$code){__typename app{__typename clientId clientSecret owner{__typename...UserTiny}scopes title}code redirectUrl state}}"
+      }
+    },
+    {
       "signature": "2157fe5206878e65213693c0d34f4a1e185a38ee6cf92e8fbf3f13fcedd55268",
       "document": "fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}query MyOrganizations{myOrganizations{__typename isPrimary:betaIsPrimary...OrganizationShort}}",
       "metadata": {

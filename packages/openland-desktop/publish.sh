@@ -1,0 +1,1 @@
+DO_KEY_ID=PRJZY37IZUB5RFHPEGYC DO_SECRET_KEY=xTtlg9rpCR+QUm1M7/dfFsXojAHO+mHuoPBBYfcizLM yarn electron-builder -mwl --publish always

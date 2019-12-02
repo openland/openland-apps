@@ -8,9 +8,9 @@ const root = css``;
 const cta = css`
     position: relative;
     text-align: center;
-    padding-top: 180px;
+    padding-top: 160px;
     padding-bottom: 100px;
-    margin-bottom: 80px;
+    margin-bottom: 70px;
 `;
 
 const headline = css`
@@ -52,8 +52,8 @@ const text = css`
         font-size: 18px;
     }
 
-    margin-top: 20px;
-    margin-bottom: 46px;
+    margin-top: 25px;
+    margin-bottom: 50px;
 `;
 
 const button = css`
@@ -103,7 +103,7 @@ const ctaSmall = css`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 180px;
+    margin-top: 200px;
     margin-bottom: 180px;
 
     @media (max-width: 1140px) {
@@ -113,7 +113,7 @@ const ctaSmall = css`
 `;
 
 const content = css`
-    margin-right: 70px;
+    margin-right: 120px;
 
     @media (max-width: 1140px) {
         margin-right: 0;
@@ -156,14 +156,14 @@ const dotsLeft = css`
     width: 10000px;
     height: 122px;
 
-    background: url('/static/landing/dot-left.svg');
+    background: url('https://cdn.openland.com/shared/landing/dot-left.svg');
 
     position: absolute;
-    top: 50%;
+    top: 49%;
     transform: translateY(-50%);
 
     @media (min-width: 1140px) {
-        left: -10050px;
+        left: -10018px;
     }
 
     @media (min-width: 960px) and (max-width: 1140px) {
@@ -183,14 +183,68 @@ const dotsRight = css`
     width: 9999px;
     height: 122px;
 
-    background: url('/static/landing/dot-right.svg');
+    background: url('https://cdn.openland.com/shared/landing/dot-right.svg');
 
     position: absolute;
-    top: 50%;
+    top: 49%;
     transform: translateY(-50%);
 
     @media (min-width: 1140px) {
-        right: -10050px;
+        right: -10018px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+        right: -9985px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        right: -10000px;
+    }
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
+const dotsLeftSmall = css`
+    width: 10000px;
+    height: 85px;
+
+    background: url('https://cdn.openland.com/shared/landing/dot-left.svg');
+
+    position: absolute;
+    top: 49%;
+    transform: translateY(-50%);
+
+    @media (min-width: 1140px) {
+        left: -10018px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1140px) {
+        left: -9985px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        left: -10000px;
+    }
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
+const dotsRightSmall = css`
+    width: 9999px;
+    height: 85px;
+
+    background: url('https://cdn.openland.com/shared/landing/dot-right.svg');
+
+    position: absolute;
+    top: 49%;
+    transform: translateY(-50%);
+
+    @media (min-width: 1140px) {
+        right: -10018px;
     }
 
     @media (min-width: 960px) and (max-width: 1140px) {
@@ -211,7 +265,7 @@ export default ({ small }: { small?: boolean }) => (
         <Block>
             {small ? (
                 <div className={ctaSmall}>
-                    <div className={dotsLeft} />
+                    <div className={dotsLeftSmall} />
                     <div className={content}>
                         <Heading>Start a great community today</Heading>
                         <ul className={list}>
@@ -220,10 +274,10 @@ export default ({ small }: { small?: boolean }) => (
                             <li className={item}>Free</li>
                         </ul>
                     </div>
-                    <a className={button} href="#">
+                    <a className={button} href="https://next.openland.com/invite/h2BGtL">
                         Start community
                     </a>
-                    <div className={dotsRight} />
+                    <div className={dotsRightSmall} />
                 </div>
             ) : (
                 <div className={cta}>
@@ -234,7 +288,7 @@ export default ({ small }: { small?: boolean }) => (
                     <p className={text}>
                         Openland is the best place to start and grow inspiring communities
                     </p>
-                    <a className={button} href="#">
+                    <a className={button} href="https://next.openland.com/invite/h2BGtL">
                         Start community
                     </a>
                     <div className={dotsRight} />

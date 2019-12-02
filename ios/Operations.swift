@@ -2391,6 +2391,25 @@ private let MyStickersSelector = obj(
 private let MySuccessfulInvitesCountSelector = obj(
             field("mySuccessfulInvitesCount", "mySuccessfulInvitesCount", notNull(scalar("Int")))
         )
+private let OauthContextSelector = obj(
+            field("oauthContext", "context", arguments(fieldValue("code", refValue("code"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("app", "app", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("clientId", "clientId", notNull(scalar("String"))),
+                            field("clientSecret", "clientSecret", notNull(scalar("String"))),
+                            field("owner", "owner", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    fragment("User", UserTinySelector)
+                                ))),
+                            field("scopes", "scopes", notNull(list(notNull(scalar("String"))))),
+                            field("title", "title", notNull(scalar("String")))
+                        ))),
+                    field("code", "code", notNull(scalar("String"))),
+                    field("redirectUrl", "redirectUrl", notNull(scalar("String"))),
+                    field("state", "state", notNull(scalar("String")))
+                ))
+        )
 private let OnlineSelector = obj(
             field("user", "user", arguments(fieldValue("id", refValue("userId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -4107,6 +4126,12 @@ class Operations {
         "query MySuccessfulInvitesCount{mySuccessfulInvitesCount}",
         MySuccessfulInvitesCountSelector
     )
+    let OauthContext = OperationDefinition(
+        "OauthContext",
+        .query, 
+        "query OauthContext($code:String!){context:oauthContext(code:$code){__typename app{__typename clientId clientSecret owner{__typename ...UserTiny}scopes title}code redirectUrl state}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}",
+        OauthContextSelector
+    )
     let Online = OperationDefinition(
         "Online",
         .query, 
@@ -5124,6 +5149,7 @@ class Operations {
         if name == "MyOrganizations" { return MyOrganizations }
         if name == "MyStickers" { return MyStickers }
         if name == "MySuccessfulInvitesCount" { return MySuccessfulInvitesCount }
+        if name == "OauthContext" { return OauthContext }
         if name == "Online" { return Online }
         if name == "Organization" { return Organization }
         if name == "OrganizationByPrefix" { return OrganizationByPrefix }

@@ -137,7 +137,7 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
         showAttachMenu((type, name, path, size) => {
             setSending(true);
 
-            UploadManagerInstance.registerSimpleUpload(
+            UploadManagerInstance.registerUpload(
                 name,
                 path,
                 {

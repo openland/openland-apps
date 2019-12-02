@@ -4,7 +4,7 @@ import Block from './block';
 import Heading from './heading';
 
 const root = css`
-    margin-top: 175px;
+    margin-top: 173px;
 
     @media (min-width: 768px) and (max-width: 960px) {
         margin-top: 75px;
@@ -40,26 +40,30 @@ const card = css`
 `;
 
 const img = css`
+    flex-shrink: 0;
     width: 393px;
+    height: 339px;
+    @media (max-width: 960px) {
+        display: none;
+    }
+`;
 
-    @media (min-width: 768px) and (max-width: 960px) {
-        width: 100%;
-        height: 358px;
+const imgNarrow = css`
+    display: none;
+    height: 339px;
+    @media (max-width: 960px) {
+        display: block;
     }
 
     @media (max-width: 768px) {
-        width: 100%;
-        height: 200px;
+        max-width: 100%;
+        height: auto;
         border-radius: 16px;
     }
-
-    flex-shrink: 0;
-    background: url('/static/landing/testimonials.jpg');
-    background-size: cover;
 `;
 
 const content = css`
-    padding: 38px;
+    padding: 23px 38px;
 
     @media (max-width: 768px) {
         padding: 38px 0;
@@ -68,22 +72,22 @@ const content = css`
 
 const quotes = css`
     @media (max-width: 768px) {
-        width: 34px
-        height: 34px;
+        width: 25px
+        height: 25px;
     }
 `;
 
 const text = css`
-    margin-top: 15px;
+    margin-top: 10px;
 
-    @media (min-width: 1140px) {
-        font-size: 26px;
+    @media (min-width: 1160px) {
+        font-size: 24px;
         line-height: 44px;
     }
 
     @media (min-width: 960px) and (max-width: 1140px) {
         font-size: 22px;
-        line-height: 38px;
+        line-height: 36px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
@@ -98,7 +102,7 @@ const text = css`
 `;
 
 const author = css`
-    margin-top: 27px;
+    margin-top: 30px;
     display: flex;
     align-items: center;
 `;
@@ -172,7 +176,8 @@ export default () => (
                 <Heading>See your community thrive</Heading>
             </div>
             <div className={card}>
-                <div className={img} />
+                <img src="/static/landing/testimonials.jpg" className={img} />
+                <img src="/static/landing/testimonials-narrow.jpg" className={imgNarrow} />
                 <div className={content}>
                     <img
                         src="/static/landing/testimonials-quotes.svg"

@@ -1,0 +1,19 @@
+query OauthContext($code: String!) {
+  context: oauthContext(code: $code) {
+    __typename
+    app {
+      __typename
+      clientId
+      clientSecret
+      owner {
+        __typename
+        ...UserTiny
+      }
+      scopes
+      title
+    }
+    code
+    redirectUrl
+    state
+  }
+}

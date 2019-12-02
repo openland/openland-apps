@@ -16,6 +16,7 @@ import * as FeatureFlag from './queries/FeatureFlag';
 import * as Feed from './queries/Feed';
 import * as Matchmaking from './queries/Matchmaking';
 import * as MyNotificationsCenter from './queries/MyNotificationsCenter';
+import * as Oauth from './queries/Oauth';
 import * as Organization from './queries/Organization';
 import * as Permissions from './queries/Permissions';
 import * as Report from './queries/Report';
@@ -200,6 +201,7 @@ export const MyNotificationsCenterSubscription = typedSubscription<Types.MyNotif
 export const MyNotificationCenterQuery = typedQuery<Types.MyNotificationCenter, {}>(MyNotificationsCenter.MyNotificationCenterQuery);
 export const MyNotificationCenterMarkSeqReadMutation = typedMutation<Types.MyNotificationCenterMarkSeqRead, Types.MyNotificationCenterMarkSeqReadVariables>(MyNotificationsCenter.MyNotificationCenterMarkSeqReadMutation);
 export const ReadNotificationMutation = typedMutation<Types.ReadNotification, Types.ReadNotificationVariables>(MyNotificationsCenter.ReadNotificationMutation);
+export const OauthContextQuery = typedQuery<Types.OauthContext, Types.OauthContextVariables>(Oauth.OauthContextQuery);
 export const MyOrganizationsQuery = typedQuery<Types.MyOrganizations, {}>(Organization.MyOrganizationsQuery);
 export const UpdateOrganizationMutation = typedMutation<Types.UpdateOrganization, Types.UpdateOrganizationVariables>(Organization.UpdateOrganizationMutation);
 export const OrganizationQuery = typedQuery<Types.Organization, Types.OrganizationVariables>(Organization.OrganizationQuery);

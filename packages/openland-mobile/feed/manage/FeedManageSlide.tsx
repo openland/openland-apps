@@ -191,7 +191,7 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
         setCoverLocalPath(response.uri);
         onChangeCoverAlign(oldCoverAlign || (text && text.length > 0 ? SlideCoverAlign.Top : SlideCoverAlign.Cover));
 
-        UploadManagerInstance.registerSimpleUpload(
+        UploadManagerInstance.registerUpload(
             'image.jpg',
             response.uri,
             {

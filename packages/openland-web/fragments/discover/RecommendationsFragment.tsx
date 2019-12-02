@@ -23,7 +23,10 @@ export const RecommendationsFragment = React.memo(() => {
     return (
         <React.Suspense fallback={null}>
             {tab === 'start' && (
-                <DiscoverStart onSkip={null} onStartClick={onStartClick} noBackSkipLogo={true} />
+                <>
+                    <UHeader documentTitle="Recommendations" />
+                    <DiscoverStart onSkip={null} onStartClick={onStartClick} noBackSkipLogo={true} />
+                </>
             )}
             {tab === 'discover' && (
                 <>

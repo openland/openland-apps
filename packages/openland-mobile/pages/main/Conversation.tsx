@@ -214,7 +214,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     handleAttach = () => {
         showAttachMenu((type, name, path, size) => {
-            UploadManagerInstance.registerUpload(this.props.chat.id, name, path, size);
+            UploadManagerInstance.registerMessageUpload(this.props.chat.id, name, path, size);
         });
     }
 

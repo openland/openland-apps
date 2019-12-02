@@ -4,7 +4,7 @@ import Block from './block';
 import Heading from './heading';
 
 const root = css`
-    @media (min-width: 1140px) {
+    @media (min-width: 1160px) {
         margin-top: 197px;
     }
 
@@ -24,6 +24,7 @@ const root = css`
 const content = css`
     display: flex;
     align-items: center;
+    position: relative;
 `;
 
 const list = css`
@@ -43,13 +44,18 @@ const list = css`
 const item = css`
     width: 350px;
     margin-top: 30px;
-    margin-right: 40px;
+    margin-right: 53px;
 
     display: flex;
 
     @media (min-width: 768px) and (max-width: 1140px) {
         margin-right: 20px;
         width: 300px;
+    }
+
+    @media (max-width: 768px) {
+        width: 70%;
+        margin-right: 0;
     }
 `;
 
@@ -127,7 +133,7 @@ const link = css`
         display: inline-block;
         content: '';
 
-        background: url('/static/landing/link-arrow.svg') no-repeat;
+        background: url('https://cdn.openland.com/shared/landing/link-arrow.svg') no-repeat;
         background-size: contain;
 
         transform: translateY(-50%);
@@ -168,8 +174,11 @@ const wrapper = css`
 const img = css`
     flex-grow: 2;
     height: auto;
+    position: absolute;
+    right: -20px;
+    top: 0;
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1160px) {
         width: 402px;
     }
 
@@ -238,7 +247,7 @@ export default () => (
                                 <div className={text}>
                                     Be a part of our community of community builders.{' '}
                                     <div className={linkWrapper}>
-                                        <a href="#" className={link}>
+                                        <a href="/invite/uj4m8bo" className={link}>
                                             Join now
                                         </a>
                                     </div>
@@ -257,7 +266,7 @@ export default () => (
                                 <div className={text}>
                                     Have questions about getting started?{' '}
                                     <div className={linkWrapper}>
-                                        <a href="#" className={link}>
+                                        <a href="/invite/Ryq9hof" className={link}>
                                             Let's chat
                                         </a>
                                     </div>

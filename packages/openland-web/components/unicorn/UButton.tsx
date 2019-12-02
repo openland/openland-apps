@@ -37,7 +37,7 @@ const buttonWrapperStyle = css`
 `;
 
 const squareStyle = css`
-    border-radius: 8px;
+    border-radius: 8px !important;
 `;
 
 const disableStyle = css`

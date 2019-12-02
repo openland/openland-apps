@@ -13,7 +13,7 @@ const RNSAnimatedViewManager = NativeModules.RNSAnimatedViewManager as {
 };
 const RNSAnimatedEventEmitter = new NativeEventEmitter(NativeModules.RNSAnimatedEventEmitter);
 
-export type SAnimatedPropertyName = 'translateX' | 'translateY' | 'opacity' | 'ios-width' | 'ios-height';
+export type SAnimatedPropertyName = 'translateX' | 'translateY' | 'opacity' | 'scale' | 'ios-width' | 'ios-height';
 export type SAnimatedPropertyAnimator = (name: string, property: SAnimatedPropertyName, from: number, to: number) => void;
 
 //

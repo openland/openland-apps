@@ -6,6 +6,7 @@ export class SAnimatedShadowView {
     private readonly _opacity: SAnimatedProperty;
     private readonly _translateX: SAnimatedProperty;
     private readonly _translateY: SAnimatedProperty;
+    private readonly _scale: SAnimatedProperty;
     private readonly _iosWidth: SAnimatedProperty;
     private readonly _iosHeight: SAnimatedProperty;
 
@@ -21,6 +22,20 @@ export class SAnimatedShadowView {
             this._opacity.startDynamic(value);
         } else {
             this._opacity.stopDynamic();
+        }
+    }
+
+    get scale() {
+        return this._scale.value;
+    }
+    set scale(value: number) {
+        this._scale.value = value;
+    }
+    set scaleDynamic(value: Animated.AnimatedInterpolation | undefined) {
+        if (value) {
+            this._scale.startDynamic(value);
+        } else {
+            this._scale.stopDynamic();
         }
     }
 
@@ -52,9 +67,10 @@ export class SAnimatedShadowView {
         this._iosHeight.value = value;
     }
 
-    constructor(name: string, initial?: { opacity?: number, translateX?: number, translateY?: number }) {
+    constructor(name: string, initial?: { opacity?: number, scale?: number, translateX?: number, translateY?: number }) {
         this.name = name;
         this._opacity = new SAnimatedProperty(name, 'opacity', initial && initial.opacity !== undefined ? initial.opacity : 1);
+        this._scale = new SAnimatedProperty(name, 'scale', initial && initial.scale !== undefined ? initial.scale : 1);
         this._translateX = new SAnimatedProperty(name, 'translateX', initial && initial.translateX !== undefined ? initial.translateX : 0);
         this._translateY = new SAnimatedProperty(name, 'translateY', initial && initial.translateY !== undefined ? initial.translateY : 0);
         this._iosWidth = new SAnimatedProperty(name, 'ios-width', 0);

@@ -3,7 +3,11 @@ import { css, cx } from 'linaria';
 import Block from './block';
 
 const root = css`
-    padding: 32px 0;
+    padding: 5px 0;
+    @media (max-width: 768px) {
+        padding-bottom: 40px;
+        padding-top: 20px;
+    }
     background: #f7fafc;
 `;
 
@@ -14,37 +18,42 @@ const footer = css`
 
     @media (max-width: 768px) {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
     }
 `;
 
-const logo = css`
-    @media (max-width: 768px) {
-        margin-bottom: 24px;
-    }
-`;
+const logo = css``;
 
 const menu = css`
-    list-stype-type: none;
-    display: inline-block;
-    margin: -18px;
-    @media (max-width: 768px) {
-        margin-bottom: 10px;
+    list-style-type: none;
+    position: relative;
+    margin: 10px -20px;
+    @media (max-width: 960px) {
+        margin: 10px -10px;
+    }
+
+    display: flex;
+    flex-wrap: wrap;
+
+    @media (min-width: 1140px) {
+        left: 25px;
     }
 `;
 
 const menuItem = css`
     display: inline-block;
-    margin: 18px;
-
-    position: relative;
-
-    @media (max-width: 768px) {
+    margin: 20px;
+    @media (max-width: 960px) {
+        margin: 10px;
     }
 `;
 
 const menuLink = css`
     font-size: 18px;
+
+    @media (max-width: 960px) {
+        font-size: 16px;
+    }
     color: #9393a7;
     position: relative;
 
@@ -76,25 +85,28 @@ const social = css`
     position: relative;
 
     @media (max-width: 768px) {
-        margin-top: 22px;
+        margin-top: 35px;
         &:before {
+            position: absolute;
             display: inline-block;
             content: 'Follow us';
+            left: 5px;
+            top: -20px;
+
             font-size: 14px;
             line-height: 17px;
             color: #9393a7;
-
-            position: absolute;
-
-            top: -17px;
-            left: 10px;
         }
+    }
+
+    @media (min-width: 1140px) {
+        left: 12px;
     }
 `;
 
 const socialItem = css`
     display: inline-block;
-    margin: 10px;
+    margin: 5px;
     width: 36px;
     height: 36px;
     display: inline-flex;
@@ -130,12 +142,6 @@ const socialLogo = css`
     }
 `;
 
-const hide = css`
-    @media (min-width: 768px) and (max-width: 960px) {
-        display: none;
-    }
-`;
-
 const hideMobile = css`
     @media (max-width: 768px) {
         display: none;
@@ -145,23 +151,24 @@ const hideMobile = css`
 const apps = css`
     display: none;
     position: relative;
+    margin-right: 10px;
+    margin-top: 25px;
 
     @media (max-width: 768px) {
         display: inline-block;
-        margin-top: 22px;
+        margin-top: 40px;
+    }
 
-        &:before {
-            display: inline-block;
-            content: 'Install the app';
-            font-size: 14px;
-            line-height: 17px;
-            color: #9393a7;
+    &:before {
+        position: absolute;
+        display: inline-block;
+        content: 'Install the app';
+        left: 7px;
+        top: -20px;
 
-            position: absolute;
-
-            top: -17px;
-            left: 7px;
-        }
+        font-size: 14px;
+        line-height: 17px;
+        color: #9393a7;
     }
 `;
 
@@ -172,14 +179,13 @@ const appsLink = css`
 
 const links = css`
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap-reverse;
     align-items: center;
-    margin: -10px;
+    margin: -5px;
 `;
 
 const menuItemWrapper = css`
     display: inline-block;
-    margin-top: -10px;
 `;
 
 const popup = css`
@@ -196,16 +202,8 @@ const popup = css`
     padding: 8px 0;
     z-index: 5;
     background: white;
-
-    // &:before {
-    //     position: absolute;
-    //     top: -50px;
-    //     display: block;
-    //     content: '';
-    //     width: 100%;
-    //     height: 50px;
-    // }
 `;
+
 const popupItem = css`
     line-height: 40px;
     padding: 0 20px;
@@ -259,7 +257,7 @@ export default () => {
                     <img className={logo} src="/static/landing/logo.svg" width="120" height="37" />
                     <ul className={menu}>
                         <li className={menuItem}>
-                            <a className={menuLink} href="#">
+                            <a className={menuLink} href="/next/about">
                                 About
                             </a>
                         </li>
@@ -274,7 +272,7 @@ export default () => {
                                         className={popupCloser}
                                         onClick={() => appsSetOpen(false)}
                                     />
-                                    <a className={popupItem} href="#">
+                                    <a className={popupItem} href="https://oplnd.com/ios">
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/ios.svg"
@@ -284,7 +282,7 @@ export default () => {
                                         />
                                         <span className={popupText}>iOS</span>
                                     </a>
-                                    <a className={popupItem} href="#">
+                                    <a className={popupItem} href="https://oplnd.com/android">
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/android.svg"
@@ -295,7 +293,7 @@ export default () => {
                                         <span className={popupText}>Android</span>
                                     </a>
                                     <div className={popupSeparator} />
-                                    <a className={popupItem} href="#">
+                                    <a className={popupItem} href="https://oplnd.com/mac">
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/mac.svg"
@@ -305,7 +303,7 @@ export default () => {
                                         />
                                         <span className={popupText}>Mac</span>
                                     </a>
-                                    <a className={popupItem} href="#">
+                                    <a className={popupItem} href="https://oplnd.com/windows">
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/win.svg"
@@ -315,7 +313,7 @@ export default () => {
                                         />
                                         <span className={popupText}>Windows</span>
                                     </a>
-                                    <a className={popupItem} href="#">
+                                    <a className={popupItem} href="https://oplnd.com/linux">
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/linux.svg"
@@ -329,7 +327,7 @@ export default () => {
                             )}
                         </li>
                         <li className={menuItem}>
-                            <a className={menuLink} href="#">
+                            <a className={menuLink} href="/invite/EGVDClq">
                                 Careers
                             </a>
                         </li>
@@ -348,26 +346,41 @@ export default () => {
                                             className={popupCloser}
                                             onClick={() => legalSetOpen(false)}
                                         />
-                                        <a className={popupItem} href="#">
+                                        <a className={popupItem} href="/next/privacy">
                                             <span className={popupText}>Privacy Policy</span>
                                         </a>
-                                        <a className={popupItem} href="#">
+                                        <a className={popupItem} href="/next/terms">
                                             <span className={popupText}>Terms of Service</span>
                                         </a>
                                     </div>
                                 )}
                             </li>
-                            <li className={cx(menuItem, hide)}>
-                                <a className={menuLink} href="#">
+                            <li className={menuItem}>
+                                <a className={menuLink} href="/invite/Ryq9hof">
                                     Chat with us
                                 </a>
                             </li>
                         </div>
                     </ul>
                     <div className={links}>
+                        <div className={apps}>
+                            <a href="https://oplnd.com/ios" className={appsLink}>
+                                <img src="/static/landing/apps-ios.svg" width="120" height="40" />
+                            </a>
+                            <a href="https://oplnd.com/android" className={appsLink}>
+                                <img
+                                    src="/static/landing/apps-android.svg"
+                                    width="130"
+                                    height="40"
+                                />
+                            </a>
+                        </div>
                         <ul className={social}>
                             <li className={socialItem} title="Instagram">
-                                <a className={socialLink} href="#">
+                                <a
+                                    className={socialLink}
+                                    href="https://www.instagram.com/openlandhq/"
+                                >
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/instagram.svg"
@@ -378,7 +391,7 @@ export default () => {
                                 </a>
                             </li>
                             <li className={socialItem} title="Twitter">
-                                <a className={socialLink} href="#">
+                                <a className={socialLink} href="https://twitter.com/OpenlandHQ">
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/twitter.svg"
@@ -389,7 +402,10 @@ export default () => {
                                 </a>
                             </li>
                             <li className={socialItem} title="Facebook">
-                                <a className={socialLink} href="#">
+                                <a
+                                    className={socialLink}
+                                    href="https://www.facebook.com/openlandhq/"
+                                >
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/facebook.svg"
@@ -400,7 +416,7 @@ export default () => {
                                 </a>
                             </li>
                             <li className={socialItem} title="Angelist">
-                                <a className={socialLink} href="#">
+                                <a className={socialLink} href="https://angel.co/company/openland">
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/angelist.svg"
@@ -411,19 +427,6 @@ export default () => {
                                 </a>
                             </li>
                         </ul>
-
-                        <div className={apps}>
-                            <a href="#" className={appsLink}>
-                                <img src="/static/landing/apps-ios.svg" width="120" height="40" />
-                            </a>
-                            <a href="#" className={appsLink}>
-                                <img
-                                    src="/static/landing/apps-android.svg"
-                                    width="130"
-                                    height="40"
-                                />
-                            </a>
-                        </div>
                     </div>
                 </div>
             </Block>

@@ -15,6 +15,7 @@ class RNImageNode: ASDisplayNode {
   let node: ASImageNode
   var task: ImageTask? = nil
   private var url: String? = nil
+  private var currentTintColor: UIColor? = nil
   
   override init() {
     self.node = ASImageNode()
@@ -34,12 +35,13 @@ class RNImageNode: ASDisplayNode {
   }
 
   func setSpec(spec: AsyncImageSpec) {
-    if self.url != spec.url {
+    if self.url != spec.url || self.currentTintColor != spec.tintColor {
       // Cancel previous task
       if self.task != nil {
         self.task?.cancel()
       }
       self.url = spec.url
+      self.currentTintColor = spec.tintColor
       if spec.url != "" {
         let targetSize = CGSize(width: CGFloat(spec.style.width!) * UIScreen.main.scale, height: CGFloat(spec.style.height!) * UIScreen.main.scale)
         let targetUrl = URL(string: spec.url)!

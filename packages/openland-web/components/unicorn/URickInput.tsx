@@ -48,7 +48,7 @@ const quillStyle = css`
 
 const quillWithButtonStyle = css`
     .ql-editor {
-        padding-right: 72px;
+        padding-right: 80px;
     }
 `;
 
