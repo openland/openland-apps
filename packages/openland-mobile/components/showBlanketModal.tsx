@@ -26,6 +26,7 @@ interface BlanketModalProps {
     withoutWrapper?: boolean;
     overlayStyle?: ViewStyle;
     onCancel?: () => void;
+    ignoreSafeArea?: boolean;
 }
 
 class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: ThemeGlobal }>
@@ -164,7 +165,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
     )
 
     render() {
-        const { theme, withoutWrapper, overlayStyle } = this.props;
+        const { theme, withoutWrapper, overlayStyle, ignoreSafeArea } = this.props;
 
         return (
             <View width="100%" height="100%" flexDirection="column" alignItems="stretch">
@@ -218,8 +219,8 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
                         alignSelf="stretch"
                         flexDirection="column"
                         justifyContent="center"
-                        marginBottom={this.props.safe.bottom}
-                        marginTop={this.props.safe.top + 48}
+                        marginBottom={!ignoreSafeArea ? this.props.safe.bottom : undefined}
+                        marginTop={!ignoreSafeArea ? this.props.safe.top + 48 : undefined}
                         pointerEvents="box-none"
                     >
                         {!withoutWrapper ? (
@@ -246,6 +247,7 @@ export function showBlanketModal(
         withoutWrapper?: boolean;
         overlayStyle?: ViewStyle;
         onCancel?: () => void;
+        ignoreSafeArea?: boolean;
     },
 ) {
     showModal(modal => {
