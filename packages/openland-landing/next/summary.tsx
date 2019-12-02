@@ -33,7 +33,7 @@ const list = css`
 
     @media (max-width: 768px) {
         font-size: 16px;
-        line-height: 2.5;
+        line-height: 2.4;
     }
 `;
 
@@ -59,8 +59,8 @@ const item = css`
 `;
 
 const summaryImage = css`
-    height: auto;
     max-width: 100%;
+    height: auto;
 
     position: relative;
 
@@ -74,12 +74,17 @@ const summaryImage = css`
         width: 514px;
     }
 
-    @media (min-width: 768px) and (max-width: 960px) {
-        width: 728px;
-    }
-
     @media (max-width: 768px) {
+        max-width: 100%;
+        height: auto;
         min-width: 280px;
+    }
+`;
+
+const headingWrapper = css`
+    @media (max-width: 768px) {
+        margin-top: 20px;
+        margin-bottom: -20px;
     }
 `;
 
@@ -88,7 +93,9 @@ export default () => (
         <Block>
             <div className={summary}>
                 <div className={listWrapper}>
-                    <Heading>Built for mission-driven organizers</Heading>
+                    <div className={headingWrapper}>
+                        <Heading>Built for mission-driven organizers</Heading>
+                    </div>
                     <ul className={list}>
                         <li className={item}>Find people who share your values</li>
                         <li className={item}>Share and organize knowledge</li>

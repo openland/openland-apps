@@ -14,6 +14,7 @@ const root = css`
 
     @media (max-width: 768px) {
         margin-top: 0;
+        padding: 40px 0;
     }
 
     padding: 80px 0;
@@ -54,7 +55,8 @@ const item = css`
     }
 
     @media (max-width: 768px) {
-        width: 70%;
+        width: 100%;
+        max-width: 400px;
         margin-right: 0;
     }
 `;

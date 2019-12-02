@@ -17,7 +17,8 @@ const header = css`
 
 const content = css`
     @media (max-width: 768px) {
-        text-align: center;
+        margin-bottom: -30px;
+        width: 509px;
     }
 `;
 
@@ -146,7 +147,7 @@ const logo = css`
 const screenshotMobile = css`
     display: none;
     width: 100%;
-    max-width: 560px;
+    max-width: 509px;
     height: auto;
     margin-top: 54px;
     margin-left: auto;
@@ -249,10 +250,16 @@ const popupSectionText = css`
 
 const popupSections = css`
     display: grid;
-    grid-template-columns: repeat(auto-fill, 220px);
+    grid-template-columns: repeat(auto-fill, 200px);
     grid-gap: 40px;
     justify-content: center;
     text-align: left;
+`;
+
+const hideMobile = css`
+    @media (max-width: 768px) {
+        display: none;
+    }
 `;
 
 export default () => {
@@ -269,7 +276,9 @@ export default () => {
                         className={logo}
                     />
                     <div className={content}>
-                        <Heading>All-in-one platform you'll love</Heading>
+                        <Heading>
+                            All-in-one platform <span className={hideMobile}>you'll love</span>
+                        </Heading>
                         <div className={listWrapper}>
                             <li className={list}>
                                 <ul className={item}>Member profiles</ul>

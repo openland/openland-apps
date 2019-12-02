@@ -59,11 +59,13 @@ const text = css`
 `;
 
 const link = css`
-    display: block;
+    display: inline-block;
     font-weight: bold;
     font-size: 20px;
     line-height: 24px;
     margin-top: 30px;
+
+    position: relative;
 
     @media (min-width: 768px) and (max-width: 1140px) {
         font-size: 20px;
@@ -75,6 +77,29 @@ const link = css`
 
     @media (max-width: 400px) {
         font-size: 16px;
+    }
+
+    &,
+    &:hover,
+    &:focus {
+        text-decoration: none;
+    }
+
+    &:after {
+        display: inline-block;
+        content: '';
+
+        background: url('https://cdn.openland.com/shared/landing/arrow-about.svg') no-repeat;
+        background-size: contain;
+
+        transform: translateY(-50%);
+
+        position: absolute;
+        top: 50%;
+
+        width: 15px;
+        height: 15px;
+        right: -20px;
     }
 `;
 

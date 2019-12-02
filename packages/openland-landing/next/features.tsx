@@ -22,7 +22,7 @@ const root = css`
     }
 
     @media (max-width: 768px) {
-        padding: 50px 0;
+        margin-top: 110px;
     }
 
     background: linear-gradient(180deg, #f6f9fb 0%, rgba(255, 255, 255, 0) 100%);
@@ -69,6 +69,7 @@ const feature = css`
 
     @media (max-width: 768px) {
         padding: 20px;
+        margin-top: 40px;
         width: initial;
     }
 `;
