@@ -29,7 +29,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
                 if (props.router.params.share.files) {
                     for (let attach of props.router.params.share.files) {
                         let path = attach.split('/');
-                        UploadManagerInstance.registerUpload(id, path[path.length - 1], attach);
+                        UploadManagerInstance.registerMessageUpload(id, path[path.length - 1], attach);
                     }
                 }
 

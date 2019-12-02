@@ -37,7 +37,7 @@ export class UploadManager {
         return this.getWatcher(conversationId).watch(handler);
     }
 
-    registerUpload = async (conversationId: string, name: string, uri: string, fileSize?: number) => {
+    registerMessageUpload = async (conversationId: string, name: string, uri: string, fileSize?: number) => {
         if (!(await checkPermissions('android-storage'))) {
             return;
         }
@@ -70,7 +70,7 @@ export class UploadManager {
         this.checkQueue();
     }
 
-    registerSimpleUpload = async (name: string, uri: string, callbacks: Callbacks, fileSize?: number) => {
+    registerUpload = async (name: string, uri: string, callbacks: Callbacks, fileSize?: number) => {
         if (!(await checkPermissions('android-storage'))) {
             return;
         }
