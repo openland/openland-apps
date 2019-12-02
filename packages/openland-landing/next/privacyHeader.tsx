@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 
 let contentRootClass = css`
-    padding: 22px 0 26px;
+    padding: 46px 0 26px;
 
     @media (max-width: 767px) {
         padding: 0 0 26px;
@@ -31,16 +31,15 @@ let contentMenuClass = css`
         list-style: none;
         margin: 0;
         padding: 16px 16px 17px;
-        border: 1px solid rgba(237, 239, 243, 0.6);
+        background-color: #f7fafc;
         border-radius: 6px;
         display: block;
     }
     li {
-        color: rgba(31, 52, 73, 0.8);
         margin: 0 0 11px;
         font-size: 14px;
         line-height: 20px;
-        font-weight: 600;
+        color: #272750;
 
         &:last-child {
             margin: 0;
