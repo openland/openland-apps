@@ -104,7 +104,6 @@ const ctaSmall = css`
     align-items: center;
     justify-content: center;
     margin-top: 200px;
-    margin-left: -30px;
     margin-bottom: 180px;
 
     @media (max-width: 1140px) {

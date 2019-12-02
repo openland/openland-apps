@@ -179,7 +179,7 @@ const mobileMenuHeader = css`
     align-items: center;
     justify-content: space-between;
     padding: 20px;
-    padding-top: 22px;
+    padding-top: 16px;
 `;
 
 const mobileMenuClose = css`
