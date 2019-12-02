@@ -118,7 +118,7 @@ const link = css`
         display: inline-block;
         content: '';
 
-        background: url('/static/landing/link-arrow.svg') no-repeat;
+        background: url('https://cdn.openland.com/shared/landing/link-arrow.svg') no-repeat;
         background-size: contain;
 
         transform: translateY(-50%);

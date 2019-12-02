@@ -87,7 +87,7 @@ const text = css`
 
     @media (min-width: 960px) and (max-width: 1140px) {
         font-size: 22px;
-        line-height: 38px;
+        line-height: 36px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
