@@ -5,7 +5,7 @@ import Block from './block';
 const root = css`
     padding: 5px 0;
     @media (max-width: 768px) {
-        padding-bottom: 40px;
+        padding-bottom: 30px;
         padding-top: 20px;
     }
     background: #f7fafc;

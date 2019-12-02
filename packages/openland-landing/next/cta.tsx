@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import Block from './block';
 import Heading from './heading';
 
@@ -11,6 +11,11 @@ const cta = css`
     padding-top: 160px;
     padding-bottom: 100px;
     margin-bottom: 70px;
+
+    @media (max-width: 768px) {
+        padding-top: 80px;
+        padding-bottom: 0;
+    }
 `;
 
 const headline = css`
@@ -50,6 +55,7 @@ const text = css`
 
     @media (max-width: 768px) {
         font-size: 18px;
+        margin-bottom: 60px;
     }
 
     margin-top: 25px;
@@ -109,6 +115,10 @@ const ctaSmall = css`
     @media (max-width: 1140px) {
         flex-direction: column;
         text-align: center;
+    }
+
+    @media (max-width: 768px) {
+        margin: 70px 0;
     }
 `;
 
@@ -260,6 +270,12 @@ const dotsRightSmall = css`
     }
 `;
 
+const hideMobile = css`
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
 export default ({ small }: { small?: boolean }) => (
     <div className={root}>
         <Block>
@@ -267,10 +283,10 @@ export default ({ small }: { small?: boolean }) => (
                 <div className={ctaSmall}>
                     <div className={dotsLeftSmall} />
                     <div className={content}>
-                        <Heading>Start a great community today</Heading>
+                        <Heading>Start a great community&nbsp;today</Heading>
                         <ul className={list}>
                             <li className={item}>Seconds to launch</li>
-                            <li className={item}>Real-time support</li>
+                            <li className={cx(item, hideMobile)}>Real-time support</li>
                             <li className={item}>Free</li>
                         </ul>
                     </div>
