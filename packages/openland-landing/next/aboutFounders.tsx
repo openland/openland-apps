@@ -59,10 +59,9 @@ let founderNameClass = css`
 `;
 
 let founderPositionClass = css`
-    color: rgba(31, 52, 73, 0.5);
     font-size: 16px;
     line-height: 22px;
-    font-weight: 600;
+    color: #525273;
 
     @media (max-width: 767px) {
         font-size: 14px;
@@ -83,11 +82,10 @@ let founderLinksClass = css`
 
 let founderLinkClass = css`
     margin: 0 20px 0 0;
-    color: rgba(31, 52, 73, 0.5);
+    color: #525273;
     text-decoration: none;
     font-size: 15px;
     line-height: 20px;
-    font-weight: 600;
     display: flex;
 
     svg * {
@@ -105,13 +103,13 @@ let founderLinkClass = css`
         }
     }
     .linkedin-icon {
-        width: 20px;
-        height: 20px;
+        width: 22px;
+        height: 22px;
     }
     .mail-icon {
-        margin: 2px 8px -2px 0;
-        width: 18px;
-        height: 18px;
+        margin: 0 8px 0 0;
+        width: 22px;
+        height: 22px;
     }
 
     @media (max-width: 767px) {
@@ -138,10 +136,10 @@ const FoundersItem = (props: FoundersItemProps) => (
             <div className={founderPositionClass}>{props.position}</div>
             <div className={founderLinksClass}>
                 <a href={props.linkedin} className={founderLinkClass}>
-                    <LinkedInIcon className="linkedin-icon" />
+                    <img className="linkedin-icon" src="/static/landing/icons/in.svg" />
                 </a>
                 <a href={'mailto:' + props.mail} className={founderLinkClass}>
-                    <MailIcon className="mail-icon" />
+                    <img className="mail-icon" src="/static/landing/icons/email.svg" />
                     {props.mail}
                 </a>
             </div>
@@ -152,14 +150,14 @@ const FoundersItem = (props: FoundersItemProps) => (
 export default () => (
     <XView flexDirection="row" flexWrap="wrap">
         <FoundersItem
-            photo="/static/landing/yury.png"
+            photo="/static/landing/yury-new.png"
             name="Yury Lifshits"
             position="CEO"
             linkedin="https://www.linkedin.com/in/lifshits/"
             mail="yury@openland.com"
         />
         <FoundersItem
-            photo="/static/landing/steve.png"
+            photo="/static/landing/steve-new.png"
             name="Steve Korshakov"
             position="CTO"
             linkedin="https://www.linkedin.com/in/ex3ndr/"
