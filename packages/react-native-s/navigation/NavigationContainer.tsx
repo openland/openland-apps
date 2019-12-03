@@ -13,6 +13,7 @@ import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderCoordinator } from './header/HeaderCoordinator';
 import { HeaderComponentLoader } from './header/HeaderComponentLoader';
 import { ConnectionStatusComponent } from './header/ConnectionStatusComponent';
+import uuid from 'uuid';
 
 const styles = StyleSheet.create({
     fill: {
@@ -58,11 +59,12 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
     private swipeCurrentKey?: string;
     private swipePrevKey?: string;
     private headerCoordinator: HeaderCoordinator;
+    private headerKey = uuid();
 
     constructor(props: NavigationContainerProps) {
         super(props);
 
-        this.headerCoordinator = new HeaderCoordinator(props.manager.key, !!props.manager.parent, () => {
+        this.headerCoordinator = new HeaderCoordinator(this.headerKey, !!props.manager.parent, () => {
             return {
                 width: this.props.width,
                 height: this.props.height
@@ -544,6 +546,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         let header = (
             <View style={styles.absoluteFill} pointerEvents="box-none">
                 <HeaderComponentLoader
+                    k={this.headerKey}
                     style={this.props.style}
                     manager={this.props.manager}
                     navigateFrom={this.state.navigateFrom}
@@ -565,7 +568,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                 >
                     {pages}
                     {header}
-                    <ConnectionStatusComponent k={this.props.manager.key}/>
+                    <ConnectionStatusComponent k={this.headerKey} />
 
                 </ASSafeAreaProvider>
             </View>

@@ -171,7 +171,7 @@ class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactConte
                         view.alpha = a.from
                         anim.alpha(a.to)
                     }
-                    a.property == "opacity" -> {
+                    a.property == "scale" -> {
                         view.scaleX = a.from
                         view.scaleY = a.from
                         anim.scaleX(a.to)
