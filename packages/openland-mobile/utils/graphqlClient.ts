@@ -16,11 +16,11 @@ export function hasClient() {
     return !!cachedClient;
 }
 
-export function getClient(): OpenlandClient {
-    if (!cachedClient) {
+export function getClient(unsafe?: boolean): OpenlandClient {
+    if (!cachedClient && !unsafe) {
         throw Error('Client is not inited');
     }
-    return cachedClient;
+    return cachedClient!;
 }
 
 export function buildNativeClient(storage?: string, token?: string) {

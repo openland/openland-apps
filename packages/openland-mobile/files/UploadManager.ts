@@ -7,6 +7,7 @@ import { Image } from 'react-native';
 import { DownloadManagerInstance } from './DownloadManager';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 import UUID from 'uuid/v4';
+import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 
 export interface UploadState {
     status: UploadStatus;
@@ -27,6 +28,8 @@ interface Callbacks {
     onFail: () => void;
 }
 
+const MAX_FILE_SIZE = 1e+8;
+
 export class UploadManager {
 
     private _watchers = new Map<string, Watcher<UploadState>>();
@@ -42,6 +45,13 @@ export class UploadManager {
             return;
         }
 
+        let fallback = fileSize === undefined ? await RNFetchBlob.fs.stat(uri.replace('file://', '')) : undefined;
+
+        if ((fileSize || (fallback && fallback.size) || 0) > MAX_FILE_SIZE) {
+            AlertBlanket.alert("Files bigger than 100mb are not supported yet.");
+            return;
+        }
+
         const w = new Watcher<UploadState>();
         w.setState({ progress: 0, status: UploadStatus.UPLOADING });
         let messageId = getMessenger().engine.getConversation(conversationId).sendFile({
@@ -54,10 +64,8 @@ export class UploadManager {
                         Image.getSize(uri, (width, height) => res({ width, height }), e => onError(e));
                     });
                 }
-                if (fileSize === undefined) {
-                    RNFetchBlob.fs.stat(uri.replace('file://', ''))
-                        .then((s: any) => resolver({ name, uri, fileSize: s.size, isImage, imageSize }))
-                        .catch((e: any) => onError(e));
+                if (fallback) {
+                    resolver({ name, uri, fileSize: fallback.size, isImage, imageSize });
                 } else {
                     resolver({ name, uri, fileSize, isImage, imageSize });
                 }
@@ -74,7 +82,11 @@ export class UploadManager {
         if (!(await checkPermissions('android-storage'))) {
             return;
         }
-
+        let fallback = fileSize === undefined ? await RNFetchBlob.fs.stat(uri.replace('file://', '')) : undefined;
+        if ((fileSize || (fallback && fallback.size) || 0) > MAX_FILE_SIZE) {
+            AlertBlanket.alert("Files bigger than 100mb are not supported yet.");
+            return;
+        }
         const w = new Watcher<UploadState>();
         w.setState({ progress: 0, status: UploadStatus.UPLOADING });
 

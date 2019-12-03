@@ -104,13 +104,27 @@ const Body = (props: { files: File[][]; ctx: XModalController }) => {
     );
 };
 
+const MAX_FILE_SIZE = 1e+8;
 export const showAttachConfirm = (files: File[], callback: (files: UploadCareUploading[]) => void) => {
-    let filesRes = [[...files]];
-    const uploading = files.map(f => new UploadCareUploading(f));
+    let tooBig = false;
+    let filesFiltered = files.filter(f => {
+        let b = f.size > MAX_FILE_SIZE;
+        tooBig = tooBig || b;
+        return !b;
+    });
 
-    AlertBlanket
-        .builder()
-        .body(ctx => <Body files={filesRes} ctx={ctx} />)
-        .action('Send', async () => { await callback(uploading.filter(u => filesRes[0].includes(u.getSourceFile()))); })
-        .show();
+    let filesRes = [[...filesFiltered]];
+    const uploading = filesFiltered.map(f => new UploadCareUploading(f));
+
+    if (filesFiltered.length > 0) {
+        AlertBlanket
+            .builder()
+            .body(ctx => <Body files={filesRes} ctx={ctx} />)
+            .action('Send', async () => { await callback(uploading.filter(u => filesRes[0].includes(u.getSourceFile()))); })
+            .show();
+    }
+
+    if (tooBig) {
+        AlertBlanket.alert('Files bigger than 100mb are not supported yet.');
+    }
 };
