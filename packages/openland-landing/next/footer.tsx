@@ -217,15 +217,6 @@ const popupSeparator = css`
     margin-bottom: 8px;
 `;
 
-const popupCloser = css`
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    top: 0;
-    left: 0;
-`;
-
 export default () => {
     const [appsIsOpen, appsSetOpen] = React.useState<boolean>(false);
     const [legalIsOpen, legalSetOpen] = React.useState<boolean>(false);
@@ -242,16 +233,19 @@ export default () => {
                             </span>
                         </li>
                         <li className={cx(menuItem, hideMobile)}>
-                            <span className={menuLink} onClick={() => appsSetOpen(!appsIsOpen)}>
+                            <span
+                                className={menuLink}
+                                onClick={() => appsSetOpen(!appsIsOpen)}
+                                onMouseOver={() => appsSetOpen(!appsIsOpen)}
+                            >
                                 Apps
                             </span>
 
                             {appsIsOpen && (
-                                <div className={cx(popup, 'landingHeaderPopup')}>
-                                    <div
-                                        className={popupCloser}
-                                        onClick={() => appsSetOpen(false)}
-                                    />
+                                <div
+                                    className={cx(popup, 'landingHeaderPopup')}
+                                    onMouseLeave={() => appsSetOpen(false)}
+                                >
                                     <a className={popupItem} href="https://oplnd.com/ios">
                                         <img
                                             className={popupIcon}
@@ -316,16 +310,16 @@ export default () => {
                                 <span
                                     className={menuLink}
                                     onClick={() => legalSetOpen(!appsIsOpen)}
+                                    onMouseOver={() => legalSetOpen(!appsIsOpen)}
                                 >
                                     Legal
                                 </span>
 
                                 {legalIsOpen && (
-                                    <div className={cx(popup, 'landingHeaderPopup')}>
-                                        <div
-                                            className={popupCloser}
-                                            onClick={() => legalSetOpen(false)}
-                                        />
+                                    <div
+                                        className={cx(popup, 'landingHeaderPopup')}
+                                        onMouseLeave={() => legalSetOpen(false)}
+                                    >
                                         <span className={popupItem}>
                                             <XView path="/next/privacy">
                                                 <span className={popupText}>Privacy Policy</span>

@@ -143,15 +143,6 @@ const popupSeparator = css`
     margin-bottom: 8px;
 `;
 
-const popupCloser = css`
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    top: 0;
-    left: 0;
-`;
-
 const mobileMenu = css`
     z-index: 20;
 `;
@@ -354,13 +345,19 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                             Discover
                         </a>
                         <span className={menuItem}>
-                            <span className={trigger} onClick={() => setOpen(!isOpen)}>
+                            <span
+                                className={trigger}
+                                onClick={() => setOpen(!isOpen)}
+                                onMouseOver={() => setOpen(!isOpen)}
+                            >
                                 Apps
                             </span>
 
                             {isOpen && (
-                                <div className={cx(popup, 'landingHeaderPopup')}>
-                                    <div className={popupCloser} onClick={() => setOpen(false)} />
+                                <div
+                                    className={cx(popup, 'landingHeaderPopup')}
+                                    onMouseLeave={() => setOpen(false)}
+                                >
                                     <a className={popupItem} href="https://oplnd.com/ios">
                                         <img
                                             className={popupIcon}
