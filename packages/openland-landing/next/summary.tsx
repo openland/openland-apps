@@ -79,12 +79,18 @@ const summaryImage = css`
         height: auto;
         min-width: 280px;
     }
+
+    z-index: -1;
 `;
 
 const headingWrapper = css`
     @media (max-width: 768px) {
         margin-top: 20px;
         margin-bottom: -20px;
+    }
+
+    @media (min-width: 920px) {
+        white-space: nowrap;
     }
 `;
 

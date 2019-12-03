@@ -177,6 +177,8 @@ const popup = css`
     width: 100%;
     background-color: white;
     padding: 32px;
+    padding-top: 16px;
+    padding-right: 16px;
     box-shadow: 0px 9px 42px rgba(0, 0, 0, 0.07);
     border-radius: 32px;
     z-index: 20;
@@ -230,10 +232,10 @@ const popupHeading = css`
     font-size: 30px;
     line-height: 46px;
     color: #272750;
+    margin-bottom: 20px;
 `;
 
 const popupSection = css`
-    margin-top: 20px;
     display: inline-block;
 `;
 
@@ -256,9 +258,9 @@ const popupSectionText = css`
 
 const popupSections = css`
     display: grid;
-    grid-template-columns: repeat(auto-fill, 200px);
-    grid-gap: 40px;
-    justify-content: center;
+    grid-template-columns: repeat(auto-fill, 180px);
+    grid-gap: 20px;
+    // justify-content: center;
     text-align: left;
 `;
 

@@ -176,6 +176,8 @@ const popup = css`
     width: 100%;
     background-color: white;
     padding: 32px;
+    padding-top: 16px;
+    padding-right: 16px;
     box-shadow: 0px 9px 42px rgba(0, 0, 0, 0.07);
     border-radius: 32px;
     z-index: 20;
