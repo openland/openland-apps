@@ -3,7 +3,7 @@ import { InputValue } from './../types';
 function selectorValueKey(src: any): string {
     if (src === null) {
         return 'null';
-    } else if (src === 'string') {
+    } else if (typeof src === 'string') {
         return '"' + src + '"';
     } else if (Array.isArray(src)) {
         return '[' + src.map((v) => selectorValueKey(v)).join(',') + ']';
