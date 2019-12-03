@@ -8,13 +8,14 @@ const root = css`
 `;
 const aboutHeader = css`
     text-align: center;
-    padding-bottom: 86px;
+    padding-bottom: 50px;
     padding-top: 20px;
 `;
 
 const hero = css`
     width: 230px;
     height: auto;
+    margin-bottom: 30px;
 `;
 
 const subheading = css`
