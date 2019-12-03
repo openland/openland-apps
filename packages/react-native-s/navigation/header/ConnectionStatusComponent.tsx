@@ -11,9 +11,12 @@ import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 export const ConnectionStatusComponent = (props: { k: string }) => {
     let animate = new SAnimatedShadowView(`header-connecting-status-content-${props.k}`, { opacity: 0, translateY: -8, scale: 0.84 });
 
-    const client = useClient().client;
+    const client = useClient(true);
     const theme = useTheme();
     React.useEffect(() => {
+        if (!client) {
+            return;
+        }
         const showStatus = (show: boolean) => {
             SAnimated.beginTransaction();
             SAnimated.setDuration(0.15);
@@ -47,7 +50,7 @@ export const ConnectionStatusComponent = (props: { k: string }) => {
 
         // timeout to prevent showing "connecting" on app start
         setTimeout(() => {
-            return client.watchStatus(s => {
+            return client.client.watchStatus(s => {
                 showStatusDebaunced(s.status === 'connecting');
             });
         }, 1000);

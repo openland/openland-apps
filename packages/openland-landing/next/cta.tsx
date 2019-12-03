@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import Block from './block';
 import Heading from './heading';
 
@@ -11,15 +11,20 @@ const cta = css`
     padding-top: 160px;
     padding-bottom: 100px;
     margin-bottom: 70px;
+
+    @media (max-width: 768px) {
+        padding-top: 80px;
+        padding-bottom: 0;
+    }
 `;
 
 const headline = css`
     z-index: -1;
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         font-size: 80px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1920px) {
         font-size: 70px;
     }
 
@@ -40,17 +45,20 @@ const headlineGradient = css`
 `;
 
 const text = css`
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         font-size: 24px;
     }
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1920px) {
         font-size: 20px;
     }
 
     @media (max-width: 768px) {
         font-size: 18px;
+        margin-bottom: 60px;
     }
+
+    line-height: 1.5;
 
     margin-top: 25px;
     margin-bottom: 50px;
@@ -64,8 +72,8 @@ const button = css`
     box-shadow: 0px 6px 17px rgba(36, 139, 242, 0.32);
     color: var(--foregroundContrast);
 
-    will-change: color, background-color, box-shadow, transform;
-    transition: color 0.2s, background-color.2s, box-shadow 0.2s, transform 0.2s;
+    will-change: color, background-color, box-shadow;
+    transition: color 0.2s, background-color.2s, box-shadow 0.2s;
 
     &:hover,
     &:focus {
@@ -73,7 +81,6 @@ const button = css`
         text-decoration: none;
         background: #47a3ff;
         box-shadow: 0px 6px 27px rgba(36, 139, 242, 0.32);
-        transform: translateY(-4px);
         transition: color 0.01s, background-color.01s, box-shadow 0.01s, transform 0.2s;
     }
 
@@ -82,12 +89,12 @@ const button = css`
         transition: color 0.01s, background-color.01s, box-shadow 0.01s;
     }
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         font-size: 20px;
         padding: 13px 36px;
     }
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1920px) {
         font-size: 18px;
         padding: 11px 32px;
     }
@@ -106,16 +113,20 @@ const ctaSmall = css`
     margin-top: 200px;
     margin-bottom: 180px;
 
-    @media (max-width: 1140px) {
+    @media (max-width: 1920px) {
         flex-direction: column;
         text-align: center;
+    }
+
+    @media (max-width: 768px) {
+        margin: 70px 0;
     }
 `;
 
 const content = css`
     margin-right: 120px;
 
-    @media (max-width: 1140px) {
+    @media (max-width: 1920px) {
         margin-right: 0;
         margin-bottom: 36px;
     }
@@ -128,7 +139,7 @@ const list = css`
     color: #525273;
     margin-top: 16px;
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1920px) {
         font-size: 20px;
     }
 
@@ -162,11 +173,11 @@ const dotsLeft = css`
     top: 49%;
     transform: translateY(-50%);
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         left: -10018px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1920px) {
         left: -9985px;
     }
 
@@ -189,11 +200,11 @@ const dotsRight = css`
     top: 49%;
     transform: translateY(-50%);
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         right: -10018px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1920px) {
         right: -9985px;
     }
 
@@ -216,11 +227,11 @@ const dotsLeftSmall = css`
     top: 49%;
     transform: translateY(-50%);
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         left: -10018px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1920px) {
         left: -9985px;
     }
 
@@ -243,11 +254,11 @@ const dotsRightSmall = css`
     top: 49%;
     transform: translateY(-50%);
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         right: -10018px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1920px) {
         right: -9985px;
     }
 
@@ -260,6 +271,12 @@ const dotsRightSmall = css`
     }
 `;
 
+const hideMobile = css`
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
 export default ({ small }: { small?: boolean }) => (
     <div className={root}>
         <Block>
@@ -267,10 +284,10 @@ export default ({ small }: { small?: boolean }) => (
                 <div className={ctaSmall}>
                     <div className={dotsLeftSmall} />
                     <div className={content}>
-                        <Heading>Start a great community today</Heading>
+                        <Heading>Start a great community&nbsp;today</Heading>
                         <ul className={list}>
                             <li className={item}>Seconds to launch</li>
-                            <li className={item}>Real-time support</li>
+                            <li className={cx(item, hideMobile)}>Real-time support</li>
                             <li className={item}>Free</li>
                         </ul>
                     </div>

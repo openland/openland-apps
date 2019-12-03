@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { ASListView } from 'react-native-async-view/ASListView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -15,9 +14,11 @@ import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { STrackedValue } from 'react-native-s/STrackedValue';
 import { Animated } from 'react-native';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
+import { ActiveTabContext } from './Home';
 
 interface NotificationCenterPageProps {
     engine: NotificationCenterEngine;
+    tabEnabled: boolean;
 }
 
 class NotificationCenterPage extends React.PureComponent<NotificationCenterPageProps, { dataSourceGeneration: number }> {
@@ -31,8 +32,22 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
     }
 
     componentWillMount() {
-        this.unmount = this.props.engine.subscribe();
         this.unmount1 = this.props.engine.dataSource.dumbWatch(() => this.setState({ dataSourceGeneration: this.state.dataSourceGeneration + 1 }));
+    }
+
+    componentWillReceiveProps(newProps: NotificationCenterPageProps) {
+        if (newProps.tabEnabled !== this.props.tabEnabled) {
+            if (newProps.tabEnabled) {
+                if (!this.unmount) {
+                    this.unmount = this.props.engine.subscribe();
+                }
+            } else {
+                if (this.unmount) {
+                    this.unmount();
+                    this.unmount = undefined;
+                }
+            }
+        }
     }
 
     componentWillUnmount() {
@@ -88,10 +103,11 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
     }
 }
 
-const NotificationCenterWrapper = XMemo<PageProps>((props) => {
+const NotificationCenterWrapper = React.memo((props: PageProps) => {
     const engine = getMessenger().engine.notificationCenter;
+    const tabEnabled = React.useContext(ActiveTabContext);
 
-    return <NotificationCenterPage engine={engine} />;
+    return <NotificationCenterPage engine={engine} tabEnabled={tabEnabled} />;
 });
 
 export const NotificationCenter = withApp(NotificationCenterWrapper);

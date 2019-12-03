@@ -9,20 +9,20 @@ import Tilt from 'react-tilt';
 const root = css`
     margin-top: 132px;
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         padding: 120px 0;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1920px) {
         padding: 102px 0;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        padding: 90px 0;
+        padding: 50px 0;
     }
 
     @media (max-width: 768px) {
-        padding: 50px 0;
+        margin-top: 70px;
     }
 
     background: linear-gradient(180deg, #f6f9fb 0%, rgba(255, 255, 255, 0) 100%);
@@ -32,11 +32,11 @@ const wrapper = css`
     display: flex;
     align-items: flex-start;
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         margin: -60px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1920px) {
         margin: -50px;
     }
 
@@ -55,11 +55,11 @@ const feature = css`
     display: inline-block;
     width: 50%;
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         padding: 60px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1920px) {
         padding: 50px;
     }
 
@@ -70,6 +70,10 @@ const feature = css`
     @media (max-width: 768px) {
         padding: 20px;
         width: initial;
+
+        &:first-child {
+            margin-top: 40px;
+        }
     }
 `;
 
@@ -77,12 +81,12 @@ const text = css`
     position: relative;
     margin-top: 15px;
     color: #525273;
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         font-size: 26px;
         line-height: 1.4;
     }
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1920px) {
         font-size: 20px;
         line-height: 1.7;
     }
@@ -126,13 +130,13 @@ const link = css`
         position: absolute;
         top: 55%;
 
-        @media (min-width: 1140px) {
+        @media (min-width: 1920px) {
             width: 20px;
             height: 20px;
             right: -27px;
         }
 
-        @media (min-width: 768px) and (max-width: 1140px) {
+        @media (min-width: 768px) and (max-width: 1920px) {
             width: 16px;
             height: 16px;
             right: -23px;
@@ -160,6 +164,10 @@ const featureImage = css`
     width: 100%;
     max-width: 509px;
     height: auto;
+
+    @media (max-width: 768px) {
+        margin-top: 20px;
+    }
 `;
 
 const popup = css`
@@ -168,6 +176,8 @@ const popup = css`
     width: 100%;
     background-color: white;
     padding: 32px;
+    padding-top: 16px;
+    padding-right: 16px;
     box-shadow: 0px 9px 42px rgba(0, 0, 0, 0.07);
     border-radius: 32px;
     z-index: 20;
@@ -244,6 +254,12 @@ const popupSectionText = css`
     }
 `;
 
+const dot = css`
+    @media (max-width: 960px) {
+        display: none;
+    }
+`;
+
 export default () => {
     const [isLeftOpen, setLeftOpen] = React.useState<boolean>(false);
     const [isRightOpen, setRightOpen] = React.useState<boolean>(false);
@@ -255,7 +271,8 @@ export default () => {
                     <div className={feature}>
                         <Heading>Start in seconds</Heading>
                         <div className={text}>
-                            Start with a chat and add more activities as you grow.{' '}
+                            Start with a chat and add more activities as you grow
+                            <span className={dot}>.</span>{' '}
                             <div className={linkWrapper}>
                                 <span className={link} onClick={() => setLeftOpen(true)}>
                                     Explore activities
@@ -340,7 +357,8 @@ export default () => {
                     <div className={feature}>
                         <Heading>Easy to grow</Heading>
                         <div className={text}>
-                            Make it easy for members to bring their friends.{' '}
+                            Make it easy for members to bring their friends
+                            <span className={dot}>.</span>{' '}
                             <div className={linkWrapper}>
                                 <span className={link} onClick={() => setRightOpen(true)}>
                                     See growth tools

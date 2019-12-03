@@ -5,7 +5,7 @@ import Block from './block';
 const root = css`
     padding: 160px 0;
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1920px) {
         padding: 120px 0;
     }
 
@@ -23,12 +23,12 @@ const aboutHeader = css`
 `;
 
 const heading = css`
-    font-weight: 800;
     font-size: 76px;
+    font-weight: 800;
     line-height: 1.2;
     color: #272750;
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1920px) {
         font-size: 66px;
     }
 
@@ -39,6 +39,14 @@ const heading = css`
     @media (max-width: 400px) {
         font-size: 22px;
     }
+    transition: opacity 0.2s;
+    &:hover,
+    &:focus {
+        color: #272750;
+        text-decoration: none;
+        transition: opacity 0.01s;
+        opacity: 0.9;
+    }
 `;
 
 const subheading = css`
@@ -47,7 +55,7 @@ const subheading = css`
     line-height: 48px;
     color: #9393a7;
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1920px) {
         font-size: 32px;
     }
 
@@ -64,7 +72,9 @@ export default () => (
     <div className={root}>
         <Block>
             <div className={aboutHeader}>
-                <div className={heading}>hello@openland.com</div>
+                <a href="mailto:hello@openland.com" className={heading}>
+                    hello@openland.com
+                </a>
                 <div className={subheading}>San Francisco + Remote</div>
             </div>
         </Block>

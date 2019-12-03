@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import Block from './block';
+import { XView } from 'react-mental';
 
 const root = css`
     padding: 5px 0;
     @media (max-width: 768px) {
-        padding-bottom: 40px;
+        padding-bottom: 30px;
         padding-top: 20px;
     }
     background: #f7fafc;
@@ -35,7 +36,7 @@ const menu = css`
     display: flex;
     flex-wrap: wrap;
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         left: 25px;
     }
 `;
@@ -83,23 +84,9 @@ const social = css`
     list-style-type: none;
     display: inline-block;
     position: relative;
+    margin-top: 5px;
 
-    @media (max-width: 768px) {
-        margin-top: 35px;
-        &:before {
-            position: absolute;
-            display: inline-block;
-            content: 'Follow us';
-            left: 5px;
-            top: -20px;
-
-            font-size: 14px;
-            line-height: 17px;
-            color: #9393a7;
-        }
-    }
-
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         left: 12px;
     }
 `;
@@ -130,6 +117,10 @@ const socialItem = css`
         background-color: #eaecf0;
         transition: background-color 0.01s;
     }
+
+    @media (max-width: 768px) {
+        margin: 10px;
+    }
 `;
 
 const socialLink = css``;
@@ -152,23 +143,10 @@ const apps = css`
     display: none;
     position: relative;
     margin-right: 10px;
-    margin-top: 25px;
+    margin-top: 10px;
 
     @media (max-width: 768px) {
-        display: inline-block;
-        margin-top: 40px;
-    }
-
-    &:before {
-        position: absolute;
-        display: inline-block;
-        content: 'Install the app';
-        left: 7px;
-        top: -20px;
-
-        font-size: 14px;
-        line-height: 17px;
-        color: #9393a7;
+        display: block;
     }
 `;
 
@@ -179,7 +157,7 @@ const appsLink = css`
 
 const links = css`
     display: flex;
-    flex-wrap: wrap-reverse;
+    flex-direction: column;
     align-items: center;
     margin: -5px;
 `;
@@ -225,6 +203,8 @@ const popupItem = css`
     &:hover {
         background-color: #f7fafc;
     }
+
+    cursor: pointer;
 `;
 const popupIcon = css`
     margin-right: 20px;
@@ -235,15 +215,6 @@ const popupSeparator = css`
     opacity: 0.2;
     margin-top: 16px;
     margin-bottom: 8px;
-`;
-
-const popupCloser = css`
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    top: 0;
-    left: 0;
 `;
 
 export default () => {
@@ -257,21 +228,24 @@ export default () => {
                     <img className={logo} src="/static/landing/logo.svg" width="120" height="37" />
                     <ul className={menu}>
                         <li className={menuItem}>
-                            <a className={menuLink} href="/next/about">
-                                About
-                            </a>
+                            <span className={menuLink}>
+                                <XView path="/next/about">About</XView>
+                            </span>
                         </li>
                         <li className={cx(menuItem, hideMobile)}>
-                            <span className={menuLink} onClick={() => appsSetOpen(!appsIsOpen)}>
+                            <span
+                                className={menuLink}
+                                onClick={() => appsSetOpen(!appsIsOpen)}
+                                onMouseOver={() => appsSetOpen(!appsIsOpen)}
+                            >
                                 Apps
                             </span>
 
                             {appsIsOpen && (
-                                <div className={cx(popup, 'landingHeaderPopup')}>
-                                    <div
-                                        className={popupCloser}
-                                        onClick={() => appsSetOpen(false)}
-                                    />
+                                <div
+                                    className={cx(popup, 'landingHeaderPopup')}
+                                    onMouseLeave={() => appsSetOpen(false)}
+                                >
                                     <a className={popupItem} href="https://oplnd.com/ios">
                                         <img
                                             className={popupIcon}
@@ -336,22 +310,26 @@ export default () => {
                                 <span
                                     className={menuLink}
                                     onClick={() => legalSetOpen(!appsIsOpen)}
+                                    onMouseOver={() => legalSetOpen(!appsIsOpen)}
                                 >
                                     Legal
                                 </span>
 
                                 {legalIsOpen && (
-                                    <div className={cx(popup, 'landingHeaderPopup')}>
-                                        <div
-                                            className={popupCloser}
-                                            onClick={() => legalSetOpen(false)}
-                                        />
-                                        <a className={popupItem} href="/next/privacy">
-                                            <span className={popupText}>Privacy Policy</span>
-                                        </a>
-                                        <a className={popupItem} href="/next/terms">
-                                            <span className={popupText}>Terms of Service</span>
-                                        </a>
+                                    <div
+                                        className={cx(popup, 'landingHeaderPopup')}
+                                        onMouseLeave={() => legalSetOpen(false)}
+                                    >
+                                        <span className={popupItem}>
+                                            <XView path="/next/privacy">
+                                                <span className={popupText}>Privacy Policy</span>
+                                            </XView>
+                                        </span>
+                                        <span className={popupItem}>
+                                            <XView path="/next/terms">
+                                                <span className={popupText}>Terms of Service</span>
+                                            </XView>
+                                        </span>
                                     </div>
                                 )}
                             </li>
@@ -363,18 +341,6 @@ export default () => {
                         </div>
                     </ul>
                     <div className={links}>
-                        <div className={apps}>
-                            <a href="https://oplnd.com/ios" className={appsLink}>
-                                <img src="/static/landing/apps-ios.svg" width="120" height="40" />
-                            </a>
-                            <a href="https://oplnd.com/android" className={appsLink}>
-                                <img
-                                    src="/static/landing/apps-android.svg"
-                                    width="130"
-                                    height="40"
-                                />
-                            </a>
-                        </div>
                         <ul className={social}>
                             <li className={socialItem} title="Instagram">
                                 <a
@@ -427,6 +393,18 @@ export default () => {
                                 </a>
                             </li>
                         </ul>
+                        <div className={apps}>
+                            <a href="https://oplnd.com/ios" className={appsLink}>
+                                <img src="/static/landing/apps-ios.svg" width="120" height="40" />
+                            </a>
+                            <a href="https://oplnd.com/android" className={appsLink}>
+                                <img
+                                    src="/static/landing/apps-android.svg"
+                                    width="130"
+                                    height="40"
+                                />
+                            </a>
+                        </div>
                     </div>
                 </div>
             </Block>

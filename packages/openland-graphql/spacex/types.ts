@@ -171,3 +171,10 @@ export function objectValue(...fields: { name: string, value: InputValue }[]): I
     }
     return { type: 'object', fields: res };
 }
+
+export interface OperationDefinition {
+    name: string;
+    body: string;
+    kind: 'query' | 'mutation' | 'subscription';
+    selector: OutputTypeObject;
+}

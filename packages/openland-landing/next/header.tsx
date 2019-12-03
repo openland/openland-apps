@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import Block from './block';
+import { XView } from 'react-mental';
 
 const root = css``;
 
@@ -32,7 +33,6 @@ const menu = css`
 
 const menuItem = css`
     display: inline-block;
-    font-weight: bold;
     font-size: 18px;
     margin: 23px;
 
@@ -141,15 +141,6 @@ const popupSeparator = css`
     opacity: 0.2;
     margin-top: 16px;
     margin-bottom: 8px;
-`;
-
-const popupCloser = css`
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    top: 0;
-    left: 0;
 `;
 
 const mobileMenu = css`
@@ -354,13 +345,19 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                             Discover
                         </a>
                         <span className={menuItem}>
-                            <span className={trigger} onClick={() => setOpen(!isOpen)}>
+                            <span
+                                className={trigger}
+                                onClick={() => setOpen(!isOpen)}
+                                onMouseOver={() => setOpen(!isOpen)}
+                            >
                                 Apps
                             </span>
 
                             {isOpen && (
-                                <div className={cx(popup, 'landingHeaderPopup')}>
-                                    <div className={popupCloser} onClick={() => setOpen(false)} />
+                                <div
+                                    className={cx(popup, 'landingHeaderPopup')}
+                                    onMouseLeave={() => setOpen(false)}
+                                >
                                     <a className={popupItem} href="https://oplnd.com/ios">
                                         <img
                                             className={popupIcon}
@@ -415,12 +412,12 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                 </div>
                             )}
                         </span>
-                        <a className={menuItem} href="/next/about">
-                            About
-                        </a>
-                        <a className={cx(menuItem, menuItemActive)} href="/signin">
-                            Login
-                        </a>
+                        <span className={menuItem}>
+                            <XView path="/next/about">About</XView>
+                        </span>
+                        <span className={cx(menuItem, menuItemActive)}>
+                            <XView path="/signin">Login</XView>
+                        </span>
                     </div>
                 </div>
             </Block>

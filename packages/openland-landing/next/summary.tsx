@@ -21,19 +21,19 @@ const list = css`
     list-style-position: inside;
     list-style-type: none;
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         font-size: 28px;
         line-height: 2.2;
     }
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1920px) {
         font-size: 22px;
         line-height: 2.3;
     }
 
     @media (max-width: 768px) {
         font-size: 16px;
-        line-height: 2.5;
+        line-height: 2.4;
     }
 `;
 
@@ -44,7 +44,7 @@ const item = css`
     &:before {
         display: inline-block;
         content: '';
-        background: url('/static/landing/icons/bullet.svg') no-repeat;
+        background: url('https://cdn.openland.com/shared/landing/bullet.svg') no-repeat;
         background-size: contain;
         width: 16px;
         height: 16px;
@@ -59,27 +59,38 @@ const item = css`
 `;
 
 const summaryImage = css`
-    height: auto;
     max-width: 100%;
+    height: auto;
 
     position: relative;
 
-    @media (min-width: 1160px) {
+    @media (min-width: 1920px) {
         width: 550px;
         left: 15px;
         top: 20px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1920px) {
         width: 514px;
     }
 
-    @media (min-width: 768px) and (max-width: 960px) {
-        width: 728px;
+    @media (max-width: 768px) {
+        max-width: 100%;
+        height: auto;
+        min-width: 280px;
     }
 
+    z-index: -1;
+`;
+
+const headingWrapper = css`
     @media (max-width: 768px) {
-        min-width: 280px;
+        margin-top: 20px;
+        margin-bottom: -20px;
+    }
+
+    @media (min-width: 920px) {
+        white-space: nowrap;
     }
 `;
 
@@ -88,7 +99,9 @@ export default () => (
         <Block>
             <div className={summary}>
                 <div className={listWrapper}>
-                    <Heading>Built for mission-driven organizers</Heading>
+                    <div className={headingWrapper}>
+                        <Heading>Built for mission-driven organizers</Heading>
+                    </div>
                     <ul className={list}>
                         <li className={item}>Find people who share your values</li>
                         <li className={item}>Share and organize knowledge</li>

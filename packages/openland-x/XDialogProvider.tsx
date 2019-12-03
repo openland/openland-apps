@@ -10,7 +10,7 @@ import {
 } from 'openland-web/components/unicorn/UPopper';
 import * as ReactDOM from 'react-dom';
 import Popper from 'popper.js';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 
 const style = css`
     z-index: 2;
@@ -51,14 +51,13 @@ const style = css`
 
 interface XDialogProviderComponentState {
     modals: { component: React.ReactElement<{}>; key: string }[];
-    context: Popper.Data | null;
 }
 
 export class XDialogProviderComponent extends React.Component<{}, XDialogProviderComponentState>
     implements XModalProvider, UPopperProvider {
     constructor(props: {}) {
         super(props);
-        this.state = { modals: [], context: null };
+        this.state = { modals: [] };
     }
 
     showPopper = (popper: UPopper) => {
@@ -70,11 +69,7 @@ export class XDialogProviderComponent extends React.Component<{}, XDialogProvide
                     this.setState(state => ({ modals: state.modals.filter(v => v.key !== key) }));
                 },
             };
-            // let esc = () => {
-            //     if (escHandler) {
-            //         escHandler();
-            //     }
-            // };
+
             let res = popper(cont);
 
             const Body = () => {
@@ -82,7 +77,8 @@ export class XDialogProviderComponent extends React.Component<{}, XDialogProvide
                 const ref = React.useRef<HTMLDivElement>(null);
 
                 React.useLayoutEffect(() => {
-                    let pjs = new Popper(target, ref.current!, {
+                    const pjs = new Popper(target, ref.current!, {
+                        placement: res.placement || 'auto',
                         modifiers: {
                             computeStyle: {
                                 gpuAcceleration: true,
@@ -91,9 +87,14 @@ export class XDialogProviderComponent extends React.Component<{}, XDialogProvide
                                 order: 99,
                                 boundariesElement: 'viewport',
                                 padding: 12,
+                                priority: ['top', 'bottom'],
+                            },
+                            flip: {
+                                behavior: 'flip',
+                                flipVariations: true,
+                                flipVariationsByContent: true,
                             },
                         },
-                        placement: res.placement || 'auto',
                     });
                     return () => {
                         pjs.destroy();
@@ -101,7 +102,7 @@ export class XDialogProviderComponent extends React.Component<{}, XDialogProvide
                 }, []);
 
                 return (
-                    <div className={cx(style, 'popper-body')} ref={ref}>
+                    <div className={style} ref={ref}>
                         {res.content}
                     </div>
                 );

@@ -17,6 +17,8 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { showFeedTutorialIfNeeded } from 'openland-mobile/feed/components/FeedTutorial';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 
+export const ActiveTabContext = React.createContext(false);
+
 const DEFAULT_TAB = 1;
 
 export const Home = XMemo<PageProps>((props) => {
@@ -52,8 +54,10 @@ export const Home = XMemo<PageProps>((props) => {
                     </View>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 2 ? 1 : 0 }} pointerEvents={tab === 2 ? 'box-none' : 'none'}>
                         <HeaderContextChild enabled={tab === 2}>
-                            {tab === 2 && <ZTrack event="navigate_notifications" />}
-                            <NotificationCenter {...props} />
+                            <ActiveTabContext.Provider value={tab === 2}>
+                                {tab === 2 && <ZTrack event="navigate_notifications" />}
+                                <NotificationCenter {...props} />
+                            </ActiveTabContext.Provider>
                         </HeaderContextChild>
                     </View>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 3 ? 1 : 0 }} pointerEvents={tab === 3 ? 'box-none' : 'none'}>

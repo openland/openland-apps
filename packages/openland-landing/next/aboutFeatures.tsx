@@ -15,14 +15,29 @@ const features = css`
 
     @media (max-width: 768px) {
         grid-template-columns: auto;
+        max-width: 400px;
+        margin: 0 auto;
+        margin-bottom: 5em;
     }
 `;
 
 const feature = css`
     padding: 36px 46px;
-    background: linear-gradient(0deg, #ffffff, #ffffff);
+    background: white;
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.06);
     border-radius: 16px;
+
+    @media (min-width: 768px) and (max-width: 1920px) {
+        padding: 30px;
+    }
+
+    @media (min-width: 400px) and (max-width: 768px) {
+        padding: 35px 25px;
+    }
+
+    @media (max-width: 400px) {
+        padding: 30px 40px;
+    }
 `;
 
 const featureHeader = css`
@@ -36,16 +51,28 @@ const icon = css`
 
 const name = css`
     font-size: 26px;
-    line-height: 31px;
+    line-height: 1.2;
     font-weight: 800;
+
+    @media (min-width: 768px) and (max-width: 1920px) {
+        font-size: 19px;
+    }
+
+    @media (min-width: 400px) and (max-width: 768px) {
+        font-size: 18px;
+    }
+
+    @media (max-width: 400px) {
+        font-size: 16px;
+    }
 `;
 
 const text = css`
     font-size: 24px;
-    line-height: 36px;
+    line-height: 1.5;
     margin-top: 16px;
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1920px) {
         font-size: 20px;
     }
 
@@ -59,13 +86,15 @@ const text = css`
 `;
 
 const link = css`
-    display: block;
+    display: inline-block;
     font-weight: bold;
     font-size: 20px;
     line-height: 24px;
-    margin-top: 30px;
+    margin-top: 1em;
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    position: relative;
+
+    @media (min-width: 768px) and (max-width: 1920px) {
         font-size: 20px;
     }
 
@@ -76,11 +105,45 @@ const link = css`
     @media (max-width: 400px) {
         font-size: 16px;
     }
+
+    &,
+    &:hover,
+    &:focus {
+        text-decoration: none;
+    }
+
+    &:after {
+        display: inline-block;
+        content: '';
+
+        background: url('https://cdn.openland.com/shared/landing/arrow-about.svg') no-repeat;
+        background-size: contain;
+
+        transform: translateY(-50%);
+
+        position: absolute;
+        top: 50%;
+
+        width: 15px;
+        height: 15px;
+        right: -20px;
+    }
+
+    will-change: opacity;
+    transition: opacity 0.2s;
+
+    &:hover {
+        transition: opacity 0.01s;
+        opacity: 0.8;
+    }
 `;
 
 const headingWrapper = css`
     margin-top: 5em;
     margin-bottom: 2em;
+    @media (max-width: 768px) {
+        text-align: center;
+    }
 `;
 
 export default () => (
@@ -120,7 +183,7 @@ export default () => (
                         <div className={name}>Support and Feedback</div>
                     </div>
                     <p className={text}>
-                        Get help, share experiences, and propose ideas for Openland.
+                        Get help, share experiences, and propose ideas for Openland
                     </p>
                     <a href="https://next.openland.com/invite/zOF5IpZ" className={link}>
                         Join Chat

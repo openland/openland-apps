@@ -60,6 +60,7 @@ export class AlertBlanketBuilder {
         }, {
             cancelable: this._cancelable,
             onCancel: this._onCancel,
+            ignoreSafeArea: true
         });
     }
 }

@@ -260,7 +260,7 @@ export class HeaderCoordinator {
             }
             this.hairline.translateY = SDevice.safeArea.top + SDevice.navigationBarHeight + SDevice.statusBarHeight;
             this.connectionStatus.translateY = SDevice.safeArea.top + SDevice.navigationBarHeight + SDevice.statusBarHeight + 8;
-
+            
         }
 
         // Pages

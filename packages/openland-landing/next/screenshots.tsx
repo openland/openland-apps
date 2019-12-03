@@ -4,7 +4,7 @@ import Block from './block';
 import Heading from './heading';
 
 const root = css`
-    margin-top: 58px;
+    margin-top: 78px;
 `;
 
 const header = css`
@@ -17,7 +17,8 @@ const header = css`
 
 const content = css`
     @media (max-width: 768px) {
-        text-align: center;
+        margin-bottom: -30px;
+        width: 509px;
     }
 `;
 
@@ -25,12 +26,12 @@ const listWrapper = css`
     margin-top: 11px;
 
     position: relative;
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         font-size: 26px;
         line-height: 38px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1920px) {
         font-size: 22px;
         line-height: 35px;
     }
@@ -98,13 +99,13 @@ const link = css`
         position: absolute;
         top: 55%;
 
-        @media (min-width: 1140px) {
+        @media (min-width: 1920px) {
             width: 20px;
             height: 20px;
             right: -27px;
         }
 
-        @media (min-width: 768px) and (max-width: 1140px) {
+        @media (min-width: 768px) and (max-width: 1920px) {
             width: 16px;
             height: 16px;
             right: -23px;
@@ -120,7 +121,7 @@ const link = css`
 
 const screenshot = css`
     width: 100%;
-    max-width: 1140px;
+    max-width: 1920px;
     height: auto;
     margin-top: 54px;
     filter: drop-shadow(0px 13px 55px rgba(20, 64, 86, 0.05));
@@ -146,7 +147,7 @@ const logo = css`
 const screenshotMobile = css`
     display: none;
     width: 100%;
-    max-width: 560px;
+    max-width: 509px;
     height: auto;
     margin-top: 54px;
     margin-left: auto;
@@ -164,12 +165,20 @@ const linkWrapper = css`
     }
 `;
 
+const dot = css`
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
 const popup = css`
     position: absolute;
     top: 0;
     width: 100%;
     background-color: white;
     padding: 32px;
+    padding-top: 16px;
+    padding-right: 16px;
     box-shadow: 0px 9px 42px rgba(0, 0, 0, 0.07);
     border-radius: 32px;
     z-index: 20;
@@ -223,10 +232,10 @@ const popupHeading = css`
     font-size: 30px;
     line-height: 46px;
     color: #272750;
+    margin-bottom: 20px;
 `;
 
 const popupSection = css`
-    margin-top: 20px;
     display: inline-block;
 `;
 
@@ -249,10 +258,16 @@ const popupSectionText = css`
 
 const popupSections = css`
     display: grid;
-    grid-template-columns: repeat(auto-fill, 220px);
-    grid-gap: 40px;
-    justify-content: center;
+    grid-template-columns: repeat(auto-fill, 180px);
+    grid-gap: 20px;
+    // justify-content: center;
     text-align: left;
+`;
+
+const hideMobile = css`
+    @media (max-width: 768px) {
+        display: none;
+    }
 `;
 
 export default () => {
@@ -269,7 +284,9 @@ export default () => {
                         className={logo}
                     />
                     <div className={content}>
-                        <Heading>All-in-one platform you'll love</Heading>
+                        <Heading>
+                            All-in-one platform <span className={hideMobile}>you'll love</span>
+                        </Heading>
                         <div className={listWrapper}>
                             <li className={list}>
                                 <ul className={item}>Member profiles</ul>
@@ -277,7 +294,7 @@ export default () => {
                                 <ul className={item}>Chats</ul>
                                 <ul className={cx(item, hide)}>Ultra-fast apps</ul>
                             </li>
-                            {'. '}
+                            <span className={dot}>.</span>{' '}
                             <div className={linkWrapper}>
                                 <span className={link} onClick={() => setOpen(true)}>
                                     All features
@@ -349,7 +366,7 @@ export default () => {
                 <img
                     src="/static/landing/screenshots-desktop.png"
                     className={screenshot}
-                    width="1140"
+                    width="1920"
                     height="667"
                 />
                 <img
