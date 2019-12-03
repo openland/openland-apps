@@ -23,6 +23,8 @@ const aboutHeader = css`
 `;
 
 const heading = css`
+    font-size: 76px;
+
     @media (min-width: 768px) and (max-width: 1140px) {
         font-size: 66px;
     }
@@ -39,7 +41,6 @@ const heading = css`
     &:hover,
     &:focus {
         font-weight: 800;
-        font-size: 76px;
         line-height: 1.2;
         color: #272750;
         text-decoration: none;
