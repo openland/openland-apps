@@ -269,7 +269,7 @@ class TestNormalizer {
     }
 
     @Test
-    fun `should detect parse fragments`() {
+    fun `should parse fragments`() {
         val type = obj(
                 field("id", "id", scalar("ID")),
                 field("value", "value", scalar("String")),
@@ -293,7 +293,7 @@ class TestNormalizer {
     }
 
     @Test
-    fun `should detect parse inline fragments`() {
+    fun `should parse inline fragments`() {
         val type = obj(
                 field("id", "id", scalar("ID")),
                 field("value", "value", scalar("String")),
