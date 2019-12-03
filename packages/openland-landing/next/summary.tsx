@@ -21,12 +21,12 @@ const list = css`
     list-style-position: inside;
     list-style-type: none;
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         font-size: 28px;
         line-height: 2.2;
     }
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1920px) {
         font-size: 22px;
         line-height: 2.3;
     }
@@ -64,13 +64,13 @@ const summaryImage = css`
 
     position: relative;
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         width: 550px;
         left: 15px;
         top: 20px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1920px) {
         width: 514px;
     }
 

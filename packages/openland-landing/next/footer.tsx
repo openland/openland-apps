@@ -35,7 +35,7 @@ const menu = css`
     display: flex;
     flex-wrap: wrap;
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         left: 25px;
     }
 `;
@@ -99,7 +99,7 @@ const social = css`
         }
     }
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         left: 12px;
     }
 `;

@@ -8,7 +8,7 @@ const root = css`
         margin-top: 197px;
     }
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1920px) {
         margin-top: 128px;
     }
 
@@ -49,7 +49,7 @@ const item = css`
 
     display: flex;
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1920px) {
         margin-right: 20px;
         width: 300px;
     }
@@ -76,12 +76,12 @@ const bullet = css`
 const itemContent = css``;
 
 const subheading = css`
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         font-size: 26px;
         line-height: 32px;
     }
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1920px) {
         font-size: 22px;
         line-height: 30px;
     }
@@ -96,12 +96,12 @@ const text = css`
     margin-top: 7px;
     color: #525273;
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1920px) {
         font-size: 22px;
         line-height: 34px;
     }
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1920px) {
         font-size: 18px;
         line-height: 28px;
     }
@@ -143,13 +143,13 @@ const link = css`
         position: absolute;
         top: 55%;
 
-        @media (min-width: 1140px) {
+        @media (min-width: 1920px) {
             width: 20px;
             height: 20px;
             right: -27px;
         }
 
-        @media (min-width: 768px) and (max-width: 1140px) {
+        @media (min-width: 768px) and (max-width: 1920px) {
             width: 16px;
             height: 16px;
             right: -23px;
@@ -184,7 +184,7 @@ const img = css`
         width: 402px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1920px) {
         width: 351px;
     }
 

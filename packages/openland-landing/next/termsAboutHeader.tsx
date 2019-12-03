@@ -25,7 +25,7 @@ const subheading = css`
     margin-top: 12px;
     color: #525273;
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1920px) {
         font-size: 20px;
     }
 
