@@ -165,6 +165,12 @@ const linkWrapper = css`
     }
 `;
 
+const dot = css`
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
 const popup = css`
     position: absolute;
     top: 0;
@@ -286,7 +292,7 @@ export default () => {
                                 <ul className={item}>Chats</ul>
                                 <ul className={cx(item, hide)}>Ultra-fast apps</ul>
                             </li>
-                            {'. '}
+                            <span className={dot}>.</span>{' '}
                             <div className={linkWrapper}>
                                 <span className={link} onClick={() => setOpen(true)}>
                                     All features

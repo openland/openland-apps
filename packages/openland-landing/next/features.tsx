@@ -252,6 +252,12 @@ const popupSectionText = css`
     }
 `;
 
+const dot = css`
+    @media (max-width: 960px) {
+        display: none;
+    }
+`;
+
 export default () => {
     const [isLeftOpen, setLeftOpen] = React.useState<boolean>(false);
     const [isRightOpen, setRightOpen] = React.useState<boolean>(false);
@@ -263,7 +269,8 @@ export default () => {
                     <div className={feature}>
                         <Heading>Start in seconds</Heading>
                         <div className={text}>
-                            Start with a chat and add more activities as you grow.{' '}
+                            Start with a chat and add more activities as you grow
+                            <span className={dot}>.</span>{' '}
                             <div className={linkWrapper}>
                                 <span className={link} onClick={() => setLeftOpen(true)}>
                                     Explore activities
@@ -348,7 +355,8 @@ export default () => {
                     <div className={feature}>
                         <Heading>Easy to grow</Heading>
                         <div className={text}>
-                            Make it easy for members to bring their friends.{' '}
+                            Make it easy for members to bring their friends
+                            <span className={dot}>.</span>{' '}
                             <div className={linkWrapper}>
                                 <span className={link} onClick={() => setRightOpen(true)}>
                                     See growth tools
