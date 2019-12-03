@@ -58,6 +58,8 @@ const text = css`
         margin-bottom: 60px;
     }
 
+    line-height: 1.5;
+
     margin-top: 25px;
     margin-bottom: 50px;
 `;
