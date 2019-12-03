@@ -39,16 +39,30 @@ let contentMenuClass = css`
         margin: 0 0 11px;
         font-size: 14px;
         line-height: 20px;
-        color: #272750;
-
         &:last-child {
             margin: 0;
         }
         &.is-active {
             cursor: default;
         }
-        &:hover {
-            color: #1790ff;
+
+        color: #626283;
+        will-change: color;
+        transition: color 0.2s;
+
+        &:hover,
+        &:focus {
+            color: #050530;
+            transition: color 0.01s;
+            text-decoration: none;
+            opacity: 1;
+        }
+
+        &:active {
+            color: #248bf2;
+            transition: color 0.01s;
+            text-decoration: none;
+            opacity: 1;
         }
     }
     a {
@@ -123,6 +137,8 @@ let contentBoxClass = css`
     }
 `;
 
+const link = css``;
+
 interface ContentProps {
     contents: string[];
     children: any;
@@ -139,6 +155,7 @@ export const Content = (props: ContentProps) => (
                                 <a
                                     href={'#section' + (index + 1)}
                                     dangerouslySetInnerHTML={{ __html: item }}
+                                    className={link}
                                 />
                             </li>
                         ))}
