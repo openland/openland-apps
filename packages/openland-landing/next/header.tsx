@@ -32,7 +32,6 @@ const menu = css`
 
 const menuItem = css`
     display: inline-block;
-    font-weight: bold;
     font-size: 18px;
     margin: 23px;
 
