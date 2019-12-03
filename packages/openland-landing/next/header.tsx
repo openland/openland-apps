@@ -418,9 +418,9 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                         <span className={menuItem}>
                             <XView path="/next/about">About</XView>
                         </span>
-                        <a className={cx(menuItem, menuItemActive)} href="/signin">
-                            Login
-                        </a>
+                        <span className={cx(menuItem, menuItemActive)}>
+                            <XView path="/signin">Login</XView>
+                        </span>
                     </div>
                 </div>
             </Block>

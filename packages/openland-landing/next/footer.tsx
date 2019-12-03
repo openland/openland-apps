@@ -226,6 +226,8 @@ const popupItem = css`
     &:hover {
         background-color: #f7fafc;
     }
+
+    cursor: pointer;
 `;
 const popupIcon = css`
     margin-right: 20px;
