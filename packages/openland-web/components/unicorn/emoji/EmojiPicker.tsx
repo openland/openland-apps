@@ -133,19 +133,13 @@ const titleStyle = css`
     z-index: 2;
 
     background-color: #fff;
-    /* @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
-        margin-top: -16px;
-        padding-top: 16px;
-        background-color: rgba(0,0,0,0);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-    } */
-`;
-
-const titleBgStyle = css`
-    width: '100%';
-    height: '100%';
-    /* background-color: rgba(255,255,255,0.72); */
+    // @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+    //     margin-top: -16px;
+    //     padding-top: 16px;
+    //     background-color: rgba(0,0,0,0);
+    //     backdrop-filter: blur(10px);
+    //     -webkit-backdrop-filter: blur(10px);
+    // }
 `;
 
 const EmojiComponent = React.memo(
@@ -293,7 +287,7 @@ const innerElementType = React.forwardRef<HTMLDivElement>(({ children, ...rest }
     <div ref={ref} {...rest}>
         <div style={{ top: 0, left: 0, width: '100%', height: 3 * 40 }}>
             <div className={titleStyle}>
-                <div className={titleBgStyle}>Recent</div>
+                <div>Recent</div>
             </div>
         </div>
         {sections.map((index, i) => (
@@ -310,7 +304,7 @@ const innerElementType = React.forwardRef<HTMLDivElement>(({ children, ...rest }
                 }}
             >
                 <div className={titleStyle}>
-                    <div className={titleBgStyle}>{index.title}</div>
+                    <div>{index.title}</div>
                 </div>
             </div>
         ))}
