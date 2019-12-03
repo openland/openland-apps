@@ -64,7 +64,7 @@ const summaryImage = css`
 
     position: relative;
 
-    @media (min-width: 1160px) {
+    @media (min-width: 1140px) {
         width: 550px;
         left: 15px;
         top: 20px;
