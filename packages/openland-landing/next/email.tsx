@@ -23,11 +23,6 @@ const aboutHeader = css`
 `;
 
 const heading = css`
-    font-weight: 800;
-    font-size: 76px;
-    line-height: 1.2;
-    color: #272750;
-
     @media (min-width: 768px) and (max-width: 1140px) {
         font-size: 66px;
     }
@@ -38,6 +33,16 @@ const heading = css`
 
     @media (max-width: 400px) {
         font-size: 22px;
+    }
+
+    &,
+    &:hover,
+    &:focus {
+        font-weight: 800;
+        font-size: 76px;
+        line-height: 1.2;
+        color: #272750;
+        text-decoration: none;
     }
 `;
 
@@ -64,7 +69,9 @@ export default () => (
     <div className={root}>
         <Block>
             <div className={aboutHeader}>
-                <div className={heading}>hello@openland.com</div>
+                <a href="mailto:hello@openland.com" className={heading}>
+                    hello@openland.com
+                </a>
                 <div className={subheading}>San Francisco + Remote</div>
             </div>
         </Block>
