@@ -80,9 +80,9 @@ export class MobileMessenger {
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
                     if (item.isService) {
-                        return <AsyncServiceMessage message={item} onUserPress={this.handleUserClick} onGroupPress={this.handleGroupClick} />;
+                        return <AsyncServiceMessage message={item} onUserPress={this.handleUserClick} onGroupPress={this.handleGroupClick} onOrganizationPress={this.handleOrganizationClick} />;
                     } else {
-                        return <AsyncMessageView message={item} engine={eng} onUserPress={this.handleUserClick} onGroupPress={this.handleGroupClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsClick} onReactionsPress={this.handleReactionsClick} />;
+                        return <AsyncMessageView message={item} engine={eng} onUserPress={this.handleUserClick} onGroupPress={this.handleGroupClick} onOrganizationPress={this.handleOrganizationClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsClick} onReactionsPress={this.handleReactionsClick} />;
                     }
                 } else if (item.type === 'date') {
                     return <AsyncDateSeparator year={item.year} month={item.month} date={item.date} />;
@@ -141,6 +141,9 @@ export class MobileMessenger {
     handleGroupClick = (id: string) => {
         this.history.navigationManager.push('ProfileGroup', { id });
     }
+    handleOrganizationClick = (id: string) => {
+        this.history.navigationManager.push('ProfileOrganization', { id });
+    }
     handleConversationClick = (id: string) => {
         this.history.navigationManager.push('Conversation', { id });
     }
@@ -153,7 +156,7 @@ export class MobileMessenger {
             if (remove) {
                 // optimistic unset reaction
                 conversation.unsetReaction(message.key, r);
-                
+
                 this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: r });
             } else {
                 // optimistic set reaction

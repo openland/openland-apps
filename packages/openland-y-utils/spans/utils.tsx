@@ -41,6 +41,14 @@ export const convertServerSpan = (text: string, s: ServerSpan): Span => {
             title: s.room.__typename === 'SharedRoom' ? s.room.title : s.room.user.name,
             id: s.room.id,
         };
+    } else if (s.__typename === 'MessageSpanOrganizationMention') {
+        span = {
+            offset,
+            length,
+            type: SpanType.mention_organization,
+            title: s.organization.name,
+            id: s.organization.id,
+        };
     } else if (s.__typename === 'MessageSpanMultiUserMention') {
         span = { offset, length, type: SpanType.mention_users, users: s.users };
     } else if (s.__typename === 'MessageSpanAllMention') {

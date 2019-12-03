@@ -14,6 +14,12 @@ fragment SpanFragment on MessageSpan {
       ...UserForMention
     }
   }
+  ... on MessageSpanOrganizationMention {
+    organization {
+      __typename
+      ...OrganizationShort
+    }
+  }
   ... on MessageSpanRoomMention {
     room {
       __typename
@@ -27,6 +33,7 @@ fragment SpanFragment on MessageSpan {
       }
       ... on SharedRoom {
         id
+        roomPhoto: photo
         title
       }
     }

@@ -19,7 +19,7 @@ const openLinkContextMenu = (link: string) => {
     builder.show(true);
 };
 
-export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) => void, onGroupPress: (id: string) => void, theme: ThemeGlobal) => {
+export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) => void, onGroupPress: (id: string) => void, onOrganizationPress: (id: string) => void, theme: ThemeGlobal) => {
     const SpanView = (props: { span: Span, children?: any }) => {
         const { span, children } = props;
 
@@ -62,6 +62,17 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
                     key={'mention-room'}
                     style={{ color: theme.accentPrimary }}
                     onPress={() => onGroupPress(span.id)}
+                    allowFontScaling={false}
+                >
+                    {children}
+                </Text>
+            );
+        } else if (span.type === 'mention_organization') {
+            return (
+                <Text
+                    key={'mention-organization'}
+                    style={{ color: theme.accentPrimary }}
+                    onPress={() => onOrganizationPress(span.id)}
                     allowFontScaling={false}
                 >
                     {children}

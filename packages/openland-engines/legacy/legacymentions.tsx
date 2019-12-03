@@ -1,10 +1,11 @@
 import {
     FullMessage_GeneralMessage_spans_MessageSpanUserMention,
     FullMessage_GeneralMessage_spans_MessageSpanAllMention,
-    FullMessage_GeneralMessage_spans_MessageSpanUserMention_user,
-    FullMessage_ServiceMessage_spans,
     MentionInput,
     FullMessage_GeneralMessage_spans,
+    FullMessage_GeneralMessage_spans_MessageSpanOrganizationMention,
+    FullMessage_GeneralMessage_spans_MessageSpanRoomMention,
+    ChatMentionSearch_mentions_globalItems_SharedRoom,
 } from 'openland-api/Types';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 
@@ -13,6 +14,8 @@ export const prepareLegacyMentions = (
     intermediateMentions: MentionToSend[],
 ): (
     | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+    | FullMessage_GeneralMessage_spans_MessageSpanOrganizationMention
+    | FullMessage_GeneralMessage_spans_MessageSpanRoomMention
     | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[] => {
     if (message.length === 0) {
         return [];
@@ -20,6 +23,8 @@ export const prepareLegacyMentions = (
 
     let spans: (
         | FullMessage_GeneralMessage_spans_MessageSpanUserMention
+        | FullMessage_GeneralMessage_spans_MessageSpanOrganizationMention
+        | FullMessage_GeneralMessage_spans_MessageSpanRoomMention
         | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[] = [];
 
     let offsets = new Set<number>();
@@ -42,6 +47,10 @@ export const prepareLegacyMentions = (
         let mentionText;
         if (mention.__typename === 'User') {
             mentionText = '@' + mention.name;
+        } else if (mention.__typename === 'Organization') {
+            mentionText = '@' + mention.name;
+        } else if (mention.__typename === 'SharedRoom') {
+            mentionText = '@' + mention.title;
         } else {
             mentionText = '@All';
         }
@@ -64,6 +73,33 @@ export const prepareLegacyMentions = (
                         shortname: mention.shortname
                     },
                 });
+            } else if (mention.__typename === 'Organization') {
+                spans.push({
+                    __typename: 'MessageSpanOrganizationMention',
+                    offset: index,
+                    length: mentionText.length,
+                    organization: {
+                        __typename: 'Organization',
+                        id: mention.id,
+                        name: mention.name,
+                        photo: mention.photo,
+                        shortname: mention.shortname,
+                        about: mention.about,
+                        isCommunity: mention.isCommunity
+                    },
+                });
+            } else if (mention.__typename === 'SharedRoom') {
+                spans.push({
+                    __typename: 'MessageSpanRoomMention',
+                    offset: index,
+                    length: mentionText.length,
+                    room: {
+                        __typename: 'SharedRoom',
+                        id: mention.id,
+                        title: mention.title,
+                        roomPhoto: mention.roomPhoto
+                    },
+                });
             } else if (mention.__typename === 'AllMention') {
                 spans.push({
                     __typename: 'MessageSpanAllMention',
@@ -75,32 +111,6 @@ export const prepareLegacyMentions = (
     }
 
     return spans;
-};
-
-export const prepareMentionsToSend = (
-    mentions: (
-        | FullMessage_GeneralMessage_spans_MessageSpanUserMention
-        | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[],
-): MentionInput[] => {
-    let preparedMentions: MentionInput[] = [];
-
-    mentions.map(m => {
-        if (m.__typename === 'MessageSpanUserMention') {
-            preparedMentions.push({
-                offset: m.offset,
-                length: m.length,
-                userId: m.user.id,
-            });
-        } else if (m.__typename === 'MessageSpanAllMention') {
-            preparedMentions.push({
-                offset: m.offset,
-                length: m.length,
-                all: true,
-            });
-        }
-    });
-
-    return preparedMentions;
 };
 
 export const prepareLegacyMentionsForSend = (
@@ -117,6 +127,18 @@ export const prepareLegacyMentionsForSend = (
                 length: m.length,
                 userId: m.user.id,
             });
+        } else if (m.__typename === 'MessageSpanOrganizationMention') {
+            preparedMentions.push({
+                offset: m.offset,
+                length: m.length,
+                orgId: m.organization.id,
+            });
+        } else if (m.__typename === 'MessageSpanRoomMention') {
+            preparedMentions.push({
+                offset: m.offset,
+                length: m.length,
+                chatId: m.room.id,
+            });
         } else if (m.__typename === 'MessageSpanAllMention') {
             preparedMentions.push({
                 all: true,
@@ -127,109 +149,6 @@ export const prepareLegacyMentionsForSend = (
     });
 
     return preparedMentions;
-};
-
-export type UserWithOffset =
-    | {
-        typename: 'UserWithOffset';
-        user: FullMessage_GeneralMessage_spans_MessageSpanUserMention_user;
-        offset: number;
-        length: number;
-    }
-    | {
-        typename: 'AllMention';
-        offset: number;
-        length: number;
-    };
-
-export const convertToMentionInputNoText = (mention: UserWithOffset): MentionInput => {
-    if (mention.typename === 'UserWithOffset') {
-        return {
-            userId: mention.user.id,
-            offset: mention.offset,
-            length: mention.length,
-        };
-    } else {
-        return {
-            all: true,
-            offset: mention.offset,
-            length: mention.length,
-        };
-    }
-};
-
-export const convertToMentionInputNoText2 = (
-    mention:
-        | FullMessage_GeneralMessage_spans_MessageSpanUserMention
-        | FullMessage_GeneralMessage_spans_MessageSpanAllMention,
-): MentionInput => {
-    if (mention.__typename === 'MessageSpanUserMention') {
-        return {
-            userId: mention.user.id,
-            offset: mention.offset,
-            length: mention.length,
-        };
-    } else {
-        return {
-            all: true,
-            offset: mention.offset,
-            length: mention.length,
-        };
-    }
-};
-
-export const convertToMentionInput2 = ({
-    mentions,
-    text,
-}: {
-    mentions: (
-        | FullMessage_GeneralMessage_spans_MessageSpanUserMention
-        | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[];
-    text: string;
-}) => {
-    let mentionsCleared: MentionInput[] = [];
-
-    if (mentions.length > 0) {
-        mentions.map(mention => {
-            if (mention.__typename === 'MessageSpanUserMention') {
-                if (text.indexOf(mention.user.name) >= 0) {
-                    mentionsCleared.push(convertToMentionInputNoText2(mention));
-                }
-            } else if (mention.__typename === 'MessageSpanAllMention') {
-                mentionsCleared.push(convertToMentionInputNoText2(mention));
-            }
-        });
-    }
-
-    return mentionsCleared.length > 0 ? mentionsCleared : null;
-};
-
-export const convertSpansToUserWithOffset = ({
-    spans,
-}: {
-    spans: FullMessage_ServiceMessage_spans[];
-}): UserWithOffset[] => {
-    return spans
-        .filter(span => {
-            return span.__typename === 'MessageSpanUserMention' || span.__typename === 'MessageSpanAllMention';
-        })
-        .map((span: FullMessage_GeneralMessage_spans_MessageSpanUserMention | FullMessage_GeneralMessage_spans_MessageSpanAllMention) => {
-            if (span.__typename === 'MessageSpanUserMention') {
-                return {
-                    typename: 'UserWithOffset' as 'UserWithOffset',
-                    user: span.user,
-                    offset: span.offset,
-                    length: span.length,
-                };
-            } else {
-                return {
-                    typename: 'AllMention' as 'AllMention',
-                    offset: span.offset,
-                    length: span.length,
-                };
-            }
-
-        });
 };
 
 export const convertMentionsFromMessage = (text?: string | null, spans?: FullMessage_GeneralMessage_spans[]): MentionToSend[] => {
@@ -247,6 +166,16 @@ export const convertMentionsFromMessage = (text?: string | null, spans?: FullMes
                     ...s.user
                 });
             }
+        } else if (s.__typename === 'MessageSpanOrganizationMention') {
+            res.push({
+                __typename: 'Organization',
+                ...s.organization
+            });
+        } else if (s.__typename === 'MessageSpanRoomMention') {
+            res.push({
+                __typename: 'SharedRoom',
+                ...s.room,
+            } as ChatMentionSearch_mentions_globalItems_SharedRoom);
         } else if (s.__typename === 'MessageSpanAllMention') {
             res.push({
                 __typename: 'AllMention',

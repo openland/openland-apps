@@ -5,6 +5,7 @@ export const OauthContextQuery = gql`
     query OauthContext($code: String!) {
         context: oauthContext(code: $code) {
             app {
+                id
                 title
                 clientId
                 clientSecret
