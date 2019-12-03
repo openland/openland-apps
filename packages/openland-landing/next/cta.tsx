@@ -70,8 +70,8 @@ const button = css`
     box-shadow: 0px 6px 17px rgba(36, 139, 242, 0.32);
     color: var(--foregroundContrast);
 
-    will-change: color, background-color, box-shadow, transform;
-    transition: color 0.2s, background-color.2s, box-shadow 0.2s, transform 0.2s;
+    will-change: color, background-color, box-shadow;
+    transition: color 0.2s, background-color.2s, box-shadow 0.2s;
 
     &:hover,
     &:focus {
@@ -79,7 +79,6 @@ const button = css`
         text-decoration: none;
         background: #47a3ff;
         box-shadow: 0px 6px 27px rgba(36, 139, 242, 0.32);
-        transform: translateY(-4px);
         transition: color 0.01s, background-color.01s, box-shadow 0.01s, transform 0.2s;
     }
 
