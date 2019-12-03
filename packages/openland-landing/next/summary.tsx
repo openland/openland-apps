@@ -44,7 +44,7 @@ const item = css`
     &:before {
         display: inline-block;
         content: '';
-        background: url('/static/landing/icons/bullet.svg') no-repeat;
+        background: url('https://cdn.openland.com/shared/landing/bullet.svg') no-repeat;
         background-size: contain;
         width: 16px;
         height: 16px;
