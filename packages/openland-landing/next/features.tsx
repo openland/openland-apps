@@ -69,8 +69,11 @@ const feature = css`
 
     @media (max-width: 768px) {
         padding: 20px;
-        margin-top: 40px;
         width: initial;
+
+        &:first-child {
+            margin-top: 40px;
+        }
     }
 `;
 
@@ -161,6 +164,10 @@ const featureImage = css`
     width: 100%;
     max-width: 509px;
     height: auto;
+
+    @media (max-width: 768px) {
+        margin-top: 20px;
+    }
 `;
 
 const popup = css`

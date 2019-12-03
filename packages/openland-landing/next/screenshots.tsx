@@ -4,7 +4,7 @@ import Block from './block';
 import Heading from './heading';
 
 const root = css`
-    margin-top: 58px;
+    margin-top: 78px;
 `;
 
 const header = css`
