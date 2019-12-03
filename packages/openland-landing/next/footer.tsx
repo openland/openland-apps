@@ -84,21 +84,7 @@ const social = css`
     list-style-type: none;
     display: inline-block;
     position: relative;
-
-    @media (max-width: 768px) {
-        margin-top: 35px;
-        &:before {
-            position: absolute;
-            display: inline-block;
-            content: 'Follow us';
-            left: 5px;
-            top: -20px;
-
-            font-size: 14px;
-            line-height: 17px;
-            color: #9393a7;
-        }
-    }
+    margin-top: 5px;
 
     @media (min-width: 1920px) {
         left: 12px;
@@ -131,6 +117,10 @@ const socialItem = css`
         background-color: #eaecf0;
         transition: background-color 0.01s;
     }
+
+    @media (max-width: 768px) {
+        margin: 10px;
+    }
 `;
 
 const socialLink = css``;
@@ -153,23 +143,10 @@ const apps = css`
     display: none;
     position: relative;
     margin-right: 10px;
-    margin-top: 25px;
+    margin-top: 10px;
 
     @media (max-width: 768px) {
-        display: inline-block;
-        margin-top: 40px;
-    }
-
-    &:before {
-        position: absolute;
-        display: inline-block;
-        content: 'Install the app';
-        left: 7px;
-        top: -20px;
-
-        font-size: 14px;
-        line-height: 17px;
-        color: #9393a7;
+        display: block;
     }
 `;
 
@@ -180,7 +157,7 @@ const appsLink = css`
 
 const links = css`
     display: flex;
-    flex-wrap: wrap-reverse;
+    flex-direction: column;
     align-items: center;
     margin: -5px;
 `;
@@ -370,18 +347,6 @@ export default () => {
                         </div>
                     </ul>
                     <div className={links}>
-                        <div className={apps}>
-                            <a href="https://oplnd.com/ios" className={appsLink}>
-                                <img src="/static/landing/apps-ios.svg" width="120" height="40" />
-                            </a>
-                            <a href="https://oplnd.com/android" className={appsLink}>
-                                <img
-                                    src="/static/landing/apps-android.svg"
-                                    width="130"
-                                    height="40"
-                                />
-                            </a>
-                        </div>
                         <ul className={social}>
                             <li className={socialItem} title="Instagram">
                                 <a
@@ -434,6 +399,18 @@ export default () => {
                                 </a>
                             </li>
                         </ul>
+                        <div className={apps}>
+                            <a href="https://oplnd.com/ios" className={appsLink}>
+                                <img src="/static/landing/apps-ios.svg" width="120" height="40" />
+                            </a>
+                            <a href="https://oplnd.com/android" className={appsLink}>
+                                <img
+                                    src="/static/landing/apps-android.svg"
+                                    width="130"
+                                    height="40"
+                                />
+                            </a>
+                        </div>
                     </div>
                 </div>
             </Block>
