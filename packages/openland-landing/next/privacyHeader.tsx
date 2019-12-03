@@ -76,8 +76,8 @@ let contentBoxClass = css`
     flex-grow: 1;
     padding-left: 35px;
     padding-bottom: 24px;
-    font-size: 15px;
-    line-height: 22px;
+    font-size: 17px;
+    line-height: 1.5;
     width: calc(100% - 248px);
 
     @media (max-width: 767px) {
