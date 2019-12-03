@@ -18,11 +18,11 @@ const root = css`
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        padding: 90px 0;
+        padding: 50px 0;
     }
 
     @media (max-width: 768px) {
-        margin-top: 110px;
+        margin-top: 70px;
     }
 
     background: linear-gradient(180deg, #f6f9fb 0%, rgba(255, 255, 255, 0) 100%);

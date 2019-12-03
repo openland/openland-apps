@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import Block from './block';
+import { XView } from 'react-mental';
 
 const root = css``;
 
@@ -414,9 +415,9 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                 </div>
                             )}
                         </span>
-                        <a className={menuItem} href="/next/about">
-                            About
-                        </a>
+                        <span className={menuItem}>
+                            <XView path="/next/about">About</XView>
+                        </span>
                         <a className={cx(menuItem, menuItemActive)} href="/signin">
                             Login
                         </a>

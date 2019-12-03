@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import Block from './block';
+import { XView } from 'react-mental';
 
 const root = css`
     padding: 5px 0;
@@ -257,9 +258,9 @@ export default () => {
                     <img className={logo} src="/static/landing/logo.svg" width="120" height="37" />
                     <ul className={menu}>
                         <li className={menuItem}>
-                            <a className={menuLink} href="/next/about">
-                                About
-                            </a>
+                            <span className={menuLink}>
+                                <XView path="/next/about">About</XView>
+                            </span>
                         </li>
                         <li className={cx(menuItem, hideMobile)}>
                             <span className={menuLink} onClick={() => appsSetOpen(!appsIsOpen)}>
@@ -346,12 +347,16 @@ export default () => {
                                             className={popupCloser}
                                             onClick={() => legalSetOpen(false)}
                                         />
-                                        <a className={popupItem} href="/next/privacy">
-                                            <span className={popupText}>Privacy Policy</span>
-                                        </a>
-                                        <a className={popupItem} href="/next/terms">
-                                            <span className={popupText}>Terms of Service</span>
-                                        </a>
+                                        <span className={popupItem}>
+                                            <XView path="/next/privacy">
+                                                <span className={popupText}>Privacy Policy</span>
+                                            </XView>
+                                        </span>
+                                        <span className={popupItem}>
+                                            <XView path="/next/terms">
+                                                <span className={popupText}>Terms of Service</span>
+                                            </XView>
+                                        </span>
                                     </div>
                                 )}
                             </li>
