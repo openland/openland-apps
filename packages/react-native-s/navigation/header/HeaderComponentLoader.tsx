@@ -8,6 +8,7 @@ import { SNavigationViewStyle } from '../../SNavigationView';
 import { NavigationManager } from '../NavigationManager';
 
 export interface HeaderComponentLoaderProps {
+    k: string;
     style: SNavigationViewStyle;
     manager: NavigationManager;
     navigateTo?: string;
