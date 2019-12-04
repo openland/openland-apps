@@ -176,6 +176,7 @@ declare module 'emotion-server' {
 
 declare namespace Humanize {
     function relativeTime(timestamp: number): string;
+    function date(format: string, timestamp: number): string;
 }
 
 declare module 'humanize' {
