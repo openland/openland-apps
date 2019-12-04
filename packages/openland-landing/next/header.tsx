@@ -38,7 +38,7 @@ const menuItem = css`
 
     position: relative;
 
-    color: #525273;
+    color: #9393a7;
     font-weight: 600;
     will-change: color;
     transition: color 0.2s;
@@ -64,7 +64,7 @@ const menuItem = css`
 
 const menuItemActive = css`
     padding: 9px 24px;
-    color: var(--accentPrimary);
+    color: #50a2f5;
     background-color: rgba(36, 139, 242, 0.1);
     border-radius: 12px;
     opacity: 1;
