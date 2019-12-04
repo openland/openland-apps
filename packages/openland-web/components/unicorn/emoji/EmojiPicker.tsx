@@ -37,6 +37,7 @@ const popperContainerClass = css`
     flex-direction: column;
     width: 352px;
     height: 480px;
+    position: relative;
 `;
 
 const emojiContainer = css`
@@ -158,6 +159,8 @@ const titleStyle = css`
 
 const loaderStyle = css`
     border-radius: 8px;
+    height: 432px;
+    top: 48px;
 `;
 
 const EmojiComponent = React.memo(
