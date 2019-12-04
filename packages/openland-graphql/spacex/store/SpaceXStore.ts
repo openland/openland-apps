@@ -1,6 +1,6 @@
 import { SpaceXPersistence } from './../persistence/SpaceXPersistence';
 import { OperationDefinition } from './../types';
-import { RecordStore, RecordSet, Record, ChangedRecord } from './RecordStore';
+import { RecordStore, RecordSet, Record } from './RecordStore';
 import { normalizeResponse } from './normalize';
 import { readRootFromStore } from './readFromStore';
 import { collectMissingKeysRoot } from './collectMissingKeys';
@@ -66,6 +66,9 @@ export class SpaceXStore {
                         isTriggered = true;
                         break;
                     }
+                }
+                if (isTriggered) {
+                    triggered.push(s[1]);
                 }
             }
             for (let f of triggered) {
