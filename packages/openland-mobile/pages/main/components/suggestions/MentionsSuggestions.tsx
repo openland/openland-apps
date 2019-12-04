@@ -51,8 +51,6 @@ export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) 
 
         lastCursor.current = data.cursor;
 
-        console.warn('BOOM - handleReload', data.cursor);
-
         const items: MentionToSend[] = data.localItems;
 
         if ('@all'.startsWith(activeWord.toLowerCase())) {
@@ -66,8 +64,6 @@ export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) 
     }, [activeWord]);
 
     const handleLoadMore = React.useCallback(async () => {
-        console.warn('BOOM - handleLoadMore', { cursor: lastCursor.current, loadingPagination });
-
         if (!lastCursor.current || typeof lastQuery.current === 'undefined' || loadingPagination) {
             return;
         }
