@@ -32,7 +32,7 @@ const SectionsList = [
 
 export const PrivacyPage = React.memo(() => (
     <div className={root}>
-        <Header isGrey={true} />
+        <Header isGrey={true} startLink={true} />
         <AboutHeader />
         <Container>
             <Content contents={SectionsList}>

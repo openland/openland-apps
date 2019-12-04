@@ -273,7 +273,8 @@ export default () => {
                         <Heading>Start in seconds</Heading>
                         <div className={text}>
                             Start with a chat and add more activities as you grow
-                            <span className={dot}>.</span>{' '}
+                            <span className={dot}>.</span>
+                            {' '}
                             <div className={linkWrapper}>
                                 <span className={link} onClick={() => setLeftOpen(true)}>
                                     Explore activities
@@ -359,7 +360,8 @@ export default () => {
                         <Heading>Easy to grow</Heading>
                         <div className={text}>
                             Make it easy for members to bring their friends
-                            <span className={dot}>.</span>{' '}
+                            <span className={dot}>.</span>
+                            {' '}
                             <div className={linkWrapper}>
                                 <span className={link} onClick={() => setRightOpen(true)}>
                                     See growth tools

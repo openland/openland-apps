@@ -20,7 +20,7 @@ const root = css`
 
 export const AboutPage = React.memo(() => (
     <div className={root}>
-        <Header isGrey={true} />
+        <Header isGrey={true} startLink={true} />
         <AboutHeader />
         <Founders />
         <AboutFeatures />

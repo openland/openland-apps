@@ -90,7 +90,7 @@ const link = css`
     font-weight: bold;
     font-size: 20px;
     line-height: 24px;
-    margin-top: 1em;
+    margin-top: 1.5em;
 
     position: relative;
 

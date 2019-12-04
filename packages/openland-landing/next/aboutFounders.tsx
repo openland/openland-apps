@@ -100,10 +100,6 @@ let founderLinkClass = css`
             fill: #1790ff;
         }
     }
-    .linkedin-icon {
-        width: 22px;
-        height: 22px;
-    }
     .mail-icon {
         margin: 0 8px 0 0;
         width: 22px;
@@ -114,6 +110,11 @@ let founderLinkClass = css`
         font-size: 0;
         line-height: 0;
     }
+`;
+
+const linkedinIcon = css`
+    width: 22px;
+    height: 22px;
 `;
 
 interface FoundersItemProps {
@@ -134,7 +135,7 @@ const FoundersItem = (props: FoundersItemProps) => (
             <div className={founderPositionClass}>{props.position}</div>
             <div className={founderLinksClass}>
                 <a href={props.linkedin} className={founderLinkClass}>
-                    <img className="linkedin-icon" src="/static/landing/icons/in.svg" />
+                    <img className={linkedinIcon} src="/static/landing/icons/in.svg" />
                 </a>
                 <a href={'mailto:' + props.mail} className={founderLinkClass}>
                     <img className="mail-icon" src="/static/landing/icons/email.svg" />

@@ -258,7 +258,7 @@ const popupSectionText = css`
 
 const popupSections = css`
     display: grid;
-    grid-template-columns: repeat(auto-fill, 180px);
+    grid-template-columns: repeat(auto-fill, 230px);
     grid-gap: 20px;
     // justify-content: center;
     text-align: left;
@@ -294,7 +294,8 @@ export default () => {
                                 <ul className={item}>Chats</ul>
                                 <ul className={cx(item, hide)}>Ultra-fast apps</ul>
                             </li>
-                            <span className={dot}>.</span>{' '}
+                            <span className={dot}>.</span>
+                            {' '}
                             <div className={linkWrapper}>
                                 <span className={link} onClick={() => setOpen(true)}>
                                     All features

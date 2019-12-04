@@ -21,6 +21,7 @@ const card = css`
     overflow: hidden;
 
     display: flex;
+    align-items: center;
 
     margin-top: 24px;
 
@@ -43,6 +44,12 @@ const img = css`
     flex-shrink: 0;
     width: 393px;
     height: 339px;
+
+    @media (max-width: 1600px) {
+        width: 320px;
+        height: auto;
+    }
+
     @media (max-width: 960px) {
         display: none;
     }
@@ -88,7 +95,7 @@ const text = css`
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        font-size: 22px;
+        font-size: 18px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {

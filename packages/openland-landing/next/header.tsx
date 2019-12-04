@@ -230,7 +230,7 @@ const appsLink = css``;
 const mobileMenuOpenIcon = css``;
 const mobileMenuCloseIcon = css``;
 
-export default ({ isGrey }: { isGrey?: boolean }) => {
+export default ({ isGrey, startLink }: { isGrey?: boolean; startLink?: boolean }) => {
     const [isOpen, setOpen] = React.useState<boolean>(false);
     const [isMenuOpen, setMenuOpen] = React.useState<boolean>(false);
 
@@ -345,6 +345,11 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                         <a className={menuItem} href="#">
                             Discover
                         </a>
+                        {startLink && (
+                            <a className={menuItem} href="/next/start">
+                                Start community
+                            </a>
+                        )}
                         <span className={menuItem} onMouseLeave={() => setOpen(false)}>
                             <span
                                 className={trigger}

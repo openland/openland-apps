@@ -44,7 +44,7 @@ const SectionsList = [
 
 export const TermsPage = React.memo(() => (
     <div className={root}>
-        <Header isGrey={true} />
+        <Header isGrey={true} startLink={true} />
         <AboutHeader />
         <Container>
             <Content contents={SectionsList}>
