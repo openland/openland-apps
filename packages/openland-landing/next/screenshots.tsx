@@ -123,7 +123,7 @@ const screenshot = css`
     width: 100%;
     max-width: 1920px;
     height: auto;
-    margin-top: 54px;
+    margin-top: 40px;
     filter: drop-shadow(0px 13px 55px rgba(20, 64, 86, 0.05));
     @media (max-width: 768px) {
         display: none;

@@ -18,11 +18,12 @@ const root = css`
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        padding: 50px 0;
+        padding: 80px 0;
     }
 
     @media (max-width: 768px) {
         margin-top: 70px;
+        padding: 40px 0;
     }
 
     background: linear-gradient(180deg, #f6f9fb 0%, rgba(255, 255, 255, 0) 100%);
@@ -79,7 +80,7 @@ const feature = css`
 
 const text = css`
     position: relative;
-    margin-top: 15px;
+    margin-top: 25px;
     color: #525273;
     @media (min-width: 1920px) {
         font-size: 26px;

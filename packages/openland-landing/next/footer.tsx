@@ -142,7 +142,7 @@ const hideMobile = css`
 const apps = css`
     display: none;
     position: relative;
-    margin-right: 10px;
+    margin-left: 10px;
     margin-top: 10px;
 
     @media (max-width: 768px) {

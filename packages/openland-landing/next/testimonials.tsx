@@ -35,7 +35,7 @@ const card = css`
         margin-top: 20px;
         background-color: initial;
 
-        max-width: 400px;
+        max-width: 509px;
     }
 `;
 
@@ -67,6 +67,8 @@ const content = css`
 
     @media (max-width: 768px) {
         padding: 38px 0;
+        padding-top: 20px;
+        padding-bottom: 38px;
     }
 `;
 
@@ -79,25 +81,22 @@ const quotes = css`
 
 const text = css`
     margin-top: 10px;
+    line-height: 1.6;
 
     @media (min-width: 1160px) {
         font-size: 24px;
-        line-height: 44px;
     }
 
     @media (min-width: 960px) and (max-width: 1920px) {
         font-size: 22px;
-        line-height: 36px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
         font-size: 26px;
-        line-height: 44px;
     }
 
     @media (max-width: 768px) {
         font-size: 16px;
-        line-height: 26px;
     }
 `;
 
@@ -118,24 +117,21 @@ const avatar = css`
 const signature = css``;
 
 const title = css`
+    line-height: 1.5;
     @media (min-width: 1920px) {
         font-size: 24px;
-        line-height: 29px;
     }
 
     @media (min-width: 960px) and (max-width: 1920px) {
         font-size: 18px;
-        line-height: 22px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
         font-size: 24px;
-        line-height: 29px;
     }
 
     @media (max-width: 768px) {
         font-size: 18px;
-        line-height: 22px;
     }
 `;
 
@@ -199,7 +195,7 @@ export default () => (
                         />
                         <div className={signature}>
                             <h3 className={title}>Founders</h3>
-                            <span className={by}>Started by Yury Lifshits</span>
+                            <span className={by}>started by Yury Lifshits</span>
                         </div>
                     </div>
                 </div>
