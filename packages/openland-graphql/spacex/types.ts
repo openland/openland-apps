@@ -1,3 +1,4 @@
+import { OperationDefinition } from './types';
 // Output Type
 
 export type OutputTypeNotNull = {
@@ -178,3 +179,5 @@ export interface OperationDefinition {
     kind: 'query' | 'mutation' | 'subscription';
     selector: OutputTypeObject;
 }
+
+export type Operations = { [key: string]: OperationDefinition };

@@ -70,5 +70,5 @@ export interface GraphqlClient {
     readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null>;
     writeQuery<TQuery, TVars>(data: TQuery, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<void>;
 
-    writeFragment<TFragment>(data: TFragment, fragment: GraphqlFragment<TFragment>): Promise<void>;
+    // writeFragment<TFragment>(data: TFragment, fragment: GraphqlFragment<TFragment>): Promise<void>;
 }

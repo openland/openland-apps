@@ -1,10 +1,9 @@
-import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription, GraphqlSubscription, GraphqlQueryWatch, OperationParameters, GraphqlFragment, GraphqlClientStatus } from '../GraphqlClient';
+import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription, GraphqlSubscription, GraphqlQueryWatch, OperationParameters, GraphqlClientStatus } from '../GraphqlClient';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { FetchPolicy } from 'apollo-client';
 import { throwFatalError } from 'openland-y-utils/throwFatalError';
 import { convertError } from './convertError';
 import { DirectApolloSubscription } from './DirectApolloSubscription';
-import { defaultDataIdFromObject } from 'apollo-cache-inmemory';
 import { Watcher } from 'openland-y-utils/Watcher';
 
 // const log = createLogger('GraphQL-Direct');
@@ -176,10 +175,5 @@ export class DirectApollolClient implements GraphqlClient {
         } catch (e) {
             return null;
         }
-    }
-
-    async writeFragment<TFragment>(data: TFragment, fragment: GraphqlFragment<TFragment>): Promise<void> {
-        let id = defaultDataIdFromObject(data)!;
-        this.client.client.writeFragment<TFragment>({ data, id, fragment: fragment.document });
     }
 }

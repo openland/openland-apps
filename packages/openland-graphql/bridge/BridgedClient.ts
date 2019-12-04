@@ -257,14 +257,7 @@ export abstract class BridgedClient implements GraphqlClient {
         this.postWriteQuery(id, data, query, vars);
         await res;
     }
-
-    async writeFragment<TFragment>(data: TFragment, fragment: GraphqlFragment<TFragment>): Promise<void> {
-        let id = this.nextKey();
-        let res = this.registerPromiseHandler<void>(id);
-        this.postWriteFragment(id, data, fragment);
-        await res;
-    }
-
+    
     //
     // Implementation
     //
