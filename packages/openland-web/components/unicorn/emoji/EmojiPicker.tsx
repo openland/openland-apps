@@ -142,6 +142,10 @@ const titleStyle = css`
     // }
 `;
 
+const loaderStyle = css`
+    border-radius: 8px;
+`;
+
 const EmojiComponent = React.memo(
     (props: {
         name: string;
@@ -494,7 +498,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
                 </>
             )}
             {stickers && (
-                <React.Suspense fallback={<XLoader loading={true} />}>
+                <React.Suspense fallback={<XLoader loading={true} className={loaderStyle} />}>
                     <StickerComponent onStickerSent={props.onStickerSent} />
                 </React.Suspense>
             )}
@@ -525,7 +529,7 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
     );
 
     const [visible, show] = usePopper(
-        { placement: 'top-end', hideOnLeave: true, wrapperClassName: wrapperClassName },
+        { placement: 'top-end', hideOnLeave: false, wrapperClassName: wrapperClassName },
         () => (
             <EmojiPickerBody
                 onEmojiPicked={props.onEmojiPicked}
