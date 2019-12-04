@@ -5,7 +5,7 @@ export class PersistenceEmptyProvider implements PersistenceProvider {
     async saveRecords(records: RecordSet) {
         // Nothing to do
     }
-    async loadRecords(keys: string[]) {
+    async loadRecords(keys: Set<string>) {
         // Nothing to do
         return {};
     }
