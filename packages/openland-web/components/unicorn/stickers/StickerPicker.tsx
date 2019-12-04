@@ -161,32 +161,13 @@ const StickersRow = (props: {
 };
 
 const CategoryButton = React.memo(
-    (props: {
-        sticker: StickerFragment;
-        offset: number;
-        focused: boolean;
-        onClick: (offset: number) => void;
-    }) => {
-        let ref = React.useRef<HTMLDivElement>(null);
-
+    (props: { sticker: StickerFragment; offset: number; onClick: (offset: number) => void }) => {
         const url = `https://ucarecdn.com/${props.sticker.image.uuid}/-/format/auto/-/`;
         const ops = `preview/${24}x${24}/`;
         const opsRetina = `preview/${24 * 2}x${24 * 2}/ 2x`;
 
-        React.useLayoutEffect(
-            () => {
-                if (props.focused) {
-                    ref.current!.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'nearest',
-                        inline: 'center',
-                    });
-                }
-            },
-            [props.focused],
-        );
         return (
-            <div className={categoryButton} onClick={() => props.onClick(props.offset)} ref={ref}>
+            <div className={categoryButton} onClick={() => props.onClick(props.offset)}>
                 <ImgWithRetry
                     width={24}
                     height={24}
@@ -205,6 +186,7 @@ export const StickerComponent = React.memo<{
     const client = useClient();
     const stickers = client.useMyStickers({ fetchPolicy: 'cache-and-network' }).stickers;
     const ref = React.useRef<VariableSizeList>(null);
+    const categoriesRef = React.useRef<HTMLDivElement>(null);
     const [stickersCount, setStickersCount] = React.useState(0);
     const [stickersPack, setStickersPack] = React.useState<StickerPack[]>([]);
     const [currentSection, setCurrentSection] = React.useState(0);
@@ -241,12 +223,30 @@ export const StickerComponent = React.memo<{
         [stickersPack],
     );
 
-    const onCategoryClick = React.useCallback((src: number) => {
-        const s = ref.current;
-        if (s) {
-            s.scrollToItem(src, 'start');
-        }
-    }, []);
+    React.useLayoutEffect(
+        () => {
+            if (categoriesRef.current) {
+                categoriesRef.current.scrollTo({
+                    left: currentSection * 40,
+                    behavior: 'smooth',
+                });
+            }
+        },
+        [currentSection],
+    );
+
+    const onCategoryClick = React.useCallback(
+        (src: number) => {
+            if (ref.current && categoriesRef.current) {
+                ref.current.scrollToItem(src, 'start');
+                categoriesRef.current.scrollTo({
+                    left: currentSection * 40,
+                    behavior: 'smooth',
+                });
+            }
+        },
+        [currentSection],
+    );
 
     const sendSticker = (item: StickerFragment) => {
         if (props.onStickerSent) {
@@ -294,7 +294,7 @@ export const StickerComponent = React.memo<{
                     }}
                 </VariableSizeList>
             </div>
-            <div className={categoryContainer}>
+            <div className={categoryContainer} ref={categoriesRef}>
                 <div
                     className={categorySelector}
                     style={{ transform: `translateX(${currentSection * 40}px)` }}
@@ -307,7 +307,6 @@ export const StickerComponent = React.memo<{
                             sticker={stickerCover}
                             offset={stickersPack[j].start}
                             onClick={onCategoryClick}
-                            focused={currentSection === j}
                         />
                     );
                 })}

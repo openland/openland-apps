@@ -529,7 +529,7 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
     );
 
     const [visible, show] = usePopper(
-        { placement: 'top-end', hideOnLeave: false, wrapperClassName: wrapperClassName },
+        { placement: 'top-end', hideOnLeave: true, wrapperClassName: wrapperClassName },
         () => (
             <EmojiPickerBody
                 onEmojiPicked={props.onEmojiPicked}
