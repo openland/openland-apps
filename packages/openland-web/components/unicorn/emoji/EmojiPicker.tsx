@@ -32,11 +32,27 @@ import { StickerComponent } from '../stickers/StickerPicker';
 import { XLoader } from 'openland-x/XLoader';
 import { StickerFragment } from 'openland-api/Types';
 
-const emojiContainerClass = css`
+const popperContainerClass = css`
     display: flex;
     flex-direction: column;
     width: 352px;
     height: 480px;
+`;
+
+const emojiContainer = css`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0;
+    overflow: hidden;
+`;
+
+const emojiRowContainer = css`
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    padding-left: 16px;
 `;
 
 const sectionTitle = css`
@@ -131,15 +147,13 @@ const titleStyle = css`
     font-weight: 600;
     top: 0px;
     z-index: 2;
-
     background-color: #fff;
-    // @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
-    //     margin-top: -16px;
-    //     padding-top: 16px;
-    //     background-color: rgba(0,0,0,0);
-    //     backdrop-filter: blur(10px);
-    //     -webkit-backdrop-filter: blur(10px);
-    // }
+    padding-left: 16px;
+    @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+        background-color: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
 `;
 
 const loaderStyle = css`
@@ -245,7 +259,7 @@ const RowComponent = React.memo(
             Math.min(props.section.emoji.length, index * 8 + 8),
         );
         return (
-            <XView height={40} flexDirection="row">
+            <div className={emojiRowContainer}>
                 {emoji.map(v => (
                     <EmojiComponent
                         name={v.name}
@@ -255,7 +269,7 @@ const RowComponent = React.memo(
                         key={'emoji' + v.name}
                     />
                 ))}
-            </XView>
+            </div>
         );
     },
 );
@@ -273,7 +287,7 @@ const Recent = React.memo((props: { index: number; onEmojiPicked: (arg: string) 
         recent.splice(0, 8);
     }
     return (
-        <XView height={40} flexDirection="row">
+        <div className={emojiRowContainer}>
             {recent.map(v => (
                 <EmojiComponent
                     name={v.name}
@@ -283,7 +297,7 @@ const Recent = React.memo((props: { index: number; onEmojiPicked: (arg: string) 
                     key={'recent_emoji' + v.name}
                 />
             ))}
-        </XView>
+        </div>
     );
 });
 
@@ -357,20 +371,12 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
         }
     }, []);
     const onCategoryClick = React.useCallback((src: number) => {
-        let s = ref.current;
-        if (s) {
-            // const el = findDOMNode(s);
-            // if (el) {
-            //     (el as Element).scrollTo({
-            //         behavior: 'smooth',
-            //         top: src * 40
-            //     });
-            // }
-            s.scrollToItem(src, 'start');
+        if (ref.current) {
+            ref.current.scrollToItem(src, 'start');
         }
     }, []);
     return (
-        <div className={emojiContainerClass}>
+        <div className={popperContainerClass}>
             <XView flexDirection="row">
                 <div
                     className={cx(TextTitle3, sectionTitle, !stickers && sectionActiveTitle)}
@@ -391,13 +397,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
             </XView>
             {!stickers && (
                 <>
-                    <XView
-                        flexGrow={1}
-                        flexShrink={1}
-                        flexBasis={0}
-                        paddingHorizontal={16}
-                        overflow="hidden"
-                    >
+                    <div className={emojiContainer}>
                         <FixedSizeList
                             ref={ref}
                             itemCount={total}
@@ -432,7 +432,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
                                 );
                             }}
                         </FixedSizeList>
-                    </XView>
+                    </div>
                     <XView flexDirection="row" paddingHorizontal={16} height={48}>
                         <div
                             className={categorySelector}

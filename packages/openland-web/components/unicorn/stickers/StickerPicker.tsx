@@ -26,13 +26,12 @@ const stickersContainer = css`
     flex-shrink: 1;
     flex-basis: 0;
     overflow: hidden;
-    padding-left: 16px;
-    padding-right: 16px;
 `;
 
 const stickerRowContainer = css`
     display: flex;
     flex-direction: row;
+    padding-left: 16px;
 `;
 
 const sticker = css`
@@ -62,6 +61,12 @@ const titleContainerStyle = css`
     top: 0px;
     z-index: 2;
     background-color: #fff;
+    padding-left: 16px;
+    @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+        background-color: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
 `;
 
 const titleTextStyle = css`
