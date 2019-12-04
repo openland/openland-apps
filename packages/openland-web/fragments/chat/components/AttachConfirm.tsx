@@ -91,12 +91,12 @@ const Body = (props: { files: File[][]; ctx: XModalController }) => {
         hasPhoto && !hasFiles
             ? pluralForm(bodyFiles.length, ['a photo', bodyFiles.length + ' photos'])
             : pluralForm(bodyFiles.length, ['a file', bodyFiles.length + ' files'])
-        }`;
+    }`;
 
     return (
         <>
             <span className={titleClass}>{title}</span>
-            <XScrollView3 maxHeight={500} paddingHorizontal={40}>
+            <XScrollView3 maxHeight={500} paddingHorizontal={40} useDefaultScroll={true}>
                 {list}
                 <div style={{ height: 16 }} />
             </XScrollView3>
@@ -104,8 +104,11 @@ const Body = (props: { files: File[][]; ctx: XModalController }) => {
     );
 };
 
-const MAX_FILE_SIZE = 1e+8;
-export const showAttachConfirm = (files: File[], callback: (files: UploadCareUploading[]) => void) => {
+const MAX_FILE_SIZE = 1e8;
+export const showAttachConfirm = (
+    files: File[],
+    callback: (files: UploadCareUploading[]) => void,
+) => {
     let tooBig = false;
     let filesFiltered = files.filter(f => {
         let b = f.size > MAX_FILE_SIZE;
@@ -117,10 +120,11 @@ export const showAttachConfirm = (files: File[], callback: (files: UploadCareUpl
     const uploading = filesFiltered.map(f => new UploadCareUploading(f));
 
     if (filesFiltered.length > 0) {
-        AlertBlanket
-            .builder()
+        AlertBlanket.builder()
             .body(ctx => <Body files={filesRes} ctx={ctx} />)
-            .action('Send', async () => { await callback(uploading.filter(u => filesRes[0].includes(u.getSourceFile()))); })
+            .action('Send', async () => {
+                await callback(uploading.filter(u => filesRes[0].includes(u.getSourceFile())));
+            })
             .show();
     }
 
