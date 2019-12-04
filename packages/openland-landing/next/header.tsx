@@ -280,7 +280,7 @@ export default ({ isGrey, startLink }: { isGrey?: boolean; startLink?: boolean }
                                         </a>
                                     </li>
                                     <li className={mobileMenuItem}>
-                                        <a href="/next" className={mobileMenuLink}>
+                                        <a href="/next/start" className={mobileMenuLink}>
                                             Start community
                                         </a>
                                     </li>
