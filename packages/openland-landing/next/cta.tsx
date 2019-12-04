@@ -68,7 +68,7 @@ const button = css`
     display: inline-block;
     background-color: var(--accentPrimary);
     border-radius: 16px;
-    font-weight: bold;
+    font-weight: 600;
     box-shadow: 0px 6px 17px rgba(36, 139, 242, 0.32);
     color: var(--foregroundContrast);
 

@@ -127,10 +127,8 @@ const socialLink = css``;
 
 const socialLogo = css`
     display: inline-block;
-    @media (max-width: 768px) {
-        position: relative;
-        top: 1.5px;
-    }
+    position: relative;
+    top: 1.5px;
 `;
 
 const hideMobile = css`
@@ -180,6 +178,15 @@ const popup = css`
     padding: 8px 0;
     z-index: 5;
     background: white;
+
+    &:before {
+        position: absolute;
+        bottom: -50px;
+        display: block;
+        content: '';
+        width: 100%;
+        height: 50px;
+    }
 `;
 
 const popupItem = css`
@@ -190,7 +197,7 @@ const popupItem = css`
     align-items: center;
 
     color: #272750;
-    font-weight: normal;
+    font-weight: 600;
 
     &,
     &:hover,
@@ -232,11 +239,14 @@ export default () => {
                                 <XView path="/next/about">About</XView>
                             </span>
                         </li>
-                        <li className={cx(menuItem, hideMobile)}>
+                        <li
+                            className={cx(menuItem, hideMobile)}
+                            onMouseLeave={() => appsSetOpen(false)}
+                        >
                             <span
                                 className={menuLink}
-                                onClick={() => appsSetOpen(!appsIsOpen)}
-                                onMouseOver={() => appsSetOpen(!appsIsOpen)}
+                                onClick={() => appsSetOpen(true)}
+                                onMouseOver={() => appsSetOpen(true)}
                             >
                                 Apps
                             </span>
@@ -246,7 +256,12 @@ export default () => {
                                     className={cx(popup, 'landingHeaderPopup')}
                                     onMouseLeave={() => appsSetOpen(false)}
                                 >
-                                    <a className={popupItem} href="https://oplnd.com/ios">
+                                    <a
+                                        className={popupItem}
+                                        href="https://oplnd.com/ios"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/ios.svg"
@@ -256,7 +271,12 @@ export default () => {
                                         />
                                         <span className={popupText}>iOS</span>
                                     </a>
-                                    <a className={popupItem} href="https://oplnd.com/android">
+                                    <a
+                                        className={popupItem}
+                                        href="https://oplnd.com/android"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/android.svg"
@@ -267,7 +287,12 @@ export default () => {
                                         <span className={popupText}>Android</span>
                                     </a>
                                     <div className={popupSeparator} />
-                                    <a className={popupItem} href="https://oplnd.com/mac">
+                                    <a
+                                        className={popupItem}
+                                        href="https://oplnd.com/mac"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/mac.svg"
@@ -277,7 +302,12 @@ export default () => {
                                         />
                                         <span className={popupText}>Mac</span>
                                     </a>
-                                    <a className={popupItem} href="https://oplnd.com/windows">
+                                    <a
+                                        className={popupItem}
+                                        href="https://oplnd.com/windows"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/win.svg"
@@ -287,7 +317,12 @@ export default () => {
                                         />
                                         <span className={popupText}>Windows</span>
                                     </a>
-                                    <a className={popupItem} href="https://oplnd.com/linux">
+                                    <a
+                                        className={popupItem}
+                                        href="https://oplnd.com/linux"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/linux.svg"
@@ -306,11 +341,11 @@ export default () => {
                             </a>
                         </li>
                         <div className={menuItemWrapper}>
-                            <li className={menuItem}>
+                            <li className={menuItem} onMouseLeave={() => legalSetOpen(false)}>
                                 <span
                                     className={menuLink}
-                                    onClick={() => legalSetOpen(!appsIsOpen)}
-                                    onMouseOver={() => legalSetOpen(!appsIsOpen)}
+                                    onClick={() => legalSetOpen(true)}
+                                    onMouseOver={() => legalSetOpen(true)}
                                 >
                                     Legal
                                 </span>
@@ -321,13 +356,13 @@ export default () => {
                                         onMouseLeave={() => legalSetOpen(false)}
                                     >
                                         <span className={popupItem}>
-                                            <XView path="/next/privacy">
-                                                <span className={popupText}>Privacy Policy</span>
+                                            <XView path="/next/terms">
+                                                <span className={popupText}>Terms of Service</span>
                                             </XView>
                                         </span>
                                         <span className={popupItem}>
-                                            <XView path="/next/terms">
-                                                <span className={popupText}>Terms of Service</span>
+                                            <XView path="/next/privacy">
+                                                <span className={popupText}>Privacy Policy</span>
                                             </XView>
                                         </span>
                                     </div>
@@ -342,46 +377,43 @@ export default () => {
                     </ul>
                     <div className={links}>
                         <ul className={social}>
-                            <li className={socialItem} title="Instagram">
+                            <li className={socialItem}>
                                 <a
                                     className={socialLink}
                                     href="https://www.instagram.com/openlandhq/"
                                 >
                                     <img
                                         className={socialLogo}
-                                        src="/static/landing/icons/instagram.svg"
-                                        alt="Instagram"
+                                        src="/static/landing/icons/1.svg"
                                         width="24"
                                         height="24"
                                     />
                                 </a>
                             </li>
-                            <li className={socialItem} title="Twitter">
+                            <li className={socialItem}>
                                 <a className={socialLink} href="https://twitter.com/OpenlandHQ">
                                     <img
                                         className={socialLogo}
-                                        src="/static/landing/icons/twitter.svg"
-                                        alt="Twitter"
+                                        src="/static/landing/icons/2.svg"
                                         width="24"
                                         height="24"
                                     />
                                 </a>
                             </li>
-                            <li className={socialItem} title="Facebook">
+                            <li className={socialItem}>
                                 <a
                                     className={socialLink}
                                     href="https://www.facebook.com/openlandhq/"
                                 >
                                     <img
                                         className={socialLogo}
-                                        src="/static/landing/icons/facebook.svg"
-                                        alt="Facebook"
+                                        src="/static/landing/icons/3.svg"
                                         width="24"
                                         height="24"
                                     />
                                 </a>
                             </li>
-                            <li className={socialItem} title="Angelist">
+                            <li className={socialItem}>
                                 <a className={socialLink} href="https://angel.co/company/openland">
                                     <img
                                         className={socialLogo}

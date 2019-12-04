@@ -27,7 +27,7 @@ const list = css`
     }
 
     @media (min-width: 768px) and (max-width: 1920px) {
-        font-size: 22px;
+        font-size: 20px;
         line-height: 2.3;
     }
 
@@ -91,6 +91,9 @@ const headingWrapper = css`
 
     @media (min-width: 920px) {
         white-space: nowrap;
+        & > h2 {
+            font-size: 30px !important;
+        }
     }
 `;
 

@@ -38,7 +38,7 @@ export const PrivacyPage = React.memo(() => (
             <Content contents={SectionsList}>
                 <h2 id="section1">Welcome to&nbsp;Openland</h2>
                 <p>
-                    Openland is&nbsp;committed to&nbsp;protect your privacy, as&nbsp;you use our
+                    Openland is&nbsp;committed to&nbsp;protect your privacy as&nbsp;you use our
                     service. We&nbsp;want you to&nbsp;understand how we&nbsp;use your personal
                     information and how you can control&nbsp;it. All references
                     to&nbsp;&ldquo;we&rdquo;,&nbsp;&ldquo;us&rdquo;, &ldquo;our&rdquo;,

@@ -225,7 +225,7 @@ export default () => (
                         </li>
                         <li className={item}>
                             <img
-                                src="/static/landing/icons/share.svg"
+                                src="/static/landing/icons/loud.svg"
                                 className={bullet}
                                 width="32"
                                 height="32"

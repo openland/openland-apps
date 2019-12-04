@@ -137,7 +137,13 @@ let contentBoxClass = css`
     }
 `;
 
-const link = css``;
+const link = css`
+    &,
+    &:hover,
+    &:focus {
+        text-decoration: none;
+    }
+`;
 
 interface ContentProps {
     contents: string[];

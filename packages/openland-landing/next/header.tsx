@@ -39,6 +39,7 @@ const menuItem = css`
     position: relative;
 
     color: #525273;
+    font-weight: 600;
     will-change: color;
     transition: color 0.2s;
 
@@ -93,7 +94,7 @@ const popup = css`
     flex-direction: column;
     width: 160px;
 
-    top: 50px;
+    top: 30px;
 
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
     border-radius: 8px;
@@ -101,14 +102,14 @@ const popup = css`
     z-index: 5;
     background: white;
 
-    // &:before {
-    //     position: absolute;
-    //     top: -50px;
-    //     display: block;
-    //     content: '';
-    //     width: 100%;
-    //     height: 50px;
-    // }
+    &:before {
+        position: absolute;
+        top: -50px;
+        display: block;
+        content: '';
+        width: 100%;
+        height: 50px;
+    }
 `;
 const popupItem = css`
     line-height: 40px;
@@ -118,7 +119,7 @@ const popupItem = css`
     align-items: center;
 
     color: #272750;
-    font-weight: normal;
+    font-weight: 600;
 
     &,
     &:hover,
@@ -344,11 +345,11 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                         <a className={menuItem} href="#">
                             Discover
                         </a>
-                        <span className={menuItem}>
+                        <span className={menuItem} onMouseLeave={() => setOpen(false)}>
                             <span
                                 className={trigger}
-                                onClick={() => setOpen(!isOpen)}
-                                onMouseOver={() => setOpen(!isOpen)}
+                                onClick={() => setOpen(true)}
+                                onMouseOver={() => setOpen(true)}
                             >
                                 Apps
                             </span>
@@ -358,7 +359,12 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                     className={cx(popup, 'landingHeaderPopup')}
                                     onMouseLeave={() => setOpen(false)}
                                 >
-                                    <a className={popupItem} href="https://oplnd.com/ios">
+                                    <a
+                                        className={popupItem}
+                                        href="https://oplnd.com/ios"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/ios.svg"
@@ -368,7 +374,12 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                         />
                                         <span className={popupText}>iOS</span>
                                     </a>
-                                    <a className={popupItem} href="https://oplnd.com/android">
+                                    <a
+                                        className={popupItem}
+                                        href="https://oplnd.com/android"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/android.svg"
@@ -379,7 +390,12 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                         <span className={popupText}>Android</span>
                                     </a>
                                     <div className={popupSeparator} />
-                                    <a className={popupItem} href="https://oplnd.com/mac">
+                                    <a
+                                        className={popupItem}
+                                        href="https://oplnd.com/mac"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/mac.svg"
@@ -389,7 +405,12 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                         />
                                         <span className={popupText}>Mac</span>
                                     </a>
-                                    <a className={popupItem} href="https://oplnd.com/windows">
+                                    <a
+                                        className={popupItem}
+                                        href="https://oplnd.com/windows"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/win.svg"
@@ -399,7 +420,12 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                         />
                                         <span className={popupText}>Windows</span>
                                     </a>
-                                    <a className={popupItem} href="https://oplnd.com/linux">
+                                    <a
+                                        className={popupItem}
+                                        href="https://oplnd.com/linux"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/linux.svg"

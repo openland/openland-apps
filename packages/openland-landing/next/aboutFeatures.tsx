@@ -167,7 +167,7 @@ export default () => (
                     <p className={text}>
                         Explore open positions or design your own role in our team
                     </p>
-                    <a href="https://next.openland.com/invite/8GbujwA" className={link}>
+                    <a href="https://openland.com/invite/8GbujwA" className={link}>
                         Join Chat
                     </a>
                 </div>
@@ -185,7 +185,7 @@ export default () => (
                     <p className={text}>
                         Get help, share experiences, and propose ideas for Openland
                     </p>
-                    <a href="https://next.openland.com/invite/zOF5IpZ" className={link}>
+                    <a href="https://openland.com/invite/zOF5IpZ" className={link}>
                         Join Chat
                     </a>
                 </div>
@@ -201,7 +201,7 @@ export default () => (
                         <div className={name}>Openland News</div>
                     </div>
                     <p className={text}>Follow our journey to the future of community organizing</p>
-                    <a href="https://next.openland.com/invite/Iqx4dPt" className={link}>
+                    <a href="https://openland.com/invite/Iqx4dPt" className={link}>
                         Join Chat
                     </a>
                 </div>
@@ -219,7 +219,7 @@ export default () => (
                     <p className={text}>
                         Get inspiration and learn from the best community organizers
                     </p>
-                    <a href="https://next.openland.com/invite/XaQDsnQ" className={link}>
+                    <a href="https://openland.com/invite/XaQDsnQ" className={link}>
                         Join Chat
                     </a>
                 </div>
