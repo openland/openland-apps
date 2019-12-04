@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { css } from 'linaria';
 
 import Header from './next/header';
@@ -44,6 +45,7 @@ const SectionsList = [
 
 export const TermsPage = React.memo(() => (
     <div className={root}>
+        <XDocumentHead title="Terms of Service" titleWithoutReverse={true} />
         <Header isGrey={true} startLink={true} />
         <AboutHeader />
         <Container>

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { css } from 'linaria';
 
 import Header from './next/header';
@@ -32,6 +33,7 @@ const SectionsList = [
 
 export const PrivacyPage = React.memo(() => (
     <div className={root}>
+        <XDocumentHead title="Privacy Policy" titleWithoutReverse={true} />
         <Header isGrey={true} startLink={true} />
         <AboutHeader />
         <Container>
