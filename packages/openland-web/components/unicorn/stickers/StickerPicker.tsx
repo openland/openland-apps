@@ -191,6 +191,15 @@ export const StickerComponent = React.memo<{
     const [stickersPack, setStickersPack] = React.useState<StickerPack[]>([]);
     const [currentSection, setCurrentSection] = React.useState(0);
 
+    const categoriesScrolling = () => {
+        if (categoriesRef.current) {
+            categoriesRef.current.scrollTo({
+                left: currentSection * 40,
+                behavior: 'smooth',
+            });
+        }
+    };
+
     React.useEffect(
         () => {
             if (stickers.packs) {
@@ -223,26 +232,13 @@ export const StickerComponent = React.memo<{
         [stickersPack],
     );
 
-    React.useLayoutEffect(
-        () => {
-            if (categoriesRef.current) {
-                categoriesRef.current.scrollTo({
-                    left: currentSection * 40,
-                    behavior: 'smooth',
-                });
-            }
-        },
-        [currentSection],
-    );
+    React.useLayoutEffect(() => categoriesScrolling(), [currentSection]);
 
     const onCategoryClick = React.useCallback(
         (src: number) => {
             if (ref.current && categoriesRef.current) {
                 ref.current.scrollToItem(src, 'start');
-                categoriesRef.current.scrollTo({
-                    left: currentSection * 40,
-                    behavior: 'smooth',
-                });
+                categoriesScrolling();
             }
         },
         [currentSection],
