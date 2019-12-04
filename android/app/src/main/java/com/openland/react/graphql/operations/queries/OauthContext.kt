@@ -9,13 +9,14 @@ internal val OauthContextSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("app", "app", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("clientId", "clientId", notNull(scalar("String"))),
-                            field("clientSecret", "clientSecret", notNull(scalar("String"))),
+                            field("clientId", "clientId", scalar("String")),
+                            field("clientSecret", "clientSecret", scalar("String")),
+                            field("id", "id", notNull(scalar("ID"))),
                             field("owner", "owner", notNull(obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("User", UserTinySelector)
                                 ))),
-                            field("scopes", "scopes", notNull(list(notNull(scalar("String"))))),
+                            field("scopes", "scopes", list(notNull(scalar("String")))),
                             field("title", "title", notNull(scalar("String")))
                         ))),
                     field("code", "code", notNull(scalar("String"))),
@@ -26,6 +27,6 @@ internal val OauthContextSelector = obj(
 val OauthContext = object: OperationDefinition {
     override val name = "OauthContext"
     override val kind = OperationKind.QUERY
-    override val body = "query OauthContext(\$code:String!){context:oauthContext(code:\$code){__typename app{__typename clientId clientSecret owner{__typename ...UserTiny}scopes title}code redirectUrl state}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}"
+    override val body = "query OauthContext(\$code:String!){context:oauthContext(code:\$code){__typename app{__typename clientId clientSecret id owner{__typename ...UserTiny}scopes title}code redirectUrl state}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}"
     override val selector = OauthContextSelector
 }

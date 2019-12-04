@@ -43,6 +43,7 @@ export const UnsupportedContent = React.memo((props: UnsupportedContentProps) =>
                     }}
                     onUserPress={() => { return; }}
                     onGroupPress={() => { return; }}
+                    onOrganizationPress={() => { return; }}
                     onDocumentPress={() => { return; }}
                     onMediaPress={() => { return; }}
                 />

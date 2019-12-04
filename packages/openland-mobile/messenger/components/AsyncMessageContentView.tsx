@@ -31,12 +31,13 @@ interface AsyncMessageTextViewProps {
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
+    onOrganizationPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onMediaLongPress: (e: ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
 }
 
-export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageItem, theme: ThemeGlobal, onUserPress: (id: string) => void, onGroupPress: (id: string) => void) => {
+export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageItem, theme: ThemeGlobal, onUserPress: (id: string) => void, onGroupPress: (id: string) => void, onOrganizationPress: (id: string) => void) => {
     const SpanView = (props: { span: Span, children?: any }) => {
         const { span, children } = props;
 
@@ -59,6 +60,8 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
             return <ASText key={'mention-all'} color={linkColor} textDecorationLine={linkTextDecoration}>{children}</ASText>;
         } else if (span.type === 'mention_room') {
             return <ASText key={'mention-room'} color={linkColor} textDecorationLine={linkTextDecoration} onPress={() => onGroupPress(span.id)}>{children}</ASText>;
+        } else if (span.type === 'mention_organization') {
+            return <ASText key={'mention-organization'} color={linkColor} textDecorationLine={linkTextDecoration} onPress={() => onOrganizationPress(span.id)}>{children}</ASText>;
         } else if (span.type === 'mention_users') {
             return <OthersUsersWrapper key={'mentions'} theme={theme} onUserPress={uid => onUserPress(uid)} users={span.users} useAsync={true}>{children}</OthersUsersWrapper>;
         } else if (span.type === 'bold') {
@@ -94,7 +97,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
 };
 
 export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number, compensateBubble?: boolean) => {
-    const { theme, message, onUserPress, onGroupPress, onMediaPress, onDocumentPress, onMediaLongPress } = props;
+    const { theme, message, onUserPress, onGroupPress, onOrganizationPress, onMediaPress, onDocumentPress, onMediaLongPress } = props;
 
     // todo: handle multiple attaches
     const attaches = (message.attachments || []);
@@ -128,7 +131,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     const textSize = !compensateBubble ? maxSize : undefined;
 
     if (hasReply) {
-        topContent.push(<ReplyContent key="msg-reply" compensateBubble={compensateBubble} width={textSize} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onMediaPress={onMediaPress} />);
+        topContent.push(<ReplyContent key="msg-reply" compensateBubble={compensateBubble} width={textSize} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onMediaPress={onMediaPress} />);
     }
     if (hasImage && imageLayout) {
         topContent.push(<MediaContent key="msg-media" theme={theme} compensateBubble={compensateBubble} layout={imageLayout} message={message} attach={fileAttach!} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onMediaLongPress={onMediaLongPress} hasTopContent={hasReply} hasBottomContent={hasText || hasUrlAug} />);
@@ -137,7 +140,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         topContent.push(<StickerContent key="msg-sticker" sticker={sticker} message={message} padded={hasReply} />);
     }
     if (hasText) {
-        topContent.push(<TextContent key="msg-text" compensateBubble={compensateBubble} width={textSize} emojiOnly={isEmojiOnly} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onMediaPress={onMediaPress} />);
+        topContent.push(<TextContent key="msg-text" compensateBubble={compensateBubble} width={textSize} emojiOnly={isEmojiOnly} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onMediaPress={onMediaPress} />);
     }
     if (hasDocument) {
         topContent.push(<DocumentContent key="msg-document" theme={theme} compensateBubble={compensateBubble} attach={fileAttach!} message={message} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} />);

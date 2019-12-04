@@ -36,6 +36,7 @@ export interface AsyncMessageViewProps {
     onMessageLongPress: (message: DataSourceMessageItem) => void;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
+    onOrganizationPress: (id: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
     onCommentsPress: (message: DataSourceMessageItem) => void;
@@ -44,7 +45,7 @@ export interface AsyncMessageViewProps {
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal();
-    const { message, engine, onMessageDoublePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReactionsPress } = props;
+    const { message, engine, onMessageDoublePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReactionsPress, onOrganizationPress } = props;
     const { isOut, attachTop, attachBottom, commentsCount, reactions, sender, isSending } = message;
 
     let lastTap: number;
@@ -65,7 +66,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     let res;
 
     if (message.text || message.reply || (message.attachments && message.attachments.length) || message.sticker) {
-        res = <AsyncMessageContentView theme={theme} key={'message-content'} message={message} onMediaPress={onMediaPress} onMediaLongPress={handleLongPress} onDocumentPress={onDocumentPress} onUserPress={onUserPress} onGroupPress={onGroupPress} />;
+        res = <AsyncMessageContentView theme={theme} key={'message-content'} message={message} onMediaPress={onMediaPress} onMediaLongPress={handleLongPress} onDocumentPress={onDocumentPress} onUserPress={onUserPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} />;
     }
 
     if (!res) {

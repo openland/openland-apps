@@ -20,6 +20,11 @@ export const SpanFragment = gql`
                 ...UserForMention
             }
         }
+        ... on MessageSpanOrganizationMention {
+            organization {
+                ...OrganizationShort
+            }
+        }
         ... on MessageSpanRoomMention {
             room {
                 ... on PrivateRoom {
@@ -32,6 +37,7 @@ export const SpanFragment = gql`
                 ... on SharedRoom {
                     id
                     title
+                    roomPhoto: photo
                 }
             }
         }
@@ -43,6 +49,7 @@ export const SpanFragment = gql`
         }
     }
 
+    ${UserForMention}
     ${UserForMention}
 `;
 

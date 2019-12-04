@@ -20,6 +20,7 @@ interface ReplyContentProps {
     compensateBubble?: boolean;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
+    onOrganizationPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     theme: ThemeGlobal;
@@ -85,6 +86,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
                                                 onUserPress={this.props.onUserPress}
                                                 onGroupPress={this.props.onGroupPress}
+                                                onOrganizationPress={this.props.onOrganizationPress}
                                             />
                                         </ASFlex>
                                     )}
@@ -132,6 +134,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
                                                 onUserPress={this.props.onUserPress}
                                                 onGroupPress={this.props.onGroupPress}
+                                                onOrganizationPress={this.props.onOrganizationPress}
                                             />
                                         </ASFlex>
                                     )}

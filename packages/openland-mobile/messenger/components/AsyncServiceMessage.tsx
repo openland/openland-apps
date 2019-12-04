@@ -9,12 +9,13 @@ export interface AsyncServiceMessageProps {
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
+    onOrganizationPress: (id: string) => void;
 }
 
 export const AsyncServiceMessage = (props: AsyncServiceMessageProps) => {
-    const { message, onUserPress, onGroupPress } = props;
+    const { message, onUserPress, onGroupPress, onOrganizationPress } = props;
     const theme = useThemeGlobal();
-    let parts = renderPreprocessedText(message.textSpans, message, theme, onUserPress, onGroupPress);
+    let parts = renderPreprocessedText(message.textSpans, message, theme, onUserPress, onGroupPress, onOrganizationPress);
 
     return (
         <ASFlex

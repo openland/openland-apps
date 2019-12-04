@@ -18,7 +18,7 @@ import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { MentionsRender } from './components/MentionsRender';
+import { MentionsSuggestions } from './components/suggestions/MentionsSuggestions';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -26,7 +26,7 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 import { ChannelMuteButton, ChatInputPlaceholder } from './components/ChannelMuteButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { showCallModal } from './Call';
-import { EmojiRender, EmojiRenderRow } from './components/EmojiRender';
+import { EmojiSuggestions, EmojiSuggestionsRow } from './components/suggestions/EmojiSuggestions';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
 import { MessagesActionsState } from 'openland-engines/messenger/MessagesActionsState';
 import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardReplyView';
@@ -228,6 +228,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         if (mention.__typename === 'User') {
             newText = text.substring(0, selection.start - word.length) + '@' + mention.name + ' ' + text.slice(selection.start);
+        } else if (mention.__typename === 'Organization') {
+            newText = text.substring(0, selection.start - word.length) + '@' + mention.name + ' ' + text.slice(selection.start);
+        } else if (mention.__typename === 'SharedRoom') {
+            newText = text.substring(0, selection.start - word.length) + '@' + mention.title + ' ' + text.slice(selection.start);
         } else if (mention.__typename === 'AllMention') {
             newText = text.substring(0, selection.start - word.length) + '@All' + ' ' + text.slice(selection.start);
         }
@@ -296,7 +300,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let activeWord = findActiveWord(this.state.text, this.state.selection);
         if (this.props.chat.__typename === 'SharedRoom' && this.state.inputFocused && activeWord && activeWord.startsWith('@')) {
             suggestions = (
-                <MentionsRender
+                <MentionsSuggestions
                     activeWord={activeWord}
                     onMentionPress={this.handleMentionPress}
                     groupId={this.props.chat.id}
@@ -306,7 +310,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         if (this.state.inputFocused && activeWord && activeWord.startsWith(':')) {
             suggestions = (
-                <EmojiRender
+                <EmojiSuggestions
                     activeWord={activeWord}
                     onEmojiPress={this.handleEmojiPress}
                 />
@@ -315,7 +319,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         if (Platform.OS === 'android' && this.state.inputFocused && activeWord && emojiWordMap[activeWord.toLowerCase()]) {
             suggestions = (
-                <EmojiRenderRow
+                <EmojiSuggestionsRow
                     items={emojiWordMap[activeWord.toLowerCase()]}
                     activeWord={activeWord}
                     onEmojiPress={this.handleEmojiPress}

@@ -8,6 +8,7 @@ export const MatchmakingProfileFragment = gql`
             isYou
             name
             photo
+            isBot
             primaryOrganization {
                 id
                 name

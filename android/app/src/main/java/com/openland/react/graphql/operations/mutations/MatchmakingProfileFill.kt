@@ -13,6 +13,6 @@ internal val MatchmakingProfileFillSelector = obj(
 val MatchmakingProfileFill = object: OperationDefinition {
     override val name = "MatchmakingProfileFill"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation MatchmakingProfileFill(\$input:MatchmakingProfileFillInput!,\$peerId:ID!){matchmakingProfileFill(input:\$input,peerId:\$peerId){__typename ...MatchmakingProfileFragment}}fragment MatchmakingProfileFragment on MatchmakingProfile{__typename answers{__typename ... on TextMatchmakingAnswer{answer question{__typename id subtitle title}}... on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id isYou name photo primaryOrganization{__typename id name}}}"
+    override val body = "mutation MatchmakingProfileFill(\$input:MatchmakingProfileFillInput!,\$peerId:ID!){matchmakingProfileFill(input:\$input,peerId:\$peerId){__typename ...MatchmakingProfileFragment}}fragment MatchmakingProfileFragment on MatchmakingProfile{__typename answers{__typename ... on TextMatchmakingAnswer{answer question{__typename id subtitle title}}... on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id isBot isYou name photo primaryOrganization{__typename id name}}}"
     override val selector = MatchmakingProfileFillSelector
 }

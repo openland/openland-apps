@@ -1,18 +1,18 @@
 import UUID from 'uuid/v4';
 import { UploadingFile, UploadStatus } from './types';
 import {
-    UserForMention,
     MentionInput,
     FileAttachmentInput,
     MessageSpanInput,
     MyStickers_stickers_packs_stickers,
-    StickerFragment
+    StickerFragment,
+    ChatMentionSearch_mentions_globalItems
 } from 'openland-api/Types';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 
 export type MentionToSend =
-    | UserForMention
+    | ChatMentionSearch_mentions_globalItems
     | {
         __typename: 'AllMention';
     };

@@ -1,0 +1,24 @@
+query ChatMentionSearch($after: String, $cid: ID!, $first: Int!, $query: String) {
+  mentions: chatMentionSearch(after: $after, cid: $cid, first: $first, query: $query) {
+    __typename
+    cursor
+    globalItems {
+      __typename
+      ... on Organization {
+        ...OrganizationShort
+      }
+      ... on User {
+        ...UserForMention
+      }
+      ... on SharedRoom {
+        id
+        roomPhoto: photo
+        title
+      }
+    }
+    localItems {
+      __typename
+      ...UserForMention
+    }
+  }
+}

@@ -15,6 +15,7 @@ import * as Explore from './queries/Explore';
 import * as FeatureFlag from './queries/FeatureFlag';
 import * as Feed from './queries/Feed';
 import * as Matchmaking from './queries/Matchmaking';
+import * as Mentions from './queries/Mentions';
 import * as MyNotificationsCenter from './queries/MyNotificationsCenter';
 import * as Oauth from './queries/Oauth';
 import * as Organization from './queries/Organization';
@@ -197,6 +198,7 @@ export const MatchmakingProfileQuery = typedQuery<Types.MatchmakingProfile, Type
 export const MatchmakingRoomSaveMutation = typedMutation<Types.MatchmakingRoomSave, Types.MatchmakingRoomSaveVariables>(Matchmaking.MatchmakingRoomSaveMutation);
 export const MatchmakingProfileFillMutation = typedMutation<Types.MatchmakingProfileFill, Types.MatchmakingProfileFillVariables>(Matchmaking.MatchmakingProfileFillMutation);
 export const MatchmakingConnectMutation = typedMutation<Types.MatchmakingConnect, Types.MatchmakingConnectVariables>(Matchmaking.MatchmakingConnectMutation);
+export const ChatMentionSearchQuery = typedQuery<Types.ChatMentionSearch, Types.ChatMentionSearchVariables>(Mentions.ChatMentionSearchQuery);
 export const MyNotificationsQuery = typedQuery<Types.MyNotifications, Types.MyNotificationsVariables>(MyNotificationsCenter.MyNotificationsQuery);
 export const MyNotificationsCenterSubscription = typedSubscription<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables>(MyNotificationsCenter.MyNotificationsCenterSubscription);
 export const MyNotificationCenterQuery = typedQuery<Types.MyNotificationCenter, {}>(MyNotificationsCenter.MyNotificationCenterQuery);

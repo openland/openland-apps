@@ -80,6 +80,7 @@ internal val UserBadgeSelector = obj(
 internal val UserForMentionSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
+            field("isBot", "isBot", notNull(scalar("Boolean"))),
             field("isYou", "isYou", notNull(scalar("Boolean"))),
             field("name", "name", notNull(scalar("String"))),
             field("photo", "photo", scalar("String")),
@@ -107,6 +108,12 @@ internal val SpanFragmentSelector = obj(
                         fragment("User", UserForMentionSelector)
                     )))))
             )),
+            inline("MessageSpanOrganizationMention", obj(
+                field("organization", "organization", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("Organization", OrganizationShortSelector)
+                    )))
+            )),
             inline("MessageSpanRoomMention", obj(
                 field("room", "room", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -120,6 +127,7 @@ internal val SpanFragmentSelector = obj(
                         )),
                         inline("SharedRoom", obj(
                             field("id", "id", notNull(scalar("ID"))),
+                            field("photo", "roomPhoto", notNull(scalar("String"))),
                             field("title", "title", notNull(scalar("String")))
                         ))
                     )))
@@ -544,6 +552,7 @@ internal val MatchmakingProfileFragmentSelector = obj(
             field("user", "user", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
+                    field("isBot", "isBot", notNull(scalar("Boolean"))),
                     field("isYou", "isYou", notNull(scalar("Boolean"))),
                     field("name", "name", notNull(scalar("String"))),
                     field("photo", "photo", scalar("String")),

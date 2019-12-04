@@ -4,9 +4,9 @@ import { MessageInputBar } from '../MessageInputBar';
 import { CommentEntryFragment_comment, FileAttachmentInput, Message_message_GeneralMessage_source_MessageSourceChat_chat, CommentEntryFragment, CommentWatch_event_CommentUpdateSingle_update } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
-import { EmojiRender, EmojiRenderRow } from '../EmojiRender';
+import { EmojiSuggestions, EmojiSuggestionsRow } from '../suggestions/EmojiSuggestions';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { MentionsRender } from '../MentionsRender';
+import { MentionsSuggestions } from '../suggestions/MentionsSuggestions';
 import { CommentsList } from '../comments/CommentsList';
 import { SDevice } from 'react-native-s/SDevice';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
@@ -225,15 +225,15 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
     let quoted: JSX.Element | null = null;
 
     if (chat && chat.__typename === 'SharedRoom' && inputFocused && activeWord && activeWord.startsWith('@')) {
-        suggestions = <MentionsRender activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={chat.id} />;
+        suggestions = <MentionsSuggestions activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={chat.id} />;
     }
 
     if (inputFocused && activeWord && activeWord.startsWith(':')) {
-        suggestions = <EmojiRender activeWord={activeWord!} onEmojiPress={handleEmojiPress} />;
+        suggestions = <EmojiSuggestions activeWord={activeWord!} onEmojiPress={handleEmojiPress} />;
     }
 
     if (Platform.OS === 'android' && inputFocused && activeWord && emojiWordMap[activeWord.toLowerCase()]) {
-        suggestions = <EmojiRenderRow items={emojiWordMap[activeWord.toLowerCase()]} activeWord={activeWord} onEmojiPress={handleEmojiPress} />;
+        suggestions = <EmojiSuggestionsRow items={emojiWordMap[activeWord.toLowerCase()]} activeWord={activeWord} onEmojiPress={handleEmojiPress} />;
     }
 
     if (replied) {

@@ -13,6 +13,6 @@ internal val MatchmakingProfileSelector = obj(
 val MatchmakingProfile = object: OperationDefinition {
     override val name = "MatchmakingProfile"
     override val kind = OperationKind.QUERY
-    override val body = "query MatchmakingProfile(\$peerId:ID!,\$uid:ID!){matchmakingProfile(peerId:\$peerId,uid:\$uid){__typename ...MatchmakingProfileFragment}}fragment MatchmakingProfileFragment on MatchmakingProfile{__typename answers{__typename ... on TextMatchmakingAnswer{answer question{__typename id subtitle title}}... on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id isYou name photo primaryOrganization{__typename id name}}}"
+    override val body = "query MatchmakingProfile(\$peerId:ID!,\$uid:ID!){matchmakingProfile(peerId:\$peerId,uid:\$uid){__typename ...MatchmakingProfileFragment}}fragment MatchmakingProfileFragment on MatchmakingProfile{__typename answers{__typename ... on TextMatchmakingAnswer{answer question{__typename id subtitle title}}... on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id isBot isYou name photo primaryOrganization{__typename id name}}}"
     override val selector = MatchmakingProfileSelector
 }

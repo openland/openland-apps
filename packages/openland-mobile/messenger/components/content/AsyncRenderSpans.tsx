@@ -44,6 +44,7 @@ interface RenderSpansProps {
 
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
+    onOrganizationPress: (id: string) => void;
 }
 
 const fontSize = {
@@ -69,7 +70,7 @@ const letterSpacing = {
 
 export class RenderSpans extends React.PureComponent<RenderSpansProps> {
     render() {
-        const { emojiOnly, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetVertical, onUserPress, onGroupPress } = this.props;
+        const { emojiOnly, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetVertical, onUserPress, onGroupPress, onOrganizationPress } = this.props;
 
         const bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
         const bubbleBackgroundSecondary = message.isOut ? theme.outgoingBackgroundSecondary : theme.incomingBackgroundSecondary;
@@ -96,7 +97,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                     maxWidth={!width ? maxWidth : undefined}
                                     width={width}
                                 >
-                                    {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
+                                    {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress, onOrganizationPress)}
                                     {c.padded && paddedText(message.isEdited)}
                                 </TextWrapper>
                             </ASFlex>
@@ -121,7 +122,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                     maxWidth={!width ? maxWidth : undefined}
                                     width={width}
                                 >
-                                    {renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress)}
+                                    {renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress, onOrganizationPress)}
                                 </TextWrapper>
                             </ASFlex>
                         </ASFlex>

@@ -1,6 +1,7 @@
 fragment UserForMention on User {
   __typename
   id
+  isBot
   isYou
   name
   photo

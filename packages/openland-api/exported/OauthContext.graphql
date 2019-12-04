@@ -5,6 +5,7 @@ query OauthContext($code: String!) {
       __typename
       clientId
       clientSecret
+      id
       owner {
         __typename
         ...UserTiny

@@ -14,6 +14,7 @@ export enum SpanType {
     mention_user = 'mention_user',
     mention_users = 'mention_users',
     mention_room = 'mention_room',
+    mention_organization = 'mention_organization',
     bold = 'bold',
     date = 'date',
     code_block = 'code_block',
@@ -31,6 +32,7 @@ export type Span =
     | SpanUser
     | SpanAll
     | SpanRoom
+    | SpanOrganization
     | SpanText
     | SpanLink
     | SpanUsers
@@ -129,6 +131,12 @@ export interface SpanRoom extends SpanAbs {
     id: string;
 }
 
+export interface SpanOrganization extends SpanAbs {
+    type: SpanType.mention_organization;
+    title: string;
+    id: string;
+}
+
 export type ServerSpan = FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans;
 
 export type SpanSymbolToTypeT = {
@@ -196,6 +204,14 @@ export const SpanTypeToSymbol: { [key: string]: SpecSymbolsType } = {
         supportMobile: false,
     },
     mention_user: {
+        variants: [{ s: '@', opened: true }],
+        supportMobile: true,
+    },
+    mention_room: {
+        variants: [{ s: '@', opened: true }],
+        supportMobile: true,
+    },
+    mention_organization: {
         variants: [{ s: '@', opened: true }],
         supportMobile: true,
     },

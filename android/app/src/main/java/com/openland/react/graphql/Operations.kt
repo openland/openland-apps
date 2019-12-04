@@ -16,6 +16,7 @@ object Operations {
         if (name == "ChatInit") return ChatInit
         if (name == "ChatInitFromUnread") return ChatInitFromUnread
         if (name == "ChatMembersSearch") return ChatMembersSearch
+        if (name == "ChatMentionSearch") return ChatMentionSearch
         if (name == "Comments") return Comments
         if (name == "Conference") return Conference
         if (name == "ConferenceMedia") return ConferenceMedia
