@@ -26,12 +26,12 @@ const listWrapper = css`
     margin-top: 11px;
 
     position: relative;
-    @media (min-width: 1920px) {
+    @media (min-width: 1600px) {
         font-size: 26px;
         line-height: 38px;
     }
 
-    @media (min-width: 960px) and (max-width: 1920px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         font-size: 22px;
         line-height: 35px;
     }
@@ -99,13 +99,13 @@ const link = css`
         position: absolute;
         top: 55%;
 
-        @media (min-width: 1920px) {
+        @media (min-width: 1600px) {
             width: 20px;
             height: 20px;
             right: -27px;
         }
 
-        @media (min-width: 768px) and (max-width: 1920px) {
+        @media (min-width: 768px) and (max-width: 1600px) {
             width: 16px;
             height: 16px;
             right: -23px;
@@ -121,7 +121,7 @@ const link = css`
 
 const screenshot = css`
     width: 100%;
-    max-width: 1920px;
+    max-width: 1600px;
     height: auto;
     margin-top: 40px;
     filter: drop-shadow(0px 13px 55px rgba(20, 64, 86, 0.05));
@@ -366,7 +366,7 @@ export default () => {
                 <img
                     src="/static/landing/screenshots-desktop.png"
                     className={screenshot}
-                    width="1920"
+                    width="1600"
                     height="667"
                 />
                 <img

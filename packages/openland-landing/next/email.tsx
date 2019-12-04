@@ -5,7 +5,7 @@ import Block from './block';
 const root = css`
     padding: 160px 0;
 
-    @media (min-width: 768px) and (max-width: 1920px) {
+    @media (min-width: 768px) and (max-width: 1600px) {
         padding: 120px 0;
     }
 
@@ -28,7 +28,7 @@ const heading = css`
     line-height: 1.2;
     color: #272750;
 
-    @media (min-width: 768px) and (max-width: 1920px) {
+    @media (min-width: 768px) and (max-width: 1600px) {
         font-size: 66px;
     }
 
@@ -55,7 +55,7 @@ const subheading = css`
     line-height: 48px;
     color: #9393a7;
 
-    @media (min-width: 768px) and (max-width: 1920px) {
+    @media (min-width: 768px) and (max-width: 1600px) {
         font-size: 32px;
     }
 

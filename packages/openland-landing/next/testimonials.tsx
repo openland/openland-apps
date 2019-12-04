@@ -87,7 +87,7 @@ const text = css`
         font-size: 24px;
     }
 
-    @media (min-width: 960px) and (max-width: 1920px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         font-size: 22px;
     }
 
@@ -118,11 +118,11 @@ const signature = css``;
 
 const title = css`
     line-height: 1.5;
-    @media (min-width: 1920px) {
+    @media (min-width: 1600px) {
         font-size: 24px;
     }
 
-    @media (min-width: 960px) and (max-width: 1920px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         font-size: 18px;
     }
 
@@ -138,12 +138,12 @@ const title = css`
 const by = css`
     color: #9393a7;
 
-    @media (min-width: 1920px) {
+    @media (min-width: 1600px) {
         font-size: 20px;
         line-height: 24px;
     }
 
-    @media (min-width: 960px) and (max-width: 1920px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         font-size: 16px;
         line-height: 19px;
     }

@@ -9,11 +9,11 @@ import Tilt from 'react-tilt';
 const root = css`
     margin-top: 132px;
 
-    @media (min-width: 1920px) {
+    @media (min-width: 1600px) {
         padding: 120px 0;
     }
 
-    @media (min-width: 960px) and (max-width: 1920px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         padding: 102px 0;
     }
 
@@ -33,11 +33,11 @@ const wrapper = css`
     display: flex;
     align-items: flex-start;
 
-    @media (min-width: 1920px) {
+    @media (min-width: 1600px) {
         margin: -60px;
     }
 
-    @media (min-width: 960px) and (max-width: 1920px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         margin: -50px;
     }
 
@@ -56,11 +56,11 @@ const feature = css`
     display: inline-block;
     width: 50%;
 
-    @media (min-width: 1920px) {
+    @media (min-width: 1600px) {
         padding: 60px;
     }
 
-    @media (min-width: 960px) and (max-width: 1920px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         padding: 50px;
     }
 
@@ -82,12 +82,12 @@ const text = css`
     position: relative;
     margin-top: 25px;
     color: #525273;
-    @media (min-width: 1920px) {
+    @media (min-width: 1600px) {
         font-size: 26px;
         line-height: 1.4;
     }
 
-    @media (min-width: 768px) and (max-width: 1920px) {
+    @media (min-width: 768px) and (max-width: 1600px) {
         font-size: 20px;
         line-height: 1.7;
     }
@@ -131,13 +131,13 @@ const link = css`
         position: absolute;
         top: 55%;
 
-        @media (min-width: 1920px) {
+        @media (min-width: 1600px) {
             width: 20px;
             height: 20px;
             right: -27px;
         }
 
-        @media (min-width: 768px) and (max-width: 1920px) {
+        @media (min-width: 768px) and (max-width: 1600px) {
             width: 16px;
             height: 16px;
             right: -23px;

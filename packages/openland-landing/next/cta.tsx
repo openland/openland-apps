@@ -20,11 +20,11 @@ const cta = css`
 
 const headline = css`
     z-index: -1;
-    @media (min-width: 1920px) {
+    @media (min-width: 1600px) {
         font-size: 80px;
     }
 
-    @media (min-width: 960px) and (max-width: 1920px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         font-size: 70px;
     }
 
@@ -45,11 +45,11 @@ const headlineGradient = css`
 `;
 
 const text = css`
-    @media (min-width: 1920px) {
+    @media (min-width: 1600px) {
         font-size: 24px;
     }
 
-    @media (min-width: 768px) and (max-width: 1920px) {
+    @media (min-width: 768px) and (max-width: 1600px) {
         font-size: 20px;
     }
 
@@ -89,12 +89,12 @@ const button = css`
         transition: color 0.01s, background-color.01s, box-shadow 0.01s;
     }
 
-    @media (min-width: 1920px) {
+    @media (min-width: 1600px) {
         font-size: 20px;
         padding: 13px 36px;
     }
 
-    @media (min-width: 768px) and (max-width: 1920px) {
+    @media (min-width: 768px) and (max-width: 1600px) {
         font-size: 18px;
         padding: 11px 32px;
     }
@@ -113,7 +113,7 @@ const ctaSmall = css`
     margin-top: 200px;
     margin-bottom: 180px;
 
-    @media (max-width: 1920px) {
+    @media (max-width: 1600px) {
         flex-direction: column;
         text-align: center;
     }
@@ -126,7 +126,7 @@ const ctaSmall = css`
 const content = css`
     margin-right: 120px;
 
-    @media (max-width: 1920px) {
+    @media (max-width: 1600px) {
         margin-right: 0;
         margin-bottom: 36px;
     }
@@ -139,7 +139,7 @@ const list = css`
     color: #525273;
     margin-top: 16px;
 
-    @media (min-width: 768px) and (max-width: 1920px) {
+    @media (min-width: 768px) and (max-width: 1600px) {
         font-size: 20px;
     }
 
@@ -173,11 +173,11 @@ const dotsLeft = css`
     top: 49%;
     transform: translateY(-50%);
 
-    @media (min-width: 1920px) {
+    @media (min-width: 1600px) {
         left: -10018px;
     }
 
-    @media (min-width: 960px) and (max-width: 1920px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         left: -10025px;
     }
 
@@ -200,11 +200,11 @@ const dotsRight = css`
     top: 49%;
     transform: translateY(-50%);
 
-    @media (min-width: 1920px) {
+    @media (min-width: 1600px) {
         right: -10018px;
     }
 
-    @media (min-width: 960px) and (max-width: 1920px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         right: -10025px;
     }
 
@@ -227,11 +227,11 @@ const dotsLeftSmall = css`
     top: 49%;
     transform: translateY(-50%);
 
-    @media (min-width: 1920px) {
+    @media (min-width: 1600px) {
         left: -10018px;
     }
 
-    @media (min-width: 960px) and (max-width: 1920px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         left: -9985px;
     }
 
@@ -254,11 +254,11 @@ const dotsRightSmall = css`
     top: 49%;
     transform: translateY(-50%);
 
-    @media (min-width: 1920px) {
+    @media (min-width: 1600px) {
         right: -10018px;
     }
 
-    @media (min-width: 960px) and (max-width: 1920px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         right: -9985px;
     }
 
