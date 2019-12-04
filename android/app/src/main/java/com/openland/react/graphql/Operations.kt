@@ -80,6 +80,8 @@ object Operations {
         if (name == "RoomTiny") return RoomTiny
         if (name == "RoomWithoutMembers") return RoomWithoutMembers
         if (name == "Settings") return Settings
+        if (name == "SharedMedia") return SharedMedia
+        if (name == "SharedMediaCounters") return SharedMediaCounters
         if (name == "StickerPack") return StickerPack
         if (name == "SuggestedRooms") return SuggestedRooms
         if (name == "SuperAccount") return SuperAccount

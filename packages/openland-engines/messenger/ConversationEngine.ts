@@ -22,6 +22,7 @@ import * as Types from 'openland-api/Types';
 import { createLogger } from 'mental-log';
 import { MessagesActionsStateEngine } from './MessagesActionsState';
 import { MatchmakingEngine } from 'openland-engines/matchmaking/MatchmakingState';
+import { SharedMediaEngine, SharedMediaItemType } from 'openland-engines/messenger/SharedMediaEngine';
 import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
 import { Span } from 'openland-y-utils/spans/Span';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
@@ -230,6 +231,7 @@ export class ConversationEngine implements MessageSendHandler {
     private localMessagesMap = new Map<string, string>();
     readonly messagesActionsStateEngine: MessagesActionsStateEngine;
     readonly matchmakingEngine: MatchmakingEngine;
+    readonly sharedMediaEngines: Record<SharedMediaItemType, SharedMediaEngine> | {};
     readonly onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void;
 
     role?: Types.RoomMemberRole | null;
@@ -255,6 +257,7 @@ export class ConversationEngine implements MessageSendHandler {
 
         this.messagesActionsStateEngine = new MessagesActionsStateEngine();
         this.matchmakingEngine = new MatchmakingEngine();
+        this.sharedMediaEngines = {};
         this.onNewMessage = onNewMessage;
     }
 
@@ -396,6 +399,13 @@ export class ConversationEngine implements MessageSendHandler {
                 }
             }
         }
+    }
+
+    getSharedMedia(type: SharedMediaItemType) {
+        if (!this.sharedMediaEngines[type]) {
+            this.sharedMediaEngines[type] = new SharedMediaEngine(this.engine.client, this.conversationId, type);
+        }
+        return this.sharedMediaEngines[type];
     }
 
     onOpen = () => {

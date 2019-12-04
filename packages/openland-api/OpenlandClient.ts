@@ -907,6 +907,30 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderSettings(opts?: QueryWatchParameters): Types.Settings | null {
         return this.useQuery(Source.SettingsQuery, undefined, opts);
     }
+    async querySharedMedia(variables: Types.SharedMediaVariables, opts?: OperationParameters): Promise<Types.SharedMedia> {
+        return this.client.query(Source.SharedMediaQuery, variables, opts);
+    }
+    async refetchSharedMedia(variables: Types.SharedMediaVariables): Promise<Types.SharedMedia> {
+        return this.refetch(Source.SharedMediaQuery, variables);
+    }
+    useSharedMedia(variables: Types.SharedMediaVariables, opts?: QueryWatchParameters): Types.SharedMedia {
+        return this.useQuerySuspense(Source.SharedMediaQuery, variables, opts);
+    }
+    useWithoutLoaderSharedMedia(variables: Types.SharedMediaVariables, opts?: QueryWatchParameters): Types.SharedMedia | null {
+        return this.useQuery(Source.SharedMediaQuery, variables, opts);
+    }
+    async querySharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts?: OperationParameters): Promise<Types.SharedMediaCounters> {
+        return this.client.query(Source.SharedMediaCountersQuery, variables, opts);
+    }
+    async refetchSharedMediaCounters(variables: Types.SharedMediaCountersVariables): Promise<Types.SharedMediaCounters> {
+        return this.refetch(Source.SharedMediaCountersQuery, variables);
+    }
+    useSharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts?: QueryWatchParameters): Types.SharedMediaCounters {
+        return this.useQuerySuspense(Source.SharedMediaCountersQuery, variables, opts);
+    }
+    useWithoutLoaderSharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts?: QueryWatchParameters): Types.SharedMediaCounters | null {
+        return this.useQuery(Source.SharedMediaCountersQuery, variables, opts);
+    }
     async queryResolveShortName(variables: Types.ResolveShortNameVariables, opts?: OperationParameters): Promise<Types.ResolveShortName> {
         return this.client.query(Source.ResolveShortNameQuery, variables, opts);
     }

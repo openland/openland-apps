@@ -1318,6 +1318,20 @@
       }
     },
     {
+      "signature": "ba6f53c4ac843ef5249eee7dfed9b9fc9fa9f42aac902649b925d08824bc6b13",
+      "document": "query SharedMedia($after:String,$chatId:ID!,$first:Int!,$mediaTypes:[SharedMediaType!]!){sharedMedia:chatSharedMedia(after:$after,chatId:$chatId,first:$first,mediaTypes:$mediaTypes){__typename edges{__typename cursor node{__typename message{__typename...on GeneralMessage{attachments{__typename...on MessageAttachmentFile{fallback fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}...on MessageRichAttachment{id image{__typename url}imageFallback{__typename photo}imagePreview subTitle title titleLink}}date id sender{__typename id name}}}}}pageInfo{__typename currentPage hasNextPage}}}",
+      "metadata": {
+        "engineSignature": "query SharedMedia($after:String,$chatId:ID!,$first:Int!,$mediaTypes:[SharedMediaType!]!){chatSharedMedia(after:$after,chatId:$chatId,first:$first,mediaTypes:$mediaTypes){__typename edges{__typename cursor node{__typename message{__typename...on GeneralMessage{attachments{__typename...on MessageAttachmentFile{fallback fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}...on MessageRichAttachment{id image{__typename url}imageFallback{__typename photo}imagePreview subTitle title titleLink}}date id sender{__typename id name}}}}}pageInfo{__typename currentPage hasNextPage}}}"
+      }
+    },
+    {
+      "signature": "bec83ed0ca306f70afbf5074d540c3ee75ee33fa456ca685f85ac5ca8b09b65a",
+      "document": "query SharedMediaCounters($chatId:ID!){counters:chatSharedMediaCounters(chatId:$chatId){__typename documents images links videos}}",
+      "metadata": {
+        "engineSignature": "query SharedMediaCounters($chatId:ID!){chatSharedMediaCounters(chatId:$chatId){__typename documents images links videos}}"
+      }
+    },
+    {
       "signature": "383f6f84019b39e5315abeebf212f2d8e6baa66e7353ebcb5c4c8ece486689d1",
       "document": "query ResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename...on User{id}...on Organization{id}...on FeedChannel{id}}}",
       "metadata": {

@@ -21,6 +21,7 @@ import * as Organization from './queries/Organization';
 import * as Permissions from './queries/Permissions';
 import * as Report from './queries/Report';
 import * as Settings from './queries/Settings';
+import * as SharedMedia from './queries/SharedMedia';
 import * as Shortname from './queries/Shortname';
 import * as Stickers from './queries/Stickers';
 import * as Track from './queries/Track';
@@ -240,6 +241,8 @@ export const ProfileUpdateMutation = typedMutation<Types.ProfileUpdate, Types.Pr
 export const ProfileCreateMutation = typedMutation<Types.ProfileCreate, Types.ProfileCreateVariables>(Settings.ProfileCreateMutation);
 export const SettingsQuery = typedQuery<Types.Settings, {}>(Settings.SettingsQuery);
 export const SettingsUpdateMutation = typedMutation<Types.SettingsUpdate, Types.SettingsUpdateVariables>(Settings.SettingsUpdateMutation);
+export const SharedMediaQuery = typedQuery<Types.SharedMedia, Types.SharedMediaVariables>(SharedMedia.SharedMediaQuery);
+export const SharedMediaCountersQuery = typedQuery<Types.SharedMediaCounters, Types.SharedMediaCountersVariables>(SharedMedia.SharedMediaCountersQuery);
 export const ResolveShortNameQuery = typedQuery<Types.ResolveShortName, Types.ResolveShortNameVariables>(Shortname.ResolveShortNameQuery);
 export const SetOrgShortnameMutation = typedMutation<Types.SetOrgShortname, Types.SetOrgShortnameVariables>(Shortname.SetOrgShortnameMutation);
 export const SetUserShortnameMutation = typedMutation<Types.SetUserShortname, Types.SetUserShortnameVariables>(Shortname.SetUserShortnameMutation);
