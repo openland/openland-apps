@@ -247,7 +247,7 @@ export default () => (
                             <div className={itemContent}>
                                 <h3 className={subheading}>Experts</h3>
                                 <div className={text}>
-                                    Be a part of our community of community builders.{' '}
+                                    Be a part of our community of community builders.{' '}
                                     <div className={linkWrapper}>
                                         <a href="/invite/uj4m8bo" className={link}>
                                             Join now
@@ -266,7 +266,7 @@ export default () => (
                             <div className={itemContent}>
                                 <h3 className={subheading}>Onboarding</h3>
                                 <div className={text}>
-                                    Have questions about getting started?{' '}
+                                    Have questions about getting started?{' '}
                                     <div className={linkWrapper}>
                                         <a href="/invite/Ryq9hof" className={link}>
                                             Let's chat
