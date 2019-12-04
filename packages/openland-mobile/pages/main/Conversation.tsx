@@ -18,7 +18,7 @@ import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { MentionsSuggestions } from './components/MentionsSuggestions';
+import { MentionsSuggestions } from './components/suggestions/MentionsSuggestions';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -26,7 +26,7 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 import { ChannelMuteButton, ChatInputPlaceholder } from './components/ChannelMuteButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { showCallModal } from './Call';
-import { EmojiRender, EmojiRenderRow } from './components/EmojiRender';
+import { EmojiSuggestions, EmojiSuggestionsRow } from './components/suggestions/EmojiSuggestions';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
 import { MessagesActionsState } from 'openland-engines/messenger/MessagesActionsState';
 import { ForwardReplyView } from 'openland-mobile/messenger/components/ForwardReplyView';
@@ -310,7 +310,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         if (this.state.inputFocused && activeWord && activeWord.startsWith(':')) {
             suggestions = (
-                <EmojiRender
+                <EmojiSuggestions
                     activeWord={activeWord}
                     onEmojiPress={this.handleEmojiPress}
                 />
@@ -319,7 +319,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         if (Platform.OS === 'android' && this.state.inputFocused && activeWord && emojiWordMap[activeWord.toLowerCase()]) {
             suggestions = (
-                <EmojiRenderRow
+                <EmojiSuggestionsRow
                     items={emojiWordMap[activeWord.toLowerCase()]}
                     activeWord={activeWord}
                     onEmojiPress={this.handleEmojiPress}

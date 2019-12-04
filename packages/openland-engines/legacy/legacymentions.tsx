@@ -70,7 +70,8 @@ export const prepareLegacyMentions = (
                         isYou: mention.isYou,
                         photo: mention.photo,
                         primaryOrganization: mention.primaryOrganization,
-                        shortname: mention.shortname
+                        shortname: mention.shortname,
+                        isBot: mention.isBot
                     },
                 });
             } else if (mention.__typename === 'Organization') {

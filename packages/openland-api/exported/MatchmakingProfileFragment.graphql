@@ -25,6 +25,7 @@ fragment MatchmakingProfileFragment on MatchmakingProfile {
   user {
     __typename
     id
+    isBot
     isYou
     name
     photo
