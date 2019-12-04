@@ -28,6 +28,7 @@ import { MatchmakingAppFragment } from 'openland-web/fragments/matchmaking/Match
 import { FeedItemFragment } from 'openland-web/fragments/feed/FeedItemFragment';
 
 import { useStackRouter } from 'openland-unicorn/components/StackRouter';
+import { SharedMediaFragment } from 'openland-web/fragments/chat/SharedMediaFragment';
 
 // temporary stub for /mail/ -> not found bug
 const TemporaryStub = React.memo(() => {
@@ -51,6 +52,7 @@ routing.addRoute('/mail/:conversationId', () =>
         return <MessengerFragment id={ctx.id!} />;
     }),
 );
+routing.addRoute('/mail/:id/shared', () => SharedMediaFragment);
 
 // Message
 routing.addRoute('/message/:messageId', () => MessageFragment);

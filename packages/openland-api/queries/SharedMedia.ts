@@ -13,51 +13,49 @@ export const SharedMediaQuery = gql`
                             currentPage
                         }
                         edges {
-                        node {
-                            message {
-                                __typename
-                                ... on GeneralMessage {
-                                    id
-                                    date
-                                    sender {
+                            node {
+                                message {
+                                    ... on GeneralMessage {
                                         id
-                                        name
-                                    }
-                                    attachments {
-                                    __typename
-                                    ... on MessageAttachmentFile {
-                                        id
-                                        fileMetadata {
+                                        date
+                                        sender {
+                                            id
                                             name
-                                            isImage
-                                            imageFormat
-                                            mimeType
-                                            imageWidth
-                                            imageHeight
-                                            size
                                         }
-                                        filePreview
-                                        fileId
-                                        fallback
-                                    }
-                                    ... on MessageRichAttachment {
-                                        id
-                                        title
-                                        subTitle
-                                        titleLink
-                                        imagePreview
-                                        image {
-                                            url
+                                        attachments {
+                                            ... on MessageAttachmentFile {
+                                                id
+                                                fileMetadata {
+                                                    name
+                                                    isImage
+                                                    imageFormat
+                                                    mimeType
+                                                    imageWidth
+                                                    imageHeight
+                                                    size
+                                                }
+                                                filePreview
+                                                fileId
+                                                fallback
+                                            }
+                                            ... on MessageRichAttachment {
+                                                id
+                                                title
+                                                subTitle
+                                                titleLink
+                                                imagePreview
+                                                image {
+                                                    url
+                                                }
+                                                imageFallback {
+                                                    photo
+                                                }
+                                            }
                                         }
-                                        imageFallback {
-                                            photo
-                                        }
-                                    }
                                     }
                                 }
                             }
-                        }
-                        cursor
+                            cursor
                         }
                     }
     }

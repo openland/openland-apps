@@ -127,6 +127,8 @@ routes.add('/mail', '/unicorn/index');
 routes.add('/mail/', '/unicorn/index');
 routes.add('/mail/:conversationId', '/unicorn/index');
 routes.add('/mail/:conversationId/', '/unicorn/index');
+routes.add('/mail/:id/shared', '/unicorn/index');
+routes.add('/mail/:id/shared/', '/unicorn/index');
 routes.add('/notifications', '/unicorn/index');
 routes.add('/notifications/', '/unicorn/index');
 
