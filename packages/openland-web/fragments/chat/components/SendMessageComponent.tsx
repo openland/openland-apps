@@ -518,6 +518,8 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             if (ed) {
                 let text = ed.getText();
 
+                console.warn('boom', text);
+
                 if (text.length > 0) {
                     if (props.onTextSentAsync) {
                         setLoading(true);

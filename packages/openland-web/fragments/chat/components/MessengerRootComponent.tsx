@@ -13,7 +13,6 @@ import {
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
     RoomChat_room,
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
-    UserForMention,
     StickerFragment,
 } from 'openland-api/Types';
 import { trackEvent } from 'openland-x-analytics';
@@ -28,8 +27,8 @@ import { XLoader } from 'openland-x/XLoader';
 import {
     URickInputInstance,
     URickTextValue,
-    AllMention,
     convertToInputValue,
+    convertFromInputValue,
 } from 'openland-web/components/unicorn/URickInput';
 import { InputMessageActionComponent } from './InputMessageActionComponent';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
@@ -311,26 +310,12 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         return false;
     }
 
-    onTextSend = async (text: URickTextValue) => {
-        let actionState = this.conversation!.messagesActionsStateEngine.getState();
-        let actionMessage = actionState.messages[0];
+    onTextSend = async (data: URickTextValue) => {
+        const actionState = this.conversation!.messagesActionsStateEngine.getState();
+        const actionMessage = actionState.messages[0];
 
-        let textValue = '';
-        let mentions: (UserForMention | AllMention)[] = [];
-        for (let t of text) {
-            if (typeof t === 'string') {
-                textValue += t;
-            } else if (t.__typename === 'User') {
-                textValue += '@' + t.name;
-                mentions.push(t);
-            } else if (t.__typename === 'AllMention') {
-                textValue += '@All';
-                mentions.push(t);
-            }
-        }
-        textValue = textValue.trim();
-
-        let mentionsPrepared = prepareLegacyMentionsForSend(textValue, mentions);
+        const { text, mentions } = convertFromInputValue(data);
+        const mentionsPrepared = prepareLegacyMentionsForSend(text, mentions);
 
         if (
             actionState.action === 'edit' &&
@@ -338,18 +323,18 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             actionMessage.text &&
             actionMessage.id!
         ) {
-            if (textValue.length > 0) {
+            if (text.length > 0) {
                 this.conversation!.messagesActionsStateEngine.clear();
                 this.conversation!.engine.client.mutateEditMessage({
                     messageId: actionMessage.id!,
-                    message: textValue,
+                    message: text,
                     mentions: mentionsPrepared,
-                    spans: findSpans(textValue),
+                    spans: findSpans(text),
                 });
             }
         } else {
             if (
-                textValue.length > 0 ||
+                text.length > 0 ||
                 actionState.action === 'reply' ||
                 actionState.action === 'forward'
             ) {
@@ -365,7 +350,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 }
 
                 localStorage.removeItem('drafts-' + this.props.conversationId);
-                this.conversation!.sendMessage(textValue, mentions);
+                this.conversation!.sendMessage(text, mentions);
             }
         }
 
