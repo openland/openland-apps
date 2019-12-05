@@ -11,9 +11,7 @@ query ChatMentionSearch($after: String, $cid: ID!, $first: Int!, $query: String)
         ...UserForMention
       }
       ... on SharedRoom {
-        id
-        roomPhoto: photo
-        title
+        ...RoomSharedNano
       }
     }
     localItems {

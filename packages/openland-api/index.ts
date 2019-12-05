@@ -290,6 +290,7 @@ export const OrganizationShortFragment = typedFragment<Types.OrganizationShort>(
 export const OrganizationWithoutMembersFragmentFragment = typedFragment<Types.OrganizationWithoutMembersFragment>(OrganizationWithoutMembersFragment.OrganizationWithoutMembersFragment);
 export const RoomFullFragment = typedFragment<Types.RoomFull>(RoomFull.RoomFull);
 export const RoomFullWithoutMembersFragment = typedFragment<Types.RoomFullWithoutMembers>(RoomFull.RoomFullWithoutMembers);
+export const RoomSharedNanoFragment = typedFragment<Types.RoomSharedNano>(RoomNano.RoomSharedNano);
 export const RoomNanoFragment = typedFragment<Types.RoomNano>(RoomNano.RoomNano);
 export const RoomShortFragment = typedFragment<Types.RoomShort>(RoomShort.RoomShort);
 export const SessionStateFullFragment = typedFragment<Types.SessionStateFull>(SessionStateFull.SessionStateFull);

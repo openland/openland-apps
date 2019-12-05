@@ -61,7 +61,7 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
                 <Text
                     key={'mention-room'}
                     style={{ color: theme.accentPrimary }}
-                    onPress={() => onGroupPress(span.id)}
+                    onPress={() => onGroupPress(span.room.id)}
                     allowFontScaling={false}
                 >
                     {children}
@@ -72,7 +72,7 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
                 <Text
                     key={'mention-organization'}
                     style={{ color: theme.accentPrimary }}
-                    onPress={() => onOrganizationPress(span.id)}
+                    onPress={() => onOrganizationPress(span.organization.id)}
                     allowFontScaling={false}
                 >
                     {children}

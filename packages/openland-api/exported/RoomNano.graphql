@@ -15,15 +15,6 @@ fragment RoomNano on Room {
     }
   }
   ... on SharedRoom {
-    id
-    isChannel
-    kind
-    photo
-    settings {
-      __typename
-      id
-      mute
-    }
-    title
+    ...RoomSharedNano
   }
 }

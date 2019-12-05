@@ -1,5 +1,19 @@
 import gql from 'graphql-tag';
 
+export const RoomSharedNano = gql`
+    fragment RoomSharedNano on SharedRoom {
+        id
+        kind
+        isChannel
+        title
+        roomPhoto: photo
+        settings {
+            id
+            mute
+        }
+    }
+`;
+
 export const RoomNano = gql`
     fragment RoomNano on Room {
         ... on PrivateRoom {
@@ -15,15 +29,9 @@ export const RoomNano = gql`
             }
         } 
         ... on SharedRoom {
-            id
-            kind
-            isChannel
-            title
-            photo
-            settings {
-                id
-                mute
-            }
+            ...RoomSharedNano
         }
     }
+
+    ${RoomSharedNano}
 `;

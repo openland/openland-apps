@@ -1,0 +1,13 @@
+fragment RoomSharedNano on SharedRoom {
+  __typename
+  id
+  isChannel
+  kind
+  roomPhoto: photo
+  settings {
+    __typename
+    id
+    mute
+  }
+  title
+}

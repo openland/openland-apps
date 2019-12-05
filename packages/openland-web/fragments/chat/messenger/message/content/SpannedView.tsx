@@ -168,7 +168,7 @@ export const SpanView = React.memo<{ span: Span; children?: any; isService?: boo
     } else if (span.type === 'mention_room') {
         return (
             <ULink
-                path={'/group/' + span.id}
+                path={'/group/' + span.room.id}
                 className={cx(props.isService && mentionServiceClassName)}
             >
                 {children}
