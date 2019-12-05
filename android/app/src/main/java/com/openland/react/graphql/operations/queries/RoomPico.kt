@@ -13,6 +13,6 @@ internal val RoomPicoSelector = obj(
 val RoomPico = object: OperationDefinition {
     override val name = "RoomPico"
     override val kind = OperationKind.QUERY
-    override val body = "query RoomPico(\$id:ID!){room(id:\$id){__typename ...RoomNano}}fragment RoomNano on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename id name photo}}... on SharedRoom{id isChannel kind photo settings{__typename id mute}title}}"
+    override val body = "query RoomPico(\$id:ID!){room(id:\$id){__typename ...RoomNano}}fragment RoomNano on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename id name photo}}... on SharedRoom{...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id isChannel kind roomPhoto:photo settings{__typename id mute}title}"
     override val selector = RoomPicoSelector
 }

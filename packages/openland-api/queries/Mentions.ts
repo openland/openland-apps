@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import { UserForMention } from '../fragments/UserForMention';
 import { OrganizationShort } from 'openland-api/fragments/OrganizationShort';
+import { RoomSharedNano } from 'openland-api/fragments/RoomNano';
 
 export const ChatMentionSearchQuery = gql`
     query ChatMentionSearch($cid: ID!, $query: String, $first: Int!, $after: String) {
@@ -13,9 +14,7 @@ export const ChatMentionSearchQuery = gql`
                     ...UserForMention
                 }
                 ... on SharedRoom {
-                    id
-                    title
-                    roomPhoto: photo
+                    ...RoomSharedNano
                 }
             }
             localItems {
@@ -27,4 +26,5 @@ export const ChatMentionSearchQuery = gql`
 
     ${UserForMention}
     ${OrganizationShort}
+    ${RoomSharedNano}
 `;

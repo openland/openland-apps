@@ -23,19 +23,7 @@ fragment SpanFragment on MessageSpan {
   ... on MessageSpanRoomMention {
     room {
       __typename
-      ... on PrivateRoom {
-        id
-        user {
-          __typename
-          id
-          name
-        }
-      }
-      ... on SharedRoom {
-        id
-        roomPhoto: photo
-        title
-      }
+      ...RoomNano
     }
   }
   ... on MessageSpanLink {

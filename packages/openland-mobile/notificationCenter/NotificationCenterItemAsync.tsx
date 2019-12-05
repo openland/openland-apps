@@ -89,7 +89,7 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
                         <ASFlex onPress={() => messenger.handleConversationClick(sharedRoom.id)} marginLeft={7}>
                             <AsyncAvatar
                                 size="xx-small"
-                                src={sharedRoom.photo}
+                                src={sharedRoom.roomPhoto}
                                 placeholderKey={sharedRoom.id}
                                 placeholderTitle={sharedRoom.title}
                             />

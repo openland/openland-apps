@@ -98,7 +98,10 @@ export const prepareLegacyMentions = (
                         __typename: 'SharedRoom',
                         id: mention.id,
                         title: mention.title,
-                        roomPhoto: mention.roomPhoto
+                        roomPhoto: mention.roomPhoto,
+                        kind: mention.kind,
+                        isChannel: mention.isChannel,
+                        settings: mention.settings
                     },
                 });
             } else if (mention.__typename === 'AllMention') {

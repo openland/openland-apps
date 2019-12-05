@@ -2,7 +2,7 @@ import * as React from 'react';
 import { UserForMention } from 'openland-api/Types';
 import { css } from 'linaria';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
-import { MentionUserComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
+import { MentionItemComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
 import { XView } from 'react-mental';
 
 const style = css`
@@ -40,11 +40,11 @@ export const OthersPopper = React.memo((props: OthersPopperProps) => {
                     path={`/${user.shortname || user.id}`}
                     onClick={() => ctx.hide()}
                 >
-                    <MentionUserComponent
+                    <MentionItemComponent
                         id={user.id}
-                        name={user.name}
+                        title={user.name}
                         photo={user.photo}
-                        primaryOrganization={user.primaryOrganization}
+                        subtitle={user.isBot ? 'Bot' : user.primaryOrganization ? user.primaryOrganization.name : undefined}
                     />
                 </XView>
             ))}

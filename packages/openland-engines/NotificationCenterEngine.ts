@@ -123,7 +123,7 @@ const notificationMatchmaking = (id: string, content: Types.NotificationFragment
                 id: content.room.peer.id,
                 name: content.room.peer.title,
                 firstName: content.room.peer.title,
-                photo: content.room.peer.photo,
+                photo: content.room.peer.roomPhoto,
                 online: false,
                 isYou: false,
                 isBot: false,

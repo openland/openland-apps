@@ -3,6 +3,8 @@ import {
     FullMessage_ServiceMessage_spans,
     UserForMention,
     MessageSpanType,
+    RoomNano,
+    OrganizationShort,
 } from 'openland-api/Types';
 
 export enum SpanType {
@@ -127,14 +129,12 @@ export interface SpanAll extends SpanAbs {
 
 export interface SpanRoom extends SpanAbs {
     type: SpanType.mention_room;
-    title: string;
-    id: string;
+    room: RoomNano;
 }
 
 export interface SpanOrganization extends SpanAbs {
     type: SpanType.mention_organization;
-    title: string;
-    id: string;
+    organization: OrganizationShort;
 }
 
 export type ServerSpan = FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans;
