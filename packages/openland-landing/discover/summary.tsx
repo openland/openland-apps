@@ -7,13 +7,20 @@ const root = css`
     background-color: #f7fafc;
     margin-top: 180px;
     padding: 100px 0;
+
+    @media (max-width: 768px) {
+        background-color: initial;
+        padding: 64px 0;
+        margin-top: 0;
+    }
 `;
 
 const summary = css`
     display: flex;
     align-items: center;
+    position: relative;
 
-    @media (max-width: 960px) {
+    @media (max-width: 768px) {
         flex-direction: column-reverse;
     }
 `;
@@ -31,7 +38,7 @@ const list = css`
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        font-size: 22px;
+        font-size: 20px;
         line-height: 2.3;
     }
 
@@ -78,10 +85,15 @@ const summaryImage = css`
         width: 514px;
     }
 
+    @media (max-width: 960px) {
+        position: absolute;
+        width: 447px;
+        right: -10px;
+        top: 10px;
+    }
+
     @media (max-width: 768px) {
-        max-width: 100%;
-        height: auto;
-        min-width: 280px;
+        display: none;
     }
 
     z-index: 0;
@@ -132,7 +144,7 @@ export default () => (
                         <Heading>Build your own community</Heading>
                     </div>
                     <ul className={list}>
-                        <li className={item}>Find people who share your values</li>
+                        <li className={item}>Bring people together</li>
                         <li className={item}>Share and organize knowledge</li>
                         <li className={item}>Help people help each other</li>
                     </ul>
