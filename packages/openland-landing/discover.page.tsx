@@ -3,6 +3,8 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { css } from 'linaria';
 
 import Header from './next/header';
+import Screenshots from './discover/screenshots';
+import Summary from './discover/summary';
 import Footer from './next/footer';
 
 const root = css`
@@ -19,6 +21,8 @@ export const DiscoverPage = React.memo(() => (
     <div className={root}>
         <XDocumentHead title="Discover" titleWithoutReverse={true} />
         <Header startLink={true} />
+        <Screenshots />
+        <Summary />
         <Footer />
     </div>
 ));
