@@ -13,21 +13,20 @@ import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 
 const stickerPackViewerContainer = css`
     display: flex;
-    justify-content: center;
     flex-grow: 1;
     flex-shrink: 0;
     flex-wrap: wrap;
     padding-left: 16px;
     padding-right: 16px;
     padding-bottom: 16px;
+`;
 
-    & img {
-        margin: 4px;
-    }
-
-    & img:last-child {
-        margin: auto;
-    }
+const stickerContainer = css`
+    width: 108px;
+    height: 108px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 const AddStickerPack = (props: { packId: string; hide: () => void }) => {
@@ -48,47 +47,60 @@ const AddStickerPack = (props: { packId: string; hide: () => void }) => {
         props.hide();
     };
 
+    const removePack = async () => {
+        await client.mutateStickerPackRemoveToCollection({
+            id: props.packId,
+        });
+        await client.refetchMyStickers();
+        props.hide();
+    };
+
     return (
         <XView flexGrow={1} flexShrink={1}>
             <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
                 <div className={stickerPackViewerContainer}>
                     {stickerPack.stickers.map(i => {
                         const url = `https://ucarecdn.com/${i.image.uuid}/-/format/auto/-/`;
-                        const ops = `preview/${100}x${100}/`;
-                        const opsRetina = `preview/${100 * 2}x${100 * 2}/ 2x`;
+                        const ops = `preview/${92}x${92}/`;
+                        const opsRetina = `preview/${92 * 2}x${92 * 2}/ 2x`;
                         return (
-                            <ImgWithRetry
-                                key={i.id}
-                                width={100}
-                                height={100}
-                                src={url + ops}
-                                srcSet={url + opsRetina}
-                                style={{ objectFit: 'contain' }}
-                            />
+                            <div className={stickerContainer}>
+                                <ImgWithRetry
+                                    key={i.id}
+                                    width={92}
+                                    height={92}
+                                    src={url + ops}
+                                    srcSet={url + opsRetina}
+                                    style={{ objectFit: 'contain' }}
+                                />
+                            </div>
                         );
                     })}
                 </div>
             </XScrollView3>
             <XModalFooter>
                 <UButton
-                    text="Close"
+                    text="Cancel"
                     style="secondary"
                     size="large"
                     square={true}
                     onClick={props.hide}
                 />
-                {!iHaveThisPack && (
-                    <UButton
-                        text="Add"
-                        size="large"
-                        square={true}
-                        loading={loading}
-                        onClick={async () => {
-                            setLoading(true);
+                <UButton
+                    text={iHaveThisPack ? 'Delete' : 'Add'}
+                    style={iHaveThisPack ? 'danger' : 'primary'}
+                    size="large"
+                    square={true}
+                    loading={loading}
+                    onClick={async () => {
+                        setLoading(true);
+                        if (iHaveThisPack) {
                             await addPack();
-                        }}
-                    />
-                )}
+                        } else {
+                            await removePack();
+                        }
+                    }}
+                />
             </XModalFooter>
         </XView>
     );
@@ -107,8 +119,8 @@ const imgContainer = css`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 8px;
     cursor: pointer;
 `;
@@ -120,8 +132,8 @@ interface ImageContentProps {
 export const StickerContent = React.memo((props: ImageContentProps) => {
     const { sticker } = props;
     const url = `https://ucarecdn.com/${sticker.image.uuid}/-/format/auto/-/`;
-    const ops = `preview/${200}x${200}/`;
-    const opsRetina = `preview/${100 * 2}x${100 * 2}/ 2x`;
+    const ops = `preview/${120}x${120}/`;
+    const opsRetina = `preview/${120 * 2}x${120 * 2}/ 2x`;
 
     return (
         <div
@@ -136,8 +148,8 @@ export const StickerContent = React.memo((props: ImageContentProps) => {
             }}
         >
             <ImgWithRetry
-                width={200}
-                height={200}
+                width={120}
+                height={120}
                 src={url + ops}
                 srcSet={url + opsRetina}
                 style={{ objectFit: 'contain' }}

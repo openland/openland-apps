@@ -252,6 +252,7 @@ export const SetFeedChannelShortnameMutation = typedMutation<Types.SetFeedChanne
 export const MyStickersQuery = typedQuery<Types.MyStickers, {}>(Stickers.MyStickersQuery);
 export const StickerPackQuery = typedQuery<Types.StickerPack, Types.StickerPackVariables>(Stickers.StickerPackQuery);
 export const StickerPackAddToCollectionMutation = typedMutation<Types.StickerPackAddToCollection, Types.StickerPackAddToCollectionVariables>(Stickers.StickerPackAddToCollectionMutation);
+export const StickerPackRemoveToCollectionMutation = typedMutation<Types.StickerPackRemoveToCollection, Types.StickerPackRemoveToCollectionVariables>(Stickers.StickerPackRemoveToCollectionMutation);
 export const SendStickerMutation = typedMutation<Types.SendSticker, Types.SendStickerVariables>(Stickers.SendStickerMutation);
 export const AddStickerCommentMutation = typedMutation<Types.AddStickerComment, Types.AddStickerCommentVariables>(Stickers.AddStickerCommentMutation);
 export const PersistEventsMutation = typedMutation<Types.PersistEvents, Types.PersistEventsVariables>(Track.PersistEventsMutation);

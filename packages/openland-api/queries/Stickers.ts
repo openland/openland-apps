@@ -33,6 +33,12 @@ export const StickerPackAddToCollectionMutation = gql`
     }
 `;
 
+export const StickerPackRemoveToCollectionMutation = gql`
+    mutation StickerPackRemoveToCollection($id: ID!) {
+        stickerPackRemoveToCollection: stickerPackAddToCollection(id: $id)
+    }
+`;
+
 export const SendStickerMutation = gql`
     mutation SendSticker(
         $chatId: ID!

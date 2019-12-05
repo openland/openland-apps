@@ -3698,6 +3698,9 @@ const SettingsUpdateSelector = obj(
 const StickerPackAddToCollectionSelector = obj(
             field('stickerPackAddToCollection', 'stickerPackAddToCollection', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
         );
+const StickerPackRemoveToCollectionSelector = obj(
+            field('stickerPackAddToCollection', 'stickerPackRemoveToCollection', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
+        );
 const SubscribeToCommentsSelector = obj(
             field('subscribeToComments', 'subscribeToComments', args(fieldValue("peerId", refValue('peerId')), fieldValue("type", refValue('type'))), notNull(scalar('Boolean')))
         );
@@ -5046,6 +5049,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'StickerPackAddToCollection',
         body: 'mutation StickerPackAddToCollection($id:ID!){stickerPackAddToCollection:stickerPackAddToCollection(id:$id)}',
         selector: StickerPackAddToCollectionSelector
+    },
+    StickerPackRemoveToCollection: {
+        kind: 'mutation',
+        name: 'StickerPackRemoveToCollection',
+        body: 'mutation StickerPackRemoveToCollection($id:ID!){stickerPackRemoveToCollection:stickerPackAddToCollection(id:$id)}',
+        selector: StickerPackRemoveToCollectionSelector
     },
     SubscribeToComments: {
         kind: 'mutation',

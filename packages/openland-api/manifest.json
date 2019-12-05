@@ -1388,6 +1388,13 @@
       }
     },
     {
+      "signature": "686bb3f249a91800ff41fedb649800fcb65a115812ee367549198e00e90029a9",
+      "document": "mutation StickerPackRemoveToCollection($id:ID!){stickerPackRemoveToCollection:stickerPackAddToCollection(id:$id)}",
+      "metadata": {
+        "engineSignature": "mutation StickerPackRemoveToCollection($id:ID!){stickerPackAddToCollection(id:$id)}"
+      }
+    },
+    {
       "signature": "6683f364dfa95b67759966f540f735517f23b7b564f73ca96bc9c2dc82357874",
       "document": "mutation SendSticker($chatId:ID!,$repeatKey:String,$replyMessages:[ID!],$stickerId:ID!){sendSticker(chatId:$chatId,repeatKey:$repeatKey,replyMessages:$replyMessages,stickerId:$stickerId)}",
       "metadata": {

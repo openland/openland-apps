@@ -253,7 +253,7 @@ const ModalBoxComponent = React.memo<{
                                             size="small"
                                             position="absolute"
                                             right={16}
-                                            top={-8}
+                                            top={0}
                                         />
                                     )}
                             </XView>

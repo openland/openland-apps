@@ -3695,6 +3695,9 @@ private let SettingsUpdateSelector = obj(
 private let StickerPackAddToCollectionSelector = obj(
             field("stickerPackAddToCollection", "stickerPackAddToCollection", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
+private let StickerPackRemoveToCollectionSelector = obj(
+            field("stickerPackAddToCollection", "stickerPackRemoveToCollection", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+        )
 private let SubscribeToCommentsSelector = obj(
             field("subscribeToComments", "subscribeToComments", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
         )
@@ -5048,6 +5051,12 @@ class Operations {
         "mutation StickerPackAddToCollection($id:ID!){stickerPackAddToCollection:stickerPackAddToCollection(id:$id)}",
         StickerPackAddToCollectionSelector
     )
+    let StickerPackRemoveToCollection = OperationDefinition(
+        "StickerPackRemoveToCollection",
+        .mutation, 
+        "mutation StickerPackRemoveToCollection($id:ID!){stickerPackRemoveToCollection:stickerPackAddToCollection(id:$id)}",
+        StickerPackRemoveToCollectionSelector
+    )
     let SubscribeToComments = OperationDefinition(
         "SubscribeToComments",
         .mutation, 
@@ -5409,6 +5418,7 @@ class Operations {
         if name == "SetUserShortname" { return SetUserShortname }
         if name == "SettingsUpdate" { return SettingsUpdate }
         if name == "StickerPackAddToCollection" { return StickerPackAddToCollection }
+        if name == "StickerPackRemoveToCollection" { return StickerPackRemoveToCollection }
         if name == "SubscribeToComments" { return SubscribeToComments }
         if name == "SuperAccountActivate" { return SuperAccountActivate }
         if name == "SuperAccountAdd" { return SuperAccountAdd }
