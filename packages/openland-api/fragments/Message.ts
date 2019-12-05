@@ -4,6 +4,7 @@ import { UserShort } from './UserShort';
 import { UserForMention } from './UserForMention';
 import { UserBadge } from './UserBadge';
 import { StickerFragment } from './StickerFragment';
+import { RoomNano } from './RoomNano';
 
 export const SpanFragment = gql`
     fragment SpanFragment on MessageSpan {
@@ -27,18 +28,7 @@ export const SpanFragment = gql`
         }
         ... on MessageSpanRoomMention {
             room {
-                ... on PrivateRoom {
-                    id
-                    user {
-                        id
-                        name
-                    }
-                }
-                ... on SharedRoom {
-                    id
-                    title
-                    roomPhoto: photo
-                }
+                ...RoomNano
             }
         }
         ... on MessageSpanLink {
@@ -50,7 +40,7 @@ export const SpanFragment = gql`
     }
 
     ${UserForMention}
-    ${UserForMention}
+    ${RoomNano}
 `;
 
 export const DaialogListMessage = gql`

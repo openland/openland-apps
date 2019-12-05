@@ -59,9 +59,9 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'mention_all') {
             return <ASText key={'mention-all'} color={linkColor} textDecorationLine={linkTextDecoration}>{children}</ASText>;
         } else if (span.type === 'mention_room') {
-            return <ASText key={'mention-room'} color={linkColor} textDecorationLine={linkTextDecoration} onPress={() => onGroupPress(span.id)}>{children}</ASText>;
+            return <ASText key={'mention-room'} color={linkColor} textDecorationLine={linkTextDecoration} onPress={() => onGroupPress(span.room.id)}>{children}</ASText>;
         } else if (span.type === 'mention_organization') {
-            return <ASText key={'mention-organization'} color={linkColor} textDecorationLine={linkTextDecoration} onPress={() => onOrganizationPress(span.id)}>{children}</ASText>;
+            return <ASText key={'mention-organization'} color={linkColor} textDecorationLine={linkTextDecoration} onPress={() => onOrganizationPress(span.organization.id)}>{children}</ASText>;
         } else if (span.type === 'mention_users') {
             return <OthersUsersWrapper key={'mentions'} theme={theme} onUserPress={uid => onUserPress(uid)} users={span.users} useAsync={true}>{children}</OthersUsersWrapper>;
         } else if (span.type === 'bold') {

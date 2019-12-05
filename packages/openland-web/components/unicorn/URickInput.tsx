@@ -2,13 +2,14 @@ import * as React from 'react';
 import * as QuillType from 'quill';
 import { css, cx } from 'linaria';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
-import { StickerFragment, UserForMention } from 'openland-api/Types';
+import { StickerFragment, UserForMention, RoomSharedNano } from 'openland-api/Types';
 import { emojiLink } from 'openland-y-utils/emojiLink';
 import { EmojiPicker } from './emoji/EmojiPicker';
 import { ShortcutButton } from './shortcuts/ShortcutsButton';
 import { emojiConvertToName } from 'openland-y-utils/emojiExtract';
 import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone';
-import { Span, SpanType, SpanUser } from 'openland-y-utils/spans/Span';
+import { Span, SpanType } from 'openland-y-utils/spans/Span';
+import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 
 const quillStyle = css`
     flex-grow: 1;
@@ -74,7 +75,7 @@ const emojiStyle = css`
 `;
 
 export type AllMention = { __typename: 'AllMention' };
-export type URickTextValue = (string | UserForMention | AllMention)[];
+export type URickTextValue = (string | MentionToSend)[];
 
 export interface URickInputInstance {
     clear: () => void;
@@ -82,7 +83,7 @@ export interface URickInputInstance {
     getText: () => URickTextValue;
     commitSuggestion(
         type: 'mention' | 'emoji',
-        src: UserForMention | AllMention | { name: string; value: string },
+        src: MentionToSend | { name: string; value: string },
     ): void;
     setContent: (inputValue: URickTextValue) => void;
 }
@@ -120,11 +121,11 @@ function loadQuill() {
 
         // Mentions Blot
         class MentionBlot extends Embed {
-            static create(data: any) {
+            static create(mention: MentionToSend) {
                 const node = super.create() as HTMLSpanElement;
-                node.className = cx(mentionStyle, data.isYou && meMentionStyle);
-                node.innerText = data.__typename === 'AllMention' ? 'All' : data.name;
-                node.dataset.user = JSON.stringify(data);
+                node.className = cx(mentionStyle, mention.__typename === 'User' && mention.isYou && meMentionStyle);
+                node.innerText = mention.__typename === 'AllMention' ? 'All' : (mention.__typename === 'SharedRoom' ? mention.title : mention.name);
+                node.dataset.user = JSON.stringify(mention);
                 return node;
             }
 
@@ -181,7 +182,7 @@ function convertInputValue(content: URickTextValue) {
             if (typeof c === 'string') {
                 // TODO: extract emoji
                 return { insert: c };
-            } else if (c.__typename === 'User' || c.__typename === 'AllMention') {
+            } else if (c.__typename === 'User' || c.__typename === 'Organization' || c.__typename === 'SharedRoom' || c.__typename === 'AllMention') {
                 return { insert: { mention: c } };
             } else {
                 return { insert: '' };
@@ -212,8 +213,8 @@ function convertQuillContent(content: QuillType.Delta) {
 export function convertToInputValue(text: string, spans: Span[]): URickTextValue {
     let value: URickTextValue = [];
     let textStringTail = text;
-    for (let absSpan of spans.filter(span => span.type === SpanType.mention_user)) {
-        let userSpan = absSpan as SpanUser;
+    for (let absSpan of spans.filter(span => span.type === SpanType.mention_user || span.type === SpanType.mention_organization || span.type === SpanType.mention_room || span.type === SpanType.mention_all)) {
+        let userSpan = absSpan;
         let rawText = userSpan.textRaw || '';
         let spanStart = textStringTail.indexOf(rawText);
         if (spanStart === -1) {
@@ -222,10 +223,16 @@ export function convertToInputValue(text: string, spans: Span[]): URickTextValue
         if (spanStart !== 0) {
             value.push(textStringTail.substring(0, spanStart));
         }
-        if (userSpan.textRaw === '@All') {
+        if (userSpan.textRaw === '@All' || userSpan.type === SpanType.mention_all) {
             value.push({ __typename: 'AllMention' });
         } else {
-            value.push({ __typename: 'User', ...userSpan.user });
+            if (userSpan.type === SpanType.mention_user) {
+                value.push({ __typename: 'User', ...userSpan.user });
+            } else if (userSpan.type === SpanType.mention_room) {
+                value.push({ __typename: 'SharedRoom', ...userSpan.room as RoomSharedNano });
+            } else if (userSpan.type === SpanType.mention_organization) {
+                value.push({ __typename: 'Organization', ...userSpan.organization });
+            }
         }
 
         textStringTail = textStringTail.substring(
@@ -240,14 +247,20 @@ export function convertToInputValue(text: string, spans: Span[]): URickTextValue
 
 export function convertFromInputValue(
     data: URickTextValue,
-): { text: string; mentions: (UserForMention | AllMention)[] } {
+): { text: string; mentions: MentionToSend[] } {
     let text = '';
-    let mentions: (UserForMention | AllMention)[] = [];
+    let mentions: MentionToSend[] = [];
     for (let t of data) {
         if (typeof t === 'string') {
             text += t;
         } else if (t.__typename === 'User') {
             text += '@' + t.name;
+            mentions.push(t);
+        } else if (t.__typename === 'Organization') {
+            text += '@' + t.name;
+            mentions.push(t);
+        } else if (t.__typename === 'SharedRoom') {
+            text += '@' + t.title;
             mentions.push(t);
         } else {
             text += '@All';

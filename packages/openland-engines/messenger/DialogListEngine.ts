@@ -2,7 +2,6 @@ import { MessengerEngine } from '../MessengerEngine';
 import {
     Dialogs_dialogs_items,
     Dialogs_dialogs_items_topMessage,
-    Room_room_SharedRoom,
     Room_room_PrivateRoom,
     Dialogs_dialogs_items_topMessage_GeneralMessage_attachments,
     TinyMessage,
@@ -10,6 +9,7 @@ import {
     FullMessage,
     ChatUpdateFragment_ChatMessageReceived,
     DialogUpdateFragment_DialogPeerUpdated_peer,
+    RoomPico_room_SharedRoom,
 } from 'openland-api/Types';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { createLogger } from 'mental-log';
@@ -361,7 +361,7 @@ export class DialogListEngine {
             });
 
             let sharedRoom =
-                info.room!.__typename === 'SharedRoom' ? (info.room as Room_room_SharedRoom) : null;
+                info.room!.__typename === 'SharedRoom' ? (info.room as RoomPico_room_SharedRoom) : null;
             let privateRoom =
                 info.room!.__typename === 'PrivateRoom'
                     ? (info.room as Room_room_PrivateRoom)
@@ -387,7 +387,7 @@ export class DialogListEngine {
                     title: sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '',
                     photo:
                         (sharedRoom
-                            ? sharedRoom.photo
+                            ? sharedRoom.roomPhoto
                             : privateRoom
                                 ? privateRoom.user.photo
                                 : undefined) || undefined,

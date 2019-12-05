@@ -34,21 +34,9 @@ export const convertServerSpan = (text: string, s: ServerSpan): Span => {
     } else if (s.__typename === 'MessageSpanUserMention') {
         span = { offset, length, type: SpanType.mention_user, user: s.user };
     } else if (s.__typename === 'MessageSpanRoomMention') {
-        span = {
-            offset,
-            length,
-            type: SpanType.mention_room,
-            title: s.room.__typename === 'SharedRoom' ? s.room.title : s.room.user.name,
-            id: s.room.id,
-        };
+        span = { offset, length, type: SpanType.mention_room, room: s.room };
     } else if (s.__typename === 'MessageSpanOrganizationMention') {
-        span = {
-            offset,
-            length,
-            type: SpanType.mention_organization,
-            title: s.organization.name,
-            id: s.organization.id,
-        };
+        span = { offset, length, type: SpanType.mention_organization, organization: s.organization };
     } else if (s.__typename === 'MessageSpanMultiUserMention') {
         span = { offset, length, type: SpanType.mention_users, users: s.users };
     } else if (s.__typename === 'MessageSpanAllMention') {

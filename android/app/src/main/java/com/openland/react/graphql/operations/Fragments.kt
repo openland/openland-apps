@@ -92,6 +92,41 @@ internal val UserForMentionSelector = obj(
             field("shortname", "shortname", scalar("String"))
         )
 
+internal val RoomSharedNanoSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+            field("kind", "kind", notNull(scalar("String"))),
+            field("photo", "roomPhoto", notNull(scalar("String"))),
+            field("settings", "settings", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("mute", "mute", scalar("Boolean"))
+                ))),
+            field("title", "title", notNull(scalar("String")))
+        )
+
+internal val RoomNanoSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("PrivateRoom", obj(
+                field("id", "id", notNull(scalar("ID"))),
+                field("settings", "settings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("mute", "mute", scalar("Boolean"))
+                    ))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("name", "name", notNull(scalar("String"))),
+                        field("photo", "photo", scalar("String"))
+                    )))
+            )),
+            inline("SharedRoom", obj(
+                fragment("SharedRoom", RoomSharedNanoSelector)
+            ))
+        )
+
 internal val SpanFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("length", "length", notNull(scalar("Int"))),
@@ -117,19 +152,7 @@ internal val SpanFragmentSelector = obj(
             inline("MessageSpanRoomMention", obj(
                 field("room", "room", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        inline("PrivateRoom", obj(
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("user", "user", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("id", "id", notNull(scalar("ID"))),
-                                    field("name", "name", notNull(scalar("String")))
-                                )))
-                        )),
-                        inline("SharedRoom", obj(
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("photo", "roomPhoto", notNull(scalar("String"))),
-                            field("title", "title", notNull(scalar("String")))
-                        ))
+                        fragment("Room", RoomNanoSelector)
                     )))
             )),
             inline("MessageSpanLink", obj(
@@ -1087,36 +1110,6 @@ internal val FeedUpdateFragmentSelector = obj(
                                 fragment("FeedItem", FeedItemFullSelector)
                             )))))
                     )))
-            ))
-        )
-
-internal val RoomNanoSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            inline("PrivateRoom", obj(
-                field("id", "id", notNull(scalar("ID"))),
-                field("settings", "settings", notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("mute", "mute", scalar("Boolean"))
-                    ))),
-                field("user", "user", notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("name", "name", notNull(scalar("String"))),
-                        field("photo", "photo", scalar("String"))
-                    )))
-            )),
-            inline("SharedRoom", obj(
-                field("id", "id", notNull(scalar("ID"))),
-                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
-                field("kind", "kind", notNull(scalar("String"))),
-                field("photo", "photo", notNull(scalar("String"))),
-                field("settings", "settings", notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("mute", "mute", scalar("Boolean"))
-                    ))),
-                field("title", "title", notNull(scalar("String")))
             ))
         )
 

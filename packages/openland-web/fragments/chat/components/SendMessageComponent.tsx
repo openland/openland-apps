@@ -5,15 +5,13 @@ import {
     URickInput,
     URickInputInstance,
     URickTextValue,
-    AllMention,
 } from 'openland-web/components/unicorn/URickInput';
 import AttachIcon from 'openland-icons/s/ic-attach-24.svg';
 import AllIcon from 'openland-icons/s/ic-channel-16.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
 import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { useClient } from 'openland-web/utils/useClient';
-import { StickerFragment, RoomMembers_members_user } from 'openland-api/Types';
-import { SearchUser } from 'openland-engines/mentions/searchMentions';
+import { StickerFragment } from 'openland-api/Types';
 import { emojiSuggest } from 'openland-y-utils/emojiSuggest';
 import { emojiComponent } from 'openland-y-utils/emojiComponent';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -28,14 +26,13 @@ import { onEmojiSent } from 'openland-web/components/unicorn/emoji/Recent';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { Deferred } from 'openland-unicorn/components/Deferred';
 import { detectOS } from 'openland-x-utils/detectOS';
+import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 
-interface MentionUserComponentProps {
+interface MentionItemComponentProps {
     id: string;
-    name: string;
     photo: string | null;
-    primaryOrganization: {
-        name: string;
-    } | null;
+    title: string;
+    subtitle?: string;
 }
 
 const mentionContainer = css`
@@ -72,13 +69,13 @@ const allMentionIcon = css`
     margin-right: 12px;
 `;
 
-export const MentionUserComponent = (props: MentionUserComponentProps) => (
+export const MentionItemComponent = (props: MentionItemComponentProps) => (
     <div className={mentionContainer}>
-        <UAvatar id={props.id} title={props.name} photo={props.photo} size="x-small" />
+        <UAvatar id={props.id} title={props.title} photo={props.photo} size="x-small" />
         <div className={mentionUserDataWrap}>
-            <div className={cx(userName, TextLabel1)}>{props.name}</div>
-            {props.primaryOrganization && (
-                <div className={cx(userOrg, TextDensed)}>{props.primaryOrganization.name}</div>
+            <div className={cx(userName, TextLabel1)}>{props.title}</div>
+            {!!props.subtitle && (
+                <div className={cx(userOrg, TextDensed)}>{props.subtitle}</div>
             )}
         </div>
     </div>
@@ -124,6 +121,9 @@ interface Cursor {
     after: string;
 }
 
+interface Divider { __typename: 'divider'; }
+type ListItem = MentionToSend | Cursor | Divider;
+
 const AutoCompleteComponent = React.memo(
     React.forwardRef(
         (
@@ -131,7 +131,7 @@ const AutoCompleteComponent = React.memo(
                 groupId?: string;
                 membersCount?: number | null;
                 activeWord: string | null;
-                onSelected: (user: RoomMembers_members_user | { __typename: 'AllMention' }) => void;
+                onSelected: (mention: MentionToSend) => void;
                 onEmojiSelected: (emoji: { name: string; value: string }) => void;
             },
             ref: React.Ref<AutoCompleteComponentRef>,
@@ -154,7 +154,7 @@ const AutoCompleteComponent = React.memo(
             isActive.current = false;
             lastActiveWord.current = props.activeWord;
 
-            const [users, setUsers] = React.useState<(SearchUser | AllMention | Cursor)[]>([]);
+            const [users, setUsers] = React.useState<ListItem[]>([]);
             const lastQuery = React.useRef<string>();
 
             React.useImperativeHandle(ref, () => ({
@@ -216,55 +216,95 @@ const AutoCompleteComponent = React.memo(
             ]);
 
             const itemRender = React.useCallback(
-                (v: SearchUser | AllMention | Cursor) => {
+                (v: ListItem) => {
                     if (v.__typename === 'cursor') {
                         (async () => {
-                            let lastq = lastQuery.current;
-                            let members = await client.queryChatMembersSearch({
+                            const lastq = lastQuery.current;
+                            const { localItems, globalItems, cursor } = (await client.queryChatMentionSearch({
                                 cid: props.groupId!,
                                 query: lastQuery.current,
                                 first: 20,
                                 after: v.after,
-                            });
+                            })).mentions;
                             if (lastq !== lastQuery.current) {
                                 return;
                             }
-                            let res: (
-                                | SearchUser
-                                | AllMention
-                                | Cursor)[] = members.members.edges.map(e => e.user);
-                            if (members && members.members.pageInfo.hasNextPage) {
-                                res.push({
-                                    __typename: 'cursor',
-                                    after:
-                                        members.members.edges[members.members.edges.length - 1]
-                                            .cursor,
-                                });
-                            }
-                            setUsers([...users.filter(u => u.__typename !== 'cursor'), ...res]);
+
+                            setUsers(currentUsers => {
+                                let res: ListItem[] = currentUsers.filter(c => c.__typename !== 'cursor');
+
+                                if (currentUsers.filter(c => c.__typename === 'divider').length > 0) {
+                                    res.push(...globalItems);
+                                } else {
+                                    res.push(...localItems);
+
+                                    if (globalItems.length > 0) {
+                                        res.push({ __typename: 'divider' });
+                                        res.push(...globalItems);
+                                    }
+                                }
+
+                                if (!!cursor) {
+                                    res.push({
+                                        __typename: 'cursor',
+                                        after: cursor,
+                                    });
+                                }
+
+                                return res;
+                            });
                         })();
                     }
-                    return v.__typename === 'cursor' ? (
+
+                    if (v.__typename === 'divider') {
+                        return (
+                            <XView height={40} flexGrow={1} justifyContent="center" alignItems="center" backgroundColor="red" />
+                        );
+                    } else if (v.__typename === 'AllMention') {
+                        return (
+                            <div className={mentionContainer}>
+                                <UIcon className={allMentionIcon} icon={<AllIcon />} />
+                                <span className={userName}>
+                                    @All
+                                <span style={{ opacity: 0.4, marginLeft: 7 }}>
+                                        Notify everyone in this group
+                                </span>
+                                </span>
+                            </div>
+                        );
+                    } else if (v.__typename === 'User') {
+                        return (
+                            <MentionItemComponent
+                                id={v.id}
+                                photo={v.photo}
+                                title={v.name}
+                                subtitle={v.isBot ? 'Bot' : v.primaryOrganization ? v.primaryOrganization.name : undefined}
+                            />
+                        );
+                    } else if (v.__typename === 'Organization') {
+                        return (
+                            <MentionItemComponent
+                                id={v.id}
+                                photo={v.photo}
+                                title={v.name}
+                                subtitle={v.isCommunity ? 'Community' : 'Organization'}
+                            />
+                        );
+                    } else if (v.__typename === 'SharedRoom') {
+                        return (
+                            <MentionItemComponent
+                                id={v.id}
+                                photo={v.roomPhoto}
+                                title={v.title}
+                                subtitle="Group"
+                            />
+                        );
+                    }
+
+                    return (
                         <XView height={40} flexGrow={1} justifyContent="center" alignItems="center">
                             <XLoader transparentBackground={true} size="medium" />
                         </XView>
-                    ) : v.__typename === 'AllMention' ? (
-                        <div className={mentionContainer}>
-                            <UIcon className={allMentionIcon} icon={<AllIcon />} />
-                            <span className={userName}>
-                                @All
-                                <span style={{ opacity: 0.4, marginLeft: 7 }}>
-                                    Notify everyone in this group
-                                </span>
-                            </span>
-                        </div>
-                    ) : (
-                        <MentionUserComponent
-                            name={v.name}
-                            id={v.id}
-                            photo={v.photo}
-                            primaryOrganization={v.primaryOrganization}
-                        />
                     );
                 },
                 [users],
@@ -277,26 +317,29 @@ const AutoCompleteComponent = React.memo(
                 [],
             );
 
-            let matched: (SearchUser | AllMention | Cursor)[] | undefined = [];
+            let matched: ListItem[] | undefined = [];
             if (props.groupId) {
                 let query = word && word.startsWith('@') ? word.substring(1) : undefined;
-                let members = client.useWithoutLoaderChatMembersSearch({
-                    cid: props.groupId,
+                const mentions = client.useWithoutLoaderChatMentionSearch({
+                    cid: props.groupId!,
+                    query: lastQuery.current,
                     first: 20,
-                    query,
                 });
 
-                if (members && query !== lastQuery.current) {
+                if (mentions && query !== lastQuery.current) {
                     lastQuery.current = query;
-                    let res: (SearchUser | AllMention | Cursor)[] = members
-                        ? members.members.edges.map(e => e.user)
-                        : [];
-                    if (members && members.members.pageInfo.hasNextPage) {
+
+                    const { localItems, globalItems, cursor } = mentions.mentions;
+
+                    let res: ListItem[] = [...localItems, ...(globalItems.length > 0 ? [{ __typename: 'divider' } as Divider, ...globalItems] : [])];
+
+                    if (!!cursor) {
                         res.push({
                             __typename: 'cursor',
-                            after: members.members.edges[members.members.edges.length - 1].cursor,
+                            after: cursor,
                         });
                     }
+
                     setUsers(res);
                 }
                 if (users && word && word.startsWith('@')) {
@@ -313,9 +356,9 @@ const AutoCompleteComponent = React.memo(
 
             isActive.current = !!filtered.length || !!matched.length;
 
-            let onSelected = React.useCallback((user: RoomMembers_members_user | { __typename: 'AllMention' }) => {
+            let onSelected = React.useCallback((mention: MentionToSend) => {
                 if (isActive.current) {
-                    props.onSelected(user);
+                    props.onSelected(mention);
                 }
             }, [props.membersCount]);
 
@@ -536,8 +579,8 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     const onAutocompleteWordChange = React.useCallback((word: string) => {
         setActiveWord(word);
     }, []);
-    const onUserPicked = React.useCallback((user: RoomMembers_members_user) => {
-        ref.current!.commitSuggestion('mention', user);
+    const onUserPicked = React.useCallback((mention: MentionToSend) => {
+        ref.current!.commitSuggestion('mention', mention);
     }, []);
     const onEmojiPicked = React.useCallback((emoji: { name: string; value: string }) => {
         ref.current!.commitSuggestion('emoji', emoji);
