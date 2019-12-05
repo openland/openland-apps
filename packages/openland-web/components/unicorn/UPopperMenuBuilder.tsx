@@ -13,13 +13,14 @@ const container = css`
 `;
 
 export interface MenuItem {
-    title: string;
+    title: string | JSX.Element;
     icon?: JSX.Element;
     onClick?: () => void;
     action?: () => void;
     path?: string;
     closeAfterAction?: boolean;
     closeDelay?: number;
+    counter?: number;
 }
 interface MenuElementItem {
     element: (ctx: UPopperController) => JSX.Element;
