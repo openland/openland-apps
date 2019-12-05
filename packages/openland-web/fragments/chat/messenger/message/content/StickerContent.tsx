@@ -29,7 +29,7 @@ const stickerContainer = css`
     justify-content: center;
 `;
 
-const AddStickerPack = (props: { packId: string; hide: () => void }) => {
+const StickerPackModalInner = (props: { packId: string; hide: () => void }) => {
     const [loading, setLoading] = React.useState(false);
     const client = useClient();
     const myStickerPaks = client.useMyStickers();
@@ -105,10 +105,10 @@ const AddStickerPack = (props: { packId: string; hide: () => void }) => {
     );
 };
 
-const showAddStickerPack = (packId: string, name: string) => {
+export const showStickerStickerPackModal = (packId: string, name: string) => {
     showModalBox({ title: name, useTopCloser: true, width: 464 }, ctx => (
         <React.Suspense fallback={<XLoader loading={true} />}>
-            <AddStickerPack packId={packId} hide={ctx.hide} />
+            <StickerPackModalInner packId={packId} hide={ctx.hide} />
         </React.Suspense>
     ));
 };
@@ -141,7 +141,7 @@ export const StickerContent = React.memo((props: ImageContentProps) => {
                 if (AppConfig.isNonProduction() || AppConfig.isSuperAdmin()) {
                     e.stopPropagation();
                     if (sticker.pack) {
-                        showAddStickerPack(sticker.pack.id, sticker.pack.title);
+                        showStickerStickerPackModal(sticker.pack.id, sticker.pack.title);
                     }
                 }
             }}

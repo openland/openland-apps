@@ -22,6 +22,7 @@ import { XView } from 'react-mental';
 import { FixedSizeList, ListOnScrollProps } from 'react-window';
 import { pickerEmoji } from 'openland-y-utils/data/emoji-data';
 import { emojiComponentSprite } from 'openland-y-utils/emojiComponentSprite';
+import { TextLabel1 } from 'openland-web/utils/TextStyles';
 import { onEmojiSent, getRecent } from './Recent';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -137,7 +138,7 @@ const emojiPickerIconOpen = css`
     opacity: 0.5;
 `;
 
-const titleStyle = css`
+const titleContainerStyle = css`
     position: sticky !important;
     position: -webkit-sticky !important;
     display: flex;
@@ -150,10 +151,26 @@ const titleStyle = css`
     z-index: 2;
     background-color: #fff;
     padding-left: 16px;
+    color: var(--foregroundPrimary);
     @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
         background-color: rgba(255, 255, 255, 0.72);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
+    }
+`;
+
+const titleTextStyle = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+
+    & > span {
+        color: var(--foregroundPrimary);
+        margin-right: 4px;
+    }
+    &:hover {
+        opacity: 0.56;
     }
 `;
 
@@ -307,8 +324,10 @@ const Recent = React.memo((props: { index: number; onEmojiPicked: (arg: string) 
 const innerElementType = React.forwardRef<HTMLDivElement>(({ children, ...rest }, ref) => (
     <div ref={ref} {...rest}>
         <div style={{ top: 0, left: 0, width: '100%', height: 3 * 40 }}>
-            <div className={titleStyle}>
-                <div>Recent</div>
+            <div className={titleContainerStyle}>
+                <div className={titleTextStyle}>
+                    <span className={TextLabel1}>Recent</span>
+                </div>
             </div>
         </div>
         {sections.map((index, i) => (
@@ -324,8 +343,10 @@ const innerElementType = React.forwardRef<HTMLDivElement>(({ children, ...rest }
                             : (index.end - index.start) * 40,
                 }}
             >
-                <div className={titleStyle}>
-                    <div>{index.title}</div>
+                <div className={titleContainerStyle}>
+                    <div className={titleTextStyle}>
+                        <span className={TextLabel1}>{index.title}</span>
+                    </div>
                 </div>
             </div>
         ))}
@@ -532,7 +553,11 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
     );
 
     const [visible, show] = usePopper(
-        { placement: 'top-end', hideOnLeave: true, wrapperClassName: wrapperClassName },
+        {
+            placement: 'top-end',
+            hideOnLeave: true,
+            wrapperClassName: wrapperClassName,
+        },
         () => (
             <EmojiPickerBody
                 onEmojiPicked={props.onEmojiPicked}

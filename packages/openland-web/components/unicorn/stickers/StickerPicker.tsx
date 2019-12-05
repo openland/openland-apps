@@ -4,6 +4,10 @@ import { useClient } from 'openland-web/utils/useClient';
 import { ListOnScrollProps, VariableSizeList } from 'react-window';
 import { MyStickers_stickers_packs, StickerFragment } from 'openland-api/Types';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { showStickerStickerPackModal } from 'openland-web/fragments/chat/messenger/message/content/StickerContent';
+import IcArrow from 'openland-icons/s/ic-chevron-16.svg';
+import { TextLabel1 } from 'openland-web/utils/TextStyles';
 
 type StickerPack = MyStickers_stickers_packs & {
     start: number;
@@ -50,6 +54,7 @@ const sticker = css`
 `;
 
 const titleContainerStyle = css`
+    width: 100%;
     position: sticky !important;
     position: -webkit-sticky !important;
     display: flex;
@@ -70,10 +75,18 @@ const titleContainerStyle = css`
 `;
 
 const titleTextStyle = css`
-    width: 320px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+    & > span {
+        color: var(--foregroundPrimary);
+        margin-right: 4px;
+    }
+    &:hover {
+        opacity: 0.56;
+    }
 `;
 
 const categorySelector = css`
@@ -116,21 +129,27 @@ const InnerElementType = React.forwardRef<HTMLDivElement>((props: any, ref) => {
     const { children, sections, ...rest } = props;
     return (
         <div {...rest} ref={ref}>
-            {sections.map((index: StickerPack, i: number) => (
+            {sections.map((pack: StickerPack, i: number) => (
                 <div
                     key={'inner_element_emoji' + i}
                     style={{
-                        top: (index.start + 3) * 80,
+                        top: (pack.start + 3) * 80,
                         left: 0,
                         width: '100%',
                         height:
                             i === sections.length - 1
-                                ? (index.end - index.start - 3) * 80 /* WTF? this logic */
-                                : (index.end - index.start) * 80 - 40,
+                                ? (pack.end - pack.start - 3) * 80 /* WTF? this logic */
+                                : (pack.end - pack.start) * 80 - 40,
                     }}
                 >
                     <div className={titleContainerStyle}>
-                        <div className={titleTextStyle}>{index.title}</div>
+                        <div
+                            className={titleTextStyle}
+                            onClick={() => showStickerStickerPackModal(pack.id, pack.title)}
+                        >
+                            <span className={TextLabel1}>{pack.title}</span>
+                            <UIcon icon={<IcArrow />} color="var(--foregroundTertiary)" />
+                        </div>
                     </div>
                 </div>
             ))}
