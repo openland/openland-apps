@@ -28,7 +28,7 @@ export class SpaceXWebClient implements GraphqlClient {
     private readonly transport: SpaceXTransport;
     private readonly operations: Operations;
 
-    constructor(operations: Operations, endpoint: string, token: string) {
+    constructor(operations: Operations, endpoint: string, token?: string) {
         this.transport = new SpaceXTransport(endpoint, token);
         this.status = { status: 'connecting' };
         this.operations = operations;
@@ -87,7 +87,7 @@ export class SpaceXWebClient implements GraphqlClient {
             throw Error('Unknown operation');
         }
         if (operation.kind !== 'query') {
-            throw Error('Invalid operation kind');
+            throw Error('Invalid operation kind: ' + operation.kind);
         }
 
         let state = new QueryWatchState();

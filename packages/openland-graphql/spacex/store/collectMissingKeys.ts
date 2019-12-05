@@ -64,7 +64,7 @@ export function collectMissingKeysRoot(rootCacheKey: string, store: RecordStore,
         } else {
             let value = store.read(refId);
             let ex = value.fields.data;
-            if (!ex) {
+            if (ex) {
                 collectMissingKeysFromValue(ex, f.fieldType, store, variables, res);
             }
         }
