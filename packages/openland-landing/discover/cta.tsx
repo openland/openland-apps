@@ -159,57 +159,12 @@ const dotsRight = css`
     }
 `;
 
-const buttonGrey = css`
-    display: inline-flex;
-    align-items: center;
-    background-color: #f7fafc;
-    border-radius: 16px;
-    font-weight: 600;
-    color: #9393a7;
-    will-change: color, background-color, box-shadow;
-    transition: color 0.2s, background-color.2s, box-shadow 0.2s;
-
-    &:hover,
-    &:focus {
-        color: var(--foregroundContrast);
-        text-decoration: none;
-        background: #47a3ff;
-        transition: color 0.01s, background-color.01s, box-shadow 0.01s, transform 0.2s;
-    }
-
-    &:active {
-        background: #1d84ec;
-        transition: color 0.01s, background-color.01s, box-shadow 0.01s;
-    }
-
-    @media (min-width: 1600px) {
-        font-size: 20px;
-        padding: 13px 36px;
-    }
-
-    @media (min-width: 768px) and (max-width: 1600px) {
-        font-size: 18px;
-        padding: 11px 32px;
-    }
-
-    @media (max-width: 768px) {
-        font-size: 18px;
-        padding: 11px 32px;
-    }
-
-    margin: 10px;
-`;
-
 const buttons = css`
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     margin: -10px;
-`;
-
-const ctaImg = css`
-    margin-right: 12px;
 `;
 
 const img = css`

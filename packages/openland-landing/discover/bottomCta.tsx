@@ -168,10 +168,6 @@ const hideMobile = css`
     }
 `;
 
-const ctaImg = css`
-    margin-right: 12px;
-`;
-
 export default () => (
     <div className={root}>
         <Block>
