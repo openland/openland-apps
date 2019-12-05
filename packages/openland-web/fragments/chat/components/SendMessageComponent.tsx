@@ -18,7 +18,7 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UNavigableReactWindow } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
-import { TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
+import { TextLabel1, TextDensed, TextStyles } from 'openland-web/utils/TextStyles';
 import { fileListToArray } from './DropZone';
 import { XLoader } from 'openland-x/XLoader';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
@@ -258,7 +258,13 @@ const AutoCompleteComponent = React.memo(
 
                     if (v.__typename === 'divider') {
                         return (
-                            <XView height={40} flexGrow={1} justifyContent="center" alignItems="center" backgroundColor="red" />
+                            <XView height={40} flexGrow={1} justifyContent="center" alignItems="center" flexDirection="row">
+                                <XView height={1} backgroundColor="var(--border)" flexGrow={1} marginHorizontal={16} />
+                                <XView {...TextStyles.Caption} color="var(--foregroundTertiary)">
+                                    Not in this group
+                                </XView>
+                                <XView height={1} backgroundColor="var(--border)" flexGrow={1} marginHorizontal={16} />
+                            </XView>
                         );
                     } else if (v.__typename === 'AllMention') {
                         return (
@@ -340,13 +346,16 @@ const AutoCompleteComponent = React.memo(
                         });
                     }
 
+                    if (res.length && word && word.startsWith('@')) {
+                        if ('@all'.startsWith(word.toLowerCase())) {
+                            res.unshift({ __typename: 'AllMention' });
+                        }
+                    }
+
                     setUsers(res);
                 }
                 if (users && word && word.startsWith('@')) {
                     matched = [...users];
-                    if ('@all'.startsWith(word.toLowerCase())) {
-                        matched.unshift({ __typename: 'AllMention' });
-                    }
                 }
             }
             let filtered: { name: string; value: string; shortcode: string }[] = [];
