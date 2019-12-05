@@ -1,5 +1,7 @@
+import { Queue } from 'openland-graphql/utils/Queue';
+import { randomKey } from 'openland-graphql/utils/randomKey';
 import { Operations } from './types';
-import { GraphqlClient } from './../GraphqlClient';
+import { GraphqlClient, GraphqlQueryResult } from './../GraphqlClient';
 import {
     GraphqlClientStatus,
     GraphqlQuery,
@@ -11,6 +13,13 @@ import {
 } from 'openland-graphql/GraphqlClient';
 import { SpaceXTransport } from './transport/SpaceXTransport';
 import { SpaceXStore } from './store/SpaceXStore';
+
+class QueryWatchState {
+    hasValue: boolean = false;
+    hasError: boolean = false;
+    value?: any;
+    error?: Error;
+}
 
 export class SpaceXWebClient implements GraphqlClient {
 
@@ -69,8 +78,137 @@ export class SpaceXWebClient implements GraphqlClient {
         }
     }
     queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery> {
-        throw Error('');
+        let operation = this.operations[query.document.definitions[0].name.value];
+        let fetchPolicy: 'cache-first' | 'network-only' | 'cache-and-network' | 'no-cache' = 'cache-first';
+        if (params && params.fetchPolicy) {
+            fetchPolicy = params.fetchPolicy;
+        }
+        if (!operation) {
+            throw Error('Unknown operation');
+        }
+        if (operation.kind !== 'query') {
+            throw Error('Invalid operation kind');
+        }
+
+        let state = new QueryWatchState();
+        let callbacks = new Map<string, (args: { data?: TQuery, error?: Error }) => void>();
+        let resolved = false;
+        let resolve!: () => void;
+        let reject!: () => void;
+        let promise = new Promise<void>((rl, rj) => {
+            resolve = rl;
+            reject = rj;
+        });
+
+        let completed = false;
+        let wasLoadedFromNetwork = false;
+
+        let doRequest: (reload: boolean) => Promise<void>;
+        let doReloadFromCache: () => Promise<void>;
+
+        let onResult = (v: any) => {
+            state.hasError = false;
+            state.hasValue = true;
+            state.value = v;
+            state.error = undefined;
+
+            if (!resolved) {
+                resolved = true;
+                resolve();
+            }
+
+            for (let i of callbacks.values()) {
+                i({ data: v });
+            }
+        };
+
+        let onError = (e: any) => {
+            state.hasError = true;
+            state.hasValue = false;
+            state.value = undefined;
+            state.error = e;
+
+            if (!resolved) {
+                resolved = true;
+                reject();
+            }
+
+            for (let i of callbacks.values()) {
+                i({ error: e });
+            }
+        };
+
+        doReloadFromCache = async () => {
+            this.store.readQueryAndWatch(operation, vars, (s) => {
+                if (completed) {
+                    return;
+                }
+                if (s.type === 'value') {
+                    onResult(s.value);
+                    if (fetchPolicy === 'cache-and-network' && !wasLoadedFromNetwork) {
+                        doRequest(false);
+                    }
+                } else if (s.type === 'missing') {
+                    doRequest(true);
+                } else if (s.type === 'updated') {
+                    doReloadFromCache();
+                }
+            });
+        };
+
+        doRequest = async (reload: boolean) => {
+            wasLoadedFromNetwork = true;
+            let it = await this.transport.operation(operation, vars);
+            if (it.type === 'result') {
+                await this.store.mergeResponse(operation, vars, it.value);
+
+                if (completed) {
+                    return;
+                }
+                if (reload) {
+                    doReloadFromCache();
+                }
+            } else {
+                if (reload) {
+                    onError(it.error);
+                }
+            }
+        };
+
+        if (fetchPolicy === 'cache-first' || fetchPolicy === 'cache-and-network') {
+            doReloadFromCache();
+        } else {
+            doRequest(true);
+        }
+
+        return {
+            subscribe: (handler: (args: GraphqlQueryResult<TQuery>) => void) => {
+                let cbid = randomKey();
+                callbacks.set(cbid, handler);
+                return () => {
+                    callbacks.delete(cbid);
+                };
+            },
+            currentResult: () => {
+                if (state.hasError) {
+                    return ({ error: state.error });
+                } else if (state.hasValue) {
+                    return ({ data: state.value });
+                }
+                return undefined;
+            },
+            result: () => {
+                return promise;
+            },
+            destroy: () => {
+                if (!completed) {
+                    completed = true;
+                    // TODO: Better destroy
+                }
+            }
+        };
     }
+
     async mutate<TMutation, TVars>(mutation: GraphqlMutation<TMutation, TVars>, vars?: TVars): Promise<TMutation> {
         let operation = this.operations[mutation.document.definitions[0].name.value];
         if (!operation) {
@@ -87,8 +225,56 @@ export class SpaceXWebClient implements GraphqlClient {
             throw r.error;
         }
     }
+
     subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription<TSubscription, TVars> {
-        throw Error('');
+        let operation = this.operations[subscription.document.definitions[0].name.value];
+        if (!operation) {
+            throw Error('Unknown operation');
+        }
+        if (operation.kind !== 'subscription') {
+            throw Error('Invalid operation kind');
+        }
+        let id = randomKey();
+        let queue = new Queue();
+        let runningOperation: (() => void) | null = null;
+        let variables = vars;
+        let completed = false;
+
+        let restart = () => {
+            id = randomKey();
+            if (runningOperation) {
+                runningOperation();
+                runningOperation = null;
+            }
+            let v = variables;
+            runningOperation = this.transport.subscription(operation, v, (s) => {
+                if (s.type === 'error') {
+                    if (!completed) {
+                        restart();
+                    }
+                } else {
+                    (async () => {
+                        await this.store.mergeResponse(operation, v, s.value);
+                        queue.post(s.value);
+                    })();
+                }
+            });
+        };
+
+        return {
+            get: () => {
+                return queue.get();
+            },
+            updateVariables: (vars2: TVars) => {
+                variables = vars2;
+            },
+            destroy: () => {
+                if (runningOperation) {
+                    runningOperation();
+                    runningOperation = null;
+                }
+            }
+        };
     }
 
     // Store
