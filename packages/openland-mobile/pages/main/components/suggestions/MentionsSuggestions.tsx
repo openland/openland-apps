@@ -25,6 +25,7 @@ export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) 
     const [loadingQuery, setLoadingQuery] = React.useState(false);
     const lastQuery = React.useRef<string>();
     const lastCursor = React.useRef<string | null>(null);
+    const listRef = React.useRef<FlatList<MentionToSend | MentionsDividerType>>(null);
 
     const handleOnPress = React.useCallback((mention: MentionToSend) => {
         onMentionPress(activeWord, mention);
@@ -61,6 +62,11 @@ export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) 
         setGlobalItems(data.globalItems);
 
         setLoadingQuery(false);
+        setLoadingPagination(false);
+
+        if (listRef.current) {
+            listRef.current.scrollToOffset({ offset: 0, animated: false });
+        }
     }, [activeWord]);
 
     const handleLoadMore = React.useCallback(async () => {
@@ -110,6 +116,7 @@ export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) 
     return (
         <View>
             <FlatList
+                ref={listRef}
                 data={mergedItems}
                 renderItem={({ item }) => item.__typename === 'GlobalDivider' ? <MentionsDividerView /> : <MentionView mention={item} onPress={() => handleOnPress(item)} />}
                 keyExtractor={(item, index) => item.__typename === 'GlobalDivider' ? `${index}-divider` : item.__typename === 'AllMention' ? `${index}-all` : `${index}-${item.id}`}
