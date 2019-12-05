@@ -1,0 +1,383 @@
+import * as React from 'react';
+import { css, cx } from 'linaria';
+import Block from '../next/block';
+import Heading from '../next/heading';
+
+const root = css``;
+
+const communities = css`
+    display: flex;
+    margin-top: 84px;
+`;
+
+const topCommunities = css`
+    flex-shrink: 0;
+    margin-right: 24px;
+    @media (max-width: 960px) {
+        display: none;
+    }
+`;
+
+const type = css`
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    background-color: #f7fafc;
+    border-radius: 12px;
+    width: 300px;
+
+    @media (max-width: 1600px) {
+        width: 240px;
+    }
+
+    & + & {
+        margin-top: 16px;
+    }
+`;
+
+const typeImg = css`
+    margin-right: 12px;
+`;
+
+const typeText = css`
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #272750;
+
+    @media (max-width: 1600px) {
+        font-size: 15px;
+    }
+`;
+
+const featuredCommunities = css`
+    display: flex;
+    flex-wrap: wrap;
+    margin: -12px;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+`;
+
+const community = css`
+    position: relative;
+    width: calc(50% - 24px);
+    padding: 32px;
+    border-radius: 16px;
+    margin: 12px;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        padding: 20px 24px;
+        width: 100%;
+        max-width: 368px;
+    }
+
+    transition: box-shadow 0.3s, background 0.3s;
+
+    &:hover,
+    &:focus {
+        text-decoration: none;
+        box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.1);
+        background: white;
+
+        .communityButton {
+            opacity: 1;
+        }
+
+        .communityText {
+            opacity: 0;
+        }
+    }
+`;
+
+const communityHeader = css`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+const communityTitle = css``;
+
+const communityHeading = css`
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 1.17;
+    color: #272750;
+
+    @media (max-width: 1600px) {
+        font-size: 20px;
+    }
+`;
+
+const communitySubheading = css`
+    display: block;
+    font-size: 18px;
+    line-height: 1.33;
+    color: #525273;
+    margin-top: 8px;
+`;
+
+const communityImg = css`
+    @media (max-width: 768px) {
+        width: 52px;
+    }
+`;
+
+const communityText = css`
+    font-size: 18px;
+    line-height: 1.67;
+    color: #272750;
+    margin-top: 16px;
+
+    @media (max-width: 1600px) {
+        font-size: 16px;
+    }
+
+    transition: opacity 0.2s;
+
+    @media (max-width: 768px) {
+        font-size: 14px;
+    }
+`;
+
+const fundraising = css`
+    background: linear-gradient(121.72deg, #d3f2ff 0%, #eaf9ff 100%);
+`;
+
+const travel = css`
+    background: linear-gradient(121.72deg, #ffebd9 0%, #fff4ea 100%);
+`;
+
+const cto = css`
+    background: linear-gradient(121.72deg, #ffdada 0%, #ffeaea 100%);
+`;
+
+const food = css`
+    background: linear-gradient(121.72deg, #deffd6 0%, #eeffea 100%);
+`;
+
+const button = css`
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 28px;
+    font-weight: 600;
+    font-size: 16px;
+    color: #248bf2;
+    background: #e9f3fe;
+    border-radius: 12px;
+
+    position: absolute;
+    bottom: 32px;
+
+    @media (max-width: 768px) {
+        bottom: 20px;
+    }
+
+    opacity: 0;
+    transition: opacity 0.3s;
+`;
+
+const arrow = css`
+    margin-left: 8px;
+`;
+
+export default () => (
+    <div className={root}>
+        <Block>
+            <Heading>Communities for everyone</Heading>
+            <div className={communities}>
+                <div className={topCommunities}>
+                    <div className={type}>
+                        <img
+                            className={typeImg}
+                            src="/static/landing/icons/ic-business.svg"
+                            width="28"
+                            height="28"
+                            alt=""
+                        />
+                        <span className={typeText}>Business and startups</span>
+                    </div>
+                    <div className={type}>
+                        <img
+                            className={typeImg}
+                            src="/static/landing/icons/ic-tech.svg"
+                            width="28"
+                            height="28"
+                            alt=""
+                        />
+                        <span className={typeText}>Tech and science</span>
+                    </div>
+                    <div className={type}>
+                        <img
+                            className={typeImg}
+                            src="/static/landing/icons/ic-health.svg"
+                            width="28"
+                            height="28"
+                            alt=""
+                        />
+                        <span className={typeText}>Health and fitness</span>
+                    </div>
+                    <div className={type}>
+                        <img
+                            className={typeImg}
+                            src="/static/landing/icons/ic-art.svg"
+                            width="28"
+                            height="28"
+                            alt=""
+                        />
+                        <span className={typeText}>Arts and creativity</span>
+                    </div>
+                    <div className={type}>
+                        <img
+                            className={typeImg}
+                            src="/static/landing/icons/ic-fashion.svg"
+                            width="28"
+                            height="28"
+                            alt=""
+                        />
+                        <span className={typeText}>Fashion and beauty</span>
+                    </div>
+                    <div className={type}>
+                        <img
+                            className={typeImg}
+                            src="/static/landing/icons/ic-education.svg"
+                            width="28"
+                            height="28"
+                            alt=""
+                        />
+                        <span className={typeText}>Education and career</span>
+                    </div>
+                </div>
+
+                <div className={featuredCommunities}>
+                    <a className={cx(community, fundraising)} href="#">
+                        <div className={communityHeader}>
+                            <div className={communityTitle}>
+                                <h2 className={communityHeading}>Fundraising Help</h2>
+                                <span className={communitySubheading}>1200+ members</span>
+                            </div>
+                            <img
+                                className={communityImg}
+                                src="/static/landing/icons/fundraising.svg"
+                                width="60"
+                                height="60"
+                                alt=""
+                            />
+                        </div>
+                        <div className={cx(communityText, 'communityText')}>
+                            Get pitch deck feedback and
+                            <br />
+                            investor intros
+                        </div>
+                        <div className={cx(button, 'communityButton')}>
+                            Join community
+                            <img
+                                className={arrow}
+                                src="/static/landing/icons/arrow-blue.svg"
+                                width="16"
+                                height="16"
+                                alt=""
+                            />
+                        </div>
+                    </a>
+
+                    <a className={cx(community, travel)} href="#">
+                        <div className={communityHeader}>
+                            <div className={communityTitle}>
+                                <h2 className={communityHeading}>Travel Hacks</h2>
+                                <span className={communitySubheading}>⚡ New</span>
+                            </div>
+                            <img
+                                className={communityImg}
+                                src="/static/landing/icons/travel.svg"
+                                width="60"
+                                height="60"
+                                alt=""
+                            />
+                        </div>
+                        <div className={cx(communityText, 'communityText')}>
+                            Find inspiration for your next trip and
+                            <br />
+                            share your own experiences
+                        </div>
+                        <div className={cx(button, 'communityButton')}>
+                            Join community
+                            <img
+                                className={arrow}
+                                src="/static/landing/icons/arrow-blue.svg"
+                                width="16"
+                                height="16"
+                                alt=""
+                            />
+                        </div>
+                    </a>
+
+                    <a className={cx(community, cto)} href="#">
+                        <div className={communityHeader}>
+                            <div className={communityTitle}>
+                                <h2 className={communityHeading}>CTOs</h2>
+                                <span className={communitySubheading}>1000+ members</span>
+                            </div>
+                            <img
+                                className={communityImg}
+                                src="/static/landing/icons/cto.svg"
+                                width="60"
+                                height="60"
+                                alt=""
+                            />
+                        </div>
+                        <div className={cx(communityText, 'communityText')}>
+                            Share best practices and discuss
+                            <br />
+                            developer tools choices
+                        </div>
+                        <div className={cx(button, 'communityButton')}>
+                            Join community
+                            <img
+                                className={arrow}
+                                src="/static/landing/icons/arrow-blue.svg"
+                                width="16"
+                                height="16"
+                                alt=""
+                            />
+                        </div>
+                    </a>
+
+                    <a className={cx(community, food)} href="#">
+                        <div className={communityHeader}>
+                            <div className={communityTitle}>
+                                <h2 className={communityHeading}>Future of Food</h2>
+                                <span className={communitySubheading}>120+ members</span>
+                            </div>
+                            <img
+                                className={communityImg}
+                                src="/static/landing/icons/food.svg"
+                                width="60"
+                                height="60"
+                                alt=""
+                            />
+                        </div>
+                        <div className={cx(communityText, 'communityText')}>
+                            Discover and discuss the latest
+                            <br /> trends in food innovation
+                        </div>
+                        <div className={cx(button, 'communityButton')}>
+                            Join community
+                            <img
+                                className={arrow}
+                                src="/static/landing/icons/arrow-blue.svg"
+                                width="16"
+                                height="16"
+                                alt=""
+                            />
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </Block>
+    </div>
+);

@@ -224,7 +224,7 @@ export default () => (
                 <h1 className={headline}>
                     Find your <span className={headlineGradient}>community</span>
                 </h1>
-                <p className={text}>Meet inspiring people, learn and&nbsp;get&nbsp;help</p>
+                <p className={text}>Discover inspiring communities for your interests</p>
                 <div className={buttons}>
                     <a className={button} href="#">
                         Join Openland

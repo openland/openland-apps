@@ -4,6 +4,7 @@ import { css } from 'linaria';
 
 import Header from './next/header';
 import Cta from './discover/cta';
+import Communities from './discover/communities';
 import Screenshots from './discover/screenshots';
 import Summary from './discover/summary';
 import BottomCta from './discover/bottomCta';
@@ -24,6 +25,7 @@ export const DiscoverPage = React.memo(() => (
         <XDocumentHead title="Discover" titleWithoutReverse={true} />
         <Header startLink={true} />
         <Cta />
+        <Communities />
         <Screenshots />
         <Summary />
         <BottomCta />
