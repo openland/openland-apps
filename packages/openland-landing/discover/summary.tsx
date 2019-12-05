@@ -141,7 +141,7 @@ export default () => (
             <div className={summary}>
                 <div className={listWrapper}>
                     <div className={headingWrapper}>
-                        <Heading>Build your own community</Heading>
+                        <Heading>Build&nbsp;your&nbsp;own&nbsp;community</Heading>
                     </div>
                     <ul className={list}>
                         <li className={item}>Bring people together</li>

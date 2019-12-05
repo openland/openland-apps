@@ -3,8 +3,10 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { css } from 'linaria';
 
 import Header from './next/header';
+import Cta from './discover/cta';
 import Screenshots from './discover/screenshots';
 import Summary from './discover/summary';
+import BottomCta from './discover/bottomCta';
 import Footer from './next/footer';
 
 const root = css`
@@ -21,8 +23,10 @@ export const DiscoverPage = React.memo(() => (
     <div className={root}>
         <XDocumentHead title="Discover" titleWithoutReverse={true} />
         <Header startLink={true} />
+        <Cta />
         <Screenshots />
         <Summary />
+        <BottomCta />
         <Footer />
     </div>
 ));

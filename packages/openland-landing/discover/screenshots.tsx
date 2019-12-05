@@ -50,6 +50,7 @@ const listWrapper = css`
 const list = css`
     list-style-type: none;
     display: inline;
+    white-space: nowrap;
 `;
 
 const item = css`
@@ -277,7 +278,7 @@ export default () => {
                             <li className={list}>
                                 <ul className={item}>Chats</ul>
                                 <ul className={item}>Live sessions</ul>
-                                <ul className={item}>Match making</ul>
+                                <ul className={item}>Match&nbsp;making</ul>
                             </li>
                             <span className={dot}>.</span>
                             {' '}
