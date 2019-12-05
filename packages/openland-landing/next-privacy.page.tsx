@@ -34,7 +34,7 @@ const SectionsList = [
 export const PrivacyPage = React.memo(() => (
     <div className={root}>
         <XDocumentHead title="Privacy Policy" titleWithoutReverse={true} />
-        <Header isGrey={true} startLink={true} />
+        <Header isGrey={true} discoverLink={true} startLink={true} />
         <AboutHeader />
         <Container>
             <Content contents={SectionsList}>

@@ -26,7 +26,7 @@ export const AboutPage = React.memo(() => (
             titleWithoutReverse={true}
             description="Openland is a professional messenger designed to support all communication needs of a modern business. It can be used for fundraising, sales, recruiting, customer service, and business operations. The company is backed by 30 prominent venture investors, including Y Combinator, Gagarin Capital, Sinai Ventures, Soma Capital, Liquid 2 Ventures, and Rainfall Ventures."
         />
-        <Header isGrey={true} startLink={true} />
+        <Header isGrey={true} discoverLink={true} startLink={true} />
         <AboutHeader />
         <Founders />
         <AboutFeatures />

@@ -24,7 +24,7 @@ const root = css`
 export const NextPage = React.memo(() => (
     <div className={root}>
         <XDocumentHead title="Start community" titleWithoutReverse={true} />
-        <Header />
+        <Header discoverLink={true} />
         <Cta />
         <Summary />
         <Features />

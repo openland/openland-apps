@@ -16,6 +16,8 @@ routes.add('/download', '/landing/download');
 routes.add('/download/', '/landing/download');
 routes.add('/next/start', '/landing/next');
 routes.add('/next/start/', '/landing/next');
+routes.add('/next/discover', '/landing/discover');
+routes.add('/next/discover/', '/landing/discover');
 routes.add('/next/about', '/landing/next-about');
 routes.add('/next/about/', '/landing/next-about');
 routes.add('/next/terms', '/landing/next-terms');

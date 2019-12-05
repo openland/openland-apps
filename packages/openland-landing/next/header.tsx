@@ -193,7 +193,10 @@ const mobileMenuLink = css`
     &:hover,
     &:active {
         text-decoration: none;
+        color: #248bf2;
     }
+
+    cursor: pointer;
 `;
 
 const mobileMenuFooter = css`
@@ -230,7 +233,13 @@ const appsLink = css``;
 const mobileMenuOpenIcon = css``;
 const mobileMenuCloseIcon = css``;
 
-export default ({ isGrey, startLink }: { isGrey?: boolean; startLink?: boolean }) => {
+interface Props {
+    isGrey?: boolean;
+    startLink?: boolean;
+    discoverLink?: boolean;
+}
+
+export default ({ isGrey, startLink, discoverLink }: Props) => {
     const [isOpen, setOpen] = React.useState<boolean>(false);
     const [isMenuOpen, setMenuOpen] = React.useState<boolean>(false);
 
@@ -275,15 +284,16 @@ export default ({ isGrey, startLink }: { isGrey?: boolean; startLink?: boolean }
 
                                 <ul className={mobileMenuList}>
                                     <li className={mobileMenuItem}>
-                                        <a href="#" className={mobileMenuLink}>
-                                            Discover
-                                        </a>
+                                        <span className={mobileMenuLink}>
+                                            <XView path="/next/discover">Discover</XView>
+                                        </span>
                                     </li>
                                     <li className={mobileMenuItem}>
-                                        <a href="/next/start" className={mobileMenuLink}>
-                                            Start community
-                                        </a>
+                                        <span className={mobileMenuLink}>
+                                            <XView path="/next/start">Start community</XView>
+                                        </span>
                                     </li>
+
                                     <li className={mobileMenuItem}>
                                         <a href="/next/about" className={mobileMenuLink}>
                                             About
@@ -342,13 +352,15 @@ export default ({ isGrey, startLink }: { isGrey?: boolean; startLink?: boolean }
                     </div>
 
                     <div className={menu}>
-                        <a className={menuItem} href="#">
-                            Discover
-                        </a>
+                        {discoverLink && (
+                            <span className={menuItem}>
+                                <XView path="/next/discover">Discover</XView>
+                            </span>
+                        )}
                         {startLink && (
-                            <a className={menuItem} href="/next/start">
-                                Start community
-                            </a>
+                            <span className={menuItem}>
+                                <XView path="/next/start">Start community</XView>
+                            </span>
                         )}
                         <span className={menuItem} onMouseLeave={() => setOpen(false)}>
                             <span
