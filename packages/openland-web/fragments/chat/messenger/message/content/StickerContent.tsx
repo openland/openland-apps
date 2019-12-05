@@ -64,9 +64,8 @@ const AddStickerPack = (props: { packId: string; hide: () => void }) => {
                         const ops = `preview/${92}x${92}/`;
                         const opsRetina = `preview/${92 * 2}x${92 * 2}/ 2x`;
                         return (
-                            <div className={stickerContainer}>
+                            <div key={i.id} className={stickerContainer}>
                                 <ImgWithRetry
-                                    key={i.id}
                                     width={92}
                                     height={92}
                                     src={url + ops}
