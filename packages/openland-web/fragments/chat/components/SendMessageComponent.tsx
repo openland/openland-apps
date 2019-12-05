@@ -321,8 +321,8 @@ const AutoCompleteComponent = React.memo(
             if (props.groupId) {
                 let query = word && word.startsWith('@') ? word.substring(1) : undefined;
                 const mentions = client.useWithoutLoaderChatMentionSearch({
-                    cid: props.groupId!,
-                    query: lastQuery.current,
+                    cid: props.groupId,
+                    query,
                     first: 20,
                 });
 
