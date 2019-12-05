@@ -76,13 +76,13 @@ const summaryImage = css`
     position: relative;
 
     @media (min-width: 1600px) {
-        width: 550px;
-        left: 15px;
+        width: 640px;
+        left: 130px;
         top: 20px;
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        width: 514px;
+        width: 561px;
     }
 
     @media (max-width: 960px) {
