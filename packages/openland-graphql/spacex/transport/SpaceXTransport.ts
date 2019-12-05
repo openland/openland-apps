@@ -13,6 +13,7 @@ export class SpaceXTransport {
     }
 
     operation = async (operation: OperationDefinition, vars: any): Promise<TransportResult> => {
+        await new Promise(() => {/* */ });
         throw Error('');
     }
 

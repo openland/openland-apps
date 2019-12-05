@@ -234,14 +234,12 @@ export class SpaceXWebClient implements GraphqlClient {
         if (operation.kind !== 'subscription') {
             throw Error('Invalid operation kind');
         }
-        let id = randomKey();
         let queue = new Queue();
         let runningOperation: (() => void) | null = null;
         let variables = vars;
         let completed = false;
 
         let restart = () => {
-            id = randomKey();
             if (runningOperation) {
                 runningOperation();
                 runningOperation = null;
