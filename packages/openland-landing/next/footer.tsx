@@ -197,7 +197,7 @@ const popupItem = css`
     align-items: center;
 
     color: #272750;
-    font-weight: 600;
+    font-weight: normal;
 
     &,
     &:hover,
