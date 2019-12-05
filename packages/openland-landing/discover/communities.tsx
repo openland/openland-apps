@@ -3,7 +3,12 @@ import { css, cx } from 'linaria';
 import Block from '../next/block';
 import Heading from '../next/heading';
 
-const root = css``;
+const root = css`
+    @media (max-width: 768px) {
+        max-width: 368px;
+        margin: 0 auto;
+    }
+`;
 
 const communities = css`
     display: flex;
@@ -11,10 +16,22 @@ const communities = css`
 `;
 
 const topCommunities = css`
+    position: relative;
     flex-shrink: 0;
     margin-right: 24px;
     @media (max-width: 960px) {
         display: none;
+    }
+
+    &:before {
+        display: inline-block;
+        content: 'Top categories';
+        font-size: 20px;
+        line-height: 1.4;
+        color: #525273;
+
+        position: absolute;
+        top: -48px;
     }
 `;
 
@@ -51,6 +68,7 @@ const typeText = css`
 `;
 
 const featuredCommunities = css`
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     margin: -12px;
@@ -59,6 +77,27 @@ const featuredCommunities = css`
         flex-direction: column;
         width: 100%;
         align-items: center;
+    }
+
+    &:before {
+        display: inline-block;
+        content: 'Featured communities';
+        font-size: 20px;
+        line-height: 1.4;
+        color: #525273;
+
+        position: absolute;
+        top: -36px;
+        left: 12px;
+
+        @media (max-width: 960px) {
+            content: 'Discover communities by industry, role, skill, interest, and location';
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            top: -61px;
+        }
     }
 `;
 
@@ -72,7 +111,6 @@ const community = css`
     @media (max-width: 768px) {
         width: 100%;
         padding: 20px 24px;
-        width: 100%;
         max-width: 368px;
     }
 
