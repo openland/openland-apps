@@ -38,6 +38,7 @@ interface SharedItemMedia extends SharedItem {
 }
 
 const DateClass = css`
+    position: relative;
     width: 100%;
     margin-top: 15px;
     padding-top: 12px;
@@ -49,11 +50,34 @@ const DateClass = css`
         margin-left: 16px;    
     }
 `;
+
+const Corner = <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0H0V8C0 3.58172 3.58172 0 8 0Z" fill="var(--backgroundPrimary)" />
+</svg>;
+
+const c1 = css`position: absolute; bottom: -15px; left: 1px; z-index: 1;`;
+const c2 = css`position: absolute; bottom: -17px; right: -1px; z-index: 1; transform: rotate(90deg);`;
+const c3 = css`position: absolute; top: -32px; left: -1px; z-index: 1; transform: rotate(270deg);`;
+const c4 = css`position: absolute; top: -30px; right: 1px; z-index: 1; transform: rotate(180deg);`;
+const cf1 = css`position: absolute; top: -15px; left: 0; z-index: 1; transform: rotate(270deg);`;
+const cf2 = css`position: absolute; top: -14px; right: 1px; z-index: 1; transform: rotate(180deg);`;
 export const DateDivider = React.memo((props: { date: string }) => {
     return (
-        <div className={cx(DateClass, TextTitle3)}>{props.date}</div>
+        <div className={cx(DateClass, TextTitle3)}>
+            {props.date}
+            <div className={c1}>{Corner}</div>
+            <div className={c2}>{Corner}</div>
+            <div className={c3}>{Corner}</div>
+            <div className={c4}>{Corner}</div>
+        </div>
     );
 });
+export const Footer = () => (
+    <XView position="relative" width="100%" height={56}>
+        <div className={cf1}>{Corner}</div>
+        <div className={cf2}>{Corner}</div>
+    </XView>
+);
 
 const MediaItemClass = css`
     display: flex;
@@ -157,6 +181,7 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
     return (
         <div className={cx(SharedMediaContainerClass, layout === 'mobile' && SharedMediaContainerMobileClass, !props.active && SharedMediaContainerHiddenClass)}>
             {items}
+            <Footer />
             {loading && (
                 <XView width="100%" height={56} alignItems="center" justifyContent="center">
                     <XLoader />
