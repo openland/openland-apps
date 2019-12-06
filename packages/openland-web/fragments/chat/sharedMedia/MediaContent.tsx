@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { SharedItemMedia } from './SharedMediaFragment';
+import { SharedItemFile } from './SharedMediaFragment';
 
 const MediaItemClass = css`
 display: flex;
@@ -24,7 +24,7 @@ left: 1px;
 display: block;
 width: calc(100% - 2px);
 `;
-export const MediaContent = (props: { item: SharedItemMedia }) => {
+export const MediaContent = (props: { item: SharedItemFile }) => {
 return (
     <div className={MediaItemClass}>
         <img src={`https://ucarecdn.com/${props.item.attach.fileId}/-/format/auto/-/scale_crop/138x138/smart/`} className={MediaItemContentClass} />

@@ -9,8 +9,9 @@ export const TextLabel2 = css` font-size: 13px; line-height: 18px; font-weight: 
 export const TextBody = css` font-size: 15px; line-height: 24px; font-weight: 400; `;
 export const TextDensed = css` font-size: 14px; line-height: 20px; font-weight: 400; `;
 export const TextCaption = css` font-size: 13px; line-height: 18px; font-weight: 400; `;
+export const TextDetail = css` font-size: 10px; line-height: 12px; font-weight: 800; `;
 
-type TextStylesVariants = 'Title1' | 'Title2' | 'Title3' | 'Label1' | 'Label2' | 'Body' | 'Densed' | 'Caption';
+type TextStylesVariants = 'Title1' | 'Title2' | 'Title3' | 'Label1' | 'Label2' | 'Body' | 'Densed' | 'Caption' | 'Detail';
 
 export const TextStyles: { [key in TextStylesVariants]: XViewProps } = {
     Title1: { fontSize: 24, lineHeight: '32px', fontWeight: '700' },
@@ -21,6 +22,7 @@ export const TextStyles: { [key in TextStylesVariants]: XViewProps } = {
     Body: { fontSize: 15, lineHeight: '24px', fontWeight: '400' },
     Densed: { fontSize: 14, lineHeight: '20px', fontWeight: '400' },
     Caption: { fontSize: 13, lineHeight: '18px', fontWeight: '400' },
+    Detail: { fontSize: 10, lineHeight: '12px', fontWeight: '700' },
 };
 
 // !!! Never customize letterSpacing
