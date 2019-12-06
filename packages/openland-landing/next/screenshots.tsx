@@ -268,12 +268,6 @@ const popupSections = css`
     text-align: left;
 `;
 
-const hideMobile = css`
-    @media (max-width: 768px) {
-        display: none;
-    }
-`;
-
 export default () => {
     const [isOpen, setOpen] = React.useState<boolean>(false);
 
