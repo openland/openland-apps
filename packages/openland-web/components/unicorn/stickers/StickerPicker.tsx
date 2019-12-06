@@ -5,9 +5,11 @@ import { ListOnScrollProps, VariableSizeList } from 'react-window';
 import { MyStickers_stickers_packs, StickerFragment } from 'openland-api/Types';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { showStickerStickerPackModal } from 'openland-web/fragments/chat/messenger/message/content/StickerContent';
-import IcArrow from 'openland-icons/s/ic-chevron-16.svg';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
+import IcArrow from 'openland-icons/s/ic-chevron-16.svg';
+import IcDelete from 'openland-icons/s/ic-close-16.svg';
 
 type StickerPack = MyStickers_stickers_packs & {
     start: number;
@@ -58,6 +60,8 @@ const titleContainerStyle = css`
     position: sticky !important;
     position: -webkit-sticky !important;
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     height: 40px;
     color: var(--foregroundPrimary);
     font-size: 15px;
@@ -67,6 +71,7 @@ const titleContainerStyle = css`
     z-index: 2;
     background-color: #fff;
     padding-left: 16px;
+    padding-right: 4px;
     @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
         background-color: rgba(255, 255, 255, 0.72);
         backdrop-filter: blur(16px);
@@ -84,6 +89,18 @@ const titleTextStyle = css`
         color: var(--foregroundPrimary);
         margin-right: 4px;
     }
+    &:hover {
+        opacity: 0.56;
+    }
+`;
+
+const deletePackContainer = css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
     &:hover {
         opacity: 0.56;
     }
@@ -127,6 +144,20 @@ const categoryButton = css`
 
 const InnerElementType = React.forwardRef<HTMLDivElement>((props: any, ref) => {
     const { children, sections, ...rest } = props;
+    const client = useClient();
+    const [show] = useCaptionPopper({
+        text: 'Delete stickers',
+        placement: 'top',
+        marginBottom: -10,
+        marginRight: -2,
+        scope: 'stickers-deleting',
+    });
+    const removePack = async (packId: string) => {
+        await client.mutateStickerPackRemoveFromCollection({
+            id: packId,
+        });
+        await client.refetchMyStickers();
+    };
     return (
         <div {...rest} ref={ref}>
             {sections.map((pack: StickerPack, i: number) => (
@@ -135,7 +166,7 @@ const InnerElementType = React.forwardRef<HTMLDivElement>((props: any, ref) => {
                     style={{
                         top: (pack.start + 3) * 80,
                         left: 0,
-                        width: '100%',
+                        width: 352,
                         height:
                             i === sections.length - 1
                                 ? (pack.end - pack.start - 3) * 80 /* WTF? this logic */
@@ -149,6 +180,13 @@ const InnerElementType = React.forwardRef<HTMLDivElement>((props: any, ref) => {
                         >
                             <span className={TextLabel1}>{pack.title}</span>
                             <UIcon icon={<IcArrow />} color="var(--foregroundTertiary)" />
+                        </div>
+                        <div
+                            className={deletePackContainer}
+                            onMouseEnter={show}
+                            onClick={() => removePack(pack.id)}
+                        >
+                            <UIcon icon={<IcDelete />} />
                         </div>
                     </div>
                 </div>

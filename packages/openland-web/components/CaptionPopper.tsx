@@ -37,6 +37,10 @@ interface CaptionPopperConfig {
     placement?: 'top' | 'bottom' | 'left' | 'right';
     scope?: string;
     width?: number;
+    marginRight?: number;
+    marginLeft?: number;
+    marginTop?: number;
+    marginBottom?: number;
 }
 
 export const useCaptionPopper = (opts: CaptionPopperConfig) => {
@@ -50,6 +54,10 @@ export const useCaptionPopper = (opts: CaptionPopperConfig) => {
             useWrapper: false,
             useArrow: true,
             darkStyle: true,
+            marginRight: opts.marginRight,
+            marginLeft: opts.marginLeft,
+            marginTop: opts.marginTop,
+            marginBottom: opts.marginBottom,
         },
         ctx => (
             <div
