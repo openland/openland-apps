@@ -363,9 +363,9 @@ export default () => (
                                 />
                             </div>
                             <div className={cx(communityText, 'communityText')}>
-                                Find inspiration for your next trip and
+                                Find inspiration for your next trip
                                 <br />
-                                share your own experiences
+                                and share your own experiences
                             </div>
                             <div className={cx(button, 'communityButton')}>
                                 Join community
