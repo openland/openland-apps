@@ -14,7 +14,7 @@ const button = css`
     display: flex;
     align-items: center;
     background-color: var(--accentPrimary);
-    border-radius: 16px;
+    border-radius: 12px;
     font-weight: 600;
     box-shadow: 0px 6px 17px rgba(36, 139, 242, 0.32);
     color: var(--foregroundContrast);
@@ -67,7 +67,7 @@ const ctaSmall = css`
 
     @media (max-width: 768px) {
         margin: 70px auto;
-        width: 280px;
+        width: 330px;
         text-align: left;
         align-items: flex-start;
     }

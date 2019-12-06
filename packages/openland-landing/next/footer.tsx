@@ -45,7 +45,7 @@ const menuItem = css`
     display: inline-block;
     margin: 20px;
     @media (max-width: 960px) {
-        margin: 10px;
+        margin: 8px;
     }
 `;
 

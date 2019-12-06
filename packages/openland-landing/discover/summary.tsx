@@ -5,12 +5,14 @@ import Heading from '../next/heading';
 
 const root = css`
     background-color: #f7fafc;
-    margin-top: 180px;
-    padding: 100px 0;
+    margin-top: 120px;
+    padding: 36px 0;
+    padding-top: 60px;
 
     @media (max-width: 768px) {
         background-color: initial;
-        padding: 64px 0;
+        padding-top: 64px;
+        padding-bottom: 0;
         margin-top: 0;
     }
 `;
@@ -22,6 +24,11 @@ const summary = css`
 
     @media (max-width: 768px) {
         flex-direction: column-reverse;
+        align-items: flex-start;
+
+        max-width: 340px;
+        width: 100%;
+        margin: 0 auto;
     }
 `;
 
@@ -87,7 +94,7 @@ const summaryImage = css`
 
     @media (max-width: 960px) {
         position: absolute;
-        width: 447px;
+        width: 425px;
         right: -10px;
         top: 10px;
     }
@@ -107,20 +114,17 @@ const headingWrapper = css`
 
     @media (min-width: 920px) {
         white-space: nowrap;
-        & > h2 {
-            font-size: 30px !important;
-        }
     }
 `;
 
 const cta = css`
     display: inline-flex;
     align-items: center;
-    padding: 12px 28px;
+    padding: 15px 28px;
     background-color: #e9f3fe;
     border-radius: 12px;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 24px;
 
     &:hover,

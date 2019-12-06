@@ -56,8 +56,8 @@ export const TermsPage = React.memo(() => (
                     to&nbsp;&ldquo;Service&rdquo;, &ldquo;Company&rdquo;, &ldquo;Site&rdquo;,
                     &ldquo;we&rdquo;,&nbsp;&ldquo;us&rdquo;, &ldquo;our&rdquo;,
                     or&nbsp;&ldquo;Openland&rdquo; refer to&nbsp;Data Makes Perfect Inc.,
-                    a&nbsp;Delaware corporation operating openland. com website, along with related
-                    websites, mobile applications, and other associated services.
+                    a&nbsp;Delaware corporation operating <b>Openland</b> websites, mobile
+                    applications, and other associated services.
                 </p>
                 <h2 id="section2">These Terms are a legally binding agreement</h2>
                 <p>

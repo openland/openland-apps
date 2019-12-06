@@ -20,7 +20,7 @@ const button = css`
     display: flex;
     align-items: center;
     background-color: var(--accentPrimary);
-    border-radius: 16px;
+    border-radius: 12px;
     font-weight: 600;
     box-shadow: 0px 6px 17px rgba(36, 139, 242, 0.32);
     color: var(--foregroundContrast);
@@ -43,18 +43,18 @@ const button = css`
     }
 
     @media (min-width: 1600px) {
-        font-size: 20px;
-        padding: 13px 36px;
+        font-size: 17px;
+        padding: 16px 36px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        font-size: 18px;
-        padding: 11px 32px;
+        font-size: 15px;
+        padding: 14px 32px;
     }
 
     @media (max-width: 768px) {
-        font-size: 18px;
-        padding: 11px 32px;
+        font-size: 15px;
+        padding: 14px 32px;
     }
 `;
 
@@ -143,7 +143,7 @@ const apps = css`
 const appButton = css`
     display: flex;
     align-items: center;
-    border-radius: 16px;
+    border-radius: 12px;
     font-weight: 600;
     color: #50a2f5;
     background-color: rgba(36, 139, 242, 0.1);
@@ -205,17 +205,17 @@ const appButtonActive = css`
 
     @media (min-width: 1600px) {
         padding: 13px 24px;
-        font-size: 20px;
+        font-size: 18px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
         padding: 11px 24px;
-        font-size: 18px;
+        font-size: 16px;
     }
 
     @media (max-width: 768px) {
         padding: 11px 24px;
-        font-size: 18px;
+        font-size: 16px;
     }
 
     & svg {
