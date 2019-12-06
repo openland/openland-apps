@@ -18,6 +18,8 @@ import LinkIcon from 'openland-icons/s/ic-link-24.svg';
 import DropIcon from 'openland-icons/s/ic-dropdown-16.svg';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { TabItem, useTabs, Tabs } from 'openland-web/components/unicorn/UTabs';
+import { MediaContent } from './MediaContent';
 
 interface SharedMediaProps {
     chatId: string;
@@ -33,7 +35,7 @@ interface SharedItem {
     date: string;
 }
 
-interface SharedItemMedia extends SharedItem {
+export interface SharedItemMedia extends SharedItem {
     attach: SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile;
 }
 
@@ -61,53 +63,37 @@ const c3 = css`position: absolute; top: -32px; left: -1px; z-index: 1; transform
 const c4 = css`position: absolute; top: -30px; right: 1px; z-index: 1; transform: rotate(180deg);`;
 const cf1 = css`position: absolute; top: -15px; left: 0; z-index: 1; transform: rotate(270deg);`;
 const cf2 = css`position: absolute; top: -14px; right: 1px; z-index: 1; transform: rotate(180deg);`;
-export const DateDivider = React.memo((props: { date: string }) => {
+export const DateDivider = React.memo((props: { date: string, }) => {
+    const layout = useLayout();
     return (
         <div className={cx(DateClass, TextTitle3)}>
             {props.date}
-            <div className={c1}>{Corner}</div>
-            <div className={c2}>{Corner}</div>
-            <div className={c3}>{Corner}</div>
-            <div className={c4}>{Corner}</div>
+            {layout === 'desktop' && (
+                <>
+                    <div className={c1}>{Corner}</div>
+                    <div className={c2}>{Corner}</div>
+                    <div className={c3}>{Corner}</div>
+                    <div className={c4}>{Corner}</div>
+                </>
+            )}
         </div>
     );
 });
-export const Footer = () => (
-    <XView position="relative" width="100%" height={56}>
-        <div className={cf1}>{Corner}</div>
-        <div className={cf2}>{Corner}</div>
-    </XView>
-);
-
-const MediaItemClass = css`
-    display: flex;
-    width: 25%;    
-    position: relative;
-    @media (max-width: 750px) {
-        width: calc(100% / 3);    
-    }
-
-    &:before {
-        content: '';
-        display: block;
-        padding-top: 100%;
-    }
-`;
-const MediaItemContentClass = css`
-    position: absolute;
-    top:1px;
-    left: 1px;
-    
-    display: block;
-    width: calc(100% - 2px);
-`;
-export const MediaItem = (props: { item: SharedItemMedia }) => {
+export const Footer = (props: { children: any }) => {
+    const layout = useLayout();
     return (
-        <div className={MediaItemClass}>
-            <img src={`https://ucarecdn.com/${props.item.attach.fileId}/-/format/auto/-/scale_crop/138x138/smart/`} className={MediaItemContentClass} />
-        </div>
+        <XView position="relative" width="100%" height={56} alignItems="center" justifyContent="center">
+            {props.children}
+            {layout === 'desktop' && (
+                <>
+                    <div className={cf1}>{Corner}</div>
+                    <div className={cf2}>{Corner}</div>
+                </>
+            )}
+        </XView>
     );
 };
+
 
 const monthsFull = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -170,8 +156,11 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
             lastDate = i.date;
             items.push(<DateDivider date={i.date} />);
         }
-        if (i.attach.__typename === 'MessageAttachmentFile' && i.attach.fileMetadata.isImage) {
-            items.push(<MediaItem item={i as SharedItemMedia} />);
+        // wtf check index on backend, it apperars that non-image can appear in SharedMediaType.IMAGE
+        if (props.mediaTypes.includes(SharedMediaType.IMAGE)) {
+            if (i.attach.__typename === 'MessageAttachmentFile' && i.attach.fileMetadata.isImage) {
+                items.push(<MediaContent item={i as SharedItemMedia} />);
+            }
         } else {
             items.push(<XView padding={8} flexGrow={1}>
                 {JSON.stringify(i)}
@@ -181,91 +170,12 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
     return (
         <div className={cx(SharedMediaContainerClass, layout === 'mobile' && SharedMediaContainerMobileClass, !props.active && SharedMediaContainerHiddenClass)}>
             {items}
-            <Footer />
-            {loading && (
-                <XView width="100%" height={56} alignItems="center" justifyContent="center">
-                    <XLoader />
-                </XView>
-            )}
+            <Footer >
+                {loading && <XLoader />}
+            </Footer>
         </div>
     );
 }));
-
-interface TabItem {
-    title: string;
-    counter?: number;
-    selected: boolean;
-}
-const useTabs = (config: (string | [string, (number | null)?])[], initial?: string): [TabItem[], string, (key: string) => void] => {
-    const conf = config.map(c => Array.isArray(c) ? c : [c, undefined]) as [string, number?][];
-    const [selected, setSelected] = React.useState<string>(initial || conf[0][0]);
-    const items = conf.map((item, index) => ({ title: item[0], counter: item[1], selected: !selected ? index === 0 : item[0] === selected }));
-    return [items, selected, setSelected];
-};
-
-const TabClass = css`
-    display: flex;
-    flex-direction: row;
-    padding: 16px 8px;
-    color: var(--foregroundSecondary);
-    :hover{
-        color: var(--foregroundPrimary);
-    }
-    cursor: pointer;
-    user-select: none;    
-`;
-
-const TabSelectedClass = css`
-    color: var(--foregroundPrimary);
-`;
-
-const Tab = React.memo((props: TabItem & { setSelected: (tabKey: String) => void, innerRef: React.RefObject<HTMLDivElement> }) => {
-    const onClick = React.useCallback(() => props.setSelected(props.title), []);
-    return (
-        <div onClick={onClick} className={cx(TextTitle3, TabClass, props.selected && TabSelectedClass)} ref={props.innerRef}>
-            {props.title} <XView marginLeft={4} color="var(--foregroundTertiary)">{props.counter}</XView>
-        </div>
-    );
-});
-
-const TabLineClass = css`
-    position: absolute;
-    border-radius: 0px 0px 100px 100px;
-    height: 2px;
-    width: 48px;
-    top: 0;
-    left: 8px;
-    background: var(--foregroundPrimary);
-    will-change: transform, width;
-    transition: width 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99), transform 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
-
-`;
-const Tabs = React.memo((props: { tabs: TabItem[], setSelected: (tabKey: String) => void } & XViewProps) => {
-    let { tabs, setSelected, ...style } = props;
-    const refs = React.useMemo<React.RefObject<HTMLDivElement>[]>(() => props.tabs.map(_ => React.createRef()), [props.tabs.length]);
-    const lineRef = React.useRef<HTMLDivElement>(null);
-    React.useEffect(() => {
-        if (lineRef.current) {
-            let index = props.tabs.findIndex(t => t.selected);
-            let currentTabRef = refs[index];
-            if (index === -1) {
-                lineRef.current.style.display = 'none';
-            } else {
-                lineRef.current.style.transform = `translateX(${refs.reduce((offset, next, i) => offset + ((i < index && next.current) ? next.current!.clientWidth : 0), 0)}px)`;
-                if (currentTabRef.current) {
-                    lineRef.current.style.width = `${currentTabRef.current.offsetWidth - 16}px`;
-
-                }
-            }
-        }
-    }, [props.selected, props.tabs]);
-    return (
-        <XView flexDirection="row" height={56} {...style}>
-            <div ref={lineRef} className={TabLineClass} />
-            {tabs.map((t, i) => <Tab key={t.title} innerRef={refs[i]} {...t} setSelected={setSelected} />)}
-        </XView>
-    );
-});
 
 const MenuIcons = {
     'Media': <MediaIcon />,

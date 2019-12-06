@@ -28,7 +28,7 @@ import { MatchmakingAppFragment } from 'openland-web/fragments/matchmaking/Match
 import { FeedItemFragment } from 'openland-web/fragments/feed/FeedItemFragment';
 
 import { useStackRouter } from 'openland-unicorn/components/StackRouter';
-import { SharedMediaFragment } from 'openland-web/fragments/chat/SharedMediaFragment';
+import { SharedMediaFragment } from 'openland-web/fragments/chat/sharedMedia/SharedMediaFragment';
 
 // temporary stub for /mail/ -> not found bug
 const TemporaryStub = React.memo(() => {
