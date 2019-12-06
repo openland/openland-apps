@@ -26,9 +26,11 @@ const topCommunities = css`
     &:before {
         display: inline-block;
         content: 'Top categories';
-        font-size: 20px;
-        line-height: 1.4;
-        color: #525273;
+        line-height: 1.56;
+
+        font-weight: 600;
+        font-size: 18px;
+        color: #9393a7;
 
         position: absolute;
         top: -48px;
@@ -82,22 +84,24 @@ const featuredCommunities = css`
     &:before {
         display: inline-block;
         content: 'Featured communities';
-        font-size: 20px;
-        line-height: 1.4;
-        color: #525273;
+        line-height: 1.56;
 
         position: absolute;
         top: -36px;
         left: 12px;
 
-        @media (max-width: 960px) {
-            content: 'Discover communities by industry, role, skill, interest, and location';
-            font-size: 18px;
-        }
+        font-weight: 600;
+        font-size: 18px;
+        color: #9393a7;
 
-        @media (max-width: 768px) {
-            top: -61px;
-        }
+        // @media (max-width: 960px) {
+        //     content: 'Discover communities by industry, role, skill, interest, and location';
+        //     font-size: 18px;
+        // }
+
+        // @media (max-width: 768px) {
+        //     top: -61px;
+        // }
     }
 `;
 
@@ -223,10 +227,28 @@ const arrow = css`
     margin-left: 8px;
 `;
 
+const text = css`
+    font-size: 24px;
+    line-height: 1.5;
+    color: #525273;
+    margin-top: 12px;
+
+    @media (max-width: 960px) {
+        font-size: 20px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+    }
+`;
+
 export default () => (
     <div className={root}>
         <Block>
             <Heading>Communities for everyone</Heading>
+            <p className={text}>
+                Discover communities by industry, role, skill, interest, and location
+            </p>
             <div className={communities}>
                 <div className={topCommunities}>
                     <div className={type}>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 import Block from '../next/block';
 import Heading from '../next/heading';
 
@@ -104,6 +104,7 @@ const list = css`
 
 const item = css`
     display: inline;
+    line-height: 1.5;
 
     & + &:before {
         display: inline-block;
@@ -167,23 +168,15 @@ const dotsRightSmall = css`
     }
 `;
 
-const hideMobile = css`
-    @media (max-width: 768px) {
-        display: none;
-    }
-`;
-
 export default () => (
     <div className={root}>
         <Block>
             <div className={ctaSmall}>
                 <div className={dotsLeftSmall} />
                 <div className={content}>
-                    <Heading>Start a great community</Heading>
+                    <Heading>Find your community</Heading>
                     <ul className={list}>
-                        <li className={item}>Seconds to launch</li>
-                        <li className={cx(item, hideMobile)}>Real-time support</li>
-                        <li className={item}>Free</li>
+                        <li className={item}>Discover inspiring communities for your interests</li>
                     </ul>
                 </div>
                 <a className={button} href="#">

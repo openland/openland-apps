@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import Block from '../next/block';
 import Heading from '../next/heading';
 
@@ -259,6 +259,12 @@ const popupSections = css`
     text-align: left;
 `;
 
+const hide = css`
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
 export default () => {
     const [isOpen, setOpen] = React.useState<boolean>(false);
 
@@ -273,12 +279,13 @@ export default () => {
                         className={logo}
                     />
                     <div className={content}>
-                        <Heading>The experience you'll love</Heading>
+                        <Heading>Feel right at home</Heading>
                         <div className={listWrapper}>
                             <li className={list}>
                                 <ul className={item}>Chats</ul>
-                                <ul className={item}>Live sessions</ul>
-                                <ul className={item}>Match&nbsp;making</ul>
+                                <ul className={item}>Calls</ul>
+                                <ul className={item}>Community profiles</ul>
+                                <ul className={cx(item, hide)}>Ultra-fast apps</ul>
                             </li>
                             <span className={dot}>.</span>
                             {' '}
