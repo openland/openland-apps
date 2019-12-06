@@ -3,7 +3,12 @@ import { css, cx } from 'linaria';
 import Block from '../next/block';
 import Heading from '../next/heading';
 
-const root = css``;
+const root = css`
+    display: none;
+    @media (max-width: 768px) {
+        display: block;
+    }
+`;
 
 const button = css`
     display: flex;
