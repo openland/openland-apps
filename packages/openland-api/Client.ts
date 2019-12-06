@@ -643,7 +643,7 @@ const RoomShortSelector = obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
                         fragment('MatchmakingRoom', MatchmakingRoomFragmentSelector)
                     )),
-                field('membersCount', 'membersCount', args(), scalar('Int')),
+                field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
                 field('membership', 'membership', args(), notNull(scalar('String'))),
                 field('myBadge', 'myBadge', args(), obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -999,7 +999,7 @@ const SlideFragmentSelector = obj(
                             field('canSendMessage', 'canSendMessage', args(), notNull(scalar('Boolean'))),
                             field('id', 'id', args(), notNull(scalar('ID'))),
                             field('kind', 'kind', args(), notNull(scalar('String'))),
-                            field('membersCount', 'membersCount', args(), scalar('Int')),
+                            field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
                             field('membership', 'membership', args(), notNull(scalar('String'))),
                             field('organization', 'organization', args(), obj(
                                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -1522,7 +1522,7 @@ const RoomFullSelector = obj(
                                 fragment('User', UserShortSelector)
                             )))
                     ))))),
-                field('membersCount', 'membersCount', args(), scalar('Int')),
+                field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
                 field('membership', 'membership', args(), notNull(scalar('String'))),
                 field('myBadge', 'myBadge', args(), obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -1595,7 +1595,7 @@ const RoomFullWithoutMembersSelector = obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
                         fragment('MatchmakingRoom', MatchmakingRoomFragmentSelector)
                     )),
-                field('membersCount', 'membersCount', args(), scalar('Int')),
+                field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
                 field('membership', 'membership', args(), notNull(scalar('String'))),
                 field('myBadge', 'myBadge', args(), obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -1755,7 +1755,7 @@ const AvailableRoomsSelector = obj(
                     inline('SharedRoom', obj(
                         field('id', 'id', args(), notNull(scalar('ID'))),
                         field('kind', 'kind', args(), notNull(scalar('String'))),
-                        field('membersCount', 'membersCount', args(), scalar('Int')),
+                        field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
                         field('membership', 'membership', args(), notNull(scalar('String'))),
                         field('organization', 'organization', args(), obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -1772,7 +1772,7 @@ const AvailableRoomsSelector = obj(
                     inline('SharedRoom', obj(
                         field('id', 'id', args(), notNull(scalar('ID'))),
                         field('kind', 'kind', args(), notNull(scalar('String'))),
-                        field('membersCount', 'membersCount', args(), scalar('Int')),
+                        field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
                         field('membership', 'membership', args(), notNull(scalar('String'))),
                         field('organization', 'organization', args(), obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -1789,7 +1789,7 @@ const AvailableRoomsSelector = obj(
                     inline('SharedRoom', obj(
                         field('id', 'id', args(), notNull(scalar('ID'))),
                         field('kind', 'kind', args(), notNull(scalar('String'))),
-                        field('membersCount', 'membersCount', args(), scalar('Int')),
+                        field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
                         field('membership', 'membership', args(), notNull(scalar('String'))),
                         field('organization', 'organization', args(), obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -2201,7 +2201,7 @@ const GlobalSearchSelector = obj(
                         field('canSendMessage', 'canSendMessage', args(), notNull(scalar('Boolean'))),
                         field('id', 'id', args(), notNull(scalar('ID'))),
                         field('kind', 'kind', args(), notNull(scalar('String'))),
-                        field('membersCount', 'membersCount', args(), scalar('Int')),
+                        field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
                         field('membership', 'membership', args(), notNull(scalar('String'))),
                         field('organization', 'organization', args(), obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -2624,7 +2624,7 @@ const ResolvedInviteSelector = obj(
                                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                                             field('enabled', 'enabled', args(), notNull(scalar('Boolean')))
                                         )),
-                                    field('membersCount', 'membersCount', args(), scalar('Int')),
+                                    field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
                                     field('membership', 'membership', args(), notNull(scalar('String'))),
                                     field('photo', 'photo', args(), notNull(scalar('String'))),
                                     field('socialImage', 'socialImage', args(), scalar('String')),
@@ -2677,7 +2677,7 @@ const RoomChatSelector = obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
                                 fragment('MatchmakingRoom', MatchmakingRoomFragmentSelector)
                             )),
-                        field('membersCount', 'membersCount', args(), scalar('Int')),
+                        field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
                         field('membership', 'membership', args(), notNull(scalar('String'))),
                         field('organization', 'organization', args(), obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -2733,7 +2733,7 @@ const RoomInviteInfoSelector = obj(
                                         field('__typename', '__typename', args(), notNull(scalar('String'))),
                                         field('enabled', 'enabled', args(), notNull(scalar('Boolean')))
                                     )),
-                                field('membersCount', 'membersCount', args(), scalar('Int')),
+                                field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
                                 field('membership', 'membership', args(), notNull(scalar('String'))),
                                 field('organization', 'organization', args(), obj(
                                         field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -2841,7 +2841,7 @@ const RoomSearchSelector = obj(
                                         field('id', 'id', args(), notNull(scalar('ID'))),
                                         field('isChannel', 'isChannel', args(), notNull(scalar('Boolean'))),
                                         field('kind', 'kind', args(), notNull(scalar('String'))),
-                                        field('membersCount', 'membersCount', args(), scalar('Int')),
+                                        field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
                                         field('membership', 'membership', args(), notNull(scalar('String'))),
                                         field('organization', 'organization', args(), obj(
                                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -2976,7 +2976,7 @@ const SuggestedRoomsSelector = obj(
                     inline('SharedRoom', obj(
                         field('id', 'id', args(), notNull(scalar('ID'))),
                         field('kind', 'kind', args(), notNull(scalar('String'))),
-                        field('membersCount', 'membersCount', args(), scalar('Int')),
+                        field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
                         field('membership', 'membership', args(), notNull(scalar('String'))),
                         field('organization', 'organization', args(), obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -3076,7 +3076,7 @@ const UserAvailableRoomsSelector = obj(
                     inline('SharedRoom', obj(
                         field('id', 'id', args(), notNull(scalar('ID'))),
                         field('kind', 'kind', args(), notNull(scalar('String'))),
-                        field('membersCount', 'membersCount', args(), scalar('Int')),
+                        field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
                         field('membership', 'membership', args(), notNull(scalar('String'))),
                         field('organization', 'organization', args(), obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -3689,8 +3689,8 @@ const SettingsUpdateSelector = obj(
 const StickerPackAddToCollectionSelector = obj(
             field('stickerPackAddToCollection', 'stickerPackAddToCollection', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
         );
-const StickerPackRemoveToCollectionSelector = obj(
-            field('stickerPackAddToCollection', 'stickerPackRemoveToCollection', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
+const StickerPackRemoveFromCollectionSelector = obj(
+            field('stickerPackRemoveFromCollection', 'stickerPackRemoveFromCollection', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
         );
 const SubscribeToCommentsSelector = obj(
             field('subscribeToComments', 'subscribeToComments', args(fieldValue("peerId", refValue('peerId')), fieldValue("type", refValue('type'))), notNull(scalar('Boolean')))
@@ -5041,11 +5041,11 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation StickerPackAddToCollection($id:ID!){stickerPackAddToCollection:stickerPackAddToCollection(id:$id)}',
         selector: StickerPackAddToCollectionSelector
     },
-    StickerPackRemoveToCollection: {
+    StickerPackRemoveFromCollection: {
         kind: 'mutation',
-        name: 'StickerPackRemoveToCollection',
-        body: 'mutation StickerPackRemoveToCollection($id:ID!){stickerPackRemoveToCollection:stickerPackAddToCollection(id:$id)}',
-        selector: StickerPackRemoveToCollectionSelector
+        name: 'StickerPackRemoveFromCollection',
+        body: 'mutation StickerPackRemoveFromCollection($id:ID!){stickerPackRemoveFromCollection:stickerPackRemoveFromCollection(id:$id)}',
+        selector: StickerPackRemoveFromCollectionSelector
     },
     SubscribeToComments: {
         kind: 'mutation',

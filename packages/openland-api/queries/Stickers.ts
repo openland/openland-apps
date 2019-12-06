@@ -33,9 +33,9 @@ export const StickerPackAddToCollectionMutation = gql`
     }
 `;
 
-export const StickerPackRemoveToCollectionMutation = gql`
-    mutation StickerPackRemoveToCollection($id: ID!) {
-        stickerPackRemoveToCollection: stickerPackAddToCollection(id: $id)
+export const StickerPackRemoveFromCollectionMutation = gql`
+    mutation StickerPackRemoveFromCollection($id: ID!) {
+        stickerPackRemoveFromCollection: stickerPackRemoveFromCollection(id: $id)
     }
 `;
 

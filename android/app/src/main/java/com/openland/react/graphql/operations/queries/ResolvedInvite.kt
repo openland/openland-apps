@@ -48,7 +48,7 @@ internal val ResolvedInviteSelector = obj(
                                             field("__typename", "__typename", notNull(scalar("String"))),
                                             field("enabled", "enabled", notNull(scalar("Boolean")))
                                         )),
-                                    field("membersCount", "membersCount", scalar("Int")),
+                                    field("membersCount", "membersCount", notNull(scalar("Int"))),
                                     field("membership", "membership", notNull(scalar("String"))),
                                     field("photo", "photo", notNull(scalar("String"))),
                                     field("socialImage", "socialImage", scalar("String")),

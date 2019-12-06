@@ -16,7 +16,7 @@ internal val RoomSearchSelector = obj(
                                         field("id", "id", notNull(scalar("ID"))),
                                         field("isChannel", "isChannel", notNull(scalar("Boolean"))),
                                         field("kind", "kind", notNull(scalar("String"))),
-                                        field("membersCount", "membersCount", scalar("Int")),
+                                        field("membersCount", "membersCount", notNull(scalar("Int"))),
                                         field("membership", "membership", notNull(scalar("String"))),
                                         field("organization", "organization", obj(
                                                 field("__typename", "__typename", notNull(scalar("String"))),

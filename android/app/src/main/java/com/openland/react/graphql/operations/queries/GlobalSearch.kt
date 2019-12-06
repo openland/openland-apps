@@ -17,7 +17,7 @@ internal val GlobalSearchSelector = obj(
                         field("canSendMessage", "canSendMessage", notNull(scalar("Boolean"))),
                         field("id", "id", notNull(scalar("ID"))),
                         field("kind", "kind", notNull(scalar("String"))),
-                        field("membersCount", "membersCount", scalar("Int")),
+                        field("membersCount", "membersCount", notNull(scalar("Int"))),
                         field("membership", "membership", notNull(scalar("String"))),
                         field("organization", "organization", obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),

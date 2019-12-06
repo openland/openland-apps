@@ -1388,10 +1388,10 @@
       }
     },
     {
-      "signature": "686bb3f249a91800ff41fedb649800fcb65a115812ee367549198e00e90029a9",
-      "document": "mutation StickerPackRemoveToCollection($id:ID!){stickerPackRemoveToCollection:stickerPackAddToCollection(id:$id)}",
+      "signature": "51ec9c22a920562c86089d39d0e88e9db5a2817d8c3879fa7beb1fe255d1358f",
+      "document": "mutation StickerPackRemoveFromCollection($id:ID!){stickerPackRemoveFromCollection:stickerPackRemoveFromCollection(id:$id)}",
       "metadata": {
-        "engineSignature": "mutation StickerPackRemoveToCollection($id:ID!){stickerPackAddToCollection(id:$id)}"
+        "engineSignature": "mutation StickerPackRemoveFromCollection($id:ID!){stickerPackRemoveFromCollection(id:$id)}"
       }
     },
     {

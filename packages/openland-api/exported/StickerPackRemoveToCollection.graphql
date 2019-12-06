@@ -1,3 +1,0 @@
-mutation StickerPackRemoveToCollection($id: ID!) {
-  stickerPackRemoveToCollection: stickerPackAddToCollection(id: $id)
-}

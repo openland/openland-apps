@@ -41,7 +41,7 @@ internal val RoomChatSelector = obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 fragment("MatchmakingRoom", MatchmakingRoomFragmentSelector)
                             )),
-                        field("membersCount", "membersCount", scalar("Int")),
+                        field("membersCount", "membersCount", notNull(scalar("Int"))),
                         field("membership", "membership", notNull(scalar("String"))),
                         field("organization", "organization", obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
