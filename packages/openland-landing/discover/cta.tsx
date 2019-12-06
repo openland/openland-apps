@@ -169,6 +169,14 @@ const buttons = css`
 
 const img = css`
     width: 100%;
+
+    margin-top: 113px;
+    margin-bottom: 113px;
+
+    @media (max-width: 768px) {
+        margin-top: 30px;
+        margin-bottom: 48px;
+    }
 `;
 
 export default () => (
