@@ -18,6 +18,7 @@ const wrapper = css`
 `;
 
 const header = css`
+    position: relative;
     display: flex;
     align-items: center;
     @media (max-width: 768px) {
@@ -283,6 +284,66 @@ export default () => {
             <Block>
                 <div className={wrapper}>
                     <div className={header}>
+                        {isOpen && (
+                            <div className={popup}>
+                                <div className={popupClose} onClick={() => setOpen(false)}>
+                                    <img
+                                        className={popupCloseIcon}
+                                        src="/static/landing/icons/close.svg"
+                                        width="21"
+                                        height="21"
+                                        alt="Close modal"
+                                    />
+                                </div>
+                                <div className={popupContent}>
+                                    <h2 className={popupHeading}>Features</h2>
+                                    <div className={popupSections}>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>Chats</h2>
+                                            <p className={popupSectionText}>
+                                                Public and invite-only
+                                                <br />
+                                                Emojis, stickers, formatting
+                                                <br />
+                                                Mentions, replies, forwards
+                                                <br />
+                                                Threaded comments
+                                                <br />
+                                                Link and file previews
+                                            </p>
+                                        </div>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>Growth</h2>
+                                            <p className={popupSectionText}>
+                                                Invite pages and links
+                                                <br />
+                                                Social sharing tools
+                                                <br />
+                                                Featuring on Openland
+                                                <br />
+                                                Website widgests and buttons
+                                                <br />
+                                                New member onboarding
+                                            </p>
+                                        </div>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>Activities</h2>
+                                            <p className={popupSectionText}>
+                                                Questions and answers
+                                                <br />
+                                                Member directory
+                                                <br />
+                                                Matchmaking and intros
+                                                <br />
+                                                Live sessions
+                                                <br />
+                                                Community library
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                         <img
                             src="/static/landing/logo-screenshots.svg"
                             width="100"
@@ -305,68 +366,6 @@ export default () => {
                                         All features
                                     </span>
                                 </div>
-                                {isOpen && (
-                                    <div className={popup}>
-                                        <div className={popupClose} onClick={() => setOpen(false)}>
-                                            <img
-                                                className={popupCloseIcon}
-                                                src="/static/landing/icons/close.svg"
-                                                width="21"
-                                                height="21"
-                                                alt="Close modal"
-                                            />
-                                        </div>
-                                        <div className={popupContent}>
-                                            <h2 className={popupHeading}>Features</h2>
-                                            <div className={popupSections}>
-                                                <div className={popupSection}>
-                                                    <h2 className={popupSectionHeading}>Chats</h2>
-                                                    <p className={popupSectionText}>
-                                                        Public and invite-only
-                                                        <br />
-                                                        Emojis, stickers, formatting
-                                                        <br />
-                                                        Mentions, replies, forwards
-                                                        <br />
-                                                        Threaded comments
-                                                        <br />
-                                                        Link and file previews
-                                                    </p>
-                                                </div>
-                                                <div className={popupSection}>
-                                                    <h2 className={popupSectionHeading}>Growth</h2>
-                                                    <p className={popupSectionText}>
-                                                        Invite pages and links
-                                                        <br />
-                                                        Social sharing tools
-                                                        <br />
-                                                        Featuring on Openland
-                                                        <br />
-                                                        Website widgests and buttons
-                                                        <br />
-                                                        New member onboarding
-                                                    </p>
-                                                </div>
-                                                <div className={popupSection}>
-                                                    <h2 className={popupSectionHeading}>
-                                                        Activities
-                                                    </h2>
-                                                    <p className={popupSectionText}>
-                                                        Questions and answers
-                                                        <br />
-                                                        Member directory
-                                                        <br />
-                                                        Matchmaking and intros
-                                                        <br />
-                                                        Live sessions
-                                                        <br />
-                                                        Community library
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </div>

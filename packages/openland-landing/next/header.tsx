@@ -33,7 +33,7 @@ const menu = css`
 
 const menuItem = css`
     display: inline-block;
-    font-size: 16px;
+    font-size: 18px;
     margin: 23px;
 
     position: relative;
@@ -285,7 +285,7 @@ export default ({ isGrey, startLink, discoverLink }: Props) => {
                                 <ul className={mobileMenuList}>
                                     <li className={mobileMenuItem}>
                                         <span className={mobileMenuLink}>
-                                            <XView path="/next/discover">Discover</XView>
+                                            <XView path="/next">Discover</XView>
                                         </span>
                                     </li>
                                     <li className={mobileMenuItem}>
@@ -354,7 +354,7 @@ export default ({ isGrey, startLink, discoverLink }: Props) => {
                     <div className={menu}>
                         {discoverLink && (
                             <span className={menuItem}>
-                                <XView path="/next/discover">Discover</XView>
+                                <XView path="/next">Discover</XView>
                             </span>
                         )}
                         {startLink && (

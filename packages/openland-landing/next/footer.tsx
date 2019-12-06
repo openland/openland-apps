@@ -51,6 +51,7 @@ const menuItem = css`
 
 const menuLink = css`
     font-size: 18px;
+    font-weight: 600;
 
     @media (max-width: 960px) {
         font-size: 16px;

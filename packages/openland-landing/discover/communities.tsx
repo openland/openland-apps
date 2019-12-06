@@ -175,7 +175,7 @@ const communityText = css`
     font-size: 18px;
     line-height: 1.67;
     color: #272750;
-    margin-top: 16px;
+    margin-top: 20px;
 
     @media (max-width: 1600px) {
         font-size: 16px;
@@ -250,7 +250,8 @@ export default () => (
             <div className={wrapper}>
                 <Heading>Communities for everyone</Heading>
                 <p className={text}>
-                    Discover communities by industry, role, skill, interest, and location
+                    Discover and join communities for your industry, role, skills, interests, and
+                    location
                 </p>
                 <div className={communities}>
                     <div className={topCommunities}>
