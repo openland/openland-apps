@@ -8,5 +8,6 @@ export const OrganizationShort = gql`
         shortname
         about
         isCommunity: alphaIsCommunity
+        membersCount
     }
 `;

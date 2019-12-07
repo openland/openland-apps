@@ -133,7 +133,7 @@ const FilteredOptions = (props: FilteredOptionsProps) => {
         return <XView maxWidth={600} flexDirection="row">
             <XView flexGrow={1}>
                 <UOrganizationView
-                    organization={{ id: item.id, name: item.title, __typename: 'Organization', photo: null, shortname: null, about: null, isCommunity: false }}
+                    organization={{ id: item.id, name: item.title, __typename: 'Organization', photo: null, shortname: null, about: null, isCommunity: false, membersCount: 0 }}
 
                 />
             </XView >

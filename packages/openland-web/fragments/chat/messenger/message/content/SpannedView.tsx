@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useUserPopper } from 'openland-web/components/UserPopper';
-import { UserForMention } from 'openland-api/Types';
+import { useUserPopper, useEntityPopper } from 'openland-web/components/EntityPoppers';
+import { UserForMention, OrganizationShort, RoomNano } from 'openland-api/Types';
 import { css, cx } from 'linaria';
 import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
@@ -8,6 +8,7 @@ import { ULink } from 'openland-web/components/unicorn/ULink';
 import { OthersPopper } from './OthersPopper';
 import { TextTitle2 } from 'openland-web/utils/TextStyles';
 import { defaultHover } from 'openland-web/utils/Styles';
+import { plural } from 'openland-y-utils/plural';
 
 const boldTextClassName = css`
     font-weight: bold;
@@ -109,36 +110,79 @@ const mentionBgClassName = css`
     border-radius: 4px;
 `;
 
-const MentionedUser = React.memo(
-    ({
-        user,
-        text,
-        isYou,
-        isService,
-    }: {
-        user: UserForMention;
-        text: any;
-        isYou: boolean;
-        isService?: boolean;
-    }) => {
-        const [show] = useUserPopper({ user: user, isMe: isYou, noCardOnMe: true });
-        return (
-            <span onMouseEnter={show}>
-                <ULink
-                    path={`/${user.shortname || user.id}`}
-                    className={cx(
-                        mentionClassName,
-                        isYou && !isService && mentionBgClassName,
-                        isService && mentionServiceClassName,
-                        isService && defaultHover,
-                    )}
-                >
-                    {text}
-                </ULink>
-            </span>
-        );
-    },
-);
+const MentionedUser = React.memo((props: { user: UserForMention; children: any; isService?: boolean; }) => {
+    const { user, children, isService } = props;
+    const [show] = useUserPopper({ user, isMe: user.isYou, noCardOnMe: true });
+    return (
+        <span onMouseEnter={show}>
+            <ULink
+                path={`/${user.shortname || user.id}`}
+                className={cx(
+                    mentionClassName,
+                    user.isYou && !isService && mentionBgClassName,
+                    isService && mentionServiceClassName,
+                    isService && defaultHover,
+                )}
+            >
+                {children}
+            </ULink>
+        </span>
+    );
+});
+
+const MentionedGroup = React.memo((props: { group: RoomNano; children: any; isService?: boolean; }) => {
+    const { group, children, isService } = props;
+    let subtitle = group.__typename === 'SharedRoom' ? (group.isChannel ? 'Group' : 'Channel') : 'Private chat';
+
+    if (group.__typename === 'SharedRoom') {
+        subtitle += ', ' + plural(group.membersCount, group.isChannel ? ['follower', 'followers'] : ['member', 'memebers']);
+    }
+
+    const [show] = useEntityPopper({
+        title: group.__typename === 'SharedRoom' ? group.title : group.user.name,
+        photo: group.__typename === 'SharedRoom' ? group.roomPhoto : group.user.photo,
+        subtitle,
+        id: group.id
+    });
+    return (
+        <span onMouseEnter={show}>
+            <ULink
+                path={`/group/${group.id}`}
+                className={cx(
+                    mentionClassName,
+                    isService && mentionServiceClassName,
+                    isService && defaultHover,
+                )}
+            >
+                {children}
+            </ULink>
+        </span>
+    );
+});
+
+const MentionedOrganization = React.memo((props: { organization: OrganizationShort; children: any; isService?: boolean; }) => {
+    const { organization, children, isService } = props;
+    const [show] = useEntityPopper({
+        title: organization.name,
+        photo: organization.photo,
+        subtitle: (organization.isCommunity ? 'Community' : 'Organization') + ', ' + plural(organization.membersCount, ['member', 'members']),
+        id: organization.id
+    });
+    return (
+        <span onMouseEnter={show}>
+            <ULink
+                path={`/${organization.shortname || organization.id}`}
+                className={cx(
+                    mentionClassName,
+                    isService && mentionServiceClassName,
+                    isService && defaultHover,
+                )}
+            >
+                {children}
+            </ULink>
+        </span>
+    );
+});
 
 export const SpanView = React.memo<{ span: Span; children?: any; isService?: boolean }>(props => {
     const { span, children } = props;
@@ -167,21 +211,21 @@ export const SpanView = React.memo<{ span: Span; children?: any; isService?: boo
         return <div className={codeBlockClassName}>{children}</div>;
     } else if (span.type === 'mention_room') {
         return (
-            <ULink
-                path={'/group/' + span.room.id}
-                className={cx(props.isService && mentionServiceClassName)}
-            >
+            <MentionedGroup group={span.room} isService={props.isService}>
                 {children}
-            </ULink>
+            </MentionedGroup>
+        );
+    } else if (span.type === 'mention_organization') {
+        return (
+            <MentionedOrganization organization={span.organization} isService={props.isService}>
+                {children}
+            </MentionedOrganization>
         );
     } else if (span.type === 'mention_user') {
         return (
-            <MentionedUser
-                isYou={span.user.isYou}
-                text={children}
-                user={span.user}
-                isService={props.isService}
-            />
+            <MentionedUser user={span.user} isService={props.isService}>
+                {children}
+            </MentionedUser>
         );
     } else if (span.type === 'mention_users') {
         return <OthersPopper users={span.users}>{children}</OthersPopper>;

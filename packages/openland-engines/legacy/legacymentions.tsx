@@ -86,7 +86,8 @@ export const prepareLegacyMentions = (
                         photo: mention.photo,
                         shortname: mention.shortname,
                         about: mention.about,
-                        isCommunity: mention.isCommunity
+                        isCommunity: mention.isCommunity,
+                        membersCount: mention.membersCount,
                     },
                 });
             } else if (mention.__typename === 'SharedRoom') {
@@ -101,7 +102,8 @@ export const prepareLegacyMentions = (
                         roomPhoto: mention.roomPhoto,
                         kind: mention.kind,
                         isChannel: mention.isChannel,
-                        settings: mention.settings
+                        settings: mention.settings,
+                        membersCount: mention.membersCount,
                     },
                 });
             } else if (mention.__typename === 'AllMention') {

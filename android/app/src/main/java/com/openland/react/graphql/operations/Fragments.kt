@@ -46,6 +46,7 @@ internal val OrganizationShortSelector = obj(
             field("about", "about", scalar("String")),
             field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
             field("id", "id", notNull(scalar("ID"))),
+            field("membersCount", "membersCount", notNull(scalar("Int"))),
             field("name", "name", notNull(scalar("String"))),
             field("photo", "photo", scalar("String")),
             field("shortname", "shortname", scalar("String"))
@@ -97,6 +98,7 @@ internal val RoomSharedNanoSelector = obj(
             field("id", "id", notNull(scalar("ID"))),
             field("isChannel", "isChannel", notNull(scalar("Boolean"))),
             field("kind", "kind", notNull(scalar("String"))),
+            field("membersCount", "membersCount", notNull(scalar("Int"))),
             field("photo", "roomPhoto", notNull(scalar("String"))),
             field("settings", "settings", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -646,7 +648,7 @@ internal val RoomShortSelector = obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("MatchmakingRoom", MatchmakingRoomFragmentSelector)
                     )),
-                field("membersCount", "membersCount", scalar("Int")),
+                field("membersCount", "membersCount", notNull(scalar("Int"))),
                 field("membership", "membership", notNull(scalar("String"))),
                 field("myBadge", "myBadge", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -1002,7 +1004,7 @@ internal val SlideFragmentSelector = obj(
                             field("canSendMessage", "canSendMessage", notNull(scalar("Boolean"))),
                             field("id", "id", notNull(scalar("ID"))),
                             field("kind", "kind", notNull(scalar("String"))),
-                            field("membersCount", "membersCount", scalar("Int")),
+                            field("membersCount", "membersCount", notNull(scalar("Int"))),
                             field("membership", "membership", notNull(scalar("String"))),
                             field("organization", "organization", obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -1525,7 +1527,7 @@ internal val RoomFullSelector = obj(
                                 fragment("User", UserShortSelector)
                             )))
                     ))))),
-                field("membersCount", "membersCount", scalar("Int")),
+                field("membersCount", "membersCount", notNull(scalar("Int"))),
                 field("membership", "membership", notNull(scalar("String"))),
                 field("myBadge", "myBadge", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -1598,7 +1600,7 @@ internal val RoomFullWithoutMembersSelector = obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("MatchmakingRoom", MatchmakingRoomFragmentSelector)
                     )),
-                field("membersCount", "membersCount", scalar("Int")),
+                field("membersCount", "membersCount", notNull(scalar("Int"))),
                 field("membership", "membership", notNull(scalar("String"))),
                 field("myBadge", "myBadge", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),

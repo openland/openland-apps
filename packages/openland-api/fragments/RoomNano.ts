@@ -7,6 +7,7 @@ export const RoomSharedNano = gql`
         isChannel
         title
         roomPhoto: photo
+        membersCount
         settings {
             id
             mute

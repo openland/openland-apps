@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UserForMention } from 'openland-api/Types';
-import { UserPopperContent } from './UserPopperContent';
+import { UserPopperContent, EntityPopperContent } from './EntityPopperContent';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 
 interface UserPopperProps {
@@ -15,7 +15,7 @@ export const useUserPopper = (props: UserPopperProps) => {
             placement: 'top',
             hideOnLeave: true,
             borderRadius: 8,
-            scope: 'user-popper',
+            scope: 'entity-popper',
             useWrapper: !props.noCardOnMe || !props.isMe,
             showTimeout: 400,
         },
@@ -25,6 +25,32 @@ export const useUserPopper = (props: UserPopperProps) => {
                 noCardOnMe={props.noCardOnMe}
                 isMe={props.isMe}
                 user={props.user}
+            />
+        ),
+    );
+    return [show];
+};
+
+interface EntityPopperProps {
+    title: string;
+    subtitle?: string;
+    id: string;
+    photo?: string | null;
+}
+
+export const useEntityPopper = (props: EntityPopperProps) => {
+    const [, show] = usePopper(
+        {
+            placement: 'top',
+            hideOnLeave: true,
+            borderRadius: 8,
+            scope: 'entity-popper',
+            showTimeout: 400,
+        },
+        ctx => (
+            <EntityPopperContent
+                hidePopper={ctx.hide}
+                {...props}
             />
         ),
     );

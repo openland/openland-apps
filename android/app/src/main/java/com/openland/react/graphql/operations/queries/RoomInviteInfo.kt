@@ -23,7 +23,7 @@ internal val RoomInviteInfoSelector = obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
                                         field("enabled", "enabled", notNull(scalar("Boolean")))
                                     )),
-                                field("membersCount", "membersCount", scalar("Int")),
+                                field("membersCount", "membersCount", notNull(scalar("Int"))),
                                 field("membership", "membership", notNull(scalar("String"))),
                                 field("organization", "organization", obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -39,6 +39,6 @@ internal val RoomInviteInfoSelector = obj(
 val RoomInviteInfo = object: OperationDefinition {
     override val name = "RoomInviteInfo"
     override val kind = OperationKind.QUERY
-    override val body = "query RoomInviteInfo(\$invite:String!){invite:betaRoomInviteInfo(invite:\$invite){__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel kind matchmaking{__typename enabled}membersCount membership organization{__typename ...OrganizationShort}photo socialImage title}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id name photo shortname}"
+    override val body = "query RoomInviteInfo(\$invite:String!){invite:betaRoomInviteInfo(invite:\$invite){__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel kind matchmaking{__typename enabled}membersCount membership organization{__typename ...OrganizationShort}photo socialImage title}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}"
     override val selector = RoomInviteInfoSelector
 }

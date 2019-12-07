@@ -3,6 +3,7 @@ fragment OrganizationShort on Organization {
   about
   isCommunity: alphaIsCommunity
   id
+  membersCount
   name
   photo
   shortname

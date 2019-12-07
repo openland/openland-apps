@@ -14,7 +14,7 @@ import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
-import { useUserPopper } from 'openland-web/components/UserPopper';
+import { useUserPopper } from 'openland-web/components/EntityPoppers';
 import { defaultHover } from 'openland-web/utils/Styles';
 
 const senderContainer = css`
