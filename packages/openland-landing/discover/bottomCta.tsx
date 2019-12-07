@@ -1,15 +1,20 @@
 import * as React from 'react';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 import Block from '../next/block';
 import Heading from '../next/heading';
 
-const root = css``;
+const root = css`
+    display: none;
+    @media (max-width: 768px) {
+        display: block;
+    }
+`;
 
 const button = css`
     display: flex;
     align-items: center;
     background-color: var(--accentPrimary);
-    border-radius: 16px;
+    border-radius: 12px;
     font-weight: 600;
     box-shadow: 0px 6px 17px rgba(36, 139, 242, 0.32);
     color: var(--foregroundContrast);
@@ -62,7 +67,7 @@ const ctaSmall = css`
 
     @media (max-width: 768px) {
         margin: 70px auto;
-        width: 280px;
+        width: 330px;
         text-align: left;
         align-items: flex-start;
     }
@@ -99,6 +104,7 @@ const list = css`
 
 const item = css`
     display: inline;
+    line-height: 1.5;
 
     & + &:before {
         display: inline-block;
@@ -162,23 +168,15 @@ const dotsRightSmall = css`
     }
 `;
 
-const hideMobile = css`
-    @media (max-width: 768px) {
-        display: none;
-    }
-`;
-
 export default () => (
     <div className={root}>
         <Block>
             <div className={ctaSmall}>
                 <div className={dotsLeftSmall} />
                 <div className={content}>
-                    <Heading>Start a great community</Heading>
+                    <Heading>Find your community</Heading>
                     <ul className={list}>
-                        <li className={item}>Seconds to launch</li>
-                        <li className={cx(item, hideMobile)}>Real-time support</li>
-                        <li className={item}>Free</li>
+                        <li className={item}>Discover inspiring communities for your interests</li>
                     </ul>
                 </div>
                 <a className={button} href="#">

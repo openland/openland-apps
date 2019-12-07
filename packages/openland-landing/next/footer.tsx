@@ -45,12 +45,13 @@ const menuItem = css`
     display: inline-block;
     margin: 20px;
     @media (max-width: 960px) {
-        margin: 10px;
+        margin: 8px;
     }
 `;
 
 const menuLink = css`
     font-size: 18px;
+    font-weight: 600;
 
     @media (max-width: 960px) {
         font-size: 16px;

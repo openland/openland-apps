@@ -186,7 +186,7 @@ object Operations {
         if (name == "SetUserShortname") return SetUserShortname
         if (name == "SettingsUpdate") return SettingsUpdate
         if (name == "StickerPackAddToCollection") return StickerPackAddToCollection
-        if (name == "StickerPackRemoveToCollection") return StickerPackRemoveToCollection
+        if (name == "StickerPackRemoveFromCollection") return StickerPackRemoveFromCollection
         if (name == "SubscribeToComments") return SubscribeToComments
         if (name == "SuperAccountActivate") return SuperAccountActivate
         if (name == "SuperAccountAdd") return SuperAccountAdd

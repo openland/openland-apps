@@ -19282,7 +19282,7 @@
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Stickers.ts",
-			"operationName": "StickerPackRemoveToCollection",
+			"operationName": "StickerPackRemoveFromCollection",
 			"operationType": "mutation",
 			"rootType": "Mutation",
 			"variables": [
@@ -19291,11 +19291,11 @@
 					"type": "ID!"
 				}
 			],
-			"source": "mutation StickerPackRemoveToCollection($id: ID!) {\n  stickerPackRemoveToCollection: stickerPackAddToCollection(id: $id)\n}",
+			"source": "mutation StickerPackRemoveFromCollection($id: ID!) {\n  stickerPackRemoveFromCollection: stickerPackRemoveFromCollection(id: $id)\n}",
 			"fields": [
 				{
-					"responseName": "stickerPackRemoveToCollection",
-					"fieldName": "stickerPackAddToCollection",
+					"responseName": "stickerPackRemoveFromCollection",
+					"fieldName": "stickerPackRemoveFromCollection",
 					"type": "Boolean!",
 					"args": [
 						{
@@ -19314,8 +19314,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation StickerPackRemoveToCollection($id: ID!) {\n  stickerPackRemoveToCollection: stickerPackAddToCollection(id: $id)\n}",
-			"operationId": "6cd8b745155bbcbbb7bb7d63365e12302034508aa415f4d1f8698c09433a11b3"
+			"sourceWithFragments": "mutation StickerPackRemoveFromCollection($id: ID!) {\n  stickerPackRemoveFromCollection: stickerPackRemoveFromCollection(id: $id)\n}",
+			"operationId": "aff9f556da9bd315da22c9fcccd6bc4130f887f2536585e8635744f2d5e31b05"
 		},
 		{
 			"filePath": "file:///Users/fredmd/Projects/openland-apps/packages/openland-api/queries/Stickers.ts",

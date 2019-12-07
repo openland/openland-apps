@@ -169,6 +169,14 @@ const buttons = css`
 
 const img = css`
     width: 100%;
+
+    margin-top: 113px;
+    margin-bottom: 113px;
+
+    @media (max-width: 768px) {
+        margin-top: 30px;
+        margin-bottom: 48px;
+    }
 `;
 
 export default () => (
@@ -179,7 +187,7 @@ export default () => (
                 <h1 className={headline}>
                     Find your <span className={headlineGradient}>community</span>
                 </h1>
-                <p className={text}>Discover inspiring communities for your interests</p>
+                <p className={text}>Meet inspiring people, learn and get help</p>
                 <div className={buttons}>
                     <a className={button} href="#">
                         Join Openland

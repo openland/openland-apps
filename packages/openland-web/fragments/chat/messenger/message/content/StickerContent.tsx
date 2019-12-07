@@ -48,7 +48,7 @@ const StickerPackModalInner = (props: { packId: string; hide: () => void }) => {
     };
 
     const removePack = async () => {
-        await client.mutateStickerPackRemoveToCollection({
+        await client.mutateStickerPackRemoveFromCollection({
             id: props.packId,
         });
         await client.refetchMyStickers();
@@ -94,9 +94,9 @@ const StickerPackModalInner = (props: { packId: string; hide: () => void }) => {
                     onClick={async () => {
                         setLoading(true);
                         if (iHaveThisPack) {
-                            await addPack();
-                        } else {
                             await removePack();
+                        } else {
+                            await addPack();
                         }
                     }}
                 />

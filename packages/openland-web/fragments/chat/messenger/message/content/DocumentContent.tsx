@@ -174,7 +174,7 @@ const showPdfModal = (props: ModalProps, url?: string) => {
     });
 };
 
-const fileContainer = css`
+export const fileContainer = css`
     display: flex;
     align-items: center;
     justify-content: flex-between;
@@ -224,7 +224,7 @@ const infoContent = css`
     flex-shrink: 1;
 `;
 
-const iconContainer = css`
+export const fileIconContainer = css`
     position: relative;
     width: 40px;
     height: 40px;
@@ -300,7 +300,7 @@ const VideoContent = React.memo(
     },
 );
 
-const fileIcon = {
+export const fileIcon = {
     FILE: <IcBlue />,
     PDF: <IcRed />,
     ZIP: <IcViolet />,
@@ -313,7 +313,7 @@ const fileIcon = {
     KEY: <IcYellow />,
 };
 
-const fileFormat = (name: string) => {
+export const fileFormat = (name: string) => {
     let format = 'FILE';
     if (name.endsWith('.pdf')) {
         format = 'PDF';
@@ -404,7 +404,7 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
             href={!props.onClick ? fileSrc : undefined}
         >
             <div className={infoContent}>
-                <div className={iconContainer}>
+                <div className={fileIconContainer}>
                     {fileIcon[fileFormat(name)]}
                     {typeof progress === 'number' && progress >= 0 && progress < 1 ? (
                         <XLoader size="medium" color="#fff" transparentBackground={true} />

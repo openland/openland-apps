@@ -3688,8 +3688,8 @@ private let SettingsUpdateSelector = obj(
 private let StickerPackAddToCollectionSelector = obj(
             field("stickerPackAddToCollection", "stickerPackAddToCollection", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
-private let StickerPackRemoveToCollectionSelector = obj(
-            field("stickerPackAddToCollection", "stickerPackRemoveToCollection", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+private let StickerPackRemoveFromCollectionSelector = obj(
+            field("stickerPackRemoveFromCollection", "stickerPackRemoveFromCollection", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
 private let SubscribeToCommentsSelector = obj(
             field("subscribeToComments", "subscribeToComments", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("type", refValue("type"))), notNull(scalar("Boolean")))
@@ -5044,11 +5044,11 @@ class Operations {
         "mutation StickerPackAddToCollection($id:ID!){stickerPackAddToCollection:stickerPackAddToCollection(id:$id)}",
         StickerPackAddToCollectionSelector
     )
-    let StickerPackRemoveToCollection = OperationDefinition(
-        "StickerPackRemoveToCollection",
+    let StickerPackRemoveFromCollection = OperationDefinition(
+        "StickerPackRemoveFromCollection",
         .mutation, 
-        "mutation StickerPackRemoveToCollection($id:ID!){stickerPackRemoveToCollection:stickerPackAddToCollection(id:$id)}",
-        StickerPackRemoveToCollectionSelector
+        "mutation StickerPackRemoveFromCollection($id:ID!){stickerPackRemoveFromCollection:stickerPackRemoveFromCollection(id:$id)}",
+        StickerPackRemoveFromCollectionSelector
     )
     let SubscribeToComments = OperationDefinition(
         "SubscribeToComments",
@@ -5411,7 +5411,7 @@ class Operations {
         if name == "SetUserShortname" { return SetUserShortname }
         if name == "SettingsUpdate" { return SettingsUpdate }
         if name == "StickerPackAddToCollection" { return StickerPackAddToCollection }
-        if name == "StickerPackRemoveToCollection" { return StickerPackRemoveToCollection }
+        if name == "StickerPackRemoveFromCollection" { return StickerPackRemoveFromCollection }
         if name == "SubscribeToComments" { return SubscribeToComments }
         if name == "SuperAccountActivate" { return SuperAccountActivate }
         if name == "SuperAccountAdd" { return SuperAccountAdd }

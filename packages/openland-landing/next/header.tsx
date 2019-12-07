@@ -63,10 +63,10 @@ const menuItem = css`
 `;
 
 const menuItemActive = css`
-    padding: 9px 24px;
+    padding: 8px 18px;
     color: #50a2f5;
     background-color: rgba(36, 139, 242, 0.1);
-    border-radius: 12px;
+    border-radius: 8px;
     opacity: 1;
 
     will-change: color, background-color;
@@ -285,7 +285,7 @@ export default ({ isGrey, startLink, discoverLink }: Props) => {
                                 <ul className={mobileMenuList}>
                                     <li className={mobileMenuItem}>
                                         <span className={mobileMenuLink}>
-                                            <XView path="/next/discover">Discover</XView>
+                                            <XView path="/next">Discover</XView>
                                         </span>
                                     </li>
                                     <li className={mobileMenuItem}>
@@ -354,7 +354,7 @@ export default ({ isGrey, startLink, discoverLink }: Props) => {
                     <div className={menu}>
                         {discoverLink && (
                             <span className={menuItem}>
-                                <XView path="/next/discover">Discover</XView>
+                                <XView path="/next">Discover</XView>
                             </span>
                         )}
                         {startLink && (

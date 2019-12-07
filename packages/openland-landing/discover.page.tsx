@@ -8,6 +8,7 @@ import Communities from './discover/communities';
 import Screenshots from './discover/screenshots';
 import Summary from './discover/summary';
 import BottomCta from './discover/bottomCta';
+import Apps from './discover/apps';
 import Footer from './next/footer';
 
 const root = css`
@@ -29,6 +30,7 @@ export const DiscoverPage = React.memo(() => (
         <Screenshots />
         <Summary />
         <BottomCta />
+        <Apps />
         <Footer />
     </div>
 ));
