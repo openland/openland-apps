@@ -118,6 +118,7 @@ const headingWrapper = css`
 
     @media (min-width: 920px) {
         white-space: nowrap;
+        margin-bottom: -20px;
     }
 `;
 
