@@ -9,6 +9,10 @@ const root = css`
     padding: 36px 0;
     padding-top: 60px;
 
+    @media (max-width: 960px) {
+        padding-bottom: 56px;
+    }
+
     @media (max-width: 768px) {
         background-color: initial;
         padding-top: 64px;
