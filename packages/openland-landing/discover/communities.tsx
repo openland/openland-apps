@@ -175,7 +175,7 @@ const communityHeading = css`
 
 const communitySubheading = css`
     display: block;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1.33;
     color: #525273;
     margin-top: 8px;

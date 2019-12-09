@@ -259,7 +259,7 @@ const popupSectionHeading = css`
 `;
 
 const popupSectionText = css`
-    line-height: 2;
+    line-height: 1.8;
     color: #525273;
 
     @media (min-width: 1600px) {
