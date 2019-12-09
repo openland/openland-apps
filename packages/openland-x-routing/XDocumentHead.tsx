@@ -7,8 +7,8 @@ import { isElectron } from 'openland-y-utils/isElectron';
 const DEFAULT_OG = {
     title: 'Openland',
     description:
-        'Openland is a professional messenger designed to support all communication needs of a modern business.',
-    image: 'https://cdn.openland.com/shared/img-og-link-oplnd.png',
+        'A modern community platform. Learn, connect, get help, or start your own community.',
+    image: 'https://cdn.openland.com/shared/og/og-global.png',
 };
 
 export type XDocumentHeadT = {
