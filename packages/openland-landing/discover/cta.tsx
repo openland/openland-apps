@@ -54,6 +54,7 @@ const text = css`
     @media (max-width: 768px) {
         font-size: 18px;
         margin-bottom: 60px;
+        margin-top: 15px;
     }
 
     line-height: 1.5;
@@ -66,7 +67,7 @@ const button = css`
     display: inline-flex;
     align-items: center;
     background-color: var(--accentPrimary);
-    border-radius: 16px;
+    border-radius: 12px;
     font-weight: 600;
     box-shadow: 0px 6px 17px rgba(36, 139, 242, 0.32);
     color: var(--foregroundContrast);
@@ -89,13 +90,13 @@ const button = css`
     }
 
     @media (min-width: 1600px) {
-        font-size: 20px;
-        padding: 13px 36px;
+        font-size: 22px;
+        padding: 15px 36px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        font-size: 18px;
-        padding: 11px 32px;
+        font-size: 20px;
+        padding: 13px 32px;
     }
 
     @media (max-width: 768px) {

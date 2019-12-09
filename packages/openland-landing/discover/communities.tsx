@@ -83,6 +83,10 @@ const featuredCommunities = css`
         align-items: center;
     }
 
+    @media (max-width: 960px) {
+        margin: -8px;
+    }
+
     &:before {
         display: inline-block;
         content: 'Featured communities';
@@ -91,6 +95,10 @@ const featuredCommunities = css`
         position: absolute;
         top: -36px;
         left: 12px;
+
+        @media (max-width: 960px) {
+            left: 8px;
+        }
 
         font-weight: 600;
         font-size: 18px;
@@ -114,9 +122,13 @@ const community = css`
     border-radius: 16px;
     margin: 12px;
 
+    @media (max-width: 960px) {
+        margin: 8px;
+        padding: 20px 24px;
+    }
+
     @media (max-width: 768px) {
         width: 100%;
-        padding: 20px 24px;
         max-width: 368px;
     }
 
@@ -155,6 +167,10 @@ const communityHeading = css`
     @media (max-width: 1600px) {
         font-size: 20px;
     }
+
+    @media (max-width: 960px) {
+        font-size: 18px;
+    }
 `;
 
 const communitySubheading = css`
@@ -163,10 +179,14 @@ const communitySubheading = css`
     line-height: 1.33;
     color: #525273;
     margin-top: 8px;
+
+    @media (max-width: 960px) {
+        font-size: 16px;
+    }
 `;
 
 const communityImg = css`
-    @media (max-width: 768px) {
+    @media (max-width: 960px) {
         width: 52px;
     }
 `;

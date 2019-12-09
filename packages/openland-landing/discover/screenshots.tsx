@@ -168,6 +168,7 @@ const linkWrapper = css`
 
     @media (max-width: 768px) {
         display: block;
+        margin-top: 4px;
     }
 `;
 
