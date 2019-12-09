@@ -60,8 +60,8 @@ const button = css`
 
 const ctaSmall = css`
     position: relative;
-    margin-top: 200px;
-    margin-bottom: 180px;
+    margin-top: 150px;
+    margin-bottom: 130px;
 `;
 
 const content = css`

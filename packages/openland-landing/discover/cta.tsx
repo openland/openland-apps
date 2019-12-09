@@ -123,11 +123,7 @@ const dotsLeft = css`
         left: -10025px;
     }
 
-    @media (min-width: 768px) and (max-width: 960px) {
-        left: -10000px;
-    }
-
-    @media (max-width: 768px) {
+    @media (max-width: 960px) {
         display: none;
     }
 `;
@@ -150,11 +146,7 @@ const dotsRight = css`
         right: -10025px;
     }
 
-    @media (min-width: 768px) and (max-width: 960px) {
-        right: -10000px;
-    }
-
-    @media (max-width: 768px) {
+    @media (max-width: 960px) {
         display: none;
     }
 `;
@@ -170,12 +162,21 @@ const buttons = css`
 const img = css`
     width: 100%;
 
-    margin-top: 113px;
-    margin-bottom: 113px;
+    margin-top: 73px;
+    margin-bottom: 73px;
 
     @media (max-width: 768px) {
+        display: inline-block;
+        width: 360px;
         margin-top: 30px;
         margin-bottom: 48px;
+    }
+`;
+
+const imgWrapper = css`
+    @media (max-width: 768px) {
+        display: flex;
+        justify-content: center;
     }
 `;
 
@@ -195,7 +196,9 @@ export default () => (
                 </div>
                 <div className={dotsRight} />
             </div>
-            <img className={img} src="/static/landing/discover-cta.jpg" alt="" />
+            <div className={imgWrapper}>
+                <img className={img} src="/static/landing/discover-cta.jpg" alt="" />
+            </div>
         </Block>
     </div>
 );
