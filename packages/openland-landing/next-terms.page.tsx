@@ -4,9 +4,9 @@ import { css } from 'linaria';
 
 import Header from './next/header';
 import AboutHeader from './next/termsAboutHeader';
+import Block from './next/block';
 import Footer from './next/footer';
 
-import { Container } from './components/Container';
 import { Content } from './next/privacyHeader';
 
 const root = css`
@@ -43,6 +43,10 @@ const SectionsList = [
     'Contact&nbsp;us',
 ];
 
+const spacer = css`
+    margin-top: 46px;
+`;
+
 export const TermsPage = React.memo(() => (
     <div className={root}>
         <XDocumentHead
@@ -52,7 +56,8 @@ export const TermsPage = React.memo(() => (
         />
         <Header isGrey={true} discoverLink={true} startLink={true} />
         <AboutHeader />
-        <Container>
+        <div className={spacer} />
+        <Block>
             <Content contents={SectionsList}>
                 <h2 id="section1">Welcome to&nbsp;Openland</h2>
                 <p>
@@ -446,7 +451,7 @@ export const TermsPage = React.memo(() => (
                     mail to: Openland, 100 Van Ness #2305, San Francisco, CA&nbsp;94102, USA.
                 </p>
             </Content>
-        </Container>
+        </Block>
         <Footer />
     </div>
 ));

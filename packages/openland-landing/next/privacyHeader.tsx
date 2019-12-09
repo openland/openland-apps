@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 
 let contentRootClass = css`
-    padding: 46px 0 26px;
+    padding: 0;
 
     @media (max-width: 767px) {
         padding: 0 0 26px;

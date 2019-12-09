@@ -233,7 +233,9 @@ const popupItem = css`
 const popupIcon = css`
     margin-right: 20px;
 `;
-const popupText = css``;
+const popupText = css`
+    font-size: 16px;
+`;
 const popupSeparator = css`
     border-bottom: 1px solid #8e90a6;
     opacity: 0.2;

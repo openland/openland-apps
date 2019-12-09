@@ -19,11 +19,14 @@ const header = css`
     z-index: 10;
 `;
 
-const logo = css``;
+const logo = css`
+    cursor: pointer;
+`;
 
 const menu = css`
     position: relative;
     margin: -23px;
+    top: 5px;
 
     @media (max-width: 768px) {
         display: none;
@@ -247,7 +250,14 @@ export default ({ isGrey, startLink, discoverLink }: Props) => {
         <div className={isGrey ? grey : root}>
             <Block>
                 <div className={header}>
-                    <img className={logo} src="/static/landing/logo.svg" width="155" height="48" />
+                    <XView path="/next">
+                        <img
+                            className={logo}
+                            src="/static/landing/logo.svg"
+                            width="155"
+                            height="48"
+                        />
+                    </XView>
 
                     <div className={mobileMenu}>
                         <span className={mobileMenuTrigger} onClick={() => setMenuOpen(true)}>

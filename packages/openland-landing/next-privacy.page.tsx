@@ -3,10 +3,10 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { css } from 'linaria';
 
 import Header from './next/header';
+import Block from './next/block';
 import AboutHeader from './next/privacyAboutHeader';
 import Footer from './next/footer';
 
-import { Container } from './components/Container';
 import { Content } from './next/privacyHeader';
 
 const root = css`
@@ -31,6 +31,10 @@ const SectionsList = [
     'Contact&nbsp;us',
 ];
 
+const spacer = css`
+    margin-top: 46px;
+`;
+
 export const PrivacyPage = React.memo(() => (
     <div className={root}>
         <XDocumentHead
@@ -40,7 +44,8 @@ export const PrivacyPage = React.memo(() => (
         />
         <Header isGrey={true} discoverLink={true} startLink={true} />
         <AboutHeader />
-        <Container>
+        <div className={spacer} />
+        <Block>
             <Content contents={SectionsList}>
                 <h2 id="section1">Welcome to&nbsp;Openland</h2>
                 <p>
@@ -155,7 +160,7 @@ export const PrivacyPage = React.memo(() => (
                     mail to: Openland, 100 Van Ness #2305, San Francisco, CA&nbsp;94102, USA.
                 </p>
             </Content>
-        </Container>
+        </Block>
         <Footer />
     </div>
 ));

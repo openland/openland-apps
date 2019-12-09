@@ -42,7 +42,7 @@ const topCommunities = css`
 const type = css`
     display: flex;
     align-items: center;
-    padding: 16px 20px;
+    padding: 14px 20px;
     background-color: #f7fafc;
     border-radius: 12px;
     width: 300px;
@@ -118,7 +118,7 @@ const featuredCommunities = css`
 const community = css`
     position: relative;
     width: calc(50% - 24px);
-    padding: 32px;
+    padding: 26px;
     border-radius: 16px;
     margin: 12px;
 
@@ -165,11 +165,11 @@ const communityHeading = css`
     color: #272750;
 
     @media (max-width: 1600px) {
-        font-size: 20px;
+        font-size: 22px;
     }
 
     @media (max-width: 960px) {
-        font-size: 18px;
+        font-size: 22px;
     }
 `;
 
@@ -250,7 +250,7 @@ const arrow = css`
 `;
 
 const text = css`
-    font-size: 24px;
+    font-size: 20px;
     line-height: 1.5;
     color: #525273;
     margin-top: 12px;

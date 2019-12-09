@@ -167,7 +167,7 @@ export default () => (
                         <li className={item}>Share and organize knowledge</li>
                         <li className={item}>Help people help each other</li>
                     </ul>
-                    <a href="https://next.openland.com/invite/h2BGtL" className={cta}>
+                    <a href="/start" className={cta}>
                         Become an organizer
                         <img
                             className={arrow}
