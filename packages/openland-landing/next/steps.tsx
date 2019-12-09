@@ -102,6 +102,7 @@ const text = css`
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
+        width: 98%;
         font-size: 18px;
         line-height: 28px;
     }

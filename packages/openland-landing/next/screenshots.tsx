@@ -28,17 +28,17 @@ const listWrapper = css`
 
     position: relative;
     @media (min-width: 1600px) {
-        font-size: 26px;
+        font-size: 24px;
         line-height: 38px;
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        font-size: 22px;
+        font-size: 20px;
         line-height: 35px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        font-size: 22px;
+        font-size: 20px;
         line-height: 35px;
     }
 
