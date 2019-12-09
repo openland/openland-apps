@@ -95,13 +95,13 @@ const button = css`
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        font-size: 20px;
-        padding: 13px 32px;
+        padding: 11px 32px;
+        font-size: 16px;
     }
 
     @media (max-width: 768px) {
-        font-size: 18px;
         padding: 11px 32px;
+        font-size: 16px;
     }
     margin: 10px;
 `;

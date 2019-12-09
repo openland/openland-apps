@@ -205,16 +205,16 @@ const appButtonActive = css`
 
     @media (min-width: 1600px) {
         font-size: 20px;
-        padding: 16px;
+        padding: 16px 27px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        padding: 11px 24px;
+        padding: 11px 32px;
         font-size: 16px;
     }
 
     @media (max-width: 768px) {
-        padding: 11px 24px;
+        padding: 11px 32px;
         font-size: 16px;
     }
 

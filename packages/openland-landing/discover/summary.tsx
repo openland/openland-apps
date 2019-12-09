@@ -133,6 +133,16 @@ const cta = css`
     }
 
     margin-top: 36px;
+
+    @media (min-width: 768px) and (max-width: 1600px) {
+        padding: 11px 32px;
+        font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+        padding: 11px 32px;
+        font-size: 16px;
+    }
 `;
 
 const arrow = css`
