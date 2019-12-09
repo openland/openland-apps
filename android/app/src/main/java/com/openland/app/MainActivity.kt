@@ -1,6 +1,5 @@
 package com.openland.app
 
-import android.app.Service
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
@@ -20,6 +19,7 @@ import android.net.Uri
 import android.os.IBinder
 import android.view.WindowManager
 import android.app.NotificationManager
+import android.content.res.Configuration
 
 class MainActivity : ReactActivity() {
 
@@ -83,7 +83,8 @@ class MainActivity : ReactActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("Native", "BOOTSTRAP: Starting activity")
         super.onCreate(savedInstanceState)
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        val statusBarMode =  if ((resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or statusBarMode or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
 
         this.provider = KeyboardHeightProvider(this)
         provider!!.addKeyboardListener(object : KeyboardHeightProvider.KeyboardListener {
