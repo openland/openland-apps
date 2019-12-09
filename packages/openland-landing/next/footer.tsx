@@ -51,6 +51,8 @@ const menu = css`
     @media (max-width: 768px) {
         left: 3px;
     }
+
+    z-index: 10;
 `;
 
 const menuItem = css`
@@ -59,6 +61,7 @@ const menuItem = css`
     @media (max-width: 960px) {
         margin: 8px;
     }
+    z-index: 10;
 `;
 
 const menuLink = css`
@@ -91,6 +94,7 @@ const menuLink = css`
     }
 
     cursor: pointer;
+    z-index: 10;
 `;
 
 const social = css`
@@ -203,6 +207,8 @@ const popup = css`
         content: '';
         width: 100%;
         height: 50px;
+
+        z-index: -1;
     }
 `;
 
