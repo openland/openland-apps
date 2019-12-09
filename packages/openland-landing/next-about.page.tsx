@@ -21,11 +21,7 @@ const root = css`
 
 export const AboutPage = React.memo(() => (
     <div className={root}>
-        <XDocumentHead
-            title="About"
-            titleWithoutReverse={true}
-            description="Openland is a professional messenger designed to support all communication needs of a modern business. It can be used for fundraising, sales, recruiting, customer service, and business operations. The company is backed by 30 prominent venture investors, including Y Combinator, Gagarin Capital, Sinai Ventures, Soma Capital, Liquid 2 Ventures, and Rainfall Ventures."
-        />
+        <XDocumentHead title="About Openland" disableBranding={true} />
         <Header isGrey={true} discoverLink={true} startLink={true} />
         <AboutHeader />
         <Founders />

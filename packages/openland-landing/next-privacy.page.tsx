@@ -33,7 +33,11 @@ const SectionsList = [
 
 export const PrivacyPage = React.memo(() => (
     <div className={root}>
-        <XDocumentHead title="Privacy Policy" titleWithoutReverse={true} />
+        <XDocumentHead
+            title="Privacy Policy"
+            titleWithoutReverse={true}
+            description="Understand how Openland uses your personal information and how you can control it"
+        />
         <Header isGrey={true} discoverLink={true} startLink={true} />
         <AboutHeader />
         <Container>

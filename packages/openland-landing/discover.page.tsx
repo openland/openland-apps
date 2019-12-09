@@ -23,7 +23,12 @@ const root = css`
 
 export const DiscoverPage = React.memo(() => (
     <div className={root}>
-        <XDocumentHead title="Discover" titleWithoutReverse={true} />
+        <XDocumentHead
+            title="Inspiring communities"
+            titleWithoutReverse={true}
+            description="Discover and join communities for your industry, role, skills, interests, and location"
+            imgUrl="https://cdn.openland.com/shared/og/og-find.png"
+        />
         <Header startLink={true} />
         <Cta />
         <Communities />

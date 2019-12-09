@@ -23,7 +23,12 @@ const root = css`
 
 export const NextPage = React.memo(() => (
     <div className={root}>
-        <XDocumentHead title="Start community" titleWithoutReverse={true} />
+        <XDocumentHead
+            title="Modern community platform"
+            titleWithoutReverse={true}
+            description="An all-in-one platform for building great communities: start in seconds and grow fast"
+            imgUrl="https://cdn.openland.com/shared/og/og-build.png"
+        />
         <Header discoverLink={true} />
         <Cta />
         <Summary />
