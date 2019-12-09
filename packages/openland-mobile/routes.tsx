@@ -76,6 +76,7 @@ import { FeedPublishTo } from './pages/feed/FeedPublishTo';
 import { FeedChannelAddWriter } from './pages/feed/FeedChannelAddWriter';
 import { FeedChannelEditAdvanced } from './pages/feed/FeedChannelEditAdvanced';
 import { MatchmakingProfile } from './pages/matchmaking/MatchmakingProfile';
+import { SharedMedia } from './pages/shared-media/SharedMedia';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -166,5 +167,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('FeedChannelAddWriter', FeedChannelAddWriter)
 
   .addRoute('MatchmakingProfile', MatchmakingProfile)
+
+  .addRoute('SharedMedia', SharedMedia)
 
   .build();

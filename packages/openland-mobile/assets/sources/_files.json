@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-play-glyph",
+            "src": "ic-play-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-channel",
             "src": "ic-channel-24.svg",
             "sizes": [

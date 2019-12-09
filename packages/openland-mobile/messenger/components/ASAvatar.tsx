@@ -18,6 +18,7 @@ interface ASAvatarProps {
     marginRight?: number;
     marginTop?: number;
     marginBottom?: number;
+    borderRadius?: number;
     theme: ThemeGlobal;
 }
 
@@ -36,6 +37,7 @@ const getBorder = (size: ZAvatarSize) => {
 
 export function ASAvatar(props: ASAvatarProps) {
     const { size, placeholder: textSize } = avatarSizes[props.size];
+    const borderRadius = props.borderRadius || size / 2;
 
     if (props.src && !props.src.startsWith('ph://')) {
         let url = props.src;
@@ -51,7 +53,7 @@ export function ASAvatar(props: ASAvatarProps) {
                 marginBottom={props.marginBottom}
                 width={size}
                 height={size}
-                borderRadius={size / 2}
+                borderRadius={borderRadius}
                 backgroundColor={props.theme.backgroundTertiaryTrans}
             >
                 {!!border && (
@@ -72,7 +74,7 @@ export function ASAvatar(props: ASAvatarProps) {
                     width={size}
                     height={size}
                     source={{ uri: url }}
-                    borderRadius={size / 2}
+                    borderRadius={borderRadius}
                 />
             </ASFlex>
         );
@@ -97,7 +99,7 @@ export function ASAvatar(props: ASAvatarProps) {
             backgroundColor={placeholderStyle.placeholderColor}
             // Sorry universe
             {...{ backgroundGradient: { start: placeholderStyle.placeholderColorStart, end: placeholderStyle.placeholderColorEnd } }}
-            borderRadius={size / 2}
+            borderRadius={borderRadius}
         >
             <ASText fontSize={textSize} color="#fff">{placeholderText}</ASText>
         </ASFlex>

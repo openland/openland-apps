@@ -3,45 +3,51 @@ import * as humanize from 'humanize';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 
-export type SharedMediaItemType = 'document' | 'media' | 'link';
+export enum SharedMediaItemType {
+    MEDIA = 'MEDIA',
+    DOCUMENT = 'DOCUMENT',
+    LINK = 'LINK',
+}
 
-interface DataSourceSharedMediaDateItem {
+export interface DataSourceSharedMediaDateItem {
     key: string;
     dateLabel: string;
     type: 'date';
 }
 
-interface DataSourceSharedDocumentItem {
+export interface DataSourceSharedDocumentItem {
     key: string;
-    type: 'document';
+    type: SharedMediaItemType.DOCUMENT;
     message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage;
     dateLabel: string;
 }
 
-interface DataSourceSharedMediaItem {
+export interface DataSourceSharedMediaRow {
     key: string;
-    type: 'media';
+    type: SharedMediaItemType.MEDIA;
+    dateLabel: string;
+    messages: SharedMedia_sharedMedia_edges_node_message_GeneralMessage[];
+}
+
+export interface DataSourceSharedLinkItem {
+    key: string;
+    type: SharedMediaItemType.LINK;
     dateLabel: string;
     message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage;
 }
 
-interface DataSourceSharedLinkItem {
-    key: string;
-    type: 'link';
-    dateLabel: string;
-    message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage;
-}
-
-export type SharedMediaDataSourceItem = DataSourceSharedMediaDateItem | DataSourceSharedDocumentItem | DataSourceSharedMediaItem | DataSourceSharedLinkItem;
+export type SharedMediaDataSourceItem = DataSourceSharedMediaDateItem | DataSourceSharedDocumentItem | DataSourceSharedMediaRow | DataSourceSharedLinkItem;
 
 const makeDateLabel = (date: string) => humanize.date('F Y', parseInt(date, 10) / 1000);
 
 export class SharedMediaEngine {
-    readonly dataSource: DataSource<any>;
+    readonly dataSource: DataSource<SharedMediaDataSourceItem>;
     readonly client: OpenlandClient;
     readonly chatId: string;
-    readonly mediaType: 'media' | 'document' | 'link';
+    readonly mediaType: SharedMediaItemType;
+    readonly typesToFetch: SharedMediaType[];
 
+    numColumns = 3;
     itemsPerPage = 10;
     isLoading = false;
 
@@ -53,32 +59,36 @@ export class SharedMediaEngine {
         this.chatId = chatId;
         this.mediaType = type;
 
-        const typesToFetch = {
-            media: [SharedMediaType.IMAGE, SharedMediaType.VIDEO],
-            document: [SharedMediaType.DOCUMENT],
-            link: [SharedMediaType.LINK],
+        if (type === SharedMediaItemType.MEDIA) {
+            this.itemsPerPage = 6 * this.numColumns;
+        }
+
+        const typesMap = {
+            [SharedMediaItemType.MEDIA]: [SharedMediaType.IMAGE],
+            [SharedMediaItemType.DOCUMENT]: [SharedMediaType.DOCUMENT, SharedMediaType.VIDEO],
+            [SharedMediaItemType.LINK]: [SharedMediaType.LINK],
         };
 
+        this.typesToFetch = typesMap[this.mediaType];
+
         this.dataSource = new DataSource(() => {
-            this.loadMore(typesToFetch[this.mediaType]);
+            this.loadMore();
         }, () => {
             // do nothing
         });
-
-        this.start(typesToFetch[this.mediaType]);
     }
 
-    start = async (mediaTypes: SharedMediaType[]) => {
+    start = async () => {
         this.isLoading = true;
         const data = await this.client.querySharedMedia({
             chatId: this.chatId,
-            mediaTypes,
+            mediaTypes: this.typesToFetch,
             first: this.itemsPerPage,
         }, { fetchPolicy: 'network-only' });
         const { edges, pageInfo } = data.sharedMedia;
 
         const messages = edges.map(edge => edge.node.message) as SharedMedia_sharedMedia_edges_node_message_GeneralMessage[];
-        const items = messages
+        let items = messages
             .reduce((acc, m) => {
                 const dateLabel = makeDateLabel(m.date);
                 const last = acc[acc.length - 1];
@@ -88,12 +98,27 @@ export class SharedMediaEngine {
                     acc.push({ key: dateLabel, dateLabel, type: 'date' });
                 }
 
-                acc.push({
-                    key: m.id,
-                    type: this.mediaType,
-                    dateLabel,
-                    message: m,
-                });
+                if (this.mediaType === SharedMediaItemType.MEDIA) {
+                    if (!last || last.type === 'date' || last.dateLabel !== dateLabel || (last as DataSourceSharedMediaRow).messages.length === this.numColumns) {
+                        const newItem = {
+                            key: m.id,
+                            type: SharedMediaItemType.MEDIA,
+                            dateLabel,
+                            messages: [m],
+                        };
+                        acc.push(newItem as DataSourceSharedMediaRow);
+                    } else {
+                        (last as DataSourceSharedMediaRow).messages.push(m);
+                    }
+                } else {
+                    acc.push({
+                        key: m.id,
+                        type: this.mediaType,
+                        dateLabel,
+                        message: m,
+                    });
+                }
+
                 return acc;
             }, [] as SharedMediaDataSourceItem[]);
 
@@ -105,12 +130,16 @@ export class SharedMediaEngine {
         this.isLoading = false;
     }
 
-    loadMore = async (mediaTypes: SharedMediaType[]) => {
-        if (this.hasNextPage || !this.isLoading) {
+    destroy() {
+        this.dataSource.destroy();
+    }
+
+    loadMore = async () => {
+        if (this.hasNextPage && !this.isLoading) {
             this.isLoading = true;
             const data = await this.client.querySharedMedia({
                 chatId: this.chatId,
-                mediaTypes,
+                mediaTypes: this.typesToFetch,
                 first: this.itemsPerPage,
                 after: this.cursor
             }, { fetchPolicy: 'network-only' });
@@ -123,19 +152,38 @@ export class SharedMediaEngine {
                     const last = acc[acc.length - 1];
 
                     const existingLast = this.dataSource.getAt(this.dataSource.getSize() - 1);
+                    let delta = existingLast.type === SharedMediaItemType.MEDIA ? this.numColumns - existingLast.messages.length : 0;
 
-                    if (!last && existingLast.date !== dateLabel) {
+                    if (!last && existingLast.dateLabel !== dateLabel) {
                         acc.push({ key: dateLabel, dateLabel, type: 'date' });
+                        delta = 0;
                     } else if (last && last.dateLabel !== dateLabel) {
                         acc.push({ key: dateLabel, dateLabel, type: 'date' });
                     }
 
-                    acc.push({
-                        key: m.id,
-                        type: this.mediaType,
-                        dateLabel,
-                        message: m,
-                    });
+                    if (this.mediaType === SharedMediaItemType.MEDIA) {
+                        if (delta > 0) {
+                            (existingLast as DataSourceSharedMediaRow).messages.push(m);
+                            this.dataSource.updateItem(existingLast);
+                        } else if (!last || last.type === 'date' || last.dateLabel !== dateLabel || (last as DataSourceSharedMediaRow).messages.length === this.numColumns) {
+                            const newItem = {
+                                key: m.id,
+                                type: SharedMediaItemType.MEDIA,
+                                dateLabel,
+                                messages: [m],
+                            };
+                            acc.push(newItem as DataSourceSharedMediaRow);
+                        } else {
+                            (last as DataSourceSharedMediaRow).messages.push(m);
+                        }
+                    } else {
+                        acc.push({
+                            key: m.id,
+                            type: this.mediaType,
+                            dateLabel,
+                            message: m,
+                        });
+                    }
 
                     return acc;
                 }, [] as SharedMediaDataSourceItem[]);

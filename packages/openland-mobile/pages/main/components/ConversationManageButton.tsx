@@ -8,6 +8,7 @@ import { RoomMemberRole, Room_room, Room_room_SharedRoom } from 'openland-api/Ty
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 interface ConversationManageButtonProps {
     muted: boolean;
@@ -69,6 +70,10 @@ export const ConversationManageButton = XMemo((props: ConversationManageButtonPr
         client.mutateRoomSettingsUpdate({ roomId: room.id, settings: { mute: !muted } });
         client.refetchRoomTiny({ id: room.id });
     }, [muted, room.id]);
+    const onSharedPress = React.useCallback(() => {
+        router.push('SharedMedia', { chatId: room.id });
+    }, [room.id]);
+
     const { onInvitePress, onLeavePress } = useSharedHandlers(room as Room_room_SharedRoom, router);
 
     const onPress = React.useCallback(() => {
@@ -81,6 +86,13 @@ export const ConversationManageButton = XMemo((props: ConversationManageButtonPr
         const isPrivate = room.__typename === 'PrivateRoom';
         if (!isPrivate) {
             builder.action('Invite friends', onInvitePress, false, require('assets/ic-invite-24.png'));
+        }
+
+        if (AppConfig.isNonProduction()) {
+            builder.action('Shared resources', onSharedPress, false, require('assets/ic-attach-24.png'));
+        }
+
+        if (!isPrivate) {
             builder.action('Leave group', onLeavePress, false, require('assets/ic-leave-24.png'));
         }
 

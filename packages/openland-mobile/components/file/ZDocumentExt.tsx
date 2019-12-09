@@ -3,6 +3,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, Image } from 'react-native';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { LoaderSpinner } from '../LoaderSpinner';
+import { colorByExtension } from 'openland-mobile/utils/colorByExtension';
 
 const styles = StyleSheet.create({
     box: {
@@ -60,18 +61,13 @@ interface ZDocumentExtProps {
 export const ZDocumentExt = (props: ZDocumentExtProps) => {
     const theme = React.useContext(ThemeContext);
     const { name, loading, size = 'medium' } = props;
-    const colorByExtension = {
-        'xlsx': theme.tintGreen,
-        'zip': theme.tintOrange,
-        'pdf': theme.tintRed
-    };
 
     const ext = getExtension(name);
     const boxSize = size === 'large' ? 72 : 48;
     const cornerFirstImage = size === 'large' ? require('assets/ic-file-preview-corner-1-18.png') : require('assets/ic-file-preview-corner-1-12.png');
     const cornerSecondImage = size === 'large' ? require('assets/ic-file-preview-corner-2-18.png') : require('assets/ic-file-preview-corner-2-12.png');
     const containerImage = size === 'large' ? require('assets/ic-document-preview-72.png') : require('assets/ic-document-preview-48.png');
-    const tintColor = theme.type === 'Dark' ? theme.tintInverted : (colorByExtension[ext] || theme.accentPrimary);
+    const tintColor = theme.type === 'Dark' ? theme.tintInverted : (colorByExtension(ext, theme) || theme.accentPrimary);
 
     return (
         <View style={[styles.box, { width: boxSize, height: boxSize }]}>

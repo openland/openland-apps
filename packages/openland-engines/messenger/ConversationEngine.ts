@@ -229,9 +229,9 @@ export class ConversationEngine implements MessageSendHandler {
     private loadingHistory?: string = undefined;
     private loadingForward?: string = undefined;
     private localMessagesMap = new Map<string, string>();
+    private sharedMediaEngines: Record<SharedMediaItemType, SharedMediaEngine> | {};
     readonly messagesActionsStateEngine: MessagesActionsStateEngine;
     readonly matchmakingEngine: MatchmakingEngine;
-    readonly sharedMediaEngines: Record<SharedMediaItemType, SharedMediaEngine> | {};
     readonly onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void;
 
     role?: Types.RoomMemberRole | null;
@@ -403,9 +403,18 @@ export class ConversationEngine implements MessageSendHandler {
 
     getSharedMedia(type: SharedMediaItemType) {
         if (!this.sharedMediaEngines[type]) {
-            this.sharedMediaEngines[type] = new SharedMediaEngine(this.engine.client, this.conversationId, type);
+            const engine = new SharedMediaEngine(this.engine.client, this.conversationId, type);
+            engine.start();
+            this.sharedMediaEngines[type] = engine;
         }
         return this.sharedMediaEngines[type];
+    }
+
+    destroySharedMedia() {
+        if (Object.keys(this.sharedMediaEngines).length > 0) {
+            Object.values(this.sharedMediaEngines).forEach(engine => engine.destroy());
+        }
+        this.sharedMediaEngines = {};
     }
 
     onOpen = () => {

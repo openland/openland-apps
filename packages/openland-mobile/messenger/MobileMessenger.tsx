@@ -29,6 +29,11 @@ import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { AsyncServiceMessage } from './components/AsyncServiceMessage';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { showFileModal } from 'openland-mobile/components/file/showFileModal';
+import { SharedMediaItemType, SharedMediaDataSourceItem } from 'openland-engines/messenger/SharedMediaEngine';
+import { AsyncSharedLink } from 'openland-mobile/pages/shared-media/AsyncSharedLink';
+import { AsyncSharedDocument } from 'openland-mobile/pages/shared-media/AsyncSharedDocument';
+import { AsyncSharedMediaRow } from 'openland-mobile/pages/shared-media/AsyncSharedMediaRow';
+import { AsyncSharedDate } from 'openland-mobile/pages/shared-media/AsyncSharedDate';
 
 const SortedReactions = [
     MessageReactionType.LIKE,
@@ -59,6 +64,7 @@ export class MobileMessenger {
     readonly dialogs: ASDataView<DialogDataSourceItem>;
     readonly notifications: ASDataView<NotificationsDataSourceItem>;
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>>();
+    private readonly sharedMedias = new Map<string, Map<string, ASDataView<SharedMediaDataSourceItem>>>();
 
     constructor(engine: MessengerEngine, history: SRouting) {
         this.engine = engine;
@@ -92,6 +98,42 @@ export class MobileMessenger {
             }));
         }
         return this.conversations.get(id)!!;
+    }
+
+    renderSharedMediaItem = (wrapperWidth: number) => (item: SharedMediaDataSourceItem) => {
+        if (item.type === SharedMediaItemType.MEDIA) {
+            return <AsyncSharedMediaRow item={item} wrapperWidth={wrapperWidth} />;
+        }
+
+        if (item.type === SharedMediaItemType.LINK) {
+            return <AsyncSharedLink item={item} />;
+        }
+
+        if (item.type === SharedMediaItemType.DOCUMENT) {
+            return <AsyncSharedDocument item={item} />;
+        }
+
+        return <AsyncSharedDate item={item} />;
+    }
+
+    getSharedMedia = (id: string, type: SharedMediaItemType, wrapperWidth: number) => {
+        const key = `${type}-${wrapperWidth}`;
+        const engine = this.engine.getConversation(id).getSharedMedia(type);
+        if (!this.sharedMedias.has(id)) {
+            this.sharedMedias.set(
+                id,
+                new Map([[key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(wrapperWidth))]])
+            );
+        } else if (!this.sharedMedias.get(id)!!.has(key)) {
+            this.sharedMedias.get(id)!!.set(key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(wrapperWidth)));
+        }
+
+        return this.sharedMedias.get(id)!!.get(key)!!;
+    }
+
+    destroySharedMedia = (id: string) => {
+        this.engine.getConversation(id).destroySharedMedia();
+        this.sharedMedias.delete(id);
     }
 
     handleMediaClick = (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => {

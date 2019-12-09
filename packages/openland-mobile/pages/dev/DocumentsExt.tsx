@@ -54,6 +54,34 @@ const DocumentsExtComponent = React.memo(props => {
                 </View>
                 <View paddingLeft={16} paddingRight={8} flexDirection="row">
                     <View marginVertical={8} marginRight={8}>
+                        <ZDocumentExt name="design.fig" />
+                    </View>
+                    <View marginVertical={8} marginRight={8}>
+                        <ZDocumentExt name="design.fig" loading={true} />
+                    </View>
+                    <View marginVertical={8} marginRight={8}>
+                        <ZDocumentExt name="design.fig" size="large" />
+                    </View>
+                    <View marginVertical={8} marginRight={8}>
+                        <ZDocumentExt name="design.fig" size="large" loading={true} />
+                    </View>
+                </View>
+                <View paddingLeft={16} paddingRight={8} flexDirection="row">
+                    <View marginVertical={8} marginRight={8}>
+                        <ZDocumentExt name="paper.docx" />
+                    </View>
+                    <View marginVertical={8} marginRight={8}>
+                        <ZDocumentExt name="paper.docx" loading={true} />
+                    </View>
+                    <View marginVertical={8} marginRight={8}>
+                        <ZDocumentExt name="paper.docx" size="large" />
+                    </View>
+                    <View marginVertical={8} marginRight={8}>
+                        <ZDocumentExt name="paper.docx" size="large" loading={true} />
+                    </View>
+                </View>
+                <View paddingLeft={16} paddingRight={8} flexDirection="row">
+                    <View marginVertical={8} marginRight={8}>
                         <ZDocumentExt name="some_file" />
                     </View>
                     <View marginVertical={8} marginRight={8}>
