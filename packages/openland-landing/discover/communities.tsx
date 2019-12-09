@@ -256,7 +256,7 @@ const text = css`
     margin-top: 12px;
 
     @media (max-width: 960px) {
-        font-size: 20px;
+        font-size: 18px;
     }
 
     @media (max-width: 768px) {

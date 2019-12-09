@@ -48,7 +48,7 @@ const listWrapper = css`
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        font-size: 22px;
+        font-size: 19px;
         line-height: 35px;
     }
 

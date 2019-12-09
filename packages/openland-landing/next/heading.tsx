@@ -9,8 +9,12 @@ const root = css`
         font-size: 36px;
     }
 
-    @media (min-width: 768px) and (max-width: 1600px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         font-size: 32px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        font-size: 28px;
     }
 
     @media (max-width: 768px) {
