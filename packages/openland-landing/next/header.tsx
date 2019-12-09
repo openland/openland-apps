@@ -25,7 +25,7 @@ const menu = css`
     position: relative;
     margin: -23px;
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         display: none;
     }
     z-index: 10;
@@ -152,7 +152,7 @@ const mobileMenuTrigger = css`
     cursor: pointer;
     display: none;
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         display: initial;
     }
 `;

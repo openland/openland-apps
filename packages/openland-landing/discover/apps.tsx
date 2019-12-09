@@ -11,7 +11,7 @@ import { ReactComponent as Linux } from './icons/ic-linux.svg';
 
 const root = css`
     display: none;
-    @media (min-width: 768px) {
+    @media (min-width: 769px) {
         display: block;
     }
 `;
