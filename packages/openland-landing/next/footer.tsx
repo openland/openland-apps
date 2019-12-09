@@ -241,6 +241,12 @@ const popupSeparator = css`
     margin-bottom: 8px;
 `;
 
+const hide = css`
+    @media (max-width: 960px) {
+        display: none;
+    }
+`;
+
 export default () => {
     const [appsIsOpen, appsSetOpen] = React.useState<boolean>(false);
     const [legalIsOpen, legalSetOpen] = React.useState<boolean>(false);
@@ -385,7 +391,7 @@ export default () => {
                                     </div>
                                 )}
                             </li>
-                            <li className={menuItem}>
+                            <li className={cx(menuItem, hide)}>
                                 <a className={menuLink} href="/invite/Ryq9hof">
                                     Chat with us
                                 </a>

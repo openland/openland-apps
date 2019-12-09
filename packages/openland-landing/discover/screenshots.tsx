@@ -79,7 +79,7 @@ const item = css`
 const link = css`
     font-size: inherit;
     color: inherit;
-    font-weight: bold;
+    font-weight: 600;
     color: #525273;
     position: relative;
     cursor: pointer;
@@ -144,6 +144,10 @@ const screenshot = css`
 
 const logo = css`
     margin-right: 32px;
+
+    @media (max-width: 960px) {
+        width: 88px;
+    }
 
     @media (max-width: 768px) {
         display: none;

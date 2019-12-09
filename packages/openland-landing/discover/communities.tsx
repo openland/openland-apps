@@ -204,7 +204,7 @@ const communityText = css`
     transition: opacity 0.2s;
 
     @media (max-width: 768px) {
-        font-size: 14px;
+        font-size: 16px;
     }
 `;
 

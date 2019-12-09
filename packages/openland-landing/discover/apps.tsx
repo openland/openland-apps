@@ -156,6 +156,7 @@ const appButton = css`
     &:hover,
     &:focus {
         transition: color 0.01s, background-color 0.01s;
+        box-shadow: 0px 6px 27px rgba(36, 139, 242, 0.32);
         color: white;
         background-color: #47a3ff;
         text-decoration: none;
