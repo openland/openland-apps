@@ -255,7 +255,7 @@ export default () => {
                     <div className={content}>
                         <div className={webApp}>
                             <h2 className={subheading}>Web app</h2>
-                            <a className={button} href="#">
+                            <a className={button} href="invite/h2BGtL">
                                 Join Openland
                             </a>
                         </div>
@@ -265,21 +265,21 @@ export default () => {
                             <div className={apps}>
                                 <a
                                     className={cx(appButton, os === 'mac' && appButtonActive)}
-                                    href="#"
+                                    href="https://oplnd.com/mac"
                                 >
                                     <Mac />
                                     Mac
                                 </a>
                                 <a
                                     className={cx(appButton, os === 'windows' && appButtonActive)}
-                                    href="#"
+                                    href="https://oplnd.com/windows"
                                 >
                                     <Windows />
                                     Windows
                                 </a>
                                 <a
                                     className={cx(appButton, os === 'linux' && appButtonActive)}
-                                    href="#"
+                                    href="https://oplnd.com/linux"
                                 >
                                     <Linux />
                                     Linux
@@ -290,7 +290,10 @@ export default () => {
                         <div className={mobileApp}>
                             <h2 className={subheading}>Mobile app</h2>
                             <div className={apps}>
-                                <a className={cx(appButton, appButtonActive)} href="#">
+                                <a
+                                    className={cx(appButton, appButtonActive)}
+                                    href="https://oplnd.com/ios"
+                                >
                                     <img
                                         className={appIcon}
                                         src="/static/landing/icons/ic-ios.svg"
@@ -300,7 +303,10 @@ export default () => {
                                     />
                                     iOS
                                 </a>
-                                <a className={cx(appButton, appButtonActive)} href="#">
+                                <a
+                                    className={cx(appButton, appButtonActive)}
+                                    href="https://oplnd.com/android"
+                                >
                                     <img
                                         className={appIcon}
                                         src="/static/landing/icons/ic-android.svg"

@@ -338,7 +338,7 @@ export default () => (
                     </div>
 
                     <div className={featuredCommunities}>
-                        <a className={cx(community, fundraising)} href="#">
+                        <a className={cx(community, fundraising)} href="invite/TNMloKR">
                             <div className={communityHeader}>
                                 <div className={communityTitle}>
                                     <h2 className={communityHeading}>Fundraising Help</h2>
@@ -369,7 +369,7 @@ export default () => (
                             </div>
                         </a>
 
-                        <a className={cx(community, travel)} href="#">
+                        <a className={cx(community, travel)} href="invite/hKLqdm8">
                             <div className={communityHeader}>
                                 <div className={communityTitle}>
                                     <h2 className={communityHeading}>Travel Hacks</h2>
@@ -400,7 +400,7 @@ export default () => (
                             </div>
                         </a>
 
-                        <a className={cx(community, cto)} href="#">
+                        <a className={cx(community, cto)} href="invite/eD0uZPt">
                             <div className={communityHeader}>
                                 <div className={communityTitle}>
                                     <h2 className={communityHeading}>CTOs</h2>
@@ -431,7 +431,7 @@ export default () => (
                             </div>
                         </a>
 
-                        <a className={cx(community, food)} href="#">
+                        <a className={cx(community, food)} href="invite/skHEQcr">
                             <div className={communityHeader}>
                                 <div className={communityTitle}>
                                     <h2 className={communityHeading}>Future of Food</h2>

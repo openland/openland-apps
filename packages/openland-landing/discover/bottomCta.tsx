@@ -179,7 +179,7 @@ export default () => (
                         <li className={item}>Discover inspiring communities for your interests</li>
                     </ul>
                 </div>
-                <a className={button} href="#">
+                <a className={button} href="https://next.openland.com/invite/h2BGtL">
                     Join Openland
                 </a>
                 <div className={dotsRightSmall} />

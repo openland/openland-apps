@@ -191,7 +191,7 @@ export default () => (
                 </h1>
                 <p className={text}>Meet inspiring people, learn and get help</p>
                 <div className={buttons}>
-                    <a className={button} href="#">
+                    <a className={button} href="https://next.openland.com/invite/h2BGtL">
                         Join Openland
                     </a>
                 </div>
