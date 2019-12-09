@@ -187,7 +187,7 @@ const popup = css`
     padding-top: 16px;
     padding-right: 16px;
     box-shadow: 0px 9px 42px rgba(0, 0, 0, 0.07);
-    border-radius: 32px;
+    border-radius: 20px;
     z-index: 20;
 
     display: flex;
@@ -230,7 +230,7 @@ const popupClose = css`
 const popupCloseIcon = css``;
 
 const popupContent = css`
-    margin-top: -30px;
+    margin-top: -80px;
     pointer-events: none;
 `;
 
@@ -240,6 +240,7 @@ const popupHeading = css`
     line-height: 46px;
     color: #272750;
     margin-bottom: 20px;
+    margin-top: 50px;
 `;
 
 const popupSection = css`
@@ -254,21 +255,31 @@ const popupSectionHeading = css`
 `;
 
 const popupSectionText = css`
-    font-size: 16px;
     line-height: 2;
     color: #525273;
-    @media (max-width: 768px) {
+
+    @media (min-width: 1600px) {
+        font-size: 20px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        font-size: 17px;
+    }
+
+    @media (max-width: 960px) and (min-width: 768px) {
         font-size: 14px;
-        margin-right: 15px;
     }
 `;
 
 const popupSections = css`
     display: grid;
-    grid-template-columns: repeat(auto-fill, 230px);
+    grid-template-columns: repeat(auto-fill, 30%);
     grid-gap: 20px;
-    // justify-content: center;
     text-align: left;
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(auto-fill, 100%);
+    }
 `;
 
 const hide = css`
@@ -297,48 +308,75 @@ export default () => {
                                     />
                                 </div>
                                 <div className={popupContent}>
-                                    <h2 className={popupHeading}>Features</h2>
+                                    <h2 className={popupHeading}>Messaging</h2>
                                     <div className={popupSections}>
                                         <div className={popupSection}>
                                             <h2 className={popupSectionHeading}>Chats</h2>
                                             <p className={popupSectionText}>
-                                                Public and invite-only
+                                                Reactions, stickers, link previews
                                                 <br />
-                                                Emojis, stickers, formatting
+                                                Formatting, editing, drafts
                                                 <br />
                                                 Mentions, replies, forwards
                                                 <br />
                                                 Threaded comments
-                                                <br />
-                                                Link and file previews
                                             </p>
                                         </div>
                                         <div className={popupSection}>
-                                            <h2 className={popupSectionHeading}>Growth</h2>
+                                            <h2 className={popupSectionHeading}>Calls</h2>
                                             <p className={popupSectionText}>
-                                                Invite pages and links
+                                                Crystal-clear sound
                                                 <br />
-                                                Social sharing tools
+                                                Direct and conference calls
                                                 <br />
-                                                Featuring on Openland
+                                                Call-and-chat multitasking
                                                 <br />
-                                                Website widgests and buttons
-                                                <br />
-                                                New member onboarding
+                                                Screen sharing (coming soon)
                                             </p>
                                         </div>
                                         <div className={popupSection}>
-                                            <h2 className={popupSectionHeading}>Activities</h2>
+                                            <h2 className={popupSectionHeading}>Apps</h2>
                                             <p className={popupSectionText}>
-                                                Questions and answers
+                                                All platforms
                                                 <br />
-                                                Member directory
+                                                Beautiful and ultra-fast
+                                                <br />
+                                                Stress-free notifications
+                                                <br />
+                                                Dark mode and color themes
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <h2 className={popupHeading}>Community</h2>
+                                    <div className={popupSections}>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>Learn</h2>
+                                            <p className={popupSectionText}>
+                                                News sharing and discussion
+                                                <br />
+                                                Live sessions with experts
+                                                <br />
+                                                Shared docs and best practices
+                                            </p>
+                                        </div>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>Connect</h2>
+                                            <p className={popupSectionText}>
+                                                Member directories
                                                 <br />
                                                 Matchmaking and intros
                                                 <br />
-                                                Live sessions
+                                                Career opportunities
+                                            </p>
+                                        </div>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>Get help</h2>
+                                            <p className={popupSectionText}>
+                                                Advice and recommendations
                                                 <br />
-                                                Community library
+                                                Showcase and feedback
+                                                <br />
+                                                Customer research
                                             </p>
                                         </div>
                                     </div>
