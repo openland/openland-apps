@@ -7,7 +7,7 @@ import { Page } from 'openland-unicorn/Page';
 import { XScrollValues } from 'openland-x/XScrollView3';
 import { XView, XViewRouter } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
-import { TextTitle3, TextStyles, TextDetail } from 'openland-web/utils/TextStyles';
+import { TextTitle3, TextStyles } from 'openland-web/utils/TextStyles';
 import { css, cx } from 'linaria';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';

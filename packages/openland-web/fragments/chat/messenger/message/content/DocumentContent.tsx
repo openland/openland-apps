@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XLoader } from 'openland-x/XLoader';
-import { UserShort } from 'openland-api/Types';
 import { showModalBox } from 'openland-x/showModalBox';
 import { formatBytes } from 'openland-y-utils/formatBytes';
 import { formatDateTime } from 'openland-y-utils/formatTime';
-import { TextCaption, TextDensed, TextLabel1 } from 'openland-web/utils/TextStyles';
+import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
