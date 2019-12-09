@@ -90,8 +90,8 @@ const button = css`
     }
 
     @media (min-width: 1600px) {
-        font-size: 22px;
-        padding: 15px 36px;
+        font-size: 20px;
+        padding: 16px 36px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {

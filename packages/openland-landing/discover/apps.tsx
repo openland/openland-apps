@@ -43,7 +43,7 @@ const button = css`
     }
 
     @media (min-width: 1600px) {
-        font-size: 17px;
+        font-size: 20px;
         padding: 16px 36px;
     }
 
@@ -168,7 +168,7 @@ const appButton = css`
     }
 
     @media (min-width: 1600px) {
-        padding: 13px;
+        padding: 16px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
@@ -204,8 +204,8 @@ const appButtonActive = css`
     }
 
     @media (min-width: 1600px) {
-        padding: 13px 24px;
-        font-size: 18px;
+        font-size: 20px;
+        padding: 16px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
