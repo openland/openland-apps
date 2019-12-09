@@ -19,11 +19,19 @@ const footer = css`
 
     @media (max-width: 768px) {
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
+
+        width: 320px;
+        margin: 0 auto;
     }
 `;
 
-const logo = css``;
+const logo = css`
+    @media (max-width: 768px) {
+        position: relative;
+        left: -5px;
+    }
+`;
 
 const menu = css`
     list-style-type: none;
@@ -38,6 +46,10 @@ const menu = css`
 
     @media (min-width: 1600px) {
         left: 25px;
+    }
+
+    @media (max-width: 768px) {
+        left: 3px;
     }
 `;
 
@@ -90,6 +102,10 @@ const social = css`
     @media (min-width: 1600px) {
         left: 12px;
     }
+
+    @media (max-width: 768px) {
+        margin-left: -5px;
+    }
 `;
 
 const socialItem = css`
@@ -141,7 +157,7 @@ const hideMobile = css`
 const apps = css`
     display: none;
     position: relative;
-    margin-left: 10px;
+    // margin-left: 10px;
     margin-top: 10px;
 
     @media (max-width: 768px) {
@@ -157,7 +173,7 @@ const appsLink = css`
 const links = css`
     display: flex;
     flex-direction: column;
-    align-items: center;
+    // align-items: center;
     margin: -5px;
 `;
 
