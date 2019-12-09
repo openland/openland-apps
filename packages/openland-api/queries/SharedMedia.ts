@@ -17,6 +17,7 @@ export const SharedMediaQuery = gql`
                                 message {
                                     ... on GeneralMessage {
                                         id
+                                        fallback
                                         date
                                         sender {
                                             id

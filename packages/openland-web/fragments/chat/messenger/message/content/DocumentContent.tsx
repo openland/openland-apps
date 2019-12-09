@@ -96,7 +96,7 @@ const modalContent = css`
 interface ModalProps {
     fileId: string;
     fileName: string;
-    sender?: UserShort;
+    sender?: { name: string };
     senderNameEmojify?: string | JSX.Element;
     date?: number;
 }
@@ -267,7 +267,7 @@ const title = css`
 `;
 
 const subtitle = css`
-    color: var(--foregroundPrimary);
+    color: var(--foregroundSecondary);
 `;
 
 const videoContainer = css`
@@ -351,11 +351,13 @@ interface DocumentContentProps {
         fileMetadata: { name: string; size: number; mimeType: string | null };
         uri?: string;
     };
-    sender?: UserShort;
+    sender?: { name: string };
     senderNameEmojify?: string | JSX.Element;
     date?: number;
     onClick?: (ev: React.MouseEvent) => void;
     progress?: number;
+    className?: string;
+    inlineVideo?: boolean;
 }
 
 export const DocumentContent = React.memo((props: DocumentContentProps) => {
@@ -368,6 +370,7 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
         (file.fileMetadata.mimeType === 'application/pdf' || isSafari);
 
     if (
+        props.inlineVideo &&
         file.fileMetadata.mimeType &&
         (!!file.fileMetadata.mimeType.match('video') || fileFormat(name) === 'VIDEO')
     ) {
@@ -399,7 +402,7 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
 
     return (
         <a
-            className={cx(fileContainer, 'message-document-wrapper')}
+            className={cx(fileContainer, 'message-document-wrapper', props.className)}
             onClick={onClick}
             href={!props.onClick ? fileSrc : undefined}
         >
@@ -422,7 +425,7 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
                 </div>
                 <div className={metadataContainer}>
                     <div className={cx(title + ' title', TextLabel1)}>{name}</div>
-                    <div className={cx(subtitle, TextDensed)}>{formatBytes(size)}</div>
+                    <div className={cx(subtitle, TextCaption)}>{`${formatBytes(size)}  ·  ${!props.senderNameEmojify ? props.sender && props.sender.name : ''}`}{props.senderNameEmojify}</div>
                 </div>
             </div>
         </a>

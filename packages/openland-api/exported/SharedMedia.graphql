@@ -44,6 +44,7 @@ query SharedMedia($after: String, $chatId: ID!, $first: Int!, $mediaTypes: [Shar
               }
             }
             date
+            fallback
             id
             sender {
               __typename

@@ -2,10 +2,10 @@ import * as React from 'react';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { useClient } from 'openland-web/utils/useClient';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
-import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile, SharedMediaType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_sender } from 'openland-api/Types';
+import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile, SharedMediaType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_sender, SharedMedia_sharedMedia_edges_node_message } from 'openland-api/Types';
 import { Page } from 'openland-unicorn/Page';
 import { XScrollValues } from 'openland-x/XScrollView3';
-import { XView } from 'react-mental';
+import { XView, XViewRouter } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 import { TextTitle3, TextStyles, TextDetail } from 'openland-web/utils/TextStyles';
 import { css, cx } from 'linaria';
@@ -20,11 +20,11 @@ import ForwardIcon from 'openland-icons/s/ic-forward-24.svg';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { TabItem, useTabs, Tabs } from 'openland-web/components/unicorn/UTabs';
-import { MediaContent } from './MediaContent';
-import { fileIcon, fileFormat } from '../messenger/message/content/DocumentContent';
-import { formatBytes } from 'openland-y-utils/formatBytes';
-import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { showChatPicker } from '../showChatPicker';
+import { MediaContent } from './MediaContent';
+import { DocContent } from './DocContent';
+import { MessengerEngine } from 'openland-engines/MessengerEngine';
+import { convertMessage } from 'openland-engines/messenger/ConversationEngine';
 
 interface SharedMediaProps {
     chatId: string;
@@ -38,6 +38,7 @@ interface SharedItem {
     attach: SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile | SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment;
     sender: SharedMedia_sharedMedia_edges_node_message_GeneralMessage_sender;
     date: string;
+    message: SharedMedia_sharedMedia_edges_node_message;
 }
 
 export interface SharedItemFile extends SharedItem {
@@ -99,72 +100,17 @@ export const Footer = (props: { useCorners: boolean, children: any }) => {
     );
 };
 
-export const sharedItemMenu = (ctx: UPopperController, item: SharedItem) => {
+export const sharedItemMenu = (messenger: MessengerEngine, router: XViewRouter, ctx: UPopperController, item: SharedItem) => {
     const builder = new UPopperMenuBuilder();
     builder.item({
         title: 'Forward', icon: <ForwardIcon />, onClick: () => {
             showChatPicker(id => {
-                // TODO: handle
+                messenger.forward([convertMessage(item.message as any, 'somewhere', messenger)], id);
+                router.navigate('/mail/' + id);
             });
         }
     });
     return builder.build(ctx);
-};
-
-const FileIconContainer = css`
-    position: relative;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    margin-right: 16px;
-    justify-content: center;
-`;
-const FileIconTextClass = css`
-position: absolute;
-    z-index: 1;
-    bottom: 6px;
-    color: var(--foregroundContrast);
-`;
-const DocumentContetContainer = css`
-    display: flex;
-    width: 100%;
-    height: 56px;
-    padding: 8px 16px;
-    flex-direction: row;
-    margin: 0 -16px;
-    border-radius: 8px;
-    :hover {
-        background-color: var(--backgroundTertiary);
-        .menu-container{
-            opacity: 1;
-        }
-    }
-`;
-const MenuContainer = css`
-    opacity: 0;
-`;
-
-// TODO: add animations from messages, extract single component
-// prevent hide active umore button 
-const DocumentContet = (props: { item: SharedItemFile }) => {
-    const menuClick = React.useCallback((ctx: UPopperController) => {
-        return sharedItemMenu(ctx, props.item);
-    }, []);
-    return (
-        <div className={DocumentContetContainer}>
-            <div className={FileIconContainer}>
-                {fileIcon[fileFormat(props.item.attach.fileMetadata.name)]}
-                <div className={cx(TextDetail, FileIconTextClass)} color="var(--foregroundContrast)">{fileFormat(props.item.attach.fileMetadata.name)}</div>
-            </div>
-            <XView flexDirection="column" flexGrow={1}>
-                <XView {...TextStyles.Label1} color="var(--foregroundPrimary)">{props.item.attach.fileMetadata.name}</XView>
-                <XView {...TextStyles.Caption} color="var(--foregroundSecondary)">{`${formatBytes(props.item.attach.fileMetadata.size)}  ·  ${props.item.sender.name}`}</XView>
-            </XView>
-            <div className={cx('menu-container', MenuContainer)}>
-                <UMoreButton menu={menuClick} />
-            </div>
-        </div>
-    );
 };
 
 const monthsFull = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -183,7 +129,6 @@ const SharedMediaContainerHiddenClass = css`
     display: none;
 `;
 export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps, ref: React.RefObject<Paginated>) => {
-
     const client = useClient();
     const [loading, setLoadin] = React.useState(false);
     const [data, setData] = React.useState<SharedItem[]>([]);
@@ -202,7 +147,7 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
                     let date = monthsFull[d.getMonth()] + ' ' + d.getFullYear();
                     for (let attach of next.node.message.attachments) {
                         if (attach.__typename === 'MessageAttachmentFile' || attach.__typename === 'MessageRichAttachment') {
-                            attaches.push({ sender, date, attach });
+                            attaches.push({ sender, date, attach, message: next.node.message });
                         }
                     }
                 }
@@ -235,7 +180,7 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
             }
         } else {
             if (i.attach.__typename === 'MessageAttachmentFile') {
-                items.push(<DocumentContet item={i as SharedItemFile} />);
+                items.push(<DocContent item={i as SharedItemFile} />);
             } else {
                 items.push(<XView padding={8} flexGrow={1}> {JSON.stringify(i)} </XView>);
             }

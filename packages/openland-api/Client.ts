@@ -2939,6 +2939,7 @@ const SharedMediaSelector = obj(
                                                         ))
                                                     ))))),
                                                 field('date', 'date', args(), notNull(scalar('Date'))),
+                                                field('fallback', 'fallback', args(), notNull(scalar('String'))),
                                                 field('id', 'id', args(), notNull(scalar('ID'))),
                                                 field('sender', 'sender', args(), notNull(obj(
                                                         field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4416,7 +4417,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     SharedMedia: {
         kind: 'query',
         name: 'SharedMedia',
-        body: 'query SharedMedia($after:String,$chatId:ID!,$first:Int!,$mediaTypes:[SharedMediaType!]!){sharedMedia:chatSharedMedia(after:$after,chatId:$chatId,first:$first,mediaTypes:$mediaTypes){__typename edges{__typename cursor node{__typename message{__typename ... on GeneralMessage{attachments{__typename ... on MessageAttachmentFile{fallback fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{id image{__typename url}imageFallback{__typename photo}imagePreview subTitle title titleLink}}date id sender{__typename id name}}}}}pageInfo{__typename currentPage hasNextPage}}}',
+        body: 'query SharedMedia($after:String,$chatId:ID!,$first:Int!,$mediaTypes:[SharedMediaType!]!){sharedMedia:chatSharedMedia(after:$after,chatId:$chatId,first:$first,mediaTypes:$mediaTypes){__typename edges{__typename cursor node{__typename message{__typename ... on GeneralMessage{attachments{__typename ... on MessageAttachmentFile{fallback fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{id image{__typename url}imageFallback{__typename photo}imagePreview subTitle title titleLink}}date fallback id sender{__typename id name}}}}}pageInfo{__typename currentPage hasNextPage}}}',
         selector: SharedMediaSelector
     },
     SharedMediaCounters: {

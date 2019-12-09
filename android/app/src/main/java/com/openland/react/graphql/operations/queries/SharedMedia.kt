@@ -50,6 +50,7 @@ internal val SharedMediaSelector = obj(
                                                         ))
                                                     ))))),
                                                 field("date", "date", notNull(scalar("Date"))),
+                                                field("fallback", "fallback", notNull(scalar("String"))),
                                                 field("id", "id", notNull(scalar("ID"))),
                                                 field("sender", "sender", notNull(obj(
                                                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -70,6 +71,6 @@ internal val SharedMediaSelector = obj(
 val SharedMedia = object: OperationDefinition {
     override val name = "SharedMedia"
     override val kind = OperationKind.QUERY
-    override val body = "query SharedMedia(\$after:String,\$chatId:ID!,\$first:Int!,\$mediaTypes:[SharedMediaType!]!){sharedMedia:chatSharedMedia(after:\$after,chatId:\$chatId,first:\$first,mediaTypes:\$mediaTypes){__typename edges{__typename cursor node{__typename message{__typename ... on GeneralMessage{attachments{__typename ... on MessageAttachmentFile{fallback fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{id image{__typename url}imageFallback{__typename photo}imagePreview subTitle title titleLink}}date id sender{__typename id name}}}}}pageInfo{__typename currentPage hasNextPage}}}"
+    override val body = "query SharedMedia(\$after:String,\$chatId:ID!,\$first:Int!,\$mediaTypes:[SharedMediaType!]!){sharedMedia:chatSharedMedia(after:\$after,chatId:\$chatId,first:\$first,mediaTypes:\$mediaTypes){__typename edges{__typename cursor node{__typename message{__typename ... on GeneralMessage{attachments{__typename ... on MessageAttachmentFile{fallback fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{id image{__typename url}imageFallback{__typename photo}imagePreview subTitle title titleLink}}date fallback id sender{__typename id name}}}}}pageInfo{__typename currentPage hasNextPage}}}"
     override val selector = SharedMediaSelector
 }

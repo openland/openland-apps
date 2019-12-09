@@ -5,7 +5,7 @@ import { XViewProps } from 'react-mental';
 import { UPopperController } from '../UPopper';
 import { usePopper } from '../usePopper';
 
-interface UMoreButtonProps extends XViewProps {
+export interface UMoreButtonProps extends XViewProps {
     menu: (ctx: UPopperController) => JSX.Element;
     useWrapper?: boolean;
     size?: UIconButtonSize;

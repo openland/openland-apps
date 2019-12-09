@@ -124,6 +124,7 @@ export const MessageContent = (props: MessageContentProps) => {
                     senderNameEmojify={props.senderNameEmojify}
                     date={props.date}
                     progress={fileProgress}
+                    inlineVideo={true}
                 />
             </div>,
         );
