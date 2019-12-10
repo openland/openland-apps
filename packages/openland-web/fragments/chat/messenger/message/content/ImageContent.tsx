@@ -208,7 +208,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     props.date && (
                         <div className={modalInfoContainer}>
                             <div className={cx(TextCaption, modalSecondaryText)}>
-                                {props.senderNameEmojify || props.sender ? props.sender!!.name : ''}
+                                {props.senderNameEmojify || (props.sender ? props.sender!!.name : '')}
                             </div>
                             <div className={cx(TextCaption, modalSecondaryText)}>
                                 {formatDateTime(props.date)}

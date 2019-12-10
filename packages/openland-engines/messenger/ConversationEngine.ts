@@ -6,7 +6,6 @@ import {
     UserBadge,
     FullMessage,
     FullMessage_GeneralMessage_reactions,
-    FullMessage_GeneralMessage_sender,
     FullMessage_ServiceMessage_serviceMetadata,
     FullMessage_GeneralMessage_attachments,
     FullMessage_GeneralMessage_spans,

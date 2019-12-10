@@ -15,6 +15,7 @@ import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
 import InviteIcon from 'openland-icons/s/ic-invite-24.svg';
 import SettingsIcon from 'openland-icons/s/ic-settings-24.svg';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
+import AttachIcon from 'openland-icons/s/ic-attach-24.svg';
 import NotificationsOffIcon from 'openland-icons/s/ic-notifications-off-24.svg';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
@@ -158,6 +159,13 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
             client.mutateRoomSettingsUpdate({ roomId: chat.id, settings: { mute: newMuted } });
             setMuted(newMuted);
         },
+        closeDelay: 400,
+    });
+
+    res.item({
+        title: 'Shared resources',
+        icon: <AttachIcon />,
+        path: `/mail/${props.id}/shared`,
         closeDelay: 400,
     });
 

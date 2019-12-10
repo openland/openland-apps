@@ -39,6 +39,7 @@ interface SharedItem {
     attach: SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile | SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment;
     sender: SharedMedia_sharedMedia_edges_node_message_GeneralMessage_sender;
     date: string;
+    dateRaw: string;
     message: SharedMedia_sharedMedia_edges_node_message;
 }
 
@@ -145,7 +146,6 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
         if (after || after === undefined && !loading) {
             setLoadin(true);
             let res = await client.querySharedMedia({ chatId: props.chatId, after, mediaTypes: props.mediaTypes, first: 30 });
-            console.warn(res);
             let nextAfter: string | undefined = undefined;
             setData(currentData => res.sharedMedia.edges.reduce((attaches, next) => {
                 nextAfter = next.cursor;
@@ -155,7 +155,7 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
                     let date = monthsFull[d.getMonth()] + ' ' + d.getFullYear();
                     for (let attach of next.node.message.attachments) {
                         if (attach.__typename === 'MessageAttachmentFile' || attach.__typename === 'MessageRichAttachment') {
-                            attaches.push({ sender, date, attach, message: next.node.message });
+                            attaches.push({ sender, date, attach, message: next.node.message, dateRaw: next.node.message.date });
                         }
                     }
                 }

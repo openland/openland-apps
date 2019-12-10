@@ -12,6 +12,7 @@ import LinkIcon from 'openland-icons/s/ic-link-24.svg';
 import { TextLabel1, TextBody } from 'openland-web/utils/TextStyles';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { ULink } from 'openland-web/components/unicorn/ULink';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 
 const MenuContainer = css`
     display: flex;
@@ -23,6 +24,12 @@ const MenuContainer = css`
     border-radius: 40px;
     background-color: var(--backgroundTertiary);
 `;
+
+const MenuContainerMobile = css`
+    right: 16px;
+    background-color: var(--backgroundPrimary);
+`;
+
 const MenuVisible = css`
     opacity: 1;
 `;
@@ -93,13 +100,17 @@ const AccentPrimaryColor = css`
 const ForegroundSecondaryColor = css`
     color: var(--foregroundSecondary);
 `;
+const MobilePadding = css`
+    padding: 16px 32px;
+`;
+
 export const RichContent = (props: { item: SharedItemRich }) => {
     const messenger = React.useContext(MessengerContext);
     const router = React.useContext(XViewRouterContext)!;
     const menuClick = React.useCallback((ctx: UPopperController) => {
         return sharedItemMenu(messenger, router, ctx, props.item);
     }, []);
-    const [menuVisible, menuShow] = usePopper({ placement: 'bottom-end', hideOnClick: true }, menuClick);
+    const [menuVisible, menuShow] = usePopper({ placement: 'bottom-start', hideOnClick: true }, menuClick);
 
     const menuIconClick = React.useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault();
@@ -113,8 +124,9 @@ export const RichContent = (props: { item: SharedItemRich }) => {
         router.navigate(`/${props.item.sender.id}`);
     }, []);
 
+    const layout = useLayout();
     return (
-        <ULink className={ContainerClass} href={props.item.attach.titleLink || undefined} >
+        <ULink className={cx(ContainerClass, layout === 'mobile' && MobilePadding)} href={props.item.attach.titleLink || undefined} >
             {props.item.attach.image && (
                 <div className={ImgContianerClass}>
                     <ImgWithRetry
@@ -132,7 +144,7 @@ export const RichContent = (props: { item: SharedItemRich }) => {
                 <div className={cx(TextBody, TextInner, AccentPrimaryColor)}  >{props.item.attach.titleLink}</div>
                 <div onClick={userClick} className={cx(TextBody, TextInner, ForegroundSecondaryColor)} >{props.item.sender.name}</div>
             </div>
-            <div className={cx('menu-container', MenuContainer, menuVisible && MenuVisible)}>
+            <div className={cx('menu-container', MenuContainer, layout === 'mobile' && MenuContainerMobile, (menuVisible || layout === 'mobile') && MenuVisible)}>
                 <UIconButton
                     icon={<ManageVerticalIcon />}
                     color="var(--foregroundTertiary)"
