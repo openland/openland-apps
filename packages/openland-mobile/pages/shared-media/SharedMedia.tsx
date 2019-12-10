@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { View, Text, TouchableWithoutFeedback, Image, StyleSheet, ViewStyle, ImageStyle, TextStyle, LayoutChangeEvent } from 'react-native';
+import { View, Text, Image, StyleSheet, ViewStyle, ImageStyle, TextStyle, LayoutChangeEvent } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { withApp } from 'openland-mobile/components/withApp';
-import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { AsyncSharedMediaList } from 'openland-mobile/pages/shared-media/AsyncSharedMediaList';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SharedMediaItemType } from 'openland-engines/messenger/SharedMediaEngine';
+import { ZTab } from 'openland-mobile/components/ZTab';
 
 interface Tab {
     name: string;
@@ -39,24 +40,12 @@ const Tabs = ({ activeTab, tabs }: TabsProps) => {
                 const isActive = type === activeTab;
 
                 return (
-                    <TouchableWithoutFeedback
-                        key={name}
-                        style={{ borderRadius: RadiusStyles.Large }}
-                        onPress={onPress}
-                    >
-                        <View
-                            flexDirection="row"
-                            borderRadius={RadiusStyles.Large}
-                            backgroundColor={isActive ? theme.backgroundTertiaryTrans : undefined}
-                            paddingVertical={6}
-                            paddingHorizontal={16}
-                        >
-                            <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>{name}</Text>
-                            {count !== 0 && (
-                                <Text style={{ ...TextStyles.Label1, color: theme.foregroundTertiary }}> {count}</Text>
-                            )}
-                        </View>
-                    </TouchableWithoutFeedback>
+                    <ZTab key={name} selected={isActive} onPress={onPress}>
+                        {name}
+                        {count !== 0 && (
+                            <Text style={{ ...TextStyles.Label1, color: theme.foregroundTertiary }}> {count}</Text>
+                        )}
+                    </ZTab>
                 );
             })}
         </View>
@@ -131,7 +120,7 @@ const SharedMediaInner = React.memo(({ chatId }: { chatId: string }) => {
         <>
             <Tabs tabs={tabs} activeTab={activeTab} />
             <View flexGrow={1} onLayout={handleLayout}>
-                <React.Suspense fallback={null}>
+                <React.Suspense fallback={<ZLoader />}>
                     {currentCount === 0 ? (
                         <EmptyTab type={activeTab} />
                     ) : (

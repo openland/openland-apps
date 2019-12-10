@@ -9,8 +9,8 @@ import { ThemeGlobalKind } from 'openland-y-utils/themes/ThemeGlobal';
 import { View } from 'react-native';
 import { ThemeContext, resolveTheme } from 'openland-mobile/themes/ThemeContext';
 import { ThemePreview } from './components/appearance/ThemePreview';
-import { ThemeSwitcher } from './components/appearance/ThemeSwitcher';
 import { AccentCircle } from './components/appearance/AccentCircle';
+import { ZTab } from 'openland-mobile/components/ZTab';
 
 const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -33,9 +33,9 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
 
                 <ZListGroup header="Theme">
                     <View flexDirection="row" paddingHorizontal={16} paddingVertical={8}>
-                        <ThemeSwitcher selected={currentTheme === 'System'} label="System" onPress={() => handleChange({ theme: 'System' })} />
-                        <ThemeSwitcher selected={currentTheme === 'Light'} label="Light" onPress={() => handleChange({ theme: 'Light' })} />
-                        <ThemeSwitcher selected={currentTheme === 'Dark'} label="Dark" onPress={() => handleChange({ theme: 'Dark' })} />
+                        <ZTab selected={currentTheme === 'System'} onPress={() => handleChange({ theme: 'System' })}>System</ZTab>
+                        <ZTab selected={currentTheme === 'Light'} onPress={() => handleChange({ theme: 'Light' })}>Light</ZTab>
+                        <ZTab selected={currentTheme === 'Dark'} onPress={() => handleChange({ theme: 'Dark' })}>Dark</ZTab>
                     </View>
                 </ZListGroup>
 

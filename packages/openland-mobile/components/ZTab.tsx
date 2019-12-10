@@ -4,14 +4,14 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
-interface ThemeSwitcherProps {
-    label: string;
+interface ZTabProps {
+    children: any;
     onPress: () => void;
     selected: boolean;
 }
 
-export const ThemeSwitcher = React.memo((props: ThemeSwitcherProps) => {
-    const { label, onPress, selected } = props;
+export const ZTab = React.memo((props: ZTabProps) => {
+    const { children, onPress, selected } = props;
     const theme = React.useContext(ThemeContext);
 
     return (
@@ -25,7 +25,7 @@ export const ThemeSwitcher = React.memo((props: ThemeSwitcherProps) => {
                     borderRadius={RadiusStyles.Large}
                 >
                     <Text style={[TextStyles.Label1, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
-                        {label}
+                        {children}
                     </Text>
                 </View>
             </TouchableWithoutFeedback>

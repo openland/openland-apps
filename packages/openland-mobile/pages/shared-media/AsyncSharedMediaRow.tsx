@@ -126,15 +126,15 @@ interface AsyncSharedMediaRowProps {
     wrapperWidth: number;
 }
 
-export const AsyncSharedMediaRow = React.memo(({ item, wrapperWidth }: AsyncSharedMediaRowProps) => {
+export const AsyncSharedMediaRow = ({ item, wrapperWidth }: AsyncSharedMediaRowProps) => {
     const imageSize = (wrapperWidth - 4) / 3;
 
     return (
         <ASFlex flexDirection="row" marginBottom={2}>
             {item.messages.map((message, index) => (
-                <AsyncMediaItem key={index} message={message} index={index} imageSize={imageSize} />
+                <AsyncMediaItem key={message.id} message={message} index={index} imageSize={imageSize} />
             ))}
         </ASFlex>
 
     );
-});
+};

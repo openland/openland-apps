@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ASListView } from 'react-native-async-view/ASListView';
-import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { SharedMediaItemType } from 'openland-engines/messenger/SharedMediaEngine';
+import { View } from 'react-native';
 
 interface AsyncSharedMediaListProps {
     mediaType: SharedMediaItemType;
@@ -10,9 +10,26 @@ interface AsyncSharedMediaListProps {
     wrapperWidth: number;
 }
 
+const AsyncSharedMediaListInner = ({ mediaType, chatId, wrapperWidth }: AsyncSharedMediaListProps) => {
+    const types = Object.values(SharedMediaItemType);
+    const dataViews = types.map(type => getMessenger().getSharedMedia(chatId, type, wrapperWidth));
+
+    return (
+        <>
+            {dataViews.map((dataView, i) => (
+                <View key={dataView.key + wrapperWidth} style={{ ...types[i] === mediaType ? { flexGrow: 1 } : { height: 0 } }}>
+                    <ASListView
+                        key={dataView.key + wrapperWidth}
+                        dataView={dataView}
+                        style={{ flexGrow: 1 }}
+                    />
+                </View>
+            ))}
+        </>
+    );
+};
+
 export const AsyncSharedMediaList = ({ mediaType, chatId, wrapperWidth }: AsyncSharedMediaListProps) => {
-    const safeArea = React.useContext(ASSafeAreaContext);
-    const dataView = getMessenger().getSharedMedia(chatId, mediaType, wrapperWidth);
     React.useEffect(() => {
         return () => {
             getMessenger().destroySharedMedia(chatId);
@@ -20,11 +37,6 @@ export const AsyncSharedMediaList = ({ mediaType, chatId, wrapperWidth }: AsyncS
     }, [chatId]);
 
     return (
-        <ASListView
-            key={dataView.key}
-            dataView={dataView}
-            contentPaddingBottom={safeArea.bottom}
-            style={{ flexGrow: 1 }}
-        />
+        <AsyncSharedMediaListInner mediaType={mediaType} chatId={chatId} wrapperWidth={wrapperWidth} />
     );
 };
