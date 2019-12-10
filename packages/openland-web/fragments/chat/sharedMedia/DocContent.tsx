@@ -32,7 +32,7 @@ const DocumentContentClass = css`
 `;
 
 const DocumentContentContainerClass = css`
-    width: 100%;
+    width: calc(100% + 32px);
     margin: 0 -16px;
     position: relative;
     border-radius: 8px;

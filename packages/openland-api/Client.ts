@@ -2933,7 +2933,7 @@ const SharedMediaSelector = obj(
                                                                     field('photo', 'photo', args(), notNull(scalar('String')))
                                                                 )),
                                                             field('imagePreview', 'imagePreview', args(), scalar('String')),
-                                                            field('subTitle', 'subTitle', args(), scalar('String')),
+                                                            field('text', 'text', args(), scalar('String')),
                                                             field('title', 'title', args(), scalar('String')),
                                                             field('titleLink', 'titleLink', args(), scalar('String'))
                                                         ))
@@ -4417,7 +4417,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     SharedMedia: {
         kind: 'query',
         name: 'SharedMedia',
-        body: 'query SharedMedia($after:String,$chatId:ID!,$first:Int!,$mediaTypes:[SharedMediaType!]!){sharedMedia:chatSharedMedia(after:$after,chatId:$chatId,first:$first,mediaTypes:$mediaTypes){__typename edges{__typename cursor node{__typename message{__typename ... on GeneralMessage{attachments{__typename ... on MessageAttachmentFile{fallback fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{id image{__typename url}imageFallback{__typename photo}imagePreview subTitle title titleLink}}date fallback id sender{__typename id name}}}}}pageInfo{__typename currentPage hasNextPage}}}',
+        body: 'query SharedMedia($after:String,$chatId:ID!,$first:Int!,$mediaTypes:[SharedMediaType!]!){sharedMedia:chatSharedMedia(after:$after,chatId:$chatId,first:$first,mediaTypes:$mediaTypes){__typename edges{__typename cursor node{__typename message{__typename ... on GeneralMessage{attachments{__typename ... on MessageAttachmentFile{fallback fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{id image{__typename url}imageFallback{__typename photo}imagePreview text title titleLink}}date fallback id sender{__typename id name}}}}}pageInfo{__typename currentPage hasNextPage}}}',
         selector: SharedMediaSelector
     },
     SharedMediaCounters: {

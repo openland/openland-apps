@@ -42,7 +42,7 @@ export const SharedMediaQuery = gql`
                                             ... on MessageRichAttachment {
                                                 id
                                                 title
-                                                subTitle
+                                                text
                                                 titleLink
                                                 imagePreview
                                                 image {

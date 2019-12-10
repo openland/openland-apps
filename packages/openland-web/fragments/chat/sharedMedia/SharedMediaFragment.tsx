@@ -25,6 +25,7 @@ import { MediaContent } from './MediaContent';
 import { DocContent } from './DocContent';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { convertPartialMessage } from 'openland-engines/messenger/ConversationEngine';
+import { RichContent } from './RichContent';
 
 interface SharedMediaProps {
     chatId: string;
@@ -43,6 +44,10 @@ interface SharedItem {
 
 export interface SharedItemFile extends SharedItem {
     attach: SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile;
+}
+
+export interface SharedItemRich extends SharedItem {
+    attach: SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment;
 }
 
 const DateClass = css`
@@ -184,8 +189,10 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
         } else {
             if (i.attach.__typename === 'MessageAttachmentFile') {
                 items.push(<DocContent item={i as SharedItemFile} />);
+            } else if (i.attach.__typename === 'MessageRichAttachment') {
+                items.push(<RichContent item={i as SharedItemRich}/>);
             } else {
-                items.push(<XView padding={8} flexGrow={1}> {JSON.stringify(i)} </XView>);
+                items.push(<XView padding={8} flexGrow={1}>Unknown content</XView>);
             }
 
         }

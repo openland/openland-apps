@@ -38,7 +38,7 @@ query SharedMedia($after: String, $chatId: ID!, $first: Int!, $mediaTypes: [Shar
                   photo
                 }
                 imagePreview
-                subTitle
+                text
                 title
                 titleLink
               }
