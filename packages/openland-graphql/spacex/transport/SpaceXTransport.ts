@@ -1,10 +1,7 @@
 import { TransportServiceLayer } from './TransportServiceLayer';
-import { StableSocket, StableApolloSocket } from './StableSocket';
 import { OperationDefinition } from './../types';
 
 export type TransportResult = { type: 'result', value: any } | { type: 'error', error: any[] };
-
-type PendingOperation = { id: string, reqiestId: string, operation: OperationDefinition, variables: any, callback: (result: TransportResult) => void };
 
 export class SpaceXTransport {
 
