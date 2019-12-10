@@ -136,7 +136,7 @@ export class SpaceXStore {
             }
         }
         if (missingIds.size > 0) {
-            this.doLoad(missingIds);
+            await this.persistenceRead(missingIds);
         }
     }
 

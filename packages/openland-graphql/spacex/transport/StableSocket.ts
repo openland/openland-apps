@@ -3,7 +3,7 @@ import { StableSocket } from './StableSocket';
 export interface StableSocket<T> {
     onConnected: (() => void) | null;
     onDisconnected: (() => void) | null;
-    onReceive: ((message: T) => void) | null;
+    onReceiveData: ((id: string, message: T) => void) | null;
     onSessionLost: (() => void) | null;
 
     post(id: string, message: T): void;
@@ -17,7 +17,7 @@ export class StableApolloSocket implements StableSocket<any> {
     private readonly endpoint: string;
     private readonly params: any;
 
-    onReceive: ((message: any) => void) | null = null;
+    onReceiveData: ((id: string, message: any) => void) | null = null;
     onSessionLost: (() => void) | null = null;
     onConnected: (() => void) | null = null;
     onDisconnected: (() => void) | null = null;
@@ -107,13 +107,49 @@ export class StableApolloSocket implements StableSocket<any> {
 
     private onMessage(src: any) {
         console.log('[WS] <<< ' + JSON.stringify(src));
+        if (src.type === 'ka') {
+            // Ignore
+        } else if (src.type === 'connection_ack') {
+            if (this.state === 'starting') {
+                // Change State
+                this.state = 'started';
+
+                // Remove all pending messages
+                this.pending.clear();
+
+                console.log('[WS] Started');
+
+                // TODO: Reset backoff
+                if (this.onConnected) {
+                    this.onConnected();
+                }
+            }
+        } else if (src.type === 'ping') {
+            this.writeToSocket({
+                type: 'pong'
+            });
+        } else if (src.type === 'pong') {
+            // TODO: Implement
+        } else if (src.type === 'data') {
+            let id = src.id as string;
+            let payload = src.payload as any;
+            let errors = src.errors as any;
+            if (errors) {
+                // TODO: Implement
+            } else {
+                let data = payload.data;
+                if (this.onReceiveData) {
+                    this.onReceiveData(id, data);
+                }
+            }
+        }
     }
 
     private doConnect() {
         if (this.state !== 'waiting') {
             throw Error('Unexpected state');
         }
-        
+
         this.state = 'connecting';
         console.log('[WS] Connecting');
 
@@ -149,7 +185,7 @@ export class StableApolloSocket implements StableSocket<any> {
             if (this.state === 'started') {
                 console.log('[WS] Disconnected');
                 console.log('[WS] Session Lost');
-                
+
                 if (this.onDisconnected) {
                     this.onDisconnected();
                 }
@@ -162,7 +198,7 @@ export class StableApolloSocket implements StableSocket<any> {
             this.stopClient();
             this.state = 'waiting';
             console.log('[WS] Waiting');
-            
+
             setTimeout(() => {
                 if (this.state === 'waiting') {
                     this.doConnect();
