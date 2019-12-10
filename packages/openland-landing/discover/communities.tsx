@@ -101,6 +101,7 @@ const featuredCommunities = css`
     }
 
     @media (max-width: 960px) {
+        display: block;
         margin: -8px;
     }
 
@@ -143,6 +144,8 @@ const community = css`
     padding: 30px;
     border-radius: 16px;
     margin: 12px;
+
+    display: inline-block;
 
     @media (max-width: 960px) {
         margin: 8px;

@@ -162,6 +162,7 @@ const buttons = css`
 
 const img = css`
     width: 100%;
+    max-width: 100%;
     height: auto;
 
     margin-top: 30px;
@@ -169,12 +170,14 @@ const img = css`
 
     @media (max-width: 768px) {
         display: inline-block;
-        width: 360px;
+        width: 320px;
+        height: 128px;
         margin-top: 30px;
         margin-bottom: 48px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
+        height: auto;
         margin-top: 15px;
     }
 `;
@@ -203,7 +206,13 @@ export default () => (
                 <div className={dotsRight} />
             </div>
             <div className={imgWrapper}>
-                <img className={img} src="/static/landing/discover-cta.jpg" alt="" />
+                <img
+                    className={img}
+                    src="/static/landing/discover-cta.jpg"
+                    alt=""
+                    width="1172"
+                    height="472"
+                />
             </div>
         </Block>
     </div>
