@@ -1,6 +1,7 @@
 import { StableSocket, StableApolloSocket } from './StableSocket';
 import { OperationDefinition } from './../types';
 import { TransportResult } from './SpaceXTransport';
+import { GraphqlClientStatus } from 'openland-graphql/GraphqlClient';
 
 type PendingOperation = { id: string, reqiestId: string, operation: OperationDefinition, variables: any, callback: (result: TransportResult) => void };
 
@@ -9,15 +10,24 @@ export class TransportServiceLayer {
     private readonly liveOperations = new Map<string, PendingOperation>();
     private readonly liveOperationsIds = new Map<string, string>();
     private readonly socket: StableSocket<any>;
+    onStatusChanged: ((status: GraphqlClientStatus) => void) | null = null;
 
     constructor(endpoint: string, token?: string) {
         this.socket = new StableApolloSocket(endpoint, token ? { 'x-openland-token': token } : {});
         this.socket.onConnected = () => {
             console.log('[TX] Connected');
+            if (this.onStatusChanged) {
+                this.onStatusChanged({ status: 'connected' });
+            }
         };
         this.socket.onDisconnected = () => {
             console.log('[TX] Disconnected');
+            if (this.onStatusChanged) {
+                this.onStatusChanged({ status: 'connecting' });
+            }
         };
+
+        // Operation Callbacks
         this.socket.onReceiveData = (id, msg) => {
             let rid = this.liveOperationsIds.get(id);
             if (rid) {
@@ -27,8 +37,67 @@ export class TransportServiceLayer {
                 }
             }
         };
+        this.socket.onReceiveError = (id, errors) => {
+            let rid = this.liveOperationsIds.get(id);
+            if (rid) {
+                let op = this.liveOperations.get(rid);
+                if (op) {
+                    this.liveOperations.delete(rid);
+                    this.liveOperationsIds.delete(id);
+                    op.callback({ type: 'error', errors: errors });
+                }
+            }
+        };
+        this.socket.onReceiveCompleted = (id) => {
+            let rid = this.liveOperationsIds.get(id);
+            if (rid) {
+                let op = this.liveOperations.get(rid);
+                if (op) {
+                    this.liveOperations.delete(rid);
+                    this.liveOperationsIds.delete(id);
+                    op.callback({ type: 'completed' });
+                }
+            }
+        };
+        this.socket.onReceiveTryAgain = (id, delay) => {
+            let rid = this.liveOperationsIds.get(id);
+            if (rid) {
+                let op = this.liveOperations.get(rid);
+                if (op) {
+
+                    // Stop Existing
+                    this.flushQueryStop(op);
+
+                    // Regenerate ID
+                    let nid = (this.nextId++).toString();
+                    op.reqiestId = nid;
+                    this.liveOperationsIds.delete(id);
+                    this.liveOperationsIds.set(nid, id);
+
+                    // Schedule restart
+                    setTimeout(() => {
+                        if (this.liveOperationsIds.has(nid)) {
+                            this.flushQueryStart(op!);
+                        }
+                    }, delay);
+                }
+            }
+        };
+
         this.socket.onSessionLost = () => {
             console.log('[TX] Session lost');
+            for (let op of Array.from(this.liveOperations.values()) /* I am not sure if i can iterate and delete from map */) {
+
+                if (op.operation.kind === 'subscription') {
+                    // Stop subscriptions
+                    this.liveOperations.delete(op.id);
+                    this.liveOperationsIds.delete(op.reqiestId);
+                    op.callback({ type: 'completed' });
+                } else {
+                    // Retry query and mutation
+                    this.flushQueryStart(op);
+                }
+            }
         };
         this.socket.connect();
     }

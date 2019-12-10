@@ -1,9 +1,15 @@
+import { WatchDogTimer } from './WatchDogTimer';
 import { StableSocket } from './StableSocket';
 
 export interface StableSocket<T> {
     onConnected: (() => void) | null;
     onDisconnected: (() => void) | null;
+
     onReceiveData: ((id: string, message: T) => void) | null;
+    onReceiveError: ((id: string, error: any[]) => void) | null;
+    onReceiveTryAgain: ((id: string, delay: number) => void) | null;
+    onReceiveCompleted: ((id: string) => void) | null;
+
     onSessionLost: (() => void) | null;
 
     post(id: string, message: T): void;
@@ -18,10 +24,16 @@ export class StableApolloSocket implements StableSocket<any> {
     private readonly params: any;
 
     onReceiveData: ((id: string, message: any) => void) | null = null;
+    onReceiveError: ((id: string, error: any[]) => void) | null = null;
+    onReceiveTryAgain: ((id: string, delay: number) => void) | null = null;
+    onReceiveCompleted: ((id: string) => void) | null = null;
+
     onSessionLost: (() => void) | null = null;
     onConnected: (() => void) | null = null;
     onDisconnected: (() => void) | null = null;
 
+    private watchDog: WatchDogTimer;
+    private pingTimeout: any;
     private state: 'waiting' | 'connecting' | 'starting' | 'started' | 'completed' = 'waiting';
     private pending = new Map<string, any>();
     private isStarted = false;
@@ -31,6 +43,9 @@ export class StableApolloSocket implements StableSocket<any> {
     constructor(endpoint: string, params: any) {
         this.endpoint = endpoint;
         this.params = params;
+        this.watchDog = new WatchDogTimer(10000, () => {
+            this.onWatchdogDied();
+        });
     }
 
     post(id: string, message: any) {
@@ -119,6 +134,19 @@ export class StableApolloSocket implements StableSocket<any> {
 
                 console.log('[WS] Started');
 
+                // Kick WatchDog
+                this.watchDog.kick();
+
+                // Send Ping
+                if (this.pingTimeout) {
+                    clearTimeout(this.pingTimeout);
+                }
+                this.pingTimeout = setTimeout(() => {
+                    this.writeToSocket({
+                        type: 'ping'
+                    });
+                }, 5000);
+
                 // TODO: Reset backoff
                 if (this.onConnected) {
                     this.onConnected();
@@ -129,18 +157,48 @@ export class StableApolloSocket implements StableSocket<any> {
                 type: 'pong'
             });
         } else if (src.type === 'pong') {
-            // TODO: Implement
+            this.watchDog.kick();
+            if (this.pingTimeout) {
+                clearTimeout(this.pingTimeout);
+            }
+            this.pingTimeout = setTimeout(() => {
+                this.writeToSocket({
+                    type: 'ping'
+                });
+            }, 5000);
         } else if (src.type === 'data') {
             let id = src.id as string;
             let payload = src.payload as any;
             let errors = src.errors as any;
             if (errors) {
-                // TODO: Implement
+                let shouldRetry = false;
+                for (let e of errors) {
+                    if (e.shouldRetry === true) {
+                        shouldRetry = true;
+                        break;
+                    }
+                }
+
+                if (shouldRetry) {
+                    if (this.onReceiveTryAgain) {
+                        this.onReceiveTryAgain(id, 5000);
+                    }
+                } else {
+                    if (this.onReceiveError) {
+                        this.onReceiveError(id, errors);
+                    }
+                }
             } else {
                 let data = payload.data;
                 if (this.onReceiveData) {
                     this.onReceiveData(id, data);
                 }
+            }
+        } else if (src.type === 'error') {
+            // Critical error
+            let id = src.id as string;
+            if (this.onReceiveTryAgain) {
+                this.onReceiveTryAgain(id, 5000);
             }
         }
     }
@@ -163,6 +221,7 @@ export class StableApolloSocket implements StableSocket<any> {
             }
             this.state = 'starting';
             console.log('[WS] Starting');
+            this.watchDog.reset();
 
             this.writeToSocket({
                 protocol_v: 2,
@@ -182,8 +241,14 @@ export class StableApolloSocket implements StableSocket<any> {
             if (this.client !== ws) {
                 return;
             }
-            if (this.state === 'started') {
-                console.log('[WS] Disconnected');
+
+            let sessionLost = this.state === 'started';
+            // TODO: Backoff
+            this.stopClient();
+            this.state = 'waiting';
+            console.log('[WS] Waiting');
+
+            if (sessionLost) {
                 console.log('[WS] Session Lost');
 
                 if (this.onDisconnected) {
@@ -193,11 +258,6 @@ export class StableApolloSocket implements StableSocket<any> {
                     this.onSessionLost();
                 }
             }
-
-            // TODO: Backoff
-            this.stopClient();
-            this.state = 'waiting';
-            console.log('[WS] Waiting');
 
             setTimeout(() => {
                 if (this.state === 'waiting') {
@@ -212,6 +272,33 @@ export class StableApolloSocket implements StableSocket<any> {
             this.onMessage(JSON.parse(m.data));
         };
         this.client = ws;
+    }
+
+    private onWatchdogDied = () => {
+        console.log('[WS] WatchDog');
+
+        let sessionLost = this.state === 'started';
+        // TODO: Backoff
+        this.stopClient();
+        this.state = 'waiting';
+        console.log('[WS] Waiting');
+
+        if (sessionLost) {
+            console.log('[WS] Session Lost');
+
+            if (this.onDisconnected) {
+                this.onDisconnected();
+            }
+            if (this.onSessionLost) {
+                this.onSessionLost();
+            }
+        }
+
+        setTimeout(() => {
+            if (this.state === 'waiting') {
+                this.doConnect();
+            }
+        }, 1000);
     }
 
     private stopClient() {

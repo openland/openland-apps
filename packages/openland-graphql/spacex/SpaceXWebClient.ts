@@ -1,3 +1,4 @@
+import { Watcher } from 'openland-y-utils/Watcher';
 import { Queue } from 'openland-graphql/utils/Queue';
 import { randomKey } from 'openland-graphql/utils/randomKey';
 import { Operations } from './types';
@@ -23,21 +24,26 @@ class QueryWatchState {
 
 export class SpaceXWebClient implements GraphqlClient {
 
-    status: GraphqlClientStatus;
+    protected readonly statusWatcher: Watcher<GraphqlClientStatus> = new Watcher();
+    get status(): GraphqlClientStatus {
+        return this.statusWatcher.getState()!!;
+    }
     private readonly store = new SpaceXStore();
     private readonly transport: SpaceXTransport;
     private readonly operations: Operations;
 
     constructor(operations: Operations, endpoint: string, token?: string) {
         this.transport = new SpaceXTransport(endpoint, token);
-        this.status = { status: 'connecting' };
+        this.statusWatcher.setState({ status: 'connecting' });
         this.operations = operations;
+
+        this.transport.onStatusChanged = (status) => {
+            this.statusWatcher.setState(status);
+        };
     }
 
-    watchStatus(handler: (status: GraphqlClientStatus) => void): (() => void) {
-        return () => {
-            //
-        };
+    watchStatus(handler: (status: GraphqlClientStatus) => void) {
+        return this.statusWatcher.watch(handler);
     }
 
     //
@@ -73,8 +79,10 @@ export class SpaceXWebClient implements GraphqlClient {
         if (r.type === 'result') {
             await this.store.mergeResponse(operation, vars, r.value);
             return r.value;
+        } else if (r.type === 'error') {
+            throw r.errors;
         } else {
-            throw r.error;
+            throw Error('Internal error');
         }
     }
     queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery> {
@@ -168,10 +176,12 @@ export class SpaceXWebClient implements GraphqlClient {
                 if (reload) {
                     doReloadFromCache();
                 }
-            } else {
+            } else if (it.type === 'error') {
                 if (reload) {
-                    onError(it.error);
+                    onError(it.errors);
                 }
+            } else {
+                throw Error('Internal Error');
             }
         };
 
@@ -221,8 +231,10 @@ export class SpaceXWebClient implements GraphqlClient {
         if (r.type === 'result') {
             await this.store.mergeResponse(operation, vars, r.value);
             return r.value;
+        } else if (r.type === 'error') {
+            throw r.errors;
         } else {
-            throw r.error;
+            throw Error('Internal Error');
         }
     }
 
@@ -250,11 +262,15 @@ export class SpaceXWebClient implements GraphqlClient {
                     if (!completed) {
                         restart();
                     }
-                } else {
+                } else if (s.type === 'result') {
                     (async () => {
                         await this.store.mergeResponse(operation, v, s.value);
                         queue.post(s.value);
                     })();
+                } else {
+                    if (!completed) {
+                        restart();
+                    }
                 }
             });
         };
