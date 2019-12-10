@@ -70,6 +70,11 @@ const focusedStyle = css`
     background-color: #f0f2f5;
 `;
 
+const nonSelectableStyle = css`
+    background-color: var(--backgroundPrimary)!important;
+    cursor: initial;
+`;
+
 export const Item = React.memo(
     (props: {
         style?: any;
@@ -78,6 +83,7 @@ export const Item = React.memo(
         item: any;
         onSelected: (item: any) => void;
         startScrolling?: boolean;
+        selectable?: boolean;
     }) => {
         let ref = React.useRef<HTMLDivElement>(null);
         React.useLayoutEffect(
@@ -96,10 +102,10 @@ export const Item = React.memo(
         }, []);
         return (
             <div
-                className={cx(itemStyle, props.focused && focusedStyle)}
+                className={cx(itemStyle, props.focused && focusedStyle, props.selectable === false && nonSelectableStyle)}
                 style={props.style}
                 ref={ref}
-                onClick={callback}
+                onClick={props.selectable === false ? undefined : callback}
             >
                 {props.children}
             </div>

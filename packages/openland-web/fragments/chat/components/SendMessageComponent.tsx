@@ -122,7 +122,7 @@ interface Cursor {
 }
 
 interface Divider { __typename: 'divider'; }
-type ListItem = MentionToSend | Cursor | Divider;
+type ListItem = (MentionToSend | Cursor | Divider) & { selectable?: boolean };
 
 const AutoCompleteComponent = React.memo(
     React.forwardRef(
@@ -239,7 +239,7 @@ const AutoCompleteComponent = React.memo(
                                     res.push(...localItems);
 
                                     if (globalItems.length > 0) {
-                                        res.push({ __typename: 'divider' });
+                                        res.push({ __typename: 'divider', selectable: false });
                                         res.push(...globalItems);
                                     }
                                 }
@@ -337,7 +337,7 @@ const AutoCompleteComponent = React.memo(
 
                     const { localItems, globalItems, cursor } = mentions.mentions;
 
-                    let res: ListItem[] = [...localItems, ...(globalItems.length > 0 ? [{ __typename: 'divider' } as Divider, ...globalItems] : [])];
+                    let res: ListItem[] = [...localItems, ...(globalItems.length > 0 ? [{ __typename: 'divider', selectable: false } as Divider, ...globalItems] : [])];
 
                     if (!!cursor) {
                         res.push({
@@ -358,20 +358,20 @@ const AutoCompleteComponent = React.memo(
                     matched = [...users];
                 }
             }
-            let filtered: { name: string; value: string; shortcode: string }[] = [];
+            let filtered: { name: string; value: string; shortcode: string; selectable?: boolean; }[] = [];
             if (word) {
                 filtered.push(...emojiSuggest(word));
             }
 
             isActive.current = !!filtered.length || !!matched.length;
 
-            let onSelected = React.useCallback((mention: MentionToSend) => {
+            let onSelected = React.useCallback((mention: MentionToSend & { selectable?: boolean }) => {
                 if (isActive.current) {
                     props.onSelected(mention);
                 }
             }, [props.membersCount]);
 
-            let onEmojiSelected = React.useCallback((emoji: { name: string; value: string }) => {
+            let onEmojiSelected = React.useCallback((emoji: { name: string; value: string; selectable?: boolean }) => {
                 if (isActive.current) {
                     onEmojiSent(emoji.name);
                     props.onEmojiSelected(emoji);
