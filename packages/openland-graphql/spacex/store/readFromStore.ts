@@ -77,7 +77,7 @@ function doReadSelectors(record: Record, fields: { [key: string]: any }, store: 
                 return false;
             }
         } else if (f.type === 'type-condition') {
-            if (record.fields.__typename && record.fields.__typename.type === 'string' && record.fields.__typename.value === f.type) {
+            if (record.fields.__typename && record.fields.__typename.type === 'string' && record.fields.__typename.value === f.name) {
                 if (!doReadSelectors(record, fields, store, f.fragmentType.selectors, variables)) {
                     return false;
                 }

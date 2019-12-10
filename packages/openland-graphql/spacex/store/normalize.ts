@@ -5,6 +5,8 @@ import { selectorKey } from './selectorKey';
 
 type RecordCollection = { [key: string]: { [key: string]: RecordValue } };
 
+type NormalizeCtx = { collection: RecordCollection, queryArguments: any, root: any };
+
 function buildSet(collection: RecordCollection): RecordSet {
     let keys = Object.keys(collection);
     let res: RecordSet = {};
@@ -14,9 +16,9 @@ function buildSet(collection: RecordCollection): RecordSet {
     return res;
 }
 
-function normalizeValue(parentCacheKey: string | null, collection: RecordCollection, value: OutputType, queryArguments: any, data: any): RecordValue | null {
+function normalizeValue(parentCacheKey: string | null, value: OutputType, data: any, ctx: NormalizeCtx): RecordValue | null {
     if (value.type === 'notNull') {
-        let res = normalizeValue(parentCacheKey, collection, value.inner, queryArguments, data);
+        let res = normalizeValue(parentCacheKey, value.inner, data, ctx);
         if (res && res.type === 'null') {
             throw Error('Unexpected null value');
         } else {
@@ -55,23 +57,23 @@ function normalizeValue(parentCacheKey: string | null, collection: RecordCollect
         if (parentCacheKey !== null) {
             let items: RecordValue[] = [];
             for (let i = 0; i < data.length; i++) {
-                items.push(normalizeValue(`${parentCacheKey}.${i}`, collection, value.inner, queryArguments, data[i])!);
+                items.push(normalizeValue(`${parentCacheKey}.${i}`, value.inner, data[i], ctx)!);
             }
             return { type: 'list', values: items };
         } else {
             for (let i = 0; i < data.length; i++) {
-                normalizeValue(null, collection, value.inner, queryArguments, data[i]);
+                normalizeValue(null, value.inner, data[i], ctx);
             }
             return null;
         }
     } else if (value.type === 'object') {
-        return normalizeSelector(parentCacheKey, collection, value.selectors, queryArguments, data);
+        return normalizeSelector(parentCacheKey, value.selectors, data, ctx);
     }
 
     throw Error('Unreachable code');
 }
 
-function normalizeSelector(parentCacheKey: string | null, collection: RecordCollection, selectors: Selector[], queryArguments: any, data: any): RecordValueReference | null {
+function normalizeSelector(parentCacheKey: string | null, selectors: Selector[], data: any, ctx: NormalizeCtx): RecordValueReference | null {
     let map: { [key: string]: RecordValue } | undefined = undefined;
     let id: string | null = null;
     if (data.id !== null && data.id !== undefined) {
@@ -81,29 +83,29 @@ function normalizeSelector(parentCacheKey: string | null, collection: RecordColl
         id = parentCacheKey;
     }
     if (id !== null) {
-        let ex = collection[id];
+        let ex = ctx.collection[id];
         if (ex) {
             map = ex;
         } else {
             map = {};
-            collection[id] = map;
+            ctx.collection[id] = map;
         }
     }
 
     for (let f of selectors) {
         if (f.type === 'field') {
             if (map) {
-                let key = selectorKey(f.name, f.arguments, queryArguments);
-                map[key] = normalizeValue(id! + '.' + key, collection, f.fieldType, queryArguments, data[f.alias])!;
+                let key = selectorKey(f.name, f.arguments, ctx.queryArguments);
+                map[key] = normalizeValue(id! + '.' + key, f.fieldType, data[f.alias], ctx)!;
             } else {
-                normalizeValue(null, collection, f.fieldType, queryArguments, data[f.alias]);
+                normalizeValue(null, f.fieldType, data[f.alias], ctx);
             }
         } else if (f.type === 'type-condition') {
             if (data.__typename === f.name) {
-                normalizeSelector(parentCacheKey, collection, f.fragmentType.selectors, queryArguments, data);
+                normalizeSelector(parentCacheKey, f.fragmentType.selectors, data, ctx);
             }
         } else if (f.type === 'fragment') {
-            normalizeSelector(parentCacheKey, collection, f.fragmentType.selectors, queryArguments, data);
+            normalizeSelector(parentCacheKey, f.fragmentType.selectors, data, ctx);
         } else {
             throw Error('Unreachable code');
         }
@@ -116,38 +118,38 @@ function normalizeSelector(parentCacheKey: string | null, collection: RecordColl
     }
 }
 
-function normalizeRootSelector(rootCacheKey: string | null, collection: RecordCollection, selectors: Selector[], queryArguments: any, data: any) {
+function normalizeRootSelector(rootCacheKey: string | null, selectors: Selector[], data: any, ctx: NormalizeCtx) {
     if (rootCacheKey !== null) {
         for (let f of selectors) {
             if (f.type !== 'field') {
                 throw Error('Root query cant\'t contain fragments');
             }
-            let key = selectorKey(f.name, f.arguments, queryArguments);
+            let key = selectorKey(f.name, f.arguments, ctx.queryArguments);
             let id = `${rootCacheKey}.${key}`;
             let refId = `${rootCacheKey}.\$ref.${key}`;
-            let ex = collection[refId];
+            let ex = ctx.collection[refId];
             let map: { [key: string]: RecordValue };
             if (!ex) {
                 map = {};
-                collection[refId] = map;
+                ctx.collection[refId] = map;
             } else {
                 map = ex;
             }
-            map.data = normalizeValue(id, collection, f.fieldType, queryArguments, data[f.alias])!;
+            map.data = normalizeValue(id, f.fieldType, data[f.alias], ctx)!;
         }
     } else {
-        normalizeSelector(null, collection, selectors, queryArguments, data);
+        normalizeSelector(null, selectors, data, ctx);
     }
 }
 
 export function normalizeData(id: string, type: OutputTypeObject, queryArguments: any, data: any): RecordSet {
     let collection: RecordCollection = {};
-    normalizeSelector(id, collection, type.selectors, queryArguments, data);
+    normalizeSelector(id, type.selectors, data, { collection, root: data, queryArguments });
     return buildSet(collection);
 }
 
 export function normalizeResponse(rootCacheKey: string | null, type: OutputTypeObject, queryArguments: any, data: any): RecordSet {
     let collection: RecordCollection = {};
-    normalizeRootSelector(rootCacheKey, collection, type.selectors, queryArguments, data);
+    normalizeRootSelector(rootCacheKey, type.selectors, data, { collection, root: data, queryArguments });
     return buildSet(collection);
 }
