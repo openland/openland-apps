@@ -86,14 +86,14 @@ export const AsyncSharedLink = React.memo(({ item }: AsyncSharedLinkProps) => {
                             {attachment.title}
                         </ASText>
                     )}
-                    {!!attachment.subTitle && (
+                    {!!attachment.text && (
                         <ASText
                             {...TextStylesAsync.Subhead}
                             color={theme.foregroundPrimary}
                             marginBottom={4}
                             numberOfLines={4}
                         >
-                            {attachment.subTitle}
+                            {attachment.text}
                         </ASText>
                     )}
                     <ASText
