@@ -30,6 +30,18 @@ fragment DaialogListMessage on ModernMessage {
       }
     }
     id
+    overrideAvatar {
+      __typename
+      crop {
+        __typename
+        h
+        w
+        x
+        y
+      }
+      uuid
+    }
+    overrideName
     quotedMessages {
       __typename
       id

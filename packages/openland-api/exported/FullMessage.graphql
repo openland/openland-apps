@@ -105,6 +105,18 @@ fragment FullMessage on ModernMessage {
     commentsCount
     edited
     id
+    overrideAvatar {
+      __typename
+      crop {
+        __typename
+        h
+        w
+        x
+        y
+      }
+      uuid
+    }
+    overrideName
     quotedMessages {
       __typename
       ...QuotedMessage
@@ -122,6 +134,18 @@ fragment FullMessage on ModernMessage {
     commentsCount
     date
     id
+    overrideAvatar {
+      __typename
+      crop {
+        __typename
+        h
+        w
+        x
+        y
+      }
+      uuid
+    }
+    overrideName
     quotedMessages {
       __typename
       ...QuotedMessage
@@ -163,6 +187,18 @@ fragment FullMessage on ModernMessage {
   }
   ... on ServiceMessage {
     id
+    overrideAvatar {
+      __typename
+      crop {
+        __typename
+        h
+        w
+        x
+        y
+      }
+      uuid
+    }
+    overrideName
     serviceMetadata {
       __typename
       ... on InviteServiceMetadata {

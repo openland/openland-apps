@@ -1,6 +1,6 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { RoomReadMutation, RoomQuery, ChatInitQuery, ChatInitFromUnreadQuery, MessagesBatchQuery } from 'openland-api';
-import { MessageReactionType } from 'openland-api/Types';
+import { FullMessage_ServiceMessage_overrideAvatar, MessageReactionType } from 'openland-api/Types';
 import { backoff, delay } from 'openland-y-utils/timer';
 import {
     UserBadge,
@@ -83,6 +83,8 @@ export interface DataSourceMessageItem {
     notificationId?: string;
     notificationType?: 'new_comment' | 'unsupported' | 'mm';
     room?: Types.RoomNano;
+    overrideName: string | null;
+    overrideAvatar: Types.FullMessage_ServiceMessage_overrideAvatar | null;
 }
 
 export interface DataSourceDateItem {
@@ -120,7 +122,24 @@ type RecursivePartial<T> = {
 };
 
 export function convertPartialMessage(src: RecursivePartial<FullMessage> & { id: string } , chatId: string, engine: MessengerEngine): DataSourceMessageItem {
-    const genericGeneralMessage: FullMessage = { __typename: "GeneralMessage", id: 'will_be_overriten', sender: {} as any, attachments: [], date: null, fallback: "Unknow message type", senderBadge: null, edited: false, message: null, source: null, commentsCount: 0, quotedMessages: [], reactions: [], spans: [] };
+    const genericGeneralMessage: FullMessage = {
+        __typename: "GeneralMessage",
+        id: 'will_be_overriten',
+        sender: {} as any,
+        attachments: [],
+        date: null,
+        fallback: "Unknow message type",
+        senderBadge: null,
+        edited: false,
+        message: null,
+        source: null,
+        commentsCount: 0,
+        quotedMessages: [],
+        reactions: [],
+        spans: [],
+        overrideName: null,
+        overrideAvatar: null
+    };
     return convertMessage({ ...genericGeneralMessage, ...src as FullMessage }, chatId, engine);
 }
 
@@ -160,7 +179,9 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId
         textSpans: src.message ? processSpans(src.message, src.spans) : [],
         reactionsReduced: reactions.length ? reduceReactions(reactions, engine.user.id) : [],
         reactionsLabel: reactions.length ? getReactionsLabel(reactions, engine.user.id) : '',
-        sticker: stickerMessage ? stickerMessage.sticker : undefined
+        sticker: stickerMessage ? stickerMessage.sticker : undefined,
+        overrideName: src.overrideName,
+        overrideAvatar: src.overrideAvatar
     };
 }
 
@@ -180,7 +201,9 @@ export function convertMessageBack(src: DataSourceMessageItem): Types.FullMessag
         quotedMessages: [],
         reactions: [],
         source: src.source || null,
-        sticker: src.sticker
+        sticker: src.sticker,
+        overrideName: src.overrideName,
+        overrideAvatar: src.overrideAvatar
     };
 
     return res;
@@ -1034,7 +1057,9 @@ export class ConversationEngine implements MessageSendHandler {
                 fallback: src.message || '',
                 reactionsReduced: [],
                 reactionsLabel: '',
-                sticker: src.sticker || undefined
+                sticker: src.sticker || undefined,
+                overrideName: null,
+                overrideAvatar: null
             };
         }
         if (this.dataSource.hasItem(conv.key)) {

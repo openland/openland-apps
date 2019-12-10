@@ -262,11 +262,35 @@ internal val QuotedMessageSelector = obj(
                     ))))),
                 field("commentsCount", "commentsCount", notNull(scalar("Int"))),
                 field("edited", "edited", notNull(scalar("Boolean"))),
-                field("id", "id", notNull(scalar("ID")))
+                field("id", "id", notNull(scalar("ID"))),
+                field("overrideAvatar", "overrideAvatar", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("crop", "crop", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("h", "h", notNull(scalar("Int"))),
+                                field("w", "w", notNull(scalar("Int"))),
+                                field("x", "x", notNull(scalar("Int"))),
+                                field("y", "y", notNull(scalar("Int")))
+                            )),
+                        field("uuid", "uuid", notNull(scalar("String")))
+                    )),
+                field("overrideName", "overrideName", scalar("String"))
             )),
             inline("StickerMessage", obj(
                 field("date", "date", notNull(scalar("Date"))),
                 field("id", "id", notNull(scalar("ID"))),
+                field("overrideAvatar", "overrideAvatar", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("crop", "crop", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("h", "h", notNull(scalar("Int"))),
+                                field("w", "w", notNull(scalar("Int"))),
+                                field("x", "x", notNull(scalar("Int"))),
+                                field("y", "y", notNull(scalar("Int")))
+                            )),
+                        field("uuid", "uuid", notNull(scalar("String")))
+                    )),
+                field("overrideName", "overrideName", scalar("String")),
                 field("reactions", "reactions", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("reaction", "reaction", notNull(scalar("String"))),
@@ -457,6 +481,18 @@ internal val FullMessageSelector = obj(
                 field("commentsCount", "commentsCount", notNull(scalar("Int"))),
                 field("edited", "edited", notNull(scalar("Boolean"))),
                 field("id", "id", notNull(scalar("ID"))),
+                field("overrideAvatar", "overrideAvatar", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("crop", "crop", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("h", "h", notNull(scalar("Int"))),
+                                field("w", "w", notNull(scalar("Int"))),
+                                field("x", "x", notNull(scalar("Int"))),
+                                field("y", "y", notNull(scalar("Int")))
+                            )),
+                        field("uuid", "uuid", notNull(scalar("String")))
+                    )),
+                field("overrideName", "overrideName", scalar("String")),
                 field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", QuotedMessageSelector)
@@ -474,6 +510,18 @@ internal val FullMessageSelector = obj(
                 field("commentsCount", "commentsCount", notNull(scalar("Int"))),
                 field("date", "date", notNull(scalar("Date"))),
                 field("id", "id", notNull(scalar("ID"))),
+                field("overrideAvatar", "overrideAvatar", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("crop", "crop", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("h", "h", notNull(scalar("Int"))),
+                                field("w", "w", notNull(scalar("Int"))),
+                                field("x", "x", notNull(scalar("Int"))),
+                                field("y", "y", notNull(scalar("Int")))
+                            )),
+                        field("uuid", "uuid", notNull(scalar("String")))
+                    )),
+                field("overrideName", "overrideName", scalar("String")),
                 field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", QuotedMessageSelector)
@@ -515,6 +563,18 @@ internal val FullMessageSelector = obj(
             )),
             inline("ServiceMessage", obj(
                 field("id", "id", notNull(scalar("ID"))),
+                field("overrideAvatar", "overrideAvatar", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("crop", "crop", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("h", "h", notNull(scalar("Int"))),
+                                field("w", "w", notNull(scalar("Int"))),
+                                field("x", "x", notNull(scalar("Int"))),
+                                field("y", "y", notNull(scalar("Int")))
+                            )),
+                        field("uuid", "uuid", notNull(scalar("String")))
+                    )),
+                field("overrideName", "overrideName", scalar("String")),
                 field("serviceMetadata", "serviceMetadata", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         inline("InviteServiceMetadata", obj(
@@ -832,6 +892,18 @@ internal val DaialogListMessageSelector = obj(
                         ))
                     ))))),
                 field("id", "id", notNull(scalar("ID"))),
+                field("overrideAvatar", "overrideAvatar", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("crop", "crop", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("h", "h", notNull(scalar("Int"))),
+                                field("w", "w", notNull(scalar("Int"))),
+                                field("x", "x", notNull(scalar("Int"))),
+                                field("y", "y", notNull(scalar("Int")))
+                            )),
+                        field("uuid", "uuid", notNull(scalar("String")))
+                    )),
+                field("overrideName", "overrideName", scalar("String")),
                 field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID")))
@@ -872,6 +944,18 @@ internal val TinyMessageSelector = obj(
                 field("commentsCount", "commentsCount", notNull(scalar("Int"))),
                 field("id", "id", notNull(scalar("ID"))),
                 field("isMentioned", "isMentioned", notNull(scalar("Boolean"))),
+                field("overrideAvatar", "overrideAvatar", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("crop", "crop", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("h", "h", notNull(scalar("Int"))),
+                                field("w", "w", notNull(scalar("Int"))),
+                                field("x", "x", notNull(scalar("Int"))),
+                                field("y", "y", notNull(scalar("Int")))
+                            )),
+                        field("uuid", "uuid", notNull(scalar("String")))
+                    )),
+                field("overrideName", "overrideName", scalar("String")),
                 field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID")))

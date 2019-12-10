@@ -59,6 +59,16 @@ export const DaialogListMessage = gql`
         fallback
         ... on GeneralMessage {
             id
+            overrideName
+            overrideAvatar {
+                uuid
+                crop {
+                    x
+                    y
+                    w
+                    h
+                }
+            }
             attachments {
                 id
                 fallback
@@ -93,6 +103,16 @@ export const TinyMessage = gql`
         fallback
         ... on GeneralMessage {
             id
+            overrideName
+            overrideAvatar {
+                uuid
+                crop {
+                    x
+                    y
+                    w
+                    h
+                }
+            }
             isMentioned
             commentsCount
             attachments {
@@ -148,6 +168,16 @@ export const QuotedMessage = gql`
 
         ... on GeneralMessage {
             id
+            overrideName
+            overrideAvatar {
+                uuid
+                crop {
+                    x
+                    y
+                    w
+                    h
+                }
+            }
             commentsCount
             edited
             attachments {
@@ -210,6 +240,16 @@ export const QuotedMessage = gql`
         ... on StickerMessage {
             id
             date
+            overrideName
+            overrideAvatar {
+                uuid
+                crop {
+                    x
+                    y
+                    w
+                    h
+                }
+            }
             sender {
                 ...UserShort
             }
@@ -280,6 +320,16 @@ export const FullMessage = gql`
         }
         ... on GeneralMessage {
             id
+            overrideName
+            overrideAvatar {
+                uuid
+                crop {
+                    x
+                    y
+                    w
+                    h
+                }
+            }
             edited
             commentsCount
             attachments {
@@ -363,6 +413,16 @@ export const FullMessage = gql`
         
         ... on StickerMessage {
             id
+            overrideName
+            overrideAvatar {
+                uuid
+                crop {
+                    x
+                    y
+                    w
+                    h
+                }
+            }
             date
             commentsCount
             sender {
@@ -399,6 +459,16 @@ export const FullMessage = gql`
 
         ... on ServiceMessage {
             id
+            overrideName
+            overrideAvatar {
+                uuid
+                crop {
+                    x
+                    y
+                    w
+                    h
+                }
+            }
             serviceMetadata {
                 ... on InviteServiceMetadata {
                     users {

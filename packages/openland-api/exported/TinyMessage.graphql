@@ -31,6 +31,18 @@ fragment TinyMessage on ModernMessage {
     commentsCount
     id
     isMentioned
+    overrideAvatar {
+      __typename
+      crop {
+        __typename
+        h
+        w
+        x
+        y
+      }
+      uuid
+    }
+    overrideName
     quotedMessages {
       __typename
       id

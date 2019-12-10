@@ -96,10 +96,34 @@ fragment QuotedMessage on ModernMessage {
     commentsCount
     edited
     id
+    overrideAvatar {
+      __typename
+      crop {
+        __typename
+        h
+        w
+        x
+        y
+      }
+      uuid
+    }
+    overrideName
   }
   ... on StickerMessage {
     date
     id
+    overrideAvatar {
+      __typename
+      crop {
+        __typename
+        h
+        w
+        x
+        y
+      }
+      uuid
+    }
+    overrideName
     reactions {
       __typename
       reaction
