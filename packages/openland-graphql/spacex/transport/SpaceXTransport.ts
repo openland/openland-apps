@@ -26,9 +26,6 @@ export class SpaceXTransport {
     }
 
     subscription = (operation: OperationDefinition, vars: any, callback: (result: TransportResult) => void): (() => void) => {
-        //
-        return () => {
-            //
-        };
+        return this.serviceLayer.operation(operation, vars, callback);
     }
 }

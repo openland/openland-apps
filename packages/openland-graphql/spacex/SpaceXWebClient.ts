@@ -258,6 +258,7 @@ export class SpaceXWebClient implements GraphqlClient {
                 }
             });
         };
+        restart();
 
         return {
             get: () => {
