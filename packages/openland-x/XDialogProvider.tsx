@@ -87,10 +87,9 @@ export class XDialogProviderComponent extends React.Component<{}, XDialogProvide
                                 order: 99,
                                 boundariesElement: 'viewport',
                                 padding: 12,
-                                priority: ['top', 'bottom'],
+                                priority: ['top', 'bottom', 'left', 'right'],
                             },
                             flip: {
-                                behavior: 'flip',
                                 flipVariations: true,
                                 flipVariationsByContent: true,
                             },

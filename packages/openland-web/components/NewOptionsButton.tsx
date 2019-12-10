@@ -11,6 +11,8 @@ import NotificationIcon from 'openland-icons/s/ic-notifications-24.svg';
 import { UIconButton } from './unicorn/UIconButton';
 import { showCreatingFragment } from 'openland-web/fragments/create/CreateEntityFragment';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
+import { Placement } from 'popper.js';
 
 const dotClass = css`
     position: absolute;
@@ -172,9 +174,23 @@ const NewOptionsMenu = React.memo(() => (
 ));
 
 export const NewOptionsButton = React.memo(() => {
+    const isMobile = useLayout() === 'mobile';
+    const [menuPlacement, setMenuPlacement] = React.useState<Placement>('bottom-end');
+
+    React.useLayoutEffect(
+        () => {
+            if (isMobile) {
+                setMenuPlacement('bottom');
+            } else if (!isMobile) {
+                setMenuPlacement('bottom-end');
+            }
+        },
+        [isMobile],
+    );
+
     const [, show] = usePopper(
         {
-            placement: 'bottom-end',
+            placement: menuPlacement,
             hideOnEsc: true,
             hideOnChildClick: true,
             showTimeout: 100,
