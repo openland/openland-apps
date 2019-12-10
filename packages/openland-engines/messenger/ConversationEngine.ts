@@ -1,6 +1,6 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { RoomReadMutation, RoomQuery, ChatInitQuery, ChatInitFromUnreadQuery, MessagesBatchQuery } from 'openland-api';
-import { FullMessage_ServiceMessage_overrideAvatar, MessageReactionType } from 'openland-api/Types';
+import { MessageReactionType } from 'openland-api/Types';
 import { backoff, delay } from 'openland-y-utils/timer';
 import {
     UserBadge,

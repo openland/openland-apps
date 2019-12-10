@@ -49,5 +49,7 @@ export const convertMessage = (
         fallback: src.message || '',
         reactionsReduced: [],
         reactionsLabel: '',
+        overrideName: src.overrideName,
+        overrideAvatar: src.overrideAvatar
     };
 };

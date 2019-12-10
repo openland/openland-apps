@@ -74,6 +74,8 @@ const notificationUnsupported = (id: string): NotificationsDataSourceItem => {
             quotedMessages: [],
             reactions: [],
             spans: [{ __typename: 'MessageSpanBold', offset: 0, length: 33 }],
+            overrideName: null,
+            overrideAvatar: null
         }),
 
         notificationId: id,
@@ -143,6 +145,8 @@ const notificationMatchmaking = (id: string, content: Types.NotificationFragment
             quotedMessages: [],
             reactions: [],
             spans: spans,
+            overrideName: null,
+            overrideAvatar: null
         }),
 
         notificationId: id,
