@@ -39,37 +39,6 @@ const buildSimpleHttpOpenlandClient = () => {
 
 const openland = buildSimpleHttpOpenlandClient();
 
-type MetaTagsInfoT = {
-    title?: string;
-    url?: string;
-    description?: string;
-    image?: string;
-};
-const MetaTags = ({
-    title = 'Openland',
-    description = 'A modern community platform. Learn, connect, get help, or start your own community.',
-    image = 'https://cdn.openland.com/shared/og/og-global.png',
-    url,
-}: MetaTagsInfoT) => {
-    return (
-        <>
-            <meta name="msapplication-TileColor" content="#ffffff" />
-            <meta
-                name="msapplication-TileImage"
-                content="/static/img/favicon/ms-icon-144x144.png?v=2"
-            />
-            <meta property="og:title" content={title} />
-            <meta property="og:url" content={url} />
-            <meta property="og:description" content={description} />
-            <meta property="og:image" content={image} />
-            <meta name="twitter:card" content="summary_large_image" />
-            <meta name="twitter:site" content="@openland" />
-            <meta name="twitter:title" content={title} />
-            <meta name="twitter:description" content={description} />
-            <meta name="twitter:image" content={image} />
-        </>
-    );
-};
 export default class OpenlandDocument extends Document {
     static async getInitialProps(props: NextDocumentContext) {
         const page = props.renderPage();
@@ -232,12 +201,6 @@ export default class OpenlandDocument extends Document {
                     <meta
                         name="msapplication-TileImage"
                         content="/static/img/favicon/ms-icon-144x144.png?v=2"
-                    />
-
-                    <MetaTags
-                        {...((this.props as any).metaTagsInfo
-                            ? (this.props as any).metaTagsInfo
-                            : {})}
                     />
 
                     <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css" />
