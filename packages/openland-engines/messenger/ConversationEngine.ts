@@ -6,6 +6,7 @@ import {
     UserBadge,
     FullMessage,
     FullMessage_GeneralMessage_reactions,
+    FullMessage_GeneralMessage_sender,
     FullMessage_ServiceMessage_serviceMetadata,
     FullMessage_GeneralMessage_attachments,
     FullMessage_GeneralMessage_spans,
@@ -114,6 +115,15 @@ const getCommentsCount = (src: Types.FullMessage_GeneralMessage | Types.FullMess
 const getReactions = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
     return src ? src.reactions || [] : [];
 };
+
+type RecursivePartial<T> = {
+    [P in keyof T]?: RecursivePartial<T[P]>;
+};
+
+export function convertPartialMessage(src: RecursivePartial<FullMessage> & { id: string } , chatId: string, engine: MessengerEngine): DataSourceMessageItem {
+    const genericGeneralMessage: FullMessage = { __typename: "GeneralMessage", id: 'will_be_overriten', sender: {} as any, attachments: [], date: null, fallback: "Unknow message type", senderBadge: null, edited: false, message: null, source: null, commentsCount: 0, quotedMessages: [], reactions: [], spans: [] };
+    return convertMessage({ ...genericGeneralMessage, ...src as FullMessage }, chatId, engine);
+}
 
 export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId: string, engine: MessengerEngine, prev?: FullMessage, next?: FullMessage): DataSourceMessageItem {
     const generalMessage = src.__typename === 'GeneralMessage' ? src : undefined;

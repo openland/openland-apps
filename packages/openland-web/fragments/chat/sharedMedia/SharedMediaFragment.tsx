@@ -24,7 +24,7 @@ import { showChatPicker } from '../showChatPicker';
 import { MediaContent } from './MediaContent';
 import { DocContent } from './DocContent';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
-import { convertMessage } from 'openland-engines/messenger/ConversationEngine';
+import { convertPartialMessage } from 'openland-engines/messenger/ConversationEngine';
 
 interface SharedMediaProps {
     chatId: string;
@@ -105,7 +105,10 @@ export const sharedItemMenu = (messenger: MessengerEngine, router: XViewRouter, 
     builder.item({
         title: 'Forward', icon: <ForwardIcon />, onClick: () => {
             showChatPicker(id => {
-                messenger.forward([convertMessage(item.message as any, 'somewhere', messenger)], id);
+                if (item.message.__typename !== 'GeneralMessage') {
+                    return;
+                }
+                messenger.forward([convertPartialMessage(item.message, 'somewhere', messenger)], id);
                 router.navigate('/mail/' + id);
             });
         }
