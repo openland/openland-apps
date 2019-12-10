@@ -6,8 +6,8 @@ import Heading from '../next/heading';
 const root = css`
     background-color: #f7fafc;
     margin-top: 120px;
-    padding: 36px 0;
-    padding-top: 60px;
+    padding-top: 55px;
+    padding-bottom: 75px;
 
     @media (max-width: 960px) {
         padding-bottom: 56px;
@@ -18,6 +18,11 @@ const root = css`
         padding-top: 64px;
         padding-bottom: 0;
         margin-top: 0;
+    }
+
+    @media (min-width: 768px) and (max-width: 1600px) {
+        margin-top: 100px;
+        padding-top: 35px;
     }
 `;
 
@@ -39,13 +44,13 @@ const summary = css`
 const listWrapper = css``;
 
 const list = css`
-    margin-top: 33px;
+    margin-top: 37px;
     list-style-position: inside;
     list-style-type: none;
 
     @media (min-width: 1600px) {
         font-size: 24px;
-        line-height: 2.2;
+        line-height: 2;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
@@ -87,13 +92,20 @@ const summaryImage = css`
     position: relative;
 
     @media (min-width: 1600px) {
-        width: 640px;
-        left: 130px;
-        top: 20px;
+        width: 555px;
+        left: 150px;
+        top: 10px;
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        width: 561px;
+        width: 502px;
+        left: 30px;
+        top: 25px;
+    }
+
+    @media (min-width: 768px) and (max-width: 1600px) {
+        margin-top: -10px;
+        margin-bottom: -20px;
     }
 
     @media (max-width: 960px) {
@@ -118,6 +130,10 @@ const headingWrapper = css`
 
     @media (min-width: 920px) {
         white-space: nowrap;
+    }
+
+    @media (min-width: 768px) and (max-width: 1600px) {
+        margin-top: 38px;
         margin-bottom: -20px;
     }
 `;

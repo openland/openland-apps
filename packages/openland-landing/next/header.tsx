@@ -25,7 +25,7 @@ const logo = css`
 
 const menu = css`
     position: relative;
-    margin: -23px;
+    margin: -21px;
     top: 5px;
 
     @media (max-width: 768px) {
@@ -37,7 +37,7 @@ const menu = css`
 const menuItem = css`
     display: inline-block;
     font-size: 16px;
-    margin: 23px;
+    margin: 21px;
 
     position: relative;
 
@@ -66,7 +66,7 @@ const menuItem = css`
 `;
 
 const menuItemActive = css`
-    padding: 8px 18px;
+    padding: 10px 22px;
     color: #50a2f5;
     background-color: rgba(36, 139, 242, 0.1);
     border-radius: 8px;

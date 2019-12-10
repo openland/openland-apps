@@ -61,7 +61,12 @@ const button = css`
 const ctaSmall = css`
     position: relative;
     margin-top: 150px;
-    margin-bottom: 130px;
+    margin-bottom: 145px;
+
+    @media (min-width: 768px) and (max-width: 1600px) {
+        margin-top: 100px;
+        margin-bottom: 120px;
+    }
 `;
 
 const content = css`
@@ -123,10 +128,14 @@ const dotsRightSmall = css`
 const webApp = css``;
 
 const subheading = css`
-    font-size: 20px;
+    font-size: 24px;
     line-height: 1.6;
 
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+
+    @media (min-width: 768px) and (max-width: 1600px) {
+        font-size: 20px;
+    }
 `;
 
 const desktopApp = css`
@@ -255,7 +264,7 @@ export default () => {
                     <div className={dotsLeftSmall} />
                     <div className={content}>
                         <div className={webApp}>
-                            <h2 className={subheading}>Web app</h2>
+                            <h2 className={subheading}>Web</h2>
                             <a className={button} href="invite/h2BGtL">
                                 Join Openland
                             </a>

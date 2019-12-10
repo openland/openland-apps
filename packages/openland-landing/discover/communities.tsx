@@ -8,6 +8,10 @@ const root = css``;
 const communities = css`
     display: flex;
     margin-top: 84px;
+
+    @media (min-width: 768px) and (max-width: 1600px) {
+        margin-top: 80px;
+    }
 `;
 
 const wrapper = css`
@@ -31,11 +35,16 @@ const topCommunities = css`
         line-height: 1.56;
 
         font-weight: 600;
-        font-size: 18px;
+        font-size: 22px;
         color: #9393a7;
 
         position: absolute;
-        top: -48px;
+        top: -52px;
+
+        @media (min-width: 768px) and (max-width: 1600px) {
+            font-size: 18px;
+            top: -47px;
+        }
     }
 `;
 
@@ -52,12 +61,20 @@ const type = css`
     }
 
     & + & {
-        margin-top: 16px;
+        margin-top: 18px;
+
+        @media (min-width: 768px) and (max-width: 1600px) {
+            margin-top: 15px;
+        }
     }
 `;
 
 const typeImg = css`
     margin-right: 12px;
+
+    @media (min-width: 768px) and (max-width: 1600px) {
+        width: 24px;
+    }
 `;
 
 const typeText = css`
@@ -93,7 +110,7 @@ const featuredCommunities = css`
         line-height: 1.56;
 
         position: absolute;
-        top: -36px;
+        top: -40px;
         left: 12px;
 
         @media (max-width: 960px) {
@@ -101,8 +118,13 @@ const featuredCommunities = css`
         }
 
         font-weight: 600;
-        font-size: 18px;
+        font-size: 22px;
         color: #9393a7;
+
+        @media (min-width: 768px) and (max-width: 1600px) {
+            font-size: 18px;
+            top: -35px;
+        }
 
         // @media (max-width: 960px) {
         //     content: 'Discover communities by industry, role, skill, interest, and location';
@@ -118,7 +140,7 @@ const featuredCommunities = css`
 const community = css`
     position: relative;
     width: calc(50% - 24px);
-    padding: 26px;
+    padding: 30px;
     border-radius: 16px;
     margin: 12px;
 
@@ -250,13 +272,13 @@ const arrow = css`
 `;
 
 const text = css`
-    font-size: 20px;
+    font-size: 24px;
     line-height: 1.5;
     color: #525273;
-    margin-top: 12px;
+    margin-top: 10px;
 
-    @media (max-width: 960px) {
-        font-size: 18px;
+    @media (min-width: 768px) and (max-width: 1600px) {
+        font-size: 20px;
     }
 
     @media (max-width: 768px) {

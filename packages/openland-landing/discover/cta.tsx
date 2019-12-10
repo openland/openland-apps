@@ -7,7 +7,7 @@ const root = css``;
 const cta = css`
     position: relative;
     text-align: center;
-    padding-top: 160px;
+    padding-top: 125px;
     padding-bottom: 100px;
 
     @media (max-width: 768px) {
@@ -19,7 +19,7 @@ const cta = css`
 const headline = css`
     z-index: -1;
     @media (min-width: 1600px) {
-        font-size: 80px;
+        font-size: 84px;
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
@@ -44,11 +44,11 @@ const headlineGradient = css`
 
 const text = css`
     @media (min-width: 1600px) {
-        font-size: 24px;
+        font-size: 28px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        font-size: 20px;
+        font-size: 24px;
     }
 
     @media (max-width: 768px) {
@@ -59,8 +59,8 @@ const text = css`
 
     line-height: 1.5;
 
-    margin-top: 25px;
-    margin-bottom: 50px;
+    margin-top: 15px;
+    margin-bottom: 45px;
 `;
 
 const button = css`
@@ -113,7 +113,7 @@ const dotsLeft = css`
     background: url('https://cdn.openland.com/shared/landing/dot-left.svg');
 
     position: absolute;
-    top: 49%;
+    top: 52.5%;
     transform: translateY(-50%);
 
     @media (min-width: 1600px) {
@@ -136,7 +136,7 @@ const dotsRight = css`
     background: url('https://cdn.openland.com/shared/landing/dot-right.svg');
 
     position: absolute;
-    top: 49%;
+    top: 52.5%;
     transform: translateY(-50%);
 
     @media (min-width: 1600px) {
@@ -163,8 +163,8 @@ const buttons = css`
 const img = css`
     width: 100%;
 
-    margin-top: 73px;
-    margin-bottom: 73px;
+    margin-top: 30px;
+    margin-bottom: 65px;
 
     @media (max-width: 768px) {
         display: inline-block;
