@@ -52,6 +52,8 @@ const menu = css`
         left: 3px;
     }
 
+    top: 3px;
+
     z-index: 10;
 `;
 
@@ -250,7 +252,7 @@ const popupSeparator = css`
 `;
 
 const hide = css`
-    @media (max-width: 960px) {
+    @media (max-width: 960px) and (min-width: 768px) {
         display: none;
     }
 `;

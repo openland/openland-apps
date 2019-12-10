@@ -14,10 +14,9 @@ const root = css`
     }
 
     @media (max-width: 768px) {
-        background-color: initial;
-        padding-top: 64px;
-        padding-bottom: 0;
-        margin-top: 0;
+        padding-top: 20px;
+        padding-bottom: 32px;
+        margin-top: 40px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
@@ -113,6 +112,12 @@ const summaryImage = css`
         width: 425px;
         right: -10px;
         top: 10px;
+    }
+
+    @media (max-width: 960px) and (min-width: 768px) {
+        width: 388px;
+        top: 67px;
+        right: -25px;
     }
 
     @media (max-width: 768px) {

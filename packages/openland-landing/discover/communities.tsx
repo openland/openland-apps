@@ -149,6 +149,10 @@ const community = css`
         padding: 20px 24px;
     }
 
+    @media (min-width: 768px) and (max-width: 960px) {
+        padding: 30px;
+    }
+
     @media (max-width: 768px) {
         width: 100%;
         max-width: 368px;
@@ -210,6 +214,10 @@ const communitySubheading = css`
 const communityImg = css`
     @media (max-width: 960px) {
         width: 52px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        width: 60px;
     }
 `;
 
@@ -281,8 +289,18 @@ const text = css`
         font-size: 20px;
     }
 
+    @media (min-width: 768px) and (max-width: 960px) {
+        white-space: nowrap;
+    }
+
     @media (max-width: 768px) {
         font-size: 18px;
+    }
+`;
+
+const headingWrapper = css`
+    @media (min-width: 768px) and (max-width: 960px) {
+        font-size: 32px !important;
     }
 `;
 
@@ -290,7 +308,9 @@ export default () => (
     <div className={root}>
         <Block>
             <div className={wrapper}>
-                <Heading>Communities for everyone</Heading>
+                <div className={headingWrapper}>
+                    <Heading>Communities for everyone</Heading>
+                </div>
                 <p className={text}>
                     Discover and join communities for your industry, role, skills, interests, and
                     location

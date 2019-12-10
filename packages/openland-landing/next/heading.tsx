@@ -14,7 +14,7 @@ const root = css`
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        font-size: 28px;
+        font-size: 32px;
     }
 
     @media (max-width: 768px) {

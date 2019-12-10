@@ -27,7 +27,7 @@ const headline = css`
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        font-size: 56px;
+        font-size: 70px;
     }
 
     @media (max-width: 768px) {
@@ -162,6 +162,7 @@ const buttons = css`
 
 const img = css`
     width: 100%;
+    height: auto;
 
     margin-top: 30px;
     margin-bottom: 65px;
@@ -171,6 +172,10 @@ const img = css`
         width: 360px;
         margin-top: 30px;
         margin-bottom: 48px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: 15px;
     }
 `;
 
