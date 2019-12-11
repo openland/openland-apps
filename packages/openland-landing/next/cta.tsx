@@ -9,20 +9,19 @@ const root = css``;
 const cta = css`
     position: relative;
     text-align: center;
-    padding-top: 160px;
+    padding-top: 125px;
     padding-bottom: 100px;
-    margin-bottom: 70px;
 
     @media (max-width: 768px) {
         padding-top: 80px;
-        padding-bottom: 0;
+        padding-bottom: 50px;
     }
 `;
 
 const headline = css`
     z-index: -1;
     @media (min-width: 1600px) {
-        font-size: 80px;
+        font-size: 84px;
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
@@ -30,7 +29,7 @@ const headline = css`
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        font-size: 56px;
+        font-size: 70px;
     }
 
     @media (max-width: 768px) {
@@ -47,28 +46,30 @@ const headlineGradient = css`
 
 const text = css`
     @media (min-width: 1600px) {
-        font-size: 24px;
+        font-size: 28px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        font-size: 20px;
+        font-size: 24px;
     }
 
     @media (max-width: 768px) {
         font-size: 18px;
         margin-bottom: 60px;
+        margin-top: 15px;
     }
 
     line-height: 1.5;
 
-    margin-top: 25px;
-    margin-bottom: 50px;
+    margin-top: 15px;
+    margin-bottom: 45px;
 `;
 
 const button = css`
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     background-color: var(--accentPrimary);
-    border-radius: 16px;
+    border-radius: 12px;
     font-weight: 600;
     box-shadow: 0px 6px 17px rgba(36, 139, 242, 0.32);
     color: var(--foregroundContrast);
@@ -92,17 +93,64 @@ const button = css`
 
     @media (min-width: 1600px) {
         font-size: 20px;
-        padding: 13px 36px;
+        padding: 16px 36px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        font-size: 18px;
         padding: 11px 32px;
+        font-size: 16px;
     }
 
     @media (max-width: 768px) {
-        font-size: 18px;
         padding: 11px 32px;
+        font-size: 16px;
+    }
+    margin: 10px;
+`;
+
+const dotsLeft = css`
+    width: 10000px;
+    height: 122px;
+
+    background: url('https://cdn.openland.com/shared/landing/dot-left.svg');
+
+    position: absolute;
+    top: 52.5%;
+    transform: translateY(-50%);
+
+    @media (min-width: 1600px) {
+        left: -10018px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        left: -10131px;
+    }
+
+    @media (max-width: 960px) {
+        display: none;
+    }
+`;
+
+const dotsRight = css`
+    width: 9999px;
+    height: 122px;
+
+    background: url('https://cdn.openland.com/shared/landing/dot-right.svg');
+
+    position: absolute;
+    top: 52.5%;
+    transform: translateY(-50%);
+
+    @media (min-width: 1600px) {
+        right: -10018px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        right: -10131px;
+    }
+
+    @media (max-width: 960px) {
+        display: none;
     }
 `;
 
@@ -161,60 +209,6 @@ const item = css`
         content: '·';
         color: #9393a7;
         margin: 0 5px;
-    }
-`;
-
-const dotsLeft = css`
-    width: 10000px;
-    height: 122px;
-
-    background: url('https://cdn.openland.com/shared/landing/dot-left.svg');
-
-    position: absolute;
-    top: 49%;
-    transform: translateY(-50%);
-
-    @media (min-width: 1600px) {
-        left: -10018px;
-    }
-
-    @media (min-width: 960px) and (max-width: 1600px) {
-        left: -10025px;
-    }
-
-    @media (min-width: 768px) and (max-width: 960px) {
-        left: -10000px;
-    }
-
-    @media (max-width: 768px) {
-        display: none;
-    }
-`;
-
-const dotsRight = css`
-    width: 9999px;
-    height: 122px;
-
-    background: url('https://cdn.openland.com/shared/landing/dot-right.svg');
-
-    position: absolute;
-    top: 49%;
-    transform: translateY(-50%);
-
-    @media (min-width: 1600px) {
-        right: -10018px;
-    }
-
-    @media (min-width: 960px) and (max-width: 1600px) {
-        right: -10025px;
-    }
-
-    @media (min-width: 768px) and (max-width: 960px) {
-        right: -10000px;
-    }
-
-    @media (max-width: 768px) {
-        display: none;
     }
 `;
 
