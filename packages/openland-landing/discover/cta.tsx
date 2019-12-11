@@ -121,7 +121,7 @@ const dotsLeft = css`
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        left: -10025px;
+        left: -10131px;
     }
 
     @media (max-width: 960px) {
@@ -144,7 +144,7 @@ const dotsRight = css`
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        right: -10025px;
+        right: -10131px;
     }
 
     @media (max-width: 960px) {

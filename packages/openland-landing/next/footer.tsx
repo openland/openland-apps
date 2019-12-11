@@ -4,7 +4,7 @@ import Block from './block';
 import { XView } from 'react-mental';
 
 const root = css`
-    padding: 5px 0;
+    padding-bottom: 4px;
     @media (max-width: 768px) {
         padding-bottom: 30px;
         padding-top: 20px;

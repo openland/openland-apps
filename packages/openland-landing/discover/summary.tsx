@@ -153,9 +153,12 @@ const cta = css`
     font-size: 20px;
     line-height: 24px;
 
+    transition: box-shadow 0.2s;
+
     &:hover,
     &:focus {
         text-decoration: none;
+        box-shadow: 0px 6px 27px rgba(36, 139, 242, 0.12);
     }
 
     margin-top: 36px;

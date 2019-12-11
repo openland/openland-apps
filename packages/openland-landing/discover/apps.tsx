@@ -64,7 +64,7 @@ const ctaSmall = css`
     margin-bottom: 145px;
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        margin-top: 130px;
+        margin-top: 110px;
         margin-bottom: 120px;
     }
 

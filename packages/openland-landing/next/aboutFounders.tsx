@@ -93,7 +93,8 @@ let founderLinkClass = css`
         margin: 0;
     }
     &:hover {
-        color: #1790ff;
+        opacity: 0.7;
+        color: #525273;
         text-decoration: none;
 
         svg * {
