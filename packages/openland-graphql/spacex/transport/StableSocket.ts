@@ -1,4 +1,4 @@
-import { WatchDogTimer } from './WatchDogTimer';
+import { ThrustedSocket } from './net/ThrustedSocket';
 import { StableSocket } from './StableSocket';
 
 export interface StableSocket<T> {
@@ -19,6 +19,9 @@ export interface StableSocket<T> {
     close(): void;
 }
 
+const SOCKET_TIMEOUT = 5000;
+const PING_INTERVAL = 1000;
+
 export class StableApolloSocket implements StableSocket<any> {
     private readonly endpoint: string;
     private readonly params: any;
@@ -32,20 +35,16 @@ export class StableApolloSocket implements StableSocket<any> {
     onConnected: (() => void) | null = null;
     onDisconnected: (() => void) | null = null;
 
-    private watchDog: WatchDogTimer;
     private pingTimeout: any;
     private state: 'waiting' | 'connecting' | 'starting' | 'started' | 'completed' = 'waiting';
     private pending = new Map<string, any>();
     private isStarted = false;
     private isStopped = false;
-    private client: WebSocket | null = null;
+    private client: ThrustedSocket | null = null;
 
     constructor(endpoint: string, params: any) {
         this.endpoint = endpoint;
         this.params = params;
-        this.watchDog = new WatchDogTimer(10000, () => {
-            this.onWatchdogDied();
-        });
     }
 
     post(id: string, message: any) {
@@ -121,7 +120,7 @@ export class StableApolloSocket implements StableSocket<any> {
     }
 
     private onMessage(src: any) {
-        console.log('[WS] <<< ' + JSON.stringify(src));
+        // console.log('[WS] <<< ' + JSON.stringify(src));
         if (src.type === 'ka') {
             // Ignore
         } else if (src.type === 'connection_ack') {
@@ -134,9 +133,6 @@ export class StableApolloSocket implements StableSocket<any> {
 
                 console.log('[WS] Started');
 
-                // Kick WatchDog
-                this.watchDog.kick();
-
                 // Send Ping
                 if (this.pingTimeout) {
                     clearTimeout(this.pingTimeout);
@@ -145,7 +141,7 @@ export class StableApolloSocket implements StableSocket<any> {
                     this.writeToSocket({
                         type: 'ping'
                     });
-                }, 5000);
+                }, PING_INTERVAL);
 
                 // TODO: Reset backoff
                 if (this.onConnected) {
@@ -157,7 +153,6 @@ export class StableApolloSocket implements StableSocket<any> {
                 type: 'pong'
             });
         } else if (src.type === 'pong') {
-            this.watchDog.kick();
             if (this.pingTimeout) {
                 clearTimeout(this.pingTimeout);
             }
@@ -165,7 +160,7 @@ export class StableApolloSocket implements StableSocket<any> {
                 this.writeToSocket({
                     type: 'ping'
                 });
-            }, 5000);
+            }, PING_INTERVAL);
         } else if (src.type === 'data') {
             let id = src.id as string;
             let payload = src.payload as any;
@@ -211,7 +206,7 @@ export class StableApolloSocket implements StableSocket<any> {
         this.state = 'connecting';
         console.log('[WS] Connecting');
 
-        let ws = new WebSocket(this.endpoint);
+        let ws = new ThrustedSocket(this.endpoint, SOCKET_TIMEOUT);
         ws.onopen = () => {
             if (this.client !== ws) {
                 return;
@@ -221,7 +216,6 @@ export class StableApolloSocket implements StableSocket<any> {
             }
             this.state = 'starting';
             console.log('[WS] Starting');
-            this.watchDog.reset();
 
             this.writeToSocket({
                 protocol_v: 2,
@@ -269,49 +263,22 @@ export class StableApolloSocket implements StableSocket<any> {
             if (this.client !== ws) {
                 return;
             }
-            this.onMessage(JSON.parse(m.data));
+            this.onMessage(JSON.parse(m));
         };
         this.client = ws;
-    }
-
-    private onWatchdogDied = () => {
-        console.log('[WS] WatchDog');
-
-        let sessionLost = this.state === 'started';
-        // TODO: Backoff
-        this.stopClient();
-        this.state = 'waiting';
-        console.log('[WS] Waiting');
-
-        if (sessionLost) {
-            console.log('[WS] Session Lost');
-
-            if (this.onDisconnected) {
-                this.onDisconnected();
-            }
-            if (this.onSessionLost) {
-                this.onSessionLost();
-            }
-        }
-
-        setTimeout(() => {
-            if (this.state === 'waiting') {
-                this.doConnect();
-            }
-        }, 1000);
     }
 
     private stopClient() {
         let c = this.client!;
         this.client = null;
         c.onclose = null;
-        c.onerror = null;
+        c.onopen = null;
         c.onmessage = null;
         c.close();
     }
 
     private writeToSocket(src: any) {
-        console.log('[WS] >>> ' + JSON.stringify(src));
+        // console.log('[WS] >>> ' + JSON.stringify(src));
         this.client!.send(JSON.stringify(src));
     }
 }

@@ -29,4 +29,12 @@ export class WatchDogTimer {
         this.isDead = false;
         this.kick();
     }
+
+    kill = () => {
+        this.isDead = true;
+        if (this.timer) {
+            clearTimeout(this.timer);
+            this.timer = null;
+        }
+    }
 }
