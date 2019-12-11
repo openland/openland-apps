@@ -7,10 +7,10 @@ import Heading from './heading';
 import Tilt from 'react-tilt';
 
 const root = css`
-    margin-top: 132px;
+    margin-top: 65px;
 
     @media (min-width: 1600px) {
-        padding: 120px 0;
+        padding: 90px 0;
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
@@ -80,7 +80,7 @@ const feature = css`
 
 const text = css`
     position: relative;
-    margin-top: 25px;
+    margin-top: 13px;
     color: #525273;
     @media (min-width: 1600px) {
         font-size: 26px;
@@ -101,7 +101,8 @@ const text = css`
 const link = css`
     position: relative;
     color: inherit;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 24px;
 
     will-change: color;
     transition: color 0.2s;
@@ -152,11 +153,8 @@ const link = css`
 `;
 
 const linkWrapper = css`
-    display: inline-block;
-
-    @media (max-width: 960px) {
-        display: block;
-    }
+    display: block;
+    margin-top: 20px;
 `;
 
 const featureImage = css`
@@ -169,6 +167,8 @@ const featureImage = css`
     @media (max-width: 768px) {
         margin-top: 20px;
     }
+
+    pointer-events: none;
 `;
 
 const popup = css`
@@ -255,10 +255,29 @@ const popupSectionText = css`
     }
 `;
 
-const dot = css`
+const tilt = css`
     @media (max-width: 960px) {
-        display: none;
+        pointer-events: none;
     }
+`;
+
+const mobileOnly = css`
+    display: none;
+
+    @media (max-width: 960px) {
+        display: initial;
+    }
+`;
+
+const desktopOnly = css`
+    display: none;
+
+    @media (min-width: 961px) {
+        display: initial;
+    }
+
+    font-size: 24px;
+    white-space: nowrap;
 `;
 
 export default () => {
@@ -272,12 +291,19 @@ export default () => {
                     <div className={feature}>
                         <Heading>Start in seconds</Heading>
                         <div className={text}>
-                            Start with a chat and add more activities as you grow
-                            <span className={dot}>.</span>
-                            {' '}
+                            <span className={mobileOnly}>
+                                Start with a chat and add more activities as you grow
+                            </span>
+                            <span className={desktopOnly}>
+                                Start your community as a simple chat
+                                <br />
+                                Connect people with member directory
+                                <br />
+                                Organize knowledge with shared media
+                            </span>
                             <div className={linkWrapper}>
                                 <span className={link} onClick={() => setLeftOpen(true)}>
-                                    Explore activities
+                                    All community tools
                                 </span>
                             </div>
                             {isLeftOpen && (
@@ -347,7 +373,7 @@ export default () => {
                                 </div>
                             )}
                         </div>
-                        <Tilt options={{ max: 25, scale: 1 }}>
+                        <Tilt options={{ max: 25, scale: 1 }} className={tilt}>
                             <img
                                 src="/static/landing/feature-1.svg"
                                 className={featureImage}
@@ -359,12 +385,19 @@ export default () => {
                     <div className={feature}>
                         <Heading>Easy to grow</Heading>
                         <div className={text}>
-                            Make it easy for members to bring their friends
-                            <span className={dot}>.</span>
-                            {' '}
+                            <span className={mobileOnly}>
+                                Make it easy for members to bring their friends
+                            </span>
+                            <span className={desktopOnly}>
+                                Help members bring their friends with invite links
+                                <br />
+                                Get featured in Openland community directory
+                                <br />
+                                Use your best posts as community entry points
+                            </span>
                             <div className={linkWrapper}>
                                 <span className={link} onClick={() => setRightOpen(true)}>
-                                    See growth tools
+                                    All growth tools
                                 </span>
                             </div>
                             {isRightOpen && (

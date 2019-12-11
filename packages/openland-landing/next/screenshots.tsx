@@ -4,7 +4,7 @@ import Block from './block';
 import Heading from './heading';
 
 const root = css`
-    margin-top: 78px;
+    margin-top: 22px;
 `;
 
 const header = css`
@@ -342,7 +342,7 @@ export default () => {
                         className={logo}
                     />
                     <div className={content}>
-                        <Heading>Feel right at home</Heading>
+                        <Heading>All-in-one platform you'll love</Heading>
                         <div className={listWrapper}>
                             <li className={list}>
                                 <ul className={item}>Chats</ul>

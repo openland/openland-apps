@@ -6,7 +6,7 @@ import { XView } from 'react-mental';
 
 const root = css`
     @media (min-width: 1160px) {
-        margin-top: 197px;
+        margin-top: 137px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
@@ -100,10 +100,11 @@ const text = css`
     @media (min-width: 1600px) {
         font-size: 22px;
         line-height: 34px;
+        width: 112%;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        width: 98%;
+        width: 108%;
         font-size: 18px;
         line-height: 28px;
     }
@@ -121,6 +122,9 @@ const link = css`
     transition: color 0.2s;
     position: relative;
 
+    display: inline-flex;
+    align-items: center;
+
     &:hover,
     &:focus {
         text-decoration: none;
@@ -136,31 +140,24 @@ const link = css`
     &:after {
         display: inline-block;
         content: '';
+        margin-left: 7px;
 
         background: url('https://cdn.openland.com/shared/landing/link-arrow.svg') no-repeat;
         background-size: contain;
 
-        transform: translateY(-50%);
-
-        position: absolute;
-        top: 55%;
-
         @media (min-width: 1600px) {
             width: 20px;
             height: 20px;
-            right: -27px;
         }
 
         @media (min-width: 768px) and (max-width: 1600px) {
             width: 16px;
             height: 16px;
-            right: -23px;
         }
 
         @media (max-width: 768px) {
             width: 14px;
             height: 14px;
-            right: -21px;
         }
     }
 `;

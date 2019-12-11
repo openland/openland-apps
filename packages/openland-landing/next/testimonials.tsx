@@ -4,7 +4,7 @@ import Block from './block';
 import Heading from './heading';
 
 const root = css`
-    margin-top: 173px;
+    margin-top: 105px;
 
     @media (min-width: 768px) and (max-width: 960px) {
         margin-top: 75px;
@@ -42,8 +42,8 @@ const card = css`
 
 const img = css`
     flex-shrink: 0;
-    width: 393px;
-    height: 339px;
+    width: 376px;
+    height: 324px;
 
     @media (max-width: 1600px) {
         width: 320px;
@@ -80,6 +80,8 @@ const content = css`
 `;
 
 const quotes = css`
+width: 40px;
+height: 40px;
     @media (max-width: 768px) {
         width: 25px
         height: 25px;
@@ -92,6 +94,7 @@ const text = css`
 
     @media (min-width: 1160px) {
         font-size: 24px;
+        width: 640px;
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {

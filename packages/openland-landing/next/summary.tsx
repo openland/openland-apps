@@ -14,7 +14,11 @@ const summary = css`
     }
 `;
 
-const listWrapper = css``;
+const listWrapper = css`
+    @media (min-width: 1600px) {
+        margin-top: 60px;
+    }
+`;
 
 const list = css`
     margin-top: 33px;
@@ -22,7 +26,7 @@ const list = css`
     list-style-type: none;
 
     @media (min-width: 1600px) {
-        font-size: 28px;
+        font-size: 24px;
         line-height: 2.2;
     }
 
@@ -65,9 +69,9 @@ const summaryImage = css`
     position: relative;
 
     @media (min-width: 1600px) {
-        width: 550px;
-        left: 15px;
-        top: 20px;
+        width: 493px;
+        left: 77px;
+        top: 35px;
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
@@ -84,6 +88,10 @@ const summaryImage = css`
 `;
 
 const headingWrapper = css`
+    @media (min-width: 1600px) {
+        margin-bottom: -20px;
+    }
+
     @media (max-width: 768px) {
         margin-top: 20px;
         margin-bottom: -20px;
@@ -91,9 +99,6 @@ const headingWrapper = css`
 
     @media (min-width: 920px) {
         white-space: nowrap;
-        & > h2 {
-            font-size: 30px !important;
-        }
     }
 `;
 
