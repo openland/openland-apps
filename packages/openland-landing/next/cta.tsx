@@ -163,7 +163,7 @@ const ctaSmall = css`
     margin-top: 174px;
     margin-bottom: 150px;
 
-    @media (max-width: 1600px) {
+    @media (max-width: 960px) {
         flex-direction: column;
         text-align: center;
     }
@@ -176,7 +176,7 @@ const ctaSmall = css`
 const content = css`
     margin-right: 120px;
 
-    @media (max-width: 1600px) {
+    @media (max-width: 960px) {
         margin-right: 0;
         margin-bottom: 36px;
     }
