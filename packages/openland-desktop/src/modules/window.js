@@ -30,6 +30,8 @@ module.exports = {
         let win = new BrowserWindow({
             width: mainWindowState.width,
             height: mainWindowState.height,
+            minHeight: 375,
+            minWidth: 500,
             title: 'Openland',
             webPreferences: {
                 nodeIntegration: true
