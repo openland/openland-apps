@@ -5,9 +5,9 @@ disableAll();
 disableTag('GraphQL-Direct');
 
 import { throwFatalError } from 'openland-y-utils/throwFatalError';
-import { buildClient } from 'openland-y-graphql/apolloClient';
+// import { buildClient } from 'openland-y-graphql/apolloClient';
 import { WorkerApolloHost } from 'openland-graphql/proxy/WorkerApolloHost';
-import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
+// import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
 import { WorkerInterface } from 'openland-graphql/proxy/WorkerInterface';
 
 const ctx = self as any;
