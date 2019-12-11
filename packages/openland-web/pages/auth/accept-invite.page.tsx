@@ -22,7 +22,6 @@ const AcceptInvite = ({
     inviter: { photo: string | null; name: string; id: string };
     isMobile: boolean;
 }) => {
-    console.log('-------------------')
     const userInfo = React.useContext(UserInfoContext);
     const router = React.useContext(XRouterContext)!;
     const onAcceptInvite = React.useCallback(() => {
