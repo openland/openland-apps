@@ -7,8 +7,6 @@ import { throwFatalError } from 'openland-y-utils/throwFatalError';
 import { WorkerApolloHost } from 'openland-graphql/proxy/WorkerApolloHost';
 // import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
 import { WorkerInterface } from 'openland-graphql/proxy/WorkerInterface';
-import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
-import { buildClient } from 'openland-y-graphql/apolloClient';
 
 const ctx = self as any;
 
@@ -24,19 +22,19 @@ const initHandler = (ev: MessageEvent) => {
 
     ctx.removeEventListener('message', initHandler);
 
-    let token = msg.token;
-    let client = buildClient({
-        token: token,
-        endpoint: msg.endpoint,
-        wsEndpoint: msg.wsEndpoint,
-    });
+    // let token = msg.token;
+    // // let client = buildClient({
+    // //     token: token,
+    // //     endpoint: msg.endpoint,
+    // //     wsEndpoint: msg.wsEndpoint,
+    // // });
 
     let workerInterface: WorkerInterface = {
         post: src => ctx.postMessage(src),
         setHandler: handler => ctx.addEventListener('message', (src: any) => handler(src.data)),
     };
 
-    host = new WorkerApolloHost(new DirectApollolClient(client), workerInterface);
+    host = new WorkerApolloHost(new SpaceXWebClient(Operations, msg.wsEndpoint, msg.token), workerInterface);
 };
 
 ctx.addEventListener('message', initHandler);
