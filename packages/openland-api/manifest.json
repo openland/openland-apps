@@ -1052,10 +1052,10 @@
       }
     },
     {
-      "signature": "29c02ab0e9745d95b80634ea76f327152b12796a9b1d8544068019a51cc62e80",
-      "document": "fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename...OrganizationShort}shortname}query OauthContext($code:String!){context:oauthContext(code:$code){__typename app{__typename clientId clientSecret id owner{__typename...UserTiny}scopes title}code redirectUrl state}}",
+      "signature": "af643fba203c821d6798eee79e99dd7941185aab75202a89dbad227c5402f5d7",
+      "document": "query OauthContext($code:String!){context:oauthContext(code:$code){__typename app{__typename id image{__typename crop{__typename h w x y}uuid}scopes title}code redirectUrl state}}",
       "metadata": {
-        "engineSignature": "fragment OrganizationShort on Organization{__typename about alphaIsCommunity id membersCount name photo shortname}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename...OrganizationShort}shortname}query OauthContext($code:String!){oauthContext(code:$code){__typename app{__typename clientId clientSecret id owner{__typename...UserTiny}scopes title}code redirectUrl state}}"
+        "engineSignature": "query OauthContext($code:String!){oauthContext(code:$code){__typename app{__typename id image{__typename crop{__typename h w x y}uuid}scopes title}code redirectUrl state}}"
       }
     },
     {

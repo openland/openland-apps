@@ -2506,13 +2506,18 @@ private let OauthContextSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("app", "app", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("clientId", "clientId", scalar("String")),
-                            field("clientSecret", "clientSecret", scalar("String")),
                             field("id", "id", notNull(scalar("ID"))),
-                            field("owner", "owner", notNull(obj(
+                            field("image", "image", obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
-                                    fragment("User", UserTinySelector)
-                                ))),
+                                    field("crop", "crop", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("h", "h", notNull(scalar("Int"))),
+                                            field("w", "w", notNull(scalar("Int"))),
+                                            field("x", "x", notNull(scalar("Int"))),
+                                            field("y", "y", notNull(scalar("Int")))
+                                        )),
+                                    field("uuid", "uuid", notNull(scalar("String")))
+                                )),
                             field("scopes", "scopes", list(notNull(scalar("String")))),
                             field("title", "title", notNull(scalar("String")))
                         ))),
@@ -4322,7 +4327,7 @@ class Operations {
     let OauthContext = OperationDefinition(
         "OauthContext",
         .query, 
-        "query OauthContext($code:String!){context:oauthContext(code:$code){__typename app{__typename clientId clientSecret id owner{__typename ...UserTiny}scopes title}code redirectUrl state}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}",
+        "query OauthContext($code:String!){context:oauthContext(code:$code){__typename app{__typename id image{__typename crop{__typename h w x y}uuid}scopes title}code redirectUrl state}}",
         OauthContextSelector
     )
     let Online = OperationDefinition(

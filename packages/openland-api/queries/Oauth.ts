@@ -7,11 +7,15 @@ export const OauthContextQuery = gql`
             app {
                 id
                 title
-                clientId
-                clientSecret
                 scopes
-                owner {
-                    ...UserTiny
+                image {
+                    uuid
+                    crop {
+                        x
+                        y
+                        w
+                        h
+                    }
                 }
             }
             state

@@ -14956,7 +14956,7 @@
 					"type": "String!"
 				}
 			],
-			"source": "query OauthContext($code: String!) {\n  context: oauthContext(code: $code) {\n    __typename\n    app {\n      __typename\n      id\n      title\n      clientId\n      clientSecret\n      scopes\n      owner {\n        __typename\n        ...UserTiny\n      }\n    }\n    state\n    redirectUrl\n    code\n  }\n}",
+			"source": "query OauthContext($code: String!) {\n  context: oauthContext(code: $code) {\n    __typename\n    app {\n      __typename\n      id\n      title\n      scopes\n      image {\n        __typename\n        uuid\n        crop {\n          __typename\n          x\n          y\n          w\n          h\n        }\n      }\n    }\n    state\n    redirectUrl\n    code\n  }\n}",
 			"fields": [
 				{
 					"responseName": "context",
@@ -15009,20 +15009,6 @@
 									"isDeprecated": false
 								},
 								{
-									"responseName": "clientId",
-									"fieldName": "clientId",
-									"type": "String",
-									"isConditional": false,
-									"isDeprecated": false
-								},
-								{
-									"responseName": "clientSecret",
-									"fieldName": "clientSecret",
-									"type": "String",
-									"isConditional": false,
-									"isDeprecated": false
-								},
-								{
 									"responseName": "scopes",
 									"fieldName": "scopes",
 									"type": "[OauthScope!]",
@@ -15030,9 +15016,9 @@
 									"isDeprecated": false
 								},
 								{
-									"responseName": "owner",
-									"fieldName": "owner",
-									"type": "User!",
+									"responseName": "image",
+									"fieldName": "image",
+									"type": "ImageRef",
 									"isConditional": false,
 									"isDeprecated": false,
 									"fields": [
@@ -15041,11 +15027,61 @@
 											"fieldName": "__typename",
 											"type": "String!",
 											"isConditional": false
+										},
+										{
+											"responseName": "uuid",
+											"fieldName": "uuid",
+											"type": "String!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "crop",
+											"fieldName": "crop",
+											"type": "ImageCrop",
+											"isConditional": false,
+											"isDeprecated": false,
+											"fields": [
+												{
+													"responseName": "__typename",
+													"fieldName": "__typename",
+													"type": "String!",
+													"isConditional": false
+												},
+												{
+													"responseName": "x",
+													"fieldName": "x",
+													"type": "Int!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "y",
+													"fieldName": "y",
+													"type": "Int!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "w",
+													"fieldName": "w",
+													"type": "Int!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "h",
+													"fieldName": "h",
+													"type": "Int!",
+													"isConditional": false,
+													"isDeprecated": false
+												}
+											],
+											"fragmentSpreads": [],
+											"inlineFragments": []
 										}
 									],
-									"fragmentSpreads": [
-										"UserTiny"
-									],
+									"fragmentSpreads": [],
 									"inlineFragments": []
 								}
 							],
@@ -15080,12 +15116,9 @@
 			],
 			"fragmentSpreads": [],
 			"inlineFragments": [],
-			"fragmentsReferenced": [
-				"UserTiny",
-				"OrganizationShort"
-			],
-			"sourceWithFragments": "query OauthContext($code: String!) {\n  context: oauthContext(code: $code) {\n    __typename\n    app {\n      __typename\n      id\n      title\n      clientId\n      clientSecret\n      scopes\n      owner {\n        __typename\n        ...UserTiny\n      }\n    }\n    state\n    redirectUrl\n    code\n  }\n}\nfragment UserTiny on User {\n  __typename\n  id\n  isYou\n  name\n  firstName\n  lastName\n  photo\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n  membersCount\n}",
-			"operationId": "abfe1976382194edf9fb60f76ac59a6689599a332331089cdac9aacb2afbaca1"
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "query OauthContext($code: String!) {\n  context: oauthContext(code: $code) {\n    __typename\n    app {\n      __typename\n      id\n      title\n      scopes\n      image {\n        __typename\n        uuid\n        crop {\n          __typename\n          x\n          y\n          w\n          h\n        }\n      }\n    }\n    state\n    redirectUrl\n    code\n  }\n}",
+			"operationId": "ac3b23f0f8aaa30e2578e9ecbc3325962e45000a1b057ae4613ac283d1efabe1"
 		},
 		{
 			"filePath": "file:///Users/max/Desktop/Openland/packages/openland-api/queries/Organization.ts",

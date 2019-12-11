@@ -3,12 +3,17 @@ query OauthContext($code: String!) {
     __typename
     app {
       __typename
-      clientId
-      clientSecret
       id
-      owner {
+      image {
         __typename
-        ...UserTiny
+        crop {
+          __typename
+          h
+          w
+          x
+          y
+        }
+        uuid
       }
       scopes
       title

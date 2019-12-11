@@ -2509,13 +2509,18 @@ const OauthContextSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('app', 'app', args(), notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('clientId', 'clientId', args(), scalar('String')),
-                            field('clientSecret', 'clientSecret', args(), scalar('String')),
                             field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('owner', 'owner', args(), notNull(obj(
+                            field('image', 'image', args(), obj(
                                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    fragment('User', UserTinySelector)
-                                ))),
+                                    field('crop', 'crop', args(), obj(
+                                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                            field('h', 'h', args(), notNull(scalar('Int'))),
+                                            field('w', 'w', args(), notNull(scalar('Int'))),
+                                            field('x', 'x', args(), notNull(scalar('Int'))),
+                                            field('y', 'y', args(), notNull(scalar('Int')))
+                                        )),
+                                    field('uuid', 'uuid', args(), notNull(scalar('String')))
+                                )),
                             field('scopes', 'scopes', args(), list(notNull(scalar('String')))),
                             field('title', 'title', args(), notNull(scalar('String')))
                         ))),
@@ -4321,7 +4326,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     OauthContext: {
         kind: 'query',
         name: 'OauthContext',
-        body: 'query OauthContext($code:String!){context:oauthContext(code:$code){__typename app{__typename clientId clientSecret id owner{__typename ...UserTiny}scopes title}code redirectUrl state}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}',
+        body: 'query OauthContext($code:String!){context:oauthContext(code:$code){__typename app{__typename id image{__typename crop{__typename h w x y}uuid}scopes title}code redirectUrl state}}',
         selector: OauthContextSelector
     },
     Online: {

@@ -22,6 +22,7 @@ export interface UAvatarProps extends XViewProps {
     titleEmoji?: any;
     id: string;
     photo?: string | null;
+    uuid?: string | null;
     online?: boolean;
     size?: UAvatarSize;
     selected?: boolean;
@@ -105,15 +106,15 @@ const imageWrapperRound = css`
 `;
 
 const AvatarImage = React.memo((props: UAvatarProps) => {
-    const { photo, size = 'medium', squared } = props;
+    const { photo, uuid, size = 'medium', squared } = props;
     const boxSize = AvatarSizes[size].size;
     const [imageKey, handleImageError] = useReloadImage();
 
-    let ops =
+    const ops =
         '-/format/auto/-/scale_crop/' +
         (boxSize + 'x' + boxSize) +
         '/center/-/quality/best/-/progressive/yes/';
-    let opsRetina =
+    const opsRetina =
         '-/format/auto/-/scale_crop/' +
         (boxSize * 2 + 'x' + boxSize * 2) +
         '/center/-/quality/best/-/progressive/yes/ 2x';
@@ -127,8 +128,8 @@ const AvatarImage = React.memo((props: UAvatarProps) => {
                 key={imageKey}
                 width="100%"
                 height="100%"
-                src={photo + ops}
-                srcSet={photo + opsRetina}
+                src={!!uuid ? 'https://ucarecdn.com/' + uuid + '/' + ops : photo + ops}
+                srcSet={!!uuid ? 'https://ucarecdn.com/' + uuid + '/' + opsRetina : photo + opsRetina}
                 borderRadius={squared ? '0' : '100%'}
                 overflow="hidden"
                 onError={handleImageError}
@@ -218,6 +219,7 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
         titleEmoji,
         id,
         photo,
+        uuid,
         online,
         size = 'medium',
         selected,
@@ -225,9 +227,8 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
         ...other
     } = props;
     let content: any = undefined;
-
-    if (photo) {
-        if (photo.startsWith('ph://')) {
+    if (photo || uuid) {
+        if (photo && photo.startsWith('ph://')) {
             const phIndex = parseInt(photo.substr(5), 10) || 0;
             content = <AvatarPlaceholder {...props} index={phIndex} />;
         } else {
