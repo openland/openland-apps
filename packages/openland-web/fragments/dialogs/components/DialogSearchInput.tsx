@@ -9,6 +9,7 @@ let searchStyle = css`
     border-color: transparent !important;
     margin: 0 16px 16px;
     height: 40px !important;
+    flex-shrink: 0;
     & a {
         top: calc(50% - 10px) !important;
         width: 20px;

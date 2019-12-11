@@ -18,7 +18,7 @@ const FastButton = css`
     }
 
     line-height: 38px;
-    font-size: 15;
+    font-size: 15px;
     letter-spacing: 0;
     font-weight: 600;
     color: #ffffff;

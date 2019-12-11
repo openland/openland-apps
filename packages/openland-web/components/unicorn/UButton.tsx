@@ -73,7 +73,7 @@ const size40 = css`
     height: 40px;
     padding-left: 24px;
     padding-right: 24px;
-    border-radius: 8px;
+    border-radius: 100px;
 `;
 
 const primaryStyle = css`

@@ -267,10 +267,6 @@ const ModalBoxComponent = React.memo<{
     );
 });
 
-export const XModalBoxStyles = {
-    contentPadding: 40,
-};
-
 export interface XModalBoxConfig {
     title?: string;
     width?: number;

@@ -3,8 +3,8 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalController } from 'openland-x/showModal';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
-import { XModalFooterButton } from 'openland-web/components/XModalFooterButton';
 import { XModalContent } from 'openland-web/components/XModalContent';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XView } from 'react-mental';
 
 const LogoutDialog = React.memo<{ ctx: XModalController }>(props => {
@@ -22,8 +22,18 @@ const LogoutDialog = React.memo<{ ctx: XModalController }>(props => {
                 Are you sure you want to logout?
             </XModalContent>
             <XModalFooter>
-                <XModalFooterButton text="Cancel" style="ghost" onClick={() => props.ctx.hide()} />
-                <XModalFooterButton text="Yes, I am sure" style="danger" onClick={doConfirm} />
+                <UButton
+                    text="Cancel"
+                    style="secondary"
+                    size="large"
+                    onClick={() => props.ctx.hide()}
+                />
+                <UButton
+                    text="Yes, I am sure"
+                    style="danger"
+                    size="large"
+                    onClick={doConfirm}
+                />
             </XModalFooter>
         </XView>
     );

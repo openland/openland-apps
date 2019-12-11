@@ -9,6 +9,7 @@ import { showLeaveChatConfirmation } from 'openland-web/fragments/account/compon
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { useClient } from 'openland-web/utils/useClient';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { XModalController } from 'openland-x/showModal';
 import { useForm } from 'openland-form/useForm';
@@ -17,7 +18,6 @@ import { XView } from 'react-mental';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { InputField } from 'openland-web/components/InputField';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
-import { XModalFooterButton } from 'openland-web/components/XModalFooterButton';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { showModalBox } from 'openland-x/showModalBox';
@@ -91,8 +91,18 @@ const MakeFeaturedModal = (props: {
                     )}
                 </XModalContent>
                 <XModalFooter>
-                    <XModalFooterButton text="Cancel" style="ghost" onClick={() => ctx.hide()} />
-                    <XModalFooterButton text="Save" style="primary" onClick={onSave} />
+                    <UButton
+                        text="Cancel"
+                        style="secondary"
+                        size="large"
+                        onClick={() => ctx.hide()}
+                    />
+                    <UButton
+                        text="Save"
+                        style="primary"
+                        size="large"
+                        onClick={onSave}
+                    />
                 </XModalFooter>
             </XView>
         </>

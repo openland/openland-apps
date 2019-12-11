@@ -5,10 +5,13 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { XView } from 'react-mental';
 import { DialogSearchInput } from '../dialogs/components/DialogSearchInput';
 import { DialogSearchResults } from '../dialogs/components/DialogSearchResults';
-import { XScrollView2 } from 'openland-x/XScrollView2';
+import { XScrollView3 } from 'openland-x/XScrollView3';
 import { GlobalSearch_items, GlobalSearchEntryKind } from 'openland-api/Types';
 
-const ChatPickerComponent = (props: { onSelect: (selecedChatId: string) => void, ctx: XModalController }) => {
+const ChatPickerComponent = (props: {
+    onSelect: (selecedChatId: string) => void;
+    ctx: XModalController;
+}) => {
     let layout = useLayout();
     let onDialogClick = (item: GlobalSearch_items) => {
         if (item.__typename === 'Organization') {
@@ -21,25 +24,38 @@ const ChatPickerComponent = (props: { onSelect: (selecedChatId: string) => void,
     let [query, setQuery] = React.useState('');
 
     return (
-        <div style={{ height: layout === 'mobile' ? '100vh' : '70vh', display: 'flex', flexDirection: 'column' }}>
-            <XView flexGrow={1} flexBasis={0} minHeight={0}>
-                <DialogSearchInput value={query} onChange={setQuery} modal={true} autofocus={true} />
-                <XScrollView2 flexGrow={1}>
+        <div
+            style={{
+                height: layout === 'mobile' ? '100vh' : '70vh',
+                display: 'flex',
+                flexDirection: 'column',
+            }}
+        >
+            <XView flexGrow={1} flexBasis={0} minHeight={0} flexShrink={1}>
+                <DialogSearchInput
+                    value={query}
+                    onChange={setQuery}
+                    modal={true}
+                    autofocus={true}
+                />
+                <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
                     <DialogSearchResults
                         variables={{
                             query: query,
-                            kinds: [GlobalSearchEntryKind.SHAREDROOM, GlobalSearchEntryKind.USER]
+                            kinds: [GlobalSearchEntryKind.SHAREDROOM, GlobalSearchEntryKind.USER],
                         }}
                         onPick={onDialogClick}
                         paddingHorizontal={24}
                         isForwarding={true}
                     />
-                </XScrollView2>
+                </XScrollView3>
             </XView>
         </div>
     );
 };
 
 export const showChatPicker = (onSelect: (selecedChatId: string) => void) => {
-    showModalBox({ fullScreen: 'on-mobile', title: 'Forward to' }, (ctx) => <ChatPickerComponent onSelect={onSelect} ctx={ctx} />);
+    showModalBox({ fullScreen: 'on-mobile', title: 'Forward to' }, ctx => (
+        <ChatPickerComponent onSelect={onSelect} ctx={ctx} />
+    ));
 };
