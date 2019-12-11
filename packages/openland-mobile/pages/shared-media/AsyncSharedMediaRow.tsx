@@ -40,15 +40,17 @@ const AsyncMediaItem = React.memo(({ message, index, imageSize }: AsyncMediaItem
         if (isImage) {
             const imageWidth = attachment.fileMetadata.imageWidth || event.w;
             const imageHeight = attachment.fileMetadata.imageHeight || event.h;
-            let width, height, ratio;
+            let width, height, ratio, y = event.y, x = event.x;
             if (imageWidth > imageHeight) {
                 ratio = imageHeight / imageWidth;
                 width = event.w;
                 height = ratio * width;
+                y = event.y + event.h / 2 - height / 2;
             } else {
                 ratio = imageWidth / imageHeight;
                 height = event.h;
                 width = ratio * height;
+                x = event.x + event.w / 2 - width / 2;
             }
 
             showPictureModal({
@@ -59,8 +61,8 @@ const AsyncMediaItem = React.memo(({ message, index, imageSize }: AsyncMediaItem
                 height: imageHeight,
                 isGif: attachment.fileMetadata.imageFormat === 'GIF',
                 animate: {
-                    x: event.x,
-                    y: event.y,
+                    x,
+                    y,
                     width,
                     height,
                 },

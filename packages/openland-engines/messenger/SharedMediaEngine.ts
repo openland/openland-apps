@@ -38,6 +38,8 @@ export interface DataSourceSharedLinkItem {
 
 export type SharedMediaDataSourceItem = DataSourceSharedMediaDateItem | DataSourceSharedDocumentItem | DataSourceSharedMediaRow | DataSourceSharedLinkItem;
 
+type MediaRowOrDateItem = DataSourceSharedMediaRow | DataSourceSharedMediaDateItem;
+
 const makeDateLabel = (date: string) => humanize.date('F Y', parseInt(date, 10) / 1000);
 
 export class SharedMediaEngine {
@@ -99,17 +101,7 @@ export class SharedMediaEngine {
                 }
 
                 if (this.mediaType === SharedMediaItemType.MEDIA) {
-                    if (!last || last.type === 'date' || last.dateLabel !== dateLabel || (last as DataSourceSharedMediaRow).messages.length === this.numColumns) {
-                        const newItem = {
-                            key: m.id,
-                            type: SharedMediaItemType.MEDIA,
-                            dateLabel,
-                            messages: [m],
-                        };
-                        acc.push(newItem as DataSourceSharedMediaRow);
-                    } else {
-                        (last as DataSourceSharedMediaRow).messages.push(m);
-                    }
+                    this.addMediaMessage(acc as MediaRowOrDateItem[], m);
                 } else {
                     acc.push({
                         key: m.id,
@@ -165,16 +157,8 @@ export class SharedMediaEngine {
                         if (delta > 0) {
                             (existingLast as DataSourceSharedMediaRow).messages.push(m);
                             this.dataSource.updateItem(existingLast);
-                        } else if (!last || last.type === 'date' || last.dateLabel !== dateLabel || (last as DataSourceSharedMediaRow).messages.length === this.numColumns) {
-                            const newItem = {
-                                key: m.id,
-                                type: SharedMediaItemType.MEDIA,
-                                dateLabel,
-                                messages: [m],
-                            };
-                            acc.push(newItem as DataSourceSharedMediaRow);
                         } else {
-                            (last as DataSourceSharedMediaRow).messages.push(m);
+                            this.addMediaMessage(acc as MediaRowOrDateItem[], m);
                         }
                     } else {
                         acc.push({
@@ -194,6 +178,22 @@ export class SharedMediaEngine {
 
             this.dataSource.loadedMore(items, !this.hasNextPage);
             this.isLoading = false;
+        }
+    }
+
+    addMediaMessage(items: MediaRowOrDateItem[], message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage) {
+        const last = items[items.length - 1];
+        const dateLabel = makeDateLabel(message.date);
+        if (!last || last.type === 'date' || last.dateLabel !== dateLabel || last.messages.length === this.numColumns) {
+            const newItem = {
+                key: message.id,
+                type: SharedMediaItemType.MEDIA,
+                dateLabel,
+                messages: [message],
+            } as DataSourceSharedMediaRow;
+            items.push(newItem);
+        } else {
+            last.messages.push(message);
         }
     }
 }
