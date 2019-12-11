@@ -14,7 +14,7 @@ const root = css`
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        padding: 102px 0;
+        padding: 86px 0;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
@@ -84,7 +84,7 @@ const text = css`
     color: #525273;
     @media (min-width: 1600px) {
         font-size: 26px;
-        line-height: 1.4;
+        line-height: 1.6;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
@@ -107,6 +107,10 @@ const link = css`
     will-change: color;
     transition: color 0.2s;
     cursor: pointer;
+
+    @media (max-width: 1600px) {
+        font-size: 20px;
+    }
 
     &:hover,
     &:focus {
@@ -270,14 +274,11 @@ const mobileOnly = css`
 `;
 
 const desktopOnly = css`
-    display: none;
-
-    @media (min-width: 961px) {
-        display: initial;
-    }
-
-    font-size: 24px;
     white-space: nowrap;
+
+    @media (max-width: 960px) {
+        display: none;
+    }
 `;
 
 export default () => {
@@ -457,7 +458,7 @@ export default () => {
                                 </div>
                             )}
                         </div>
-                        <Tilt options={{ max: 25, scale: 1 }}>
+                        <Tilt options={{ max: 25, scale: 1 }} className={tilt}>
                             <img
                                 src="/static/landing/feature-2.svg"
                                 className={featureImage}

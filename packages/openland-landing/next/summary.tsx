@@ -18,6 +18,11 @@ const listWrapper = css`
     @media (min-width: 1600px) {
         margin-top: 60px;
     }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        position: relative;
+        top: 24px;
+    }
 `;
 
 const list = css`
@@ -33,6 +38,7 @@ const list = css`
     @media (min-width: 768px) and (max-width: 1600px) {
         font-size: 20px;
         line-height: 2.3;
+        margin-top: 20px;
     }
 
     @media (max-width: 768px) {
@@ -75,7 +81,9 @@ const summaryImage = css`
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        width: 514px;
+        width: 401px;
+        top: 28px;
+        left: 28px;
     }
 
     @media (max-width: 768px) {

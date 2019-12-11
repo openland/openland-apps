@@ -140,6 +140,11 @@ const hide = css`
 const logo = css`
     margin-right: 32px;
 
+    @media (max-width: 1600px) and (min-width: 960px) {
+        width: 88px;
+        height: 88px;
+    }
+
     @media (max-width: 768px) {
         display: none;
     }

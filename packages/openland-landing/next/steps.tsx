@@ -10,7 +10,7 @@ const root = css`
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        margin-top: 128px;
+        margin-top: 113px;
     }
 
     @media (max-width: 768px) {
@@ -39,7 +39,8 @@ const list = css`
     margin-top: 10px;
 
     @media (max-width: 768px) {
-        justify-content: center;
+        max-width: 509px;
+        margin: 0 auto;
     }
 `;
 
@@ -104,7 +105,7 @@ const text = css`
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        width: 108%;
+        width: 103%;
         font-size: 18px;
         line-height: 28px;
     }
@@ -169,6 +170,7 @@ const wrapper = css`
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: 100%;
     }
 `;
 
@@ -199,13 +201,23 @@ const linkWrapper = css`
         display: block;
     }
 `;
+const headingWrapper = css`
+    @media (max-width: 768px) {
+        max-width: 509px;
+        text-align: left;
+        margin: 0 auto;
+        width: 100%;
+    }
+`;
 
 export default () => (
     <div className={root}>
         <Block>
             <div className={content}>
                 <div className={wrapper}>
-                    <Heading>Help for every step</Heading>
+                    <div className={headingWrapper}>
+                        <Heading>Help for every step</Heading>
+                    </div>
 
                     <ul className={list}>
                         <li className={item}>

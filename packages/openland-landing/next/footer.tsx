@@ -252,7 +252,7 @@ const popupSeparator = css`
 `;
 
 const hide = css`
-    @media (max-width: 960px) and (min-width: 768px) {
+    @media (max-width: 960px) and (min-width: 769px) {
         display: none;
     }
 `;

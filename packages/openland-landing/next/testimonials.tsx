@@ -6,6 +6,10 @@ import Heading from './heading';
 const root = css`
     margin-top: 105px;
 
+    @media (min-width: 960px) and (max-width: 1600px) {
+        margin-top: 118px;
+    }
+
     @media (min-width: 768px) and (max-width: 960px) {
         margin-top: 75px;
     }
@@ -80,11 +84,17 @@ const content = css`
 `;
 
 const quotes = css`
-width: 40px;
-height: 40px;
+    width: 40px;
+    height: 40px;
+    
     @media (max-width: 768px) {
         width: 25px
         height: 25px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        width: 32px;
+        height: 32px;
     }
 `;
 
@@ -92,13 +102,14 @@ const text = css`
     margin-top: 10px;
     line-height: 1.6;
 
-    @media (min-width: 1160px) {
+    @media (min-width: 1600px) {
         font-size: 24px;
         width: 640px;
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        font-size: 18px;
+        font-size: 19.9px;
+        width: 510px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
@@ -171,7 +182,10 @@ const by = css`
 
 const headingWrapper = css`
     @media (max-width: 768px) {
-        text-align: center;
+        max-width: 509px;
+        text-align: left;
+        margin: 0 auto;
+        width: 100%;
     }
 `;
 

@@ -124,6 +124,7 @@ const dotsLeft = css`
 
     @media (min-width: 960px) and (max-width: 1600px) {
         left: -10131px;
+        top: 52.2%;
     }
 
     @media (max-width: 960px) {
@@ -147,6 +148,7 @@ const dotsRight = css`
 
     @media (min-width: 960px) and (max-width: 1600px) {
         right: -10131px;
+        top: 52.2%;
     }
 
     @media (max-width: 960px) {
@@ -162,6 +164,11 @@ const ctaSmall = css`
 
     margin-top: 174px;
     margin-bottom: 150px;
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        margin-top: 120px;
+        margin-bottom: 132px;
+    }
 
     @media (max-width: 960px) {
         flex-direction: column;
@@ -228,7 +235,7 @@ const dotsLeftSmall = css`
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        left: -9985px;
+        left: -10073px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
@@ -255,7 +262,7 @@ const dotsRightSmall = css`
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        right: -9985px;
+        right: -10073px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
