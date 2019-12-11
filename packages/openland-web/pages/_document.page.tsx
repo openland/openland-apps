@@ -70,6 +70,45 @@ const MetaTags = ({
         </>
     );
 };
+
+interface MetaTagsDescriptors {
+    [key: string]: {
+        title?: string;
+        description?: string;
+        image?: string;
+    };
+}
+
+const matchMetaTags: MetaTagsDescriptors = {
+    '/next': {
+        title: 'Openland · Inspiring communities',
+        description:
+            'Discover and join communities for your industry, role, skills, interests, and location',
+        image: 'https://cdn.openland.com/shared/og/og-find.png',
+    },
+    '/next/start': {
+        title: 'Openland · Modern community platform',
+        description:
+            'An all-in-one platform for building great communities: start in seconds and grow fast',
+        image: 'https://cdn.openland.com/shared/og/og-build.png',
+    },
+    '/next/about': {
+        title: 'About Openland',
+        description:
+            'A modern community platform. Learn, connect, get help, or start your own community.',
+    },
+    '/next/terms': {
+        title: 'Openland · Terms of service',
+        description:
+            'Terms and conditions for using Openland websites, mobile apps, and other associated services',
+    },
+    '/next/privacy': {
+        title: 'Openland · Privacy policy',
+        description:
+            'Understand how Openland uses your personal information and how you can control it',
+    },
+};
+
 export default class OpenlandDocument extends Document {
     static async getInitialProps(props: NextDocumentContext) {
         const page = props.renderPage();
@@ -79,6 +118,8 @@ export default class OpenlandDocument extends Document {
         let metaTagsInfo;
         if (props && props.req && (props.req as any).originalUrl) {
             const originalUrl = (props.req as any).originalUrl;
+
+            metaTagsInfo = matchMetaTags[originalUrl] || {};
 
             if (originalUrl.startsWith('/invite/')) {
                 inviteKey = originalUrl.slice('/invite/'.length);
