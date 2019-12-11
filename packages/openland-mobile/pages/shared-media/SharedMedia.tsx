@@ -5,7 +5,7 @@ import { useClient } from 'openland-mobile/utils/useClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { withApp } from 'openland-mobile/components/withApp';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { useTheme } from 'openland-mobile/themes/ThemeContext';
+import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { AsyncSharedMediaList } from 'openland-mobile/pages/shared-media/AsyncSharedMediaList';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { PageProps } from 'openland-mobile/components/PageProps';
@@ -25,7 +25,7 @@ interface TabsProps {
 }
 
 const Tabs = ({ activeTab, tabs }: TabsProps) => {
-    const theme = useTheme();
+    const theme = useThemeGlobal();
     const safeArea = React.useContext(ASSafeAreaContext);
 
     return (
@@ -82,7 +82,7 @@ const EmptyTab = React.memo(({ type }: { type: SharedMediaItemType }) => {
         [SharedMediaItemType.DOCUMENT]: 'files',
         [SharedMediaItemType.LINK]: 'links',
     };
-    const theme = useTheme();
+    const theme = useThemeGlobal();
 
     return (
         <View style={emptyTab.wrapper}>

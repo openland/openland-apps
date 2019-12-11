@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Platform } from 'react-native';
 import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
-import { useTheme } from 'openland-mobile/themes/ThemeContext';
+import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { showPictureModal } from 'openland-mobile/components/modal/ZPictureModal';
@@ -26,7 +26,7 @@ const AsyncMediaItem = React.memo(({ message, index, imageSize }: AsyncMediaItem
     const senderName = sender.name;
     const [path, setPath] = React.useState();
     const optimalSize = layoutMedia(attachment.fileMetadata.imageWidth!!, attachment.fileMetadata.imageHeight!!, 1024, 1024);
-    const theme = useTheme();
+    const theme = useThemeGlobal();
 
     React.useEffect(() => {
         return DownloadManagerInstance.watch(attachment.fileId, optimalSize, state => {

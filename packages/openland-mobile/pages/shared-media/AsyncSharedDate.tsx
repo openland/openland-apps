@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataSourceSharedMediaDateItem } from 'openland-engines/messenger/SharedMediaEngine';
-import { useTheme } from 'openland-mobile/themes/ThemeContext';
+import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { ASText } from 'react-native-async-view/ASText';
 import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
 
@@ -9,7 +9,7 @@ interface AsyncSharedDateProps {
 }
 
 export const AsyncSharedDate = React.memo(({ item }: AsyncSharedDateProps) => {
-    const theme = useTheme();
+    const theme = useThemeGlobal();
 
     return (
         <ASText

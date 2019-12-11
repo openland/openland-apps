@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
-import { useTheme } from 'openland-mobile/themes/ThemeContext';
+import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { showFileModal } from 'openland-mobile/components/file/showFileModal';
 import { formatBytes } from 'openland-y-utils/formatBytes';
 import { ASDocumentExt } from 'openland-mobile/components/file/ASDocumentExt';
@@ -14,7 +14,7 @@ interface AsyncSharedDocumentProps {
 }
 
 export const AsyncSharedDocument = React.memo(({ item }: AsyncSharedDocumentProps) => {
-    const theme = useTheme();
+    const theme = useThemeGlobal();
     const { message } = item;
     const senderName = message.sender.name;
     const attachment = message.attachments[0] as SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile;

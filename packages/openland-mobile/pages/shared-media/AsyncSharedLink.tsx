@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DataSourceSharedLinkItem } from 'openland-engines/messenger/SharedMediaEngine';
 import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
-import { useTheme } from 'openland-mobile/themes/ThemeContext';
+import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { Linking, Image } from 'react-native';
 import { ASAvatar } from 'openland-mobile/messenger/components/ASAvatar';
 import { ASImage } from 'react-native-async-view/ASImage';
@@ -21,7 +21,7 @@ export const AsyncSharedLink = React.memo(({ item }: AsyncSharedLinkProps) => {
     const { message } = item;
     const senderName = message.sender.name;
     const attachment = message.attachments[0] as SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment;
-    const theme = useTheme();
+    const theme = useThemeGlobal();
 
     const onPress = React.useCallback(() => {
         Linking.openURL(attachment.titleLink!!);
