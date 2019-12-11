@@ -50,7 +50,7 @@ export const forward = (conversationEngine: ConversationEngine, messages: DataSo
         title: 'Forward to', pressCallback: (id: string) => {
             getMessenger().engine.forward(messages, id);
             if (conversationEngine.conversationId === id) {
-                getMessenger().history.navigationManager.pushAndReset('Conversation', { id });
+                getMessenger().history.navigationManager.pop();
             } else {
                 getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
             }
