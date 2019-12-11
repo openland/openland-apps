@@ -155,11 +155,14 @@ export class StableApolloSocket implements StableSocket<any> {
         } else if (src.type === 'pong') {
             if (this.pingTimeout) {
                 clearTimeout(this.pingTimeout);
+                this.pingTimeout = null;
             }
             this.pingTimeout = setTimeout(() => {
-                this.writeToSocket({
-                    type: 'ping'
-                });
+                if (this.state === 'started') {
+                    this.writeToSocket({
+                        type: 'ping'
+                    });
+                }
             }, PING_INTERVAL);
         } else if (src.type === 'data') {
             let id = src.id as string;
@@ -275,6 +278,11 @@ export class StableApolloSocket implements StableSocket<any> {
         c.onopen = null;
         c.onmessage = null;
         c.close();
+
+        if (this.pingTimeout) {
+            clearTimeout(this.pingTimeout);
+            this.pingTimeout = null;
+        }
     }
 
     private writeToSocket(src: any) {
