@@ -369,9 +369,9 @@ export default () => {
                             )}
                         </li>
                         <li className={menuItem}>
-                            <a className={menuLink} href="/invite/EGVDClq">
-                                Careers
-                            </a>
+                            <span className={menuLink}>
+                                <XView path="/invite/EGVDClq">Careers</XView>
+                            </span>
                         </li>
                         <div className={menuItemWrapper}>
                             <li className={menuItem} onMouseLeave={() => legalSetOpen(false)}>
@@ -402,9 +402,9 @@ export default () => {
                                 )}
                             </li>
                             <li className={cx(menuItem, hide)}>
-                                <a className={menuLink} href="/invite/Ryq9hof">
-                                    Chat with us
-                                </a>
+                                <span className={menuLink}>
+                                    <XView path="/invite/Ryq9hof">Chat with us</XView>
+                                </span>
                             </li>
                         </div>
                     </ul>

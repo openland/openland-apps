@@ -305,35 +305,32 @@ export default ({ isGrey, startLink, discoverLink }: Props) => {
                                     </li>
 
                                     <li className={mobileMenuItem}>
-                                        <a href="/next/about" className={mobileMenuLink}>
-                                            About
-                                        </a>
+                                        <span className={mobileMenuLink}>
+                                            <XView path="/next/about">About</XView>
+                                        </span>
                                     </li>
                                     <li className={mobileMenuItem}>
-                                        <a href="/invite/EGVDClq" className={mobileMenuLink}>
-                                            Careers
-                                        </a>
+                                        <span className={mobileMenuLink}>
+                                            <XView path="/invite/EGVDClq">Careers</XView>
+                                        </span>
                                     </li>
                                     <li className={mobileMenuItem}>
-                                        <a href="/invite/Ryq9hof" className={mobileMenuLink}>
-                                            Chat with us
-                                        </a>
+                                        <span className={mobileMenuLink}>
+                                            <XView path="/invite/Ryq9hof">Chat with us</XView>
+                                        </span>
                                     </li>
                                 </ul>
 
                                 <ul className={mobileMenuList}>
                                     <li className={mobileMenuItem}>
-                                        <a
-                                            href="https://next.openland.com/invite/h2BGtL"
-                                            className={cx(mobileMenuLink, blue)}
-                                        >
-                                            Sign up
-                                        </a>
+                                        <span className={cx(mobileMenuLink, blue)}>
+                                            <XView path="/invite/h2BGtL">Sign up</XView>
+                                        </span>
                                     </li>
                                     <li className={mobileMenuItem}>
-                                        <a href="/signin" className={mobileMenuLink}>
-                                            Login
-                                        </a>
+                                        <span className={mobileMenuLink}>
+                                            <XView path="/signin">Login</XView>
+                                        </span>
                                     </li>
                                 </ul>
 

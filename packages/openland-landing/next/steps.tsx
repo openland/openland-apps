@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 import Block from './block';
 import Heading from './heading';
+import { XView } from 'react-mental';
 
 const root = css`
     @media (min-width: 1160px) {
@@ -250,9 +251,9 @@ export default () => (
                                 <div className={text}>
                                     Be a part of our community of community builders.{' '}
                                     <div className={linkWrapper}>
-                                        <a href="/invite/uj4m8bo" className={link}>
-                                            Join now
-                                        </a>
+                                        <span className={link}>
+                                            <XView path="/invite/uj4m8bo">Join now</XView>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -269,9 +270,9 @@ export default () => (
                                 <div className={text}>
                                     Have questions about getting started?{' '}
                                     <div className={linkWrapper}>
-                                        <a href="/invite/Ryq9hof" className={link}>
-                                            Let's chat
-                                        </a>
+                                        <span className={link}>
+                                            <XView path="/invite/Ryq9hof">Let's chat</XView>
+                                        </span>
                                     </div>
                                 </div>
                             </div>

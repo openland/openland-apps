@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 import Block from './block';
 import Heading from './heading';
+import { XView } from 'react-mental';
 
 const root = css`
     background: linear-gradient(0deg, #f7fafc, #f7fafc);
@@ -136,6 +137,8 @@ const link = css`
         transition: opacity 0.01s;
         opacity: 0.8;
     }
+
+    cursor: pointer;
 `;
 
 const headingWrapper = css`
@@ -167,9 +170,9 @@ export default () => (
                     <p className={text}>
                         Explore open positions or design your own role in our team
                     </p>
-                    <a href="https://openland.com/invite/8GbujwA" className={link}>
-                        Join Chat
-                    </a>
+                    <span className={link}>
+                        <XView path="/invite/8GbujwA">Join Chat</XView>
+                    </span>
                 </div>
                 <div className={feature}>
                     <div className={featureHeader}>
@@ -185,9 +188,9 @@ export default () => (
                     <p className={text}>
                         Get help, share experiences, and propose ideas for Openland
                     </p>
-                    <a href="https://openland.com/invite/zOF5IpZ" className={link}>
-                        Join Chat
-                    </a>
+                    <span className={link}>
+                        <XView path="/invite/zOF5IpZ">Join Chat</XView>
+                    </span>
                 </div>
                 <div className={feature}>
                     <div className={featureHeader}>
@@ -201,9 +204,9 @@ export default () => (
                         <div className={name}>Openland News</div>
                     </div>
                     <p className={text}>Follow our journey to the future of community organizing</p>
-                    <a href="https://openland.com/invite/Iqx4dPt" className={link}>
-                        Join Chat
-                    </a>
+                    <span className={link}>
+                        <XView path="/invite/Iqx4dPt">Join Chat</XView>
+                    </span>
                 </div>
                 <div className={feature}>
                     <div className={featureHeader}>
@@ -219,9 +222,9 @@ export default () => (
                     <p className={text}>
                         Get inspiration and learn from the best community organizers
                     </p>
-                    <a href="https://openland.com/invite/XaQDsnQ" className={link}>
-                        Join Chat
-                    </a>
+                    <span className={link}>
+                        <XView path="/invite/XaQDsnQ">Join Chat</XView>
+                    </span>
                 </div>
             </div>
         </Block>

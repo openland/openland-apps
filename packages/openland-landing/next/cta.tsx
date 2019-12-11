@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import Block from './block';
 import Heading from './heading';
+import { XView } from 'react-mental';
 
 const root = css``;
 
@@ -291,9 +292,9 @@ export default ({ small }: { small?: boolean }) => (
                             <li className={item}>Free</li>
                         </ul>
                     </div>
-                    <a className={button} href="https://next.openland.com/invite/h2BGtL">
-                        Start community
-                    </a>
+                    <span className={button}>
+                        <XView path="/invite/h2BGtL">Start community</XView>
+                    </span>
                     <div className={dotsRightSmall} />
                 </div>
             ) : (
@@ -305,9 +306,9 @@ export default ({ small }: { small?: boolean }) => (
                     <p className={text}>
                         Openland is the best place to start and grow inspiring communities
                     </p>
-                    <a className={button} href="https://next.openland.com/invite/h2BGtL">
-                        Start community
-                    </a>
+                    <span className={button}>
+                        <XView path="/invite/h2BGtL">Start community</XView>
+                    </span>
                     <div className={dotsRight} />
                 </div>
             )}
