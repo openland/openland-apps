@@ -31,6 +31,8 @@ const logo = css`
         position: relative;
         left: -5px;
     }
+
+    cursor: pointer;
 `;
 
 const menu = css`
@@ -270,12 +272,14 @@ export default () => {
         <div className={root}>
             <Block>
                 <div className={footer}>
-                    <img
-                        className={logo}
-                        src="/static/landing/logo-footer.svg"
-                        width="120"
-                        height="37"
-                    />
+                    <XView path="/next/">
+                        <img
+                            className={logo}
+                            src="/static/landing/logo-footer.svg"
+                            width="120"
+                            height="37"
+                        />
+                    </XView>
                     <ul className={menu}>
                         <li className={menuItem}>
                             <span className={menuLink}>

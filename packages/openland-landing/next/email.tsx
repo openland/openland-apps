@@ -23,20 +23,21 @@ const aboutHeader = css`
 `;
 
 const heading = css`
-    font-size: 76px;
-    font-weight: 600;
+    font-size: 56px;
+    line-height: 67px;
+    font-weight: bold;
     line-height: 1.2;
     color: #272750;
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        font-size: 66px;
+        font-size: 50px;
     }
 
-    @media (min-width: 400px) and (max-width: 768px) {
+    @media (min-width: 420px) and (max-width: 768px) {
         font-size: 40px;
     }
 
-    @media (max-width: 400px) {
+    @media (max-width: 420px) {
         font-size: 22px;
     }
     transition: opacity 0.2s;
@@ -51,19 +52,19 @@ const heading = css`
 
 const subheading = css`
     margin-top: 0.5em;
-    font-size: 40px;
-    line-height: 48px;
+    font-size: 24px;
+    line-height: 29px;
     color: #9393a7;
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        font-size: 32px;
+        font-size: 22px;
     }
 
-    @media (min-width: 400px) and (max-width: 768px) {
+    @media (min-width: 420px) and (max-width: 768px) {
         font-size: 20px;
     }
 
-    @media (max-width: 400px) {
+    @media (max-width: 420px) {
         font-size: 16px;
     }
 `;

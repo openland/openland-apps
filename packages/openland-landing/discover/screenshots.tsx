@@ -241,6 +241,15 @@ const popupHeading = css`
     color: #272750;
     margin-bottom: 12px;
     margin-top: 40px;
+
+    @media (min-width: 720px) and (max-width: 960px) {
+        font-size: 25px;
+        margin-bottom: 0;
+    }
+
+    // @media (max-width: 960px) and (min-width: 768px) {
+    //     font-size: 14px;
+    // }
 `;
 
 const popupSection = css`
@@ -249,9 +258,15 @@ const popupSection = css`
 
 const popupSectionHeading = css`
     font-weight: bold;
-    font-size: 18px;
-    line-height: 26px;
+    font-size: 22px;
+    line-height: 28px;
+    margin-bottom: 8px;
+    margin-top: 5px;
     color: #272750;
+
+    @media (min-width: 720px) and (max-width: 960px) {
+        font-size: 18px;
+    }
 `;
 
 const popupSectionText = css`

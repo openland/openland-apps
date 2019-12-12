@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import Block from '../next/block';
+import { XView } from 'react-mental';
 
 const root = css``;
 
@@ -64,6 +65,7 @@ const text = css`
 `;
 
 const button = css`
+    cursor: pointer;
     display: inline-flex;
     line-height: 1.5;
     align-items: center;
@@ -200,9 +202,9 @@ export default () => (
                 </h1>
                 <p className={text}>Meet inspiring people, learn and get help</p>
                 <div className={buttons}>
-                    <a className={button} href="https://next.openland.com/invite/h2BGtL">
-                        Join Openland
-                    </a>
+                    <span className={button}>
+                        <XView path="/invite/h2BGtL">Join Openland</XView>
+                    </span>
                 </div>
                 <div className={dotsRight} />
             </div>

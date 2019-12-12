@@ -106,6 +106,7 @@ const button = css`
         font-size: 16px;
     }
     margin: 10px;
+    cursor: pointer;
 `;
 
 const dotsLeft = css`

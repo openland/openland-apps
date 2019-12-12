@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 import Block from '../next/block';
 import Heading from '../next/heading';
+import { XView } from 'react-mental';
 
 const root = css`
     background-color: #f7fafc;
@@ -107,16 +108,16 @@ const summaryImage = css`
         margin-bottom: -20px;
     }
 
-    @media (max-width: 960px) {
-        position: absolute;
-        width: 425px;
-        right: -10px;
-        top: 10px;
-    }
+    // @media (max-width: 960px) {
+    //     position: absolute;
+    //     width: 425px;
+    //     right: -10px;
+    //     top: 10px;
+    // }
 
     @media (max-width: 960px) and (min-width: 768px) {
         width: 388px;
-        top: 67px;
+        top: 25px;
         right: -25px;
     }
 
@@ -145,6 +146,7 @@ const headingWrapper = css`
 
 const cta = css`
     display: inline-flex;
+    width: initial;
     align-items: center;
     padding: 15px 28px;
     background-color: #e9f3fe;
@@ -152,7 +154,8 @@ const cta = css`
     font-weight: 600;
     font-size: 20px;
     line-height: 24px;
-
+    cursor: pointer;
+    color: #248bf2;
     transition: box-shadow 0.2s, background-color 0.2s;
 
     &:hover,
@@ -197,16 +200,20 @@ export default () => (
                         <li className={item}>Share and organize knowledge</li>
                         <li className={item}>Help people help each other</li>
                     </ul>
-                    <a href="/start" className={cta}>
-                        Become an organizer
-                        <img
-                            className={arrow}
-                            src="/static/landing/icons/arrow-blue.svg"
-                            width="16"
-                            height="16"
-                            alt=""
-                        />
-                    </a>
+                    <XView path="/start">
+                        <span>
+                            <span className={cta}>
+                                Become an organizer
+                                <img
+                                    className={arrow}
+                                    src="/static/landing/icons/arrow-blue.svg"
+                                    width="16"
+                                    height="16"
+                                    alt=""
+                                />
+                            </span>
+                        </span>
+                    </XView>
                 </div>
                 <img
                     className={summaryImage}

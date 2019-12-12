@@ -122,7 +122,7 @@ const link = css`
     will-change: color;
     transition: color 0.2s;
     position: relative;
-
+    cursor: pointer;
     display: inline-flex;
     align-items: center;
 

@@ -8,6 +8,7 @@ import { ReactComponent as Mac } from './icons/ic-mac.svg';
 import { ReactComponent as Windows } from './icons/ic-win.svg';
 // @ts-ignore
 import { ReactComponent as Linux } from './icons/ic-linux.svg';
+import { XView } from 'react-mental';
 
 const root = css`
     display: none;
@@ -56,6 +57,8 @@ const button = css`
         font-size: 15px;
         padding: 14px 32px;
     }
+
+    cursor: pointer;
 `;
 
 const ctaSmall = css`
@@ -277,9 +280,10 @@ export default () => {
                     <div className={content}>
                         <div className={webApp}>
                             <h2 className={subheading}>Web</h2>
-                            <a className={button} href="invite/h2BGtL">
-                                Join Openland
-                            </a>
+
+                            <span className={button}>
+                                <XView path="/invite/h2BGtL">Join Openland</XView>
+                            </span>
                         </div>
 
                         <div className={desktopApp}>

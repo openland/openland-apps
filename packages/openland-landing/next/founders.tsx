@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import Block from './block';
+import Block from './smallBlock';
 import Heading from './heading';
 import Founders from './aboutFounders';
 

@@ -7,6 +7,13 @@ const root = css`
     margin-top: 22px;
 `;
 
+const wrapper = css`
+    @media (max-width: 768px) {
+        margin: 0 auto;
+        max-width: 360px;
+    }
+`;
+
 const header = css`
     position: relative;
     display: flex;
@@ -234,12 +241,21 @@ const popupContent = css`
 `;
 
 const popupHeading = css`
-    font-weight: 800;
+    font-weight: bold;
     font-size: 30px;
     line-height: 46px;
     color: #272750;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     margin-top: 40px;
+
+    @media (min-width: 720px) and (max-width: 960px) {
+        font-size: 25px;
+        margin-bottom: 0;
+    }
+
+    // @media (max-width: 960px) and (min-width: 768px) {
+    //     font-size: 14px;
+    // }
 `;
 
 const popupSection = css`
@@ -248,9 +264,15 @@ const popupSection = css`
 
 const popupSectionHeading = css`
     font-weight: bold;
-    font-size: 18px;
-    line-height: 26px;
+    font-size: 22px;
+    line-height: 28px;
+    margin-bottom: 8px;
+    margin-top: 5px;
     color: #272750;
+
+    @media (min-width: 720px) and (max-width: 960px) {
+        font-size: 18px;
+    }
 `;
 
 const popupSectionText = css`
@@ -277,7 +299,7 @@ const popupSections = css`
     text-align: left;
 
     @media (max-width: 768px) {
-        grid-template-columns: repeat(auto-fill, 200px);
+        grid-template-columns: repeat(auto-fill, 100%);
     }
 `;
 
@@ -293,106 +315,135 @@ export default () => {
     return (
         <div className={root}>
             <Block>
-                <div className={header}>
-                    {isOpen && (
-                        <div className={popup}>
-                            <div className={popupClose} onClick={() => setOpen(false)}>
-                                <img
-                                    className={popupCloseIcon}
-                                    src="/static/landing/icons/close.svg"
-                                    width="21"
-                                    height="21"
-                                    alt="Close modal"
-                                />
-                            </div>
-                            <div className={popupContent}>
-                                <h2 className={popupHeading}>Features</h2>
-                                <div className={popupSections}>
-                                    <div className={popupSection}>
-                                        <h2 className={popupSectionHeading}>Chats</h2>
-                                        <p className={popupSectionText}>
-                                            Public and invite-only
-                                            <br />
-                                            Emojis, stickers, formatting
-                                            <br />
-                                            Mentions, replies, forwards
-                                            <br />
-                                            Threaded comments
-                                            <br />
-                                            Link and file previews
-                                        </p>
+                <div className={wrapper}>
+                    <div className={header}>
+                        {isOpen && (
+                            <div className={popup}>
+                                <div className={popupClose} onClick={() => setOpen(false)}>
+                                    <img
+                                        className={popupCloseIcon}
+                                        src="/static/landing/icons/close.svg"
+                                        width="21"
+                                        height="21"
+                                        alt="Close modal"
+                                    />
+                                </div>
+                                <div className={popupContent}>
+                                    <h2 className={popupHeading}>Messaging</h2>
+                                    <div className={popupSections}>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>Chats</h2>
+                                            <p className={popupSectionText}>
+                                                Reactions, stickers, link previews
+                                                <br />
+                                                Formatting, editing, drafts
+                                                <br />
+                                                Mentions, replies, forwards
+                                                <br />
+                                                Threaded comments
+                                            </p>
+                                        </div>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>Calls</h2>
+                                            <p className={popupSectionText}>
+                                                Crystal-clear sound
+                                                <br />
+                                                Direct and conference calls
+                                                <br />
+                                                Call-and-chat multitasking
+                                                <br />
+                                                Screen sharing (coming soon)
+                                            </p>
+                                        </div>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>Apps</h2>
+                                            <p className={popupSectionText}>
+                                                All platforms
+                                                <br />
+                                                Beautiful and ultra-fast
+                                                <br />
+                                                Stress-free notifications
+                                                <br />
+                                                Dark mode and color themes
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div className={popupSection}>
-                                        <h2 className={popupSectionHeading}>Growth</h2>
-                                        <p className={popupSectionText}>
-                                            Invite pages and links
-                                            <br />
-                                            Social sharing tools
-                                            <br />
-                                            Featuring on Openland
-                                            <br />
-                                            Website widgests and buttons
-                                            <br />
-                                            New member onboarding
-                                        </p>
-                                    </div>
-                                    <div className={popupSection}>
-                                        <h2 className={popupSectionHeading}>Activities</h2>
-                                        <p className={popupSectionText}>
-                                            Questions and answers
-                                            <br />
-                                            Member directory
-                                            <br />
-                                            Matchmaking and intros
-                                            <br />
-                                            Live sessions
-                                            <br />
-                                            Community library
-                                        </p>
+                                    <h2 className={popupHeading}>Community</h2>
+                                    <div className={popupSections}>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>Learn</h2>
+                                            <p className={popupSectionText}>
+                                                News sharing and discussion
+                                                <br />
+                                                Live sessions with experts
+                                                <br />
+                                                Shared docs and best practices
+                                            </p>
+                                        </div>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>Connect</h2>
+                                            <p className={popupSectionText}>
+                                                Member directories
+                                                <br />
+                                                Matchmaking and intros
+                                                <br />
+                                                Career opportunities
+                                            </p>
+                                        </div>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>Get help</h2>
+                                            <p className={popupSectionText}>
+                                                Advice and recommendations
+                                                <br />
+                                                Showcase and feedback
+                                                <br />
+                                                Customer research
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
-                    <img
-                        src="/static/landing/logo-screenshots.svg"
-                        width="100"
-                        height="100"
-                        className={logo}
-                    />
-                    <div className={content}>
-                        <Heading>
-                            All-in-one platform <span className={hideMobile}>you'll love</span>
-                        </Heading>
-                        <div className={listWrapper}>
-                            <li className={list}>
-                                <ul className={item}>Chats</ul>
-                                <ul className={item}>Calls</ul>
-                                <ul className={item}>Community profiles</ul>
-                                <ul className={cx(item, hide)}>Ultra-fast apps</ul>
-                            </li>
-                            <span className={dot}>.</span>
-                            {' '}
-                            <div className={linkWrapper}>
-                                <span className={link} onClick={() => setOpen(true)}>
-                                    All features
-                                </span>
+                        )}
+                        <img
+                            src="/static/landing/logo-screenshots.svg"
+                            width="100"
+                            height="100"
+                            className={logo}
+                        />
+                        <div className={content}>
+                            <Heading>
+                                All-in-one platform <span className={hideMobile}>you'll love</span>
+                            </Heading>
+                            <div className={listWrapper}>
+                                <li className={list}>
+                                    <ul className={item}>Chats</ul>
+                                    <ul className={item}>Calls</ul>
+                                    <ul className={item}>Community profiles</ul>
+                                    <ul className={cx(item, hide)}>Ultra-fast apps</ul>
+                                </li>
+                                <span className={dot}>.</span>
+                                {' '}
+                                <div className={linkWrapper}>
+                                    <span className={link} onClick={() => setOpen(true)}>
+                                        All features
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <img
+                        src="/static/landing/screenshots-desktop.png"
+                        className={screenshot}
+                        width="1600"
+                        height="667"
+                    />
+                    <img
+                        src="/static/landing/screenshots-mobile.png"
+                        className={screenshotMobile}
+                        width="560"
+                        height="1188"
+                    />
                 </div>
-                <img
-                    src="/static/landing/screenshots-desktop.png"
-                    className={screenshot}
-                    width="1600"
-                    height="667"
-                />
-                <img
-                    src="/static/landing/screenshots-mobile.png"
-                    className={screenshotMobile}
-                    width="560"
-                    height="1188"
-                />
             </Block>
         </div>
     );

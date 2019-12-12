@@ -37,7 +37,7 @@ let contentMenuClass = css`
     }
     li {
         margin: 0 0 11px;
-        font-size: 14px;
+        font-size: 16px;
         line-height: 20px;
         &:last-child {
             margin: 0;
@@ -76,8 +76,8 @@ let contentBoxClass = css`
     flex-grow: 1;
     padding-left: 35px;
     padding-bottom: 24px;
-    font-size: 17px;
-    line-height: 1.5;
+    font-size: 18px;
+    line-height: 1.72;
     width: calc(100% - 248px);
 
     @media (max-width: 767px) {
@@ -97,9 +97,9 @@ let contentBoxClass = css`
     }
     h2 {
         margin: 32px 0 12px;
-        font-size: 18px;
-        line-height: 22px;
-        font-weight: 700;
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 32px;
     }
     p {
         margin: 0 0 12px;

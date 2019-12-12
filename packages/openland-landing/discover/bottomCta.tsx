@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 import Block from '../next/block';
 import Heading from '../next/heading';
+import { XView } from 'react-mental';
 
 const root = css`
     display: none;
@@ -50,6 +51,8 @@ const button = css`
         font-size: 18px;
         padding: 11px 32px;
     }
+
+    cursor: pointer;
 `;
 
 const ctaSmall = css`
@@ -179,9 +182,9 @@ export default () => (
                         <li className={item}>Discover inspiring communities for your interests</li>
                     </ul>
                 </div>
-                <a className={button} href="https://next.openland.com/invite/h2BGtL">
-                    Join Openland
-                </a>
+                <span className={button}>
+                    <XView path="/invite/h2BGtL">Join Openland</XView>
+                </span>
                 <div className={dotsRightSmall} />
             </div>
         </Block>

@@ -46,9 +46,10 @@ const wrapper = css`
     }
 
     @media (max-width: 768px) {
-        margin: -20px;
+        margin: -20px auto;
         flex-direction: column;
         align-items: center;
+        max-width: 400px;
     }
 `;
 
@@ -178,7 +179,7 @@ const featureImage = css`
 const popup = css`
     position: absolute;
     top: -80px;
-    width: 100%;
+    width: 110%;
     background-color: white;
     padding: 32px;
     padding-top: 16px;
@@ -190,14 +191,9 @@ const popup = css`
     display: flex;
     flex-direction: column;
 
-    // @media (max-width: 768px) {
-    //     position: fixed;
-    //     top: 0;
-    //     left: 0;
-    //     right: 0;
-    //     bottom: 0;
-    //     border-radius: 0;
-    // }
+    @media (max-width: 960px) {
+        width: 100%;
+    }
 `;
 
 const popupClose = css`
@@ -232,7 +228,7 @@ const popupContent = css`
 `;
 
 const popupHeading = css`
-    font-weight: 800;
+    font-weight: bold;
     font-size: 30px;
     line-height: 46px;
     color: #272750;
@@ -244,14 +240,21 @@ const popupSection = css`
 
 const popupSectionHeading = css`
     font-weight: bold;
-    font-size: 18px;
+    font-size: 22px;
     line-height: 26px;
     color: #272750;
+    margin-bottom: 8px;
+    margin-top: 24px;
 `;
 
 const popupSectionText = css`
-    font-size: 16px;
-    line-height: 2;
+    font-size: 20px;
+    line-height: 1.8;
+
+    @media (max-width: 1600px) {
+        font-size: 17px;
+    }
+
     color: #525273;
     @media (max-width: 768px) {
         font-size: 14px;
@@ -364,8 +367,7 @@ export default () => {
                                                 Community library
                                             </h2>
                                             <p className={popupSectionText}>
-                                                Shared photos, videos, files, and links for your
-                                                community
+                                                Shared photos, videos, files, and links
                                                 <br />
                                                 Message search to find every conversation
                                             </p>
