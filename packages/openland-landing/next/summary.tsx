@@ -102,7 +102,7 @@ const headingWrapper = css`
 
     @media (max-width: 768px) {
         margin-top: 20px;
-        margin-bottom: -20px;
+        margin-bottom: -15px;
     }
 
     @media (min-width: 920px) {

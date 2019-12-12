@@ -14,7 +14,7 @@ const cta = css`
 
     @media (max-width: 768px) {
         padding-top: 80px;
-        padding-bottom: 50px;
+        padding-bottom: 80px;
     }
 `;
 
@@ -29,7 +29,7 @@ const headline = css`
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        font-size: 70px;
+        font-size: 65px;
     }
 
     @media (max-width: 768px) {
@@ -55,7 +55,7 @@ const text = css`
 
     @media (max-width: 768px) {
         font-size: 18px;
-        margin-bottom: 60px;
+        margin-bottom: 40px;
         margin-top: 15px;
     }
 

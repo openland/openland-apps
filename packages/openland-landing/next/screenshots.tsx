@@ -273,6 +273,12 @@ const popupSections = css`
     text-align: left;
 `;
 
+const hideMobile = css`
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
 export default () => {
     const [isOpen, setOpen] = React.useState<boolean>(false);
 
@@ -347,7 +353,9 @@ export default () => {
                         className={logo}
                     />
                     <div className={content}>
-                        <Heading>All-in-one platform you'll love</Heading>
+                        <Heading>
+                            All-in-one platform <span className={hideMobile}>you'll love</span>
+                        </Heading>
                         <div className={listWrapper}>
                             <li className={list}>
                                 <ul className={item}>Chats</ul>

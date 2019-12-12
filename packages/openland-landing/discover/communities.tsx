@@ -167,7 +167,6 @@ const community = css`
     &:focus {
         text-decoration: none;
         box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.1);
-        background: white;
 
         .communityButton {
             opacity: 1;
@@ -176,6 +175,42 @@ const community = css`
         .communityText {
             opacity: 0;
         }
+
+        & *:not(.communityButton) {
+            color: white;
+        }
+    }
+`;
+
+const fundraising = css`
+    background: linear-gradient(121.72deg, #d3f2ff 0%, #eaf9ff 100%);
+
+    &:hover {
+        background: linear-gradient(117.71deg, #0fabee 0%, #3ad0ff 100%);
+    }
+`;
+
+const travel = css`
+    background: linear-gradient(121.72deg, #ffebd9 0%, #fff4ea 100%);
+
+    &:hover {
+        background: linear-gradient(117.71deg, #ffa855 0%, #ffc978 100%);
+    }
+`;
+
+const cto = css`
+    background: linear-gradient(121.72deg, #ffdada 0%, #ffeaea 100%);
+
+    &:hover {
+        background: linear-gradient(117.71deg, #ff8989 0%, #ffa5a5 100%);
+    }
+`;
+
+const food = css`
+    background: linear-gradient(121.72deg, #deffd6 0%, #eeffea 100%);
+
+    &:hover {
+        background: linear-gradient(117.71deg, #71cc5a 0%, #b0df8b 100%);
     }
 `;
 
@@ -234,27 +269,11 @@ const communityText = css`
         font-size: 16px;
     }
 
-    transition: opacity 0.2s;
+    transition: opacity 0.3s;
 
     @media (max-width: 768px) {
         font-size: 16px;
     }
-`;
-
-const fundraising = css`
-    background: linear-gradient(121.72deg, #d3f2ff 0%, #eaf9ff 100%);
-`;
-
-const travel = css`
-    background: linear-gradient(121.72deg, #ffebd9 0%, #fff4ea 100%);
-`;
-
-const cto = css`
-    background: linear-gradient(121.72deg, #ffdada 0%, #ffeaea 100%);
-`;
-
-const food = css`
-    background: linear-gradient(121.72deg, #deffd6 0%, #eeffea 100%);
 `;
 
 const button = css`
@@ -288,16 +307,12 @@ const text = css`
     color: #525273;
     margin-top: 10px;
 
-    @media (min-width: 768px) and (max-width: 1600px) {
-        font-size: 20px;
-    }
-
-    @media (min-width: 768px) and (max-width: 960px) {
-        white-space: nowrap;
-    }
+    font-size: 20px;
+    white-space: nowrap;
 
     @media (max-width: 768px) {
         font-size: 18px;
+        white-space: initial;
     }
 `;
 
@@ -402,16 +417,7 @@ export default () => (
                                 <br />
                                 investor intros
                             </div>
-                            <div className={cx(button, 'communityButton')}>
-                                Join community
-                                <img
-                                    className={arrow}
-                                    src="/static/landing/icons/arrow-blue.svg"
-                                    width="16"
-                                    height="16"
-                                    alt=""
-                                />
-                            </div>
+                            <div className={cx(button, 'communityButton')}>Join community</div>
                         </a>
 
                         <a className={cx(community, travel)} href="invite/hKLqdm8">
@@ -433,16 +439,7 @@ export default () => (
                                 <br />
                                 and share your own experiences
                             </div>
-                            <div className={cx(button, 'communityButton')}>
-                                Join community
-                                <img
-                                    className={arrow}
-                                    src="/static/landing/icons/arrow-blue.svg"
-                                    width="16"
-                                    height="16"
-                                    alt=""
-                                />
-                            </div>
+                            <div className={cx(button, 'communityButton')}>Join community</div>
                         </a>
 
                         <a className={cx(community, cto)} href="invite/eD0uZPt">
@@ -464,16 +461,7 @@ export default () => (
                                 <br />
                                 developer tools choices
                             </div>
-                            <div className={cx(button, 'communityButton')}>
-                                Join community
-                                <img
-                                    className={arrow}
-                                    src="/static/landing/icons/arrow-blue.svg"
-                                    width="16"
-                                    height="16"
-                                    alt=""
-                                />
-                            </div>
+                            <div className={cx(button, 'communityButton')}>Join community</div>
                         </a>
 
                         <a className={cx(community, food)} href="invite/skHEQcr">
@@ -494,16 +482,7 @@ export default () => (
                                 Discover and discuss the latest
                                 <br /> trends in food innovation
                             </div>
-                            <div className={cx(button, 'communityButton')}>
-                                Join community
-                                <img
-                                    className={arrow}
-                                    src="/static/landing/icons/arrow-blue.svg"
-                                    width="16"
-                                    height="16"
-                                    alt=""
-                                />
-                            </div>
+                            <div className={cx(button, 'communityButton')}>Join community</div>
                         </a>
                     </div>
                 </div>
