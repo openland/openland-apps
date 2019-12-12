@@ -158,9 +158,8 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
     const [data, setData] = React.useState<SharedItem[]>([]);
     const [after, setAfter] = React.useState<string | null>();
     const loadMore = React.useCallback(async () => {
-        if (after || after === undefined && !loading) {
+        if ((after || after === undefined) && !loading) {
             setLoadin(true);
-            console.warn('shared after', after);
             let res = await client.querySharedMedia({ chatId: props.chatId, after, mediaTypes: props.mediaTypes, first: 30 });
             let nextAfter: string | undefined = undefined;
             setData(currentData => res.sharedMedia.edges.reduce((attaches, next) => {
