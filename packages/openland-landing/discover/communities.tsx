@@ -297,10 +297,6 @@ const button = css`
     transition: opacity 0.3s;
 `;
 
-const arrow = css`
-    margin-left: 8px;
-`;
-
 const text = css`
     font-size: 24px;
     line-height: 1.5;

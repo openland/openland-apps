@@ -240,7 +240,7 @@ const popupHeading = css`
     line-height: 46px;
     color: #272750;
     margin-bottom: 20px;
-    margin-top: 50px;
+    margin-top: 40px;
 `;
 
 const popupSection = css`
