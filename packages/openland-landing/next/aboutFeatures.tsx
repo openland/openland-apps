@@ -174,9 +174,14 @@ export default () => (
                     <p className={text}>
                         Explore open positions or design your own role in our team
                     </p>
-                    <span className={link}>
-                        <XView path="/invite/8GbujwA">Join chat</XView>
-                    </span>
+                    <a
+                        className={link}
+                        href="/invite/8GbujwA"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Join chat
+                    </a>
                 </div>
                 <div className={feature}>
                     <div className={featureHeader}>

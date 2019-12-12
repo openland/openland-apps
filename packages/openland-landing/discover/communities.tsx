@@ -407,7 +407,12 @@ export default () => (
                     </div>
 
                     <div className={featuredCommunities}>
-                        <a className={cx(community, fundraising)} href="invite/TNMloKR">
+                        <a
+                            className={cx(community, fundraising)}
+                            href="invite/TNMloKR"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <div className={communityHeader}>
                                 <div className={communityTitle}>
                                     <h2 className={communityHeading}>Fundraising Help</h2>
@@ -429,7 +434,12 @@ export default () => (
                             <div className={cx(button, 'communityButton')}>Join community</div>
                         </a>
 
-                        <a className={cx(community, travel)} href="invite/hKLqdm8">
+                        <a
+                            className={cx(community, travel)}
+                            href="invite/hKLqdm8"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <div className={communityHeader}>
                                 <div className={communityTitle}>
                                     <h2 className={communityHeading}>Travel Hacks</h2>
@@ -451,7 +461,12 @@ export default () => (
                             <div className={cx(button, 'communityButton')}>Join community</div>
                         </a>
 
-                        <a className={cx(community, cto)} href="invite/eD0uZPt">
+                        <a
+                            className={cx(community, cto)}
+                            href="invite/eD0uZPt"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <div className={communityHeader}>
                                 <div className={communityTitle}>
                                     <h2 className={communityHeading}>CTOs</h2>
@@ -473,7 +488,12 @@ export default () => (
                             <div className={cx(button, 'communityButton')}>Join community</div>
                         </a>
 
-                        <a className={cx(community, food)} href="invite/skHEQcr">
+                        <a
+                            className={cx(community, food)}
+                            href="invite/skHEQcr"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <div className={communityHeader}>
                                 <div className={communityTitle}>
                                     <h2 className={communityHeading}>Future of Food</h2>

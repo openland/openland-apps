@@ -63,7 +63,7 @@ const menuItem = css`
     @media (max-width: 960px) {
         margin: 8px;
     }
-    z-index: 10;
+    z-index: 20;
 `;
 
 const menuLink = css`
@@ -96,7 +96,7 @@ const menuLink = css`
     }
 
     cursor: pointer;
-    z-index: 10;
+    z-index: 30;
 `;
 
 const social = css`
@@ -185,6 +185,11 @@ const links = css`
 
 const menuItemWrapper = css`
     display: inline-block;
+    z-index: -1;
+
+    .landingHeaderPopup:before {
+        width: 50%;
+    }
 `;
 
 const popup = css`
@@ -210,7 +215,7 @@ const popup = css`
         width: 100%;
         height: 50px;
 
-        z-index: -1;
+        z-index: -3;
     }
 `;
 
@@ -374,9 +379,14 @@ export default () => {
                             )}
                         </li>
                         <li className={menuItem}>
-                            <span className={menuLink}>
-                                <XView path="/invite/EGVDClq">Careers</XView>
-                            </span>
+                            <a
+                                className={menuLink}
+                                href="/invite/EGVDClq"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Careers
+                            </a>
                         </li>
                         <div className={menuItemWrapper}>
                             <li className={menuItem} onMouseLeave={() => legalSetOpen(false)}>
