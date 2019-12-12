@@ -160,6 +160,7 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
     const loadMore = React.useCallback(async () => {
         if (after || after === undefined && !loading) {
             setLoadin(true);
+            console.warn('shared after', after);
             let res = await client.querySharedMedia({ chatId: props.chatId, after, mediaTypes: props.mediaTypes, first: 30 });
             let nextAfter: string | undefined = undefined;
             setData(currentData => res.sharedMedia.edges.reduce((attaches, next) => {
@@ -213,14 +214,15 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
         }
     }
     const initialLoading = loading && items.length === 0;
+    const isEmpty = !loading && items.length === 0;
     return (
         <div className={cx(SharedMediaContainerClass, layout === 'mobile' && SharedMediaContainerMobileClass, !props.active && SharedMediaContainerHiddenClass)}>
             {items}
-            {!initialLoading && <Footer useCorners={props.mediaTypes.includes(SharedMediaType.IMAGE)}>
+            {initialLoading && <XView flexGrow={1} height="calc(100vh - 56px)"><XLoader/></XView>}
+            {isEmpty && <Placeholder mediaTypes={props.mediaTypes} />}
+            {!initialLoading && !isEmpty && <Footer useCorners={props.mediaTypes.includes(SharedMediaType.IMAGE)}>
                 {loading && <XLoader />}
             </Footer>}
-            {initialLoading && <XView flexGrow={1} height="calc(100vh - 56px)"><XLoader/></XView>}
-            {!loading && items.length === 0 && <Placeholder mediaTypes={props.mediaTypes} />}
         </div>
     );
 }));
