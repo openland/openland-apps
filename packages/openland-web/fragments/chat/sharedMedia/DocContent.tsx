@@ -30,6 +30,9 @@ const DocumentContentClass = css`
     background: unset;
     padding: 6px 16px 8px;
     transition: unset;
+    :hover{
+        background: var(--backgroundTertiary);
+    }
 `;
 
 const DocumentContentContainerClass = css`

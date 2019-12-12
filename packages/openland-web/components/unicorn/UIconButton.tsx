@@ -31,7 +31,7 @@ const wrapper = css`
 
 const wrapperActive = css`
     &::before {
-        background: var(--backgroundPrimaryHover);
+        background: var(--backgroundTertiaryTrans);
         transform: scale3d(1, 1, 1);
     }
 `;
@@ -43,7 +43,7 @@ const container = css`
     justify-content: center;
 
     &:hover .${wrapper}::before {
-        background: var(--backgroundPrimaryHover);
+        background: var(--backgroundTertiaryTrans);
         transform: scale3d(1, 1, 1);
     }
 `;

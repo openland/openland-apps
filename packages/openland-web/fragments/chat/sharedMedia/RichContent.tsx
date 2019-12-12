@@ -76,6 +76,7 @@ const ImgClass = css`
 `;
 
 const TextInner = css`
+    margin: 1px 0;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -85,8 +86,8 @@ const TextInner = css`
 const TextContainer = css`
     display: block;
     margin-left: 16px;
-    margin-top: -4px;
-    margin-bottom: -4px;
+    margin-top: -5px;
+    margin-bottom: -5px;
     width: 100%;
 `;
 

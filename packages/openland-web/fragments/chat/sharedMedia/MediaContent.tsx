@@ -7,19 +7,33 @@ import { emoji } from 'openland-y-utils/emoji';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 
 const MediaItemClass = css`
-display: flex;
-width: 25%;    
-position: relative;
-overflow: hidden;
-@media (max-width: 750px) {
-    width: calc(100% / 3);    
-}
-
-&:before {
-    content: '';
-    display: block;
-    padding-top: 100%;
-}
+    display: flex;
+    width: 25%;    
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    @media (max-width: 750px) {
+        width: calc(100% / 3);    
+    }
+    &:before {
+        content: '';
+        display: block;
+        padding-top: 100%;
+    }
+    &:after {
+        content: '';
+        position: absolute;
+        opacity: 0;
+        top:1px;
+        left: 1px;
+        bottom: 1px;
+        right: 1px;
+        background: var(--overlayLight);
+    }
+    &:hover:after{
+        opacity: 1;
+    }
+    
 `;
 const MediaItemContentClass = css`
     position: absolute;
