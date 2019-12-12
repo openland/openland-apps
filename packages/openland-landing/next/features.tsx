@@ -177,7 +177,7 @@ const featureImage = css`
 
 const popup = css`
     position: absolute;
-    top: 0;
+    top: -80px;
     width: 100%;
     background-color: white;
     padding: 32px;

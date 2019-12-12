@@ -65,6 +65,7 @@ const text = css`
 
 const button = css`
     display: inline-flex;
+    line-height: 1.5;
     align-items: center;
     background-color: var(--accentPrimary);
     border-radius: 12px;

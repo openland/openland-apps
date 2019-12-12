@@ -265,7 +265,12 @@ export default () => {
         <div className={root}>
             <Block>
                 <div className={footer}>
-                    <img className={logo} src="/static/landing/logo.svg" width="120" height="37" />
+                    <img
+                        className={logo}
+                        src="/static/landing/logo-footer.svg"
+                        width="120"
+                        height="37"
+                    />
                     <ul className={menu}>
                         <li className={menuItem}>
                             <span className={menuLink}>

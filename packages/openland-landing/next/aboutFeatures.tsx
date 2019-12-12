@@ -53,10 +53,14 @@ const icon = css`
 const name = css`
     font-size: 26px;
     line-height: 1.2;
-    font-weight: 800;
+    font-weight: 600;
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        font-size: 19px;
+        font-size: 24px;
+    }
+
+    @media (max-width: 960px) {
+        font-size: 20px;
     }
 
     @media (min-width: 400px) and (max-width: 768px) {
@@ -64,7 +68,6 @@ const name = css`
     }
 
     @media (max-width: 400px) {
-        font-size: 16px;
     }
 `;
 
@@ -111,6 +114,7 @@ const link = css`
     &:hover,
     &:focus {
         text-decoration: none;
+        color: #248bf2;
     }
 
     &:after {
@@ -171,7 +175,7 @@ export default () => (
                         Explore open positions or design your own role in our team
                     </p>
                     <span className={link}>
-                        <XView path="/invite/8GbujwA">Join Chat</XView>
+                        <XView path="/invite/8GbujwA">Join chat</XView>
                     </span>
                 </div>
                 <div className={feature}>
@@ -189,7 +193,7 @@ export default () => (
                         Get support, ask for features, and share your ideas for Openland
                     </p>
                     <span className={link}>
-                        <XView path="/invite/zOF5IpZ">Join Chat</XView>
+                        <XView path="/invite/zOF5IpZ">Join chat</XView>
                     </span>
                 </div>
                 <div className={feature}>
@@ -205,7 +209,7 @@ export default () => (
                     </div>
                     <p className={text}>Follow our journey to the future of community organizing</p>
                     <span className={link}>
-                        <XView path="/invite/Iqx4dPt">Join Chat</XView>
+                        <XView path="/invite/Iqx4dPt">Join chat</XView>
                     </span>
                 </div>
                 <div className={feature}>
@@ -223,7 +227,7 @@ export default () => (
                         Get inspiration and learn from the best community organizers
                     </p>
                     <span className={link}>
-                        <XView path="/invite/XaQDsnQ">Join Chat</XView>
+                        <XView path="/invite/XaQDsnQ">Join chat</XView>
                     </span>
                 </div>
             </div>

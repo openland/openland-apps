@@ -73,7 +73,7 @@ const button = css`
     font-weight: 600;
     box-shadow: 0px 6px 17px rgba(36, 139, 242, 0.32);
     color: var(--foregroundContrast);
-
+    line-height: 1.5;
     will-change: color, background-color, box-shadow;
     transition: color 0.2s, background-color.2s, box-shadow 0.2s;
 

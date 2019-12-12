@@ -187,6 +187,10 @@ const fundraising = css`
 
     &:hover {
         background: linear-gradient(117.71deg, #0fabee 0%, #3ad0ff 100%);
+
+        .communityButton {
+            color: #089fe1;
+        }
     }
 `;
 
@@ -195,6 +199,10 @@ const travel = css`
 
     &:hover {
         background: linear-gradient(117.71deg, #ffa855 0%, #ffc978 100%);
+
+        .communityButton {
+            color: #e98e37;
+        }
     }
 `;
 
@@ -203,6 +211,10 @@ const cto = css`
 
     &:hover {
         background: linear-gradient(117.71deg, #ff8989 0%, #ffa5a5 100%);
+
+        .communityButton {
+            color: #f07c7c;
+        }
     }
 `;
 
@@ -211,6 +223,10 @@ const food = css`
 
     &:hover {
         background: linear-gradient(117.71deg, #71cc5a 0%, #b0df8b 100%);
+
+        .communityButton {
+            color: #5cbc44;
+        }
     }
 `;
 
@@ -269,8 +285,6 @@ const communityText = css`
         font-size: 16px;
     }
 
-    transition: opacity 0.3s;
-
     @media (max-width: 768px) {
         font-size: 16px;
     }
@@ -294,7 +308,6 @@ const button = css`
     }
 
     opacity: 0;
-    transition: opacity 0.3s;
 `;
 
 const text = css`

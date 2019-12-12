@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView, XImage } from 'react-mental';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 
 let founderRootClass = css`
     padding: 13px 0 0 150px;
@@ -120,6 +120,12 @@ const linkedinIcon = css`
     height: 22px;
 `;
 
+const link = css`
+    @media (max-width: 960px) {
+        font-size: 0;
+    }
+`;
+
 interface FoundersItemProps {
     photo: string;
     name: string;
@@ -140,7 +146,7 @@ const FoundersItem = (props: FoundersItemProps) => (
                 <a href={props.linkedin} className={founderLinkClass}>
                     <img className={linkedinIcon} src="/static/landing/icons/in.svg" />
                 </a>
-                <a href={'mailto:' + props.mail} className={founderLinkClass}>
+                <a href={'mailto:' + props.mail} className={cx(founderLinkClass, link)}>
                     <img className="mail-icon" src="/static/landing/icons/email.svg" />
                     {props.mail}
                 </a>
