@@ -235,11 +235,11 @@ const popupContent = css`
 `;
 
 const popupHeading = css`
-    font-weight: 800;
+    font-weight: bold;
     font-size: 30px;
     line-height: 46px;
     color: #272750;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     margin-top: 40px;
 `;
 
