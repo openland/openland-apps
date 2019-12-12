@@ -183,10 +183,10 @@ export default () => (
                             height="64"
                             alt=""
                         />
-                        <div className={name}>Support and Feedback</div>
+                        <div className={name}>Help and Feedback</div>
                     </div>
                     <p className={text}>
-                        Get help, share experiences, and propose ideas for Openland
+                        Get support, ask for features, and share your ideas for Openland
                     </p>
                     <span className={link}>
                         <XView path="/invite/zOF5IpZ">Join Chat</XView>
@@ -217,7 +217,7 @@ export default () => (
                             height="64"
                             alt=""
                         />
-                        <div className={name}>Community Builders</div>
+                        <div className={name}>Community Creators</div>
                     </div>
                     <p className={text}>
                         Get inspiration and learn from the best community organizers

@@ -3,7 +3,7 @@ import { XView, XImage } from 'react-mental';
 import { css } from 'linaria';
 
 let founderRootClass = css`
-    padding: 7px 0 0 132px;
+    padding: 13px 0 0 150px;
     position: relative;
     width: 50%;
     min-height: 116px;
@@ -25,10 +25,12 @@ let founderRootClass = css`
 `;
 
 let founderPhotoClass = css`
-    width: 110px;
+    width: 127px;
     position: absolute;
     top: 3px;
     left: 0;
+
+    margin-right: 10px;
 
     img {
         display: block;
@@ -46,7 +48,7 @@ let founderPhotoClass = css`
 let founderNameClass = css`
     color: #1f3449;
     margin: 0 0 5px;
-    font-size: 22px;
+    font-size: 26px;
     line-height: 30px;
     font-weight: 600;
 
@@ -57,8 +59,8 @@ let founderNameClass = css`
 `;
 
 let founderPositionClass = css`
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 21px;
+    line-height: 1.5;
     color: #525273;
 
     @media (max-width: 767px) {
@@ -82,7 +84,7 @@ let founderLinkClass = css`
     margin: 0 20px 0 0;
     color: #525273;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 18px;
     line-height: 20px;
     display: flex;
 

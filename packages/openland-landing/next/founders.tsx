@@ -23,7 +23,7 @@ const founders = css`
 `;
 const text = css`
     margin-top: 1em;
-    font-size: 26px;
+    font-size: 24px;
     line-height: 1.6;
 
     @media (min-width: 768px) and (max-width: 1600px) {
