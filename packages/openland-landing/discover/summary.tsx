@@ -200,7 +200,7 @@ export default () => (
                         <li className={item}>Share and organize knowledge</li>
                         <li className={item}>Help people help each other</li>
                     </ul>
-                    <XView path="/start">
+                    <XView path="/next/start">
                         <span>
                             <span className={cta}>
                                 Become an organizer

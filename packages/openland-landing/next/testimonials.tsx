@@ -40,7 +40,7 @@ const card = css`
         margin-top: 20px;
         background-color: initial;
 
-        max-width: 509px;
+        max-width: 360px;
     }
 `;
 
@@ -182,7 +182,8 @@ const by = css`
 
 const headingWrapper = css`
     @media (max-width: 768px) {
-        max-width: 509px;
+        max-width: 360px;
+
         text-align: left;
         margin: 0 auto;
         width: 100%;

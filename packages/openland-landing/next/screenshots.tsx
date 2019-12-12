@@ -248,7 +248,7 @@ const popupHeading = css`
     margin-bottom: 12px;
     margin-top: 40px;
 
-    @media (min-width: 720px) and (max-width: 960px) {
+    @media (max-width: 960px) {
         font-size: 25px;
         margin-bottom: 0;
     }
@@ -270,7 +270,7 @@ const popupSectionHeading = css`
     margin-top: 5px;
     color: #272750;
 
-    @media (min-width: 720px) and (max-width: 960px) {
+    @media (max-width: 960px) {
         font-size: 18px;
     }
 `;

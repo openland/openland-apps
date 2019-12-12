@@ -39,7 +39,7 @@ const list = css`
     margin-top: 10px;
 
     @media (max-width: 768px) {
-        max-width: 509px;
+        max-width: 360px;
         margin: 0 auto;
     }
 `;
@@ -117,7 +117,7 @@ const text = css`
 `;
 
 const link = css`
-    font-weight: bold;
+    font-weight: 600;
     color: inherit;
     will-change: color;
     transition: color 0.2s;
@@ -203,7 +203,7 @@ const linkWrapper = css`
 `;
 const headingWrapper = css`
     @media (max-width: 768px) {
-        max-width: 509px;
+        max-width: 360px;
         text-align: left;
         margin: 0 auto;
         width: 100%;

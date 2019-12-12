@@ -177,7 +177,10 @@ const ctaSmall = css`
     }
 
     @media (max-width: 768px) {
-        margin: 70px 0;
+        margin: 70px auto;
+        max-width: 360px;
+        text-align: left;
+        align-items: flex-start;
     }
 `;
 
@@ -288,7 +291,7 @@ export default ({ small }: { small?: boolean }) => (
                 <div className={ctaSmall}>
                     <div className={dotsLeftSmall} />
                     <div className={content}>
-                        <Heading>Start a great community&nbsp;today</Heading>
+                        <Heading>Start a great&nbsp;community today</Heading>
                         <ul className={list}>
                             <li className={item}>Seconds to launch</li>
                             <li className={cx(item, hideMobile)}>Real-time support</li>
