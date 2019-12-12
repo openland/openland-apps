@@ -179,14 +179,14 @@ const dot = css`
 
 const popup = css`
     position: absolute;
-    top: 0;
+    top: -10px;
     width: 100%;
     background-color: white;
     padding: 32px;
     padding-top: 16px;
     padding-right: 16px;
     box-shadow: 0px 9px 42px rgba(0, 0, 0, 0.07);
-    border-radius: 32px;
+    border-radius: 20px;
     z-index: 20;
 
     display: flex;
@@ -229,7 +229,7 @@ const popupClose = css`
 const popupCloseIcon = css``;
 
 const popupContent = css`
-    margin-top: -30px;
+    margin-top: -80px;
     pointer-events: none;
 `;
 
@@ -239,6 +239,7 @@ const popupHeading = css`
     line-height: 46px;
     color: #272750;
     margin-bottom: 20px;
+    margin-top: 40px;
 `;
 
 const popupSection = css`
@@ -247,30 +248,37 @@ const popupSection = css`
 
 const popupSectionHeading = css`
     font-weight: bold;
-    font-size: 22px;
+    font-size: 18px;
     line-height: 26px;
     color: #272750;
 `;
 
 const popupSectionText = css`
-    font-size: 20px;
-    line-height: 2;
+    line-height: 1.8;
     color: #525273;
-    margin-top: 15px;
-    @media (max-width: 960px) {
-        font-size: 16px;
+
+    @media (min-width: 1600px) {
+        font-size: 20px;
     }
-    @media (max-width: 768px) {
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        font-size: 17px;
+    }
+
+    @media (max-width: 960px) and (min-width: 768px) {
         font-size: 14px;
-        margin-right: 15px;
     }
 `;
 
 const popupSections = css`
     display: grid;
-    grid-template-columns: repeat(auto-fill, 300px);
-    grid-gap: 40px;
+    grid-template-columns: repeat(auto-fill, 30%);
+    grid-gap: 20px;
     text-align: left;
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(auto-fill, 200px);
+    }
 `;
 
 const hideMobile = css`

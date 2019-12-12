@@ -319,7 +319,7 @@ export default () => {
                                         />
                                     </div>
                                     <div className={popupContent}>
-                                        <h2 className={popupHeading}>Activities</h2>
+                                        <h2 className={popupHeading}>Community tools</h2>
                                         <div className={popupSection}>
                                             <h2 className={popupSectionHeading}>
                                                 Questions and answers
