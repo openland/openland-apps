@@ -137,6 +137,21 @@ const SharedMediaContainerMobileClass = css`
 const SharedMediaContainerHiddenClass = css`
     display: none;
 `;
+
+export const Placeholder = (props: { mediaTypes: SharedMediaType[]; }) => {
+    return (
+        <XView flexDirection="column" alignItems="center" justifyContent="center" height="calc(100vh - 56px)" width="100%">
+            <img
+                height={200}
+                src="https://cdn.openland.com/shared/art/art-shared.png"
+                srcSet="https://cdn.openland.com/shared/art/art-shared.png@2x.png 2x, https://cdn.openland.com/shared/art/art-shared.png@3x.png 3x"
+            />
+            <XView {...TextStyles.Title1} color="var(--foregroundPrimary)" marginTop={12} >{props.mediaTypes.includes(SharedMediaType.IMAGE) ? 'No media yet' : props.mediaTypes.includes(SharedMediaType.LINK) ? 'No links yet' : 'No files yet'}</XView>
+            <XView {...TextStyles.Body} color="var(--foregroundSecondary)" marginTop={8} >{props.mediaTypes.includes(SharedMediaType.IMAGE) ? 'Share photos and videos in this chat, and they will appear here' : props.mediaTypes.includes(SharedMediaType.LINK) ? 'Share links in this chat, and they will appear here' : 'Share files in this chat, and they will appear here'}</XView>
+        </XView>
+    );
+};
+
 export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps, ref: React.RefObject<Paginated>) => {
     const client = useClient();
     const [loading, setLoadin] = React.useState(false);
@@ -190,19 +205,22 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
             if (i.attach.__typename === 'MessageAttachmentFile') {
                 items.push(<DocContent item={i as SharedItemFile} />);
             } else if (i.attach.__typename === 'MessageRichAttachment') {
-                items.push(<RichContent item={i as SharedItemRich}/>);
+                items.push(<RichContent item={i as SharedItemRich} />);
             } else {
                 items.push(<XView padding={8} flexGrow={1}>Unknown content</XView>);
             }
 
         }
     }
+    const initialLoading = loading && items.length === 0;
     return (
         <div className={cx(SharedMediaContainerClass, layout === 'mobile' && SharedMediaContainerMobileClass, !props.active && SharedMediaContainerHiddenClass)}>
             {items}
-            <Footer useCorners={props.mediaTypes.includes(SharedMediaType.IMAGE)}>
+            {!initialLoading && <Footer useCorners={props.mediaTypes.includes(SharedMediaType.IMAGE)}>
                 {loading && <XLoader />}
-            </Footer>
+            </Footer>}
+            {initialLoading && <XView flexGrow={1} height="calc(100vh - 56px)"><XLoader/></XView>}
+            {!loading && items.length === 0 && <Placeholder mediaTypes={props.mediaTypes} />}
         </div>
     );
 }));
