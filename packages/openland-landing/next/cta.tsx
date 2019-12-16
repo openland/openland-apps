@@ -47,6 +47,7 @@ const headlineGradient = css`
 const text = css`
     @media (min-width: 1600px) {
         font-size: 24px;
+        margin-bottom: 33px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
@@ -105,7 +106,7 @@ const button = css`
         padding: 11px 32px;
         font-size: 16px;
     }
-    margin: 10px;
+    margin-bottom: 10px;
     cursor: pointer;
 `;
 
