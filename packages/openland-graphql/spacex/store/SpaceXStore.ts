@@ -105,7 +105,7 @@ export class SpaceXStore {
             let normalized = normalizeResponse(ROOT_QUERY, operation.selector, variables, root.value!);
             let keys = new Set<string>();
             for (let r of Object.keys(normalized)) {
-                for (let f of Object.keys(normalized[r])) {
+                for (let f of Object.keys(normalized[r].fields)) {
                     keys.add(r + '.' + f);
                 }
             }

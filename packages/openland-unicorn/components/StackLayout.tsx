@@ -269,7 +269,6 @@ const ConnectingStatus = () => {
         };
         const setStatusDebaunced = debounce(setConnecting, 500);
         return client.watchStatus(s => {
-            console.warn(s);
             setStatusDebaunced(s.status === 'connecting');
         });
     }, []);
