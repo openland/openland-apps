@@ -63,8 +63,6 @@ const item = css`
     }
 `;
 
-
-
 const bullet = css`
     margin-right: 16px;
     width: 32px;

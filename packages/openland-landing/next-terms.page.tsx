@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { css } from 'linaria';
-import {XView} from 'react-mental';
+import { XView } from 'react-mental';
 
 import Header from './next/header';
 import AboutHeader from './next/termsAboutHeader';
