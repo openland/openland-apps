@@ -83,7 +83,7 @@ export const TermsPage = React.memo(() => (
                     you agree that you have read and understood, and, as&nbsp;a&nbsp;condition
                     to&nbsp;your use of&nbsp;the service, you irrevocably agree
                     to&nbsp;be&nbsp;bound&nbsp;by, the following terms and conditions, including
-                    Openland&rsquo;s <a className={xview}><XView as="a" path="/next/privacy">Privacy Policy</XView></a> (together, these
+                    Openland&rsquo;s <a className={xview}><XView path="/next/privacy">Privacy Policy</XView></a> (together, these
                     &ldquo;Terms&rdquo;).
                 </p>
                 <p>
