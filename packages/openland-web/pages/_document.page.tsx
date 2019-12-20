@@ -47,8 +47,8 @@ type MetaTagsInfoT = {
 };
 const MetaTags = ({
     title = 'Openland',
-    description = "An invitation-only community where people doing most interesting things in the world are helping each other. There are chats for any industry, location, and priority task. If you need help with investor intros, customers, hiring, or tech choices — that's the place!",
-    image = 'https://cdn.openland.com/shared/img-og-link-oplnd.png',
+    description = 'A modern community platform. Learn, connect, get help, or start your own community.',
+    image = 'https://cdn.openland.com/shared/og/og-global.png',
     url,
 }: MetaTagsInfoT) => {
     return (
@@ -70,6 +70,45 @@ const MetaTags = ({
         </>
     );
 };
+
+interface MetaTagsDescriptors {
+    [key: string]: {
+        title?: string;
+        description?: string;
+        image?: string;
+    };
+}
+
+const matchMetaTags: MetaTagsDescriptors = {
+    '/': {
+        title: 'Openland · Inspiring communities',
+        description:
+            'Discover and join communities for your industry, role, skills, interests, and location',
+        image: 'https://cdn.openland.com/shared/og/og-find.png',
+    },
+    '/start': {
+        title: 'Openland · Modern community platform',
+        description:
+            'An all-in-one platform for building great communities: start in seconds and grow fast',
+        image: 'https://cdn.openland.com/shared/og/og-build.png',
+    },
+    '/about': {
+        title: 'About Openland',
+        description:
+            'A modern community platform. Learn, connect, get help, or start your own community.',
+    },
+    '/terms': {
+        title: 'Openland · Terms of service',
+        description:
+            'Terms and conditions for using Openland websites, mobile apps, and other associated services',
+    },
+    '/privacy': {
+        title: 'Openland · Privacy policy',
+        description:
+            'Understand how Openland uses your personal information and how you can control it',
+    },
+};
+
 export default class OpenlandDocument extends Document {
     static async getInitialProps(props: NextDocumentContext) {
         const page = props.renderPage();
@@ -79,6 +118,8 @@ export default class OpenlandDocument extends Document {
         let metaTagsInfo;
         if (props && props.req && (props.req as any).originalUrl) {
             const originalUrl = (props.req as any).originalUrl;
+
+            metaTagsInfo = matchMetaTags[originalUrl] || {};
 
             if (originalUrl.startsWith('/invite/')) {
                 inviteKey = originalUrl.slice('/invite/'.length);
@@ -245,8 +286,14 @@ export default class OpenlandDocument extends Document {
                     {/* Styles */}
                     {/* <link rel="stylesheet" href="https://cdn.openland.com/shared/emoji/sprites/joypixels-sprite-64.css" />
                     <link rel="stylesheet" href="https://cdn.openland.com/shared/emoji/sprites/joypixels-sprite-32.css" /> */}
-                    <link rel="stylesheet" href="https://cdn.openland.com/shared/emoji/sprites/joypixels-sprite-24.css" />
-                    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&display=swap&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese" rel="stylesheet" />
+                    <link
+                        rel="stylesheet"
+                        href="https://cdn.openland.com/shared/emoji/sprites/joypixels-sprite-24.css"
+                    />
+                    <link
+                        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&display=swap&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese"
+                        rel="stylesheet"
+                    />
                     <link rel="stylesheet" href="/static/css/x.css?v=9" />
 
                     <style dangerouslySetInnerHTML={{ __html: (this.props as any).glamCss }} />
@@ -266,7 +313,11 @@ export default class OpenlandDocument extends Document {
 
                     {/* <script src="/static/bns.js" /> */}
                     <script dangerouslySetInnerHTML={{ __html: saveConfig(config) }} />
-                    <script dangerouslySetInnerHTML={{ __html: 'window.initial = JSON.stringify(window.history.state)' }} />
+                    <script
+                        dangerouslySetInnerHTML={{
+                            __html: 'window.initial = JSON.stringify(window.history.state)',
+                        }}
+                    />
                 </Head>
 
                 <body>

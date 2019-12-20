@@ -7,12 +7,13 @@ import { isElectron } from 'openland-y-utils/isElectron';
 const DEFAULT_OG = {
     title: 'Openland',
     description:
-        'Openland is a professional messenger designed to support all communication needs of a modern business.',
-    image: 'https://cdn.openland.com/shared/img-og-link-oplnd.png',
+        'A modern community platform. Learn, connect, get help, or start your own community.',
+    image: 'https://cdn.openland.com/shared/og/og-global.png',
 };
 
 export type XDocumentHeadT = {
     title?: string | string[];
+    disableBranding?: boolean;
     titleWithoutReverse?: boolean;
     titleSocial?: string | null;
     imgCloud?: string | null;
@@ -22,7 +23,9 @@ export type XDocumentHeadT = {
 
 export const XDocumentHead = XMemo<XDocumentHeadT>(props => {
     let router = React.useContext(XRouterContext)!;
-    let parts = ['Openland'];
+    // remove "Openland" prefix from title. Remove it only if a valid title passed
+    // so the actual page title will never be empty
+    let parts = props.disableBranding && !!props.title && props.title.length ? [] : ['Openland'];
     if (typeof props.title === 'string') {
         if (props.title !== 'Openland') {
             parts = [...parts, props.title];
