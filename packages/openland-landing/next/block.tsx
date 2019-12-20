@@ -11,7 +11,7 @@ const root = css`
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        width: 960px;
+        width: 992px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {

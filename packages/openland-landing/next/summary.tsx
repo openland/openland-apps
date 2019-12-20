@@ -12,6 +12,10 @@ const summary = css`
     @media (max-width: 960px) {
         flex-direction: column-reverse;
     }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: 21px;
+    }
 `;
 
 const listWrapper = css`
@@ -22,6 +26,10 @@ const listWrapper = css`
     @media (min-width: 960px) and (max-width: 1600px) {
         position: relative;
         top: 24px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: 15px;
     }
 `;
 
@@ -84,6 +92,10 @@ const summaryImage = css`
         width: 401px;
         top: 28px;
         left: 28px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        width: 616px;
     }
 
     @media (max-width: 768px) {

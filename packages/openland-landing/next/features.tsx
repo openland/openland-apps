@@ -19,6 +19,7 @@ const root = css`
 
     @media (min-width: 768px) and (max-width: 960px) {
         padding: 80px 0;
+        padding-bottom: 90px;
     }
 
     @media (max-width: 768px) {
@@ -160,6 +161,10 @@ const link = css`
 const linkWrapper = css`
     display: block;
     margin-top: 20px;
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: 5px;
+    }
 `;
 
 const featureImage = css`
@@ -171,6 +176,10 @@ const featureImage = css`
 
     @media (max-width: 768px) {
         margin-top: 20px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: 31px;
     }
 
     pointer-events: none;

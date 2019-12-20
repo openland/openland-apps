@@ -11,7 +11,7 @@ const root = css`
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        margin-top: 75px;
+        margin-top: 107px;
     }
 
     @media (max-width: 768px) {
@@ -76,6 +76,10 @@ const imgNarrow = css`
 const content = css`
     padding: 23px 38px;
 
+    @media (min-width: 960px) and (max-width: 1600px) {
+        padding: 23px 30px;
+    }
+
     @media (max-width: 768px) {
         padding: 38px 0;
         padding-top: 20px;
@@ -96,6 +100,11 @@ const quotes = css`
         width: 32px;
         height: 32px;
     }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        width: 32px;
+        height: 32px;
+    }
 `;
 
 const text = css`
@@ -108,12 +117,13 @@ const text = css`
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        font-size: 19.9px;
-        width: 510px;
+        font-size: 22px;
+        width: 576px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        font-size: 26px;
+        font-size: 24px;
+        margin-top: 17px;
     }
 
     @media (max-width: 768px) {
@@ -123,6 +133,9 @@ const text = css`
 
 const author = css`
     margin-top: 30px;
+    @media (min-width: 960px) and (max-width: 1600px) {
+        margin-top: 20px;
+    }
     display: flex;
     align-items: center;
 `;

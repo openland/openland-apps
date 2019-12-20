@@ -139,7 +139,7 @@ const screenshot = css`
 `;
 
 const hide = css`
-    @media (min-width: 768px) and (max-width: 960px) {
+    @media (max-width: 768px) {
         display: none;
     }
 `;
@@ -150,6 +150,12 @@ const logo = css`
     @media (max-width: 1600px) and (min-width: 960px) {
         width: 88px;
         height: 88px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        width: 88px;
+        height: 88px;
+        margin-right: 19px;
     }
 
     @media (max-width: 768px) {

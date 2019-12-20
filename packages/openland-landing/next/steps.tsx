@@ -13,6 +13,14 @@ const root = css`
         margin-top: 113px;
     }
 
+    @media (min-width: 960px) and (max-width: 1600px) {
+        margin-top: 90px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        padding-top: 57px;
+    }
+
     @media (max-width: 768px) {
         margin-top: 0;
         padding: 40px 0;
@@ -54,6 +62,10 @@ const item = css`
     @media (min-width: 768px) and (max-width: 1600px) {
         margin-right: 20px;
         width: 300px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-right: 60px;
     }
 
     @media (max-width: 768px) {

@@ -43,6 +43,10 @@ const menu = css`
         margin: 10px -10px;
     }
 
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin: 10px -15px;
+    }
+
     display: flex;
     flex-wrap: wrap;
 
@@ -66,6 +70,10 @@ const menuItem = css`
         margin: 8px;
     }
     z-index: 20;
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin: 15px;
+    }
 `;
 
 const menuLink = css`

@@ -12,9 +12,10 @@ const cta = css`
     padding-top: 125px;
     padding-bottom: 100px;
 
-    @media (max-width: 768px) {
-        padding-top: 80px;
-        padding-bottom: 80px;
+        @media (min-width: 768px) and (max-width: 960px) {
+
+        padding-top: 112px;
+    }
     }
 `;
 
@@ -29,7 +30,7 @@ const headline = css`
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        font-size: 65px;
+        font-size: 60px;
     }
 
     @media (max-width: 768px) {
@@ -52,6 +53,14 @@ const text = css`
 
     @media (min-width: 768px) and (max-width: 1600px) {
         font-size: 24px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        font-size: 20px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        font-size: 20px;
     }
 
     @media (max-width: 768px) {
@@ -108,6 +117,10 @@ const button = css`
     }
     margin-bottom: 10px;
     cursor: pointer;
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        margin-top: 3px;
+    }
 `;
 
 const dotsLeft = css`
@@ -166,6 +179,11 @@ const ctaSmall = css`
 
     margin-top: 174px;
     margin-bottom: 150px;
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: 80px;
+        margin-bottom: 86px;
+    }
 
     @media (min-width: 960px) and (max-width: 1600px) {
         margin-top: 120px;
@@ -250,6 +268,10 @@ const dotsLeftSmall = css`
     @media (max-width: 768px) {
         display: none;
     }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        display: none;
+    }
 `;
 
 const dotsRightSmall = css`
@@ -275,6 +297,10 @@ const dotsRightSmall = css`
     }
 
     @media (max-width: 768px) {
+        display: none;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
         display: none;
     }
 `;
