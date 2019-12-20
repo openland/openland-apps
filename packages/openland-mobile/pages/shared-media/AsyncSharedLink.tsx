@@ -54,7 +54,7 @@ export const AsyncSharedLink = React.memo(({ item }: AsyncSharedLinkProps) => {
     const capInsets = { top: 12, right: 12, bottom: 12, left: 12 };
 
     return (
-        <ASFlex onPress={onPress} flexGrow={1}>
+        <ASFlex onPress={onPress} flexGrow={1} highlightColor={theme.backgroundTertiary}>
             <ASFlex flexDirection="row" flexGrow={1} marginLeft={16} marginRight={16} marginTop={8} marginBottom={8}>
                 <ASFlex marginTop={4}>
                     <ASFlex

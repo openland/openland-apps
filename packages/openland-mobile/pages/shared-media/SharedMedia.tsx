@@ -34,7 +34,6 @@ const Tabs = ({ activeTab, tabs }: TabsProps) => {
             flexDirection="row"
             justifyContent="space-between"
             paddingHorizontal={16}
-            marginBottom={16}
         >
             {tabs.map(({ name, count, type, onPress }) => {
                 const isActive = type === activeTab;

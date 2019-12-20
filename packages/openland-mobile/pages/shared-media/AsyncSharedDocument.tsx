@@ -25,37 +25,40 @@ export const AsyncSharedDocument = React.memo(({ item }: AsyncSharedDocumentProp
 
     return (
         <ASFlex
+            marginRight={16}
+            marginLeft={16}
             flexGrow={1}
+            flexDirection="row"
             onPress={onPress}
+            highlightColor={theme.backgroundTertiary}
+            alignItems="center"
         >
+            <ASDocumentExt name={attachment.fileMetadata.name} size="medium" />
             <ASFlex
-                marginRight={16}
                 marginLeft={16}
-                marginTop={8}
-                marginBottom={8}
+                marginTop={6}
+                marginBottom={6}
                 flexGrow={1}
-                flexDirection="row"
-                onPress={onPress}
+                flexShrink={1}
+                flexBasis={0}
+                flexDirection="column"
             >
-                <ASDocumentExt name={attachment.fileMetadata.name} size="medium" />
-                <ASFlex marginLeft={16} flexGrow={1} flexShrink={1} flexBasis={0} flexDirection="column">
-                    <ASText
-                        {...TextStylesAsync.Label1}
-                        color={theme.foregroundPrimary}
-                        flexShrink={1}
-                        numberOfLines={1}
-                    >
-                        {attachment.fileMetadata.name}
-                    </ASText>
-                    <ASText
-                        {...TextStylesAsync.Subhead}
-                        color={theme.foregroundTertiary}
-                        flexShrink={1}
-                        numberOfLines={1}
-                    >
-                        {formatBytes(attachment.fileMetadata.size)} · {senderName}
-                    </ASText>
-                </ASFlex>
+                <ASText
+                    {...TextStylesAsync.Label1}
+                    color={theme.foregroundPrimary}
+                    flexShrink={1}
+                    numberOfLines={1}
+                >
+                    {attachment.fileMetadata.name}
+                </ASText>
+                <ASText
+                    {...TextStylesAsync.Subhead}
+                    color={theme.foregroundTertiary}
+                    flexShrink={1}
+                    numberOfLines={1}
+                >
+                    {`${formatBytes(attachment.fileMetadata.size)}  ·  ${senderName}`}
+                </ASText>
             </ASFlex>
         </ASFlex>
     );

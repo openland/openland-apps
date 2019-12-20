@@ -69,7 +69,7 @@ const TextStylesAsyncIOS: { [key in TextStylesVariants]: ASTextProps } = {
     Densed: { ...TextStylesIOS.Densed as ASTextProps, letterSpacing: -0.41 },
     Subhead: { ...TextStylesIOS.Subhead as ASTextProps, letterSpacing: -0.24 },
     Caption: { ...TextStylesIOS.Caption as ASTextProps, letterSpacing: -0.08 },
-    Detail: { ...TextStylesIOS.Caption as ASTextProps, letterSpacing: 0.25 },
+    Detail: { ...TextStylesIOS.Detail as ASTextProps, letterSpacing: 0.25 },
     Post1: { ...TextStylesIOS.Post1 as ASTextProps, letterSpacing: 0.36 },
     Post2: { ...TextStylesIOS.Post2 as ASTextProps, letterSpacing: 0.38 },
 };
@@ -86,7 +86,7 @@ const TextStylesAsyncAndroid: { [key in TextStylesVariants]: ASTextProps } = {
     Densed: { ...TextStylesAndroid.Densed as ASTextProps, letterSpacing: 0.25 },
     Subhead: { ...TextStylesAndroid.Subhead as ASTextProps, letterSpacing: 0.25 },
     Caption: { ...TextStylesAndroid.Caption as ASTextProps, letterSpacing: 0.4 },
-    Detail: { ...TextStylesAndroid.Caption as ASTextProps, letterSpacing: 0.25 },
+    Detail: { ...TextStylesAndroid.Detail as ASTextProps, letterSpacing: 0.25 },
     Post1: { ...TextStylesAndroid.Post1 as ASTextProps, letterSpacing: 0.36 },
     Post2: { ...TextStylesAndroid.Post2 as ASTextProps, letterSpacing: 0.38 },
 };

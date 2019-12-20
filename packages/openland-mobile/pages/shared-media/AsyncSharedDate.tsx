@@ -14,7 +14,7 @@ export const AsyncSharedDate = React.memo(({ item }: AsyncSharedDateProps) => {
     return (
         <ASText
             {...TextStylesAsync.Title2}
-            marginTop={11}
+            marginTop={27}
             marginBottom={11}
             marginLeft={16}
             marginRight={16}
