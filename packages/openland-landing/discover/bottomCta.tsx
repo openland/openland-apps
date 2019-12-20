@@ -58,7 +58,6 @@ const button = css`
     }
     margin-bottom: 10px;
     cursor: pointer;
-    margin-top: 8px;
 `;
 
 const ctaSmall = css`

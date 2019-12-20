@@ -329,7 +329,7 @@ const text = css`
     @media (max-width: 768px) {
         font-size: 18px;
         white-space: initial;
-        width: 350px;
+        max-width: 350px;
     }
 `;
 

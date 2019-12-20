@@ -51,7 +51,7 @@ const heading = css`
 `;
 
 const subheading = css`
-    margin-top: 0.5em;
+    margin-top: 0.7em;
     font-size: 24px;
     line-height: 29px;
     color: #9393a7;
