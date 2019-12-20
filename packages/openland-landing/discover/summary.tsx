@@ -7,7 +7,7 @@ import { XView } from 'react-mental';
 const root = css`
     background-color: #f7fafc;
     margin-top: 120px;
-    padding-top: 55px;
+    padding-top: 48px;
     padding-bottom: 75px;
 
     @media (max-width: 960px) {
@@ -15,14 +15,20 @@ const root = css`
     }
 
     @media (max-width: 768px) {
-        padding-top: 20px;
-        padding-bottom: 32px;
-        margin-top: 40px;
+        padding-top: 22px;
+        padding-bottom: 29px;
+        margin-top: 61px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
         margin-top: 100px;
         padding-top: 35px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: 84px;
+        padding-top: 76px;
+        padding-bottom: 98px;
     }
 `;
 
@@ -44,7 +50,7 @@ const summary = css`
 const listWrapper = css``;
 
 const list = css`
-    margin-top: 37px;
+    margin-top: 18px;
     list-style-position: inside;
     list-style-type: none;
 
@@ -60,7 +66,8 @@ const list = css`
 
     @media (max-width: 768px) {
         font-size: 18px;
-        line-height: 2.4;
+        line-height: 2;
+        margin-top: 38px;
     }
 `;
 
@@ -99,8 +106,8 @@ const summaryImage = css`
 
     @media (min-width: 960px) and (max-width: 1600px) {
         width: 502px;
-        left: 30px;
-        top: 25px;
+        left: 74px;
+        top: 18px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
@@ -116,9 +123,9 @@ const summaryImage = css`
     // }
 
     @media (max-width: 960px) and (min-width: 768px) {
-        width: 388px;
-        top: 25px;
-        right: -25px;
+        width: 466px;
+        top: 18px;
+        right: -20px;
     }
 
     @media (max-width: 768px) {
@@ -139,8 +146,8 @@ const headingWrapper = css`
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        margin-top: 38px;
-        margin-bottom: -20px;
+        margin-top: 23px;
+        margin-bottom: 0;
     }
 `;
 

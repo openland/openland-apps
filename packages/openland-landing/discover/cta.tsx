@@ -15,6 +15,14 @@ const cta = css`
         padding-top: 80px;
         padding-bottom: 50px;
     }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        padding-bottom: 84px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        padding-top: 113px;
+    }
 `;
 
 const headline = css`
@@ -62,19 +70,18 @@ const text = css`
 
     margin-top: 15px;
     margin-bottom: 45px;
+    color: #525273;
 `;
 
 const button = css`
-    cursor: pointer;
     display: inline-flex;
-    line-height: 1.5;
     align-items: center;
     background-color: var(--accentPrimary);
     border-radius: 12px;
     font-weight: 600;
     box-shadow: 0px 6px 17px rgba(36, 139, 242, 0.32);
     color: var(--foregroundContrast);
-
+    line-height: 1.5;
     will-change: color, background-color, box-shadow;
     transition: color 0.2s, background-color.2s, box-shadow 0.2s;
 
@@ -92,7 +99,9 @@ const button = css`
         transition: color 0.01s, background-color.01s, box-shadow 0.01s;
     }
 
-    @media (min-width: 1600px) {
+    line-height: 1.2;
+
+    @media (min-width: 1601px) {
         font-size: 20px;
         padding: 16px 36px;
     }
@@ -100,13 +109,17 @@ const button = css`
     @media (min-width: 768px) and (max-width: 1600px) {
         padding: 11px 32px;
         font-size: 16px;
+        line-height: 1.5;
     }
 
     @media (max-width: 768px) {
         padding: 11px 32px;
         font-size: 16px;
+        line-height: 1.5;
     }
-    margin: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    margin-top: 8px;
 `;
 
 const dotsLeft = css`
@@ -116,15 +129,16 @@ const dotsLeft = css`
     background: url('https://cdn.openland.com/shared/landing/dot-left.svg');
 
     position: absolute;
-    top: 52.5%;
+    top: 49.5%;
     transform: translateY(-50%);
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         left: -10018px;
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        left: -10131px;
+        left: -10112px;
+        top: 52.2%;
     }
 
     @media (max-width: 960px) {
@@ -139,15 +153,16 @@ const dotsRight = css`
     background: url('https://cdn.openland.com/shared/landing/dot-right.svg');
 
     position: absolute;
-    top: 52.5%;
+    top: 49.5%;
     transform: translateY(-50%);
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         right: -10018px;
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        right: -10131px;
+        right: -10112px;
+        top: 52.2%;
     }
 
     @media (max-width: 960px) {
@@ -181,7 +196,11 @@ const img = css`
 
     @media (min-width: 768px) and (max-width: 960px) {
         height: auto;
-        margin-top: 15px;
+        margin-top: 20px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        margin-bottom: 75px;
     }
 `;
 
@@ -201,11 +220,11 @@ export default () => (
                 <h1 className={headline}>
                     Find your <span className={headlineGradient}>community</span>
                 </h1>
-                <p className={text}>Meet inspiring people, learn and get help</p>
+                <p className={text}>Meet inspiring people, learn and&nbsp;get&nbsp;help</p>
                 <div className={buttons}>
-                    <span className={button}>
-                        <XView path="/invite/h2BGtL">Join Openland</XView>
-                    </span>
+                    <XView path="/invite/h2BGtL">
+                        <span className={button}>Join Openland</span>
+                    </XView>
                 </div>
                 <div className={dotsRight} />
             </div>

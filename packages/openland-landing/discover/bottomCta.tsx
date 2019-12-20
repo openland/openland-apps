@@ -8,18 +8,19 @@ const root = css`
     display: none;
     @media (max-width: 768px) {
         display: block;
+        margin-bottom: -19px;
     }
 `;
 
 const button = css`
-    display: flex;
+    display: inline-flex;
     align-items: center;
     background-color: var(--accentPrimary);
     border-radius: 12px;
     font-weight: 600;
     box-shadow: 0px 6px 17px rgba(36, 139, 242, 0.32);
     color: var(--foregroundContrast);
-
+    line-height: 1.5;
     will-change: color, background-color, box-shadow;
     transition: color 0.2s, background-color.2s, box-shadow 0.2s;
 
@@ -37,22 +38,27 @@ const button = css`
         transition: color 0.01s, background-color.01s, box-shadow 0.01s;
     }
 
-    @media (min-width: 1600px) {
+    line-height: 1.2;
+
+    @media (min-width: 1601px) {
         font-size: 20px;
-        padding: 13px 36px;
+        padding: 16px 36px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        font-size: 18px;
         padding: 11px 32px;
+        font-size: 16px;
+        line-height: 1.5;
     }
 
     @media (max-width: 768px) {
-        font-size: 18px;
         padding: 11px 32px;
+        font-size: 16px;
+        line-height: 1.5;
     }
-
+    margin-bottom: 10px;
     cursor: pointer;
+    margin-top: 8px;
 `;
 
 const ctaSmall = css`
@@ -69,7 +75,7 @@ const ctaSmall = css`
     }
 
     @media (max-width: 768px) {
-        margin: 70px auto;
+        margin: 88px auto;
         width: 330px;
         text-align: left;
         align-items: flex-start;
@@ -101,7 +107,7 @@ const list = css`
     }
 
     @media (max-width: 400px) {
-        font-size: 16px;
+        font-size: 18px;
     }
 `;
 
@@ -179,7 +185,9 @@ export default () => (
                 <div className={content}>
                     <Heading>Find your community</Heading>
                     <ul className={list}>
-                        <li className={item}>Discover inspiring communities for your interests</li>
+                        <li className={item}>
+                            Discover inspiring communities for&nbsp;your&nbsp;interests
+                        </li>
                     </ul>
                 </div>
                 <span className={button}>

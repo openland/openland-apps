@@ -27,8 +27,12 @@ const header = css`
 `;
 
 const content = css`
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: -17px;
+    }
     @media (max-width: 768px) {
-        margin-bottom: -30px;
+        margin-bottom: -31px;
+        margin-top: -8px;
         width: 100%;
     }
 `;
@@ -136,6 +140,14 @@ const screenshot = css`
     @media (max-width: 768px) {
         display: none;
     }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        margin-top: 26px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: 23px;
+    }
 `;
 
 const logo = css`
@@ -147,6 +159,10 @@ const logo = css`
 
     @media (max-width: 768px) {
         display: none;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-right: 22px;
     }
 `;
 

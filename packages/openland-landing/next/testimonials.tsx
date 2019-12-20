@@ -90,9 +90,9 @@ const content = css`
 const quotes = css`
     width: 40px;
     height: 40px;
-    
+
     @media (max-width: 768px) {
-        width: 25px
+        width: 25px;
         height: 25px;
     }
 
