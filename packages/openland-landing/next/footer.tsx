@@ -280,7 +280,7 @@ export default () => {
         <div className={root}>
             <Block>
                 <div className={footer}>
-                    <XView path="/next/">
+                    <XView path="/">
                         <img
                             className={logo}
                             src="/static/landing/logo-footer.svg"
@@ -291,7 +291,7 @@ export default () => {
                     <ul className={menu}>
                         <li className={menuItem}>
                             <span className={menuLink}>
-                                <XView path="/next/about">About</XView>
+                                <XView path="/about">About</XView>
                             </span>
                         </li>
                         <li
@@ -416,12 +416,12 @@ export default () => {
                                         onMouseLeave={() => legalSetOpen(false)}
                                     >
                                         <span className={popupItem}>
-                                            <XView path="/next/terms">
+                                            <XView path="/terms">
                                                 <span className={popupText}>Terms of Service</span>
                                             </XView>
                                         </span>
                                         <span className={popupItem}>
-                                            <XView path="/next/privacy">
+                                            <XView path="/privacy">
                                                 <span className={popupText}>Privacy Policy</span>
                                             </XView>
                                         </span>

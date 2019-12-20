@@ -5,7 +5,7 @@ import { AuthRouter } from '../root/AuthRouter';
 import { InitTexts } from './_text';
 import { withUserInfo } from '../../components/UserInfo';
 import { withAppBase } from '../../components/withAppBase';
-import HomePage from 'openland-landing/home.page';
+import { DiscoverPage as HomePage } from 'openland-landing/discover.page';
 import { EnvironmentContext } from '../root/EnvironmentContext';
 
 export default withAppBase(
