@@ -92,7 +92,7 @@ const link = css`
     }
 
     &:active {
-        color: #248bf2;
+        color: #272750;
         transition: color 0.01s;
     }
 

@@ -24,7 +24,7 @@ const cta = css`
 
 const headline = css`
     z-index: -1;
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         font-size: 84px;
     }
 
@@ -51,7 +51,7 @@ const headlineGradient = css`
 `;
 
 const text = css`
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         font-size: 24px;
         margin-bottom: 38px;
     }
@@ -128,7 +128,7 @@ const button = css`
 
     line-height: 1.2;
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         font-size: 20px;
         padding: 16px 36px;
     }
@@ -146,6 +146,8 @@ const button = css`
     }
     margin-bottom: 10px;
     cursor: pointer;
+
+    margin-top: 3px;
 `;
 
 const dotsLeft = css`
@@ -158,12 +160,12 @@ const dotsLeft = css`
     top: 49.5%;
     transform: translateY(-50%);
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         left: -10018px;
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        left: -10131px;
+        left: -10112px;
         top: 52.2%;
     }
 
@@ -182,12 +184,12 @@ const dotsRight = css`
     top: 49.5%;
     transform: translateY(-50%);
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         right: -10018px;
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {
-        right: -10131px;
+        right: -10112px;
         top: 52.2%;
     }
 
@@ -278,7 +280,7 @@ const dotsLeftSmall = css`
     top: 53%;
     transform: translateY(-50%);
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         left: -10018px;
     }
 
@@ -309,7 +311,7 @@ const dotsRightSmall = css`
     top: 53%;
     transform: translateY(-50%);
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         right: -10018px;
     }
 
@@ -336,6 +338,13 @@ const hideMobile = css`
     }
 `;
 
+const XViewWrapper = css`
+    &,
+    & * {
+        display: inline-block;
+    }
+`;
+
 export default ({ small }: { small?: boolean }) => (
     <div className={root}>
         <Block>
@@ -350,9 +359,11 @@ export default ({ small }: { small?: boolean }) => (
                             <li className={item}>Free</li>
                         </ul>
                     </div>
-                    <span className={button}>
-                        <XView path="/invite/h2BGtL">Start community</XView>
-                    </span>
+                    <div className={XViewWrapper}>
+                        <XView as="div" path="/invite/h2BGtL">
+                            <span className={button}>Start community</span>
+                        </XView>
+                    </div>
                     <div className={dotsRightSmall} />
                 </div>
             ) : (
@@ -368,9 +379,11 @@ export default ({ small }: { small?: boolean }) => (
                         Discover&nbsp;inspiring&nbsp;communities to learn, get help, and find new
                         friends
                     </p>
-                    <span className={button}>
-                        <XView path="/invite/h2BGtL">Start community</XView>
-                    </span>
+                    <div className={XViewWrapper}>
+                        <XView as="div" path="/invite/h2BGtL">
+                            <span className={button}>Start community</span>
+                        </XView>
+                    </div>
                     <div className={dotsRight} />
                 </div>
             )}

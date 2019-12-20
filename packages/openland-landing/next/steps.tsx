@@ -173,7 +173,7 @@ const link = css`
     }
 
     &:active {
-        color: #248bf2;
+        color: #272750;
         transition: color 0.01s;
     }
 
@@ -300,7 +300,7 @@ export default () => (
                                     Be a part of our community of community builders.{' '}
                                     <div className={linkWrapper}>
                                         <span className={link}>
-                                            <XView path="/invite/uj4m8bo">Join now</XView>
+                                            <XView path="/invite/XaQDsnQ">Join now</XView>
                                         </span>
                                     </div>
                                 </div>
@@ -319,7 +319,7 @@ export default () => (
                                     Have questions about getting started?{' '}
                                     <div className={linkWrapper}>
                                         <span className={link}>
-                                            <XView path="/invite/Ryq9hof">Let's chat</XView>
+                                            <XView path="/invite/zOF5IpZ">Let's chat</XView>
                                         </span>
                                     </div>
                                 </div>

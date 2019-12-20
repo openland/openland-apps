@@ -19,7 +19,7 @@ const summary = css`
 `;
 
 const listWrapper = css`
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         margin-top: 60px;
     }
 
@@ -38,7 +38,7 @@ const list = css`
     list-style-position: inside;
     list-style-type: none;
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         font-size: 24px;
         line-height: 2.2;
     }
@@ -82,7 +82,7 @@ const summaryImage = css`
 
     position: relative;
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         width: 493px;
         left: 77px;
         top: 35px;
@@ -109,7 +109,7 @@ const summaryImage = css`
 `;
 
 const headingWrapper = css`
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         margin-bottom: -20px;
     }
 
