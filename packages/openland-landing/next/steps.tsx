@@ -23,7 +23,7 @@ const root = css`
 
     @media (max-width: 768px) {
         margin-top: 0;
-        padding: 40px 0;
+        padding: 58px 0;
     }
 
     padding: 80px 0;
@@ -49,6 +49,7 @@ const list = css`
     @media (max-width: 768px) {
         max-width: 360px;
         margin: 0 auto;
+        margin-top: 10px;
     }
 `;
 
@@ -72,6 +73,8 @@ const item = css`
         width: 100%;
         max-width: 400px;
         margin-right: 0;
+
+        margin-top: 17px;
     }
 `;
 
@@ -84,6 +87,7 @@ const bullet = css`
     @media (max-width: 768px) {
         width: 28px;
         height: 28px;
+        margin-right: 11px;
     }
 `;
 

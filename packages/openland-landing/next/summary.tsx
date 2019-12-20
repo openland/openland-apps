@@ -99,9 +99,10 @@ const summaryImage = css`
     }
 
     @media (max-width: 768px) {
-        max-width: 100%;
         height: auto;
         min-width: 280px;
+        max-width: 400px;
+        width: 100%;
     }
 
     z-index: -1;
@@ -119,6 +120,12 @@ const headingWrapper = css`
 
     @media (min-width: 920px) {
         white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+        max-width: 365px;
+        min-width: 297px;
+        margin-bottom: -25px;
     }
 `;
 

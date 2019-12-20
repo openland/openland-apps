@@ -15,7 +15,7 @@ const root = css`
     }
 
     @media (max-width: 768px) {
-        margin-top: 45px;
+        margin-top: 78px;
     }
 `;
 
@@ -136,6 +136,10 @@ const author = css`
     @media (min-width: 960px) and (max-width: 1600px) {
         margin-top: 20px;
     }
+
+    @media (max-width: 768px) {
+        margin-top: 20px;
+    }
     display: flex;
     align-items: center;
 `;
@@ -145,6 +149,7 @@ const avatar = css`
     @media (max-width: 768px) {
         width: 50px;
         height: 50px;
+        margin-right: 7px;
     }
 `;
 
@@ -200,6 +205,8 @@ const headingWrapper = css`
         text-align: left;
         margin: 0 auto;
         width: 100%;
+
+        white-space: nowrap;
     }
 `;
 

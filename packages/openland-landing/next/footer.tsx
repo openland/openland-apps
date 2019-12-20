@@ -7,7 +7,7 @@ const root = css`
     padding-bottom: 4px;
     @media (max-width: 768px) {
         padding-bottom: 30px;
-        padding-top: 20px;
+        padding-top: 30px;
     }
     background: #f7fafc;
 `;
@@ -21,7 +21,7 @@ const footer = css`
         flex-direction: column;
         align-items: flex-start;
 
-        width: 320px;
+        width: 360px;
         margin: 0 auto;
     }
 `;

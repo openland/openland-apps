@@ -23,7 +23,7 @@ const root = css`
     }
 
     @media (max-width: 768px) {
-        margin-top: 70px;
+        margin-top: 40px;
         padding: 40px 0;
     }
 
@@ -67,7 +67,15 @@ const feature = css`
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        padding: 10px;
+        padding: 8px;
+
+        &:first-child {
+            padding-right: 15px;
+        }
+
+        &:last-child {
+            padding-left: 15px;
+        }
     }
 
     @media (max-width: 768px) {
@@ -75,7 +83,11 @@ const feature = css`
         width: initial;
 
         &:first-child {
-            margin-top: 40px;
+            margin-top: 7px;
+        }
+
+        &:last-child {
+            margin-top: 16px;
         }
     }
 `;
@@ -165,6 +177,10 @@ const linkWrapper = css`
     @media (min-width: 768px) and (max-width: 960px) {
         margin-top: 5px;
     }
+
+    @media (max-width: 768px) {
+        margin-top: 5px;
+    }
 `;
 
 const featureImage = css`
@@ -194,7 +210,7 @@ const popup = css`
     padding-top: 16px;
     padding-right: 16px;
     box-shadow: 0px 9px 42px rgba(0, 0, 0, 0.07);
-    border-radius: 32px;
+    border-radius: 24px;
     z-index: 20;
 
     display: flex;
@@ -202,6 +218,10 @@ const popup = css`
 
     @media (max-width: 960px) {
         width: 100%;
+    }
+
+    @media (max-width: 768px) {
+        border-radius: 16px;
     }
 `;
 
@@ -218,11 +238,11 @@ const popupClose = css`
     border-radius: 100%;
     cursor: pointer;
 
-    // @media (max-width: 768px) {
-    //     position: relative;
-    //     right: 20px;
-    //     top: 10px;
-    // }
+    @media (max-width: 768px) {
+        position: relative;
+        right: 0;
+        top: 15px;
+    }
 
     &:hover {
         background-color: #eaecf0;
@@ -241,6 +261,11 @@ const popupHeading = css`
     font-size: 30px;
     line-height: 46px;
     color: #272750;
+
+    @media (max-width: 768px) {
+        font-size: 24px;
+        margin-bottom: -15px;
+    }
 `;
 
 const popupSection = css`
@@ -254,6 +279,10 @@ const popupSectionHeading = css`
     color: #272750;
     margin-bottom: 8px;
     margin-top: 24px;
+
+    @media (max-width: 768px) {
+        font-size: 20px;
+    }
 `;
 
 const popupSectionText = css`
@@ -266,7 +295,7 @@ const popupSectionText = css`
 
     color: #525273;
     @media (max-width: 768px) {
-        font-size: 14px;
+        font-size: 18px;
         margin-right: 15px;
     }
 `;
@@ -281,7 +310,8 @@ const mobileOnly = css`
     display: none;
 
     @media (max-width: 960px) {
-        display: initial;
+        display: inline-block;
+        width: 300px;
     }
 `;
 
@@ -305,7 +335,7 @@ export default () => {
                         <Heading>Start in seconds</Heading>
                         <div className={text}>
                             <span className={mobileOnly}>
-                                Start with a chat and add more activities as you grow
+                                Start with a single chat and add more activities as you grow
                             </span>
                             <span className={desktopOnly}>
                                 Start your community as a simple chat
@@ -339,7 +369,8 @@ export default () => {
                                             <p className={popupSectionText}>
                                                 Dedicated chat for answering community questions
                                                 <br />
-                                                Recognition badges for experts and top contributors
+                                                Recognition badges for experts and&nbsp;top
+                                                contributors
                                             </p>
                                         </div>
                                         <div className={popupSection}>
@@ -349,7 +380,7 @@ export default () => {
                                             <p className={popupSectionText}>
                                                 Custom profiles for your own community
                                                 <br />
-                                                Pick your own questions to ask new members
+                                                Pick your own questions to ask new&nbsp;members
                                             </p>
                                         </div>
                                         <div className={popupSection}>
@@ -359,14 +390,14 @@ export default () => {
                                             <p className={popupSectionText}>
                                                 Member cards to explore and connect
                                                 <br />
-                                                Secret chats to make individual and small group
+                                                Secret chats to make individual and&nbsp;small group
                                                 intros
                                             </p>
                                         </div>
                                         <div className={popupSection}>
                                             <h2 className={popupSectionHeading}>Live sessions</h2>
                                             <p className={popupSectionText}>
-                                                Voice conferences with crystal clear sound
+                                                Voice conferences with crystal clear&nbsp;sound
                                                 <br />
                                                 Talk-and-chat multitasking
                                             </p>
@@ -376,7 +407,8 @@ export default () => {
                                                 Community library
                                             </h2>
                                             <p className={popupSectionText}>
-                                                Shared photos, videos, files, and links
+                                                Shared photos, videos, files,
+                                                and&nbsp;links&nbsp;for your community
                                                 <br />
                                                 Message search to find every conversation
                                             </p>
@@ -398,7 +430,7 @@ export default () => {
                         <Heading>Easy to grow</Heading>
                         <div className={text}>
                             <span className={mobileOnly}>
-                                Make it easy for members to bring their friends
+                                Make it easy for members to&nbsp;bring their friends
                             </span>
                             <span className={desktopOnly}>
                                 Help members bring their friends with invite links

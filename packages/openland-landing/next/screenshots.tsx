@@ -11,6 +11,7 @@ const wrapper = css`
     @media (max-width: 768px) {
         margin: 0 auto;
         max-width: 360px;
+        margin-top: 10px;
     }
 `;
 

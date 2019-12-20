@@ -12,10 +12,13 @@ const cta = css`
     padding-top: 125px;
     padding-bottom: 100px;
 
-        @media (min-width: 768px) and (max-width: 960px) {
-
+    @media (min-width: 768px) and (max-width: 960px) {
         padding-top: 112px;
     }
+
+    @media (max-width: 768px) {
+        padding-top: 40px;
+        padding-bottom: 70px;
     }
 `;
 
@@ -34,7 +37,9 @@ const headline = css`
     }
 
     @media (max-width: 768px) {
-        font-size: 36px;
+        font-size: 42px;
+        width: 300px;
+        margin: 0 auto;
     }
 `;
 
@@ -48,7 +53,7 @@ const headlineGradient = css`
 const text = css`
     @media (min-width: 1600px) {
         font-size: 24px;
-        margin-bottom: 33px;
+        margin-bottom: 38px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
@@ -64,12 +69,32 @@ const text = css`
     }
 
     @media (max-width: 768px) {
-        font-size: 18px;
-        margin-bottom: 40px;
-        margin-top: 15px;
+        display: none;
     }
 
     line-height: 1.5;
+
+    margin-top: 15px;
+    margin-bottom: 45px;
+    color: #525273;
+`;
+
+const mobileOnly = css`
+    display: none;
+    @media (max-width: 768px) {
+        font-size: 18px;
+        margin-bottom: 48px;
+        margin-top: 15px;
+        margin-left: auto;
+        margin-right: auto;
+
+        display: block;
+
+        max-width: 368px;
+
+        font-size: 20px;
+        line-height: 32px;
+    }
 
     margin-top: 15px;
     margin-bottom: 45px;
@@ -101,6 +126,8 @@ const button = css`
         transition: color 0.01s, background-color.01s, box-shadow 0.01s;
     }
 
+    line-height: 1.2;
+
     @media (min-width: 1600px) {
         font-size: 20px;
         padding: 16px 36px;
@@ -109,11 +136,13 @@ const button = css`
     @media (min-width: 768px) and (max-width: 1600px) {
         padding: 11px 32px;
         font-size: 16px;
+        line-height: 1.5;
     }
 
     @media (max-width: 768px) {
         padding: 11px 32px;
         font-size: 16px;
+        line-height: 1.5;
     }
     margin-bottom: 10px;
     cursor: pointer;
@@ -338,6 +367,10 @@ export default ({ small }: { small?: boolean }) => (
                     </h1>
                     <p className={text}>
                         Openland is the best place to start and grow inspiring communities
+                    </p>
+                    <p className={mobileOnly}>
+                        Discover&nbsp;inspiring&nbsp;communities to learn, get help, and find new
+                        friends
                     </p>
                     <span className={button}>
                         <XView path="/invite/h2BGtL">Start community</XView>
