@@ -114,7 +114,10 @@ const AddMemberModalInner = (props: InviteModalProps) => {
         <>
             <XModalContent>
                 <XTrack event="invite_view" params={{ invite_type: objType }} />
-                <XTrack event={`navigate_${objType}_add_members`} params={{ invite_type: objType }} />
+                <XTrack
+                    event={`navigate_${objType}_add_members`}
+                    params={{ invite_type: objType }}
+                />
                 <XView
                     height={props.isMobile ? '100%' : '65vh'}
                     flexGrow={1}
@@ -159,38 +162,45 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                 </XView>
             </XModalContent>
             <XModalFooter>
-                <UButton text="Cancel" style="secondary" size="large" onClick={props.hide} />
+                <UButton
+                    text="Cancel"
+                    style="secondary"
+                    size="large"
+                    square={true}
+                    onClick={props.hide}
+                />
                 <UButton
                     text="Add"
                     style="primary"
                     size="large"
+                    square={true}
                     disable={!options.length}
                     onClick={
                         !!options.length
                             ? async () => {
-                                if (props.isGroup) {
-                                    await (props.addMembers as RoomAddMembersType)({
-                                        variables: {
-                                            roomId: props.id,
-                                            invites: options.map(i => ({
-                                                userId: i.value,
-                                                role: RoomMemberRole.MEMBER,
-                                            })),
-                                        },
-                                    });
-                                } else if (props.isOrganization) {
-                                    await (props.addMembers as OrganizationAddMembersType)({
-                                        variables: {
-                                            organizationId: props.id,
-                                            userIds: options.map(i => i.value),
-                                        },
-                                    });
-                                }
-                                setSelectedUsers(null);
-                                if (props.hide) {
-                                    props.hide();
-                                }
-                            }
+                                  if (props.isGroup) {
+                                      await (props.addMembers as RoomAddMembersType)({
+                                          variables: {
+                                              roomId: props.id,
+                                              invites: options.map(i => ({
+                                                  userId: i.value,
+                                                  role: RoomMemberRole.MEMBER,
+                                              })),
+                                          },
+                                      });
+                                  } else if (props.isOrganization) {
+                                      await (props.addMembers as OrganizationAddMembersType)({
+                                          variables: {
+                                              organizationId: props.id,
+                                              userIds: options.map(i => i.value),
+                                          },
+                                      });
+                                  }
+                                  setSelectedUsers(null);
+                                  if (props.hide) {
+                                      props.hide();
+                                  }
+                              }
                             : undefined
                     }
                 />

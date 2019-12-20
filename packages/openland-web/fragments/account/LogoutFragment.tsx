@@ -27,12 +27,14 @@ const LogoutDialog = React.memo<{ ctx: XModalController }>(props => {
                     style="secondary"
                     size="large"
                     onClick={() => props.ctx.hide()}
+                    square={true}
                 />
                 <UButton
                     text="Yes, I am sure"
                     style="danger"
                     size="large"
                     onClick={doConfirm}
+                    square={true}
                 />
             </XModalFooter>
         </XView>
