@@ -116,6 +116,29 @@ const text = css`
     }
 `;
 
+const textNarrow = css`
+    margin-top: 7px;
+    color: #525273;
+
+    @media (min-width: 1600px) {
+        font-size: 22px;
+        line-height: 34px;
+        width: 100%;
+    }
+
+    @media (min-width: 768px) and (max-width: 1600px) {
+        width: 98%;
+        font-size: 18px;
+        line-height: 28px;
+    }
+
+    @media (max-width: 768px) {
+        width: 98%;
+        font-size: 16px;
+        line-height: 26px;
+    }
+`;
+
 const link = css`
     font-weight: 600;
     color: inherit;
@@ -229,7 +252,7 @@ export default () => (
                             />
                             <div className={itemContent}>
                                 <h3 className={subheading}>Inspiration</h3>
-                                <p className={text}>
+                                <p className={textNarrow}>
                                     Guides, templates, checklists, and actionable insights
                                 </p>
                             </div>
@@ -243,7 +266,7 @@ export default () => (
                             />
                             <div className={itemContent}>
                                 <h3 className={subheading}>Support</h3>
-                                <p className={text}>
+                                <p className={textNarrow}>
                                     Real-time help for launching and growing your community
                                 </p>
                             </div>

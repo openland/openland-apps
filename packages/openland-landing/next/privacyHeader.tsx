@@ -133,7 +133,7 @@ let contentBoxClass = css`
         margin-top: 0 !important;
     }
     > *:last-child {
-        margin-bottom: 0 !important;
+        margin-bottom: 56px !important;
     }
 `;
 

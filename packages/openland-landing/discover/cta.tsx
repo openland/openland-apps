@@ -174,7 +174,7 @@ const img = css`
     @media (max-width: 768px) {
         display: inline-block;
         width: 320px;
-        height: 128px;
+        height: auto;
         margin-top: 30px;
         margin-bottom: 48px;
     }
@@ -189,6 +189,7 @@ const imgWrapper = css`
     @media (max-width: 768px) {
         display: flex;
         justify-content: center;
+        align-items: flex-start;
     }
 `;
 

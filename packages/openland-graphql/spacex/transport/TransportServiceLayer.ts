@@ -34,6 +34,10 @@ export class TransportServiceLayer {
                 let op = this.liveOperations.get(rid);
                 if (op) {
                     op.callback({ type: 'result', value: msg });
+                    if (['query', 'mutation'].includes(op.operation.kind)) {
+                        this.liveOperations.delete(rid);
+                        this.liveOperationsIds.delete(id);
+                    }
                 }
             }
         };
@@ -105,7 +109,6 @@ export class TransportServiceLayer {
     operation = (operation: OperationDefinition, variables: any, callback: (result: TransportResult) => void) => {
         let id = (this.nextId++).toString();
         let op: PendingOperation = { id: id, reqiestId: id, operation, variables, callback };
-
         this.liveOperations.set(id, op);
         this.liveOperationsIds.set(id, id);
 

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { css } from 'linaria';
+import { XView } from 'react-mental';
 
 import Header from './next/header';
 import AboutHeader from './next/termsAboutHeader';
@@ -47,6 +48,13 @@ const spacer = css`
     margin-top: 46px;
 `;
 
+const xview = css`
+    &,
+    & * {
+        display: inline;
+    }
+`;
+
 export const TermsPage = React.memo(() => (
     <div className={root}>
         <XDocumentHead
@@ -75,7 +83,7 @@ export const TermsPage = React.memo(() => (
                     you agree that you have read and understood, and, as&nbsp;a&nbsp;condition
                     to&nbsp;your use of&nbsp;the service, you irrevocably agree
                     to&nbsp;be&nbsp;bound&nbsp;by, the following terms and conditions, including
-                    Openland&rsquo;s <a href="/privacy">Privacy Policy</a> (together, these
+                    Openland&rsquo;s <a className={xview}><XView path="/next/privacy">Privacy Policy</XView></a> (together, these
                     &ldquo;Terms&rdquo;).
                 </p>
                 <p>
