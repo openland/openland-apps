@@ -297,6 +297,10 @@ const popupSectionText = css`
     @media (max-width: 960px) and (min-width: 768px) {
         font-size: 14px;
     }
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+    }
 `;
 
 const popupSections = css`

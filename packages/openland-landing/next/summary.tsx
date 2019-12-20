@@ -23,7 +23,7 @@ const listWrapper = css`
         margin-top: 60px;
     }
 
-    @media (min-width: 960px) and (max-width: 1600px) {
+    @media (min-width: 961px) and (max-width: 1600px) {
         position: relative;
         top: 24px;
     }
@@ -88,7 +88,7 @@ const summaryImage = css`
         top: 35px;
     }
 
-    @media (min-width: 960px) and (max-width: 1600px) {
+    @media (min-width: 961px) and (max-width: 1600px) {
         width: 401px;
         top: 28px;
         left: 28px;

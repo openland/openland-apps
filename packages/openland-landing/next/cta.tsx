@@ -146,10 +146,6 @@ const button = css`
     }
     margin-bottom: 10px;
     cursor: pointer;
-
-    @media (min-width: 960px) and (max-width: 1600px) {
-        margin-top: 3px;
-    }
 `;
 
 const dotsLeft = css`
