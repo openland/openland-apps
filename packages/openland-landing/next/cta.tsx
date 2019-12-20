@@ -1,34 +1,45 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import Block from './block';
 import Heading from './heading';
+import { XView } from 'react-mental';
 
 const root = css``;
 
 const cta = css`
     position: relative;
     text-align: center;
-    padding-top: 160px;
+    padding-top: 125px;
     padding-bottom: 100px;
-    margin-bottom: 70px;
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        padding-top: 112px;
+    }
+
+    @media (max-width: 768px) {
+        padding-top: 40px;
+        padding-bottom: 70px;
+    }
 `;
 
 const headline = css`
     z-index: -1;
-    @media (min-width: 1140px) {
-        font-size: 80px;
+    @media (min-width: 1601px) {
+        font-size: 84px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         font-size: 70px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        font-size: 56px;
+        font-size: 60px;
     }
 
     @media (max-width: 768px) {
-        font-size: 36px;
+        font-size: 42px;
+        width: 300px;
+        margin: 0 auto;
     }
 `;
 
@@ -40,32 +51,66 @@ const headlineGradient = css`
 `;
 
 const text = css`
-    @media (min-width: 1140px) {
+    @media (min-width: 1601px) {
+        font-size: 24px;
+        margin-bottom: 38px;
+    }
+
+    @media (min-width: 768px) and (max-width: 1600px) {
         font-size: 24px;
     }
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
+        font-size: 20px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
         font-size: 20px;
     }
 
     @media (max-width: 768px) {
-        font-size: 18px;
+        display: none;
     }
 
-    margin-top: 25px;
-    margin-bottom: 50px;
+    line-height: 1.5;
+
+    margin-top: 15px;
+    margin-bottom: 45px;
+    color: #525273;
+`;
+
+const mobileOnly = css`
+    display: none;
+    @media (max-width: 768px) {
+        font-size: 18px;
+        margin-bottom: 48px;
+        margin-top: 15px;
+        margin-left: auto;
+        margin-right: auto;
+
+        display: block;
+
+        max-width: 368px;
+
+        font-size: 20px;
+        line-height: 32px;
+    }
+
+    margin-top: 15px;
+    margin-bottom: 45px;
 `;
 
 const button = css`
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     background-color: var(--accentPrimary);
-    border-radius: 16px;
-    font-weight: bold;
+    border-radius: 12px;
+    font-weight: 600;
     box-shadow: 0px 6px 17px rgba(36, 139, 242, 0.32);
     color: var(--foregroundContrast);
-
-    will-change: color, background-color, box-shadow, transform;
-    transition: color 0.2s, background-color.2s, box-shadow 0.2s, transform 0.2s;
+    line-height: 1.5;
+    will-change: color, background-color, box-shadow;
+    transition: color 0.2s, background-color.2s, box-shadow 0.2s;
 
     &:hover,
     &:focus {
@@ -73,7 +118,6 @@ const button = css`
         text-decoration: none;
         background: #47a3ff;
         box-shadow: 0px 6px 27px rgba(36, 139, 242, 0.32);
-        transform: translateY(-4px);
         transition: color 0.01s, background-color.01s, box-shadow 0.01s, transform 0.2s;
     }
 
@@ -82,19 +126,75 @@ const button = css`
         transition: color 0.01s, background-color.01s, box-shadow 0.01s;
     }
 
-    @media (min-width: 1140px) {
+    line-height: 1.2;
+
+    @media (min-width: 1601px) {
         font-size: 20px;
-        padding: 13px 36px;
+        padding: 16px 36px;
     }
 
-    @media (min-width: 768px) and (max-width: 1140px) {
-        font-size: 18px;
+    @media (min-width: 768px) and (max-width: 1600px) {
         padding: 11px 32px;
+        font-size: 16px;
+        line-height: 1.5;
     }
 
     @media (max-width: 768px) {
-        font-size: 18px;
         padding: 11px 32px;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+    margin-bottom: 10px;
+    cursor: pointer;
+
+    margin-top: 3px;
+`;
+
+const dotsLeft = css`
+    width: 10000px;
+    height: 122px;
+
+    background: url('https://cdn.openland.com/shared/landing/dot-left.svg');
+
+    position: absolute;
+    top: 49.5%;
+    transform: translateY(-50%);
+
+    @media (min-width: 1601px) {
+        left: -10018px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        left: -10112px;
+        top: 52.2%;
+    }
+
+    @media (max-width: 960px) {
+        display: none;
+    }
+`;
+
+const dotsRight = css`
+    width: 9999px;
+    height: 122px;
+
+    background: url('https://cdn.openland.com/shared/landing/dot-right.svg');
+
+    position: absolute;
+    top: 49.5%;
+    transform: translateY(-50%);
+
+    @media (min-width: 1601px) {
+        right: -10018px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        right: -10112px;
+        top: 52.2%;
+    }
+
+    @media (max-width: 960px) {
+        display: none;
     }
 `;
 
@@ -103,20 +203,37 @@ const ctaSmall = css`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 200px;
-    margin-left: -30px;
-    margin-bottom: 180px;
 
-    @media (max-width: 1140px) {
+    margin-top: 174px;
+    margin-bottom: 150px;
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: 80px;
+        margin-bottom: 86px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        margin-top: 120px;
+        margin-bottom: 132px;
+    }
+
+    @media (max-width: 960px) {
         flex-direction: column;
         text-align: center;
+    }
+
+    @media (max-width: 768px) {
+        margin: 70px auto;
+        max-width: 360px;
+        text-align: left;
+        align-items: flex-start;
     }
 `;
 
 const content = css`
     margin-right: 120px;
 
-    @media (max-width: 1140px) {
+    @media (max-width: 960px) {
         margin-right: 0;
         margin-bottom: 36px;
     }
@@ -129,7 +246,7 @@ const list = css`
     color: #525273;
     margin-top: 16px;
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1600px) {
         font-size: 20px;
     }
 
@@ -153,22 +270,22 @@ const item = css`
     }
 `;
 
-const dotsLeft = css`
+const dotsLeftSmall = css`
     width: 10000px;
-    height: 122px;
+    height: 85px;
 
     background: url('https://cdn.openland.com/shared/landing/dot-left.svg');
 
     position: absolute;
-    top: 49%;
+    top: 53%;
     transform: translateY(-50%);
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1601px) {
         left: -10018px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
-        left: -9985px;
+    @media (min-width: 960px) and (max-width: 1600px) {
+        left: -10073px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
@@ -178,24 +295,28 @@ const dotsLeft = css`
     @media (max-width: 768px) {
         display: none;
     }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        display: none;
+    }
 `;
 
-const dotsRight = css`
+const dotsRightSmall = css`
     width: 9999px;
-    height: 122px;
+    height: 85px;
 
     background: url('https://cdn.openland.com/shared/landing/dot-right.svg');
 
     position: absolute;
-    top: 49%;
+    top: 53%;
     transform: translateY(-50%);
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1601px) {
         right: -10018px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
-        right: -9985px;
+    @media (min-width: 960px) and (max-width: 1600px) {
+        right: -10073px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
@@ -205,6 +326,23 @@ const dotsRight = css`
     @media (max-width: 768px) {
         display: none;
     }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        display: none;
+    }
+`;
+
+const hideMobile = css`
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
+const XViewWrapper = css`
+    &,
+    & * {
+        display: inline-block;
+    }
 `;
 
 export default ({ small }: { small?: boolean }) => (
@@ -212,19 +350,21 @@ export default ({ small }: { small?: boolean }) => (
         <Block>
             {small ? (
                 <div className={ctaSmall}>
-                    <div className={dotsLeft} />
+                    <div className={dotsLeftSmall} />
                     <div className={content}>
-                        <Heading>Start a great community today</Heading>
+                        <Heading>Start a great&nbsp;community today</Heading>
                         <ul className={list}>
                             <li className={item}>Seconds to launch</li>
-                            <li className={item}>Real-time support</li>
+                            <li className={cx(item, hideMobile)}>Real-time support</li>
                             <li className={item}>Free</li>
                         </ul>
                     </div>
-                    <a className={button} href="https://next.openland.com/invite/h2BGtL">
-                        Start community
-                    </a>
-                    <div className={dotsRight} />
+                    <div className={XViewWrapper}>
+                        <XView as="div" path="/invite/h2BGtL">
+                            <span className={button}>Start community</span>
+                        </XView>
+                    </div>
+                    <div className={dotsRightSmall} />
                 </div>
             ) : (
                 <div className={cta}>
@@ -235,9 +375,15 @@ export default ({ small }: { small?: boolean }) => (
                     <p className={text}>
                         Openland is the best place to start and grow inspiring communities
                     </p>
-                    <a className={button} href="https://next.openland.com/invite/h2BGtL">
-                        Start community
-                    </a>
+                    <p className={mobileOnly}>
+                        Discover&nbsp;inspiring&nbsp;communities to learn, get help, and find new
+                        friends
+                    </p>
+                    <div className={XViewWrapper}>
+                        <XView as="div" path="/invite/h2BGtL">
+                            <span className={button}>Start community</span>
+                        </XView>
+                    </div>
                     <div className={dotsRight} />
                 </div>
             )}

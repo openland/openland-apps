@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { XView, XImage } from 'react-mental';
-import { css } from 'linaria';
-import MailIcon from 'openland-icons/landing/mail.svg';
-import LinkedInIcon from 'openland-icons/landing/linkedin.svg';
+import { css, cx } from 'linaria';
 
 let founderRootClass = css`
-    padding: 7px 0 0 132px;
+    padding: 13px 0 0 150px;
     position: relative;
     width: 50%;
     min-height: 116px;
@@ -27,10 +25,12 @@ let founderRootClass = css`
 `;
 
 let founderPhotoClass = css`
-    width: 110px;
+    width: 127px;
     position: absolute;
     top: 3px;
     left: 0;
+
+    margin-right: 10px;
 
     img {
         display: block;
@@ -48,7 +48,7 @@ let founderPhotoClass = css`
 let founderNameClass = css`
     color: #1f3449;
     margin: 0 0 5px;
-    font-size: 22px;
+    font-size: 26px;
     line-height: 30px;
     font-weight: 600;
 
@@ -59,10 +59,9 @@ let founderNameClass = css`
 `;
 
 let founderPositionClass = css`
-    color: rgba(31, 52, 73, 0.5);
-    font-size: 16px;
-    line-height: 22px;
-    font-weight: 600;
+    font-size: 21px;
+    line-height: 1.5;
+    color: #525273;
 
     @media (max-width: 767px) {
         font-size: 14px;
@@ -83,11 +82,10 @@ let founderLinksClass = css`
 
 let founderLinkClass = css`
     margin: 0 20px 0 0;
-    color: rgba(31, 52, 73, 0.5);
+    color: #525273;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 18px;
     line-height: 20px;
-    font-weight: 600;
     display: flex;
 
     svg * {
@@ -97,26 +95,34 @@ let founderLinkClass = css`
         margin: 0;
     }
     &:hover {
-        color: #1790ff;
+        opacity: 0.7;
+        color: #525273;
         text-decoration: none;
 
         svg * {
             fill: #1790ff;
         }
     }
-    .linkedin-icon {
-        width: 20px;
-        height: 20px;
-    }
     .mail-icon {
-        margin: 2px 8px -2px 0;
-        width: 18px;
-        height: 18px;
+        margin: 0 8px 0 0;
+        width: 22px;
+        height: 22px;
     }
 
     @media (max-width: 767px) {
         font-size: 0;
         line-height: 0;
+    }
+`;
+
+const linkedinIcon = css`
+    width: 22px;
+    height: 22px;
+`;
+
+const link = css`
+    @media (max-width: 960px) {
+        font-size: 0;
     }
 `;
 
@@ -138,10 +144,10 @@ const FoundersItem = (props: FoundersItemProps) => (
             <div className={founderPositionClass}>{props.position}</div>
             <div className={founderLinksClass}>
                 <a href={props.linkedin} className={founderLinkClass}>
-                    <LinkedInIcon className="linkedin-icon" />
+                    <img className={linkedinIcon} src="/static/landing/icons/in.svg" />
                 </a>
-                <a href={'mailto:' + props.mail} className={founderLinkClass}>
-                    <MailIcon className="mail-icon" />
+                <a href={'mailto:' + props.mail} className={cx(founderLinkClass, link)}>
+                    <img className="mail-icon" src="/static/landing/icons/email.svg" />
                     {props.mail}
                 </a>
             </div>
@@ -152,14 +158,14 @@ const FoundersItem = (props: FoundersItemProps) => (
 export default () => (
     <XView flexDirection="row" flexWrap="wrap">
         <FoundersItem
-            photo="/static/landing/yury.png"
+            photo="/static/landing/yury-new.png"
             name="Yury Lifshits"
             position="CEO"
             linkedin="https://www.linkedin.com/in/lifshits/"
             mail="yury@openland.com"
         />
         <FoundersItem
-            photo="/static/landing/steve.png"
+            photo="/static/landing/steve-new.png"
             name="Steve Korshakov"
             position="CTO"
             linkedin="https://www.linkedin.com/in/ex3ndr/"

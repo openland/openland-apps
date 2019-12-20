@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { Container } from '../Container';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { LandingLinks } from '../_links';
 
 let homeAccessRootClass = css`
@@ -87,7 +87,7 @@ export const HomeAccess = () => (
                     Join founders, investors, and experts from 1000+ organizations
                 </div>
                 <div className={homeAccessBtnClass}>
-                    <XButton
+                    <UButton
                         path={LandingLinks.signup}
                         text="Sign up for free"
                         style="primary"

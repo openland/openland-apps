@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { css } from 'linaria';
 
 import Header from './next/header';
@@ -22,7 +23,13 @@ const root = css`
 
 export const NextPage = React.memo(() => (
     <div className={root}>
-        <Header />
+        <XDocumentHead
+            title="Modern community platform"
+            titleWithoutReverse={true}
+            description="An all-in-one platform for building great communities: start in seconds and grow fast"
+            imgUrl="https://cdn.openland.com/shared/og/og-build.png"
+        />
+        <Header discoverLink={true} />
         <Cta />
         <Summary />
         <Features />

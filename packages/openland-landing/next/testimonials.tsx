@@ -4,14 +4,18 @@ import Block from './block';
 import Heading from './heading';
 
 const root = css`
-    margin-top: 173px;
+    margin-top: 105px;
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        margin-top: 118px;
+    }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        margin-top: 75px;
+        margin-top: 107px;
     }
 
     @media (max-width: 768px) {
-        margin-top: 45px;
+        margin-top: 78px;
     }
 `;
 
@@ -21,6 +25,7 @@ const card = css`
     overflow: hidden;
 
     display: flex;
+    align-items: center;
 
     margin-top: 24px;
 
@@ -35,14 +40,20 @@ const card = css`
         margin-top: 20px;
         background-color: initial;
 
-        max-width: 400px;
+        max-width: 360px;
     }
 `;
 
 const img = css`
     flex-shrink: 0;
-    width: 393px;
-    height: 339px;
+    width: 376px;
+    height: 324px;
+
+    @media (max-width: 1600px) {
+        width: 320px;
+        height: auto;
+    }
+
     @media (max-width: 960px) {
         display: none;
     }
@@ -65,44 +76,70 @@ const imgNarrow = css`
 const content = css`
     padding: 23px 38px;
 
+    @media (min-width: 960px) and (max-width: 1600px) {
+        padding: 23px 30px;
+    }
+
     @media (max-width: 768px) {
         padding: 38px 0;
+        padding-top: 20px;
+        padding-bottom: 38px;
     }
 `;
 
 const quotes = css`
+    width: 40px;
+    height: 40px;
+
     @media (max-width: 768px) {
-        width: 25px
+        width: 25px;
         height: 25px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        width: 32px;
+        height: 32px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        width: 32px;
+        height: 32px;
     }
 `;
 
 const text = css`
     margin-top: 10px;
+    line-height: 1.6;
 
-    @media (min-width: 1160px) {
+    @media (min-width: 1600px) {
         font-size: 24px;
-        line-height: 44px;
+        width: 640px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         font-size: 22px;
-        line-height: 38px;
+        width: 576px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        font-size: 26px;
-        line-height: 44px;
+        font-size: 24px;
+        margin-top: 17px;
     }
 
     @media (max-width: 768px) {
-        font-size: 16px;
-        line-height: 26px;
+        font-size: 18px;
     }
 `;
 
 const author = css`
     margin-top: 30px;
+    @media (min-width: 960px) and (max-width: 1600px) {
+        margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+        margin-top: 20px;
+    }
     display: flex;
     align-items: center;
 `;
@@ -112,42 +149,40 @@ const avatar = css`
     @media (max-width: 768px) {
         width: 50px;
         height: 50px;
+        margin-right: 7px;
     }
 `;
 
 const signature = css``;
 
 const title = css`
-    @media (min-width: 1140px) {
+    line-height: 1.5;
+    @media (min-width: 1600px) {
         font-size: 24px;
-        line-height: 29px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         font-size: 18px;
-        line-height: 22px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
         font-size: 24px;
-        line-height: 29px;
     }
 
     @media (max-width: 768px) {
         font-size: 18px;
-        line-height: 22px;
     }
 `;
 
 const by = css`
     color: #9393a7;
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1600px) {
         font-size: 20px;
         line-height: 24px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         font-size: 16px;
         line-height: 19px;
     }
@@ -165,7 +200,13 @@ const by = css`
 
 const headingWrapper = css`
     @media (max-width: 768px) {
-        text-align: center;
+        max-width: 360px;
+
+        text-align: left;
+        margin: 0 auto;
+        width: 100%;
+
+        white-space: nowrap;
     }
 `;
 
@@ -199,7 +240,7 @@ export default () => (
                         />
                         <div className={signature}>
                             <h3 className={title}>Founders</h3>
-                            <span className={by}>Started by Yury Lifshits</span>
+                            <span className={by}>started by Yury Lifshits</span>
                         </div>
                     </div>
                 </div>

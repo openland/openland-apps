@@ -1,11 +1,13 @@
 import * as React from 'react';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { css } from 'linaria';
+import { XView } from 'react-mental';
 
 import Header from './next/header';
 import AboutHeader from './next/termsAboutHeader';
+import Block from './next/block';
 import Footer from './next/footer';
 
-import { Container } from './components/Container';
 import { Content } from './next/privacyHeader';
 
 const root = css`
@@ -42,11 +44,28 @@ const SectionsList = [
     'Contact&nbsp;us',
 ];
 
+const spacer = css`
+    margin-top: 46px;
+`;
+
+const xview = css`
+    &,
+    & * {
+        display: inline;
+    }
+`;
+
 export const TermsPage = React.memo(() => (
     <div className={root}>
-        <Header isGrey={true} />
+        <XDocumentHead
+            title="Terms of service"
+            titleWithoutReverse={true}
+            description="Terms and conditions for using Openland websites, mobile apps, and other associated services"
+        />
+        <Header isGrey={true} discoverLink={true} startLink={true} />
         <AboutHeader />
-        <Container>
+        <div className={spacer} />
+        <Block>
             <Content contents={SectionsList}>
                 <h2 id="section1">Welcome to&nbsp;Openland</h2>
                 <p>
@@ -54,8 +73,8 @@ export const TermsPage = React.memo(() => (
                     to&nbsp;&ldquo;Service&rdquo;, &ldquo;Company&rdquo;, &ldquo;Site&rdquo;,
                     &ldquo;we&rdquo;,&nbsp;&ldquo;us&rdquo;, &ldquo;our&rdquo;,
                     or&nbsp;&ldquo;Openland&rdquo; refer to&nbsp;Data Makes Perfect Inc.,
-                    a&nbsp;Delaware corporation operating openland. com website, along with related
-                    websites, mobile applications, and other associated services.
+                    a&nbsp;Delaware corporation operating <b>Openland</b> websites, mobile
+                    applications, and other associated services.
                 </p>
                 <h2 id="section2">These Terms are a legally binding agreement</h2>
                 <p>
@@ -64,8 +83,11 @@ export const TermsPage = React.memo(() => (
                     you agree that you have read and understood, and, as&nbsp;a&nbsp;condition
                     to&nbsp;your use of&nbsp;the service, you irrevocably agree
                     to&nbsp;be&nbsp;bound&nbsp;by, the following terms and conditions, including
-                    Openland&rsquo;s <a href="/privacy">Privacy Policy</a> (together, these
-                    &ldquo;Terms&rdquo;).
+                    Openland&rsquo;s{' '}
+                    <a className={xview}>
+                        <XView path="/privacy">Privacy Policy</XView>
+                    </a>{' '}
+                    (together, these &ldquo;Terms&rdquo;).
                 </p>
                 <p>
                     If&nbsp;you do&nbsp;not agree to&nbsp;the Terms, then you do&nbsp;not have our
@@ -440,7 +462,7 @@ export const TermsPage = React.memo(() => (
                     mail to: Openland, 100 Van Ness #2305, San Francisco, CA&nbsp;94102, USA.
                 </p>
             </Content>
-        </Container>
+        </Block>
         <Footer />
     </div>
 ));

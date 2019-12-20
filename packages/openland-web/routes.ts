@@ -6,22 +6,14 @@ let routes = NRoutes();
 // Landing
 //
 
-routes.add('/about', '/landing/about');
-routes.add('/about/', '/landing/about');
-routes.add('/terms', '/landing/terms');
-routes.add('/terms/', '/landing/terms');
-routes.add('/privacy', '/landing/privacy');
-routes.add('/privacy/', '/landing/privacy');
-routes.add('/download', '/landing/download');
-routes.add('/download/', '/landing/download');
-routes.add('/next', '/landing/next');
-routes.add('/next/', '/landing/next');
-routes.add('/next/about', '/landing/next-about');
-routes.add('/next/about/', '/landing/next-about');
-routes.add('/next/terms', '/landing/next-terms');
-routes.add('/next/terms/', '/landing/next-terms');
-routes.add('/next/privacy', '/landing/next-privacy');
-routes.add('/next/privacy/', '/landing/next-privacy');
+routes.add('/start', '/landing/next');
+routes.add('/start/', '/landing/next');
+routes.add('/about', '/landing/next-about');
+routes.add('/about/', '/landing/next-about');
+routes.add('/terms', '/landing/next-terms');
+routes.add('/terms/', '/landing/next-terms');
+routes.add('/privacy', '/landing/next-privacy');
+routes.add('/privacy/', '/landing/next-privacy');
 //
 // Authentication
 //
@@ -127,6 +119,8 @@ routes.add('/mail', '/unicorn/index');
 routes.add('/mail/', '/unicorn/index');
 routes.add('/mail/:conversationId', '/unicorn/index');
 routes.add('/mail/:conversationId/', '/unicorn/index');
+routes.add('/mail/:id/shared', '/unicorn/index');
+routes.add('/mail/:id/shared/', '/unicorn/index');
 routes.add('/notifications', '/unicorn/index');
 routes.add('/notifications/', '/unicorn/index');
 

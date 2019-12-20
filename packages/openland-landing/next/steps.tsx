@@ -2,18 +2,28 @@ import * as React from 'react';
 import { css } from 'linaria';
 import Block from './block';
 import Heading from './heading';
+import { XView } from 'react-mental';
 
 const root = css`
     @media (min-width: 1160px) {
-        margin-top: 197px;
+        margin-top: 137px;
     }
 
-    @media (min-width: 768px) and (max-width: 1140px) {
-        margin-top: 128px;
+    @media (min-width: 768px) and (max-width: 1600px) {
+        margin-top: 113px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        margin-top: 90px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        padding-top: 57px;
     }
 
     @media (max-width: 768px) {
         margin-top: 0;
+        padding: 58px 0;
     }
 
     padding: 80px 0;
@@ -37,7 +47,9 @@ const list = css`
     margin-top: 10px;
 
     @media (max-width: 768px) {
-        justify-content: center;
+        max-width: 360px;
+        margin: 0 auto;
+        margin-top: 10px;
     }
 `;
 
@@ -48,14 +60,21 @@ const item = css`
 
     display: flex;
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1600px) {
         margin-right: 20px;
         width: 300px;
     }
 
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-right: 60px;
+    }
+
     @media (max-width: 768px) {
-        width: 70%;
+        width: 100%;
+        max-width: 400px;
         margin-right: 0;
+
+        margin-top: 17px;
     }
 `;
 
@@ -68,18 +87,19 @@ const bullet = css`
     @media (max-width: 768px) {
         width: 28px;
         height: 28px;
+        margin-right: 11px;
     }
 `;
 
 const itemContent = css``;
 
 const subheading = css`
-    @media (min-width: 1140px) {
+    @media (min-width: 1600px) {
         font-size: 26px;
         line-height: 32px;
     }
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1600px) {
         font-size: 22px;
         line-height: 30px;
     }
@@ -94,12 +114,14 @@ const text = css`
     margin-top: 7px;
     color: #525273;
 
-    @media (min-width: 1140px) {
+    @media (min-width: 1600px) {
         font-size: 22px;
         line-height: 34px;
+        width: 112%;
     }
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1600px) {
+        width: 103%;
         font-size: 18px;
         line-height: 28px;
     }
@@ -110,12 +132,38 @@ const text = css`
     }
 `;
 
+const textNarrow = css`
+    margin-top: 7px;
+    color: #525273;
+
+    @media (min-width: 1600px) {
+        font-size: 22px;
+        line-height: 34px;
+        width: 100%;
+    }
+
+    @media (min-width: 768px) and (max-width: 1600px) {
+        width: 98%;
+        font-size: 18px;
+        line-height: 28px;
+    }
+
+    @media (max-width: 768px) {
+        width: 98%;
+        font-size: 16px;
+        line-height: 26px;
+    }
+`;
+
 const link = css`
-    font-weight: bold;
+    font-weight: 600;
     color: inherit;
     will-change: color;
     transition: color 0.2s;
     position: relative;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
 
     &:hover,
     &:focus {
@@ -125,38 +173,31 @@ const link = css`
     }
 
     &:active {
-        color: #248bf2;
+        color: #272750;
         transition: color 0.01s;
     }
 
     &:after {
         display: inline-block;
         content: '';
+        margin-left: 7px;
 
-        background: url('/static/landing/link-arrow.svg') no-repeat;
+        background: url('https://cdn.openland.com/shared/landing/link-arrow.svg') no-repeat;
         background-size: contain;
 
-        transform: translateY(-50%);
-
-        position: absolute;
-        top: 55%;
-
-        @media (min-width: 1140px) {
+        @media (min-width: 1600px) {
             width: 20px;
             height: 20px;
-            right: -27px;
         }
 
-        @media (min-width: 768px) and (max-width: 1140px) {
+        @media (min-width: 768px) and (max-width: 1600px) {
             width: 16px;
             height: 16px;
-            right: -23px;
         }
 
         @media (max-width: 768px) {
             width: 14px;
             height: 14px;
-            right: -21px;
         }
     }
 `;
@@ -168,6 +209,7 @@ const wrapper = css`
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: 100%;
     }
 `;
 
@@ -182,7 +224,7 @@ const img = css`
         width: 402px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
+    @media (min-width: 960px) and (max-width: 1600px) {
         width: 351px;
     }
 
@@ -198,13 +240,23 @@ const linkWrapper = css`
         display: block;
     }
 `;
+const headingWrapper = css`
+    @media (max-width: 768px) {
+        max-width: 360px;
+        text-align: left;
+        margin: 0 auto;
+        width: 100%;
+    }
+`;
 
 export default () => (
     <div className={root}>
         <Block>
             <div className={content}>
                 <div className={wrapper}>
-                    <Heading>Help for every step</Heading>
+                    <div className={headingWrapper}>
+                        <Heading>Help for every step</Heading>
+                    </div>
 
                     <ul className={list}>
                         <li className={item}>
@@ -216,21 +268,21 @@ export default () => (
                             />
                             <div className={itemContent}>
                                 <h3 className={subheading}>Inspiration</h3>
-                                <p className={text}>
+                                <p className={textNarrow}>
                                     Guides, templates, checklists, and actionable insights
                                 </p>
                             </div>
                         </li>
                         <li className={item}>
                             <img
-                                src="/static/landing/icons/share.svg"
+                                src="/static/landing/icons/loud.svg"
                                 className={bullet}
                                 width="32"
                                 height="32"
                             />
                             <div className={itemContent}>
                                 <h3 className={subheading}>Support</h3>
-                                <p className={text}>
+                                <p className={textNarrow}>
                                     Real-time help for launching and growing your community
                                 </p>
                             </div>
@@ -245,11 +297,11 @@ export default () => (
                             <div className={itemContent}>
                                 <h3 className={subheading}>Experts</h3>
                                 <div className={text}>
-                                    Be a part of our community of community builders.{' '}
+                                    Be a part of our community of community builders.{' '}
                                     <div className={linkWrapper}>
-                                        <a href="/invite/uj4m8bo" className={link}>
-                                            Join now
-                                        </a>
+                                        <span className={link}>
+                                            <XView path="/invite/XaQDsnQ">Join now</XView>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -264,11 +316,11 @@ export default () => (
                             <div className={itemContent}>
                                 <h3 className={subheading}>Onboarding</h3>
                                 <div className={text}>
-                                    Have questions about getting started?{' '}
+                                    Have questions about getting started?{' '}
                                     <div className={linkWrapper}>
-                                        <a href="/invite/Ryq9hof" className={link}>
-                                            Let's chat
-                                        </a>
+                                        <span className={link}>
+                                            <XView path="/invite/zOF5IpZ">Let's chat</XView>
+                                        </span>
                                     </div>
                                 </div>
                             </div>

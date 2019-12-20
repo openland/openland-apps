@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 
 let contentRootClass = css`
-    padding: 22px 0 26px;
+    padding: 0;
 
     @media (max-width: 767px) {
         padding: 0 0 26px;
@@ -31,25 +31,38 @@ let contentMenuClass = css`
         list-style: none;
         margin: 0;
         padding: 16px 16px 17px;
-        border: 1px solid rgba(237, 239, 243, 0.6);
+        background-color: #f7fafc;
         border-radius: 6px;
         display: block;
     }
     li {
-        color: rgba(31, 52, 73, 0.8);
         margin: 0 0 11px;
-        font-size: 14px;
+        font-size: 16px;
         line-height: 20px;
-        font-weight: 600;
-
         &:last-child {
             margin: 0;
         }
         &.is-active {
             cursor: default;
         }
-        &:hover {
-            color: #1790ff;
+
+        color: #626283;
+        will-change: color;
+        transition: color 0.2s;
+
+        &:hover,
+        &:focus {
+            color: #050530;
+            transition: color 0.01s;
+            text-decoration: none;
+            opacity: 1;
+        }
+
+        &:active {
+            color: #248bf2;
+            transition: color 0.01s;
+            text-decoration: none;
+            opacity: 1;
         }
     }
     a {
@@ -63,8 +76,8 @@ let contentBoxClass = css`
     flex-grow: 1;
     padding-left: 35px;
     padding-bottom: 24px;
-    font-size: 15px;
-    line-height: 22px;
+    font-size: 18px;
+    line-height: 1.72;
     width: calc(100% - 248px);
 
     @media (max-width: 767px) {
@@ -84,9 +97,9 @@ let contentBoxClass = css`
     }
     h2 {
         margin: 32px 0 12px;
-        font-size: 18px;
-        line-height: 22px;
-        font-weight: 700;
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 32px;
     }
     p {
         margin: 0 0 12px;
@@ -120,7 +133,15 @@ let contentBoxClass = css`
         margin-top: 0 !important;
     }
     > *:last-child {
-        margin-bottom: 0 !important;
+        margin-bottom: 56px !important;
+    }
+`;
+
+const link = css`
+    &,
+    &:hover,
+    &:focus {
+        text-decoration: none;
     }
 `;
 
@@ -140,6 +161,7 @@ export const Content = (props: ContentProps) => (
                                 <a
                                     href={'#section' + (index + 1)}
                                     dangerouslySetInnerHTML={{ __html: item }}
+                                    className={link}
                                 />
                             </li>
                         ))}

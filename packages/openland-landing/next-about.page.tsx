@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { css } from 'linaria';
 
 import Header from './next/header';
@@ -20,7 +21,8 @@ const root = css`
 
 export const AboutPage = React.memo(() => (
     <div className={root}>
-        <Header isGrey={true} />
+        <XDocumentHead title="About Openland" disableBranding={true} />
+        <Header isGrey={true} discoverLink={true} startLink={true} />
         <AboutHeader />
         <Founders />
         <AboutFeatures />

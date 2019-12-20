@@ -1,11 +1,12 @@
 import * as React from 'react';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { css } from 'linaria';
 
 import Header from './next/header';
+import Block from './next/block';
 import AboutHeader from './next/privacyAboutHeader';
 import Footer from './next/footer';
 
-import { Container } from './components/Container';
 import { Content } from './next/privacyHeader';
 
 const root = css`
@@ -30,15 +31,25 @@ const SectionsList = [
     'Contact&nbsp;us',
 ];
 
+const spacer = css`
+    margin-top: 46px;
+`;
+
 export const PrivacyPage = React.memo(() => (
     <div className={root}>
-        <Header isGrey={true} />
+        <XDocumentHead
+            title="Privacy Policy"
+            titleWithoutReverse={true}
+            description="Understand how Openland uses your personal information and how you can control it"
+        />
+        <Header isGrey={true} discoverLink={true} startLink={true} />
         <AboutHeader />
-        <Container>
+        <div className={spacer} />
+        <Block>
             <Content contents={SectionsList}>
                 <h2 id="section1">Welcome to&nbsp;Openland</h2>
                 <p>
-                    Openland is&nbsp;committed to&nbsp;protect your privacy, as&nbsp;you use our
+                    Openland is&nbsp;committed to&nbsp;protect your privacy as&nbsp;you use our
                     service. We&nbsp;want you to&nbsp;understand how we&nbsp;use your personal
                     information and how you can control&nbsp;it. All references
                     to&nbsp;&ldquo;we&rdquo;,&nbsp;&ldquo;us&rdquo;, &ldquo;our&rdquo;,
@@ -149,7 +160,7 @@ export const PrivacyPage = React.memo(() => (
                     mail to: Openland, 100 Van Ness #2305, San Francisco, CA&nbsp;94102, USA.
                 </p>
             </Content>
-        </Container>
+        </Block>
         <Footer />
     </div>
 ));

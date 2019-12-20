@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import Block from './block';
+import { XView } from 'react-mental';
 
 const root = css``;
 
@@ -18,13 +19,16 @@ const header = css`
     z-index: 10;
 `;
 
-const logo = css``;
+const logo = css`
+    cursor: pointer;
+`;
 
 const menu = css`
     position: relative;
-    margin: -23px;
+    margin: -21px;
+    top: 5px;
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         display: none;
     }
     z-index: 10;
@@ -32,13 +36,13 @@ const menu = css`
 
 const menuItem = css`
     display: inline-block;
-    font-weight: bold;
-    font-size: 18px;
-    margin: 23px;
+    font-size: 16px;
+    margin: 21px;
 
     position: relative;
 
-    color: #525273;
+    color: #9393a7;
+    font-weight: 600;
     will-change: color;
     transition: color 0.2s;
 
@@ -62,10 +66,10 @@ const menuItem = css`
 `;
 
 const menuItemActive = css`
-    padding: 9px 24px;
-    color: var(--accentPrimary);
+    padding: 10px 22px;
+    color: #50a2f5;
     background-color: rgba(36, 139, 242, 0.1);
-    border-radius: 12px;
+    border-radius: 8px;
     opacity: 1;
 
     will-change: color, background-color;
@@ -93,7 +97,7 @@ const popup = css`
     flex-direction: column;
     width: 160px;
 
-    top: 50px;
+    top: 30px;
 
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
     border-radius: 8px;
@@ -101,14 +105,14 @@ const popup = css`
     z-index: 5;
     background: white;
 
-    // &:before {
-    //     position: absolute;
-    //     top: -50px;
-    //     display: block;
-    //     content: '';
-    //     width: 100%;
-    //     height: 50px;
-    // }
+    &:before {
+        position: absolute;
+        top: -50px;
+        display: block;
+        content: '';
+        width: 100%;
+        height: 50px;
+    }
 `;
 const popupItem = css`
     line-height: 40px;
@@ -143,15 +147,6 @@ const popupSeparator = css`
     margin-bottom: 8px;
 `;
 
-const popupCloser = css`
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    top: 0;
-    left: 0;
-`;
-
 const mobileMenu = css`
     z-index: 20;
 `;
@@ -160,7 +155,7 @@ const mobileMenuTrigger = css`
     cursor: pointer;
     display: none;
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         display: initial;
     }
 `;
@@ -179,7 +174,7 @@ const mobileMenuHeader = css`
     align-items: center;
     justify-content: space-between;
     padding: 20px;
-    padding-top: 22px;
+    padding-top: 16px;
 `;
 
 const mobileMenuClose = css`
@@ -201,7 +196,10 @@ const mobileMenuLink = css`
     &:hover,
     &:active {
         text-decoration: none;
+        color: #248bf2;
     }
+
+    cursor: pointer;
 `;
 
 const mobileMenuFooter = css`
@@ -238,7 +236,20 @@ const appsLink = css``;
 const mobileMenuOpenIcon = css``;
 const mobileMenuCloseIcon = css``;
 
-export default ({ isGrey }: { isGrey?: boolean }) => {
+const XViewWrapper = css`
+    &,
+    & * {
+        display: inline-block;
+    }
+`;
+
+interface Props {
+    isGrey?: boolean;
+    startLink?: boolean;
+    discoverLink?: boolean;
+}
+
+export default ({ isGrey, startLink, discoverLink }: Props) => {
     const [isOpen, setOpen] = React.useState<boolean>(false);
     const [isMenuOpen, setMenuOpen] = React.useState<boolean>(false);
 
@@ -246,7 +257,14 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
         <div className={isGrey ? grey : root}>
             <Block>
                 <div className={header}>
-                    <img className={logo} src="/static/landing/logo.svg" width="155" height="48" />
+                    <XView path="/">
+                        <img
+                            className={logo}
+                            src="/static/landing/logo.svg"
+                            width="155"
+                            height="48"
+                        />
+                    </XView>
 
                     <div className={mobileMenu}>
                         <span className={mobileMenuTrigger} onClick={() => setMenuOpen(true)}>
@@ -283,45 +301,43 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
 
                                 <ul className={mobileMenuList}>
                                     <li className={mobileMenuItem}>
-                                        <a href="#" className={mobileMenuLink}>
-                                            Discover
-                                        </a>
+                                        <span className={mobileMenuLink}>
+                                            <XView path="/">Discover</XView>
+                                        </span>
                                     </li>
                                     <li className={mobileMenuItem}>
-                                        <a href="/next" className={mobileMenuLink}>
-                                            Start community
-                                        </a>
+                                        <span className={mobileMenuLink}>
+                                            <XView path="/start">Start community</XView>
+                                        </span>
+                                    </li>
+
+                                    <li className={mobileMenuItem}>
+                                        <span className={mobileMenuLink}>
+                                            <XView path="/about">About</XView>
+                                        </span>
                                     </li>
                                     <li className={mobileMenuItem}>
-                                        <a href="/next/about" className={mobileMenuLink}>
-                                            About
-                                        </a>
+                                        <span className={mobileMenuLink}>
+                                            <XView path="/invite/EGVDClq">Careers</XView>
+                                        </span>
                                     </li>
                                     <li className={mobileMenuItem}>
-                                        <a href="/invite/EGVDClq" className={mobileMenuLink}>
-                                            Careers
-                                        </a>
-                                    </li>
-                                    <li className={mobileMenuItem}>
-                                        <a href="/invite/Ryq9hof" className={mobileMenuLink}>
-                                            Chat with us
-                                        </a>
+                                        <span className={mobileMenuLink}>
+                                            <XView path="/invite/Ryq9hof">Chat with us</XView>
+                                        </span>
                                     </li>
                                 </ul>
 
                                 <ul className={mobileMenuList}>
                                     <li className={mobileMenuItem}>
-                                        <a
-                                            href="https://next.openland.com/invite/h2BGtL"
-                                            className={cx(mobileMenuLink, blue)}
-                                        >
-                                            Sign up
-                                        </a>
+                                        <span className={cx(mobileMenuLink, blue)}>
+                                            <XView path="/invite/h2BGtL">Sign up</XView>
+                                        </span>
                                     </li>
                                     <li className={mobileMenuItem}>
-                                        <a href="/signin" className={mobileMenuLink}>
-                                            Login
-                                        </a>
+                                        <span className={mobileMenuLink}>
+                                            <XView path="/signin">Login</XView>
+                                        </span>
                                     </li>
                                 </ul>
 
@@ -350,18 +366,36 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                     </div>
 
                     <div className={menu}>
-                        <a className={menuItem} href="#">
-                            Discover
-                        </a>
-                        <span className={menuItem}>
-                            <span className={trigger} onClick={() => setOpen(!isOpen)}>
+                        {discoverLink && (
+                            <span className={menuItem}>
+                                <XView path="/">Discover</XView>
+                            </span>
+                        )}
+                        {startLink && (
+                            <span className={menuItem}>
+                                <XView path="/start">Start community</XView>
+                            </span>
+                        )}
+                        <span className={menuItem} onMouseLeave={() => setOpen(false)}>
+                            <span
+                                className={trigger}
+                                onClick={() => setOpen(true)}
+                                onMouseOver={() => setOpen(true)}
+                            >
                                 Apps
                             </span>
 
                             {isOpen && (
-                                <div className={cx(popup, 'landingHeaderPopup')}>
-                                    <div className={popupCloser} onClick={() => setOpen(false)} />
-                                    <a className={popupItem} href="https://oplnd.com/ios">
+                                <div
+                                    className={cx(popup, 'landingHeaderPopup')}
+                                    onMouseLeave={() => setOpen(false)}
+                                >
+                                    <a
+                                        className={popupItem}
+                                        href="https://oplnd.com/ios"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/ios.svg"
@@ -371,7 +405,12 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                         />
                                         <span className={popupText}>iOS</span>
                                     </a>
-                                    <a className={popupItem} href="https://oplnd.com/android">
+                                    <a
+                                        className={popupItem}
+                                        href="https://oplnd.com/android"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/android.svg"
@@ -382,7 +421,12 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                         <span className={popupText}>Android</span>
                                     </a>
                                     <div className={popupSeparator} />
-                                    <a className={popupItem} href="https://oplnd.com/mac">
+                                    <a
+                                        className={popupItem}
+                                        href="https://oplnd.com/mac"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/mac.svg"
@@ -392,7 +436,12 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                         />
                                         <span className={popupText}>Mac</span>
                                     </a>
-                                    <a className={popupItem} href="https://oplnd.com/windows">
+                                    <a
+                                        className={popupItem}
+                                        href="https://oplnd.com/windows"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/win.svg"
@@ -402,7 +451,12 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                         />
                                         <span className={popupText}>Windows</span>
                                     </a>
-                                    <a className={popupItem} href="https://oplnd.com/linux">
+                                    <a
+                                        className={popupItem}
+                                        href="https://oplnd.com/linux"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <img
                                             className={popupIcon}
                                             src="/static/landing/icons/linux.svg"
@@ -415,12 +469,14 @@ export default ({ isGrey }: { isGrey?: boolean }) => {
                                 </div>
                             )}
                         </span>
-                        <a className={menuItem} href="/next/about">
-                            About
-                        </a>
-                        <a className={cx(menuItem, menuItemActive)} href="/signin">
-                            Login
-                        </a>
+                        <span className={menuItem}>
+                            <XView path="/about">About</XView>
+                        </span>
+                        <span className={XViewWrapper}>
+                            <XView path="/signin">
+                                <span className={cx(menuItem, menuItemActive)}>Login</span>
+                            </XView>
+                        </span>
                     </div>
                 </div>
             </Block>

@@ -8,13 +8,14 @@ const root = css`
 `;
 const aboutHeader = css`
     text-align: center;
-    padding-bottom: 86px;
+    padding-bottom: 50px;
     padding-top: 20px;
 `;
 
 const hero = css`
     width: 230px;
     height: auto;
+    margin-bottom: 30px;
 `;
 
 const subheading = css`
@@ -24,7 +25,7 @@ const subheading = css`
     margin-top: 12px;
     color: #525273;
 
-    @media (min-width: 768px) and (max-width: 1140px) {
+    @media (min-width: 768px) and (max-width: 1600px) {
         font-size: 20px;
     }
 

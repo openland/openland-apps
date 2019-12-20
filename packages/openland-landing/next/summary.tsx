@@ -12,28 +12,46 @@ const summary = css`
     @media (max-width: 960px) {
         flex-direction: column-reverse;
     }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: 21px;
+    }
 `;
 
-const listWrapper = css``;
+const listWrapper = css`
+    @media (min-width: 1601px) {
+        margin-top: 60px;
+    }
+
+    @media (min-width: 961px) and (max-width: 1600px) {
+        position: relative;
+        top: 24px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: 15px;
+    }
+`;
 
 const list = css`
     margin-top: 33px;
     list-style-position: inside;
     list-style-type: none;
 
-    @media (min-width: 1140px) {
-        font-size: 28px;
+    @media (min-width: 1601px) {
+        font-size: 24px;
         line-height: 2.2;
     }
 
-    @media (min-width: 768px) and (max-width: 1140px) {
-        font-size: 22px;
+    @media (min-width: 768px) and (max-width: 1600px) {
+        font-size: 20px;
         line-height: 2.3;
+        margin-top: 20px;
     }
 
     @media (max-width: 768px) {
         font-size: 16px;
-        line-height: 2.5;
+        line-height: 2.4;
     }
 `;
 
@@ -44,7 +62,7 @@ const item = css`
     &:before {
         display: inline-block;
         content: '';
-        background: url('/static/landing/icons/bullet.svg') no-repeat;
+        background: url('https://cdn.openland.com/shared/landing/bullet.svg') no-repeat;
         background-size: contain;
         width: 16px;
         height: 16px;
@@ -59,27 +77,55 @@ const item = css`
 `;
 
 const summaryImage = css`
-    height: auto;
     max-width: 100%;
+    height: auto;
 
     position: relative;
 
-    @media (min-width: 1160px) {
-        width: 550px;
-        left: 15px;
-        top: 20px;
+    @media (min-width: 1601px) {
+        width: 493px;
+        left: 77px;
+        top: 35px;
     }
 
-    @media (min-width: 960px) and (max-width: 1140px) {
-        width: 514px;
+    @media (min-width: 961px) and (max-width: 1600px) {
+        width: 401px;
+        top: 28px;
+        left: 28px;
     }
 
     @media (min-width: 768px) and (max-width: 960px) {
-        width: 728px;
+        width: 616px;
     }
 
     @media (max-width: 768px) {
+        height: auto;
         min-width: 280px;
+        max-width: 400px;
+        width: 100%;
+    }
+
+    z-index: -1;
+`;
+
+const headingWrapper = css`
+    @media (min-width: 1601px) {
+        margin-bottom: -20px;
+    }
+
+    @media (max-width: 768px) {
+        margin-top: 20px;
+        margin-bottom: -15px;
+    }
+
+    @media (min-width: 920px) {
+        white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+        max-width: 365px;
+        min-width: 297px;
+        margin-bottom: -25px;
     }
 `;
 
@@ -88,7 +134,9 @@ export default () => (
         <Block>
             <div className={summary}>
                 <div className={listWrapper}>
-                    <Heading>Built for mission-driven organizers</Heading>
+                    <div className={headingWrapper}>
+                        <Heading>Built for mission-driven organizers</Heading>
+                    </div>
                     <ul className={list}>
                         <li className={item}>Find people who share your values</li>
                         <li className={item}>Share and organize knowledge</li>
