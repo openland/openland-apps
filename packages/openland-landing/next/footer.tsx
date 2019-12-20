@@ -393,7 +393,7 @@ export default () => {
                         <li className={menuItem}>
                             <a
                                 className={menuLink}
-                                href="/invite/EGVDClq"
+                                href="/invite/8GbujwA"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -430,7 +430,7 @@ export default () => {
                             </li>
                             <li className={cx(menuItem, hide)}>
                                 <span className={menuLink}>
-                                    <XView path="/invite/Ryq9hof">Chat with us</XView>
+                                    <XView path="/invite/zOF5IpZ">Chat with us</XView>
                                 </span>
                             </li>
                         </div>
