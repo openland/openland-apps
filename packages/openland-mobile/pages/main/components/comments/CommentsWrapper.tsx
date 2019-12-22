@@ -24,6 +24,7 @@ import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { showNoiseWarning } from 'openland-mobile/messenger/components/showNoiseWarning';
+import { plural } from 'openland-y-utils/plural';
 
 interface CommentsWrapperProps {
     peerView: JSX.Element;
@@ -66,9 +67,12 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
             } else {
                 if (chat && chat.__typename === 'SharedRoom' && mentionsPrepared.filter(m => m.all === true).length) {
                     try {
+                        const chatType = chat.isChannel ? 'channel' : 'group';
+                        const membersType = chat.isChannel ? ['follower', 'followers'] : ['member', 'members'];
+
                         await showNoiseWarning(
-                            `Notify all members?`,
-                            'By using @All, you’re about to notify all group members even when they muted this chat. Please use it only for important messages'
+                            `Notify all ${!!chat.membersCount ? plural(chat.membersCount, membersType) : membersType[1]}?`,
+                            `By using @All, you’re about to notify all ${chatType} ${membersType[1]} even when they muted this chat. Please use it only for important messages`
                         );
                     } catch {
                         setSending(false);
@@ -225,7 +229,7 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
     let quoted: JSX.Element | null = null;
 
     if (chat && chat.__typename === 'SharedRoom' && inputFocused && activeWord && activeWord.startsWith('@')) {
-        suggestions = <MentionsSuggestions activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={chat.id} />;
+        suggestions = <MentionsSuggestions activeWord={activeWord!} onMentionPress={handleMentionPress} groupId={chat.id} isChannel={chat.isChannel} />;
     }
 
     if (inputFocused && activeWord && activeWord.startsWith(':')) {

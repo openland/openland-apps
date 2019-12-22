@@ -9,11 +9,13 @@ import { SuggestionsItemName } from '../Suggestions';
 interface MentionViewProps {
     mention: MentionToSend;
     onPress: () => void;
+    isChannel: boolean;
 }
 
 export const MentionView = React.memo((props: MentionViewProps) => {
     const theme = React.useContext(ThemeContext);
-    const { mention, onPress } = props;
+    const { mention, onPress, isChannel } = props;
+    const chatType = isChannel ? 'channel' : 'group';
 
     return (
         <ZListItemBase
@@ -72,7 +74,7 @@ export const MentionView = React.memo((props: MentionViewProps) => {
                         <SuggestionsItemName
                             theme={theme}
                             name="@All"
-                            description="Notify everyone in this chat"
+                            description={`Notify everyone in this ${chatType}`}
                         />
                     )}
                 </View>

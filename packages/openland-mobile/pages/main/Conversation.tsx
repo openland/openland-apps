@@ -190,9 +190,12 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         } else {
             if (this.props.chat.__typename === 'SharedRoom' && mentions.filter(m => m.all === true).length) {
                 try {
+                    const chatType = this.props.chat.isChannel ? 'channel' : 'group';
+                    const membersType = this.props.chat.isChannel ? ['follower', 'followers'] : ['member', 'members'];
+
                     await showNoiseWarning(
-                        `Notify all ${!!this.props.chat.membersCount ? plural(this.props.chat.membersCount, ['member', 'members']) : 'members'}?`,
-                        'By using @All, you’re about to notify all group members even when they muted this chat. Please use it only for important messages'
+                        `Notify all ${!!this.props.chat.membersCount ? plural(this.props.chat.membersCount, membersType) : membersType[1]}?`,
+                        `By using @All, you’re about to notify all ${chatType} ${membersType[1]} even when they muted this chat. Please use it only for important messages`
                     );
                 } catch {
                     return;
@@ -304,6 +307,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     activeWord={activeWord}
                     onMentionPress={this.handleMentionPress}
                     groupId={this.props.chat.id}
+                    isChannel={this.props.chat.isChannel}
                 />
             );
         }

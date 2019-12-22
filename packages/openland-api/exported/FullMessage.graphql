@@ -22,6 +22,8 @@ fragment FullMessage on ModernMessage {
         }
         ... on SharedRoom {
           id
+          isChannel
+          membersCount
         }
       }
     }

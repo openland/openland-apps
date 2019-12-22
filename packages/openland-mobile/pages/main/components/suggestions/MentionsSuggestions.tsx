@@ -11,6 +11,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 interface MentionsSuggestionsProps {
     activeWord: string;
     groupId: string;
+    isChannel: boolean;
 
     onMentionPress: (word: string | undefined, mention: MentionToSend) => void;
 }
@@ -18,7 +19,7 @@ interface MentionsSuggestionsProps {
 export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) => {
     const client = getClient();
     const theme = React.useContext(ThemeContext);
-    const { activeWord, groupId, onMentionPress } = props;
+    const { activeWord, groupId, isChannel, onMentionPress } = props;
     const [localItems, setLocalItems] = React.useState<MentionToSend[]>([]);
     const [globalItems, setGlobalItems] = React.useState<MentionToSend[]>([]);
     const [loadingPagination, setLoadingPagination] = React.useState(false);
@@ -118,7 +119,7 @@ export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) 
             <FlatList
                 ref={listRef}
                 data={mergedItems}
-                renderItem={({ item }) => item.__typename === 'GlobalDivider' ? <MentionsDividerView /> : <MentionView mention={item} onPress={() => handleOnPress(item)} />}
+                renderItem={({ item }) => item.__typename === 'GlobalDivider' ? <MentionsDividerView /> : <MentionView mention={item} onPress={() => handleOnPress(item)} isChannel={isChannel} />}
                 keyExtractor={(item, index) => item.__typename === 'GlobalDivider' ? `${index}-divider` : item.__typename === 'AllMention' ? `${index}-all` : `${index}-${item.id}`}
                 alwaysBounceVertical={false}
                 keyboardShouldPersistTaps="always"

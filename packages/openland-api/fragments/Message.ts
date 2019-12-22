@@ -314,6 +314,8 @@ export const FullMessage = gql`
                     }
                     ... on SharedRoom {
                         id
+                        isChannel
+                        membersCount
                     }
                 }
             }

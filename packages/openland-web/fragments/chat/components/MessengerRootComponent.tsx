@@ -340,9 +340,12 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             ) {
                 if (this.props.room.__typename === 'SharedRoom' && mentionsPrepared.filter(m => m.all === true).length) {
                     try {
+                        const chatType = this.props.room.isChannel ? 'channel' : 'group';
+                        const membersType = this.props.room.isChannel ? ['follower', 'followers'] : ['member', 'members'];
+
                         await showNoiseWarning(
-                            `Notify all ${!!this.props.room.membersCount ? plural(this.props.room.membersCount, ['member', 'members']) : 'members'}?`,
-                            'By using @All, you’re about to notify all group members even when they muted this chat. Please use it only for important messages'
+                            `Notify all ${!!this.props.room.membersCount ? plural(this.props.room.membersCount, membersType) : membersType[1]}?`,
+                            `By using @All, you’re about to notify all ${chatType} ${membersType[1]} even when they muted this chat. Please use it only for important messages`
                         );
                     } catch {
                         return false;
@@ -445,6 +448,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                 onStickerSent={this.onStickerSent}
                                 onTextChange={this.handleChange}
                                 onContentChange={this.onContentChange}
+                                isChannel={this.props.room.__typename === 'SharedRoom' ? this.props.room.isChannel : undefined}
                             />
                         </div>
                     </div>

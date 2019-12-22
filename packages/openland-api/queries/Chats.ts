@@ -971,19 +971,6 @@ export const MessageQuery = gql`
     query Message($messageId: ID!) {
         message(messageId: $messageId) {
             ...FullMessage
-
-            source {
-                ... on MessageSourceChat {
-                    chat {
-                        ... on PrivateRoom {
-                            id
-                        }
-                        ... on SharedRoom {
-                            id
-                        }
-                    }
-                }
-            }
         }
     }
     ${FullMessage}
