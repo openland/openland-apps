@@ -11,11 +11,11 @@ import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     const router = useStackRouter();
     const layout = useLayout();
-    const wideHeader = router.pages.length > 1 || layout === 'mobile';
+    const wideHeader = router.pages.length > 0 || layout === 'mobile';
     useShortcuts({
         keys: ['Escape'],
         callback: () => {
-            return router.pages.length > 1 ? router.pop() : false;
+            return router.pages.length > 0 ? router.pop() : false;
         },
     });
     let appearance = props.config.appearance || 'normal';
@@ -54,8 +54,8 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                             appearance === 'normal'
                                 ? 600
                                 : appearance === 'fullwidth'
-                                    ? '100%'
-                                    : 824
+                                ? '100%'
+                                : 824
                         }
                         flexDirection="row"
                         paddingHorizontal={16}
