@@ -6,6 +6,8 @@ import android.net.LinkProperties
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Build
+import com.openland.spacex.transport.net.DispatchedWebSocketClient
+import com.openland.spacex.transport.net.ThrustedSocket
 import com.openland.spacex.transport.ws.WebSocketClient
 import com.openland.spacex.utils.DispatchQueue
 import com.openland.spacex.utils.backoffDelay
@@ -19,6 +21,9 @@ enum class NetworkingApolloState {
     WAITING, CONNECTING, STARTING, STARTED, COMPLETED
 }
 
+val PING_INTERVAL = 1000
+val SOCKET_TIMEOUT = 5000
+
 class NetworkingApollo(
         val context: Context,
         val url: String,
@@ -29,14 +34,12 @@ class NetworkingApollo(
 
     private val queue = DispatchQueue("spacex-networking-apollo")
     private var state = NetworkingApolloState.WAITING
-    private var client: WebSocketClient? = null
+    private var client: ThrustedSocket? = null
     private var failuresCount = 0
     private var reachable = false
     private var started = false
     private var pending = mutableMapOf<String, JSONObject>()
-    private var pingTimer: Timer? = null
-    private var lastPong = 0L
-    private var lastPing = 0L
+    private var pingTimeout: (() -> Unit)? = null
 
     private val connectivityCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network?) {
@@ -162,30 +165,23 @@ class NetworkingApollo(
         }
         this.state = NetworkingApolloState.CONNECTING
 
-        val ws = WebSocketClient(this.url)
-        ws.onConnected {
-            this.queue.async {
-                if (this.client == ws) {
-                    onConnected()
-                }
+        val ws = ThrustedSocket(this.url, SOCKET_TIMEOUT, this.queue)
+        ws.onOpen = {
+            if (this.client == ws) {
+                onConnected()
             }
         }
-        ws.onDisconnected {
-            this.queue.async {
-                if (this.client == ws) {
-                    onDisconnected()
-                }
+        ws.onClose = {
+            if (this.client == ws) {
+                onDisconnected()
             }
         }
-        ws.onMessage {
-            this.queue.async {
-                if (this.client == ws) {
-                    onReceived(it)
-                }
+        ws.onMessage = {
+            if (this.client == ws) {
+                onReceived(it)
             }
         }
         this.client = ws
-        ws.connect()
     }
 
     private fun onConnected() {
@@ -207,27 +203,15 @@ class NetworkingApollo(
                     "payload" to p.value
             )))
         }
-        startPing()
     }
 
-    private fun startPing() {
-        if (this.pingTimer != null) {
-            this.pingTimer!!.cancel()
+    private fun sendPing() {
+        this.pingTimeout?.invoke()
+        this.pingTimeout = this.queue.asyncDelayed(PING_INTERVAL) {
+            writeToSocket(JSONObject(mapOf(
+                    "type" to "ping"
+            )))
         }
-        this.pingTimer = Timer()
-        this.pingTimer!!.schedule(timerTask {
-            Timer().schedule(timerTask {
-                queue.async {
-                    if (state === NetworkingApolloState.STARTED && lastPing > lastPong) {
-                        onDisconnected()
-                    }
-                    writeToSocket(JSONObject(mapOf(
-                            "type" to "ping"
-                    )))
-                    lastPing = System.currentTimeMillis()
-                }
-            }, 10000)
-        }, 0, 30000)
     }
 
     private fun onReceived(message: String) {
@@ -237,7 +221,7 @@ class NetworkingApollo(
         val type = parsed.getString("type")
 //        xLog("SpaceX-Apollo", "<< $type")
         if (type == "ka") {
-            // TODO: Handle
+            // Ignore
         } else if (type == "connection_ack") {
             if (this.state == NetworkingApolloState.STARTING) {
                 xLog("SpaceX-Apollo", "Started")
@@ -250,6 +234,9 @@ class NetworkingApollo(
 
                 // Reset failure count
                 this.failuresCount = 0
+
+                // Ping
+                sendPing()
 
                 // Notify about state
                 this.handlerQueue.async {
@@ -292,13 +279,12 @@ class NetworkingApollo(
                 this.handler.onCompleted(id)
             }
         } else if (type == "ping") {
-            this.handlerQueue.async {
-                this.writeToSocket(JSONObject(mapOf(
-                        "type" to "pong"
-                )))
-            }
+
+            this.writeToSocket(JSONObject(mapOf(
+                    "type" to "pong"
+            )))
         } else if (type == "pong") {
-            this.lastPong = System.currentTimeMillis()
+            sendPing()
         } else if (type == "complete") {
             val id = parsed.getString("id")
             this.handlerQueue.async {
@@ -333,9 +319,6 @@ class NetworkingApollo(
                 this.handler.onSessionRestart()
             }
         }
-        if (this.pingTimer !== null) {
-            this.pingTimer!!.cancel()
-        }
         this.stopClient()
         this.state = NetworkingApolloState.WAITING
         this.failuresCount += 1
@@ -349,13 +332,20 @@ class NetworkingApollo(
 
     private fun stopClient() {
         val ws = client
-        client = ws
+        client = null
+
+        ws?.onMessage = null
+        ws?.onClose = null
+        ws?.onOpen = null
         ws?.close()
+
+        this.pingTimeout?.invoke()
+        this.pingTimeout = null
     }
 
     private fun writeToSocket(src: JSONObject) {
         val msg = src.toString()
         xLog("SpaceX-Apollo", ">> $msg")
-        this.client!!.postMessage(msg)
+        this.client!!.post(msg)
     }
 }
