@@ -14,6 +14,7 @@ import { HeaderCoordinator } from './header/HeaderCoordinator';
 import { HeaderComponentLoader } from './header/HeaderComponentLoader';
 import { ConnectionStatusComponent } from './header/ConnectionStatusComponent';
 import uuid from 'uuid';
+import { ModalProvider } from 'openland-mobile/components/ZModal';
 
 const styles = StyleSheet.create({
     fill: {
@@ -100,6 +101,10 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
 
         // Dismiss keyboard on navigation
         Keyboard.dismiss();
+
+        if (ModalProvider) {
+            ModalProvider.hideModals();
+        }
 
         // Resolve current page
         let underlay = this.currentHistory.history[this.currentHistory.history.length - 1].key;
@@ -211,6 +216,10 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
 
         // Dismiss keyboard on navigation
         Keyboard.dismiss();
+
+        if (ModalProvider) {
+            ModalProvider.hideModals();
+        }
 
         // Update internal state
         let underlayKey = state.history[state.history.length - 1].key;
