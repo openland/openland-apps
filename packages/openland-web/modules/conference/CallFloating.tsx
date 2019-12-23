@@ -310,6 +310,10 @@ const Avatar = React.memo(
     },
 );
 
+const greenButtonStyle = css`
+    background-color: var(--accentPositiveHover);
+`;
+
 const CallFloatingComponent = React.memo((props: { id: string; private: boolean }) => {
     const isMobile = useIsMobile();
     const [forceOpen, setForceOpen] = React.useState(false);
@@ -359,14 +363,17 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
                         text={callState.mute ? 'Unmute' : 'Mute'}
                         onClick={() => calls.setMute(!callState.mute)}
                         marginLeft={4}
-                        marginRight={4}
+                        marginRight={8}
+                        className={greenButtonStyle}
                     />
                     <UButton
                         flexShrink={0}
                         style="success"
                         text={callState.status === 'connecting' ? 'Connecting' : 'Leave'}
                         onClick={() => calls.leaveCall()}
-                        marginLeft={4}
+                        marginLeft={8}
+                        marginRight={4}
+                        className={greenButtonStyle}
                     />
                 </div>
             </div>

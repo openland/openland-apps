@@ -190,6 +190,10 @@ export const CallPeer = (props: CallPeerProps) => {
     );
 };
 
+const greenButtonStyle = css`
+    background-color: var(--accentPositiveHover);
+`;
+
 export const TalkBarComponent = (props: { chat: ChatInfo }) => {
     let calls = React.useContext(MessengerContext).calls;
     let callState = calls.useState();
@@ -235,6 +239,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                                         style="success"
                                         marginRight={8}
                                         text={callState.screenSharing ? 'Stop' : 'Share screen'}
+                                        className={greenButtonStyle}
                                         onClick={() =>
                                             calls.setScreenShare(!callState.screenSharing)
                                         }
@@ -245,6 +250,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                                     style="success"
                                     text={callState.mute ? 'Unmute' : 'Mute'}
                                     onClick={() => calls.setMute(!callState.mute)}
+                                    className={greenButtonStyle}
                                     marginRight={8}
                                 />
                                 <UButton
@@ -253,6 +259,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                                     text={
                                         callState.status === 'connecting' ? 'Connecting' : 'Leave'
                                     }
+                                    className={greenButtonStyle}
                                     onClick={() => calls.leaveCall()}
                                 />
                             </>
