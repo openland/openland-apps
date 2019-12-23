@@ -1,5 +1,4 @@
 import React from 'react';
-import { css } from 'linaria';
 import { XView } from 'react-mental';
 
 export default React.memo(() => {
