@@ -252,7 +252,7 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
                                             className={containerDesktop}
                                             visible={selectedMounted === i}
                                             router={v}
-                                            placeholder={<Placeholder />}
+                                            placeholder={v.rootPath === '/mail' && <Placeholder />}
                                         />
                                     </XView>
                                 </div>
