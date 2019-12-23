@@ -44,7 +44,8 @@ const iconBackround = css`
 interface ButtonProps {
     icon: React.ReactNode;
     text: string;
-    path: string;
+    path?: string;
+    onClick?: () => void;
 }
 
 export default React.memo((props: ButtonProps) => (
@@ -57,6 +58,7 @@ export default React.memo((props: ButtonProps) => (
             alignItems="center"
             minWidth={128}
             cursor="pointer"
+            onClick={props.onClick}
         >
             <XView position="relative" width={56} height={56}>
                 <div className={cx(iconBackround, 'stackLayoutPlaceholderIconBackground')} />

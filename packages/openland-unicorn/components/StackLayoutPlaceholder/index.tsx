@@ -1,6 +1,7 @@
 import React from 'react';
 import { XView } from 'react-mental';
 import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
+import { showCreatingFragment } from 'openland-web/fragments/create/CreateEntityFragment';
 import Button from './button';
 
 // @ts-ignore
@@ -11,6 +12,7 @@ import { ReactComponent as Person } from './person.svg';
 import { ReactComponent as Download } from './download.svg';
 
 export default React.memo(() => {
+    const createGroup = () => showCreatingFragment({ entityType: 'group' });
     return (
         <XView
             width="100%"
@@ -33,9 +35,9 @@ export default React.memo(() => {
                 <p className={TextBody}>Or get done something else</p>
             </XView>
             <XView marginTop={32} justifyContent="center" flexWrap="nowrap" flexDirection="row">
-                <Button icon={<Plus />} text="Create group" path="/" />
-                <Button icon={<Person />} text="Invite friends" path="/" />
-                <Button icon={<Download />} text="Install apps" path="/" />
+                <Button icon={<Plus />} text="Create group" onClick={createGroup} />
+                <Button icon={<Person />} text="Invite friends" path="/settings/invites" />
+                <Button icon={<Download />} text="Install apps" path="/settings/download" />
             </XView>
         </XView>
     );
