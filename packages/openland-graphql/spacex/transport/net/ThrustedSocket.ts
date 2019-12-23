@@ -1,5 +1,6 @@
 import { WatchDogTimer } from './WatchDogTimer';
 import { Thruster } from './Thruster';
+
 const CONNECTION_BUCKETS = [1000, 5000, 30000];
 
 export class ThrustedSocket {
@@ -48,7 +49,13 @@ export class ThrustedSocket {
     private onConnectionDied = () => {
         if (!this.closed) {
             this.closed = true;
-            this.socket = null;
+            if (this.socket) {
+                this.socket.onmessage = null;
+                this.socket.onclose = null;
+                this.socket.onopen = null;
+                this.socket.close();
+                this.socket = null;
+            }
             if (this.watchDog) {
                 this.watchDog.kill();
                 this.watchDog = null;
@@ -63,7 +70,9 @@ export class ThrustedSocket {
         if (this.socket) {
             this.socket.send(msg);
         } else {
-            throw Error('Socket is not connected yet');
+            if (!this.closed) {
+                throw Error('Socket is not connected yet');
+            }
         }
     }
 

@@ -30,6 +30,12 @@ class DispatchQueue(val name: String) {
             return e != null && e
         }
 
+    fun requreQueue() {
+        if (!this.isCurrentQueue) {
+            throw Error("Invalid queue")
+        }
+    }
+
     fun asyncDelayed(delay: Int, op: () -> Unit): () -> Unit {
         if (!isCurrentQueue) {
             error("asyncDelayed need to be called in queue thread")

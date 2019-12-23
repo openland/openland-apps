@@ -32,7 +32,7 @@ export class Thruster {
         const url = this.configs[bucket].url;
 
         // Close existing
-        if (this.bucketTimeout[bucket]) {
+        if (this.bucketSockets[bucket]) {
             let ex = this.bucketSockets[bucket]!;
             this.bucketSockets[bucket] = null;
             ex.onclose = null;

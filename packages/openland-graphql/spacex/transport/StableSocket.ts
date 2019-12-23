@@ -1,5 +1,4 @@
 import { ThrustedSocket } from './net/ThrustedSocket';
-import { StableSocket } from './StableSocket';
 
 export interface StableSocket<T> {
     onConnected: (() => void) | null;
