@@ -5,7 +5,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { UserSelect } from '../../api/UserSelect';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useClient } from 'openland-web/utils/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { XModalFooter } from 'openland-x-modal/XModal';
@@ -22,7 +22,7 @@ const ActivateButton = ({ accountId }: { accountId: string }) => {
     const client = useClient();
 
     return (
-        <XButton
+        <UButton
             style="primary"
             action={() => {
                 client.mutateSuperAccountActivate({
@@ -39,7 +39,7 @@ const SuspendButton = ({ accountId }: { accountId: string }) => {
     const client = useClient();
 
     return (
-        <XButton
+        <UButton
             style="danger"
             action={() =>
                 client.mutateSuperAccountSuspend({
@@ -56,7 +56,7 @@ const PendButton = ({ accountId }: { accountId: string }) => {
     const client = useClient();
 
     return (
-        <XButton
+        <UButton
             style="danger"
             action={() =>
                 client.mutateSuperAccountPend({
@@ -86,9 +86,14 @@ export const showSuperDeleteOrganizationModal = ({ orgId, accountId }: DeleteBut
                 <XView borderRadius={8}>
                     <XModalFooter>
                         <XView marginRight={12}>
-                            <XButton text="Cancel" style="ghost" size="large" onClick={ctx.hide} />
+                            <UButton
+                                text="Cancel"
+                                style="secondary"
+                                size="large"
+                                onClick={ctx.hide}
+                            />
                         </XView>
-                        <XButton
+                        <UButton
                             text="Delete"
                             style="danger"
                             size="large"
@@ -109,7 +114,7 @@ export const showSuperDeleteOrganizationModal = ({ orgId, accountId }: DeleteBut
 
 const DeleteButton = (props: DeleteButtonProps) => {
     return (
-        <XButton
+        <UButton
             text="Delete"
             style="danger"
             flexShrink={0}
@@ -135,9 +140,9 @@ const DeleteUserModal = ({ userId, hide }: { userId: string; hide: () => void })
         <XView borderRadius={8}>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
                 </XView>
-                <XButton
+                <UButton
                     text="Delete"
                     style="danger"
                     size="large"
@@ -172,9 +177,9 @@ const AlterOrgPublishedButton = ({
     const client = useClient();
 
     return (
-        <XButton
+        <UButton
             text={published ? 'Hide from search' : 'Publish'}
-            style="flat"
+            style="secondary"
             action={async () => {
                 await client.mutateOrganizationAlterPublished({
                     organizationId: orgId,
@@ -218,9 +223,9 @@ const AddMemberForm = ({ hide, accountId }: { accountId: string; hide: () => voi
             </XModalContent>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
                 </XView>
-                <XButton
+                <UButton
                     text="Add"
                     style="primary"
                     size="large"
@@ -272,9 +277,9 @@ const RemoveMemberForm = ({ hide, accountId }: { accountId: string; hide: () => 
             </XModalContent>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
                 </XView>
-                <XButton
+                <UButton
                     text="Remove"
                     style="danger"
                     size="large"
@@ -358,9 +363,9 @@ const AddFeatureModal = ({ accountId, hide }: { accountId: string; hide: () => v
             </XModalContent>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
                 </XView>
-                <XButton
+                <UButton
                     text="Add"
                     style="primary"
                     size="large"
@@ -444,9 +449,9 @@ const RemoveFeatureModal = ({ accountId, hide }: { accountId: string; hide: () =
             </XModalContent>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
                 </XView>
-                <XButton
+                <UButton
                     text="Remove"
                     style="danger"
                     size="large"
@@ -503,9 +508,9 @@ const EditOrganizationModal = ({
             </XModalContent>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
                 </XView>
-                <XButton
+                <UButton
                     text="Rename"
                     style="primary"
                     size="large"
@@ -538,7 +543,7 @@ export default withApp('Super Organization', 'super-admin', () => {
     return (
         <DevToolsScaffold title={superAccount.title}>
             <XHeader text={superAccount.title} description={'Current State: ' + superAccount.state}>
-                <XButton
+                <UButton
                     text="Edit"
                     flexShrink={0}
                     onClick={() =>
@@ -550,12 +555,12 @@ export default withApp('Super Organization', 'super-admin', () => {
                 />
                 {superAccount.state !== 'DELETED' && (
                     <>
-                        <XButton
+                        <UButton
                             text="Add member"
                             flexShrink={0}
                             onClick={() => showAddMemberFormModal(accountId)}
                         />
-                        <XButton
+                        <UButton
                             style="danger"
                             text="Remove member"
                             flexShrink={0}
@@ -586,7 +591,7 @@ export default withApp('Super Organization', 'super-admin', () => {
                             <XTable.Cell>{v.name}</XTable.Cell>
                             <XTable.Cell>{v.email}</XTable.Cell>
                             <XTable.Cell>
-                                <XButton
+                                <UButton
                                     text="Block"
                                     style="danger"
                                     flexShrink={0}
@@ -598,8 +603,8 @@ export default withApp('Super Organization', 'super-admin', () => {
                 </XTable.Body>
             </XTable> */}
             <XHeader text="Features" description={superAccount.features.length + ' total'}>
-                <XButton text="Add feature" onClick={() => showAddFeatureModal(accountId)} />
-                <XButton
+                <UButton text="Add feature" onClick={() => showAddFeatureModal(accountId)} />
+                <UButton
                     style="danger"
                     text="Remove feature"
                     onClick={() => showRemoveFeatureModal(accountId)}

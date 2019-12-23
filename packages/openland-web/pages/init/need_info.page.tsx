@@ -4,8 +4,8 @@ import { MessagePageContent } from 'openland-web/components/MessagePageContent';
 import { withAppBase } from 'openland-web/components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { AuthRouter } from 'openland-web/pages/root/AuthRouter';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextGlobal } from 'openland-text/TextGlobal';
-import { XButton } from 'openland-x/XButton';
 import { InitTexts } from './_text';
 import { css } from 'linaria';
 
@@ -23,7 +23,7 @@ export default withAppBase('Need Info', props => {
             <MessagePage>
                 <MessagePageContent title={InitTexts.need_info.title}>
                     <div className={InfoText}>{InitTexts.need_info.content}</div>
-                    <XButton
+                    <UButton
                         path="/auth/logout"
                         text={TextGlobal.signOut}
                         style="primary"

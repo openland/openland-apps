@@ -1,18 +1,14 @@
-// tslint:disable
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
-import { XButton } from 'openland-x/XButton';
-// import { XTable } from 'openland-x/XTable';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XSwitcher } from 'openland-x/XSwitcher';
-// import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XView } from 'react-mental';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { useClient } from 'openland-web/utils/useClient';
 import { XInput } from 'openland-x/XInput';
 import { SuperAccounts_superAccounts } from 'openland-api/Types';
-// import { XDate } from 'openland-x/XDate';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -52,9 +48,9 @@ const AddAccountForm = ({ hide }: { hide: () => void }) => {
             </XModalContent>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
                 </XView>
-                <XButton
+                <UButton
                     text="Add"
                     style="primary"
                     size="large"
@@ -94,10 +90,10 @@ const SearchInput = (props: { onClick: (data: string) => void }) => {
             <XView marginRight={16} flexGrow={1}>
                 <XInput value={value} onChange={searchField} placeholder="search" />
             </XView>
-            <XButton text="search" style="primary" onClick={onClick} />
+            <UButton text="search" style="primary" onClick={onClick} />
             {value && (
                 <XView marginLeft={16}>
-                    <XButton text="clear search" onClick={clearSearch} />
+                    <UButton text="clear search" onClick={clearSearch} />
                 </XView>
             )}
         </XView>
@@ -116,13 +112,18 @@ const FilteredOptions = (props: FilteredOptionsProps) => {
     }
 
     let ds = new DataSource(() => [], () => []);
-    ds.initialize(nodes.map(v => ({ ...v, key: v.id })), true, true)
+    ds.initialize(nodes.map(v => ({ ...v, key: v.id })), true, true);
     let dsw = new DataSourceWindow(ds, 50);
 
     const renderLoading = React.useMemo(() => {
         return () => {
             return (
-                <XView flexDirection="column" alignItems="center" justifyContent="center" height={80}>
+                <XView
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    height={80}
+                >
                     <XLoader />
                 </XView>
             );
@@ -130,33 +131,47 @@ const FilteredOptions = (props: FilteredOptionsProps) => {
     }, []);
 
     let renderItem = (item: SuperAccounts_superAccounts & { key: string }) => {
-        return <XView maxWidth={600} flexDirection="row">
-            <XView flexGrow={1}>
-                <UOrganizationView
-                    organization={{ id: item.id, name: item.title, __typename: 'Organization', photo: null, shortname: null, about: null, isCommunity: false, membersCount: 0 }}
-
+        return (
+            <XView maxWidth={600} flexDirection="row">
+                <XView flexGrow={1}>
+                    <UOrganizationView
+                        organization={{
+                            id: item.id,
+                            name: item.title,
+                            __typename: 'Organization',
+                            photo: null,
+                            shortname: null,
+                            about: null,
+                            isCommunity: false,
+                            membersCount: 0,
+                        }}
+                    />
+                </XView>
+                <UButton
+                    path={'/super/orgs/' + item.id}
+                    style="secondary"
+                    text="Settings"
+                    flexShrink={0}
                 />
-            </XView >
-            <XButton
-                path={'/super/orgs/' + item.id}
-                style="ghost"
-                text="Settings"
-                flexShrink={0}
-            />
-            <XButton
-                path={'/directory/o/' + item.orgId}
-                style="ghost"
-                text="Profile"
-                flexShrink={0}
-            />
-        </XView>
-
-    }
+                <UButton
+                    path={'/directory/o/' + item.orgId}
+                    style="secondary"
+                    text="Profile"
+                    flexShrink={0}
+                />
+            </XView>
+        );
+    };
     return (
-        <XListView itemHeight={50} loadingHeight={200} dataSource={dsw} renderLoading={renderLoading} renderItem={renderItem} />
+        <XListView
+            itemHeight={50}
+            loadingHeight={200}
+            dataSource={dsw}
+            renderLoading={renderLoading}
+            renderItem={renderItem}
+        />
     );
-    return null;
-}
+};
 
 export default withApp('Super Organizations', 'super-admin', () => {
     const [searchValue, setSearchValue] = React.useState('');
@@ -179,7 +194,7 @@ export default withApp('Super Organizations', 'super-admin', () => {
     return (
         <DevToolsScaffold title="Organizations">
             <XHeader text="Organizations" description={orgs.length + ' total'}>
-                <XButton text="Add organization" onClick={() => showAddAccountFormModal()} />
+                <UButton text="Add organization" onClick={() => showAddAccountFormModal()} />
             </XHeader>
             <SearchInput onClick={searchTextFilter} />
             <XView marginLeft={24}>
@@ -209,9 +224,7 @@ export default withApp('Super Organizations', 'super-admin', () => {
             </XView>
             <FilteredOptions orgsCurrentTab={orgsCurrentTab} searchValue={searchValue} />
 
-            <XView>
-
-            </XView>
+            <XView />
         </DevToolsScaffold>
     );
 });

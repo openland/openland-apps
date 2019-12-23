@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -12,22 +12,6 @@ import { XPopperContentDEPRECATED } from 'openland-x/popper/XPopperContent';
 const ContentWrapper = Glamorous(XPopperContentDEPRECATED)({
     minWidth: 180,
 });
-
-const PickerButton = Glamorous(XButton)<{ activated?: boolean }>(props => ({
-    backgroundColor: props.activated ? '#f6f6f6' : 'none',
-    borderColor: props.activated ? 'transparent!important' : 'none',
-    borderRadius: 10,
-    fontWeight: 400,
-    fontSize: 14,
-    '& .icon': {
-        fontSize: 22,
-        marginRight: '8px!important',
-    },
-    '& > div': {
-        paddingLeft: '10px!important',
-        paddingRight: '12px!important',
-    },
-}));
 
 const PickerWrapper = Glamorous(XVertical)({
     margin: -10,
@@ -158,14 +142,14 @@ export class SortPicker extends React.Component<
                 marginRight={-1}
                 contentContainer={<ContentWrapper />}
             >
-                <PickerButton
-                    iconOpacity={0.4}
-                    activated={this.state.popper}
-                    text={selected ? selected.label : '?'}
-                    style="flat"
-                    icon="sort"
-                    onClick={this.switch}
-                />
+                <div>
+                    <UButton
+                        text={selected ? selected.label : '?'}
+                        style="secondary"
+                        onClick={this.switch}
+                        size="small"
+                    />
+                </div>
             </XPolitePopper>
         );
     }

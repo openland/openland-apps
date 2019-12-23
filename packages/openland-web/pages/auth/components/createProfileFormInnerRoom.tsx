@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
@@ -160,9 +160,8 @@ export const CreateProfileFormInnerRoom = (
                             </XView>
                             <XView marginTop={70 - 8} paddingBottom={84}>
                                 <ButtonsWrapper>
-                                    <XButton
+                                    <UButton
                                         loading={sending}
-                                        dataTestId="continue-button"
                                         style="primary"
                                         text={InitTexts.create_profile.continue}
                                         size="large"

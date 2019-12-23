@@ -1,30 +1,9 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { css } from 'linaria';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XView } from 'react-mental';
-import IosIcon from 'openland-icons/ic-ios-white.svg';
-import AndroidIcon from 'openland-icons/ic-android-white.svg';
-import MacIcon from 'openland-icons/ic-app-mac.svg';
-import WinIcon from 'openland-icons/ic-app-win.svg';
-import LinuxIcon from 'openland-icons/ic-app-linux.svg';
 import CloseIcon from 'openland-icons/ic-close-banner.svg';
 import { detectOS } from 'openland-x-utils/detectOS';
-
-const ActiveButton = Glamorous(XButton)({
-    height: 30,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    border: 'solid 1px #ffffff',
-    '&:hover': {
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    },
-    '& svg': {
-        marginRight: 6,
-    },
-    '& svg path:last-child': {
-        fill: '#fff',
-    },
-});
 
 const titleClassName = css`
     font-weight: 500;
@@ -47,52 +26,37 @@ export const PromoBanner = (props: { onClise: () => void }) => {
             </XView>
             {os === 'Mac' && (
                 <XView cursor="pointer" alignItems="center" flexDirection="row" marginRight={24}>
-                    <ActiveButton
-                        text="Mac"
-                        style="primary"
-                        size="small"
-                        icon={<MacIcon />}
-                        href="https://oplnd.com/mac"
-                    />
+                    <UButton text="Mac" style="primary" size="small" href="https://oplnd.com/mac" />
                 </XView>
             )}
             {os === 'Windows' && (
                 <XView cursor="pointer" alignItems="center" flexDirection="row" marginRight={24}>
-                    <ActiveButton
+                    <UButton
                         text="Windows"
                         style="primary"
                         size="small"
-                        icon={<WinIcon />}
                         href="https://oplnd.com/windows"
                     />
                 </XView>
             )}
             {os === 'Linux' && (
                 <XView cursor="pointer" alignItems="center" flexDirection="row" marginRight={24}>
-                    <ActiveButton
+                    <UButton
                         text="Linux"
                         style="primary"
                         size="small"
-                        icon={<LinuxIcon />}
                         href="https://oplnd.com/linux"
                     />
                 </XView>
             )}
             <XView cursor="pointer" alignItems="center" flexDirection="row" marginRight={24}>
-                <ActiveButton
-                    text="iOS"
-                    style="primary"
-                    size="small"
-                    icon={<IosIcon />}
-                    href="https://oplnd.com/ios"
-                />
+                <UButton text="iOS" style="primary" size="small" href="https://oplnd.com/ios" />
             </XView>
             <XView cursor="pointer" alignItems="center" flexDirection="row">
-                <ActiveButton
+                <UButton
                     text="Android"
                     style="primary"
                     size="small"
-                    icon={<AndroidIcon />}
                     href="https://oplnd.com/android"
                 />
             </XView>

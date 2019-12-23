@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XView, XImage } from 'react-mental';
 import { css } from 'linaria';
 
@@ -72,7 +72,7 @@ export const ErrorPage = ({ statusCode, message }: ErrorPageProps) => (
                             <a href="mailto:hello@openland.com">hello@openland.com</a>
                         </div>
                         <XView width={150}>
-                            <XButton
+                            <UButton
                                 style="primary"
                                 onClick={() => {
                                     document.location!.replace('/');

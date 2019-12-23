@@ -1,9 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TalkWatchComponent } from './TalkWatchComponent';
-import { XView } from 'react-mental';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-web/utils/useClient';
 import { css } from 'linaria';
@@ -27,7 +26,8 @@ const FloatContainerClass = css`
     flex-direction: row;
     padding: 8px;
     border-radius: 48px;
-    transition: max-width 250ms cubic-bezier(.29, .09, .24, .99), opacity 250ms cubic-bezier(.29, .09, .24, .99);
+    transition: max-width 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
+        opacity 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
     overflow: hidden;
     max-width: 48px;
     opacity: 0.56;
@@ -44,13 +44,20 @@ const TargetClass = css`
 `;
 
 const animatedAvatarStyle = css`
-    transition: transform 250ms cubic-bezier(.29, .09, .24, .99);
+    transition: transform 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
 `;
 
-const useJsDrag = (targetRef: React.RefObject<HTMLDivElement>, containerRef: React.RefObject<HTMLDivElement>, contentRef: React.RefObject<HTMLDivElement>) => {
-    const saveLastShift = React.useCallback(debounce((shift: number[]) => {
-        window.localStorage.setItem('call_floating_shift', JSON.stringify(shift));
-    }, 500), []);
+const useJsDrag = (
+    targetRef: React.RefObject<HTMLDivElement>,
+    containerRef: React.RefObject<HTMLDivElement>,
+    contentRef: React.RefObject<HTMLDivElement>,
+) => {
+    const saveLastShift = React.useCallback(
+        debounce((shift: number[]) => {
+            window.localStorage.setItem('call_floating_shift', JSON.stringify(shift));
+        }, 500),
+        [],
+    );
 
     React.useLayoutEffect(() => {
         const container = containerRef.current;
@@ -58,13 +65,15 @@ const useJsDrag = (targetRef: React.RefObject<HTMLDivElement>, containerRef: Rea
         const content = contentRef.current;
         let dragging = false;
         let saved = window.localStorage.getItem('call_floating_shift');
-        let positionShift = saved ? JSON.parse(saved) : [window.innerWidth / 2 - 48, window.innerHeight / 2];
+        let positionShift = saved
+            ? JSON.parse(saved)
+            : [window.innerWidth / 2 - 48, window.innerHeight / 2];
         let prev: number[] | undefined;
 
         const checkPostion = () => {
             // limit shift with screen bounds
             if (Math.abs(positionShift[0]) > window.innerWidth / 2) {
-                positionShift[0] = (window.innerWidth) / 2 * Math.sign(positionShift[0]);
+                positionShift[0] = (window.innerWidth / 2) * Math.sign(positionShift[0]);
             }
             positionShift[1] = Math.min(window.innerHeight - 48, Math.max(0, positionShift[1]));
 
@@ -119,7 +128,9 @@ const useJsDrag = (targetRef: React.RefObject<HTMLDivElement>, containerRef: Rea
 
                 saveLastShift(positionShift);
                 if (container) {
-                    container.style.transform = `translate(${positionShift[0]}px, ${positionShift[1]}px)`;
+                    container.style.transform = `translate(${positionShift[0]}px, ${
+                        positionShift[1]
+                    }px)`;
                 }
             }
             prev = current;
@@ -127,16 +138,16 @@ const useJsDrag = (targetRef: React.RefObject<HTMLDivElement>, containerRef: Rea
 
         checkPostion();
         if (container && target) {
-            target.addEventListener("mousedown", onDragStart);
-            target.addEventListener("mouseup", onDragStop);
-            window.document.addEventListener("mouseup", onDragStop);
-            window.document.addEventListener("mousemove", onDrag);
+            target.addEventListener('mousedown', onDragStart);
+            target.addEventListener('mouseup', onDragStop);
+            window.document.addEventListener('mouseup', onDragStop);
+            window.document.addEventListener('mousemove', onDrag);
 
-            target.addEventListener("touchstart", onDragStart);
-            target.addEventListener("touchend", onDragStop);
-            target.addEventListener("touchcancel", onDragStop);
-            target.addEventListener("touchmove", (ev) => ev.preventDefault());
-            window.document.addEventListener("touchmove", onDrag);
+            target.addEventListener('touchstart', onDragStart);
+            target.addEventListener('touchend', onDragStop);
+            target.addEventListener('touchcancel', onDragStop);
+            target.addEventListener('touchmove', ev => ev.preventDefault());
+            window.document.addEventListener('touchmove', onDrag);
 
             container.style.display = 'flex';
             container.style.transform = `translate(${positionShift[0]}px, ${positionShift[1]}px)`;
@@ -144,132 +155,162 @@ const useJsDrag = (targetRef: React.RefObject<HTMLDivElement>, containerRef: Rea
 
         return () => {
             if (target) {
-                target.removeEventListener("mousedown", onDragStart);
-                target.removeEventListener("mouseup", onDragStop);
-                window.document.removeEventListener("mouseup", onDragStop);
-                window.document.removeEventListener("mousemove", onDrag);
+                target.removeEventListener('mousedown', onDragStart);
+                target.removeEventListener('mouseup', onDragStop);
+                window.document.removeEventListener('mouseup', onDragStop);
+                window.document.removeEventListener('mousemove', onDrag);
 
-                target.removeEventListener("touchstart", onDragStart);
-                target.removeEventListener("touchend", onDragStop);
-                target.removeEventListener("touchcancel", onDragStop);
-                target.removeEventListener("touchmove", (ev) => ev.preventDefault());
-                window.document.removeEventListener("touchmove", onDrag);
+                target.removeEventListener('touchstart', onDragStart);
+                target.removeEventListener('touchend', onDragStop);
+                target.removeEventListener('touchcancel', onDragStop);
+                target.removeEventListener('touchmove', ev => ev.preventDefault());
+                window.document.removeEventListener('touchmove', onDrag);
             }
         };
     }, []);
 };
 
-const Avatar = React.memo((props: { peers: Conference_conference_peers[], mediaSessionManager?: MediaSessionManager, fallback: { id: string, title: string, picture?: string | null } }) => {
-    const avatarRef = React.useRef<HTMLDivElement>(null);
-    const [speakingPeerId, setSpeakingPeerId] = React.useState<string>();
-    React.useEffect(() => {
-        let buffer: Uint8Array;
-        let running = true;
-        let disposeStreamsListener: (() => void) | undefined;
-        let streamsManagers: Map<string, MediaStreamManager> = new Map();
-        const peerStreamAnalyzers = new Map<string, { analyzer: AnalyserNode, stream: MediaStream, appSrteam: AppMediaStream, isMe?: boolean }>();
-        if (props.mediaSessionManager) {
-            disposeStreamsListener = props.mediaSessionManager.listenStreams(s => streamsManagers = s);
-        } else {
-            return;
-        }
-
-        const initStreamsAnalizer = (manager: MediaStreamManager, isMe?: boolean) => {
-            // damn you safari
-            if (!(window as any).AudioContext) {
-                return;
-            }
-            const peerId = isMe ? manager.getPeerId() : manager.getTargetPeerId() || 'none';
-            let ex = peerStreamAnalyzers.get(peerId);
-            let stream = isMe ?
-                (manager.getStream() as any as AppUserMediaStreamWeb).getStream() :
-                manager.getInStream() ? (manager.getInStream() as any as AppUserMediaStreamWeb).getStream() : undefined;
-            // clean up
-            if (ex && ex.stream !== stream) {
-                ex.analyzer.disconnect();
-            }
-            // create new analyzer
-            if (stream && (!ex || ex.stream !== stream)) {
-                let context = new AudioContext();
-                let source = context.createMediaStreamSource(stream);
-                let analyser = context.createAnalyser();
-                const bufferLength = analyser.frequencyBinCount;
-                if (!buffer) {
-                    buffer = new Uint8Array(bufferLength);
-                }
-                source.connect(analyser);
-                peerStreamAnalyzers.set(peerId, { stream, appSrteam: manager.getStream(), analyzer: analyser, isMe });
-            }
-        };
-        const initStreamsAnalizers = () => {
-            streamsManagers.forEach(sm => {
-                initStreamsAnalizer(sm);
-            });
-            if (streamsManagers.size) {
-                initStreamsAnalizer(streamsManagers.values().next().value, true);
-            }
-        };
-        const render = () => {
-            if (!running) {
-                return;
-            }
-            initStreamsAnalizers();
-            let lastVal = 0;
-            let activePeerId: string | undefined;
-            for (let [key, entry] of peerStreamAnalyzers) {
-                entry.analyzer.getByteFrequencyData(buffer);
-                let val = Math.min(1, buffer.reduce((res, x) => {
-                    return res + x;
-                }, 0) / buffer.length / 10);
-                if (val < 0.2) {
-                    val = 0;
-                }
-                if (entry.isMe && entry.appSrteam.muted) {
-                    val = 0;
-                }
-                if (val > lastVal) {
-                    lastVal = val;
-                    activePeerId = key;
+const Avatar = React.memo(
+    (props: {
+        peers: Conference_conference_peers[];
+        mediaSessionManager?: MediaSessionManager;
+        fallback: { id: string; title: string; picture?: string | null };
+    }) => {
+        const avatarRef = React.useRef<HTMLDivElement>(null);
+        const [speakingPeerId, setSpeakingPeerId] = React.useState<string>();
+        React.useEffect(
+            () => {
+                let buffer: Uint8Array;
+                let running = true;
+                let disposeStreamsListener: (() => void) | undefined;
+                let streamsManagers: Map<string, MediaStreamManager> = new Map();
+                const peerStreamAnalyzers = new Map<
+                    string,
+                    {
+                        analyzer: AnalyserNode;
+                        stream: MediaStream;
+                        appSrteam: AppMediaStream;
+                        isMe?: boolean;
+                    }
+                >();
+                if (props.mediaSessionManager) {
+                    disposeStreamsListener = props.mediaSessionManager.listenStreams(
+                        s => (streamsManagers = s),
+                    );
+                } else {
+                    return;
                 }
 
-                // animate
-                let scale = 1 + lastVal * 0.4;
-                if (avatarRef.current) {
-                    avatarRef.current.style.transform = `scale(${scale})`;
-                }
+                const initStreamsAnalizer = (manager: MediaStreamManager, isMe?: boolean) => {
+                    // damn you safari
+                    if (!(window as any).AudioContext) {
+                        return;
+                    }
+                    const peerId = isMe ? manager.getPeerId() : manager.getTargetPeerId() || 'none';
+                    let ex = peerStreamAnalyzers.get(peerId);
+                    let stream = isMe
+                        ? ((manager.getStream() as any) as AppUserMediaStreamWeb).getStream()
+                        : manager.getInStream()
+                            ? ((manager.getInStream() as any) as AppUserMediaStreamWeb).getStream()
+                            : undefined;
+                    // clean up
+                    if (ex && ex.stream !== stream) {
+                        ex.analyzer.disconnect();
+                    }
+                    // create new analyzer
+                    if (stream && (!ex || ex.stream !== stream)) {
+                        let context = new AudioContext();
+                        let source = context.createMediaStreamSource(stream);
+                        let analyser = context.createAnalyser();
+                        const bufferLength = analyser.frequencyBinCount;
+                        if (!buffer) {
+                            buffer = new Uint8Array(bufferLength);
+                        }
+                        source.connect(analyser);
+                        peerStreamAnalyzers.set(peerId, {
+                            stream,
+                            appSrteam: manager.getStream(),
+                            analyzer: analyser,
+                            isMe,
+                        });
+                    }
+                };
+                const initStreamsAnalizers = () => {
+                    streamsManagers.forEach(sm => {
+                        initStreamsAnalizer(sm);
+                    });
+                    if (streamsManagers.size) {
+                        initStreamsAnalizer(streamsManagers.values().next().value, true);
+                    }
+                };
+                const render = () => {
+                    if (!running) {
+                        return;
+                    }
+                    initStreamsAnalizers();
+                    let lastVal = 0;
+                    let activePeerId: string | undefined;
+                    for (let [key, entry] of peerStreamAnalyzers) {
+                        entry.analyzer.getByteFrequencyData(buffer);
+                        let val = Math.min(
+                            1,
+                            buffer.reduce((res, x) => {
+                                return res + x;
+                            }, 0) /
+                                buffer.length /
+                                10,
+                        );
+                        if (val < 0.2) {
+                            val = 0;
+                        }
+                        if (entry.isMe && entry.appSrteam.muted) {
+                            val = 0;
+                        }
+                        if (val > lastVal) {
+                            lastVal = val;
+                            activePeerId = key;
+                        }
 
-            }
-            setSpeakingPeerId(activePeerId);
-            requestAnimationFrame(render);
-        };
+                        // animate
+                        let scale = 1 + lastVal * 0.4;
+                        if (avatarRef.current) {
+                            avatarRef.current.style.transform = `scale(${scale})`;
+                        }
+                    }
+                    setSpeakingPeerId(activePeerId);
+                    requestAnimationFrame(render);
+                };
 
-        requestAnimationFrame(render);
-        return () => {
-            running = false;
-            if (disposeStreamsListener) {
-                disposeStreamsListener();
-            }
-            peerStreamAnalyzers.forEach(v => v.analyzer.disconnect());
+                requestAnimationFrame(render);
+                return () => {
+                    running = false;
+                    if (disposeStreamsListener) {
+                        disposeStreamsListener();
+                    }
+                    peerStreamAnalyzers.forEach(v => v.analyzer.disconnect());
 
-            if (avatarRef.current) {
-                avatarRef.current.style.transform = '';
-            }
-        };
-    }, [props.mediaSessionManager]);
-    let peer = props.peers.find(p => p.id === speakingPeerId);
-    return (
-        <div key={'animtateing_wrapper'} className={animatedAvatarStyle} ref={avatarRef}>
-            <UAvatar
-                size="small"
-                id={peer ? peer.user.id : props.fallback.id}
-                title={peer ? peer.user.name : props.fallback.title}
-                photo={peer ? peer.user.photo : props.fallback.picture}
-            />
-        </div>
-    );
-});
+                    if (avatarRef.current) {
+                        avatarRef.current.style.transform = '';
+                    }
+                };
+            },
+            [props.mediaSessionManager],
+        );
+        let peer = props.peers.find(p => p.id === speakingPeerId);
+        return (
+            <div key={'animtateing_wrapper'} className={animatedAvatarStyle} ref={avatarRef}>
+                <UAvatar
+                    size="small"
+                    id={peer ? peer.user.id : props.fallback.id}
+                    title={peer ? peer.user.name : props.fallback.title}
+                    photo={peer ? peer.user.photo : props.fallback.picture}
+                />
+            </div>
+        );
+    },
+);
 
-const CallFloatingComponent = React.memo((props: { id: string, private: boolean }) => {
+const CallFloatingComponent = React.memo((props: { id: string; private: boolean }) => {
     const isMobile = useIsMobile();
     const [forceOpen, setForceOpen] = React.useState(false);
     const targetRef = React.useRef<HTMLDivElement>(null);
@@ -280,58 +321,62 @@ const CallFloatingComponent = React.memo((props: { id: string, private: boolean 
     let callState = calls.useState();
 
     let client = useClient();
-    let data = client.useWithoutLoaderConference(
-        { id: props.id },
-        { fetchPolicy: 'network-only' },
+    let data = client.useWithoutLoaderConference({ id: props.id }, { fetchPolicy: 'network-only' });
+
+    const onClick = React.useCallback(
+        () => {
+            if (isMobile) {
+                if (containerRef.current) {
+                    containerRef.current.style.opacity = forceOpen ? '1' : '0.56';
+                    containerRef.current.style.maxWidth = forceOpen ? '360px' : '48px';
+                }
+                setForceOpen(!forceOpen);
+            }
+        },
+        [forceOpen],
     );
 
-    const onClick = React.useCallback(() => {
-        if (isMobile) {
-            if (containerRef.current) {
-                containerRef.current.style.opacity = forceOpen ? '1' : '0.56';
-                containerRef.current.style.maxWidth = forceOpen ? '360px' : '48px';
-            }
-            setForceOpen(!forceOpen);
-        }
-    }, [forceOpen]);
-
-    return data && <div className={FloatContainerClass} ref={containerRef} onClick={onClick}>
-        <div style={{ display: 'flex', flexDirection: 'row' }} ref={contentRef}>
-
-            {callState.avatar &&
-                <div className={TargetClass} ref={targetRef}>
-                    <Avatar
-                        peers={data.conference.peers}
-                        mediaSessionManager={calls.getMediaSession()}
-                        fallback={{ id: callState.avatar.id, title: callState.avatar.title, picture: callState.avatar.picture }}
+    return (
+        data && (
+            <div className={FloatContainerClass} ref={containerRef} onClick={onClick}>
+                <div style={{ display: 'flex', flexDirection: 'row' }} ref={contentRef}>
+                    {callState.avatar && (
+                        <div className={TargetClass} ref={targetRef}>
+                            <Avatar
+                                peers={data.conference.peers}
+                                mediaSessionManager={calls.getMediaSession()}
+                                fallback={{
+                                    id: callState.avatar.id,
+                                    title: callState.avatar.title,
+                                    picture: callState.avatar.picture,
+                                }}
+                            />
+                        </div>
+                    )}
+                    <UButton
+                        flexShrink={0}
+                        style="success"
+                        text={callState.mute ? 'Unmute' : 'Mute'}
+                        onClick={() => calls.setMute(!callState.mute)}
+                        marginLeft={4}
+                        marginRight={4}
                     />
-                </div>}
-            <XView width={8} />
-            <XButton
-                flexShrink={0}
-                style="success"
-                text={callState.mute ? 'Unmute' : 'Mute'}
-                onClick={() => calls.setMute(!callState.mute)}
-            />
-            <XView width={8} />
-            <XButton
-                flexShrink={0}
-                style="success"
-                text={
-                    callState.status === 'connecting' ? 'Connecting' : 'Leave'
-                }
-                onClick={() => calls.leaveCall()}
-            />
-        </div>
-    </div>;
+                    <UButton
+                        flexShrink={0}
+                        style="success"
+                        text={callState.status === 'connecting' ? 'Connecting' : 'Leave'}
+                        onClick={() => calls.leaveCall()}
+                        marginLeft={4}
+                    />
+                </div>
+            </div>
+        )
+    );
 });
 
-const CallFloatingInner = React.memo((props: { id: string, private: boolean }) => {
+const CallFloatingInner = React.memo((props: { id: string; private: boolean }) => {
     let client = useClient();
-    let data = client.useWithoutLoaderConference(
-        { id: props.id },
-        { fetchPolicy: 'network-only' },
-    );
+    let data = client.useWithoutLoaderConference({ id: props.id }, { fetchPolicy: 'network-only' });
     if (!data) {
         return null;
     }

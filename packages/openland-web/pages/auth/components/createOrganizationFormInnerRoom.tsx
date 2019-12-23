@@ -4,7 +4,7 @@ import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import {
     ContentWrapper,
@@ -68,13 +68,16 @@ export const CreateOrganizationFormInnerRoom = ({
             text: 'Please enter your organization name',
         },
     ]);
-    const doConfirm = React.useCallback(() => {
-        form.doAction(async () => {
-            await processCreateOrganization({
-                organizationFieldValue: organizationField.value.trim(),
+    const doConfirm = React.useCallback(
+        () => {
+            form.doAction(async () => {
+                await processCreateOrganization({
+                    organizationFieldValue: organizationField.value.trim(),
+                });
             });
-        });
-    }, [organizationField.value]);
+        },
+        [organizationField.value],
+    );
 
     const subtitle = 'Give others context about your work';
 
@@ -84,7 +87,6 @@ export const CreateOrganizationFormInnerRoom = ({
     const isInvalid = !!errorText && organizationField.input.invalid;
 
     return (
-
         <RoomSignupContainer pageMode="CreateOrganization" {...roomContainerParams!!}>
             <XView alignItems="center" flexGrow={1} justifyContent="center">
                 <ContentWrapper>
@@ -107,9 +109,8 @@ export const CreateOrganizationFormInnerRoom = ({
                                     <XPolitePopper
                                         content={
                                             <InfoText>
-                                                To register as an individual, simply enter your
-                                                name
-                                                </InfoText>
+                                                To register as an individual, simply enter your name
+                                            </InfoText>
                                         }
                                         showOnHover={true}
                                         placement="top"
@@ -127,26 +128,25 @@ export const CreateOrganizationFormInnerRoom = ({
                                 flexDirection="row"
                                 marginTop={
                                     organizationField.input.invalid &&
-                                        organizationField.input.errorText
+                                    organizationField.input.errorText
                                         ? 50 - 26
                                         : 50
                                 }
                             >
                                 {onSkip && (
                                     <XView marginRight={16}>
-                                        <XButton
+                                        <UButton
                                             loading={skiping}
                                             onClick={onSkip}
                                             size="large"
-                                            style="ghost"
+                                            style="secondary"
                                             alignSelf="center"
-                                            text={'Skip'}
+                                            text="Skip"
                                         />
                                     </XView>
                                 )}
-                                <XButton
+                                <UButton
                                     loading={sending}
-                                    dataTestId="continue-button"
                                     style="primary"
                                     text={InitTexts.create_organization.continue}
                                     size="large"

@@ -3,7 +3,7 @@ import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
@@ -86,9 +86,12 @@ const LocalDiscoverComponent = ({
     const isMobile = useIsMobile();
     const [localSelected, setLocalSelected] = React.useState<string[]>(() => selected);
 
-    React.useLayoutEffect(() => {
-        setLocalSelected(selected);
-    }, [selected]);
+    React.useLayoutEffect(
+        () => {
+            setLocalSelected(selected);
+        },
+        [selected],
+    );
 
     const onTagPress = React.useCallback(
         (tag: Tag) => {
@@ -105,9 +108,12 @@ const LocalDiscoverComponent = ({
         [localSelected],
     );
 
-    const onMyContinueClick = React.useCallback(() => {
-        onContinueClick(localSelected);
-    }, [localSelected]);
+    const onMyContinueClick = React.useCallback(
+        () => {
+            onContinueClick(localSelected);
+        },
+        [localSelected],
+    );
 
     if (!group) {
         return null;
@@ -144,8 +150,8 @@ const LocalDiscoverComponent = ({
 
                     <TagsGroupPage group={group} selected={localSelected} onPress={onTagPress} />
                     <div className={cx(shadowClassName, isMobile && mobileShadowClassName)} />
-                    <XButton
-                        enabled={allowContinue || !!localSelected.length}
+                    <UButton
+                        disable={!(allowContinue || !!localSelected.length)}
                         flexShrink={0}
                         zIndex={2}
                         text="Continue"
@@ -206,11 +212,14 @@ export const Discover = ({
         { fetchPolicy: 'network-only' },
     );
 
-    React.useLayoutEffect(() => {
-        client.refetchSuggestedRooms().then(() => {
-            client.refetchDiscoverIsDone();
-        });
-    }, [currentPage.betaNextDiscoverPage!!.tagGroup]);
+    React.useLayoutEffect(
+        () => {
+            client.refetchSuggestedRooms().then(() => {
+                client.refetchDiscoverIsDone();
+            });
+        },
+        [currentPage.betaNextDiscoverPage!!.tagGroup],
+    );
 
     if (!currentPage.betaNextDiscoverPage!!.tagGroup!! || discoverDone.betaIsDiscoverDone) {
         if (!discoverDone.betaIsDiscoverDone) {
@@ -297,37 +306,24 @@ export const DiscoverOnLocalState = ({
         [],
     );
 
-    const mergeAllSelected = React.useCallback(() => {
-        const allSelectedArrays = rootState.map(({ selected }) => {
-            return selected;
-        });
+    const mergeAllSelected = React.useCallback(
+        () => {
+            const allSelectedArrays = rootState.map(({ selected }) => {
+                return selected;
+            });
 
-        const allSelected: string[] = [];
-        for (let selected of allSelectedArrays) {
-            for (let selectedItem of selected) {
-                if (!allSelected.includes(selectedItem)) {
-                    allSelected.push(selectedItem);
+            const allSelected: string[] = [];
+            for (let selected of allSelectedArrays) {
+                for (let selectedItem of selected) {
+                    if (!allSelected.includes(selectedItem)) {
+                        allSelected.push(selectedItem);
+                    }
                 }
             }
-        }
-        return allSelected;
-    }, [rootState]);
-
-    // const mergeAllExcluded = React.useCallback(() => {
-    //     const allExcludeArrays = rootState.map(({ exclude }) => {
-    //         return exclude;
-    //     });
-
-    //     const allExclude: string[] = [];
-    //     for (let exclude of allExcludeArrays) {
-    //         for (let selectedItem of exclude) {
-    //             if (!allExclude.includes(selectedItem)) {
-    //                 allExclude.push(selectedItem);
-    //             }
-    //         }
-    //     }
-    //     return allExclude;
-    // }, [rootState]);
+            return allSelected;
+        },
+        [rootState],
+    );
 
     const onContinueClick = React.useCallback(
         async (data: { selected: string[]; exclude: string[]; currentPageId: string }) => {
@@ -390,37 +386,46 @@ export const DiscoverOnLocalState = ({
         [previousChoisesMap, rootState],
     );
 
-    const onBack = React.useCallback(async () => {
-        if (rootState.length !== 0) {
-            const cloneRootState = [...rootState];
+    const onBack = React.useCallback(
+        async () => {
+            if (rootState.length !== 0) {
+                const cloneRootState = [...rootState];
 
-            cloneRootState.pop();
+                cloneRootState.pop();
 
-            setRootState(cloneRootState);
-        }
-    }, [rootState]);
+                setRootState(cloneRootState);
+            }
+        },
+        [rootState],
+    );
 
-    const getLastStateOrEmpty = React.useCallback(() => {
-        if (rootState.length === 0) {
-            return { selected: [], exclude: [] };
-        }
-        return rootState[rootState.length - 1];
-    }, [rootState]);
+    const getLastStateOrEmpty = React.useCallback(
+        () => {
+            if (rootState.length === 0) {
+                return { selected: [], exclude: [] };
+            }
+            return rootState[rootState.length - 1];
+        },
+        [rootState],
+    );
 
-    const onChatsForYouBack = React.useCallback(async () => {
-        await client.mutateBetaNextDiscoverReset();
-        await client.refetchSuggestedRooms();
-        await client.refetchDiscoverIsDone();
+    const onChatsForYouBack = React.useCallback(
+        async () => {
+            await client.mutateBetaNextDiscoverReset();
+            await client.refetchSuggestedRooms();
+            await client.refetchDiscoverIsDone();
 
-        const result = await client.queryDiscoverNextPage({
-            selectedTagsIds: getLastStateOrEmpty().selected,
-            excudedGroupsIds: getLastStateOrEmpty().exclude,
-        });
+            const result = await client.queryDiscoverNextPage({
+                selectedTagsIds: getLastStateOrEmpty().selected,
+                excudedGroupsIds: getLastStateOrEmpty().exclude,
+            });
 
-        if (result.betaNextDiscoverPage!!.tagGroup === null) {
-            await onBack();
-        }
-    }, [rootState]);
+            if (result.betaNextDiscoverPage!!.tagGroup === null) {
+                await onBack();
+            }
+        },
+        [rootState],
+    );
 
     const lastStateOrEmpty = getLastStateOrEmpty();
 

@@ -34,6 +34,7 @@ const buttonWrapperStyle = css`
     position: relative;
     cursor: pointer;
     transition: color 0.08s ease-in, all 0.15s ease;
+    border-radius: 100px;
 `;
 
 const squareStyle = css`
@@ -55,7 +56,6 @@ const size28 = css`
     height: 28px;
     padding-left: 16px;
     padding-right: 16px;
-    border-radius: 100px;
 `;
 
 const size32 = css`
@@ -64,7 +64,6 @@ const size32 = css`
     height: 32px;
     padding-left: 16px;
     padding-right: 16px;
-    border-radius: 100px;
 `;
 
 const size40 = css`
@@ -73,7 +72,6 @@ const size40 = css`
     height: 40px;
     padding-left: 24px;
     padding-right: 24px;
-    border-radius: 100px;
 `;
 
 const primaryStyle = css`
@@ -222,7 +220,7 @@ export const UButton = (props: UButtonProps) => {
     );
 
     return (
-        <XView {...other} onClick={action ? actionCallback : onClick}>
+        <XView {...other} onClick={!disable ? action ? actionCallback : onClick : undefined}>
             <div
                 tabIndex={-1}
                 className={cx(

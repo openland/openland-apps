@@ -9,7 +9,7 @@ import {
     RoomSignupContainer,
 } from 'openland-web/pages/init/components/SignComponents';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XInput } from 'openland-x/XInput';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
@@ -100,8 +100,7 @@ export const RoomCreateWithEmail = ({
                     width={280}
                 >
                     <XVertical alignItems="center">
-                        <XButton
-                            dataTestId="continue-button"
+                        <UButton
                             style="primary"
                             loading={emailSending}
                             size="large"

@@ -4,7 +4,7 @@ import Glamorous from 'glamorous';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XRouter } from 'openland-x-routing/XRouter';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XModalContext } from './XModalContext';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -239,7 +239,7 @@ class ModalContentRender extends React.Component<ModalContentRenderProps> {
                 {this.props.footer === undefined &&
                     !this.props.useTopCloser && (
                         <XModalFooter>
-                            <XButton text="Close" autoClose={true} />
+                            <UButton text="Close" style="secondary"/>
                         </XModalFooter>
                     )}
                 {this.props.footer !== undefined && this.props.footer}

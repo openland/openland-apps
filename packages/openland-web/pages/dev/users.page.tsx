@@ -3,7 +3,7 @@ import { css } from 'linaria';
 import { withApp } from '../../components/withApp';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XView } from 'react-mental';
 import { XInput } from 'openland-x/XInput';
 import { XLoader } from 'openland-x/XLoader';
@@ -44,8 +44,8 @@ function BlockUserModal(
             justifyContent="flex-end"
         >
             <XHorizontal justifyContent="space-between">
-                <XButton text="Cancel" onClick={ctx.hide} />
-                <XButton
+                <UButton text="Cancel" onClick={ctx.hide} />
+                <UButton
                     text={deleted ? 'Done!' : 'Delete'}
                     style={deleted ? 'success' : 'danger'}
                     action={async () => {
@@ -68,7 +68,7 @@ const BlockUserButton = (props: { id: string }) => {
     const client = useClient();
     const [deleted, setDelete] = React.useState(false);
     return (
-        <XButton
+        <UButton
             text="Block"
             flexShrink={0}
             style="danger"
@@ -99,7 +99,9 @@ const ExplorePeople = (props: ExplorePeopleProps) => {
                     <XView key={i.node.id} flexShrink={0}>
                         <UUserView
                             user={i.node}
-                            onClick={() => { return; }}
+                            onClick={() => {
+                                return;
+                            }}
                             rightElement={<BlockUserButton id={i.node.id} />}
                         />
                     </XView>

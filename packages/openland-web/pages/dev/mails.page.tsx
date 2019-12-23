@@ -4,7 +4,7 @@ import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 
 import { DebugEmailType } from 'openland-api/Types';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XContent } from 'openland-x-layout/XContent';
 import { useClient } from 'openland-web/utils/useClient';
 import { XVertical2 } from 'openland-x/XVertical2';
@@ -15,29 +15,12 @@ interface DebugMailButtonProps {
 }
 
 class DebugMailButtonInner extends React.Component<DebugMailButtonProps, { isSended: boolean }> {
-    state = {
-        isSended: false,
-    };
-
-    handleSended = () => {
-        this.setState({
-            isSended: true,
-        });
-
-        setTimeout(() => {
-            this.setState({
-                isSended: false,
-            });
-        }, 3000);
-    }
-
     render() {
         return (
-            <XButton
+            <UButton
                 alignSelf="flex-start"
-                icon={this.state.isSended ? 'check' : undefined}
-                text={this.state.isSended ? 'Sent!' : this.props.emailType.toString()}
-                style={this.state.isSended ? 'success' : 'primary'}
+                text={this.props.emailType.toString()}
+                style="primary"
                 action={async () => {
                     await this.props.sendMail({
                         variables: {
@@ -45,7 +28,6 @@ class DebugMailButtonInner extends React.Component<DebugMailButtonProps, { isSen
                         },
                     });
                 }}
-                onSuccess={this.handleSended}
             />
         );
     }

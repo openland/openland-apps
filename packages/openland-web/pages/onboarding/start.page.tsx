@@ -3,7 +3,7 @@ import { css } from 'linaria';
 import { withApp } from 'openland-web/components/withApp';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XView } from 'react-mental';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import ImgUnboardingStart from 'openland-icons/img_unboarding_start.svg';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
@@ -26,12 +26,9 @@ export const DiscoverStart = ({
     onLogin?: boolean;
 }) => {
     const isMobile = useIsMobile();
-    const button = <XButton text="Start" style="primary" size="large" onClick={onStartClick} />;
     return (
         <XView flexGrow={1}>
-            {!noBackSkipLogo && (
-                <BackSkipLogo onBack={null} onSkip={onSkip} noLogo={!!isMobile} />
-            )}
+            {!noBackSkipLogo && <BackSkipLogo onBack={null} onSkip={onSkip} noLogo={!!isMobile} />}
             <XView
                 alignItems="center"
                 flexGrow={1}
@@ -62,10 +59,14 @@ export const DiscoverStart = ({
                         </span>
                     )}
                 </XView>
-                {!isMobile && <XView alignItems="center">{button}</XView>}
+                {!isMobile && (
+                    <XView alignItems="center">
+                        <UButton text="Start" style="primary" size="large" onClick={onStartClick} />
+                    </XView>
+                )}
                 {isMobile && (
                     <XView alignItems="center" position="absolute" bottom={30}>
-                        {button}
+                        <UButton text="Start" style="primary" size="large" onClick={onStartClick} />
                     </XView>
                 )}
             </XView>

@@ -23,26 +23,29 @@ const PageAnimator = React.memo(
     }) => {
         console.log('render[' + props.k + ']: ' + props.state);
 
-        React.useLayoutEffect(() => {
-            let active = true;
-            if (props.state === 'entering') {
-                setTimeout(() => {
-                    if (active) {
-                        props.dispatch({ type: 'entered', key: props.k });
-                    }
-                }, 400);
-            }
-            if (props.state === 'exiting' || props.removing) {
-                setTimeout(() => {
-                    if (active) {
-                        props.dispatch({ type: 'exited', key: props.k });
-                    }
-                }, 400);
-            }
-            return () => {
-                active = false;
-            };
-        }, [props.state, props.removing]);
+        React.useLayoutEffect(
+            () => {
+                let active = true;
+                if (props.state === 'entering') {
+                    setTimeout(() => {
+                        if (active) {
+                            props.dispatch({ type: 'entered', key: props.k });
+                        }
+                    }, 400);
+                }
+                if (props.state === 'exiting' || props.removing) {
+                    setTimeout(() => {
+                        if (active) {
+                            props.dispatch({ type: 'exited', key: props.k });
+                        }
+                    }, 400);
+                }
+                return () => {
+                    active = false;
+                };
+            },
+            [props.state, props.removing],
+        );
 
         let state = props.state;
         if (state === 'hidden' && props.depth >= 2) {
@@ -238,7 +241,7 @@ const connectingContainerClass = css`
     align-items: center;
     padding: 7px 16px 9px;
     opacity: 0;
-    transform: scale(0.84), translateY(-8px);
+    transform: scale(0.84) translateY(-8px);
     transition: transform 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
         opacity 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
@@ -249,7 +252,7 @@ const connectingContainerWrapperClass = css`
     left: 0;
     right: 0;
     top: 72px;
-
+    pointer-events: none;
     justify-content: center;
     display: flex;
 `;

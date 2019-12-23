@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
@@ -28,7 +28,7 @@ class FirstText extends React.Component {
     render() {
         let ch: any[] = [];
         for (let a = 0; a < 1000; a++) {
-            ch.push(<XButton key={'b-' + a} text="button" />);
+            ch.push(<UButton key={'b-' + a} text="button" />);
         }
         return <XVertical2>{ch}</XVertical2>;
     }
@@ -77,10 +77,10 @@ export default class Perf extends React.Component {
         return (
             <XVertical2>
                 <XHorizontal>
-                    <XButton text="0" query={{ field: 'tab' }} />
-                    <XButton text="1" query={{ field: 'tab', value: '1' }} />
-                    <XButton text="2" query={{ field: 'tab', value: '2' }} />
-                    <XButton text="3" query={{ field: 'tab', value: '3' }} />
+                    <UButton text="0" path="/performance" />
+                    <UButton text="1" path="/performance?tab=1" />
+                    <UButton text="2" path="/performance?tab=2" />
+                    <UButton text="3" path="/performance?tab=3" />
                 </XHorizontal>
                 <XRouterContext.Consumer>
                     {ctx => {

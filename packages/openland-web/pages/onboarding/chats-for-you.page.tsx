@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { css, cx } from 'linaria';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { useClient } from 'openland-web/utils/useClient';
@@ -93,9 +93,12 @@ const ChatsItemList = ({
     const allRoomsIds = rooms.map(({ id }) => id);
     const [selectedIds, setSelectedIds] = React.useState<string[]>(allRoomsIds);
 
-    React.useLayoutEffect(() => {
-        setSelectedIds(rooms.map(({ id }) => id));
-    }, [rooms]);
+    React.useLayoutEffect(
+        () => {
+            setSelectedIds(rooms.map(({ id }) => id));
+        },
+        [rooms],
+    );
     const [joinLoader, setJoinLoader] = React.useState(false);
     let router = React.useContext(XRouterContext)!;
 
@@ -135,24 +138,22 @@ const ChatsItemList = ({
                     {`${rooms.length} chats`}
                 </XView>
                 {allRoomsIds.length === selectedIds.length ? (
-                    <XButton
-                        text={`Clear`}
-                        style="light"
-                        size="default"
+                    <UButton
+                        text="Clear"
+                        size="medium"
                         onClick={() => {
                             setSelectedIds([]);
                         }}
                     />
                 ) : (
-                        <XButton
-                            text={`Select all`}
-                            style="light"
-                            size="default"
-                            onClick={() => {
-                                setSelectedIds(allRoomsIds);
-                            }}
-                        />
-                    )}
+                    <UButton
+                        text="Select all"
+                        size="medium"
+                        onClick={() => {
+                            setSelectedIds(allRoomsIds);
+                        }}
+                    />
+                )}
             </XView>
 
             <XScrollView3 marginBottom={-110} flexGrow={1} flexShrink={1} alignItems="center">
@@ -183,7 +184,7 @@ const ChatsItemList = ({
             </XScrollView3>
             <div className={cx(shadowClassName, isMobile && mobileShadowClassName)} />
             <XView flexShrink={0} alignSelf="center" zIndex={2}>
-                <XButton
+                <UButton
                     zIndex={2}
                     flexShrink={0}
                     text={joinButtonText}
@@ -191,7 +192,7 @@ const ChatsItemList = ({
                     size="large"
                     loading={joinLoader}
                     onClick={join}
-                    enabled={!!selectedLength}
+                    disable={!selectedLength}
                 />
             </XView>
         </XView>

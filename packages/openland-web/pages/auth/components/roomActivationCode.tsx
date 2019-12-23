@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { useForm } from 'openland-form/useForm';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useField } from 'openland-form/useField';
 import {
     Title,
@@ -33,16 +33,6 @@ const SmallerText = Glamorous.div({
 
 const ResendCodeRow = Glamorous(XVertical)({
     marginTop: 12,
-});
-
-const ResendButton = Glamorous(XButton)({
-    height: 20,
-    '& .button-content': {
-        paddingLeft: 4,
-        paddingRight: 0,
-        fontWeight: 'normal',
-        fontSize: 13,
-    },
 });
 
 export const RoomActivationCode = ({
@@ -116,10 +106,11 @@ export const RoomActivationCode = ({
                                         ? 'Code successfully sent.'
                                         : InitTexts.auth.haveNotReceiveCode}
                                 </SmallerText>
-                                <ResendButton
+                                <UButton
                                     onClick={resendCodeClick}
-                                    style="link"
+                                    style="secondary"
                                     text={InitTexts.auth.resend}
+                                    size="small"
                                 />
                             </>
                         )}
@@ -128,14 +119,14 @@ export const RoomActivationCode = ({
             <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
                 <XVertical alignItems="center">
                     <XHorizontal alignItems="center">
-                        <XButton
+                        <UButton
                             onClick={backButtonClick}
                             size="large"
-                            style="ghost"
+                            style="secondary"
                             alignSelf="center"
                             text={'Back'}
                         />
-                        <XButton
+                        <UButton
                             loading={codeSending}
                             onClick={doConfirm}
                             size="large"

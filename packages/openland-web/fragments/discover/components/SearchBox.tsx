@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XInput } from 'openland-x/XInput';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import SearchIcon from 'openland-icons/ic-search-small.svg';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -78,9 +78,9 @@ export const SearchBox = XMemo<SearchBoxProps>(props => {
                         />
                     </XHorizontal>
                     {props.value.length > 0 && (
-                        <XButton text="Clear" onClick={onClear} flexShrink={0} />
+                        <UButton text="Clear" style="secondary" onClick={onClear} flexShrink={0} />
                     )}
-                    {layout !== 'mobile' && <XButton text="Search" style="primary" />}
+                    {layout !== 'mobile' && <UButton text="Search" style="primary" />}
                 </SearchInner>
             </XContentWrapper>
         </SearchWrapper>

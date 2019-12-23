@@ -5,7 +5,7 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XVertical2 } from 'openland-x/XVertical2';
 import * as React from 'react';
 import { XCheckbox } from 'openland-x/XCheckbox';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XView } from 'react-mental';
 import { XSelect } from 'openland-x/XSelect';
 import { useClient } from '../../utils/useClient';
@@ -49,10 +49,10 @@ class DebugEventsInner extends React.Component<
                     />
                 </XView>
                 <XView marginTop={10}>
-                    <XButton
+                    <UButton
                         alignSelf="flex-start"
-                        text={'run'}
-                        style={'primary'}
+                        text="run"
+                        style="primary"
                         action={async () => {
                             this.props.run(randomDelay, count);
                         }}

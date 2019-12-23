@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { UserSelect } from '../../api/UserSelect';
-import { XButton } from 'openland-x/XButton';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { useClient } from 'openland-web/utils/useClient';
 import { SuperAdminRole } from 'openland-api/Types';
@@ -61,9 +61,9 @@ export const AddSuperAdminForm = ({ hide }: { hide: () => void }) => {
             </XModalContent>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
                 </XView>
-                <XButton
+                <UButton
                     text="Add"
                     style="danger"
                     size="large"
@@ -113,9 +113,9 @@ const RemoveSuperAdminForm = ({ hide }: { hide: () => void }) => {
             </XModalContent>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <XButton text="Cancel" style="ghost" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
                 </XView>
-                <XButton text="Leave" style="danger" size="large" onClick={remove} />
+                <UButton text="Leave" style="danger" size="large" onClick={remove} />
             </XModalFooter>
         </XView>
     );
@@ -140,13 +140,16 @@ export default withApp('Super Admins', 'super-admin', () => {
                     <span className={TextTitle1}>Super Admins</span>
                     <span className={TextLabel2}>{superAdmins.length + ' total'}</span>
                 </XView>
-                <XButton text="Add New" onClick={() => showAddSuperAdminFormModal()} />
-                <XButton text="Remove existing" onClick={() => showRemoveSuperAdminFormModal()} />
+                <UButton text="Add New" onClick={() => showAddSuperAdminFormModal()} />
+                <UButton text="Remove existing" onClick={() => showRemoveSuperAdminFormModal()} />
             </XView>
-            <XScrollView3 >
+            <XScrollView3>
                 <XView maxWidth={600}>
                     {superAdmins.map(v => (
-                        <UUserView user={v.user} rightElement={<span className={TextLabel1}>{v.role}</span>} />
+                        <UUserView
+                            user={v.user}
+                            rightElement={<span className={TextLabel1}>{v.role}</span>}
+                        />
                     ))}
                 </XView>
             </XScrollView3>
