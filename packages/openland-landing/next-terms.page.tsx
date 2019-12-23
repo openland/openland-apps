@@ -77,7 +77,7 @@ export const TermsPage = React.memo(() => (
                     applications, and other associated services.
                 </p>
                 <h2 id="section2">These Terms are a legally binding agreement</h2>
-                <p>
+                <div>
                     By&nbsp;clicking &ldquo;I&nbsp;Accept&rdquo;, creating an&nbsp;account,
                     downloading, installing, or&nbsp;otherwise accessing or&nbsp;using the Service,
                     you agree that you have read and understood, and, as&nbsp;a&nbsp;condition
@@ -88,7 +88,7 @@ export const TermsPage = React.memo(() => (
                         <XView path="/privacy">Privacy Policy</XView>
                     </a>{' '}
                     (together, these &ldquo;Terms&rdquo;).
-                </p>
+                </div>
                 <p>
                     If&nbsp;you do&nbsp;not agree to&nbsp;the Terms, then you do&nbsp;not have our
                     permission to&nbsp;use the service. Your use of&nbsp;the Service, and

@@ -42,7 +42,13 @@ export default () => (
     <div className={root}>
         <Block>
             <div className={aboutHeader}>
-                <img className={hero} src="/static/landing/terms.png" alt="" />
+                <img
+                    className={hero}
+                    src="/static/landing/terms.png"
+                    alt=""
+                    width="230"
+                    height="176.25"
+                />
                 <Heading>Terms of Service @ Openland</Heading>
                 <div className={subheading}>Effective Date — July 9, 2018</div>
             </div>
