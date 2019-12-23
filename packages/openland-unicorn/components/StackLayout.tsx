@@ -19,33 +19,30 @@ const PageAnimator = React.memo(
         router: StackRouter;
         visible: boolean;
         depth: number;
-        removing?: boolean
+        removing?: boolean;
     }) => {
         console.log('render[' + props.k + ']: ' + props.state);
 
-        React.useLayoutEffect(
-            () => {
-                let active = true;
-                if (props.state === 'entering') {
-                    setTimeout(() => {
-                        if (active) {
-                            props.dispatch({ type: 'entered', key: props.k });
-                        }
-                    }, 400);
-                }
-                if (props.state === 'exiting' || props.removing) {
-                    setTimeout(() => {
-                        if (active) {
-                            props.dispatch({ type: 'exited', key: props.k });
-                        }
-                    }, 400);
-                }
-                return () => {
-                    active = false;
-                };
-            },
-            [props.state, props.removing],
-        );
+        React.useLayoutEffect(() => {
+            let active = true;
+            if (props.state === 'entering') {
+                setTimeout(() => {
+                    if (active) {
+                        props.dispatch({ type: 'entered', key: props.k });
+                    }
+                }, 400);
+            }
+            if (props.state === 'exiting' || props.removing) {
+                setTimeout(() => {
+                    if (active) {
+                        props.dispatch({ type: 'exited', key: props.k });
+                    }
+                }, 400);
+            }
+            return () => {
+                active = false;
+            };
+        }, [props.state, props.removing]);
 
         let state = props.state;
         if (state === 'hidden' && props.depth >= 2) {
@@ -62,32 +59,32 @@ const PageAnimator = React.memo(
 
 type AnimationAction =
     | {
-        type: 'push';
-        key: string;
-        query: any;
-        id?: string;
-        path: string;
-        component: any;
-    }
+          type: 'push';
+          key: string;
+          query: any;
+          id?: string;
+          path: string;
+          component: any;
+      }
     | {
-        type: 'pop';
-        key: string;
-    }
+          type: 'pop';
+          key: string;
+      }
     | {
-        type: 'entered';
-        key: string;
-    }
+          type: 'entered';
+          key: string;
+      }
     | {
-        type: 'exited';
-        key: string;
-    }
+          type: 'exited';
+          key: string;
+      }
     | {
-        type: 'mounted';
-    }
+          type: 'mounted';
+      }
     | {
-        type: 'reset';
-        pages: StackItems[];
-    };
+          type: 'reset';
+          pages: StackItems[];
+      };
 
 type AnimationState = {
     pages: {
@@ -97,7 +94,7 @@ type AnimationState = {
         query: any;
         id?: string;
         state: 'mounting' | 'entering' | 'visible' | 'hidden' | 'exiting';
-        removing?: boolean
+        removing?: boolean;
     }[];
 };
 
@@ -242,9 +239,9 @@ const connectingContainerClass = css`
     padding: 7px 16px 9px;
     opacity: 0;
     transform: scale(0.84), translateY(-8px);
-    transition: transform 150ms cubic-bezier(.29, .09, .24, .99), opacity 150ms cubic-bezier(.29, .09, .24, .99);
+    transition: transform 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
+        opacity 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
-
 `;
 
 const connectingContainerWrapperClass = css`
@@ -264,7 +261,9 @@ const ConnectingStatus = () => {
         const setConnecting = (connecting: boolean) => {
             if (containerRef.current) {
                 containerRef.current.style.opacity = connecting ? '1' : '0';
-                containerRef.current.style.transform = `scale(${connecting ? 1 : 0.84}) translateY(${connecting ? 0 : -8}px)`;
+                containerRef.current.style.transform = `scale(${
+                    connecting ? 1 : 0.84
+                }) translateY(${connecting ? 0 : -8}px)`;
             }
         };
         const setStatusDebaunced = debounce(setConnecting, 500);
@@ -275,57 +274,69 @@ const ConnectingStatus = () => {
     return (
         <div className={connectingContainerWrapperClass}>
             <div className={connectingContainerClass} ref={containerRef}>
-                <XView width={16} height={16} marginRight={8} marginTop={1}><XLoader color="var(--foregroundContrast)" transparentBackground={true} size="small" /></XView>
-                <XView {...TextStyles.Label1} color="var(--foregroundContrast)">Connecting</XView>
+                <XView width={16} height={16} marginRight={8} marginTop={1}>
+                    <XLoader
+                        color="var(--foregroundContrast)"
+                        transparentBackground={true}
+                        size="small"
+                    />
+                </XView>
+                <XView {...TextStyles.Label1} color="var(--foregroundContrast)">
+                    Connecting
+                </XView>
             </div>
         </div>
     );
 };
 
-export const StackLayout = React.memo(
-    (props: { router: StackRouter; className?: string; visible: boolean }) => {
-        let [state, dispatch] = React.useReducer(
-            animationReducer,
-            props.router.pages,
-            initialState,
-        );
-        const baseRoute = React.useContext(XViewRouteContext)!;
-        React.useEffect(() => {
-            return props.router.addListener(dispatch);
-        }, []);
-        React.useLayoutEffect(() => {
-            requestAnimationFrame(() => requestAnimationFrame(() => dispatch({ type: 'mounted' })));
-        });
-        return (
-            <StackRouterContext.Provider value={props.router}>
-                <VisibleTabContext.Provider value={props.visible}>
-                    <div key="content" className={props.className} ref={props.router.ref}>
-                        {state.pages.map((v, i) => (
-                            <PageAnimator
-                                state={v.state}
-                                removing={v.removing}
-                                key={v.key}
-                                k={v.key}
-                                dispatch={dispatch}
-                                router={props.router}
-                                visible={props.visible}
-                                depth={i}
-                            >
-                                <PageComponent
-                                    component={v.component}
-                                    query={v.query}
-                                    id={v.id}
-                                    path={v.path}
-                                    protocol={baseRoute.protocol}
-                                    hostName={baseRoute.hostName}
-                                />
-                            </PageAnimator>
-                        ))}
-                        <ConnectingStatus />
+interface StackLayoutProps {
+    router: StackRouter;
+    className?: string;
+    visible: boolean;
+    placeholder?: React.ReactNode;
+}
 
-                    </div>
-                </VisibleTabContext.Provider>
-            </StackRouterContext.Provider>
-        );
-    },
-);
+export const StackLayout = React.memo((props: StackLayoutProps) => {
+    let [state, dispatch] = React.useReducer(animationReducer, props.router.pages, initialState);
+    const baseRoute = React.useContext(XViewRouteContext)!;
+    React.useEffect(() => {
+        return props.router.addListener(dispatch);
+    }, []);
+    React.useLayoutEffect(() => {
+        requestAnimationFrame(() => requestAnimationFrame(() => dispatch({ type: 'mounted' })));
+    });
+
+    const Placeholder = props.placeholder;
+
+    return (
+        <StackRouterContext.Provider value={props.router}>
+            <VisibleTabContext.Provider value={props.visible}>
+                <div key="content" className={props.className} ref={props.router.ref}>
+                    {Placeholder}
+                    {state.pages.map((v, i) => (
+                        <PageAnimator
+                            state={v.state}
+                            removing={v.removing}
+                            key={v.key}
+                            k={v.key}
+                            dispatch={dispatch}
+                            router={props.router}
+                            visible={props.visible}
+                            depth={i}
+                        >
+                            <PageComponent
+                                component={v.component}
+                                query={v.query}
+                                id={v.id}
+                                path={v.path}
+                                protocol={baseRoute.protocol}
+                                hostName={baseRoute.hostName}
+                            />
+                        </PageAnimator>
+                    ))}
+                    <ConnectingStatus />
+                </div>
+            </VisibleTabContext.Provider>
+        </StackRouterContext.Provider>
+    );
+});
