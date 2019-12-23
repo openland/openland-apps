@@ -63,10 +63,10 @@ export const ZDocumentExt = (props: ZDocumentExtProps) => {
     const { name, loading, size = 'medium' } = props;
 
     const ext = getExtension(name);
-    const boxSize = size === 'large' ? 72 : 48;
-    const cornerFirstImage = size === 'large' ? require('assets/ic-file-preview-corner-1-18.png') : require('assets/ic-file-preview-corner-1-12.png');
-    const cornerSecondImage = size === 'large' ? require('assets/ic-file-preview-corner-2-18.png') : require('assets/ic-file-preview-corner-2-12.png');
-    const containerImage = size === 'large' ? require('assets/ic-document-preview-72.png') : require('assets/ic-document-preview-48.png');
+    const boxSize = size === 'large' ? 72 : 40;
+    const cornerFirstImage = size === 'large' ? require('assets/ic-file-preview-corner-1-18.png') : require('assets/ic-file-preview-corner-1-10.png');
+    const cornerSecondImage = size === 'large' ? require('assets/ic-file-preview-corner-2-18.png') : require('assets/ic-file-preview-corner-2-10.png');
+    const containerImage = size === 'large' ? require('assets/ic-document-preview-72.png') : require('assets/ic-document-preview-40.png');
     const tintColor = theme.type === 'Dark' ? theme.tintInverted : (colorByExtension(ext, theme) || theme.accentPrimary);
 
     return (

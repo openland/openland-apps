@@ -63,15 +63,16 @@ const button = css`
 
 const ctaSmall = css`
     position: relative;
-    margin-top: 150px;
+    margin-top: 117px;
     margin-bottom: 145px;
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        margin-top: 110px;
+        margin-top: 100px;
         margin-bottom: 120px;
     }
 
     @media (max-width: 960px) and (min-width: 768px) {
+        margin-top: 88px;
     }
 `;
 
@@ -230,11 +231,11 @@ const appButtonActive = css`
 
     @media (min-width: 1600px) {
         font-size: 20px;
-        padding: 16px 27px;
+        padding: 16px 28px;
     }
 
     @media (min-width: 768px) and (max-width: 1600px) {
-        padding: 11px 32px;
+        padding: 11px 22px;
         font-size: 16px;
     }
 
@@ -253,7 +254,7 @@ const appButtonActive = css`
 const mobileApp = css``;
 
 const appIcon = css`
-    margin-right: 8px;
+    margin-right: 13px;
 `;
 
 const getOS = () => {
@@ -281,9 +282,9 @@ export default () => {
                         <div className={webApp}>
                             <h2 className={subheading}>Web</h2>
 
-                            <span className={button}>
-                                <XView path="/invite/h2BGtL">Join Openland</XView>
-                            </span>
+                            <XView path="/invite/h2BGtL">
+                                <span className={button}>Join Openland</span>
+                            </XView>
                         </div>
 
                         <div className={desktopApp}>

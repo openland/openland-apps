@@ -12,13 +12,14 @@ export type ZModal = (modal: ZModalController) => React.ReactElement<{}>;
 
 interface ZModalProviderInt {
     showModal(modal: ZModal): void;
+    hideModals(): void;
 }
 
-let provider: ZModalProviderInt | undefined;
+export let ModalProvider: ZModalProviderInt | undefined;
 
 export function showModal(modal: ZModal) {
-    if (provider) {
-        provider.showModal(modal);
+    if (ModalProvider) {
+        ModalProvider.showModal(modal);
     }
 }
 
@@ -39,7 +40,7 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
     }
 
     componentWillMount() {
-        provider = this;
+        ModalProvider = this;
         if (Platform.OS !== 'ios') {
             DeviceEventEmitter.addListener('async_keyboard_height', this.onKeyboardChange);
         }
@@ -73,6 +74,10 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
             let element = modal(cont);
             this.setState((state) => ({ modals: [...state.modals, { key, element }] }));
         }, 1);
+    }
+
+    hideModals() {
+        this.setState((state) => ({ modals: [] }));
     }
 
     render() {

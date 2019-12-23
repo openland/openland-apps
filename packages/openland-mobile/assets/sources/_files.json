@@ -82,7 +82,7 @@
             "src": "ic-file-preview-corner-1.svg",
             "sizes": [
                 18,
-                12
+                10
             ]
         },
         {
@@ -90,7 +90,7 @@
             "src": "ic-file-preview-corner-2.svg",
             "sizes": [
                 18,
-                12
+                10
             ]
         },
         {
@@ -144,9 +144,9 @@
         },
         {
             "name": "ic-document-preview",
-            "src": "ic-document-preview-48.svg",
+            "src": "ic-document-preview-40.svg",
             "sizes": [
-                48
+                40
             ]
         },
         {

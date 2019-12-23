@@ -11,6 +11,7 @@ const wrapper = css`
     @media (max-width: 768px) {
         margin: 0 auto;
         max-width: 360px;
+        margin-top: 10px;
     }
 `;
 
@@ -91,7 +92,7 @@ const link = css`
     }
 
     &:active {
-        color: #248bf2;
+        color: #272750;
         transition: color 0.01s;
     }
 
@@ -139,7 +140,7 @@ const screenshot = css`
 `;
 
 const hide = css`
-    @media (min-width: 768px) and (max-width: 960px) {
+    @media (max-width: 768px) {
         display: none;
     }
 `;
@@ -150,6 +151,12 @@ const logo = css`
     @media (max-width: 1600px) and (min-width: 960px) {
         width: 88px;
         height: 88px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        width: 88px;
+        height: 88px;
+        margin-right: 19px;
     }
 
     @media (max-width: 768px) {
@@ -289,6 +296,10 @@ const popupSectionText = css`
 
     @media (max-width: 960px) and (min-width: 768px) {
         font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 18px;
     }
 `;
 

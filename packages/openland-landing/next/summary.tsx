@@ -12,16 +12,24 @@ const summary = css`
     @media (max-width: 960px) {
         flex-direction: column-reverse;
     }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: 21px;
+    }
 `;
 
 const listWrapper = css`
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         margin-top: 60px;
     }
 
-    @media (min-width: 960px) and (max-width: 1600px) {
+    @media (min-width: 961px) and (max-width: 1600px) {
         position: relative;
         top: 24px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: 15px;
     }
 `;
 
@@ -30,7 +38,7 @@ const list = css`
     list-style-position: inside;
     list-style-type: none;
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         font-size: 24px;
         line-height: 2.2;
     }
@@ -74,29 +82,34 @@ const summaryImage = css`
 
     position: relative;
 
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         width: 493px;
         left: 77px;
         top: 35px;
     }
 
-    @media (min-width: 960px) and (max-width: 1600px) {
+    @media (min-width: 961px) and (max-width: 1600px) {
         width: 401px;
         top: 28px;
         left: 28px;
     }
 
+    @media (min-width: 768px) and (max-width: 960px) {
+        width: 616px;
+    }
+
     @media (max-width: 768px) {
-        max-width: 100%;
         height: auto;
         min-width: 280px;
+        max-width: 400px;
+        width: 100%;
     }
 
     z-index: -1;
 `;
 
 const headingWrapper = css`
-    @media (min-width: 1600px) {
+    @media (min-width: 1601px) {
         margin-bottom: -20px;
     }
 
@@ -107,6 +120,12 @@ const headingWrapper = css`
 
     @media (min-width: 920px) {
         white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+        max-width: 365px;
+        min-width: 297px;
+        margin-bottom: -25px;
     }
 `;
 

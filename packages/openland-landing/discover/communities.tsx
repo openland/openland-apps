@@ -7,10 +7,14 @@ const root = css``;
 
 const communities = css`
     display: flex;
-    margin-top: 84px;
+    margin-top: 92px;
 
     @media (min-width: 768px) and (max-width: 1600px) {
         margin-top: 80px;
+    }
+
+    @media (max-width: 768px) {
+        margin-top: 64px;
     }
 `;
 
@@ -98,11 +102,7 @@ const featuredCommunities = css`
         flex-direction: column;
         width: 100%;
         align-items: center;
-    }
-
-    @media (max-width: 960px) {
-        display: block;
-        margin: -8px;
+        margin: -9px;
     }
 
     &:before {
@@ -115,7 +115,7 @@ const featuredCommunities = css`
         left: 12px;
 
         @media (max-width: 960px) {
-            left: 8px;
+            left: 12px;
         }
 
         font-weight: 600;
@@ -127,18 +127,24 @@ const featuredCommunities = css`
             top: -35px;
         }
 
-        // @media (max-width: 960px) {
-        //     content: 'Discover communities by industry, role, skill, interest, and location';
-        //     font-size: 18px;
-        // }
+        @media (max-width: 768px) {
+            font-size: 18px;
+            top: -30px;
+        }
+    }
 
-        // @media (max-width: 768px) {
-        //     top: -61px;
-        // }
+    @media (max-width: 960px) {
+        display: block;
+        margin: -12px;
     }
 `;
 
 const community = css`
+    @media (max-width: 960px) {
+        margin: 12px;
+        padding: 20px 24px;
+    }
+
     position: relative;
     width: calc(50% - 24px);
     padding: 30px;
@@ -147,11 +153,6 @@ const community = css`
 
     display: inline-block;
 
-    @media (max-width: 960px) {
-        margin: 8px;
-        padding: 20px 24px;
-    }
-
     @media (min-width: 768px) and (max-width: 960px) {
         padding: 30px;
     }
@@ -159,6 +160,7 @@ const community = css`
     @media (max-width: 768px) {
         width: 100%;
         max-width: 368px;
+        margin: 9px;
     }
 
     transition: box-shadow 0.3s, background 0.3s;
@@ -251,11 +253,15 @@ const communityHeading = css`
     @media (max-width: 960px) {
         font-size: 22px;
     }
+
+    @media (max-width: 768px) {
+        font-size: 20px;
+    }
 `;
 
 const communitySubheading = css`
     display: block;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1.33;
     color: #525273;
     margin-top: 8px;
@@ -287,6 +293,7 @@ const communityText = css`
 
     @media (max-width: 768px) {
         font-size: 16px;
+        margin-top: 12px;
     }
 `;
 
@@ -297,7 +304,7 @@ const button = css`
     font-weight: 600;
     font-size: 16px;
     color: #248bf2;
-    background: #e9f3fe;
+    background: white;
     border-radius: 12px;
 
     position: absolute;
@@ -322,6 +329,7 @@ const text = css`
     @media (max-width: 768px) {
         font-size: 18px;
         white-space: initial;
+        max-width: 350px;
     }
 `;
 

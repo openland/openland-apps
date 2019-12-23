@@ -250,7 +250,7 @@ export default ({ isGrey, startLink, discoverLink }: Props) => {
         <div className={isGrey ? grey : root}>
             <Block>
                 <div className={header}>
-                    <XView path="/next">
+                    <XView path="/">
                         <img
                             className={logo}
                             src="/static/landing/logo.svg"
@@ -295,18 +295,18 @@ export default ({ isGrey, startLink, discoverLink }: Props) => {
                                 <ul className={mobileMenuList}>
                                     <li className={mobileMenuItem}>
                                         <span className={mobileMenuLink}>
-                                            <XView path="/next">Discover</XView>
+                                            <XView path="/">Discover</XView>
                                         </span>
                                     </li>
                                     <li className={mobileMenuItem}>
                                         <span className={mobileMenuLink}>
-                                            <XView path="/next/start">Start community</XView>
+                                            <XView path="/start">Start community</XView>
                                         </span>
                                     </li>
 
                                     <li className={mobileMenuItem}>
                                         <span className={mobileMenuLink}>
-                                            <XView path="/next/about">About</XView>
+                                            <XView path="/about">About</XView>
                                         </span>
                                     </li>
                                     <li className={mobileMenuItem}>
@@ -361,12 +361,12 @@ export default ({ isGrey, startLink, discoverLink }: Props) => {
                     <div className={menu}>
                         {discoverLink && (
                             <span className={menuItem}>
-                                <XView path="/next">Discover</XView>
+                                <XView path="/">Discover</XView>
                             </span>
                         )}
                         {startLink && (
                             <span className={menuItem}>
-                                <XView path="/next/start">Start community</XView>
+                                <XView path="/start">Start community</XView>
                             </span>
                         )}
                         <span className={menuItem} onMouseLeave={() => setOpen(false)}>
@@ -463,7 +463,7 @@ export default ({ isGrey, startLink, discoverLink }: Props) => {
                             )}
                         </span>
                         <span className={menuItem}>
-                            <XView path="/next/about">About</XView>
+                            <XView path="/about">About</XView>
                         </span>
                         <span className={cx(menuItem, menuItemActive)}>
                             <XView path="/signin">Login</XView>

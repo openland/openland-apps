@@ -129,6 +129,7 @@ const AutoCompleteComponent = React.memo(
         (
             props: {
                 groupId?: string;
+                isChannel?: boolean;
                 membersCount?: number | null;
                 activeWord: string | null;
                 onSelected: (mention: MentionToSend) => void;
@@ -272,9 +273,9 @@ const AutoCompleteComponent = React.memo(
                                 <UIcon className={allMentionIcon} icon={<AllIcon />} />
                                 <span className={userName}>
                                     @All
-                                <span style={{ opacity: 0.4, marginLeft: 7 }}>
-                                        Notify everyone in this group
-                                </span>
+                                    <span style={{ opacity: 0.4, marginLeft: 7 }}>
+                                        Notify everyone in this {props.isChannel ? 'channel' : 'group'}
+                                    </span>
                                 </span>
                             </div>
                         );
@@ -440,6 +441,7 @@ const AutoCompleteComponent = React.memo(
 
 interface SendMessageComponentProps {
     groupId?: string;
+    isChannel?: boolean;
     membersCount?: number | null;
     onTextSent?: (text: URickTextValue) => boolean;
     onTextSentAsync?: (text: URickTextValue) => Promise<boolean>;
@@ -606,6 +608,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     groupId={props.groupId}
                     membersCount={props.membersCount}
                     activeWord={activeWord}
+                    isChannel={props.isChannel}
                     ref={suggestRef}
                 />
             </Deferred>

@@ -397,7 +397,9 @@ internal val FullMessageSelector = obj(
                                     field("id", "id", notNull(scalar("ID")))
                                 )),
                                 inline("SharedRoom", obj(
-                                    field("id", "id", notNull(scalar("ID")))
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                                    field("membersCount", "membersCount", notNull(scalar("Int")))
                                 ))
                             )))
                     ))

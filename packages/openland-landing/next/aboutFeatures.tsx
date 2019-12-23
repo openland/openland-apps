@@ -212,7 +212,9 @@ export default () => (
                         />
                         <div className={name}>Openland News</div>
                     </div>
-                    <p className={text}>Follow our journey to the future of community organizing</p>
+                    <p className={text}>
+                        Follow our journey to the future of&nbsp;community organizing
+                    </p>
                     <span className={link}>
                         <XView path="/invite/Iqx4dPt">Join chat</XView>
                     </span>
@@ -229,7 +231,7 @@ export default () => (
                         <div className={name}>Community Creators</div>
                     </div>
                     <p className={text}>
-                        Get inspiration and learn from the best community organizers
+                        Get inspiration and learn from the&nbsp;best community organizers
                     </p>
                     <span className={link}>
                         <XView path="/invite/XaQDsnQ">Join chat</XView>

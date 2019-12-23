@@ -7,7 +7,7 @@ const root = css`
     padding: 0 20px;
 
     @media (min-width: 1600px) {
-        width: 960px;
+        width: 1027px;
     }
 
     @media (min-width: 960px) and (max-width: 1600px) {

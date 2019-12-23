@@ -7,7 +7,7 @@ const root = css`
     padding-bottom: 4px;
     @media (max-width: 768px) {
         padding-bottom: 30px;
-        padding-top: 20px;
+        padding-top: 30px;
     }
     background: #f7fafc;
 `;
@@ -21,7 +21,7 @@ const footer = css`
         flex-direction: column;
         align-items: flex-start;
 
-        width: 320px;
+        width: 360px;
         margin: 0 auto;
     }
 `;
@@ -41,6 +41,10 @@ const menu = css`
     margin: 10px -20px;
     @media (max-width: 960px) {
         margin: 10px -10px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin: 10px -15px;
     }
 
     display: flex;
@@ -66,6 +70,10 @@ const menuItem = css`
         margin: 8px;
     }
     z-index: 20;
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin: 15px;
+    }
 `;
 
 const menuLink = css`
@@ -272,7 +280,7 @@ export default () => {
         <div className={root}>
             <Block>
                 <div className={footer}>
-                    <XView path="/next/">
+                    <XView path="/">
                         <img
                             className={logo}
                             src="/static/landing/logo-footer.svg"
@@ -283,7 +291,7 @@ export default () => {
                     <ul className={menu}>
                         <li className={menuItem}>
                             <span className={menuLink}>
-                                <XView path="/next/about">About</XView>
+                                <XView path="/about">About</XView>
                             </span>
                         </li>
                         <li
@@ -385,7 +393,7 @@ export default () => {
                         <li className={menuItem}>
                             <a
                                 className={menuLink}
-                                href="/invite/EGVDClq"
+                                href="/invite/8GbujwA"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -408,12 +416,12 @@ export default () => {
                                         onMouseLeave={() => legalSetOpen(false)}
                                     >
                                         <span className={popupItem}>
-                                            <XView path="/next/terms">
+                                            <XView path="/terms">
                                                 <span className={popupText}>Terms of Service</span>
                                             </XView>
                                         </span>
                                         <span className={popupItem}>
-                                            <XView path="/next/privacy">
+                                            <XView path="/privacy">
                                                 <span className={popupText}>Privacy Policy</span>
                                             </XView>
                                         </span>
@@ -422,7 +430,7 @@ export default () => {
                             </li>
                             <li className={cx(menuItem, hide)}>
                                 <span className={menuLink}>
-                                    <XView path="/invite/Ryq9hof">Chat with us</XView>
+                                    <XView path="/invite/zOF5IpZ">Chat with us</XView>
                                 </span>
                             </li>
                         </div>
