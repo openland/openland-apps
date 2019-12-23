@@ -6,14 +6,16 @@ import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { showFileModal } from 'openland-mobile/components/file/showFileModal';
 import { formatBytes } from 'openland-y-utils/formatBytes';
 import { ASDocumentExt } from 'openland-mobile/components/file/ASDocumentExt';
-import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile, SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/Types';
 import { DataSourceSharedDocumentItem } from 'openland-engines/messenger/SharedMediaEngine';
 
 interface AsyncSharedDocumentProps {
     item: DataSourceSharedDocumentItem;
+    chatId: string;
+    onLongPress: (options: { chatId: string, message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage }) => void;
 }
 
-export const AsyncSharedDocument = React.memo(({ item }: AsyncSharedDocumentProps) => {
+export const AsyncSharedDocument = React.memo(({ item, chatId, onLongPress }: AsyncSharedDocumentProps) => {
     const theme = useThemeGlobal();
     const { message } = item;
     const senderName = message.sender.name;
@@ -23,6 +25,10 @@ export const AsyncSharedDocument = React.memo(({ item }: AsyncSharedDocumentProp
         showFileModal({ uuid: attachment.fileId, name: attachment.fileMetadata.name, size: attachment.fileMetadata.size });
     }, [attachment]);
 
+    const handleLongPress = React.useCallback(() => {
+        onLongPress({ message: item.message, chatId });
+    }, []);
+
     return (
         <ASFlex
             marginRight={16}
@@ -30,6 +36,7 @@ export const AsyncSharedDocument = React.memo(({ item }: AsyncSharedDocumentProp
             flexGrow={1}
             flexDirection="row"
             onPress={onPress}
+            onLongPress={handleLongPress}
             highlightColor={theme.backgroundTertiary}
             alignItems="center"
         >

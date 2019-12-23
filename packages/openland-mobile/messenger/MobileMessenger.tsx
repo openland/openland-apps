@@ -1,20 +1,21 @@
 import * as React from 'react';
+import ShareFile from 'react-native-share';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ASDataView } from 'react-native-async-view/ASDataView';
-import { DataSourceMessageItem, DataSourceDateItem, ConversationEngine, DataSourceNewDividerItem } from 'openland-engines/messenger/ConversationEngine';
+import { DataSourceMessageItem, DataSourceDateItem, ConversationEngine, DataSourceNewDividerItem, convertPartialMessage } from 'openland-engines/messenger/ConversationEngine';
 import { AsyncDateSeparator } from './components/AsyncDateSeparator';
 import { showPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
-import { Clipboard, Platform, View, TouchableOpacity, Image } from 'react-native';
+import { Clipboard, Platform, View, TouchableOpacity, Image, Share } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, MessageReactionType } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, MessageReactionType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/Types';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { reactionsImagesMap } from './components/AsyncMessageReactionsView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -34,6 +35,7 @@ import { AsyncSharedLink } from 'openland-mobile/pages/shared-media/AsyncSharedL
 import { AsyncSharedDocument } from 'openland-mobile/pages/shared-media/AsyncSharedDocument';
 import { AsyncSharedMediaRow } from 'openland-mobile/pages/shared-media/AsyncSharedMediaRow';
 import { AsyncSharedDate } from 'openland-mobile/pages/shared-media/AsyncSharedDate';
+import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 
 const SortedReactions = [
     MessageReactionType.LIKE,
@@ -50,7 +52,7 @@ export const forward = (conversationEngine: ConversationEngine, messages: DataSo
         title: 'Forward to', pressCallback: (id: string) => {
             getMessenger().engine.forward(messages, id);
             if (conversationEngine.conversationId === id) {
-                getMessenger().history.navigationManager.pop();
+                getMessenger().history.navigationManager.pushAndReset('Conversation', { id });
             } else {
                 getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
             }
@@ -100,17 +102,47 @@ export class MobileMessenger {
         return this.conversations.get(id)!!;
     }
 
-    renderSharedMediaItem = (wrapperWidth: number) => (item: SharedMediaDataSourceItem) => {
+    handleSharedLongPress = ({ filePath, message, chatId }: { chatId: string, filePath?: string, message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage, }) => {
+        let builder = new ActionSheetBuilder();
+
+        builder.action('Forward', () => {
+            let conversation: ConversationEngine = this.engine.getConversation(chatId);
+            const fullMessage = convertPartialMessage(message, chatId, this.engine);
+            forward(conversation, [fullMessage]);
+        }, false, require('assets/ic-forward-24.png'));
+
+        builder.action('Share', async () => {
+            const attachment = message.attachments[0];
+            if (attachment.__typename === 'MessageRichAttachment') {
+                Share.share({ message: attachment.titleLink!! });
+            } else if (attachment.__typename === 'MessageAttachmentFile') {
+                let path;
+                if (attachment.fileMetadata.isImage) {
+                    path = await DownloadManagerInstance.copyFileWithNewName(filePath!!, attachment.fileMetadata.name);
+                } else {
+                    startLoader();
+                    await DownloadManagerInstance.init(attachment.fileId, null);
+                    path = await DownloadManagerInstance.getFilePathWithRealName(attachment.fileId, null, attachment.fileMetadata.name || 'file');
+                    stopLoader();
+                }
+                ShareFile.open({ url: 'file://' + path });
+            }
+        }, false, require('assets/ic-share-24.png'));
+
+        builder.show(true);
+    }
+
+    renderSharedMediaItem = (chatId: string, wrapperWidth: number) => (item: SharedMediaDataSourceItem) => {
         if (item.type === SharedMediaItemType.MEDIA) {
-            return <AsyncSharedMediaRow item={item} wrapperWidth={wrapperWidth} />;
+            return <AsyncSharedMediaRow item={item} chatId={chatId} wrapperWidth={wrapperWidth} onLongPress={this.handleSharedLongPress} />;
         }
 
         if (item.type === SharedMediaItemType.LINK) {
-            return <AsyncSharedLink item={item} />;
+            return <AsyncSharedLink item={item} chatId={chatId} onLongPress={this.handleSharedLongPress} />;
         }
 
         if (item.type === SharedMediaItemType.DOCUMENT) {
-            return <AsyncSharedDocument item={item} />;
+            return <AsyncSharedDocument item={item} chatId={chatId} onLongPress={this.handleSharedLongPress} />;
         }
 
         return <AsyncSharedDate item={item} />;
@@ -122,10 +154,10 @@ export class MobileMessenger {
         if (!this.sharedMedias.has(id)) {
             this.sharedMedias.set(
                 id,
-                new Map([[key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(wrapperWidth))]])
+                new Map([[key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, wrapperWidth))]])
             );
         } else if (!this.sharedMedias.get(id)!!.has(key)) {
-            this.sharedMedias.get(id)!!.set(key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(wrapperWidth)));
+            this.sharedMedias.get(id)!!.set(key, new ASDataView(engine.dataSource, this.renderSharedMediaItem(id, wrapperWidth)));
         }
 
         return this.sharedMedias.get(id)!!.get(key)!!;

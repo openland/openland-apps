@@ -17,9 +17,11 @@ interface AsyncMediaItemProps {
     index: number;
     message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage;
     imageSize: number;
+    chatId: string;
+    onLongPress: (options: { filePath?: string, chatId: string, message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage }) => void;
 }
 
-const AsyncMediaItem = React.memo(({ message, index, imageSize }: AsyncMediaItemProps) => {
+const AsyncMediaItem = React.memo(({ message, index, imageSize, chatId, onLongPress }: AsyncMediaItemProps) => {
     const { attachments, sender, date } = message;
     const attachment = attachments[0] as SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile;
     const { isImage } = attachment.fileMetadata;
@@ -31,7 +33,7 @@ const AsyncMediaItem = React.memo(({ message, index, imageSize }: AsyncMediaItem
     React.useEffect(() => {
         return DownloadManagerInstance.watch(attachment.fileId, optimalSize, state => {
             if (state.path) {
-                setPath('file://' + state.path);
+                setPath(state.path);
             }
         });
     }, []);
@@ -56,7 +58,7 @@ const AsyncMediaItem = React.memo(({ message, index, imageSize }: AsyncMediaItem
             showPictureModal({
                 title: senderName,
                 subtitle: date ? formatDateTime(parseInt(date, 10) / 1000) : undefined,
-                url: path,
+                url: 'file://' + path,
                 width: imageWidth,
                 height: imageHeight,
                 isGif: attachment.fileMetadata.imageFormat === 'GIF',
@@ -85,11 +87,16 @@ const AsyncMediaItem = React.memo(({ message, index, imageSize }: AsyncMediaItem
 
     }, [path]);
 
-    const url = path || attachment.filePreview || undefined;
+    const handleLongPress = React.useCallback(() => {
+        onLongPress({ filePath: path, message, chatId });
+    }, [path]);
+
+    const url = 'file://' + path || attachment.filePreview || undefined;
 
     return (
         <ASFlex
             onPress={onPress}
+            onLongPress={handleLongPress}
             marginRight={(index + 1) % 3 ? 2 : 0}
             backgroundColor={theme.backgroundTertiary}
         >
@@ -126,15 +133,17 @@ const AsyncMediaItem = React.memo(({ message, index, imageSize }: AsyncMediaItem
 interface AsyncSharedMediaRowProps {
     item: DataSourceSharedMediaRow;
     wrapperWidth: number;
+    chatId: string;
+    onLongPress: (options: { filePath?: string, chatId: string, message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage }) => void;
 }
 
-export const AsyncSharedMediaRow = ({ item, wrapperWidth }: AsyncSharedMediaRowProps) => {
+export const AsyncSharedMediaRow = ({ item, wrapperWidth, onLongPress, chatId }: AsyncSharedMediaRowProps) => {
     const imageSize = (wrapperWidth - 4) / 3;
 
     return (
         <ASFlex flexDirection="row" marginBottom={2}>
             {item.messages.map((message, index) => (
-                <AsyncMediaItem key={message.id} message={message} index={index} imageSize={imageSize} />
+                <AsyncMediaItem key={message.id} chatId={chatId} message={message} index={index} imageSize={imageSize} onLongPress={onLongPress} />
             ))}
         </ASFlex>
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataSourceSharedLinkItem } from 'openland-engines/messenger/SharedMediaEngine';
-import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
+import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment, SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/Types';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { Linking, Image } from 'react-native';
 import { ASAvatar } from 'openland-mobile/messenger/components/ASAvatar';
@@ -15,9 +15,11 @@ const isAvatar = (url: string | null) => {
 
 interface AsyncSharedLinkProps {
     item: DataSourceSharedLinkItem;
+    chatId: string;
+    onLongPress: (options: { chatId: string, message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage }) => void;
 }
 
-export const AsyncSharedLink = React.memo(({ item }: AsyncSharedLinkProps) => {
+export const AsyncSharedLink = React.memo(({ item, chatId, onLongPress }: AsyncSharedLinkProps) => {
     const { message } = item;
     const senderName = message.sender.name;
     const attachment = message.attachments[0] as SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment;
@@ -26,6 +28,10 @@ export const AsyncSharedLink = React.memo(({ item }: AsyncSharedLinkProps) => {
     const onPress = React.useCallback(() => {
         Linking.openURL(attachment.titleLink!!);
     }, []);
+
+    const handleLongPress = React.useCallback(() => {
+        onLongPress({ chatId, message: item.message });
+    }, [attachment.titleLink]);
 
     const url = attachment.image && attachment.image.url || attachment.imageFallback && attachment.imageFallback.photo || attachment.imagePreview;
     let image = null;
@@ -54,7 +60,7 @@ export const AsyncSharedLink = React.memo(({ item }: AsyncSharedLinkProps) => {
     const capInsets = { top: 12, right: 12, bottom: 12, left: 12 };
 
     return (
-        <ASFlex onPress={onPress} flexGrow={1} highlightColor={theme.backgroundTertiary}>
+        <ASFlex onPress={onPress} onLongPress={handleLongPress} flexGrow={1} highlightColor={theme.backgroundTertiary}>
             <ASFlex flexDirection="row" flexGrow={1} marginLeft={16} marginRight={16} marginTop={8} marginBottom={8}>
                 <ASFlex marginTop={4}>
                     <ASFlex

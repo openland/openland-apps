@@ -54,7 +54,7 @@ export class DownloadManager implements DownloadManagerInterface {
         }
         let path = this.rootDir + '/' + uuid + suffix;
 
-        watcherState.existing.then(async (existing) => {
+        return watcherState.existing.then(async (existing) => {
 
             let url = 'https://ucarecdn.com/' + uuid + '/';
             if (resize) {

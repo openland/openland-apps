@@ -17,7 +17,14 @@ const AsyncSharedMediaListInner = ({ mediaType, chatId, wrapperWidth }: AsyncSha
     return (
         <>
             {dataViews.map((dataView, i) => (
-                <View key={dataView.key + wrapperWidth} style={{ ...types[i] === mediaType ? { flexGrow: 1 } : { height: 0 } }}>
+                <View
+                    key={dataView.key + wrapperWidth}
+                    style={{
+                        position: 'relative',
+                        top: -16,
+                        ...types[i] === mediaType ? { flexGrow: 1 } : { height: 0 }
+                    }}
+                >
                     <ASListView
                         key={dataView.key + wrapperWidth}
                         dataView={dataView}

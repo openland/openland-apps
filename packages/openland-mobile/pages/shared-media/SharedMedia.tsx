@@ -34,6 +34,10 @@ const Tabs = ({ activeTab, tabs }: TabsProps) => {
             flexDirection="row"
             justifyContent="space-between"
             paddingHorizontal={16}
+            paddingBottom={16}
+            position="relative"
+            backgroundColor={theme.backgroundPrimary}
+            zIndex={1}
         >
             {tabs.map(({ name, count, type, onPress }) => {
                 const isActive = type === activeTab;
@@ -54,7 +58,7 @@ const Tabs = ({ activeTab, tabs }: TabsProps) => {
 const emptyTab = StyleSheet.create({
     wrapper: {
         paddingTop: 76,
-        justifyContent: 'center',
+        alignItems: 'center',
     } as ViewStyle,
     image: {
         width: 360,
