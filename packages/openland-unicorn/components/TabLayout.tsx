@@ -34,7 +34,6 @@ const containerDesktop = css`
     height: 100%;
     flex-direction: column;
     background-color: #f0f2f5;
-    pointer-events: none;
     z-index: 2;
 `;
 

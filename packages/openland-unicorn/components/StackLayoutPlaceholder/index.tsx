@@ -1,5 +1,14 @@
 import React from 'react';
 import { XView } from 'react-mental';
+import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
+import Button from './button';
+
+// @ts-ignore
+import { ReactComponent as Plus } from './plus.svg';
+// @ts-ignore
+import { ReactComponent as Person } from './person.svg';
+// @ts-ignore
+import { ReactComponent as Download } from './download.svg';
 
 export default React.memo(() => {
     return (
@@ -10,7 +19,24 @@ export default React.memo(() => {
             justifyContent="center"
             backgroundColor="var(--backgroundPrimary)"
         >
-            Hello!
+            <img
+                width="320"
+                height="200"
+                src="//cdn.openland.com/shared/art/art-create.png"
+                srcSet="//cdn.openland.com/shared/art/art-create@2x.png 2x, //cdn.openland.com/shared/art/art-create@3x.png 3x"
+                alt=""
+            />
+            <XView marginTop={6}>
+                <h2 className={TextTitle1}>Pick a chat on the left</h2>
+            </XView>
+            <XView marginTop={8} color="var(--foregroundSecondary)">
+                <p className={TextBody}>Or get done something else</p>
+            </XView>
+            <XView marginTop={32} justifyContent="center" flexWrap="nowrap" flexDirection="row">
+                <Button icon={<Plus />} text="Create group" path="/" />
+                <Button icon={<Person />} text="Invite friends" path="/" />
+                <Button icon={<Download />} text="Install apps" path="/" />
+            </XView>
         </XView>
     );
 });
