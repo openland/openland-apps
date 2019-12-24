@@ -108,8 +108,8 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     }
 
     render() {
-        const isBot = !!(this.props.engine.user && this.props.engine.user.isBot);
         const userName = this.props.engine.user ? this.props.engine.user.firstName : '';
+        const canSendMessage = this.props.engine.canSendMessage;
 
         return (
             <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -androidMessageInputListOverlap })}>
@@ -123,8 +123,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                 {
                     !this.state.conversation.loading && this.state.conversation.messages.length === 0 && (
                         <ASSafeAreaView style={{ position: 'absolute', top: 0, right: 32, left: 32, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
-                            {isBot && <Text style={{ fontSize: 72, lineHeight: 120, color: this.props.theme.foregroundPrimary }} allowFontScaling={false}>🤖</Text>}
-                            {!isBot && (
+                            {canSendMessage && (
                                 <>
                                     <Image source={require('assets/art-no-messages.png')} style={styles.image} />
 
@@ -144,6 +143,12 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                                     </View>
                                     <ZRoundedButton style="secondary" title="Happy to connect!" onPress={() => this.sendMessage('Happy to connect!')} />
                                 </>
+                            )}
+
+                            {!canSendMessage && (
+                                <Text style={[styles.subtitle, { color: this.props.theme.foregroundSecondary }]} allowFontScaling={false}>
+                                    No messages yet
+                                </Text>
                             )}
                         </ASSafeAreaView>
                     )
