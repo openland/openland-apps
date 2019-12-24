@@ -13,6 +13,7 @@ export interface DataSourceSharedMediaDateItem {
     key: string;
     dateLabel: string;
     type: 'date';
+    isFirst: boolean;
 }
 
 export interface DataSourceSharedDocumentItem {
@@ -95,9 +96,9 @@ export class SharedMediaEngine {
                 const dateLabel = makeDateLabel(m.date);
                 const last = acc[acc.length - 1];
                 if (!last) {
-                    acc.push({ key: dateLabel, dateLabel, type: 'date' });
+                    acc.push({ key: dateLabel, dateLabel, type: 'date', isFirst: true });
                 } else if (last.dateLabel !== dateLabel) {
-                    acc.push({ key: dateLabel, dateLabel, type: 'date' });
+                    acc.push({ key: dateLabel, dateLabel, type: 'date', isFirst: false });
                 }
 
                 if (this.mediaType === SharedMediaItemType.MEDIA) {
@@ -147,10 +148,10 @@ export class SharedMediaEngine {
                     let delta = existingLast.type === SharedMediaItemType.MEDIA ? this.numColumns - existingLast.messages.length : 0;
 
                     if (!last && existingLast.dateLabel !== dateLabel) {
-                        acc.push({ key: dateLabel, dateLabel, type: 'date' });
+                        acc.push({ key: dateLabel, dateLabel, type: 'date', isFirst: false });
                         delta = 0;
                     } else if (last && last.dateLabel !== dateLabel) {
-                        acc.push({ key: dateLabel, dateLabel, type: 'date' });
+                        acc.push({ key: dateLabel, dateLabel, type: 'date', isFirst: false });
                     }
 
                     if (this.mediaType === SharedMediaItemType.MEDIA) {

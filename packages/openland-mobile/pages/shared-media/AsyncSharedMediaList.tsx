@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { ASListView } from 'react-native-async-view/ASListView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { SharedMediaItemType } from 'openland-engines/messenger/SharedMediaEngine';
+import { SharedMediaItemType, SharedMediaDataSourceItem } from 'openland-engines/messenger/SharedMediaEngine';
 import { View } from 'react-native';
+import { ASDataView } from 'react-native-async-view/ASDataView';
 
 interface AsyncSharedMediaListProps {
     mediaType: SharedMediaItemType;
@@ -12,18 +13,20 @@ interface AsyncSharedMediaListProps {
 
 const AsyncSharedMediaListInner = ({ mediaType, chatId, wrapperWidth }: AsyncSharedMediaListProps) => {
     const types = Object.values(SharedMediaItemType);
-    const dataViews = types.map(type => getMessenger().getSharedMedia(chatId, type, wrapperWidth));
+    const [dataViews, setDataViews] = React.useState<ASDataView<SharedMediaDataSourceItem>[]>([]);
+    React.useEffect(() => {
+        if (wrapperWidth !== 0) {
+            const newDataViews = types.map(type => getMessenger().getSharedMedia(chatId, type, wrapperWidth));
+            setDataViews(newDataViews);
+        }
+    }, [wrapperWidth, chatId]);
 
     return (
         <>
             {dataViews.map((dataView, i) => (
                 <View
                     key={dataView.key + wrapperWidth}
-                    style={{
-                        position: 'relative',
-                        top: -16,
-                        ...types[i] === mediaType ? { flexGrow: 1 } : { height: 0 }
-                    }}
+                    style={{ ...types[i] === mediaType ? { flexGrow: 1 } : { height: 0 } }}
                 >
                     <ASListView
                         key={dataView.key + wrapperWidth}
