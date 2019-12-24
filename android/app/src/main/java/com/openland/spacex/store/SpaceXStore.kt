@@ -46,51 +46,11 @@ class SpaceXStore(context: Context, name: String?) {
     private var nextSubscriptionId = AtomicInteger(1)
     private var subscriptions = mutableMapOf<Int, Subscription>()
 
-    fun mergeResponse(operation: OperationDefinition, variables: JSONObject, data: JSONObject, queue: DispatchQueue, callback: () -> Unit) {
+    fun mergeQuery(operation: OperationDefinition, variables: JSONObject, data: JSONObject, queue: DispatchQueue, callback: () -> Unit) {
         this.normalizationQueue.async {
             val rootCacheKey = if (operation.kind == OperationKind.QUERY) ROOT_QUERY else null
             val normalized = normalizeResponse(rootCacheKey, operation.selector, variables, data)
-            this.merge(normalized, queue, callback)
-        }
-    }
-
-    fun merge(recordSet: RecordSet, queue: DispatchQueue, callback: () -> Unit) {
-        this.storeQueue.async {
-            prepareMerge(recordSet) {
-
-                // Merge data in RAM store
-                val changed = store.merge(recordSet)
-
-                // Write data to disk
-                if (changed.isNotEmpty()) {
-                    val toWrite = RecordSet(changed.mapValues { store.read(it.key) })
-                    this.persistenceWrite(toWrite)
-                }
-
-                // Notify watchers
-                if (changed.isNotEmpty()) {
-                    val triggered = mutableListOf<Subscription>()
-                    val keys = mutableSetOf<String>()
-                    for (r in changed) {
-                        for (f in r.value.fields) {
-                            keys.add(r.key + "." + f)
-                        }
-                    }
-                    for (s in subscriptions) {
-                        if (s.value.id.any { keys.contains(it) }) {
-                            triggered.add(s.value)
-                        }
-                    }
-                    for (t in triggered) {
-                        t.callback()
-                    }
-                }
-
-                // Invoke callback
-                queue.async {
-                    callback()
-                }
-            }
+            this.doMerge(normalized, queue, callback)
         }
     }
 
@@ -154,8 +114,44 @@ class SpaceXStore(context: Context, name: String?) {
         }
     }
 
-    fun close() {
-        // TODO: Implement
+    private fun doMerge(recordSet: RecordSet, queue: DispatchQueue, callback: () -> Unit) {
+        this.storeQueue.async {
+            prepareMerge(recordSet) {
+
+                // Merge data in RAM store
+                val changed = store.merge(recordSet)
+
+                // Write data to disk
+                if (changed.isNotEmpty()) {
+                    val toWrite = RecordSet(changed.mapValues { store.read(it.key) })
+                    this.persistenceWrite(toWrite)
+                }
+
+                // Notify watchers
+                if (changed.isNotEmpty()) {
+                    val triggered = mutableListOf<Subscription>()
+                    val keys = mutableSetOf<String>()
+                    for (r in changed) {
+                        for (f in r.value.fields) {
+                            keys.add(r.key + "." + f)
+                        }
+                    }
+                    for (s in subscriptions) {
+                        if (s.value.id.any { keys.contains(it) }) {
+                            triggered.add(s.value)
+                        }
+                    }
+                    for (t in triggered) {
+                        t.callback()
+                    }
+                }
+
+                // Invoke callback
+                queue.async {
+                    callback()
+                }
+            }
+        }
     }
 
     private fun prepareMerge(recordSet: RecordSet, callback: () -> Unit) {

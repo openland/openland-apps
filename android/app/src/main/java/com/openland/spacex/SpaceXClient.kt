@@ -53,7 +53,7 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String?)
                 } else {
                     transport.operation(operation, variables, queue) { r ->
                         if (r is TransportOperationResult.Value) {
-                            store.mergeResponse(operation, variables, r.data, queue) {
+                            store.mergeQuery(operation, variables, r.data, queue) {
                                 callback.onResult(r.data)
                             }
                         } else if (r is TransportOperationResult.Error) {
@@ -65,7 +65,7 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String?)
         } else {
             transport.operation(operation, variables, queue) { r ->
                 if (r is TransportOperationResult.Value) {
-                    store.mergeResponse(operation, variables, r.data, queue) {
+                    store.mergeQuery(operation, variables, r.data, queue) {
                         callback.onResult(r.data)
                     }
                 } else if (r is TransportOperationResult.Error) {
@@ -85,7 +85,7 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String?)
         }
         transport.operation(operation, variables, queue) {
             if (it is TransportOperationResult.Value) {
-                store.mergeResponse(operation, variables, it.data, queue) {
+                store.mergeQuery(operation, variables, it.data, queue) {
                     callback.onResult(it.data)
                 }
             } else if (it is TransportOperationResult.Error) {
@@ -155,9 +155,9 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String?)
                     return@operation
                 }
                 if (it is TransportOperationResult.Value) {
-                    store.mergeResponse(operation, variables, it.data, queue) {
+                    store.mergeQuery(operation, variables, it.data, queue) {
                         if (this.completed) {
-                            return@mergeResponse
+                            return@mergeQuery
                         }
                         if (reload) {
                             doReloadFromCache()
@@ -203,7 +203,7 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String?)
             queue.async {
                 runningOperation = transport.subscription(operation, variables, queue) {
                     if (it is TransportOperationResult.Value) {
-                        store.mergeResponse(operation, variables, it.data, queue) {
+                        store.mergeQuery(operation, variables, it.data, queue) {
                             callback.onResult(it.data)
                         }
                     } else if (it is TransportOperationResult.Error) {
@@ -237,7 +237,7 @@ class SpaceXClient(url: String, token: String?, context: Context, name: String?)
     }
 
     fun write(operation: OperationDefinition, variables: JSONObject, data: JSONObject, callback: StoreWriteCallback) {
-        store.mergeResponse(operation, variables, data, queue) {
+        store.mergeQuery(operation, variables, data, queue) {
             callback.onResult()
         }
     }

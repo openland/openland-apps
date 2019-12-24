@@ -6,16 +6,12 @@ import android.net.LinkProperties
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Build
-import com.openland.spacex.transport.net.DispatchedWebSocketClient
 import com.openland.spacex.transport.net.ThrustedSocket
-import com.openland.spacex.transport.ws.WebSocketClient
 import com.openland.spacex.utils.DispatchQueue
 import com.openland.spacex.utils.backoffDelay
 import com.openland.spacex.utils.fatalError
 import com.openland.spacex.utils.xLog
 import org.json.JSONObject
-import java.util.*
-import kotlin.concurrent.timerTask
 
 enum class NetworkingApolloState {
     WAITING, CONNECTING, STARTING, STARTED, COMPLETED

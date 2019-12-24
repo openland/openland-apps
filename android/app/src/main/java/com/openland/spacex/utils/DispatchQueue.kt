@@ -5,11 +5,18 @@ import android.os.HandlerThread
 import android.util.Log
 import java.util.concurrent.Executors
 
+/**
+ * DispatchQueue helps to dispatch code execution on separate thread
+ */
 class DispatchQueue(val name: String) {
     companion object {
         private val thread = HandlerThread("timer")
         private val handler: Handler by lazy { Handler(thread.looper) }
         private val currentQueueName = ThreadLocal<String>()
+
+        /**
+         * Current Queue Name. Useful for logging.
+         */
         val currentQueue: String?
             get() {
                 return currentQueueName.get()
@@ -24,39 +31,21 @@ class DispatchQueue(val name: String) {
     private val queue = Executors.newSingleThreadExecutor()
     private val currentQueueLocal = ThreadLocal<Boolean>()
     private val activeTasks = mutableSetOf<Int>()
+
+    /**
+     * Check code is executing in this queue
+     */
     val isCurrentQueue: Boolean
         get() {
             val e = currentQueueLocal.get()
             return e != null && e
         }
 
-    fun requreQueue() {
-        if (!this.isCurrentQueue) {
-            throw Error("Invalid queue")
-        }
-    }
 
-    fun asyncDelayed(delay: Int, op: () -> Unit): () -> Unit {
-        if (!isCurrentQueue) {
-            error("asyncDelayed need to be called in queue thread")
-        }
-        val id = nextId++
-        activeTasks.add(id)
-        DispatchQueue.handler.postDelayed({
-            async {
-                if (activeTasks.contains(id)) {
-                    op()
-                }
-            }
-        }, delay.toLong())
-        return {
-            if (!isCurrentQueue) {
-                error("Operation can be canceled only in queue thread")
-            }
-            activeTasks.remove(id)
-        }
-    }
-
+    /**
+     * Schedule execution on queue. Exits immediately.
+     * @param op callback to execute
+     */
     fun async(op: () -> Unit) {
         queue.submit {
             val start = System.currentTimeMillis()
@@ -74,6 +63,41 @@ class DispatchQueue(val name: String) {
                 currentQueueName.remove()
                 currentQueueLocal.remove()
             }
+        }
+    }
+
+    /**
+     * Schedule executing on queue after some time in the future.
+     * @param delay delay of execution in ms
+     * @param op callback to execute
+     * @return cancelling callback
+     */
+    fun asyncDelayed(delay: Int, op: () -> Unit): () -> Unit {
+        requireQueue()
+
+        val id = nextId++
+        activeTasks.add(id)
+        handler.postDelayed({
+            async {
+                if (activeTasks.contains(id)) {
+                    op()
+                }
+            }
+        }, delay.toLong())
+        return {
+            if (!isCurrentQueue) {
+                error("Operation can be canceled only in queue thread")
+            }
+            activeTasks.remove(id)
+        }
+    }
+
+    /**
+     * Asserting that code is executing in this queue
+     */
+    fun requireQueue() {
+        if (!this.isCurrentQueue) {
+            throw Error("Invalid queue")
         }
     }
 }

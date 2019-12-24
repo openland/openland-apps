@@ -2,154 +2,86 @@ package com.openland.spacex.persistence
 
 import android.content.Context
 import android.util.Log
-import com.openland.lmdb.LMDB
-import com.openland.lmdb.LMDBDatabase
-import com.openland.lmdb.LMDBEnvironment
 import com.openland.spacex.store.Record
 import com.openland.spacex.store.RecordSet
 import com.openland.spacex.store.parseRecord
 import com.openland.spacex.store.serializeRecord
 import com.openland.spacex.utils.DispatchQueue
-import com.snappydb.DBFactory
 import java.util.concurrent.Executors
 import java.util.concurrent.SynchronousQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
-interface PersistenceProvider {
-    fun saveRecords(records: Map<String, String>)
-    fun loadRecords(keys: Set<String>): Map<String, String>
-}
-
-class EmptyPersistenceProvider : PersistenceProvider {
-    override fun saveRecords(records: Map<String, String>) {
-        // Nothing to do
-    }
-
-    override fun loadRecords(keys: Set<String>): Map<String, String> {
-        return emptyMap()
-    }
-}
-
-class SnappyDBPersistenceProvider(val context: Context, val name: String) : PersistenceProvider {
-
-    private val db by lazy { DBFactory.open(context, name + "-v2") }
-
-    override fun saveRecords(records: Map<String, String>) {
-        val start = System.currentTimeMillis()
-        for (kv in records) {
-            db.put(kv.key, kv.value)
-        }
-        Log.d("SpaceX-Persistence", records.size.toString() + " written in " + (System.currentTimeMillis() - start) + " ms")
-    }
-
-    override fun loadRecords(keys: Set<String>): Map<String, String> {
-        val start = System.currentTimeMillis()
-        val res = mutableMapOf<String, String>()
-        for (k in keys) {
-            if (db.exists(k)) {
-                val ex = db.get(k)
-                if (ex != null && ex != "") {
-                    res.put(k, ex)
-                }
-            }
-        }
-        Log.d("SpaceX-Persistence", res.size.toString() + " loaded in " + (System.currentTimeMillis() - start) + " ms")
-        return res
-    }
-}
-
-class LMDBPersistenceProvider(val context: Context, val name: String) : PersistenceProvider {
-
-    private val env: LMDBEnvironment = LMDB.createEnvironment(context.filesDir.absolutePath + "/" + name + "-v3.mdb")
-    private val db: LMDBDatabase
-
-    init {
-        val tx = env.startTransaction()
-        db = tx.openDatabase("persistence")
-        tx.commit()
-    }
-
-    override fun saveRecords(records: Map<String, String>) {
-        Log.d("SpaceX-LMDB", "Saving records")
-        val start = System.currentTimeMillis()
-        val tx = env.startTransaction()
-        try {
-            for (kv in records) {
-                db.put(tx, kv.key, kv.value)
-            }
-            tx.commit()
-        } catch (e: Throwable) {
-            tx.abort()
-            throw e
-        }
-        Log.d("SpaceX-LMDB", records.size.toString() + " written in " + (System.currentTimeMillis() - start) + " ms")
-    }
-
-    override fun loadRecords(keys: Set<String>): Map<String, String> {
-        Log.d("SpaceX-LMDB", "Loading records: " + LMDB.testString())
-        val start = System.currentTimeMillis()
-        val res = mutableMapOf<String, String>()
-        val tx = env.startTransaction(true)
-        Log.d("SpaceX-LMDB", "Loading records1")
-        try {
-            for (k in keys) {
-                Log.d("SpaceX-LMDB", "Get: $k")
-                val ex = db.get(tx, k)
-                if (ex != null) {
-                    res[k] = ex
-                }
-            }
-        } finally {
-            Log.d("SpaceX-LMDB", "Abort")
-            tx.abort()
-        }
-        Log.d("SpaceX-LMDB", res.size.toString() + " loaded in " + (System.currentTimeMillis() - start) + " ms")
-        return res
-    }
-
-}
-
-
+/**
+ * SpaceXPersistence provides dispatched operations on top of underlying persistence provider.
+ */
 class SpaceXPersistence(val context: Context, val name: String?) {
 
-    private val writerExecutor = Executors.newSingleThreadExecutor()
 
+    private val persistenceProvider = if (name != null)
+        PersistenceProviderLMDB(context, name)
+    else
+        EmptyPersistenceProvider()
+
+    private val writerExecutor = Executors.newSingleThreadExecutor()
     private val readerExecutor = ThreadPoolExecutor(
             2, 8,
             60L, TimeUnit.SECONDS,
             SynchronousQueue<Runnable>()
     )
 
-    private val persistenceProvider = if (name != null) LMDBPersistenceProvider(context, name) else EmptyPersistenceProvider()
-
+    /**
+     * Save records to store
+     * @param records records to write
+     * @param queue DispatchQueue to dispatch callback on
+     * @param callback Callback to call on successful write
+     */
     fun saveRecords(records: RecordSet, queue: DispatchQueue, callback: () -> Unit) {
         writerExecutor.submit {
-            val start = System.currentTimeMillis()
+
+            // Serializing
+            var start = System.currentTimeMillis()
             val serialized = records.records.mapValues { serializeRecord(it.value) }
             Log.d("SpaceX-Persistence", "Serialized in " + (System.currentTimeMillis() - start) + " ms")
+
+            // Write to store
+            start = System.currentTimeMillis()
             persistenceProvider.saveRecords(serialized)
+            Log.d("SpaceX-Persistence", "Written in " + (System.currentTimeMillis() - start) + " ms")
+
             queue.async {
                 callback()
             }
         }
     }
 
+    /**
+     * Load records from store
+     * @param keys keys to read
+     * @param queue  DispatchQueue to dispatch callback on
+     * @param callback Callback to call on successful read
+     */
     fun loadRecords(keys: Set<String>, queue: DispatchQueue, callback: (records: RecordSet) -> Unit) {
         readerExecutor.execute {
-            val loaded = mutableMapOf<String, Record>()
+
+            // Reading from store
+            var start = System.currentTimeMillis()
             val res = persistenceProvider.loadRecords(keys)
-            val start = System.currentTimeMillis()
+            Log.d("SpaceX-Persistence", "Read in " + (System.currentTimeMillis() - start) + " ms")
+
+            // Parsing
+            start = System.currentTimeMillis()
+            val loaded = mutableMapOf<String, Record>()
             for (kv in res) {
                 loaded[kv.key] = parseRecord(kv.key, kv.value)
             }
-            Log.d("SpaceX-Persistence", "Deserialized in " + (System.currentTimeMillis() - start) + " ms")
             // Fill empty for missing records
             for (k in keys) {
                 if (!loaded.containsKey(k)) {
                     loaded[k] = Record(k, emptyMap())
                 }
             }
+            Log.d("SpaceX-Persistence", "Parsed in " + (System.currentTimeMillis() - start) + " ms")
 
             queue.async {
                 callback(RecordSet(loaded))

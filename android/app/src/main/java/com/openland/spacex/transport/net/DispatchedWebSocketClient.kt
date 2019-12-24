@@ -70,7 +70,7 @@ class DispatchedWebSocketClient(val url: String, val queue: DispatchQueue) {
     }
 
     fun post(text: String) {
-        this.queue.requreQueue()
+        this.queue.requireQueue()
 
         if (!this.isClosed) {
             if (!this@DispatchedWebSocketClient.isStarted) {
@@ -81,7 +81,7 @@ class DispatchedWebSocketClient(val url: String, val queue: DispatchQueue) {
     }
 
     fun close() {
-        this.queue.requreQueue()
+        this.queue.requireQueue()
 
         if (!this.isClosed) {
             this.isClosed = true

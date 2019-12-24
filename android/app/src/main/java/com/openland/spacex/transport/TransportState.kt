@@ -32,7 +32,6 @@ class TransportState : NetworkingHandler {
     private var networking: NetworkingApollo
     private var nextId = AtomicInteger(1)
 
-    private var connected = false
     private val queue = DispatchQueue("ws")
 
     private var liveOperations = mutableMapOf<String, PendingOperation>()

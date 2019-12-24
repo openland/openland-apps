@@ -28,7 +28,7 @@ class ThrustedSocket {
     }
 
     private fun onConnected(socketClient: DispatchedWebSocketClient) {
-        this.queue.requreQueue()
+        this.queue.requireQueue()
 
         this.watchDog = WatchDogTimer(this.timeout, this::onConnectionDied, this.queue)
         this.watchDog!!.reset()
@@ -48,7 +48,7 @@ class ThrustedSocket {
     }
 
     private fun onConnectionDied() {
-        this.queue.requreQueue()
+        this.queue.requireQueue()
         if (this.isClosed) {
             return
         }
@@ -70,7 +70,7 @@ class ThrustedSocket {
     }
 
     fun post(msg: String) {
-        this.queue.requreQueue()
+        this.queue.requireQueue()
 
         if (this.socket != null) {
             this.socket!!.post(msg)
@@ -82,7 +82,7 @@ class ThrustedSocket {
     }
 
     fun close() {
-        this.queue.requreQueue()
+        this.queue.requireQueue()
 
         if (this.isClosed) {
             return

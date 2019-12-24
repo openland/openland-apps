@@ -280,7 +280,6 @@ dependencies {
     implementation project(":spacex")
 
     // Databases
-    implementation 'com.snappydb:snappydb-lib:0.5.2'
     implementation 'com.openland:lmdb-android:1.0.1'
 
     // Hermes
