@@ -24,7 +24,7 @@ export const StackLayoutPlaceholder = React.memo(() => {
                 srcSet="//cdn.openland.com/shared/art/art-create@2x.png 2x, //cdn.openland.com/shared/art/art-create@3x.png 3x"
                 alt=""
             />
-            <XView marginTop={6}>
+            <XView marginTop={16}>
                 <h2 className={TextTitle1}>Pick a chat on the left</h2>
             </XView>
             <XView marginTop={8} color="var(--foregroundSecondary)">
