@@ -75,7 +75,7 @@ const CreateOrganizationFormInnerWeb = ({
     return (
         <FormLayout
             top={
-                (<>
+                <>
                     <Title text={InitTexts.create_organization.title} />
                     <Subtitle text={subtitle} />
                     <XView width={isMobile ? '100%' : 360} maxWidth={360}>
@@ -85,7 +85,8 @@ const CreateOrganizationFormInnerWeb = ({
                         />
                         {isInvalid && <XErrorMessage2 message={errorText} />}
                     </XView>
-                </>)}
+                </>
+            }
             bottom={button}
         />
     );
@@ -101,8 +102,8 @@ export const EnterYourOrganizationPageInner = ({
 
     const initialOrganizationName =
         profile.profile &&
-            profile.profile.primaryOrganization &&
-            profile.profile.primaryOrganization.name
+        profile.profile.primaryOrganization &&
+        profile.profile.primaryOrganization.name
             ? profile.profile.primaryOrganization.name
             : undefined;
 
@@ -149,7 +150,8 @@ export const EnterYourOrganizationPageInner = ({
                 await client.refetchAccount();
 
                 window.location.href = `/mail/${room.join.id}`;
-            } if (Cookie.get('x-openland-app-invite')) {
+            }
+            if (Cookie.get('x-openland-app-invite')) {
                 // app invite invite
                 const inviteKey = Cookie.get('x-openland-app-invite')!!;
                 await client.mutateOrganizationActivateByInvite({
@@ -186,8 +188,16 @@ export const EnterYourOrganizationPageInner = ({
                 // Cookie.remove('x-openland-invite');
                 Cookie.remove('x-openland-create-new-account');
                 await client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
-                if (room.join.__typename === 'SharedRoom' && room.join.matchmaking && room.join.matchmaking.questions && room.join.matchmaking.questions.length) {
-                    window.location.href = `/matchmaking/${room.join.id}/ask/${room.join.matchmaking.questions[0].id}`;
+                if (
+                    room.join.__typename === 'SharedRoom' &&
+                    room.join.matchmaking &&
+                    room.join.matchmaking.enabled &&
+                    room.join.matchmaking.questions &&
+                    room.join.matchmaking.questions.length
+                ) {
+                    window.location.href = `/matchmaking/${room.join.id}/ask/${
+                        room.join.matchmaking.questions[0].id
+                    }`;
                 } else {
                     window.location.href = `/mail/${room.join.id}`;
                 }
