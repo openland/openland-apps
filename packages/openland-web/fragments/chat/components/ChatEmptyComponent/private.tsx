@@ -3,6 +3,7 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { XView } from 'react-mental';
 import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 
 interface MessageProps {
     children: string | string[];
@@ -27,6 +28,7 @@ interface ChatEmptyComponentPrivateProps {
 export default React.memo((props: ChatEmptyComponentPrivateProps) => {
     const userName = props.conversation.user!.firstName;
     const sendMessage = (text: string) => props.conversation.sendMessage(text, null);
+    const layout = useLayout();
 
     return (
         <XView width="100%" height="100%" alignItems="center" justifyContent="center">
@@ -48,13 +50,13 @@ export default React.memo((props: ChatEmptyComponentPrivateProps) => {
                 justifyContent="center"
                 flexDirection="row"
                 flexWrap="wrap"
-                maxWidth={400}
+                maxWidth={layout !== 'mobile' ? 400 : 200}
             >
                 <Message sendMessage={sendMessage}>👋</Message>
                 <Message sendMessage={sendMessage}>Hello, {userName}!</Message>
                 <Message sendMessage={sendMessage}>Happy to connect!</Message>
-                <Message sendMessage={sendMessage}>What are you working on?</Message>
-                <Message sendMessage={sendMessage}>How can I help?</Message>
+                {layout !== 'mobile' && <Message sendMessage={sendMessage}>What are you working on?</Message>}
+                {layout !== 'mobile' && <Message sendMessage={sendMessage}>How can I help?</Message>}
             </XView>
         </XView>
     );
