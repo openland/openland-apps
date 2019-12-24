@@ -3,11 +3,11 @@ import { withApp } from '../../components/withApp';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { UInput, UInputField } from 'openland-web/components/unicorn/UInput';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { XView } from 'react-mental';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { useClient } from 'openland-web/utils/useClient';
-import { XInput } from 'openland-x/XInput';
 import { SuperAccounts_superAccounts } from 'openland-api/Types';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalContent } from 'openland-web/components/XModalContent';
@@ -15,7 +15,6 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XModalFooter } from 'openland-x-modal/XModal';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
-import { InputField } from 'openland-web/components/InputField';
 import { UOrganizationView } from 'openland-web/components/unicorn/templates/UOrganizationView';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
 import { DataSource } from 'openland-y-utils/DataSource';
@@ -43,7 +42,7 @@ const AddAccountForm = ({ hide }: { hide: () => void }) => {
         <XView borderRadius={8}>
             <XModalContent>
                 <XVertical flexGrow={1} separator={8}>
-                    <InputField title={'Organization Name'} field={titleField} size="large" />
+                    <UInputField label="Organization Name" field={titleField} />
                 </XVertical>
             </XModalContent>
             <XModalFooter>
@@ -88,7 +87,7 @@ const SearchInput = (props: { onClick: (data: string) => void }) => {
     return (
         <XView flexShrink={0} paddingHorizontal={24} flexDirection="row" alignItems="center">
             <XView marginRight={16} flexGrow={1}>
-                <XInput value={value} onChange={searchField} placeholder="search" />
+                <UInput value={value} onChange={searchField} label="search" />
             </XView>
             <UButton text="search" style="primary" onClick={onClick} />
             {value && (
@@ -147,18 +146,22 @@ const FilteredOptions = (props: FilteredOptionsProps) => {
                         }}
                     />
                 </XView>
-                <UButton
-                    path={'/super/orgs/' + item.id}
-                    style="secondary"
-                    text="Settings"
-                    flexShrink={0}
-                />
-                <UButton
-                    path={'/directory/o/' + item.orgId}
-                    style="secondary"
-                    text="Profile"
-                    flexShrink={0}
-                />
+                <XView flexDirection="row" alignItems="center">
+                    <UButton
+                        path={'/super/orgs/' + item.id}
+                        style="secondary"
+                        text="Settings"
+                        flexShrink={0}
+                        size="small"
+                    />
+                    <UButton
+                        path={'/directory/o/' + item.orgId}
+                        style="secondary"
+                        text="Profile"
+                        flexShrink={0}
+                        size="small"
+                    />
+                </XView>
             </XView>
         );
     };

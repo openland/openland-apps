@@ -27,7 +27,7 @@ export const CallPeer = (props: CallPeerProps) => {
     let callState = React.useContext(MessengerContext).calls.useState();
     const avatarRef = React.useRef<HTMLDivElement>(null);
     const mediaStream = useStream(props.mediaSessionManager, props.peer.id);
-    var dataArray: Uint8Array;
+    let dataArray: Uint8Array;
     const isMe =
         props.peer.id === (props.mediaSessionManager && props.mediaSessionManager.getPeerId());
     // animate while speaking

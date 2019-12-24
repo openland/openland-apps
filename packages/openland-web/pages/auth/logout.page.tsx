@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Cookie from 'js-cookie';
 
-class LogoutHandler extends React.Component<{}, {}> {
+export default class LogoutHandler extends React.Component<{}, {}> {
     constructor(props: {}) {
         super(props);
     }
@@ -27,5 +27,3 @@ class LogoutHandler extends React.Component<{}, {}> {
         return <div />;
     }
 }
-
-export default LogoutHandler;

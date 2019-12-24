@@ -9,7 +9,6 @@ import { EnterYourOrganizationPage } from './enter-your-organization.page';
 import { IntroduceYourselfPage } from './introduce-yourself.page';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { trackEvent } from 'openland-x-analytics';
-import { InitTexts } from 'openland-web/pages/init/_text';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import * as Cookie from 'js-cookie';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
@@ -46,20 +45,9 @@ const checkIfIsSignIn = (router: any) => {
     return router.path.endsWith('signin');
 };
 
-export type RoomContainerParams = {
-    text: string;
-    signupText: string;
-    linkText: string;
-    containerPath: string;
-    headerStyle: 'signin' | 'signup' | 'profile' | 'organization';
-    onClick: (event: React.MouseEvent<any, MouseEvent>) => void;
-};
-
 export default () => {
     let router = React.useContext(XRouterContext)!;
     let page: pagesT = pages.createNewAccount;
-
-    let appInviteKey = null;
 
     const isSignInInvite = checkIfIsSignInInvite(router);
 
@@ -72,11 +60,6 @@ export default () => {
     }
 
     let isInvitePage = isSignInInvite;
-    let isInvitePageSignin = false;
-
-    if (isInvitePage && router.path.endsWith('/signup')) {
-        isInvitePageSignin = true;
-    }
 
     if (router.path.includes('accept-invite') || isInvitePage) {
         page = pages.acceptInvite;
@@ -97,21 +80,11 @@ export default () => {
     ) {
         page = pages.enterYourOrganization;
     }
-    if (
-        router.path.includes('introduce-yourself') ||
-        router.path.includes('/createProfile')
-    ) {
+    if (router.path.includes('introduce-yourself') || router.path.includes('/createProfile')) {
         page = pages.introduceYourself;
     }
 
     const [signin, setSignin] = React.useState(router.path.endsWith('signin'));
-
-    const toggleSignin = React.useCallback(
-        () => {
-            setSignin(!signin);
-        },
-        [signin],
-    );
 
     let redirect = router.query ? (router.query.redirect ? router.query.redirect : null) : null;
 
@@ -123,16 +96,7 @@ export default () => {
             );
         }
     }
-
-    let roomView = false;
     const isMobile = useIsMobile();
-
-    // let title;
-    // if (isSignInInvite) {
-    //     title = InitTexts.invite.pageTitle;
-    // } else {
-    //     title = signin ? InitTexts.auth.signinPageTitle : InitTexts.auth.signupPageTitle;
-    // }
 
     const [email, setEmail] = React.useState(false);
     const [emailValue, setEmailValue] = React.useState('');
@@ -252,30 +216,6 @@ export default () => {
         page = pages.loading;
     }
 
-    let signupText = signin ? InitTexts.auth.signupHint : InitTexts.auth.signinHint;
-    let linkText = signin ? InitTexts.auth.signup : InitTexts.auth.signin;
-
-    let containerPath = (signin ? '/signup' : '/signin') + redirect;
-    let headerStyle: 'signin' | 'signup' | 'profile' | 'organization' = signin
-        ? 'signin'
-        : 'signup';
-
-    if (isInvitePage) {
-        containerPath = (isInvitePageSignin ? '/signin' : '/signup') + redirect;
-        headerStyle = isInvitePageSignin ? 'signup' : 'signin';
-        signupText = isInvitePageSignin ? InitTexts.auth.signupHint : InitTexts.auth.signinHint;
-        linkText = isInvitePageSignin ? InitTexts.auth.signup : InitTexts.auth.signin;
-    }
-
-    const roomContainerParams: RoomContainerParams = {
-        text: signupText,
-        signupText,
-        linkText,
-        containerPath,
-        headerStyle,
-        onClick: toggleSignin,
-    };
-
     return (
         <>
             {page === pages.loading && <XLoader />}
@@ -293,8 +233,6 @@ export default () => {
                     key={signin ? 'signin-track' : 'signup-track'}
                 >
                     <CreateNewAccountPage
-                        roomContainerParams={roomContainerParams}
-                        roomView={roomView}
                         onLoginClick={() => {
                             setSignin(true);
                         }}
@@ -311,8 +249,6 @@ export default () => {
             {page === pages.askEmail && (
                 <XTrack event={signin ? 'signin_email_view' : 'signup_email_view'}>
                     <AskEmailPage
-                        roomContainerParams={roomContainerParams}
-                        roomView={roomView}
                         fireEmail={fireEmail}
                         signin={signin}
                         emailError={emailError}
@@ -329,8 +265,6 @@ export default () => {
             {page === pages.askActivationCode && (
                 <XTrack event="code_view">
                     <AskActivationPage
-                        roomContainerParams={roomContainerParams}
-                        roomView={roomView}
                         signin={signin}
                         resendCodeClick={async () => {
                             trackEvent('code_resend_action');
@@ -351,21 +285,12 @@ export default () => {
             )}
             {page === pages.introduceYourself && (
                 <XTrack event="signup_profile_view">
-                    <IntroduceYourselfPage
-                        roomView={roomView}
-                        roomContainerParams={roomContainerParams}
-                        isMobile={!!isMobile}
-                    />
+                    <IntroduceYourselfPage isMobile={!!isMobile} />
                 </XTrack>
             )}
             {page === pages.enterYourOrganization && (
                 <XTrack event="signup_org_view">
-                    <EnterYourOrganizationPage
-                        roomView={roomView}
-                        inviteKey={appInviteKey}
-                        roomContainerParams={roomContainerParams}
-                        isMobile={!!isMobile}
-                    />
+                    <EnterYourOrganizationPage inviteKey={null} isMobile={!!isMobile} />
                 </XTrack>
             )}
         </>

@@ -4,8 +4,8 @@ import { withApp } from '../../components/withApp';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { UInput } from 'openland-web/components/unicorn/UInput';
 import { XView } from 'react-mental';
-import { XInput } from 'openland-x/XInput';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { showModalBox } from 'openland-x/showModalBox';
@@ -121,8 +121,8 @@ export default withApp('Super Users', 'super-admin', () => {
     return (
         <DevToolsScaffold title="Users" bottomOffset={false}>
             <XHeader text="Users" />
-            <XInput
-                placeholder="search"
+            <UInput
+                label="search"
                 onChange={onInputChange}
                 value={searchValue}
                 flexShrink={0}
