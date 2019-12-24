@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { XView, XImage } from 'react-mental';
 
 export default React.memo(() => (
