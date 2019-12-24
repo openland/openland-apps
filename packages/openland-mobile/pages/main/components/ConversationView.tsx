@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { View, Text, Platform, Animated, Easing } from 'react-native';
+import { View, Text, Platform, Animated, Easing, Image, StyleSheet, ImageStyle, TextStyle } from 'react-native';
 import { ConversationMessagesView } from './ConversationMessagesView';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
@@ -10,6 +10,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { useChatSelectionMode } from 'openland-engines/messenger/MessagesActionsState';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 export interface MessagesListProps {
     engine: ConversationEngine;
@@ -17,6 +18,28 @@ export interface MessagesListProps {
     inverted: boolean;
 }
 export const androidMessageInputListOverlap = 52;
+
+// specs
+const trimUserName = (name: string) => name.length > 15 ? name.slice(0, 12) + '...' : name;
+
+const styles = StyleSheet.create({
+    image: {
+        width: 240,
+        height: 150,
+        resizeMode: 'cover'
+    } as ImageStyle,
+    title: {
+        ...TextStyles.Title2,
+        marginTop: 16,
+        textAlign: 'center'
+    } as TextStyle,
+    subtitle: {
+        ...TextStyles.Body,
+        marginTop: 8,
+        marginBottom: 24,
+        textAlign: 'center'
+    } as TextStyle
+});
 
 class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number, theme: ThemeGlobal, selectionMode: boolean }, { conversation: ConversationState }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
@@ -79,8 +102,15 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
         trackEvent('message_wave_sent');
     }
 
+    sendMessage = (message: string) => {
+        this.props.engine.sendMessage(message, []);
+        // trackEvent('message_sent'); do we need this?
+    }
+
     render() {
         const isBot = !!(this.props.engine.user && this.props.engine.user.isBot);
+        const userName = this.props.engine.user ? this.props.engine.user.firstName : '';
+
         return (
             <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -androidMessageInputListOverlap })}>
                 <ConversationMessagesView
@@ -92,12 +122,27 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                 />
                 {
                     !this.state.conversation.loading && this.state.conversation.messages.length === 0 && (
-                        <ASSafeAreaView style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
+                        <ASSafeAreaView style={{ position: 'absolute', top: 0, right: 32, left: 32, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
                             {isBot && <Text style={{ fontSize: 72, lineHeight: 120, color: this.props.theme.foregroundPrimary }} allowFontScaling={false}>🤖</Text>}
                             {!isBot && (
                                 <>
-                                    <Text style={{ fontSize: 72, lineHeight: 120, color: this.props.theme.foregroundPrimary }} allowFontScaling={false} onPress={this.sendWave}>👋</Text>
-                                    <ZRoundedButton title="Wave" style="secondary" onPress={this.sendWave} />
+                                    <Image source={require('assets/art-no-messages.png')} style={styles.image} />
+
+                                    <Text style={[styles.title, { color: this.props.theme.foregroundPrimary }]} allowFontScaling={false}>
+                                        No messages yet
+                                    </Text>
+
+                                    <Text style={[styles.subtitle, { color: this.props.theme.foregroundSecondary }]} allowFontScaling={false}>
+                                        Start a conversation with&nbsp;{userName}
+                                    </Text>
+
+                                    <View marginBottom={16} flexDirection="row">
+                                        <ZRoundedButton style="secondary" title="👋" onPress={() => this.sendMessage('👋')} />
+                                        <View marginLeft={16}>
+                                            <ZRoundedButton style="secondary" title={`Hello, ${trimUserName(userName)}!`} onPress={() => this.sendMessage(`Hello, ${userName}!`)} />
+                                        </View>
+                                    </View>
+                                    <ZRoundedButton style="secondary" title="Happy to connect!" onPress={() => this.sendMessage('Happy to connect!')} />
                                 </>
                             )}
                         </ASSafeAreaView>
