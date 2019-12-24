@@ -277,7 +277,6 @@ dependencies {
 
     // Network
     implementation "com.squareup.okhttp3:okhttp:3.14.1"
-    implementation project(":spacex")
 
     // Databases
     implementation 'com.openland:lmdb-android:1.0.1'
