@@ -35,38 +35,47 @@ const wrapper = css`
 
 export const PrivatePlaceholder = React.memo((props: ChatEmptyComponentPrivateProps) => {
     const userName = props.conversation.user!.firstName;
+    const canSendMessage = props.conversation.canSendMessage;
     const sendMessage = (text: string) => props.conversation.sendMessage(text, null);
     const layout = useLayout();
 
     return (
         <div className={wrapper}>
             <XView flexDirection="column" alignItems="center" justifyContent="center">
-                <img
-                    width="320"
-                    height="200"
-                    src="//cdn.openland.com/shared/art/art-no-messages.png"
-                    srcSet="//cdn.openland.com/shared/art/art-no-messages@2x.png 2x, //cdn.openland.com/shared/art/art-no-messages@3x.png 3x"
-                    alt=""
-                />
-                <XView marginTop={6}>
-                    <h2 className={TextTitle1}>No messages yet</h2>
-                </XView>
-                <XView marginTop={8} color="var(--foregroundSecondary)">
-                    <p className={TextBody}>Start a conversation with {userName}</p>
-                </XView>
-                <XView
-                    marginTop={24}
-                    justifyContent="center"
-                    flexDirection="row"
-                    flexWrap="wrap"
-                    maxWidth={layout !== 'mobile' ? 400 : 200}
-                >
-                    <Message sendMessage={sendMessage}>👋</Message>
-                    <Message sendMessage={sendMessage}>Hello, {userName}!</Message>
-                    <Message sendMessage={sendMessage}>Happy to connect!</Message>
-                    {layout !== 'mobile' && <Message sendMessage={sendMessage}>What are you working on?</Message>}
-                    {layout !== 'mobile' && <Message sendMessage={sendMessage}>How can I help?</Message>}
-                </XView>
+                {canSendMessage ? (
+                    <>
+                        <img
+                            width="320"
+                            height="200"
+                            src="//cdn.openland.com/shared/art/art-no-messages.png"
+                            srcSet="//cdn.openland.com/shared/art/art-no-messages@2x.png 2x, //cdn.openland.com/shared/art/art-no-messages@3x.png 3x"
+                            alt=""
+                        />
+                        <XView marginTop={6}>
+                            <h2 className={TextTitle1}>No messages yet</h2>
+                        </XView>
+                        <XView marginTop={8} color="var(--foregroundSecondary)">
+                            <p className={TextBody}>Start a conversation with {userName}</p>
+                        </XView>
+                        <XView
+                            marginTop={24}
+                            justifyContent="center"
+                            flexDirection="row"
+                            flexWrap="wrap"
+                            maxWidth={layout !== 'mobile' ? 400 : 200}
+                        >
+                            <Message sendMessage={sendMessage}>👋</Message>
+                            <Message sendMessage={sendMessage}>Hello, {userName}!</Message>
+                            <Message sendMessage={sendMessage}>Happy to connect!</Message>
+                            {layout !== 'mobile' && <Message sendMessage={sendMessage}>What are you working on?</Message>}
+                            {layout !== 'mobile' && <Message sendMessage={sendMessage}>How can I help?</Message>}
+                        </XView>
+                    </>
+                ) : (
+                        <XView color="var(--foregroundSecondary)">
+                            <p className={TextBody}>No messages yet</p>
+                        </XView>
+                    )}
             </XView>
         </div>
     );
