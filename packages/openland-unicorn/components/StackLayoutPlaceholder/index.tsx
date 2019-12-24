@@ -2,14 +2,10 @@ import React from 'react';
 import { XView } from 'react-mental';
 import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
 import { showCreatingFragment } from 'openland-web/fragments/create/CreateEntityFragment';
-import Button from './button';
-
-// @ts-ignore
-import { ReactComponent as Plus } from './plus.svg';
-// @ts-ignore
-import { ReactComponent as Person } from './person.svg';
-// @ts-ignore
-import { ReactComponent as Download } from './download.svg';
+import { Button } from './button';
+import Plus from './plus.svg';
+import Person from './person.svg';
+import Download from './download.svg';
 
 export const StackLayoutPlaceholder = React.memo(() => {
     const createGroup = () => showCreatingFragment({ entityType: 'group' });

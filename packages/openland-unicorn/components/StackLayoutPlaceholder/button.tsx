@@ -48,7 +48,7 @@ interface ButtonProps {
     onClick?: () => void;
 }
 
-export default React.memo((props: ButtonProps) => (
+export const Button = React.memo((props: ButtonProps) => (
     <div className={button}>
         <XView
             paddingLeft={8}
