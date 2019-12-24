@@ -1,22 +1,20 @@
 import React from 'react';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XView } from 'react-mental';
 import { TextTitle1, TextBody, TextLabel2 } from 'openland-web/utils/TextStyles';
 
-interface ChatEmptyComponentPrivateProps {
-    username: string;
+interface MessageProps {
+    children: string | string[];
     sendMessage: (message: string) => void;
 }
 
-interface MessageProps {
-    children: string;
-    sendMessage: (message: string) => void;
-}
+const createMessage = (message: string | string[]) => message instanceof Array ? message.join('') : message;
 
 const Message = React.memo((props: MessageProps) => (
     <XView
         backgroundColor="var(--backgroundTertiary)"
         cursor="pointer"
-        onClick={() => props.sendMessage(props.children)}
+        onClick={() => props.sendMessage(createMessage(props.children))}
         paddingLeft={16}
         paddingRight={16}
         paddingTop={7}
@@ -29,7 +27,14 @@ const Message = React.memo((props: MessageProps) => (
     </XView>
 ));
 
-export default React.memo(() => {
+interface ChatEmptyComponentPrivateProps {
+    conversation: ConversationEngine;
+}
+
+export default React.memo((props: ChatEmptyComponentPrivateProps) => {
+    const userName = props.conversation.user!.firstName;
+    const sendMessage = (text: string) => props.conversation.sendMessage(text, null);
+
     return (
         <XView width="100%" height="100%" alignItems="center" justifyContent="center">
             <img
@@ -43,7 +48,7 @@ export default React.memo(() => {
                 <h2 className={TextTitle1}>No messages yet</h2>
             </XView>
             <XView marginTop={8} color="var(--foregroundSecondary)">
-                <p className={TextBody}>Start a conversation with Yury</p>
+                <p className={TextBody}>Start a conversation with {userName}</p>
             </XView>
             <XView
                 marginTop={24}
@@ -52,11 +57,11 @@ export default React.memo(() => {
                 flexWrap="wrap"
                 maxWidth={400}
             >
-                <Message sendMessage={console.log}>👋</Message>
-                <Message sendMessage={console.log}>Hello, Yury!</Message>
-                <Message sendMessage={console.log}>Happy to connect!</Message>
-                <Message sendMessage={console.log}>What are you working on?</Message>
-                <Message sendMessage={console.log}>How can I help?</Message>
+                <Message sendMessage={sendMessage}>👋</Message>
+                <Message sendMessage={sendMessage}>Hello, {userName}!</Message>
+                <Message sendMessage={sendMessage}>Happy to connect!</Message>
+                <Message sendMessage={sendMessage}>What are you working on?</Message>
+                <Message sendMessage={sendMessage}>How can I help?</Message>
             </XView>
         </XView>
     );

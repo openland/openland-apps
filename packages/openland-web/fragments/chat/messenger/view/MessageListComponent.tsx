@@ -131,7 +131,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
 
     dataSourceWrapper = (props: { children?: any }) => {
         if (this.isEmpty()) {
-            return <EmptyBlock conversationType={this.props.conversationType} />;
+            return <EmptyBlock conversation={this.props.conversation} />;
         }
         return <XScrollViewAnchored
             bottomAttached={this.state.bottomAttached}

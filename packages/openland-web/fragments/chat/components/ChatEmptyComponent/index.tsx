@@ -1,11 +1,11 @@
 import React from 'react';
-import { SharedRoomKind } from 'openland-api/Types';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import PublicPlaceholder from './public';
 import PrivatePlaceholder from './private';
 
 interface EmptyBlockProps {
-    conversationType?: SharedRoomKind | 'PRIVATE';
+    conversation: ConversationEngine;
 }
 
 export default (props: EmptyBlockProps) =>
-    props.conversationType === 'PUBLIC' ? <PublicPlaceholder /> : <PrivatePlaceholder />;
+    props.conversation.isPrivate ? <PrivatePlaceholder conversation={props.conversation} /> : <PublicPlaceholder />;
