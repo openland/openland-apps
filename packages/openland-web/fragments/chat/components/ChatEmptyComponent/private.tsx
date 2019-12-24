@@ -1,7 +1,8 @@
 import React from 'react';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XView } from 'react-mental';
-import { TextTitle1, TextBody, TextLabel2 } from 'openland-web/utils/TextStyles';
+import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 
 interface MessageProps {
     children: string | string[];
@@ -11,20 +12,12 @@ interface MessageProps {
 const createMessage = (message: string | string[]) => message instanceof Array ? message.join('') : message;
 
 const Message = React.memo((props: MessageProps) => (
-    <XView
-        backgroundColor="var(--backgroundTertiary)"
-        cursor="pointer"
-        onClick={() => props.sendMessage(createMessage(props.children))}
-        paddingLeft={16}
-        paddingRight={16}
-        paddingTop={7}
-        paddingBottom={7}
-        borderRadius={18}
+    <UButton
+        text={createMessage(props.children)}
         margin={8}
-        color="var(--foregroundSecondary)"
-    >
-        <span className={TextLabel2}>{props.children}</span>
-    </XView>
+        style="secondary"
+        onClick={() => props.sendMessage(createMessage(props.children))}
+    />
 ));
 
 interface ChatEmptyComponentPrivateProps {
