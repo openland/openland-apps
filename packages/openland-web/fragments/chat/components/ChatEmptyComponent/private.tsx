@@ -25,7 +25,7 @@ interface ChatEmptyComponentPrivateProps {
     conversation: ConversationEngine;
 }
 
-export default React.memo((props: ChatEmptyComponentPrivateProps) => {
+export const PrivatePlaceholder = React.memo((props: ChatEmptyComponentPrivateProps) => {
     const userName = props.conversation.user!.firstName;
     const sendMessage = (text: string) => props.conversation.sendMessage(text, null);
     const layout = useLayout();

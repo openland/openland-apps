@@ -1,11 +1,11 @@
 import React from 'react';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import PublicPlaceholder from './public';
-import PrivatePlaceholder from './private';
+import { PublicPlaceholder } from './public';
+import { PrivatePlaceholder } from './private';
 
-interface EmptyBlockProps {
+interface ChatEmptyComponentProps {
     conversation: ConversationEngine;
 }
 
-export default (props: EmptyBlockProps) =>
+export const ChatEmptyComponent = (props: ChatEmptyComponentProps) =>
     props.conversation.isPrivate ? <PrivatePlaceholder conversation={props.conversation} /> : <PublicPlaceholder />;

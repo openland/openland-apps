@@ -1,7 +1,7 @@
 import React from 'react';
 import { XView, XImage } from 'react-mental';
 
-export default React.memo(() => (
+export const PublicPlaceholder = React.memo(() => (
     <XView position="relative" alignItems="center" justifyContent="center" flexGrow={1}>
         <XView zIndex={1} justifyContent="center" alignItems="center">
             <XView alignItems="center" justifyContent="center">

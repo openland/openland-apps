@@ -11,7 +11,7 @@ import { ReactComponent as Person } from './person.svg';
 // @ts-ignore
 import { ReactComponent as Download } from './download.svg';
 
-export default React.memo(() => {
+export const StackLayoutPlaceholder = React.memo(() => {
     const createGroup = () => showCreatingFragment({ entityType: 'group' });
     return (
         <XView
