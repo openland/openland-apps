@@ -12,6 +12,8 @@ interface MessageProps {
 }
 
 const createMessage = (message: string | string[]) => message instanceof Array ? message.join('') : message;
+// specs
+const trimUserName = (name: string) => name.length > 20 ? name.slice(0, 17) + '...' : name;
 
 const Message = React.memo((props: MessageProps) => (
     <UButton
@@ -65,7 +67,7 @@ export const PrivatePlaceholder = React.memo((props: ChatEmptyComponentPrivatePr
                             maxWidth={layout !== 'mobile' ? 400 : 200}
                         >
                             <Message sendMessage={sendMessage}>👋</Message>
-                            <Message sendMessage={sendMessage}>Hello, {userName}!</Message>
+                            <Message sendMessage={sendMessage}>Hello, {trimUserName(userName)}!</Message>
                             <Message sendMessage={sendMessage}>Happy to connect!</Message>
                             {layout !== 'mobile' && <Message sendMessage={sendMessage}>What are you working on?</Message>}
                             {layout !== 'mobile' && <Message sendMessage={sendMessage}>How can I help?</Message>}
