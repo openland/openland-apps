@@ -158,7 +158,6 @@ export const AccountFragment = React.memo(() => {
                         />
                     </UListGroup>
 
-
                     <UListGroup
                         header="Organizations"
                         action={{
