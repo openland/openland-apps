@@ -101,7 +101,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
 
     sendMessage = (message: string) => {
         this.props.engine.sendMessage(message, []);
-        // trackEvent('message_sent'); do we need this?
+        trackEvent('message_sent');
     }
 
     render() {
