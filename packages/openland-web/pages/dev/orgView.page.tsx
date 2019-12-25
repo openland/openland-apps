@@ -14,7 +14,7 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { SelectWithDropdown } from '../main/mail/SelectWithDropdown';
+import { SelectWithDropdown } from '../components/SelectWithDropdown';
 import { FeatureFlags_featureFlags } from 'openland-api/Types';
 import { XInput } from 'openland-x/XInput';
 

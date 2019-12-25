@@ -54,7 +54,6 @@ export const OrganizationsList = ({ onChange, value, inOrgId = null }: Organizat
     const client = useClient();
     const orgs = client.useMyOrganizations();
     const userContext = React.useContext(UserInfoContext);
-
     let primaryOrganizationId = '';
     if (userContext && userContext.organization) {
         primaryOrganizationId = userContext.organization.id;
@@ -84,6 +83,17 @@ export const OrganizationsList = ({ onChange, value, inOrgId = null }: Organizat
         organizationsMap.unshift(primaryOrg);
     }
 
+    React.useEffect(
+        () => {
+            if (!value && inOrgId) {
+                onChange(inOrgId);
+            }
+            if (!value && !inOrgId) {
+                onChange(primaryOrganizationId);
+            }
+        },
+        [value],
+    );
     return (
         <Container>
             {organizationsMap.map(i => {

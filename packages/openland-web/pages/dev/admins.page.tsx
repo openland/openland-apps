@@ -10,7 +10,7 @@ import { XModalContent } from 'openland-web/components/XModalContent';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XModalFooter } from 'openland-x-modal/XModal';
 import { showModalBox } from 'openland-x/showModalBox';
-import { SelectWithDropdown } from '../main/mail/SelectWithDropdown';
+import { SelectWithDropdown } from '../components/SelectWithDropdown';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { TextLabel1, TextTitle1, TextLabel2 } from 'openland-web/utils/TextStyles';

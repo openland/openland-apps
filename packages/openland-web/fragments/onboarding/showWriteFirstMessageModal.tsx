@@ -5,7 +5,7 @@ import { XImage } from 'react-mental';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
-import { SelectWithDropdown } from 'openland-web/pages/main/mail/SelectWithDropdown';
+import { SelectWithDropdown } from 'openland-web/pages/components/SelectWithDropdown';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XModalController } from 'openland-x/showModal';

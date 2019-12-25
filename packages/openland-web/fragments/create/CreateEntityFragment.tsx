@@ -238,7 +238,9 @@ const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide:
                             description={descriptionField.value}
                             photo={sanitizeImageRef(avatarField.value)}
                             secret={secretTypeField.value}
-                            inOrgId={props.inOrgId}
+                            inOrgId={
+                                selectedOrgField.value ? selectedOrgField.value : props.inOrgId
+                            }
                             entityType={props.entityType}
                         />
                     </>
