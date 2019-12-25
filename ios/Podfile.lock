@@ -14,8 +14,6 @@ PODS:
     - AppCenter/Core
   - AppCenterReactNativeShared (1.13.0):
     - AppCenter/Core (= 1.14.0)
-  - Auth0 (1.14.2):
-    - SimpleKeychain
   - boost-for-react-native (1.63.0)
   - BVLinearGradient (2.4.0):
     - React
@@ -345,7 +343,6 @@ PODS:
   - SDWebImageWebPCoder (0.2.4):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.0)
-  - SimpleKeychain (0.9.0)
   - Starscream (3.0.6)
   - SwiftyJSON (4.3.0)
   - Texture (2.7):
@@ -362,7 +359,6 @@ DEPENDENCIES:
   - AppCenter/Analytics (~> 1.14.0)
   - AppCenter/Crashes (~> 1.14.0)
   - AppCenterReactNativeShared (~> 1.13.0)
-  - Auth0 (~> 1.14.2)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -427,7 +423,6 @@ SPEC REPOS:
     - AppAuth
     - AppCenter
     - AppCenterReactNativeShared
-    - Auth0
     - boost-for-react-native
     - GoogleSignIn
     - GTMAppAuth
@@ -442,7 +437,6 @@ SPEC REPOS:
     - RSKImageCropper
     - SDWebImage
     - SDWebImageWebPCoder
-    - SimpleKeychain
     - Starscream
     - SwiftyJSON
 
@@ -558,7 +552,6 @@ SPEC CHECKSUMS:
   AppAuth: bce82c76043657c99d91e7882e8a9e1a93650cd4
   AppCenter: 02c5efe08d3bbab5421ae41d5f7aa7238906b817
   AppCenterReactNativeShared: 00f470c3c17b47718db8733cbe811ccdcfd86282
-  Auth0: df9ac013e7850052fea1dcd53fa09bb129121721
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: 8913bd8fdc47b85abc801ae8bae007bbfb6b4ce5
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
@@ -621,12 +614,11 @@ SPEC CHECKSUMS:
   RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a
   SDWebImage: 96d7f03415ccb28d299d765f93557ff8a617abd8
   SDWebImageWebPCoder: cc72085bb20368b2f8dbb21b7e355c667e1309b7
-  SimpleKeychain: 3be49072fd2d82de8fa83d847ef1e548622f8fc5
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: 32bb1d4729c1ced87ed8f1fca9dfa1c9e77f2800
+PODFILE CHECKSUM: 2c9cc02ef1dc93a2ed0bc2a32ee2f610a4545bdf
 
 COCOAPODS: 1.8.4

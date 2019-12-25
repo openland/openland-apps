@@ -86,8 +86,6 @@
 		AAB0EF91213D8CF500FBCB75 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF90213D8CF500FBCB75 /* Utils.swift */; };
 		AAB181762284EC06008D3603 /* NormalizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB181752284EC06008D3603 /* NormalizerTests.swift */; };
 		AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */; };
-		AAC60B52215AE40C005E09BA /* RNSAuth0.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC60B51215AE40C005E09BA /* RNSAuth0.swift */; };
-		AAC60B55215AE445005E09BA /* RNSAuth0-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC60B54215AE445005E09BA /* RNSAuth0-Bridge.m */; };
 		AAC60B57215AF2D3005E09BA /* Auth0.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAC60B56215AF2D3005E09BA /* Auth0.plist */; };
 		AACF26432260A90100C565E4 /* SwiftStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACF263922609C7400C565E4 /* SwiftStore.framework */; };
 		AACF26442260A90100C565E4 /* SwiftStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AACF263922609C7400C565E4 /* SwiftStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -382,9 +380,6 @@
 		AAB181752284EC06008D3603 /* NormalizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizerTests.swift; sourceTree = "<group>"; };
 		AAB181772284EDE6008D3603 /* normalizeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = normalizeData.swift; sourceTree = "<group>"; };
 		AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncTextNode.swift; sourceTree = "<group>"; };
-		AAC60B51215AE40C005E09BA /* RNSAuth0.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAuth0.swift; sourceTree = "<group>"; };
-		AAC60B53215AE422005E09BA /* RNSAuth0-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNSAuth0-Bridge.h"; sourceTree = "<group>"; };
-		AAC60B54215AE445005E09BA /* RNSAuth0-Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNSAuth0-Bridge.m"; sourceTree = "<group>"; };
 		AAC60B56215AF2D3005E09BA /* Auth0.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Auth0.plist; sourceTree = "<group>"; };
 		AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftStore.xcodeproj; path = Vendor/SwiftStore/SwiftStore.xcodeproj; sourceTree = "<group>"; };
 		AACFC575210778FE00225C86 /* openland.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = openland.entitlements; path = openland/openland.entitlements; sourceTree = "<group>"; };
@@ -510,7 +505,6 @@
 				AA2365592244EBEE000AA3A7 /* RNGraphql */,
 				AA2FBA1E22247C61000915F7 /* RNSDevice */,
 				AAA4DA46221457BB00BB1781 /* appcenter */,
-				AAC60B06215AE3F0005E09BA /* RNSAuth0 */,
 				AAE501832146078400BEAA04 /* RNSAnimation */,
 				AAE104CF212C2A440034DA0F /* RNAsyncView */,
 				AAE56DBF2129F997003706B3 /* hacks */,
@@ -779,16 +773,6 @@
 				AA2281C9228A4B7F00810848 /* collectMissingKeys.swift */,
 			);
 			name = Store;
-			sourceTree = "<group>";
-		};
-		AAC60B06215AE3F0005E09BA /* RNSAuth0 */ = {
-			isa = PBXGroup;
-			children = (
-				AAC60B51215AE40C005E09BA /* RNSAuth0.swift */,
-				AAC60B53215AE422005E09BA /* RNSAuth0-Bridge.h */,
-				AAC60B54215AE445005E09BA /* RNSAuth0-Bridge.m */,
-			);
-			name = RNSAuth0;
 			sourceTree = "<group>";
 		};
 		AACF262B22609C7400C565E4 /* Products */ = {
@@ -1278,7 +1262,6 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-openland/Pods-openland-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework",
-				"${BUILT_PRODUCTS_DIR}/Auth0/Auth0.framework",
 				"${BUILT_PRODUCTS_DIR}/BVLinearGradient/BVLinearGradient.framework",
 				"${BUILT_PRODUCTS_DIR}/DoubleConversion/DoubleConversion.framework",
 				"${BUILT_PRODUCTS_DIR}/FBReactNativeSpec/FBReactNativeSpec.framework",
@@ -1322,7 +1305,6 @@
 				"${BUILT_PRODUCTS_DIR}/ReactNativePermissions/ReactNativePermissions.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImageWebPCoder/SDWebImageWebPCoder.framework",
-				"${BUILT_PRODUCTS_DIR}/SimpleKeychain/SimpleKeychain.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/Texture/AsyncDisplayKit.framework",
@@ -1343,7 +1325,6 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppAuth.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Auth0.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BVLinearGradient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoubleConversion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBReactNativeSpec.framework",
@@ -1387,7 +1368,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativePermissions.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageWebPCoder.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SimpleKeychain.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AsyncDisplayKit.framework",
@@ -1490,7 +1470,6 @@
 				AAE50186214607B600BEAA04 /* RNSAnimationSpec.swift in Sources */,
 				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,
 				AA2FBA2B22247D0E000915F7 /* RNSDevice.swift in Sources */,
-				AAC60B52215AE40C005E09BA /* RNSAuth0.swift in Sources */,
 				AA67E2582149318200AE9CAC /* RNSAnimated-Bridge.m in Sources */,
 				A099CBDC233B9CFF00A7AC8C /* ChatFlowLayout.swift in Sources */,
 				AAE501802145801600BEAA04 /* RNAsyncKeyboardContext.swift in Sources */,
@@ -1519,7 +1498,6 @@
 				AA7B7BF822860CA6001AA400 /* RecordStore.swift in Sources */,
 				AAA942B5235E783800690F14 /* RNSWindowManager-Bridge.m in Sources */,
 				AAA47D73212C45FA00E71A74 /* RNAsyncNodeResolver.swift in Sources */,
-				AAC60B55215AE445005E09BA /* RNSAuth0-Bridge.m in Sources */,
 				AA2365772247CE87000AA3A7 /* RNGraphQL-Bridge.m in Sources */,
 				AA2281BC228A1DD100810848 /* readFromStore.swift in Sources */,
 				AA3DDA112284E14E0078A762 /* Types.swift in Sources */,
