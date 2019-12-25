@@ -100,7 +100,7 @@ interface ModalProps {
     date?: number;
 }
 
-const ModalContent = (props: ModalProps & { hide: () => void, url?: string }) => {
+const ModalContent = (props: ModalProps & { hide: () => void; url?: string }) => {
     const messenger = React.useContext(MessengerContext);
 
     const forwardCallback = React.useCallback(() => {
@@ -152,14 +152,16 @@ const ModalContent = (props: ModalProps & { hide: () => void, url?: string }) =>
                 </div>
             </div>
             <div className={modalContent} onClick={e => e.stopPropagation()}>
-                {isElectron ?
-                    <XLoader transparentBackground={true} /> :
+                {isElectron ? (
+                    <XLoader transparentBackground={true} />
+                ) : (
                     <embed
                         src={`https://ucarecdn.com/${props.fileId}/-/inline/yes/${props.fileName}`}
                         width="100%"
                         height="100%"
                         type="application/pdf"
-                    />}
+                    />
+                )}
             </div>
         </div>
     );
@@ -167,16 +169,14 @@ const ModalContent = (props: ModalProps & { hide: () => void, url?: string }) =>
 
 const showPdfModal = (props: ModalProps, url?: string) => {
     showModalBox({ fullScreen: true, darkOverlay: true, useTopCloser: false }, ctx => {
-        return (
-            <ModalContent {...props} hide={ctx.hide} url={url} />
-        );
+        return <ModalContent {...props} hide={ctx.hide} url={url} />;
     });
 };
 
 export const fileContainer = css`
     display: flex;
     align-items: center;
-    justify-content: flex-between;
+    justify-content: space-between;
     flex-shrink: 1;
     align-self: flex-start;
     background-color: var(--backgroundTertiary);
@@ -384,13 +384,16 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
         } else {
             ev.stopPropagation();
             if (applyShowPdfModal) {
-                showPdfModal({
-                    fileId: file.fileId || '',
-                    fileName: file.fileMetadata.name,
-                    sender: props.sender,
-                    senderNameEmojify: props.senderNameEmojify,
-                    date: props.date,
-                }, fileSrc);
+                showPdfModal(
+                    {
+                        fileId: file.fileId || '',
+                        fileName: file.fileMetadata.name,
+                        sender: props.sender,
+                        senderNameEmojify: props.senderNameEmojify,
+                        date: props.date,
+                    },
+                    fileSrc,
+                );
             }
         }
     }, []);
@@ -398,6 +401,12 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
     if (applyShowPdfModal && !isElectron) {
         fileSrc = undefined;
     }
+
+    const fileSender = props.senderNameEmojify
+        ? props.senderNameEmojify
+        : props.sender && props.sender.name
+            ? props.sender.name
+            : '';
 
     return (
         <a
@@ -411,20 +420,23 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
                     {typeof progress === 'number' && progress >= 0 && progress < 1 ? (
                         <XLoader size="medium" color="#fff" transparentBackground={true} />
                     ) : (
-                            <div className={cx(iconInfo, 'icon-info')}>
-                                <UIcon
-                                    icon={applyShowPdfModal ? <IcSearch /> : <IcDownload />}
-                                    color="#fff"
-                                    size={16}
-                                    className="download-icon"
-                                />
-                                <div className="format-text">{fileFormat(name)}</div>
-                            </div>
-                        )}
+                        <div className={cx(iconInfo, 'icon-info')}>
+                            <UIcon
+                                icon={applyShowPdfModal ? <IcSearch /> : <IcDownload />}
+                                color="#fff"
+                                size={16}
+                                className="download-icon"
+                            />
+                            <div className="format-text">{fileFormat(name)}</div>
+                        </div>
+                    )}
                 </div>
                 <div className={metadataContainer}>
                     <div className={cx(title + ' title', TextLabel1)}>{name}</div>
-                    <div className={cx(subtitle, TextCaption)}>{`${formatBytes(size)}  ·  ${!props.senderNameEmojify ? props.sender && props.sender.name : ''}`}{props.senderNameEmojify}</div>
+                    <div className={cx(subtitle, TextCaption)}>
+                        {`${formatBytes(size)}${fileSender ? `  ·  ` : ''}`}
+                        {fileSender ? fileSender : ''}
+                    </div>
                 </div>
             </div>
         </a>

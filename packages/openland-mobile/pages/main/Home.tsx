@@ -11,8 +11,8 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { Feed } from '../feed/Feed';
 import { NotificationCenter } from './NotificationCenter';
-import { isPad } from '../Root';
-import { NON_PRODUCTION } from '../Init';
+// import { isPad } from '../Root';
+// import { NON_PRODUCTION } from '../Init';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { showFeedTutorialIfNeeded } from 'openland-mobile/feed/components/FeedTutorial';
 import { SRouterContext } from 'react-native-s/SRouterContext';
@@ -27,7 +27,8 @@ export const Home = XMemo<PageProps>((props) => {
     const counter = getClient().useWithoutLoaderGlobalCounter();
     const notificationsCounter = getClient().useWithoutLoaderMyNotificationCenter();
     const discoverDone = getClient().useWithoutLoaderDiscoverIsDone();
-    const showFeed = false; // NON_PRODUCTION && !isPad;
+    // const showFeed = NON_PRODUCTION && !isPad;
+    const showFeed = false;
 
     React.useEffect(() => {
         if (tab === 0 && showFeed) {

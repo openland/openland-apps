@@ -24,9 +24,9 @@ const root = css`
 export const NextPage = React.memo(() => (
     <div className={root}>
         <XDocumentHead
-            title="Modern community platform"
+            title="Modern platform for chat communities"
             titleWithoutReverse={true}
-            description="An all-in-one platform for building great communities: start in seconds and grow fast"
+            description="Openland is an all-in-one platform for building great communities. Start your community in seconds and grow fast with built-in viral growth tools."
             imgUrl="https://cdn.openland.com/shared/og/og-build.png"
         />
         <Header discoverLink={true} />

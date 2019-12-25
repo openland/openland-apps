@@ -1,19 +1,13 @@
 {
     "env": {
         "default": {
-            "presets": [
-                "next/babel",
-                "@zeit/next-typescript/babel",
-                "linaria/babel"
-            ],
+            "presets": ["next/babel", "@zeit/next-typescript/babel", "linaria/babel"],
             "plugins": [
                 "graphql-tag",
                 [
                     "module-resolver",
                     {
-                        "root": [
-                            "./packages/"
-                        ],
+                        "root": ["./packages/"]
                         // "alias": {
                         //     "openland-icons": "openland-icons"
                         // }
@@ -32,19 +26,13 @@
             ]
         },
         "webproduction": {
-            "presets": [
-                "next/babel",
-                "@zeit/next-typescript/babel",
-                "linaria/babel"
-            ],
+            "presets": ["next/babel", "@zeit/next-typescript/babel", "linaria/babel"],
             "plugins": [
                 "graphql-tag",
                 [
                     "module-resolver",
                     {
-                        "root": [
-                            "./packages/"
-                        ],
+                        "root": ["./packages/"]
                         // "alias": {
                         //     "openland-icons": "openland-icons"
                         // }
@@ -64,23 +52,18 @@
             ]
         },
         "production": {
-            "presets": [
-                "module:metro-react-native-babel-preset"
-            ],
+            "presets": ["module:metro-react-native-babel-preset"],
             "plugins": [
                 "graphql-tag",
                 [
                     "module-resolver",
                     {
-                        "root": [
-                            "./build/native"
-                        ],
+                        "root": ["./build/native"],
                         "alias": {
                             "openland-mobile": "./build/native/openland-mobile",
                             "react-native-s": "./build/native/react-native-s",
                             "react-native-async-view": "./build/native/react-native-async-view",
                             "react-native-notification-handler": "./build/native/react-native-notification-handler",
-                            "react-native-auth0-s": "./build/native/react-native-auth0-s",
                             "openland-video": "./build/native/openland-video",
                             "openland-api": "./build/native/openland-api",
                             "openland-graphql": "./build/native/openland-graphql",
@@ -106,22 +89,17 @@
             ]
         },
         "development": {
-            "presets": [
-                "module:metro-react-native-babel-preset"
-            ],
+            "presets": ["module:metro-react-native-babel-preset"],
             "plugins": [
                 [
                     "module-resolver",
                     {
-                        "root": [
-                            "."
-                        ],
+                        "root": ["."],
                         "alias": {
                             "openland-mobile": "./build/native/openland-mobile",
                             "react-native-s": "./build/native/react-native-s",
                             "react-native-async-view": "./build/native/react-native-async-view",
                             "react-native-notification-handler": "./build/native/react-native-notification-handler",
-                            "react-native-auth0-s": "./build/native/react-native-auth0-s",
                             "openland-api": "./build/native/openland-api",
                             "openland-video": "./build/native/openland-video",
                             "openland-graphql": "./build/native/openland-graphql",

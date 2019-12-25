@@ -236,6 +236,13 @@ const appsLink = css``;
 const mobileMenuOpenIcon = css``;
 const mobileMenuCloseIcon = css``;
 
+const XViewWrapper = css`
+    &,
+    & * {
+        display: inline-block;
+    }
+`;
+
 interface Props {
     isGrey?: boolean;
     startLink?: boolean;
@@ -465,8 +472,10 @@ export default ({ isGrey, startLink, discoverLink }: Props) => {
                         <span className={menuItem}>
                             <XView path="/about">About</XView>
                         </span>
-                        <span className={cx(menuItem, menuItemActive)}>
-                            <XView path="/signin">Login</XView>
+                        <span className={XViewWrapper}>
+                            <XView path="/signin">
+                                <span className={cx(menuItem, menuItemActive)}>Login</span>
+                            </XView>
                         </span>
                     </div>
                 </div>

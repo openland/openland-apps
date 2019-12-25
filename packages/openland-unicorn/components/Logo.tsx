@@ -1,14 +1,20 @@
 import * as React from 'react';
 
-// svg gradient workaround. Gradient only works if inlined
+// svg gradient workaround. Gradient only works if ivg is inlined and the gradient itself is defined exactly once.
+// see _document.page.tsx
 
-export default () => (
+interface LogoProps {
+    className?: string;
+}
+
+export default (props: LogoProps) => (
     <svg
         width="40"
         height="40"
         viewBox="0 0 1024 1024"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        className={props.className}
     >
         <path
             fillRule="evenodd"
@@ -32,20 +38,5 @@ export default () => (
             d="M581 350C556.838 345.973 537 358 531 382C563 378 594 390 614 406C620 378 605 354 581 350Z"
             fill="#7373BF"
         />
-        <defs>
-            <linearGradient
-                id="paint0_linear"
-                x1="959.977"
-                y1="32.8002"
-                x2="234.863"
-                y2="794.492"
-                gradientUnits="userSpaceOnUse"
-            >
-                <stop stopColor="#FEC519" />
-                <stop offset="0.278985" stopColor="#E62E5C" />
-                <stop offset="0.760754" stopColor="#45A3E6" />
-                <stop offset="1" stopColor="#5CE6C3" />
-            </linearGradient>
-        </defs>
     </svg>
 );

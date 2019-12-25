@@ -29,6 +29,7 @@ import { FeedItemFragment } from 'openland-web/fragments/feed/FeedItemFragment';
 
 import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 import { SharedMediaFragment } from 'openland-web/fragments/chat/sharedMedia/SharedMediaFragment';
+import { SettingsAboutFragment } from 'openland-web/fragments/account/SettingsAboutFragment';
 
 // temporary stub for /mail/ -> not found bug
 const TemporaryStub = React.memo(() => {
@@ -76,6 +77,7 @@ routing.addRoute('/settings/appearance', () => SettingsAppearanceFragment);
 routing.addRoute('/settings/download', () => DownloadAppsFragment);
 routing.addRoute('/settings/invites', () => InviteFriendsFragment);
 routing.addRoute('/settings/finance', () => SettingsFinanceFragment);
+routing.addRoute('/settings/about', () => SettingsAboutFragment);
 
 // Profile
 routing.addRoute('/group/:id', () => GroupProfileFragment);

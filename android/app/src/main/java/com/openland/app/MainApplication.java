@@ -30,7 +30,6 @@ import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
 import com.oney.WebRTCModule.WebRTCModulePackage;
 import com.levelasquez.androidopensettings.AndroidOpenSettingsPackage;
-import com.auth0.react.A0Auth0Package;
 import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.distribute.Distribute;
@@ -96,7 +95,6 @@ public class MainApplication extends Application implements ShareApplication, Re
                     new ReactNativeDocumentPicker(),
                     new WebRTCModulePackage(),
                     new AndroidOpenSettingsPackage(),
-                    new A0Auth0Package(),
                     new RNThreadPackage(mReactNativeHost),
                     new ReactNativeRestartPackage(),
                     new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),

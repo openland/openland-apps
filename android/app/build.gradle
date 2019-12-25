@@ -221,7 +221,6 @@ dependencies {
     implementation project(':react-native-document-picker')
     implementation project(':react-native-webrtc')
     implementation project(':react-native-android-open-settings')
-    implementation project(':react-native-auth0')
     implementation project(':react-native-restart')
     implementation project(':react-native-share')
     implementation project(':react-native-image-capinsets')

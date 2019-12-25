@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { useForm } from 'openland-form/useForm';
@@ -12,9 +11,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useClient } from 'openland-web/utils/useClient';
 import * as Cookie from 'js-cookie';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
-import { RoomContainerParams } from './root.page';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { CreateProfileFormInnerRoom } from './components/createProfileFormInnerRoom';
 import { Title, Subtitle, FormLayout } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UButton } from 'openland-web/components/unicorn/UButton';
@@ -31,8 +28,6 @@ export type EnterYourOrganizationPageProps = {
 };
 
 type IntroduceYourselfPageOuterProps = {
-    roomView: boolean;
-    roomContainerParams: RoomContainerParams;
     initialProfileFormData?: ProfileFormData | null;
     isMobile: boolean;
 };
@@ -49,8 +44,8 @@ const CreateProfileFormInnerWeb = (
     let firstName = useField<string>(
         'input.firstName',
         (prefill && prefill.firstName) ||
-        (props.initialProfileFormData && props.initialProfileFormData.firstName) ||
-        '',
+            (props.initialProfileFormData && props.initialProfileFormData.firstName) ||
+            '',
         form,
         [
             {
@@ -62,8 +57,8 @@ const CreateProfileFormInnerWeb = (
     let lastName = useField<string>(
         'input.lastName',
         (prefill && prefill.lastName) ||
-        (props.initialProfileFormData && props.initialProfileFormData.lastName) ||
-        '',
+            (props.initialProfileFormData && props.initialProfileFormData.lastName) ||
+            '',
         form,
     );
     let photoRef = useField<StoredFileT | null>(
@@ -80,13 +75,13 @@ const CreateProfileFormInnerWeb = (
                     lastName: lastName.value.trim(),
                     photoRef: photoRef.value
                         ? {
-                            ...(photoRef.value as any),
-                            isImage: undefined,
-                            width: undefined,
-                            height: undefined,
-                            crop: undefined,
-                            __typename: undefined,
-                        }
+                              ...(photoRef.value as any),
+                              isImage: undefined,
+                              width: undefined,
+                              height: undefined,
+                              crop: undefined,
+                              __typename: undefined,
+                          }
                         : undefined,
                 };
 
@@ -134,57 +129,55 @@ const CreateProfileFormInnerWeb = (
 
     return (
         <FormLayout
-            top={(<>
-                <Title text={InitTexts.create_profile.title} />
-                <Subtitle
-                    text={InitTexts.create_profile.subTitle}
-                    maxWidth={props.isMobile ? 230 : undefined}
-                />
-                <XView marginBottom={20}>
-                    <UAvatarUploadField
-                        field={photoRef}
-                        initialUrl={prefill ? prefill.picture : undefined}
+            top={
+                <>
+                    <Title text={InitTexts.create_profile.title} />
+                    <Subtitle
+                        text={InitTexts.create_profile.subTitle}
+                        maxWidth={props.isMobile ? 230 : undefined}
                     />
-                </XView>
-
-                <XView width={props.isMobile ? '100%' : 360} maxWidth={360} marginBottom={20}>
-                    <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
-                        <UInput
-                            label="First name"
-                            flexGrow={1}
-                            onChange={firstName.input.onChange}
+                    <XView marginBottom={20}>
+                        <UAvatarUploadField
+                            field={photoRef}
+                            initialUrl={prefill ? prefill.picture : undefined}
                         />
                     </XView>
-                    {firstName.input.invalid &&
-                        firstName.input.errorText && (
-                            <XErrorMessage2 message={firstName.input.errorText} />
-                        )}
-                </XView>
 
-                <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
-                    <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
-                        <UInput
-                            label="Last name"
-                            flexGrow={1}
-                            onChange={lastName.input.onChange}
-                        />
+                    <XView width={props.isMobile ? '100%' : 360} maxWidth={360} marginBottom={20}>
+                        <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
+                            <UInput
+                                label="First name"
+                                flexGrow={1}
+                                onChange={firstName.input.onChange}
+                            />
+                        </XView>
+                        {firstName.input.invalid &&
+                            firstName.input.errorText && (
+                                <XErrorMessage2 message={firstName.input.errorText} />
+                            )}
                     </XView>
-                    {lastName.input.invalid &&
-                        lastName.input.errorText && (
-                            <XErrorMessage2 message={lastName.input.errorText} />
-                        )}
-                </XView>
-            </>)}
+
+                    <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
+                        <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
+                            <UInput
+                                label="Last name"
+                                flexGrow={1}
+                                onChange={lastName.input.onChange}
+                            />
+                        </XView>
+                        {lastName.input.invalid &&
+                            lastName.input.errorText && (
+                                <XErrorMessage2 message={lastName.input.errorText} />
+                            )}
+                    </XView>
+                </>
+            }
             bottom={button}
         />
     );
 };
 
-export const IntroduceYourselfPageInner = ({
-    roomView,
-    roomContainerParams,
-    isMobile,
-}: IntroduceYourselfPageOuterProps) => {
+export const IntroduceYourselfPageInner = ({ isMobile }: IntroduceYourselfPageOuterProps) => {
     const client = useClient();
 
     if (canUseDOM) {
@@ -199,45 +192,31 @@ export const IntroduceYourselfPageInner = ({
 
     const initialProfileFormData = profile.profile
         ? {
-            firstName: profile.profile.firstName,
-            lastName: profile.profile.lastName,
-            photoRef: profile.profile.photoRef,
-        }
+              firstName: profile.profile.firstName,
+              lastName: profile.profile.lastName,
+              photoRef: profile.profile.photoRef,
+          }
         : null;
 
     return (
-        <>
-            {!roomView && (
-                <Wrapper>
-                    <XDocumentHead title="Introduce yourself" />
-                    <BackSkipLogo
-                        onBack={
-                            null
-                            // () => {
-                            //     router.replace('/authorization/ask-activation-code');
-                            // }
-                        }
-                        onSkip={null}
-                        noLogo={isMobile}
-                    />
-                    <CreateProfileFormInnerWeb
-                        prefill={prefill}
-                        initialProfileFormData={initialProfileFormData}
-                        isMobile={isMobile}
-                    />
-                </Wrapper>
-            )}
-            {roomView && (
-                <XView backgroundColor="white" flexGrow={1}>
-                    <XDocumentHead title="Introduce yourself" />
-                    <CreateProfileFormInnerRoom
-                        prefill={usePhotoPrefill && data ? data.prefill : null}
-                        initialProfileFormData={initialProfileFormData}
-                        roomContainerParams={roomContainerParams!!}
-                    />
-                </XView>
-            )}
-        </>
+        <Wrapper>
+            <XDocumentHead title="Introduce yourself" />
+            <BackSkipLogo
+                onBack={
+                    null
+                    // () => {
+                    //     router.replace('/authorization/ask-activation-code');
+                    // }
+                }
+                onSkip={null}
+                noLogo={isMobile}
+            />
+            <CreateProfileFormInnerWeb
+                prefill={prefill}
+                initialProfileFormData={initialProfileFormData}
+                isMobile={isMobile}
+            />
+        </Wrapper>
     );
 };
 
@@ -248,10 +227,3 @@ export const IntroduceYourselfPage = (props: IntroduceYourselfPageOuterProps) =>
         </React.Suspense>
     );
 };
-
-export default withApp(
-    'Home',
-    'viewer',
-    () => null,
-    // <IntroduceYourselfPage roomView={false} />
-);

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { useForm } from 'openland-form/useForm';
-import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { useField } from 'openland-form/useField';
@@ -10,8 +9,6 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { trackEvent } from 'openland-x-analytics';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
-import { RoomActivationCode } from './components/roomActivationCode';
-import { RoomContainerParams } from './root.page';
 import { Wrapper } from '../onboarding/components/wrapper';
 import { Title, Subtitle, FormLayout } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
@@ -27,18 +24,6 @@ export type ActivationCodeProps = {
     resendCodeClick: (event?: React.MouseEvent<any>) => void;
     emailSendedTo: string;
     isMobile: boolean;
-};
-
-export type ActivationCodeInnerProps = {
-    roomView: boolean;
-    codeSending: boolean;
-    codeError: string;
-    loginCodeStart: (a: { emailValue: string; codeValue: string }) => void;
-};
-
-export type ActivationCodeOuterProps = {
-    roomView: boolean;
-    roomContainerParams?: RoomContainerParams;
 };
 
 const trackError = (error: string) => {
@@ -72,7 +57,11 @@ export const WebSignUpActivationCode = ({
     codeError,
     loginCodeStart,
     isMobile,
-}: ActivationCodeProps & ActivationCodeInnerProps) => {
+}: ActivationCodeProps & {
+    codeSending: boolean;
+    codeError: string;
+    loginCodeStart: (a: { emailValue: string; codeValue: string }) => void;
+}) => {
     const form = useForm();
 
     let codeField = useField('input.code', '', form, [
@@ -162,7 +151,7 @@ export const WebSignUpActivationCode = ({
     );
 };
 
-export const AskActivationPage = (props: ActivationCodeProps & ActivationCodeOuterProps) => {
+export const AskActivationPage = (props: ActivationCodeProps) => {
     let router = React.useContext(XRouterContext)!;
     const [codeError, setCodeError] = React.useState('');
     const [codeSending, setCodeSending] = React.useState(false);
@@ -201,8 +190,6 @@ export const AskActivationPage = (props: ActivationCodeProps & ActivationCodeOut
                     if (error) {
                         setCodeSending(false);
                         setCodeError(InitTexts.auth.wrongCodeLength);
-                    } else {
-                        // Ignore. Should be redirect to completion page.
                     }
                 },
             );
@@ -210,66 +197,27 @@ export const AskActivationPage = (props: ActivationCodeProps & ActivationCodeOut
     };
 
     return (
-        <>
-            {!props.roomView && (
-                <Wrapper>
-                    <XDocumentHead title="Activation code" />
-                    <BackSkipLogo
-                        onBack={() => {
-                            router.replace('/authorization/ask-email');
-                            props.backButtonClick();
-                        }}
-                        onSkip={null}
-                        noLogo={props.isMobile}
-                    />
+        <Wrapper>
+            <XDocumentHead title="Activation code" />
+            <BackSkipLogo
+                onBack={() => {
+                    router.replace('/authorization/ask-email');
+                    props.backButtonClick();
+                }}
+                onSkip={null}
+                noLogo={props.isMobile}
+            />
 
-                    <WebSignUpActivationCode
-                        {...props}
-                        codeError={codeError}
-                        codeSending={codeSending}
-                        loginCodeStart={loginCodeStart}
-                        backButtonClick={() => {
-                            router.replace('/authorization/ask-email');
-                            props.backButtonClick();
-                        }}
-                    />
-                </Wrapper>
-            )}
-            {props.roomView && (
-                <XView backgroundColor="white" flexGrow={1}>
-                    <XDocumentHead title="Activation code" />
-                    <RoomActivationCode
-                        {...props}
-                        codeError={codeError}
-                        codeSending={codeSending}
-                        loginCodeStart={loginCodeStart}
-                        backButtonClick={() => {
-                            router.replace('/authorization/ask-email');
-                            props.backButtonClick();
-                        }}
-                    />
-                </XView>
-            )}
-        </>
+            <WebSignUpActivationCode
+                {...props}
+                codeError={codeError}
+                codeSending={codeSending}
+                loginCodeStart={loginCodeStart}
+                backButtonClick={() => {
+                    router.replace('/authorization/ask-email');
+                    props.backButtonClick();
+                }}
+            />
+        </Wrapper>
     );
 };
-
-export default withApp(
-    'Home',
-    'viewer',
-    () => null,
-    // <AskActivationPage
-    //     roomView={false}
-    //     signin={true}
-    //     backButtonClick={() => {
-    //         //
-    //     }}
-    //     resendCodeClick={() => {
-    //         //
-    //     }}
-    //     emailValue=""
-    //     emailSendedTo=""
-    //     emailSending={false}
-    //     emailWasResend={false}
-    // />
-);

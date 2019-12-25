@@ -3,7 +3,6 @@ import { css } from 'linaria';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import { withApp } from 'openland-web/components/withApp';
 import { XView } from 'react-mental';
 import LogoBig from 'openland-icons/logo-big.svg';
 import { UButton } from 'openland-web/components/unicorn/UButton';
@@ -112,7 +111,3 @@ export const AcceptInvitePage = (props: {
     }
     return <AcceptInvite inviter={inviter} isMobile={props.isMobile} />;
 };
-
-export default withApp('Home', 'viewer', () => {
-    return <div />;
-});

@@ -2,8 +2,6 @@ import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { BackSkipLogo } from '../components/BackSkipLogo';
-import { RoomContainerParams } from './root.page';
-import { RoomAuthMechanism } from './components/roomAuthMechanism';
 import { TextTitle1, TextBody, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
@@ -34,11 +32,6 @@ export type AuthMechanism = {
     loginWithGoogle: () => void;
     loginWithEmail: () => void;
     isMobile: boolean;
-};
-
-export type AuthMechanismOuterProps = {
-    roomView: boolean;
-    roomContainerParams: RoomContainerParams;
 };
 
 export const SignUpAuthMechanism = ({
@@ -128,23 +121,16 @@ export const SignUpAuthMechanism = ({
     );
 };
 
-export const CreateNewAccountPage = (props: AuthMechanism & AuthMechanismOuterProps) => {
+export const CreateNewAccountPage = (props: AuthMechanism) => {
     return (
         <XView backgroundColor="white" flexGrow={1}>
             <XDocumentHead title="Create New Account" />
-
-            {!props.roomView && (
-                <>
-                    <BackSkipLogo
-                        onBack={() => window.history.back()}
-                        onSkip={null}
-                        noLogo={true}
-                    />
-                    <SignUpAuthMechanism {...props} />
-                </>
-            )}
-
-            {props.roomView && <RoomAuthMechanism {...props} />}
+            <BackSkipLogo
+                onBack={() => window.history.back()}
+                onSkip={null}
+                noLogo={true}
+            />
+            <SignUpAuthMechanism {...props} />
         </XView>
     );
 };

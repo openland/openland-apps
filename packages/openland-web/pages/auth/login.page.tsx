@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as qs from 'query-string';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 
-class LoginStarter extends React.Component<{}, { error: boolean }> {
+export default class LoginStarter extends React.Component<{}, { error: boolean }> {
     constructor(props: {}) {
         super(props);
         this.state = { error: false };
@@ -22,5 +22,3 @@ class LoginStarter extends React.Component<{}, { error: boolean }> {
         return <div />;
     }
 }
-
-export default LoginStarter;

@@ -14,7 +14,7 @@ interface AuthResult {
     idTokenPayload?: { sub: string };
 }
 
-class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
+export default class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
     constructor(props: {}) {
         super(props);
         this.state = { error: false };
@@ -95,5 +95,3 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
         });
     }
 }
-
-export default AuthenticationHandler;
