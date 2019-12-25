@@ -3,6 +3,36 @@ package com.openland.spacex.store
 import org.json.JSONArray
 import org.json.JSONObject
 
+/**
+ * Serialize Record to String
+ * @param record Record for serialization
+ * @return serialized record
+ */
+fun serializeRecord(record: Record): String {
+    return JSONObject(record.fields.mapValues { serializeValue(it.value) }).toString()
+}
+
+/**
+ * Parse Record from String
+ * @param key Record Key
+ * @param src serialized record
+ * @return Parsed Record
+ */
+fun parseRecord(key: String, src: String): Record {
+    val field = JSONObject(src)
+    val fields = mutableMapOf<String, RecordValue>()
+    for (fieldKey in field.keys()) {
+        val f = field[fieldKey]!!
+        fields[fieldKey] = parseValue(f)
+    }
+    return Record(key, fields)
+}
+
+/**
+ * Serialize Record Value to JSON
+ * @param value Record Value
+ * @return JSON serialization
+ */
 private fun serializeValue(value: RecordValue): Any {
     return when (value) {
         is RecordValue.String -> value.value
@@ -14,11 +44,12 @@ private fun serializeValue(value: RecordValue): Any {
     }
 }
 
-fun serializeRecord(record: Record): String {
-    return JSONObject(record.fields.mapValues { serializeValue(it.value) }).toString()
-}
-
-fun parseValue(f: Any): RecordValue {
+/**
+ * Parse Value to Record Value
+ * @param f JSON serialization
+ * @return Record Value
+ */
+private fun parseValue(f: Any): RecordValue {
     if (f == JSONObject.NULL) {
         return RecordValue.Null
     } else if (f is String) {
@@ -38,14 +69,4 @@ fun parseValue(f: Any): RecordValue {
     } else {
         throw Error()
     }
-}
-
-fun parseRecord(key: String, src: String): Record {
-    val field = JSONObject(src)
-    val fields = mutableMapOf<String, RecordValue>()
-    for (key in field.keys()) {
-        val f = field[key]!!
-        fields[key] = parseValue(f)
-    }
-    return Record(key, fields)
 }

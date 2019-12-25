@@ -24,7 +24,7 @@ class RecordSerializationTests {
                 )
         )
         val serialized = serializeRecord(record1)
-        val expected = "{\"field6\":{\"key\":\"key2\"},\"field1\":\"value1\",\"field3\":false,\"field2\":true,\"field5\":null,\"field4\":\"valu\\\"'!#23\uD83E\uDD84e3\"}"
+        val expected = "{\"field1\":\"value1\",\"field6\":{\"key\":\"key2\"},\"field3\":false,\"field2\":true,\"field5\":null,\"field4\":\"valu\\\"'!#23\uD83E\uDD84e3\"}"
         assertEquals(expected, serialized)
 
         val res = parseRecord("key1", serialized)
