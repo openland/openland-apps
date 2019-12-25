@@ -2,12 +2,9 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import Block from '../next/block';
 
-// @ts-ignore
-import { ReactComponent as Mac } from './icons/ic-mac.svg';
-// @ts-ignore
-import { ReactComponent as Windows } from './icons/ic-win.svg';
-// @ts-ignore
-import { ReactComponent as Linux } from './icons/ic-linux.svg';
+import Mac from './icons/ic-mac.svg';
+import Windows from './icons/ic-win.svg';
+import Linux from './icons/ic-linux.svg';
 import { XView } from 'react-mental';
 
 const root = css`
