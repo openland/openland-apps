@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform } from 'react-native';
+import { Platform, Dimensions, PixelRatio } from 'react-native';
 import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
@@ -12,6 +12,7 @@ import { showFileModal } from 'openland-mobile/components/file/showFileModal';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DataSourceSharedMediaRow } from 'openland-engines/messenger/SharedMediaEngine';
 import { ASFlex } from 'react-native-async-view/ASFlex';
+import { SDevice } from 'react-native-s/SDevice';
 
 interface AsyncMediaItemProps {
     index: number;
@@ -26,20 +27,33 @@ const AsyncMediaItem = React.memo(({ message, index, imageSize, chatId, onLongPr
     const attachment = attachments[0] as SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile;
     const { isImage } = attachment.fileMetadata;
     const senderName = sender.name;
-    const [path, setPath] = React.useState();
-    const optimalSize = layoutMedia(attachment.fileMetadata.imageWidth!!, attachment.fileMetadata.imageHeight!!, 1024, 1024);
+    const [previewPath, setPreviewPath] = React.useState<string>();
+    const fsPathRef = React.useRef<string>();
+    const fullScreenSize = layoutMedia(attachment.fileMetadata.imageWidth!!, attachment.fileMetadata.imageHeight!!, 1024, 1024);
     const theme = useThemeGlobal();
 
     React.useEffect(() => {
-        return DownloadManagerInstance.watch(attachment.fileId, optimalSize, state => {
+        const d = DownloadManagerInstance.watch(attachment.fileId, fullScreenSize, state => {
+
             if (state.path) {
-                setPath(state.path);
+                fsPathRef.current = 'file://' + state.path;
             }
         });
+        const srcImgSize = Math.round(imageSize * PixelRatio.get());
+        const d1 = DownloadManagerInstance.watch(attachment.fileId, { width: srcImgSize, height: srcImgSize }, state => {
+            if (state.path) {
+                setPreviewPath('file://' + state.path);
+            }
+        });
+
+        return () => {
+            d();
+            d1();
+        };
     }, []);
 
     const onPress = React.useCallback((event: ASPressEvent) => {
-        if (isImage) {
+        if (isImage && fsPathRef.current) {
             const imageWidth = attachment.fileMetadata.imageWidth || event.w;
             const imageHeight = attachment.fileMetadata.imageHeight || event.h;
             let width, height, ratio, y = event.y, x = event.x;
@@ -58,7 +72,7 @@ const AsyncMediaItem = React.memo(({ message, index, imageSize, chatId, onLongPr
             showPictureModal({
                 title: senderName,
                 subtitle: date ? formatDateTime(parseInt(date, 10) / 1000) : undefined,
-                url: 'file://' + path,
+                url: fsPathRef.current,
                 width: imageWidth,
                 height: imageHeight,
                 isGif: attachment.fileMetadata.imageFormat === 'GIF',
@@ -85,13 +99,13 @@ const AsyncMediaItem = React.memo(({ message, index, imageSize, chatId, onLongPr
             });
         }
 
-    }, [path]);
+    }, []);
 
     const handleLongPress = React.useCallback(() => {
-        onLongPress({ filePath: path, message, chatId });
-    }, [path]);
+        onLongPress({ filePath: previewPath, message, chatId });
+    }, [previewPath]);
 
-    const url = 'file://' + path || attachment.filePreview || undefined;
+    const url = previewPath || attachment.filePreview || undefined;
 
     return (
         <ASFlex
@@ -138,7 +152,7 @@ interface AsyncSharedMediaRowProps {
 }
 
 export const AsyncSharedMediaRow = ({ item, wrapperWidth, onLongPress, chatId }: AsyncSharedMediaRowProps) => {
-    const imageSize = (wrapperWidth - 4) / 3;
+    const imageSize = Math.round((wrapperWidth - 4) / 3);
 
     return (
         <ASFlex flexDirection="row" marginBottom={2}>
