@@ -195,6 +195,7 @@ routes.add('/settings/email', '/unicorn/index');
 routes.add('/settings/apps', '/unicorn/index');
 routes.add('/settings/apps/', '/unicorn/index');
 routes.add('/settings/finance', '/unicorn/index');
+routes.add('/settings/about', '/unicorn/index');
 
 //
 // Group
