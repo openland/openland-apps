@@ -124,6 +124,7 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
                     <Text
                         style={[styles.title, { color: actionInProgress ? 'transparent' : textColor, paddingBottom: Platform.OS === 'android' ? 2 : undefined }]}
                         allowFontScaling={false}
+                        numberOfLines={1}
                     >
                         {props.title}
                     </Text>

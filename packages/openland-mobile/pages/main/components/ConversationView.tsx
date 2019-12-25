@@ -19,9 +19,6 @@ export interface MessagesListProps {
 }
 export const androidMessageInputListOverlap = 52;
 
-// specs
-const trimUserName = (name: string) => name.length > 15 ? name.slice(0, 12) + '...' : name;
-
 const styles = StyleSheet.create({
     image: {
         width: 240,
@@ -138,7 +135,11 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                                     <View marginBottom={16} flexDirection="row">
                                         <ZRoundedButton style="secondary" title="👋" onPress={() => this.sendMessage('👋')} />
                                         <View marginLeft={16}>
-                                            <ZRoundedButton style="secondary" title={`Hello, ${trimUserName(userName)}!`} onPress={() => this.sendMessage(`Hello, ${userName}!`)} />
+                                            <ZRoundedButton
+                                                style="secondary"
+                                                title={`Hello, ${userName}!`}
+                                                onPress={() => this.sendMessage(`Hello, ${userName}!`)}
+                                            />
                                         </View>
                                     </View>
                                     <ZRoundedButton style="secondary" title="Happy to connect!" onPress={() => this.sendMessage('Happy to connect!')} />
