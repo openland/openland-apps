@@ -26,7 +26,7 @@ class TestNormalizer {
         )
 
         for (case in cases) {
-            val normalized = normalizeData("1", type, JSONObject(), JSONObject(case))
+            val normalized = normalizeData("1", type, JSONObject(case))
 
             assertEquals(1, normalized.records.size)
             assertTrue(normalized.records.containsKey("1"))
@@ -51,7 +51,7 @@ class TestNormalizer {
                 field("field3", "field3_alias", scalar("String"))
         )
         val floatCase = """{"field1_alias":1.0,"field2_alias":2.0}"""
-        val normalized = normalizeData("1", type, JSONObject(), JSONObject(floatCase))
+        val normalized = normalizeData("1", type, JSONObject(floatCase))
         assertEquals(1, normalized.records.size)
         assertTrue(normalized.records.containsKey("1"))
         val nr = normalized.records.getValue("1")
@@ -72,7 +72,7 @@ class TestNormalizer {
                 field("field3", "field3_alias", scalar("String"))
         )
         val intCase = """{"field1_alias":1,"field2_alias":2}"""
-        val normalized = normalizeData("1", type, JSONObject(), JSONObject(intCase))
+        val normalized = normalizeData("1", type, JSONObject(intCase))
         assertEquals(1, normalized.records.size)
         assertTrue(normalized.records.containsKey("1"))
         val nr = normalized.records.getValue("1")
@@ -93,7 +93,7 @@ class TestNormalizer {
                 field("field3", "field3_alias", scalar("String"))
         )
         val intCase = """{"field1_alias":true,"field2_alias":false}"""
-        val normalized = normalizeData("1", type, JSONObject(), JSONObject(intCase))
+        val normalized = normalizeData("1", type, JSONObject(intCase))
         assertEquals(1, normalized.records.size)
         assertTrue(normalized.records.containsKey("1"))
         val nr = normalized.records.getValue("1")
@@ -115,7 +115,7 @@ class TestNormalizer {
                 field("field4", "field4_alias", scalar("Boolean"))
         )
         val case = """{"field1_alias":true,"field2_alias":false,"field3_alias":null}"""
-        val normalized = normalizeData("1", type, JSONObject(), JSONObject(case))
+        val normalized = normalizeData("1", type, JSONObject(case))
         assertEquals(1, normalized.records.size)
         assertTrue(normalized.records.containsKey("1"))
         val nr = normalized.records.getValue("1")
@@ -139,7 +139,7 @@ class TestNormalizer {
                 field("field4", "field4_alias", scalar("Int"))
         )
         val case = """{"field1_alias":1,"field2_alias":2,"field3_alias":null}"""
-        val normalized = normalizeData("1", type, JSONObject(), JSONObject(case))
+        val normalized = normalizeData("1", type, JSONObject(case))
         assertEquals(1, normalized.records.size)
         assertTrue(normalized.records.containsKey("1"))
         val nr = normalized.records.getValue("1")
@@ -163,7 +163,7 @@ class TestNormalizer {
                 field("field4", "field4_alias", scalar("Float"))
         )
         val case = """{"field1_alias":1.0,"field2_alias":2.0,"field3_alias":null}"""
-        val normalized = normalizeData("1", type, JSONObject(), JSONObject(case))
+        val normalized = normalizeData("1", type, JSONObject(case))
         assertEquals(1, normalized.records.size)
         assertTrue(normalized.records.containsKey("1"))
         val nr = normalized.records.getValue("1")
@@ -187,7 +187,7 @@ class TestNormalizer {
                 field("field4", "field4_alias", scalar("ID"))
         )
         val case = """{"field1_alias":1,"field2_alias":"2","field3_alias":null}"""
-        val normalized = normalizeData("1", type, JSONObject(), JSONObject(case))
+        val normalized = normalizeData("1", type, JSONObject(case))
         assertEquals(1, normalized.records.size)
         assertTrue(normalized.records.containsKey("1"))
         val nr = normalized.records.getValue("1")
@@ -211,7 +211,7 @@ class TestNormalizer {
                 field("field4", "field4_alias", scalar("Date"))
         )
         val case = """{"field1_alias":1,"field2_alias":"2","field3_alias":null}"""
-        val normalized = normalizeData("1", type, JSONObject(), JSONObject(case))
+        val normalized = normalizeData("1", type, JSONObject(case))
         assertEquals(1, normalized.records.size)
         assertTrue(normalized.records.containsKey("1"))
         val nr = normalized.records.getValue("1")
@@ -236,7 +236,7 @@ class TestNormalizer {
         )
         val case = """{"field1_alias":1,"field2_alias":"2","field3_alias":null}"""
         assertFailsWith(InvalidDataException::class) {
-            normalizeData("1", type, JSONObject(), JSONObject(case))
+            normalizeData("1", type, JSONObject(case))
         }
     }
 
@@ -250,7 +250,7 @@ class TestNormalizer {
         )
         val case = """{"field1_alias":"1","field2_alias":null,"field3_alias":null}"""
         assertFailsWith(InvalidDataException::class) {
-            normalizeData("1", type, JSONObject(), JSONObject(case))
+            normalizeData("1", type, JSONObject(case))
         }
     }
 
@@ -262,7 +262,7 @@ class TestNormalizer {
         )
         val cases = listOf("""{"id":"1","value":null}""", """{"id":1,"value":null}""")
         for (case in cases) {
-            val normalized = normalizeData("some-parent-id", type, JSONObject(), JSONObject(case))
+            val normalized = normalizeData("some-parent-id", type, JSONObject(case))
             assertEquals(1, normalized.records.size)
             assertTrue(normalized.records.containsKey("1"))
         }
@@ -284,7 +284,7 @@ class TestNormalizer {
                 """{"__typename": "SomeValue", "id":1,"value":null,"value2":"2"}"""
         )
         for (case in cases) {
-            val normalized = normalizeData("some-parent-id", type, JSONObject(), JSONObject(case))
+            val normalized = normalizeData("some-parent-id", type, JSONObject(case))
             assertEquals(1, normalized.records.size)
             assertTrue(normalized.records.containsKey("1"))
             val r = normalized.records["1"]!!
@@ -304,14 +304,14 @@ class TestNormalizer {
         val cases = listOf("""{"__typename":"SomeType","id":"1","value":null,"value2":"2"}""", """{"__typename":"SomeType","id":1,"value":null,"value2":"2"}""")
         val negativeCase = listOf("""{"__typename":"SomeType2","id":"1","value":null,"value2":"2"}""", """{"__typename":"SomeType2","id":1,"value":null,"value2":"2"}""")
         for (case in cases) {
-            val normalized = normalizeData("some-parent-id", type, JSONObject(), JSONObject(case))
+            val normalized = normalizeData("some-parent-id", type, JSONObject(case))
             assertEquals(1, normalized.records.size)
             assertTrue(normalized.records.containsKey("1"))
             val r = normalized.records["1"]!!
             assertEquals(3, r.fields.size)
         }
         for (case in negativeCase) {
-            val normalized = normalizeData("some-parent-id", type, JSONObject(), JSONObject(case))
+            val normalized = normalizeData("some-parent-id", type, JSONObject(case))
             assertEquals(1, normalized.records.size)
             assertTrue(normalized.records.containsKey("1"))
             val r = normalized.records["1"]!!
@@ -325,7 +325,7 @@ class TestNormalizer {
                 field("list", "list", list(scalar("String")))
         )
         val case = """{"list":["1",null,"3"]}"""
-        val normalized = normalizeData("1", type, JSONObject(), JSONObject(case))
+        val normalized = normalizeData("1", type, JSONObject(case))
         assertEquals(1, normalized.records.size)
         assertTrue(normalized.records.containsKey("1"))
         val nr = normalized.records.getValue("1")
@@ -345,7 +345,7 @@ class TestNormalizer {
                 field("list", "list", list(list(scalar("String"))))
         )
         val case = """{"list":[["1",null,"3"]]}"""
-        val normalized = normalizeData("1", type, JSONObject(), JSONObject(case))
+        val normalized = normalizeData("1", type, JSONObject(case))
         assertEquals(1, normalized.records.size)
         assertTrue(normalized.records.containsKey("1"))
         val nr = normalized.records.getValue("1")
@@ -371,7 +371,7 @@ class TestNormalizer {
                 )
         )
         val case = """{"list":[{"value":"1"},null,{"value":"3"}]}"""
-        val normalized = normalizeData("1", type, JSONObject(), JSONObject(case))
+        val normalized = normalizeData("1", type, JSONObject(case))
         assertEquals(3, normalized.records.size)
         assertTrue(normalized.records.containsKey("1"))
         assertTrue(normalized.records.containsKey("1.list.0"))

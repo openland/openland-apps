@@ -6,10 +6,65 @@ import com.openland.spacex.Selector
 import org.json.JSONArray
 import org.json.JSONObject
 
+
+/**
+ * Normalize Operation Response
+ * @param rootCacheKey optional Root Cache Key. If not specified then data will be ignored until object
+ *                     with id found
+ * @param type Type to normalize
+ * @param arguments Operation Arguments
+ * @param data Operation Data
+ * @return Normalized Record Set
+ */
+fun normalizeResponse(rootCacheKey: String?, type: OutputType.Object, arguments: JSONObject, data: JSONObject): RecordSet {
+    val collection = NormalizedCollection()
+    normalizeRootSelector(rootCacheKey, collection, type.selectors, arguments, data)
+    return collection.build()
+}
+
+/**
+ * Normalize Fragment
+ * @param id of Record
+ * @param type Type to normalize
+ * @param data Fragment's data
+ * @return Normalized Record Set
+ */
+fun normalizeData(id: String, type: OutputType.Object, data: JSONObject): RecordSet {
+    val collection = NormalizedCollection()
+    normalizeSelector(id, collection, type.selectors, JSONObject(), data)
+    return collection.build()
+}
+
 private class NormalizedCollection {
     val records = mutableMapOf<String, MutableMap<String, RecordValue>>()
     fun build(): RecordSet {
         return RecordSet(records.mapValues { Record(it.key, it.value) })
+    }
+}
+
+private fun normalizeRootSelector(rootCacheKey: String?, collection: NormalizedCollection,
+                                  selectors: List<Selector>, arguments: JSONObject,
+                                  data: JSONObject) {
+    if (rootCacheKey != null) {
+        for (f in selectors) {
+            if (f !is Selector.Field) {
+                error("Root query cant't contain fragments")
+            }
+            val key = selectorKey(f.name, f.arguments, arguments)
+            val id = "$rootCacheKey.$key"
+            val refId = "$rootCacheKey.\$ref.$key"
+            val ex = collection.records[refId]
+            val map: MutableMap<String, RecordValue>
+            if (ex == null) {
+                map = mutableMapOf()
+                collection.records[refId] = map
+            } else {
+                map = ex
+            }
+            map["data"] = normalizeValue(id, collection, f.type, arguments, data[f.alias])!!
+        }
+    } else {
+        normalizeSelector(null, collection, selectors, arguments, data)
     }
 }
 
@@ -136,42 +191,4 @@ private fun normalizeSelector(
     } else {
         return null
     }
-}
-
-private fun normalizeRootSelector(rootCacheKey: String?, collection: NormalizedCollection,
-                                  selectors: List<Selector>, arguments: JSONObject,
-                                  data: JSONObject) {
-    if (rootCacheKey != null) {
-        for (f in selectors) {
-            if (f !is Selector.Field) {
-                error("Root query cant't contain fragments")
-            }
-            val key = selectorKey(f.name, f.arguments, arguments)
-            val id = "$rootCacheKey.$key"
-            val refId = "$rootCacheKey.\$ref.$key"
-            val ex = collection.records[refId]
-            val map: MutableMap<String, RecordValue>
-            if (ex == null) {
-                map = mutableMapOf()
-                collection.records[refId] = map
-            } else {
-                map = ex
-            }
-            map["data"] = normalizeValue(id, collection, f.type, arguments, data[f.alias])!!
-        }
-    } else {
-        normalizeSelector(null, collection, selectors, arguments, data)
-    }
-}
-
-fun normalizeData(id: String, type: OutputType.Object, arguments: JSONObject, data: JSONObject): RecordSet {
-    val collection = NormalizedCollection()
-    normalizeSelector(id, collection, type.selectors, arguments, data)
-    return collection.build()
-}
-
-fun normalizeResponse(rootCacheKey: String?, type: OutputType.Object, arguments: JSONObject, data: JSONObject): RecordSet {
-    val collection = NormalizedCollection()
-    normalizeRootSelector(rootCacheKey, collection, type.selectors, arguments, data)
-    return collection.build()
 }

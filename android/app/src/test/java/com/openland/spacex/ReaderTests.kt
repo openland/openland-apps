@@ -40,7 +40,7 @@ class ReaderTests {
                 "field8" to RecordValue.Boolean(false)
         )))
 
-        val res = readFromStore("1", store, type, JSONObject())
+        val res = readFromStore("1", store, type)
         assertTrue(res.first)
         assertNotNull(res.second)
         val v = res.second!!

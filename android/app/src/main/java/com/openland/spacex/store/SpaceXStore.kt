@@ -3,7 +3,7 @@ package com.openland.spacex.store
 import android.content.Context
 import com.openland.spacex.OperationDefinition
 import com.openland.spacex.OperationKind
-import com.openland.spacex.persistence.SpaceXPersistence
+import com.openland.spacex.store.persistence.SpaceXPersistence
 import com.openland.spacex.utils.DispatchQueue
 import com.openland.spacex.utils.trace
 import org.json.JSONObject
@@ -24,6 +24,11 @@ private class Subscription(val id: Set<String>, val callback: () -> Unit)
 private class ReadRequest(val missing: MutableSet<String>, val callback: () -> Unit)
 
 
+/**
+ * SpaceX Store. Integrates RecordStore, Persistence and subscriptions.
+ * @param context Android Context
+ * @param name Optional name of persistence
+ */
 class SpaceXStore(context: Context, name: String?) {
     companion object {
         const val ROOT_QUERY = "ROOT_QUERY"
@@ -46,19 +51,34 @@ class SpaceXStore(context: Context, name: String?) {
     private var nextSubscriptionId = AtomicInteger(1)
     private var subscriptions = mutableMapOf<Int, Subscription>()
 
-    fun mergeQuery(operation: OperationDefinition, variables: JSONObject, data: JSONObject, queue: DispatchQueue, callback: () -> Unit) {
+    /**
+     * Merge Operation to Store
+     * @param operation Operation to merge
+     * @param arguments Operation arguments
+     * @param data Operation Data
+     * @param queue DispatchQueue to dispatch result
+     * @param callback Completion callback
+     */
+    fun mergeQuery(operation: OperationDefinition, arguments: JSONObject, data: JSONObject, queue: DispatchQueue, callback: () -> Unit) {
         this.normalizationQueue.async {
             val rootCacheKey = if (operation.kind == OperationKind.QUERY) ROOT_QUERY else null
-            val normalized = normalizeResponse(rootCacheKey, operation.selector, variables, data)
+            val normalized = normalizeResponse(rootCacheKey, operation.selector, arguments, data)
             this.doMerge(normalized, queue, callback)
         }
     }
 
-    fun readQuery(operation: OperationDefinition, variables: JSONObject, queue: DispatchQueue, callback: (result: QueryReadResult) -> Unit) {
+    /**
+     * Read Query from Store
+     * @param operation Query to read
+     * @param arguments Query Arguments
+     * @param queue DispatchQueue to dispatch result
+     * @param callback Completion callback
+     */
+    fun readQuery(operation: OperationDefinition, arguments: JSONObject, queue: DispatchQueue, callback: (result: QueryReadResult) -> Unit) {
         this.storeQueue.async {
-            prepareRead(operation, variables) {
+            prepareRead(operation, arguments) {
                 // Read from in-memory store
-                val res = readRootFromStore(SpaceXStore.ROOT_QUERY, store, operation.selector, variables)
+                val res = readRootFromStore(SpaceXStore.ROOT_QUERY, store, operation.selector, arguments)
 
                 // Notify about result
                 if (res.first) {
@@ -74,11 +94,18 @@ class SpaceXStore(context: Context, name: String?) {
         }
     }
 
-    fun readQueryAndWatch(operation: OperationDefinition, variables: JSONObject, queue: DispatchQueue, callback: (result: QueryReadAndWatchResult) -> Unit) {
+    /**
+     * Read Query and Watch. Watch notification can fire only once.
+     * @param operation Query to read
+     * @param arguments Query Arguments
+     * @param queue DispatchQueue to dispatch result
+     * @param callback Completion callback
+     */
+    fun readQueryAndWatch(operation: OperationDefinition, arguments: JSONObject, queue: DispatchQueue, callback: (result: QueryReadAndWatchResult) -> Unit) {
         this.storeQueue.async {
-            prepareRead(operation, variables) {
+            prepareRead(operation, arguments) {
                 // Read from in-memory store
-                val res = readRootFromStore(SpaceXStore.ROOT_QUERY, store, operation.selector, variables)
+                val res = readRootFromStore(SpaceXStore.ROOT_QUERY, store, operation.selector, arguments)
 
                 // If missing
                 if (!res.first) {
@@ -94,7 +121,7 @@ class SpaceXStore(context: Context, name: String?) {
 
                 // Calculate keys
                 // TODO: Optimize
-                val normalized = normalizeResponse(SpaceXStore.ROOT_QUERY, operation.selector, variables, res.second!!)
+                val normalized = normalizeResponse(SpaceXStore.ROOT_QUERY, operation.selector, arguments, res.second!!)
                 val keys = mutableSetOf<String>()
                 for (r in normalized.records) {
                     for (f in r.value.fields) {

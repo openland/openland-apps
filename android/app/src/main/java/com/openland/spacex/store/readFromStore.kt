@@ -131,10 +131,27 @@ private fun readSelector(cacheKey: String, store: RecordStore, selectors: List<S
     return true to JSONObject(fields)
 }
 
-fun readFromStore(cacheKey: String, store: RecordStore, type: OutputType.Object, arguments: JSONObject): Pair<Boolean, JSONObject?> {
-    return readSelector(cacheKey, store, type.selectors, arguments)
+/**
+ * Read Object from Store. Used only in tests.
+ * @param cacheKey Cache Key of Record
+ * @param store Store to read from
+ * @param type Object Type to read
+ * @return pair of true and JSONObject if read was successful
+ * @throws Error if some of the records in the tree are not loaded to Record Store*
+ */
+fun readFromStore(cacheKey: String, store: RecordStore, type: OutputType.Object): Pair<Boolean, JSONObject?> {
+    return readSelector(cacheKey, store, type.selectors, JSONObject())
 }
 
+/**
+ * Read Operation from Store
+ * @param rootCacheKey Root Cache Key for operation type
+ * @param store Store to read from
+ * @param type Type to read
+ * @param arguments Operation Arguments
+ * @return pair of true and JSONObject if read was successful
+ * @throws Error if some of the records in the tree are not loaded to Record Store
+ */
 fun readRootFromStore(rootCacheKey: String, store: RecordStore, type: OutputType.Object, arguments: JSONObject): Pair<Boolean, JSONObject?> {
     val fields = mutableMapOf<String, Any?>()
     for (f in type.selectors) {

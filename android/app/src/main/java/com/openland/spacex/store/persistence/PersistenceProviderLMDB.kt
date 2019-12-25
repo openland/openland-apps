@@ -1,4 +1,4 @@
-package com.openland.spacex.persistence
+package com.openland.spacex.store.persistence
 
 import android.content.Context
 import com.openland.lmdb.LMDB

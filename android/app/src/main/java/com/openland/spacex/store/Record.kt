@@ -1,6 +1,13 @@
 package com.openland.spacex.store
 
+/**
+ * RecordValue represents field value
+ */
 sealed class RecordValue {
+
+    /**
+     * String Record Value
+     */
     class String(val value: kotlin.String) : RecordValue() {
         override fun equals(other: Any?): kotlin.Boolean {
             return other != null && other is RecordValue.String && other.value == value
@@ -15,6 +22,9 @@ sealed class RecordValue {
         }
     }
 
+    /**
+     * Number Record Value
+     */
     class Number(val value: kotlin.Double) : RecordValue() {
 
         override fun equals(other: Any?): kotlin.Boolean {
@@ -30,6 +40,9 @@ sealed class RecordValue {
         }
     }
 
+    /**
+     * Boolean Record Value
+     */
     class Boolean(val value: kotlin.Boolean) : RecordValue() {
         override fun equals(other: Any?): kotlin.Boolean {
             return other != null && other is RecordValue.Boolean && other.value == value
@@ -44,12 +57,18 @@ sealed class RecordValue {
         }
     }
 
+    /**
+     * Null Record Value
+     */
     object Null : RecordValue() {
         override fun toString(): kotlin.String {
             return "<NULL>"
         }
     }
 
+    /**
+     * Record Value that references other Record
+     */
     class Reference(val key: kotlin.String) : RecordValue() {
         override fun equals(other: Any?): kotlin.Boolean {
             return other != null && other is RecordValue.Reference && other.key == key
@@ -64,6 +83,9 @@ sealed class RecordValue {
         }
     }
 
+    /**
+     * List Record Value of Record Values
+     */
     class List(val items: kotlin.collections.List<RecordValue>) : RecordValue() {
         override fun equals(other: Any?): kotlin.Boolean {
             return other != null && other is RecordValue.List && other.items == items
@@ -79,6 +101,9 @@ sealed class RecordValue {
     }
 }
 
+/**
+ * In memory representation of Record and it't fields
+ */
 class Record(val key: String, val fields: Map<String, RecordValue>) {
     override fun equals(other: Any?): Boolean {
         if (other == null || other !is Record) {
@@ -106,4 +131,7 @@ class Record(val key: String, val fields: Map<String, RecordValue>) {
     }
 }
 
+/**
+ * Set of Records
+ */
 class RecordSet(val records: Map<String, Record>)

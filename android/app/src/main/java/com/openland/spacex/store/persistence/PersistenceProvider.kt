@@ -1,4 +1,4 @@
-package com.openland.spacex.persistence
+package com.openland.spacex.store.persistence
 
 /**
  * PersistenceProvider is an interface that have to be implemented to connect to new storage engine.
