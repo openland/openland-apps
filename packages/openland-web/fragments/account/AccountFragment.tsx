@@ -126,26 +126,38 @@ export const AccountFragment = React.memo(() => {
                             path="/settings/finance"
                         />
                     </XWithRole> */}
-                    <UListItem
-                        title="Notifications"
-                        icon={<NotificationsIcon />}
-                        path="/settings/notifications"
-                    />
-                    <UListItem
-                        title="Email preferences"
-                        icon={<EmailIcon />}
-                        path="/settings/email"
-                    />
-                    <UListItem
-                        title="Appearance"
-                        icon={<AppearanceIcon />}
-                        path="/settings/appearance"
-                    />
-                    <UListItem
-                        title="Download apps"
-                        icon={<DownloadIcon />}
-                        path="/settings/download"
-                    />
+
+                    <UListGroup header="Settings">
+                        <UListItem
+                            title="Notifications"
+                            icon={<NotificationsIcon />}
+                            path="/settings/notifications"
+                        />
+                        <UListItem
+                            title="Email preferences"
+                            icon={<EmailIcon />}
+                            path="/settings/email"
+                        />
+                        <UListItem
+                            title="Appearance"
+                            icon={<AppearanceIcon />}
+                            path="/settings/appearance"
+                        />
+                    </UListGroup>
+
+                    <UListGroup header="Openland">
+                        <UListItem
+                            title="Install apps"
+                            icon={<DownloadIcon />}
+                            path="/settings/download"
+                        />
+                        <UListItem
+                            title="About us"
+                            icon={<DownloadIcon />}
+                            path="/settings/about"
+                        />
+                    </UListGroup>
+
 
                     <UListGroup
                         header="Organizations"
