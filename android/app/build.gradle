@@ -289,6 +289,9 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    // Tests
+    testImplementation 'org.json:json:20160810'
 }
 
 // Run this once to be able to run the application with BUCK

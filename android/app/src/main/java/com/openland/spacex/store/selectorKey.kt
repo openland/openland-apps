@@ -4,6 +4,11 @@ import com.openland.spacex.InputValue
 import org.json.JSONArray
 import org.json.JSONObject
 
+/**
+ * Calculate Selector Key from JSON object
+ * @param src Source Object
+ * @return selector key
+ */
 private fun selectorValueKey(src: Any): String {
     if (src == JSONObject.NULL) {
         return "null"
@@ -27,6 +32,12 @@ private fun selectorValueKey(src: Any): String {
     }
 }
 
+/**
+ * Selector key from InputValue
+ * @param value Input Value
+ * @param arguments Operation arguments
+ * @return selector key
+ */
 private fun selectorKey(value: InputValue, arguments: JSONObject): String? {
     if (value is InputValue.Int) {
         return value.value.toString()
@@ -59,6 +70,13 @@ private fun selectorKey(value: InputValue, arguments: JSONObject): String? {
     error("Unreachable code")
 }
 
+/**
+ * Calculate field selector key
+ * @param name Field Name
+ * @param fieldArguments Field arguments
+ * @param arguments Operation arguments
+ * @return selector key
+ */
 fun selectorKey(name: String, fieldArguments: Map<String, InputValue>, arguments: JSONObject): String {
     if (fieldArguments.isEmpty()) {
         return name
