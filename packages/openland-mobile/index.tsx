@@ -21,9 +21,6 @@ import 'openland-y-runtime/AppNotifications';
 // Disable annoying yellow box
 (console as any).disableYellowBox = true;
 
-// Import auth0
-import './utils/auth0Client';
-
 // App Root
 import { AppRegistry } from 'react-native';
 // Enable layout animations on Android
