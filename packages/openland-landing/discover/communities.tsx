@@ -304,7 +304,7 @@ const button = css`
     font-weight: 600;
     font-size: 16px;
     color: #248bf2;
-    background: #e9f3fe;
+    background-color: white;
     border-radius: 12px;
 
     position: absolute;
