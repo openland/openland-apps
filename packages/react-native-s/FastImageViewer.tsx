@@ -39,6 +39,7 @@ export interface FastImageViewerProps {
     onStarting?: () => void;
     onClosed?: () => void;
     onClosing?: () => void;
+    crossFade?: boolean;
 }
 
 export class FastImageViewer extends React.PureComponent<FastImageViewerProps> {
@@ -50,17 +51,18 @@ export class FastImageViewer extends React.PureComponent<FastImageViewerProps> {
     private _imagePreviewLoaded = false;
 
     private _loadingOpacity = new Animated.Value(0);
-    private _transitionOpacity = new Animated.Value(0);
+    private _transitionOpacity = new Animated.Value(this.props.crossFade ? 1 : 0);
     private _transitionOpacityMain = this._transitionOpacity.interpolate({
         inputRange: [0.2, 1],
         outputRange: [0, 1],
         extrapolate: 'clamp'
     });
-    // private _transitionOpacityPreview = this._transitionOpacity.interpolate({
-    //     inputRange: [0, 0.9, 1],
-    //     outputRange: [1, 1, 0],
-    //     extrapolate: 'clamp'
-    // });
+    private _transitionOpacityPreview = this._transitionOpacity.interpolate({
+        inputRange: [0, 1],
+        outputRange: [1, 0],
+        extrapolate: 'clamp'
+    });
+    
     private _transitionZoomMoverX = new Animated.Value(1);
     private _transitionZoomMoverY = new Animated.Value(1);
     private _transitionOffsetMoverX = new Animated.Value(0);
@@ -575,7 +577,7 @@ export class FastImageViewer extends React.PureComponent<FastImageViewerProps> {
                                 left: 0,
                                 width: this.props.srcWidth,
                                 height: this.props.srcHeight,
-                                // opacity: this._transitionOpacityPreview
+                                opacity: this.props.crossFade ? this._transitionOpacityPreview : undefined
                             }}
                         >
                             <View

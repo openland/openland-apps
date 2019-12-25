@@ -58,7 +58,7 @@ export class DownloadManager implements DownloadManagerInterface {
 
             let url = 'https://ucarecdn.com/' + uuid + '/';
             if (resize) {
-                url += '-/scale_crop/' + resize.width + 'x' + resize.height + '/';
+                url += '-/scale_crop/' + resize.width + 'x' + resize.height + '/center/';
             }
 
             if (existing) {
