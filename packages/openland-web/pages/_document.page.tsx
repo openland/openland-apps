@@ -336,6 +336,25 @@ export default class OpenlandDocument extends Document {
                         }}
                         id="progress_container"
                     />
+
+                    {/* Required for logo gradients to work when logo is used multiple times */}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" viewBox="0 0" style={{ position: 'fixed', top: '0' }}>
+                        <defs>
+                            <linearGradient
+                                id="paint0_linear"
+                                x1="959.977"
+                                y1="32.8002"
+                                x2="234.863"
+                                y2="794.492"
+                                gradientUnits="userSpaceOnUse"
+                            >
+                                <stop stopColor="#FEC519" />
+                                <stop offset="0.278985" stopColor="#E62E5C" />
+                                <stop offset="0.760754" stopColor="#45A3E6" />
+                                <stop offset="1" stopColor="#5CE6C3" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
                 </body>
             </html>
         );
