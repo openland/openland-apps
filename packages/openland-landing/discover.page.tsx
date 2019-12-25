@@ -24,9 +24,9 @@ const root = css`
 export const DiscoverPage = React.memo(() => (
     <div className={root}>
         <XDocumentHead
-            title="Inspiring communities"
+            title="Inspiring chat communities"
             titleWithoutReverse={true}
-            description="Discover and join communities for your industry, role, skills, interests, and location"
+            description="Discover and join communities for your industry, role, skills, interests, and location."
             imgUrl="https://cdn.openland.com/shared/og/og-find.png"
         />
         <Header startLink={true} />
