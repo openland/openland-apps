@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, Dimensions, PixelRatio } from 'react-native';
+import { Platform, PixelRatio } from 'react-native';
 import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
@@ -12,7 +12,6 @@ import { showFileModal } from 'openland-mobile/components/file/showFileModal';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DataSourceSharedMediaRow } from 'openland-engines/messenger/SharedMediaEngine';
 import { ASFlex } from 'react-native-async-view/ASFlex';
-import { SDevice } from 'react-native-s/SDevice';
 
 interface AsyncMediaItemProps {
     index: number;
