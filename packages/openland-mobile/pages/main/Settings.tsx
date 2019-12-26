@@ -102,13 +102,7 @@ let SettingsContent = ((props: PageProps) => {
             </ZListGroup>
             <ZListGroup header="About">
                 <ZListItem
-                    leftIconColor={theme.tintCyan}
-                    leftIcon={require('assets/ic-help-glyph-24.png')}
-                    text="Ask for help"
-                    onPress={() => props.router.push('Conversation', { flexibleId: '9KkDvyowQgcYAn0WvYgXFrdqAp' })}
-                />
-                <ZListItem
-                    leftIconColor={theme.tintPurple}
+                    leftIconColor={theme.tintOrange}
                     leftIcon={require('assets/ic-star-glyph-24.png')}
                     text="Rate the app"
                     onPress={() => {
@@ -117,6 +111,18 @@ let SettingsContent = ((props: PageProps) => {
                             GooglePackageName: 'com.openland.app'
                         }, () => { /**/ });
                     }}
+                />
+                <ZListItem
+                    leftIconColor={theme.tintCyan}
+                    leftIcon={require('assets/ic-help-glyph-24.png')}
+                    text="Ask for help"
+                    onPress={() => props.router.push('Conversation', { flexibleId: '9KkDvyowQgcYAn0WvYgXFrdqAp' })}
+                />
+                <ZListItem
+                    leftIconColor={theme.tintBlue}
+                    leftIcon={require('assets/ic-info-glyph-24.png')}
+                    text="About us"
+                    path="SettingsAbout"
                 />
             </ZListGroup>
 

@@ -36,6 +36,7 @@ import { GroupList } from './pages/main/GroupList';
 import { SelectPrimaryOrganization } from './pages/main/SelectPrimaryOrganization';
 import { SetUserShortname } from './pages/main/SetUserShortname';
 import { SettingsAppearance } from './pages/main/SettingsAppearance';
+import { SettingsAbout } from './pages/main/SettingsAbout';
 import { HomeDialogs } from './pages/main/HomeDialogs';
 import { SetOrgShortname } from './pages/main/SetOrgShortname';
 import { EditGroup } from './pages/main/EditGroup';
@@ -92,6 +93,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('SettingsEmail', SettingsEmail)
   .addRoute('SettingsOrganizations', SettingsOrganizations)
   .addRoute('SettingsAppearance', SettingsAppearance)
+  .addRoute('SettingsAbout', SettingsAbout)
   .addRoute('NewOrganization', NewOrganization)
   .addRoute('EditCommunity', EditCommunity)
   .addRoute('EditOrganization', EditOrganization)
