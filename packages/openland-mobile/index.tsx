@@ -22,7 +22,7 @@ import 'openland-y-runtime/AppNotifications';
 (console as any).disableYellowBox = true;
 
 // App Root
-import { AppRegistry, Platform, AppState } from 'react-native';
+import { AppRegistry } from 'react-native';
 // Enable layout animations on Android
 // disabled to fix random crash https://github.com/facebook/react-native/issues/13984#issuecomment-343826572
 // if (UIManager.setLayoutAnimationEnabledExperimental) { UIManager.setLayoutAnimationEnabledExperimental(true); }
