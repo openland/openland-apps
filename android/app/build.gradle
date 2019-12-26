@@ -111,8 +111,7 @@ if ("$System.env.CI" == "true") {
 
 def jscFlavor = 'org.webkit:android-jsc:+'
 def appVersionCode = Integer.valueOf(System.env.BUILD_NUMBER ?: 1)
-// enable when issue (https://github.com/auth0/react-native-auth0/issues/251) is resolved
-def enableHermes = false
+def enableHermes = true
 project.ext.react.put("enableHermes", enableHermes)
 
 android {
