@@ -12,33 +12,32 @@ class KeepAliveModule(reactContext: ReactApplicationContext) : ReactContextBaseJ
     }
 
     init {
+
         // Hack Timers
-        val headlessContext = HeadlessJsTaskContext.getInstance(reactContext)
-        try {
-            val mActiveTasks = HeadlessJsTaskContext::class.java.getDeclaredField("mActiveTasks")
-            mActiveTasks.isAccessible = true
-            val tasks = mActiveTasks.get(headlessContext) as MutableSet<Int>
-            tasks.add(-1)
-        } catch (e: NoSuchFieldException) {
-            e.printStackTrace()
-        } catch (e: IllegalAccessException) {
-            e.printStackTrace()
-        }
-    }
+        runOnUIThread {
+            val headlessContext = HeadlessJsTaskContext.getInstance(reactContext)
+            try {
+                val mActiveTasks = HeadlessJsTaskContext::class.java.getDeclaredField("mActiveTasks")
+                mActiveTasks.isAccessible = true
+                val tasks = mActiveTasks.get(headlessContext) as MutableSet<Int>
+                tasks.add(-1)
+            } catch (e: NoSuchFieldException) {
+                e.printStackTrace()
+            } catch (e: IllegalAccessException) {
+                e.printStackTrace()
+            }
 
-    override fun initialize() {
-        super.initialize()
-
-        val module = reactApplicationContext.getNativeModule(Timing::class.java)
-        try {
-            val isRunningTasks = Timing::class.java.getDeclaredField("isRunningTasks")
-            isRunningTasks.isAccessible = true
-            val v = isRunningTasks.get(module) as AtomicBoolean
-            v.set(true)
-        } catch (e: NoSuchFieldException) {
-            e.printStackTrace()
-        } catch (e: IllegalAccessException) {
-            e.printStackTrace()
+            val module = reactApplicationContext.getNativeModule(Timing::class.java)
+            try {
+                val isRunningTasks = Timing::class.java.getDeclaredField("isRunningTasks")
+                isRunningTasks.isAccessible = true
+                val v = isRunningTasks.get(module) as AtomicBoolean
+                v.set(true)
+            } catch (e: NoSuchFieldException) {
+                e.printStackTrace()
+            } catch (e: IllegalAccessException) {
+                e.printStackTrace()
+            }
         }
     }
 }
