@@ -22,7 +22,7 @@ import 'openland-y-runtime/AppNotifications';
 (console as any).disableYellowBox = true;
 
 // App Root
-import { AppRegistry } from 'react-native';
+import { AppRegistry, Platform, AppState } from 'react-native';
 // Enable layout animations on Android
 // disabled to fix random crash https://github.com/facebook/react-native/issues/13984#issuecomment-343826572
 // if (UIManager.setLayoutAnimationEnabledExperimental) { UIManager.setLayoutAnimationEnabledExperimental(true); }
@@ -30,11 +30,5 @@ import { AppRegistry } from 'react-native';
 import { withGlobalLoader } from './components/ZGlobalLoader';
 import { Init } from './pages/Init';
 import { SNativeConfig } from 'react-native-s/SNativeConfig';
-import { delay } from 'openland-y-utils/timer';
 SNativeConfig.loader = <ZLoader />;
 AppRegistry.registerComponent('openland', () => withGlobalLoader(Init));
-AppRegistry.registerHeadlessTask('KeepAlive', () => async () => {
-    while (true) {
-        await delay(15000);
-    }
-});

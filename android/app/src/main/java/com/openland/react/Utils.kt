@@ -3,6 +3,10 @@ package com.openland.react
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import com.facebook.react.bridge.LifecycleEventListener
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.jstasks.HeadlessJsTaskContext
+import com.facebook.react.jstasks.HeadlessJsTaskEventListener
 
 private val handler = Handler(Looper.getMainLooper())
 
@@ -26,3 +30,63 @@ val Context.statusBarHeight: Float
 
         return statusBarHeight
     }
+
+
+fun watchLifecycle(reactContext: ReactApplicationContext, callback: (active: Boolean) -> Unit) {
+
+    val headlessJsTaskContext = HeadlessJsTaskContext.getInstance(reactContext)
+
+    val syncObject = Object()
+    var lastValue = false
+
+    var wasStarted = false
+    var hasTask = headlessJsTaskContext.hasActiveTasks()
+
+    fun notifyIfNeeded() {
+        val nv = wasStarted or hasTask
+        if (nv != lastValue) {
+            lastValue = nv
+            callback(nv)
+        }
+    }
+
+    reactContext.addLifecycleEventListener(object : LifecycleEventListener {
+        override fun onHostResume() {
+            synchronized(syncObject) {
+                wasStarted = true
+                notifyIfNeeded()
+            }
+        }
+
+        override fun onHostPause() {
+            synchronized(syncObject) {
+                wasStarted = false
+                notifyIfNeeded()
+            }
+        }
+
+        override fun onHostDestroy() {
+            synchronized(syncObject) {
+                wasStarted = false
+                notifyIfNeeded()
+            }
+        }
+    })
+
+    headlessJsTaskContext.addTaskEventListener(object : HeadlessJsTaskEventListener {
+
+        override fun onHeadlessJsTaskStart(taskId: Int) {
+            synchronized(syncObject) {
+                hasTask = headlessJsTaskContext.hasActiveTasks()
+                notifyIfNeeded()
+            }
+        }
+
+        override fun onHeadlessJsTaskFinish(taskId: Int) {
+            synchronized(syncObject) {
+                hasTask = headlessJsTaskContext.hasActiveTasks()
+                notifyIfNeeded()
+            }
+        }
+    })
+}

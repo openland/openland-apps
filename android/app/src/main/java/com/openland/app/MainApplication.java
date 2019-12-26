@@ -1,12 +1,6 @@
 package com.openland.app;
 
 import android.app.Application;
-import android.app.Service;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -15,7 +9,9 @@ import com.codemotionapps.reactnativedarkmode.DarkModePackage;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
 import com.reactnativecommunity.cameraroll.CameraRollPackage;
+
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
+
 import com.brentvatne.react.ReactVideoPackage;
 
 import org.wonday.pdf.RCTPdfView;
@@ -69,12 +65,6 @@ public class MainApplication extends Application implements ShareApplication, Re
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
-//        @Nullable
-//        @Override
-//        protected JavaScriptExecutorFactory getJavaScriptExecutorFactory() {
-//            return new ProxyJavaScriptExecutor.Factory(new V8Executor.Factory(MainApplication.this));
-//        }
-
         @Override
         public boolean getUseDeveloperSupport() {
             return BuildConfig.DEBUG;
@@ -84,7 +74,7 @@ public class MainApplication extends Application implements ShareApplication, Re
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-            new CameraRollPackage(),
+                    new CameraRollPackage(),
                     new RNGoogleSigninPackage(),
                     new ReactVideoPackage(),
                     new RCTPdfView(),
@@ -127,11 +117,13 @@ public class MainApplication extends Application implements ShareApplication, Re
         return mReactNativeHost;
     }
 
+
     @Override
     public void onCreate() {
         super.onCreate();
         Log.d("Native", "BOOTSTRAP: Starting app");
 
+        // Load Native Libraries
         SoLoader.init(this, /* native exopackage */ false);
         Log.d("Native", "BOOTSTRAP: soloader done");
         Fresco.initialize(this);
@@ -139,7 +131,7 @@ public class MainApplication extends Application implements ShareApplication, Re
         LMDB.INSTANCE.loadLibrary(this);
         Log.d("Native", "BOOTSTRAP: lmdb done");
 
-
+        // Hack Status Bar color
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
 
         // App Center
@@ -147,49 +139,11 @@ public class MainApplication extends Application implements ShareApplication, Re
         AppCenter.start(Distribute.class);
 
         Log.d("Native", "BOOTSTRAP: app start done");
-
-        try {
-            // Start keep alive service
-            Intent service = new Intent(this.getApplicationContext(), MainService.class);
-            startService(service);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-//        // Start keep alive service
-//        Intent service = new Intent(getApplicationContext(), MainService.class);
-//        Bundle bundle = new Bundle();
-//        service.putExtras(bundle);
-//        startService(service);
     }
 
-    private boolean once = true;
-    public void bindKeepAliveOnce(){
-        if(once){
-            once = false;
-            Intent service = new Intent(this.getApplicationContext(), MainService.class);
-            service.putExtras(new Bundle());
-            bindService(service, new DumbServiceConnection(), Service.BIND_AUTO_CREATE);
-        }
-
-    }
 
     @Override
     public String getFileProviderAuthority() {
         return BuildConfig.APPLICATION_ID + ".provider";
-    }
-
-
-    class DumbServiceConnection implements ServiceConnection{
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
     }
 }

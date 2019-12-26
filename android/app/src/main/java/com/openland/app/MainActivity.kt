@@ -1,8 +1,6 @@
 package com.openland.app
 
-import android.content.ComponentName
 import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -16,7 +14,6 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.openland.react.keyboard.KeyboardHeightProvider
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView
 import android.net.Uri
-import android.os.IBinder
 import android.view.WindowManager
 import android.app.NotificationManager
 import android.content.res.Configuration
@@ -47,16 +44,11 @@ class MainActivity : ReactActivity() {
                 Log.d("MainActivity", "onCreate")
             }
 
-            override fun onPause() {
-                super.onPause()
-                (applicationContext as MainApplication).bindKeepAliveOnce()
-            }
-
             override fun onResume() {
                 super.onResume()
                 // TODO: process pending after started
                 Log.d("MainActivity", "onResume")
-                if(pendingIntent != null){
+                if (pendingIntent != null) {
                     onNewIntent(pendingIntent)
                     pendingIntent = null
                 }
@@ -83,7 +75,7 @@ class MainActivity : ReactActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("Native", "BOOTSTRAP: Starting activity")
         super.onCreate(savedInstanceState)
-        val statusBarMode =  if ((resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        val statusBarMode = if ((resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or statusBarMode or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
 
         this.provider = KeyboardHeightProvider(this)
@@ -107,7 +99,6 @@ class MainActivity : ReactActivity() {
 
         (getSystemService(NOTIFICATION_SERVICE) as? NotificationManager)?.cancelAll()
         pendingIntent = intent
-
     }
 
     override fun onResume() {
@@ -124,20 +115,22 @@ class MainActivity : ReactActivity() {
         provider!!.close()
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        try {
+            // Start keep alive service
+            val service = Intent(this.applicationContext, MainService::class.java)
+            service.putExtras(Bundle())
+            startService(service)
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+
+    }
+
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         delegate?.onNewIntent(intent)
     }
-
-     class DumbServiceConnection: ServiceConnection{
-        override fun onServiceDisconnected(name: ComponentName?) {
-            Log.d("DumbServiceConnection", name?.className + " disconnected")
-        }
-
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            Log.d("DumbServiceConnection", name?.className + " connected")
-        }
-
-    }
-
 }

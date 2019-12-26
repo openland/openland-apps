@@ -1,43 +1,40 @@
 package com.openland.app;
 
+import android.app.Service;
 import android.content.Intent;
-import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.facebook.react.HeadlessJsTaskService;
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.jstasks.HeadlessJsTaskConfig;
+public class MainService extends Service {
 
-public class MainService extends HeadlessJsTaskService {
+    private Handler handler = new Handler(msg -> {
+        if (msg.what == 0) {
+            Log.d("GraphQL-Lifecycle", "MainService: Stop Self");
+            stopSelf();
+        }
+        return true;
+    });
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d("GraphQL-Lifecycle", "MainService: Create");
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("KeepAlive", "onStart");
-        return START_REDELIVER_INTENT;
+        handler.removeMessages(0);
+        handler.sendEmptyMessageDelayed(0, 15000);
+        Log.d("GraphQL-Lifecycle", "MainService: Command");
+        return START_NOT_STICKY;
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d("KeepAlive", "onBind");
-        HeadlessJsTaskConfig taskConfig = getTaskConfig(intent);
-        if (taskConfig != null) {
-            startTask(taskConfig);
-        }
-        return super.onBind(intent);
-    }
-
-    @Override
-    protected @Nullable
-    HeadlessJsTaskConfig getTaskConfig(Intent intent) {
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            return new HeadlessJsTaskConfig("KeepAlive", Arguments.fromBundle(extras), 0, true);
-        }
         return null;
     }
-
 }
