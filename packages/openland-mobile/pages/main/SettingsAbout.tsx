@@ -6,6 +6,7 @@ import { View, Text, StyleSheet, Image, Linking, TouchableOpacity, ImageSourcePr
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradient.native';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import DeviceInfo from 'react-native-device-info';
 
 interface ItemProps {
     path: string;
@@ -69,13 +70,15 @@ const SettingsAboutComponent = React.memo((props: PageProps) => {
         }
     });
 
+    const buildNumber = DeviceInfo.getBuildNumber();
+
     return (
         <SScrollView>
             <ZLinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} fallbackColor={theme.gradient0to100Start} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}>
                 <View style={styles.hero}>
                     <Image style={styles.image} source={require('assets/ic-app-icon-192.png')} />
                     <Text style={styles.title} allowFontScaling={false}>Openland</Text>
-                    <Text style={styles.subtitle} allowFontScaling={false}>Version 1.2.3.4</Text>
+                    <Text style={styles.subtitle} allowFontScaling={false}>Version {buildNumber}</Text>
                 </View>
             </ZLinearGradient>
             <View marginTop={16}>
