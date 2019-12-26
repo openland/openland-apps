@@ -7,7 +7,9 @@ import { css } from 'linaria';
 import Logo from 'openland-unicorn/components/Logo';
 import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
 
-import MacIcon from 'openland-icons/ic-app-mac.svg';
+import Info from 'openland-icons/ic-info-24.svg';
+import Terms from 'openland-icons/ic-terms-24.svg';
+import Privacy from 'openland-icons/ic-lock-24.svg';
 
 const hero = css`
     background-color: #F2F3F5;
@@ -33,6 +35,10 @@ const menuItem = css`
     &:hover,
     &:focus {
         background-color: var(--backgroundTertiary);
+    }
+
+    & path {
+        fill: var(--foregroundSecondary);
     }
 `;
 
@@ -75,9 +81,9 @@ export const SettingsAboutFragment = React.memo(() => {
                     </XView>
                 </div>
                 <XView marginTop={24}>
-                    <MenuItem icon={<MacIcon />} path="/about">About Openland</MenuItem>
-                    <MenuItem icon={<MacIcon />} path="/terms">Terms of service</MenuItem>
-                    <MenuItem icon={<MacIcon />} path="/privacy">Privacy policy</MenuItem>
+                    <MenuItem icon={<Info />} path="/about">About Openland</MenuItem>
+                    <MenuItem icon={<Terms />} path="/terms">Terms of service</MenuItem>
+                    <MenuItem icon={<Privacy />} path="/privacy">Privacy policy</MenuItem>
                 </XView>
             </FormWrapper>
         </Page>
