@@ -138,7 +138,7 @@ export default class OpenlandDocument extends Document {
                     resolvedInvite.invite.__typename === 'AppInvite'
                 ) {
                     metaTagsInfo = {
-                        image: 'https://cdn.openland.com/shared/social-sharing-image.png',
+                        image: 'https://cdn.openland.com/shared/og/og-global.png',
                     };
                 } else if (
                     resolvedInvite &&
