@@ -1,14 +1,32 @@
 import { ThemeLight } from './light';
 import { ThemeDark } from './dark';
-import { AccentRed, AccentOrange, AccentGrey, AccentGreen, AccentBlue, AccentPurple, AccentPink, AccentCyan } from './accents';
+import {
+    AccentRed,
+    AccentOrange,
+    AccentGrey,
+    AccentGreen,
+    AccentBlue,
+    AccentPurple,
+    AccentPink,
+    AccentCyan,
+} from './accents';
 import { SystemTheme } from 'openland-mobile/themes/ThemeContext';
 
 export type ThemeGlobalType = 'Light' | 'Dark';
-export type AccentGlobalType = 'Default' | 'Red' | 'Orange' | 'Green' | 'Cyan' | 'Blue' | 'Purple' | 'Pink' | 'Grey';
+export type AccentGlobalType =
+    | 'Default'
+    | 'Red'
+    | 'Orange'
+    | 'Green'
+    | 'Cyan'
+    | 'Blue'
+    | 'Purple'
+    | 'Pink'
+    | 'Grey';
 export type ThemeVariants = ThemeGlobalType | 'System';
 export type ThemeGlobalKind = {
-    theme: ThemeVariants,
-    accent?: AccentGlobalType
+    theme: ThemeVariants;
+    accent?: AccentGlobalType;
 };
 
 export type ThemeGlobal = {
@@ -85,6 +103,10 @@ export type ThemeGlobal = {
     outgoingForegroundPrimary: string;
     outgoingForegroundSecondary: string;
     outgoingForegroundTertiary: string;
+
+    // gradients
+    gradient0to100Start: string;
+    gradient0to100End: string;
 
     // mobile-only
     blurType: 'dark' | 'light' | 'none';

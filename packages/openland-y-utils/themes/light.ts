@@ -1,5 +1,15 @@
 import { ThemeGlobal } from './ThemeGlobal';
-import { TintBlue, TintGreen, TintRed, TintOrange, TintCyan, TintPurple, TintInverted, TintPink, TintGrey } from './tints';
+import {
+    TintBlue,
+    TintGreen,
+    TintRed,
+    TintOrange,
+    TintCyan,
+    TintPurple,
+    TintInverted,
+    TintPink,
+    TintGrey,
+} from './tints';
 
 export const ThemeLight: ThemeGlobal = {
     type: 'Light',
@@ -74,6 +84,9 @@ export const ThemeLight: ThemeGlobal = {
     outgoingForegroundPrimary: '#FFFFFF',
     outgoingForegroundSecondary: 'rgba(255, 255, 255, 0.56)',
     outgoingForegroundTertiary: 'rgba(255, 255, 255, 0.36)',
+
+    gradient0to100Start: 'rgba(242, 243, 245, 0)',
+    gradient0to100End: 'rgba(242, 243, 245, 0.56)',
 
     blurType: 'light',
     keyboardAppearance: 'light',
