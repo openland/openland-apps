@@ -10,7 +10,7 @@ import InviteFriendsIcon from 'openland-icons/s/ic-invite-24.svg';
 import EditProfileIcon from 'openland-icons/s/ic-edit-24.svg';
 import AppearanceIcon from 'openland-icons/s/ic-appearance-24.svg';
 import DownloadIcon from 'openland-icons/s/ic-download-24.svg';
-
+import InfoIcon from 'openland-icons/s/ic-info-24.svg';
 import { withUserInfo } from 'openland-web/components/UserInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
@@ -153,7 +153,7 @@ export const AccountFragment = React.memo(() => {
                         />
                         <UListItem
                             title="About us"
-                            icon={<DownloadIcon />}
+                            icon={<InfoIcon />}
                             path="/settings/about"
                         />
                     </UListGroup>
