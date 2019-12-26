@@ -6,6 +6,7 @@ import { FormWrapper } from './components/FormWrapper';
 import { css } from 'linaria';
 import Logo from 'openland-unicorn/components/Logo';
 import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
+import { isElectron } from 'openland-y-utils/isElectron';
 
 import Info from 'openland-icons/ic-info-24.svg';
 import Terms from 'openland-icons/ic-terms-24.svg';
@@ -31,10 +32,13 @@ const menuItem = css`
     border-radius: 8px;
 
     cursor: pointer;
+    color: inherit;
 
     &:hover,
     &:focus {
         background-color: var(--backgroundTertiary);
+        text-decoration: none;
+        color: inherit;
     }
 
     & path {
@@ -49,19 +53,19 @@ interface MenuItemProps {
 }
 
 const MenuItem = React.memo((props: MenuItemProps) => (
-    <XView path={props.path}>
-        <div className={menuItem}>
-            <XView marginRight={16}>
-                {props.icon}
-            </XView >
-            <span className={TextBody}>
-                {props.children}
-            </span>
-        </div>
-    </XView >
+    <a className={menuItem} href={props.path} target="_blank" rel="noopener noreferrer">
+        <XView marginRight={16}>
+            {props.icon}
+        </XView >
+        <span className={TextBody}>
+            {props.children}
+        </span>
+    </a>
 ));
 
 export const SettingsAboutFragment = React.memo(() => {
+    const text = isElectron ? '1.2.3.4' : 'Find and build inspiring communities';
+
     return (
         <Page track="account_about_us">
             <UHeader title="About us" />
@@ -73,8 +77,7 @@ export const SettingsAboutFragment = React.memo(() => {
                             <h2 className={TextTitle3}>Openland</h2>
                             <XView marginTop={4} color="var(--foregroundSecondary)">
                                 <p className={TextBody}>
-                                    {/* TODO display real version on electron and "Find and build inspiring communities" on web */}
-                                    Version 1.2.3.4
+                                    {text}
                                 </p>
                             </XView>
                         </XView>
