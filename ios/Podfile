@@ -36,7 +36,6 @@ target 'openland' do
     
   pod 'Texture', :git => 'https://github.com/openland/Texture.git', :branch => '2.7-fontfix'
   pod 'SwiftyJSON', '~> 4.0'
-  pod 'Auth0', '~> 1.14.2'
   pod 'Starscream', '~> 3.0.2'
   pod 'ReachabilitySwift'
 

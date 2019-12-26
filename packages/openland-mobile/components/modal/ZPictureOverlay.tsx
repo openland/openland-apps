@@ -187,14 +187,14 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                                 imageSize={{ width: size.width, height: size.height }}
                                 onLoaded={onLoaded}
                                 borderRadius={props.config.animate!!.borderRadius}
-                                resize={props.config.isGif ? 'none' : undefined}
+                                resize={props.config.isGif ? 'none' : 'cover'}
                                 highPriority={true}
                             />
                         )}
                     onStarting={handleStarting}
                     onClosing={handleClosing}
                     onClosed={handleClosed}
-
+                    crossFade={props.config.crossFade}
                 >
                     {onLoaded => (
                         <ZImage
@@ -203,7 +203,7 @@ export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose
                             height={size.height}
                             imageSize={{ width: size.width, height: size.height }}
                             onLoaded={onLoaded}
-                            resize={props.config.isGif ? 'none' : undefined}
+                            resize={props.config.isGif ? 'none' : 'contain'}
                             highPriority={true}
                         />
                     )}

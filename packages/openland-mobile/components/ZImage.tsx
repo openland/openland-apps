@@ -18,7 +18,7 @@ export interface ZImageProps {
     width: number;
     height: number;
     imageSize?: { width: number, height: number };
-    resize?: 'fill' | 'fit' | 'none';
+    resize?: FastImage.ResizeMode | 'none';
     borderRadius?: number;
     borderBottomLeftRadius?: number;
     borderBottomRightRadius?: number;
@@ -29,7 +29,7 @@ export interface ZImageProps {
 }
 
 export class ZImage extends React.Component<ZImageProps> {
-    
+
     render() {
         let baseUrl: string | undefined;
         if (this.props.source) {
@@ -52,7 +52,7 @@ export class ZImage extends React.Component<ZImageProps> {
         return (
             <FastImage
                 source={{ uri: url, priority: this.props.highPriority ? 'high' : 'normal', ...{ disableAnimations: true } as any }}
-                resizeMode={this.props.resize === 'fit' ? 'contain' : 'stretch'}
+                resizeMode={this.props.resize === 'none' ? 'stretch' : this.props.resize}
                 style={{
                     width: this.props.width,
                     height: this.props.height,

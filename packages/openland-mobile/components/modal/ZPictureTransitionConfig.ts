@@ -8,4 +8,5 @@ export interface ZPictureTransitionConfig {
     subtitle?: string;
     onBegin?: () => void;
     onEnd?: () => void;
+    crossFade?: boolean;
 }

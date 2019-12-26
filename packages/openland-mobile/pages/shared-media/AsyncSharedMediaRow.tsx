@@ -60,15 +60,15 @@ const AsyncMediaItem = React.memo(({ message, index, imageSize, chatId, onLongPr
                 ratio = imageHeight / imageWidth;
                 width = event.w;
                 height = ratio * width;
-                y = event.y + event.h / 2 - height / 2;
+                y = event.y;
             } else {
                 ratio = imageWidth / imageHeight;
                 height = event.h;
                 width = ratio * height;
-                x = event.x + event.w / 2 - width / 2;
+                x = event.x;
             }
-
             showPictureModal({
+                crossFade: true,
                 title: senderName,
                 subtitle: date ? formatDateTime(parseInt(date, 10) / 1000) : undefined,
                 url: fsPathRef.current,
@@ -78,8 +78,8 @@ const AsyncMediaItem = React.memo(({ message, index, imageSize, chatId, onLongPr
                 animate: {
                     x,
                     y,
-                    width,
-                    height,
+                    width: imageSize,
+                    height: imageSize,
                 },
                 ...Platform.OS === 'ios' ? {
                     onBegin: () => {
