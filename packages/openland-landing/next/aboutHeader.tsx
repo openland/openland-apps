@@ -22,7 +22,7 @@ export default () => (
     <div className={root}>
         <Block>
             <div className={aboutHeader}>
-                <img className={hero} src="/static/landing/about.png" alt="" />
+                <img className={hero} src="/static/landing/about.png" alt="" width="230" height="210" />
                 <Heading>About Openland</Heading>
             </div>
         </Block>
