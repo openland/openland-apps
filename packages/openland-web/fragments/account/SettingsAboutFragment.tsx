@@ -6,7 +6,7 @@ import { FormWrapper } from './components/FormWrapper';
 import { css } from 'linaria';
 import Logo from 'openland-unicorn/components/Logo';
 import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
-import { isElectron } from 'openland-y-utils/isElectron';
+// import { isElectron } from 'openland-y-utils/isElectron';
 
 import Info from 'openland-icons/ic-info-24.svg';
 import Terms from 'openland-icons/ic-terms-24.svg';
@@ -64,7 +64,9 @@ const MenuItem = React.memo((props: MenuItemProps) => (
 ));
 
 export const SettingsAboutFragment = React.memo(() => {
-    const text = isElectron ? '1.2.3.4' : 'Find and build inspiring communities';
+    // replace with electron build number when available
+    // const text = isElectron ? '1.2.3.4' : 'Find and build inspiring communities';
+    const text = 'Find and build inspiring communities';
 
     return (
         <Page track="account_about_us">
