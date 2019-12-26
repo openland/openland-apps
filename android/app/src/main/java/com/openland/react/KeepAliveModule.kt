@@ -11,11 +11,11 @@ class KeepAliveModule(reactContext: ReactApplicationContext) : ReactContextBaseJ
         return "RNKeepAlive"
     }
 
-    init {
-
+    override fun initialize() {
+        
         // Hack Timers
         runOnUIThread {
-            val headlessContext = HeadlessJsTaskContext.getInstance(reactContext)
+            val headlessContext = HeadlessJsTaskContext.getInstance(reactApplicationContext)
             try {
                 val mActiveTasks = HeadlessJsTaskContext::class.java.getDeclaredField("mActiveTasks")
                 mActiveTasks.isAccessible = true
