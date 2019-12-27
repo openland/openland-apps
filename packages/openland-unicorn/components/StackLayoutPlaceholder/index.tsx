@@ -5,7 +5,7 @@ import { showCreatingFragment } from 'openland-web/fragments/create/CreateEntity
 import { Button } from './button';
 import Plus from './plus.svg';
 import Person from './person.svg';
-import Download from './download.svg';
+import Apps from './apps.svg';
 
 export const StackLayoutPlaceholder = React.memo(() => {
     const createGroup = () => showCreatingFragment({ entityType: 'group' });
@@ -33,7 +33,7 @@ export const StackLayoutPlaceholder = React.memo(() => {
             <XView marginTop={32} justifyContent="center" flexWrap="nowrap" flexDirection="row">
                 <Button icon={<Plus />} text="Create group" onClick={createGroup} />
                 <Button icon={<Person />} text="Invite friends" path="/settings/invites" />
-                <Button icon={<Download />} text="Install apps" path="/settings/download" />
+                <Button icon={<Apps />} text="Install apps" path="/settings/download" />
             </XView>
         </XView>
     );
