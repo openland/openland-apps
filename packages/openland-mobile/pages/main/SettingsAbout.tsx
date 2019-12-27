@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { View, Text, StyleSheet, Image, Linking, TouchableOpacity, ImageSourcePropType } from 'react-native';
+import { View, Text, StyleSheet, Image, Linking } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradient.native';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
