@@ -55,7 +55,15 @@ class RNPatchNode: ASDisplayNode {
     self.node.placeholderEnabled = false
     self.node.placeholderFadeDuration = 0.0
     self.node.placeholderColor = UIColor.white
+    
+    if(spec.tint != nil){
+        let modificationBlock = { (originalImage: UIImage) -> UIImage? in
+            return ASImageNodeTintColorModificationBlock(spec.tint!)(originalImage)
+        }
+        self.node.imageModificationBlock = modificationBlock
+    }
     self.node.image = _baseImage?.resizableImage(withCapInsets: UIEdgeInsets(top: CGFloat(spec.top), left: CGFloat(spec.left), bottom: CGFloat(spec.bottom), right: CGFloat(spec.right)), resizingMode: UIImage.ResizingMode.stretch)
+    
   }
   
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
