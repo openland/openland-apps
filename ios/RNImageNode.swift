@@ -54,10 +54,9 @@ class RNImageNode: ASDisplayNode {
                   return ASImageNodeTintColorModificationBlock(spec.tintColor!)(originalImage)
               }
               self.node.imageModificationBlock = modificationBlock
-              let img = UIImage(cgImage: response!.image.cgImage!, scale: response!.image.scale, orientation: response!.image.imageOrientation)
-            } else {
-              self.node.image = response?.image
             }
+            self.node.image = response?.image
+            
           } else {
             print(error.debugDescription)
           }
