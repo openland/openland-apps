@@ -9,7 +9,7 @@ import EmailIcon from 'openland-icons/s/ic-mail-24.svg';
 import InviteFriendsIcon from 'openland-icons/s/ic-invite-24.svg';
 import EditProfileIcon from 'openland-icons/s/ic-edit-24.svg';
 import AppearanceIcon from 'openland-icons/s/ic-appearance-24.svg';
-import DownloadIcon from 'openland-icons/s/ic-download-24.svg';
+import AppsIcon from 'openland-icons/s/ic-apps-24.svg';
 import InfoIcon from 'openland-icons/s/ic-info-24.svg';
 import { withUserInfo } from 'openland-web/components/UserInfo';
 import { XLoader } from 'openland-x/XLoader';
@@ -148,7 +148,7 @@ export const AccountFragment = React.memo(() => {
                     <UListGroup header="Openland">
                         <UListItem
                             title="Install apps"
-                            icon={<DownloadIcon />}
+                            icon={<AppsIcon />}
                             path="/settings/download"
                         />
                         <UListItem
