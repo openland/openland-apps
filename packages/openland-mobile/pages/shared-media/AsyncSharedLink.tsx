@@ -8,6 +8,7 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
+import { json } from 'express';
 
 const isAvatar = (url: string | null) => {
     return url && url.startsWith('ph://');
@@ -20,9 +21,8 @@ interface AsyncSharedLinkProps {
 }
 
 export const AsyncSharedLink = React.memo(({ item, chatId, onLongPress }: AsyncSharedLinkProps) => {
-    const { message } = item;
+    const { message, attachment } = item;
     const senderName = message.sender.name;
-    const attachment = message.attachments[0] as SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment;
     const theme = useThemeGlobal();
 
     const onPress = React.useCallback(() => {

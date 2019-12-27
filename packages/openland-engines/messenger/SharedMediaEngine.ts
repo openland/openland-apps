@@ -1,4 +1,4 @@
-import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage, SharedMediaType } from 'openland-api/Types';
+import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage, SharedMediaType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import * as humanize from 'humanize';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
@@ -21,6 +21,7 @@ export interface DataSourceSharedDocumentItem {
     type: SharedMediaItemType.DOCUMENT;
     message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage;
     dateLabel: string;
+    attachment: SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile;
 }
 
 export interface DataSourceSharedMediaRow {
@@ -28,6 +29,7 @@ export interface DataSourceSharedMediaRow {
     type: SharedMediaItemType.MEDIA;
     dateLabel: string;
     messages: SharedMedia_sharedMedia_edges_node_message_GeneralMessage[];
+    entries: { message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage, attachment: SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile }[];
 }
 
 export interface DataSourceSharedLinkItem {
@@ -35,6 +37,7 @@ export interface DataSourceSharedLinkItem {
     type: SharedMediaItemType.LINK;
     dateLabel: string;
     message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage;
+    attachment: SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment;
 }
 
 export type SharedMediaDataSourceItem = DataSourceSharedMediaDateItem | DataSourceSharedDocumentItem | DataSourceSharedMediaRow | DataSourceSharedLinkItem;
@@ -93,23 +96,40 @@ export class SharedMediaEngine {
         const messages = edges.map(edge => edge.node.message) as SharedMedia_sharedMedia_edges_node_message_GeneralMessage[];
         let items = messages
             .reduce((acc, m) => {
-                const dateLabel = makeDateLabel(m.date);
-                const last = acc[acc.length - 1];
-                if (!last) {
-                    acc.push({ key: dateLabel, dateLabel, type: 'date', isFirst: true });
-                } else if (last.dateLabel !== dateLabel) {
-                    acc.push({ key: dateLabel, dateLabel, type: 'date', isFirst: false });
-                }
+                for (let a of m.attachments) {
+                    const dateLabel = makeDateLabel(m.date);
+                    const last = acc[acc.length - 1];
+                    if (!last) {
+                        acc.push({ key: dateLabel, dateLabel, type: 'date', isFirst: true });
+                    } else if (last.dateLabel !== dateLabel) {
+                        acc.push({ key: dateLabel, dateLabel, type: 'date', isFirst: false });
+                    }
 
-                if (this.mediaType === SharedMediaItemType.MEDIA) {
-                    this.addMediaMessage(acc as MediaRowOrDateItem[], m);
-                } else {
-                    acc.push({
-                        key: m.id,
-                        type: this.mediaType,
-                        dateLabel,
-                        message: m,
-                    });
+                    if (this.mediaType === SharedMediaItemType.MEDIA) {
+                        if (a.__typename === 'MessageAttachmentFile') {
+                            this.addMediaMessage(acc as MediaRowOrDateItem[], m, a);
+                        }
+                    } else if (this.mediaType === SharedMediaItemType.DOCUMENT) {
+                        if (a.__typename === 'MessageAttachmentFile') {
+                            acc.push({
+                                key: m.id,
+                                type: this.mediaType,
+                                dateLabel,
+                                message: m,
+                                attachment: a
+                            });
+                        }
+                    } else if (this.mediaType === SharedMediaItemType.LINK) {
+                        if (a.__typename === 'MessageRichAttachment') {
+                            acc.push({
+                                key: m.id,
+                                type: this.mediaType,
+                                dateLabel,
+                                message: m,
+                                attachment: a
+                            });
+                        }
+                    }
                 }
 
                 return acc;
@@ -137,37 +157,60 @@ export class SharedMediaEngine {
                 after: this.cursor
             }, { fetchPolicy: 'network-only' });
             const { edges, pageInfo } = data.sharedMedia;
-
-            const messages = edges.map(edge => edge.node.message) as SharedMedia_sharedMedia_edges_node_message_GeneralMessage[];
+            const messages = edges.map(edge => edge.node.message);
             const items = messages
                 .reduce((acc, m) => {
+                    if (m.__typename !== 'GeneralMessage') {
+                        return acc;
+                    }
                     const dateLabel = makeDateLabel(m.date);
                     const last = acc[acc.length - 1];
 
                     const existingLast = this.dataSource.getAt(this.dataSource.getSize() - 1);
-                    let delta = existingLast.type === SharedMediaItemType.MEDIA ? this.numColumns - existingLast.messages.length : 0;
+                    for (let a of m.attachments) {
+                        let delta = existingLast.type === SharedMediaItemType.MEDIA ? this.numColumns - existingLast.messages.length : 0;
 
-                    if (!last && existingLast.dateLabel !== dateLabel) {
-                        acc.push({ key: dateLabel, dateLabel, type: 'date', isFirst: false });
-                        delta = 0;
-                    } else if (last && last.dateLabel !== dateLabel) {
-                        acc.push({ key: dateLabel, dateLabel, type: 'date', isFirst: false });
-                    }
-
-                    if (this.mediaType === SharedMediaItemType.MEDIA) {
-                        if (delta > 0) {
-                            (existingLast as DataSourceSharedMediaRow).messages.push(m);
-                            this.dataSource.updateItem(existingLast);
-                        } else {
-                            this.addMediaMessage(acc as MediaRowOrDateItem[], m);
+                        if (!last && existingLast.dateLabel !== dateLabel) {
+                            acc.push({ key: dateLabel, dateLabel, type: 'date', isFirst: false });
+                            console.warn("push 1");
+                            delta = 0;
+                        } else if (last && last.dateLabel !== dateLabel) {
+                            acc.push({ key: dateLabel, dateLabel, type: 'date', isFirst: false });
+                            console.warn("push 2");
                         }
-                    } else {
-                        acc.push({
-                            key: m.id,
-                            type: this.mediaType,
-                            dateLabel,
-                            message: m,
-                        });
+
+                        if (this.mediaType === SharedMediaItemType.MEDIA) {
+                            if (a.__typename === 'MessageAttachmentFile') {
+                                if (delta > 0) {
+                                    (existingLast as DataSourceSharedMediaRow).messages.push(m);
+                                    (existingLast as DataSourceSharedMediaRow).entries.push({ message: m, attachment: a });
+                                    this.dataSource.updateItem(existingLast);
+                                } else {
+                                    this.addMediaMessage(acc as MediaRowOrDateItem[], m, a);
+                                }
+                            }
+                        } else if (this.mediaType === SharedMediaItemType.DOCUMENT) {
+                            if (a.__typename === 'MessageAttachmentFile') {
+                                acc.push({
+                                    key: m.id,
+                                    type: this.mediaType,
+                                    dateLabel,
+                                    message: m,
+                                    attachment: a
+                                });
+                            }
+                        } else if (this.mediaType === SharedMediaItemType.LINK) {
+                            if (a.__typename === 'MessageRichAttachment') {
+                                acc.push({
+                                    key: m.id,
+                                    type: this.mediaType,
+                                    dateLabel,
+                                    message: m,
+                                    attachment: a
+                                });
+                            }
+
+                        }
                     }
 
                     return acc;
@@ -176,25 +219,29 @@ export class SharedMediaEngine {
             const lastEdge = edges[edges.length - 1];
             this.cursor = String(lastEdge && lastEdge.cursor);
             this.hasNextPage = pageInfo.hasNextPage;
+            console.warn(items.length);
 
             this.dataSource.loadedMore(items, !this.hasNextPage);
             this.isLoading = false;
         }
+
     }
 
-    addMediaMessage(items: MediaRowOrDateItem[], message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage) {
+    addMediaMessage(items: MediaRowOrDateItem[], message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage, attachment: SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile) {
         const last = items[items.length - 1];
         const dateLabel = makeDateLabel(message.date);
         if (!last || last.type === 'date' || last.dateLabel !== dateLabel || last.messages.length === this.numColumns) {
             const newItem = {
                 key: message.id,
-                type: SharedMediaItemType.MEDIA,
+                type: SharedMediaItemType.MEDIA as SharedMediaItemType.MEDIA,
                 dateLabel,
                 messages: [message],
-            } as DataSourceSharedMediaRow;
+                entries: [{ message, attachment }]
+            };
             items.push(newItem);
         } else {
             last.messages.push(message);
+            last.entries.push({ message, attachment });
         }
     }
 }

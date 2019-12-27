@@ -17,9 +17,8 @@ interface AsyncSharedDocumentProps {
 
 export const AsyncSharedDocument = React.memo(({ item, chatId, onLongPress }: AsyncSharedDocumentProps) => {
     const theme = useThemeGlobal();
-    const { message } = item;
+    const { message, attachment } = item;
     const senderName = message.sender.name;
-    const attachment = message.attachments[0] as SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile;
 
     const onPress = React.useCallback(() => {
         showFileModal({ uuid: attachment.fileId, name: attachment.fileMetadata.name, size: attachment.fileMetadata.size });

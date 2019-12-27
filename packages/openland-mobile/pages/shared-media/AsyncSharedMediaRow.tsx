@@ -12,18 +12,19 @@ import { showFileModal } from 'openland-mobile/components/file/showFileModal';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DataSourceSharedMediaRow } from 'openland-engines/messenger/SharedMediaEngine';
 import { ASFlex } from 'react-native-async-view/ASFlex';
+import { ASText } from 'react-native-async-view/ASText';
 
 interface AsyncMediaItemProps {
     index: number;
     message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage;
     imageSize: number;
     chatId: string;
+    attachment: SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile;
     onLongPress: (options: { filePath?: string, chatId: string, message: SharedMedia_sharedMedia_edges_node_message_GeneralMessage }) => void;
 }
 
-const AsyncMediaItem = React.memo(({ message, index, imageSize, chatId, onLongPress }: AsyncMediaItemProps) => {
-    const { attachments, sender, date } = message;
-    const attachment = attachments[0] as SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile;
+const AsyncFileItem = React.memo(({ message, attachment, index, imageSize, chatId, onLongPress }: AsyncMediaItemProps) => {
+    const { sender, date } = message;
     const { isImage } = attachment.fileMetadata;
     const senderName = sender.name;
     const [previewPath, setPreviewPath] = React.useState<string>();
@@ -155,9 +156,12 @@ export const AsyncSharedMediaRow = ({ item, wrapperWidth, onLongPress, chatId }:
 
     return (
         <ASFlex flexDirection="row" marginBottom={2}>
-            {item.messages.map((message, index) => (
-                <AsyncMediaItem key={message.id} chatId={chatId} message={message} index={index} imageSize={imageSize} onLongPress={onLongPress} />
-            ))}
+            {item.entries.map((entry, index) => {
+                if (entry.attachment.__typename === 'MessageAttachmentFile') {
+                    return <AsyncFileItem attachment={entry.attachment} key={entry.message.id} chatId={chatId} message={entry.message} index={index} imageSize={imageSize} onLongPress={onLongPress} />;
+                }
+                return null;
+            })}
         </ASFlex>
 
     );
