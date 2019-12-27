@@ -127,6 +127,7 @@ const categoryContainer = css`
     padding-bottom: 20px;
     margin-bottom: -20px;
     overflow-x: scroll;
+    overflow-y: hidden;
     height: 68px;
     will-change: transform;
 `;
