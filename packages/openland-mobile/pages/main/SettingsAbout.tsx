@@ -5,41 +5,9 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { View, Text, StyleSheet, Image, Linking, TouchableOpacity, ImageSourcePropType } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradient.native';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import DeviceInfo from 'react-native-device-info';
-
-interface ItemProps {
-    path: string;
-    icon: ImageSourcePropType;
-    children: string;
-}
-
-const Item = React.memo((props: ItemProps) => {
-    const theme = React.useContext(ThemeContext);
-
-    const styles = StyleSheet.create({
-        text: {
-            ...TextStyles.Body,
-            color: theme.foregroundPrimary
-        },
-        icon: {
-            tintColor: theme.foregroundSecondary
-        }
-    });
-
-    return (
-        <TouchableOpacity onPress={() => Linking.openURL(props.path)}>
-            <View flexDirection="row" alignItems="center" paddingLeft={16} paddingRight={16} paddingTop={12} paddingBottom={12}>
-                <View marginRight={16}>
-                    <Image source={props.icon} style={styles.icon} />
-                </View>
-                <Text allowFontScaling={false} style={styles.text}>
-                    {props.children}
-                </Text>
-            </View>
-        </TouchableOpacity>
-    );
-});
 
 const SettingsAboutComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -82,9 +50,24 @@ const SettingsAboutComponent = React.memo((props: PageProps) => {
                 </View>
             </ZLinearGradient>
             <View marginTop={16}>
-                <Item path="https://openland.com/about" icon={require('assets/ic-info-24.png')}>About Openland</Item>
-                <Item path="https://openland.com/terms" icon={require('assets/ic-terms-24.png')}>Terms of service</Item>
-                <Item path="https://openland.com/privacy" icon={require('assets/ic-lock-24.png')}>Privacy policy</Item>
+                <ZListItem
+                    leftIcon={require('assets/ic-info-24.png')}
+                    text='About Openland'
+                    small={true}
+                    onPress={() => Linking.openURL('https://openland.com/about')}
+                />
+                <ZListItem
+                    leftIcon={require('assets/ic-terms-24.png')}
+                    text='Terms of service'
+                    small={true}
+                    onPress={() => Linking.openURL('https://openland.com/terms')}
+                />
+                <ZListItem
+                    leftIcon={require('assets/ic-lock-24.png')}
+                    text='Privacy policy'
+                    small={true}
+                    onPress={() => Linking.openURL('https://openland.com/privacy')}
+                />
             </View>
         </SScrollView>
     );
