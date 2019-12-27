@@ -6,7 +6,7 @@ import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { showFileModal } from 'openland-mobile/components/file/showFileModal';
 import { formatBytes } from 'openland-y-utils/formatBytes';
 import { ASDocumentExt } from 'openland-mobile/components/file/ASDocumentExt';
-import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile, SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/Types';
+import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/Types';
 import { DataSourceSharedDocumentItem } from 'openland-engines/messenger/SharedMediaEngine';
 
 interface AsyncSharedDocumentProps {

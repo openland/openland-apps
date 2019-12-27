@@ -12,7 +12,6 @@ import { showFileModal } from 'openland-mobile/components/file/showFileModal';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DataSourceSharedMediaRow } from 'openland-engines/messenger/SharedMediaEngine';
 import { ASFlex } from 'react-native-async-view/ASFlex';
-import { ASText } from 'react-native-async-view/ASText';
 
 interface AsyncMediaItemProps {
     index: number;

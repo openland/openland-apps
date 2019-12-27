@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataSourceSharedLinkItem } from 'openland-engines/messenger/SharedMediaEngine';
-import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment, SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/Types';
+import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/Types';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { Linking, Image } from 'react-native';
 import { ASAvatar } from 'openland-mobile/messenger/components/ASAvatar';
@@ -8,7 +8,6 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
-import { json } from 'express';
 
 const isAvatar = (url: string | null) => {
     return url && url.startsWith('ph://');
