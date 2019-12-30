@@ -15,6 +15,10 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         if (link.includes('?')) {
             link = link.split('?')[0];
         }
+
+        if (link.endsWith('/')) {
+            link = link.substr(0, link.length - 1);
+        }
         let patternBase = '(http(s)\\://)(:subdomain.)openland.com/';
         let patternBaseDeep = 'openland\\://deep/';
 
