@@ -8,6 +8,7 @@ import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradie
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import DeviceInfo from 'react-native-device-info';
+import Version from 'react-native-version-number';
 
 const SettingsAboutComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -38,7 +39,7 @@ const SettingsAboutComponent = React.memo((props: PageProps) => {
         }
     });
 
-    const buildNumber = DeviceInfo.getBuildNumber();
+    const buildNumber = Version.appVersion;
 
     return (
         <SScrollView>

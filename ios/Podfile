@@ -91,6 +91,8 @@ target 'openland' do
 
   pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
 
+  pod 'react-native-version-number', :path => '../node_modules/react-native-version-number'
+
 end
 
 target 'openlandTests' do

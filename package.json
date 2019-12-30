@@ -186,6 +186,7 @@
         "react-native-restart": "^0.0.8",
         "react-native-share": "^2.0.0",
         "react-native-sqlite-storage": "^3.3.10",
+        "react-native-version-number": "^0.3.6",
         "react-native-video": "4.4.4",
         "react-native-web": "^0.9.0",
         "react-native-webrtc": "^1.69.1",

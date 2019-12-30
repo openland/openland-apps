@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import com.codemotionapps.reactnativedarkmode.DarkModePackage;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import com.apsl.versionnumber.RNVersionNumberPackage;
 import com.reactnativecommunity.cameraroll.CameraRollPackage;
 
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
@@ -74,6 +75,7 @@ public class MainApplication extends Application implements ShareApplication, Re
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new RNVersionNumberPackage(),
                     new CameraRollPackage(),
                     new RNGoogleSigninPackage(),
                     new ReactVideoPackage(),
