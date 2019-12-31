@@ -11,11 +11,11 @@ for (let m of manifest.operations) {
     let parsed = parse(doc);
     for (let def of parsed.definitions) {
         if (def.kind === 'FragmentDefinition') {
-            fs.writeFileSync(destPath + '/' + def.name.value + '.graphql', print(def), 'utf-8')
+            fs.writeFileSync(destPath + '/' + def.name.value + '.graphql', print(def), 'utf-8');
         } else if (def.kind === 'OperationDefinition') {
-            fs.writeFileSync(destPath + '/' + def.name!!.value + '.graphql', print(def), 'utf-8')
+            fs.writeFileSync(destPath + '/' + def.name!!.value + '.graphql', print(def), 'utf-8');
         } else {
-            throw Error('Unknown kind: ' + def.kind)
+            throw Error('Unknown kind: ' + def.kind);
         }
     }
 }

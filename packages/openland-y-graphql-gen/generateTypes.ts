@@ -4,13 +4,13 @@ import * as path from 'path';
 import { URL } from 'url';
 
 function extractImport(src: string) {
-    let url = new URL(src)
+    let url = new URL(src);
     let importPath = url.pathname.split('/');
-    let name = importPath[importPath.length - 1].split('.')[0]
+    let name = importPath[importPath.length - 1].split('.')[0];
     return {
         name,
         path: './' + importPath[importPath.length - 2] + '/' + name
-    }
+    };
 }
 
 function generateTypes() {
@@ -41,7 +41,7 @@ function generateTypes() {
             continue;
         }
         imported.add(op.filePath);
-        let p = extractImport(op.filePath)
+        let p = extractImport(op.filePath);
         resContent += 'import * as ' + p.name + ' from \'' + p.path + '\';\n';
     }
     for (let op of queries.fragments) {
@@ -49,7 +49,7 @@ function generateTypes() {
             continue;
         }
         imported.add(op.filePath);
-        let p = extractImport(op.filePath)
+        let p = extractImport(op.filePath);
         resContent += 'import * as ' + p.name + ' from \'' + p.path + '\';\n';
     }
 
@@ -57,7 +57,7 @@ function generateTypes() {
     resContent += '\n';
 
     for (let op of queries.operations) {
-        let p = extractImport(op.filePath)
+        let p = extractImport(op.filePath);
         if (op.operationType === 'query') {
             if (op.variables.length > 0) {
                 resContent += 'export const ' + op.operationName + 'Query = typedQuery<Types.' + op.operationName + ', Types.' + op.operationName + 'Variables>(' + p.name + '.' + op.operationName + 'Query);\n';
@@ -80,7 +80,7 @@ function generateTypes() {
     }
 
     for (let op of queries.fragments) {
-        let p = extractImport(op.filePath)
+        let p = extractImport(op.filePath);
         resContent += 'export const ' + op.fragmentName + 'Fragment = typedFragment<Types.' + op.fragmentName + '>(' + p.name + '.' + op.fragmentName + ');\n';
     }
 

@@ -288,7 +288,7 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         if (this.destroyed) {
             throw Error('Datasource already destroyed');
         }
-        if (this.completeForward) {
+        if (this.completedForward) {
             return;
         }
         this.completedForward = true;
