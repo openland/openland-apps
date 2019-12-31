@@ -1,7 +1,7 @@
 import { GraphqlClient } from "openland-graphql/GraphqlClient";
 import { WorkerInterface } from './WorkerInterface';
-import { WorkerApolloHost } from './WorkerApolloHost';
-import { WorkerApolloClient } from './WorkerApolloClient';
+import { WorkerHost } from './WorkerHost';
+import { WorkerClient } from './WorkerClient';
 
 export function createDumbBridgeClient(client: GraphqlClient) {
 
@@ -26,6 +26,6 @@ export function createDumbBridgeClient(client: GraphqlClient) {
     };
 
     // tslint:disable-next-line
-    let host = new WorkerApolloHost(client, hostWorkerInterface);
-    return new WorkerApolloClient(clientWorkerInterface);
+    let host = new WorkerHost(client, hostWorkerInterface);
+    return new WorkerClient(clientWorkerInterface);
 }

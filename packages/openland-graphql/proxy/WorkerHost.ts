@@ -3,7 +3,7 @@ import { WorkerInterface } from './WorkerInterface';
 import { WorkerRequest, WorkerResponse } from './api/WorkerApi';
 import { randomKey } from 'openland-graphql/utils/randomKey';
 
-export class WorkerApolloHost {
+export class WorkerHost {
     private worker: WorkerInterface;
     private client: GraphqlClient;
     private watches = new Map<string, () => void>();

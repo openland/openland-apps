@@ -6,7 +6,7 @@ import { exponentialBackoffDelay } from 'openland-y-utils/exponentialBackoffDela
 
 export class DirectApolloSubscription<TSubscription, TVars> implements GraphqlActiveSubscription<TSubscription, TVars> {
     private readonly client: DirectApollolClient;
-    private source?: Observable<any>;
+    private source: Observable<any> | undefined;
     private sourceSubscription?: ZenObservable.Subscription;
     private statusSubscription: () => void;
     private subscription: any;
@@ -43,8 +43,8 @@ export class DirectApolloSubscription<TSubscription, TVars> implements GraphqlAc
             return;
         }
         // console.log('trying to start');
-        this.source = this.client.client.client.subscribe({ query: this.subscription, variables: this.vars })!!;
-        this.sourceSubscription = this.source.subscribe({
+        this.source = this.client.client.client.subscribe({ query: this.subscription, variables: this.vars }) as any;
+        this.sourceSubscription = this.source!.subscribe({
             next: this.handleNext,
             error: this.handleError,
             complete: this.handleError

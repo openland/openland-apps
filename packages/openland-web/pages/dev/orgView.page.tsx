@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { withApp } from '../../components/withApp';
 import { XLoader } from 'openland-x/XLoader';
-import { UserSelect } from '../../api/UserSelect';
+import { UserSelect } from '../../components/UserSelect';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { UButton } from 'openland-web/components/unicorn/UButton';

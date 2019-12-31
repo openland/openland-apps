@@ -3,7 +3,7 @@ import { WorkerInterface } from './WorkerInterface';
 import { WorkerResponse, WorkerRequest } from './api/WorkerApi';
 import { BridgedClient } from '../bridge/BridgedClient';
 
-export class WorkerApolloClient extends BridgedClient {
+export class WorkerClient extends BridgedClient {
     private readonly bridge: WorkerInterface;
 
     constructor(bridge: WorkerInterface) {

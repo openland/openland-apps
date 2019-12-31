@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { UserSelect } from '../../api/UserSelect';
+import { UserSelect } from '../../components/UserSelect';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { useClient } from 'openland-web/utils/useClient';

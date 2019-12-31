@@ -1,6 +1,6 @@
 const W = require('./apollo.worker');
 import { WorkerInterface } from 'openland-graphql/proxy/WorkerInterface';
-import { WorkerApolloClient } from 'openland-graphql/proxy/WorkerApolloClient';
+import { WorkerClient } from 'openland-graphql/proxy/WorkerClient';
 
 export function createWorkerClient(endpoint: string, wsEndpoint: string, token?: string) {
     console.log('creating client');
@@ -17,7 +17,7 @@ export function createWorkerClient(endpoint: string, wsEndpoint: string, token?:
                 handler(src.data);
             }),
     };
-    let res = new WorkerApolloClient(threadInterface);
+    let res = new WorkerClient(threadInterface);
     console.log('completed');
     return res;
 }
