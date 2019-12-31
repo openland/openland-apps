@@ -101,6 +101,7 @@ export const UInput = (props: UInputProps) => {
                     type={type}
                     pattern={pattern}
                     autoFocus={autofocus}
+                    autoComplete="off"
                     onChange={e => handleChange(e.target.value)}
                 />
                 <div

@@ -584,6 +584,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                     onKeyPress={this.handleKey}
                     onFocus={this.handleFocus}
                     onBlur={this.handleBlur}
+                    autoComplete="off"
                     data-test-id={dataTestId}
                     fontSize={this.props.fontSize}
                     padding={this.props.padding}
