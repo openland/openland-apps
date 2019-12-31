@@ -15,12 +15,9 @@ const displayFlex = css`
     display: flex;
 `;
 
-const displayNone = css`
-    display: none;
-`;
-
 const base = css`
     overflow: hidden;
+    will-change: transform;
     justify-content: center;
     align-items: center;
     position: absolute;
@@ -28,11 +25,9 @@ const base = css`
     height: 100%;
     top: 0;
     left: 0;
-    overflow: hidden;
-    will-change: transform;
 `;
 
-let rotate = css`
+const rotate = css`
     animation: rotate 0.752s linear infinite;
 
     @keyframes rotate {
@@ -94,7 +89,7 @@ interface LoaderRenderProps {
     color: string;
 }
 
-const SvgLoader = (props: LoaderRenderProps) => {
+const SvgLoader = React.memo((props: LoaderRenderProps) => {
     return (
         <svg {...sizes[props.size]} fill="none" xmlns="http://www.w3.org/2000/svg">
             {props.size === 'small' ? (
@@ -110,30 +105,39 @@ const SvgLoader = (props: LoaderRenderProps) => {
                     className={cx(rotate, rotateHackMedium)}
                 />
             ) : (
-                        <path
-                            d="M16,1.00089125 C16,0.448100132 15.5518,-0.00328771327 15.0006,0.0312307033 C11.8055,0.231319261 8.73516,1.38724569 6.19349,3.36057599 C3.38777,5.53890435 1.38573,8.58953294 0.50267,12.032011 C-0.380386,15.474369 -0.0942841,19.1131071 1.31593,22.3748994 C2.72613,25.6366917 5.18031,28.3362683 8.29194,30.048439 C11.4036,31.7606097 14.9958,32.3881854 18.5029,31.8321753 C22.0101,31.2761653 25.2328,29.5682985 27.6635,26.9775218 C30.0942,24.3866449 31.5948,21.0600932 31.929,17.5217472 C32.2317,14.3164067 31.5616,11.1022581 30.0184,8.29488263 C29.7521,7.81056833 29.1312,7.67368276 28.6649,7.96988449 C28.1986,8.26608622 28.064,8.88310226 28.3259,9.36978873 C29.6337,11.8000983 30.1988,14.5704397 29.9379,17.3333744 C29.6455,20.4294146 28.3324,23.3401849 26.2056,25.6071646 C24.0787,27.8741443 21.2588,29.3685152 18.1901,29.8549615 C15.1213,30.3415078 11.9781,29.7924041 9.25545,28.2942297 C6.53278,26.7960553 4.38537,24.4338883 3.15143,21.5798701 C1.9175,18.7257517 1.66716,15.541931 2.43984,12.5297676 C3.21251,9.5176744 4.9643,6.84837563 7.4193,4.94233707 C9.61016,3.24137664 12.25,2.23450295 15.0008,2.03753225 C15.5517,1.99808606 16,1.55367837 16,1.00089125 Z"
-                            fill={props.color}
-                            className={cx(rotate, rotateHackLarge)}
-                        />
-                    )}
+                <path
+                    d="M16,1.00089125 C16,0.448100132 15.5518,-0.00328771327 15.0006,0.0312307033 C11.8055,0.231319261 8.73516,1.38724569 6.19349,3.36057599 C3.38777,5.53890435 1.38573,8.58953294 0.50267,12.032011 C-0.380386,15.474369 -0.0942841,19.1131071 1.31593,22.3748994 C2.72613,25.6366917 5.18031,28.3362683 8.29194,30.048439 C11.4036,31.7606097 14.9958,32.3881854 18.5029,31.8321753 C22.0101,31.2761653 25.2328,29.5682985 27.6635,26.9775218 C30.0942,24.3866449 31.5948,21.0600932 31.929,17.5217472 C32.2317,14.3164067 31.5616,11.1022581 30.0184,8.29488263 C29.7521,7.81056833 29.1312,7.67368276 28.6649,7.96988449 C28.1986,8.26608622 28.064,8.88310226 28.3259,9.36978873 C29.6337,11.8000983 30.1988,14.5704397 29.9379,17.3333744 C29.6455,20.4294146 28.3324,23.3401849 26.2056,25.6071646 C24.0787,27.8741443 21.2588,29.3685152 18.1901,29.8549615 C15.1213,30.3415078 11.9781,29.7924041 9.25545,28.2942297 C6.53278,26.7960553 4.38537,24.4338883 3.15143,21.5798701 C1.9175,18.7257517 1.66716,15.541931 2.43984,12.5297676 C3.21251,9.5176744 4.9643,6.84837563 7.4193,4.94233707 C9.61016,3.24137664 12.25,2.23450295 15.0008,2.03753225 C15.5517,1.99808606 16,1.55367837 16,1.00089125 Z"
+                    fill={props.color}
+                    className={cx(rotate, rotateHackLarge)}
+                />
+            )}
         </svg>
     );
-};
+});
 
-export const XLoader = React.forwardRef((props: XLoaderProps, ref: React.Ref<HTMLDivElement>) => (
-    <div
-        ref={ref}
-        className={cx(
-            base,
-            props.className,
-            props.loading !== false ? displayFlex : displayNone,
-            props.size === 'small' ? minHeightSmall : props.size === 'medium' ? minHeightMedium : minHeightLarge,
-            props.transparentBackground ? undefined : backgroundColor,
-        )}
-    >
-        <SvgLoader size={props.size || 'medium'} color={props.color || '#C4C7CC'} />
-    </div>
-));
+export const XLoader = React.forwardRef((props: XLoaderProps, ref: React.Ref<HTMLDivElement>) => {
+    if (props.loading !== true) {
+        return null;
+    }
+    return (
+        <div
+            ref={ref}
+            className={cx(
+                base,
+                displayFlex,
+                props.className,
+                props.size === 'small'
+                    ? minHeightSmall
+                    : props.size === 'medium'
+                        ? minHeightMedium
+                        : minHeightLarge,
+                props.transparentBackground ? undefined : backgroundColor,
+            )}
+        >
+            <SvgLoader size={props.size || 'medium'} color={props.color || '#C4C7CC'} />
+        </div>
+    );
+});
 
 const splashWrapper = css`
     position: absolute;

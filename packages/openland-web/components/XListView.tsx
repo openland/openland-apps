@@ -9,7 +9,7 @@ export interface XListViewProps<T extends DataSourceItem> {
     itemHeight: number;
     loadingHeight: number;
     renderItem: (item: T) => React.ReactElement<any>;
-    renderLoading: () => React.ReactElement<any>;
+    renderLoading: () => JSX.Element;
     beforeChildren?: any;
     afterChildren?: any;
     WrapChildrenComponent?: any;

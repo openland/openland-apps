@@ -19,11 +19,10 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { CallFloating } from 'openland-web/modules/conference/CallFloating';
 
 export const dialogSearchWrapperClassName = css`
-    justify-content: flex-start !important;
+    justify-content: flex-start;
     overflow-y: scroll;
     overflow-x: hidden;
     display: flex;
-    justify-content: center;
     flex-direction: column;
 `;
 
