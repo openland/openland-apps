@@ -261,7 +261,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                         style={{ cursor: 'default' }}
                     />
                 )}
-                <XLoader transparentBackground={true} ref={loaderRef} />
+                <XLoader loading={true} transparentBackground={true} ref={loaderRef} />
                 <ImgWithRetry
                     ref={imgRef}
                     onLoad={onLoad}
@@ -464,7 +464,7 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                 height={layoutHeight}
                 src={props.file.filePreview || undefined}
             />
-            <XLoader transparentBackground={true} ref={loaderRef} />
+            <XLoader loading={true} transparentBackground={true} ref={loaderRef} />
             <ImgWithRetry
                 ref={imgRef}
                 onLoad={onLoad}
