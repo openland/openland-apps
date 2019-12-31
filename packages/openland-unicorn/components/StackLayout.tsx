@@ -279,8 +279,9 @@ const ConnectingStatus = () => {
             <div className={connectingContainerClass} ref={containerRef}>
                 <XView width={16} height={16} marginRight={8} marginTop={1}>
                     <XLoader
-                        color="var(--foregroundContrast)"
+                        contrast={true}
                         transparentBackground={true}
+                        loading={true}
                         size="small"
                     />
                 </XView>

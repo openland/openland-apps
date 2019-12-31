@@ -190,7 +190,7 @@ const AvatarRender = (props: AvatarRenderProps) => {
                     <XLoader
                         transparentBackground={true}
                         loading={props.isLoading || isLoading}
-                        color="#fff"
+                        contrast={true}
                         className="loader"
                     />
                 )}

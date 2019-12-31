@@ -169,18 +169,18 @@ const styleResolverActive = {
     success: successActiveStyle,
 };
 
-const loaderColor = {
+const loaderStyle = {
     primary: {
-        color: '#fff',
+        contrast: true,
     },
     secondary: {
-        color: '#676D7A',
+        contrast: false,
     },
     danger: {
-        color: '#fff',
+        contrast: true,
     },
     success: {
-        color: '#fff',
+        contrast: true,
     },
 };
 
@@ -220,7 +220,7 @@ export const UButton = (props: UButtonProps) => {
     );
 
     return (
-        <XView {...other} onClick={!disable ? action ? actionCallback : onClick : undefined}>
+        <XView {...other} onClick={!disable ? (action ? actionCallback : onClick) : undefined}>
             <div
                 tabIndex={-1}
                 className={cx(
@@ -239,9 +239,9 @@ export const UButton = (props: UButtonProps) => {
                 {loadingState && (
                     <XLoader
                         loading={true}
-                        size="medium"
                         transparentBackground={true}
-                        {...loaderColor[style]}
+                        size="medium"
+                        {...loaderStyle[style]}
                     />
                 )}
             </div>
