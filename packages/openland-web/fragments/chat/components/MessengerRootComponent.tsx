@@ -384,9 +384,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
 
     render() {
         if (!this.conversation) {
-            return null;
+            return <XLoader loading={true} static={true} />;
         }
-
         const isChannel =
             this.props.room &&
             this.props.room.__typename === 'SharedRoom' &&
@@ -405,7 +404,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             this.props.room.__typename === 'SharedRoom' ? this.props.room.membersCount : undefined;
         return (
             <div className={messengerContainer}>
-                {this.state.loading && <XLoader loading={this.state.loading} />}
+                {this.state.loading && <XLoader loading={true} />}
                 {!this.state.loading && (
                     <>
                         {memberProfiles && (

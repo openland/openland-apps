@@ -9,6 +9,7 @@ interface XLoaderProps {
     size?: LoaderSize;
     className?: string;
     contrast?: boolean;
+    static?: boolean;
 }
 
 const displayFlex = css`
@@ -56,6 +57,7 @@ const backgroundColor = css`
 interface LoaderRenderProps {
     size: LoaderSize;
     contrast?: boolean;
+    static?: boolean;
 }
 
 const SvgLoader = React.memo((props: LoaderRenderProps) => {
@@ -69,7 +71,7 @@ const SvgLoader = React.memo((props: LoaderRenderProps) => {
         ? loaderSizePath + '-contrast.svg'
         : loaderSizePath + '.svg';
 
-    return <img src={loaderFullPath} className={rotate} />;
+    return <img src={loaderFullPath} className={props.static === true ? undefined : rotate} />;
 });
 
 export const XLoader = React.forwardRef((props: XLoaderProps, ref: React.Ref<HTMLDivElement>) => {
@@ -91,7 +93,11 @@ export const XLoader = React.forwardRef((props: XLoaderProps, ref: React.Ref<HTM
                 props.transparentBackground ? undefined : backgroundColor,
             )}
         >
-            <SvgLoader size={props.size || 'medium'} contrast={props.contrast} />
+            <SvgLoader
+                size={props.size || 'medium'}
+                contrast={props.contrast}
+                static={props.static}
+            />
         </div>
     );
 });

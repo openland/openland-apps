@@ -338,7 +338,7 @@ export default class OpenlandDocument extends Document {
                     />
 
                     {/* Required for logo gradients to work when logo is used multiple times */}
-                    <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" viewBox="0 0" style={{ position: 'fixed', top: '0' }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" viewBox="0 0 0 0" style={{ position: 'fixed', top: '0' }}>
                         <defs>
                             <linearGradient
                                 id="paint0_linear"
