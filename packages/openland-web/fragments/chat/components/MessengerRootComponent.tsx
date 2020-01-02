@@ -44,7 +44,6 @@ interface MessagesComponentProps {
     onChatLostAccess?: Function;
     isActive: boolean;
     conversationId: string;
-    loading: boolean;
     messenger: MessengerEngine;
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
@@ -99,7 +98,6 @@ const messagesListContainer = css`
     display: flex;
     position: relative;
     flex-direction: column;
-    position: relative;
     flex-grow: 1;
     flex-shrink: 1;
     overflow: hidden;
@@ -407,53 +405,54 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             this.props.room.__typename === 'SharedRoom' ? this.props.room.membersCount : undefined;
         return (
             <div className={messengerContainer}>
-                {memberProfiles && (
-                    <MemberProfilesComponent chatId={this.props.room.id} />
-                )}
-                {pin &&
-                    !this.state.loading && (
-                        <PinMessageComponent message={pin} engine={this.conversation} />
-                    )}
-                <div className={messagesListContainer}>
-                    <MessageListComponent
-                        ref={this.messagesList}
-                        isChannel={isChannel}
-                        me={this.props.me}
-                        conversation={this.conversation}
-                        conversationType={this.props.conversationType}
-                        inputShower={this.handleShowIput}
-                        conversationId={this.props.conversationId}
-                        room={this.props.room}
-                    />
-                    <TypingsView conversationId={this.props.conversationId} />
-                    {this.props.loading && <XLoader loading={this.props.loading} />}
-                </div>
-
-                <ReloadFromEndButton conversation={this.conversation} showInput={!!showInput} />
-
-                {showInput && (
-                    <div className={composeContainer}>
-                        <div className={composeContent}>
-                            <InputMessageActionComponent
-                                engine={this.conversation.messagesActionsStateEngine}
+                {this.state.loading && <XLoader loading={this.state.loading} />}
+                {!this.state.loading && (
+                    <>
+                        {memberProfiles && (
+                            <MemberProfilesComponent chatId={this.props.room.id} />
+                        )}
+                        {pin && (
+                            <PinMessageComponent message={pin} engine={this.conversation} />
+                        )}
+                        <div className={messagesListContainer}>
+                            <MessageListComponent
+                                ref={this.messagesList}
+                                isChannel={isChannel}
+                                me={this.props.me}
+                                conversation={this.conversation}
+                                conversationType={this.props.conversationType}
+                                inputShower={this.handleShowIput}
+                                conversationId={this.props.conversationId}
+                                room={this.props.room}
                             />
-                            <SendMessageComponent
-                                onAttach={this.onAttach}
-                                initialText={this.initialContent}
-                                onPressUp={this.onInputPressUp}
-                                rickRef={this.rickRef}
-                                groupId={groupId}
-                                membersCount={membersCount}
-                                onTextSentAsync={this.onTextSend}
-                                onStickerSent={this.onStickerSent}
-                                onTextChange={this.handleChange}
-                                onContentChange={this.onContentChange}
-                                isChannel={this.props.room.__typename === 'SharedRoom' ? this.props.room.isChannel : undefined}
-                            />
+                            <TypingsView conversationId={this.props.conversationId} />
                         </div>
-                    </div>
+                        <ReloadFromEndButton conversation={this.conversation} showInput={!!showInput} />
+                        {showInput && (
+                            <div className={composeContainer}>
+                                <div className={composeContent}>
+                                    <InputMessageActionComponent
+                                        engine={this.conversation.messagesActionsStateEngine}
+                                    />
+                                    <SendMessageComponent
+                                        onAttach={this.onAttach}
+                                        initialText={this.initialContent}
+                                        onPressUp={this.onInputPressUp}
+                                        rickRef={this.rickRef}
+                                        groupId={groupId}
+                                        membersCount={membersCount}
+                                        onTextSentAsync={this.onTextSend}
+                                        onStickerSent={this.onStickerSent}
+                                        onTextChange={this.handleChange}
+                                        onContentChange={this.onContentChange}
+                                        isChannel={this.props.room.__typename === 'SharedRoom' ? this.props.room.isChannel : undefined}
+                                    />
+                                </div>
+                            </div>
+                        )}
+                        {showInput && <DropZone onDrop={this.onAttach} />}
+                    </>
                 )}
-                {showInput && <DropZone onDrop={this.onAttach} />}
             </div>
         );
     }
@@ -478,7 +477,6 @@ export const MessengerRootComponent = React.memo((props: MessengerRootComponentP
             onChatLostAccess={props.onChatLostAccess}
             isActive={true}
             me={messenger.user}
-            loading={false}
             conversationId={props.conversationId}
             messenger={messenger}
             conversationType={props.conversationType}
