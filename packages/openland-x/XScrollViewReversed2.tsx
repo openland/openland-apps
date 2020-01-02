@@ -122,6 +122,11 @@ export const XScrollViewReverse2 = React.memo(
                     outerHeight.current = outer;
                     if (d < 0) {
                         delta -= d;
+                    } else {
+                        // We can't overscroll view (setting scrollTop can be ignored for invalid values)
+                        // so we need to measure maximum bottom scroll and adjust scroll value
+                        const currentBottom = innerHeight.current - scrollTop.current - outerHeight.current;
+                        delta -= Math.min(d, currentBottom);
                     }
                 }
                 if (delta !== 0) {
@@ -186,7 +191,7 @@ export const XScrollViewReverse2 = React.memo(
             React.useLayoutEffect(
                 () => {
                     let running = false;
-                    
+
                     // Invoke on next frame to avoid forced styles
                     requestAnimationFrame(() => {
                         if (!running) {
