@@ -217,10 +217,10 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
     return (
         <div className={cx(SharedMediaContainerClass, layout === 'mobile' && SharedMediaContainerMobileClass, !props.active && SharedMediaContainerHiddenClass)}>
             {items}
-            {initialLoading && <XView flexGrow={1} height="calc(100vh - 56px)"><XLoader/></XView>}
+            {initialLoading && <XView flexGrow={1} height="calc(100vh - 56px)"><XLoader loading={true}/></XView>}
             {isEmpty && <Placeholder mediaTypes={props.mediaTypes} />}
             {!initialLoading && !isEmpty && <Footer useCorners={props.mediaTypes.includes(SharedMediaType.IMAGE)}>
-                {loading && <XLoader />}
+                {loading && <XLoader loading={true} />}
             </Footer>}
         </div>
     );

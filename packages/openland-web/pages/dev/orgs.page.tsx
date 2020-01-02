@@ -123,7 +123,7 @@ const FilteredOptions = (props: FilteredOptionsProps) => {
                     justifyContent="center"
                     height={80}
                 >
-                    <XLoader />
+                    <XLoader loading={true} />
                 </XView>
             );
         };

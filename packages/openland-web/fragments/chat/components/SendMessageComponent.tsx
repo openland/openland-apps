@@ -310,7 +310,7 @@ const AutoCompleteComponent = React.memo(
 
                     return (
                         <XView height={40} flexGrow={1} justifyContent="center" alignItems="center">
-                            <XLoader transparentBackground={true} size="medium" />
+                            <XLoader loading={true} transparentBackground={true} size="medium" />
                         </XView>
                     );
                 },
@@ -661,7 +661,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             )}
             {loading && (
                 <div className={loaderContainer}>
-                    <XLoader size="medium" />
+                    <XLoader loading={true} size="medium" />
                 </div>
             )}
         </div>

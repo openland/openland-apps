@@ -219,7 +219,7 @@ export const ChatsForYou = ({
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'network-only' });
 
     if (!discoverDone.betaIsDiscoverDone) {
-        return <XLoader />;
+        return <XLoader loading={true} />;
     }
 
     const rooms: SuggestedRooms_suggestedRooms_SharedRoom[] = [];

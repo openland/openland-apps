@@ -223,7 +223,7 @@ export const Discover = ({
 
     if (!currentPage.betaNextDiscoverPage!!.tagGroup!! || discoverDone.betaIsDiscoverDone) {
         if (!discoverDone.betaIsDiscoverDone) {
-            return <XLoader />;
+            return <XLoader loading={true} />;
         }
         return (
             <ChatsForYou

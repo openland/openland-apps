@@ -91,7 +91,7 @@ export const ReloadFromEndButton = React.memo((props: { conversation: Conversati
     return <div className={outerContainer}>
         <div className={reloadButtonContainer}>
             <div className={cx(reloadButtonClass, show ? showClass : hideClass, !props.showInput && inputPlacehodler)} onClick={onClick} >
-                {loading ? <XLoader size="medium" transparentBackground={true} /> : <UIcon icon={<ArrowIcon />} className={iconRotation} />}
+                {loading ? <XLoader loading={true} size="medium" transparentBackground={true} /> : <UIcon icon={<ArrowIcon />} className={iconRotation} />}
             </div>
         </div>
     </div>;

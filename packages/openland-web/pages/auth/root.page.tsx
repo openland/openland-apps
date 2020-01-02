@@ -218,7 +218,7 @@ export default () => {
 
     return (
         <>
-            {page === pages.loading && <XLoader />}
+            {page === pages.loading && <XLoader loading={true} />}
             {page === pages.acceptInvite && (
                 <AcceptInvitePage
                     variables={{

@@ -140,7 +140,7 @@ export const PageLayout = (props: {
                 <HeaderComponent visible={props.visible}>
                     <Deferred>
                         <div className={contentWrapperStyle}>
-                            <React.Suspense fallback={<XLoader />}>
+                            <React.Suspense fallback={<XLoader loading={true} />}>
                                 {props.children}
                             </React.Suspense>
                         </div>

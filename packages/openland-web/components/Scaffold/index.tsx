@@ -107,7 +107,7 @@ class ScaffoldContent extends React.Component<{
         }
         if (canUseDOM) {
             return (
-                <React.Suspense fallback={<XLoader />}>
+                <React.Suspense fallback={<XLoader loading={true} />}>
                     <XVertical flexGrow={1}>
                         {children}
                         {bottomOffset !== false && <PageDiv />}
