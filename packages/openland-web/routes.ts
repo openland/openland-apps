@@ -158,6 +158,9 @@ routes.add('/ui/avatars/', '/dev/ui/avatars');
 routes.add('/ui/checkbox', '/dev/ui/checkbox');
 routes.add('/ui/checkbox/', '/dev/ui/checkbox');
 
+routes.add('/ui/scroll', '/dev/ui/scroll');
+routes.add('/ui/scroll/', '/dev/ui/scroll');
+
 //
 // Dev Tools
 //

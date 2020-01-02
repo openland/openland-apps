@@ -33,6 +33,7 @@ export function DevDocsScaffold(props: {
                             <UListItem title="Shortcuts" path="/ui/shortcuts" />
                             <UListItem title="Video" path="/ui/video" />
                             <UListItem title="Avatars" path="/ui/avatars" />
+                            <UListItem title="Scroll" path="/ui/scroll" />
                         </UListGroup>
                     </XView>
                 )}

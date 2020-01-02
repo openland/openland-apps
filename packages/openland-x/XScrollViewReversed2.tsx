@@ -186,6 +186,8 @@ export const XScrollViewReverse2 = React.memo(
             React.useLayoutEffect(
                 () => {
                     let running = false;
+                    
+                    // Invoke on next frame to avoid forced styles
                     requestAnimationFrame(() => {
                         if (!running) {
                             return;
