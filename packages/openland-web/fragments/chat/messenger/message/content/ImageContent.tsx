@@ -208,7 +208,8 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     props.date && (
                         <div className={modalInfoContainer}>
                             <div className={cx(TextCaption, modalSecondaryText)}>
-                                {props.senderNameEmojify || (props.sender ? props.sender!!.name : '')}
+                                {props.senderNameEmojify ||
+                                    (props.sender ? props.sender!!.name : '')}
                             </div>
                             <div className={cx(TextCaption, modalSecondaryText)}>
                                 {formatDateTime(props.date)}
@@ -261,7 +262,12 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                         style={{ cursor: 'default' }}
                     />
                 )}
-                <XLoader loading={true} transparentBackground={true} ref={loaderRef} />
+                <XLoader
+                    loading={true}
+                    transparentBackground={true}
+                    ref={loaderRef}
+                    contrast={true}
+                />
                 <ImgWithRetry
                     ref={imgRef}
                     onLoad={onLoad}
@@ -336,7 +342,12 @@ const GifContent = React.memo(
                     src={props.file.filePreview || undefined}
                     style={{ top: imgPositionTop, left: imgPositionLeft }}
                 />
-                <XLoader transparentBackground={true} ref={loaderRef} loading={true} />
+                <XLoader
+                    transparentBackground={true}
+                    ref={loaderRef}
+                    loading={true}
+                    contrast={true}
+                />
                 <video
                     ref={gifRef}
                     onLoadStart={onLoad}

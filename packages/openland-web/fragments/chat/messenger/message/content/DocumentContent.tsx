@@ -153,7 +153,7 @@ const ModalContent = (props: ModalProps & { hide: () => void; url?: string }) =>
             </div>
             <div className={modalContent} onClick={e => e.stopPropagation()}>
                 {isElectron ? (
-                    <XLoader loading={true} transparentBackground={true} />
+                    <XLoader loading={true} transparentBackground={true} contrast={true} />
                 ) : (
                     <embed
                         src={`https://ucarecdn.com/${props.fileId}/-/inline/yes/${props.fileName}`}
