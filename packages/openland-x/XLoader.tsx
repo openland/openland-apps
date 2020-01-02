@@ -68,11 +68,11 @@ const SvgLoader = React.memo((props: LoaderRenderProps) => {
     const loaderFullPath = props.contrast
         ? loaderSizePath + '-contrast.svg'
         : loaderSizePath + '.svg';
+
     return <img src={loaderFullPath} className={rotate} />;
 });
 
 export const XLoader = React.forwardRef((props: XLoaderProps, ref: React.Ref<HTMLDivElement>) => {
-    console.log(props);
     if (props.loading !== true) {
         return null;
     }
