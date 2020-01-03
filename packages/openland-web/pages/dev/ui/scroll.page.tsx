@@ -47,7 +47,21 @@ const TestComponent = React.memo(() => {
 
     let items: any[] = [];
     for (let i = countStart; i < count; i++) {
-        items.push(<XView key={'l-' + i} width={100} height={100} backgroundColor={i % 2 === 0 ? 'red' : 'blue'} />);
+        items.push(
+            <XView
+                key={'l-' + i}
+                width={100}
+                height={100}
+                backgroundColor={i % 2 === 0 ? 'red' : 'blue'}
+                color="white"
+                alignItems="center"
+                justifyContent="center"
+            >
+                <span>
+                    {'Item #' + i}
+                </span>
+            </XView>
+        );
     }
     return (
         <XView height={height} flexDirection="column">
@@ -75,21 +89,23 @@ const TestComponent = React.memo(() => {
                     onChange={(p) => setEngine((p as any).value)}
                 />
             </XView>
-            {engine === 'XScrollViewReverse2' && (
-                <XScrollViewReverse2 flexGrow={1} flexShrink={1} alignSelf="stretch" backgroundColor="magenta">
-                    {items}
-                </XScrollViewReverse2>
-            )}
-            {engine === 'XScrollViewAnchored' && (
-                <XScrollViewAnchored flexGrow={1} flexShrink={1} alignSelf="stretch" backgroundColor="magenta">
-                    {items}
-                </XScrollViewAnchored>
-            )}
-            {engine === 'Native' && (
-                <NativeScroll>
-                    {items}
-                </NativeScroll>
-            )}
+            <XView flexGrow={1} flexShrink={1} alignSelf="stretch" flexDirection="column">
+                {engine === 'XScrollViewReverse2' && (
+                    <XScrollViewReverse2 flexGrow={1} flexShrink={1} alignSelf="stretch" backgroundColor="magenta">
+                        {items}
+                    </XScrollViewReverse2>
+                )}
+                {engine === 'XScrollViewAnchored' && (
+                    <XScrollViewAnchored flexGrow={1} flexShrink={1} alignSelf="stretch" backgroundColor="magenta">
+                        {items}
+                    </XScrollViewAnchored>
+                )}
+                {engine === 'Native' && (
+                    <NativeScroll>
+                        {items}
+                    </NativeScroll>
+                )}
+            </XView>
         </XView>
     );
 });

@@ -5,6 +5,7 @@ import { XView, XStyles } from 'react-mental';
 import { XScrollValues } from './XScrollView3';
 import { throttle } from 'openland-y-utils/timer';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import aboutHeader from 'openland-landing/next/aboutHeader';
 
 const ResizeObserver = ((canUseDOM && window && ((window as any).ResizeObserver)) || ResizeObserverPolyfill) as typeof ResizeObserverPolyfill;
 
@@ -39,21 +40,13 @@ interface XScrollViewReverse2RefProps {
     getClientHeight: () => number;
 }
 
-const context = React.createContext(() => { /*  */ });
-
-export const useScrollRefresh = () => {
-    let ct = React.useContext(context);
-    React.useLayoutEffect(() => {
-        ct();
-    });
-};
-
 export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewReverse2RefProps, XScrollViewReverse2Props>((props, ref) => {
     const outerRef = React.useRef<HTMLDivElement>(null);
     const innerRef = props.innerRef || React.useRef<HTMLDivElement>(null);
     const outerHeight = React.useRef<number>(0);
     const innerHeight = React.useRef<number>(0);
     const scrollTop = React.useRef<number>(0);
+    const lastAnchors = React.useRef<Map<HTMLDivElement, number>>(new Map<HTMLDivElement, number>());
 
     // Instance methods
     React.useImperativeHandle<XScrollViewReverse2RefProps, any>(ref, () => ({
@@ -98,6 +91,19 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
         }, 150);
     }, []);
 
+    const calculateAnchors = React.useCallback(() => {
+        let anchors = new Map<HTMLDivElement, number>();
+        if (!innerRef.current || !outerRef.current) {
+            return anchors;
+        }
+        for (let i = innerRef.current!.childElementCount - 1; i >= 0; i--) {
+            let node = innerRef.current!.childNodes[i] as HTMLDivElement;
+            let offset = node.offsetTop;
+            anchors.set(node, offset);
+        }
+        return anchors;
+    }, []);
+
     // Handle content change
     const updateSizes = React.useCallback((outer: number, inner: number) => {
         const outerDiv = outerRef.current!!;
@@ -107,26 +113,36 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
         }
 
         let delta = 0;
-        if (inner !== innerHeight.current) {
-            let d = inner - innerHeight.current;
-            innerHeight.current = inner;
-            if (d > 0) {
-                delta += d;
+
+        // Detect content movement
+        const lAnchors = lastAnchors.current;
+        for (let i = innerRef.current!.childElementCount - 1; i >= 0; i--) {
+            let node = innerRef.current!.childNodes[i] as HTMLDivElement;
+            let offset = node.offsetTop;
+            let ex = lAnchors.get(node);
+            if (ex !== undefined) {
+                delta += offset - ex;
+                break;
             }
         }
+
+        // Detect outer content delta
         if (outer !== outerHeight.current) {
             let d = outer - outerHeight.current;
             outerHeight.current = outer;
-            if (d < 0) {
-                delta -= d;
-            } else {
+            delta -= d;
+        }
+        if (delta !== 0) {
+
+            if (delta < 0) {
                 // We can't overscroll view (setting scrollTop can be ignored for invalid values)
                 // so we need to measure maximum bottom scroll and adjust scroll value
                 const currentBottom = innerHeight.current - scrollTop.current - outerHeight.current;
-                delta -= Math.min(d, currentBottom);
+                if (currentBottom > -delta) {
+                    delta = -currentBottom;
+                }
             }
-        }
-        if (delta !== 0) {
+
             scrollTop.current = outerDiv.scrollTop + delta;
             outerDiv.scrollTop = scrollTop.current;
             reportOnScroll();
@@ -141,6 +157,7 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
         outerHeight.current = outerDiv.clientHeight;
         scrollTop.current = innerHeight.current;
         outerDiv.scrollTop = scrollTop.current;
+        lastAnchors.current = calculateAnchors();
         reportOnScroll();
 
         // Watch for scroll
@@ -166,6 +183,7 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
                 }
             }
             updateSizes(outer, inner);
+            lastAnchors.current = calculateAnchors(); // Should be AFTER updateSizes since updateSizes requires old anchors.
         });
         observer.observe(innerDiv);
         observer.observe(outerDiv);
@@ -176,28 +194,15 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
         };
     }, []);
 
-    // Refresh callback used by children
-    const ctx = React.useCallback(() => {
-        const outerDiv = outerRef.current!!;
-        const innerDiv = innerRef.current!!;
-        if (!outerDiv || !innerDiv) {
-            return;
-        }
-        updateSizes(outerDiv.clientHeight, innerDiv.clientHeight);
-        reportOnScroll();
-    }, []);
-
     // Render
     const { children, ...other } = props;
     return (
-        <context.Provider value={ctx}>
-            <XView {...other}>
-                <div className={NativeScrollStyle} ref={outerRef}>
-                    <div className={NativeScrollContentStyle} ref={innerRef}>
-                        {props.children}
-                    </div>
+        <XView {...other}>
+            <div className={NativeScrollStyle} ref={outerRef}>
+                <div className={NativeScrollContentStyle} ref={innerRef}>
+                    {props.children}
                 </div>
-            </XView>
-        </context.Provider>
+            </div>
+        </XView>
     );
 }));
