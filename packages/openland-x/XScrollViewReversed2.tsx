@@ -4,9 +4,9 @@ import { ResizeObserver as ResizeObserverPolyfill } from '@juggle/resize-observe
 import { XView, XStyles } from 'react-mental';
 import { XScrollValues } from './XScrollView3';
 import { throttle } from 'openland-y-utils/timer';
-// import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
-const ResizeObserver = ResizeObserverPolyfill; // ((canUseDOM && window && ((window as any).ResizeObserver)) || ResizeObserverPolyfill) as typeof ResizeObserverPolyfill;
+const ResizeObserver = ((canUseDOM && window && ((window as any).ResizeObserver)) || ResizeObserverPolyfill) as typeof ResizeObserverPolyfill;
 
 const NativeScrollStyle = css`
     overflow-y: overlay;
