@@ -111,6 +111,7 @@ const TestComponent = React.memo(() => {
                 <UButton text="Smaller" onClick={() => setHeight((s) => s - 20)} marginRight={8} />
 
                 <USelect
+                    placeholder="Engine"
                     options={[{
                         value: 'XScrollViewReverse2', label: 'XScrollViewReverse2'
                     }, {
