@@ -1409,6 +1409,11 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
+"@juggle/resize-observer@v3.0.0-0":
+  version "3.0.0-0"
+  resolved "https://registry.yarnpkg.com/@juggle/resize-observer/-/resize-observer-3.0.0-0.tgz#2dea1c92b12212526fe6500261cdac5ebf98fd8e"
+  integrity sha512-cQFwTDB77F4SE+liyAd+deeyCJ3L9uTTBXX3+ArZu/jXL1LDMXIVsD7oI9qUS5RJu3G0pNZYd9GmbgrcvAeQ0w==
+
 "@mapbox/geo-viewport@^0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@mapbox/geo-viewport/-/geo-viewport-0.2.2.tgz#93206c044238c21a60fca7e9064c8ce63e8027b4"

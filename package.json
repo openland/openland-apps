@@ -16,6 +16,7 @@
         "@babel/plugin-transform-react-inline-elements": "^7.2.0",
         "@babel/traverse": "^7.1.6",
         "@babel/types": "^7.2.0",
+        "@juggle/resize-observer": "v3.0.0-0",
         "@mapbox/geo-viewport": "^0.2.2",
         "@mapbox/mapbox-gl-geocoder": "^2.2.0",
         "@openland/react-video-renderer": "1.2.1",
