@@ -5,7 +5,6 @@ import { XView, XStyles } from 'react-mental';
 import { XScrollValues } from './XScrollView3';
 import { throttle } from 'openland-y-utils/timer';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import aboutHeader from 'openland-landing/next/aboutHeader';
 
 const ResizeObserver = ((canUseDOM && window && ((window as any).ResizeObserver)) || ResizeObserverPolyfill) as typeof ResizeObserverPolyfill;
 
