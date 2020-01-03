@@ -184,7 +184,7 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
 
                 // const prevOffsetBottom = (innerHeight.current - outerHeight.current - scrollTop.current);
                 // const currentOffsetBottom = (innerDiv.clientHeight - outerDiv.clientHeight - outerDiv.scrollTop);
-                // const nextOffsetBottom = (inner - outer - scrollTop.current) + delta;
+                const nextOffsetBottom = (inner - outer - scrollTop.current) + delta;
 
                 // console.log('content-height: ' + (innerHeight.current) + ' -> ' + innerDiv.clientHeight);
                 // console.log('scroll-botom: ' + (prevOffsetBottom) + ' -> ' + (currentOffsetBottom) + ' -> ' + (nextOffsetBottom));
