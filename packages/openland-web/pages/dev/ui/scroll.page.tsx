@@ -39,37 +39,37 @@ const NativeScroll = React.memo((props: { children?: any }) => {
     );
 });
 
-const DynamicView = React.memo(() => {
-    const [h, setH] = React.useState(100);
+// const DynamicView = React.memo(() => {
+//     const [h, setH] = React.useState(100);
 
-    React.useEffect(() => {
-        let it = setInterval(() => {
-            setH((s) => {
-                if (s === 100) {
-                    return 200;
-                } else {
-                    return 100;
-                }
-            });
-        }, 1000);
-        return () => clearInterval(it);
-    }, []);
+//     React.useEffect(() => {
+//         let it = setInterval(() => {
+//             setH((s) => {
+//                 if (s === 100) {
+//                     return 200;
+//                 } else {
+//                     return 100;
+//                 }
+//             });
+//         }, 1000);
+//         return () => clearInterval(it);
+//     }, []);
 
-    return (
-        <XView
-            width={100}
-            height={h}
-            backgroundColor={'green'}
-            color="white"
-            alignItems="center"
-            justifyContent="center"
-        >
-            <span>
-                {'Dyno'}
-            </span>
-        </XView>
-    );
-});
+//     return (
+//         <XView
+//             width={100}
+//             height={h}
+//             backgroundColor={'green'}
+//             color="white"
+//             alignItems="center"
+//             justifyContent="center"
+//         >
+//             <span>
+//                 {'Dyno'}
+//             </span>
+//         </XView>
+//     );
+// });
 
 const TestComponent = React.memo(() => {
     const [engine, setEngine] = React.useState<'XScrollViewReverse2' | 'XScrollViewAnchored' | 'Native'>('XScrollViewReverse2');

@@ -127,7 +127,7 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
 
         // Detect content delta
         let contentDelta = 0;
-        let contentBottomDelta = 0;
+        // let contentBottomDelta = 0;
         const lAnchors = lastAnchors.current;
         for (let i = innerRef.current!.childElementCount - 1; i >= 0; i--) {
             let node = innerRef.current!.childNodes[i] as HTMLDivElement;
@@ -136,7 +136,7 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
             // console.log('ddd:' + (lAnchors.height - innerRef.current!.clientHeight));
             if (ex !== undefined) {
                 contentDelta = offset - ex;
-                contentBottomDelta = ((innerRef.current!.clientHeight - offset) - (lAnchors.height - ex));
+                // contentBottomDelta = ((innerRef.current!.clientHeight - offset) - (lAnchors.height - ex));
                 break;
             }
         }
