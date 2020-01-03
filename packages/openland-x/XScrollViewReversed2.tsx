@@ -4,9 +4,9 @@ import { ResizeObserver as ResizeObserverPolyfill } from '@juggle/resize-observe
 import { XView, XStyles } from 'react-mental';
 import { XScrollValues } from './XScrollView3';
 import { throttle } from 'openland-y-utils/timer';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
+// import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
-const ResizeObserver = ((canUseDOM && window && ((window as any).ResizeObserver)) || ResizeObserverPolyfill) as typeof ResizeObserverPolyfill;
+const ResizeObserver = ResizeObserverPolyfill; // ((canUseDOM && window && ((window as any).ResizeObserver)) || ResizeObserverPolyfill) as typeof ResizeObserverPolyfill;
 
 const NativeScrollStyle = css`
     overflow-y: overlay;
@@ -45,7 +45,7 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
     const outerHeight = React.useRef<number>(0);
     const innerHeight = React.useRef<number>(0);
     const scrollTop = React.useRef<number>(0);
-    const lastAnchors = React.useRef<Map<HTMLDivElement, number>>(new Map<HTMLDivElement, number>());
+    const lastAnchors = React.useRef<{ height: number, offsets: Map<HTMLDivElement, number> }>({ height: 0, offsets: new Map<HTMLDivElement, number>() });
 
     // Instance methods
     React.useImperativeHandle<XScrollViewReverse2RefProps, any>(ref, () => ({
@@ -93,59 +93,126 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
     const calculateAnchors = React.useCallback(() => {
         let anchors = new Map<HTMLDivElement, number>();
         if (!innerRef.current || !outerRef.current) {
-            return anchors;
+            return { height: 0, offsets: anchors };
         }
         for (let i = innerRef.current!.childElementCount - 1; i >= 0; i--) {
             let node = innerRef.current!.childNodes[i] as HTMLDivElement;
             let offset = node.offsetTop;
             anchors.set(node, offset);
         }
-        return anchors;
+        return { height: innerRef.current!.clientHeight, offsets: anchors };
     }, []);
 
     // Handle content change
     const updateSizes = React.useCallback((outer: number, inner: number) => {
         const outerDiv = outerRef.current!!;
         const innerDiv = innerRef.current!!;
+        let delta = 0;
         if (!outerDiv || !innerDiv) {
             return;
         }
 
-        let delta = 0;
+        // Hotfix?
+        // outerDiv.scrollTop = outerDiv.scrollTop;
+        // scrollTop.current = outerDiv.scrollTop;
 
-        // Detect content movement
+        // DEBUG
+        // const currentBottom = (innerHeight.current - innerDiv.scrollHeight - outerHeight.current);
+        // let offsetBottom = -(scrollTop.current + outerHeight.current - innerHeight.current);
+        // console.log('scroll-top: ' + outerDiv.scrollTop);
+        // console.log('outer-height: ' + outerDiv.clientHeight);
+        // console.log('inner-height: ' + innerDiv.clientHeight);
+        // console.log('scroll-bottom: ' + offsetBottom);
+        // DEBUG
+
+        // Detect content delta
+        let contentDelta = 0;
+        let contentBottomDelta = 0;
         const lAnchors = lastAnchors.current;
         for (let i = innerRef.current!.childElementCount - 1; i >= 0; i--) {
             let node = innerRef.current!.childNodes[i] as HTMLDivElement;
             let offset = node.offsetTop;
-            let ex = lAnchors.get(node);
+            let ex = lAnchors.offsets.get(node);
+            // console.log('ddd:' + (lAnchors.height - innerRef.current!.clientHeight));
             if (ex !== undefined) {
-                delta += offset - ex;
+                contentDelta = offset - ex;
+                contentBottomDelta = ((innerRef.current!.clientHeight - offset) - (lAnchors.height - ex));
                 break;
             }
         }
+        // console.log('content-delta: ' + contentDelta);
+        // console.log('content-delta-bottom: ' + contentBottomDelta);
+        // console.log('inner-delta: ' + (inner - innerHeight.current));
 
         // Detect outer content delta
         if (outer !== outerHeight.current) {
-            let d = outer - outerHeight.current;
-            outerHeight.current = outer;
-            delta -= d;
+            delta += outerHeight.current - outer;
         }
+
+        // Inner 
+        // if (inner !== innerHeight.current) {
+        //     let d = inner - innerHeight.current;
+        //     if (d > 0 && contentDelta !== 0) {
+        //         delta += contentDelta;
+        //         console.log('inner-delta: ' + d);
+        //     }
+        // }
+
+        delta += contentDelta;
+        // delta += contentBottomDelta;
+
+        // console.log('end-delta: ' + delta);
+        // }
+
+        // Update scroll
         if (delta !== 0) {
 
-            if (delta < 0) {
-                // We can't overscroll view (setting scrollTop can be ignored for invalid values)
-                // so we need to measure maximum bottom scroll and adjust scroll value
-                const currentBottom = innerHeight.current - scrollTop.current - outerHeight.current;
-                if (currentBottom > -delta) {
-                    delta = -currentBottom;
-                }
-            }
+            // console.log('---');
+            // console.log('delta: ' + delta);
 
-            scrollTop.current = outerDiv.scrollTop + delta;
-            outerDiv.scrollTop = scrollTop.current;
-            reportOnScroll();
+            // if (delta < 0) {
+            //     const offsetBottom = -(scrollTop.current + outer - inner);
+            //     if (delta < -offsetBottom) {
+            //         delta = -offsetBottom;
+            //     }
+            //     // console.log(offsetBottom);
+            // }
+
+            if (delta !== 0 && delta !== -0) {
+                // Update scrollTop and then read actual value and save it
+                // console.log(outerDiv.scrollTop);
+
+                const prevOffsetBottom = (innerHeight.current - outerHeight.current - scrollTop.current);
+                const currentOffsetBottom = (innerDiv.clientHeight - outerDiv.clientHeight - outerDiv.scrollTop);
+                const nextOffsetBottom = (inner - outer - scrollTop.current) + delta;
+
+                // console.log('content-height: ' + (innerHeight.current) + ' -> ' + innerDiv.clientHeight);
+                // console.log('scroll-botom: ' + (prevOffsetBottom) + ' -> ' + (currentOffsetBottom) + ' -> ' + (nextOffsetBottom));
+                // console.log('scroll-top: ' + (scrollTop.current) + ' -> ' + (outerDiv.scrollTop) + ' -> ' + (scrollTop.current + delta));
+
+                // outerDiv.style.overflow = 'hidden';
+                if (nextOffsetBottom >= 0) {
+                    scrollTop.current = outerDiv.scrollTop;
+                    scrollTop.current = scrollTop.current + delta;
+                    outerDiv.scrollTop = scrollTop.current;
+                }
+                // setTimeout(function () { outerDiv.style.overflow = ''; }, 10);
+
+                // console.log(outerDiv.scrollTop);
+                // console.log('---');
+            }
         }
+
+        // Save Values
+        outerHeight.current = outer;
+        innerHeight.current = inner;
+        scrollTop.current = outerDiv.scrollTop;
+
+        // offsetBottom = -(scrollTop.current + outerHeight.current - innerHeight.current);
+        // console.log('scroll-bottom-upd: ' + offsetBottom);
+
+        // Report Scroll Event
+        reportOnScroll();
     }, []);
 
     // Initial calculations
@@ -168,6 +235,7 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
 
         // Watch for size
         let observer = new ResizeObserver(src => {
+            console.log('resize');
             let outer = outerHeight.current;
             let inner = innerHeight.current;
 
@@ -181,15 +249,22 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
                     outer = s.contentRect.height;
                 }
             }
+
             updateSizes(outer, inner);
-            lastAnchors.current = calculateAnchors(); // Should be AFTER updateSizes since updateSizes requires old anchors.
+            lastAnchors.current = calculateAnchors(); // Should be AFTER updateSizes since updateSizes requires old anchors
         });
         observer.observe(innerDiv);
         observer.observe(outerDiv);
 
+        // let mutObserver = new MutationObserver((mutations) => {
+        //     console.log('mutation');
+        // });
+        // mutObserver.observe(innerDiv, { childList: true, attributes: true, characterData: true });
+
         return () => {
-            outerDiv.removeEventListener('scroll', onScrollHandler);
+            // outerDiv.removeEventListener('scroll', onScrollHandler);
             observer.disconnect();
+            // mutObserver.disconnect();
         };
     }, []);
 

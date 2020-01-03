@@ -12,7 +12,7 @@ const NativeStyle = css`
     overflow-y: overlay;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    overflow-anchor: auto;
+    overflow-anchor: none;
     flex-shrink: 1;
     width: 100%;
     height: 100%;
@@ -39,6 +39,38 @@ const NativeScroll = React.memo((props: { children?: any }) => {
     );
 });
 
+const DynamicView = React.memo(() => {
+    const [h, setH] = React.useState(100);
+
+    React.useEffect(() => {
+        let it = setInterval(() => {
+            setH((s) => {
+                if (s === 100) {
+                    return 200;
+                } else {
+                    return 100;
+                }
+            });
+        }, 1000);
+        return () => clearInterval(it);
+    }, []);
+
+    return (
+        <XView
+            width={100}
+            height={h}
+            backgroundColor={'green'}
+            color="white"
+            alignItems="center"
+            justifyContent="center"
+        >
+            <span>
+                {'Dyno'}
+            </span>
+        </XView>
+    );
+});
+
 const TestComponent = React.memo(() => {
     const [engine, setEngine] = React.useState<'XScrollViewReverse2' | 'XScrollViewAnchored' | 'Native'>('XScrollViewReverse2');
     const [countStart, setCountStart] = React.useState(0);
@@ -47,6 +79,9 @@ const TestComponent = React.memo(() => {
 
     let items: any[] = [];
     for (let i = countStart; i < count; i++) {
+        // if (i === 0) {
+        //     items.push(<DynamicView key="dyno" />);
+        // }
         items.push(
             <XView
                 key={'l-' + i}
@@ -89,23 +124,21 @@ const TestComponent = React.memo(() => {
                     onChange={(p) => setEngine((p as any).value)}
                 />
             </XView>
-            <XView flexGrow={1} flexShrink={1} alignSelf="stretch" flexDirection="column">
-                {engine === 'XScrollViewReverse2' && (
-                    <XScrollViewReverse2 flexGrow={1} flexShrink={1} alignSelf="stretch" backgroundColor="magenta">
-                        {items}
-                    </XScrollViewReverse2>
-                )}
-                {engine === 'XScrollViewAnchored' && (
-                    <XScrollViewAnchored flexGrow={1} flexShrink={1} alignSelf="stretch" backgroundColor="magenta">
-                        {items}
-                    </XScrollViewAnchored>
-                )}
-                {engine === 'Native' && (
-                    <NativeScroll>
-                        {items}
-                    </NativeScroll>
-                )}
-            </XView>
+            {engine === 'XScrollViewReverse2' && (
+                <XScrollViewReverse2 flexGrow={1} flexShrink={1} alignSelf="stretch" backgroundColor="magenta">
+                    {items}
+                </XScrollViewReverse2>
+            )}
+            {engine === 'XScrollViewAnchored' && (
+                <XScrollViewAnchored flexGrow={1} flexShrink={1} alignSelf="stretch" backgroundColor="magenta">
+                    {items}
+                </XScrollViewAnchored>
+            )}
+            {engine === 'Native' && (
+                <NativeScroll>
+                    {items}
+                </NativeScroll>
+            )}
         </XView>
     );
 });
