@@ -45,7 +45,6 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
     const outerHeight = React.useRef<number>(0);
     const innerHeight = React.useRef<number>(0);
     const scrollTop = React.useRef<number>(0);
-    const lastAnchors = React.useRef<{ height: number, offsets: Map<HTMLDivElement, number> }>({ height: 0, offsets: new Map<HTMLDivElement, number>() });
 
     // Instance methods
     React.useImperativeHandle<XScrollViewReverse2RefProps, any>(ref, () => ({
@@ -90,131 +89,6 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
         }, 150);
     }, []);
 
-    const calculateAnchors = React.useCallback(() => {
-        let anchors = new Map<HTMLDivElement, number>();
-        if (!innerRef.current || !outerRef.current) {
-            return { height: 0, offsets: anchors };
-        }
-        for (let i = innerRef.current!.childElementCount - 1; i >= 0; i--) {
-            let node = innerRef.current!.childNodes[i] as HTMLDivElement;
-            let offset = node.offsetTop;
-            anchors.set(node, offset);
-        }
-        return { height: innerRef.current!.clientHeight, offsets: anchors };
-    }, []);
-
-    // Handle content change
-    const updateSizes = React.useCallback((outer: number, inner: number) => {
-        const outerDiv = outerRef.current!!;
-        const innerDiv = innerRef.current!!;
-        let delta = 0;
-        if (!outerDiv || !innerDiv) {
-            return;
-        }
-
-        // Hotfix?
-        // outerDiv.scrollTop = outerDiv.scrollTop;
-        // scrollTop.current = outerDiv.scrollTop;
-
-        // DEBUG
-        // const currentBottom = (innerHeight.current - innerDiv.scrollHeight - outerHeight.current);
-        // let offsetBottom = -(scrollTop.current + outerHeight.current - innerHeight.current);
-        // console.log('scroll-top: ' + outerDiv.scrollTop);
-        // console.log('outer-height: ' + outerDiv.clientHeight);
-        // console.log('inner-height: ' + innerDiv.clientHeight);
-        // console.log('scroll-bottom: ' + offsetBottom);
-        // DEBUG
-
-        // Detect content delta
-        let contentDelta = 0;
-        // let contentBottomDelta = 0;
-        const lAnchors = lastAnchors.current;
-        for (let i = innerRef.current!.childElementCount - 1; i >= 0; i--) {
-            let node = innerRef.current!.childNodes[i] as HTMLDivElement;
-            let offset = node.offsetTop;
-            let ex = lAnchors.offsets.get(node);
-            // console.log('ddd:' + (lAnchors.height - innerRef.current!.clientHeight));
-            if (ex !== undefined) {
-                contentDelta = offset - ex;
-                // contentBottomDelta = ((innerRef.current!.clientHeight - offset) - (lAnchors.height - ex));
-                break;
-            }
-        }
-        // console.log('content-delta: ' + contentDelta);
-        // console.log('content-delta-bottom: ' + contentBottomDelta);
-        // console.log('inner-delta: ' + (inner - innerHeight.current));
-
-        // Detect outer content delta
-        if (outer !== outerHeight.current) {
-            delta += outerHeight.current - outer;
-        }
-
-        // Inner 
-        // if (inner !== innerHeight.current) {
-        //     let d = inner - innerHeight.current;
-        //     if (d > 0 && contentDelta !== 0) {
-        //         delta += contentDelta;
-        //         console.log('inner-delta: ' + d);
-        //     }
-        // }
-
-        delta += contentDelta;
-        // delta += contentBottomDelta;
-
-        // console.log('end-delta: ' + delta);
-        // }
-
-        // Update scroll
-        if (delta !== 0) {
-
-            // console.log('---');
-            // console.log('delta: ' + delta);
-
-            // if (delta < 0) {
-            //     const offsetBottom = -(scrollTop.current + outer - inner);
-            //     if (delta < -offsetBottom) {
-            //         delta = -offsetBottom;
-            //     }
-            //     // console.log(offsetBottom);
-            // }
-
-            if (delta !== 0 && delta !== -0) {
-                // Update scrollTop and then read actual value and save it
-                // console.log(outerDiv.scrollTop);
-
-                // const prevOffsetBottom = (innerHeight.current - outerHeight.current - scrollTop.current);
-                // const currentOffsetBottom = (innerDiv.clientHeight - outerDiv.clientHeight - outerDiv.scrollTop);
-                const nextOffsetBottom = (inner - outer - scrollTop.current) + delta;
-
-                // console.log('content-height: ' + (innerHeight.current) + ' -> ' + innerDiv.clientHeight);
-                // console.log('scroll-botom: ' + (prevOffsetBottom) + ' -> ' + (currentOffsetBottom) + ' -> ' + (nextOffsetBottom));
-                // console.log('scroll-top: ' + (scrollTop.current) + ' -> ' + (outerDiv.scrollTop) + ' -> ' + (scrollTop.current + delta));
-
-                // outerDiv.style.overflow = 'hidden';
-                if (nextOffsetBottom >= 0) {
-                    scrollTop.current = outerDiv.scrollTop;
-                    scrollTop.current = scrollTop.current + delta;
-                    outerDiv.scrollTop = scrollTop.current;
-                }
-                // setTimeout(function () { outerDiv.style.overflow = ''; }, 10);
-
-                // console.log(outerDiv.scrollTop);
-                // console.log('---');
-            }
-        }
-
-        // Save Values
-        outerHeight.current = outer;
-        innerHeight.current = inner;
-        scrollTop.current = outerDiv.scrollTop;
-
-        // offsetBottom = -(scrollTop.current + outerHeight.current - innerHeight.current);
-        // console.log('scroll-bottom-upd: ' + offsetBottom);
-
-        // Report Scroll Event
-        reportOnScroll();
-    }, []);
-
     // Initial calculations
     React.useLayoutEffect(() => {
         const outerDiv = outerRef.current!!;
@@ -223,7 +97,6 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
         outerHeight.current = outerDiv.clientHeight;
         scrollTop.current = innerHeight.current;
         outerDiv.scrollTop = scrollTop.current;
-        lastAnchors.current = calculateAnchors();
         reportOnScroll();
 
         // Watch for scroll
@@ -234,10 +107,15 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
         outerDiv.addEventListener('scroll', onScrollHandler, { passive: true });
 
         // Watch for size
+        const childSizes = new Map<HTMLDivElement, number>();
+        const childOffsets = new Map<HTMLDivElement, number>();
         let observer = new ResizeObserver(src => {
-            console.log('resize');
             let outer = outerHeight.current;
             let inner = innerHeight.current;
+
+            let delta = 0;
+            let topWindow = outerDiv.scrollTop;
+            let bottomWindow = topWindow + outerDiv.clientHeight;
 
             for (let s of src) {
                 if (s.contentRect.height === 0 && s.contentRect.width === 0) {
@@ -247,24 +125,102 @@ export const XScrollViewReverse2 = React.memo(React.forwardRef<XScrollViewRevers
                     inner = s.contentRect.height;
                 } else if (s.target === outerDiv) {
                     outer = s.contentRect.height;
+                } else {
+                    let t = s.target as HTMLDivElement;
+                    let ex = childSizes.get(t);
+                    if (ex !== undefined) {
+                        let d = s.contentRect.height - ex;
+                        childSizes.set(t, s.contentRect.height);
+                        // childOffsets.set(t, s.contentRect.) Update?
+
+                        if (d !== 0) {
+                            let top = t.offsetTop;
+                            let bottom = top + t.clientHeight;
+
+                            if (top <= bottomWindow || bottom <= bottomWindow) {
+                                delta += d;
+                            }
+                        }
+                    }
                 }
             }
 
-            updateSizes(outer, inner);
-            lastAnchors.current = calculateAnchors(); // Should be AFTER updateSizes since updateSizes requires old anchors
+            // Outer Container Delta
+            if (outer !== outerHeight.current) {
+                delta += outerHeight.current - outer;
+            }
+
+            // Apply
+            scrollTop.current = scrollTop.current + delta;
+            outerDiv.scrollTop = scrollTop.current;
+
+            // Save Values
+            outerHeight.current = outer;
+            innerHeight.current = inner;
+            reportOnScroll();
         });
         observer.observe(innerDiv);
         observer.observe(outerDiv);
 
-        // let mutObserver = new MutationObserver((mutations) => {
-        //     console.log('mutation');
-        // });
-        // mutObserver.observe(innerDiv, { childList: true, attributes: true, characterData: true });
+        // Watch for children changes
+        for (let i = 0; i < innerRef.current!.childElementCount; i++) {
+            let node = innerRef.current!.childNodes[i] as HTMLDivElement;
+            childSizes.set(node, node.clientHeight);
+            childOffsets.set(node, node.offsetTop);
+            observer.observe(node);
+        }
+        let childObserver = new MutationObserver((mutations) => {
+            let delta = 0;
+            let topWindow = outerDiv.scrollTop;
+            let bottomWindow = topWindow + outerDiv.clientHeight;
+
+            for (let m of mutations) {
+                if (m.type === 'childList') {
+
+                    // Removed nodes
+                    for (let ri = 0; ri < m.removedNodes.length; ri++) {
+                        let r = m.removedNodes[ri] as HTMLDivElement;
+
+                        let top = childOffsets.get(r)!;
+                        let bottom = top + childSizes.get(r)!;
+                        if (top <= bottomWindow || bottom <= bottomWindow) {
+                            delta -= childSizes.get(r)!;
+                        }
+
+                        observer.unobserve(r);
+                        childSizes.delete(r);
+                        childOffsets.delete(r);
+                    }
+
+                    // Added nodes
+                    for (let ri = 0; ri < m.addedNodes.length; ri++) {
+                        let r = m.addedNodes[ri] as HTMLDivElement;
+
+                        // Update offset
+                        let top = r.offsetTop;
+                        let bottom = top + r.clientHeight;
+                        if (top <= bottomWindow || bottom <= bottomWindow) {
+                            delta += r.clientHeight;
+                        }
+
+                        // Set initial values
+                        childSizes.set(r, r.clientHeight);
+                        childOffsets.set(r, r.offsetTop);
+                        observer.observe(r);
+                    }
+                }
+            }
+
+            // Apply changes
+            scrollTop.current = scrollTop.current + delta;
+            outerDiv.scrollTop = scrollTop.current;
+        });
+        childObserver.observe(innerDiv, { childList: true });
 
         return () => {
-            // outerDiv.removeEventListener('scroll', onScrollHandler);
+            outerDiv.removeEventListener('scroll', onScrollHandler);
             observer.disconnect();
-            // mutObserver.disconnect();
+            childObserver.disconnect();
         };
     }, []);
 

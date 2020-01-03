@@ -39,67 +39,69 @@ const NativeScroll = React.memo((props: { children?: any }) => {
     );
 });
 
-// const DynamicView = React.memo(() => {
-//     const [h, setH] = React.useState(100);
+const DynamicView = React.memo(() => {
+    const [h, setH] = React.useState(100);
 
-//     React.useEffect(() => {
-//         let it = setInterval(() => {
-//             setH((s) => {
-//                 if (s === 100) {
-//                     return 200;
-//                 } else {
-//                     return 100;
-//                 }
-//             });
-//         }, 1000);
-//         return () => clearInterval(it);
-//     }, []);
+    React.useEffect(() => {
+        let it = setInterval(() => {
+            setH((s) => {
+                if (s === 100) {
+                    return 200;
+                } else {
+                    return 100;
+                }
+            });
+        }, 5000);
+        return () => clearInterval(it);
+    }, []);
 
-//     return (
-//         <XView
-//             width={100}
-//             height={h}
-//             backgroundColor={'green'}
-//             color="white"
-//             alignItems="center"
-//             justifyContent="center"
-//         >
-//             <span>
-//                 {'Dyno'}
-//             </span>
-//         </XView>
-//     );
-// });
+    return (
+        <XView
+            width={100}
+            height={h}
+            backgroundColor={'green'}
+            color="white"
+            alignItems="center"
+            justifyContent="center"
+        >
+            <span>
+                {'Dyno'}
+            </span>
+        </XView>
+    );
+});
 
 const TestComponent = React.memo(() => {
     const [engine, setEngine] = React.useState<'XScrollViewReverse2' | 'XScrollViewAnchored' | 'Native'>('XScrollViewReverse2');
     const [countStart, setCountStart] = React.useState(0);
     const [count, setCount] = React.useState(20);
     const [height, setHeight] = React.useState(400);
-
+    const [width, setWidth] = React.useState(600);
+    
     let items: any[] = [];
     for (let i = countStart; i < count; i++) {
-        // if (i === 0) {
-        //     items.push(<DynamicView key="dyno" />);
-        // }
+        if (i === 0) {
+            items.push(<DynamicView key="dyno" />);
+        }
         items.push(
-            <XView
-                key={'l-' + i}
-                width={100}
-                height={100}
-                backgroundColor={i % 2 === 0 ? 'red' : 'blue'}
-                color="white"
-                alignItems="center"
-                justifyContent="center"
-            >
-                <span>
-                    {'Item #' + i}
-                </span>
+            <XView flexWrap="wrap" flexDirection="row" key={'l-' + i}>
+                <XView
+                    width={100}
+                    height={100}
+                    backgroundColor={i % 2 === 0 ? 'red' : 'blue'}
+                    color="white"
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <span>
+                        {'Item #' + i}
+                    </span>
+                </XView>
             </XView>
         );
     }
     return (
-        <XView height={height} flexDirection="column">
+        <XView height={height} width={width} flexDirection="column">
             <XView height={60} flexDirection="row" alignItems="center">
                 <UButton text="Add Top" onClick={() => setCountStart((s) => s - 1)} marginRight={8} />
                 <UButton text="Remove Top" onClick={() => setCountStart((s) => s + 1)} marginRight={8} />
@@ -109,7 +111,10 @@ const TestComponent = React.memo(() => {
             <XView height={60} flexDirection="row" alignItems="center">
                 <UButton text="Bigger" onClick={() => setHeight((s) => s + 20)} marginRight={8} />
                 <UButton text="Smaller" onClick={() => setHeight((s) => s - 20)} marginRight={8} />
-
+                <UButton text="Wider" onClick={() => setWidth((s) => s + 20)} marginRight={8} />
+                <UButton text="Thinner" onClick={() => setWidth((s) => s - 20)} marginRight={8} />
+            </XView>
+            <XView height={60} flexDirection="row" alignItems="center">
                 <USelect
                     placeholder="Engine"
                     options={[{
