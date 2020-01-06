@@ -442,9 +442,11 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
             </XView>
             {!stickers && (
                 <>
-                    <XView paddingLeft={16} paddingRight={16} paddingBottom={8}>
-                        <USearchInput value={searchInput} onChange={onSearch} onReset={onReset} />
-                    </XView>
+                    <XWithRole role="super-admin">
+                        <XView paddingLeft={16} paddingRight={16} paddingBottom={8}>
+                            <USearchInput value={searchInput} onChange={onSearch} onReset={onReset} />
+                        </XView>
+                    </XWithRole>
                     {searchInput.length > 0 && foundEmoji.length > 0 && (
                         <div className={emojiContainer}>
                             <XView marginTop={8}>
