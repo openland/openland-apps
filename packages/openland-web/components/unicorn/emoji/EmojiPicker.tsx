@@ -396,15 +396,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
     const onSearch = (e: any) => {
         const searchValue = e.target.value;
         setSearchInput(searchValue);
-        setFoundEmoji(findEmoji(searchValue).map(emoji => {
-
-            const foundPickerEmoji = pickerEmoji.find(element => element.name === emoji.name);
-            const sprite = foundPickerEmoji ? foundPickerEmoji.sprite : 'diversity';
-            return {
-                ...emoji,
-                sprite
-            };
-        }));
+        setFoundEmoji(findEmoji(searchValue));
     };
 
     const onScroll = React.useCallback((s: ListOnScrollProps) => {
@@ -453,9 +445,8 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
                                 ref={ref}
                                 itemCount={foundEmoji.length / 8}
                                 itemSize={40}
-                                width={384 /* Bigger width to hide scrollbar */}
+                                width={384}
                                 height={384}
-                                // innerElementType={innerElementType}
                                 onScroll={onScroll}
                             >
                                 {({ index: rowIndex, style }) => {
@@ -480,7 +471,6 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
                             </FixedSizeList>
                         </div>
                     )}
-
 
                     {searchInput.length === 0 && (
                         <>

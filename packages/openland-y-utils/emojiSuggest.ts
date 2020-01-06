@@ -8,7 +8,19 @@ const emojiList: {
     name: string;
     value: string;
     shortcodes: string[];
+    sprite: string;
 }[] = [];
+
+const DIVERSITY = false;
+
+function getSprite(name: string, diversity: boolean): string | null {
+    const foundPickerEmoji = pickerEmoji.find(emoji => emoji.name === name);
+    if (foundPickerEmoji && foundPickerEmoji.sprite) {
+        return foundPickerEmoji.sprite;
+    } else {
+        return diversity ? 'diversity' : null;
+    }
+}
 
 function populateEmoji() {
     const processed = new Set<string>();
@@ -22,12 +34,18 @@ function populateEmoji() {
         if (!dt) {
             continue;
         }
-        emojiList.push({
-            name: emojiConvertToName(dt[2] as string),
-            value: dt[2] as string,
-            shortcodes: dt[1] as string[],
-        });
+        const name = emojiConvertToName(dt[2] as string);
+        const sprite = getSprite(name, DIVERSITY);
+        if (sprite) {
+            emojiList.push({
+                name,
+                sprite,
+                value: dt[2] as string,
+                shortcodes: dt[1] as string[],
+            });
+        }
     }
+
     for (let r of rankings) {
         if (processed.has(r.char)) {
             continue;
@@ -37,21 +55,33 @@ function populateEmoji() {
         if (!dt) {
             continue;
         }
-        emojiList.push({
-            name: emojiConvertToName(dt[2] as string),
-            value: dt[2] as string,
-            shortcodes: dt[1] as string[],
-        });
+
+        const name = emojiConvertToName(dt[2] as string);
+        const sprite = getSprite(name, DIVERSITY);
+        if (sprite) {
+            emojiList.push({
+                name,
+                sprite,
+                value: dt[2] as string,
+                shortcodes: dt[1] as string[],
+            });
+        }
     }
     for (let e of EMOJI_DATA) {
         if (processed.has(e[2] as string)) {
             continue;
         }
-        emojiList.push({
-            name: emojiConvertToName(e[2] as string),
-            value: e[2] as string,
-            shortcodes: e[1] as string[],
-        });
+
+        const name = emojiConvertToName(e[2] as string);
+        const sprite = getSprite(name, DIVERSITY);
+        if (sprite) {
+            emojiList.push({
+                name,
+                sprite,
+                value: e[2] as string,
+                shortcodes: e[1] as string[],
+            });
+        }
     }
 }
 populateEmoji();
@@ -60,6 +90,7 @@ interface Emoji {
     name: string;
     value: string;
     shortcode: string;
+    sprite: string;
 }
 
 export function emojiSuggest(input: string): Emoji[] {
@@ -73,6 +104,7 @@ export function emojiSuggest(input: string): Emoji[] {
                     name: emojiList[i].name,
                     value: emojiList[i].value,
                     shortcode: emojiList[i].shortcodes[0],
+                    sprite: emojiList[i].sprite,
                 });
             }
         } else {
@@ -81,7 +113,7 @@ export function emojiSuggest(input: string): Emoji[] {
                 for (let j = 0; j < e.shortcodes.length; j++) {
                     let sc = e.shortcodes[j];
                     if (sc.startsWith(input)) {
-                        res.push({ name: e.name, value: e.value, shortcode: sc });
+                        res.push({ name: e.name, value: e.value, shortcode: sc, sprite: e.sprite });
                         break;
                     }
                 }
@@ -89,11 +121,16 @@ export function emojiSuggest(input: string): Emoji[] {
         }
     } else {
         for (let dt of emojiWordMap[input] || []) {
-            res.push({
-                name: emojiConvertToName(dt[2] as string),
-                value: dt[2] as string,
-                shortcode: dt[1][0],
-            });
+            const name = emojiConvertToName(dt[2] as string);
+            const sprite = getSprite(name, DIVERSITY);
+            if (sprite) {
+                res.push({
+                    name,
+                    sprite,
+                    value: dt[2] as string,
+                    shortcode: dt[1][0],
+                });
+            }
         }
     }
 
@@ -110,7 +147,7 @@ export function findEmoji(input: string): Emoji[] {
         for (let j = 0; j < e.shortcodes.length; j++) {
             let sc = e.shortcodes[j];
             if (sc.startsWith(input)) {
-                res.push({ name: e.name, value: e.value, shortcode: sc });
+                res.push({ name: e.name, value: e.value, shortcode: sc, sprite: e.sprite });
                 break;
             }
         }
