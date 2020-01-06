@@ -32,6 +32,7 @@ import IcSticker from 'openland-icons/s/ic-sticker-24.svg';
 import { StickerComponent } from '../stickers/StickerPicker';
 import { XLoader } from 'openland-x/XLoader';
 import { StickerFragment } from 'openland-api/Types';
+import { findEmoji } from 'openland-y-utils/emojiSuggest';
 
 const popperContainerClass = css`
     display: flex;
@@ -209,9 +210,15 @@ const EmojiComponent = React.memo(
     },
 );
 
+interface Emoji {
+    name: string;
+    value: string;
+    sprite: string;
+}
+
 interface EmojiSection {
     title: string;
-    emoji: { name: string; value: string; sprite: string }[];
+    emoji: Emoji[];
     start: number;
     end: number;
 }
@@ -384,6 +391,22 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
     const ref = React.useRef<FixedSizeList>(null);
     const [currentSection, setCurrentSection] = React.useState(0);
     const [stickers, setStickers] = React.useState(false);
+    const [searchInput, setSearchInput] = React.useState<string>('');
+    const [foundEmoji, setFoundEmoji] = React.useState<Emoji[]>([]);
+    const onSearch = (e: any) => {
+        const searchValue = e.target.value;
+        setSearchInput(searchValue);
+        setFoundEmoji(findEmoji(searchValue).map(emoji => {
+
+            const foundPickerEmoji = pickerEmoji.find(element => element.name === emoji.name);
+            const sprite = foundPickerEmoji ? foundPickerEmoji.sprite : 'diversity';
+            return {
+                ...emoji,
+                sprite
+            };
+        }));
+    };
+
     const onScroll = React.useCallback((s: ListOnScrollProps) => {
         let row = Math.round(s.scrollOffset / 40);
         if (row < 3) {
@@ -399,6 +422,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
             ref.current.scrollToItem(src, 'start');
         }
     }, []);
+
     return (
         <div className={popperContainerClass}>
             <XView flexDirection="row">
@@ -421,104 +445,145 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
             </XView>
             {!stickers && (
                 <>
-                    <div className={emojiContainer}>
-                        <FixedSizeList
-                            ref={ref}
-                            itemCount={total}
-                            itemSize={40}
-                            overscanCount={10}
-                            width={384 /* Bigger width to hide scrollbar */}
-                            height={384}
-                            innerElementType={innerElementType}
-                            onScroll={onScroll}
-                        >
-                            {({ index, style }) => {
-                                if (index < 3) {
+                    <input type="text" value={searchInput} onChange={onSearch} autoFocus={true} />
+
+                    {searchInput.length > 0 && (
+                        <div className={emojiContainer}>
+                            <FixedSizeList
+                                ref={ref}
+                                itemCount={foundEmoji.length / 8}
+                                itemSize={40}
+                                width={384 /* Bigger width to hide scrollbar */}
+                                height={384}
+                                // innerElementType={innerElementType}
+                                onScroll={onScroll}
+                            >
+                                {({ index: rowIndex, style }) => {
+                                    const currentRowEmoji = foundEmoji.slice(rowIndex * 8, rowIndex * 8 + 8);
+
                                     return (
                                         <div style={style}>
-                                            <Recent
-                                                index={index}
-                                                onEmojiPicked={props.onEmojiPicked}
-                                            />
+                                            <div className={emojiRowContainer}>
+                                                {currentRowEmoji.map(v => (
+                                                    <EmojiComponent
+                                                        name={v.name}
+                                                        value={v.value}
+                                                        category={v.sprite}
+                                                        onEmojiPicked={props.onEmojiPicked}
+                                                        key={'emoji' + v.name}
+                                                    />
+                                                ))}
+                                            </div>
                                         </div>
                                     );
-                                }
-                                let ii = index - 3;
-                                let section = sections.find(v => v.start <= ii && ii < v.end)!;
-                                return (
-                                    <div style={style}>
-                                        <RowComponent
-                                            section={section}
-                                            index={ii}
-                                            onEmojiPicked={props.onEmojiPicked}
-                                        />
-                                    </div>
-                                );
-                            }}
-                        </FixedSizeList>
-                    </div>
-                    <XView flexDirection="row" paddingHorizontal={16} height={48}>
-                        <div
-                            className={categorySelector}
-                            style={{ transform: `translateX(${currentSection * 40}px)` }}
-                        />
-                        <CategoryButton
-                            iconActive={<IconRecentFilled />}
-                            iconInactive={<IconRecent />}
-                            focused={currentSection === 0}
-                            offset={0}
-                            onClick={onCategoryClick}
-                        />
-                        <CategoryButton
-                            iconActive={<IconSmileFilled />}
-                            iconInactive={<IconSmile />}
-                            focused={currentSection === 1}
-                            offset={3 + sections[0].start}
-                            onClick={onCategoryClick}
-                        />
-                        <CategoryButton
-                            iconActive={<IconAnimalFilled />}
-                            iconInactive={<IconAnimal />}
-                            focused={currentSection === 2}
-                            offset={3 + sections[1].start}
-                            onClick={onCategoryClick}
-                        />
-                        <CategoryButton
-                            iconActive={<IconFoodFilled />}
-                            iconInactive={<IconFood />}
-                            focused={currentSection === 3}
-                            offset={3 + sections[2].start}
-                            onClick={onCategoryClick}
-                        />
-                        <CategoryButton
-                            iconActive={<IconSportFilled />}
-                            iconInactive={<IconSport />}
-                            focused={currentSection === 4}
-                            offset={3 + sections[3].start}
-                            onClick={onCategoryClick}
-                        />
-                        <CategoryButton
-                            iconActive={<IconTrasportFilled />}
-                            iconInactive={<IconTrasport />}
-                            focused={currentSection === 5}
-                            offset={3 + sections[4].start}
-                            onClick={onCategoryClick}
-                        />
-                        <CategoryButton
-                            iconActive={<IconObjectFilled />}
-                            iconInactive={<IconObject />}
-                            focused={currentSection === 6}
-                            offset={3 + sections[5].start}
-                            onClick={onCategoryClick}
-                        />
-                        <CategoryButton
-                            iconActive={<IconSymbolFilled />}
-                            iconInactive={<IconSymbol />}
-                            focused={currentSection === 7}
-                            offset={3 + sections[6].start}
-                            onClick={onCategoryClick}
-                        />
-                    </XView>
+                                }}
+                            </FixedSizeList>
+                        </div>
+                    )}
+
+
+                    {searchInput.length === 0 && (
+                        <>
+                            <div className={emojiContainer}>
+                                <FixedSizeList
+                                    ref={ref}
+                                    itemCount={total}
+                                    itemSize={40}
+                                    overscanCount={10}
+                                    width={384 /* Bigger width to hide scrollbar */}
+                                    height={384}
+                                    innerElementType={innerElementType}
+                                    onScroll={onScroll}
+                                >
+                                    {({ index, style }) => {
+                                        if (index < 3) {
+                                            return (
+                                                <div style={style}>
+                                                    <Recent
+                                                        index={index}
+                                                        onEmojiPicked={props.onEmojiPicked}
+                                                    />
+                                                </div>
+                                            );
+                                        }
+                                        let ii = index - 3;
+                                        let section = sections.find(v => v.start <= ii && ii < v.end)!;
+                                        return (
+                                            <div style={style}>
+                                                <RowComponent
+                                                    section={section}
+                                                    index={ii}
+                                                    onEmojiPicked={props.onEmojiPicked}
+                                                />
+                                            </div>
+                                        );
+                                    }}
+                                </FixedSizeList>
+                            </div>
+                            <XView flexDirection="row" paddingHorizontal={16} height={48}>
+                                <div
+                                    className={categorySelector}
+                                    style={{ transform: `translateX(${currentSection * 40}px)` }}
+                                />
+                                <CategoryButton
+                                    iconActive={<IconRecentFilled />}
+                                    iconInactive={<IconRecent />}
+                                    focused={currentSection === 0}
+                                    offset={0}
+                                    onClick={onCategoryClick}
+                                />
+                                <CategoryButton
+                                    iconActive={<IconSmileFilled />}
+                                    iconInactive={<IconSmile />}
+                                    focused={currentSection === 1}
+                                    offset={3 + sections[0].start}
+                                    onClick={onCategoryClick}
+                                />
+                                <CategoryButton
+                                    iconActive={<IconAnimalFilled />}
+                                    iconInactive={<IconAnimal />}
+                                    focused={currentSection === 2}
+                                    offset={3 + sections[1].start}
+                                    onClick={onCategoryClick}
+                                />
+                                <CategoryButton
+                                    iconActive={<IconFoodFilled />}
+                                    iconInactive={<IconFood />}
+                                    focused={currentSection === 3}
+                                    offset={3 + sections[2].start}
+                                    onClick={onCategoryClick}
+                                />
+                                <CategoryButton
+                                    iconActive={<IconSportFilled />}
+                                    iconInactive={<IconSport />}
+                                    focused={currentSection === 4}
+                                    offset={3 + sections[3].start}
+                                    onClick={onCategoryClick}
+                                />
+                                <CategoryButton
+                                    iconActive={<IconTrasportFilled />}
+                                    iconInactive={<IconTrasport />}
+                                    focused={currentSection === 5}
+                                    offset={3 + sections[4].start}
+                                    onClick={onCategoryClick}
+                                />
+                                <CategoryButton
+                                    iconActive={<IconObjectFilled />}
+                                    iconInactive={<IconObject />}
+                                    focused={currentSection === 6}
+                                    offset={3 + sections[5].start}
+                                    onClick={onCategoryClick}
+                                />
+                                <CategoryButton
+                                    iconActive={<IconSymbolFilled />}
+                                    iconInactive={<IconSymbol />}
+                                    focused={currentSection === 7}
+                                    offset={3 + sections[6].start}
+                                    onClick={onCategoryClick}
+                                />
+                            </XView>
+                        </>
+                    )}
                 </>
             )}
             {stickers && (

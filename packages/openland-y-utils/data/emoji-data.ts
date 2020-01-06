@@ -2771,7 +2771,7 @@ const EMOJI_DATA_ANIMATED = [
     ['woozy_face', '🥴'],
     ['zany_face', '🤪'],
     ['zipper_mouth_face', '🤐'],
-]
+];
 
 const ASCII_DATA = [
     // angry
@@ -2866,12 +2866,28 @@ EMOJI_DATA_ANIMATED.map(([name, unicode]) => {
     animUnicodeToName.set(unicode, name);
 });
 
-const pickerEmoji =
-    emj.filter((v) => v.n.indexOf('-1f3f') < 0 || !v.sc)
-        .filter((v) => ['1f3fb', '1f3fc', '1f3fd', '1f3fe', '1f3ff', '1f9b0', '1f9b1', '1f9b3', '1f9b2'].indexOf(v.n) < 0)
-        .map((v) => ({ name: v.n, value: v.v, sprite: v.sc!, category: v.c }));
+const pickerEmoji = emj
+    .filter(v => v.n.indexOf('-1f3f') < 0 || !v.sc)
+    .filter(
+        v =>
+            [
+                '1f3fb',
+                '1f3fc',
+                '1f3fd',
+                '1f3fe',
+                '1f3ff',
+                '1f9b0',
+                '1f9b1',
+                '1f9b3',
+                '1f9b2',
+            ].indexOf(v.n) < 0,
+    )
+    .map(v => ({ name: v.n, value: v.v, sprite: v.sc!, category: v.c }));
 
-const pickerEmojiMap = new Map<string, { name: string, value: string, sprite: string, category: number }>();
+const pickerEmojiMap = new Map<
+    string,
+    { name: string; value: string; sprite: string; category: number }
+>();
 for (let p of pickerEmoji) {
     pickerEmojiMap.set(p.name, p);
 }
@@ -2884,5 +2900,5 @@ export {
     EMOJI_DATA,
     emj as emojiData,
     pickerEmoji,
-    pickerEmojiMap
+    pickerEmojiMap,
 };
