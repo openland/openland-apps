@@ -33,6 +33,8 @@ import { StickerComponent } from '../stickers/StickerPicker';
 import { XLoader } from 'openland-x/XLoader';
 import { StickerFragment } from 'openland-api/Types';
 import { findEmoji } from 'openland-y-utils/emojiSuggest';
+import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
+import { ChangeEvent } from 'react';
 
 const popperContainerClass = css`
     display: flex;
@@ -393,10 +395,13 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
     const [stickers, setStickers] = React.useState(false);
     const [searchInput, setSearchInput] = React.useState<string>('');
     const [foundEmoji, setFoundEmoji] = React.useState<Emoji[]>([]);
-    const onSearch = (e: any) => {
+    const onSearch = (e: ChangeEvent<HTMLInputElement>) => {
         const searchValue = e.target.value;
         setSearchInput(searchValue);
         setFoundEmoji(findEmoji(searchValue));
+    };
+    const onReset = () => {
+        setSearchInput('');
     };
 
     const onScroll = React.useCallback((s: ListOnScrollProps) => {
@@ -437,38 +442,41 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
             </XView>
             {!stickers && (
                 <>
-                    <input type="text" value={searchInput} onChange={onSearch} autoFocus={true} />
-
+                    <XView paddingLeft={16} paddingRight={16} paddingBottom={8}>
+                        <USearchInput value={searchInput} onChange={onSearch} onReset={onReset} />
+                    </XView>
                     {searchInput.length > 0 && (
                         <div className={emojiContainer}>
-                            <FixedSizeList
-                                ref={ref}
-                                itemCount={foundEmoji.length / 8}
-                                itemSize={40}
-                                width={384}
-                                height={384}
-                                onScroll={onScroll}
-                            >
-                                {({ index: rowIndex, style }) => {
-                                    const currentRowEmoji = foundEmoji.slice(rowIndex * 8, rowIndex * 8 + 8);
+                            <XView marginTop={8}>
+                                <FixedSizeList
+                                    ref={ref}
+                                    itemCount={foundEmoji.length / 8}
+                                    itemSize={40}
+                                    width={384}
+                                    height={384}
+                                    onScroll={onScroll}
+                                >
+                                    {({ index: rowIndex, style }) => {
+                                        const currentRowEmoji = foundEmoji.slice(rowIndex * 8, rowIndex * 8 + 8);
 
-                                    return (
-                                        <div style={style}>
-                                            <div className={emojiRowContainer}>
-                                                {currentRowEmoji.map(v => (
-                                                    <EmojiComponent
-                                                        name={v.name}
-                                                        value={v.value}
-                                                        category={v.sprite}
-                                                        onEmojiPicked={props.onEmojiPicked}
-                                                        key={'emoji' + v.name}
-                                                    />
-                                                ))}
+                                        return (
+                                            <div style={style}>
+                                                <div className={emojiRowContainer}>
+                                                    {currentRowEmoji.map(v => (
+                                                        <EmojiComponent
+                                                            name={v.name}
+                                                            value={v.value}
+                                                            category={v.sprite}
+                                                            onEmojiPicked={props.onEmojiPicked}
+                                                            key={'emoji' + v.name}
+                                                        />
+                                                    ))}
+                                                </div>
                                             </div>
-                                        </div>
-                                    );
-                                }}
-                            </FixedSizeList>
+                                        );
+                                    }}
+                                </FixedSizeList>
+                            </XView>
                         </div>
                     )}
 
@@ -610,7 +618,7 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
     const [visible, show] = usePopper(
         {
             placement: 'top-end',
-            hideOnLeave: true,
+            hideOnLeave: false,
             wrapperClassName: wrapperClassName,
         },
         () => (
