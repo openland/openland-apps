@@ -8,7 +8,6 @@ import { RoomMemberRole, Room_room, Room_room_SharedRoom } from 'openland-api/Ty
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 interface ConversationManageButtonProps {
     muted: boolean;
