@@ -26,7 +26,7 @@ import { TextLabel1 } from 'openland-web/utils/TextStyles';
 import { onEmojiSent, getRecent } from './Recent';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import { TextTitle3 } from 'openland-web/utils/TextStyles';
+import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import IcSticker from 'openland-icons/s/ic-sticker-24.svg';
 import { StickerComponent } from '../stickers/StickerPicker';
@@ -445,7 +445,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
                     <XView paddingLeft={16} paddingRight={16} paddingBottom={8}>
                         <USearchInput value={searchInput} onChange={onSearch} onReset={onReset} />
                     </XView>
-                    {searchInput.length > 0 && (
+                    {searchInput.length > 0 && foundEmoji.length > 0 && (
                         <div className={emojiContainer}>
                             <XView marginTop={8}>
                                 <FixedSizeList
@@ -478,6 +478,14 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
                                 </FixedSizeList>
                             </XView>
                         </div>
+                    )}
+
+                    {searchInput.length > 0 && foundEmoji.length === 0 && (
+                        <XView marginLeft={16} marginRight={16} height={384} alignItems="center" justifyContent="center" color='var(--foregroundTertiary)'>
+                            <span className={TextBody}>
+                                Nothing found
+                            </span>
+                        </XView>
                     )}
 
                     {searchInput.length === 0 && (
@@ -618,7 +626,9 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
     const [visible, show] = usePopper(
         {
             placement: 'top-end',
-            hideOnLeave: true,
+            hideOnLeave: false,
+            hideOnClick: false,
+            hideOnChildClick: false,
             wrapperClassName: wrapperClassName,
         },
         () => (

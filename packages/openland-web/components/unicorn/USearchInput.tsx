@@ -5,7 +5,7 @@ import SearchIcon from 'openland-icons/ic-search-16.svg';
 import ClearIcon from 'openland-icons/ic-close-16.svg';
 
 const field = css`
-    appearance: none;
+    appearance: textfield;
     position: relative;
     background-color: var(--backgroundTertiary);
     padding: 8px 40px 8px 36px;
@@ -13,6 +13,10 @@ const field = css`
 
     &::-webkit-search-cancel-button {
         display: none;
+    }
+
+    &::-webkit-search-decoration {
+        appearance: none;
     }
 
     &::placeholder {
@@ -72,26 +76,41 @@ interface USearchInputProps {
     placeholder?: string;
 }
 
-export const USearchInput: FC<USearchInputProps> = (props) => (
-    <XView position="relative">
-        <input
-            type="search"
-            className={field}
-            value={props.value}
-            onChange={props.onChange}
-            autoFocus={props.autoFocus}
-            placeholder={props.placeholder}
-        />
-        <div className={searchIconWrapper}>
-            <SearchIcon />
-        </div>
-        {props.value && props.value.length > 0 && (
-            <button className={reset} onClick={props.onReset}>
-                <ClearIcon />
-            </button>
-        )}
-    </XView>
-);
+export const USearchInput: FC<USearchInputProps> = (props) => {
+    const inputRef = React.createRef<HTMLInputElement>();
+
+    const resetAndRefocus = () => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+
+        if (props.onReset) {
+            props.onReset();
+        }
+    };
+
+    return (
+        <XView position="relative">
+            <input
+                type="search"
+                className={field}
+                value={props.value}
+                onChange={props.onChange}
+                autoFocus={props.autoFocus}
+                placeholder={props.placeholder}
+                ref={inputRef}
+            />
+            <div className={searchIconWrapper}>
+                <SearchIcon />
+            </div>
+            {props.value && props.value.length > 0 && (
+                <button className={reset} onClick={resetAndRefocus}>
+                    <ClearIcon />
+                </button>
+            )}
+        </XView>
+    );
+};
 
 USearchInput.defaultProps = {
     placeholder: 'Search'
