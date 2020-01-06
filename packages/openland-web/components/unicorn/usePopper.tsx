@@ -79,11 +79,6 @@ interface PopperBodyRef {
     instantHide: () => void;
 }
 
-const eventBorder = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-};
-
 const PopperBody = React.memo(
     React.forwardRef((props: PopperBodyProps, ref: React.Ref<PopperBodyRef>) => {
         const [visible, setVisible] = React.useState(!props.showTimeout);
@@ -179,8 +174,6 @@ const PopperBody = React.memo(
             <div
                 className={cx(pickerBody, !visible && pickerBodyInvisible, props.wrapperClassName)}
                 ref={containerRef}
-                onMouseDown={eventBorder}
-                onClick={eventBorder}
                 style={{
                     marginLeft: props.marginLeft,
                     marginRight: props.marginRight,
