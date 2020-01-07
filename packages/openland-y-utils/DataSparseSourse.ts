@@ -10,10 +10,10 @@ export class DataSparseSource<T> {
     private readonly loader: SparseLoader<T>;
     private readonly keyExtractor: KeyExtractor<T>;
 
-    private readonly windows = new Map<number, string[]>();
+    // private readonly windows = new Map<number, string[]>();
     private readonly itemWindow = new Map<string, number>();
 
-    private allLoaded = false;
+    // private allLoaded = false;
     private startLoaded = false;
     private startLoading = false;
 
@@ -68,9 +68,9 @@ export class DataSparseSource<T> {
         }
 
         // Mark as all loaded
-        if (window === WINDOW_START && !needMore) {
-            this.allLoaded = true;
-        }
+        // if (window === WINDOW_START && !needMore) {
+        //     this.allLoaded = true;
+        // }
     }
 
     // append = async (items: T[]) => {
