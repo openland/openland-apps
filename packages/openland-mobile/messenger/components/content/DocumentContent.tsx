@@ -36,7 +36,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
         this.state = {};
     }
 
-    componentWillMount() {
+    componentDidMount() {
         if (this.props.attach && this.props.attach.fileId) {
             this.downloadManagerWatch = DownloadManagerInstance.watch(
                 this.props.attach!!.fileId!,

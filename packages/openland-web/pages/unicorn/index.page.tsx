@@ -43,8 +43,11 @@ const Unicorn = React.memo(() => {
 
 export default React.memo(() => {
     return (
-        <AuthRouter>
-            <Unicorn />
-        </AuthRouter>
+        <React.StrictMode>
+            <AuthRouter>
+                <Unicorn />
+            </AuthRouter>
+        </React.StrictMode>
+
     );
 });

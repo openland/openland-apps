@@ -6,7 +6,6 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { PushEngineComponent } from 'openland-web/modules/push/PushEngineComponent';
 import { useClient } from 'openland-web/utils/useClient';
 import { UnicornSplash } from 'openland-x/XLoader';
-import { XShortcutsRoot } from 'openland-x/XShortcuts';
 
 export const AppContainer = (props: { children: any }) => {
     const client = useClient();
@@ -19,7 +18,7 @@ export const AppContainer = (props: { children: any }) => {
 
     let hasMessenger = canUseDOM && !!data.me;
     return (
-        <XShortcutsRoot>
+        <>
             <PushEngineComponent enable={hasMessenger} />
             <XDocumentHead title={[]} />
             <UserInfoProvider
@@ -32,7 +31,7 @@ export const AppContainer = (props: { children: any }) => {
                     {props.children}
                 </MessengerProvider>
             </UserInfoProvider>
-        </XShortcutsRoot>
+        </>
     );
 };
 

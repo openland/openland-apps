@@ -15,7 +15,7 @@ class FileModalWithTransition extends React.PureComponent<{ config: ZFileModalCo
     contentView = new SAnimatedShadowView(this.key + '--ctns', { translateY: Dimensions.get('screen').height });
     contentHeight = Dimensions.get('screen').height;
 
-    componentWillMount() {
+    componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 
         if (this.started) {

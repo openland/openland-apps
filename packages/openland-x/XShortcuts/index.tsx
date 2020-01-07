@@ -7,18 +7,6 @@ const shortcutManager = new ShortcutManager({
     App: {},
 });
 
-export class XShortcutsRoot extends React.Component {
-    static childContextTypes = {
-        shortcuts: PropTypes.object.isRequired,
-    };
-    getChildContext() {
-        return { shortcuts: shortcutManager };
-    }
-    render() {
-        return <>{this.props.children}</>;
-    }
-}
-
 type HandlerMapT = {
     [id: string]: Function;
 };
@@ -50,7 +38,7 @@ export class XShortcuts extends React.Component<XShortcutsT> {
         this.componentId = UUID();
     }
 
-    // componentWillMount() {
+    // componentDidMount() {
     //     listOfIdKeymaps.push({
     //         id: this.componentId,
     //         keymap: this.props.keymap,

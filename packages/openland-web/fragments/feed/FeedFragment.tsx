@@ -44,7 +44,7 @@ class FeedInner extends React.PureComponent<CommentsNotificationsProps, { dataSo
         this.state = { dataSourceGeneration: 0 };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.unmount = this.dataSource.dumbWatch(() =>
             this.setState({
                 dataSourceGeneration: this.state.dataSourceGeneration + 1

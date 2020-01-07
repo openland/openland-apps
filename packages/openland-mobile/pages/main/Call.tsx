@@ -179,7 +179,7 @@ class CallContainer extends React.Component<{ id: string, modal: ZModalControlle
     private ended = false;
     private container = new SAnimatedShadowView(this.key + '--bg', { opacity: 0 });
 
-    componentWillMount() {
+    componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 
         SAnimated.beginTransaction();

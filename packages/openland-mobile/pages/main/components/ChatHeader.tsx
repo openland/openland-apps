@@ -127,7 +127,7 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
         this.state = {};
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.disposeSubscription = getMessenger().engine.getTypings(this.props.conversationId).subcribe(t => this.setState({ typing: t }));
     }
 

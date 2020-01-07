@@ -179,7 +179,7 @@ export class XDialogProviderComponent extends React.Component<{}, XDialogProvide
         }, 1);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         registerModalProvider(this);
         registerPopupProvider(this);
     }

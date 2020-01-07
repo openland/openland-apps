@@ -39,7 +39,7 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
         this.setState({ keyboardHeight: e ? e.height : 0 });
     }
 
-    componentWillMount() {
+    componentDidMount() {
         ModalProvider = this;
         if (Platform.OS !== 'ios') {
             DeviceEventEmitter.addListener('async_keyboard_height', this.onKeyboardChange);
