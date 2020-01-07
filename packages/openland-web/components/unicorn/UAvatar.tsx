@@ -254,6 +254,7 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
                         height: boxSize,
                         '--dotBorder': dotBorder,
                         '--dotBackground': dotBackground,
+                        userSelect: 'none'
                     } as React.CSSProperties
                 }
             >
