@@ -278,9 +278,12 @@ export class MobileMessenger {
             </View>
         ));
 
-        builder.action('Select', () => {
-            conversation.messagesActionsStateEngine.selectToggle(message);
-        }, false, require('assets/ic-select-24.png'));
+        const hasActiveActions = !!conversation.messagesActionsStateEngine.getState().action;
+        if (!hasActiveActions) {
+            builder.action('Select', () => {
+                conversation.messagesActionsStateEngine.selectToggle(message);
+            }, false, require('assets/ic-select-24.png'));
+        }
 
         if (conversation.canSendMessage) {
             builder.action('Reply', () => {
