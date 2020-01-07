@@ -78,7 +78,9 @@
                             "openland-shared": "./build/native/openland-shared",
                             "openland-form": "./build/native/openland-form",
                             "assets": "./packages/openland-mobile/assets",
-                            "assets-s": "./packages/react-native-s/assets"
+                            "assets-s": "./packages/react-native-s/assets",
+                            "openland-pegasus": "./build/native/openland-pegasus",
+                            "openland-powerups": "./build/native/openland-powerups"
                         }
                     }
                 ],
@@ -115,7 +117,9 @@
                             "openland-shared": "./build/native/openland-shared",
                             "openland-form": "./build/native/openland-form",
                             "assets": "./packages/openland-mobile/assets",
-                            "assets-s": "./packages/react-native-s/assets"
+                            "assets-s": "./packages/react-native-s/assets",
+                            "openland-pegasus": "./build/native/openland-pegasus",
+                            "openland-powerups": "./build/native/openland-powerups"
                         }
                     }
                 ],

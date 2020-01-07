@@ -1,23 +1,20 @@
 import * as React from 'react';
 import { withApp } from 'openland-mobile/components/withApp';
+import { View } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
-import { SScrollView } from 'react-native-s/SScrollView';
-import { ZListGroup } from 'openland-mobile/components/ZListGroup';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
-import RNRestart from 'react-native-restart';
-import { AppStorage } from 'openland-mobile/utils/AppStorage';
+import { PegasusHost } from 'openland-pegasus/PegasusHost';
+import { PowerupSample } from 'openland-powerups/PowerupSample';
 
-export const Developer = withApp(() => {
-    const handleLogout = () => {
-        (async () => {
-            await AppStorage.clear();
-            RNRestart.Restart();
-        })();
-    };
-
+export const PowerUps = withApp(() => {
     return (
         <>
-            <SHeader title="Developer" />
+            <SHeader title="PowerUp" />
+            <View flexGrow={1} flexShrink={1} alignSelf="stretch">
+                <PegasusHost>
+                    <PowerupSample />
+                </PegasusHost>
+            </View>
+            {/* <SHeader title="Developer" />
             <SScrollView>
                 <ZListGroup header={null}>
                     <ZListItem text="Colors" path="DevColors" />
@@ -37,10 +34,9 @@ export const Developer = withApp(() => {
                     <ZListItem text="Bad User Profile" path="ProfileUser" pathParams={{ id: "1" }} />
                     <ZListItem text="Videos" path="DevVideos" />
                     <ZListItem text="Document extensions" path="DevDocumentsExt" />
-                    <ZListItem text="PowerUps" path="DevPowerUps" />
                     <ZListItem text="Log out" onPress={handleLogout} />
                 </ZListGroup>
-            </SScrollView>
+            </SScrollView> */}
         </>
     );
-});
+}, { navigationAppearance: 'small' });

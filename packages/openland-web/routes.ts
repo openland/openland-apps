@@ -161,6 +161,9 @@ routes.add('/ui/checkbox/', '/dev/ui/checkbox');
 routes.add('/ui/scroll', '/dev/ui/scroll');
 routes.add('/ui/scroll/', '/dev/ui/scroll');
 
+routes.add('/ui/pegasus', '/dev/ui/pegasus');
+routes.add('/ui/pegasus/', '/dev/ui/pegasus');
+
 //
 // Dev Tools
 //

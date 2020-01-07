@@ -78,6 +78,7 @@ import { FeedChannelAddWriter } from './pages/feed/FeedChannelAddWriter';
 import { FeedChannelEditAdvanced } from './pages/feed/FeedChannelEditAdvanced';
 import { MatchmakingProfile } from './pages/matchmaking/MatchmakingProfile';
 import { SharedMedia } from './pages/shared-media/SharedMedia';
+import { PowerUps } from './pages/dev/PowerUps';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -141,6 +142,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevAvatars', Avatars)
   .addRoute('DevVideos', Videos)
   .addRoute('DevDocumentsExt', DocumentsExt)
+  .addRoute('DevPowerUps', PowerUps)
 
   .addRoute('HomeDialogs', HomeDialogs)
 

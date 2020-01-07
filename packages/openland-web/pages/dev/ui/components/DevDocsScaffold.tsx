@@ -34,13 +34,14 @@ export function DevDocsScaffold(props: {
                             <UListItem title="Video" path="/ui/video" />
                             <UListItem title="Avatars" path="/ui/avatars" />
                             <UListItem title="Scroll" path="/ui/scroll" />
+                            <UListItem title="Pegasus" path="/ui/pegasus" />
                         </UListGroup>
                     </XView>
                 )}
                 <XView flexGrow={1}>
-                    <Page track={'DevDocsScaffold'}>
+                    <Page track={'DevDocsScaffold'} scroll="disable">
                         {props.title !== undefined && <UListHeader text={props.title} />}
-                        <XView paddingHorizontal={16}>
+                        <XView paddingHorizontal={16} flexGrow={1}>
                             {props.children}
                         </XView>
                     </Page>

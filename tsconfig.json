@@ -65,7 +65,9 @@
             "openland-apps": ["openland-apps"],
             "openland-form": ["openland-form"],
             "openland-unicorn": ["openland-unicorn"],
-            "openland-unimoji": ["openland-unimoji"]
+            "openland-unimoji": ["openland-unimoji"],
+            "openland-pegasus": ["openland-pegasus"],
+            "openland-powerups": ["openland-powerups"]
         },
         "importHelpers": true
     },
