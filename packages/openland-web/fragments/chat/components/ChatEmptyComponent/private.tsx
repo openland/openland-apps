@@ -4,7 +4,7 @@ import { XView } from 'react-mental';
 import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 
 interface MessageProps {
     children: string | string[];
@@ -35,6 +35,10 @@ const wrapper = css`
     transform: translate(-50%, -50%);
 `;
 
+const subtitle = css`
+    text-align: center;
+`;
+
 export const PrivatePlaceholder = React.memo((props: ChatEmptyComponentPrivateProps) => {
     const userName = props.conversation.user!.firstName;
     const canSendMessage = props.conversation.canSendMessage;
@@ -57,7 +61,7 @@ export const PrivatePlaceholder = React.memo((props: ChatEmptyComponentPrivatePr
                             <h2 className={TextTitle1}>No messages yet</h2>
                         </XView>
                         <XView marginTop={8} color="var(--foregroundSecondary)">
-                            <p className={TextBody}>Start a conversation with {userName}</p>
+                            <p className={cx(TextBody, subtitle)}>Start a conversation with {userName}</p>
                         </XView>
                         <XView
                             marginTop={24}
