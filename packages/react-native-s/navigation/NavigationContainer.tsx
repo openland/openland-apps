@@ -15,6 +15,7 @@ import { HeaderComponentLoader } from './header/HeaderComponentLoader';
 import { ConnectionStatusComponent } from './header/ConnectionStatusComponent';
 import uuid from 'uuid';
 import { ModalProvider } from 'openland-mobile/components/ZModal';
+import { SRouterMountedContext } from 'react-native-s/SRouterContext';
 
 const styles = StyleSheet.create({
     fill: {
@@ -61,6 +62,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
     private swipePrevKey?: string;
     private headerCoordinator: HeaderCoordinator;
     private headerKey = uuid();
+    private mountedRef: { mounted: string[] } = { mounted: [] };
 
     constructor(props: NavigationContainerProps) {
         super(props);
@@ -514,41 +516,44 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
     }
 
     render() {
+        this.mountedRef.mounted = this.state.mounted;
         let pages = (
             <View style={styles.fill}>
-                {this.state.routes.map((v) => {
-                    return (
-                        <SAnimated.View
-                            name={AnimatedViewKeys.page(v.key)}
-                            key={'page-' + v.key}
-                            style={styles.absoluteFill}
-                            pointerEvents={(this.state.current === v.key && !this.state.navigateFrom && !this.state.navigateTo) ? 'box-none' : 'none'}
-                        >
-                            <PageContainer
-                                style={this.props.style}
-                                component={v.component}
-                                router={v.router}
-                                mounted={!!this.state.mounted.find((m) => v.key === m)}
-                            />
+                <SRouterMountedContext.Provider value={this.mountedRef}>
+                    {this.state.routes.map((v) => {
+                        return (
                             <SAnimated.View
-                                name={AnimatedViewKeys.pageShadowOverlay(v.key)}
-                                key={'shadow-' + v.key}
-                                style={[styles.absoluteFill, { opacity: 0 }]}
-                                pointerEvents="none"
+                                name={AnimatedViewKeys.page(v.key)}
+                                key={'page-' + v.key}
+                                style={styles.absoluteFill}
+                                pointerEvents={(this.state.current === v.key && !this.state.navigateFrom && !this.state.navigateTo) ? 'box-none' : 'none'}
                             >
-                                <View style={[styles.fill, styles.shadow]} />
+                                <PageContainer
+                                    style={this.props.style}
+                                    component={v.component}
+                                    router={v.router}
+                                    mounted={!!this.state.mounted.find((m) => v.key === m)}
+                                />
+                                <SAnimated.View
+                                    name={AnimatedViewKeys.pageShadowOverlay(v.key)}
+                                    key={'shadow-' + v.key}
+                                    style={[styles.absoluteFill, { opacity: 0 }]}
+                                    pointerEvents="none"
+                                >
+                                    <View style={[styles.fill, styles.shadow]} />
+                                </SAnimated.View>
+                                <SAnimated.View
+                                    name={AnimatedViewKeys.pageShadowSide(v.key)}
+                                    key={'shadow-side-' + v.key}
+                                    style={[styles.absoluteFill, { opacity: 0 }]}
+                                    pointerEvents="none"
+                                >
+                                    <Image source={require('assets-s/swipe-shadow.png')} resizeMode="stretch" style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 14, height: this.props.height }} />
+                                </SAnimated.View>
                             </SAnimated.View>
-                            <SAnimated.View
-                                name={AnimatedViewKeys.pageShadowSide(v.key)}
-                                key={'shadow-side-' + v.key}
-                                style={[styles.absoluteFill, { opacity: 0 }]}
-                                pointerEvents="none"
-                            >
-                                <Image source={require('assets-s/swipe-shadow.png')} resizeMode="stretch" style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 14, height: this.props.height }} />
-                            </SAnimated.View>
-                        </SAnimated.View>
-                    );
-                })}
+                        );
+                    })}
+                </SRouterMountedContext.Provider>
             </View>
         );
 

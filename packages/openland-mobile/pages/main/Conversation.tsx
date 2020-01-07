@@ -45,11 +45,13 @@ import { ReloadFromBottomButton } from './components/ReloadFromBottomButton';
 import { ConversationManageButton } from './components/ConversationManageButton';
 import { showNoiseWarning } from 'openland-mobile/messenger/components/showNoiseWarning';
 import { plural } from 'openland-y-utils/plural';
+import { SRouterMountedContext } from 'react-native-s/SRouterContext';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
     chat: Room_room;
     theme: ThemeGlobal;
+    mountedRef: { mounted: string[] };
 }
 
 interface ConversationRootState {
@@ -114,7 +116,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     this.inputRef.current.focus();
                 } else if (state.action === 'forward') {
                     setTimeout(() => {
-                        if (this.inputRef.current) {
+                        const isMounted = this.props.mountedRef.mounted.includes(this.props.router.key);
+                        if (this.inputRef.current && isMounted) {
                             this.inputRef.current.focus();
                         }
                     }, 500);
@@ -424,6 +427,7 @@ const ConversationComponent = XMemo<PageProps>((props) => {
     let theme = React.useContext(ThemeContext);
     let messenger = getMessenger();
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id }, { fetchPolicy: 'cache-and-network' }).room;
+    let mountedRef = React.useContext(SRouterMountedContext);
 
     if (room === null) {
         return <ChatAccessDenied theme={theme} onPress={() => props.router.back()} />;
@@ -438,7 +442,7 @@ const ConversationComponent = XMemo<PageProps>((props) => {
 
     return (
         <View flexDirection="column" height="100%" width="100%">
-            <ConversationRoot key={(sharedRoom || privateRoom)!.id} router={props.router} engine={messenger.engine} chat={(sharedRoom || privateRoom)!} theme={theme} />
+            <ConversationRoot key={(sharedRoom || privateRoom)!.id} router={props.router} engine={messenger.engine} chat={(sharedRoom || privateRoom)!} theme={theme} mountedRef={mountedRef} />
             <ASSafeAreaContext.Consumer>
                 {safe => <View position="absolute" top={safe.top} right={0} left={0}><CallBarComponent id={(sharedRoom || privateRoom)!.id} /></View>}
             </ASSafeAreaContext.Consumer>
