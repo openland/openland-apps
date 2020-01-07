@@ -12,7 +12,7 @@ import CloseIcon from './ic-close.svg';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { XView } from 'react-mental';
-import { XShortcuts } from 'openland-x/XShortcuts';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 interface ModalRenderProps {
     size: 'x-large' | 's-large' | 'large' | 'default' | 'small';
@@ -27,6 +27,7 @@ interface ModalRenderProps {
 }
 
 const ModalRender = XMemo<ModalRenderProps>(props => {
+    useShortcuts({ keys: ["Escape"], callback: props.onCloseRequest });
     const isMobile = React.useContext(IsMobileContext);
     let width = 575;
     if (props.sWidth !== undefined) {
@@ -44,71 +45,60 @@ const ModalRender = XMemo<ModalRenderProps>(props => {
     }
 
     return (
-        <XShortcuts
-            handlerMap={{
-                ESC: () => {
-                    props.onCloseRequest();
+        <ReactModal
+            isOpen={props.isOpen}
+            onRequestClose={props.onCloseRequest}
+            shouldCloseOnOverlayClick={
+                props.closeOnClick !== undefined ? props.closeOnClick : true
+            }
+            shouldCloseOnEsc={true}
+            ariaHideApp={false}
+            closeTimeoutMS={300}
+            style={{
+                overlay: {
+                    zIndex: 2,
+                    backgroundColor:
+                        props.size !== 'x-large' && props.size !== 'large'
+                            ? 'rgba(0, 0, 0, 0.4)'
+                            : 'rgba(0, 0, 0, 0.3)',
+                },
+                content: {
+                    display: 'block',
+                    background: props.transparent ? 'transparent' : '#ffffff',
+                    margin: 'auto',
+                    padding: 0,
+                    overflow: 'visible',
+
+                    // Border/shadow
+                    border: 'none',
+                    boxShadow: props.transparent ? 'none' : '0px 2px 2px 0px #777',
+                    borderRadius: isMobile ? 0 : 6,
+
+                    // Sizes
+                    width: isMobile
+                        ? '100%'
+                        : props.size !== 'x-large'
+                            ? width
+                            : 'calc(100% - 128px)',
+                    top: isMobile
+                        ? 0
+                        : props.size !== 'x-large' && !props.scrollableContent
+                            ? 96
+                            : 64,
+                    left: isMobile
+                        ? 0
+                        : props.size !== 'x-large'
+                            ? `calc(50% - ${width / 2}px)`
+                            : 64,
+                    right: isMobile ? 0 : props.size !== 'x-large' ? 'auto' : 64,
+                    bottom: isMobile ? 0 : props.size !== 'x-large' ? 'auto' : 64,
                 },
             }}
-            keymap={{
-                ESC: 'ESC',
-            }}
         >
-            <ReactModal
-                isOpen={props.isOpen}
-                onRequestClose={props.onCloseRequest}
-                shouldCloseOnOverlayClick={
-                    props.closeOnClick !== undefined ? props.closeOnClick : true
-                }
-                shouldCloseOnEsc={true}
-                ariaHideApp={false}
-                closeTimeoutMS={300}
-                style={{
-                    overlay: {
-                        zIndex: 2,
-                        backgroundColor:
-                            props.size !== 'x-large' && props.size !== 'large'
-                                ? 'rgba(0, 0, 0, 0.4)'
-                                : 'rgba(0, 0, 0, 0.3)',
-                    },
-                    content: {
-                        display: 'block',
-                        background: props.transparent ? 'transparent' : '#ffffff',
-                        margin: 'auto',
-                        padding: 0,
-                        overflow: 'visible',
-
-                        // Border/shadow
-                        border: 'none',
-                        boxShadow: props.transparent ? 'none' : '0px 2px 2px 0px #777',
-                        borderRadius: isMobile ? 0 : 6,
-
-                        // Sizes
-                        width: isMobile
-                            ? '100%'
-                            : props.size !== 'x-large'
-                                ? width
-                                : 'calc(100% - 128px)',
-                        top: isMobile
-                            ? 0
-                            : props.size !== 'x-large' && !props.scrollableContent
-                                ? 96
-                                : 64,
-                        left: isMobile
-                            ? 0
-                            : props.size !== 'x-large'
-                                ? `calc(50% - ${width / 2}px)`
-                                : 64,
-                        right: isMobile ? 0 : props.size !== 'x-large' ? 'auto' : 64,
-                        bottom: isMobile ? 0 : props.size !== 'x-large' ? 'auto' : 64,
-                    },
-                }}
-            >
-                <XModalContext.Provider value={{ close: props.onCloseRequest }}>
-                    {props.children}
-                </XModalContext.Provider>
-            </ReactModal>
-        </XShortcuts>
+            <XModalContext.Provider value={{ close: props.onCloseRequest }}>
+                {props.children}
+            </XModalContext.Provider>
+        </ReactModal>
     );
 });
 
@@ -239,7 +229,7 @@ class ModalContentRender extends React.Component<ModalContentRenderProps> {
                 {this.props.footer === undefined &&
                     !this.props.useTopCloser && (
                         <XModalFooter>
-                            <UButton text="Close" style="secondary"/>
+                            <UButton text="Close" style="secondary" />
                         </XModalFooter>
                     )}
                 {this.props.footer !== undefined && this.props.footer}
