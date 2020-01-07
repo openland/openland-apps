@@ -66,7 +66,7 @@ const AcceptInvite = ({
                 />
             </XView>
             <XView position="absolute" bottom={20} fontSize={14} opacity={0.5} alignSelf={'center'}>
-                © 2019 Openland
+                © {new Date().getFullYear()} Openland
             </XView>
         </XView>
     );
