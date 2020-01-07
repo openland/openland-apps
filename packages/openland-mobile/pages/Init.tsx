@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Linking, LayoutChangeEvent, Platform, Dimensions, LayoutAnimation, Image } from 'react-native';
 import { buildNativeClient, saveClient, getClient, hasClient } from '../utils/graphqlClient';
-import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
+import { buildMessenger, setMessenger, getMessenger, getMessengerNullable } from '../utils/messenger';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { backoff } from 'openland-y-utils/timer';
 import { Routes } from '../routes';
@@ -189,7 +189,10 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
     componentDidMount() {
         Linking.addEventListener('url', this.handleOpenURL);
         Linking.getInitialURL().then(async url => await this.handleOpenURL({ url: url }));
-
+        if (getMessengerNullable()) {
+            this.setState({ state: 'app' });
+            return;
+        }
         (async () => {
             console.log('BOOTSTRAP: loading');
             await ThemePersister.prepare();

@@ -1,9 +1,13 @@
 import { AsyncStorage } from 'react-native';
 import { ThemeController } from './ThemeControler';
 import { AccentGlobalType, getThemeByType, ThemeVariants } from 'openland-y-utils/themes/ThemeGlobal';
-
+let prepared = false;
 class ThemePersisterImpl {
     prepare = async () => {
+        if (prepared) {
+            return;
+        }
+        prepared = true;
         const storageThemeType = await AsyncStorage.getItem('app.theme.3') as ThemeVariants;
         const storageAccentType = await AsyncStorage.getItem('app.accent.3') as AccentGlobalType;
 

@@ -23,3 +23,7 @@ export function getMessenger() {
     }
     return cachedMessenger!!;
 }
+
+export function getMessengerNullable() {
+    return cachedMessenger;
+}

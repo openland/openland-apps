@@ -3,7 +3,6 @@ import uuid from 'uuid/v4';
 
 class AppStorageStatic {
 
-    private started: boolean = false;
     private inited = false;
     private initPromise!: Promise<void>;
     private _token?: string;
@@ -24,7 +23,7 @@ class AppStorageStatic {
     }
 
     prepare = async () => {
-        if (!this.started) {
+        if (!this.inited) {
             this.initPromise = this.doPrepare();
         }
         await this.initPromise;
