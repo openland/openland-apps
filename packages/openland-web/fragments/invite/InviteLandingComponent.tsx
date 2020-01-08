@@ -23,7 +23,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 
 const RootClassName = css`
     position: relative;
-    overflow: scroll;
+    overflow: auto;
     display: flex;
     flex-direction: column;
     flex-grow: 1;

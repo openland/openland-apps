@@ -13,7 +13,7 @@ const selectOrganizationWrapperClassName = css`
     flex-grow: 0;
     flex-shrink: 1;
     flex-direction: column;
-    overflow: scroll;
+    overflow: auto;
     -webkit-overflow-scrolling: touch;
 `;
 
