@@ -18,52 +18,34 @@ import { OrganizationMemberRole, OrganizationWithoutMembers_organization, Organi
 import { GroupView } from './components/GroupView';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
-import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 import { trackEvent } from 'openland-mobile/analytics';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
 const PrivateProfile = XMemo<PageProps & { organization: OrganizationWithoutMembers_organization }>((props) => {
-    const { router, organization } = props;
+    const { organization } = props;
     const theme = React.useContext(ThemeContext);
-    const typeString = organization.isCommunity ? 'community' : 'organization';
-    const screenHeight = Dimensions.get('screen').height;
+    const area = React.useContext(ASSafeAreaContext);
+    const typeString = organization.isCommunity ? 'Community' : 'Organization';
 
     return (
-        <>
-            <SHeader title={'Cannot view ' + typeString} />
-            <ASSafeAreaView flexGrow={1}>
-                <View flexGrow={1}>
-                    <View paddingHorizontal={16} paddingVertical={15} backgroundColor={theme.backgroundTertiary}>
-                        <Text style={{ color: theme.foregroundPrimary, textAlign: 'center', fontSize: 15, fontWeight: FontStyles.Weight.Medium, marginBottom: 5 }}>You must be invited to view this {typeString}</Text>
-                        <Text style={{ color: theme.foregroundPrimary, textAlign: 'center', fontSize: 13, opacity: 0.6 }}>Creator of this {typeString} made it private</Text>
-                    </View>
-                    <View paddingTop={screenHeight <= 640 ? 60 : 100} paddingHorizontal={16} alignItems="center" flexDirection="column">
-                        <ZAvatar size="x-large" src={organization.photo} placeholderKey={organization.id} placeholderTitle={organization.name} />
-                        <Text style={{ color: theme.foregroundPrimary, fontSize: 20, lineHeight: 28, marginTop: 20, textAlign: 'center', fontWeight: FontStyles.Weight.Medium }}>{organization.name}</Text>
-
-                        {!!organization.about && (
-                            <Text style={{ color: theme.foregroundPrimary, fontSize: 15, lineHeight: 22, marginTop: 8, textAlign: 'center' }}>{organization.about}</Text>
-                        )}
-                    </View>
-                    <View position="absolute" left={0} right={0} bottom={46} alignItems="center">
-                        <View width={126}>
-                            <ZRoundedButton
-                                size="large"
-                                style="secondary"
-                                title="Go back"
-                                onPress={() => router.back()}
-                            />
-                        </View>
-                    </View>
-                </View>
-            </ASSafeAreaView>
-        </>
+        <View flexGrow={1} paddingTop={area.top} paddingBottom={area.bottom + 16} paddingHorizontal={24} alignItems="center" flexDirection="column">
+            <View flexGrow={1} marginBottom={16} justifyContent="center" alignItems="center">
+                <ZAvatar size="xx-large" src={organization.photo} placeholderKey={organization.id} placeholderTitle={organization.name} />
+                <Text style={{ color: theme.foregroundPrimary, marginTop: 24, textAlign: 'center', ...TextStyles.Title2 }}>{organization.name}</Text>
+                <Text style={{ color: theme.foregroundTertiary, marginTop: 4, textAlign: 'center', ...TextStyles.Subhead }}>{typeString}</Text>
+            </View>
+            <View flexShrink={1} flexDirection="row" alignItems="flex-end">
+                <Text style={{ color: theme.foregroundTertiary, textAlign: 'center', ...TextStyles.Caption }}>
+                    You must be invited to view this community. Its creator made it private
+                </Text>
+            </View>
+        </View>
     );
 });
 
