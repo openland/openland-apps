@@ -12,39 +12,35 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
 const styles = StyleSheet.create({
-    wrapper: {
-        flexDirection: 'column',
-        width: '100%',
-        height: '100%',
-    } as ViewStyle,
-    infoWrapper: {
-        flexDirection: 'column',
-        zIndex: -1,
-        padding: 24
-    } as ViewStyle,
     container: {
         alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
+        paddingHorizontal: 32,
         flexGrow: 1
     } as ViewStyle,
     title: {
         ...TextStyles.Title2,
+        marginTop: 16,
         textAlign: 'center'
     } as TextStyle,
     description: {
-        fontSize: 15,
-        textAlign: 'center',
+        ...TextStyles.Body,
         marginTop: 4,
-        lineHeight: 22
+        textAlign: 'center',
+    } as TextStyle,
+    membersWrapper: {
+        borderRadius: 100,
+        paddingHorizontal: 16,
+        paddingVertical: 6,
+        marginTop: 16,
     } as TextStyle,
     members: {
-        ...TextStyles.Body,
-        textAlign: 'center',
-        marginTop: 4
+        ...TextStyles.Label1,
     } as TextStyle,
     buttonWrapper: {
+        paddingTop: 16,
         paddingHorizontal: 16
     } as ViewStyle
 });
@@ -66,7 +62,7 @@ export const ChatJoin = React.memo((props: ChatJoinProps) => {
         <>
             <SHeaderView />
             <SHeaderButton />
-            <View style={[styles.wrapper, { paddingTop: area.top, paddingBottom }]}>
+            <View style={{ flexGrow: 1, paddingTop: area.top, paddingBottom }}>
                 <View style={styles.container}>
                     <ZAvatar
                         src={photo}
@@ -74,16 +70,16 @@ export const ChatJoin = React.memo((props: ChatJoinProps) => {
                         placeholderKey={id}
                         placeholderTitle={title}
                     />
-                    <View style={styles.infoWrapper}>
-                        <Text style={[styles.title, { color: theme.foregroundPrimary }]}>
-                            {title}
+                    <Text style={[styles.title, { color: theme.foregroundPrimary }]}>
+                        {title}
+                    </Text>
+                    {!!description && (
+                        <Text style={[styles.description, { color: theme.foregroundPrimary }]}>
+                            {description}
                         </Text>
-                        {!!description && (
-                            <Text style={[styles.description, { color: theme.foregroundPrimary }]}>
-                                {description}
-                            </Text>
-                        )}
-                        <Text style={[styles.members, { color: theme.foregroundTertiary }]}>
+                    )}
+                    <View style={[styles.membersWrapper, { backgroundColor: theme.backgroundTertiaryTrans }]}>
+                        <Text style={[styles.members, { color: theme.foregroundSecondary }]}>
                             {membersCount + (membersCount === 1 ? ' member' : ' members')}
                         </Text>
                     </View>
