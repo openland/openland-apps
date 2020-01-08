@@ -37,11 +37,15 @@ const PrivateProfile = XMemo<PageProps & { organization: OrganizationWithoutMemb
         <View flexGrow={1} paddingTop={area.top} paddingBottom={area.bottom + 16} paddingHorizontal={24} alignItems="center" flexDirection="column">
             <View flexGrow={1} marginBottom={16} justifyContent="center" alignItems="center">
                 <ZAvatar size="xx-large" src={organization.photo} placeholderKey={organization.id} placeholderTitle={organization.name} />
-                <Text style={{ color: theme.foregroundPrimary, marginTop: 24, textAlign: 'center', ...TextStyles.Title2 }}>{organization.name}</Text>
-                <Text style={{ color: theme.foregroundTertiary, marginTop: 4, textAlign: 'center', ...TextStyles.Subhead }}>{typeString}</Text>
+                <Text style={{ color: theme.foregroundPrimary, marginTop: 24, textAlign: 'center', ...TextStyles.Title2 }} allowFontScaling={false}>
+                    {organization.name}
+                </Text>
+                <Text style={{ color: theme.foregroundTertiary, marginTop: 4, textAlign: 'center', ...TextStyles.Subhead }} allowFontScaling={false}>
+                    {typeString}
+                </Text>
             </View>
             <View flexShrink={1} flexDirection="row" alignItems="flex-end">
-                <Text style={{ color: theme.foregroundTertiary, textAlign: 'center', ...TextStyles.Caption }}>
+                <Text style={{ color: theme.foregroundTertiary, textAlign: 'center', ...TextStyles.Caption }} allowFontScaling={false}>
                     You must be invited to view this community. Its creator made it private
                 </Text>
             </View>
