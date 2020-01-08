@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
-import { SHeader } from 'react-native-s/SHeader';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { RoomInviteInfo_invite } from 'openland-api/Types';
-import { Text, TextStyle, View, StyleSheet, Image, ImageStyle, Dimensions, ViewStyle, Platform } from 'react-native';
+import { Text, TextStyle, View, StyleSheet, ViewStyle, Platform } from 'react-native';
 import { FontStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
@@ -17,38 +16,33 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 const styles = StyleSheet.create({
     label: {
         ...TextStyles.Subhead,
+        marginTop: 16,
         textAlign: 'center',
     } as TextStyle,
-
     userName: {
         fontWeight: FontStyles.Weight.Bold
     } as TextStyle,
-
     title: {
         ...TextStyles.Title2,
-        marginTop: 24,
+        marginTop: 16,
         textAlign: 'center',
     } as TextStyle,
-
-    members: {
-        ...TextStyles.Subhead,
-        marginTop: 5,
+    membersWrapper: {
+        borderRadius: 100,
+        paddingHorizontal: 16,
+        paddingVertical: 6,
+        marginTop: 16,
     } as TextStyle,
-
-    membersIcon: {
-        opacity: 0.25,
-        marginRight: 6,
-        marginBottom: 1,
-        alignSelf: 'flex-end',
-    } as ImageStyle,
-
+    members: {
+        ...TextStyles.Label1,
+    } as TextStyle,
     description: {
-        fontSize: 15,
-        lineHeight: 22,
-        marginTop: 15,
+        ...TextStyles.Body,
+        marginTop: 4,
         textAlign: 'center',
     } as TextStyle,
     buttonWrapper: {
+        paddingTop: 16,
         paddingHorizontal: 16
     } as ViewStyle
 });
@@ -64,38 +58,33 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
     let inviteId = props.router.params.inviteId;
     let room = invite.room;
     let user = invite.invitedByUser;
-    let screenWidth = Dimensions.get('screen').width;
+    let typeString = room.isChannel ? 'channel' : 'group';
 
     let showMembersCount = room.membersCount ? room.membersCount >= MIN_MEMBERS_COUNT_TO_SHOW : false;
 
     return (
         <View style={{ flexGrow: 1, paddingTop: area.top, paddingBottom }}>
-            <View paddingHorizontal={32} flexGrow={1}>
-                <View position="absolute" top={16} left={0} width={screenWidth}>
-                    <Text style={[styles.label, { color: theme.foregroundSecondary }]}>
-                        <Text style={styles.userName}>{user.name}</Text> invites you to join chat
-                    </Text>
-                </View>
-           
-                <View flexGrow={1} justifyContent="center" alignItems="center" flexDirection="column" marginTop={-15}>
+            <View flexGrow={1} paddingHorizontal={32}>
+                <Text style={[styles.label, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
+                    <Text style={styles.userName} allowFontScaling={false}>{user.name}</Text> invites you to join {typeString}
+                </Text>
+                <View flexGrow={1} justifyContent="center" alignItems="center" flexDirection="column">
                     <ZAvatar size="xx-large" src={room.photo} placeholderKey={room.id} placeholderTitle={room.title} />
-                    <Text style={[styles.title, { color: theme.foregroundPrimary }]}>{room.title}</Text>
-                    <View flexDirection="row">
-                        {showMembersCount && (<Image source={require('assets/ic-members-16.png')} style={[styles.membersIcon, { tintColor: theme.foregroundPrimary }]} />)}
-                        <Text style={[styles.members, { color: theme.foregroundTertiary }]}>
-                            {showMembersCount ? (room.membersCount + ' members') : 'New ' + (room.isChannel ? 'channel' : 'group')}
+                    <Text style={[styles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>{room.title}</Text>
+                    {!!room.description && (
+                        <Text style={[styles.description, { color: theme.foregroundSecondary }]} allowFontScaling={false}>{room.description}</Text>
+                    )}
+                    <View style={[styles.membersWrapper, { backgroundColor: theme.backgroundTertiaryTrans }]}>
+                        <Text style={[styles.members, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
+                            {showMembersCount ? `${room.membersCount} members` : `New ${typeString}`}
                         </Text>
                     </View>
-
-                    {!!room.description && (
-                        <Text style={[styles.description, { color: theme.foregroundPrimary }]}>{room.description}</Text>
-                    )}
                 </View>
             </View>
             <View style={styles.buttonWrapper}>
                 <ZRoundedButton
                     size="large"
-                    title="Accept invitation"
+                    title={`Join ${typeString}`}
                     onPress={async () => {
                         startLoader();
                         try {
@@ -113,17 +102,4 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
     );
 });
 
-class GroupInviteComponent extends React.Component<PageProps> {
-    render() {
-        let invite: RoomInviteInfo_invite = this.props.router.params.invite;
-        let room = invite.room;
-        return (
-            <>
-                <SHeader title={(room.isChannel ? 'Channel' : 'Group') + ' invitation'} />
-                <GroupInviteContent {...this.props} />
-            </>
-        );
-    }
-}
-
-export const GroupInvite = withApp(GroupInviteComponent, { navigationAppearance: 'small' });
+export const GroupInvite = withApp(GroupInviteContent, { navigationAppearance: 'small' });
