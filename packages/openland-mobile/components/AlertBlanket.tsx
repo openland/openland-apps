@@ -7,7 +7,8 @@ export class AlertBlanketBuilder {
     _title?: string;
     _message?: string;
     _view?: any;
-    _cancelable?: boolean;
+    _cancelable = true;
+    _cancelAction = true;
     _actions: { name: string, callback?: () => void, style?: BlanketButtonsStyle, action?: () => void, onActionSuccess?: () => void, onActionError?: (e: Error) => void }[] = [];
     _onCancel?: () => void;
 
@@ -24,6 +25,11 @@ export class AlertBlanketBuilder {
 
     cancelable(cancelable: boolean): AlertBlanketBuilder {
         this._cancelable = cancelable;
+        return this;
+    }
+
+    cancelDefaultAction(cancelable: boolean): AlertBlanketBuilder {
+        this._cancelAction = cancelable;
         return this;
     }
 

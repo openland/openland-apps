@@ -216,7 +216,7 @@ const UserCard = React.memo((props: UserCardProps) => {
         }
         window.localStorage.setItem('matchmakin_disclamer_shown', 'true');
         AlertBlanket.builder()
-            .cancelable(false)
+            .cancelDefaultAction(false)
             .title('All new chats will be in your Openland inbox')
             .action(
                 'Got it',

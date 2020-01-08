@@ -3,10 +3,20 @@ import { PView } from 'openland-pegasus/PView';
 import { PHeader } from 'openland-pegasus/PHeader';
 import { PMap } from 'openland-pegasus/PMap';
 import { useClient } from 'openland-y-graphql/GQLClientContext';
+import { AppAlertBlanket } from 'openland-y-runtime/AppAlertBlanket';
 
 export const PowerupSample = React.memo(() => {
     const client = useClient();
     const acc = client.useAccount();
+    React.useEffect(() => {
+        (async () => {
+            let res = await client.queryAccount();
+            AppAlertBlanket.builder()
+                .title(`Hi, ${res.me!.firstName}`)
+                .message(`this is Power Up Sample!`)
+                .show();
+        })();
+    }, []);
     return (
         <>
             <PHeader title={`Hi, ${acc.me!.firstName}, this is Power Up Sample!`} />

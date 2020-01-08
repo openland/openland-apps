@@ -81,6 +81,22 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
                 {props.builder._message && <Text style={{ ...TextStyles.Body, marginBottom: 16, color: theme.foregroundPrimary }} allowFontScaling={false}>{props.builder._message}</Text>}
                 {props.builder._view}
                 <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
+                    {props.builder._cancelAction && !props.builder._actions.find(a => a.name.toLowerCase() === 'cancel') && (
+                        <>
+                            <View style={{ width: 8 }} />
+                            <ZRoundedButton
+                                key={'cancel-ac'}
+                                style="secondary"
+                                title="Cancel"
+                                onPress={async () => {
+                                    props.modalController.hide();
+                                    if (props.builder._onCancel) {
+                                        props.builder._onCancel();
+                                    }
+                                }}
+                            />
+                        </>
+                    )}
                     {props.builder._actions.map((a, i) => (
                         <>
                             <View style={{ width: 8 }} />

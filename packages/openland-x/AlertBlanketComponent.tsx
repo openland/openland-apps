@@ -12,17 +12,16 @@ import { useShortcuts } from './XShortcuts/useShortcuts';
 export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, controller: XModalController }>(props => {
     const { builder, controller } = props;
     const form = useForm();
-    const doConfirm = () => {
+    const doConfirm = (callback?: () => Promise<void>) => {
         form.doAction(async () => {
-            if (builder._action) {
-                await builder._action.action();
+            if (callback) {
+                await callback();
             }
-
             controller.hide();
         });
     };
 
-    useShortcuts({ keys: ['Enter'], callback: doConfirm });
+    useShortcuts({ keys: ['Enter'], callback: () => doConfirm((builder._actions.length) ? builder._actions[builder._actions.length - 1].action : undefined) });
 
     return (
         <>
@@ -35,7 +34,7 @@ export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, 
                 )}
                 {builder._body && builder._body(controller)}
                 <XModalFooter>
-                    {builder._cancelable && (
+                    {builder._cancelAction && !builder._actions.find(a => a.name.toLowerCase() === 'cancel') && (
                         <UButton
                             text="Cancel"
                             style="secondary"
@@ -51,17 +50,17 @@ export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, 
                         />
                     )}
 
-                    {builder._action && (
+                    {builder._actions.map(action => (
                         <UButton
-                            text={builder._action.name}
-                            style={builder._action.style}
+                            text={action.name}
+                            style={action.style}
                             size="large"
                             square={true}
-                            onClick={doConfirm}
+                            onClick={() => doConfirm(action.action)}
                             loading={form.loading}
                             marginLeft={12}
                         />
-                    )}
+                    ))}
                 </XModalFooter>
             </XView>
         </>

@@ -9,7 +9,8 @@ export class AlertBlanketBuilder {
     _message?: string;
     _body?: (ctx: XModalController) => JSX.Element;
     _cancelable?: boolean;
-    _action?: { name: string, action: () => Promise<void>, style: UButtonStyle } = undefined;
+    _cancelAction = true;
+    _actions: { name: string, action: () => Promise<void>, style: UButtonStyle }[] = [];
     _width?: number;
     _onCancel?: () => void;
 
@@ -33,6 +34,11 @@ export class AlertBlanketBuilder {
         return this;
     }
 
+    cancelDefaultAction(cancelable: boolean): AlertBlanketBuilder {
+        this._cancelAction = cancelable;
+        return this;
+    }
+
     message(message: string): AlertBlanketBuilder {
         this._message = message;
         return this;
@@ -44,7 +50,7 @@ export class AlertBlanketBuilder {
     }
 
     action(name: string, action: () => Promise<void>, style?: UButtonStyle): AlertBlanketBuilder {
-        this._action = { name, action, style: style || 'primary' };
+        this._actions.push({ name, action, style: style || 'primary' });
         return this;
     }
 
