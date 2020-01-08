@@ -59,7 +59,7 @@ export const withGlobalLoader = (Wrapped: React.ComponentType) => {
     class GlobalLoaderproviderComponent extends React.PureComponent<{}, { loading: boolean }> {
         state = { loading: loading };
 
-        componentDidMount() {
+        componentWillMount() {
             watchers.push(this.handleLoadingChanged);
         }
 

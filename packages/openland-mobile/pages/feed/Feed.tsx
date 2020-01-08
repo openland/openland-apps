@@ -30,7 +30,7 @@ class FeedPage extends React.PureComponent<FeedPageProps, { dataSourceGeneration
         this.state = { dataSourceGeneration: 0 };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.unmount = this.props.engine.dataSource.dumbWatch(() => this.setState({ dataSourceGeneration: this.state.dataSourceGeneration + 1 }));
     }
 

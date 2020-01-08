@@ -16,7 +16,7 @@ export interface ASImageProps extends ASViewStyle {
 export class ASImage extends React.PureComponent<ASImageProps> {
     private tag = randomTag();
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.onPress) {
             ASEventEmitter.registerOnPress(this.tag, this.handleOnPress);
         }

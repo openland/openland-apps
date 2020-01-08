@@ -23,7 +23,7 @@ export interface ASTextProps extends ASViewStyle {
 export class ASText extends React.PureComponent<ASTextProps> {
     private tag = randomTag();
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.onPress) {
             ASEventEmitter.registerOnPress(this.tag, this.handleOnPress);
         }

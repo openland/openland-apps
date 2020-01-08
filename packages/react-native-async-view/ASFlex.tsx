@@ -22,7 +22,7 @@ export class ASFlex extends React.Component<ASFlexProps> {
 
     private tag = randomTag();
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.onPress) {
             ASEventEmitter.registerOnPress(this.tag, this.handleOnPress);
         }

@@ -28,7 +28,7 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
     contentView = new SAnimatedShadowView(this.key + '--ctns', { opacity: 0 });
     contentHeight = 0;
 
-    componentDidMount() {
+    componentWillMount() {
         this.contents = this.props.modal(this);
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     }

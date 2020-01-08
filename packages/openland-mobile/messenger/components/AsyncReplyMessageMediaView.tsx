@@ -33,7 +33,7 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
         }
     }
 
-    componentDidMount() {
+    componentWillMount() {
         let optimalSize = layoutMedia(this.props.attach!!.fileMetadata.imageWidth || 0, this.props.attach!!.fileMetadata.imageHeight || 0, 1024, 1024);
         this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.attach!!.fileId!, (this.props.attach!!.fileMetadata.mimeType !== 'gif') ? optimalSize : null, (state) => {
             this.setState({ downloadState: state });

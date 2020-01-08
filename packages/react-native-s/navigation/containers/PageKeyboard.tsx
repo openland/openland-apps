@@ -21,7 +21,7 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
         this.setState({ keyboardHeight: e ? e.height : 0 });
     }
 
-    componentDidMount() {
+    componentWillMount() {
         if (Platform.OS !== 'ios') {
             DeviceEventEmitter.addListener('async_keyboard_height', this.onKeyboardChange);
             // Keyboard.addListener('keyboardDidShow', this.onKeyboardChange);

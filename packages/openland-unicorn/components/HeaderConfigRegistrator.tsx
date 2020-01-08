@@ -5,7 +5,7 @@ import { HeaderContextProvider, HeaderContext } from './HeaderContext';
 class HeaderConfigRegistratorComponent extends React.PureComponent<{ config: HeaderConfig, provider: HeaderContextProvider }> {
     private registrationId: string | undefined;
 
-    componentDidMount() {
+    componentWillMount() {
         this.registrationId = this.props.provider.registerConfig(this.props.config);
     }
     componentWillReceiveProps(nextProps: { config: HeaderConfig, provider: HeaderContextProvider }) {

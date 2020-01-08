@@ -36,7 +36,7 @@ export class AsyncReplyMessageDocumentView extends React.PureComponent<AsyncRepl
         this.state = {};
     }
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.attach && this.props.attach.fileId) {
             this.downloadManagerWatch = DownloadManagerInstance.watch(
                 this.props.attach!!.fileId!,

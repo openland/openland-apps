@@ -5,7 +5,7 @@ export class SDeferred extends React.PureComponent<{}, { inited: boolean }> {
         inited: false
     };
 
-    componentDidMount() {
+    componentWillMount() {
         // console.log('SDeferred: Waiting');
         setTimeout(() => { /*console.log('SDeferred: Mounting');*/ this.setState({ inited: true }); }, 10);
     }

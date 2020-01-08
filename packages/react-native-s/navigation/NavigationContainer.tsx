@@ -85,7 +85,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.subscription = this.props.manager.watch(this);
         if (this.currentHistory !== this.props.manager.getState()) {
             this.currentHistory = this.props.manager.getState();

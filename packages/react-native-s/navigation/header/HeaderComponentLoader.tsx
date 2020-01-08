@@ -34,7 +34,7 @@ export class HeaderComponentLoader extends React.PureComponent<HeaderComponentLo
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.watchRoutes(this.props.pages);
     }
 

@@ -52,7 +52,7 @@ class CommentsNotificationsInner extends React.PureComponent<
         this.state = { dataSourceGeneration: 0 };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.unmount = this.props.engine.subscribe();
         this.unmount1 = this.dataSource.dumbWatch(() =>
             this.setState({ dataSourceGeneration: this.state.dataSourceGeneration + 1 }),

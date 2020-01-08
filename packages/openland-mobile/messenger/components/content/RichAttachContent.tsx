@@ -45,7 +45,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
     private downloadManagerWatch?: WatchSubscription;
     private imageCompact = false;
 
-    componentDidMount() {
+    componentWillMount() {
         if (this.props.attach && this.props.attach.image && this.props.imageLayout) {
 
             this.augLayout = this.props.imageLayout;

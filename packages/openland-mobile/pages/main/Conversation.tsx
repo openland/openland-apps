@@ -94,7 +94,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         AsyncStorage.getItem('compose_draft_mentions_v2_' + this.props.chat.id).then(s => this.setState({ mentions: JSON.parse(s) || [] }));
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.engine.messagesActionsStateEngine.listen(state => {
             this.setState({ messagesActionsState: state });
 

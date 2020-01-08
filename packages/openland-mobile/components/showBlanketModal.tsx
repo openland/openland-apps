@@ -40,7 +40,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
     contentView = new SAnimatedShadowView(this.key + '--ctns', { opacity: 0 });
     contentHeight = 0;
 
-    componentDidMount() {
+    componentWillMount() {
         this.contents = this.props.modal(this);
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     }
