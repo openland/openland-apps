@@ -28,6 +28,7 @@ import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { BottomSheetProvider } from 'openland-mobile/components/BottomSheet';
 import { AndroidSplashView } from '../components/AndroidSplashView';
 import { initialMode } from 'react-native-dark-mode';
+import { GQLClientContext } from 'openland-y-graphql/GQLClientContext';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(() => new SAnimatedShadowView('app-placeholder-' + randomKey(), { opacity: 1 }), []);
@@ -279,10 +280,10 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         if (this.state.state === 'app') {
             loading = false;
             content = (
-                <>
+                <GQLClientContext.Provider value={getClient()}>
                     <PushManager client={getClient()} />
                     {this.state.dimensions && <Root routing={getMessenger().history} width={this.state.dimensions.width} height={this.state.dimensions.height} />}
-                </>
+                </GQLClientContext.Provider>
             );
         } else if (this.state.state === 'initial') {
             loading = false;

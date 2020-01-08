@@ -33,6 +33,7 @@ import { AppContainer } from './root/AppContainer';
 import { EnvironmentContext } from './root/EnvironmentContext';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { OpenlandApiContext } from 'openland-web/utils/OpenlandApiProvider';
+import { GQLClientContext } from 'openland-y-graphql/GQLClientContext';
 
 export default withData(
     class MyApp extends App<{
@@ -96,17 +97,19 @@ export default withData(
                             >
                                 <ClientCacheProvider>
                                     <OpenlandApiContext.Provider value={this.props.apollo}>
-                                        <RootErrorBoundary>
-                                            <AppContainer>
-                                                {/* <XView justifyContent="center" width="50%">
+                                        <GQLClientContext.Provider value={this.props.apollo}>
+                                            <RootErrorBoundary>
+                                                <AppContainer>
+                                                    {/* <XView justifyContent="center" width="50%">
                                                     <TestCommentsComponent />
                                                 </XView> */}
-                                                {/* <XView justifyContent="center" width="50%">
+                                                    {/* <XView justifyContent="center" width="50%">
                                                     <TestMessengerComponent />
                                                 </XView> */}
-                                                <Component {...pageProps} />
-                                            </AppContainer>
-                                        </RootErrorBoundary>
+                                                    <Component {...pageProps} />
+                                                </AppContainer>
+                                            </RootErrorBoundary>
+                                        </GQLClientContext.Provider>
                                     </OpenlandApiContext.Provider>
                                 </ClientCacheProvider>
                             </XRouterProvider>

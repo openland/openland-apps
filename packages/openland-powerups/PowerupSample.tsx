@@ -2,11 +2,14 @@ import * as React from 'react';
 import { PView } from 'openland-pegasus/PView';
 import { PHeader } from 'openland-pegasus/PHeader';
 import { PMap } from 'openland-pegasus/PMap';
+import { useClient } from 'openland-y-graphql/GQLClientContext';
 
 export const PowerupSample = React.memo(() => {
+    const client = useClient();
+    const acc = client.useAccount();
     return (
         <>
-            <PHeader title="Power Up Sample!" />
+            <PHeader title={`Hi, ${acc.me!.firstName}, this is Power Up Sample!`} />
             <PView
                 width={'100%'}
                 flexGrow={1}
