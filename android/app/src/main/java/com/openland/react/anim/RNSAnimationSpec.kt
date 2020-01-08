@@ -13,7 +13,8 @@ class RNSAnimationTransactionSpec {
 }
 
 enum class RNSAnimationType {
-    timing
+    timing,
+    circular
 }
 
 enum class RNSEasingType {
@@ -34,6 +35,9 @@ class RNSAnimationSpec {
     var property: String = ""
     var to: Float = 0.0f
     var from: Float = 0.0f
+
+    var centerX: Float = 0.0f
+    var centerY: Float = 0.0f
 
     var duration: Float? = null
     var optional: Boolean = false
@@ -63,12 +67,19 @@ fun parseAnimationSpec(spec: String): RNSAnimationTransactionSpec {
                 Log.d("RNSAnimated", "Spring animations are not supported on Android")
             }
             "timing" -> aspec.type = RNSAnimationType.timing
+            "circular" -> {
+                aspec.type = RNSAnimationType.circular
+            }
         }
 
         aspec.viewKey = anim["view"] as String
-        aspec.property = anim["prop"] as String
         aspec.to = (anim["to"] as Number).toFloat()
         aspec.from = (anim["from"] as Number).toFloat()
+
+        // Property
+        if (aspec.type != RNSAnimationType.circular) {
+            aspec.property = anim["prop"] as String
+        }
 
         // Easing
         if (anim["easing"] is JsonObject) {
@@ -83,6 +94,13 @@ fun parseAnimationSpec(spec: String): RNSAnimationTransactionSpec {
         // Duration
         if (anim["duration"] is Number) {
             aspec.duration = (anim["duration"] as Number).toFloat()
+        }
+
+        if (anim["centerX"] is Number) {
+            aspec.centerX = (anim["centerX"] as Number).toFloat()
+        }
+        if (anim["centerY"] is Number) {
+            aspec.centerY = (anim["centerY"] as Number).toFloat()
         }
 
         // Optional

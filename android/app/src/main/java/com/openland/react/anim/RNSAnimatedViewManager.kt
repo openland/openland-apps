@@ -17,6 +17,14 @@ import com.openland.react.anim.hack.CubicBezierInterpolator
 import com.openland.react.anim.hack.MakeAnimationsFast
 import com.openland.react.runOnUIThread
 import com.openland.react.runOnUIThreadDelayed
+import android.R.attr.centerY
+import android.R.attr.centerX
+import android.view.ViewAnimationUtils
+import android.R.anim
+import android.animation.Animator
+import android.view.View
+import com.openland.react.anim.RNSAnimatedView
+import com.openland.react.anim.hack.MakeAnimationsRenderThreadFast
 
 
 class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext), UIManagerModuleListener {
@@ -146,45 +154,112 @@ class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactConte
         for (a in spec.animations) {
             val view = views[a.viewKey]
             if (view != null) {
-                val anim = MakeAnimationsFast.fastAnimate(view)
 
-                // Set duration
-                if (a.duration != null) {
-                    anim.duration = (a.duration!! * 1000).toLong()
-                    maxDuration = Math.max(a.duration!!, maxDuration)
-                } else {
-                    anim.duration = (spec.duration * 1000).toLong()
-                    maxDuration = Math.max(spec.duration, maxDuration)
-                }
+                if (a.type == RNSAnimationType.timing) {
 
-                // Easing
-                when {
-                    a.easing.type === RNSEasingType.linear -> anim.interpolator = LinearInterpolator()
-                    a.easing.type === RNSEasingType.material -> anim.interpolator = FastOutSlowInInterpolator()
-                    a.easing.type === RNSEasingType.bezier -> anim.interpolator = CubicBezierInterpolator(PointF(a.easing.bezier!![0], a.easing.bezier!![1]), PointF(a.easing.bezier!![2], a.easing.bezier!![3]))
-                    else -> // Fallback to linear
-                        anim.interpolator = LinearInterpolator()
-                }
+                    when {
+                        a.property == "opacity" -> {
+                            view.alpha = a.from
+                        }
+                        a.property == "scale" -> {
+                            view.scaleX = a.from
+                            view.scaleY = a.from
+                        }
+                        a.property == "translateX" -> {
+                            view.translationX = PixelUtil.toPixelFromDIP(a.from)
+                        }
+                        a.property == "translateY" -> {
+                            view.translationY = PixelUtil.toPixelFromDIP(a.from)
+                        }
+                    }
 
-                when {
-                    a.property == "opacity" -> {
-                        view.alpha = a.from
-                        anim.alpha(a.to)
+                    val duration = if (a.duration != null) {
+                        maxDuration = Math.max(a.duration!!, maxDuration)
+                        (a.duration!! * 1000).toLong()
+                    } else {
+                        maxDuration = Math.max(spec.duration, maxDuration)
+                        (spec.duration * 1000).toLong()
                     }
-                    a.property == "scale" -> {
-                        view.scaleX = a.from
-                        view.scaleY = a.from
-                        anim.scaleX(a.to)
-                        anim.scaleY(a.to)
+
+                    val inter = when {
+                        a.easing.type === RNSEasingType.linear -> LinearInterpolator()
+                        a.easing.type === RNSEasingType.material -> FastOutSlowInInterpolator()
+                        a.easing.type === RNSEasingType.bezier -> CubicBezierInterpolator(PointF(a.easing.bezier!![0], a.easing.bezier!![1]), PointF(a.easing.bezier!![2], a.easing.bezier!![3]))
+                        else -> // Fallback to linear
+                            LinearInterpolator()
                     }
-                    a.property == "translateX" -> {
-                        view.translationX = PixelUtil.toPixelFromDIP(a.from)
-                        anim.translationX(PixelUtil.toPixelFromDIP(a.to))
+
+                    val rnAnim: Animator? = MakeAnimationsRenderThreadFast.fastAnimate(a.property, a.to, view)
+                    if (rnAnim != null) {
+                        rnAnim.duration = duration
+                        rnAnim.interpolator = inter
+                        rnAnim.start()
+                    } else {
+                        val fAnim = MakeAnimationsFast.fastAnimate(view)
+                        fAnim.duration = duration
+                        fAnim.interpolator = inter
+
+                        when {
+                            a.property == "opacity" -> {
+                                fAnim.alpha(a.to)
+                            }
+                            a.property == "scale" -> {
+                                fAnim.scaleX(a.to)
+                                fAnim.scaleY(a.to)
+                            }
+                            a.property == "translateX" -> {
+                                fAnim.translationX(PixelUtil.toPixelFromDIP(a.to))
+                            }
+                            a.property == "translateY" -> {
+                                fAnim.translationY(PixelUtil.toPixelFromDIP(a.to))
+                            }
+                        }
                     }
-                    a.property == "translateY" -> {
-                        view.translationY = PixelUtil.toPixelFromDIP(a.from)
-                        anim.translationY(PixelUtil.toPixelFromDIP(a.to))
+                } else if (a.type == RNSAnimationType.circular) {
+
+                    // Set duration
+                    val duration: Long
+                    if (a.duration != null) {
+                        duration = (a.duration!! * 1000).toLong()
+                        maxDuration = Math.max(a.duration!!, maxDuration)
+                    } else {
+                        duration = (spec.duration * 1000).toLong()
+                        maxDuration = Math.max(spec.duration, maxDuration)
                     }
+
+
+                    // Create Animator
+                    val animator = ViewAnimationUtils.createCircularReveal(view,
+                            PixelUtil.toPixelFromDIP(a.centerX).toInt(),
+                            PixelUtil.toPixelFromDIP(a.centerY).toInt(),
+                            PixelUtil.toPixelFromDIP(a.from),
+                            PixelUtil.toPixelFromDIP(a.to)
+                    )
+                    animator.duration = duration
+                    animator.addListener(object : Animator.AnimatorListener {
+                        override fun onAnimationRepeat(animation: Animator?) {
+
+                        }
+
+                        override fun onAnimationEnd(animation: Animator?) {
+                            if (a.to == 0.0f) {
+                                view.visibility = View.INVISIBLE
+                            } else {
+                                view.visibility = View.VISIBLE
+                            }
+                        }
+
+                        override fun onAnimationCancel(animation: Animator?) {
+
+                        }
+
+                        override fun onAnimationStart(animation: Animator?) {
+
+                        }
+
+                    })
+                    animator.setupEndValues()
+                    animator.start()
                 }
             }
         }
@@ -197,13 +272,13 @@ class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactConte
                     runOnUIThreadDelayed((maxDuration * 1000).toInt()) {
                         for (s in spec.valueSets) {
                             val view = views[s.viewKey]
-                            if(view != null){
+                            if (view != null) {
                                 IncrementalMountUtils.incrementallyMountLithoViews(view)
                             }
                         }
                         for (a in spec.animations) {
                             val view = views[a.viewKey]
-                            if(view != null){
+                            if (view != null) {
                                 IncrementalMountUtils.incrementallyMountLithoViews(view)
                             }
                         }

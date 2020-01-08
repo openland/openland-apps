@@ -32,6 +32,14 @@ export interface SAnimatedTimingConfig {
     easing?: SAnimatedEasing;
 }
 
+export interface SAnimatedCircularConfig {
+    from: number;
+    to: number;
+    duration?: number;
+    centerX?: number;
+    centerY?: number;
+}
+
 function resolveEasing(easing?: SAnimatedEasing) {
     if (!easing || easing === 'linear') {
         return {
@@ -355,6 +363,23 @@ class SAnimatedImpl {
             to: animation.to,
             optional: animation.optional,
             velocity: animation.velocity
+        };
+        if (this._inTransaction) {
+            this._pendingAnimations.push(anim);
+        } else {
+            this._postAnimations(this._transactionDuration, [anim], [], undefined);
+        }
+    }
+
+    circular = (name: string, animation: SAnimatedCircularConfig) => {
+        let anim = {
+            view: name,
+            type: 'circular',
+            from: animation.from,
+            to: animation.to,
+            duration: animation.duration,
+            centerX: animation.centerX,
+            centerY: animation.centerY
         };
         if (this._inTransaction) {
             this._pendingAnimations.push(anim);

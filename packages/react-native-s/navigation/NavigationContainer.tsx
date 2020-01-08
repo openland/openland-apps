@@ -192,10 +192,11 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         to: 1,
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
-                    // SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.key), {
-                    //     property: 'opacity',
+                    // SAnimated.circular(AnimatedViewKeys.page(record.key), {
                     //     from: 0,
-                    //     to: 1, easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                    //     to: Math.max(this.props.width, this.props.height),
+                    //     centerX: this.props.width / 2,
+                    //     centerY: this.props.height / 2
                     // });
                 }
                 this.headerCoordinator.onPushed(underlayHolder, record);
@@ -310,11 +311,11 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                         to: 0,
                         easing: { bezier: [0.4, 0.0, 0.2, 1] }
                     });
-                    // SAnimated.timing(AnimatedViewKeys.pageShadow(underlayHolder.key), {
-                    //     property: 'opacity',
-                    //     from: 1,
+                    // SAnimated.circular(AnimatedViewKeys.page(page.key), {
+                    //     from: Math.max(this.props.height, this.props.width),
                     //     to: 0,
-                    //     easing: { bezier: [0.4, 0.0, 0.2, 1] }
+                    //     centerX: this.props.width / 2,
+                    //     centerY: this.props.height / 2
                     // });
                 }
                 this.headerCoordinator.onPopped(page, underlayHolder);
