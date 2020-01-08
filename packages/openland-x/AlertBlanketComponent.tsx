@@ -36,6 +36,7 @@ export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, 
                 <XModalFooter>
                     {builder._cancelAction && !builder._actions.find(a => a.name.toLowerCase() === 'cancel') && (
                         <UButton
+                            disable={form.loading}
                             text="Cancel"
                             style="secondary"
                             size="large"
@@ -52,6 +53,7 @@ export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, 
 
                     {builder._actions.map(action => (
                         <UButton
+                            disable={form.loading}
                             text={action.name}
                             style={action.style}
                             size="large"

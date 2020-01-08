@@ -20,9 +20,9 @@ class WebAlertBlanketBuilder implements AlertBlanketBuilderApi {
     }
     action(name: string, style?: "destructive" | "cancel" | "default" | undefined, action?: (() => void) | undefined): AlertBlanketBuilderApi {
         this.builder.action(name, () => {
-            return new Promise((resolve) => {
+            return new Promise(async (resolve) => {
                 if (action) {
-                    action();
+                    await action();
                 }
                 resolve();
             });

@@ -15,6 +15,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modalController: ZModalController }>((props) => {
     let theme = React.useContext(ThemeContext);
     let [state, setState] = React.useState<'initial' | 'done' | 'error'>('initial');
+    let [isActionInProgress, setActionInProgress] = React.useState(false);
     let key = randomKey();
 
     let contentView = new SAnimatedShadowView(key + '--ctns', { opacity: 1 });
@@ -61,7 +62,8 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
         new AlertBlanketBuilder().alert(formatError(e));
         props.modalController.hide();
     }, []);
-
+    console.warn('boom', isActionInProgress);
+    console.warn('boom', state);
     return (
         <View
             flexDirection="column"
@@ -88,6 +90,7 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
                                 key={'cancel-ac'}
                                 style="secondary"
                                 title="Cancel"
+                                enabled={!isActionInProgress}
                                 onPress={async () => {
                                     props.modalController.hide();
                                     if (props.builder._onCancel) {
@@ -104,6 +107,7 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
                                 key={i + '-ac'}
                                 style={a.style === 'cancel' ? 'secondary' : a.style === 'destructive' ? 'danger' : 'primary'}
                                 title={a.name}
+                                enabled={!isActionInProgress}
                                 onPress={async () => {
                                     if (a.callback) {
                                         await a.callback();
@@ -113,6 +117,7 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
                                     }
                                 }}
                                 action={a.action}
+                                onActionStart={() => setActionInProgress(true)}
                                 onActionSuccess={() => onSuccess(a.onActionSuccess)}
                                 onActionError={(e) => onError(e, a.onActionError)}
                             />

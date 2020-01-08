@@ -49,6 +49,7 @@ export interface ZRoundedButtonProps {
     onPress?: () => void;
     action?: () => void;
     actionFinally?: () => void;
+    onActionStart?: () => void;
     onActionSuccess?: () => void;
     onActionError?: (e: Error) => void;
     path?: string;
@@ -78,6 +79,9 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
             setActionInProgress(true);
 
             try {
+                if (props.onActionStart) {
+                    await props.onActionStart();
+                }
                 await props.action();
                 if (props.onActionSuccess) {
                     await props.onActionSuccess();
