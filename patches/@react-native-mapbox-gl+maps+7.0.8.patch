@@ -1,0 +1,290 @@
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/annotation/RCTMGLPointAnnotation.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/annotation/RCTMGLPointAnnotation.java
+index 60bf434..c20b2c1 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/annotation/RCTMGLPointAnnotation.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/annotation/RCTMGLPointAnnotation.java
+@@ -5,7 +5,7 @@ import android.graphics.PointF;
+ import android.graphics.Bitmap;
+ import android.view.MotionEvent;
+ import android.view.View;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.util.Log;
+ 
+ import com.mapbox.geojson.Point;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/camera/CameraStop.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/camera/CameraStop.java
+index fc8a02b..b9938fe 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/camera/CameraStop.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/camera/CameraStop.java
+@@ -1,7 +1,7 @@
+ package com.mapbox.rctmgl.components.camera;
+ 
+ import android.content.Context;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.util.DisplayMetrics;
+ 
+ import com.facebook.react.bridge.ReadableMap;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/camera/CameraUpdateItem.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/camera/CameraUpdateItem.java
+index 70034d5..11053f4 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/camera/CameraUpdateItem.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/camera/CameraUpdateItem.java
+@@ -1,6 +1,6 @@
+ package com.mapbox.rctmgl.components.camera;
+ 
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ 
+ import com.mapbox.mapboxsdk.camera.CameraUpdate;
+ import com.mapbox.mapboxsdk.constants.MapboxConstants;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/camera/RCTMGLCamera.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/camera/RCTMGLCamera.java
+index af33832..69fe8ec 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/camera/RCTMGLCamera.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/camera/RCTMGLCamera.java
+@@ -41,7 +41,7 @@ import com.mapbox.geojson.Point;
+ 
+ import com.mapbox.android.core.permissions.PermissionsManager;
+ 
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ 
+ public class RCTMGLCamera extends AbstractMapFeature {
+     private RCTMGLCameraManager mManager;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/camera/constants/CameraMode.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/camera/constants/CameraMode.java
+index a6fa2ad..016fa70 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/camera/constants/CameraMode.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/camera/constants/CameraMode.java
+@@ -1,6 +1,6 @@
+ package com.mapbox.rctmgl.components.camera.constants;
+ 
+-import android.support.annotation.IntDef;
++import androidx.annotation.IntDef;
+ 
+ import java.lang.annotation.Retention;
+ import java.lang.annotation.RetentionPolicy;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/mapview/RCTMGLMapView.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/mapview/RCTMGLMapView.java
+index 52d7422..070b441 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/mapview/RCTMGLMapView.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/mapview/RCTMGLMapView.java
+@@ -7,7 +7,7 @@ import android.graphics.PointF;
+ import android.graphics.RectF;
+ import android.location.Location;
+ import android.os.Handler;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.util.DisplayMetrics;
+ import android.util.Log;
+ import android.view.Gravity;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/RCTMGLStyle.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/RCTMGLStyle.java
+index 653d3bb..6c2028f 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/RCTMGLStyle.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/RCTMGLStyle.java
+@@ -1,7 +1,7 @@
+ package com.mapbox.rctmgl.components.styles;
+ 
+ import android.content.Context;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ 
+ import com.facebook.react.bridge.ReadableMap;
+ import com.facebook.react.bridge.ReadableMapKeySetIterator;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/RCTMGLStyleValue.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/RCTMGLStyleValue.java
+index e519ff0..d7766fd 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/RCTMGLStyleValue.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/RCTMGLStyleValue.java
+@@ -1,6 +1,6 @@
+ package com.mapbox.rctmgl.components.styles;
+ 
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ 
+ import com.facebook.react.bridge.Dynamic;
+ import com.facebook.react.bridge.ReadableArray;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/sources/RCTMGLShapeSource.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/sources/RCTMGLShapeSource.java
+index 64753bb..7a72048 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/sources/RCTMGLShapeSource.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/sources/RCTMGLShapeSource.java
+@@ -3,9 +3,9 @@ package com.mapbox.rctmgl.components.styles.sources;
+ import android.content.Context;
+ import android.graphics.Bitmap;
+ import android.graphics.drawable.BitmapDrawable;
+-import android.support.annotation.NonNull;
+-import android.support.annotation.Nullable;
+-import android.support.v4.content.res.ResourcesCompat;
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
++import androidx.core.content.res.ResourcesCompat;
+ 
+ import com.mapbox.geojson.Feature;
+ import com.mapbox.mapboxsdk.maps.MapboxMap;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/sources/RCTMGLVectorSource.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/sources/RCTMGLVectorSource.java
+index 2b7357c..a98f3cc 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/sources/RCTMGLVectorSource.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/sources/RCTMGLVectorSource.java
+@@ -1,8 +1,8 @@
+ package com.mapbox.rctmgl.components.styles.sources;
+ 
+ import android.content.Context;
+-import android.support.annotation.Nullable;
+-import android.support.annotation.Size;
++import androidx.annotation.Nullable;
++import androidx.annotation.Size;
+ 
+ import com.facebook.react.bridge.WritableMap;
+ import com.facebook.react.bridge.WritableNativeMap;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/sources/RCTMGLVectorSourceManager.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/sources/RCTMGLVectorSourceManager.java
+index e6f195f..33019f2 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/sources/RCTMGLVectorSourceManager.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/sources/RCTMGLVectorSourceManager.java
+@@ -1,6 +1,6 @@
+ package com.mapbox.rctmgl.components.styles.sources;
+ 
+-import android.support.annotation.Nullable;
++import androidx.annotation.Nullable;
+ 
+ import com.facebook.react.bridge.ReactApplicationContext;
+ import com.facebook.react.bridge.ReadableArray;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/sources/RCTSource.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/sources/RCTSource.java
+index 98da01f..1659247 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/sources/RCTSource.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/components/styles/sources/RCTSource.java
+@@ -1,7 +1,7 @@
+ package com.mapbox.rctmgl.components.styles.sources;
+ 
+ import android.content.Context;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.view.View;
+ 
+ import com.facebook.react.bridge.ReadableMap;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/events/LocationEvent.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/events/LocationEvent.java
+index 4667d66..c6f1d60 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/events/LocationEvent.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/events/LocationEvent.java
+@@ -1,7 +1,7 @@
+ package com.mapbox.rctmgl.events;
+ 
+ import android.location.Location;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ 
+ import com.facebook.react.bridge.Arguments;
+ import com.facebook.react.bridge.WritableMap;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/events/MapClickEvent.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/events/MapClickEvent.java
+index a9f914a..2e439b9 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/events/MapClickEvent.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/events/MapClickEvent.java
+@@ -1,7 +1,7 @@
+ package com.mapbox.rctmgl.events;
+ 
+ import android.graphics.PointF;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.view.View;
+ 
+ import com.facebook.react.bridge.WritableMap;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/events/PointAnnotationClickEvent.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/events/PointAnnotationClickEvent.java
+index cd92579..0436428 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/events/PointAnnotationClickEvent.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/events/PointAnnotationClickEvent.java
+@@ -1,7 +1,7 @@
+ package com.mapbox.rctmgl.events;
+ 
+ import android.graphics.PointF;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.view.View;
+ 
+ import com.facebook.react.bridge.WritableMap;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/events/PointAnnotationDragEvent.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/events/PointAnnotationDragEvent.java
+index 5f20887..7709ad1 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/events/PointAnnotationDragEvent.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/events/PointAnnotationDragEvent.java
+@@ -1,7 +1,7 @@
+ package com.mapbox.rctmgl.events;
+ 
+ import android.graphics.PointF;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ import android.view.View;
+ 
+ import com.facebook.react.bridge.WritableMap;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/modules/RCTMGLLocationModule.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/modules/RCTMGLLocationModule.java
+index 51900dd..888fc60 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/modules/RCTMGLLocationModule.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/modules/RCTMGLLocationModule.java
+@@ -1,7 +1,7 @@
+ package com.mapbox.rctmgl.modules;
+ 
+ import android.location.Location;
+-import android.support.annotation.NonNull;
++import androidx.annotation.NonNull;
+ 
+ import com.facebook.react.bridge.LifecycleEventListener;
+ import com.facebook.react.bridge.Promise;
+diff --git a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/utils/ResourceUtils.java b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/utils/ResourceUtils.java
+index 7fa10e3..6ba704b 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/utils/ResourceUtils.java
++++ b/node_modules/@react-native-mapbox-gl/maps/android/rctmgl/src/main/java/com/mapbox/rctmgl/utils/ResourceUtils.java
+@@ -3,7 +3,7 @@ package com.mapbox.rctmgl.utils;
+ import android.content.Context;
+ import android.content.res.Resources;
+ import android.graphics.drawable.Drawable;
+-import android.support.v4.content.ContextCompat;
++import androidx.core.content.ContextCompat;
+ 
+ /**
+  * Created by nickitaliano on 10/19/17.
+diff --git a/node_modules/@react-native-mapbox-gl/maps/index.d.ts b/node_modules/@react-native-mapbox-gl/maps/index.d.ts
+index 5a62959..91c6a20 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/index.d.ts
++++ b/node_modules/@react-native-mapbox-gl/maps/index.d.ts
+@@ -99,12 +99,12 @@ declare namespace MapboxGL {
+       coordinate: GeoJSON.Position,
+       filter?: Array<string>,
+       layerIds?: Array<string>,
+-    ): Promise<GeoJSON.FeatureCollection?>;
++    ): Promise<GeoJSON.FeatureCollection | undefined>;
+     queryRenderedFeaturesInRect(
+       coordinate: GeoJSON.Position,
+       filter?: Array<string>,
+       layerIds?: Array<string>,
+-    ): Promise<GeoJSON.FeatureCollection?>;
++    ): Promise<GeoJSON.FeatureCollection | undefined>;
+     takeSnap(writeToDisk?: boolean): Promise<string>;
+     getZoom(): Promise<number>;
+     getCenter(): Promise<GeoJSON.Position>;
+@@ -274,7 +274,7 @@ export interface MapViewProps extends ViewProps {
+   userTrackingMode?: MapboxGL.UserTrackingModes;
+   userLocationVerticalAlignment?: number;
+   contentInset?: Array<number>;
+-  style?: StyleProp;
++  style?: StyleProp<any>;
+   styleURL?: string;
+   localizeLabels?: boolean;
+   zoomEnabled?: boolean;
+@@ -620,14 +620,14 @@ export interface VectorSourceProps extends TileSourceProps {
+ export interface ShapeSourceProps extends ViewProps {
+   id?: string;
+   url?: string;
+-  shape?: GeoJSON.Geometries | GeoJSON.Feature | GeoJSON.FeatureCollection;
++  shape?: GeoJSON.Feature | GeoJSON.FeatureCollection;
+   cluster?: boolean;
+   clusterRadius?: number;
+   clusterMaxZoomLevel?: number;
+   maxZoomLevel?: number;
+   buffer?: number;
+   tolerance?: number;
+-  images?: {assets?: string[]; [key: string]: ImageSourcePropType};
++  images?: { [key: string]: ImageSourcePropType};
+   onPress?: (event: MapboxGLEvent<'shapesourcelayerpress'>) => void;
+   hitbox?: {
+     width: number;
+@@ -684,7 +684,7 @@ export interface HeatmapLayerProps extends LayerBaseProps {
+ }
+ 
+ export interface ImagesProps extends ViewProps {
+-  images?: {assets?: string[]; [key: string]: ImageSourcePropType};
++  images?: { [key: string]: ImageSourcePropType};
+ }
+ 
+ export interface ImageSourceProps extends ViewProps {

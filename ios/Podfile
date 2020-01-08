@@ -93,6 +93,7 @@ target 'openland' do
 
   pod 'react-native-version-number', :path => '../node_modules/react-native-version-number'
 
+  pod 'react-native-mapbox-gl', :path => '../node_modules/@react-native-mapbox-gl/maps'
 end
 
 target 'openlandTests' do

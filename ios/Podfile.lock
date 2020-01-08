@@ -260,6 +260,8 @@ PODS:
     - React
   - react-native-image-picker (1.1.0):
     - React
+  - react-native-mapbox-gl (7.0.8):
+    - React
   - react-native-pdf (5.1.0):
     - React
   - react-native-sqlite-storage (3.3.10):
@@ -388,6 +390,7 @@ DEPENDENCIES:
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-haptic-feedback (from `../node_modules/react-native-haptic-feedback`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - "react-native-mapbox-gl (from `../node_modules/@react-native-mapbox-gl/maps`)"
   - react-native-pdf (from `../node_modules/react-native-pdf`)
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
   - react-native-version-number (from `../node_modules/react-native-version-number`)
@@ -488,6 +491,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-haptic-feedback"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
+  react-native-mapbox-gl:
+    :path: "../node_modules/@react-native-mapbox-gl/maps"
   react-native-pdf:
     :path: "../node_modules/react-native-pdf"
   react-native-sqlite-storage:
@@ -590,6 +595,7 @@ SPEC CHECKSUMS:
   react-native-document-picker: da1c37bbc4ff0896986a70784808a2862d297887
   react-native-haptic-feedback: 22c9dc85fd8059f83bf9edd9212ac4bd4ae6074d
   react-native-image-picker: 7a85cf7b0a53845f03ae52fb4592a2748ded069b
+  react-native-mapbox-gl: fcd88e2bf0ddea552b0209cc2770a5ac2b9c9910
   react-native-pdf: 8cc276fd8ab7dff6b602eb65fcf0f6c145c0f524
   react-native-sqlite-storage: dba8e864e9a76f1aae6ddb5e7d0dc330d59f4bb3
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
@@ -625,6 +631,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: db6ea347fe7b95a4cfb191907da39b6553205047
+PODFILE CHECKSUM: 7835539d9611796895c8e8b3e2f0720bae8a372d
 
 COCOAPODS: 1.8.4

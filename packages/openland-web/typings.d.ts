@@ -19,46 +19,6 @@ declare module '*.svg' {
     export default content;
 }
 
-declare module 'react-map-gl' {
-    interface StaticMapProps {
-        mapboxApiAccessToken: string;
-        width: number | string;
-        height: number | string;
-        latitude: number;
-        longitude: number;
-        zoom?: number;
-        mapStyle?: string;
-        pitch?: number;
-        bearing?: number;
-        transitionDuration?: number;
-        transitionInterpolator?: FlyToInterpolator;
-    }
-
-    interface InteractiveMapProps extends StaticMapProps {
-        maxZoom?: number;
-        dragPan?: boolean;
-        dragRotate?: boolean;
-        touchRotate?: boolean;
-        onViewportChange?: (viewport: ViewPortChanged) => void;
-    }
-
-    interface ViewPortChanged {
-        latitude: number;
-        longitude: number;
-        zoom: number;
-        pitch: number;
-        bearing: number;
-    }
-
-    export let NavigationControl: React.ComponentClass<{
-        onViewportChange?: (viewport: ViewPortChanged) => void;
-    }>;
-
-    export class FlyToInterpolator { }
-    export let StaticMap: React.ComponentClass<StaticMapProps>;
-    export let InteractiveMap: React.ComponentClass<InteractiveMapProps>;
-}
-
 declare module 'mixpanel-browser' {
     export function init(token: string): void;
     export function track(event: string, params?: { [key: string]: any }): void;
