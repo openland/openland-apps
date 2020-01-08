@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactMapGL from 'react-map-gl';
+import ReactMapGL, { Marker } from 'react-map-gl';
 import { css } from 'linaria';
 import { ResizeObserver as ResizeObserverPolyfill } from '@juggle/resize-observer';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
@@ -13,7 +13,19 @@ const containerStyles = css`
 
 const ResizeObserver = ((canUseDOM && window && ((window as any).ResizeObserver)) || ResizeObserverPolyfill) as typeof ResizeObserverPolyfill;
 
-export const PMap = React.memo((props: {}) => {
+export const PMyLocation = React.memo((props: { latitude: number, longitude: number }) => {
+    return (
+        <Marker
+            className="mapboxgl-user-location-dot"
+            longitude={props.longitude}
+            latitude={props.latitude}
+            captureDrag={false}
+            captureDoubleClick={false}
+        />
+    );
+});
+
+export const PMap = React.memo((props: { children?: any }) => {
 
     const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -51,7 +63,9 @@ export const PMap = React.memo((props: {}) => {
                     mapboxApiAccessToken={TOKEN}
                     {...viewport}
                     onViewportChange={setViewport}
-                />
+                >
+                    {props.children}
+                </ReactMapGL>
             )}
         </div>
     );

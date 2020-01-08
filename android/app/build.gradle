@@ -208,6 +208,7 @@ configurations.all {
 }
 
 dependencies {
+    implementation project(':@react-native-community_geolocation')
     implementation project(':react-native-version-number')
     implementation project(':@react-native-community_cameraroll')
     implementation 'com.facebook.react:react-native:+'

@@ -1,22 +1,22 @@
 import * as React from 'react';
 import { PView } from 'openland-pegasus/PView';
 import { PHeader } from 'openland-pegasus/PHeader';
-import { PMap } from 'openland-pegasus/PMap';
+import { PMap, PMyLocation } from 'openland-pegasus/PMap';
 import { useClient } from 'openland-y-graphql/GQLClientContext';
-import { AppAlertBlanket } from 'openland-y-runtime/AppAlertBlanket';
+import { AppGeolocation } from 'openland-y-runtime/AppGeolocation';
 
 export const PowerupSample = React.memo(() => {
     const client = useClient();
     const acc = client.useAccount();
+    const [myLocation, setMyLocation] = React.useState<{ latitude: number, longitude: number } | undefined>(undefined);
+
     React.useEffect(() => {
         (async () => {
-            let res = await client.queryAccount();
-            AppAlertBlanket.builder()
-                .title(`Hi, ${res.me!.firstName}`)
-                .message(`this is Power Up Sample!`)
-                .show();
+            let res = await AppGeolocation.getCurrentPosition();
+            setMyLocation(res);
         })();
     }, []);
+    
     return (
         <>
             <PHeader title={`Hi, ${acc.me!.firstName}, this is Power Up Sample!`} />
@@ -26,7 +26,9 @@ export const PowerupSample = React.memo(() => {
                 flexShrink={1}
                 backgroundColor="red"
             >
-                <PMap />
+                <PMap>
+                    {myLocation && <PMyLocation latitude={myLocation.latitude} longitude={myLocation.longitude} />}
+                </PMap>
                 <PView
                     position="absolute"
                     height={100}

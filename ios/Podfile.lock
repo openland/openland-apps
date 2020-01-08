@@ -256,6 +256,8 @@ PODS:
     - React
   - react-native-document-picker (2.2.0):
     - React
+  - react-native-geolocation (2.0.2):
+    - React
   - react-native-haptic-feedback (1.7.1):
     - React
   - react-native-image-picker (1.1.0):
@@ -388,6 +390,7 @@ DEPENDENCIES:
   - react-native-blur (from `../node_modules/react-native-blur`)
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
+  - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-haptic-feedback (from `../node_modules/react-native-haptic-feedback`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-mapbox-gl (from `../node_modules/@react-native-mapbox-gl/maps`)"
@@ -487,6 +490,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/cameraroll"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
+  react-native-geolocation:
+    :path: "../node_modules/@react-native-community/geolocation"
   react-native-haptic-feedback:
     :path: "../node_modules/react-native-haptic-feedback"
   react-native-image-picker:
@@ -593,6 +598,7 @@ SPEC CHECKSUMS:
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-cameraroll: d0193ddec45380cc3bd770c7011ddf702eed68e8
   react-native-document-picker: da1c37bbc4ff0896986a70784808a2862d297887
+  react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
   react-native-haptic-feedback: 22c9dc85fd8059f83bf9edd9212ac4bd4ae6074d
   react-native-image-picker: 7a85cf7b0a53845f03ae52fb4592a2748ded069b
   react-native-mapbox-gl: fcd88e2bf0ddea552b0209cc2770a5ac2b9c9910
@@ -631,6 +637,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: 7835539d9611796895c8e8b3e2f0720bae8a372d
+PODFILE CHECKSUM: 10cac51751386f8162cb2e974cf322b8535f654e
 
 COCOAPODS: 1.8.4
