@@ -5,6 +5,8 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { emoji } from 'openland-y-utils/emoji';
 import { TextBody } from 'openland-web/utils/TextStyles';
 import { ULink } from 'openland-web/components/unicorn/ULink';
+// import { useUserPopper } from 'openland-web/components/EntityPoppers';
+import { TypingsUser } from 'openland-engines/messenger/Typings';
 
 const typingWrapper = css`
     display: flex;
@@ -27,12 +29,6 @@ const typingContent = css`
     max-width: 824px;
     padding-left: 72px;
     padding-right: 72px;
-`;
-
-const typingText = css`
-    align-items: flex-start;
-    margin-top: 8px;
-    margin-bottom: 8px;
     color: var(--foregroundSecondary);
 `;
 
@@ -40,44 +36,76 @@ export interface TypingsViewProps {
     conversationId: string;
 }
 
+// TODO proper types
+const UserLink = (props: TypingsUser) => {
+    // const [show] = useUserPopper({
+    //     user: props,
+    //     isMe: false
+    // });
+
+    return (
+        <ULink path={`/${props.userId}`}>
+            {/* <span onMouseEnter={show}> */}
+            {emoji(props.userName)}
+            {/* </span> */}
+        </ULink>
+    );
+};
+
 export const TypingsView = XMemo<TypingsViewProps>(props => {
     let messeger = React.useContext(MessengerContext);
-    let [typing, setTyping] = React.useState<string | null>(null);
-    // TODO replace with TypingUser
-    const [typingArr, setTypingArr] = React.useState<any[]>([]);
+    const [typingArr, setTypingArr] = React.useState<TypingsUser[]>([]);
 
     React.useEffect(
         () => {
-            return messeger.getTypings(props.conversationId).subcribe((typings, users) => {
-                if (typings) {
-                    setTyping(typings);
-                    setTypingArr(users || []);
-                } else {
-                    setTyping(null);
-                    setTypingArr([]);
-                }
+            return messeger.getTypings(props.conversationId).subcribe((_, users) => {
+                setTypingArr(users || []);
             });
         },
         [props.conversationId],
     );
 
-    console.log(typingArr);
-
-    let content: any = null;
-
-    if (typing) {
-        content = <div className={cx(typingText, TextBody)}>{emoji(typing)}</div>;
-    }
-
     return (
         <div className={typingWrapper}>
-            {/* <div className={typingContent}>{content}</div> */}
-            <div className={typingContent}>
-                {typingArr.map(user => (
-                    <ULink path={`/${user.userId}`} key={user.userId}>
-                        {emoji(user.userName)}
-                    </ULink>
-                ))}
+            <div className={cx(typingContent, TextBody)}>
+
+                {typingArr.length === 1 && (
+                    <>
+                        <UserLink {...typingArr[0]} />
+                        &nbsp;is typing...
+                    </>
+                )}
+
+                {typingArr.length === 2 && (
+                    <>
+                        <UserLink {...typingArr[0]} />
+                        &nbsp;and&nbsp;
+                        <UserLink {...typingArr[1]} />
+                        &nbsp;are typing...
+                    </>
+                )}
+
+                {typingArr.length === 3 && (
+                    <>
+                        <UserLink {...typingArr[0]} />
+                        ,&nbsp;
+                        <UserLink {...typingArr[1]} />
+                        &nbsp;and&nbsp;
+                        <UserLink {...typingArr[2]} />
+                        &nbsp;are typing...
+                    </>
+                )}
+
+                {typingArr.length > 3 && (
+                    <>
+                        <UserLink {...typingArr[0]} />
+                        ,&nbsp;
+                        <UserLink {...typingArr[1]} />
+                        &nbsp;and&nbsp;
+                        {typingArr.length - 2}
+                        &nbsp;more are typing...
+                    </>
+                )}
             </div>
         </div>
     );

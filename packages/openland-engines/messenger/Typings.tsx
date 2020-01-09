@@ -3,7 +3,7 @@ import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { TypingsWatch } from 'openland-api/Types';
 import { forever } from 'openland-engines/utils/forever';
 
-interface TypingsUser {
+export interface TypingsUser {
     userName: string;
     userPic: string | null;
     userId: string;
