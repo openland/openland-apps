@@ -15,14 +15,9 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { SDeferred } from 'react-native-s/SDeferred';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { handleGlobalInvitePress } from './Settings';
 import { GlobalSearchEntryKind } from 'openland-api/Types';
 
 const DialogsComponent = XMemo<PageProps>((props) => {
-    const theme = React.useContext(ThemeContext);
     const handlePress = React.useCallback((id: string, title: string) => {
         if (props.router.params.share) {
             Alert.builder().title(`Share with ${title}?`).button('Cancel', 'cancel').button('Share', 'default', async () => {
@@ -76,16 +71,6 @@ const DialogsComponent = XMemo<PageProps>((props) => {
                         onGroupPress={handlePress}
                         onUserPress={handlePress}
                         kinds={(props.router.params.title || props.router.params.share) ? [GlobalSearchEntryKind.USER, GlobalSearchEntryKind.SHAREDROOM] : undefined}
-                        initialView={(!props.router.params.share && !props.router.params.title) ? (
-                            <SDeferred>
-                                <ZListItem
-                                    leftIconColor={theme.tintOrange}
-                                    leftIcon={require('assets/ic-invite-glyph-24.png')}
-                                    text="Invite friends"
-                                    onPress={handleGlobalInvitePress}
-                                />
-                            </SDeferred>
-                        ) : undefined}
                     />
                 )}
             >

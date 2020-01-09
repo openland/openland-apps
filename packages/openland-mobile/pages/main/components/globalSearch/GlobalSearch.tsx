@@ -11,11 +11,11 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SNativeConfig } from 'react-native-s/SNativeConfig';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { GlobalSearchEntryKind } from 'openland-api/Types';
+import { SDeferred } from 'react-native-s/SDeferred';
 
 interface GlobalSearchProps {
     query: string;
     router: SRouter;
-    initialView?: JSX.Element;
     kinds?: GlobalSearchEntryKind[];
 
     onOrganizationPress?: (id: string, title: string) => void;
@@ -62,7 +62,6 @@ const GlobalSearchInner = (props: GlobalSearchProps) => {
 
 export const GlobalSearch = XMemo<GlobalSearchProps>((props) => {
     const theme = React.useContext(ThemeContext);
-    const query = props.query.trim();
 
     return (
         <SScrollView>
@@ -70,8 +69,9 @@ export const GlobalSearch = XMemo<GlobalSearchProps>((props) => {
                 {area => (
                     <View minHeight={Dimensions.get('screen').height - area.top - area.bottom} backgroundColor={theme.backgroundPrimary}>
                         <React.Suspense fallback={SNativeConfig.loader}>
-                            {query.length > 0 && <GlobalSearchInner {...props} />}
-                            {query.length <= 0 && props.initialView}
+                            <SDeferred>
+                                <GlobalSearchInner {...props} />
+                            </SDeferred>
                         </React.Suspense>
                     </View>
                 )}
