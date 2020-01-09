@@ -287,7 +287,7 @@ export class ConversationEngine implements MessageSendHandler {
         });
         // this.dataSourceLogger = new DataSourceLogger('conv:' + conversationId, this.dataSource);
 
-        this.messagesActionsStateEngine = new MessagesActionsStateEngine();
+        this.messagesActionsStateEngine = new MessagesActionsStateEngine(this.engine);
         this.matchmakingEngine = new MatchmakingEngine();
         this.sharedMediaEngines = {};
         this.onNewMessage = onNewMessage;
@@ -592,7 +592,7 @@ export class ConversationEngine implements MessageSendHandler {
 
         if (['reply', 'forward'].includes(messagesActionsState.action || '')) {
             quoted = this.messagesActionsStateEngine.getState().messages;
-            this.messagesActionsStateEngine.clear();
+            this.messagesActionsStateEngine.clearAll();
         }
 
         let styledSpans = findSpans(message);

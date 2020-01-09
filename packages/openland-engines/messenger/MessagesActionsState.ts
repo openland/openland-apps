@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { DataSourceMessageItem } from "./ConversationEngine";
+import { DataSourceMessageItem, ConversationEngine } from "./ConversationEngine";
 import { DataSource } from 'openland-y-utils/DataSource';
+import { MessengerEngine } from 'openland-engines/MessengerEngine';
 
 export interface MessagesActionsState {
     action?: 'forward' | 'reply' | 'edit';
@@ -10,6 +11,11 @@ export interface MessagesActionsState {
 export class MessagesActionsStateEngine {
     private state: MessagesActionsState = { messages: [] };
     private listeners = new Set<(state: MessagesActionsState) => void>();
+    private engine: MessengerEngine;
+
+    constructor (engine: MessengerEngine) {
+        this.engine = engine;
+    }
 
     ////
     // Actions
@@ -50,6 +56,12 @@ export class MessagesActionsStateEngine {
         this.state = { messages: [] };
         this.notifyAll();
         return !!changed;
+    }
+
+    clearAll = () => {
+        this.engine.activeConversations.forEach((conversation: ConversationEngine) => {
+            conversation.messagesActionsStateEngine.clear();
+        });
     }
 
     ////

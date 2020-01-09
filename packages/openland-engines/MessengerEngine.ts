@@ -36,8 +36,8 @@ export class MessengerEngine {
     readonly userStorage: UserStorageEngine;
     readonly options: EngineOptions;
     readonly forwardBuffer = new Map<string, DataSourceMessageItem[]>();
+    readonly activeConversations = new Map<string, ConversationEngine>();
     private readonly createEntityState: CreateEntityEngine;
-    private readonly activeConversations = new Map<string, ConversationEngine>();
     private readonly activeUserConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number; unread: number }>();
     private readonly activeTypings = new Map<string, TypingEngine>();
