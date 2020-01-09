@@ -4,6 +4,7 @@ import { css, cx } from 'linaria';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { emoji } from 'openland-y-utils/emoji';
 import { TextBody } from 'openland-web/utils/TextStyles';
+import { ULink } from 'openland-web/components/unicorn/ULink';
 
 const typingWrapper = css`
     display: flex;
@@ -42,19 +43,25 @@ export interface TypingsViewProps {
 export const TypingsView = XMemo<TypingsViewProps>(props => {
     let messeger = React.useContext(MessengerContext);
     let [typing, setTyping] = React.useState<string | null>(null);
+    // TODO replace with TypingUser
+    const [typingArr, setTypingArr] = React.useState<any[]>([]);
 
     React.useEffect(
         () => {
-            return messeger.getTypings(props.conversationId).subcribe(typings => {
+            return messeger.getTypings(props.conversationId).subcribe((typings, users) => {
                 if (typings) {
                     setTyping(typings);
+                    setTypingArr(users || []);
                 } else {
                     setTyping(null);
+                    setTypingArr([]);
                 }
             });
         },
         [props.conversationId],
     );
+
+    console.log(typingArr);
 
     let content: any = null;
 
@@ -64,7 +71,14 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
 
     return (
         <div className={typingWrapper}>
-            <div className={typingContent}>{content}</div>
+            {/* <div className={typingContent}>{content}</div> */}
+            <div className={typingContent}>
+                {typingArr.map(user => (
+                    <ULink path={`/${user.userId}`} key={user.userId}>
+                        {emoji(user.userName)}
+                    </ULink>
+                ))}
+            </div>
         </div>
     );
 });
