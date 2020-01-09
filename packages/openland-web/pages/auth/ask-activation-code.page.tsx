@@ -7,13 +7,14 @@ import { useField } from 'openland-form/useField';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { trackEvent } from 'openland-x-analytics';
-import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { Wrapper } from '../onboarding/components/wrapper';
 import { Title, Subtitle, FormLayout } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInput } from 'openland-web/components/unicorn/UInput';
+import { API_HOST } from 'openland-y-utils/api';
+import { completeAuth } from './complete.page';
 
 export type ActivationCodeProps = {
     emailValue: string;
@@ -120,11 +121,11 @@ export const WebSignUpActivationCode = ({
                             {emailSending ? (
                                 sendingCodeText
                             ) : (
-                                <>
-                                    We just sent it to
+                                    <>
+                                        We just sent it to
                                     <strong>{' ' + emailSendedTo}</strong>
-                                </>
-                            )}
+                                    </>
+                                )}
                         </Subtitle>
                     </XView>
                     <XView width={isMobile ? '100%' : 360} maxWidth={360}>
@@ -150,6 +151,8 @@ export const WebSignUpActivationCode = ({
         />
     );
 };
+
+class AuthError extends Error { }
 
 export const AskActivationPage = (props: ActivationCodeProps) => {
     let router = React.useContext(XRouterContext)!;
@@ -178,21 +181,37 @@ export const AskActivationPage = (props: ActivationCodeProps) => {
         } else {
             setCodeSending(true);
 
-            createAuth0Client().passwordlessVerify(
-                {
-                    connection: 'email',
-                    email: emailValue,
-                    verificationCode: codeValue,
-                },
-                (error: any, v) => {
-                    trackError(error.code);
-                    console.warn(error);
-                    if (error) {
-                        setCodeSending(false);
-                        setCodeError(InitTexts.auth.wrongCodeLength);
-                    }
-                },
-            );
+            try {
+                let res = await (await fetch('https://' + API_HOST + '/auth/checkCode', {
+                    body: JSON.stringify({
+                        session: localStorage.getItem('authSession'),
+                        code: codeValue,
+                    }),
+                    headers: [['Content-Type', 'application/json']],
+                    method: 'POST',
+                })).json();
+                if (!res.ok) {
+                    throw new AuthError(res.errorText || 'Something went wrong');
+                }
+
+                let res2 = await (await fetch('https://' + API_HOST + '/auth/getAccessToken', {
+                    body: JSON.stringify({
+                        session: localStorage.getItem('authSession'),
+                        authToken: res.authToken,
+                    }),
+                    headers: [['Content-Type', 'application/json']],
+                    method: 'POST',
+                })).json();
+                if (!res2.ok) {
+                    throw new AuthError(res2.errorText || 'Something went wrong');
+                }
+
+                await completeAuth(res2.accessToken);
+            } catch (e) {
+                setCodeError(e instanceof AuthError ? e.message : 'Something went wrong');
+                setCodeSending(false);
+            }
+
         }
     };
 

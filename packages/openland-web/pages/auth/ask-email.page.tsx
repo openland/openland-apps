@@ -129,10 +129,16 @@ export const AskEmailPage = (props: CreateWithEmailProps) => {
             setEmailError('');
             setEmailSent(false);
 
-            await fireEmail(email);
-            setTimeout(() => {
-                router.push('/authorization/ask-activation-code');
-            }, 0);
+            try {
+                await fireEmail(email);
+                setTimeout(() => {
+                    router.push('/authorization/ask-activation-code');
+                }, 0);
+            } catch (e) {
+                setEmailSending(false);
+                setEmailError(e.message);
+            }
+
         }
     };
 

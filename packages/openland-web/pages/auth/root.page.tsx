@@ -14,6 +14,7 @@ import * as Cookie from 'js-cookie';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { API_HOST } from 'openland-y-utils/api';
 
 const getAppInvite = (router: any) => {
     if (router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite') {
@@ -109,30 +110,27 @@ export default () => {
 
     const fireEmail = React.useCallback(
         async (emailToFire: string) => {
-            return new Promise(cb => {
-                Cookie.set('auth-type', 'email', { path: '/' });
-                if (redirect) {
-                    Cookie.set('sign-redirect', redirect, { path: '/' });
+            Cookie.set('auth-type', 'email', { path: '/' });
+            if (redirect) {
+                Cookie.set('sign-redirect', redirect, { path: '/' });
+            } try {
+                let res = await (await fetch('https://' + API_HOST + '/auth/sendCode', {
+                    body: JSON.stringify({
+                        email: emailToFire,
+                    }),
+                    headers: [['Content-Type', 'application/json']],
+                    method: 'POST',
+                })).json();
+                if (!res.ok) {
+                    throw new Error(res.errorText || 'Something went wrong');
                 }
-                createAuth0Client().passwordlessStart(
-                    { connection: 'email', send: 'link', email: emailToFire },
-                    (error: any, v) => {
-                        if (error) {
-                            setEmailSending(false);
-                            setEmailError(error.description);
-                        } else {
-                            setTimeout(() => {
-                                setEmailSending(false);
-                                setEmailSent(true);
+                localStorage.setItem('authSession', res.session);
 
-                                if (cb) {
-                                    cb();
-                                }
-                            }, 500);
-                        }
-                    },
-                );
-            });
+                setEmailSending(false);
+                setEmailSent(true);
+            } catch (e) {
+                throw new Error('Something went wrong');
+            }
         },
         [redirect],
     );
@@ -194,7 +192,7 @@ export default () => {
         if (canUseDOM) {
             if (!noValue) {
                 fireEmail(router.query.email);
-                router.push('/authorization/ask-email');
+                router.push('/authorization/ask-activation-code');
             } else {
                 router.push('/authorization/ask-email');
             }

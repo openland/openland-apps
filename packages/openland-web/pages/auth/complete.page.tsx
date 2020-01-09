@@ -14,6 +14,21 @@ interface AuthResult {
     idTokenPayload?: { sub: string };
 }
 
+export const completeAuth = (token: string) => {
+    Cookie.remove('statecraft-key');
+    Cookie.remove('x-openland-org', { path: '/' });
+    Cookie.set('x-openland-token', token, {
+        path: '/',
+        expires: 180,
+    });
+    let path = Cookie.get('sign-redirect') || '/';
+    Cookie.remove('sign-redirect', { path: '/' });
+    localStorage.removeItem('authSession');
+    createHistory({
+        forceRefresh: true,
+    }).replace(path);
+};
+
 export default class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
     constructor(props: {}) {
         super(props);
