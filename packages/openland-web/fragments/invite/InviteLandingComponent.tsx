@@ -351,16 +351,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     if (invite.invite && invite.invite.__typename === 'RoomInvite') {
         room = invite.invite.room;
         invitedByUser = invite.invite.invitedByUser;
-
         matchmaking = !!(room.matchmaking && room.matchmaking.enabled);
-
-        // const membership = invite.invite.room.membership;
-        // const roomId = invite.invite.room.id!;
-
-        // if (membership === 'MEMBER') {
-        //     router!.navigate(`/mail/${roomId}`);
-        //     return null;
-        // }
     }
 
     if (invite.invite && invite.invite.__typename === 'AppInvite') {

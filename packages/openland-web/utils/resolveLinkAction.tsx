@@ -57,7 +57,7 @@ export const resolveLinkAction = (url: string | null, client: OpenlandClient, ro
             action_type: 'write_first_message'
         });
         showWriteFirstMessageModal();
-    } else if (url && url.includes('openland.com/invite/')) {
+    } else if (url && url.includes('/invite')) {
         return resolveInvite(url, client, router, fallback);
     } else if (fallback) {
         fallback();

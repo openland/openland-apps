@@ -220,13 +220,27 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
 
     let avatarWrapper = null;
     let keyboardWrapper = null;
-    const router = React.useContext(XViewRouterContext);
+    const router = React.useContext(XViewRouterContext)!;
+    const engine = React.useContext(MessengerContext);
 
-    const keyboardAction = React.useCallback((e: React.MouseEvent, path: string | null) => {
+    const link = makeInternalLinkRelative(titleLink || '');
+    const linkSegments = link.split('/');
+    const key = linkSegments.includes('invite') ? linkSegments[linkSegments.length - 1] : '';
+    const client = engine.client;
+
+    const keyboardAction = React.useCallback(async (e: React.MouseEvent, path: string | null) => {
         e.stopPropagation();
-        if (router) {
-            router.navigate(makeInternalLinkRelative(path || ''));
+        e.preventDefault();
+
+        let finalLink = link;
+        const invite = await client.queryResolvedInvite({ key });
+
+        if (invite.invite && invite.invite.__typename === 'RoomInvite' && invite.invite.room.membership === 'MEMBER') {
+            const roomId = invite.invite.room.id!;
+            finalLink = `/mail/${roomId}`;
         }
+
+        router.navigate(finalLink);
     }, []);
 
     if (image) {
