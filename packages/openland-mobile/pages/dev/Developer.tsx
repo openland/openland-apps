@@ -37,7 +37,7 @@ export const Developer = withApp(() => {
                     <ZListItem text="Bad User Profile" path="ProfileUser" pathParams={{ id: "1" }} />
                     <ZListItem text="Videos" path="DevVideos" />
                     <ZListItem text="Document extensions" path="DevDocumentsExt" />
-                    <ZListItem text="PowerUps" path="DevPowerUps" />
+                    <ZListItem text="PowerUps" path="DevPowerUps" pathPresent={true} />
                     <ZListItem text="Log out" onPress={handleLogout} />
                 </ZListGroup>
             </SScrollView>

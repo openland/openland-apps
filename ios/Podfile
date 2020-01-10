@@ -94,8 +94,8 @@ target 'openland' do
   pod 'react-native-version-number', :path => '../node_modules/react-native-version-number'
 
   pod 'react-native-mapbox-gl', :path => '../node_modules/@react-native-mapbox-gl/maps'
-  pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
 
+  pod 'react-native-location', :path => '../node_modules/react-native-location'
 end
 
 target 'openlandTests' do

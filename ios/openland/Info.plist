@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSContactsUsageDescription</key>
-	<string>Enable access to your contacts to find existing contacts on Openland</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -96,6 +94,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Enable access to your camera to take new photos and videos with Openland and share them in chats without leaving the app</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Enable access to your contacts to find existing contacts on Openland</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This lets you share your geolocation</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -136,6 +136,7 @@
 	<array>
 		<string>audio</string>
 		<string>fetch</string>
+		<string>location</string>
 		<string>remote-notification</string>
 		<string>voip</string>
 	</array>

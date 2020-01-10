@@ -16,6 +16,7 @@ export interface ZListItemBaseProps {
     path?: string;
     pathParams?: any;
     pathRemove?: boolean;
+    pathPresent?: boolean;
     navigationIcon?: boolean;
     backgroundColor?: string;
     enabled?: boolean;
@@ -32,6 +33,8 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
         if (this.props.path) {
             if (this.props.pathRemove) {
                 this.props.router.pushAndRemove(this.props.path, this.props.pathParams);
+            } else if (this.props.pathPresent) {
+                this.props.router.present(this.props.path, this.props.pathParams);
             } else {
                 this.props.router.push(this.props.path, this.props.pathParams);
             }

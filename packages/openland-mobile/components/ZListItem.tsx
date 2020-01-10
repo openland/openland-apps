@@ -33,6 +33,7 @@ export interface ZListItemProps {
     path?: string;
     pathParams?: any;
     pathRemove?: boolean;
+    pathPresent?: boolean;
     onPress?: () => void;
     onLongPress?: () => void;
     appearance?: 'default' | 'action' | 'danger';
@@ -131,6 +132,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                 path={this.props.path}
                 pathParams={this.props.pathParams}
                 pathRemove={this.props.pathRemove}
+                pathPresent={this.props.pathPresent}
                 height={height}
             >
                 {this.props.leftIcon && <LeftIcon theme={theme} src={this.props.leftIcon} flatIcon={this.props.small} leftIconColor={this.props.leftIconColor} appearance={this.props.appearance} />}

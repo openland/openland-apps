@@ -1,3 +1,4 @@
+import { LocationEngine } from './location/LocationEngine';
 import * as React from 'react';
 import { MessageSender } from './messenger/MessageSender';
 import { ConversationEngine, DataSourceMessageItem } from './messenger/ConversationEngine';
@@ -34,6 +35,7 @@ export class MessengerEngine {
     readonly notifications: NotificationsEngine;
     readonly calls: CallsEngine;
     readonly userStorage: UserStorageEngine;
+    readonly location: LocationEngine;
     readonly options: EngineOptions;
     readonly forwardBuffer = new Map<string, DataSourceMessageItem[]>();
     readonly activeConversations = new Map<string, ConversationEngine>();
@@ -85,6 +87,9 @@ export class MessengerEngine {
 
         // Online reporter
         this.onlineReporter = new OnlineReportEngine(this, platform);
+
+        // Location
+        this.location = new LocationEngine(this);
 
         // Starting
         this.loadingPromise = this.loadingSequence();
