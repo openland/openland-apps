@@ -318,6 +318,8 @@ export default class OpenlandDocument extends Document {
                             __html: 'window.initial = JSON.stringify(window.history.state)',
                         }}
                     />
+
+                    <script src="https://apis.google.com/js/api.js" />
                 </Head>
 
                 <body>

@@ -33,6 +33,8 @@
         "@types/combokeys": "^2.4.6",
         "@types/fluent-ffmpeg": "^2.1.10",
         "@types/form-data": "^2.5.0",
+        "@types/gapi": "^0.0.39",
+        "@types/gapi.auth2": "^0.0.51",
         "@types/howler": "^2.0.5",
         "@types/inflected": "^1.1.29",
         "@types/loader-utils": "^1.1.3",

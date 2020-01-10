@@ -9,12 +9,12 @@ import { EnterYourOrganizationPage } from './enter-your-organization.page';
 import { IntroduceYourselfPage } from './introduce-yourself.page';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { trackEvent } from 'openland-x-analytics';
-import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import * as Cookie from 'js-cookie';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
+import { completeAuth } from './complete.page';
 
 const getAppInvite = (router: any) => {
     if (router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite') {
@@ -84,7 +84,9 @@ export default () => {
     if (router.path.includes('introduce-yourself') || router.path.includes('/createProfile')) {
         page = pages.introduceYourself;
     }
-
+    if (router.path.includes('google-complete')) {
+        page = pages.loading;
+    }
     const [signin, setSignin] = React.useState(router.path.endsWith('signin'));
 
     let redirect = router.query ? (router.query.redirect ? router.query.redirect : null) : null;
@@ -141,10 +143,37 @@ export default () => {
         if (redirect) {
             Cookie.set('sign-redirect', redirect, { path: '/' });
         }
-        createAuth0Client().authorize({
-            connection: 'google-oauth2',
-            state: redirect ? redirect : 'none',
+        gapi.load('auth2', async () => {
+            gapi.auth2.init({
+                client_id: "1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com",
+                scope: "profile email"
+            }).then((auth2) => auth2.signIn({ ux_mode: 'redirect', redirect_uri: window.origin + '/authorization/google-complete' }));
+
         });
+    }, []);
+
+    React.useEffect(() => {
+        if (router.path.includes('google-complete')) {
+            gapi.load('auth2', async () => {
+                gapi.auth2.init({
+                    client_id: "1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com",
+                    scope: "profile email"
+                }).then(async (auth2) => {
+                    var uploaded = await (await fetch(API_AUTH_ENDPOINT + '/google/getAccessToken', {
+                        method: 'POST',
+                        headers: [['Content-Type', 'application/json']],
+                        body: JSON.stringify({ idToken: auth2.currentUser.get().getAuthResponse().id_token })
+                    })).json();
+
+                    // TODO: handle errors, no id_token
+                    if (uploaded.ok) {
+                        completeAuth(uploaded.accessToken);
+                    } else {
+                        console.warn(uploaded);
+                    }
+                });
+            });
+        }
     }, []);
 
     const loginWithGoogle = React.useCallback(() => {
