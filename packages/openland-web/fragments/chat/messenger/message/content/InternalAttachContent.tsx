@@ -18,7 +18,6 @@ const root = css`
     background-color: var(--backgroundTertiary);
     border-radius: 8px;
     overflow: hidden;
-    min-width: 410px;
     max-width: 480px;
     cursor: pointer;
     transition: background-color 300ms ease;
