@@ -8,6 +8,7 @@ export class AppGeolocationNative implements AppGeoilocationApi {
 
     private initPromise: Promise<void>;
     private state: 'initial' | 'allow' | 'deny' = undefined as any /* Hack for lazy init */;
+    private permissionsWatch: ((state: 'initial' | 'allow' | 'deny' | 'unsupported') => void)[] = [];
 
     constructor() {
         this.initPromise = this.init();
@@ -35,6 +36,9 @@ export class AppGeolocationNative implements AppGeoilocationApi {
         }
 
         this.state = state;
+        for (let p of this.permissionsWatch) {
+            p(state);
+        }
     }
 
     async getCurrentPosition(): Promise<{ latitude: number, longitude: number } | undefined> {
@@ -56,13 +60,30 @@ export class AppGeolocationNative implements AppGeoilocationApi {
         let res = await Geolocation.requestPermission({ ios: 'whenInUse' });
         if (res) {
             this.state = 'allow';
+            for (let p of this.permissionsWatch) {
+                p('allow');
+            }
             await AsyncStorage.setItem('geo-permission-state', 'allow');
             return 'allow';
         } else {
             this.state = 'deny';
+            for (let p of this.permissionsWatch) {
+                p('deny');
+            }
             await AsyncStorage.setItem('geo-permission-state', 'deny');
             return 'deny';
         }
+    }
+
+    watchPermissions(callback: (state: 'initial' | 'allow' | 'deny' | 'unsupported') => void): () => void {
+        this.permissionsWatch.push(callback);
+
+        return () => {
+            let i = this.permissionsWatch.findIndex((v) => v === callback);
+            if (i >= 0) {
+                this.permissionsWatch.splice(i, 1);
+            }
+        };
     }
 }
 

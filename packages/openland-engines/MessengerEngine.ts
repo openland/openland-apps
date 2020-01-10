@@ -98,6 +98,7 @@ export class MessengerEngine {
 
     private loadingSequence = async () => {
         await this.global.start();
+        this.location.start();
     }
 
     handleTyping = (

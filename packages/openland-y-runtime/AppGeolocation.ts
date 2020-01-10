@@ -10,6 +10,10 @@ export class AppGeolocationStub implements AppGeoilocationApi {
     async requestPermissions(): Promise<'allow' | 'deny'> {
         return 'deny';
     }
+
+    watchPermissions(callback: (state: 'initial' | 'allow' | 'deny' | 'unsupported') => void): () => void {
+        throw Error('Stub');
+    }
 }
 
 export const AppGeolocation = new AppGeolocationStub();
