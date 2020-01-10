@@ -7,18 +7,18 @@ import { useClient } from 'openland-web/utils/useClient';
 const ULinkInternal = React.memo((props: { link: string; color?: string, className?: string, children?: any }) => {
     const { link, children, className, color } = props;
     const router = React.useContext(XViewRouterContext);
+    // const client = useClient();
 
-    const linkSegments = link.split('/');
-    const inviteId = linkSegments.includes('invite') ? linkSegments[linkSegments.length - 1] : '';
-    const client = useClient();
-    const invite = client.useResolvedInvite({ key: inviteId });
+    // const linkSegments = link.split('/');
+    // const inviteId = linkSegments.includes('invite') ? linkSegments[linkSegments.length - 1] : '';
+    // const invite = client.useResolvedInvite({ key: inviteId });
 
     let finalLink = link;
 
-    if (invite.invite && invite.invite.__typename === 'RoomInvite' && invite.invite.room.membership === 'MEMBER') {
-        const roomId = invite.invite.room.id!;
-        finalLink = `/mail/${roomId}`;
-    }
+    // if (invite.invite && invite.invite.__typename === 'RoomInvite' && invite.invite.room.membership === 'MEMBER') {
+    //     const roomId = invite.invite.room.id!;
+    //     finalLink = `/mail/${roomId}`;
+    // }
 
     return (
         <a
