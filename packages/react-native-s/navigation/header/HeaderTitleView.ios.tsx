@@ -81,12 +81,18 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
 
     render() {
         let v = this.props.page;
+        const showBackButton = !this.props.manager.parent || this.props.page.page.startIndex !== 0;
+        const showCloseButton = !!this.props.manager.parent && this.props.page.page.startIndex === 0;
 
         let content = (
             <SEquisiteCentered style={{ width: '100%' }} enable={!v.config.titleView}>
                 <SAnimated.View name={'header-left--' + v.page.key} pointerEvents={'box-none'} style={{ paddingLeft: 4 }}>
-                    {(!!this.props.manager.parent && this.props.page.page.startIndex === 0) && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.iconColor} />}
-                    {(!this.props.manager.parent || this.props.page.page.startIndex !== 0) && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.page.config.iconColor || this.props.style.iconColor} hideText={this.props.page.config.hideBackText} />}
+                    {!v.config.hideIcon && (
+                        <>
+                            {showCloseButton && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.iconColor} />}
+                            {showBackButton && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.page.config.iconColor || this.props.style.iconColor} hideText={this.props.page.config.hideBackText} />}
+                        </>
+                    )}
                 </SAnimated.View>
                 <SAnimated.View name={'header-title--' + v.page.key} style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column' }}>
                     {!v.config.titleView && v.config.title && <Text numberOfLines={1} style={[styles.title, { color: this.props.style.textColor }]} allowFontScaling={false}>{v.config.title}</Text>}

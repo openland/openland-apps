@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform, TouchableOpacity, Image } from 'react-native';
+import { View, Platform, TouchableOpacity, Image, Text } from 'react-native';
 import { ZKeyboardAwareBar } from 'openland-mobile/components/layout/ZKeyboardAwareBar';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -8,6 +8,37 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { forward } from 'openland-mobile/messenger/MobileMessenger';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
+import { SHeaderView } from 'react-native-s/SHeaderView';
+import { SCloseButton } from 'react-native-s/SCloseButton';
+
+export const ChatSelectedActionsHeader = (props: { messagesCount: number, cancel: () => void }) => {
+    const messagesText = props.messagesCount > 1 ? 'messages' : 'message';
+    const theme = React.useContext(ThemeContext);
+    const height = Platform.OS === 'android' ? 56 : 44;
+
+    return (
+        <View
+            alignItems="center"
+            justifyContent="center"
+            height={height}
+            flexDirection="row"
+            flexGrow={1}
+            position="relative"
+        >
+            <View position="absolute" left={0}>
+                <SCloseButton
+                    onPress={props.cancel}
+                    tintColor={theme.foregroundSecondary}
+                />
+            </View>
+            <Text style={{ ...TextStyles.Headline, textAlign: 'center', color: theme.foregroundPrimary }} allowFontScaling={false}>
+                {props.messagesCount} {messagesText} selected
+            </Text>
+        </View>
+    );
+};
 
 interface ChatSelectedActionsProps {
     conversation: ConversationEngine;
@@ -16,8 +47,10 @@ interface ChatSelectedActionsProps {
 export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
     const theme = React.useContext(ThemeContext);
     const del = React.useCallback(() => {
+        const messagesCount = props.conversation.messagesActionsStateEngine.getState().messages.length;
+        const messagesText = messagesCount > 1 ? 'messages' : 'message';
         Alert.builder()
-            .title(`Delete ${props.conversation.messagesActionsStateEngine.getState().messages.length} messages?`)
+            .title(`Delete ${messagesCount} ${messagesText}?`)
             .message('Messages will be deleted for everyone. This cannot be undone')
             .button('Cancel', 'cancel')
             .action('Delete', 'destructive',
@@ -47,41 +80,45 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
 
     let res =
         <View flexGrow={1} flexDirection="row" alignItems="center">
-            {canDelete && (
-                <TouchableOpacity onPress={del}>
-                    <View style={{ height: height, alignItems: 'center', justifyContent: 'center', marginLeft: 30 }}>
-                        <Image source={require('assets/ic-delete-ios-26.png')} style={{ tintColor: theme.foregroundSecondary }} />
+            <View flexGrow={1} justifyContent="center" alignItems="center">
+                <TouchableOpacity onPress={del} disabled={!canDelete}>
+                    <View style={{ height: height, alignItems: 'center', justifyContent: 'center', opacity: canDelete ? 1 : 0.24, }}>
+                        <Image source={require('assets/ic-delete-24.png')} style={{ tintColor: theme.foregroundSecondary }} />
                     </View>
                 </TouchableOpacity>
-            )}
-            {!canDelete && (
-                <View style={{ height: height, width: 26, marginLeft: 30 }} />
-            )}
-            <View flexGrow={1} />
-            <TouchableOpacity onPress={cancel}>
-                <View style={{ height: height, alignItems: 'center', justifyContent: 'center' }}>
-                    <Image source={require('assets/ic-cancel-gray-26.png')} style={{ tintColor: theme.foregroundSecondary }} />
-                </View>
-            </TouchableOpacity>
-            <View flexGrow={1} />
-            <TouchableOpacity onPress={fwd}>
-                <View style={{ height: height, alignItems: 'center', justifyContent: 'center', marginRight: 30 }}>
-                    <Image source={require('assets/ic-forward-ios-26.png')} style={{ tintColor: theme.foregroundSecondary }} />
-                </View>
-            </TouchableOpacity >
+            </View>
+            <View flexGrow={1}>
+                <TouchableOpacity onPress={fwd}>
+                    <View style={{ height: height, alignItems: 'center', justifyContent: 'center', }}>
+                        <Image source={require('assets/ic-forward-24.png')} style={{ tintColor: theme.foregroundSecondary }} />
+                    </View>
+                </TouchableOpacity>
+            </View>
         </View>;
 
     if (Platform.OS === 'ios') {
         return (
-            <ZKeyboardAwareBar>
-                {res}
-            </ZKeyboardAwareBar>
+            <>
+                <HeaderConfigRegistrator config={{ hideIcon: true }} />
+                <SHeaderView>
+                    <ChatSelectedActionsHeader messagesCount={props.conversation.messagesActionsStateEngine.getState().messages.length} cancel={cancel} />
+                </SHeaderView>
+                <ZKeyboardAwareBar>
+                    {res}
+                </ZKeyboardAwareBar>
+            </>
         );
     }
 
     return (
-        <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundPrimary}>
-            {res}
-        </View>
+        <>
+            <HeaderConfigRegistrator config={{ hideIcon: true }} />
+            <SHeaderView>
+                <ChatSelectedActionsHeader messagesCount={props.conversation.messagesActionsStateEngine.getState().messages.length} cancel={cancel} />
+            </SHeaderView>
+            <View marginBottom={SDevice.safeArea.bottom} backgroundColor={theme.backgroundPrimary}>
+                {res}
+            </View>
+        </>
     );
 };

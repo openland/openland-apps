@@ -20,6 +20,7 @@ export interface HeaderConfig {
     backgroundColor?: string;
 
     hideBackText?: boolean;
+    hideIcon?: boolean;
 
     contentOffset?: STrackedValue;
     buttons?: HeaderButtonDescription[];
@@ -58,6 +59,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let searchContainer: SAnimatedShadowView | undefined;
     let searchContext: SearchContext | undefined;
     let hideBackText: boolean | undefined;
+    let hideIcon: boolean | undefined;
     for (let c of configs) {
         if (c.title) {
             title = c.title;
@@ -88,6 +90,9 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
         }
         if (c.hideBackText !== undefined) {
             hideBackText = c.hideBackText;
+        }
+        if (c.hideIcon !== undefined) {
+            hideIcon = c.hideIcon;
         }
         if (c.searchActive !== undefined) {
             searchActive = c.searchActive;
@@ -120,7 +125,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
             searchContext = c.searchContext;
         }
     }
-    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress, searchContainer, searchClosingCompleted, searchChanged, searchContext, headerHidden, accentColor, iconColor, hideBackText, backgroundColor };
+    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress, searchContainer, searchClosingCompleted, searchChanged, searchContext, headerHidden, accentColor, iconColor, hideBackText, hideIcon, backgroundColor };
 }
 
 export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
@@ -140,6 +145,9 @@ export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
         return false;
     }
     if (a.hideBackText !== b.hideBackText) {
+        return false;
+    }
+    if (a.hideIcon !== b.hideIcon) {
         return false;
     }
     if (a.title !== b.title) {
@@ -185,9 +193,9 @@ export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
         return false;
     }
 
-    if (a.buttons && a.buttons.length > 0) {
-        let a2 = new Set(a.buttons.map((v) => v.id));
-        let b2 = new Set(b.buttons!!.map((v) => v.id));
+    if (a.buttons && a.buttons.length > 0 || b.buttons && b.buttons.length > 0) {
+        let a2 = new Set((a.buttons || []).map((v) => v.id));
+        let b2 = new Set((b.buttons || []).map((v) => v.id));
         for (let a3 of a2) {
             if (!b2.has(a3)) {
                 return false;

@@ -363,24 +363,29 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             inputPlaceholder = <ChatInputPlaceholder text="View profile" onPress={() => this.props.router.push("ProfileUser", { id: privateRoom!.user.id })} />;
         }
         let reloadButton = <ReloadFromBottomButton conversation={this.engine} />;
+        let isBot = privateRoom && privateRoom.user.isBot;
         return (
             <>
-                <SHeaderView>
-                    {header}
-                </SHeaderView>
-                {(privateRoom ? !privateRoom.user.isBot : true) && (
+                {!showSelectedMessagesActions && (
+                    <SHeaderView>
+                        {header}
+                    </SHeaderView>
+                )}
+                {!isBot && !showSelectedMessagesActions && (
                     <SHeaderButton
                         title="Call"
                         icon={require('assets/ic-call-24.png')}
                         onPress={async () => { showCallModal(this.props.chat.id); }}
                     />
                 )}
-                <ConversationManageButton
-                    muted={this.state.muted}
-                    onMutedChange={this.onMutedChange}
-                    router={this.props.router}
-                    room={this.props.chat}
-                />
+                {!showSelectedMessagesActions && (
+                    <ConversationManageButton
+                        muted={this.state.muted}
+                        onMutedChange={this.onMutedChange}
+                        router={this.props.router}
+                        room={this.props.chat}
+                    />
+                )}
                 <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
