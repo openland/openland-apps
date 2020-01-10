@@ -65,16 +65,18 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
                     style={{
                         backgroundColor: theme.backgroundTertiaryTrans,
                         borderRadius: RadiusStyles.Large,
-                        paddingHorizontal: 12,
-                        paddingVertical: 7,
-                        marginVertical: 8
+                        marginVertical: 8,
+                        overflow: 'hidden',
                     }}
                 >
                     <TextInput
                         ref={ref}
                         selectionColor={theme.accentPrimary}
                         style={{
-                            paddingTop: 0,
+                            paddingTop: 7,
+                            paddingBottom: 7,
+                            paddingLeft: 12,
+                            paddingRight: 12,
                             color: theme.foregroundPrimary,
                             minHeight: 21,
                             maxHeight: 100,
