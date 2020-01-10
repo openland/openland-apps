@@ -80,6 +80,20 @@ async function start() {
     );
 
     //
+    // Auth API Proxy
+    //
+    server.use(
+        '/api/auth',
+        proxy({
+            changeOrigin: true,
+            target: endpoint,
+            pathRewrite: function(path: string) {
+                return path.replace('/api/auth', '/auth');
+            },
+        }),
+    );
+
+    //
     // GraphiQL Sandbox
     //
     server.use(

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Cookie from 'js-cookie';
 import createHistory from 'history/createBrowserHistory';
-import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
+import { AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 import { ErrorPage } from '../root/ErrorPage';
 import { trackError } from 'openland-x-analytics';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
@@ -50,7 +50,7 @@ export default class AuthenticationHandler extends React.Component<{}, { error: 
 
     async completeAuth() {
         let auth = await this.retreiveAuthentication();
-        var uploaded = await fetch(API_AUTH_ENDPOINT, {
+        var uploaded = await fetch(AUTH_ENDPOINT, {
             method: 'POST',
             headers: {
                 authorization: 'Bearer ' + auth.idToken,

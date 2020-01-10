@@ -13,8 +13,8 @@ import { Title, Subtitle, FormLayout } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInput } from 'openland-web/components/unicorn/UInput';
-import { API_HOST } from 'openland-y-utils/api';
 import { completeAuth } from './complete.page';
+import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 
 export type ActivationCodeProps = {
     emailValue: string;
@@ -182,7 +182,7 @@ export const AskActivationPage = (props: ActivationCodeProps) => {
             setCodeSending(true);
 
             try {
-                let res = await (await fetch('https://' + API_HOST + '/auth/checkCode', {
+                let res = await (await fetch(API_AUTH_ENDPOINT + '/checkCode', {
                     body: JSON.stringify({
                         session: localStorage.getItem('authSession'),
                         code: codeValue,
@@ -194,7 +194,7 @@ export const AskActivationPage = (props: ActivationCodeProps) => {
                     throw new AuthError(res.errorText || 'Something went wrong');
                 }
 
-                let res2 = await (await fetch('https://' + API_HOST + '/auth/getAccessToken', {
+                let res2 = await (await fetch(API_AUTH_ENDPOINT + '/getAccessToken', {
                     body: JSON.stringify({
                         session: localStorage.getItem('authSession'),
                         authToken: res.authToken,

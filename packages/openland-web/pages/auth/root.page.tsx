@@ -14,7 +14,7 @@ import * as Cookie from 'js-cookie';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { API_HOST } from 'openland-y-utils/api';
+import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 
 const getAppInvite = (router: any) => {
     if (router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite') {
@@ -113,8 +113,9 @@ export default () => {
             Cookie.set('auth-type', 'email', { path: '/' });
             if (redirect) {
                 Cookie.set('sign-redirect', redirect, { path: '/' });
-            } try {
-                let res = await (await fetch('https://' + API_HOST + '/auth/sendCode', {
+            }
+            try {
+                let res = await (await fetch(API_AUTH_ENDPOINT + '/sendCode', {
                     body: JSON.stringify({
                         email: emailToFire,
                     }),
@@ -137,6 +138,9 @@ export default () => {
 
     const fireGoogle = React.useCallback(async () => {
         Cookie.set('auth-type', 'google', { path: '/' });
+        if (redirect) {
+            Cookie.set('sign-redirect', redirect, { path: '/' });
+        }
         createAuth0Client().authorize({
             connection: 'google-oauth2',
             state: redirect ? redirect : 'none',
