@@ -473,6 +473,20 @@ internal val FullMessageSelector = obj(
                                             field("url", "url", scalar("String"))
                                         ))))))
                                 )),
+                            field("socialImage", "socialImage", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("metadata", "metadata", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("imageFormat", "imageFormat", scalar("String")),
+                                            field("imageHeight", "imageHeight", scalar("Int")),
+                                            field("imageWidth", "imageWidth", scalar("Int")),
+                                            field("isImage", "isImage", notNull(scalar("Boolean"))),
+                                            field("mimeType", "mimeType", scalar("String")),
+                                            field("name", "name", notNull(scalar("String"))),
+                                            field("size", "size", notNull(scalar("Int")))
+                                        )),
+                                    field("url", "url", notNull(scalar("String")))
+                                )),
                             field("subTitle", "subTitle", scalar("String")),
                             field("text", "text", scalar("String")),
                             field("title", "title", scalar("String")),

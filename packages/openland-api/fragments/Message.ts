@@ -382,6 +382,18 @@ export const FullMessage = gql`
                             imageFormat
                         }
                     }
+                    socialImage {
+                        url
+                        metadata {
+                            name
+                            mimeType
+                            size
+                            isImage
+                            imageWidth
+                            imageHeight
+                            imageFormat
+                        }
+                    }
                     imageFallback {
                         photo
                         text

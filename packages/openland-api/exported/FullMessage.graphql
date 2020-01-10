@@ -97,6 +97,20 @@ fragment FullMessage on ModernMessage {
             url
           }
         }
+        socialImage {
+          __typename
+          metadata {
+            __typename
+            imageFormat
+            imageHeight
+            imageWidth
+            isImage
+            mimeType
+            name
+            size
+          }
+          url
+        }
         subTitle
         text
         title

@@ -12,21 +12,14 @@ import { resolveLinkAction } from 'openland-web/utils/resolveLinkAction';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 
-const wrapper = css`
-    display: flex;
-    flex-direction: row;
-    flex-shrink: 1;
+const root = css`
     background-color: var(--backgroundTertiary);
     border-radius: 8px;
     overflow: hidden;
-    position: relative;
-    align-self: flex-start;
-    align-items: center;
-    min-width: 480px;
-    max-width: calc(100% - 56px);
-    padding: 16px 24px 16px 16px;
-    justify-content: space-between;
+    min-width: 410px;
+    max-width: 480px;
     cursor: pointer;
     transition: background-color 300ms ease;
 
@@ -34,6 +27,20 @@ const wrapper = css`
         background-color: var(--backgroundTertiaryHover);
         transition: background-color 100ms ease;
     }
+`;
+
+const wrapper = css`
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 1;
+
+    overflow: hidden;
+    position: relative;
+    align-self: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 16px 24px 16px 16px;
+    justify-content: space-between;
 
     @media (max-width: 1050px) {
         width: 100%;
@@ -45,6 +52,12 @@ const wrapper = css`
         flex-direction: column;
         padding: 16px;
     }
+`;
+
+const socialImageStyle = css`
+    width: 100%;
+    height: auto;
+    display: block;
 `;
 
 const content = css`
@@ -199,7 +212,7 @@ const MessageButton = (props: UButtonProps & { url: string | null, fallback: (e:
 };
 
 export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment }) => {
-    const { title, subTitle, keyboard, image, imageFallback, id, titleLink } = props.attach;
+    const { title, subTitle, keyboard, image, imageFallback, socialImage, id, titleLink } = props.attach;
     const layout = useLayout();
 
     if (!title && !subTitle && keyboard) {
@@ -267,26 +280,31 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
         );
     }
     return (
-        <div
-            className={cx(wrapper, 'message-rich-wrapper')}
-            onClick={(e) => keyboardAction(e, titleLink)}
-        >
-            <div className={content}>
-                {avatarWrapper}
-                <div className={dataContent}>
-                    {title && (
-                        <div className={cx(titleStyle, ellipsisStyle, TextTitle3)}>
-                            {title}
-                        </div>
-                    )}
-                    {subTitle && (
-                        <div className={cx(textStyle, ellipsisStyle, TextBody)}>
-                            {subTitle}
-                        </div>
-                    )}
+        <div className={root}>
+            {socialImage && (
+                <ImgWithRetry src={socialImage.url} className={socialImageStyle} />
+            )}
+            <div
+                className={cx(wrapper, 'message-rich-wrapper')}
+                onClick={(e) => keyboardAction(e, titleLink)}
+            >
+                <div className={content}>
+                    {avatarWrapper}
+                    <div className={dataContent}>
+                        {title && (
+                            <div className={cx(titleStyle, ellipsisStyle, TextTitle3)}>
+                                {title}
+                            </div>
+                        )}
+                        {subTitle && (
+                            <div className={cx(textStyle, ellipsisStyle, TextBody)}>
+                                {subTitle}
+                            </div>
+                        )}
+                    </div>
                 </div>
+                {keyboardWrapper}
             </div>
-            {keyboardWrapper}
         </div>
     );
 };
