@@ -87,7 +87,7 @@ export const ConversationManageButton = XMemo((props: ConversationManageButtonPr
             builder.action('Invite friends', onInvitePress, false, require('assets/ic-invite-24.png'));
         }
 
-        builder.action('Shared resources', onSharedPress, false, require('assets/ic-attach-24.png'));
+        builder.action('Shared media', onSharedPress, false, require('assets/ic-attach-24.png'));
 
         if (!isPrivate) {
             builder.action('Leave group', onLeavePress, false, require('assets/ic-leave-24.png'));
