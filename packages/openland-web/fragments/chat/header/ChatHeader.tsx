@@ -163,7 +163,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     });
 
     res.item({
-        title: 'Shared medium',
+        title: 'Shared media',
         icon: <AttachIcon />,
         path: `/mail/${props.id}/shared`,
         closeDelay: 400,
