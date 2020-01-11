@@ -2,16 +2,35 @@ import * as React from 'react';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { XView } from 'react-mental';
 import { Page } from 'openland-unicorn/Page';
-import { StripeCardComponent } from './components/StripeCardComponent';
+import { StripeCardComponent, StripeCardComponentInstance } from './components/StripeCardComponent';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 
 export const SettingsFinanceFragment = React.memo(() => {
+    let ref = React.useRef<StripeCardComponentInstance>(null);
+    let [loading, setLoading] = React.useState(false);
+    let onClick = React.useCallback(() => {
+        (async () => {
+            setLoading(true);
+            try {
+                let paymentMethod = await ref.current!.createPaymentMethod();
+                console.log(paymentMethod);
+            } finally {
+                setLoading(false);
+            }
+
+        })();
+    }, []);
     return (
         <Page track="settings_finance">
             <UHeader title="Finance" />
             <XView flexDirection="column">
-                <XView paddingHorizontal={16}>
-                    <StripeCardComponent />
+                <XView
+                    paddingHorizontal={16}
+                    paddingVertical={16}
+                >
+                    <StripeCardComponent ref={ref} />
                 </XView>
+                <UButton text="Add" onClick={onClick} loading={loading} />
             </XView>
         </Page>
     );

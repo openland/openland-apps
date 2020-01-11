@@ -24,6 +24,7 @@ import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
 import { showCreatingFragment } from 'openland-web/fragments/create/CreateEntityFragment';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { trackEvent } from 'openland-x-analytics';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const UserProfileCard = withUserInfo(({ user }) => {
     if (user) {
@@ -119,15 +120,15 @@ export const AccountFragment = React.memo(() => {
                         icon={<InviteFriendsIcon />}
                         path="/settings/invites"
                     />
-                    {/* <XWithRole role="super-admin">
-                        <UListItem
-                            title="Finance"
-                            icon={<NotificationsIcon />}
-                            path="/settings/finance"
-                        />
-                    </XWithRole> */}
 
                     <UListGroup header="Settings">
+                        <XWithRole role="super-admin">
+                            <UListItem
+                                title="Finance"
+                                icon={<NotificationsIcon />}
+                                path="/settings/finance"
+                            />
+                        </XWithRole>
                         <UListItem
                             title="Notifications"
                             icon={<NotificationsIcon />}
