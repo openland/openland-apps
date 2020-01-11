@@ -11,6 +11,7 @@ import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
 import Info from 'openland-icons/ic-info-24.svg';
 import Terms from 'openland-icons/ic-terms-24.svg';
 import Privacy from 'openland-icons/ic-lock-24.svg';
+import { VERSION } from 'openland-web/version';
 
 const hero = css`
     background-color: #F2F3F5;
@@ -66,7 +67,7 @@ const MenuItem = React.memo((props: MenuItemProps) => (
 export const SettingsAboutFragment = React.memo(() => {
     // replace with electron build number when available
     // const text = isElectron ? '1.2.3.4' : 'Find and build inspiring communities';
-    const text = 'Find and build inspiring communities';
+    const text = VERSION;
 
     return (
         <Page track="account_about_us">
