@@ -1306,6 +1306,35 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
+"@bugsnag/browser@^6.5.0":
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/@bugsnag/browser/-/browser-6.5.0.tgz#cec29fba00b47cbfca464be7f52b3900dd809cef"
+  integrity sha512-BBUK4XlCkzRsAwFbdAOBPSa353EqDmGuVvbnXom0xG1D2IySGyNmYdPBproTRNKp+h0XuCkXeBrjsyC9Wph6+g==
+
+"@bugsnag/js@^6.5.0":
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/@bugsnag/js/-/js-6.5.0.tgz#4961e799d93c84ca9dd37877ecdbfa939ebf3404"
+  integrity sha512-iY0e3BOjDkTV6YssVeAC/TfP27RRdqZoZWJGKBU1mTdfKdNb0aSkR8DsU5UTriwY900ughNVONLQm87ecHyNUQ==
+  dependencies:
+    "@bugsnag/browser" "^6.5.0"
+    "@bugsnag/node" "^6.5.0"
+
+"@bugsnag/node@^6.5.0":
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/@bugsnag/node/-/node-6.5.0.tgz#10ebba701f3f78bbbc1cf7cc806ffa633d61e5ec"
+  integrity sha512-qW6+MYeXxcUA1nYzfeO637PzwPhKP89udYrIRXhhTLFIZwMyyFRes9Fok4M6RGN6VKP6H4zpQrzMc6/dU08Jxw==
+  dependencies:
+    byline "^5.0.0"
+    error-stack-parser "^2.0.2"
+    iserror "^0.0.2"
+    pump "^3.0.0"
+    stack-generator "^2.0.3"
+
+"@bugsnag/plugin-react@^6.5.0":
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/@bugsnag/plugin-react/-/plugin-react-6.5.0.tgz#93eec6bd167dab007ca588e69daa544124c3107a"
+  integrity sha512-kbyFSnQ4QLGjN04t9MbuD5KLWI2qQpjrgKrJvJNKM8xyeVIJYpkjx//TsDzG4ujNFVkwaP3bT48j85rf4EJNqA==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.3.tgz#099139eaec7ebf07a27c1786a3ff64f39464d2ef"
@@ -1841,52 +1870,6 @@
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.0.tgz#ecdf48d532c58ea477acfcab80348424f8d0662f"
   dependencies:
     any-observable "^0.3.0"
-
-"@sentry/browser@^4.0.5":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-4.4.1.tgz#3473ca9e61926c2e896abe84bddfb2651004fb5a"
-  dependencies:
-    "@sentry/core" "4.4.1"
-    "@sentry/types" "4.4.1"
-    "@sentry/utils" "4.4.1"
-    tslib "^1.9.3"
-
-"@sentry/core@4.4.1":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-4.4.1.tgz#8836813d9d309059913b464cee6d23da09cc4056"
-  dependencies:
-    "@sentry/hub" "4.4.1"
-    "@sentry/minimal" "4.4.1"
-    "@sentry/types" "4.4.1"
-    "@sentry/utils" "4.4.1"
-    tslib "^1.9.3"
-
-"@sentry/hub@4.4.1":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-4.4.1.tgz#3f82405131bf10ef9e751e2760d63bfff809fa4a"
-  dependencies:
-    "@sentry/types" "4.4.1"
-    "@sentry/utils" "4.4.1"
-    tslib "^1.9.3"
-
-"@sentry/minimal@4.4.1":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-4.4.1.tgz#332e97395a20a01e398ae6614a8fb857f2566c31"
-  dependencies:
-    "@sentry/hub" "4.4.1"
-    "@sentry/types" "4.4.1"
-    tslib "^1.9.3"
-
-"@sentry/types@4.4.1":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-4.4.1.tgz#d19f9b0450a543aa11b136681ea19612e3cc1611"
-
-"@sentry/utils@4.4.1":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-4.4.1.tgz#cf80fe596d43dc04f51cb780e0cf70017a8c1eb1"
-  dependencies:
-    "@sentry/types" "4.4.1"
-    tslib "^1.9.3"
 
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
@@ -5154,7 +5137,7 @@ busboy@^0.3.0:
   dependencies:
     dicer "0.3.0"
 
-byline@5.0.0:
+byline@5.0.0, byline@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/byline/-/byline-5.0.0.tgz#741c5216468eadc457b03410118ad77de8c1ddb1"
 
@@ -6984,6 +6967,13 @@ error-stack-parser@^2.0.1:
   integrity sha512-E1fPutRDdIj/hohG0UpT5mayXNCxXP9d+snxFsPU9X0XgccOumKraa3juDMwTUyi7+Bu5+mCGagjg4IYeNbOdw==
   dependencies:
     stackframe "^1.0.4"
+
+error-stack-parser@^2.0.2:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/error-stack-parser/-/error-stack-parser-2.0.6.tgz#5a99a707bd7a4c58a797902d48d82803ede6aad8"
+  integrity sha512-d51brTeqC+BHlwF0BhPtcYgF5nlzf9ZZ0ZIUQNZpc9ZB9qw5IJ2diTrBY9jlCJkTLITYPjmiX6OWCwH+fuyNgQ==
+  dependencies:
+    stackframe "^1.1.1"
 
 errorhandler@^1.5.0:
   version "1.5.0"
@@ -9441,6 +9431,11 @@ isarray@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-2.0.1.tgz#a37d94ed9cda2d59865c9f76fe596ee1f338741e"
   integrity sha1-o32U7ZzaLVmGXJ92/llu4fM4dB4=
+
+iserror@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/iserror/-/iserror-0.0.2.tgz#bd53451fe2f668b9f2402c1966787aaa2c7c0bf5"
+  integrity sha1-vVNFH+L2aLnyQCwZZnh6qix8C/U=
 
 isexe@^2.0.0:
   version "2.0.0"
@@ -15573,6 +15568,13 @@ ssri@^6.0.1:
   dependencies:
     figgy-pudding "^3.5.1"
 
+stack-generator@^2.0.3:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/stack-generator/-/stack-generator-2.0.5.tgz#fb00e5b4ee97de603e0773ea78ce944d81596c36"
+  integrity sha512-/t1ebrbHkrLrDuNMdeAcsvynWgoH/i4o8EGGfX7dEYDoTXOYVAkEpFdtshlvabzc6JlJ8Kf9YdFEoz7JkzGN9Q==
+  dependencies:
+    stackframe "^1.1.1"
+
 stack-trace@0.0.x:
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/stack-trace/-/stack-trace-0.0.10.tgz#547c70b347e8d32b4e108ea1a2a159e5fdde19c0"
@@ -15584,6 +15586,11 @@ stack-utils@^1.0.1:
 stackframe@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/stackframe/-/stackframe-1.0.4.tgz#357b24a992f9427cba6b545d96a14ed2cbca187b"
+
+stackframe@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/stackframe/-/stackframe-1.1.1.tgz#ffef0a3318b1b60c3b58564989aca5660729ec71"
+  integrity sha512-0PlYhdKh6AfFxRyK/v+6/k+/mMfyiEBbTM5L94D0ZytQnJ166wuwoTYLHFWGbs2dpA8Rgq763KGWmN1EQEYHRQ==
 
 stacktrace-parser@^0.1.3:
   version "0.1.4"

@@ -1,11 +1,8 @@
 import * as React from 'react';
 import { trackError } from 'openland-x-analytics';
 import { ErrorPage } from './ErrorPage';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { loadConfig } from 'openland-x-config';
-import { buildConfig } from 'openland-web/config';
-import * as Sentry from '@sentry/browser';
 import { WHITE_LISTED_ERROR_NAME } from 'openland-x-graphql/throwErrors';
+
 export class RootErrorBoundary extends React.Component<
     {},
     { isError: boolean; code?: number; message?: string }
@@ -27,15 +24,6 @@ export class RootErrorBoundary extends React.Component<
             if ((error as any).graphQLErrors.length > 0) {
                 code = (error as any).graphQLErrors[0].code || 500;
             }
-        }
-        let cfg = canUseDOM ? loadConfig() : buildConfig();
-        if (cfg.sentryEndpoint && cfg.release) {
-            Sentry.configureScope(scope => {
-                Object.keys(errorInfo).forEach(key => {
-                    scope.setExtra(key, errorInfo[key]);
-                });
-            });
-            Sentry.captureException(error);
         }
         this.setState({ isError: true, code: code });
     }

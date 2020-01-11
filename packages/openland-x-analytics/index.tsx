@@ -3,6 +3,7 @@ import { Track, TrackPlatform } from 'openland-engines/Tracking';
 import { EventPlatform } from 'openland-api/Types';
 import { isMobile } from 'openland-web/hooks/useIsMobile';
 import { detectOS } from 'openland-x-utils/detectOS';
+import { CrashReporting } from 'openland-engines/CrashReporting';
 
 export function trackEvent(event: string, params?: { [key: string]: any }) {
     const platform: TrackPlatform = {
@@ -18,6 +19,7 @@ export function trackEvent(event: string, params?: { [key: string]: any }) {
 
 export function trackError(src: any) {
     trackEvent('Error', { error: '' + src });
+    CrashReporting.notify(src);
 }
 
 const getReferrer: () => { host: string, url: string } = () => {

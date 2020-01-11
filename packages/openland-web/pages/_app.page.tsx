@@ -1,7 +1,16 @@
+//
+// Polyfills
+// 
+
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 if (canUseDOM) {
     require('web-animations-js');
 }
+
+//
+// Styles
+//
+
 import { XStyleFactoryRegistry } from 'react-mental';
 import { css, rehydrate } from 'glamor';
 import { ClientCacheProvider } from 'openland-graphql/ClientCache';
@@ -13,15 +22,40 @@ XStyleFactoryRegistry.registerFactory({
         return css(styles).toString();
     },
 });
-
 import './_app.css';
+
+//
+// Init
+//
+
+import React from 'react';
+import bugsnag from '@bugsnag/js';
+import bugsnagReact from '@bugsnag/plugin-react';
+import { getConfig } from 'openland-web/config';
+import { CrashReporting } from 'openland-engines/CrashReporting';
+import { VERSION } from 'openland-web/version';
+let config = getConfig();
+const bugsnagClient = bugsnag({
+    apiKey: 'face7f06bcc3b1b0d5d60ed0fe912a88',
+    releaseStage: config.release || 'dev',
+    notifyReleaseStages: ['prod', 'next'],
+    appVersion: VERSION
+});
+bugsnagClient.use(bugsnagReact, React);
+CrashReporting.setReporter({
+    notify: (src) => bugsnagClient.notify(src),
+    setUserId: (src) => bugsnagClient.user = { id: src }
+});
+
 import './init';
 import '../globals';
-import React from 'react';
+
+//
+//  App
+//
+
 import App, { AppProps, Container } from 'next/app';
-import * as Sentry from '@sentry/browser';
-import { loadConfig } from 'openland-x-config';
-import { buildConfig } from '../config';
+
 import { withData } from './root/withData';
 import { RootErrorBoundary } from './root/RootErrorBoundary';
 import moment from 'moment-timezone';
@@ -35,6 +69,8 @@ import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { OpenlandApiContext } from 'openland-web/utils/OpenlandApiProvider';
 import { GQLClientContext } from 'openland-y-graphql/GQLClientContext';
 
+const ErrorBoundary = bugsnagClient.getPlugin('react');
+
 export default withData(
     class MyApp extends App<{
         apollo: OpenlandClient;
@@ -43,7 +79,6 @@ export default withData(
         protocol: string;
         isApp: boolean;
     }> {
-        private isSentryEnabled = false;
 
         constructor(
             props: {
@@ -55,11 +90,6 @@ export default withData(
             } & AppProps,
         ) {
             super(props as any);
-            let cfg = canUseDOM ? loadConfig() : buildConfig();
-            if (cfg.sentryEndpoint && cfg.release) {
-                this.isSentryEnabled = true;
-                Sentry.init({ dsn: cfg.sentryEndpoint, release: cfg.release });
-            }
 
             if (canUseDOM) {
                 let tz = moment.tz.guess();
@@ -68,54 +98,42 @@ export default withData(
             }
         }
 
-        componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-            if (this.isSentryEnabled) {
-                Sentry.configureScope(scope => {
-                    Object.keys(errorInfo).forEach(key => {
-                        scope.setExtra(key, errorInfo[key]);
-                    });
-                });
-                Sentry.captureException(error);
-            }
-
-            // This is needed to render errors correctly in development / production
-            super.componentDidCatch!!(error, errorInfo);
-        }
-
         render() {
             const { Component, pageProps } = this.props;
             return (
-                <Container>
-                    <EnvironmentContext.Provider value={{ isApp: this.props.isApp }}>
-                        <XStorageProvider
-                            storage={canUseDOM ? getClientStorage() : this.props.storage}
-                        >
-                            <XRouterProvider
-                                routes={Routes}
-                                hostName={this.props.host}
-                                protocol={this.props.protocol}
+                <ErrorBoundary>
+                    <Container>
+                        <EnvironmentContext.Provider value={{ isApp: this.props.isApp }}>
+                            <XStorageProvider
+                                storage={canUseDOM ? getClientStorage() : this.props.storage}
                             >
-                                <ClientCacheProvider>
-                                    <OpenlandApiContext.Provider value={this.props.apollo}>
-                                        <GQLClientContext.Provider value={this.props.apollo}>
-                                            <RootErrorBoundary>
-                                                <AppContainer>
-                                                    {/* <XView justifyContent="center" width="50%">
+                                <XRouterProvider
+                                    routes={Routes}
+                                    hostName={this.props.host}
+                                    protocol={this.props.protocol}
+                                >
+                                    <ClientCacheProvider>
+                                        <OpenlandApiContext.Provider value={this.props.apollo}>
+                                            <GQLClientContext.Provider value={this.props.apollo}>
+                                                <RootErrorBoundary>
+                                                    <AppContainer>
+                                                        {/* <XView justifyContent="center" width="50%">
                                                     <TestCommentsComponent />
                                                 </XView> */}
-                                                    {/* <XView justifyContent="center" width="50%">
+                                                        {/* <XView justifyContent="center" width="50%">
                                                     <TestMessengerComponent />
                                                 </XView> */}
-                                                    <Component {...pageProps} />
-                                                </AppContainer>
-                                            </RootErrorBoundary>
-                                        </GQLClientContext.Provider>
-                                    </OpenlandApiContext.Provider>
-                                </ClientCacheProvider>
-                            </XRouterProvider>
-                        </XStorageProvider>
-                    </EnvironmentContext.Provider>
-                </Container>
+                                                        <Component {...pageProps} />
+                                                    </AppContainer>
+                                                </RootErrorBoundary>
+                                            </GQLClientContext.Provider>
+                                        </OpenlandApiContext.Provider>
+                                    </ClientCacheProvider>
+                                </XRouterProvider>
+                            </XStorageProvider>
+                        </EnvironmentContext.Provider>
+                    </Container>
+                </ErrorBoundary>
             );
         }
     },
