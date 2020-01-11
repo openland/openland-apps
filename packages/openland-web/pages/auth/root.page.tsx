@@ -159,17 +159,21 @@ export default () => {
                     client_id: "1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com",
                     scope: "profile email"
                 }).then(async (auth2) => {
-                    var uploaded = await (await fetch(API_AUTH_ENDPOINT + '/google/getAccessToken', {
-                        method: 'POST',
-                        headers: [['Content-Type', 'application/json']],
-                        body: JSON.stringify({ idToken: auth2.currentUser.get().getAuthResponse().id_token })
-                    })).json();
+                    if (auth2.isSignedIn.get()) {
+                        var uploaded = await (await fetch(API_AUTH_ENDPOINT + '/google/getAccessToken', {
+                            method: 'POST',
+                            headers: [['Content-Type', 'application/json']],
+                            body: JSON.stringify({ idToken: auth2.currentUser.get().getAuthResponse().id_token })
+                        })).json();
 
-                    // TODO: handle errors, no id_token
-                    if (uploaded.ok) {
-                        completeAuth(uploaded.accessToken);
+                        if (uploaded.ok) {
+                            completeAuth(uploaded.accessToken);
+                        } else {
+                            console.warn(uploaded);
+                            router.push('/authorization/signin');
+                        }
                     } else {
-                        console.warn(uploaded);
+                        router.push('/authorization/signin');
                     }
                 });
             });
