@@ -15,7 +15,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 
 export type CreateWithEmailProps = {
-    fireEmail: Function;
+    fireEmail: (email: string) => Promise<boolean>;
     signin: boolean;
     emailError: string;
     emailValue: string;
@@ -130,9 +130,10 @@ export const AskEmailPage = (props: CreateWithEmailProps) => {
             setEmailSent(false);
 
             try {
-                await fireEmail(email);
+                let isExistingUser = await fireEmail(email);
                 setTimeout(() => {
-                    router.push('/authorization/ask-activation-code');
+                    localStorage.setItem('authUserEmail', email);
+                    router.push(isExistingUser ? '/authorization/ask-activation-code' : '/authorization/confirm-new-user-email');
                 }, 0);
             } catch (e) {
                 setEmailSending(false);
