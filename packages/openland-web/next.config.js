@@ -4,6 +4,7 @@ const withTypescript = require('@zeit/next-typescript');
 const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 const withCSS = require('@zeit/next-css');
 const withWorkers = require('@zeit/next-workers');
+const { BugsnagSourceMapUploaderPlugin } = require('webpack-bugsnag-plugins');
 
 const config = {
     pageExtensions: ['page.ts', 'page.tsx'],
@@ -218,6 +219,14 @@ const config = {
         // if (!isServer){
         //     config.optimization.splitChunks.cacheGroups.commons.minChunks = 2;
         // }
+
+        // Bugsnag
+        if (process.env.BUILD_NUMBER) {
+            config.plugins.push(new BugsnagSourceMapUploaderPlugin({
+                apiKey: 'face7f06bcc3b1b0d5d60ed0fe912a88',
+                appVersion: process.env.BUILD_NUMBER
+            }));
+        }
 
         // Add moment to commons
         if (!isServer) {
