@@ -224,7 +224,8 @@ const config = {
         if (process.env.BUILD_NUMBER) {
             config.plugins.push(new BugsnagSourceMapUploaderPlugin({
                 apiKey: 'face7f06bcc3b1b0d5d60ed0fe912a88',
-                appVersion: process.env.BUILD_NUMBER
+                appVersion: process.env.BUILD_NUMBER,
+                publicPath: '*/'
             }));
         }
 
