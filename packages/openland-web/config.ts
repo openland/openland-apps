@@ -6,7 +6,9 @@ let cachedConfig: Config | undefined;
 
 export function buildConfig() {
     if (!cachedConfig) {
-        let config: Config = {};
+        let config: Config = {
+            env: process.env.APP_ENVIRONMENT === 'prod' ? 'production' : (process.env.APP_ENVIRONMENT || 'dev')
+        };
         config.uploadcareKey = 'b70227616b5eac21ba88';
         config.release = process.env.RELEASE_ID || 'development';
         config.webSocketEndpoint = process.env.API_WS_ENDPOINT;

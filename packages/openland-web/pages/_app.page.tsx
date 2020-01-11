@@ -37,8 +37,8 @@ import { VERSION } from 'openland-web/version';
 let config = getConfig();
 const bugsnagClient = bugsnag({
     apiKey: 'face7f06bcc3b1b0d5d60ed0fe912a88',
-    releaseStage: config.release || 'dev',
-    notifyReleaseStages: ['prod', 'next'],
+    releaseStage: config.env,
+    notifyReleaseStages: ['production', 'next'],
     appVersion: VERSION
 });
 bugsnagClient.use(bugsnagReact, React);
