@@ -10,7 +10,9 @@ class CrashReportingImpl {
 
     setUserId = (id: string) => {
         this.userId = id;
-        this.reporter?.setUserId(id);
+        if (this.reporter) {
+            this.reporter.setUserId(id);
+        }
     }
 
     setReporter = (reporter: CrashReporter) => {
@@ -21,7 +23,9 @@ class CrashReportingImpl {
     }
 
     notify = (error: Error) => {
-        this.reporter?.notify(error);
+        if (this.reporter) {
+            this.reporter.notify(error);
+        }
     }
 }
 

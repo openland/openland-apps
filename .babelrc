@@ -3,6 +3,7 @@
         "default": {
             "presets": ["next/babel", "@zeit/next-typescript/babel", "linaria/babel"],
             "plugins": [
+                "@babel/plugin-proposal-optional-chaining",
                 "graphql-tag",
                 [
                     "module-resolver",
@@ -28,6 +29,7 @@
         "webproduction": {
             "presets": ["next/babel", "@zeit/next-typescript/babel", "linaria/babel"],
             "plugins": [
+                "@babel/plugin-proposal-optional-chaining",
                 "graphql-tag",
                 [
                     "module-resolver",
