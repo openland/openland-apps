@@ -36,18 +36,10 @@ export interface TypingsViewProps {
     conversationId: string;
 }
 
-// TODO proper types
 const UserLink = (props: TypingsUser) => {
-    // const [show] = useUserPopper({
-    //     user: props,
-    //     isMe: false
-    // });
-
     return (
-        <ULink path={`/${props.userId}`}>
-            {/* <span onMouseEnter={show}> */}
+        <ULink path={`/${props.userId}`} className={TextBody}>
             {emoji(props.userName)}
-            {/* </span> */}
         </ULink>
     );
 };
