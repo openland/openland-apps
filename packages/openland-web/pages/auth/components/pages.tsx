@@ -5,7 +5,6 @@ export type pagesT =
     | 'askEmail'
     | 'createNewAccount'
     | 'enterYourOrganization'
-    | 'confirmNewUser'
     | 'introduceYourself';
 
 export const pages: { [K in pagesT]: pagesT } = {
@@ -16,5 +15,4 @@ export const pages: { [K in pagesT]: pagesT } = {
     createNewAccount: 'createNewAccount',
     enterYourOrganization: 'enterYourOrganization',
     introduceYourself: 'introduceYourself',
-    confirmNewUser: 'confirmNewUser',
 };

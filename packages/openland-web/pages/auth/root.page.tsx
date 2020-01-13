@@ -15,7 +15,6 @@ import { XLoader } from 'openland-x/XLoader';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 import { completeAuth } from './complete.page';
-import { ConfirmNewUser } from './confitm-new-user.page';
 
 const getAppInvite = (router: any) => {
     if (router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite') {
@@ -71,9 +70,6 @@ export default () => {
     }
     if (router.path.includes('ask-email')) {
         page = pages.askEmail;
-    }
-    if (router.path.includes('confirm-new-user')) {
-        page = pages.confirmNewUser;
     }
     if (router.path.includes('create-new-account')) {
         Cookie.set('x-openland-create-new-account', 'true');
@@ -138,7 +134,6 @@ export default () => {
 
                 setEmailSending(false);
                 setEmailSent(true);
-                return !!res.isExistingUser;
             } catch (e) {
                 throw new Error('Something went wrong');
             }
@@ -175,13 +170,7 @@ export default () => {
                         })).json();
 
                         if (uploaded.ok) {
-                            if (uploaded.isExistingUser) {
-                                completeAuth(uploaded.accessToken);
-                            } else {
-                                localStorage.setItem('pendingOpenlandToken', uploaded.accessToken);
-                                localStorage.setItem('authUserEmail', auth2.currentUser.get().getBasicProfile().getEmail());
-                                router.replace('/authorization/confirm-new-user-google');
-                            }
+                            completeAuth(uploaded.accessToken);
                         } else {
                             console.warn(uploaded);
                             router.replace('/authorization/signin');
@@ -286,9 +275,6 @@ export default () => {
                     }}
                     isMobile={!!isMobile}
                 />
-            )}
-            {page === pages.confirmNewUser && (
-                <ConfirmNewUser />
             )}
             {page === pages.createNewAccount && (
                 <XTrack

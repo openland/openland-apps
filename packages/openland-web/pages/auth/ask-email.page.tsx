@@ -129,10 +129,9 @@ export const AskEmailPage = (props: CreateWithEmailProps) => {
             setEmailSent(false);
 
             try {
-                let isExistingUser = await fireEmail(email);
+                await fireEmail(email);
                 setTimeout(() => {
-                    localStorage.setItem('authUserEmail', email);
-                    router.push(isExistingUser ? '/authorization/ask-activation-code' : '/authorization/confirm-new-user-email');
+                    router.push('/authorization/ask-activation-code');
                 }, 0);
             } catch (e) {
                 setEmailSending(false);
