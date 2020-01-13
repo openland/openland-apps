@@ -26,10 +26,11 @@ import { MatchmakingCreatedFragment } from 'openland-web/fragments/matchmaking/M
 import { MatchmakingUsersFragment } from 'openland-web/fragments/matchmaking/MatchmakingUsersFragment';
 import { MatchmakingAppFragment } from 'openland-web/fragments/matchmaking/MatchmakingAppFragment';
 import { FeedItemFragment } from 'openland-web/fragments/feed/FeedItemFragment';
-
 import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 import { SharedMediaFragment } from 'openland-web/fragments/chat/sharedMedia/SharedMediaFragment';
 import { SettingsAboutFragment } from 'openland-web/fragments/account/SettingsAboutFragment';
+import { useClient } from 'openland-web/utils/useClient';
+import { withRouter, SingletonRouter } from 'next/router';
 
 // temporary stub for /mail/ -> not found bug
 const TemporaryStub = React.memo(() => {
@@ -43,6 +44,32 @@ const TemporaryStub = React.memo(() => {
 });
 
 const routing = new URouting();
+
+interface RawInviteResolverProps {
+    router: SingletonRouter;
+}
+
+const RawInviteResolver = React.memo<RawInviteResolverProps>(({ router }) => {
+    const client = useClient();
+    const unicorn = useUnicorn();
+    const key = unicorn.id!;
+    const invite = client.useResolvedInvite({ key });
+
+    // if user is already a member, silently render MessengerFragment and replace the url    
+    if (invite.invite && invite.invite.__typename === 'RoomInvite' && invite.invite.room.membership === 'MEMBER') {
+        const roomId = invite.invite.room.id!;
+        const destination = `/unicorn?conversationId=${roomId}`;
+        const as = `/mail/${roomId}`;
+
+        router.replace(destination, as);
+
+        return <MessengerFragment id={roomId} />;
+    }
+
+    return <InviteLandingComponent />;
+});
+
+const InviteResolver = withRouter(RawInviteResolver);
 
 // Mail
 routing.addRoute('/mail', () => TemporaryStub);
@@ -90,8 +117,8 @@ routing.addRoute('/:shortname', () => ShortnameFragment);
 routing.addRoute('/advanced/:id', () => AdvancedSettingsFragment);
 
 // Invites
-routing.addRoute('/invite/:invite', () => InviteLandingComponent);
-routing.addRoute('/join/:invite', () => InviteLandingComponent);
+routing.addRoute('/invite/:invite', () => InviteResolver);
+routing.addRoute('/join/:invite', () => InviteResolver);
 
 //
 // Backward compatibility
