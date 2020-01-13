@@ -15,7 +15,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 
 export type CreateWithEmailProps = {
-    fireEmail: (email: string) => Promise<boolean>;
+    fireEmail: (email: string) => Promise<void>;
     signin: boolean;
     emailError: string;
     emailValue: string;
