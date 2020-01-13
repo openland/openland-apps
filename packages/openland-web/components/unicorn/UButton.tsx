@@ -34,6 +34,7 @@ const buttonWrapperStyle = css`
     justify-content: center;
     position: relative;
     cursor: pointer;
+    user-select: none;
     transition: color 0.08s ease-in, all 0.15s ease;
 `;
 
