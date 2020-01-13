@@ -12,9 +12,10 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 import { SHeaderView } from 'react-native-s/SHeaderView';
 import { SCloseButton } from 'react-native-s/SCloseButton';
+import { plural } from 'openland-y-utils/plural';
 
 export const ChatSelectedActionsHeader = (props: { messagesCount: number, cancel: () => void }) => {
-    const messagesText = props.messagesCount > 1 ? 'messages' : 'message';
+    const messagesText = plural(props.messagesCount, ['message', 'messages']);
     const theme = React.useContext(ThemeContext);
     const height = Platform.OS === 'android' ? 56 : 44;
 
@@ -34,7 +35,7 @@ export const ChatSelectedActionsHeader = (props: { messagesCount: number, cancel
                 />
             </View>
             <Text style={{ ...TextStyles.Headline, textAlign: 'center', color: theme.foregroundPrimary }} allowFontScaling={false}>
-                {props.messagesCount} {messagesText} selected
+                {messagesText} selected
             </Text>
         </View>
     );
@@ -48,9 +49,9 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
     const theme = React.useContext(ThemeContext);
     const del = React.useCallback(() => {
         const messagesCount = props.conversation.messagesActionsStateEngine.getState().messages.length;
-        const messagesText = messagesCount > 1 ? 'messages' : 'message';
+        const messagesText = plural(messagesCount, ['message', 'messages']);
         Alert.builder()
-            .title(`Delete ${messagesCount} ${messagesText}?`)
+            .title(`Delete ${messagesText}?`)
             .message('Messages will be deleted for everyone. This cannot be undone')
             .button('Cancel', 'cancel')
             .action('Delete', 'destructive',
