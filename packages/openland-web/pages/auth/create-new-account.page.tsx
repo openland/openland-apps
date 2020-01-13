@@ -93,7 +93,6 @@ export const SignUpAuthMechanism = ({
                         <UButton
                             onClick={loginWithEmail}
                             size="large"
-                            square={true}
                             text="Continue with Email"
                             style="secondary"
                             left={
@@ -106,7 +105,6 @@ export const SignUpAuthMechanism = ({
                             onClick={loginWithGoogle}
                             marginTop={16}
                             size="large"
-                            square={true}
                             text="Continue with Google"
                             left={
                                 <XView marginRight={6}>

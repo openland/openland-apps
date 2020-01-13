@@ -80,14 +80,12 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
                     text="Cancel"
                     style="secondary"
                     size="large"
-                    square={true}
                     onClick={() => props.onClose()}
                 />
                 <UButton
                     text="Save"
                     style="primary"
                     size="large"
-                    square={true}
                     onClick={onSubmit}
                     loading={form.loading}
                 />

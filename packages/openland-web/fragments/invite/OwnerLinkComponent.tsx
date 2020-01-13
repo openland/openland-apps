@@ -128,7 +128,6 @@ const OwnerLink = (props: OwnerLinkComponentProps) => {
                 text={copied ? 'Copied' : 'Copy'}
                 style={copied ? 'success' : 'primary'}
                 size="large"
-                square={true}
                 onClick={copyPath}
             />
         </XView>

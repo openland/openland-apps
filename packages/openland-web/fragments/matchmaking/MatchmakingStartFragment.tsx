@@ -108,7 +108,6 @@ export const MatchmakingStartComponent = (props: { onStart: () => void }) => {
                 <UButton
                     text="Continue"
                     size="large"
-                    square={true}
                     alignSelf="center"
                     onClick={props.onStart}
                     marginBottom={60}

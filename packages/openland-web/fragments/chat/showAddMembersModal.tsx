@@ -166,14 +166,12 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                     text="Cancel"
                     style="secondary"
                     size="large"
-                    square={true}
                     onClick={props.hide}
                 />
                 <UButton
                     text="Add"
                     style="primary"
                     size="large"
-                    square={true}
                     disable={!options.length}
                     onClick={
                         !!options.length

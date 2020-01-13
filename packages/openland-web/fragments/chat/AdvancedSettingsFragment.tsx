@@ -233,7 +233,6 @@ export const AdvancedSettingsFragment = () => {
                 action={handleSave}
                 text="Save changes"
                 size="large"
-                square={true}
                 marginLeft={16}
                 marginTop={16}
                 marginBottom={20}

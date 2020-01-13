@@ -95,14 +95,12 @@ const MakeFeaturedModal = (props: {
                         text="Cancel"
                         style="secondary"
                         size="large"
-                        square={true}
                         onClick={() => ctx.hide()}
                     />
                     <UButton
                         text="Save"
                         style="primary"
                         size="large"
-                        square={true}
                         onClick={onSave}
                     />
                 </XModalFooter>

@@ -52,7 +52,6 @@ const TextComponent = (props: TextComponentProps) => {
                 alignSelf="center"
                 size="large"
                 text="Continue"
-                square={true}
                 onClick={!text.trim() ? undefined : () => props.onSubmit(text.trim())}
                 disable={!text.trim()}
                 marginBottom={60}
@@ -138,7 +137,6 @@ const TagsComponent = (props: TagsComponentProps) => {
                 alignSelf="center"
                 size="large"
                 text="Continue"
-                square={true}
                 onClick={!tags.size ? undefined : () => props.onSubmit(Array.from(tags))}
                 disable={!tags.size}
                 marginBottom={60}

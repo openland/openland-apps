@@ -172,7 +172,6 @@ export const MemberProfileEditFragment = React.memo(() => {
             <UButton
                 text="Save changes"
                 size="large"
-                square={true}
                 alignSelf="flex-start"
                 action={submitAction}
             />

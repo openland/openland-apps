@@ -122,7 +122,6 @@ const CreateProfileFormInnerWeb = (
             style="primary"
             text={InitTexts.create_profile.continue}
             size="large"
-            square={true}
             onClick={doConfirm}
         />
     );

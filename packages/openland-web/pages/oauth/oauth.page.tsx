@@ -107,7 +107,6 @@ const OauthFragment = React.memo(() => {
                 <div className={buttonsContainer}>
                     <UButton
                         text="Allow"
-                        square={true}
                         size="large"
                         marginBottom={16}
                         as="a"
@@ -117,7 +116,6 @@ const OauthFragment = React.memo(() => {
                     />
                     <UButton
                         text="Decline"
-                        square={true}
                         style="secondary"
                         size="large"
                         as="a"

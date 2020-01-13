@@ -82,14 +82,12 @@ const StickerPackModalInner = (props: { packId: string; hide: () => void }) => {
                     text="Cancel"
                     style="secondary"
                     size="large"
-                    square={true}
                     onClick={props.hide}
                 />
                 <UButton
                     text={iHaveThisPack ? 'Delete' : 'Add'}
                     style={iHaveThisPack ? 'danger' : 'primary'}
                     size="large"
-                    square={true}
                     loading={loading}
                     onClick={async () => {
                         setLoading(true);

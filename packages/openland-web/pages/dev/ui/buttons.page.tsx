@@ -10,7 +10,7 @@ export default withApp('Buttons', 'viewer', props => {
         <DevDocsScaffold title="Buttons">
             <XVertical>
                 <XHorizontal>
-                    <UButton text="Label" size="small" />
+                    <UButton text="Label" size="small" shape="square" />
                     <UButton text="Label" size="small" style="secondary" />
                     <UButton text="Label" size="small" style="danger" />
                     <UButton text="Label" size="small" loading={true} />
@@ -26,7 +26,7 @@ export default withApp('Buttons', 'viewer', props => {
                     <UButton text="Label" style="danger" loading={true} />
                 </XHorizontal>
                 <XHorizontal>
-                    <UButton text="Label" size="large" />
+                    <UButton text="Label" size="large" shape="round" />
                     <UButton text="Label" size="large" style="secondary" />
                     <UButton text="Label" size="large" style="danger" />
                     <UButton text="Label" size="large" loading={true} />

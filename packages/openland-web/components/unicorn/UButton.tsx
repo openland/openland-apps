@@ -3,12 +3,13 @@ import { css, cx } from 'linaria';
 import { XView, XViewProps } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 
+type UButtonShape = 'round' | 'square';
 type UButtonSize = 'small' | 'medium' | 'large';
 export type UButtonStyle = 'primary' | 'secondary' | 'danger' | 'success';
 
 export interface UButtonProps extends XViewProps {
-    square?: boolean;
     text: string;
+    shape?: UButtonShape;
     size?: UButtonSize;
     style?: UButtonStyle;
     loading?: boolean;
@@ -34,7 +35,10 @@ const buttonWrapperStyle = css`
     position: relative;
     cursor: pointer;
     transition: color 0.08s ease-in, all 0.15s ease;
-    border-radius: 100px;
+`;
+
+const roundStyle = css`
+    border-radius: 100px !important;
 `;
 
 const squareStyle = css`
@@ -56,6 +60,7 @@ const size28 = css`
     height: 28px;
     padding-left: 16px;
     padding-right: 16px;
+    border-radius: 100px;
 `;
 
 const size32 = css`
@@ -64,6 +69,7 @@ const size32 = css`
     height: 32px;
     padding-left: 16px;
     padding-right: 16px;
+    border-radius: 100px;
 `;
 
 const size40 = css`
@@ -72,6 +78,7 @@ const size40 = css`
     height: 40px;
     padding-left: 24px;
     padding-right: 24px;
+    border-radius: 8px;
 `;
 
 const primaryStyle = css`
@@ -142,6 +149,11 @@ const successActiveStyle = css`
     }
 `;
 
+const shapeResolver = {
+    round: roundStyle,
+    square: squareStyle,
+};
+
 const sizeResolver = {
     small: size28,
     medium: size32,
@@ -187,7 +199,7 @@ const loaderStyle = {
 export const UButton = React.memo((props: UButtonProps) => {
     const {
         text,
-        square,
+        shape,
         size = 'medium',
         style = 'primary',
         loading,
@@ -225,7 +237,7 @@ export const UButton = React.memo((props: UButtonProps) => {
                 tabIndex={-1}
                 className={cx(
                     buttonWrapperStyle,
-                    square && squareStyle,
+                    shape && shapeResolver[shape],
                     (loadingState || disable) && disableStyle,
                     sizeResolver[size],
                     styleResolver[style],

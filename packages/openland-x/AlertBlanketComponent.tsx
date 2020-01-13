@@ -40,7 +40,6 @@ export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, 
                             text="Cancel"
                             style="secondary"
                             size="large"
-                            square={true}
                             onClick={() => {
                                 if (builder._onCancel) {
                                     builder._onCancel();
@@ -57,7 +56,6 @@ export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, 
                             text={action.name}
                             style={action.style}
                             size="large"
-                            square={true}
                             onClick={() => doConfirm(action.action)}
                             loading={form.loading}
                         />

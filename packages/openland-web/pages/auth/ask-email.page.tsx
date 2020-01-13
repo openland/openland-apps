@@ -73,7 +73,6 @@ export const WebSignUpCreateWithEmail = ({
             style="primary"
             loading={emailSending}
             size="large"
-            square={true}
             alignSelf="center"
             text={InitTexts.auth.continue}
             onClick={doConfirm}

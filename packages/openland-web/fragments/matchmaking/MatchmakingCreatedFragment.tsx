@@ -132,7 +132,6 @@ export const MatchmakingCreatedFragment = React.memo(() => {
                 <UButton
                     text="See my matches"
                     size="large"
-                    square={true}
                     alignSelf="center"
                     onClick={onStart}
                     marginBottom={60}

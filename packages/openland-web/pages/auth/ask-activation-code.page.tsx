@@ -93,7 +93,6 @@ export const WebSignUpActivationCode = ({
             loading={codeSending}
             onClick={doConfirm}
             size="large"
-            square={true}
             style="primary"
             alignSelf="center"
             text={InitTexts.auth.continue}

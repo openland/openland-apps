@@ -139,7 +139,7 @@ export const MatchmakingAppFragment = React.memo(() => {
                             {(os === 'iOS' || os === 'Android') && (
                                 <UButton
                                     text="Install app"
-                                    square={true}
+                                    shape="square"
                                     href={
                                         os === 'iOS'
                                             ? 'https://oplnd.com/ios'
