@@ -26,11 +26,11 @@ export const PowerupSample = React.memo(() => {
             if (state === 'initial') {
                 AppAlertBlanket.builder()
                     .message('To see everybody on the map, please share your location with others')
+                    .action('Deny', 'destructive', () => {
+                        setPermission('deny');
+                    })
                     .action('Share', 'default', () => {
                         setPermission('allow');
-                    })
-                    .action('Deny', 'cancel', () => {
-                        setPermission('deny');
                     })
                     .show();
 

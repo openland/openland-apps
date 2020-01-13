@@ -28,7 +28,7 @@ export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, 
             {form.error && <XErrorMessage message={form.error} />}
             <XView flexDirection="column" borderRadius={8} overflow="hidden">
                 {!!builder._message && (
-                    <XModalContent>
+                    <XModalContent marginTop={builder._title ? undefined : 24}>
                         {builder._message}
                     </XModalContent>
                 )}
