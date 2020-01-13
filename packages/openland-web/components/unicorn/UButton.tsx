@@ -184,7 +184,7 @@ const loaderStyle = {
     },
 };
 
-export const UButton = (props: UButtonProps) => {
+export const UButton = React.memo((props: UButtonProps) => {
     const {
         text,
         square,
@@ -247,4 +247,4 @@ export const UButton = (props: UButtonProps) => {
             </div>
         </XView>
     );
-};
+});
