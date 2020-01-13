@@ -2,7 +2,7 @@ import * as React from 'react';
 import { pages, pagesT } from './components/pages';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { AcceptInvitePage } from './accept-invite.page';
-import { AskActivationPage } from './ask-activation-code.page';
+import { AskActivationPage, checkCode } from './ask-activation-code.page';
 import { AskEmailPage } from './ask-email.page';
 import { CreateNewAccountPage } from './create-new-account.page';
 import { EnterYourOrganizationPage } from './enter-your-organization.page';
@@ -89,6 +89,9 @@ export default () => {
         page = pages.introduceYourself;
     }
     if (router.path.includes('google-complete')) {
+        page = pages.loading;
+    }
+    if (router.path.includes('magic')) {
         page = pages.loading;
     }
     const [signin, setSignin] = React.useState(router.path.endsWith('signin'));
@@ -188,6 +191,17 @@ export default () => {
                     }
                 });
             });
+        } else if (router.path.includes('magic')) {
+            (async () => {
+                let path = router.path.split('/');
+                try {
+                    let token = await checkCode(path[path.length - 1]);
+                    await completeAuth(token);
+                } catch {
+                    // TODO: ask for design for magic button auth errors
+                    router.replace('/authorization/signin');
+                }
+            })();
         }
     }, []);
 

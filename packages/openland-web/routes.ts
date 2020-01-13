@@ -49,6 +49,7 @@ routes.add('/404', '/404');
 // Joins?
 routes.add('/authorization', '/auth/root');
 routes.add('/authorization/:step', '/auth/root');
+routes.add('/authorization/magic/:code', '/auth/root');
 
 //
 // Discover

@@ -152,6 +152,31 @@ export const WebSignUpActivationCode = ({
 };
 
 class AuthError extends Error { }
+export const checkCode = async (codeValue: string) => {
+    let res = await (await fetch(API_AUTH_ENDPOINT + '/checkCode', {
+        body: JSON.stringify({
+            session: localStorage.getItem('authSession'),
+            code: codeValue,
+        }),
+        headers: [['Content-Type', 'application/json']],
+        method: 'POST',
+    })).json();
+    if (!res.ok) {
+        throw new AuthError(res.errorText || 'Something went wrong');
+    }
+    let res2 = await (await fetch(API_AUTH_ENDPOINT + '/getAccessToken', {
+        body: JSON.stringify({
+            session: localStorage.getItem('authSession'),
+            authToken: res.authToken,
+        }),
+        headers: [['Content-Type', 'application/json']],
+        method: 'POST',
+    })).json();
+    if (!res2.ok) {
+        throw new AuthError(res2.errorText || 'Something went wrong');
+    }
+    return res2.accessToken as string;
+};
 
 export const AskActivationPage = (props: ActivationCodeProps) => {
     let router = React.useContext(XRouterContext)!;
@@ -181,31 +206,8 @@ export const AskActivationPage = (props: ActivationCodeProps) => {
             setCodeSending(true);
 
             try {
-                let res = await (await fetch(API_AUTH_ENDPOINT + '/checkCode', {
-                    body: JSON.stringify({
-                        session: localStorage.getItem('authSession'),
-                        code: codeValue,
-                    }),
-                    headers: [['Content-Type', 'application/json']],
-                    method: 'POST',
-                })).json();
-                if (!res.ok) {
-                    throw new AuthError(res.errorText || 'Something went wrong');
-                }
-
-                let res2 = await (await fetch(API_AUTH_ENDPOINT + '/getAccessToken', {
-                    body: JSON.stringify({
-                        session: localStorage.getItem('authSession'),
-                        authToken: res.authToken,
-                    }),
-                    headers: [['Content-Type', 'application/json']],
-                    method: 'POST',
-                })).json();
-                if (!res2.ok) {
-                    throw new AuthError(res2.errorText || 'Something went wrong');
-                }
-
-                await completeAuth(res2.accessToken);
+                let token = await checkCode(codeValue);
+                await completeAuth(token);
             } catch (e) {
                 setCodeError(e instanceof AuthError ? e.message : 'Something went wrong');
                 setCodeSending(false);
