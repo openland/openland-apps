@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import Block from './block';
+import Block from './headerBlock';
 import { XView } from 'react-mental';
 
 const root = css``;
