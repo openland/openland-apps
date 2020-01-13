@@ -60,7 +60,6 @@ export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, 
                             square={true}
                             onClick={() => doConfirm(action.action)}
                             loading={form.loading}
-                            marginLeft={12}
                         />
                     ))}
                 </XModalFooter>

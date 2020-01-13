@@ -162,7 +162,6 @@ export const UserPopperContent = React.memo(
                             {!isMe && (
                                 <UButton
                                     text="Message"
-                                    size="small"
                                     marginTop={16}
                                     onClick={(e: React.MouseEvent) => {
                                         e.preventDefault();
