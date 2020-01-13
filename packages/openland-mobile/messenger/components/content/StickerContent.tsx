@@ -8,7 +8,7 @@ import { paddedText } from '../AsyncMessageContentView';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { PixelRatio } from 'react-native';
 
-export const STICKER_SIZE = 150;
+export const STICKER_SIZE = 192;
 export const layoutSticker = () => {
     const ratio = PixelRatio.get();
 
