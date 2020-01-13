@@ -1,8 +1,9 @@
 import React, { FC, ChangeEvent } from 'react';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import SearchIcon from 'openland-icons/ic-search-16.svg';
 import ClearIcon from 'openland-icons/ic-close-16.svg';
+import { TextBody } from 'openland-web/utils/TextStyles';
 
 const field = css`
     appearance: textfield;
@@ -93,7 +94,7 @@ export const USearchInput: FC<USearchInputProps> = (props) => {
         <XView position="relative">
             <input
                 type="search"
-                className={field}
+                className={cx(TextBody, field)}
                 value={props.value}
                 onChange={props.onChange}
                 autoFocus={props.autoFocus}
