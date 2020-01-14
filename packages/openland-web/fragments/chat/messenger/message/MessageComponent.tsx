@@ -354,17 +354,25 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
         </div>
     );
 
-    const avatar = (
-        <div className={messageAvatarWrapper}>
-            <MAvatar
-                senderPhoto={message.senderPhoto}
-                senderNameEmojify={message.senderNameEmojify}
-                senderName={message.senderName}
-                senderId={message.senderId}
-            />
-        </div>
-    );
+    const Avatar = () => {
+        const [show] = useUserPopper({
+            user: message.sender,
+            isMe: message.sender.isYou,
+            noCardOnMe: false,
+        });
 
+        return (
+            <div className={messageAvatarWrapper} onMouseEnter={show}>
+                <MAvatar
+                    senderPhoto={message.senderPhoto}
+                    senderNameEmojify={message.senderNameEmojify}
+                    senderName={message.senderName}
+                    senderId={message.senderId}
+                />
+            </div>
+        );
+    };
+        
     const sender = (
         <MessageSenderContent
             sender={message.sender}
@@ -386,7 +394,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
         >
             <div className={messageContentClass}>
                 <div className={messageInnerContainerClass}>
-                    {!message.attachTop && avatar}
+                    {!message.attachTop && <Avatar />}
                     {message.attachTop && (
                         <div className={cx(dateStyle, 'message-date')}>
                             <span className={TextCaption}>{formatTime(message.date)}</span>
