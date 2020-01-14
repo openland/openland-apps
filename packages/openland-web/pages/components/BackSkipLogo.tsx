@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView, XImage } from 'react-mental';
+import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import IcBack from 'openland-icons/s/ic-back-24.svg';
 import { XModalBoxContext } from 'openland-x/XModalBoxContext';
@@ -22,11 +22,9 @@ const Skip = ({ onClick }: { onClick: (event: React.MouseEvent) => void }) => {
 };
 
 export const BackSkipLogo = ({
-    noLogo,
     onBack,
     onSkip,
 }: {
-    noLogo?: boolean;
     onSkip: ((event: React.MouseEvent) => void) | null;
     onBack: ((event: React.MouseEvent) => void) | null;
 }) => {
@@ -50,17 +48,6 @@ export const BackSkipLogo = ({
                     <div />
                 )}
 
-            {!noLogo && !isMobile && (
-                <div
-                    style={{
-                        position: 'absolute',
-                        left: modalBox ? 32 : 'calc(50% - 73px)',
-                        margin: 'auto',
-                    }}
-                >
-                    <XImage src="/static/landing/logotype.svg" width={146} height={42} />
-                </div>
-            )}
             {onSkip && !modalBox ? (
                 <XView zIndex={1001}>
                     <Skip onClick={onSkip} />

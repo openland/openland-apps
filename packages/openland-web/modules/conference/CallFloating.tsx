@@ -14,6 +14,8 @@ import { MediaStreamManager } from 'openland-engines/media/MediaStreamManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 
+const AVATAR_SIZE = 48;
+
 const FloatContainerClass = css`
     display: none;
     position: absolute;
@@ -25,11 +27,11 @@ const FloatContainerClass = css`
     background-color: #32bb78;
     flex-direction: row;
     padding: 8px;
-    border-radius: 48px;
+    border-radius: ${AVATAR_SIZE}px;
     transition: max-width 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
         opacity 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
     overflow: hidden;
-    max-width: 48px;
+    max-width: ${AVATAR_SIZE}px;
     opacity: 0.56;
     &:hover {
         max-width: 360px;
@@ -67,25 +69,25 @@ const useJsDrag = (
         let saved = window.localStorage.getItem('call_floating_shift');
         let positionShift = saved
             ? JSON.parse(saved)
-            : [window.innerWidth / 2 - 48, window.innerHeight / 2];
+            : [window.innerWidth / 2 - (AVATAR_SIZE), window.innerHeight / 2];
         let prev: number[] | undefined;
 
         const checkPostion = () => {
             // limit shift with screen bounds
-            if (Math.abs(positionShift[0]) > window.innerWidth / 2) {
-                positionShift[0] = (window.innerWidth / 2) * Math.sign(positionShift[0]);
+            if (Math.abs(positionShift[0]) > window.innerWidth / 2 - (AVATAR_SIZE / 2)) {
+                positionShift[0] = (window.innerWidth / 2 - (AVATAR_SIZE / 2)) * Math.sign(positionShift[0]);
             }
-            positionShift[1] = Math.min(window.innerHeight - 48, Math.max(0, positionShift[1]));
+            positionShift[1] = Math.min(window.innerHeight - (AVATAR_SIZE), Math.max(0, positionShift[1]));
 
             // swap layout for left/right part of screen
             if (container && content) {
                 if (positionShift[0] > 0) {
-                    container.style.right = 'calc(50% - 24px)';
-                    container.style.left = null;
+                    container.style.right = `calc(50% - ${AVATAR_SIZE / 2}px)`;
+                    container.style.left = 'initial';
                     content.style.flexDirection = 'row-reverse';
                 } else {
-                    container.style.right = null;
-                    container.style.left = 'calc(50% - 24px)';
+                    container.style.right = 'initial';
+                    container.style.left = `calc(50% - ${AVATAR_SIZE / 2}px)`;
                     content.style.flexDirection = 'row';
                 }
             }
@@ -332,7 +334,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
             if (isMobile) {
                 if (containerRef.current) {
                     containerRef.current.style.opacity = forceOpen ? '1' : '0.56';
-                    containerRef.current.style.maxWidth = forceOpen ? '360px' : '48px';
+                    containerRef.current.style.maxWidth = forceOpen ? '360px' : `${AVATAR_SIZE}px`;
                 }
                 setForceOpen(!forceOpen);
             }

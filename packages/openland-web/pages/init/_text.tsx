@@ -23,20 +23,22 @@ export const InitTexts = {
         signupWebSignUpEmail: 'Sign up for Openland',
         signinRoomSignUpEmail: 'Sign in and join the conversation',
         signupRoomSignUpEmail: 'Sign up and join the conversation',
-        enterActivationCode: 'Enter activation code',
+        enterActivationCode: 'Enter login code',
         resend: 'Resend.',
         haveNotReceiveCode: "Haven't received our email?",
         noEmail: 'Please enter your email address',
         emailInvalid:
             'It looks like this email is incorrect.\nPlease check your email address and try again.',
-        emailPlaceholder: 'Your email',
+        emailPlaceholder: 'Email',
         codeInvalid: 'Invalid activation code',
         noCode: "Please enter the 6-digit code we've just sent to your email",
         wrongCodeLength:
             'The code you entered is incorrect.\nPlease check the code in the email and try again.',
-        codePlaceholder: 'Code from email',
+        codePlaceholder: 'Login code',
         continue: 'Continue',
+        next: 'Next',
         back: 'Back',
+        done: 'Done',
         complete: 'Continue',
         organizationIsEmptyError: `Organization field is required. To register as an individual, simply enter your name.`,
         firstNameIsEmptyError: "What's your name?",
@@ -60,7 +62,7 @@ export const InitTexts = {
 
     create_profile: {
         pageTitle: 'Create profile',
-        title: 'Your name',
+        title: 'What’s your name?',
         subTitle: 'Help others recognize you',
         firstName: 'First Name',
         firstNamePlaceholder: 'First name',
@@ -71,12 +73,13 @@ export const InitTexts = {
         organizationName: 'Organization Name',
         organizationPopup: 'To register as an individual, simply enter your name',
         continue: 'Continue',
+        next: 'Next',
     },
 
     create_organization: {
         pageTitle: 'Your organization',
-        title: 'Your organization',
-        subTitle: 'Provide some context about what you do',
+        title: 'Where do you work?',
+        subTitle: 'Give others a bit of context about you',
         name: 'Organization name',
         namePlaceholder: 'Acme Corporation',
         website: 'Website',
@@ -85,6 +88,8 @@ export const InitTexts = {
         cancel: 'Cancel',
         skip: 'Skip for now',
         continue: 'Continue',
+        next: 'Next',
+        done: 'Done',
     },
 
     create_organization_popper: {

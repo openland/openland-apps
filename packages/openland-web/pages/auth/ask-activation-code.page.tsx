@@ -9,22 +9,20 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { trackEvent } from 'openland-x-analytics';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout } from './components/authComponents';
+import { Title, Subtitle, FormLayout, AuthActionButton, AuthInput } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
-import { UButton } from 'openland-web/components/unicorn/UButton';
-import { UInput } from 'openland-web/components/unicorn/UInput';
 import { completeAuth } from './complete.page';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 
 export type ActivationCodeProps = {
     emailValue: string;
-    signin: boolean;
     emailWasResend: boolean;
     emailSending: boolean;
     backButtonClick: (event?: React.MouseEvent<any>) => void;
     resendCodeClick: (event?: React.MouseEvent<any>) => void;
     emailSendedTo: string;
     isMobile: boolean;
+    isExistingUser: boolean;
 };
 
 const trackError = (error: string) => {
@@ -57,6 +55,7 @@ export const WebSignUpActivationCode = ({
     codeSending,
     codeError,
     loginCodeStart,
+    isExistingUser,
     isMobile,
 }: ActivationCodeProps & {
     codeSending: boolean;
@@ -88,66 +87,34 @@ export const WebSignUpActivationCode = ({
     const errorText = (codeField.input.invalid && codeField.input.errorText) || codeError;
     const isInvalid = !!errorText;
 
-    const button = (
-        <UButton
-            loading={codeSending}
-            onClick={doConfirm}
-            size="large"
-            style="primary"
-            alignSelf="center"
-            text={InitTexts.auth.continue}
-        />
-    );
-
-    const resendEmail = (
-        <>
-            <XView color="rgba(0, 0, 0, 0.5)" fontSize={14} marginRight={6}>
-                {emailWasResend ? 'Code successfully sent.' : InitTexts.auth.haveNotReceiveCode}
-            </XView>
-            <XView onClick={resendCodeClick} color="#1790ff" cursor="pointer" as="a">
-                <strong>{InitTexts.auth.resend}</strong>
-            </XView>
-        </>
-    );
-
     return (
-        <FormLayout
-            top={
-                <>
-                    <Title text={InitTexts.auth.enterActivationCode} />
-                    <XView color="var(--foregroundSecondary)" marginBottom={32} marginTop={8}>
-                        <Subtitle>
-                            {emailSending ? (
-                                sendingCodeText
-                            ) : (
-                                    <>
-                                        We just sent it to
-                                    <strong>{' ' + emailSendedTo}</strong>
-                                    </>
-                                )}
-                        </Subtitle>
-                    </XView>
-                    <XView width={isMobile ? '100%' : 360} maxWidth={360}>
-                        <UInput
-                            width={isMobile ? '100%' : 360}
-                            pattern="[0-9]*"
-                            type="number"
-                            autofocus={true}
-                            label={InitTexts.auth.codePlaceholder}
-                            flexGrow={1}
-                            flexShrink={0}
-                            onChange={codeField.input.onChange}
-                            invalid={isInvalid}
-                        />
-                        {isInvalid && <XErrorMessage2 message={errorText} />}
-                        <XView marginTop={30} flexDirection="row" justifyContent="center">
-                            {resendEmail}
-                        </XView>
-                    </XView>
-                </>
-            }
-            bottom={button}
-        />
+        <FormLayout>
+            <Title text={InitTexts.auth.enterActivationCode} />
+            <Subtitle>
+                {emailSending ? (
+                    sendingCodeText
+                ) : (
+                        <>
+                            We just sent it to {emailSendedTo}.<br />
+                            {emailWasResend ? 'Code successfully sent.' : InitTexts.auth.haveNotReceiveCode} <a onClick={resendCodeClick}>Resend</a>
+                        </>
+                    )}
+            </Subtitle>
+            {/* {isExistingUser && <XView alignSelf="center" marginTop={16} width={72} height={72} backgroundColor="black" borderRadius={100} />} */}
+            <XView width={isMobile ? '100%' : 360} maxWidth={360}>
+                <AuthInput
+                    isMobile={isMobile}
+                    pattern="[0-9]*"
+                    type="number"
+                    label={InitTexts.auth.codePlaceholder}
+                    onChange={codeField.input.onChange}
+                    invalid={isInvalid}
+                />
+                {isInvalid && <XErrorMessage2 message={errorText} />}
+            </XView>
+            {/* <AuthActionButton text={isExistingUser ? InitTexts.auth.done : InitTexts.auth.next} loading={codeSending} onClick={doConfirm} /> */}
+            <AuthActionButton text={InitTexts.auth.next} loading={codeSending} onClick={doConfirm} />
+        </FormLayout>
     );
 };
 
@@ -218,14 +185,13 @@ export const AskActivationPage = (props: ActivationCodeProps) => {
 
     return (
         <Wrapper>
-            <XDocumentHead title="Activation code" />
+            <XDocumentHead title="Enter login code" />
             <BackSkipLogo
                 onBack={() => {
                     router.replace('/authorization/ask-email');
                     props.backButtonClick();
                 }}
                 onSkip={null}
-                noLogo={props.isMobile}
             />
 
             <WebSignUpActivationCode

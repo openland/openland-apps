@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, ViewStyle, Platform } from 'react-native';
+import { View, StyleSheet, Image, Text, ViewStyle, Platform, Linking } from 'react-native';
 import RNRestart from 'react-native-restart';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
@@ -7,6 +7,7 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { trackEvent } from 'openland-mobile/analytics';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { API_HOST } from 'openland-y-utils/api';
@@ -21,15 +22,21 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     } as ViewStyle,
     buttons: {
         paddingTop: 16,
-        paddingBottom: 32,
         paddingHorizontal: 32,
         maxWidth: 424,
         alignSelf: 'center',
-        width: '100%'
+        width: '100%',
+    } as ViewStyle,
+    privacy: {
+        paddingTop: 16,
+        paddingBottom: 32,
+        paddingHorizontal: 32,
+        alignItems: 'center',
+        justifyContent: 'center',
     } as ViewStyle,
 });
 
@@ -40,17 +47,56 @@ const Logo = React.memo(() => {
         <View style={styles.logoWrapper}>
             <Image
                 fadeDuration={0}
-                source={theme.type === 'Light' ? require('assets/ic-logo-240.png') : require('assets/ic-logo-dark-240.png')}
-                style={{ width: 240, height: 240 }}
+                source={
+                    theme.type === 'Light'
+                        ? require('assets/ic-logo-240.png')
+                        : require('assets/ic-logo-dark-240.png')
+                }
+                style={{ width: 240, height: 240, marginBottom: 12 }}
             />
+            <Text
+                allowFontScaling={false}
+                style={{
+                    ...TextStyles.Body,
+                    textAlign: 'center',
+                    color: theme.foregroundSecondary,
+                }}
+            >
+                The best place to find and build {'\n'} inspiring communities
+            </Text>
         </View>
     );
 });
 
-class LoginComponent extends React.Component<PageProps, { initing: boolean, loading: boolean }> {
+const PrivacyText = React.memo(() => {
+    const theme = React.useContext(ThemeContext);
+
+    return (
+        <View style={styles.privacy}>
+            <Text
+                allowFontScaling={false}
+                style={{
+                    ...TextStyles.Caption,
+                    textAlign: 'center',
+                    color: theme.foregroundTertiary,
+                }}
+            >
+                By creating an account you are accepting our{' '}
+                <Text style={{ ...TextStyles.Label3 }} onPress={() => Linking.openURL('https://openland.com/terms')}>
+                    Terms of service
+                </Text>{' '}and{' '}
+                <Text style={{ ...TextStyles.Label3 }} onPress={() => Linking.openURL('https://openland.com/privacy')}>
+                    Privacy policy
+                </Text>
+            </Text>
+        </View>
+    );
+});
+
+class LoginComponent extends React.Component<PageProps, { initing: boolean; loading: boolean }> {
     state = {
         initing: false,
-        loading: false
+        loading: false,
     };
 
     handleGoogleAuth = async () => {
@@ -59,16 +105,18 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
         try {
             this.setState({ loading: true });
             GoogleSignin.configure({
-                webClientId: '1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com',
-                iosClientId: '1095846783035-mp5t7jtqvocp6rfr696rot34r4qfobum.apps.googleusercontent.com',
+                webClientId:
+                    '1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com',
+                iosClientId:
+                    '1095846783035-mp5t7jtqvocp6rfr696rot34r4qfobum.apps.googleusercontent.com',
             });
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
 
-            var uploaded = await fetch('https://' + API_HOST + '/auth/google/getAccessToken', {
+            let uploaded = await fetch('https://' + API_HOST + '/auth/google/getAccessToken', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ idToken: userInfo.idToken })
+                body: JSON.stringify({ idToken: userInfo.idToken }),
             });
 
             if (uploaded.ok) {
@@ -84,7 +132,10 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
             // TODO: Better error
             Alert.alert('Unable to authenticate');
         } catch (error) {
-            if (error.code === statusCodes.SIGN_IN_CANCELLED || error.code === statusCodes.IN_PROGRESS) {
+            if (
+                error.code === statusCodes.SIGN_IN_CANCELLED ||
+                error.code === statusCodes.IN_PROGRESS
+            ) {
                 // user cancelled the login flow or operation (e.g. sign in) is in progress already
             } else if (Platform.OS === 'ios') {
                 // can't handle cancel with latest GoogleSignIn lib - just ignore all error for now
@@ -108,10 +159,9 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                 <ASSafeAreaView style={{ flexGrow: 1 }}>
                     <View style={styles.container}>
                         <Logo />
-
                         <View style={styles.buttons}>
                             <ZRoundedButton
-                                title="Sign in with Google"
+                                title="Continue with Google"
                                 loading={this.state.loading}
                                 onPress={this.handleGoogleAuth}
                                 size="large"
@@ -125,6 +175,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                                 size="large"
                             />
                         </View>
+                        <PrivacyText />
                     </View>
                 </ASSafeAreaView>
             </ZTrack>

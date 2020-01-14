@@ -124,7 +124,7 @@ const LocalDiscoverComponent = ({
         <Wrapper fullHeight={fullHeight}>
             <XDocumentHead title="Choose role" />
             {!noBackSkipLogo && (
-                <BackSkipLogo onBack={onBack} onSkip={onSkip} noLogo={noLogo || !!isMobile} />
+                <BackSkipLogo onBack={onBack} onSkip={onSkip} />
             )}
             <XView
                 alignItems="center"

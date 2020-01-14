@@ -210,6 +210,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                                 onStickerSent={onStickerSent}
                                 groupId={groupId}
                                 compact={true}
+                                forceAutofocus={true}
                             />
                         )}
                     </>

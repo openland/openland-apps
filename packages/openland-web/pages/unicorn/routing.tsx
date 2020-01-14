@@ -12,7 +12,6 @@ import { SettingsEmailFragment } from 'openland-web/fragments/account/SettingsEm
 import { NotificationsFragment } from 'openland-web/fragments/notifications/NofiticationsFragment';
 import { DownloadAppsFragment } from 'openland-web/fragments/account/SettingsDownloadAppsFragment';
 import { InviteFriendsFragment } from 'openland-web/fragments/account/SettingsInviteFriendsFragment';
-import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 import { GroupProfileFragment } from 'openland-web/fragments/group/GroupProfileFragment';
 import { MemberProfileFragment } from 'openland-web/fragments/group/MemberProfileFragment';
 import { MemberProfileEditFragment } from 'openland-web/fragments/group/MemberProfileEditFragment';
@@ -29,8 +28,7 @@ import { FeedItemFragment } from 'openland-web/fragments/feed/FeedItemFragment';
 import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 import { SharedMediaFragment } from 'openland-web/fragments/chat/sharedMedia/SharedMediaFragment';
 import { SettingsAboutFragment } from 'openland-web/fragments/account/SettingsAboutFragment';
-import { useClient } from 'openland-web/utils/useClient';
-import { withRouter, SingletonRouter } from 'next/router';
+import { InviteBypass } from './inviteBypass';
 
 // temporary stub for /mail/ -> not found bug
 const TemporaryStub = React.memo(() => {
@@ -44,32 +42,6 @@ const TemporaryStub = React.memo(() => {
 });
 
 const routing = new URouting();
-
-interface RawInviteResolverProps {
-    router: SingletonRouter;
-}
-
-const RawInviteResolver = React.memo<RawInviteResolverProps>(({ router }) => {
-    const client = useClient();
-    const unicorn = useUnicorn();
-    const key = unicorn.id!;
-    const invite = client.useResolvedInvite({ key });
-
-    // if user is already a member, silently render MessengerFragment and replace the url    
-    if (invite.invite && invite.invite.__typename === 'RoomInvite' && invite.invite.room.membership === 'MEMBER') {
-        const roomId = invite.invite.room.id!;
-        const destination = `/unicorn?conversationId=${roomId}`;
-        const as = `/mail/${roomId}`;
-
-        router.replace(destination, as);
-
-        return <MessengerFragment id={roomId} />;
-    }
-
-    return <InviteLandingComponent />;
-});
-
-const InviteResolver = withRouter(RawInviteResolver);
 
 // Mail
 routing.addRoute('/mail', () => TemporaryStub);
@@ -119,8 +91,8 @@ routing.addRoute('/:shortname', () => ShortnameFragment);
 routing.addRoute('/advanced/:id', () => AdvancedSettingsFragment);
 
 // Invites
-routing.addRoute('/invite/:invite', () => InviteResolver);
-routing.addRoute('/join/:invite', () => InviteResolver);
+routing.addRoute('/invite/:invite', () => InviteBypass);
+routing.addRoute('/join/:invite', () => InviteBypass);
 
 //
 // Backward compatibility

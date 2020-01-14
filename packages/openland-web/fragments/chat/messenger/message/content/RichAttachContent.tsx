@@ -33,6 +33,7 @@ const richWrapper = css`
 
     @media (max-width: 1100px) {
         flex-direction: column;
+        max-width: 360px;
     }
 `;
 

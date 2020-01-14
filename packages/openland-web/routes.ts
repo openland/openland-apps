@@ -27,8 +27,6 @@ routes.add('auth/complete');
 //
 
 routes.add('/', '/init/root');
-routes.add('/signup', '/auth/root');
-routes.add('/signup/', '/auth/root');
 routes.add('/signin', '/auth/root');
 routes.add('/signin/', '/auth/root');
 routes.add('/signin/invite', '/auth/root');

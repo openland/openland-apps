@@ -25,7 +25,7 @@ const AcceptInvite = ({
     const router = React.useContext(XRouterContext)!;
     const onAcceptInvite = React.useCallback(() => {
         if (!userInfo || !userInfo.isLoggedIn) {
-            router.push('/authorization/create-new-account');
+            router.push('/signin');
         } else {
             router.push('/mail');
         }
