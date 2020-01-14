@@ -30,6 +30,10 @@ const inputWrapper = css`
     }
 `;
 
+const inputWrapperWithPlaceholder = css`
+    height: 40px;
+`;
+
 const inputStyle = css`
     width: 100%;
     height: 100%;
@@ -39,6 +43,15 @@ const inputStyle = css`
     font-size: 15px;
     color: var(--foregroundPrimary);
     line-height: 24px;
+`;
+
+const inputStyleWithPlaceholder = css`
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+    &::placeholder {
+        color: var(--foregroundTertiary);
+    }
 `;
 
 const labelStyle = css`
@@ -70,13 +83,14 @@ export interface UInputProps extends XViewProps {
     disabled?: boolean;
     invalid?: boolean;
     type?: string;
+    hasPlaceholder?: boolean;
     pattern?: string;
     autofocus?: boolean;
     onChange?: (v: string) => void;
 }
 
 export const UInput = (props: UInputProps) => {
-    const { label, value, disabled, invalid, type, pattern, autofocus, onChange, ...other } = props;
+    const { label, value, disabled, invalid, type, hasPlaceholder, pattern, autofocus, onChange, ...other } = props;
 
     const [val, setValue] = React.useState(value || '');
 
@@ -93,27 +107,30 @@ export const UInput = (props: UInputProps) => {
 
     return (
         <XView {...other}>
-            <div className={inputWrapper}>
+            <div className={cx(inputWrapper, hasPlaceholder && inputWrapperWithPlaceholder)}>
                 <input
                     disabled={disabled}
                     value={val || ''}
-                    className={inputStyle}
+                    className={cx(inputStyle, hasPlaceholder && inputStyleWithPlaceholder)}
                     type={type}
                     pattern={pattern}
                     autoFocus={autofocus}
                     autoComplete="off"
                     onChange={e => handleChange(e.target.value)}
+                    {...hasPlaceholder && { placeholder: label }}
                 />
-                <div
-                    className={cx(
-                        labelStyle,
-                        val && labelValueStyle,
-                        invalid && labelInvalidStyle,
-                        'input-label',
-                    )}
-                >
-                    {label}
-                </div>
+                {!hasPlaceholder && (
+                    <div
+                        className={cx(
+                            labelStyle,
+                            val && labelValueStyle,
+                            invalid && labelInvalidStyle,
+                            'input-label',
+                        )}
+                    >
+                        {label}
+                    </div>
+                )}
             </div>
         </XView>
     );

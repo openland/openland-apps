@@ -29,7 +29,7 @@ export const InitTexts = {
         noEmail: 'Please enter your email address',
         emailInvalid:
             'It looks like this email is incorrect.\nPlease check your email address and try again.',
-        emailPlaceholder: 'Your email',
+        emailPlaceholder: 'Email',
         codeInvalid: 'Invalid activation code',
         noCode: "Please enter the 6-digit code we've just sent to your email",
         wrongCodeLength:

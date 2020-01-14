@@ -25,8 +25,8 @@ export const Title = (props: { text: string }) => (
     </div>
 );
 
-export const Subtitle = (props: { text?: string; maxWidth?: number | string, className?: string, children?: any }) => (
-    <div className={cx(TextBody, textAlignClassName, subtitleClassName, props.className)}>
+export const Subtitle = (props: { text?: string; maxWidth?: number | string, children?: any }) => (
+    <div className={cx(TextBody, textAlignClassName, subtitleClassName)}>
         {props.text}
         {props.children}
     </div>
@@ -55,6 +55,7 @@ export const AuthInput = (props: UInputProps & { isMobile: boolean }) => {
             maxWidth={360}
             type="email"
             alignSelf="center"
+            hasPlaceholder={true}
             {...other}
         />
     );
