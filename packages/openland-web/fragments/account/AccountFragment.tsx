@@ -11,6 +11,7 @@ import EditProfileIcon from 'openland-icons/s/ic-edit-24.svg';
 import AppearanceIcon from 'openland-icons/s/ic-appearance-24.svg';
 import AppsIcon from 'openland-icons/s/ic-apps-24.svg';
 import InfoIcon from 'openland-icons/s/ic-info-24.svg';
+import WalletIcon from 'openland-icons/s/ic-wallet-24.svg';
 import { withUserInfo } from 'openland-web/components/UserInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
@@ -124,9 +125,9 @@ export const AccountFragment = React.memo(() => {
                     <UListGroup header="Settings">
                         <XWithRole role="super-admin">
                             <UListItem
-                                title="Finance"
-                                icon={<NotificationsIcon />}
-                                path="/settings/finance"
+                                title="Wallet"
+                                icon={<WalletIcon />}
+                                path="/wallet"
                             />
                         </XWithRole>
                         <UListItem

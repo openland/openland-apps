@@ -6,7 +6,7 @@ import { StripeCardComponent, StripeCardComponentInstance } from './components/S
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useClient } from 'openland-web/utils/useClient';
 
-export const SettingsFinanceFragment = React.memo(() => {
+export const WalletFragment = React.memo(() => {
     let client = useClient();
     let ref = React.useRef<StripeCardComponentInstance>(null);
     let [loading, setLoading] = React.useState(false);
